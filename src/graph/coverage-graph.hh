@@ -24,165 +24,165 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../OT/Layout/Common/Coverage.hh"
+#అన్తర్భావ "graph.hh"
+#అన్తర్భావ "../OT/Layout/Common/Coverage.hh"
 
-#ifndef GRAPH_COVERAGE_GRAPH_HH
-#define GRAPH_COVERAGE_GRAPH_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_COVERAGE_లేఖాచిత్రం_HH
+#నిర్వచించు లేఖాచిత్రం_COVERAGE_లేఖాచిత్రం_HH
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
-  const graph_t::vertex_t& vertex
+మూస <రకం_పేరు Types>
+స్థిర లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (
+  స్థిరరాశి OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
+  స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం
 ) {
-  size_t vertex_len = vertex.table_size();
-  constexpr unsigned min_size = OT::Layout::Common::CoverageFormat1_3<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత();
+  constexpr గుర్తులేని min_కొలత = OT::Layout::Common::CoverageFormat1_3<Types>::min_కొలత;
+  ఒకవేళ (unlikely (శీర్షం_len < min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  ఒకవేళ (unlikely (శీర్షం_len < min_కొలత + thiz->glyphArray.get_కొలత () - thiz->glyphArray.len.get_కొలత ()))
+    తిరిగి Err(SANITIZE_FAILURE);
+  తిరిగి Ok();
 }
 
-template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
-  const graph_t::vertex_t& vertex
+మూస <రకం_పేరు Types>
+స్థిర లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (
+  స్థిరరాశి OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
+  స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం
 ) {
-  size_t vertex_len = vertex.table_size();
-  constexpr unsigned min_size = OT::Layout::Common::CoverageFormat2_4<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత();
+  constexpr గుర్తులేని min_కొలత = OT::Layout::Common::CoverageFormat2_4<Types>::min_కొలత;
+  ఒకవేళ (unlikely (శీర్షం_len < min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  ఒకవేళ (unlikely (శీర్షం_len < min_కొలత + thiz->range_రికార్డు.get_కొలత () - thiz->range_రికార్డు.len.get_కొలత ()))
+    తిరిగి Err(SANITIZE_FAILURE);
+  తిరిగి Ok();
 }
 
-struct Coverage : public OT::Layout::Common::Coverage
+నిర్మాణం Coverage : బహిరంగ OT::Layout::Common::Coverage
 {
-  static graph_result_t<void> clone_coverage (gsubgpos_graph_context_t& c,
-                                              unsigned coverage_id,
-                                              unsigned new_parent_id,
-                                              unsigned link_position,
-                                              unsigned start, unsigned end)
+  స్థిర లేఖాచిత్రం_ఫలితం_t<శూన్య> clone_coverage (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                              గుర్తులేని coverage_id,
+                                              గుర్తులేని new_మాతృ_id,
+                                              గుర్తులేని link_position,
+                                              గుర్తులేని ప్రారంభం, గుర్తులేని చివర)
 
   {
-    unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    auto& coverage_v = c.graph.vertices_[coverage_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
+    గుర్తులేని coverage_కొలత = c.లేఖాచిత్రం.vertices_[coverage_id].పట్టిక_కొలత ();
+    స్వయంచాలక& coverage_v = c.లేఖాచిత్రం.vertices_[coverage_id];
+    స్థిరరాశి Coverage* coverage_పట్టిక = (స్థిరరాశి Coverage*) coverage_v.obj().తల_2;
+    ఒకవేళ (unlikely (!coverage_పట్టిక))
+      తిరిగి Err(INVALID_వాదం);
+    TRY (coverage_పట్టిక->sanitize (coverage_v));
 
-    auto new_coverage =
-        + hb_zip (coverage_table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+    స్వయంచాలక new_coverage =
+        + hb_zip (coverage_పట్టిక->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<గుర్తులేని, గుర్తులేని> p) {
+          తిరిగి p.second >= ప్రారంభం && p.second < చివర;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_క్రమీకరణ (hb_మొదటి)
         ;
 
-    return add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
+    తిరిగి కూడు_coverage (c, new_మాతృ_id, link_position, new_coverage, coverage_కొలత);
   }
 
-  template<typename It>
-  static graph_result_t<void> add_coverage (gsubgpos_graph_context_t& c,
-                                            unsigned parent_id,
-                                            unsigned link_position,
+  మూస<రకం_పేరు It>
+  స్థిర లేఖాచిత్రం_ఫలితం_t<శూన్య> కూడు_coverage (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                            గుర్తులేని మాతృ_id,
+                                            గుర్తులేని link_position,
                                             It glyphs,
-                                            unsigned max_size)
+                                            గుర్తులేని max_size)
   {
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
-    TRY (make_coverage (c, glyphs, coverage_prime_id, max_size));
+    TRY_కేటాయించు (గుర్తులేని coverage_ప్రధానసంఖ్య_id, c.లేఖాచిత్రం.new_కణుపు (శూన్యసూచిక, శూన్యసూచిక));
+    స్వయంచాలక& coverage_ప్రధానసంఖ్య_శీర్షం = c.లేఖాచిత్రం.vertices_[coverage_ప్రధానసంఖ్య_id];
+    TRY (make_coverage (c, glyphs, coverage_ప్రధానసంఖ్య_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_prime_id, link_position));
-    TRY(coverage_prime_vertex.add_parent (parent_id, false));
+    TRY(c.లేఖాచిత్రం.vertices_[మాతృ_id].కూడు_real_link (SmallTypes::కొలత, coverage_ప్రధానసంఖ్య_id, link_position));
+    TRY(coverage_ప్రధానసంఖ్య_శీర్షం.కూడు_మాతృ (మాతృ_id, అబద్ధం));
 
-    return Ok();
+    తిరిగి Ok();
   }
 
   // Filter an existing coverage table to glyphs at indices [start, end) and replace it with the filtered version.
-  static graph_result_t<void> filter_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned existing_coverage,
-                                                unsigned start, unsigned end) {
-    unsigned coverage_size = c.graph.vertices_[existing_coverage].table_size ();
-    auto& coverage_v = c.graph.vertices_[existing_coverage];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
+  స్థిర లేఖాచిత్రం_ఫలితం_t<శూన్య> filter_coverage (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                గుర్తులేని existing_coverage,
+                                                గుర్తులేని ప్రారంభం, గుర్తులేని చివర) {
+    గుర్తులేని coverage_కొలత = c.లేఖాచిత్రం.vertices_[existing_coverage].పట్టిక_కొలత ();
+    స్వయంచాలక& coverage_v = c.లేఖాచిత్రం.vertices_[existing_coverage];
+    స్థిరరాశి Coverage* coverage_పట్టిక = (స్థిరరాశి Coverage*) coverage_v.obj().తల_2;
+    ఒకవేళ (unlikely (!coverage_పట్టిక))
+      తిరిగి Err(INVALID_వాదం);
+    TRY (coverage_పట్టిక->sanitize (coverage_v));
 
-    auto new_coverage =
-        + hb_zip (coverage_table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+    స్వయంచాలక new_coverage =
+        + hb_zip (coverage_పట్టిక->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<గుర్తులేని, గుర్తులేని> p) {
+          తిరిగి p.second >= ప్రారంభం && p.second < చివర;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_క్రమీకరణ (hb_మొదటి)
         ;
 
-    return make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
+    తిరిగి make_coverage (c, new_coverage, existing_coverage, coverage_కొలత * 2 + 100);
   }
 
   // Replace the coverage table at dest obj with one covering 'glyphs'.
-  template<typename It>
-  static graph_result_t<void> make_coverage (gsubgpos_graph_context_t& c,
+  మూస<రకం_పేరు It>
+  స్థిర లేఖాచిత్రం_ఫలితం_t<శూన్య> make_coverage (gsubgpos_లేఖాచిత్రం_context_t& c,
                                              It glyphs,
-                                             unsigned dest_obj,
-                                             unsigned max_size)
+                                             గుర్తులేని dest_obj,
+                                             గుర్తులేని max_size)
   {
-    char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    అక్షరం* బఫరు = (అక్షరం*) hb_calloc (1, max_size);
+    ఒకవేళ (unlikely (!బఫరు))
+      తిరిగి Err(కేటాయింపు_FAILURE);
 
-    hb_serialize_context_t serializer (buffer, max_size);
+    hb_serialize_context_t serializer (బఫరు, max_size);
     OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
-    serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    serializer.చివర_serialize ();
+    ఒకవేళ (unlikely (serializer.లోపల_error ()))
     {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      hb_free (బఫరు);
+      తిరిగి Err(కేటాయింపు_FAILURE);
     }
 
-    hb_bytes_t coverage_copy = serializer.copy_bytes ();
-    if (unlikely (!coverage_copy.arrayZ)) {
-      hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+    hb_బైట్లు_t coverage_copy = serializer.copy_బైట్లు ();
+    ఒకవేళ (unlikely (!coverage_copy.arrayZ)) {
+      hb_free (బఫరు);
+      తిరిగి Err(కేటాయింపు_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
-    auto res = c.add_buffer ((char *) coverage_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    స్వయంచాలక res = c.కూడు_బఫరు ((అక్షరం *) coverage_copy.arrayZ);
+    ఒకవేళ (unlikely (!res.is_ok ()))
     {
-      hb_free (buffer);
-      hb_free ((char *) coverage_copy.arrayZ);
-      return res;
+      hb_free (బఫరు);
+      hb_free ((అక్షరం *) coverage_copy.arrayZ);
+      తిరిగి res;
     }
 
-    auto& v = c.graph.vertices_[dest_obj];
-    char* head = (char *) coverage_copy.arrayZ;
-    v.set_buffer (head, head + coverage_copy.length);
+    స్వయంచాలక& v = c.లేఖాచిత్రం.vertices_[dest_obj];
+    అక్షరం* తల_2 = (అక్షరం *) coverage_copy.arrayZ;
+    v.సమితి_బఫరు (తల_2, తల_2 + coverage_copy.నిడివి);
 
-    hb_free (buffer);
-    return Ok();
+    hb_free (బఫరు);
+    తిరిగి Ok();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) return Err(SANITIZE_FAILURE);
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (శీర్షం_len < OT::Layout::Common::Coverage::min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) this, vertex);
-    case 2: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) this, vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) this, vertex);
-    case 4: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) this, vertex);
-#endif
-    default: return Err(SANITIZE_FAILURE);
+    స్థితి 1: తిరిగి లేఖాచిత్రం::sanitize ((స్థిరరాశి OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) ఇది, శీర్షం);
+    స్థితి 2: తిరిగి లేఖాచిత్రం::sanitize ((స్థిరరాశి OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) ఇది, శీర్షం);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: తిరిగి లేఖాచిత్రం::sanitize ((స్థిరరాశి OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) ఇది, శీర్షం);
+    స్థితి 4: తిరిగి లేఖాచిత్రం::sanitize ((స్థిరరాశి OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) ఇది, శీర్షం);
+#అయితే_ముగింపు
+    అప్రమేయ: తిరిగి Err(SANITIZE_FAILURE);
     }
   }
 };
@@ -190,4 +190,4 @@ struct Coverage : public OT::Layout::Common::Coverage
 
 }
 
-#endif  // GRAPH_COVERAGE_GRAPH_HH
+#అయితే_ముగింపు  // GRAPH_COVERAGE_GRAPH_HH

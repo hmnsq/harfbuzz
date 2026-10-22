@@ -24,112 +24,112 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#అన్తర్భావ "hb.h"
+#అన్తర్భావ "hb-ot.h"
+#నిర్వచితమైతే HAVE_FREETYPE
+#అన్తర్భావ "hb-ft.h"
+#అయితే_ముగింపు
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  bool ret = true;
+  తార్కిక ret = నిజం;
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#నిర్వచితం_కాకపోతే HB_NO_బఫరు_SERIALIZE
 
-  hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  hb_బఫరు_serialize_format_t format = HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం;
+  ఒకవేళ (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    ఒకవేళ (!strcmp (argv[1], "--json"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
+      format = HB_బఫరు_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    లేకపోతే ఒకవేళ (!strcmp (argv[1], "--text"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
+      format = HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం;
       argc--;
       argv++;
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  ఒకవేళ (argc < 2)
+    argv[1] = (అక్షరం *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = శూన్యసూచిక;
 
-  unsigned int upem = hb_face_get_upem (face);
+  గుర్తులేని పూర్ణాంకం upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
-  hb_font_set_scale (font, upem, upem);
+  hb_font_సమితి_scale (font, upem, upem);
 
-  hb_buffer_t *buf;
-  buf = hb_buffer_create ();
+  hb_బఫరు_t *buf;
+  buf = hb_బఫరు_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  అక్షరం పంక్తి[BUFSIZ], బహిర్గతం[BUFSIZ];
+  అయితే (fgets (పంక్తి, పరిమాణం(పంక్తి), stdin))
   {
-    hb_buffer_clear_contents (buf);
+    hb_బఫరు_clear_contents (buf);
 
-    while (true)
+    అయితే (నిజం)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
-	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
-					 p, end - p, &p,
+      స్థిరరాశి అక్షరం *p = పంక్తి;
+      స్థిరరాశి అక్షరం *చివర = p + అక్షరశ్రేణి_పొడవు (p);
+      ఒకవేళ (p < చివర && *(చివర - 1) == '\n')
+	  చివర--;
+      ఒకవేళ (!hb_బఫరు_deserialize_glyphs (buf,
+					 p, చివర - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = అబద్ధం;
+        ఆపు;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      ఒకవేళ (*p == '\n')
+        ఆపు;
+      ఒకవేళ (p == పంక్తి)
       {
-	ret = false;
-	break;
+	ret = అబద్ధం;
+	ఆపు;
       }
 
-      unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      గుర్తులేని len = అక్షరశ్రేణి_పొడవు (p);
+      memmove (పంక్తి, p, len);
+      ఒకవేళ (!fgets (పంక్తి + len, పరిమాణం(పంక్తి) - len, stdin))
+        పంక్తి[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    గుర్తులేని లెక్క = hb_బఫరు_get_నిడివి (buf);
+    కొరకు (గుర్తులేని స్థానభ్రంశం = 0; స్థానభ్రంశం < లెక్క;)
     {
-      unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      గుర్తులేని len;
+      స్థానభ్రంశం += hb_బఫరు_serialize_glyphs (buf, స్థానభ్రంశం, లెక్క,
+					    బహిర్గతం, పరిమాణం (బహిర్గతం), &len,
 					    font,
 					    format,
-					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
-      fwrite (out, 1, len, stdout);
+					    HB_బఫరు_SERIALIZE_FLAG_GLYPH_FLAGS);
+      fwrite (బహిర్గతం, 1, len, stdout);
     }
     fputs ("\n", stdout);
   }
 
-  hb_buffer_destroy (buf);
+  hb_బఫరు_destroy (buf);
 
   hb_font_destroy (font);
 
-#endif
+#అయితే_ముగింపు
 
-  return !ret;
+  తిరిగి !ret;
 }

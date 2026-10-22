@@ -24,92 +24,92 @@ Input files:
 * https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
 """
 
-import collections
-import html
-from html.parser import HTMLParser
-import itertools
-import os
-import re
-import sys
-import unicodedata
+దిగుమతి collections
+దిగుమతి html
+తః html.parser దిగుమతి HTMLParser
+దిగుమతి itertools
+దిగుమతి os
+దిగుమతి re
+దిగుమతి sys
+దిగుమతి unicodedata
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
-	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+ఒకవేళ పొడవు (sys.argv) > 1 మరియు sys.argv[1] == '--rust':
+	తీసివేయి sys.argv[1]
+	output_rust = నిజం
+లేకపోతే:
+	output_rust = అబద్ధం
 
-if len (sys.argv) != 3:
+ఒకవేళ పొడవు (sys.argv) != 3:
 	sys.exit (__doc__)
 
-def expect (condition, message=None):
-	if not condition:
-		if message is None:
-			raise AssertionError
-		raise AssertionError (message)
+నిర్వచనం expect (condition, సందేశం=ఏమీలేదు):
+	ఒకవేళ కాదు condition:
+		ఒకవేళ సందేశం అయిన ఏమీలేదు:
+			లేపు AssertionError
+		లేపు AssertionError (సందేశం)
 
-def write (s):
+నిర్వచనం లిఖ (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
+	sys.stdout.బఫరు.లిఖ (s.encode ('utf-8'))
 
-_ALLOWED_COMMENT_PUNCT = set (" -—–.,;:’'ʼ()[]/!=>_+")
+_ALLOWED_COMMENT_PUNCT = సమితి (" -—–.,;:’'ʼ()[]/!=>_+")
 
-def sanitize_comment (s):
+నిర్వచనం sanitize_comment (s):
 	"""Validate that a comment contains only safe characters and return the stripped string.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string for comment, got %s" % type (s).__name__)
+	ఒకవేళ కాదు isinstance (s, str):
+		లేపు TypeError ("Expected string for comment, got %s" % type (s).__name__)
 	s = s.strip ()
-	if not s:
-		return ''
-	for ch in s:
+	ఒకవేళ కాదు s:
+		తిరిగి ''
+	కొరకు ch లో s:
 		cat = unicodedata.category (ch)
-		if not (cat.startswith (('L', 'M', 'N', 'Z')) or ch in _ALLOWED_COMMENT_PUNCT):
-			raise ValueError ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
-	return s
+		ఒకవేళ కాదు (cat.startswith (('L', 'M', 'N', 'Z')) లేదా ch లో _ALLOWED_COMMENT_PUNCT):
+			లేపు విలువ_Error ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
+	తిరిగి s
 
-def sanitize_header (s):
+నిర్వచనం sanitize_శీర్షిక (s):
 	"""Validate that a header string contains only safe characters and return the stripped string.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string for header, got %s" % type (s).__name__)
+	ఒకవేళ కాదు isinstance (s, str):
+		లేపు TypeError ("Expected string for header, got %s" % type (s).__name__)
 	s = s.strip ()
-	if not re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
-		raise ValueError ("Invalid header line %r: contains disallowed characters" % s)
-	return s
+	ఒకవేళ కాదు re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
+		లేపు విలువ_Error ("Invalid header line %r: contains disallowed characters" % s)
+	తిరిగి s
 
-def sanitize_bcp47_tag (s):
+నిర్వచనం sanitize_bcp47_ట్యాగ్ (s):
 	"""Validate that a BCP-47 tag or subtag contains only alphanumeric characters and hyphens.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string, got %s" % type (s).__name__)
-	if not re.fullmatch (r'[a-zA-Z0-9-]+', s):
-		raise ValueError ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
-	return s
+	ఒకవేళ కాదు isinstance (s, str):
+		లేపు TypeError ("Expected string, got %s" % type (s).__name__)
+	ఒకవేళ కాదు re.fullmatch (r'[a-zA-Z0-9-]+', s):
+		లేపు విలువ_Error ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
+	తిరిగి s
 
-def sanitize_tag (tag):
+నిర్వచనం sanitize_ట్యాగ్ (ట్యాగ్_2):
 	"""Validate that an OpenType tag contains only 1-4 alphanumeric characters or spaces.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (tag, str):
-		raise TypeError ("Expected string for tag, got %s" % type (tag).__name__)
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
-		return ''
-	if not re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', tag):
-		raise ValueError ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % tag)
-	return tag
+	ఒకవేళ కాదు isinstance (ట్యాగ్_2, str):
+		లేపు TypeError ("Expected string for tag, got %s" % type (ట్యాగ్_2).__name__)
+	ఒకవేళ ట్యాగ్_2 == DEFAULT_LANGUAGE_SYSTEM:
+		తిరిగి ''
+	ఒకవేళ కాదు re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', ట్యాగ్_2):
+		లేపు విలువ_Error ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % ట్యాగ్_2)
+	తిరిగి ట్యాగ్_2
 
 DEFAULT_LANGUAGE_SYSTEM = ''
 
 # from https://www-01.sil.org/iso639-3/iso-639-3.tab
-ISO_639_3_TO_1 = {
+ISO_639_3_గమ్యం_1 = {
 	'aar': 'aa',
 	'abk': 'ab',
 	'afr': 'af',
@@ -297,7 +297,7 @@ ISO_639_3_TO_1 = {
 	'zul': 'zu',
 }
 
-class LanguageTag (object):
+తరగతి Language_ట్యాగ్ (object):
 	"""A BCP 47 language tag.
 
 	Attributes:
@@ -314,35 +314,35 @@ class LanguageTag (object):
 		tag (str): A BCP 47 language tag.
 
 	"""
-	def __init__ (self, tag):
-		global bcp_47
-		self.subtags = tag.lower ().split ('-')
-		self.grandfathered = tag.lower () in bcp_47.grandfathered
-		if self.grandfathered:
-			self.language = tag.lower ()
+	నిర్వచనం __init__ (self, ట్యాగ్_2):
+		వైశ్విక bcp_47
+		self.subtags = ట్యాగ్_2.క్రింది ().విభజించు ('-')
+		self.grandfathered = ట్యాగ్_2.క్రింది () లో bcp_47.grandfathered
+		ఒకవేళ self.grandfathered:
+			self.language = ట్యాగ్_2.క్రింది ()
 			self.script = ''
 			self.region = ''
 			self.variant = ''
-		else:
+		లేకపోతే:
 			self.language = self.subtags[0]
-			self.script = self._find_first (lambda s: len (s) == 4 and s[0] > '9', self.subtags)
-			self.region = self._find_first (lambda s: len (s) == 2 and s[0] > '9' or len (s) == 3 and s[0] <= '9', self.subtags[1:])
-			self.variant = self._find_first (lambda s: len (s) > 4 or len (s) == 4 and s[0] <= '9', self.subtags)
+			self.script = self.కనుగొను_మొదటి (అజ్ఞాత s: పొడవు (s) == 4 మరియు s[0] > '9', self.subtags)
+			self.region = self.కనుగొను_మొదటి (అజ్ఞాత s: పొడవు (s) == 2 మరియు s[0] > '9' లేదా పొడవు (s) == 3 మరియు s[0] <= '9', self.subtags[1:])
+			self.variant = self.కనుగొను_మొదటి (అజ్ఞాత s: పొడవు (s) > 4 లేదా పొడవు (s) == 4 మరియు s[0] <= '9', self.subtags)
 
-	def __str__(self):
-		return '-'.join(self.subtags)
+	నిర్వచనం __str__(self):
+		తిరిగి '-'.join(self.subtags)
 
-	def __repr__ (self):
-		return 'LanguageTag(%r)' % str(self)
+	నిర్వచనం __repr__ (self):
+		తిరిగి 'LanguageTag(%r)' % str(self)
 
 	@staticmethod
-	def _find_first (function, sequence):
-		try:
-			return next (iter (filter (function, sequence)))
-		except StopIteration:
-			return None
+	నిర్వచనం కనుగొను_మొదటి (function, sequence):
+		ప్రయత్నించు:
+			తిరిగి తదుపరి (iter (filter (function, sequence)))
+		మినహాయింపు StopIteration:
+			తిరిగి ఏమీలేదు
 
-	def is_complex (self):
+	నిర్వచనం is_complex (self):
 		"""Return whether this tag is too complex to represent as a
 		``LangTag`` in the generated code.
 
@@ -352,12 +352,12 @@ class LanguageTag (object):
 		Returns:
 			Whether this tag is complex.
 		"""
-		return not (len (self.subtags) == 1
-			or self.grandfathered
-			and len (self.subtags[1]) != 3
-			and ot.from_bcp_47[self.subtags[0]] == ot.from_bcp_47[self.language])
+		తిరిగి కాదు (పొడవు (self.subtags) == 1
+			లేదా self.grandfathered
+			మరియు పొడవు (self.subtags[1]) != 3
+			మరియు ot.from_bcp_47[self.subtags[0]] == ot.from_bcp_47[self.language])
 
-	def get_group (self):
+	నిర్వచనం get_సమూహం (self):
 		"""Return the group into which this tag should be categorized in
 		``hb_ot_tags_from_complex_language``.
 
@@ -368,12 +368,12 @@ class LanguageTag (object):
 		Returns:
 			This tag's group.
 		"""
-		return ('und'
-			if (self.language == 'und'
-				or self.variant in bcp_47.prefixes and len (bcp_47.prefixes[self.variant]) == 1)
-			else self.language[0])
+		తిరిగి ('und'
+			ఒకవేళ (self.language == 'und'
+				లేదా self.variant లో bcp_47.prefixes మరియు పొడవు (bcp_47.prefixes[self.variant]) == 1)
+			లేకపోతే self.language[0])
 
-class OpenTypeRegistryParser (HTMLParser):
+తరగతి OpenTypeRegistryParser (HTMLParser):
 	"""A parser for the OpenType language system tag registry.
 
 	Attributes:
@@ -396,86 +396,86 @@ class OpenTypeRegistryParser (HTMLParser):
 			``inherit_from_macrolanguages``.
 
 	"""
-	def __init__ (self):
+	నిర్వచనం __init__ (self):
 		HTMLParser.__init__ (self)
-		self.header = ''
-		self.names = {}
-		self.ranks = collections.defaultdict (int)
-		self.to_bcp_47 = collections.defaultdict (set)
-		self.from_bcp_47 = collections.defaultdict (set)
-		self.from_bcp_47_uninherited = None
+		self.శీర్షిక = ''
+		self.పేర్లు = {}
+		self.ranks = collections.defaultdict (పూర్ణాంకం)
+		self.గమ్యం_bcp_47 = collections.defaultdict (సమితి)
+		self.from_bcp_47 = collections.defaultdict (సమితి)
+		self.from_bcp_47_uninherited = ఏమీలేదు
 		# Whether the parser is in a <td> element
-		self._td = False
+		self._td = అబద్ధం
 		# Whether the parser ignores the rest of the current <td> element
-		self._disengaged = False
+		self._disengaged = అబద్ధం
 		# The text of the <td> elements of the current <tr> element.
 		self._current_tr = []
 
-	def handle_starttag (self, tag, attrs):
-		if tag == 'a':
-			if self._current_tr and not self._disengaged:
+	నిర్వచనం handle_starttag (self, ట్యాగ్_2, attrs):
+		ఒకవేళ ట్యాగ్_2 == 'a':
+			ఒకవేళ self._current_tr మరియు కాదు self._disengaged:
 				self._current_tr[-1] = ''
-				self._disengaged = True
-		elif tag == 'br':
-			self._disengaged = True
-		elif tag == 'meta':
-			for attr, value in attrs:
-				if attr == 'name' and value == 'updated_at':
-					self.header = self.get_starttag_text ()
-					break
-		elif tag == 'td':
-			self._td = True
+				self._disengaged = నిజం
+		లేదావేళ ట్యాగ్_2 == 'br':
+			self._disengaged = నిజం
+		లేదావేళ ట్యాగ్_2 == 'meta':
+			కొరకు attr, విలువ_2 లో attrs:
+				ఒకవేళ attr == 'name' మరియు విలువ_2 == 'updated_at':
+					self.శీర్షిక = self.get_starttag_పాఠ్యం ()
+					ఆపు
+		లేదావేళ ట్యాగ్_2 == 'td':
+			self._td = నిజం
 			self._current_tr.append ('')
-		elif tag == 'tr':
-			self._disengaged = False
+		లేదావేళ ట్యాగ్_2 == 'tr':
+			self._disengaged = అబద్ధం
 			self._current_tr = []
 
-	def handle_endtag (self, tag):
-		if tag == 'td':
-			self._td = False
-			self._disengaged = False
-		elif tag == 'tr' and self._current_tr:
-			expect (2 <= len (self._current_tr) <= 3)
+	నిర్వచనం handle_endtag (self, ట్యాగ్_2):
+		ఒకవేళ ట్యాగ్_2 == 'td':
+			self._td = అబద్ధం
+			self._disengaged = అబద్ధం
+		లేదావేళ ట్యాగ్_2 == 'tr' మరియు self._current_tr:
+			expect (2 <= పొడవు (self._current_tr) <= 3)
 			name = self._current_tr[0].strip ()
-			tag = self._current_tr[1].strip ("\t\n\v\f\r '")
+			ట్యాగ్_2 = self._current_tr[1].strip ("\t\n\v\f\r '")
 			rank = 0
-			if len (tag) > 4:
-				expect (tag.endswith (' (deprecated)'), 'ill-formed OpenType tag: %s' % tag)
+			ఒకవేళ పొడవు (ట్యాగ్_2) > 4:
+				expect (ట్యాగ్_2.endswith (' (deprecated)'), 'ill-formed OpenType tag: %s' % ట్యాగ్_2)
 				name += ' (deprecated)'
-				tag = tag.split (' ')[0]
+				ట్యాగ్_2 = ట్యాగ్_2.విభజించు (' ')[0]
 				rank = 1
-			self.names[tag] = re.sub (' languages$', '', name)
-			if not self._current_tr[2]:
-				return
+			self.పేర్లు[ట్యాగ్_2] = re.sub (' languages$', '', name)
+			ఒకవేళ కాదు self._current_tr[2]:
+				తిరిగి
 			iso_codes = self._current_tr[2].strip ()
-			self.to_bcp_47[tag].update (ISO_639_3_TO_1.get (code, code) for code in iso_codes.replace (' ', '').split (','))
-			rank += 2 * len (self.to_bcp_47[tag])
-			self.ranks[tag] = rank
+			self.గమ్యం_bcp_47[ట్యాగ్_2].update (ISO_639_3_గమ్యం_1.get (సంకేతం_2, సంకేతం_2) కొరకు సంకేతం_2 లో iso_codes.replace (' ', '').విభజించు (','))
+			rank += 2 * పొడవు (self.గమ్యం_bcp_47[ట్యాగ్_2])
+			self.ranks[ట్యాగ్_2] = rank
 
-	def handle_data (self, data):
-		if self._td and not self._disengaged:
-			self._current_tr[-1] += data
+	నిర్వచనం handle_దత్తాంశం (self, దత్తాంశం):
+		ఒకవేళ self._td మరియు కాదు self._disengaged:
+			self._current_tr[-1] += దత్తాంశం
 
-	def handle_charref (self, name):
-		self.handle_data (html.unescape ('&#%s;' % name))
+	నిర్వచనం handle_charref (self, name):
+		self.handle_దత్తాంశం (html.unescape ('&#%s;' % name))
 
-	def handle_entityref (self, name):
-		self.handle_data (html.unescape ('&%s;' % name))
+	నిర్వచనం handle_entityref (self, name):
+		self.handle_దత్తాంశం (html.unescape ('&%s;' % name))
 
-	def parse (self, filename):
+	నిర్వచనం parse (self, filename):
 		"""Parse the OpenType language system tag registry.
 
 		Args:
 			filename (str): The file name of the registry.
 		"""
-		with open (filename, encoding='utf-8') as f:
-			self.feed (f.read ())
-		expect (self.header)
-		for tag, iso_codes in self.to_bcp_47.items ():
-			for iso_code in iso_codes:
-				self.from_bcp_47[iso_code].add (tag)
+		తోడుగా open (filename, encoding='utf-8') ఇవ f:
+			self.feed (f.పఠ ())
+		expect (self.శీర్షిక)
+		కొరకు ట్యాగ్_2, iso_codes లో self.గమ్యం_bcp_47.వస్తువులు ():
+			కొరకు iso_సంకేతం లో iso_codes:
+				self.from_bcp_47[iso_సంకేతం].కూడు (ట్యాగ్_2)
 
-	def add_language (self, bcp_47_tag, ot_tag):
+	నిర్వచనం కూడు_language (self, bcp_47_ట్యాగ్, ot_ట్యాగ్):
 		"""Add a language as if it were in the registry.
 
 		Args:
@@ -486,45 +486,45 @@ class OpenTypeRegistryParser (HTMLParser):
 				remainder of the tag appended.
 			ot_tag (str): An OpenType language system tag.
 		"""
-		global bcp_47
-		self.to_bcp_47[ot_tag].add (bcp_47_tag)
-		self.from_bcp_47[bcp_47_tag].add (ot_tag)
-		if bcp_47_tag.lower () not in bcp_47.grandfathered:
-			try:
-				[macrolanguage, suffix] = bcp_47_tag.split ('-', 1)
-				if macrolanguage in bcp_47.macrolanguages:
-					s = set ()
-					for language in bcp_47.macrolanguages[macrolanguage]:
-						if language.lower () not in bcp_47.grandfathered:
-							s.add ('%s-%s' % (language, suffix))
+		వైశ్విక bcp_47
+		self.గమ్యం_bcp_47[ot_ట్యాగ్].కూడు (bcp_47_ట్యాగ్)
+		self.from_bcp_47[bcp_47_ట్యాగ్].కూడు (ot_ట్యాగ్)
+		ఒకవేళ bcp_47_ట్యాగ్.క్రింది () కాదు లో bcp_47.grandfathered:
+			ప్రయత్నించు:
+				[macrolanguage, suffix] = bcp_47_ట్యాగ్.విభజించు ('-', 1)
+				ఒకవేళ macrolanguage లో bcp_47.macrolanguages:
+					s = సమితి ()
+					కొరకు language లో bcp_47.macrolanguages[macrolanguage]:
+						ఒకవేళ language.క్రింది () కాదు లో bcp_47.grandfathered:
+							s.కూడు ('%s-%s' % (language, suffix))
 					bcp_47.macrolanguages['%s-%s' % (macrolanguage, suffix)] = s
-			except ValueError:
-				pass
+			మినహాయింపు విలువ_Error:
+				దాటు
 
 	@staticmethod
-	def _remove_language (tag_1, dict_1, dict_2):
-		for tag_2 in dict_1.pop (tag_1):
-			dict_2[tag_2].remove (tag_1)
-			if not dict_2[tag_2]:
-				del dict_2[tag_2]
+	నిర్వచనం _remove_language (ట్యాగ్_1, dict_1, dict_2):
+		కొరకు ట్యాగ్_2_2 లో dict_1.తీయి (ట్యాగ్_1):
+			dict_2[ట్యాగ్_2_2].remove (ట్యాగ్_1)
+			ఒకవేళ కాదు dict_2[ట్యాగ్_2_2]:
+				తీసివేయి dict_2[ట్యాగ్_2_2]
 
-	def remove_language_ot (self, ot_tag):
+	నిర్వచనం remove_language_ot (self, ot_ట్యాగ్):
 		"""Remove an OpenType tag from the registry.
 
 		Args:
 			ot_tag (str): An OpenType tag.
 		"""
-		self._remove_language (ot_tag, self.to_bcp_47, self.from_bcp_47)
+		self._remove_language (ot_ట్యాగ్, self.గమ్యం_bcp_47, self.from_bcp_47)
 
-	def remove_language_bcp_47 (self, bcp_47_tag):
+	నిర్వచనం remove_language_bcp_47 (self, bcp_47_ట్యాగ్):
 		"""Remove a BCP 47 tag from the registry.
 
 		Args:
 			bcp_47_tag (str): A BCP 47 tag.
 		"""
-		self._remove_language (bcp_47_tag, self.from_bcp_47, self.to_bcp_47)
+		self._remove_language (bcp_47_ట్యాగ్, self.from_bcp_47, self.గమ్యం_bcp_47)
 
-	def inherit_from_macrolanguages (self):
+	నిర్వచనం inherit_from_macrolanguages (self):
 		"""Copy mappings from macrolanguages to individual languages.
 
 		If a BCP 47 tag for an individual mapping has no OpenType
@@ -545,55 +545,55 @@ class OpenTypeRegistryParser (HTMLParser):
 		some of its individual languages do, their mappings are copied
 		to the macrolanguage.
 		"""
-		global bcp_47
-		first_time = self.from_bcp_47_uninherited is None
-		if first_time:
+		వైశ్విక bcp_47
+		మొదటి_సమయం = self.from_bcp_47_uninherited అయిన ఏమీలేదు
+		ఒకవేళ మొదటి_సమయం:
 			self.from_bcp_47_uninherited = dict (self.from_bcp_47)
-		for macrolanguage, languages in dict (bcp_47.macrolanguages).items ():
+		కొరకు macrolanguage, languages లో dict (bcp_47.macrolanguages).వస్తువులు ():
 			ot_macrolanguages = {
-				ot_macrolanguage for ot_macrolanguage in self.from_bcp_47_uninherited.get (macrolanguage, set ())
+				ot_macrolanguage కొరకు ot_macrolanguage లో self.from_bcp_47_uninherited.get (macrolanguage, సమితి ())
 			}
-			blocked_ot_macrolanguages = set ()
-			if 'retired code' not in bcp_47.scopes.get (macrolanguage, ''):
-				for ot_macrolanguage in ot_macrolanguages:
-					round_trip_macrolanguages = {
-						l for l in self.to_bcp_47[ot_macrolanguage]
-						if 'retired code' not in bcp_47.scopes.get (l, '')
+			blocked_ot_macrolanguages = సమితి ()
+			ఒకవేళ 'retired code' కాదు లో bcp_47.scopes.get (macrolanguage, ''):
+				కొరకు ot_macrolanguage లో ot_macrolanguages:
+					విడత_trip_macrolanguages = {
+						l కొరకు l లో self.గమ్యం_bcp_47[ot_macrolanguage]
+						ఒకవేళ 'retired code' కాదు లో bcp_47.scopes.get (l, '')
 					}
-					round_trip_languages = {
-						l for l in languages
-						if 'retired code' not in bcp_47.scopes.get (l, '')
+					విడత_trip_languages = {
+						l కొరకు l లో languages
+						ఒకవేళ 'retired code' కాదు లో bcp_47.scopes.get (l, '')
 					}
-					intersection = round_trip_macrolanguages & round_trip_languages
-					if intersection and intersection != round_trip_languages:
-						blocked_ot_macrolanguages.add (ot_macrolanguage)
-			if ot_macrolanguages:
-				for ot_macrolanguage in ot_macrolanguages:
-					if ot_macrolanguage not in blocked_ot_macrolanguages:
-						for language in languages:
-							self.add_language (language, ot_macrolanguage)
-							if not blocked_ot_macrolanguages:
+					intersection = విడత_trip_macrolanguages & విడత_trip_languages
+					ఒకవేళ intersection మరియు intersection != విడత_trip_languages:
+						blocked_ot_macrolanguages.కూడు (ot_macrolanguage)
+			ఒకవేళ ot_macrolanguages:
+				కొరకు ot_macrolanguage లో ot_macrolanguages:
+					ఒకవేళ ot_macrolanguage కాదు లో blocked_ot_macrolanguages:
+						కొరకు language లో languages:
+							self.కూడు_language (language, ot_macrolanguage)
+							ఒకవేళ కాదు blocked_ot_macrolanguages:
 								self.ranks[ot_macrolanguage] += 1
-			elif first_time:
-				for language in languages:
-					if language in self.from_bcp_47_uninherited:
+			లేదావేళ మొదటి_సమయం:
+				కొరకు language లో languages:
+					ఒకవేళ language లో self.from_bcp_47_uninherited:
 						ot_macrolanguages |= self.from_bcp_47_uninherited[language]
-					else:
+					లేకపోతే:
 						ot_macrolanguages.clear ()
-					if not ot_macrolanguages:
-						break
-				for ot_macrolanguage in ot_macrolanguages:
-					self.add_language (macrolanguage, ot_macrolanguage)
+					ఒకవేళ కాదు ot_macrolanguages:
+						ఆపు
+				కొరకు ot_macrolanguage లో ot_macrolanguages:
+					self.కూడు_language (macrolanguage, ot_macrolanguage)
 
-	def sort_languages (self):
+	నిర్వచనం క్రమీకరించు_languages (self):
 		"""Sort the values of ``from_bcp_47`` in ascending rank order."""
-		for language, tags in self.from_bcp_47.items ():
-			self.from_bcp_47[language] = sorted (tags,
-					key=lambda t: (self.ranks[t] + rank_delta (language, t), t))
+		కొరకు language, ట్యాగులు లో self.from_bcp_47.వస్తువులు ():
+			self.from_bcp_47[language] = sorted (ట్యాగులు,
+					కీలకం_2=అజ్ఞాత t: (self.ranks[t] + rank_delta (language, t), t))
 
 ot = OpenTypeRegistryParser ()
 
-class BCP47Parser (object):
+తరగతి BCP47Parser (object):
 	"""A parser for the BCP 47 subtag registry.
 
 	Attributes:
@@ -614,111 +614,111 @@ class BCP47Parser (object):
 			normalized to lowercase.
 
 	"""
-	def __init__ (self):
-		self.header = ''
-		self.names = {}
+	నిర్వచనం __init__ (self):
+		self.శీర్షిక = ''
+		self.పేర్లు = {}
 		self.scopes = {}
-		self.macrolanguages = collections.defaultdict (set)
-		self.prefixes = collections.defaultdict (set)
-		self.grandfathered = set ()
+		self.macrolanguages = collections.defaultdict (సమితి)
+		self.prefixes = collections.defaultdict (సమితి)
+		self.grandfathered = సమితి ()
 
-	def parse (self, filename):
+	నిర్వచనం parse (self, filename):
 		"""Parse the BCP 47 subtag registry.
 
 		Args:
 			filename (str): The file name of the registry.
 		"""
-		with open (filename, encoding='utf-8') as f:
-			subtag_type = None
-			subtag = None
-			deprecated = False
-			has_preferred_value = False
-			line_buffer = ''
-			for line in itertools.chain (f, ['']):
-				line = line.rstrip ()
-				if line.startswith (' '):
-					line_buffer += line[1:]
-					continue
-				line, line_buffer = line_buffer, line
-				if line.startswith ('Type: '):
-					subtag_type = line.split (' ')[1]
-					deprecated = False
-					has_preferred_value = False
-				elif line.startswith ('Subtag: ') or line.startswith ('Tag: '):
-					subtag = line.split (' ')[1]
-					if subtag_type == 'grandfathered':
-						self.grandfathered.add (subtag.lower ())
-				elif line.startswith ('Description: '):
-					description = line.split (' ', 1)[1].replace (' (individual language)', '')
+		తోడుగా open (filename, encoding='utf-8') ఇవ f:
+			subtag_type = ఏమీలేదు
+			subtag = ఏమీలేదు
+			deprecated = అబద్ధం
+			has_preferred_విలువ = అబద్ధం
+			పంక్తి_బఫరు = ''
+			కొరకు పంక్తి లో itertools.chain (f, ['']):
+				పంక్తి = పంక్తి.rstrip ()
+				ఒకవేళ పంక్తి.startswith (' '):
+					పంక్తి_బఫరు += పంక్తి[1:]
+					కొనసాగు
+				పంక్తి, పంక్తి_బఫరు = పంక్తి_బఫరు, పంక్తి
+				ఒకవేళ పంక్తి.startswith ('Type: '):
+					subtag_type = పంక్తి.విభజించు (' ')[1]
+					deprecated = అబద్ధం
+					has_preferred_విలువ = అబద్ధం
+				లేదావేళ పంక్తి.startswith ('Subtag: ') లేదా పంక్తి.startswith ('Tag: '):
+					subtag = పంక్తి.విభజించు (' ')[1]
+					ఒకవేళ subtag_type == 'grandfathered':
+						self.grandfathered.కూడు (subtag.క్రింది ())
+				లేదావేళ పంక్తి.startswith ('Description: '):
+					description = పంక్తి.విభజించు (' ', 1)[1].replace (' (individual language)', '')
 					description = re.sub (r' (\(family\)|\((individual |macro)language\)|languages)$', '',
 							description)
-					if subtag in self.names:
-						self.names[subtag] += '\n' + description
-					else:
-						self.names[subtag] = description
-				elif subtag_type == 'language' or subtag_type == 'grandfathered':
-					if line.startswith ('Scope: '):
-						scope = line.split (' ')[1]
-						if scope == 'macrolanguage':
+					ఒకవేళ subtag లో self.పేర్లు:
+						self.పేర్లు[subtag] += '\n' + description
+					లేకపోతే:
+						self.పేర్లు[subtag] = description
+				లేదావేళ subtag_type == 'language' లేదా subtag_type == 'grandfathered':
+					ఒకవేళ పంక్తి.startswith ('Scope: '):
+						scope = పంక్తి.విభజించు (' ')[1]
+						ఒకవేళ scope == 'macrolanguage':
 							scope = ' [macrolanguage]'
-						elif scope == 'collection':
+						లేదావేళ scope == 'collection':
 							scope = ' [collection]'
-						else:
-							continue
+						లేకపోతే:
+							కొనసాగు
 						self.scopes[subtag] = scope
-					elif line.startswith ('Deprecated: '):
+					లేదావేళ పంక్తి.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-						deprecated = True
-					elif deprecated and line.startswith ('Comments: see '):
+						deprecated = నిజం
+					లేదావేళ deprecated మరియు పంక్తి.startswith ('Comments: see '):
 						# If a subtag is split into multiple replacement subtags,
 						# it essentially represents a macrolanguage.
-						for language in line.replace (',', '').split (' ')[2:]:
-							self._add_macrolanguage (subtag, language)
-					elif line.startswith ('Preferred-Value: '):
+						కొరకు language లో పంక్తి.replace (',', '').విభజించు (' ')[2:]:
+							self.కూడు_macrolanguage (subtag, language)
+					లేదావేళ పంక్తి.startswith ('Preferred-Value: '):
 						# If a subtag is deprecated in favor of a single replacement subtag,
 						# it is either a dialect or synonym of the preferred subtag. Either
 						# way, it is close enough to the truth to consider the replacement
 						# the macrolanguage of the deprecated language.
-						has_preferred_value = True
-						macrolanguage = line.split (' ')[1]
-						self._add_macrolanguage (macrolanguage, subtag)
-					elif not has_preferred_value and line.startswith ('Macrolanguage: '):
-						self._add_macrolanguage (line.split (' ')[1], subtag)
-				elif subtag_type == 'variant':
-					if line.startswith ('Deprecated: '):
+						has_preferred_విలువ = నిజం
+						macrolanguage = పంక్తి.విభజించు (' ')[1]
+						self.కూడు_macrolanguage (macrolanguage, subtag)
+					లేదావేళ కాదు has_preferred_విలువ మరియు పంక్తి.startswith ('Macrolanguage: '):
+						self.కూడు_macrolanguage (పంక్తి.విభజించు (' ')[1], subtag)
+				లేదావేళ subtag_type == 'variant':
+					ఒకవేళ పంక్తి.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-					elif line.startswith ('Prefix: '):
-						self.prefixes[subtag].add (line.split (' ')[1])
-				elif line.startswith ('File-Date: '):
-					self.header = line
-		expect (self.header)
+					లేదావేళ పంక్తి.startswith ('Prefix: '):
+						self.prefixes[subtag].కూడు (పంక్తి.విభజించు (' ')[1])
+				లేదావేళ పంక్తి.startswith ('File-Date: '):
+					self.శీర్షిక = పంక్తి
+		expect (self.శీర్షిక)
 
-	def _add_macrolanguage (self, macrolanguage, language):
-		global ot
-		if language not in ot.from_bcp_47:
-			for l in self.macrolanguages.get (language, set ()):
-				self._add_macrolanguage (macrolanguage, l)
-		if macrolanguage not in ot.from_bcp_47:
-			for ls in list (self.macrolanguages.values ()):
-				if macrolanguage in ls:
-					ls.add (language)
-					return
-		self.macrolanguages[macrolanguage].add (language)
+	నిర్వచనం కూడు_macrolanguage (self, macrolanguage, language):
+		వైశ్విక ot
+		ఒకవేళ language కాదు లో ot.from_bcp_47:
+			కొరకు l లో self.macrolanguages.get (language, సమితి ()):
+				self.కూడు_macrolanguage (macrolanguage, l)
+		ఒకవేళ macrolanguage కాదు లో ot.from_bcp_47:
+			కొరకు ls లో list (self.macrolanguages.విలువలు ()):
+				ఒకవేళ macrolanguage లో ls:
+					ls.కూడు (language)
+					తిరిగి
+		self.macrolanguages[macrolanguage].కూడు (language)
 
-	def remove_extra_macrolanguages (self):
+	నిర్వచనం remove_extra_macrolanguages (self):
 		"""Make every language have at most one macrolanguage."""
 		inverted = collections.defaultdict (list)
-		for macrolanguage, languages in self.macrolanguages.items ():
-			for language in languages:
+		కొరకు macrolanguage, languages లో self.macrolanguages.వస్తువులు ():
+			కొరకు language లో languages:
 				inverted[language].append (macrolanguage)
-		for language, macrolanguages in inverted.items ():
-			if len (macrolanguages) > 1:
-				macrolanguages.sort (key=lambda ml: len (self.macrolanguages[ml]))
-				biggest_macrolanguage = macrolanguages.pop ()
-				for macrolanguage in macrolanguages:
-					self._add_macrolanguage (biggest_macrolanguage, macrolanguage)
+		కొరకు language, macrolanguages లో inverted.వస్తువులు ():
+			ఒకవేళ పొడవు (macrolanguages) > 1:
+				macrolanguages.క్రమీకరించు (కీలకం_2=అజ్ఞాత ml: పొడవు (self.macrolanguages[ml]))
+				biggest_macrolanguage = macrolanguages.తీయి ()
+				కొరకు macrolanguage లో macrolanguages:
+					self.కూడు_macrolanguage (biggest_macrolanguage, macrolanguage)
 
-	def _get_name_piece (self, subtag):
+	నిర్వచనం _get_name_piece (self, subtag):
 		"""Return the first name of a subtag plus its scope suffix.
 
 		Args:
@@ -727,9 +727,9 @@ class BCP47Parser (object):
 		Returns:
 			The name form of ``subtag``.
 		"""
-		return self.names[subtag].split ('\n')[0] + self.scopes.get (subtag, '')
+		తిరిగి self.పేర్లు[subtag].విభజించు ('\n')[0] + self.scopes.get (subtag, '')
 
-	def get_name (self, lt):
+	నిర్వచనం get_name (self, lt):
 		"""Return the names of the subtags in a language tag.
 
 		Args:
@@ -739,116 +739,116 @@ class BCP47Parser (object):
 			The name form of ``lt``.
 		"""
 		name = self._get_name_piece (lt.language)
-		if lt.script:
+		ఒకవేళ lt.script:
 			name += '; ' + self._get_name_piece (lt.script.title ())
-		if lt.region:
-			name += '; ' + self._get_name_piece (lt.region.upper ())
-		if lt.variant:
+		ఒకవేళ lt.region:
+			name += '; ' + self._get_name_piece (lt.region.పై ())
+		ఒకవేళ lt.variant:
 			name += '; ' + self._get_name_piece (lt.variant)
-		return name
+		తిరిగి name
 
 bcp_47 = BCP47Parser ()
 
 ot.parse (sys.argv[1])
 bcp_47.parse (sys.argv[2])
 
-ot.add_language ('ary', 'MOR')
+ot.కూడు_language ('ary', 'MOR')
 
-ot.add_language ('ath', 'ATH')
+ot.కూడు_language ('ath', 'ATH')
 
-ot.add_language ('bai', 'BML')
+ot.కూడు_language ('bai', 'BML')
 
 ot.ranks['BAL'] = ot.ranks['KAR'] + 1
 
-ot.add_language ('ber', 'BBR')
+ot.కూడు_language ('ber', 'BBR')
 
 ot.remove_language_ot ('PGR')
-ot.add_language ('el-polyton', 'PGR')
+ot.కూడు_language ('el-polyton', 'PGR')
 
-bcp_47.names['flm'] = 'Falam Chin'
+bcp_47.పేర్లు['flm'] = 'Falam Chin'
 bcp_47.scopes['flm'] = ' (retired code)'
 bcp_47.macrolanguages['flm'] = {'cfm'}
 
 ot.ranks['FNE'] = ot.ranks['TNE'] + 1
 
-ot.add_language ('und-fonipa', 'IPPH')
+ot.కూడు_language ('und-fonipa', 'IPPH')
 
-ot.add_language ('und-fonnapa', 'APPH')
+ot.కూడు_language ('und-fonnapa', 'APPH')
 
-ot.add_language ('und-fonupa', 'UPPH')
+ot.కూడు_language ('und-fonupa', 'UPPH')
 
-ot.add_language ('ga-Latg', 'IRT')
+ot.కూడు_language ('ga-Latg', 'IRT')
 
-ot.add_language ('hy-arevmda', 'HYE')
+ot.కూడు_language ('hy-arevmda', 'HYE')
 
 ot.remove_language_ot ('KGE')
-ot.add_language ('und-Geok', 'KGE')
+ot.కూడు_language ('und-Geok', 'KGE')
 
-ot.add_language ('kht', 'KHN')
-ot.names['KHN'] = ot.names['KHT'] + ' (Microsoft fonts)'
+ot.కూడు_language ('kht', 'KHN')
+ot.పేర్లు['KHN'] = ot.పేర్లు['KHT'] + ' (Microsoft fonts)'
 ot.ranks['KHN'] = ot.ranks['KHT'] + 1
 
 ot.ranks['LCR'] = ot.ranks['MCR'] + 1
 
-ot.names['MAL'] = 'Malayalam Traditional'
+ot.పేర్లు['MAL'] = 'Malayalam Traditional'
 ot.ranks['MLR'] += 1
 
-bcp_47.names['mhv'] = 'Arakanese'
+bcp_47.పేర్లు['mhv'] = 'Arakanese'
 bcp_47.scopes['mhv'] = ' (retired code)'
 
-ot.add_language ('mnw-TH', 'MONT')
+ot.కూడు_language ('mnw-TH', 'MONT')
 
-ot.add_language ('no', 'NOR')
+ot.కూడు_language ('no', 'NOR')
 
-ot.add_language ('oc-provenc', 'PRO')
+ot.కూడు_language ('oc-provenc', 'PRO')
 
 ot.remove_language_ot ('QUZ')
-ot.add_language ('qu', 'QUZ')
-ot.add_language ('qub', 'QWH')
-ot.add_language ('qud', 'QVI')
-ot.add_language ('qug', 'QVI')
-ot.add_language ('qul', 'QUH')
-ot.add_language ('qup', 'QVI')
-ot.add_language ('qur', 'QWH')
-ot.add_language ('qus', 'QUH')
-ot.add_language ('quw', 'QVI')
-ot.add_language ('qux', 'QWH')
-ot.add_language ('qva', 'QWH')
-ot.add_language ('qvh', 'QWH')
-ot.add_language ('qvj', 'QVI')
-ot.add_language ('qvl', 'QWH')
-ot.add_language ('qvm', 'QWH')
-ot.add_language ('qvn', 'QWH')
-ot.add_language ('qvo', 'QVI')
-ot.add_language ('qvp', 'QWH')
-ot.add_language ('qvw', 'QWH')
-ot.add_language ('qvz', 'QVI')
-ot.add_language ('qwa', 'QWH')
-ot.add_language ('qws', 'QWH')
-ot.add_language ('qxa', 'QWH')
-ot.add_language ('qxc', 'QWH')
-ot.add_language ('qxh', 'QWH')
-ot.add_language ('qxl', 'QVI')
-ot.add_language ('qxn', 'QWH')
-ot.add_language ('qxo', 'QWH')
-ot.add_language ('qxr', 'QVI')
-ot.add_language ('qxt', 'QWH')
-ot.add_language ('qxw', 'QWH')
+ot.కూడు_language ('qu', 'QUZ')
+ot.కూడు_language ('qub', 'QWH')
+ot.కూడు_language ('qud', 'QVI')
+ot.కూడు_language ('qug', 'QVI')
+ot.కూడు_language ('qul', 'QUH')
+ot.కూడు_language ('qup', 'QVI')
+ot.కూడు_language ('qur', 'QWH')
+ot.కూడు_language ('qus', 'QUH')
+ot.కూడు_language ('quw', 'QVI')
+ot.కూడు_language ('qux', 'QWH')
+ot.కూడు_language ('qva', 'QWH')
+ot.కూడు_language ('qvh', 'QWH')
+ot.కూడు_language ('qvj', 'QVI')
+ot.కూడు_language ('qvl', 'QWH')
+ot.కూడు_language ('qvm', 'QWH')
+ot.కూడు_language ('qvn', 'QWH')
+ot.కూడు_language ('qvo', 'QVI')
+ot.కూడు_language ('qvp', 'QWH')
+ot.కూడు_language ('qvw', 'QWH')
+ot.కూడు_language ('qvz', 'QVI')
+ot.కూడు_language ('qwa', 'QWH')
+ot.కూడు_language ('qws', 'QWH')
+ot.కూడు_language ('qxa', 'QWH')
+ot.కూడు_language ('qxc', 'QWH')
+ot.కూడు_language ('qxh', 'QWH')
+ot.కూడు_language ('qxl', 'QVI')
+ot.కూడు_language ('qxn', 'QWH')
+ot.కూడు_language ('qxo', 'QWH')
+ot.కూడు_language ('qxr', 'QVI')
+ot.కూడు_language ('qxt', 'QWH')
+ot.కూడు_language ('qxw', 'QWH')
 
-bcp_47.macrolanguages['ro-MD'].add ('mo')
+bcp_47.macrolanguages['ro-MD'].కూడు ('mo')
 
 ot.remove_language_ot ('SYRE')
 ot.remove_language_ot ('SYRJ')
 ot.remove_language_ot ('SYRN')
-ot.add_language ('und-Syre', 'SYRE')
-ot.add_language ('und-Syrj', 'SYRJ')
-ot.add_language ('und-Syrn', 'SYRN')
+ot.కూడు_language ('und-Syre', 'SYRE')
+ot.కూడు_language ('und-Syrj', 'SYRJ')
+ot.కూడు_language ('und-Syrn', 'SYRN')
 
-bcp_47.names['xst'] = "Silt'e"
+bcp_47.పేర్లు['xst'] = "Silt'e"
 bcp_47.scopes['xst'] = ' (retired code)'
 bcp_47.macrolanguages['xst'] = {'stv', 'wle'}
 
-ot.add_language ('xwo', 'TOD')
+ot.కూడు_language ('xwo', 'TOD')
 
 ot.remove_language_ot ('ZHH')
 ot.remove_language_ot ('ZHP')
@@ -856,21 +856,21 @@ ot.remove_language_ot ('ZHT')
 ot.remove_language_ot ('ZHTM')
 bcp_47.macrolanguages['zh'].remove ('lzh')
 bcp_47.macrolanguages['zh'].remove ('yue')
-ot.add_language ('zh-Hant-MO', 'ZHH')
-ot.add_language ('zh-Hant-MO', 'ZHTM')
-ot.add_language ('zh-Hant-HK', 'ZHH')
-ot.add_language ('zh-Hans', 'ZHS')
-ot.add_language ('zh-Hant', 'ZHT')
-ot.add_language ('zh-HK', 'ZHH')
-ot.add_language ('zh-MO', 'ZHH')
-ot.add_language ('zh-MO', 'ZHTM')
-ot.add_language ('zh-TW', 'ZHT')
-ot.add_language ('lzh', 'ZHT')
-ot.add_language ('lzh-Hans', 'ZHS')
-ot.add_language ('yue', 'ZHH')
-ot.add_language ('yue-Hans', 'ZHS')
+ot.కూడు_language ('zh-Hant-MO', 'ZHH')
+ot.కూడు_language ('zh-Hant-MO', 'ZHTM')
+ot.కూడు_language ('zh-Hant-HK', 'ZHH')
+ot.కూడు_language ('zh-Hans', 'ZHS')
+ot.కూడు_language ('zh-Hant', 'ZHT')
+ot.కూడు_language ('zh-HK', 'ZHH')
+ot.కూడు_language ('zh-MO', 'ZHH')
+ot.కూడు_language ('zh-MO', 'ZHTM')
+ot.కూడు_language ('zh-TW', 'ZHT')
+ot.కూడు_language ('lzh', 'ZHT')
+ot.కూడు_language ('lzh-Hans', 'ZHS')
+ot.కూడు_language ('yue', 'ZHH')
+ot.కూడు_language ('yue-Hans', 'ZHS')
 
-def rank_delta (bcp_47, ot):
+నిర్వచనం rank_delta (bcp_47, ot):
 	"""Return a delta to apply to a BCP 47 tag's rank.
 
 	Most OpenType tags have a constant rank, but a few have ranks that
@@ -884,11 +884,11 @@ def rank_delta (bcp_47, ot):
 		A number to add to ``ot``'s rank when sorting ``bcp_47``'s
 		OpenType equivalents.
 	"""
-	if bcp_47 == 'ak' and ot == 'AKA':
-		return -1
-	if bcp_47 == 'tw' and ot == 'TWI':
-		return -1
-	return 0
+	ఒకవేళ bcp_47 == 'ak' మరియు ot == 'AKA':
+		తిరిగి -1
+	ఒకవేళ bcp_47 == 'tw' మరియు ot == 'TWI':
+		తిరిగి -1
+	తిరిగి 0
 
 disambiguation = {
 	'ALT': 'alt',
@@ -929,196 +929,196 @@ disambiguation = {
 ot.inherit_from_macrolanguages ()
 bcp_47.remove_extra_macrolanguages ()
 ot.inherit_from_macrolanguages ()
-ot.names[DEFAULT_LANGUAGE_SYSTEM] = ''
-ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.values ()) + 1
-for tricky_ot_tag in filter (lambda tag: re.match ('[A-Z]{3}$', tag), ot.names):
-	possible_bcp_47_tag = tricky_ot_tag.lower ()
-	if possible_bcp_47_tag in bcp_47.names and not ot.from_bcp_47[possible_bcp_47_tag]:
-		ot.add_language (possible_bcp_47_tag, DEFAULT_LANGUAGE_SYSTEM)
-		bcp_47.macrolanguages[possible_bcp_47_tag] = set ()
-ot.sort_languages ()
+ot.పేర్లు[DEFAULT_LANGUAGE_SYSTEM] = ''
+ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.విలువలు ()) + 1
+కొరకు tricky_ot_ట్యాగ్ లో filter (అజ్ఞాత ట్యాగ్_2: re.సరిపోలిక ('[A-Z]{3}$', ట్యాగ్_2), ot.పేర్లు):
+	possible_bcp_47_ట్యాగ్ = tricky_ot_ట్యాగ్.క్రింది ()
+	ఒకవేళ possible_bcp_47_ట్యాగ్ లో bcp_47.పేర్లు మరియు కాదు ot.from_bcp_47[possible_bcp_47_ట్యాగ్]:
+		ot.కూడు_language (possible_bcp_47_ట్యాగ్, DEFAULT_LANGUAGE_SYSTEM)
+		bcp_47.macrolanguages[possible_bcp_47_ట్యాగ్] = సమితి ()
+ot.క్రమీకరించు_languages ()
 
-if output_rust:
-	def hb_tag_rust (tag):
-		if tag == DEFAULT_LANGUAGE_SYSTEM:
-			return 'Tag::new(&[0; 4])'
-		sanitize_tag (tag)
-		return 'Tag::new(b"%s%s%s%s")' % tuple (('%-4s' % tag)[:4])
+ఒకవేళ output_rust:
+	నిర్వచనం hb_ట్యాగ్_rust (ట్యాగ్_2):
+		ఒకవేళ ట్యాగ్_2 == DEFAULT_LANGUAGE_SYSTEM:
+			తిరిగి 'Tag::new(&[0; 4])'
+		sanitize_ట్యాగ్ (ట్యాగ్_2)
+		తిరిగి 'Tag::new(b"%s%s%s%s")' % tuple (('%-4s' % ట్యాగ్_2)[:4])
 
-	def get_variant_set_rust (name):
-		return set (unicodedata.normalize (
+	నిర్వచనం get_variant_సమితి_rust (name):
+		తిరిగి సమితి (unicodedata.normalize (
 					'NFD',
 					n.replace ('\u02BC', "'").replace ('\u2019', "'"),
 				)
 				.encode ('ASCII', 'ignore')
 				.strip ()
-				for n in re.split ('[\n(),]', name) if n)
+				కొరకు n లో re.విభజించు ('[\n(),]', name) ఒకవేళ n)
 
-	def language_name_intersection_rust (a, b):
-		return get_variant_set_rust (a).intersection (get_variant_set_rust (b))
+	నిర్వచనం language_name_intersection_rust (a, b):
+		తిరిగి get_variant_సమితి_rust (a).intersection (get_variant_సమితి_rust (b))
 
-	def get_matching_language_name_rust (intersection, candidates):
-		return next (iter (c for c in candidates if not intersection.isdisjoint (get_variant_set_rust (c))))
+	నిర్వచనం get_matching_language_name_rust (intersection, candidates):
+		తిరిగి తదుపరి (iter (c కొరకు c లో candidates ఒకవేళ కాదు intersection.isdisjoint (get_variant_సమితి_rust (c))))
 
-	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-tag-table.py --rust')
-	print ()
-	print ('use read_fonts::types::Tag;')
-	print ()
-	print ('pub(crate) struct LangTag {')
-	print ('    pub language: [u8; 4],')
-	print ('    pub tag: Tag,')
-	print ('}')
-	print ()
-	print ('const fn lang(language: &[u8]) -> [u8; 4] {')
-	print ('    let mut bytes = [0; 4];')
-	print ('    let mut i = 0;')
-	print ()
-	print ('    while i < language.len() {')
-	print ('        bytes[i] = language[i];')
-	print ('        i += 1;')
-	print ('    }')
-	print ()
-	print ('    bytes')
-	print ('}')
-	print ()
-	print ('use super::tag::{lang_matches, strncmp, subtag_matches};')
-	print ()
-	print ('#[rustfmt::skip]')
-	print ('pub(crate) static OPEN_TYPE_LANGUAGES: &[LangTag] = &[')
+	ముద్రించు ('// WARNING: this file was generated by ../../harfbuzz/src/gen-tag-table.py --rust')
+	ముద్రించు ()
+	ముద్రించు ('use read_fonts::types::Tag;')
+	ముద్రించు ()
+	ముద్రించు ('pub(crate) struct LangTag {')
+	ముద్రించు ('    pub language: [u8; 4],')
+	ముద్రించు ('    pub tag: Tag,')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ('const fn lang(language: &[u8]) -> [u8; 4] {')
+	ముద్రించు ('    let mut bytes = [0; 4];')
+	ముద్రించు ('    let mut i = 0;')
+	ముద్రించు ()
+	ముద్రించు ('    while i < language.len() {')
+	ముద్రించు ('        bytes[i] = language[i];')
+	ముద్రించు ('        i += 1;')
+	ముద్రించు ('    }')
+	ముద్రించు ()
+	ముద్రించు ('    bytes')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ('use super::tag::{lang_matches, strncmp, subtag_matches};')
+	ముద్రించు ()
+	ముద్రించు ('#[rustfmt::skip]')
+	ముద్రించు ('pub(crate) static OPEN_TYPE_LANGUAGES: &[LangTag] = &[')
 
-	for language, tags in sorted (ot.from_bcp_47.items ()):
-		if language == '' or '-' in language:
-			continue
-		commented_out = len (language) == 3 and len (tags) == 1 and language == tags[0].lower ()
-		for tag in tags:
-			print ('%sLangTag { language: lang(b"%s"), \ttag: %s },' % ('//  ' if commented_out else '    ', sanitize_bcp47_tag (language), hb_tag_rust (tag)), end='')
-			print (' // ', end='')
-			bcp_47_name = bcp_47.names.get (language, '')
-			bcp_47_name_candidates = bcp_47_name.split ('\n')
-			ot_name = ot.names[tag]
+	కొరకు language, ట్యాగులు లో sorted (ot.from_bcp_47.వస్తువులు ()):
+		ఒకవేళ language == '' లేదా '-' లో language:
+			కొనసాగు
+		commented_బహిర్గతం = పొడవు (language) == 3 మరియు పొడవు (ట్యాగులు) == 1 మరియు language == ట్యాగులు[0].క్రింది ()
+		కొరకు ట్యాగ్_2 లో ట్యాగులు:
+			ముద్రించు ('%sLangTag { language: lang(b"%s"), \ttag: %s },' % ('//  ' ఒకవేళ commented_బహిర్గతం లేకపోతే '    ', sanitize_bcp47_ట్యాగ్ (language), hb_ట్యాగ్_rust (ట్యాగ్_2)), చివర='')
+			ముద్రించు (' // ', చివర='')
+			bcp_47_name = bcp_47.పేర్లు.get (language, '')
+			bcp_47_name_candidates = bcp_47_name.విభజించు ('\n')
+			ot_name = ot.పేర్లు[ట్యాగ్_2]
 			scope = bcp_47.scopes.get (language, '')
-			if tag == DEFAULT_LANGUAGE_SYSTEM:
+			ఒకవేళ ట్యాగ్_2 == DEFAULT_LANGUAGE_SYSTEM:
 				comment = f'{bcp_47_name_candidates[0]}{scope} != {ot.names[language.upper ()]}'
-			else:
+			లేకపోతే:
 				intersection = language_name_intersection_rust (bcp_47_name, ot_name)
-				if not intersection:
+				ఒకవేళ కాదు intersection:
 					comment = '%s%s -> %s' % (bcp_47_name_candidates[0], scope, ot_name)
-				else:
+				లేకపోతే:
 					name = get_matching_language_name_rust (intersection, bcp_47_name_candidates)
-					bcp_47.names[language] = name
-					comment = '%s%s' % (name if len (name) > len (ot_name) else ot_name, scope)
-			print (sanitize_comment (comment))
+					bcp_47.పేర్లు[language] = name
+					comment = '%s%s' % (name ఒకవేళ పొడవు (name) > పొడవు (ot_name) లేకపోతే ot_name, scope)
+			ముద్రించు (sanitize_comment (comment))
 
-	print ('];')
-	print ()
-	print ('/// Converts a multi-subtag BCP 47 language tag to language tags.')
-	print ('pub fn tags_from_complex_language(language: &str, tags: &mut smallvec::SmallVec<[Tag; 3]>) -> bool {')
+	ముద్రించు ('];')
+	ముద్రించు ()
+	ముద్రించు ('/// Converts a multi-subtag BCP 47 language tag to language tags.')
+	ముద్రించు ('pub fn tags_from_complex_language(language: &str, tags: &mut smallvec::SmallVec<[Tag; 3]>) -> bool {')
 
-	def print_subtag_matches_rust (subtag, new_line):
-		if subtag:
-			if new_line:
-				print (' && ', end='')
-			print ('subtag_matches(language, "-%s")' % sanitize_bcp47_tag (subtag), end='')
+	నిర్వచనం print_subtag_matches_rust (subtag, new_పంక్తి):
+		ఒకవేళ subtag:
+			ఒకవేళ new_పంక్తి:
+				ముద్రించు (' && ', చివర='')
+			ముద్రించు ('subtag_matches(language, "-%s")' % sanitize_bcp47_ట్యాగ్ (subtag), చివర='')
 
-	complex_tags = collections.defaultdict (list)
-	for initial, group in itertools.groupby ((lt_tags for lt_tags in [
-				(LanguageTag (language), tags)
-				for language, tags in sorted (ot.from_bcp_47.items (),
-					key=lambda i: (-len (i[0]), i[0]))
-			] if lt_tags[0].is_complex ()),
-			key=lambda lt_tags: lt_tags[0].get_group ()):
-		complex_tags[initial] += group
+	complex_ట్యాగులు = collections.defaultdict (list)
+	కొరకు initial, సమూహం లో itertools.groupby ((lt_ట్యాగులు కొరకు lt_ట్యాగులు లో [
+				(Language_ట్యాగ్ (language), ట్యాగులు)
+				కొరకు language, ట్యాగులు లో sorted (ot.from_bcp_47.వస్తువులు (),
+					కీలకం_2=అజ్ఞాత i: (-పొడవు (i[0]), i[0]))
+			] ఒకవేళ lt_ట్యాగులు[0].is_complex ()),
+			కీలకం_2=అజ్ఞాత lt_ట్యాగులు: lt_ట్యాగులు[0].get_సమూహం ()):
+		complex_ట్యాగులు[initial] += సమూహం
 
-	for initial, items in sorted (complex_tags.items ()):
-		if initial != 'und':
-			continue
-		for lt, tags in items:
-			if not tags:
-				continue
-			if lt.variant in bcp_47.prefixes:
-				expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
+	కొరకు initial, వస్తువులు లో sorted (complex_ట్యాగులు.వస్తువులు ()):
+		ఒకవేళ initial != 'und':
+			కొనసాగు
+		కొరకు lt, ట్యాగులు లో వస్తువులు:
+			ఒకవేళ కాదు ట్యాగులు:
+				కొనసాగు
+			ఒకవేళ lt.variant లో bcp_47.prefixes:
+				expect (తదుపరి (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 						'%s is not a valid prefix of %s' % (lt.language, lt.variant))
-			print ('    if ', end='')
-			print_subtag_matches_rust (lt.script, False)
-			print_subtag_matches_rust (lt.region, False)
-			print_subtag_matches_rust (lt.variant, False)
-			print (' {')
-			print ('        // %s' % sanitize_comment (bcp_47.get_name (lt)))
-			if len (tags) == 1:
-				print ('        tags.push(%s); // %s' % (hb_tag_rust (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			else:
-				print ('        let possible_tags = &[')
-				for tag in tags:
-					print ('            %s, // %s' % (hb_tag_rust (tag), sanitize_comment (ot.names[tag])))
-				print ('        ];')
-				print ('        tags.extend_from_slice(possible_tags);')
-			print ('        return true;')
-			print ('    }')
+			ముద్రించు ('    if ', చివర='')
+			print_subtag_matches_rust (lt.script, అబద్ధం)
+			print_subtag_matches_rust (lt.region, అబద్ధం)
+			print_subtag_matches_rust (lt.variant, అబద్ధం)
+			ముద్రించు (' {')
+			ముద్రించు ('        // %s' % sanitize_comment (bcp_47.get_name (lt)))
+			ఒకవేళ పొడవు (ట్యాగులు) == 1:
+				ముద్రించు ('        tags.push(%s); // %s' % (hb_ట్యాగ్_rust (ట్యాగులు[0]), sanitize_comment (ot.పేర్లు[ట్యాగులు[0]])))
+			లేకపోతే:
+				ముద్రించు ('        let possible_tags = &[')
+				కొరకు ట్యాగ్_2 లో ట్యాగులు:
+					ముద్రించు ('            %s, // %s' % (hb_ట్యాగ్_rust (ట్యాగ్_2), sanitize_comment (ot.పేర్లు[ట్యాగ్_2])))
+				ముద్రించు ('        ];')
+				ముద్రించు ('        tags.extend_from_slice(possible_tags);')
+			ముద్రించు ('        return true;')
+			ముద్రించు ('    }')
 
-	print ('    match language.as_bytes()[0] {')
-	for initial, items in sorted (complex_tags.items ()):
-		if initial == 'und':
-			continue
-		print ("        b'%s' => {" % sanitize_bcp47_tag (initial))
-		for lt, tags in items:
-			if not tags:
-				continue
-			print ('            if ', end='')
+	ముద్రించు ('    match language.as_bytes()[0] {')
+	కొరకు initial, వస్తువులు లో sorted (complex_ట్యాగులు.వస్తువులు ()):
+		ఒకవేళ initial == 'und':
+			కొనసాగు
+		ముద్రించు ("        b'%s' => {" % sanitize_bcp47_ట్యాగ్ (initial))
+		కొరకు lt, ట్యాగులు లో వస్తువులు:
+			ఒకవేళ కాదు ట్యాగులు:
+				కొనసాగు
+			ముద్రించు ('            if ', చివర='')
 			script = lt.script
 			region = lt.region
-			if lt.grandfathered:
-				print ('&language[1..] == "%s"' % sanitize_bcp47_tag (lt.language[1:]), end='')
-			else:
+			ఒకవేళ lt.grandfathered:
+				ముద్రించు ('&language[1..] == "%s"' % sanitize_bcp47_ట్యాగ్ (lt.language[1:]), చివర='')
+			లేకపోతే:
 				string_literal = lt.language[1:] + '-'
-				if script:
+				ఒకవేళ script:
 					string_literal += script
-					script = None
-					if region:
+					script = ఏమీలేదు
+					ఒకవేళ region:
 						string_literal += '-' + region
-						region = None
-				if string_literal[-1] == '-':
-					print ('strncmp(&language[1..], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-				else:
-					print ('lang_matches(&language[1..], "%s")' % sanitize_bcp47_tag (string_literal), end='')
-			print_subtag_matches_rust (script, True)
-			print_subtag_matches_rust (region, True)
-			print_subtag_matches_rust (lt.variant, True)
-			print (' {')
-			print ('                // %s' % sanitize_comment (bcp_47.get_name (lt)))
-			if len (tags) == 1:
-				print ('                tags.push(%s); // %s' % (hb_tag_rust (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			else:
-				print ('                let possible_tags = &[')
-				for tag in tags:
-					print ('                    %s, // %s' % (hb_tag_rust (tag), sanitize_comment (ot.names[tag])))
-				print ('                ];')
-				print ('                tags.extend_from_slice(possible_tags);')
-			print ('                return true;')
-			print ('            }')
-		print ('        }')
-	print ('        _ => {}')
-	print ('    }')
-	print ('    false')
-	print ('}')
+						region = ఏమీలేదు
+				ఒకవేళ string_literal[-1] == '-':
+					ముద్రించు ('strncmp(&language[1..], "%s", %i)' % (sanitize_bcp47_ట్యాగ్ (string_literal), పొడవు (string_literal)), చివర='')
+				లేకపోతే:
+					ముద్రించు ('lang_matches(&language[1..], "%s")' % sanitize_bcp47_ట్యాగ్ (string_literal), చివర='')
+			print_subtag_matches_rust (script, నిజం)
+			print_subtag_matches_rust (region, నిజం)
+			print_subtag_matches_rust (lt.variant, నిజం)
+			ముద్రించు (' {')
+			ముద్రించు ('                // %s' % sanitize_comment (bcp_47.get_name (lt)))
+			ఒకవేళ పొడవు (ట్యాగులు) == 1:
+				ముద్రించు ('                tags.push(%s); // %s' % (hb_ట్యాగ్_rust (ట్యాగులు[0]), sanitize_comment (ot.పేర్లు[ట్యాగులు[0]])))
+			లేకపోతే:
+				ముద్రించు ('                let possible_tags = &[')
+				కొరకు ట్యాగ్_2 లో ట్యాగులు:
+					ముద్రించు ('                    %s, // %s' % (hb_ట్యాగ్_rust (ట్యాగ్_2), sanitize_comment (ot.పేర్లు[ట్యాగ్_2])))
+				ముద్రించు ('                ];')
+				ముద్రించు ('                tags.extend_from_slice(possible_tags);')
+			ముద్రించు ('                return true;')
+			ముద్రించు ('            }')
+		ముద్రించు ('        }')
+	ముద్రించు ('        _ => {}')
+	ముద్రించు ('    }')
+	ముద్రించు ('    false')
+	ముద్రించు ('}')
 	sys.exit (0)
 
-print ('/* == Start of generated table == */')
-print ('/*')
-print (' * The following table is generated by running:')
-print (' *')
-print (' *   %s languagetags language-subtag-registry' % os.path.basename (sys.argv[0]))
-print (' *')
-print (' * on files with these headers:')
-print (' *')
-print (' * %s' % sanitize_header (ot.header))
-print (' * %s' % sanitize_header (bcp_47.header))
-print (' */')
-print ()
-print ('#ifndef HB_OT_TAG_TABLE_HH')
-print ('#define HB_OT_TAG_TABLE_HH')
-print ()
+ముద్రించు ('/* == Start of generated table == */')
+ముద్రించు ('/*')
+ముద్రించు (' * The following table is generated by running:')
+ముద్రించు (' *')
+ముద్రించు (' *   %s languagetags language-subtag-registry' % os.మార్గం.basename (sys.argv[0]))
+ముద్రించు (' *')
+ముద్రించు (' * on files with these headers:')
+ముద్రించు (' *')
+ముద్రించు (' * %s' % sanitize_శీర్షిక (ot.శీర్షిక))
+ముద్రించు (' * %s' % sanitize_శీర్షిక (bcp_47.శీర్షిక))
+ముద్రించు (' */')
+ముద్రించు ()
+ముద్రించు ('#ifndef HB_OT_TAG_TABLE_HH')
+ముద్రించు ('#define HB_OT_TAG_TABLE_HH')
+ముద్రించు ()
 
-def hb_tag (tag):
+నిర్వచనం hb_ట్యాగ్ (ట్యాగ్_2):
 	"""Convert a tag to ``HB_TAG`` form.
 
 	Args:
@@ -1127,12 +1127,12 @@ def hb_tag (tag):
 	Returns:
 		A snippet of C++ representing ``tag``.
 	"""
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
-		return 'HB_TAG_NONE\t       '
-	sanitize_tag (tag)
-	return "HB_TAG('%s','%s','%s','%s')" % tuple (('%-4s' % tag)[:4])
+	ఒకవేళ ట్యాగ్_2 == DEFAULT_LANGUAGE_SYSTEM:
+		తిరిగి 'HB_TAG_NONE\t       '
+	sanitize_ట్యాగ్ (ట్యాగ్_2)
+	తిరిగి "HB_TAG('%s','%s','%s','%s')" % tuple (('%-4s' % ట్యాగ్_2)[:4])
 
-def get_variant_set (name):
+నిర్వచనం get_variant_సమితి (name):
 	"""Return a set of variant language names from a name.
 
 	Args:
@@ -1142,15 +1142,15 @@ def get_variant_set (name):
 	Returns:
 		A set of normalized language names.
 	"""
-	return set (unicodedata.normalize (
+	తిరిగి సమితి (unicodedata.normalize (
 				'NFD',
 				n.replace ('\u02BC', "'").replace ('\u2019', "'"),
 			)
 			.encode ('ASCII', 'ignore')
 			.strip ()
-			for n in re.split ('[\n(),]', name) if n)
+			కొరకు n లో re.విభజించు ('[\n(),]', name) ఒకవేళ n)
 
-def language_name_intersection (a, b):
+నిర్వచనం language_name_intersection (a, b):
 	"""Return the names in common between two language names.
 
 	Args:
@@ -1162,261 +1162,261 @@ def language_name_intersection (a, b):
 	Returns:
 		The normalized language names shared by ``a`` and ``b``.
 	"""
-	return get_variant_set (a).intersection (get_variant_set (b))
+	తిరిగి get_variant_సమితి (a).intersection (get_variant_సమితి (b))
 
-def get_matching_language_name (intersection, candidates):
-	return next (iter (c for c in candidates if not intersection.isdisjoint (get_variant_set (c))))
+నిర్వచనం get_matching_language_name (intersection, candidates):
+	తిరిగి తదుపరి (iter (c కొరకు c లో candidates ఒకవేళ కాదు intersection.isdisjoint (get_variant_సమితి (c))))
 
-def same_tag (bcp_47_tag, ot_tags):
-	return len (bcp_47_tag) == 3 and len (ot_tags) == 1 and bcp_47_tag == ot_tags[0].lower ()
+నిర్వచనం same_ట్యాగ్ (bcp_47_ట్యాగ్, ot_ట్యాగులు):
+	తిరిగి పొడవు (bcp_47_ట్యాగ్) == 3 మరియు పొడవు (ot_ట్యాగులు) == 1 మరియు bcp_47_ట్యాగ్ == ot_ట్యాగులు[0].క్రింది ()
 
-def format_language_comment (language, tag):
-	bcp_47_name = bcp_47.names.get (language, '')
-	bcp_47_name_candidates = bcp_47_name.split ('\n')
-	ot_name = ot.names[tag]
+నిర్వచనం format_language_comment (language, ట్యాగ్_2):
+	bcp_47_name = bcp_47.పేర్లు.get (language, '')
+	bcp_47_name_candidates = bcp_47_name.విభజించు ('\n')
+	ot_name = ot.పేర్లు[ట్యాగ్_2]
 	scope = bcp_47.scopes.get (language, '')
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
+	ఒకవేళ ట్యాగ్_2 == DEFAULT_LANGUAGE_SYSTEM:
 		comment = f'{bcp_47_name_candidates[0]}{scope} != {ot.names[language.upper ()]}'
-	else:
+	లేకపోతే:
 		intersection = language_name_intersection (bcp_47_name, ot_name)
-		if not intersection:
+		ఒకవేళ కాదు intersection:
 			comment = '%s%s -> %s' % (bcp_47_name_candidates[0], scope, ot_name)
-		else:
+		లేకపోతే:
 			name = get_matching_language_name (intersection, bcp_47_name_candidates)
-			bcp_47.names[language] = name
-			comment = '%s%s' % (name if len (name) > len (ot_name) else ot_name, scope)
-	return sanitize_comment (comment)
+			bcp_47.పేర్లు[language] = name
+			comment = '%s%s' % (name ఒకవేళ పొడవు (name) > పొడవు (ot_name) లేకపోతే ot_name, scope)
+	తిరిగి sanitize_comment (comment)
 
-print ('static const LangTag ot_languages2[] = {')
-for language, tags in sorted (ot.from_bcp_47.items ()):
-	if language == '' or '-' in language or len (language) != 2:
-		continue
-	for tag in tags:
-		print ('  {%s,\t%s},\t/* %s */' % (
-			hb_tag (language),
-			hb_tag (tag),
-			format_language_comment (language, tag)))
-print ('};')
-print ()
+ముద్రించు ('static const LangTag ot_languages2[] = {')
+కొరకు language, ట్యాగులు లో sorted (ot.from_bcp_47.వస్తువులు ()):
+	ఒకవేళ language == '' లేదా '-' లో language లేదా పొడవు (language) != 2:
+		కొనసాగు
+	కొరకు ట్యాగ్_2 లో ట్యాగులు:
+		ముద్రించు ('  {%s,\t%s},\t/* %s */' % (
+			hb_ట్యాగ్ (language),
+			hb_ట్యాగ్ (ట్యాగ్_2),
+			format_language_comment (language, ట్యాగ్_2)))
+ముద్రించు ('};')
+ముద్రించు ()
 
-print ('#ifndef HB_NO_LANGUAGE_LONG')
+ముద్రించు ('#ifndef HB_NO_LANGUAGE_LONG')
 
 languages3_blocked = []
 languages3_singles = []
 languages3_multi_ranges = []
-languages3_multi_values = []
-for language, tags in sorted (ot.from_bcp_47.items ()):
-	if language == '' or '-' in language or len (language) != 3:
-		continue
-	if same_tag (language, tags):
-		continue
-	if tags == [DEFAULT_LANGUAGE_SYSTEM]:
-		languages3_blocked.append ((language, tags[0]))
-		continue
-	if len (tags) == 1:
-		languages3_singles.append ((language, tags[0]))
-		continue
-	offset = len (languages3_multi_values)
-	languages3_multi_values.extend ((language, tag) for tag in tags)
-	languages3_multi_ranges.append ((language, offset, len (tags), tags[0]))
+languages3_multi_విలువలు = []
+కొరకు language, ట్యాగులు లో sorted (ot.from_bcp_47.వస్తువులు ()):
+	ఒకవేళ language == '' లేదా '-' లో language లేదా పొడవు (language) != 3:
+		కొనసాగు
+	ఒకవేళ same_ట్యాగ్ (language, ట్యాగులు):
+		కొనసాగు
+	ఒకవేళ ట్యాగులు == [DEFAULT_LANGUAGE_SYSTEM]:
+		languages3_blocked.append ((language, ట్యాగులు[0]))
+		కొనసాగు
+	ఒకవేళ పొడవు (ట్యాగులు) == 1:
+		languages3_singles.append ((language, ట్యాగులు[0]))
+		కొనసాగు
+	స్థానభ్రంశం = పొడవు (languages3_multi_విలువలు)
+	languages3_multi_విలువలు.extend ((language, ట్యాగ్_2) కొరకు ట్యాగ్_2 లో ట్యాగులు)
+	languages3_multi_ranges.append ((language, స్థానభ్రంశం, పొడవు (ట్యాగులు), ట్యాగులు[0]))
 
-print ('static const hb_tag_t ot_languages3_blocked[] = {')
-for language, tag in languages3_blocked:
-	print ('  %s,\t/* %s */' % (hb_tag (language), format_language_comment (language, tag)))
-print ('};')
-print ()
+ముద్రించు ('static const hb_tag_t ot_languages3_blocked[] = {')
+కొరకు language, ట్యాగ్_2 లో languages3_blocked:
+	ముద్రించు ('  %s,\t/* %s */' % (hb_ట్యాగ్ (language), format_language_comment (language, ట్యాగ్_2)))
+ముద్రించు ('};')
+ముద్రించు ()
 
-print ('static const LangTag ot_languages3[] = {')
-for language, tag in languages3_singles:
-	print ('  {%s,\t%s},\t/* %s */' % (
-		hb_tag (language),
-		hb_tag (tag),
-		format_language_comment (language, tag)))
-print ('};')
-print ()
+ముద్రించు ('static const LangTag ot_languages3[] = {')
+కొరకు language, ట్యాగ్_2 లో languages3_singles:
+	ముద్రించు ('  {%s,\t%s},\t/* %s */' % (
+		hb_ట్యాగ్ (language),
+		hb_ట్యాగ్ (ట్యాగ్_2),
+		format_language_comment (language, ట్యాగ్_2)))
+ముద్రించు ('};')
+ముద్రించు ()
 
-print ('static const hb_tag_t ot_languages3_multi_values[] = {')
-for language, tag in languages3_multi_values:
-	print ('  %s,\t/* %s */' % (hb_tag (tag), format_language_comment (language, tag)))
-print ('};')
-print ()
+ముద్రించు ('static const hb_tag_t ot_languages3_multi_values[] = {')
+కొరకు language, ట్యాగ్_2 లో languages3_multi_విలువలు:
+	ముద్రించు ('  %s,\t/* %s */' % (hb_ట్యాగ్ (ట్యాగ్_2), format_language_comment (language, ట్యాగ్_2)))
+ముద్రించు ('};')
+ముద్రించు ()
 
-print ('static const LangTagRange ot_languages3_multi[] = {')
-for language, offset, count, first_tag in languages3_multi_ranges:
-	print ('  {%s,\t%u,\t%u},\t/* %s */' % (
-		hb_tag (language),
-		int(offset),
-		int(count),
-		format_language_comment (language, first_tag)))
-print ('};')
-print ('#endif')
-print ()
+ముద్రించు ('static const LangTagRange ot_languages3_multi[] = {')
+కొరకు language, స్థానభ్రంశం, లెక్క, మొదటి_ట్యాగ్ లో languages3_multi_ranges:
+	ముద్రించు ('  {%s,\t%u,\t%u},\t/* %s */' % (
+		hb_ట్యాగ్ (language),
+		పూర్ణాంకం(స్థానభ్రంశం),
+		పూర్ణాంకం(లెక్క),
+		format_language_comment (language, మొదటి_ట్యాగ్)))
+ముద్రించు ('};')
+ముద్రించు ('#endif')
+ముద్రించు ()
 
-print ('/**')
-print (' * hb_ot_tags_from_complex_language:')
-print (' * @lang_str: a BCP 47 language tag to convert.')
-print (' * @limit: a pointer to the end of the substring of @lang_str to consider for')
-print (' * conversion.')
-print (' * @count: maximum number of language tags to retrieve (IN) and actual number of')
-print (' * language tags retrieved (OUT). If no tags are retrieved, it is not modified.')
-print (' * @tags: array of size at least @language_count to store the language tag')
-print (' * results')
-print (' *')
-print (' * Converts a multi-subtag BCP 47 language tag to language tags.')
-print (' *')
-print (' * Return value: Whether any language systems were retrieved.')
-print (' **/')
-print ('static inline bool')
-print ('hb_ot_tags_from_complex_language (const char   *lang_str,')
-print ('\t\t\t\t  const char   *limit,')
-print ('\t\t\t\t  unsigned int *count /* IN/OUT */,')
-print ('\t\t\t\t  hb_tag_t     *tags /* OUT */)')
-print ('{')
+ముద్రించు ('/**')
+ముద్రించు (' * hb_ot_tags_from_complex_language:')
+ముద్రించు (' * @lang_str: a BCP 47 language tag to convert.')
+ముద్రించు (' * @limit: a pointer to the end of the substring of @lang_str to consider for')
+ముద్రించు (' * conversion.')
+ముద్రించు (' * @count: maximum number of language tags to retrieve (IN) and actual number of')
+ముద్రించు (' * language tags retrieved (OUT). If no tags are retrieved, it is not modified.')
+ముద్రించు (' * @tags: array of size at least @language_count to store the language tag')
+ముద్రించు (' * results')
+ముద్రించు (' *')
+ముద్రించు (' * Converts a multi-subtag BCP 47 language tag to language tags.')
+ముద్రించు (' *')
+ముద్రించు (' * Return value: Whether any language systems were retrieved.')
+ముద్రించు (' **/')
+ముద్రించు ('static inline bool')
+ముద్రించు ('hb_ot_tags_from_complex_language (const char   *lang_str,')
+ముద్రించు ('\t\t\t\t  const char   *limit,')
+ముద్రించు ('\t\t\t\t  unsigned int *count /* IN/OUT */,')
+ముద్రించు ('\t\t\t\t  hb_tag_t     *tags /* OUT */)')
+ముద్రించు ('{')
 
-def print_subtag_matches (subtag, string, new_line):
-	if subtag:
-		if new_line:
-			print ()
-			print ('\t&& ', end='')
-		print ('subtag_matches (%s, limit, "-%s", %i)' % (string, sanitize_bcp47_tag (subtag), 1 + len (subtag)), end='')
+నిర్వచనం print_subtag_matches (subtag, string, new_పంక్తి):
+	ఒకవేళ subtag:
+		ఒకవేళ new_పంక్తి:
+			ముద్రించు ()
+			ముద్రించు ('\t&& ', చివర='')
+		ముద్రించు ('subtag_matches (%s, limit, "-%s", %i)' % (string, sanitize_bcp47_ట్యాగ్ (subtag), 1 + పొడవు (subtag)), చివర='')
 
-complex_tags = collections.defaultdict (list)
-for initial, group in itertools.groupby ((lt_tags for lt_tags in [
-			(LanguageTag (language), tags)
-			for language, tags in sorted (ot.from_bcp_47.items (),
-				key=lambda i: (-len (i[0]), i[0]))
-		] if lt_tags[0].is_complex ()),
-		key=lambda lt_tags: lt_tags[0].get_group ()):
-	complex_tags[initial] += group
+complex_ట్యాగులు = collections.defaultdict (list)
+కొరకు initial, సమూహం లో itertools.groupby ((lt_ట్యాగులు కొరకు lt_ట్యాగులు లో [
+			(Language_ట్యాగ్ (language), ట్యాగులు)
+			కొరకు language, ట్యాగులు లో sorted (ot.from_bcp_47.వస్తువులు (),
+				కీలకం_2=అజ్ఞాత i: (-పొడవు (i[0]), i[0]))
+		] ఒకవేళ lt_ట్యాగులు[0].is_complex ()),
+		కీలకం_2=అజ్ఞాత lt_ట్యాగులు: lt_ట్యాగులు[0].get_సమూహం ()):
+	complex_ట్యాగులు[initial] += సమూహం
 
 # Calculate the min length of the subtags outside the switch
 min_subtag_len = 100
-for initial, items in sorted (complex_tags.items ()):
-	if initial != 'und':
-		continue
-	for lt, tags in items:
-		if not tags:
-			continue
+కొరకు initial, వస్తువులు లో sorted (complex_ట్యాగులు.వస్తువులు ()):
+	ఒకవేళ initial != 'und':
+		కొనసాగు
+	కొరకు lt, ట్యాగులు లో వస్తువులు:
+		ఒకవేళ కాదు ట్యాగులు:
+			కొనసాగు
 		subtag_len = 0
-		subtag_len += 1 + len (lt.script) if lt.script is not None else 0
-		subtag_len += 1 + len (lt.region) if lt.region is not None else 0
-		subtag_len += 1 + len (lt.variant) if lt.variant is not None else 0
+		subtag_len += 1 + పొడవు (lt.script) ఒకవేళ lt.script అయిన కాదు ఏమీలేదు లేకపోతే 0
+		subtag_len += 1 + పొడవు (lt.region) ఒకవేళ lt.region అయిన కాదు ఏమీలేదు లేకపోతే 0
+		subtag_len += 1 + పొడవు (lt.variant) ఒకవేళ lt.variant అయిన కాదు ఏమీలేదు లేకపోతే 0
 		min_subtag_len = min(subtag_len, min_subtag_len)
 
-print ('  if (limit - lang_str >= %d)' % (min_subtag_len + 2))
-print ('  {')
-print ("    const char *p = strchr (lang_str, '-');")
-print ("    if (!p || p >= limit || limit - p < %i) goto out;" % min_subtag_len)
-for initial, items in sorted (complex_tags.items ()):
-	if initial != 'und':
-		continue
-	for lt, tags in items:
-		if not tags:
-			continue
-		if lt.variant in bcp_47.prefixes:
-			expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
+ముద్రించు ('  if (limit - lang_str >= %d)' % (min_subtag_len + 2))
+ముద్రించు ('  {')
+ముద్రించు ("    const char *p = strchr (lang_str, '-');")
+ముద్రించు ("    if (!p || p >= limit || limit - p < %i) goto out;" % min_subtag_len)
+కొరకు initial, వస్తువులు లో sorted (complex_ట్యాగులు.వస్తువులు ()):
+	ఒకవేళ initial != 'und':
+		కొనసాగు
+	కొరకు lt, ట్యాగులు లో వస్తువులు:
+		ఒకవేళ కాదు ట్యాగులు:
+			కొనసాగు
+		ఒకవేళ lt.variant లో bcp_47.prefixes:
+			expect (తదుపరి (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 					'%s is not a valid prefix of %s' % (lt.language, lt.variant))
-		print ('    if (', end='')
-		print_subtag_matches (lt.script, 'p', False)
-		print_subtag_matches (lt.region, 'p', False)
-		print_subtag_matches (lt.variant, 'p', False)
-		print (')')
-		print ('    {')
-		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
-		print ()
-		if len (tags) == 1:
-			write ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			print ()
-			print ('      *count = 1;')
-		else:
-			print ('    hb_tag_t possible_tags[] = {')
-			for tag in tags:
-				write ('      %s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
-				print ()
-			print ('      };')
-			print ('      for (i = 0; i < %s && i < *count; i++)' % len (tags))
-			print ('\ttags[i] = possible_tags[i];')
-			print ('      *count = i;')
-		print ('      return true;')
-		print ('    }')
-print ('  }')
-print ('out:')
+		ముద్రించు ('    if (', చివర='')
+		print_subtag_matches (lt.script, 'p', అబద్ధం)
+		print_subtag_matches (lt.region, 'p', అబద్ధం)
+		print_subtag_matches (lt.variant, 'p', అబద్ధం)
+		ముద్రించు (')')
+		ముద్రించు ('    {')
+		లిఖ ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
+		ముద్రించు ()
+		ఒకవేళ పొడవు (ట్యాగులు) == 1:
+			లిఖ ('      tags[0] = %s;  /* %s */' % (hb_ట్యాగ్ (ట్యాగులు[0]), sanitize_comment (ot.పేర్లు[ట్యాగులు[0]])))
+			ముద్రించు ()
+			ముద్రించు ('      *count = 1;')
+		లేకపోతే:
+			ముద్రించు ('    hb_tag_t possible_tags[] = {')
+			కొరకు ట్యాగ్_2 లో ట్యాగులు:
+				లిఖ ('      %s,  /* %s */' % (hb_ట్యాగ్ (ట్యాగ్_2), sanitize_comment (ot.పేర్లు[ట్యాగ్_2])))
+				ముద్రించు ()
+			ముద్రించు ('      };')
+			ముద్రించు ('      for (i = 0; i < %s && i < *count; i++)' % పొడవు (ట్యాగులు))
+			ముద్రించు ('\ttags[i] = possible_tags[i];')
+			ముద్రించు ('      *count = i;')
+		ముద్రించు ('      return true;')
+		ముద్రించు ('    }')
+ముద్రించు ('  }')
+ముద్రించు ('out:')
 
-print ('  switch (lang_str[0])')
-print ('  {')
-for initial, items in sorted (complex_tags.items ()):
-	if initial == 'und':
-		continue
-	print ("  case '%s':" % sanitize_bcp47_tag (initial))
-	for lt, tags in items:
-		if not tags:
-			continue
-		print ('    if (', end='')
+ముద్రించు ('  switch (lang_str[0])')
+ముద్రించు ('  {')
+కొరకు initial, వస్తువులు లో sorted (complex_ట్యాగులు.వస్తువులు ()):
+	ఒకవేళ initial == 'und':
+		కొనసాగు
+	ముద్రించు ("  case '%s':" % sanitize_bcp47_ట్యాగ్ (initial))
+	కొరకు lt, ట్యాగులు లో వస్తువులు:
+		ఒకవేళ కాదు ట్యాగులు:
+			కొనసాగు
+		ముద్రించు ('    if (', చివర='')
 		script = lt.script
 		region = lt.region
-		if lt.grandfathered:
-			print ('0 == strcmp (&lang_str[1], "%s")' % sanitize_bcp47_tag (lt.language[1:]), end='')
-		else:
+		ఒకవేళ lt.grandfathered:
+			ముద్రించు ('0 == strcmp (&lang_str[1], "%s")' % sanitize_bcp47_ట్యాగ్ (lt.language[1:]), చివర='')
+		లేకపోతే:
 			string_literal = lt.language[1:] + '-'
-			if script:
+			ఒకవేళ script:
 				string_literal += script
-				script = None
-				if region:
+				script = ఏమీలేదు
+				ఒకవేళ region:
 					string_literal += '-' + region
-					region = None
-			if string_literal[-1] == '-':
-				print ('0 == strncmp (&lang_str[1], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-			else:
-				print ('lang_matches (&lang_str[1], limit, "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-		print_subtag_matches (script, 'lang_str', True)
-		print_subtag_matches (region, 'lang_str', True)
-		print_subtag_matches (lt.variant, 'lang_str', True)
-		print (')')
-		print ('    {')
-		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
-		print ()
-		if len (tags) == 1:
-			write ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			print ()
-			print ('      *count = 1;')
-		else:
-			print ('      unsigned int i;')
-			print ('      hb_tag_t possible_tags[] = {')
-			for tag in tags:
-				write ('\t%s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
-				print ()
-			print ('      };')
-			print ('      for (i = 0; i < %s && i < *count; i++)' % len (tags))
-			print ('\ttags[i] = possible_tags[i];')
-			print ('      *count = i;')
-		print ('      return true;')
-		print ('    }')
-	print ('    break;')
+					region = ఏమీలేదు
+			ఒకవేళ string_literal[-1] == '-':
+				ముద్రించు ('0 == strncmp (&lang_str[1], "%s", %i)' % (sanitize_bcp47_ట్యాగ్ (string_literal), పొడవు (string_literal)), చివర='')
+			లేకపోతే:
+				ముద్రించు ('lang_matches (&lang_str[1], limit, "%s", %i)' % (sanitize_bcp47_ట్యాగ్ (string_literal), పొడవు (string_literal)), చివర='')
+		print_subtag_matches (script, 'lang_str', నిజం)
+		print_subtag_matches (region, 'lang_str', నిజం)
+		print_subtag_matches (lt.variant, 'lang_str', నిజం)
+		ముద్రించు (')')
+		ముద్రించు ('    {')
+		లిఖ ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
+		ముద్రించు ()
+		ఒకవేళ పొడవు (ట్యాగులు) == 1:
+			లిఖ ('      tags[0] = %s;  /* %s */' % (hb_ట్యాగ్ (ట్యాగులు[0]), sanitize_comment (ot.పేర్లు[ట్యాగులు[0]])))
+			ముద్రించు ()
+			ముద్రించు ('      *count = 1;')
+		లేకపోతే:
+			ముద్రించు ('      unsigned int i;')
+			ముద్రించు ('      hb_tag_t possible_tags[] = {')
+			కొరకు ట్యాగ్_2 లో ట్యాగులు:
+				లిఖ ('\t%s,  /* %s */' % (hb_ట్యాగ్ (ట్యాగ్_2), sanitize_comment (ot.పేర్లు[ట్యాగ్_2])))
+				ముద్రించు ()
+			ముద్రించు ('      };')
+			ముద్రించు ('      for (i = 0; i < %s && i < *count; i++)' % పొడవు (ట్యాగులు))
+			ముద్రించు ('\ttags[i] = possible_tags[i];')
+			ముద్రించు ('      *count = i;')
+		ముద్రించు ('      return true;')
+		ముద్రించు ('    }')
+	ముద్రించు ('    break;')
 
-print ('  }')
-print ('  return false;')
-print ('}')
-print ()
-print ('/**')
-print (' * hb_ot_ambiguous_tag_to_language')
-print (' * @tag: A language tag.')
-print (' *')
-print (' * Converts @tag to a BCP 47 language tag if it is ambiguous (it corresponds to')
-print (' * many language tags) and the best tag is not the first (sorted alphabetically,')
-print (' * with two-letter tags having priority over all three-letter tags), or if the')
-print (' * best tag consists of multiple subtags, or if the best tag does not appear in')
-print (' * #ot_languages2 or #ot_languages3.')
-print (' *')
-print (' * Return value: The #hb_language_t corresponding to the BCP 47 language tag,')
-print (' * or #HB_LANGUAGE_INVALID if @tag is not ambiguous.')
-print (' **/')
-print ('static inline hb_language_t')
-print ('hb_ot_ambiguous_tag_to_language (hb_tag_t tag)')
-print ('{')
-print ('  switch (tag)')
-print ('  {')
+ముద్రించు ('  }')
+ముద్రించు ('  return false;')
+ముద్రించు ('}')
+ముద్రించు ()
+ముద్రించు ('/**')
+ముద్రించు (' * hb_ot_ambiguous_tag_to_language')
+ముద్రించు (' * @tag: A language tag.')
+ముద్రించు (' *')
+ముద్రించు (' * Converts @tag to a BCP 47 language tag if it is ambiguous (it corresponds to')
+ముద్రించు (' * many language tags) and the best tag is not the first (sorted alphabetically,')
+ముద్రించు (' * with two-letter tags having priority over all three-letter tags), or if the')
+ముద్రించు (' * best tag consists of multiple subtags, or if the best tag does not appear in')
+ముద్రించు (' * #ot_languages2 or #ot_languages3.')
+ముద్రించు (' *')
+ముద్రించు (' * Return value: The #hb_language_t corresponding to the BCP 47 language tag,')
+ముద్రించు (' * or #HB_LANGUAGE_INVALID if @tag is not ambiguous.')
+ముద్రించు (' **/')
+ముద్రించు ('static inline hb_language_t')
+ముద్రించు ('hb_ot_ambiguous_tag_to_language (hb_tag_t tag)')
+ముద్రించు ('{')
+ముద్రించు ('  switch (tag)')
+ముద్రించు ('  {')
 
-def verify_disambiguation_dict ():
+నిర్వచనం verify_disambiguation_dict ():
 	"""Verify and normalize ``disambiguation``.
 
 	``disambiguation`` is a map of ambiguous OpenType language system
@@ -1433,66 +1433,66 @@ def verify_disambiguation_dict ():
 	Raises:
 		AssertionError: Verification failed.
 	"""
-	global bcp_47
-	global disambiguation
-	global ot
-	for ot_tag, bcp_47_tags in ot.to_bcp_47.items ():
-		if ot_tag == DEFAULT_LANGUAGE_SYSTEM:
-			primary_tags = []
-		else:
-			primary_tags = list (t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot.from_bcp_47.get (t)[0] == ot_tag)
-		if len (primary_tags) == 1:
-			expect (ot_tag not in disambiguation, 'unnecessary disambiguation for OT tag: %s' % ot_tag)
-			if '-' in primary_tags[0]:
-				disambiguation[ot_tag] = primary_tags[0]
-			else:
-				first_tag = sorted ((t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot_tag in ot.from_bcp_47.get (t)),
-						key=lambda t: (len (t), t))[0]
-				if primary_tags[0] != first_tag:
-					disambiguation[ot_tag] = primary_tags[0]
-		elif len (primary_tags) == 0:
-			expect (ot_tag not in disambiguation, 'There is no possible valid disambiguation for %s' % ot_tag)
-		else:
-			original_languages = [t for t in primary_tags if t in ot.from_bcp_47_uninherited and 'retired code' not in bcp_47.scopes.get (t, '')]
-			if len (original_languages) == 1:
+	వైశ్విక bcp_47
+	వైశ్విక disambiguation
+	వైశ్విక ot
+	కొరకు ot_ట్యాగ్, bcp_47_ట్యాగులు లో ot.గమ్యం_bcp_47.వస్తువులు ():
+		ఒకవేళ ot_ట్యాగ్ == DEFAULT_LANGUAGE_SYSTEM:
+			primary_ట్యాగులు = []
+		లేకపోతే:
+			primary_ట్యాగులు = list (t కొరకు t లో bcp_47_ట్యాగులు ఒకవేళ t కాదు లో bcp_47.grandfathered మరియు ot.from_bcp_47.get (t)[0] == ot_ట్యాగ్)
+		ఒకవేళ పొడవు (primary_ట్యాగులు) == 1:
+			expect (ot_ట్యాగ్ కాదు లో disambiguation, 'unnecessary disambiguation for OT tag: %s' % ot_ట్యాగ్)
+			ఒకవేళ '-' లో primary_ట్యాగులు[0]:
+				disambiguation[ot_ట్యాగ్] = primary_ట్యాగులు[0]
+			లేకపోతే:
+				మొదటి_ట్యాగ్ = sorted ((t కొరకు t లో bcp_47_ట్యాగులు ఒకవేళ t కాదు లో bcp_47.grandfathered మరియు ot_ట్యాగ్ లో ot.from_bcp_47.get (t)),
+						కీలకం_2=అజ్ఞాత t: (పొడవు (t), t))[0]
+				ఒకవేళ primary_ట్యాగులు[0] != మొదటి_ట్యాగ్:
+					disambiguation[ot_ట్యాగ్] = primary_ట్యాగులు[0]
+		లేదావేళ పొడవు (primary_ట్యాగులు) == 0:
+			expect (ot_ట్యాగ్ కాదు లో disambiguation, 'There is no possible valid disambiguation for %s' % ot_ట్యాగ్)
+		లేకపోతే:
+			original_languages = [t కొరకు t లో primary_ట్యాగులు ఒకవేళ t లో ot.from_bcp_47_uninherited మరియు 'retired code' కాదు లో bcp_47.scopes.get (t, '')]
+			ఒకవేళ పొడవు (original_languages) == 1:
 				macrolanguages = original_languages
-			else:
-				macrolanguages = [t for t in primary_tags if bcp_47.scopes.get (t) == ' [macrolanguage]']
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if bcp_47.scopes.get (t) == ' [collection]')
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if 'retired code' not in bcp_47.scopes.get (t, ''))
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if t.lower () == ISO_639_3_TO_1.get (ot_tag.lower (), ot_tag.lower ()))
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if '-' not in t)
-			if len (macrolanguages) != 1:
-				expect (ot_tag in disambiguation, 'ambiguous OT tag: %s %s' % (ot_tag, sorted (primary_tags)))
-				expect (disambiguation[ot_tag] in bcp_47_tags,
-						'%s is not a valid disambiguation for %s' % (disambiguation[ot_tag], ot_tag))
-			elif ot_tag not in disambiguation:
-				disambiguation[ot_tag] = macrolanguages[0]
-			if '-' not in disambiguation[ot_tag]:
-				different_bcp_47_tags = sorted ((t for t in bcp_47_tags if not same_tag (t, ot.from_bcp_47.get (t))),
-						key=lambda t: (len (t), t))
-				if different_bcp_47_tags and disambiguation[ot_tag] == different_bcp_47_tags[0]:
-					del disambiguation[ot_tag]
-	for ot_tag in disambiguation.keys ():
-		expect (ot_tag in ot.to_bcp_47, 'unknown OT tag: %s' % ot_tag)
+			లేకపోతే:
+				macrolanguages = [t కొరకు t లో primary_ట్యాగులు ఒకవేళ bcp_47.scopes.get (t) == ' [macrolanguage]']
+			ఒకవేళ పొడవు (macrolanguages) != 1:
+				macrolanguages = list (t కొరకు t లో primary_ట్యాగులు ఒకవేళ bcp_47.scopes.get (t) == ' [collection]')
+			ఒకవేళ పొడవు (macrolanguages) != 1:
+				macrolanguages = list (t కొరకు t లో primary_ట్యాగులు ఒకవేళ 'retired code' కాదు లో bcp_47.scopes.get (t, ''))
+			ఒకవేళ పొడవు (macrolanguages) != 1:
+				macrolanguages = list (t కొరకు t లో primary_ట్యాగులు ఒకవేళ t.క్రింది () == ISO_639_3_గమ్యం_1.get (ot_ట్యాగ్.క్రింది (), ot_ట్యాగ్.క్రింది ()))
+			ఒకవేళ పొడవు (macrolanguages) != 1:
+				macrolanguages = list (t కొరకు t లో primary_ట్యాగులు ఒకవేళ '-' కాదు లో t)
+			ఒకవేళ పొడవు (macrolanguages) != 1:
+				expect (ot_ట్యాగ్ లో disambiguation, 'ambiguous OT tag: %s %s' % (ot_ట్యాగ్, sorted (primary_ట్యాగులు)))
+				expect (disambiguation[ot_ట్యాగ్] లో bcp_47_ట్యాగులు,
+						'%s is not a valid disambiguation for %s' % (disambiguation[ot_ట్యాగ్], ot_ట్యాగ్))
+			లేదావేళ ot_ట్యాగ్ కాదు లో disambiguation:
+				disambiguation[ot_ట్యాగ్] = macrolanguages[0]
+			ఒకవేళ '-' కాదు లో disambiguation[ot_ట్యాగ్]:
+				different_bcp_47_ట్యాగులు = sorted ((t కొరకు t లో bcp_47_ట్యాగులు ఒకవేళ కాదు same_ట్యాగ్ (t, ot.from_bcp_47.get (t))),
+						కీలకం_2=అజ్ఞాత t: (పొడవు (t), t))
+				ఒకవేళ different_bcp_47_ట్యాగులు మరియు disambiguation[ot_ట్యాగ్] == different_bcp_47_ట్యాగులు[0]:
+					తీసివేయి disambiguation[ot_ట్యాగ్]
+	కొరకు ot_ట్యాగ్ లో disambiguation.కీలకాలు ():
+		expect (ot_ట్యాగ్ లో ot.గమ్యం_bcp_47, 'unknown OT tag: %s' % ot_ట్యాగ్)
 
 verify_disambiguation_dict ()
-for ot_tag, bcp_47_tag in sorted (disambiguation.items ()):
-	write ('  case %s:  /* %s */' % (hb_tag (ot_tag), sanitize_comment (ot.names[ot_tag])))
-	print ()
-	write ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_tag (bcp_47_tag), sanitize_comment (bcp_47.get_name (LanguageTag (bcp_47_tag)))))
-	print ()
+కొరకు ot_ట్యాగ్, bcp_47_ట్యాగ్ లో sorted (disambiguation.వస్తువులు ()):
+	లిఖ ('  case %s:  /* %s */' % (hb_ట్యాగ్ (ot_ట్యాగ్), sanitize_comment (ot.పేర్లు[ot_ట్యాగ్])))
+	ముద్రించు ()
+	లిఖ ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_ట్యాగ్ (bcp_47_ట్యాగ్), sanitize_comment (bcp_47.get_name (Language_ట్యాగ్ (bcp_47_ట్యాగ్)))))
+	ముద్రించు ()
 
-print ('  default:')
-print ('    return HB_LANGUAGE_INVALID;')
-print ('  }')
-print ('}')
+ముద్రించు ('  default:')
+ముద్రించు ('    return HB_LANGUAGE_INVALID;')
+ముద్రించు ('  }')
+ముద్రించు ('}')
 
-print ()
-print ('#endif /* HB_OT_TAG_TABLE_HH */')
-print ()
-print ('/* == End of generated table == */')
+ముద్రించు ()
+ముద్రించు ('#endif /* HB_OT_TAG_TABLE_HH */')
+ముద్రించు ()
+ముద్రించు ('/* == End of generated table == */')

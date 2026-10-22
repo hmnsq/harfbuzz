@@ -23,15 +23,15 @@
  */
 
 
-#ifndef HB_DIRECTWRITE_HH
-#define HB_DIRECTWRITE_HH
+#నిర్వచితం_కాకపోతే HB_DIRECTWRITE_HH
+#నిర్వచించు HB_DIRECTWRITE_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-directwrite.h"
+#అన్తర్భావ "hb-directwrite.h"
 
-#include "hb-mutex.hh"
-#include "hb-map.hh"
+#అన్తర్భావ "hb-mutex.hh"
+#అన్తర్భావ "hb-map.hh"
 
 /*
  * DirectWrite font stream helpers
@@ -41,208 +41,208 @@
 
 
 /* Declare object creator for dynamic support of DWRITE */
-typedef HRESULT (WINAPI *t_DWriteCreateFactory)(
+రకనిర్వచనం HRESULT (WINAPI *t_DWriteCreateFactory)(
   DWRITE_FACTORY_TYPE factoryType,
   REFIID              iid,
   IUnknown            **factory
 );
 
-template <typename Type, typename ...Ts>
-static Type *
-hb_directwrite_object_create (Ts&&... args)
+మూస <రకం_పేరు Type, రకం_పేరు ...Ts>
+స్థిర Type *
+hb_directwrite_object_create (Ts&&... వాదనలు)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
-  if (unlikely (!obj))
-    return nullptr;
+  Type *obj = (Type *) hb_calloc (1, పరిమాణం (Type));
+  ఒకవేళ (unlikely (!obj))
+    తిరిగి శూన్యసూచిక;
 
-  return new (obj) Type (std::forward<Ts> (args)...);
+  తిరిగి కొత్త (obj) Type (std::forward<Ts> (వాదనలు)...);
 }
 
-template <typename Type>
-static void
+మూస <రకం_పేరు Type>
+స్థిర శూన్య
 hb_directwrite_object_destroy (Type *obj)
 {
-  if (!obj)
-    return;
+  ఒకవేళ (!obj)
+    తిరిగి;
 
   obj->~Type ();
   hb_free (obj);
 }
 
-class DWriteFontFileLoader final : public IDWriteFontFileLoader
+తరగతి DWriteFontFileLoader final : బహిరంగ IDWriteFontFileLoader
 {
-private:
-  hb_reference_count_t mRefCount;
+అంతరంగ:
+  hb_reference_లెక్క_t m_Ref_లెక్క;
   hb_mutex_t mutex;
-  hb_hashmap_t<uint64_t, IDWriteFontFileStream *> mFontStreams;
-  uint64_t mNextFontFileKey = 0;
-public:
+  hb_hashmap_t<uint64_t, IDWrite_Font_File_ప్రవాహం *> mFontStreams;
+  uint64_t m_తదుపరి_Font_File_కీలకం = 0;
+బహిరంగ:
   DWriteFontFileLoader ()
   {
-    mRefCount.init ();
+    m_Ref_లెక్క.init ();
   }
 
-  uint64_t RegisterFontFileStream (IDWriteFontFileStream *fontFileStream)
+  uint64_t రిజిస్టరు_Font_File_ప్రవాహం (IDWrite_Font_File_ప్రవాహం *font_File_ప్రవాహం)
   {
-    fontFileStream->AddRef ();
-    hb_lock_t lock {mutex};
-    mFontStreams.set (mNextFontFileKey, fontFileStream);
-    return mNextFontFileKey++;
+    font_File_ప్రవాహం->కూడు_Ref ();
+    hb_తాళం_t lock {mutex};
+    mFontStreams.సమితి (m_తదుపరి_Font_File_కీలకం, font_File_ప్రవాహం);
+    తిరిగి m_తదుపరి_Font_File_కీలకం++;
   }
-  void UnregisterFontFileStream (uint64_t fontFileKey)
+  శూన్య Unregister_Font_File_ప్రవాహం (uint64_t font_File_కీలకం)
   {
-    hb_lock_t lock {mutex};
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (stream)
+    hb_తాళం_t lock {mutex};
+    IDWrite_Font_File_ప్రవాహం *ప్రవాహం = mFontStreams.get (font_File_కీలకం);
+    ఒకవేళ (ప్రవాహం)
     {
-      mFontStreams.del (fontFileKey);
-      stream->Release ();
+      mFontStreams.del (font_File_కీలకం);
+      ప్రవాహం->Release ();
     }
   }
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
-  IFACEMETHOD_ (ULONG, AddRef) ()
+  IFACEMETHOD (QueryInterface) (IID స్థిరరాశి& iid, బహిర్గతం_3 శూన్య** ppObject)
+  { తిరిగి S_OK; }
+  IFACEMETHOD_ (ULONG, కూడు_Ref) ()
   {
-    return mRefCount.inc () + 1;
+    తిరిగి m_Ref_లెక్క.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    గుర్తుగల ref_లెక్క = m_Ref_లెక్క.dec () - 1;
+    ప్రతిజ్ఞా (ref_లెక్క >= 0);
+    ఒకవేళ (ref_లెక్క)
+      తిరిగి ref_లెక్క;
+    hb_directwrite_object_destroy (ఇది);
+    తిరిగి 0;
   }
 
   // IDWriteFontFileLoader methods
-  virtual HRESULT STDMETHODCALLTYPE
-  CreateStreamFromKey (void const* fontFileReferenceKey,
-		       uint32_t fontFileReferenceKeySize,
-		       OUT IDWriteFontFileStream** fontFileStream)
+  మాయా HRESULT STDMETHODCALLTYPE
+  Create_ప్రవాహం_From_కీలకం (శూన్య స్థిరరాశి* font_File_Reference_కీలకం,
+		       uint32_t font_File_Reference_కీలకం_కొలత,
+		       బహిర్గతం_3 IDWrite_Font_File_ప్రవాహం** font_File_ప్రవాహం)
   {
-    if (fontFileReferenceKeySize != sizeof (uint64_t))
-      return E_INVALIDARG;
-    uint64_t fontFileKey = * (uint64_t *) fontFileReferenceKey;
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (!stream)
-      return E_FAIL;
-    stream->AddRef ();
-    *fontFileStream = stream;
-    return S_OK;
+    ఒకవేళ (font_File_Reference_కీలకం_కొలత != పరిమాణం (uint64_t))
+      తిరిగి E_INVALIDARG;
+    uint64_t font_File_కీలకం = * (uint64_t *) font_File_Reference_కీలకం;
+    IDWrite_Font_File_ప్రవాహం *ప్రవాహం = mFontStreams.get (font_File_కీలకం);
+    ఒకవేళ (!ప్రవాహం)
+      తిరిగి E_FAIL;
+    ప్రవాహం->కూడు_Ref ();
+    *font_File_ప్రవాహం = ప్రవాహం;
+    తిరిగి S_OK;
   }
 
   ~DWriteFontFileLoader()
   {
-    for (auto v : mFontStreams.values ())
+    కొరకు (స్వయంచాలక v : mFontStreams.values ())
       v->Release ();
   }
 };
 
-class DWriteFontFileStream final : public IDWriteFontFileStream
+తరగతి DWrite_Font_File_ప్రవాహం final : బహిరంగ IDWrite_Font_File_ప్రవాహం
 {
-private:
-  hb_reference_count_t mRefCount;
+అంతరంగ:
+  hb_reference_లెక్క_t m_Ref_లెక్క;
   hb_blob_t *mBlob;
-  uint8_t *mData;
-  unsigned mSize;
+  uint8_t *m_దత్తాంశం;
+  గుర్తులేని m_కొలత;
   DWriteFontFileLoader *mLoader;
-public:
-  uint64_t fontFileKey;
-public:
-  DWriteFontFileStream (hb_blob_t *blob);
+బహిరంగ:
+  uint64_t font_File_కీలకం;
+బహిరంగ:
+  DWrite_Font_File_ప్రవాహం (hb_blob_t *blob);
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
-  IFACEMETHOD_ (ULONG, AddRef) ()
+  IFACEMETHOD (QueryInterface) (IID స్థిరరాశి& iid, బహిర్గతం_3 శూన్య** ppObject)
+  { తిరిగి S_OK; }
+  IFACEMETHOD_ (ULONG, కూడు_Ref) ()
   {
-    return mRefCount.inc () + 1;
+    తిరిగి m_Ref_లెక్క.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    గుర్తుగల ref_లెక్క = m_Ref_లెక్క.dec () - 1;
+    ప్రతిజ్ఞా (ref_లెక్క >= 0);
+    ఒకవేళ (ref_లెక్క)
+      తిరిగి ref_లెక్క;
+    hb_directwrite_object_destroy (ఇది);
+    తిరిగి 0;
   }
 
   // IDWriteFontFileStream methods
-  virtual HRESULT STDMETHODCALLTYPE
-  ReadFileFragment (void const** fragmentStart,
-		    UINT64 fileOffset,
-		    UINT64 fragmentSize,
-		    OUT void** fragmentContext)
+  మాయా HRESULT STDMETHODCALLTYPE
+  ReadFileFragment (శూన్య స్థిరరాశి** fragment_ప్రారంభం_2,
+		    UINT64 file_స్థానభ్రంశం,
+		    UINT64 fragment_కొలత,
+		    బహిర్గతం_3 శూన్య** fragmentContext)
   {
     // We are required to do bounds checking.
-    if (fileOffset + fragmentSize > mSize) return E_FAIL;
+    ఒకవేళ (file_స్థానభ్రంశం + fragment_కొలత > m_కొలత) తిరిగి E_FAIL;
 
     // truncate the 64 bit fileOffset to size_t sized index into mData
-    size_t index = static_cast<size_t> (fileOffset);
+    size_t సూచీ_2 = static_cast<size_t> (file_స్థానభ్రంశం);
 
     // We should be alive for the duration of this.
-    *fragmentStart = &mData[index];
-    *fragmentContext = nullptr;
-    return S_OK;
+    *fragment_ప్రారంభం_2 = &m_దత్తాంశం[సూచీ_2];
+    *fragmentContext = శూన్యసూచిక;
+    తిరిగి S_OK;
   }
 
-  virtual void STDMETHODCALLTYPE
-  ReleaseFileFragment (void* fragmentContext) {}
+  మాయా శూన్య STDMETHODCALLTYPE
+  ReleaseFileFragment (శూన్య* fragmentContext) {}
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetFileSize (OUT UINT64* fileSize)
+  మాయా HRESULT STDMETHODCALLTYPE
+  Get_File_కొలత (బహిర్గతం_3 UINT64* file_కొలత_2)
   {
-    *fileSize = mSize;
-    return S_OK;
+    *file_కొలత_2 = m_కొలత;
+    తిరిగి S_OK;
   }
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetLastWriteTime (OUT UINT64* lastWriteTime) { return E_NOTIMPL; }
+  మాయా HRESULT STDMETHODCALLTYPE
+  Get_చివరి_Write_సమయం (బహిర్గతం_3 UINT64* చివరి_Write_సమయం) { తిరిగి E_NOTIMPL; }
 
-  ~DWriteFontFileStream();
+  ~DWrite_Font_File_ప్రవాహం();
 };
 
-struct hb_directwrite_global_t
+నిర్మాణం hb_directwrite_global_t
 {
   hb_directwrite_global_t ()
   {
     HRESULT hr = DWriteCreateFactory (DWRITE_FACTORY_TYPE_SHARED, __uuidof (IDWriteFactory),
 				      (IUnknown**) &dwriteFactory);
 
-    if (unlikely (hr != S_OK))
-      return;
+    ఒకవేళ (unlikely (hr != S_OK))
+      తిరిగి;
 
     fontFileLoader = hb_directwrite_object_create<DWriteFontFileLoader> ();
-    if (unlikely (!fontFileLoader))
-      return;
-    if (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
-      return;
+    ఒకవేళ (unlikely (!fontFileLoader))
+      తిరిగి;
+    ఒకవేళ (unlikely (FAILED (dwriteFactory->రిజిస్టరు_Font_File_Loader (fontFileLoader))))
+      తిరిగి;
 
-    success = true;
+    success = నిజం;
   }
   ~hb_directwrite_global_t ()
   {
-    if (fontFileLoader)
+    ఒకవేళ (fontFileLoader)
       fontFileLoader->Release ();
-    if (dwriteFactory)
+    ఒకవేళ (dwriteFactory)
       dwriteFactory->Release ();
   }
 
-  bool success = false;
-  IDWriteFactory *dwriteFactory = nullptr;
-  DWriteFontFileLoader *fontFileLoader = nullptr;
+  తార్కిక success = అబద్ధం;
+  IDWriteFactory *dwriteFactory = శూన్యసూచిక;
+  DWriteFontFileLoader *fontFileLoader = శూన్యసూచిక;
 };
 
 
-HB_INTERNAL hb_directwrite_global_t *
+HB_అంతర్గత hb_directwrite_global_t *
 get_directwrite_global ();
 
-HB_INTERNAL IDWriteFontFace *
-dw_face_create (hb_blob_t *blob, unsigned index);
+HB_అంతర్గత IDWriteFontFace *
+dw_face_create (hb_blob_t *blob, గుర్తులేని సూచీ_2);
 
 
-#endif /* HB_DIRECTWRITE_HH */
+#అయితే_ముగింపు /* HB_DIRECTWRITE_HH */

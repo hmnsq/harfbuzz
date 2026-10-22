@@ -24,20 +24,20 @@
  * Google Author(s): Garret Rieger, Rod Sheeter, Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-open-file.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-open-file.hh"
 
-#include "hb-subset.hh"
-#include "hb-subset-table.hh"
-#include "hb-subset-accelerator.hh"
+#అన్తర్భావ "hb-subset.hh"
+#అన్తర్భావ "hb-subset-table.hh"
+#అన్తర్భావ "hb-subset-accelerator.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-post-table-v2subset.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-ot-var-cvar-table.hh"
+#అన్తర్భావ "hb-ot-head-table.hh"
+#అన్తర్భావ "hb-ot-stat-table.hh"
+#అన్తర్భావ "hb-ot-post-table-v2subset.hh"
 
 
 /**
@@ -62,332 +62,332 @@
  */
 
 
-hb_user_data_key_t _hb_subset_accelerator_user_data_key = {};
+hb_user_దత్తాంశం_కీలకం_t hb_subset_accelerator_user_దత్తాంశం_కీలకం = {};
 
 
 /*
  * The list of tables in the open type spec. Used to check for tables that may need handling
  * if we are unable to list the tables in a face.
  */
-static hb_tag_t known_tables[] {
-  HB_TAG('a','v','a','r'),
-  HB_TAG('B','A','S','E'),
-  HB_TAG('C','B','D','T'),
-  HB_TAG('C','B','L','C'),
-  HB_TAG('C','F','F',' '),
-  HB_TAG('C','F','F','2'),
-  HB_TAG('c','m','a','p'),
-  HB_TAG('C','O','L','R'),
-  HB_TAG('C','P','A','L'),
-  HB_TAG('c','v','a','r'),
-  HB_TAG('c','v','t',' '),
-  HB_TAG('D','S','I','G'),
-  HB_TAG('E','B','D','T'),
-  HB_TAG('E','B','L','C'),
-  HB_TAG('E','B','S','C'),
-  HB_TAG('f','p','g','m'),
-  HB_TAG('f','v','a','r'),
-  HB_TAG('g','a','s','p'),
-  HB_TAG('G','D','E','F'),
-  HB_TAG('g','l','y','f'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('G','L','Y','F'),
-#endif
-  HB_TAG('G','P','O','S'),
-  HB_TAG('G','S','U','B'),
-  HB_TAG('g','v','a','r'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('G','V','A','R'),
-#endif
-  HB_TAG('h','d','m','x'),
-  HB_TAG('h','e','a','d'),
-  HB_TAG('h','h','e','a'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('H','H','E','A'),
-#endif
-  HB_TAG('h','m','t','x'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('H','M','T','X'),
-#endif
-  HB_TAG('H','V','A','R'),
-  HB_TAG('J','S','T','F'),
-  HB_TAG('k','e','r','n'),
-  HB_TAG('l','o','c','a'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('L','O','C','A'),
-#endif
-  HB_TAG('L','T','S','H'),
-  HB_TAG('M','A','T','H'),
-  HB_TAG('m','a','x','p'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('M','A','X','P'),
-#endif
-  HB_TAG('M','E','R','G'),
-  HB_TAG('m','e','t','a'),
-  HB_TAG('M','V','A','R'),
-  HB_TAG('P','C','L','T'),
-  HB_TAG('p','o','s','t'),
-  HB_TAG('p','r','e','p'),
-  HB_TAG('s','b','i','x'),
-  HB_TAG('S','T','A','T'),
-  HB_TAG('S','V','G',' '),
-  HB_TAG('V','D','M','X'),
-  HB_TAG('v','h','e','a'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('V','H','E','A'),
-#endif
-  HB_TAG('v','m','t','x'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('V','M','T','X'),
-#endif
-  HB_TAG('V','O','R','G'),
-  HB_TAG('V','A','R','C'),
-  HB_TAG('V','V','A','R'),
-  HB_TAG('n','a','m','e'),
-  HB_TAG('O','S','/','2')
+స్థిర hb_ట్యాగ్_t తెలిసిన_tables[] {
+  HB_ట్యాగ్('a','v','a','r'),
+  HB_ట్యాగ్('B','A','S','E'),
+  HB_ట్యాగ్('C','B','D','T'),
+  HB_ట్యాగ్('C','B','L','C'),
+  HB_ట్యాగ్('C','F','F',' '),
+  HB_ట్యాగ్('C','F','F','2'),
+  HB_ట్యాగ్('c','m','a','p'),
+  HB_ట్యాగ్('C','O','L','R'),
+  HB_ట్యాగ్('C','P','A','L'),
+  HB_ట్యాగ్('c','v','a','r'),
+  HB_ట్యాగ్('c','v','t',' '),
+  HB_ట్యాగ్('D','S','I','G'),
+  HB_ట్యాగ్('E','B','D','T'),
+  HB_ట్యాగ్('E','B','L','C'),
+  HB_ట్యాగ్('E','B','S','C'),
+  HB_ట్యాగ్('f','p','g','m'),
+  HB_ట్యాగ్('f','v','a','r'),
+  HB_ట్యాగ్('g','a','s','p'),
+  HB_ట్యాగ్('G','D','E','F'),
+  HB_ట్యాగ్('g','l','y','f'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('G','L','Y','F'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('G','P','O','S'),
+  HB_ట్యాగ్('G','S','U','B'),
+  HB_ట్యాగ్('g','v','a','r'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('G','V','A','R'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('h','d','m','x'),
+  HB_ట్యాగ్('h','e','a','d'),
+  HB_ట్యాగ్('h','h','e','a'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('H','H','E','A'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('h','m','t','x'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('H','M','T','X'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('H','V','A','R'),
+  HB_ట్యాగ్('J','S','T','F'),
+  HB_ట్యాగ్('k','e','r','n'),
+  HB_ట్యాగ్('l','o','c','a'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('L','O','C','A'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('L','T','S','H'),
+  HB_ట్యాగ్('M','A','T','H'),
+  HB_ట్యాగ్('m','a','x','p'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('M','A','X','P'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('M','E','R','G'),
+  HB_ట్యాగ్('m','e','t','a'),
+  HB_ట్యాగ్('M','V','A','R'),
+  HB_ట్యాగ్('P','C','L','T'),
+  HB_ట్యాగ్('p','o','s','t'),
+  HB_ట్యాగ్('p','r','e','p'),
+  HB_ట్యాగ్('s','b','i','x'),
+  HB_ట్యాగ్('S','T','A','T'),
+  HB_ట్యాగ్('S','V','G',' '),
+  HB_ట్యాగ్('V','D','M','X'),
+  HB_ట్యాగ్('v','h','e','a'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('V','H','E','A'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('v','m','t','x'),
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  HB_ట్యాగ్('V','M','T','X'),
+#అయితే_ముగింపు
+  HB_ట్యాగ్('V','O','R','G'),
+  HB_ట్యాగ్('V','A','R','C'),
+  HB_ట్యాగ్('V','V','A','R'),
+  HB_ట్యాగ్('n','a','m','e'),
+  HB_ట్యాగ్('O','S','/','2')
 };
 
-static bool _table_is_empty (const hb_face_t *face, hb_tag_t tag)
+స్థిర తార్కిక పట్టిక_is_ఖాళీలు (స్థిరరాశి hb_face_t *face, hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  hb_blob_t* blob = hb_face_reference_table (face, tag);
-  bool result = (blob == hb_blob_get_empty ());
+  hb_blob_t* blob = hb_face_reference_పట్టిక (face, ట్యాగ్_2);
+  తార్కిక ఫలితం = (blob == hb_blob_get_ఖాళీలు ());
   hb_blob_destroy (blob);
-  return result;
+  తిరిగి ఫలితం;
 }
 
-static unsigned int
-_get_table_tags (const hb_subset_plan_t* plan,
-                 unsigned int  start_offset,
-                 unsigned int *table_count, /* IN/OUT */
-                 hb_tag_t     *table_tags /* OUT */)
+స్థిర గుర్తులేని పూర్ణాంకం
+get_పట్టిక_ట్యాగులు_2 (స్థిరరాశి hb_subset_plan_t* plan,
+                 గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+                 గుర్తులేని పూర్ణాంకం *పట్టిక_లెక్క_2, /* IN/OUT */
+                 hb_ట్యాగ్_t     *పట్టిక_ట్యాగులు /*బహిర్గతం*/)
 {
-  unsigned num_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
-  if (num_tables)
-    return hb_face_get_table_tags (plan->source, start_offset, table_count, table_tags);
+  గుర్తులేని అంకె_tables = hb_face_get_పట్టిక_ట్యాగులు (plan->ఆధారం, 0, శూన్యసూచిక, శూన్యసూచిక);
+  ఒకవేళ (అంకె_tables)
+    తిరిగి hb_face_get_పట్టిక_ట్యాగులు (plan->ఆధారం, ప్రారంభం_స్థానభ్రంశం, పట్టిక_లెక్క_2, పట్టిక_ట్యాగులు);
 
   // If face has 0 tables associated with it, assume that it was built from
   // hb_face_create_tables and thus is unable to list its tables. Fallback to
   // checking each table type we can handle for existence instead.
-  auto it =
+  స్వయంచాలక it =
       hb_concat (
-          + hb_array (known_tables)
-          | hb_filter ([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag) && !plan->no_subset_tables.has (tag);
+          + hb_array (తెలిసిన_tables)
+          | hb_filter ([&] (hb_ట్యాగ్_t ట్యాగ్_2) {
+            తిరిగి !పట్టిక_is_ఖాళీలు (plan->ఆధారం, ట్యాగ్_2) && !plan->no_subset_tables.has (ట్యాగ్_2);
           })
-          | hb_map ([] (hb_tag_t tag) -> hb_tag_t { return tag; }),
+          | hb_map ([] (hb_ట్యాగ్_t ట్యాగ్_2) -> hb_ట్యాగ్_t { తిరిగి ట్యాగ్_2; }),
 
           plan->no_subset_tables.iter ()
-          | hb_filter([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag);
+          | hb_filter([&] (hb_ట్యాగ్_t ట్యాగ్_2) {
+            తిరిగి !పట్టిక_is_ఖాళీలు (plan->ఆధారం, ట్యాగ్_2);
           }));
 
-  it += start_offset;
+  it += ప్రారంభం_స్థానభ్రంశం;
 
-  unsigned num_written = 0;
-  while (bool (it) && num_written < *table_count)
-    table_tags[num_written++] = *it++;
+  గుర్తులేని అంకె_written = 0;
+  అయితే (తార్కిక (it) && అంకె_written < *పట్టిక_లెక్క_2)
+    పట్టిక_ట్యాగులు[అంకె_written++] = *it++;
 
-  *table_count = num_written;
-  return num_written;
+  *పట్టిక_లెక్క_2 = అంకె_written;
+  తిరిగి అంకె_written;
 }
 
 
-static bool
-_is_table_present (hb_face_t *source, hb_tag_t tag)
+స్థిర తార్కిక
+is_పట్టిక_present (hb_face_t *ఆధారం, hb_ట్యాగ్_t ట్యాగ్_2)
 {
 
-  if (!hb_face_get_table_tags (source, 0, nullptr, nullptr)) {
+  ఒకవేళ (!hb_face_get_పట్టిక_ట్యాగులు (ఆధారం, 0, శూన్యసూచిక, శూన్యసూచిక)) {
     // If face has 0 tables associated with it, assume that it was built from
     // hb_face_create_tables and thus is unable to list its tables. Fallback to
     // checking if the blob associated with tag is empty.
-    return !_table_is_empty (source, tag);
+    తిరిగి !పట్టిక_is_ఖాళీలు (ఆధారం, ట్యాగ్_2);
   }
 
-  hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
-  while (((void) hb_face_get_table_tags (source, offset, &num_tables, table_tags), num_tables))
+  hb_ట్యాగ్_t పట్టిక_ట్యాగులు[32];
+  గుర్తులేని స్థానభ్రంశం = 0, అంకె_tables = ARRAY_నిడివి (పట్టిక_ట్యాగులు);
+  అయితే (((శూన్య) hb_face_get_పట్టిక_ట్యాగులు (ఆధారం, స్థానభ్రంశం, &అంకె_tables, పట్టిక_ట్యాగులు), అంకె_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
-      if (table_tags[i] == tag)
-	return true;
-    offset += num_tables;
+    కొరకు (గుర్తులేని i = 0; i < అంకె_tables; ++i)
+      ఒకవేళ (పట్టిక_ట్యాగులు[i] == ట్యాగ్_2)
+	తిరిగి నిజం;
+    స్థానభ్రంశం += అంకె_tables;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static bool
-_should_drop_table (hb_subset_plan_t *plan, hb_tag_t tag)
+స్థిర తార్కిక
+should_drop_పట్టిక (hb_subset_plan_t *plan, hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  if (plan->drop_tables.has (tag))
-    return true;
+  ఒకవేళ (plan->drop_tables.has (ట్యాగ్_2))
+    తిరిగి నిజం;
 
-  switch (tag)
+  ఎంపిక (ట్యాగ్_2)
   {
-  case HB_TAG('c','v','a','r'): /* hint table, fallthrough */
-    return plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+  స్థితి HB_ట్యాగ్('c','v','a','r'): /* hint table, fallthrough */
+    తిరిగి plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
-  case HB_TAG('c','v','t',' '): /* hint table, fallthrough */
-  case HB_TAG('f','p','g','m'): /* hint table, fallthrough */
-  case HB_TAG('p','r','e','p'): /* hint table, fallthrough */
-  case HB_TAG('h','d','m','x'): /* hint table, fallthrough */
-  case HB_TAG('V','D','M','X'): /* hint table, fallthrough */
-    return plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
+  స్థితి HB_ట్యాగ్('c','v','t',' '): /* hint table, fallthrough */
+  స్థితి HB_ట్యాగ్('f','p','g','m'): /* hint table, fallthrough */
+  స్థితి HB_ట్యాగ్('p','r','e','p'): /* hint table, fallthrough */
+  స్థితి HB_ట్యాగ్('h','d','m','x'): /* hint table, fallthrough */
+  స్థితి HB_ట్యాగ్('V','D','M','X'): /* hint table, fallthrough */
+    తిరిగి plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
 
-#ifdef HB_NO_SUBSET_LAYOUT
+#నిర్వచితమైతే HB_NO_SUBSET_LAYOUT
     // Drop Layout Tables if requested.
-  case HB_TAG('G','D','E','F'):
-  case HB_TAG('G','P','O','S'):
-  case HB_TAG('G','S','U','B'):
-  case HB_TAG('m','o','r','x'):
-  case HB_TAG('m','o','r','t'):
-  case HB_TAG('k','e','r','x'):
-  case HB_TAG('k','e','r','n'):
-    return true;
-#endif
+  స్థితి HB_ట్యాగ్('G','D','E','F'):
+  స్థితి HB_ట్యాగ్('G','P','O','S'):
+  స్థితి HB_ట్యాగ్('G','S','U','B'):
+  స్థితి HB_ట్యాగ్('m','o','r','x'):
+  స్థితి HB_ట్యాగ్('m','o','r','t'):
+  స్థితి HB_ట్యాగ్('k','e','r','x'):
+  స్థితి HB_ట్యాగ్('k','e','r','n'):
+    తిరిగి నిజం;
+#అయితే_ముగింపు
 
-  case HB_TAG('a','v','a','r'):
-  case HB_TAG('f','v','a','r'):
-  case HB_TAG('g','v','a','r'):
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'):
-#endif
-  case HB_TAG('H','V','A','R'):
-  case HB_TAG('V','V','A','R'):
-  case HB_TAG('M','V','A','R'):
-    return plan->all_axes_pinned;
+  స్థితి HB_ట్యాగ్('a','v','a','r'):
+  స్థితి HB_ట్యాగ్('f','v','a','r'):
+  స్థితి HB_ట్యాగ్('g','v','a','r'):
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  స్థితి HB_ట్యాగ్('G','V','A','R'):
+#అయితే_ముగింపు
+  స్థితి HB_ట్యాగ్('H','V','A','R'):
+  స్థితి HB_ట్యాగ్('V','V','A','R'):
+  స్థితి HB_ట్యాగ్('M','V','A','R'):
+    తిరిగి plan->all_axes_pinned;
 
-  default:
-    return false;
+  అప్రమేయ:
+    తిరిగి అబద్ధం;
   }
 }
 
-static bool
-_dependencies_satisfied (hb_subset_plan_t *plan, hb_tag_t tag,
-                         const hb_set_t &subsetted_tags,
-                         const hb_set_t &pending_subset_tags)
+స్థిర తార్కిక
+_dependencies_satisfied (hb_subset_plan_t *plan, hb_ట్యాగ్_t ట్యాగ్_2,
+                         స్థిరరాశి hb_సమితి_t &subsetted_ట్యాగులు,
+                         స్థిరరాశి hb_సమితి_t &pending_subset_ట్యాగులు)
 {
-  bool outline_pending = pending_subset_tags.has (HB_TAG('g','l','y','f'));
-#ifndef HB_NO_BEYOND_64K
-  outline_pending |= pending_subset_tags.has (HB_TAG('G','L','Y','F'));
-#endif
+  తార్కిక outline_pending = pending_subset_ట్యాగులు.has (HB_ట్యాగ్('g','l','y','f'));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  outline_pending |= pending_subset_ట్యాగులు.has (HB_ట్యాగ్('G','L','Y','F'));
+#అయితే_ముగింపు
 
-  switch (tag)
+  ఎంపిక (ట్యాగ్_2)
   {
-  case HB_TAG('h','m','t','x'):
-  case HB_TAG('v','m','t','x'):
-  case HB_TAG('m','a','x','p'):
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('H','M','T','X'):
-  case HB_TAG('V','M','T','X'):
-  case HB_TAG('M','A','X','P'):
-#endif
-  case HB_TAG('O','S','/','2'):
-    return !plan->normalized_coords || !outline_pending;
-  case HB_TAG('G','P','O','S'):
-  case HB_TAG('G','S','U','B'):
-    return plan->all_axes_pinned || !pending_subset_tags.has (HB_TAG('G','D','E','F'));
+  స్థితి HB_ట్యాగ్('h','m','t','x'):
+  స్థితి HB_ట్యాగ్('v','m','t','x'):
+  స్థితి HB_ట్యాగ్('m','a','x','p'):
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  స్థితి HB_ట్యాగ్('H','M','T','X'):
+  స్థితి HB_ట్యాగ్('V','M','T','X'):
+  స్థితి HB_ట్యాగ్('M','A','X','P'):
+#అయితే_ముగింపు
+  స్థితి HB_ట్యాగ్('O','S','/','2'):
+    తిరిగి !plan->normalized_coords || !outline_pending;
+  స్థితి HB_ట్యాగ్('G','P','O','S'):
+  స్థితి HB_ట్యాగ్('G','S','U','B'):
+    తిరిగి plan->all_axes_pinned || !pending_subset_ట్యాగులు.has (HB_ట్యాగ్('G','D','E','F'));
   /* For avar2, variation tables must wait for avar to be subsetted first. */
-  case HB_TAG('g','v','a','r'):
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'):
-#endif
-  case HB_TAG('c','v','a','r'):
-  case HB_TAG('H','V','A','R'):
-  case HB_TAG('V','V','A','R'):
-  case HB_TAG('M','V','A','R'):
-  case HB_TAG('G','D','E','F'):
-  case HB_TAG('C','F','F','2'):
-    return !plan->has_avar2 || !pending_subset_tags.has (HB_TAG('a','v','a','r'));
-  default:
-    return true;
+  స్థితి HB_ట్యాగ్('g','v','a','r'):
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  స్థితి HB_ట్యాగ్('G','V','A','R'):
+#అయితే_ముగింపు
+  స్థితి HB_ట్యాగ్('c','v','a','r'):
+  స్థితి HB_ట్యాగ్('H','V','A','R'):
+  స్థితి HB_ట్యాగ్('V','V','A','R'):
+  స్థితి HB_ట్యాగ్('M','V','A','R'):
+  స్థితి HB_ట్యాగ్('G','D','E','F'):
+  స్థితి HB_ట్యాగ్('C','F','F','2'):
+    తిరిగి !plan->has_avar2 || !pending_subset_ట్యాగులు.has (HB_ట్యాగ్('a','v','a','r'));
+  అప్రమేయ:
+    తిరిగి నిజం;
   }
 }
 
-static bool
-_subset_table (hb_subset_plan_t *plan,
-	       hb_vector_t<char> &buf,
-	       hb_tag_t tag)
+స్థిర తార్కిక
+subset_పట్టిక (hb_subset_plan_t *plan,
+	       hb_సదిశ_t<అక్షరం> &buf,
+	       hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  if (plan->no_subset_tables.has (tag)) {
-    return _hb_subset_table_passthrough (plan, tag);
+  ఒకవేళ (plan->no_subset_tables.has (ట్యాగ్_2)) {
+    తిరిగి hb_subset_పట్టిక_passthrough (plan, ట్యాగ్_2);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
+  DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "subset %c%c%c%c", HB_UNTAG (ట్యాగ్_2));
 
-  bool success;
-  if (_hb_subset_table_layout (plan, buf, tag, &success) ||
-      _hb_subset_table_var (plan, buf, tag, &success) ||
-      _hb_subset_table_cff (plan, buf, tag, &success) ||
-      _hb_subset_table_color (plan, buf, tag, &success) ||
-      _hb_subset_table_other (plan, buf, tag, &success))
-    return success;
+  తార్కిక success;
+  ఒకవేళ (hb_subset_పట్టిక_layout (plan, buf, ట్యాగ్_2, &success) ||
+      hb_subset_పట్టిక_var (plan, buf, ట్యాగ్_2, &success) ||
+      hb_subset_పట్టిక_cff (plan, buf, ట్యాగ్_2, &success) ||
+      hb_subset_పట్టిక_color (plan, buf, ట్యాగ్_2, &success) ||
+      hb_subset_పట్టిక_other (plan, buf, ట్యాగ్_2, &success))
+    తిరిగి success;
 
 
-  switch (tag)
+  ఎంపిక (ట్యాగ్_2)
   {
-  case HB_TAG('h','e','a','d'):
+  స్థితి HB_ట్యాగ్('h','e','a','d'):
   {
-    bool outline_table_handles_head =
-	_is_table_present (plan->source, HB_TAG('g','l','y','f')) &&
-	!_should_drop_table (plan, HB_TAG('g','l','y','f'));
-#ifndef HB_NO_BEYOND_64K
-    outline_table_handles_head |=
-	_is_table_present (plan->source, HB_TAG('G','L','Y','F')) &&
-	!_should_drop_table (plan, HB_TAG('G','L','Y','F'));
-#endif
-    if (outline_table_handles_head)
-      return true; /* skip head, handled by the outline table */
-    return _hb_subset_table<const OT::head> (plan, buf);
+    తార్కిక outline_పట్టిక_handles_తల =
+	is_పట్టిక_present (plan->ఆధారం, HB_ట్యాగ్('g','l','y','f')) &&
+	!should_drop_పట్టిక (plan, HB_ట్యాగ్('g','l','y','f'));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    outline_పట్టిక_handles_తల |=
+	is_పట్టిక_present (plan->ఆధారం, HB_ట్యాగ్('G','L','Y','F')) &&
+	!should_drop_పట్టిక (plan, HB_ట్యాగ్('G','L','Y','F'));
+#అయితే_ముగింపు
+    ఒకవేళ (outline_పట్టిక_handles_తల)
+      తిరిగి నిజం; /* skip head, handled by the outline table */
+    తిరిగి hb_subset_పట్టిక<స్థిరరాశి OT::తల_2> (plan, buf);
   }
 
-  case HB_TAG('S','T','A','T'):
-    if (!plan->user_axes_location.is_empty ()) return _hb_subset_table<const OT::STAT> (plan, buf);
-    else return _hb_subset_table_passthrough (plan, tag);
+  స్థితి HB_ట్యాగ్('S','T','A','T'):
+    ఒకవేళ (!plan->user_axes_location.is_empty ()) తిరిగి hb_subset_పట్టిక<స్థిరరాశి OT::STAT> (plan, buf);
+    లేకపోతే తిరిగి hb_subset_పట్టిక_passthrough (plan, ట్యాగ్_2);
 
-  case HB_TAG('c','v','t',' '):
-#ifndef HB_NO_VAR
-    if (_is_table_present (plan->source, HB_TAG('c','v','a','r')) &&
+  స్థితి HB_ట్యాగ్('c','v','t',' '):
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (is_పట్టిక_present (plan->ఆధారం, HB_ట్యాగ్('c','v','a','r')) &&
         plan->normalized_coords && !plan->pinned_at_default)
     {
-      auto &cvar = *plan->source->table.cvar;
-      return OT::cvar::add_cvt_and_apply_deltas (plan, cvar.get_tuple_var_data (), &cvar);
+      స్వయంచాలక &cvar = *plan->ఆధారం->పట్టిక.cvar;
+      తిరిగి OT::cvar::కూడు_cvt_and_apply_deltas (plan, cvar.get_tuple_var_దత్తాంశం (), &cvar);
     }
-#endif
-    return _hb_subset_table_passthrough (plan, tag);
+#అయితే_ముగింపు
+    తిరిగి hb_subset_పట్టిక_passthrough (plan, ట్యాగ్_2);
   }
 
-  if (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
-    return _hb_subset_table_passthrough (plan, tag);
+  ఒకవేళ (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
+    తిరిగి hb_subset_పట్టిక_passthrough (plan, ట్యాగ్_2);
 
   // Drop table
-  return true;
+  తిరిగి నిజం;
 }
 
-static void _attach_accelerator_data (hb_subset_plan_t* plan,
+స్థిర శూన్య attach_accelerator_దత్తాంశం_2 (hb_subset_plan_t* plan,
                                       hb_face_t* face /* IN/OUT */)
 {
-  if (!plan->inprogress_accelerator) return;
+  ఒకవేళ (!plan->inprogress_accelerator) తిరిగి;
 
   // Transfer the accelerator from the plan to us.
   hb_subset_accelerator_t* accel = plan->inprogress_accelerator;
-  plan->inprogress_accelerator = nullptr;
+  plan->inprogress_accelerator = శూన్యసూచిక;
 
-  if (accel->in_error ())
+  ఒకవేళ (accel->లోపల_error ())
   {
     hb_subset_accelerator_t::destroy (accel);
-    return;
+    తిరిగి;
   }
 
   // Populate caches that need access to the final tables.
-  hb_blob_ptr_t<OT::cmap> cmap_ptr (hb_sanitize_context_t ().reference_table<OT::cmap> (face));
+  hb_blob_ptr_t<OT::cmap> cmap_ptr (hb_sanitize_context_t ().reference_పట్టిక<OT::cmap> (face));
   accel->cmap_cache = OT::cmap::create_filled_cache (cmap_ptr);
   accel->destroy_cmap_cache = OT::SubtableUnicodesCache::destroy;
 
-  if (!hb_face_set_user_data(face,
-                             hb_subset_accelerator_t::user_data_key(),
+  ఒకవేళ (!hb_face_సమితి_user_దత్తాంశం(face,
+                             hb_subset_accelerator_t::user_దత్తాంశం_కీలకం(),
                              accel,
                              hb_subset_accelerator_t::destroy,
-                             true))
+                             నిజం))
     hb_subset_accelerator_t::destroy (accel);
 }
 
@@ -402,24 +402,24 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
  * Since: 2.9.0
  **/
 hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
+hb_subset_or_fail (hb_face_t *ఆధారం, స్థిరరాశి hb_subset_ఆదానం_t *ఆదానం)
 {
-  if (unlikely (!input || !source)) return nullptr;
+  ఒకవేళ (unlikely (!ఆదానం || !ఆధారం)) తిరిగి శూన్యసూచిక;
 
-  if (unlikely (!source->get_num_glyphs ()))
+  ఒకవేళ (unlikely (!ఆధారం->get_అంకె_glyphs ()))
   {
-    DEBUG_MSG (SUBSET, nullptr, "No glyphs in source font.");
-    return nullptr;
+    DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "No glyphs in source font.");
+    తిరిగి శూన్యసూచిక;
   }
 
-  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, input);
-  if (unlikely (!plan)) {
-    return nullptr;
+  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (ఆధారం, ఆదానం);
+  ఒకవేళ (unlikely (!plan)) {
+    తిరిగి శూన్యసూచిక;
   }
 
-  hb_face_t * result = hb_subset_plan_execute_or_fail (plan);
+  hb_face_t * ఫలితం = hb_subset_plan_execute_or_fail (plan);
   hb_subset_plan_destroy (plan);
-  return result;
+  తిరిగి ఫలితం;
 }
 
 
@@ -438,76 +438,76 @@ hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
 hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
 {
-  if (unlikely (!plan || plan->in_error ())) {
-    return nullptr;
+  ఒకవేళ (unlikely (!plan || plan->లోపల_error ())) {
+    తిరిగి శూన్యసూచిక;
   }
 
-  hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
+  hb_ట్యాగ్_t పట్టిక_ట్యాగులు[32];
+  గుర్తులేని స్థానభ్రంశం = 0, అంకె_tables = ARRAY_నిడివి (పట్టిక_ట్యాగులు);
 
-  hb_set_t subsetted_tags, pending_subset_tags;
-  while (((void) _get_table_tags (plan, offset, &num_tables, table_tags), num_tables))
+  hb_సమితి_t subsetted_ట్యాగులు, pending_subset_ట్యాగులు;
+  అయితే (((శూన్య) get_పట్టిక_ట్యాగులు_2 (plan, స్థానభ్రంశం, &అంకె_tables, పట్టిక_ట్యాగులు), అంకె_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
+    కొరకు (గుర్తులేని i = 0; i < అంకె_tables; ++i)
     {
-      hb_tag_t tag = table_tags[i];
-      if (_should_drop_table (plan, tag)) continue;
-      pending_subset_tags.add (tag);
+      hb_ట్యాగ్_t ట్యాగ్_2 = పట్టిక_ట్యాగులు[i];
+      ఒకవేళ (should_drop_పట్టిక (plan, ట్యాగ్_2)) కొనసాగు;
+      pending_subset_ట్యాగులు.కూడు (ట్యాగ్_2);
     }
 
-    offset += num_tables;
+    స్థానభ్రంశం += అంకె_tables;
   }
 
-  bool success = true;
+  తార్కిక success = నిజం;
 
   {
     // Grouping to deallocate buf before calling hb_face_reference (plan->dest).
 
-    hb_vector_t<char> buf;
+    hb_సదిశ_t<అక్షరం> buf;
     buf.alloc (8192 - 16);
 
-    while (!pending_subset_tags.is_empty ())
+    అయితే (!pending_subset_ట్యాగులు.is_empty ())
     {
-      if (subsetted_tags.in_error ()
-	  || pending_subset_tags.in_error ()) {
-	success = false;
-	goto end;
+      ఒకవేళ (subsetted_ట్యాగులు.లోపల_error ()
+	  || pending_subset_ట్యాగులు.లోపల_error ()) {
+	success = అబద్ధం;
+	వెళ్ళు చివర;
       }
 
-      bool made_changes = false;
-      for (hb_tag_t tag : pending_subset_tags)
+      తార్కిక made_changes = అబద్ధం;
+      కొరకు (hb_ట్యాగ్_t ట్యాగ్_2 : pending_subset_ట్యాగులు)
       {
-	if (!_dependencies_satisfied (plan, tag,
-				      subsetted_tags,
-				      pending_subset_tags))
+	ఒకవేళ (!_dependencies_satisfied (plan, ట్యాగ్_2,
+				      subsetted_ట్యాగులు,
+				      pending_subset_ట్యాగులు))
 	{
 	  // delayed subsetting for some tables since they might have dependency on other tables
 	  // in some cases: e.g: during instantiating glyf tables, hmetrics/vmetrics are updated
 	  // and saved in subset plan, hmtx/vmtx subsetting need to use these updated metrics values
-	  continue;
+	  కొనసాగు;
 	}
 
-	pending_subset_tags.del (tag);
-	subsetted_tags.add (tag);
-	made_changes = true;
+	pending_subset_ట్యాగులు.del (ట్యాగ్_2);
+	subsetted_ట్యాగులు.కూడు (ట్యాగ్_2);
+	made_changes = నిజం;
 
-	success = _subset_table (plan, buf, tag);
-	if (unlikely (!success)) goto end;
+	success = subset_పట్టిక (plan, buf, ట్యాగ్_2);
+	ఒకవేళ (unlikely (!success)) వెళ్ళు చివర;
       }
 
-      if (!made_changes)
+      ఒకవేళ (!made_changes)
       {
-	DEBUG_MSG (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
-	success = false;
-	goto end;
+	DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "Table dependencies unable to be satisfied. Subset failed.");
+	success = అబద్ధం;
+	వెళ్ళు చివర;
       }
     }
   }
 
-  if (success && plan->attach_accelerator_data) {
-    _attach_accelerator_data (plan, plan->dest);
+  ఒకవేళ (success && plan->attach_accelerator_దత్తాంశం) {
+    attach_accelerator_దత్తాంశం_2 (plan, plan->dest);
   }
 
-end:
-  return success ? hb_face_reference (plan->dest) : nullptr;
+చివర:
+  తిరిగి success ? hb_face_reference (plan->dest) : శూన్యసూచిక;
 }

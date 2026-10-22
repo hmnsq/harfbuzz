@@ -1,17 +1,17 @@
-#ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
-#define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#నిర్వచించు OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+నిర్మాణం ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  రకనిర్వచనం నిర్మాణం Pos_Lookup_Sub_పట్టిక Sub_పట్టిక;
 };
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */

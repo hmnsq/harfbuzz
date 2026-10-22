@@ -22,31 +22,31 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_SUBSET_INSTANCER_IUP_HH
-#define HB_SUBSET_INSTANCER_IUP_HH
+#నిర్వచితం_కాకపోతే HB_SUBSET_INSTANCER_IUP_HH
+#నిర్వచించు HB_SUBSET_INSTANCER_IUP_HH
 
-#include "hb-subset-plan.hh"
+#అన్తర్భావ "hb-subset-plan.hh"
 
-struct iup_scratch_t
+నిర్మాణం iup_scratch_t
 {
-  hb_vector_t<unsigned> end_points;
-  hb_vector_t<double> interp_x_deltas;
-  hb_vector_t<double> interp_y_deltas;
-  hb_vector_t<unsigned> costs;
-  hb_vector_t<int> chain;
-  hb_vector_t<bool> rot_indices;
-  hb_vector_t<int> rot_x_deltas;
-  hb_vector_t<int> rot_y_deltas;
-  contour_point_vector_t rot_points;
+  hb_సదిశ_t<గుర్తులేని> చివర_points;
+  hb_సదిశ_t<ద్విగుణ> interp_x_deltas;
+  hb_సదిశ_t<ద్విగుణ> interp_y_deltas;
+  hb_సదిశ_t<గుర్తులేని> costs;
+  hb_సదిశ_t<పూర్ణాంకం> chain;
+  hb_సదిశ_t<తార్కిక> rot_indices;
+  hb_సదిశ_t<పూర్ణాంకం> rot_x_deltas;
+  hb_సదిశ_t<పూర్ణాంకం> rot_y_deltas;
+  contour_బిందువు_సదిశ_t rot_points;
 };
 
 /* given contour points and deltas, optimize a set of referenced points within error
  * tolerance. Returns optimized referenced point indices */
-HB_INTERNAL bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                                     const hb_vector_t<int>& x_deltas,
-                                     const hb_vector_t<int>& y_deltas,
-                                     hb_vector_t<bool>& opt_indices, /* OUT */
+HB_అంతర్గత తార్కిక iup_delta_optimize (స్థిరరాశి contour_బిందువు_సదిశ_t& contour_points,
+                                     స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>& x_deltas,
+                                     స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>& y_deltas,
+                                     hb_సదిశ_t<తార్కిక>& opt_indices, /*బహిర్గతం*/
 				     iup_scratch_t &scratch,
-                                     double tolerance = 0.0);
+                                     ద్విగుణ tolerance = 0.0);
 
-#endif /* HB_SUBSET_INSTANCER_IUP_HH */
+#అయితే_ముగింపు /* HB_SUBSET_INSTANCER_IUP_HH */

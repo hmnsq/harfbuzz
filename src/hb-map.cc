@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-map.hh"
+#అన్తర్భావ "hb-map.hh"
 
 
 /**
@@ -53,10 +53,10 @@ hb_map_create ()
 {
   hb_map_t *map;
 
-  if (!(map = hb_object_create<hb_map_t> ()))
-    return hb_map_get_empty ();
+  ఒకవేళ (!(map = hb_object_create<hb_map_t> ()))
+    తిరిగి hb_map_get_ఖాళీలు ();
 
-  return map;
+  తిరిగి map;
 }
 
 /**
@@ -69,9 +69,9 @@ hb_map_create ()
  * Since: 1.7.7
  **/
 hb_map_t *
-hb_map_get_empty ()
+hb_map_get_ఖాళీలు ()
 {
-  return const_cast<hb_map_t *> (&Null (hb_map_t));
+  తిరిగి const_cast<hb_map_t *> (&Null (hb_map_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_map_get_empty ()
 hb_map_t *
 hb_map_reference (hb_map_t *map)
 {
-  return hb_object_reference (map);
+  తిరిగి hb_object_reference (map);
 }
 
 /**
@@ -100,10 +100,10 @@ hb_map_reference (hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+శూన్య
 hb_map_destroy (hb_map_t *map)
 {
-  if (!hb_object_destroy (map)) return;
+  ఒకవేళ (!hb_object_destroy (map)) తిరిగి;
 
   hb_free (map);
 }
@@ -123,13 +123,13 @@ hb_map_destroy (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_map_సమితి_user_దత్తాంశం (hb_map_t           *map,
+		      hb_user_దత్తాంశం_కీలకం_t *key,
+		      శూన్య *              దత్తాంశం,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (map, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (map, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_map_set_user_data (hb_map_t           *map,
  *
  * Since: 1.7.7
  **/
-void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key)
+శూన్య *
+hb_map_get_user_దత్తాంశం (స్థిరరాశి hb_map_t     *map,
+		      hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  return hb_object_get_user_data (map, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (map, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_map_get_user_data (const hb_map_t     *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_allocation_successful (const hb_map_t  *map)
+hb_map_కేటాయింపు_successful (స్థిరరాశి hb_map_t  *map)
 {
-  return map->successful;
+  తిరిగి map->successful;
 }
 
 /**
@@ -179,14 +179,14 @@ hb_map_allocation_successful (const hb_map_t  *map)
  * Since: 4.4.0
  **/
 hb_map_t *
-hb_map_copy (const hb_map_t *map)
+hb_map_copy (స్థిరరాశి hb_map_t *map)
 {
   hb_map_t *copy = hb_map_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_map_get_empty ();
+  ఒకవేళ (unlikely (copy->లోపల_error ()))
+    తిరిగి hb_map_get_ఖాళీలు ();
 
   *copy = *map;
-  return copy;
+  తిరిగి copy;
 }
 
 /**
@@ -199,13 +199,13 @@ hb_map_copy (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
-hb_map_set (hb_map_t       *map,
+శూన్య
+hb_map_సమితి (hb_map_t       *map,
 	    hb_codepoint_t  key,
 	    hb_codepoint_t  value)
 {
   /* Immutable-safe. */
-  map->set (key, value);
+  map->సమితి (key, value);
 }
 
 /**
@@ -218,10 +218,10 @@ hb_map_set (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_codepoint_t
-hb_map_get (const hb_map_t *map,
+hb_map_get (స్థిరరాశి hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->get (key);
+  తిరిగి map->get (key);
 }
 
 /**
@@ -233,7 +233,7 @@ hb_map_get (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+శూన్య
 hb_map_del (hb_map_t       *map,
 	    hb_codepoint_t  key)
 {
@@ -253,10 +253,10 @@ hb_map_del (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_has (const hb_map_t *map,
+hb_map_has (స్థిరరాశి hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->has (key);
+  తిరిగి map->has (key);
 }
 
 
@@ -268,10 +268,10 @@ hb_map_has (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+శూన్య
 hb_map_clear (hb_map_t *map)
 {
-  return map->clear ();
+  తిరిగి map->clear ();
 }
 
 /**
@@ -285,9 +285,9 @@ hb_map_clear (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_is_empty (const hb_map_t *map)
+hb_map_is_ఖాళీలు (స్థిరరాశి hb_map_t *map)
 {
-  return map->is_empty ();
+  తిరిగి map->is_empty ();
 }
 
 /**
@@ -300,10 +300,10 @@ hb_map_is_empty (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_map_get_population (const hb_map_t *map)
+గుర్తులేని పూర్ణాంకం
+hb_map_get_population (స్థిరరాశి hb_map_t *map)
 {
-  return map->get_population ();
+  తిరిగి map->get_population ();
 }
 
 /**
@@ -319,10 +319,10 @@ hb_map_get_population (const hb_map_t *map)
  * Since: 4.3.0
  **/
 hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other)
+hb_map_is_equal (స్థిరరాశి hb_map_t *map,
+		 స్థిరరాశి hb_map_t *other)
 {
-  return map->is_equal (*other);
+  తిరిగి map->is_equal (*other);
 }
 
 /**
@@ -336,10 +336,10 @@ hb_map_is_equal (const hb_map_t *map,
  *
  * Since: 4.4.0
  **/
-unsigned int
-hb_map_hash (const hb_map_t *map)
+గుర్తులేని పూర్ణాంకం
+hb_map_hash (స్థిరరాశి hb_map_t *map)
 {
-  return map->hash ();
+  తిరిగి map->hash ();
 }
 
 /**
@@ -351,9 +351,9 @@ hb_map_hash (const hb_map_t *map)
  *
  * Since: 7.0.0
  **/
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other)
+	       స్థిరరాశి hb_map_t *other)
 {
   map->update (*other);
 }
@@ -378,12 +378,12 @@ hb_map_update (hb_map_t *map,
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
+hb_map_తదుపరి (స్థిరరాశి hb_map_t *map,
+	     పూర్ణాంకం *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value)
 {
-  return map->next (idx, key, value);
+  తిరిగి map->next (idx, key, value);
 }
 
 /**
@@ -395,11 +395,11 @@ hb_map_next (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys)
+శూన్య
+hb_map_కీలకాలు (స్థిరరాశి hb_map_t *map,
+	     hb_సమితి_t *కీలకాలు)
 {
-  hb_copy (map->keys() , *keys);
+  hb_copy (map->కీలకాలు() , *కీలకాలు);
 }
 
 /**
@@ -411,9 +411,9 @@ hb_map_keys (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values)
+శూన్య
+hb_map_విలువలు (స్థిరరాశి hb_map_t *map,
+	       hb_సమితి_t *values)
 {
   hb_copy (map->values() , *values);
 }

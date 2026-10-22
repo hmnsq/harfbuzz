@@ -1,46 +1,46 @@
 #!/usr/bin/env python3
 
-import os
-import shutil
-import subprocess
-import sys
+దిగుమతి os
+దిగుమతి shutil
+దిగుమతి subprocess
+దిగుమతి sys
 
-from check_helpers import CHECK_LIBSTDCXX_LIBS
+తః check_helpers దిగుమతి CHECK_LIBSTDCXX_LIBS
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+పునాది_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
 ldd = os.getenv("LDD", shutil.which("ldd"))
-if not ldd:
+ఒకవేళ కాదు ldd:
     otool = os.getenv("OTOOL", shutil.which("otool"))
-    if otool:
+    ఒకవేళ otool:
         ldd = otool + " -L"
-    else:
-        print("check-libstdc++.py: 'ldd' not found; skipping test")
+    లేకపోతే:
+        ముద్రించు("check-libstdc++.py: 'ldd' not found; skipping test")
         sys.exit(77)
 
 stat = 0
-tested = False
+tested = అబద్ధం
 
-for soname in CHECK_LIBSTDCXX_LIBS:
-    for suffix in ["so", "dylib"]:
-        so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
-            continue
+కొరకు soname లో CHECK_LIBSTDCXX_LIBS:
+    కొరకు suffix లో ["so", "dylib"]:
+        so = os.మార్గం.join(builddir, "lib%s.%s" % (soname, suffix))
+        ఒకవేళ కాదు os.మార్గం.exists(so):
+            కొనసాగు
 
-        print("Checking that we are not linking to libstdc++ or libc++ in %s" % so)
-        ldd_result = subprocess.check_output(ldd.split() + [so])
-        if (b"libstdc++" in ldd_result) or (b"libc++" in ldd_result):
-            print("Ouch, %s is linked to libstdc++ or libc++" % so)
+        ముద్రించు("Checking that we are not linking to libstdc++ or libc++ in %s" % so)
+        ldd_ఫలితం = subprocess.check_output(ldd.విభజించు() + [so])
+        ఒకవేళ (b"libstdc++" లో ldd_ఫలితం) లేదా (b"libc++" లో ldd_ఫలితం):
+            ముద్రించు("Ouch, %s is linked to libstdc++ or libc++" % so)
             stat = 1
 
-        tested = True
+        tested = నిజం
 
-if not tested:
-    print("check-libstdc++.py: libharfbuzz shared library not found; skipping test")
+ఒకవేళ కాదు tested:
+    ముద్రించు("check-libstdc++.py: libharfbuzz shared library not found; skipping test")
     sys.exit(77)
 
 sys.exit(stat)

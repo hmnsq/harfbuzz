@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#నిర్వచితం_కాకపోతే HB_NO_బఫరు_SERIALIZE
 
-#include "hb-buffer.hh"
+#అన్తర్భావ "hb-buffer.hh"
 
 
-static const char *_hb_buffer_serialize_formats[] = {
+స్థిర స్థిరరాశి అక్షరం *hb_బఫరు_serialize_formats[] = {
   "text",
   "json",
-  nullptr
+  శూన్యసూచిక
 };
 
 /**
@@ -47,10 +47,10 @@ static const char *_hb_buffer_serialize_formats[] = {
  *
  * Since: 0.9.7
  **/
-const char **
-hb_buffer_serialize_list_formats ()
+స్థిరరాశి అక్షరం **
+hb_బఫరు_serialize_list_formats ()
 {
-  return _hb_buffer_serialize_formats;
+  తిరిగి hb_బఫరు_serialize_formats;
 }
 
 /**
@@ -67,11 +67,11 @@ hb_buffer_serialize_list_formats ()
  *
  * Since: 0.9.7
  **/
-hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len)
+hb_బఫరు_serialize_format_t
+hb_బఫరు_serialize_format_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len)
 {
   /* Upper-case it. */
-  return (hb_buffer_serialize_format_t) (hb_tag_from_string (str, len) & ~0x20202020u);
+  తిరిగి (hb_బఫరు_serialize_format_t) (hb_ట్యాగ్_from_string (str, len) & ~0x20202020u);
 }
 
 /**
@@ -86,338 +86,338 @@ hb_buffer_serialize_format_from_string (const char *str, int len)
  *
  * Since: 0.9.7
  **/
-const char *
-hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format)
+స్థిరరాశి అక్షరం *
+hb_బఫరు_serialize_format_గమ్యం_string (hb_బఫరు_serialize_format_t format)
 {
-  switch ((unsigned) format)
+  ఎంపిక ((గుర్తులేని) format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT: return _hb_buffer_serialize_formats[0];
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON: return _hb_buffer_serialize_formats[1];
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:  return nullptr;
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం: తిరిగి hb_బఫరు_serialize_formats[0];
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_JSON: తిరిగి hb_బఫరు_serialize_formats[1];
+    అప్రమేయ:
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_INVALID:  తిరిగి శూన్యసూచిక;
   }
 }
 
-static unsigned int
-_hb_buffer_serialize_glyphs_json (hb_buffer_t *buffer,
-                                  unsigned int start,
-                                  unsigned int end,
-                                  char *buf,
-                                  unsigned int buf_size,
-                                  unsigned int *buf_consumed,
+స్థిర గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_glyphs_json (hb_బఫరు_t *బఫరు,
+                                  గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                                  గుర్తులేని పూర్ణాంకం చివర,
+                                  అక్షరం *buf,
+                                  గుర్తులేని పూర్ణాంకం buf_కొలత,
+                                  గుర్తులేని పూర్ణాంకం *buf_consumed,
                                   hb_font_t *font,
-                                  hb_buffer_serialize_flags_t flags)
+                                  hb_బఫరు_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *pos = (flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS) ?
-                             nullptr : hb_buffer_get_glyph_positions (buffer, nullptr);
+  hb_glyph_info_t *info = hb_బఫరు_get_glyph_infos (బఫరు, శూన్యసూచిక);
+  hb_glyph_position_t *pos = (flags & HB_బఫరు_SERIALIZE_FLAG_NO_POSITIONS) ?
+                             శూన్యసూచిక : hb_బఫరు_get_glyph_positions (బఫరు, శూన్యసూచిక);
 
   *buf_consumed = 0;
   hb_position_t x = 0, y = 0;
 
   /* Calculate the advance of the previous glyphs */
-  if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+  ఒకవేళ (pos && (flags & HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES))
   {
-    for (unsigned int i = 0; i < start; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ప్రారంభం; i++)
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_కూడు (x, pos[i].x_advance);
+      y = hb_saturate_కూడు (y, pos[i].y_advance);
     }
   }
 
-  for (unsigned int i = start; i < end; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    char b[1024];
-    char *p = b;
+    అక్షరం b[1024];
+    అక్షరం *p = b;
 
     /* In the following code, we know b is large enough that no overflow can happen. */
 
-#define APPEND(s) HB_STMT_START { strcpy (p, s); p += strlen (s); } HB_STMT_END
+#నిర్వచించు APPEND(s) HB_STMT_ప్రారంభం { strcpy (p, s); p += అక్షరశ్రేణి_పొడవు (s); } HB_STMT_చివర
 
-    if (i)
+    ఒకవేళ (i)
       *p++ = ',';
-    else
+    లేకపోతే
       *p++ = '[';
 
     *p++ = '{';
 
     APPEND ("\"g\":");
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
+    ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_GLYPH_పేర్లు))
     {
-      char g[128];
-      hb_font_glyph_to_string (font, info[i].codepoint, g, sizeof (g));
+      అక్షరం g[128];
+      hb_font_glyph_గమ్యం_string (font, info[i].codepoint, g, పరిమాణం (g));
       *p++ = '"';
-      for (char *q = g; *q; q++)
+      కొరకు (అక్షరం *q = g; *q; q++)
       {
-	if (unlikely (*q == '"' || *q == '\\'))
+	ఒకవేళ (unlikely (*q == '"' || *q == '\\'))
 	  *p++ = '\\';
 	*p++ = *q;
       }
       *p++ = '"';
     }
-    else
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
+    లేకపోతే
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"cl\":%u", info[i].cluster));
+    ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"cl\":%u", info[i].cluster));
     }
 
-    if (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
+    ఒకవేళ (pos && !(flags & HB_బఫరు_SERIALIZE_FLAG_NO_POSITIONS))
     {
-      hb_position_t dx = hb_saturate_add (x, pos[i].x_offset);
-      hb_position_t dy = hb_saturate_add (y, pos[i].y_offset);
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"dx\":%d,\"dy\":%d",
+      hb_position_t dx = hb_saturate_కూడు (x, pos[i].x_స్థానభ్రంశం_2);
+      hb_position_t dy = hb_saturate_కూడు (y, pos[i].y_స్థానభ్రంశం_2);
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"dx\":%d,\"dy\":%d",
 		   dx, dy));
-      if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"ax\":%d,\"ay\":%d",
+      ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES))
+        p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"ax\":%d,\"ay\":%d",
 		     pos[i].x_advance, pos[i].y_advance));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
+    ఒకవేళ (flags & HB_బఫరు_SERIALIZE_FLAG_GLYPH_FLAGS)
     {
-      if (info[i].mask & HB_GLYPH_FLAG_DEFINED)
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"fl\":%u", info[i].mask & HB_GLYPH_FLAG_DEFINED));
+      ఒకవేళ (info[i].ముసుగు & HB_GLYPH_FLAG_DEFINED)
+        p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"fl\":%u", info[i].ముసుగు & HB_GLYPH_FLAG_DEFINED));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
+    ఒకవేళ (flags & HB_బఫరు_SERIALIZE_FLAG_GLYPH_EXTENTS)
     {
       hb_glyph_extents_t extents;
-      if (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
+      ఒకవేళ (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
       {
-	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"xb\":%d,\"yb\":%d",
+	p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"xb\":%d,\"yb\":%d",
 				  extents.x_bearing, extents.y_bearing));
-	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"w\":%d,\"h\":%d",
-				  extents.width, extents.height));
+	p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"w\":%d,\"h\":%d",
+				  extents.వెడల్పు, extents.ఎత్తు));
       }
     }
 
     *p++ = '}';
-    if (i == end-1)
+    ఒకవేళ (i == చివర-1)
       *p++ = ']';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    గుర్తులేని పూర్ణాంకం l = p - b;
+    ఒకవేళ (buf_కొలత > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_కొలత -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } లేకపోతే
+      తిరిగి i - ప్రారంభం;
 
-    if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+    ఒకవేళ (pos && (flags & HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES))
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_కూడు (x, pos[i].x_advance);
+      y = hb_saturate_కూడు (y, pos[i].y_advance);
     }
   }
 
-  return end - start;
+  తిరిగి చివర - ప్రారంభం;
 }
 
-static unsigned int
-_hb_buffer_serialize_unicode_json (hb_buffer_t *buffer,
-          unsigned int start,
-          unsigned int end,
-          char *buf,
-          unsigned int buf_size,
-          unsigned int *buf_consumed,
-          hb_buffer_serialize_flags_t flags)
+స్థిర గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_unicode_json (hb_బఫరు_t *బఫరు,
+          గుర్తులేని పూర్ణాంకం ప్రారంభం,
+          గుర్తులేని పూర్ణాంకం చివర,
+          అక్షరం *buf,
+          గుర్తులేని పూర్ణాంకం buf_కొలత,
+          గుర్తులేని పూర్ణాంకం *buf_consumed,
+          hb_బఫరు_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
+  hb_glyph_info_t *info = hb_బఫరు_get_glyph_infos (బఫరు, శూన్యసూచిక);
 
   *buf_consumed = 0;
-  for (unsigned int i = start; i < end; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    char b[1024];
-    char *p = b;
+    అక్షరం b[1024];
+    అక్షరం *p = b;
 
-    if (i)
+    ఒకవేళ (i)
       *p++ = ',';
-    else
+    లేకపోతే
       *p++ = '[';
 
     *p++ = '{';
 
     APPEND ("\"u\":");
 
-    p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
+    p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"cl\":%u", info[i].cluster));
+    ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",\"cl\":%u", info[i].cluster));
     }
 
     *p++ = '}';
 
-    if (i == end-1)
+    ఒకవేళ (i == చివర-1)
       *p++ = ']';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    గుర్తులేని పూర్ణాంకం l = p - b;
+    ఒకవేళ (buf_కొలత > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_కొలత -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } లేకపోతే
+      తిరిగి i - ప్రారంభం;
 
   }
 
-  return end - start;
+  తిరిగి చివర - ప్రారంభం;
 }
 
-static unsigned int
-_hb_buffer_serialize_glyphs_text (hb_buffer_t *buffer,
-                                  unsigned int start,
-                                  unsigned int end,
-                                  char *buf,
-                                  unsigned int buf_size,
-                                  unsigned int *buf_consumed,
+స్థిర గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_glyphs_పాఠ్యం (hb_బఫరు_t *బఫరు,
+                                  గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                                  గుర్తులేని పూర్ణాంకం చివర,
+                                  అక్షరం *buf,
+                                  గుర్తులేని పూర్ణాంకం buf_కొలత,
+                                  గుర్తులేని పూర్ణాంకం *buf_consumed,
                                   hb_font_t *font,
-                                  hb_buffer_serialize_flags_t flags)
+                                  hb_బఫరు_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *pos = (flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS) ?
-           nullptr : hb_buffer_get_glyph_positions (buffer, nullptr);
+  hb_glyph_info_t *info = hb_బఫరు_get_glyph_infos (బఫరు, శూన్యసూచిక);
+  hb_glyph_position_t *pos = (flags & HB_బఫరు_SERIALIZE_FLAG_NO_POSITIONS) ?
+           శూన్యసూచిక : hb_బఫరు_get_glyph_positions (బఫరు, శూన్యసూచిక);
 
   *buf_consumed = 0;
   hb_position_t x = 0, y = 0;
 
   /* Calculate the advance of the previous glyphs */
-  if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+  ఒకవేళ (pos && (flags & HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES))
   {
-    for (unsigned int i = 0; i < start; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ప్రారంభం; i++)
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_కూడు (x, pos[i].x_advance);
+      y = hb_saturate_కూడు (y, pos[i].y_advance);
     }
   }
 
-  for (unsigned int i = start; i < end; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    char b[1024];
-    char *p = b;
+    అక్షరం b[1024];
+    అక్షరం *p = b;
 
     /* In the following code, we know b is large enough that no overflow can happen. */
 
-    if (i)
+    ఒకవేళ (i)
       *p++ = '|';
-    else
+    లేకపోతే
       *p++ = '[';
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
+    ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_GLYPH_పేర్లు))
     {
       /* TODO Escape delimiters we use. */
-      hb_font_glyph_to_string (font, info[i].codepoint, p, 128);
-      p += strlen (p);
+      hb_font_glyph_గమ్యం_string (font, info[i].codepoint, p, 128);
+      p += అక్షరశ్రేణి_పొడవు (p);
     }
-    else
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
+    లేకపోతే
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "=%u", info[i].cluster));
+    ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "=%u", info[i].cluster));
     }
 
-    if (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
+    ఒకవేళ (pos && !(flags & HB_బఫరు_SERIALIZE_FLAG_NO_POSITIONS))
     {
-      hb_position_t dx = hb_saturate_add (x, pos[i].x_offset);
-      hb_position_t dy = hb_saturate_add (y, pos[i].y_offset);
-      if (dx || dy)
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "@%d,%d", dx, dy));
+      hb_position_t dx = hb_saturate_కూడు (x, pos[i].x_స్థానభ్రంశం_2);
+      hb_position_t dy = hb_saturate_కూడు (y, pos[i].y_స్థానభ్రంశం_2);
+      ఒకవేళ (dx || dy)
+        p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "@%d,%d", dx, dy));
 
-      if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+      ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES))
       {
         *p++ = '+';
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%d", pos[i].x_advance));
-        if (pos[i].y_advance)
-          p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",%d", pos[i].y_advance));
+        p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "%d", pos[i].x_advance));
+        ఒకవేళ (pos[i].y_advance)
+          p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), ",%d", pos[i].y_advance));
       }
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
+    ఒకవేళ (flags & HB_బఫరు_SERIALIZE_FLAG_GLYPH_FLAGS)
     {
-      if (info[i].mask & HB_GLYPH_FLAG_DEFINED)
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "#%X", info[i].mask &HB_GLYPH_FLAG_DEFINED));
+      ఒకవేళ (info[i].ముసుగు & HB_GLYPH_FLAG_DEFINED)
+        p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "#%X", info[i].ముసుగు &HB_GLYPH_FLAG_DEFINED));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
+    ఒకవేళ (flags & HB_బఫరు_SERIALIZE_FLAG_GLYPH_EXTENTS)
     {
       hb_glyph_extents_t extents;
-      if (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
-	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "<%d,%d,%d,%d>", extents.x_bearing, extents.y_bearing, extents.width, extents.height));
+      ఒకవేళ (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
+	p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "<%d,%d,%d,%d>", extents.x_bearing, extents.y_bearing, extents.వెడల్పు, extents.ఎత్తు));
     }
 
-    if (i == end-1) {
+    ఒకవేళ (i == చివర-1) {
       *p++ = ']';
     }
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    గుర్తులేని పూర్ణాంకం l = p - b;
+    ఒకవేళ (buf_కొలత > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_కొలత -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } లేకపోతే
+      తిరిగి i - ప్రారంభం;
 
-    if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+    ఒకవేళ (pos && (flags & HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES))
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_కూడు (x, pos[i].x_advance);
+      y = hb_saturate_కూడు (y, pos[i].y_advance);
     }
   }
 
-  return end - start;
+  తిరిగి చివర - ప్రారంభం;
 }
 
 
-static unsigned int
-_hb_buffer_serialize_unicode_text (hb_buffer_t *buffer,
-                                   unsigned int start,
-                                   unsigned int end,
-                                   char *buf,
-                                   unsigned int buf_size,
-                                   unsigned int *buf_consumed,
-                                   hb_buffer_serialize_flags_t flags)
+స్థిర గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_unicode_పాఠ్యం (hb_బఫరు_t *బఫరు,
+                                   గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                                   గుర్తులేని పూర్ణాంకం చివర,
+                                   అక్షరం *buf,
+                                   గుర్తులేని పూర్ణాంకం buf_కొలత,
+                                   గుర్తులేని పూర్ణాంకం *buf_consumed,
+                                   hb_బఫరు_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
+  hb_glyph_info_t *info = hb_బఫరు_get_glyph_infos (బఫరు, శూన్యసూచిక);
   *buf_consumed = 0;
-  for (unsigned int i = start; i < end; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    char b[1024];
-    char *p = b;
+    అక్షరం b[1024];
+    అక్షరం *p = b;
 
-    if (i)
+    ఒకవేళ (i)
       *p++ = '|';
-    else
+    లేకపోతే
       *p++ = '<';
 
-    p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "U+%04X", info[i].codepoint));
+    p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "U+%04X", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "=%u", info[i].cluster));
+    ఒకవేళ (!(flags & HB_బఫరు_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_నిడివి (b) - (p - b), "=%u", info[i].cluster));
     }
 
-    if (i == end-1)
+    ఒకవేళ (i == చివర-1)
       *p++ = '>';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    గుర్తులేని పూర్ణాంకం l = p - b;
+    ఒకవేళ (buf_కొలత > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_కొలత -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } లేకపోతే
+      తిరిగి i - ప్రారంభం;
   }
-  return end - start;
+  తిరిగి చివర - ప్రారంభం;
 }
 
 /**
@@ -483,53 +483,53 @@ _hb_buffer_serialize_unicode_text (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-                            unsigned int start,
-                            unsigned int end,
-                            char *buf,
-                            unsigned int buf_size,
-                            unsigned int *buf_consumed,
+గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_glyphs (hb_బఫరు_t *బఫరు,
+                            గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                            గుర్తులేని పూర్ణాంకం చివర,
+                            అక్షరం *buf,
+                            గుర్తులేని పూర్ణాంకం buf_కొలత,
+                            గుర్తులేని పూర్ణాంకం *buf_consumed,
                             hb_font_t *font,
-                            hb_buffer_serialize_format_t format,
-                            hb_buffer_serialize_flags_t flags)
+                            hb_బఫరు_serialize_format_t format,
+                            hb_బఫరు_serialize_flags_t flags)
 {
-  end = hb_clamp (end, start, buffer->len);
-  start = hb_min (start, end);
+  చివర = hb_clamp (చివర, ప్రారంభం, బఫరు->len);
+  ప్రారంభం = hb_min (ప్రారంభం, చివర);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  గుర్తులేని పూర్ణాంకం sconsumed;
+  ఒకవేళ (!buf_consumed)
     buf_consumed = &sconsumed;
   *buf_consumed = 0;
-  if (buf_size)
+  ఒకవేళ (buf_కొలత)
     *buf = '\0';
 
-  buffer->assert_glyphs ();
+  బఫరు->assert_glyphs ();
 
-  if (!buffer->have_positions)
-    flags |= HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS;
+  ఒకవేళ (!బఫరు->have_positions)
+    flags |= HB_బఫరు_SERIALIZE_FLAG_NO_POSITIONS;
 
-  if (unlikely (start == end))
-    return 0;
+  ఒకవేళ (unlikely (ప్రారంభం == చివర))
+    తిరిగి 0;
 
-  if (!font)
-    font = hb_font_get_empty ();
+  ఒకవేళ (!font)
+    font = hb_font_get_ఖాళీలు ();
 
-  switch (format)
+  ఎంపిక (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      return _hb_buffer_serialize_glyphs_text (buffer, start, end,
-                 buf, buf_size, buf_consumed,
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం:
+      తిరిగి hb_బఫరు_serialize_glyphs_పాఠ్యం (బఫరు, ప్రారంభం, చివర,
+                 buf, buf_కొలత, buf_consumed,
                  font, flags);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      return _hb_buffer_serialize_glyphs_json (buffer, start, end,
-                 buf, buf_size, buf_consumed,
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_JSON:
+      తిరిగి hb_బఫరు_serialize_glyphs_json (బఫరు, ప్రారంభం, చివర,
+                 buf, buf_కొలత, buf_consumed,
                  font, flags);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return 0;
+    అప్రమేయ:
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_INVALID:
+      తిరిగి 0;
 
   }
 }
@@ -585,76 +585,76 @@ hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
  *
  * Since: 2.7.3
  **/
-unsigned int
-hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-                             unsigned int start,
-                             unsigned int end,
-                             char *buf,
-                             unsigned int buf_size,
-                             unsigned int *buf_consumed,
-                             hb_buffer_serialize_format_t format,
-                             hb_buffer_serialize_flags_t flags)
+గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_unicode (hb_బఫరు_t *బఫరు,
+                             గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                             గుర్తులేని పూర్ణాంకం చివర,
+                             అక్షరం *buf,
+                             గుర్తులేని పూర్ణాంకం buf_కొలత,
+                             గుర్తులేని పూర్ణాంకం *buf_consumed,
+                             hb_బఫరు_serialize_format_t format,
+                             hb_బఫరు_serialize_flags_t flags)
 {
-  end = hb_clamp (end, start, buffer->len);
-  start = hb_min (start, end);
+  చివర = hb_clamp (చివర, ప్రారంభం, బఫరు->len);
+  ప్రారంభం = hb_min (ప్రారంభం, చివర);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  గుర్తులేని పూర్ణాంకం sconsumed;
+  ఒకవేళ (!buf_consumed)
     buf_consumed = &sconsumed;
   *buf_consumed = 0;
-  if (buf_size)
+  ఒకవేళ (buf_కొలత)
     *buf = '\0';
 
-  buffer->assert_unicode ();
+  బఫరు->assert_unicode ();
 
-  if (unlikely (start == end))
-    return 0;
+  ఒకవేళ (unlikely (ప్రారంభం == చివర))
+    తిరిగి 0;
 
-  switch (format)
+  ఎంపిక (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      return _hb_buffer_serialize_unicode_text (buffer, start, end,
-                                                buf, buf_size, buf_consumed, flags);
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం:
+      తిరిగి hb_బఫరు_serialize_unicode_పాఠ్యం (బఫరు, ప్రారంభం, చివర,
+                                                buf, buf_కొలత, buf_consumed, flags);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      return _hb_buffer_serialize_unicode_json (buffer, start, end,
-                                                buf, buf_size, buf_consumed, flags);
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_JSON:
+      తిరిగి hb_బఫరు_serialize_unicode_json (బఫరు, ప్రారంభం, చివర,
+                                                buf, buf_కొలత, buf_consumed, flags);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return 0;
+    అప్రమేయ:
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_INVALID:
+      తిరిగి 0;
 
   }
 }
 
-static unsigned int
-_hb_buffer_serialize_invalid (hb_buffer_t *buffer,
-                              unsigned int start,
-                              unsigned int end,
-                              char *buf,
-                              unsigned int buf_size,
-                              unsigned int *buf_consumed,
-                              hb_buffer_serialize_format_t format,
-                              hb_buffer_serialize_flags_t flags)
+స్థిర గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_invalid (hb_బఫరు_t *బఫరు,
+                              గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                              గుర్తులేని పూర్ణాంకం చివర,
+                              అక్షరం *buf,
+                              గుర్తులేని పూర్ణాంకం buf_కొలత,
+                              గుర్తులేని పూర్ణాంకం *buf_consumed,
+                              hb_బఫరు_serialize_format_t format,
+                              hb_బఫరు_serialize_flags_t flags)
 {
-  assert (!buffer->len);
+  ప్రతిజ్ఞా (!బఫరు->len);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  గుర్తులేని పూర్ణాంకం sconsumed;
+  ఒకవేళ (!buf_consumed)
     buf_consumed = &sconsumed;
-  if (buf_size < 3)
-    return 0;
-  if (format == HB_BUFFER_SERIALIZE_FORMAT_JSON) {
+  ఒకవేళ (buf_కొలత < 3)
+    తిరిగి 0;
+  ఒకవేళ (format == HB_బఫరు_SERIALIZE_FORMAT_JSON) {
     *buf++ = '[';
     *buf++ = ']';
     *buf = '\0';
-  } else if (format == HB_BUFFER_SERIALIZE_FORMAT_TEXT) {
+  } లేకపోతే ఒకవేళ (format == HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం) {
     *buf++ = '!';
     *buf++ = '!';
     *buf = '\0';
   }
   *buf_consumed = 2;
-  return 0;
+  తిరిగి 0;
 }
 
 /**
@@ -683,74 +683,74 @@ _hb_buffer_serialize_invalid (hb_buffer_t *buffer,
  *
  * Since: 2.7.3
  **/
-unsigned int
-hb_buffer_serialize (hb_buffer_t *buffer,
-                     unsigned int start,
-                     unsigned int end,
-                     char *buf,
-                     unsigned int buf_size,
-                     unsigned int *buf_consumed,
+గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize (hb_బఫరు_t *బఫరు,
+                     గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                     గుర్తులేని పూర్ణాంకం చివర,
+                     అక్షరం *buf,
+                     గుర్తులేని పూర్ణాంకం buf_కొలత,
+                     గుర్తులేని పూర్ణాంకం *buf_consumed,
                      hb_font_t *font,
-                     hb_buffer_serialize_format_t format,
-                     hb_buffer_serialize_flags_t flags)
+                     hb_బఫరు_serialize_format_t format,
+                     hb_బఫరు_serialize_flags_t flags)
 {
-  switch (buffer->content_type)
+  ఎంపిక (బఫరు->content_type)
   {
 
-    case HB_BUFFER_CONTENT_TYPE_GLYPHS:
-      return hb_buffer_serialize_glyphs (buffer, start, end, buf, buf_size,
+    స్థితి HB_బఫరు_CONTENT_TYPE_GLYPHS:
+      తిరిగి hb_బఫరు_serialize_glyphs (బఫరు, ప్రారంభం, చివర, buf, buf_కొలత,
 					 buf_consumed, font, format, flags);
 
-    case HB_BUFFER_CONTENT_TYPE_UNICODE:
-      return hb_buffer_serialize_unicode (buffer, start, end, buf, buf_size,
+    స్థితి HB_బఫరు_CONTENT_TYPE_UNICODE:
+      తిరిగి hb_బఫరు_serialize_unicode (బఫరు, ప్రారంభం, చివర, buf, buf_కొలత,
 					  buf_consumed, format, flags);
 
-    case HB_BUFFER_CONTENT_TYPE_INVALID:
-    default:
-      return _hb_buffer_serialize_invalid (buffer, start, end, buf, buf_size,
+    స్థితి HB_బఫరు_CONTENT_TYPE_INVALID:
+    అప్రమేయ:
+      తిరిగి hb_బఫరు_serialize_invalid (బఫరు, ప్రారంభం, చివర, buf, buf_కొలత,
 					   buf_consumed, format, flags);
   }
 }
 
-static bool
-parse_int (const char *pp, const char *end, int32_t *pv)
+స్థిర తార్కిక
+parse_int (స్థిరరాశి అక్షరం *pp, స్థిరరాశి అక్షరం *చివర, int32_t *pv)
 {
-  int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_int (&p, end, &v, true/* whole buffer */)))
-    return false;
+  పూర్ణాంకం v;
+  స్థిరరాశి అక్షరం *p = pp;
+  ఒకవేళ (unlikely (!hb_parse_int (&p, చివర, &v, నిజం/* whole buffer */)))
+    తిరిగి అబద్ధం;
 
   *pv = v;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_uint (const char *pp, const char *end, uint32_t *pv)
+స్థిర తార్కిక
+parse_uint (స్థిరరాశి అక్షరం *pp, స్థిరరాశి అక్షరం *చివర, uint32_t *pv)
 {
-  unsigned int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */)))
-    return false;
+  గుర్తులేని పూర్ణాంకం v;
+  స్థిరరాశి అక్షరం *p = pp;
+  ఒకవేళ (unlikely (!hb_parse_uint (&p, చివర, &v, నిజం/* whole buffer */)))
+    తిరిగి అబద్ధం;
 
   *pv = v;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_hex (const char *pp, const char *end, uint32_t *pv)
+స్థిర తార్కిక
+parse_hex (స్థిరరాశి అక్షరం *pp, స్థిరరాశి అక్షరం *చివర, uint32_t *pv)
 {
-  unsigned int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, 16)))
-    return false;
+  గుర్తులేని పూర్ణాంకం v;
+  స్థిరరాశి అక్షరం *p = pp;
+  ఒకవేళ (unlikely (!hb_parse_uint (&p, చివర, &v, నిజం/* whole buffer */, 16)))
+    తిరిగి అబద్ధం;
 
   *pv = v;
-  return true;
+  తిరిగి నిజం;
 }
 
-#include "hb-buffer-deserialize-json.hh"
-#include "hb-buffer-deserialize-text-glyphs.hh"
-#include "hb-buffer-deserialize-text-unicode.hh"
+#అన్తర్భావ "hb-buffer-deserialize-json.hh"
+#అన్తర్భావ "hb-buffer-deserialize-text-glyphs.hh"
+#అన్తర్భావ "hb-buffer-deserialize-text-unicode.hh"
 
 /**
  * hb_buffer_deserialize_glyphs:
@@ -770,56 +770,56 @@ parse_hex (const char *pp, const char *end, uint32_t *pv)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-                              const char *buf,
-                              int buf_len, /* -1 means nul-terminated */
-                              const char **end_ptr, /* May be NULL */
+hb_బఫరు_deserialize_glyphs (hb_బఫరు_t *బఫరు,
+                              స్థిరరాశి అక్షరం *buf,
+                              పూర్ణాంకం buf_len, /* -1 means nul-terminated */
+                              స్థిరరాశి అక్షరం **end_ptr, /* May be NULL */
                               hb_font_t *font, /* May be NULL */
-                              hb_buffer_serialize_format_t format)
+                              hb_బఫరు_serialize_format_t format)
 {
-  const char *end;
-  if (!end_ptr)
-    end_ptr = &end;
+  స్థిరరాశి అక్షరం *చివర;
+  ఒకవేళ (!end_ptr)
+    end_ptr = &చివర;
   *end_ptr = buf;
 
-  buffer->assert_glyphs ();
+  బఫరు->assert_glyphs ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
   {
-    if (end_ptr)
+    ఒకవేళ (end_ptr)
       *end_ptr = buf;
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  if (buf_len == -1)
-    buf_len = strlen (buf);
+  ఒకవేళ (buf_len == -1)
+    buf_len = అక్షరశ్రేణి_పొడవు (buf);
 
-  if (!buf_len)
+  ఒకవేళ (!buf_len)
   {
     *end_ptr = buf;
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  if (!font)
-    font = hb_font_get_empty ();
+  ఒకవేళ (!font)
+    font = hb_font_get_ఖాళీలు ();
 
-  switch (format)
+  ఎంపిక (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-      return _hb_buffer_deserialize_text_glyphs (buffer,
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం:
+      hb_బఫరు_సమితి_content_type (బఫరు, HB_బఫరు_CONTENT_TYPE_GLYPHS);
+      తిరిగి hb_బఫరు_deserialize_పాఠ్యం_glyphs (బఫరు,
 						 buf, buf_len, end_ptr,
 						 font);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-      return _hb_buffer_deserialize_json (buffer,
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_JSON:
+      hb_బఫరు_సమితి_content_type (బఫరు, HB_బఫరు_CONTENT_TYPE_GLYPHS);
+      తిరిగి hb_బఫరు_deserialize_json (బఫరు,
                                           buf, buf_len, end_ptr,
                                           font);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return false;
+    అప్రమేయ:
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_INVALID:
+      తిరిగి అబద్ధం;
 
   }
 }
@@ -842,57 +842,57 @@ hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
  * Since: 2.7.3
  **/
 hb_bool_t
-hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-                               const char *buf,
-                               int buf_len, /* -1 means nul-terminated */
-                               const char **end_ptr, /* May be NULL */
-                               hb_buffer_serialize_format_t format)
+hb_బఫరు_deserialize_unicode (hb_బఫరు_t *బఫరు,
+                               స్థిరరాశి అక్షరం *buf,
+                               పూర్ణాంకం buf_len, /* -1 means nul-terminated */
+                               స్థిరరాశి అక్షరం **end_ptr, /* May be NULL */
+                               hb_బఫరు_serialize_format_t format)
 {
-  const char *end;
-  if (!end_ptr)
-    end_ptr = &end;
+  స్థిరరాశి అక్షరం *చివర;
+  ఒకవేళ (!end_ptr)
+    end_ptr = &చివర;
   *end_ptr = buf;
 
-  buffer->assert_unicode ();
+  బఫరు->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
   {
-    if (end_ptr)
+    ఒకవేళ (end_ptr)
       *end_ptr = buf;
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  if (buf_len == -1)
-    buf_len = strlen (buf);
+  ఒకవేళ (buf_len == -1)
+    buf_len = అక్షరశ్రేణి_పొడవు (buf);
 
-  if (!buf_len)
+  ఒకవేళ (!buf_len)
   {
     *end_ptr = buf;
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  hb_font_t* font = hb_font_get_empty ();
+  hb_font_t* font = hb_font_get_ఖాళీలు ();
 
-  switch (format)
+  ఎంపిక (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
-      return _hb_buffer_deserialize_text_unicode (buffer,
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం:
+      hb_బఫరు_సమితి_content_type (బఫరు, HB_బఫరు_CONTENT_TYPE_UNICODE);
+      తిరిగి hb_బఫరు_deserialize_పాఠ్యం_unicode (బఫరు,
 						  buf, buf_len, end_ptr,
 						  font);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
-      return _hb_buffer_deserialize_json (buffer,
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_JSON:
+      hb_బఫరు_సమితి_content_type (బఫరు, HB_బఫరు_CONTENT_TYPE_UNICODE);
+      తిరిగి hb_బఫరు_deserialize_json (బఫరు,
                                           buf, buf_len, end_ptr,
                                           font);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return false;
+    అప్రమేయ:
+    స్థితి HB_బఫరు_SERIALIZE_FORMAT_INVALID:
+      తిరిగి అబద్ధం;
 
   }
 }
 
 
-#endif
+#అయితే_ముగింపు

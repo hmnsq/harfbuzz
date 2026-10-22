@@ -22,237 +22,237 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_DRAW_HH
-#define HB_DRAW_HH
+#నిర్వచితం_కాకపోతే HB_DRAW_HH
+#నిర్వచించు HB_DRAW_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 
 /*
  * hb_draw_funcs_t
  */
 
-#define HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_DRAW_FUNC_IMPLEMENT (move_to) \
-  HB_DRAW_FUNC_IMPLEMENT (line_to) \
-  HB_DRAW_FUNC_IMPLEMENT (quadratic_to) \
-  HB_DRAW_FUNC_IMPLEMENT (cubic_to) \
-  HB_DRAW_FUNC_IMPLEMENT (close_path) \
-  HB_DRAW_FUNC_IMPLEMENT (set_budget) \
+#నిర్వచించు HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
+  HB_DRAW_FUNC_IMPLEMENT (move_గమ్యం) \
+  HB_DRAW_FUNC_IMPLEMENT (పంక్తి_గమ్యం) \
+  HB_DRAW_FUNC_IMPLEMENT (quadratic_గమ్యం) \
+  HB_DRAW_FUNC_IMPLEMENT (cubic_గమ్యం) \
+  HB_DRAW_FUNC_IMPLEMENT (close_మార్గం) \
+  HB_DRAW_FUNC_IMPLEMENT (సమితి_budget) \
   HB_DRAW_FUNC_IMPLEMENT (get_budget) \
-  HB_DRAW_FUNC_IMPLEMENT (get_budget_remaining) \
+  HB_DRAW_FUNC_IMPLEMENT (get_budget_మిగిలిన) \
   /* ^--- Add new callbacks here */
 
-struct hb_draw_funcs_t
+నిర్మాణం hb_draw_funcs_t
 {
-  hb_object_header_t header;
+  hb_object_శీర్షిక_t శీర్షిక;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
+  నిర్మాణం {
+#నిర్వచించు HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_DRAW_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) void *name;
+  నిర్మాణం {
+#నిర్వచించు HB_DRAW_FUNC_IMPLEMENT(name) శూన్య *name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
-  } *user_data;
+#నిర్వచనం_రద్దు HB_DRAW_FUNC_IMPLEMENT
+  } *user_దత్తాంశం;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
+  నిర్మాణం {
+#నిర్వచించు HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_DRAW_FUNC_IMPLEMENT
   } *destroy;
 
-  void emit_move_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.move_to (this, draw_data, &st,
-		  to_x, to_y,
-		  !user_data ? nullptr : user_data->move_to); }
-  void emit_line_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.line_to (this, draw_data, &st,
-		  to_x, to_y,
-		  !user_data ? nullptr : user_data->line_to); }
-  void emit_quadratic_to (void *draw_data, hb_draw_state_t &st,
-			  float control_x, float control_y,
-			  float to_x, float to_y)
-  { func.quadratic_to (this, draw_data, &st,
+  శూన్య emit_move_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+		     దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
+  { func.move_గమ్యం (ఇది, draw_దత్తాంశం, &st,
+		  గమ్యం_x, గమ్యం_y,
+		  !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->move_గమ్యం); }
+  శూన్య emit_పంక్తి_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+		     దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
+  { func.పంక్తి_గమ్యం (ఇది, draw_దత్తాంశం, &st,
+		  గమ్యం_x, గమ్యం_y,
+		  !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->పంక్తి_గమ్యం); }
+  శూన్య emit_quadratic_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+			  దశాంశం control_x, దశాంశం control_y,
+			  దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
+  { func.quadratic_గమ్యం (ఇది, draw_దత్తాంశం, &st,
 		       control_x, control_y,
-		       to_x, to_y,
-		       !user_data ? nullptr : user_data->quadratic_to); }
-  void emit_cubic_to (void *draw_data, hb_draw_state_t &st,
-		      float control1_x, float control1_y,
-		      float control2_x, float control2_y,
-		      float to_x, float to_y)
-  { func.cubic_to (this, draw_data, &st,
+		       గమ్యం_x, గమ్యం_y,
+		       !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->quadratic_గమ్యం); }
+  శూన్య emit_cubic_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+		      దశాంశం control1_x, దశాంశం control1_y,
+		      దశాంశం control2_x, దశాంశం control2_y,
+		      దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
+  { func.cubic_గమ్యం (ఇది, draw_దత్తాంశం, &st,
 		   control1_x, control1_y,
 		   control2_x, control2_y,
-		   to_x, to_y,
-		   !user_data ? nullptr : user_data->cubic_to); }
-  void emit_close_path (void *draw_data, hb_draw_state_t &st)
-  { func.close_path (this, draw_data, &st,
-		     !user_data ? nullptr : user_data->close_path); }
+		   గమ్యం_x, గమ్యం_y,
+		   !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->cubic_గమ్యం); }
+  శూన్య emit_close_మార్గం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st)
+  { func.close_మార్గం (ఇది, draw_దత్తాంశం, &st,
+		     !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->close_మార్గం); }
 
-  bool set_budget (void *draw_data, int64_t budget)
+  తార్కిక సమితి_budget (శూన్య *draw_దత్తాంశం, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    ఒకవేళ (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, draw_data, budget,
-			    !user_data ? nullptr : user_data->set_budget);
+    తిరిగి func.సమితి_budget (ఇది, draw_దత్తాంశం, budget,
+			    !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->సమితి_budget);
   }
-  int64_t get_budget (void *draw_data)
-  { return func.get_budget (this, draw_data,
-			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *draw_data)
-  { return func.get_budget_remaining (this, draw_data,
-				      !user_data ? nullptr : user_data->get_budget_remaining); }
+  int64_t get_budget (శూన్య *draw_దత్తాంశం)
+  { తిరిగి func.get_budget (ఇది, draw_దత్తాంశం,
+			    !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->get_budget); }
+  int64_t *get_budget_మిగిలిన_ptr (శూన్య *draw_దత్తాంశం)
+  { తిరిగి func.get_budget_మిగిలిన (ఇది, draw_దత్తాంశం,
+				      !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->get_budget_మిగిలిన); }
 
 
-  void
+  శూన్య
   HB_ALWAYS_INLINE
-  move_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
+  move_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+	   దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    if (unlikely (st.path_open)) close_path (draw_data, st);
+    ఒకవేళ (unlikely (st.మార్గం_open)) close_మార్గం (draw_దత్తాంశం, st);
 
-    st.current_x = to_x;
-    st.current_y = to_y;
-  }
-
-  void
-  HB_ALWAYS_INLINE
-  line_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
-  {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
-
-    emit_line_to (draw_data, st, to_x, to_y);
-
-    st.current_x = to_x;
-    st.current_y = to_y;
+    st.current_x = గమ్యం_x;
+    st.current_y = గమ్యం_y;
   }
 
-  void
+  శూన్య
   HB_ALWAYS_INLINE
-  quadratic_to (void *draw_data, hb_draw_state_t &st,
-		float control_x, float control_y,
-		float to_x, float to_y)
+  పంక్తి_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+	   దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    ఒకవేళ (unlikely (!st.మార్గం_open)) ప్రారంభం_మార్గం (draw_దత్తాంశం, st);
 
-    emit_quadratic_to (draw_data, st, control_x, control_y, to_x, to_y);
+    emit_పంక్తి_గమ్యం (draw_దత్తాంశం, st, గమ్యం_x, గమ్యం_y);
 
-    st.current_x = to_x;
-    st.current_y = to_y;
+    st.current_x = గమ్యం_x;
+    st.current_y = గమ్యం_y;
   }
 
-  void
+  శూన్య
   HB_ALWAYS_INLINE
-  cubic_to (void *draw_data, hb_draw_state_t &st,
-	    float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  quadratic_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+		దశాంశం control_x, దశాంశం control_y,
+		దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    ఒకవేళ (unlikely (!st.మార్గం_open)) ప్రారంభం_మార్గం (draw_దత్తాంశం, st);
 
-    emit_cubic_to (draw_data, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
+    emit_quadratic_గమ్యం (draw_దత్తాంశం, st, control_x, control_y, గమ్యం_x, గమ్యం_y);
 
-    st.current_x = to_x;
-    st.current_y = to_y;
+    st.current_x = గమ్యం_x;
+    st.current_y = గమ్యం_y;
   }
 
-  void
+  శూన్య
   HB_ALWAYS_INLINE
-  close_path (void *draw_data, hb_draw_state_t &st)
+  cubic_గమ్యం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st,
+	    దశాంశం control1_x, దశాంశం control1_y,
+	    దశాంశం control2_x, దశాంశం control2_y,
+	    దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    if (likely (st.path_open))
+    ఒకవేళ (unlikely (!st.మార్గం_open)) ప్రారంభం_మార్గం (draw_దత్తాంశం, st);
+
+    emit_cubic_గమ్యం (draw_దత్తాంశం, st, control1_x, control1_y, control2_x, control2_y, గమ్యం_x, గమ్యం_y);
+
+    st.current_x = గమ్యం_x;
+    st.current_y = గమ్యం_y;
+  }
+
+  శూన్య
+  HB_ALWAYS_INLINE
+  close_మార్గం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st)
+  {
+    ఒకవేళ (likely (st.మార్గం_open))
     {
-      if ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
-	emit_line_to (draw_data, st, st.path_start_x, st.path_start_y);
-      emit_close_path (draw_data, st);
+      ఒకవేళ ((st.మార్గం_ప్రారంభం_x != st.current_x) || (st.మార్గం_ప్రారంభం_y != st.current_y))
+	emit_పంక్తి_గమ్యం (draw_దత్తాంశం, st, st.మార్గం_ప్రారంభం_x, st.మార్గం_ప్రారంభం_y);
+      emit_close_మార్గం (draw_దత్తాంశం, st);
     }
-    st.path_open = false;
-    st.path_start_x = st.current_x = st.path_start_y = st.current_y = 0;
+    st.మార్గం_open = అబద్ధం;
+    st.మార్గం_ప్రారంభం_x = st.current_x = st.మార్గం_ప్రారంభం_y = st.current_y = 0;
   }
 
-  protected:
+  రక్షిత:
 
-  void start_path (void *draw_data, hb_draw_state_t &st)
+  శూన్య ప్రారంభం_మార్గం (శూన్య *draw_దత్తాంశం, hb_draw_state_t &st)
   {
-    assert (!st.path_open);
-    emit_move_to (draw_data, st, st.current_x, st.current_y);
-    st.path_open = true;
-    st.path_start_x = st.current_x;
-    st.path_start_y = st.current_y;
+    ప్రతిజ్ఞా (!st.మార్గం_open);
+    emit_move_గమ్యం (draw_దత్తాంశం, st, st.current_x, st.current_y);
+    st.మార్గం_open = నిజం;
+    st.మార్గం_ప్రారంభం_x = st.current_x;
+    st.మార్గం_ప్రారంభం_y = st.current_y;
   }
 };
 DECLARE_NULL_INSTANCE (hb_draw_funcs_t);
 
-struct hb_draw_session_t
+నిర్మాణం hb_draw_session_t
 {
-  hb_draw_session_t (hb_draw_funcs_t *funcs_, void *draw_data_)
-    : funcs {funcs_}, draw_data {draw_data_}, st HB_DRAW_STATE_DEFAULT,
-      local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_remaining_ptr (draw_data)}
+  hb_draw_session_t (hb_draw_funcs_t *funcs_, శూన్య *draw_దత్తాంశం_2)
+    : funcs {funcs_}, draw_దత్తాంశం {draw_దత్తాంశం_2}, st HB_DRAW_STATE_DEFAULT,
+      local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_మిగిలిన_ptr (draw_దత్తాంశం)}
   {
-    if (!budget)
+    ఒకవేళ (!budget)
       budget = &local_budget;
   }
 
-  ~hb_draw_session_t () { close_path (); }
+  ~hb_draw_session_t () { close_మార్గం (); }
 
   HB_ALWAYS_INLINE
-  void move_to (float to_x, float to_y)
+  శూన్య move_గమ్యం (దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    funcs->move_to (draw_data, st,
-		    to_x, to_y);
+    funcs->move_గమ్యం (draw_దత్తాంశం, st,
+		    గమ్యం_x, గమ్యం_y);
   }
   HB_ALWAYS_INLINE
-  void line_to (float to_x, float to_y)
+  శూన్య పంక్తి_గమ్యం (దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    funcs->line_to (draw_data, st,
-		    to_x, to_y);
+    funcs->పంక్తి_గమ్యం (draw_దత్తాంశం, st,
+		    గమ్యం_x, గమ్యం_y);
   }
-  void
+  శూన్య
   HB_ALWAYS_INLINE
-  quadratic_to (float control_x, float control_y,
-		float to_x, float to_y)
+  quadratic_గమ్యం (దశాంశం control_x, దశాంశం control_y,
+		దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    funcs->quadratic_to (draw_data, st,
+    funcs->quadratic_గమ్యం (draw_దత్తాంశం, st,
 			 control_x, control_y,
-			 to_x, to_y);
+			 గమ్యం_x, గమ్యం_y);
   }
-  void
+  శూన్య
   HB_ALWAYS_INLINE
-  cubic_to (float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  cubic_గమ్యం (దశాంశం control1_x, దశాంశం control1_y,
+	    దశాంశం control2_x, దశాంశం control2_y,
+	    దశాంశం గమ్యం_x, దశాంశం గమ్యం_y)
   {
-    funcs->cubic_to (draw_data, st,
+    funcs->cubic_గమ్యం (draw_దత్తాంశం, st,
 		     control1_x, control1_y,
 		     control2_x, control2_y,
-		     to_x, to_y);
+		     గమ్యం_x, గమ్యం_y);
   }
   HB_ALWAYS_INLINE
-  void close_path ()
+  శూన్య close_మార్గం ()
   {
-    funcs->close_path (draw_data, st);
+    funcs->close_మార్గం (draw_దత్తాంశం, st);
   }
 
-  int64_t &get_budget () { return *budget; }
+  int64_t &get_budget () { తిరిగి *budget; }
 
-  public:
+  బహిరంగ:
   hb_draw_funcs_t *funcs;
-  void *draw_data;
+  శూన్య *draw_దత్తాంశం;
   hb_draw_state_t st;
   int64_t local_budget;
   int64_t *budget;
 };
 
 
-HB_INTERNAL hb_draw_funcs_t *
+HB_అంతర్గత hb_draw_funcs_t *
 hb_draw_extents_get_funcs ();
 
 
-#endif /* HB_DRAW_HH */
+#అయితే_ముగింపు /* HB_DRAW_HH */

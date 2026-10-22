@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ఒకవేళ !defined(HB_OT_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb-ot.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_OT_VAR_H
-#define HB_OT_VAR_H
+#నిర్వచితం_కాకపోతే HB_OT_VAR_H
+#నిర్వచించు HB_OT_VAR_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -40,7 +40,7 @@ HB_BEGIN_DECLS
  *
  * Registered tag for the roman/italic axis.
  */
-#define HB_OT_TAG_VAR_AXIS_ITALIC	HB_TAG('i','t','a','l')
+#నిర్వచించు HB_OT_ట్యాగ్_VAR_AXIS_ITALIC	HB_ట్యాగ్('i','t','a','l')
 
 /**
  * HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE:
@@ -48,28 +48,28 @@ HB_BEGIN_DECLS
  * Registered tag for the optical-size axis.
  * <note>Note: The optical-size axis supersedes the OpenType `size` feature.</note>
  */
-#define HB_OT_TAG_VAR_AXIS_OPTICAL_SIZE	HB_TAG('o','p','s','z')
+#నిర్వచించు HB_OT_ట్యాగ్_VAR_AXIS_OPTICAL_కొలత	HB_ట్యాగ్('o','p','s','z')
 
 /**
  * HB_OT_TAG_VAR_AXIS_SLANT:
  *
  * Registered tag for the slant axis
  */
-#define HB_OT_TAG_VAR_AXIS_SLANT	HB_TAG('s','l','n','t')
+#నిర్వచించు HB_OT_ట్యాగ్_VAR_AXIS_SLANT	HB_ట్యాగ్('s','l','n','t')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WIDTH:
  *
  * Registered tag for the width axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WIDTH	HB_TAG('w','d','t','h')
+#నిర్వచించు HB_OT_ట్యాగ్_VAR_AXIS_వెడల్పు	HB_ట్యాగ్('w','d','t','h')
 
 /**
  * HB_OT_TAG_VAR_AXIS_WEIGHT:
  *
  * Registered tag for the weight axis.
  */
-#define HB_OT_TAG_VAR_AXIS_WEIGHT	HB_TAG('w','g','h','t')
+#నిర్వచించు HB_OT_ట్యాగ్_VAR_AXIS_బరువు	HB_ట్యాగ్('w','g','h','t')
 
 
 /*
@@ -77,7 +77,7 @@ HB_BEGIN_DECLS
  */
 
 HB_EXTERN hb_bool_t
-hb_ot_var_has_data (hb_face_t *face);
+hb_ot_var_has_దత్తాంశం (hb_face_t *face);
 
 
 /*
@@ -85,8 +85,8 @@ hb_ot_var_has_data (hb_face_t *face);
  */
 
 
-HB_EXTERN unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_var_get_axis_లెక్క (hb_face_t *face);
 
 /**
  * hb_ot_var_axis_flags_t:
@@ -96,11 +96,11 @@ hb_ot_var_get_axis_count (hb_face_t *face);
  *
  * Since: 2.2.0
  */
-typedef enum { /*< flags >*/
+రకనిర్వచనం గణన { /*< flags >*/
   HB_OT_VAR_AXIS_FLAG_HIDDEN	= 0x00000001u,
 
   /*< private >*/
-  _HB_OT_VAR_AXIS_FLAG_MAX_VALUE= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_VAR_AXIS_FLAG_MAX_విలువ= HB_ట్యాగ్_MAX_SIGNED /*< skip >*/
 } hb_ot_var_axis_flags_t;
 
 /**
@@ -122,27 +122,27 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.2.0
  */
-typedef struct hb_ot_var_axis_info_t {
-  unsigned int			axis_index;
-  hb_tag_t			tag;
+రకనిర్వచనం నిర్మాణం hb_ot_var_axis_info_t {
+  గుర్తులేని పూర్ణాంకం			axis_సూచీ;
+  hb_ట్యాగ్_t			ట్యాగ్_2;
   hb_ot_name_id_t		name_id;
   hb_ot_var_axis_flags_t	flags;
-  float				min_value;
-  float				default_value;
-  float				max_value;
+  దశాంశం				min_విలువ;
+  దశాంశం				default_విలువ;
+  దశాంశం				max_విలువ;
   /*< private >*/
-  unsigned int			reserved;
+  గుర్తులేని పూర్ణాంకం			reserved;
 } hb_ot_var_axis_info_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */);
+			  గుర్తులేని పూర్ణాంకం           ప్రారంభం_స్థానభ్రంశం,
+			  గుర్తులేని పూర్ణాంకం          *axes_లెక్క /* IN/OUT */,
+			  hb_ot_var_axis_info_t *axes_array /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
+hb_ot_var_కనుగొను_axis_info (hb_face_t             *face,
+			  hb_ట్యాగ్_t               axis_ట్యాగ్_2,
 			  hb_ot_var_axis_info_t *axis_info);
 
 
@@ -150,42 +150,42 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  * Named instances.
  */
 
-HB_EXTERN unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_var_get_named_instance_లెక్క (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index);
+						గుర్తులేని పూర్ణాంకం instance_సూచీ);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index);
+						గుర్తులేని పూర్ణాంకం instance_సూచీ);
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */);
+					    గుర్తులేని పూర్ణాంకం  instance_సూచీ,
+					    గుర్తులేని పూర్ణాంకం *coords_నిడివి, /* IN/OUT */
+					    దశాంశం        *coords         /*బహిర్గతం*/);
 
 
 /*
  * Conversions.
  */
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length);
+				స్థిరరాశి hb_variation_t *variations, /*లోపల*/
+				గుర్తులేని పూర్ణాంకం          variations_నిడివి,
+				పూర్ణాంకం                  *coords, /*బహిర్గతం*/
+				గుర్తులేని పూర్ణాంకం          coords_నిడివి);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */);
+			    గుర్తులేని పూర్ణాంకం coords_నిడివి,
+			    స్థిరరాశి దశాంశం *design_coords, /*లోపల*/
+			    పూర్ణాంకం *normalized_coords /*బహిర్గతం*/);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_OT_VAR_H */
+#అయితే_ముగింపు /* HB_OT_VAR_H */

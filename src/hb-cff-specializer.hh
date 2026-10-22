@@ -8,21 +8,21 @@
  * Based on fontTools.cffLib.specializer
  */
 
-#ifndef HB_CFF_SPECIALIZER_HH
-#define HB_CFF_SPECIALIZER_HH
+#నిర్వచితం_కాకపోతే HB_CFF_SPECIALIZER_HH
+#నిర్వచించు HB_CFF_SPECIALIZER_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
 /* CharString command representation - forward declared in hb-subset-cff-common.hh */
 
 /* Specialization must preserve nonzero fractional displacements. */
-static inline bool
-is_zero (const number_t &n)
+స్థిర అంతఃవరుస తార్కిక
+is_zero (స్థిరరాశి సంఖ్య_t &n)
 {
-  return n.to_real () == 0.;
+  తిరిగి n.గమ్యం_real () == 0.;
 }
 
 /* Generalize CharString commands to canonical form
@@ -33,110 +33,110 @@ is_zero (const number_t &n)
  *
  * Based on fontTools.cffLib.specializer.generalizeCommands
  */
-static void
-generalize_commands (hb_vector_t<cs_command_t> &commands)
+స్థిర శూన్య
+generalize_commands (hb_సదిశ_t<cs_command_t> &commands)
 {
-  hb_vector_t<cs_command_t> result;
-  result.alloc (commands.length * 2);  /* Estimate: might expand */
+  hb_సదిశ_t<cs_command_t> ఫలితం;
+  ఫలితం.alloc (commands.నిడివి * 2);  /* Estimate: might expand */
 
-  for (unsigned i = 0; i < commands.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < commands.నిడివి; i++)
   {
-    auto &cmd = commands[i];
+    స్వయంచాలక &cmd = commands[i];
 
-    switch (cmd.op)
+    ఎంపిక (cmd.op)
     {
-      case OpCode_hmoveto:
-      case OpCode_vmoveto:
+      స్థితి Op_సంకేతం_hmoveto:
+      స్థితి Op_సంకేతం_vmoveto:
       {
         /* Convert to rmoveto with explicit dx,dy */
-        cs_command_t gen (OpCode_rmoveto);
-        gen.args.alloc (2);
+        cs_command_t gen (Op_సంకేతం_rmoveto);
+        gen.వాదనలు.alloc (2);
 
-        if (cmd.op == OpCode_hmoveto && cmd.args.length >= 1)
+        ఒకవేళ (cmd.op == Op_సంకేతం_hmoveto && cmd.వాదనలు.నిడివి >= 1)
         {
-          gen.args.push (cmd.args[0]);  /* dx */
-          number_t zero; zero.set_int (0);
-          gen.args.push (zero);          /* dy = 0 */
+          gen.వాదనలు.push (cmd.వాదనలు[0]);  /* dx */
+          సంఖ్య_t zero; zero.సమితి_int (0);
+          gen.వాదనలు.push (zero);          /* dy = 0 */
         }
-        else if (cmd.op == OpCode_vmoveto && cmd.args.length >= 1)
+        లేకపోతే ఒకవేళ (cmd.op == Op_సంకేతం_vmoveto && cmd.వాదనలు.నిడివి >= 1)
         {
-          number_t zero; zero.set_int (0);
-          gen.args.push (zero);          /* dx = 0 */
-          gen.args.push (cmd.args[0]);  /* dy */
+          సంఖ్య_t zero; zero.సమితి_int (0);
+          gen.వాదనలు.push (zero);          /* dx = 0 */
+          gen.వాదనలు.push (cmd.వాదనలు[0]);  /* dy */
         }
-        result.push (gen);
-        break;
+        ఫలితం.push (gen);
+        ఆపు;
       }
 
-      case OpCode_hlineto:
-      case OpCode_vlineto:
+      స్థితి Op_సంకేతం_hlineto:
+      స్థితి Op_సంకేతం_vlineto:
       {
         /* Convert h/v lineto to rlineto, breaking into single segments
          * hlineto alternates: dx1 (→ dx1,0) dy1 (→ 0,dy1) dx2 (→ dx2,0) ...
          * vlineto alternates: dy1 (→ 0,dy1) dx1 (→ dx1,0) dy2 (→ 0,dy2) ... */
-        bool is_h = (cmd.op == OpCode_hlineto);
-        number_t zero; zero.set_int (0);
+        తార్కిక is_h = (cmd.op == Op_సంకేతం_hlineto);
+        సంఖ్య_t zero; zero.సమితి_int (0);
 
-        for (unsigned j = 0; j < cmd.args.length; j++)
+        కొరకు (గుర్తులేని j = 0; j < cmd.వాదనలు.నిడివి; j++)
         {
-          cs_command_t seg (OpCode_rlineto);
-          seg.args.alloc (2);
+          cs_command_t seg (Op_సంకేతం_rlineto);
+          seg.వాదనలు.alloc (2);
 
-          bool is_horizontal = is_h ? (j % 2 == 0) : (j % 2 == 1);
-          if (is_horizontal)
+          తార్కిక is_horizontal = is_h ? (j % 2 == 0) : (j % 2 == 1);
+          ఒకవేళ (is_horizontal)
           {
-            seg.args.push (cmd.args[j]);  /* dx */
-            seg.args.push (zero);          /* dy = 0 */
+            seg.వాదనలు.push (cmd.వాదనలు[j]);  /* dx */
+            seg.వాదనలు.push (zero);          /* dy = 0 */
           }
-          else
+          లేకపోతే
           {
-            seg.args.push (zero);          /* dx = 0 */
-            seg.args.push (cmd.args[j]);  /* dy */
+            seg.వాదనలు.push (zero);          /* dx = 0 */
+            seg.వాదనలు.push (cmd.వాదనలు[j]);  /* dy */
           }
-          result.push (seg);
+          ఫలితం.push (seg);
         }
-        break;
+        ఆపు;
       }
 
-      case OpCode_rlineto:
+      స్థితి Op_సంకేతం_rlineto:
       {
         /* Break into single segments (dx,dy pairs) */
-        for (unsigned j = 0; j + 1 < cmd.args.length; j += 2)
+        కొరకు (గుర్తులేని j = 0; j + 1 < cmd.వాదనలు.నిడివి; j += 2)
         {
-          cs_command_t seg (OpCode_rlineto);
-          seg.args.alloc (2);
-          seg.args.push (cmd.args[j]);
-          seg.args.push (cmd.args[j + 1]);
-          result.push (seg);
+          cs_command_t seg (Op_సంకేతం_rlineto);
+          seg.వాదనలు.alloc (2);
+          seg.వాదనలు.push (cmd.వాదనలు[j]);
+          seg.వాదనలు.push (cmd.వాదనలు[j + 1]);
+          ఫలితం.push (seg);
         }
-        break;
+        ఆపు;
       }
 
-      case OpCode_rrcurveto:
+      స్థితి Op_సంకేతం_rrcurveto:
       {
         /* Break into single segments (6 args each) */
-        for (unsigned j = 0; j + 5 < cmd.args.length; j += 6)
+        కొరకు (గుర్తులేని j = 0; j + 5 < cmd.వాదనలు.నిడివి; j += 6)
         {
-          cs_command_t seg (OpCode_rrcurveto);
-          seg.args.alloc (6);
-          for (unsigned k = 0; k < 6; k++)
-            seg.args.push (cmd.args[j + k]);
-          result.push (seg);
+          cs_command_t seg (Op_సంకేతం_rrcurveto);
+          seg.వాదనలు.alloc (6);
+          కొరకు (గుర్తులేని k = 0; k < 6; k++)
+            seg.వాదనలు.push (cmd.వాదనలు[j + k]);
+          ఫలితం.push (seg);
         }
-        break;
+        ఆపు;
       }
 
-      default:
+      అప్రమేయ:
         /* Keep other operators as-is */
-        result.push (cmd);
-        break;
+        ఫలితం.push (cmd);
+        ఆపు;
     }
   }
 
   /* Replace commands with generalized result */
   commands.clear ();
-  for (unsigned i = 0; i < result.length; i++)
-    commands.push (result[i]);
+  కొరకు (గుర్తులేని i = 0; i < ఫలితం.నిడివి; i++)
+    commands.push (ఫలితం[i]);
 }
 
 /* Specialize CharString commands to optimize bytecode size
@@ -149,39 +149,39 @@ generalize_commands (hb_vector_t<cs_command_t> &commands)
  *
  * This ensures we never exceed stack depth while optimizing bytecode.
  */
-static void
-specialize_commands (hb_vector_t<cs_command_t> &commands,
-                     unsigned maxstack = 48)
+స్థిర శూన్య
+specialize_commands (hb_సదిశ_t<cs_command_t> &commands,
+                     గుర్తులేని maxstack = 48)
 {
-  if (commands.length == 0) return;
+  ఒకవేళ (commands.నిడివి == 0) తిరిగి;
 
   /* Pass 0: Generalize to canonical form (fontTools does this first) */
   generalize_commands (commands);
 
   /* Pass 1: Specialize rmoveto/rlineto into h/v variants */
-  for (unsigned i = 0; i < commands.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < commands.నిడివి; i++)
   {
-    auto &cmd = commands[i];
+    స్వయంచాలక &cmd = commands[i];
 
-    if ((cmd.op == OpCode_rmoveto || cmd.op == OpCode_rlineto) &&
-        cmd.args.length == 2)
+    ఒకవేళ ((cmd.op == Op_సంకేతం_rmoveto || cmd.op == Op_సంకేతం_rlineto) &&
+        cmd.వాదనలు.నిడివి == 2)
     {
-      bool dx_zero = is_zero (cmd.args[0]);
-      bool dy_zero = is_zero (cmd.args[1]);
+      తార్కిక dx_zero = is_zero (cmd.వాదనలు[0]);
+      తార్కిక dy_zero = is_zero (cmd.వాదనలు[1]);
 
-      if (dx_zero && !dy_zero)
+      ఒకవేళ (dx_zero && !dy_zero)
       {
         /* Vertical movement (dx=0): keep only dy */
-        cmd.op = (cmd.op == OpCode_rmoveto) ? OpCode_vmoveto : OpCode_vlineto;
+        cmd.op = (cmd.op == Op_సంకేతం_rmoveto) ? Op_సంకేతం_vmoveto : Op_సంకేతం_vlineto;
         /* Shift dy to position 0 */
-        cmd.args[0] = cmd.args[1];
-        cmd.args.resize (1);
+        cmd.వాదనలు[0] = cmd.వాదనలు[1];
+        cmd.వాదనలు.resize (1);
       }
-      else if (!dx_zero && dy_zero)
+      లేకపోతే ఒకవేళ (!dx_zero && dy_zero)
       {
         /* Horizontal movement (dy=0): keep only dx */
-        cmd.op = (cmd.op == OpCode_rmoveto) ? OpCode_hmoveto : OpCode_hlineto;
-        cmd.args.resize (1);  /* Keep only dx */
+        cmd.op = (cmd.op == Op_సంకేతం_rmoveto) ? Op_సంకేతం_hmoveto : Op_సంకేతం_hlineto;
+        cmd.వాదనలు.resize (1);  /* Keep only dx */
       }
       /* else: both zero or both non-zero, keep as rmoveto/rlineto */
     }
@@ -190,24 +190,24 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
   /* Pass 2: Combine adjacent hlineto/vlineto operators
    * hlineto can take multiple args alternating with vlineto
    * This saves operator bytes */
-  for (int i = (int)commands.length - 1; i > 0; i--)
+  కొరకు (పూర్ణాంకం i = (పూర్ణాంకం)commands.నిడివి - 1; i > 0; i--)
   {
-    auto &cmd = commands[i];
-    auto &prev = commands[i-1];
+    స్వయంచాలక &cmd = commands[i];
+    స్వయంచాలక &prev = commands[i-1];
 
     /* Different starting directions can combine only after an odd number
      * of alternating arguments in the preceding command. */
-    if (((prev.op == OpCode_hlineto && cmd.op == OpCode_vlineto) ||
-         (prev.op == OpCode_vlineto && cmd.op == OpCode_hlineto)) &&
-        (prev.args.length & 1))
+    ఒకవేళ (((prev.op == Op_సంకేతం_hlineto && cmd.op == Op_సంకేతం_vlineto) ||
+         (prev.op == Op_సంకేతం_vlineto && cmd.op == Op_సంకేతం_hlineto)) &&
+        (prev.వాదనలు.నిడివి & 1))
     {
       /* Check stack depth */
-      unsigned combined_args = prev.args.length + cmd.args.length;
-      if (combined_args < maxstack)
+      గుర్తులేని combined_వాదనలు = prev.వాదనలు.నిడివి + cmd.వాదనలు.నిడివి;
+      ఒకవేళ (combined_వాదనలు < maxstack)
       {
         /* Merge into first command, keep its operator */
-        for (unsigned j = 0; j < cmd.args.length; j++)
-          prev.args.push (cmd.args[j]);
+        కొరకు (గుర్తులేని j = 0; j < cmd.వాదనలు.నిడివి; j++)
+          prev.వాదనలు.push (cmd.వాదనలు[j]);
         commands.remove_ordered (i);
         i++;  /* Adjust for removed element */
       }
@@ -215,25 +215,25 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
   }
 
   /* Pass 3: Combine adjacent identical operators */
-  for (int i = (int)commands.length - 1; i > 0; i--)
+  కొరకు (పూర్ణాంకం i = (పూర్ణాంకం)commands.నిడివి - 1; i > 0; i--)
   {
-    auto &cmd = commands[i];
-    auto &prev = commands[i-1];
+    స్వయంచాలక &cmd = commands[i];
+    స్వయంచాలక &prev = commands[i-1];
 
     /* Same-direction h/v commands can combine only after an even number
      * of alternating arguments. Other repeatable operators concatenate. */
-    if (prev.op == cmd.op &&
-        (cmd.op == OpCode_rlineto || cmd.op == OpCode_rrcurveto ||
-         ((cmd.op == OpCode_hlineto || cmd.op == OpCode_vlineto) &&
-          !(prev.args.length & 1))))
+    ఒకవేళ (prev.op == cmd.op &&
+        (cmd.op == Op_సంకేతం_rlineto || cmd.op == Op_సంకేతం_rrcurveto ||
+         ((cmd.op == Op_సంకేతం_hlineto || cmd.op == Op_సంకేతం_vlineto) &&
+          !(prev.వాదనలు.నిడివి & 1))))
     {
       /* Check stack depth */
-      unsigned combined_args = prev.args.length + cmd.args.length;
-      if (combined_args < maxstack)
+      గుర్తులేని combined_వాదనలు = prev.వాదనలు.నిడివి + cmd.వాదనలు.నిడివి;
+      ఒకవేళ (combined_వాదనలు < maxstack)
       {
         /* Merge args */
-        for (unsigned j = 0; j < cmd.args.length; j++)
-          prev.args.push (cmd.args[j]);
+        కొరకు (గుర్తులేని j = 0; j < cmd.వాదనలు.నిడివి; j++)
+          prev.వాదనలు.push (cmd.వాదనలు[j]);
         commands.remove_ordered (i);
         i++;  /* Adjust for removed element */
       }
@@ -242,36 +242,36 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
 }
 
 /* Encode commands back to binary CharString */
-static bool
-encode_commands (const hb_vector_t<cs_command_t> &commands,
+స్థిర తార్కిక
+encode_commands (స్థిరరాశి hb_సదిశ_t<cs_command_t> &commands,
                  str_buff_t &output)
 {
-  for (const auto &cmd : commands)
+  కొరకు (స్థిరరాశి స్వయంచాలక &cmd : commands)
   {
     str_encoder_t encoder (output);
 
     /* Encode arguments */
-    for (const auto &arg : cmd.args)
-      encoder.encode_num_cs (arg);
+    కొరకు (స్థిరరాశి స్వయంచాలక &arg : cmd.వాదనలు)
+      encoder.encode_అంకె_cs (arg);
 
     /* Encode operator */
-    if (cmd.op != OpCode_Invalid)
+    ఒకవేళ (cmd.op != Op_సంకేతం_Invalid)
       encoder.encode_op (cmd.op);
 
     /* hintmask/cntrmask are followed by raw mask bytes. */
-    if (cmd.op == OpCode_hintmask || cmd.op == OpCode_cntrmask)
+    ఒకవేళ (cmd.op == Op_సంకేతం_hintmask || cmd.op == Op_సంకేతం_cntrmask)
     {
-      for (const auto &byte : cmd.mask_bytes)
+      కొరకు (స్థిరరాశి స్వయంచాలక &byte : cmd.ముసుగు_బైట్లు)
         encoder.encode_byte (byte);
     }
 
-    if (encoder.in_error ())
-      return false;
+    ఒకవేళ (encoder.లోపల_error ())
+      తిరిగి అబద్ధం;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_SPECIALIZER_HH */
+#అయితే_ముగింపు /* HB_CFF_SPECIALIZER_HH */

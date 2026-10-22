@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_MAP_H
-#define HB_MAP_H
+#నిర్వచితం_కాకపోతే HB_MAP_H
+#నిర్వచించు HB_MAP_H
 
-#include "hb-common.h"
-#include "hb-set.h"
+#అన్తర్భావ "hb-common.h"
+#అన్తర్భావ "hb-set.h"
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.7.7
  */
-#define HB_MAP_VALUE_INVALID HB_CODEPOINT_INVALID
+#నిర్వచించు HB_MAP_విలువ_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_map_t:
@@ -52,92 +52,92 @@ HB_BEGIN_DECLS
  * Data type for holding integer-to-integer hash maps.
  *
  **/
-typedef struct hb_map_t hb_map_t;
+రకనిర్వచనం నిర్మాణం hb_map_t hb_map_t;
 
 
 HB_EXTERN hb_map_t *
-hb_map_create (void);
+hb_map_create (శూన్య);
 
 HB_EXTERN hb_map_t *
-hb_map_get_empty (void);
+hb_map_get_ఖాళీలు (శూన్య);
 
 HB_EXTERN hb_map_t *
 hb_map_reference (hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_map_destroy (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_map_సమితి_user_దత్తాంశం (hb_map_t           *map,
+		      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+		      శూన్య *              దత్తాంశం,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key);
+HB_EXTERN శూన్య *
+hb_map_get_user_దత్తాంశం (స్థిరరాశి hb_map_t     *map,
+		      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_map_allocation_successful (const hb_map_t *map);
+hb_map_కేటాయింపు_successful (స్థిరరాశి hb_map_t *map);
 
 HB_EXTERN hb_map_t *
-hb_map_copy (const hb_map_t *map);
+hb_map_copy (స్థిరరాశి hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_map_clear (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_empty (const hb_map_t *map);
+hb_map_is_ఖాళీలు (స్థిరరాశి hb_map_t *map);
 
-HB_EXTERN unsigned int
-hb_map_get_population (const hb_map_t *map);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_map_get_population (స్థిరరాశి hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other);
+hb_map_is_equal (స్థిరరాశి hb_map_t *map,
+		 స్థిరరాశి hb_map_t *other);
 
-HB_EXTERN unsigned int
-hb_map_hash (const hb_map_t *map);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_map_hash (స్థిరరాశి hb_map_t *map);
 
-HB_EXTERN void
-hb_map_set (hb_map_t       *map,
-	    hb_codepoint_t  key,
-	    hb_codepoint_t  value);
+HB_EXTERN శూన్య
+hb_map_సమితి (hb_map_t       *map,
+	    hb_codepoint_t  కీలకం_2,
+	    hb_codepoint_t  విలువ_2);
 
 HB_EXTERN hb_codepoint_t
-hb_map_get (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_get (స్థిరరాశి hb_map_t *map,
+	    hb_codepoint_t  కీలకం_2);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_map_del (hb_map_t       *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  కీలకం_2);
 
 HB_EXTERN hb_bool_t
-hb_map_has (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_has (స్థిరరాశి hb_map_t *map,
+	    hb_codepoint_t  కీలకం_2);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other);
+	       స్థిరరాశి hb_map_t *other);
 
 /* Pass -1 in for idx to get started. */
 HB_EXTERN hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
-	     hb_codepoint_t *key,
-	     hb_codepoint_t *value);
+hb_map_తదుపరి (స్థిరరాశి hb_map_t *map,
+	     పూర్ణాంకం *idx,
+	     hb_codepoint_t *కీలకం_2,
+	     hb_codepoint_t *విలువ_2);
 
-HB_EXTERN void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys);
+HB_EXTERN శూన్య
+hb_map_కీలకాలు (స్థిరరాశి hb_map_t *map,
+	     hb_సమితి_t *కీలకాలు);
 
-HB_EXTERN void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values);
+HB_EXTERN శూన్య
+hb_map_విలువలు (స్థిరరాశి hb_map_t *map,
+	       hb_సమితి_t *విలువలు);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_MAP_H */
+#అయితే_ముగింపు /* HB_MAP_H */

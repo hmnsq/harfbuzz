@@ -24,56 +24,56 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-array.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-array.hh"
 
-static void
-test_reverse ()
+స్థిర శూన్య
+test_తిరగేయి ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  పూర్ణాంకం values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<పూర్ణాంకం> a (values, 9);
   a.reverse();
 
-  int expected_values[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
-  hb_array_t<int> expected (expected_values, 9);
+  పూర్ణాంకం expected_విలువలు[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+  hb_array_t<పూర్ణాంకం> expected (expected_విలువలు, 9);
   hb_always_assert (a == expected);
 }
 
-static void
-test_reverse_range ()
+స్థిర శూన్య
+test_తిరగేయి_range ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  పూర్ణాంకం values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<పూర్ణాంకం> a (values, 9);
   a.reverse(2, 6);
 
-  int expected_values[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  పూర్ణాంకం expected_విలువలు[] = {1, 2, 6, 5, 4, 3, 7, 8, 9};
+  hb_array_t<పూర్ణాంకం> expected (expected_విలువలు, 9);
   hb_always_assert (a == expected);
 }
 
-static void
-test_reverse_invalid ()
+స్థిర శూన్య
+test_తిరగేయి_invalid ()
 {
-  int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> a (values, 9);
+  పూర్ణాంకం values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<పూర్ణాంకం> a (values, 9);
 
   a.reverse(4, 3);
   a.reverse(2, 3);
   a.reverse(5, 5);
   a.reverse(12, 15);
 
-  int expected_values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  hb_array_t<int> expected (expected_values, 9);
+  పూర్ణాంకం expected_విలువలు[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  hb_array_t<పూర్ణాంకం> expected (expected_విలువలు, 9);
   hb_always_assert (a == expected);
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
   /* The following fails on MSVC. */
   // hb_always_assert (sizeof (hb_array_t<int>) == sizeof (hb_sorted_array_t<int>));
 
-  test_reverse ();
-  test_reverse_range ();
-  test_reverse_invalid ();
+  test_తిరగేయి ();
+  test_తిరగేయి_range ();
+  test_తిరగేయి_invalid ();
 }

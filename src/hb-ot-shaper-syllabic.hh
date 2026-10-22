@@ -22,26 +22,26 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_SHAPER_SYLLABIC_HH
-#define HB_OT_SHAPER_SYLLABIC_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPER_SYLLABIC_HH
+#నిర్వచించు HB_OT_SHAPER_SYLLABIC_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#అన్తర్భావ "hb-ot-shaper.hh"
 
 
-HB_INTERNAL bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
-				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category = -1,
-				   int dottedcircle_position = -1);
+HB_అంతర్గత తార్కిక
+hb_syllabic_చొప్పించు_dotted_circles (hb_font_t *font,
+				   hb_బఫరు_t *బఫరు,
+				   గుర్తులేని పూర్ణాంకం broken_syllable_type,
+				   గుర్తులేని పూర్ణాంకం dottedcircle_category,
+				   పూర్ణాంకం repha_category = -1,
+				   పూర్ణాంకం dottedcircle_position = -1);
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత తార్కిక
+hb_syllabic_clear_var (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
+		       hb_బఫరు_t *బఫరు);
 
 
-#endif /* HB_OT_SHAPER_SYLLABIC_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPER_SYLLABIC_HH */

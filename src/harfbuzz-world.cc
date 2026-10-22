@@ -1,188 +1,188 @@
-#ifdef HB_FEATURES_H
-#include HB_FEATURES_H
-#endif
+#నిర్వచితమైతే HB_FEATURES_H
+#అన్తర్భావ HB_FEATURES_H
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_CORETEXT
-#define HAVE_CORETEXT 1
-#endif
-#ifdef HB_HAS_DIRECTWRITE
-#define HAVE_DIRECTWRITE 1
-#endif
-#ifdef HB_HAS_FREETYPE
-#define HAVE_FREETYPE 1
-#endif
-#ifdef HB_HAS_GDI
-#define HAVE_GDI 1
-#endif
-#ifdef HB_HAS_GLIB
-#define HAVE_GLIB 1
-#endif
-#ifdef HB_HAS_GRAPHITE
-#define HAVE_GRAPHITE 1
-#endif
-#ifdef HB_HAS_UNISCRIBE
-#define HAVE_UNISCRIBE 1
-#define HAVE_GDI 1
-#endif
-#ifdef HB_HAS_WASM
-#define HAVE_WASM 1
-#endif
+#నిర్వచితమైతే HB_HAS_CORETEXT
+#నిర్వచించు HAVE_CORETEXT 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_DIRECTWRITE
+#నిర్వచించు HAVE_DIRECTWRITE 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_FREETYPE
+#నిర్వచించు HAVE_FREETYPE 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_GDI
+#నిర్వచించు HAVE_GDI 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_GLIB
+#నిర్వచించు HAVE_GLIB 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_GRAPHITE
+#నిర్వచించు HAVE_GRAPHITE 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_UNISCRIBE
+#నిర్వచించు HAVE_UNISCRIBE 1
+#నిర్వచించు HAVE_GDI 1
+#అయితే_ముగింపు
+#నిర్వచితమైతే HB_HAS_WASM
+#నిర్వచించు HAVE_WASM 1
+#అయితే_ముగింపు
 
 
 /* Core library. */
-#include "OT/Var/VARC/VARC.cc"
-#include "hb-aat-layout.cc"
-#include "hb-aat-map.cc"
-#include "hb-blob.cc"
-#include "hb-buffer-serialize.cc"
-#include "hb-buffer-verify.cc"
-#include "hb-buffer.cc"
-#include "hb-common.cc"
-#include "hb-draw.cc"
-#include "hb-face-builder.cc"
-#include "hb-face.cc"
-#include "hb-fallback-shape.cc"
-#include "hb-font.cc"
-#include "hb-map.cc"
-#include "hb-number.cc"
-#include "hb-ot-cff1-table.cc"
-#include "hb-ot-cff2-table.cc"
-#include "hb-ot-color.cc"
-#include "hb-ot-face.cc"
-#include "hb-ot-fetch.cc"
-#include "hb-ot-font.cc"
-#include "hb-ot-layout.cc"
-#include "hb-ot-map.cc"
-#include "hb-ot-math.cc"
-#include "hb-ot-meta.cc"
-#include "hb-ot-metrics.cc"
-#include "hb-ot-name.cc"
-#include "hb-ot-shape-fallback.cc"
-#include "hb-ot-shape-normalize.cc"
-#include "hb-ot-shape.cc"
-#include "hb-ot-shaper-arabic.cc"
-#include "hb-ot-shaper-default.cc"
-#include "hb-ot-shaper-hangul.cc"
-#include "hb-ot-shaper-hebrew.cc"
-#include "hb-ot-shaper-indic-table.cc"
-#include "hb-ot-shaper-indic.cc"
-#include "hb-ot-shaper-khmer.cc"
-#include "hb-ot-shaper-myanmar.cc"
-#include "hb-ot-shaper-syllabic.cc"
-#include "hb-ot-shaper-thai.cc"
-#include "hb-ot-shaper-use.cc"
-#include "hb-ot-shaper-vowel-constraints.cc"
-#include "hb-ot-tag.cc"
-#include "hb-ot-var.cc"
-#include "hb-outline.cc"
-#include "hb-paint-bounded.cc"
-#include "hb-paint-extents.cc"
-#include "hb-paint.cc"
-#include "hb-set.cc"
-#include "hb-shape-plan.cc"
-#include "hb-shape.cc"
-#include "hb-shaper.cc"
-#include "hb-static.cc"
-#include "hb-style.cc"
-#include "hb-ucd.cc"
-#include "hb-unicode.cc"
+#అన్తర్భావ "OT/Var/VARC/VARC.cc"
+#అన్తర్భావ "hb-aat-layout.cc"
+#అన్తర్భావ "hb-aat-map.cc"
+#అన్తర్భావ "hb-blob.cc"
+#అన్తర్భావ "hb-buffer-serialize.cc"
+#అన్తర్భావ "hb-buffer-verify.cc"
+#అన్తర్భావ "hb-buffer.cc"
+#అన్తర్భావ "hb-common.cc"
+#అన్తర్భావ "hb-draw.cc"
+#అన్తర్భావ "hb-face-builder.cc"
+#అన్తర్భావ "hb-face.cc"
+#అన్తర్భావ "hb-fallback-shape.cc"
+#అన్తర్భావ "hb-font.cc"
+#అన్తర్భావ "hb-map.cc"
+#అన్తర్భావ "hb-number.cc"
+#అన్తర్భావ "hb-ot-cff1-table.cc"
+#అన్తర్భావ "hb-ot-cff2-table.cc"
+#అన్తర్భావ "hb-ot-color.cc"
+#అన్తర్భావ "hb-ot-face.cc"
+#అన్తర్భావ "hb-ot-fetch.cc"
+#అన్తర్భావ "hb-ot-font.cc"
+#అన్తర్భావ "hb-ot-layout.cc"
+#అన్తర్భావ "hb-ot-map.cc"
+#అన్తర్భావ "hb-ot-math.cc"
+#అన్తర్భావ "hb-ot-meta.cc"
+#అన్తర్భావ "hb-ot-metrics.cc"
+#అన్తర్భావ "hb-ot-name.cc"
+#అన్తర్భావ "hb-ot-shape-fallback.cc"
+#అన్తర్భావ "hb-ot-shape-normalize.cc"
+#అన్తర్భావ "hb-ot-shape.cc"
+#అన్తర్భావ "hb-ot-shaper-arabic.cc"
+#అన్తర్భావ "hb-ot-shaper-default.cc"
+#అన్తర్భావ "hb-ot-shaper-hangul.cc"
+#అన్తర్భావ "hb-ot-shaper-hebrew.cc"
+#అన్తర్భావ "hb-ot-shaper-indic-table.cc"
+#అన్తర్భావ "hb-ot-shaper-indic.cc"
+#అన్తర్భావ "hb-ot-shaper-khmer.cc"
+#అన్తర్భావ "hb-ot-shaper-myanmar.cc"
+#అన్తర్భావ "hb-ot-shaper-syllabic.cc"
+#అన్తర్భావ "hb-ot-shaper-thai.cc"
+#అన్తర్భావ "hb-ot-shaper-use.cc"
+#అన్తర్భావ "hb-ot-shaper-vowel-constraints.cc"
+#అన్తర్భావ "hb-ot-tag.cc"
+#అన్తర్భావ "hb-ot-var.cc"
+#అన్తర్భావ "hb-outline.cc"
+#అన్తర్భావ "hb-paint-bounded.cc"
+#అన్తర్భావ "hb-paint-extents.cc"
+#అన్తర్భావ "hb-paint.cc"
+#అన్తర్భావ "hb-set.cc"
+#అన్తర్భావ "hb-shape-plan.cc"
+#అన్తర్భావ "hb-shape.cc"
+#అన్తర్భావ "hb-shaper.cc"
+#అన్తర్భావ "hb-static.cc"
+#అన్తర్భావ "hb-style.cc"
+#అన్తర్భావ "hb-ucd.cc"
+#అన్తర్భావ "hb-unicode.cc"
 
-#ifdef HB_HAS_CAIRO
-#include "hb-cairo-utils.cc"
-#include "hb-cairo.cc"
-#include "hb-static.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_CAIRO
+#అన్తర్భావ "hb-cairo-utils.cc"
+#అన్తర్భావ "hb-cairo.cc"
+#అన్తర్భావ "hb-static.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_CORETEXT
-#include "hb-coretext-font.cc"
-#include "hb-coretext-shape.cc"
-#include "hb-coretext.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_CORETEXT
+#అన్తర్భావ "hb-coretext-font.cc"
+#అన్తర్భావ "hb-coretext-shape.cc"
+#అన్తర్భావ "hb-coretext.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_DIRECTWRITE
-#include "hb-directwrite-font.cc"
-#include "hb-directwrite-shape.cc"
-#include "hb-directwrite.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_DIRECTWRITE
+#అన్తర్భావ "hb-directwrite-font.cc"
+#అన్తర్భావ "hb-directwrite-shape.cc"
+#అన్తర్భావ "hb-directwrite.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_FREETYPE
-#include "hb-ft.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_FREETYPE
+#అన్తర్భావ "hb-ft.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_GDI
-#ifndef HAVE_GDI
-#include "hb-gdi.cc"
-#endif
-#endif
+#నిర్వచితమైతే HB_HAS_GDI
+#నిర్వచితం_కాకపోతే HAVE_GDI
+#అన్తర్భావ "hb-gdi.cc"
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_GLIB
-#include "hb-glib.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_GLIB
+#అన్తర్భావ "hb-glib.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_GRAPHITE
-#include "hb-graphite2.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_GRAPHITE
+#అన్తర్భావ "hb-graphite2.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_GPU
-#include "hb-gpu-draw.cc"
-#include "hb-gpu-paint.cc"
-#include "hb-gpu.cc"
-#include "hb-static.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_GPU
+#అన్తర్భావ "hb-gpu-draw.cc"
+#అన్తర్భావ "hb-gpu-paint.cc"
+#అన్తర్భావ "hb-gpu.cc"
+#అన్తర్భావ "hb-static.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_ICU
-#include "hb-icu.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_ICU
+#అన్తర్భావ "hb-icu.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_RASTER
-#include "hb-raster-draw.cc"
-#include "hb-raster-image.cc"
-#include "hb-raster-paint.cc"
-#include "hb-static.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_RASTER
+#అన్తర్భావ "hb-raster-draw.cc"
+#అన్తర్భావ "hb-raster-image.cc"
+#అన్తర్భావ "hb-raster-paint.cc"
+#అన్తర్భావ "hb-static.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_SUBSET
-#include "OT/Var/VARC/VARC.cc"
-#include "graph/gsubgpos-context.cc"
-#include "hb-depend.cc"
-#include "hb-number.cc"
-#include "hb-ot-cff1-table.cc"
-#include "hb-ot-cff2-table.cc"
-#include "hb-static.cc"
-#include "hb-subset-cff-common.cc"
-#include "hb-subset-cff1.cc"
-#include "hb-subset-cff2.cc"
-#include "hb-subset-input.cc"
-#include "hb-subset-instancer-iup.cc"
-#include "hb-subset-instancer-solver.cc"
-#include "hb-subset-plan-layout.cc"
-#include "hb-subset-plan-var.cc"
-#include "hb-subset-plan.cc"
-#include "hb-subset-serialize.cc"
-#include "hb-subset-table-cff.cc"
-#include "hb-subset-table-color.cc"
-#include "hb-subset-table-layout.cc"
-#include "hb-subset-table-other.cc"
-#include "hb-subset-table-var.cc"
-#include "hb-subset.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_SUBSET
+#అన్తర్భావ "OT/Var/VARC/VARC.cc"
+#అన్తర్భావ "graph/gsubgpos-context.cc"
+#అన్తర్భావ "hb-depend.cc"
+#అన్తర్భావ "hb-number.cc"
+#అన్తర్భావ "hb-ot-cff1-table.cc"
+#అన్తర్భావ "hb-ot-cff2-table.cc"
+#అన్తర్భావ "hb-static.cc"
+#అన్తర్భావ "hb-subset-cff-common.cc"
+#అన్తర్భావ "hb-subset-cff1.cc"
+#అన్తర్భావ "hb-subset-cff2.cc"
+#అన్తర్భావ "hb-subset-input.cc"
+#అన్తర్భావ "hb-subset-instancer-iup.cc"
+#అన్తర్భావ "hb-subset-instancer-solver.cc"
+#అన్తర్భావ "hb-subset-plan-layout.cc"
+#అన్తర్భావ "hb-subset-plan-var.cc"
+#అన్తర్భావ "hb-subset-plan.cc"
+#అన్తర్భావ "hb-subset-serialize.cc"
+#అన్తర్భావ "hb-subset-table-cff.cc"
+#అన్తర్భావ "hb-subset-table-color.cc"
+#అన్తర్భావ "hb-subset-table-layout.cc"
+#అన్తర్భావ "hb-subset-table-other.cc"
+#అన్తర్భావ "hb-subset-table-var.cc"
+#అన్తర్భావ "hb-subset.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_UNISCRIBE
-#include "hb-uniscribe.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_UNISCRIBE
+#అన్తర్భావ "hb-uniscribe.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_VECTOR
-#include "hb-static.cc"
-#include "hb-vector-draw.cc"
-#include "hb-vector-paint-pdf.cc"
-#include "hb-vector-paint-svg.cc"
-#include "hb-vector-paint.cc"
-#include "hb-vector-path.cc"
-#include "hb-vector.cc"
-#include "hb-zlib.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_సదిశ
+#అన్తర్భావ "hb-static.cc"
+#అన్తర్భావ "hb-vector-draw.cc"
+#అన్తర్భావ "hb-vector-paint-pdf.cc"
+#అన్తర్భావ "hb-vector-paint-svg.cc"
+#అన్తర్భావ "hb-vector-paint.cc"
+#అన్తర్భావ "hb-vector-path.cc"
+#అన్తర్భావ "hb-vector.cc"
+#అన్తర్భావ "hb-zlib.cc"
+#అయితే_ముగింపు
 
-#ifdef HB_HAS_WASM
-#include "hb-wasm-api.cc"
-#include "hb-wasm-shape.cc"
-#endif
+#నిర్వచితమైతే HB_HAS_WASM
+#అన్తర్భావ "hb-wasm-api.cc"
+#అన్తర్భావ "hb-wasm-shape.cc"
+#అయితే_ముగింపు

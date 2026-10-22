@@ -1,290 +1,290 @@
 #!/usr/bin/env python3
 
-import gi
+దిగుమతి gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, HarfBuzz as hb
+gi.require_సంస్కరణ("Gtk", "3.0")
+తః gi.repository దిగుమతి Gtk, HarfBuzz ఇవ hb
 
 
 POOL = {}
 
 
-def move_to_f(funcs, draw_data, st, to_x, to_y, user_data):
-    context = POOL[draw_data]
-    context.move_to(to_x, to_y)
+నిర్వచనం move_గమ్యం_f(funcs, draw_దత్తాంశం, st, గమ్యం_x, గమ్యం_y, user_దత్తాంశం):
+    context = POOL[draw_దత్తాంశం]
+    context.move_గమ్యం(గమ్యం_x, గమ్యం_y)
 
 
-def line_to_f(funcs, draw_data, st, to_x, to_y, user_data):
-    context = POOL[draw_data]
-    context.line_to(to_x, to_y)
+నిర్వచనం పంక్తి_గమ్యం_f(funcs, draw_దత్తాంశం, st, గమ్యం_x, గమ్యం_y, user_దత్తాంశం):
+    context = POOL[draw_దత్తాంశం]
+    context.పంక్తి_గమ్యం(గమ్యం_x, గమ్యం_y)
 
 
-def cubic_to_f(
+నిర్వచనం cubic_గమ్యం_f(
     funcs,
-    draw_data,
+    draw_దత్తాంశం,
     st,
     control1_x,
     control1_y,
     control2_x,
     control2_y,
-    to_x,
-    to_y,
-    user_data,
+    గమ్యం_x,
+    గమ్యం_y,
+    user_దత్తాంశం,
 ):
-    context = POOL[draw_data]
-    context.curve_to(control1_x, control1_y, control2_x, control2_y, to_x, to_y)
+    context = POOL[draw_దత్తాంశం]
+    context.వక్రం_గమ్యం(control1_x, control1_y, control2_x, control2_y, గమ్యం_x, గమ్యం_y)
 
 
-def close_path_f(funcs, draw_data, st, user_data):
-    context = POOL[draw_data]
-    context.close_path()
+నిర్వచనం close_మార్గం_f(funcs, draw_దత్తాంశం, st, user_దత్తాంశం):
+    context = POOL[draw_దత్తాంశం]
+    context.close_మార్గం()
 
 
 DFUNCS = hb.draw_funcs_create()
-hb.draw_funcs_set_move_to_func(DFUNCS, move_to_f, None)
-hb.draw_funcs_set_line_to_func(DFUNCS, line_to_f, None)
-hb.draw_funcs_set_cubic_to_func(DFUNCS, cubic_to_f, None)
-hb.draw_funcs_set_close_path_func(DFUNCS, close_path_f, None)
+hb.draw_funcs_సమితి_move_గమ్యం_func(DFUNCS, move_గమ్యం_f, ఏమీలేదు)
+hb.draw_funcs_సమితి_పంక్తి_గమ్యం_func(DFUNCS, పంక్తి_గమ్యం_f, ఏమీలేదు)
+hb.draw_funcs_సమితి_cubic_గమ్యం_func(DFUNCS, cubic_గమ్యం_f, ఏమీలేదు)
+hb.draw_funcs_సమితి_close_మార్గం_func(DFUNCS, close_మార్గం_f, ఏమీలేదు)
 
 
-def push_transform_f(funcs, paint_data, xx, yx, xy, yy, dx, dy, user_data):
-    raise NotImplementedError
+నిర్వచనం నెట్టు_transform_f(funcs, paint_దత్తాంశం, xx, yx, xy, yy, dx, dy, user_దత్తాంశం):
+    లేపు NotImplementedError
 
 
-def pop_transform_f(funcs, paint_data, user_data):
-    raise NotImplementedError
+నిర్వచనం తీయి_transform_f(funcs, paint_దత్తాంశం, user_దత్తాంశం):
+    లేపు NotImplementedError
 
 
-def color_f(funcs, paint_data, is_foreground, color, user_data):
-    context = POOL[paint_data]
+నిర్వచనం color_f(funcs, paint_దత్తాంశం, is_foreground, color, user_దత్తాంశం):
+    context = POOL[paint_దత్తాంశం]
     r = hb.color_get_red(color) / 255
     g = hb.color_get_green(color) / 255
     b = hb.color_get_blue(color) / 255
     a = hb.color_get_alpha(color) / 255
-    context.set_source_rgba(r, g, b, a)
+    context.సమితి_ఆధారం_rgba(r, g, b, a)
     context.paint()
 
 
-def push_clip_rectangle_f(funcs, paint_data, xmin, ymin, xmax, ymax, user_data):
-    context = POOL[paint_data]
+నిర్వచనం నెట్టు_clip_rectangle_f(funcs, paint_దత్తాంశం, xmin, ymin, xmax, ymax, user_దత్తాంశం):
+    context = POOL[paint_దత్తాంశం]
     context.save()
     context.rectangle(xmin, ymin, xmax, ymax)
     context.clip()
 
 
-def push_clip_glyph_f(funcs, paint_data, glyph, font, user_data):
-    context = POOL[paint_data]
+నిర్వచనం నెట్టు_clip_glyph_f(funcs, paint_దత్తాంశం, glyph, font, user_దత్తాంశం):
+    context = POOL[paint_దత్తాంశం]
     context.save()
-    context.new_path()
-    hb.font_draw_glyph(font, glyph, DFUNCS, paint_data)
-    context.close_path()
+    context.new_మార్గం()
+    hb.font_draw_glyph(font, glyph, DFUNCS, paint_దత్తాంశం)
+    context.close_మార్గం()
     context.clip()
 
 
-def pop_clip_f(funcs, paint_data, user_data):
-    context = POOL[paint_data]
+నిర్వచనం తీయి_clip_f(funcs, paint_దత్తాంశం, user_దత్తాంశం):
+    context = POOL[paint_దత్తాంశం]
     context.restore()
 
 
-def push_group_f(funcs, paint_data, user_data):
-    raise NotImplementedError
+నిర్వచనం నెట్టు_సమూహం_f(funcs, paint_దత్తాంశం, user_దత్తాంశం):
+    లేపు NotImplementedError
 
 
-def pop_group_f(funcs, paint_data, mode, user_data):
-    raise NotImplementedError
+నిర్వచనం తీయి_సమూహం_f(funcs, paint_దత్తాంశం, బహుళకం, user_దత్తాంశం):
+    లేపు NotImplementedError
 
 
 PFUNCS = hb.paint_funcs_create()
-hb.paint_funcs_set_push_transform_func(PFUNCS, push_transform_f, None)
-hb.paint_funcs_set_pop_transform_func(PFUNCS, pop_transform_f, None)
-hb.paint_funcs_set_color_func(PFUNCS, color_f, None)
-hb.paint_funcs_set_push_clip_glyph_func(PFUNCS, push_clip_glyph_f, None)
-hb.paint_funcs_set_push_clip_rectangle_func(PFUNCS, push_clip_rectangle_f, None)
-hb.paint_funcs_set_pop_clip_func(PFUNCS, pop_clip_f, None)
-hb.paint_funcs_set_push_group_func(PFUNCS, push_group_f, None)
-hb.paint_funcs_set_pop_group_func(PFUNCS, pop_group_f, None)
+hb.paint_funcs_సమితి_నెట్టు_transform_func(PFUNCS, నెట్టు_transform_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_తీయి_transform_func(PFUNCS, తీయి_transform_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_color_func(PFUNCS, color_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_నెట్టు_clip_glyph_func(PFUNCS, నెట్టు_clip_glyph_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_నెట్టు_clip_rectangle_func(PFUNCS, నెట్టు_clip_rectangle_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_తీయి_clip_func(PFUNCS, తీయి_clip_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_నెట్టు_సమూహం_func(PFUNCS, నెట్టు_సమూహం_f, ఏమీలేదు)
+hb.paint_funcs_సమితి_తీయి_సమూహం_func(PFUNCS, తీయి_సమూహం_f, ఏమీలేదు)
 
 
-def makebuffer(words):
-    buf = hb.buffer_create()
+నిర్వచనం makebuffer(పదాలు):
+    buf = hb.బఫరు_create()
 
-    text = " ".join(words)
-    hb.buffer_add_codepoints(buf, [ord(c) for c in text], 0, len(text))
+    పాఠ్యం = " ".join(పదాలు)
+    hb.బఫరు_కూడు_codepoints(buf, [ord(c) కొరకు c లో పాఠ్యం], 0, పొడవు(పాఠ్యం))
 
-    hb.buffer_guess_segment_properties(buf)
+    hb.బఫరు_guess_segment_properties(buf)
 
-    return buf
+    తిరిగి buf
 
 
-def justify(face, words, advance, target_advance):
+నిర్వచనం justify(face, పదాలు, advance, లక్ష్యం_advance):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(పదాలు)
 
     wiggle = 5
-    shrink = target_advance - wiggle < advance
-    expand = target_advance + wiggle > advance
+    shrink = లక్ష్యం_advance - wiggle < advance
+    expand = లక్ష్యం_advance + wiggle > advance
 
-    ret, advance, tag, value = hb.shape_justify(
+    ret, advance, ట్యాగ్_2, విలువ_2 = hb.shape_justify(
         font,
         buf,
-        None,
-        None,
-        target_advance,
-        target_advance,
+        ఏమీలేదు,
+        ఏమీలేదు,
+        లక్ష్యం_advance,
+        లక్ష్యం_advance,
         advance,
     )
 
-    if not ret:
-        return False, buf, None
+    ఒకవేళ కాదు ret:
+        తిరిగి అబద్ధం, buf, ఏమీలేదు
 
-    if tag:
+    ఒకవేళ ట్యాగ్_2:
         variation = hb.variation_t()
-        variation.tag = tag
-        variation.value = value
-    else:
-        variation = None
+        variation.ట్యాగ్_2 = ట్యాగ్_2
+        variation.విలువ_2 = విలువ_2
+    లేకపోతే:
+        variation = ఏమీలేదు
 
-    if shrink and advance > target_advance + wiggle:
-        return False, buf, variation
-    if expand and advance < target_advance - wiggle:
-        return False, buf, variation
+    ఒకవేళ shrink మరియు advance > లక్ష్యం_advance + wiggle:
+        తిరిగి అబద్ధం, buf, variation
+    ఒకవేళ expand మరియు advance < లక్ష్యం_advance - wiggle:
+        తిరిగి అబద్ధం, buf, variation
 
-    return True, buf, variation
+    తిరిగి నిజం, buf, variation
 
 
-def shape(face, words):
+నిర్వచనం shape(face, పదాలు):
     font = hb.font_create(face)
-    buf = makebuffer(words)
+    buf = makebuffer(పదాలు)
     hb.shape(font, buf)
-    positions = hb.buffer_get_glyph_positions(buf)
-    advance = sum(p.x_advance for p in positions)
-    return buf, advance
+    positions = hb.బఫరు_get_glyph_positions(buf)
+    advance = కూడిక(p.x_advance కొరకు p లో positions)
+    తిరిగి buf, advance
 
 
-def typeset(face, text, target_advance):
-    lines = []
-    words = []
-    for word in text.split():
-        words.append(word)
-        buf, advance = shape(face, words)
-        if advance > target_advance:
+నిర్వచనం typeset(face, పాఠ్యం, లక్ష్యం_advance):
+    పంక్తులు = []
+    పదాలు = []
+    కొరకు మాట_2 లో పాఠ్యం.విభజించు():
+        పదాలు.append(మాట_2)
+        buf, advance = shape(face, పదాలు)
+        ఒకవేళ advance > లక్ష్యం_advance:
             # Shrink
-            ret, buf, variation = justify(face, words, advance, target_advance)
-            if ret:
-                lines.append((buf, variation))
-                words = []
+            ret, buf, variation = justify(face, పదాలు, advance, లక్ష్యం_advance)
+            ఒకవేళ ret:
+                పంక్తులు.append((buf, variation))
+                పదాలు = []
             # If if fails, pop the last word and shrink, and hope for the best.
             # A too short line is better than too long.
-            elif len(words) > 1:
-                words.pop()
-                _, buf, variation = justify(face, words, advance, target_advance)
-                lines.append((buf, variation))
-                words = [word]
+            లేదావేళ పొడవు(పదాలు) > 1:
+                పదాలు.తీయి()
+                _, buf, variation = justify(face, పదాలు, advance, లక్ష్యం_advance)
+                పంక్తులు.append((buf, variation))
+                పదాలు = [మాట_2]
             # But if it is one word, meh.
-            else:
-                lines.append((buf, variation))
-                words = []
+            లేకపోతే:
+                పంక్తులు.append((buf, variation))
+                పదాలు = []
 
     # Justify last line
-    if words:
-        _, buf, variation = justify(face, words, advance, target_advance)
-        lines.append((buf, variation))
+    ఒకవేళ పదాలు:
+        _, buf, variation = justify(face, పదాలు, advance, లక్ష్యం_advance)
+        పంక్తులు.append((buf, variation))
 
-    return lines
+    తిరిగి పంక్తులు
 
 
-def render(face, text, context, width, height, fontsize):
+నిర్వచనం render(face, పాఠ్యం, context, వెడల్పు, ఎత్తు, fontsize):
     font = hb.font_create(face)
 
     margin = fontsize * 2
     scale = fontsize / hb.face_get_upem(face)
-    target_advance = (width - (margin * 2)) / scale
+    లక్ష్యం_advance = (వెడల్పు - (margin * 2)) / scale
 
-    lines = typeset(face, text, target_advance)
+    పంక్తులు = typeset(face, పాఠ్యం, లక్ష్యం_advance)
 
     _, extents = hb.font_get_h_extents(font)
-    lineheight = extents.ascender - extents.descender + extents.line_gap
+    lineheight = extents.ascender - extents.descender + extents.పంక్తి_gap
     lineheight *= scale
 
     context.save()
     context.translate(0, margin)
-    context.set_font_size(12)
-    context.set_source_rgb(1, 0, 0)
-    for buf, variation in lines:
-        rtl = hb.buffer_get_direction(buf) == hb.direction_t.RTL
-        if rtl:
-            hb.buffer_reverse(buf)
-        infos = hb.buffer_get_glyph_infos(buf)
-        positions = hb.buffer_get_glyph_positions(buf)
-        advance = sum(p.x_advance for p in positions)
+    context.సమితి_font_కొలత(12)
+    context.సమితి_ఆధారం_rgb(1, 0, 0)
+    కొరకు buf, variation లో పంక్తులు:
+        rtl = hb.బఫరు_get_direction(buf) == hb.direction_t.RTL
+        ఒకవేళ rtl:
+            hb.బఫరు_తిరగేయి(buf)
+        infos = hb.బఫరు_get_glyph_infos(buf)
+        positions = hb.బఫరు_get_glyph_positions(buf)
+        advance = కూడిక(p.x_advance కొరకు p లో positions)
 
         context.translate(0, lineheight)
         context.save()
 
         context.save()
-        context.move_to(0, -20)
-        if variation:
-            tag = hb.tag_to_string(variation.tag).decode("ascii")
-            context.show_text(f" {tag}={variation.value:g}")
-        context.move_to(0, 0)
-        context.show_text(f" {advance:g}/{target_advance:g}")
+        context.move_గమ్యం(0, -20)
+        ఒకవేళ variation:
+            ట్యాగ్_2 = hb.ట్యాగ్_గమ్యం_string(variation.ట్యాగ్_2).decode("ascii")
+            context.show_పాఠ్యం(f" {tag}={variation.value:g}")
+        context.move_గమ్యం(0, 0)
+        context.show_పాఠ్యం(f" {advance:g}/{target_advance:g}")
         context.restore()
 
-        if variation:
-            hb.font_set_variations(font, [variation])
+        ఒకవేళ variation:
+            hb.font_సమితి_variations(font, [variation])
 
         context.translate(margin, 0)
         context.scale(scale, -scale)
 
-        if rtl:
-            context.translate(target_advance, 0)
+        ఒకవేళ rtl:
+            context.translate(లక్ష్యం_advance, 0)
 
-        for info, pos in zip(infos, positions):
-            if rtl:
+        కొరకు info, pos లో zip(infos, positions):
+            ఒకవేళ rtl:
                 context.translate(-pos.x_advance, pos.y_advance)
             context.save()
-            context.translate(pos.x_offset, pos.y_offset)
+            context.translate(pos.x_స్థానభ్రంశం_2, pos.y_స్థానభ్రంశం_2)
             hb.font_paint_glyph(font, info.codepoint, PFUNCS, id(context), 0, 0x0000FF)
             context.restore()
-            if not rtl:
+            ఒకవేళ కాదు rtl:
                 context.translate(+pos.x_advance, pos.y_advance)
 
         context.restore()
     context.restore()
 
 
-def main(fontpath, textpath):
+నిర్వచనం ప్రధాన(fontpath, textpath):
     fontsize = 70
 
     blob = hb.blob_create_from_file(fontpath)
     face = hb.face_create(blob, 0)
 
-    with open(textpath) as f:
-        text = f.read()
+    తోడుగా open(textpath) ఇవ f:
+        పాఠ్యం = f.పఠ()
 
-    def on_draw(da, context):
-        alloc = da.get_allocation()
+    నిర్వచనం on_draw(da, context):
+        alloc = da.get_కేటాయింపు()
         POOL[id(context)] = context
-        render(face, text, context, alloc.width, alloc.height, fontsize)
-        del POOL[id(context)]
+        render(face, పాఠ్యం, context, alloc.వెడల్పు, alloc.ఎత్తు, fontsize)
+        తీసివేయి POOL[id(context)]
 
     drawingarea = Gtk.DrawingArea()
     drawingarea.connect("draw", on_draw)
 
-    win = Gtk.Window()
+    win = Gtk.కిటికీ()
     win.connect("destroy", Gtk.main_quit)
-    win.set_default_size(1000, 700)
-    win.add(drawingarea)
+    win.సమితి_default_కొలత(1000, 700)
+    win.కూడు(drawingarea)
 
     win.show_all()
-    Gtk.main()
+    Gtk.ప్రధాన()
 
 
-if __name__ == "__main__":
-    import argparse
+ఒకవేళ __name__ == "__main__":
+    దిగుమతి argparse
 
-    parser = argparse.ArgumentParser(description="HarfBuzz justification demo.")
-    parser.add_argument("fontfile", help="font file")
-    parser.add_argument("textfile", help="text")
-    args = parser.parse_args()
-    main(args.fontfile, args.textfile)
+    parser = argparse.వాదం_Parser(description="HarfBuzz justification demo.")
+    parser.కూడు_వాదం("fontfile", help="font file")
+    parser.కూడు_వాదం("textfile", help="text")
+    వాదనలు = parser.parse_వాదనలు()
+    ప్రధాన(వాదనలు.fontfile, వాదనలు.textfile)

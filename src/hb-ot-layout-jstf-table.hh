@@ -24,96 +24,96 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_JSTF_TABLE_HH
-#define HB_OT_LAYOUT_JSTF_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_LAYOUT_JSTF_పట్టిక_HH
+#నిర్వచించు HB_OT_LAYOUT_JSTF_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 
 
 /*
  * JstfModList -- Justification Modification List Tables
  */
 
-typedef IndexArray JstfModList;
+రకనిర్వచనం సూచీ_Array JstfModList;
 
 
 /*
  * JstfMax -- Justification Maximum Table
  */
 
-typedef List16OfOffset16To<PosLookup> JstfMax;
+రకనిర్వచనం List16_యొక్క_Offset16_గమ్యం<PosLookup> JstfMax;
 
 
 /*
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+నిర్మాణం Jstf_ప్రాధాన్యత
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  shrinkageEnableGSUB.sanitize (c, this) &&
-		  shrinkageDisableGSUB.sanitize (c, this) &&
-		  shrinkageEnableGPOS.sanitize (c, this) &&
-		  shrinkageDisableGPOS.sanitize (c, this) &&
-		  shrinkageJstfMax.sanitize (c, this) &&
-		  extensionEnableGSUB.sanitize (c, this) &&
-		  extensionDisableGSUB.sanitize (c, this) &&
-		  extensionEnableGPOS.sanitize (c, this) &&
-		  extensionDisableGPOS.sanitize (c, this) &&
-		  extensionJstfMax.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  shrinkageEnableGSUB.sanitize (c, ఇది) &&
+		  shrinkageDisableGSUB.sanitize (c, ఇది) &&
+		  shrinkageEnableGPOS.sanitize (c, ఇది) &&
+		  shrinkageDisableGPOS.sanitize (c, ఇది) &&
+		  shrinkageJstfMax.sanitize (c, ఇది) &&
+		  extensionEnableGSUB.sanitize (c, ఇది) &&
+		  extensionDisableGSUB.sanitize (c, ఇది) &&
+		  extensionEnableGPOS.sanitize (c, ఇది) &&
+		  extensionDisableGPOS.sanitize (c, ఇది) &&
+		  extensionJstfMax.sanitize (c, ఇది));
   }
 
-  protected:
-  Offset16To<JstfModList>
+  రక్షిత:
+  Offset16_గమ్యం<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		shrinkageDisableGSUB;	/* Offset to Shrinkage Disable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		shrinkageEnableGPOS;	/* Offset to Shrinkage Enable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		shrinkageDisableGPOS;	/* Offset to Shrinkage Disable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfMax>
+  Offset16_గమ్యం<JstfMax>
 		shrinkageJstfMax;	/* Offset to Shrinkage JstfMax table--
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		extensionEnableGSUB;	/* Offset to Extension Enable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		extensionDisableGSUB;	/* Offset to Extension Disable GSUB
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		extensionEnableGPOS;	/* Offset to Extension Enable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfModList>
+  Offset16_గమ్యం<JstfModList>
 		extensionDisableGPOS;	/* Offset to Extension Disable GPOS
 					 * JstfModList table--from beginning of
 					 * JstfPriority table--may be NULL */
-  Offset16To<JstfMax>
+  Offset16_గమ్యం<JstfMax>
 		extensionJstfMax;	/* Offset to Extension JstfMax table--
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (20);
 };
 
 
@@ -121,13 +121,13 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+నిర్మాణం JstfLangSys : List16_యొక్క_Offset16_గమ్యం<Jstf_ప్రాధాన్యత>
 {
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి రికార్డు_sanitize_సంవృతం_t * = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (List16OfOffset16To<JstfPriority>::sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (List16_యొక్క_Offset16_గమ్యం<Jstf_ప్రాధాన్యత>::sanitize (c));
   }
 };
 
@@ -136,102 +136,102 @@ struct JstfLangSys : List16OfOffset16To<JstfPriority>
  * ExtenderGlyphs -- Extender Glyph Table
  */
 
-template <typename Types>
-using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
+మూస <రకం_పేరు Types>
+ఉపయోగించి ExtenderGlyphs = Sorted_Array16_యొక్క<రకం_పేరు Types::HBGlyphID>;
 
 
 /*
  * JstfScript -- The Justification Table
  */
 
-template <typename Types>
-struct JstfScript
+మూస <రకం_పేరు Types>
+నిర్మాణం JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  గుర్తులేని పూర్ణాంకం get_lang_sys_లెక్క () స్థిరరాశి
+  { తిరిగి langSys.len; }
+  స్థిరరాశి ట్యాగ్& get_lang_sys_ట్యాగ్ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి langSys.get_ట్యాగ్ (i); }
+  గుర్తులేని పూర్ణాంకం get_lang_sys_ట్యాగులు (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం *lang_sys_లెక్క /* IN/OUT */,
+				  hb_ట్యాగ్_t     *lang_sys_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి langSys.get_ట్యాగులు (ప్రారంభం_స్థానభ్రంశం, lang_sys_లెక్క, lang_sys_ట్యాగులు); }
+  స్థిరరాశి JstfLangSys& get_lang_sys (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    ఒకవేళ (i == సూచీ::NOT_దొరికింది_సూచీ) తిరిగి get_default_lang_sys ();
+    తిరిగి ఇది+langSys[i].స్థానభ్రంశం;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  తార్కిక కనుగొను_lang_sys_సూచీ (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని పూర్ణాంకం *సూచీ_2) స్థిరరాశి
+  { తిరిగి langSys.కనుగొను_సూచీ (ట్యాగ్_2, సూచీ_2); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  తార్కిక has_default_lang_sys () స్థిరరాశి               { తిరిగి defaultLangSys != 0; }
+  స్థిరరాశి JstfLangSys& get_default_lang_sys () స్థిరరాశి { తిరిగి ఇది+defaultLangSys; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి రికార్డు_sanitize_సంవృతం_t * = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (extenderGlyphs.sanitize (c, this) &&
-		  defaultLangSys.sanitize (c, this) &&
-		  langSys.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (extenderGlyphs.sanitize (c, ఇది) &&
+		  defaultLangSys.sanitize (c, ఇది) &&
+		  langSys.sanitize (c, ఇది));
   }
 
-  protected:
-  typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
+  రక్షిత:
+  రకం_పేరు Types::మూస LOffset_గమ్యం<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
-  typename Types::template LOffsetTo<JstfLangSys>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<JstfLangSys>
 		defaultLangSys;	/* Offset to DefaultJstfLangSys table--from
 				 * beginning of JstfScript table--may be Null */
-  RecordArrayOf<JstfLangSys>
+  రికార్డు_Array_యొక్క<JstfLangSys>
 		langSys;	/* Array of JstfLangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
-  DEFINE_SIZE_ARRAY (2 * Types::LOffset::static_size + 2, langSys);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 * Types::LOffset::static_కొలత + 2, langSys);
 };
 
-template <typename Types>
-struct JstfScriptRecord
+మూస <రకం_పేరు Types>
+నిర్మాణం Jstf_Script_రికార్డు
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t a) స్థిరరాశి { తిరిగి ట్యాగ్_2.cmp (a); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
-		  offset.sanitize (c, base, &closure));
+    TRACE_SANITIZE (ఇది);
+    స్థిరరాశి రికార్డు_sanitize_సంవృతం_t సంవృతం = {ట్యాగ్_2, పునాది};
+    return_trace (c->check_struct (ఇది) &&
+		  స్థానభ్రంశం.sanitize (c, పునాది, &సంవృతం));
   }
 
-  Tag		tag;		/* 4-byte JstfScript identification tag */
-  typename Types::template LOffsetTo<JstfScript<Types>>
-		offset;		/* Offset from beginning of JSTF header */
-  public:
-  DEFINE_SIZE_STATIC (4 + Types::LOffset::static_size);
+  ట్యాగ్		ట్యాగ్_2;		/* 4-byte JstfScript identification tag */
+  రకం_పేరు Types::మూస LOffset_గమ్యం<JstfScript<Types>>
+		స్థానభ్రంశం;		/* Offset from beginning of JSTF header */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4 + Types::LOffset::static_కొలత);
 };
 
-template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+మూస <రకం_పేరు Types>
+నిర్మాణం JstfScriptList : Sorted_Array16_యొక్క<Jstf_Script_రికార్డు<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
-			 hb_tag_t     *script_tags /* OUT */) const
+  స్థిరరాశి ట్యాగ్& get_ట్యాగ్ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి (*ఇది)[i].ట్యాగ్_2; }
+  గుర్తులేని పూర్ణాంకం get_ట్యాగులు (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			 గుర్తులేని పూర్ణాంకం *script_లెక్క /* IN/OUT */,
+			 hb_ట్యాగ్_t     *script_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (script_count)
+    ఒకవేళ (script_లెక్క)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
-      | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      + ఇది->as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, script_లెక్క)
+      | hb_map (&Jstf_Script_రికార్డు<Types>::ట్యాగ్_2)
+      | hb_sink (hb_array (script_ట్యాగులు, *script_లెక్క))
       ;
     }
-    return this->len;
+    తిరిగి ఇది->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  స్థిరరాశి JstfScript<Types>& get_script (స్థిరరాశి శూన్య *పునాది, గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి పునాది+(*ఇది)[i].స్థానభ్రంశం; }
+  తార్కిక కనుగొను_సూచీ (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని పూర్ణాంకం *సూచీ_2) స్థిరరాశి
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    తిరిగి ఇది->bfind (ట్యాగ్_2, సూచీ_2, HB_NOT_దొరికింది_STORE, సూచీ::NOT_దొరికింది_సూచీ);
   }
 };
 
@@ -241,97 +241,97 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+నిర్మాణం JSTF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_JSTF;
 
-  unsigned int get_script_count () const
+  గుర్తులేని పూర్ణాంకం get_script_లెక్క () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
-#endif
-    return scriptList.len;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (has_script_list2 ()) తిరిగి get_script_list2 ().len;
+#అయితే_ముగింపు
+    తిరిగి scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  స్థిరరాశి ట్యాగ్& get_script_ట్యాగ్ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
-#endif
-    return scriptList.get_tag (i);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (has_script_list2 ()) తిరిగి get_script_list2 ().get_ట్యాగ్ (i);
+#అయితే_ముగింపు
+    తిరిగి scriptList.get_ట్యాగ్ (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
+  గుర్తులేని పూర్ణాంకం get_script_ట్యాగులు (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				గుర్తులేని పూర్ణాంకం *script_లెక్క /* IN/OUT */,
+				hb_ట్యాగ్_t     *script_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
-#endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (has_script_list2 ())
+      తిరిగి get_script_list2 ().get_ట్యాగులు (ప్రారంభం_స్థానభ్రంశం, script_లెక్క, script_ట్యాగులు);
+#అయితే_ముగింపు
+    తిరిగి scriptList.get_ట్యాగులు (ప్రారంభం_స్థానభ్రంశం, script_లెక్క, script_ట్యాగులు);
   }
-  template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  మూస <రకం_పేరు Types>
+  స్థిరరాశి JstfScript<Types>& get_script (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి;
+  తార్కిక కనుగొను_script_సూచీ (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని పూర్ణాంకం *సూచీ_2) స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
-#endif
-    return scriptList.find_index (tag, index);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (has_script_list2 ()) తిరిగి get_script_list2 ().కనుగొను_సూచీ (ట్యాగ్_2, సూచీ_2);
+#అయితే_ముగింపు
+    తిరిగి scriptList.కనుగొను_సూచీ (ట్యాగ్_2, సూచీ_2);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!సంస్కరణ.sanitize (c) ||
 		  !hb_barrier () ||
-		  version.major != 1 ||
-		  !scriptList.sanitize (c, this)))
-      return_trace (false);
-#ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
-      return_trace (false);
-#endif
-    return_trace (true);
+		  సంస్కరణ.major != 1 ||
+		  !scriptList.sanitize (c, ఇది)))
+      return_trace (అబద్ధం);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (unlikely (సంస్కరణ.minor >= 1 && !get_script_list2 ().sanitize (c, ఇది)))
+      return_trace (అబద్ధం);
+#అయితే_ముగింపు
+    return_trace (నిజం);
   }
 
-  private:
-#ifndef HB_NO_BEYOND_64K
-  bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
-  const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
-#endif
+  అంతరంగ:
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  తార్కిక has_script_list2 () స్థిరరాశి
+  { తిరిగి సంస్కరణ.minor >= 1 && get_script_list2 ().len; }
+  స్థిరరాశి JstfScriptList<Layout::MediumTypes>& get_script_list2 () స్థిరరాశి
+  { తిరిగి StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+#అయితే_ముగింపు
 
-  protected:
-  FixedVersion<>version;	/* Version of the JSTF table--initially set
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
 		scriptList;	/* Array of JstfScripts--listed
 				 * alphabetically by ScriptTag */
-#ifndef HB_NO_BEYOND_64K
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
 /*JstfScriptList<Layout::MediumTypes>
 		scriptList2;*//* Array of JstfScript2s--listed
 				 * alphabetically by ScriptTag.
 				 * Present only if minorVersion is 1 or greater. */
-#endif
-  public:
-  DEFINE_SIZE_ARRAY (6, scriptList);
+#అయితే_ముగింపు
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, scriptList);
 };
 
-template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+మూస <>
+అంతఃవరుస స్థిరరాశి JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+{ తిరిగి scriptList.get_script (ఇది, i); }
 
-#ifndef HB_NO_BEYOND_64K
-template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+మూస <>
+అంతఃవరుస స్థిరరాశి JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+{ తిరిగి get_script_list2 ().get_script (ఇది, i); }
+#అయితే_ముగింపు
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_JSTF_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_LAYOUT_JSTF_TABLE_HH */

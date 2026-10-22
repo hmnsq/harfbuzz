@@ -26,126 +26,126 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_AAT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_AAT_SHAPE
 
-#include "hb-aat-map.hh"
+#అన్తర్భావ "hb-aat-map.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-layout-feat-table.hh"
+#అన్తర్భావ "hb-aat-layout.hh"
+#అన్తర్భావ "hb-aat-layout-feat-table.hh"
 
 
-void hb_aat_map_builder_t::add_feature (const hb_feature_t &feature)
+శూన్య hb_aat_map_builder_t::కూడు_feature (స్థిరరాశి hb_feature_t &feature)
 {
-  if (!face->table.feat->has_data ()) return;
+  ఒకవేళ (!face->పట్టిక.feat->has_దత్తాంశం ()) తిరిగి;
 
-  if (feature.tag == HB_TAG ('a','a','l','t'))
+  ఒకవేళ (feature.ట్యాగ్_2 == HB_ట్యాగ్ ('a','a','l','t'))
   {
-    if (!face->table.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
-      return;
+    ఒకవేళ (!face->పట్టిక.feat->exposes_feature (HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES))
+      తిరిగి;
     feature_range_t *range = features.push();
-    range->start = feature.start;
-    range->end = feature.end;
+    range->ప్రారంభం = feature.ప్రారంభం;
+    range->చివర = feature.చివర;
     range->info.type = HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_ALTERNATIVES;
     range->info.setting = (hb_aat_layout_feature_selector_t) feature.value;
-    range->info.seq = features.length;
-    range->info.is_exclusive = true;
-    return;
+    range->info.seq = features.నిడివి;
+    range->info.is_exclusive = నిజం;
+    తిరిగి;
   }
 
-  const hb_aat_feature_mapping_t *mapping = hb_aat_layout_find_feature_mapping (feature.tag);
-  if (!mapping) return;
+  స్థిరరాశి hb_aat_feature_mapping_t *mapping = hb_aat_layout_కనుగొను_feature_mapping (feature.ట్యాగ్_2);
+  ఒకవేళ (!mapping) తిరిగి;
 
-  const AAT::FeatureName* feature_name = &face->table.feat->get_feature (mapping->aatFeatureType);
-  if (!feature_name->has_data ())
+  స్థిరరాశి AAT::FeatureName* feature_name = &face->పట్టిక.feat->get_feature (mapping->aatFeatureType);
+  ఒకవేళ (!feature_name->has_దత్తాంశం ())
   {
     /* Special case: Chain::compile_flags will fall back to the deprecated version of
      * small-caps if necessary, so we need to check for that possibility.
      * https://github.com/harfbuzz/harfbuzz/issues/2307 */
-    if (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE &&
-	mapping->selectorToEnable == HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS)
+    ఒకవేళ (mapping->aatFeatureType == HB_AAT_LAYOUT_FEATURE_TYPE_క్రింది_CASE &&
+	mapping->selector_గమ్యం_Enable == HB_AAT_LAYOUT_FEATURE_SELECTOR_క్రింది_CASE_SMALL_CAPS)
     {
-      feature_name = &face->table.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
-      if (!feature_name->has_data ()) return;
+      feature_name = &face->పట్టిక.feat->get_feature (HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE);
+      ఒకవేళ (!feature_name->has_దత్తాంశం ()) తిరిగి;
     }
-    else return;
+    లేకపోతే తిరిగి;
   }
 
   feature_range_t *range = features.push();
-  range->start = feature.start;
-  range->end = feature.end;
+  range->ప్రారంభం = feature.ప్రారంభం;
+  range->చివర = feature.చివర;
   range->info.type = mapping->aatFeatureType;
-  range->info.setting = feature.value ? mapping->selectorToEnable : mapping->selectorToDisable;
-  range->info.seq = features.length;
+  range->info.setting = feature.value ? mapping->selector_గమ్యం_Enable : mapping->selector_గమ్యం_Disable;
+  range->info.seq = features.నిడివి;
   range->info.is_exclusive = feature_name->is_exclusive ();
 }
 
-void
+శూన్య
 hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 {
   /* Compute active features per range, and compile each. */
-  if (!features.length)
+  ఒకవేళ (!features.నిడివి)
   {
-    hb_aat_layout_compile_map (this, &m);
-    return;
+    hb_aat_layout_compile_map (ఇది, &m);
+    తిరిగి;
   }
 
   /* Sort features by start/end events. */
-  hb_vector_t<feature_event_t> feature_events;
-  feature_events.alloc_exact (features.length * 2 + 1);
-  for (unsigned int i = 0; i < features.length; i++)
+  hb_సదిశ_t<feature_event_t> feature_events;
+  feature_events.alloc_exact (features.నిడివి * 2 + 1);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < features.నిడివి; i++)
   {
-    auto &feature = features.arrayZ[i];
+    స్వయంచాలక &feature = features.arrayZ[i];
 
-    if (feature.start == feature.end)
-      continue;
+    ఒకవేళ (feature.ప్రారంభం == feature.చివర)
+      కొనసాగు;
 
     feature_event_t *event;
 
     event = feature_events.push ();
-    event->index = feature.start;
-    event->start = true;
+    event->సూచీ_2 = feature.ప్రారంభం;
+    event->ప్రారంభం = నిజం;
     event->feature = feature.info;
 
     event = feature_events.push ();
-    event->index = feature.end;
-    event->start = false;
+    event->సూచీ_2 = feature.చివర;
+    event->ప్రారంభం = అబద్ధం;
     event->feature = feature.info;
   }
   feature_events.qsort ();
   /* Add a strategic final event. */
   {
     feature_info_t feature;
-    feature.seq = features.length + 1;
+    feature.seq = features.నిడివి + 1;
 
     feature_event_t *event = feature_events.push ();
-    event->index = -1; /* This value does magic. */
-    event->start = false;
+    event->సూచీ_2 = -1; /* This value does magic. */
+    event->ప్రారంభం = అబద్ధం;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
-  hb_sorted_vector_t<feature_info_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  hb_sorted_సదిశ_t<feature_info_t> చురుకైన_features;
+  గుర్తులేని పూర్ణాంకం చివరి_సూచీ = 0;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < feature_events.నిడివి; i++)
   {
     feature_event_t *event = &feature_events[i];
 
-    if (event->index != last_index)
+    ఒకవేళ (event->సూచీ_2 != చివరి_సూచీ)
     {
       /* Save a snapshot of active features and the range. */
 
       /* Sort features and merge duplicates */
-      current_features = active_features;
-      range_first = last_index;
-      range_last = event->index - 1;
-      if (current_features.length)
+      current_features = చురుకైన_features;
+      range_మొదటి = చివరి_సూచీ;
+      range_చివరి = event->సూచీ_2 - 1;
+      ఒకవేళ (current_features.నిడివి)
       {
 	current_features.qsort ();
-	unsigned int j = 0;
-	for (unsigned int i = 1; i < current_features.length; i++)
-	  if (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
+	గుర్తులేని పూర్ణాంకం j = 0;
+	కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < current_features.నిడివి; i++)
+	  ఒకవేళ (current_features.arrayZ[i].type != current_features.arrayZ[j].type ||
 	      /* Nonexclusive feature selectors come in even/odd pairs to turn a setting on/off
 	       * respectively, so we mask out the low-order bit when checking for "duplicates"
 	       * (selectors referring to the same feature setting) here. */
@@ -154,25 +154,25 @@ hb_aat_map_builder_t::compile (hb_aat_map_t  &m)
 	current_features.shrink (j + 1);
       }
 
-      hb_aat_layout_compile_map (this, &m);
+      hb_aat_layout_compile_map (ఇది, &m);
 
-      last_index = event->index;
+      చివరి_సూచీ = event->సూచీ_2;
     }
 
-    if (event->start)
+    ఒకవేళ (event->ప్రారంభం)
     {
-      active_features.push (event->feature);
-    } else {
-      feature_info_t *feature = active_features.lsearch (event->feature);
-      if (feature)
-	active_features.remove_ordered (feature - active_features.arrayZ);
+      చురుకైన_features.push (event->feature);
+    } లేకపోతే {
+      feature_info_t *feature = చురుకైన_features.lsearch (event->feature);
+      ఒకవేళ (feature)
+	చురుకైన_features.remove_ordered (feature - చురుకైన_features.arrayZ);
     }
   }
 
-  for (auto &chain_flags : m.chain_flags)
+  కొరకు (స్వయంచాలక &chain_flags : m.chain_flags)
     // With our above setup this value is one less than desired; adjust it.
-    chain_flags.tail().cluster_last = HB_FEATURE_GLOBAL_END;
+    chain_flags.తోక().cluster_చివరి = HB_FEATURE_GLOBAL_చివర;
 }
 
 
-#endif
+#అయితే_ముగింపు

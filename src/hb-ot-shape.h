@@ -24,35 +24,35 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ఒకవేళ !defined(HB_OT_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb-ot.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_OT_SHAPE_H
-#define HB_OT_SHAPE_H
+#నిర్వచితం_కాకపోతే HB_OT_SHAPE_H
+#నిర్వచించు HB_OT_SHAPE_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
 /* TODO port to shape-plan / set. */
-HB_EXTERN void
-hb_ot_shape_glyphs_closure (hb_font_t          *font,
-			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
-			    hb_set_t           *glyphs);
+HB_EXTERN శూన్య
+hb_ot_shape_glyphs_సంవృతం (hb_font_t          *font,
+			    hb_బఫరు_t        *బఫరు,
+			    స్థిరరాశి hb_feature_t *features,
+			    గుర్తులేని పూర్ణాంకం        అంకె_features,
+			    hb_సమితి_t           *glyphs);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
-				  hb_tag_t         table_tag,
-				  hb_set_t        *lookup_indexes /* OUT */);
+				  hb_ట్యాగ్_t         పట్టిక_ట్యాగ్_2,
+				  hb_సమితి_t        *lookup_indexes /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
-hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
-				   hb_tag_t        *tags /* OUT */);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_shape_plan_get_feature_ట్యాగులు (hb_shape_plan_t *shape_plan,
+				   గుర్తులేని పూర్ణాంకం     ప్రారంభం_స్థానభ్రంశం,
+				   గుర్తులేని పూర్ణాంకం    *ట్యాగ్_లెక్క, /* IN/OUT */
+				   hb_ట్యాగ్_t        *ట్యాగులు /*బహిర్గతం*/);
 
 /**
  * HB_OT_SHAPE_BUFFER_FORMAT_SERIAL:
@@ -64,11 +64,11 @@ hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
  *
  * Since: 13.2.0
  */
-#define HB_OT_SHAPE_BUFFER_FORMAT_SERIAL 1
+#నిర్వచించు HB_OT_SHAPE_బఫరు_FORMAT_SERIAL 1
 
-HB_EXTERN unsigned int
-hb_ot_shape_get_buffer_format_serial (void);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_shape_get_బఫరు_format_serial (శూన్య);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_OT_SHAPE_H */
+#అయితే_ముగింపు /* HB_OT_SHAPE_H */

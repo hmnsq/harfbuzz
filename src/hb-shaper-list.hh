@@ -24,50 +24,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_LIST_HH
-#define HB_SHAPER_LIST_HH
-#endif /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
+#నిర్వచితం_కాకపోతే HB_SHAPER_LIST_HH
+#నిర్వచించు HB_SHAPER_LIST_HH
+#అయితే_ముగింపు /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_NO_SHAPER
+#నిర్వచితం_కాకపోతే HB_NO_SHAPER
 
 
 /* v--- Add new shapers in the right place here. */
 
-#ifdef HAVE_WASM
+#నిర్వచితమైతే HAVE_WASM
 /* Only picks up fonts that have a "Wasm" table. */
 HB_SHAPER_IMPLEMENT (wasm)
-#endif
+#అయితే_ముగింపు
 
-#ifdef HAVE_GRAPHITE2
+#నిర్వచితమైతే HAVE_GRAPHITE2
 /* Only picks up fonts that have a "Silf" table. */
 HB_SHAPER_IMPLEMENT (graphite2)
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 HB_SHAPER_IMPLEMENT (ot) /* <--- This is our main shaper. */
-#endif
+#అయితే_ముగింపు
 
-#ifdef HAVE_UNISCRIBE
+#నిర్వచితమైతే HAVE_UNISCRIBE
 HB_SHAPER_IMPLEMENT (uniscribe)
-#endif
-#ifdef HAVE_DIRECTWRITE
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_DIRECTWRITE
 HB_SHAPER_IMPLEMENT (directwrite)
-#endif
-#ifdef HAVE_CORETEXT
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_CORETEXT
 HB_SHAPER_IMPLEMENT (coretext)
-#endif
+#అయితే_ముగింపు
 
-#ifdef HAVE_HARFRUST
+#నిర్వచితమైతే HAVE_HARFRUST
 HB_SHAPER_IMPLEMENT (harfrust)
-#endif
+#అయితే_ముగింపు
 
-#ifdef HAVE_KBTS
+#నిర్వచితమైతే HAVE_KBTS
 HB_SHAPER_IMPLEMENT (kbts)
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_FALLBACK_SHAPE
 HB_SHAPER_IMPLEMENT (fallback) /* <--- This should be last. */
-#endif
+#అయితే_ముగింపు
 
 
-#endif
+#అయితే_ముగింపు

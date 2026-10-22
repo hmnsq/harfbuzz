@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_PARSER_HH
-#define HB_NUMBER_PARSER_HH
+#నిర్వచితం_కాకపోతే HB_సంఖ్య_PARSER_HH
+#నిర్వచించు HB_సంఖ్య_PARSER_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 // Handles 0..308; anything larger overflows double and returns HUGE_VAL.
-static inline double
-_pow10 (unsigned exponent)
+స్థిర అంతఃవరుస ద్విగుణ
+_pow10 (గుర్తులేని exponent)
 {
   // DBL_MAX is between 10^308 and 10^309
-  if (unlikely (exponent > 308)) return HUGE_VAL;
+  ఒకవేళ (unlikely (exponent > 308)) తిరిగి HUGE_VAL;
 
-  static const double _powers_of_10[] =
+  స్థిర స్థిరరాశి ద్విగుణ powers_యొక్క_10[] =
   {
     1.0e+256,
     1.0e+128,
@@ -47,43 +47,43 @@ _pow10 (unsigned exponent)
     100.,
     10.
   };
-  unsigned mask = 1 << (ARRAY_LENGTH (_powers_of_10) - 1);
-  double result = 1;
-  for (const double *power = _powers_of_10; mask; ++power, mask >>= 1)
-    if (exponent & mask) result *= *power;
-  return result;
+  గుర్తులేని ముసుగు = 1 << (ARRAY_నిడివి (powers_యొక్క_10) - 1);
+  ద్విగుణ ఫలితం = 1;
+  కొరకు (స్థిరరాశి ద్విగుణ *power = powers_యొక్క_10; ముసుగు; ++power, ముసుగు >>= 1)
+    ఒకవేళ (exponent & ముసుగు) ఫలితం *= *power;
+  తిరిగి ఫలితం;
 }
 
-struct _hb_fraction
+నిర్మాణం _hb_fraction
 {
-  void add (int digit)
+  శూన్య కూడు (పూర్ణాంకం digit)
   {
-    if (likely (fraction <= MAX_FRACT / 10))
+    ఒకవేళ (likely (fraction <= MAX_FRACT / 10))
     {
       fraction = fraction * 10. + digit;
-      ++count;
+      ++లెక్క;
     }
-    else if (drop < 0) drop = digit;
-    else if (digit != 0) sticky = true;
+    లేకపోతే ఒకవేళ (drop < 0) drop = digit;
+    లేకపోతే ఒకవేళ (digit != 0) sticky = నిజం;
   }
 
-  double get_value () const
+  ద్విగుణ get_విలువ () స్థిరరాశి
   {
-    double result = fraction;
+    ద్విగుణ ఫలితం = fraction;
     // Round-to-nearest-even using the recorded tail
-    if (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
-      result += 1;
-    return result / _pow10 (count);
+    ఒకవేళ (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
+      ఫలితం += 1;
+    తిరిగి ఫలితం / _pow10 (లెక్క);
   }
 
-  bool is_empty () const { return !count; }
+  తార్కిక is_empty () స్థిరరాశి { తిరిగి !లెక్క; }
 
-private:
-  unsigned count = 0;
-  double fraction = 0;
-  int drop = -1; // drop is the first digit we couldn't accumulate
-  bool sticky = false; // sticky is set when any later digit was nonzero.
-  static constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
+అంతరంగ:
+  గుర్తులేని లెక్క = 0;
+  ద్విగుణ fraction = 0;
+  పూర్ణాంకం drop = -1; // drop is the first digit we couldn't accumulate
+  తార్కిక sticky = అబద్ధం; // sticky is set when any later digit was nonzero.
+  స్థిర constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
 };
 
 // A variant of strtod that also gets end of buffer in its second argument.
@@ -99,115 +99,115 @@ private:
 // On success, *end_ptr is set just past the longest well-formed prefix.
 // On no match, *end_ptr is left at the original p (matching strtod's
 // "no conversion performed" behavior, so the caller's pointer is unchanged).
-static inline double
-hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
+స్థిర అంతఃవరుస ద్విగుణ
+hb_strtod (స్థిరరాశి అక్షరం *p, స్థిరరాశి అక్షరం **end_ptr /* IN/OUT */)
 {
-  const char *p_original = p;
-  const char *pe = *end_ptr;
+  స్థిరరాశి అక్షరం *p_original = p;
+  స్థిరరాశి అక్షరం *pe = *end_ptr;
 
   // Skip leading whitespace
-  while (p < pe && ISSPACE (*p))
+  అయితే (p < pe && ISSPACE (*p))
     p++;
 
   // Sign
-  bool neg = false;
-  if (p < pe && (*p == '+' || *p == '-'))
+  తార్కిక neg = అబద్ధం;
+  ఒకవేళ (p < pe && (*p == '+' || *p == '-'))
   {
     neg = (*p == '-');
     p++;
   }
 
-  double value = 0;
+  ద్విగుణ value = 0;
 
   // Integer and fraction
   {
-    const char *int_start = p;
-    while (p < pe && '0' <= *p && *p <= '9')
+    స్థిరరాశి అక్షరం *int_ప్రారంభం = p;
+    అయితే (p < pe && '0' <= *p && *p <= '9')
     {
       value = value * 10. + (*p - '0');
       p++;
     }
-    bool has_int = p > int_start;
+    తార్కిక has_int = p > int_ప్రారంభం;
 
     _hb_fraction frac;
-    if (p < pe && *p == '.')
+    ఒకవేళ (p < pe && *p == '.')
     {
       p++;
-      while (p < pe && '0' <= *p && *p <= '9')
+      అయితే (p < pe && '0' <= *p && *p <= '9')
       {
-	frac.add (*p - '0');
+	frac.కూడు (*p - '0');
 	p++;
       }
     }
 
-    if (!frac.is_empty ()) value += frac.get_value ();
-    else if (!has_int)
+    ఒకవేళ (!frac.is_empty ()) value += frac.get_విలువ ();
+    లేకపోతే ఒకవేళ (!has_int)
     {
       // Nothing could be parsed
       *end_ptr = p_original;
-      return .0;
+      తిరిగి .0;
     }
   }
 
   // Exponent
-  unsigned exp = 0;
-  bool exp_neg = false, exp_overflow = false;
-  if (p < pe && (*p == 'e' || *p == 'E'))
+  గుర్తులేని ఘాతాంకం = 0;
+  తార్కిక exp_neg = అబద్ధం, exp_అధికప్రవాహం = అబద్ధం;
+  ఒకవేళ (p < pe && (*p == 'e' || *p == 'E'))
   {
-    constexpr unsigned MAX_EXP = 0x7FFu; /* 2^11-1 */
-    const char *before_exponent = p;
+    constexpr గుర్తులేని MAX_EXP = 0x7FFu; /* 2^11-1 */
+    స్థిరరాశి అక్షరం *before_exponent = p;
     p++;
-    if (p < pe && (*p == '+' || *p == '-'))
+    ఒకవేళ (p < pe && (*p == '+' || *p == '-'))
     {
       exp_neg = (*p == '-');
       p++;
     }
 
-    if (p < pe && '0' <= *p && *p <= '9')
-      do
+    ఒకవేళ (p < pe && '0' <= *p && *p <= '9')
+      చేయి
       {
-	if (likely (exp * 10 + (*p - '0') <= MAX_EXP))
-	  exp = exp * 10 + (*p - '0');
-	else
-	  exp_overflow = true;
+	ఒకవేళ (likely (ఘాతాంకం * 10 + (*p - '0') <= MAX_EXP))
+	  ఘాతాంకం = ఘాతాంకం * 10 + (*p - '0');
+	లేకపోతే
+	  exp_అధికప్రవాహం = నిజం;
 	p++;
-      } while (p < pe && '0' <= *p && *p <= '9');
-    else
+      } అయితే (p < pe && '0' <= *p && *p <= '9');
+    లేకపోతే
       p = before_exponent; // rewind
   }
   *end_ptr = p;
 
-  if (neg) value *= -1.;
+  ఒకవేళ (neg) value *= -1.;
 
-  if (unlikely (exp_overflow))
+  ఒకవేళ (unlikely (exp_అధికప్రవాహం))
   {
-    if (value == 0) return value;
-    if (exp_neg)    return neg ? -.0 : .0;
-    else            return neg ? -DBL_MAX : DBL_MAX;
+    ఒకవేళ (value == 0) తిరిగి value;
+    ఒకవేళ (exp_neg)    తిరిగి neg ? -.0 : .0;
+    లేకపోతే            తిరిగి neg ? -DBL_MAX : DBL_MAX;
   }
 
-  if (exp)
+  ఒకవేళ (ఘాతాంకం)
   {
-    if (exp_neg)
+    ఒకవేళ (exp_neg)
     {
       // 10^308 is the largest finite power of ten, so two reductions of 308 suffice.
-      if (unlikely (exp > 308))
+      ఒకవేళ (unlikely (ఘాతాంకం > 308))
       {
 	value /= 1e308;
-	exp -= 308;
-	if (unlikely (exp > 308))
+	ఘాతాంకం -= 308;
+	ఒకవేళ (unlikely (ఘాతాంకం > 308))
 	{
 	  value /= 1e308;
-	  exp -= 308;
+	  ఘాతాంకం -= 308;
 	}
       }
-      value /= _pow10 (exp);
+      value /= _pow10 (ఘాతాంకం);
     }
-    else
-      value *= _pow10 (exp);
+    లేకపోతే
+      value *= _pow10 (ఘాతాంకం);
   }
 
-  return value;
+  తిరిగి value;
 }
 
-#endif /* HB_NUMBER_PARSER_HH */
+#అయితే_ముగింపు /* HB_NUMBER_PARSER_HH */

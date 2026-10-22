@@ -24,51 +24,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  if (argc != 2) {
+  ఒకవేళ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    నిష్క్రమించు (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = శూన్యసూచిక;
 
-  unsigned int count = 0;
+  గుర్తులేని పూర్ణాంకం లెక్క = 0;
 
-#ifndef HB_NO_NAME
-  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
+#నిర్వచితం_కాకపోతే HB_NO_NAME
+  స్థిరరాశి hb_ot_name_నమోదు_t *entries = hb_ot_name_list_పేర్లు (face, &లెక్క);
 
-  for (unsigned int i = 0; i < count; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    printf ("%u	%s	",
+    రాయి ("%u	%s	",
 	    entries[i].name_id,
-	    hb_language_to_string (entries[i].language));
+	    hb_language_గమ్యం_string (entries[i].language));
 
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
+    అక్షరం buf[64];
+    గుర్తులేని పూర్ణాంకం buf_కొలత = పరిమాణం (buf);
     hb_ot_name_get_utf8 (face,
 			 entries[i].name_id,
 			 entries[i].language,
-			 &buf_size,
+			 &buf_కొలత,
 			 buf);
 
-    printf ("%s\n", buf);
+    రాయి ("%s\n", buf);
   }
-#endif
+#అయితే_ముగింపు
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  తిరిగి లెక్క ? 0 : 1;
 }

@@ -26,31 +26,31 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GLIB_H
-#define HB_GLIB_H
+#నిర్వచితం_కాకపోతే HB_GLIB_H
+#నిర్వచించు HB_GLIB_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include <glib.h>
+#అన్తర్భావ <glib.h>
 
 HB_BEGIN_DECLS
 
 
 HB_EXTERN hb_script_t
-hb_glib_script_to_script (GUnicodeScript script);
+hb_glib_script_గమ్యం_script (GUnicodeScript script);
 
 HB_EXTERN GUnicodeScript
 hb_glib_script_from_script (hb_script_t script);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_glib_get_unicode_funcs (void);
+hb_glib_get_unicode_funcs (శూన్య);
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#ఒకవేళ GLIB_CHECK_సంస్కరణ(2,31,10)
 HB_EXTERN hb_blob_t *
 hb_glib_blob_create (GBytes *gbytes);
-#endif
+#అయితే_ముగింపు
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_GLIB_H */
+#అయితే_ముగింపు /* HB_GLIB_H */

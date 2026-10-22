@@ -1,208 +1,208 @@
-#ifndef OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
+#నిర్వచించు OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
 
-#include "LigatureArray.hh"
+#అన్తర్భావ "LigatureArray.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
 
-template <typename Types>
-struct MarkLigPosFormat1_2
+మూస <రకం_పేరు Types>
+నిర్మాణం MarkLigPosFormat1_2
 {
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 markCoverage;           /* Offset to Mark Coverage table--from
                                          * beginning of MarkLigPos subtable */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 ligatureCoverage;       /* Offset to Ligature Coverage
                                          * table--from beginning of MarkLigPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
-  typename Types::template LOffsetTo<MarkArray<Types>>
+  HBUINT16      class_లెక్క_2;             /* Number of defined mark classes */
+  రకం_పేరు Types::మూస LOffset_గమ్యం<MarkArray<Types>>
                 markArray;              /* Offset to MarkArray table--from
                                          * beginning of MarkLigPos subtable */
-  typename Types::template LOffsetTo<LigatureArray<Types>>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<LigatureArray<Types>>
                 ligatureArray;          /* Offset to LigatureArray table--from
                                          * beginning of MarkLigPos subtable */
-  public:
-  DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4 + 4 * Types::LOffset::static_కొలత);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  markCoverage.sanitize (c, this) &&
-                  ligatureCoverage.sanitize (c, this) &&
-                  markArray.sanitize (c, this) &&
-                  ligatureArray.sanitize (c, this, (unsigned int) classCount));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+                  markCoverage.sanitize (c, ఇది) &&
+                  ligatureCoverage.sanitize (c, ఇది) &&
+                  markArray.sanitize (c, ఇది) &&
+                  ligatureArray.sanitize (c, ఇది, (గుర్తులేని పూర్ణాంకం) class_లెక్క_2));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    return (this+markCoverage).intersects (glyphs) &&
-           (this+ligatureCoverage).intersects (glyphs);
+    తిరిగి (ఇది+markCoverage).intersects (glyphs) &&
+           (ఇది+ligatureCoverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  శూన్య సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c) స్థిరరాశి {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    (this+markArray).collect_variation_indices (c, this+markCoverage);
+    (ఇది+markArray).collect_variation_indices (c, ఇది+markCoverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, *c->glyph_set, &klass_mapping);
+    Markclass_సంవృతం_and_remap_indexes (ఇది+markCoverage, ఇది+markArray, *c->glyph_సమితి, &klass_mapping);
 
-    (this+ligatureArray).collect_variation_indices (c, this+ligatureCoverage,
-                                                   classCount, klass_mapping);
+    (ఇది+ligatureArray).collect_variation_indices (c, ఇది+ligatureCoverage,
+                                                   class_లెక్క_2, klass_mapping);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) return;
+    ఒకవేళ (unlikely (!(ఇది+markCoverage).collect_coverage (c->ఆదానం))) తిరిగి;
+    ఒకవేళ (unlikely (!(ఇది+ligatureCoverage).collect_coverage (c->ఆదానం))) తిరిగి;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+ligatureCoverage).collect_coverage (digest); }
+  శూన్య collect_రెండవ_glyphs (hb_సమితి_digest_t *digest) స్థిరరాశి
+  { (ఇది+ligatureCoverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  స్థిరరాశి Coverage &get_coverage () స్థిరరాశి { తిరిగి ఇది+markCoverage; }
 
-  static inline bool accept (hb_buffer_t *buffer, unsigned idx)
+  స్థిర అంతఃవరుస తార్కిక accept (hb_బఫరు_t *బఫరు, గుర్తులేని idx)
   {
     /* We only want to attach to the first of a MultipleSubst sequence,
      * which might have been ligated into a preceding ligature, and in that
      * case the mark should attach to that ligature.
      * https://github.com/harfbuzz/harfbuzz/issues/4969
      * Reject others... */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
-	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]);
+    తిరిగి !_hb_glyph_info_multiplied (&బఫరు->info[idx]) ||
+	   0 == _hb_glyph_info_get_lig_comp (&బఫరు->info[idx]);
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    TRACE_APPLY (ఇది);
+    hb_బఫరు_t *బఫరు = c->బఫరు;
+    గుర్తులేని పూర్ణాంకం mark_సూచీ = (ఇది+markCoverage).get_coverage  (బఫరు->cur().codepoint);
+    ఒకవేళ (likely (mark_సూచీ == NOT_COVERED)) return_trace (అబద్ధం);
 
     /* Now we search backwards for a non-mark glyph */
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
+    స్వయంచాలక &skippy_iter = c->iter_ఆదానం;
+    skippy_iter.సమితి_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    ఒకవేళ (c->చివరి_పునాది_until > బఫరు->idx)
     {
-      c->last_base_until = 0;
-      c->last_base = -1;
+      c->చివరి_పునాది_until = 0;
+      c->చివరి_పునాది = -1;
     }
-    unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    గుర్తులేని j;
+    కొరకు (j = బఫరు->idx; j > c->చివరి_పునాది_until; j--)
     {
-      auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      స్వయంచాలక సరిపోలిక = skippy_iter.సరిపోలిక (బఫరు->info[j - 1]);
+      ఒకవేళ (సరిపోలిక == skippy_iter.సరిపోలిక_2)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
-	    NOT_COVERED == (this+ligatureCoverage).get_coverage  (buffer->info[j - 1].codepoint))
-	  match = skippy_iter.SKIP;
+	ఒకవేళ (!accept (బఫరు, j - 1) &&
+	    NOT_COVERED == (ఇది+ligatureCoverage).get_coverage  (బఫరు->info[j - 1].codepoint))
+	  సరిపోలిక = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      ఒకవేళ (సరిపోలిక == skippy_iter.సరిపోలిక_2)
       {
-	c->last_base = (signed) j - 1;
-	break;
+	c->చివరి_పునాది = (గుర్తుగల) j - 1;
+	ఆపు;
       }
     }
-    c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    c->చివరి_పునాది_until = బఫరు->idx;
+    ఒకవేళ (c->చివరి_పునాది == -1)
     {
-      buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat_from_outbuffer (0, బఫరు->idx + 1);
+      return_trace (అబద్ధం);
     }
 
-    unsigned idx = (unsigned) c->last_base;
+    గుర్తులేని idx = (గుర్తులేని) c->చివరి_పునాది;
 
     /* Checking that matched glyph is actually a ligature by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_ligature (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int lig_index = (this+ligatureCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (lig_index == NOT_COVERED)
+    గుర్తులేని పూర్ణాంకం lig_సూచీ = (ఇది+ligatureCoverage).get_coverage  (బఫరు->info[idx].codepoint);
+    ఒకవేళ (lig_సూచీ == NOT_COVERED)
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat_from_outbuffer (idx, బఫరు->idx + 1);
+      return_trace (అబద్ధం);
     }
 
-    const LigatureArray<Types>& lig_array = this+ligatureArray;
-    const AnchorMatrix<Types, HBUINT16>& lig_attach = lig_array[lig_index];
+    స్థిరరాశి LigatureArray<Types>& lig_array = ఇది+ligatureArray;
+    స్థిరరాశి Anchor_మాతృక<Types, HBUINT16>& lig_attach = lig_array[lig_సూచీ];
 
     /* Find component to attach to */
-    unsigned int comp_count = lig_attach.rows;
-    if (unlikely (!comp_count))
+    గుర్తులేని పూర్ణాంకం comp_లెక్క = lig_attach.అడ్డువరుసలు;
+    ఒకవేళ (unlikely (!comp_లెక్క))
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat_from_outbuffer (idx, బఫరు->idx + 1);
+      return_trace (అబద్ధం);
     }
 
     /* We must now check whether the ligature ID of the current mark glyph
      * is identical to the ligature ID of the found ligature.  If yes, we
      * can directly use the component index.  If not, we attach the mark
      * glyph to the last component of the ligature. */
-    unsigned int comp_index;
-    unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[idx]);
-    unsigned int mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    unsigned int mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-    if (lig_id && lig_id == mark_id && mark_comp > 0)
-      comp_index = hb_min (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
-    else
-      comp_index = comp_count - 1;
+    గుర్తులేని పూర్ణాంకం comp_సూచీ;
+    గుర్తులేని పూర్ణాంకం lig_id = _hb_glyph_info_get_lig_id (&బఫరు->info[idx]);
+    గుర్తులేని పూర్ణాంకం mark_id = _hb_glyph_info_get_lig_id (&బఫరు->cur());
+    గుర్తులేని పూర్ణాంకం mark_comp = _hb_glyph_info_get_lig_comp (&బఫరు->cur());
+    ఒకవేళ (lig_id && lig_id == mark_id && mark_comp > 0)
+      comp_సూచీ = hb_min (comp_లెక్క, _hb_glyph_info_get_lig_comp (&బఫరు->cur())) - 1;
+    లేకపోతే
+      comp_సూచీ = comp_లెక్క - 1;
 
-    return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, classCount, idx));
+    return_trace ((ఇది+markArray).apply (c, mark_సూచీ, comp_సూచీ, lig_attach, class_లెక్క_2, idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    బహిర్గతం->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
+    Markclass_సంవృతం_and_remap_indexes (ఇది+markCoverage, ఇది+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    ఒకవేళ (!klass_mapping.get_population ()) return_trace (అబద్ధం);
+    బహిర్గతం->class_లెక్క_2 = klass_mapping.get_population ();
 
-    auto mark_iter =
-    + hb_zip (this+markCoverage, hb_range ((unsigned) (this+markArray).len))
-    | hb_filter (glyphset, hb_first)
+    స్వయంచాలక mark_iter =
+    + hb_zip (ఇది+markCoverage, hb_range ((గుర్తులేని) (ఇది+markArray).len))
+    | hb_filter (glyphset, hb_మొదటి)
     ;
 
-    auto new_mark_coverage =
+    స్వయంచాలక new_mark_coverage =
     + mark_iter
-    | hb_map_retains_sorting (hb_first)
-    | hb_map_retains_sorting (glyph_map)
+    | hb_map_retains_క్రమీకరణ (hb_మొదటి)
+    | hb_map_retains_క్రమీకరణ (glyph_map)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
-      return_trace (false);
+    ఒకవేళ (!బహిర్గతం->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
+      return_trace (అబద్ధం);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
-						    (this+markCoverage).iter (),
+    ఒకవేళ (unlikely (!బహిర్గతం->markArray.serialize_subset (c, markArray, ఇది,
+						    (ఇది+markCoverage).iter (),
 						    &klass_mapping)))
-      return_trace (false);
+      return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_lig_coverage;
-    if (!out->ligatureArray.serialize_subset (c, ligatureArray, this,
-					      hb_iter (this+ligatureCoverage),
-					      classCount, &klass_mapping, new_lig_coverage))
-      return_trace (false);
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_lig_coverage;
+    ఒకవేళ (!బహిర్గతం->ligatureArray.serialize_subset (c, ligatureArray, ఇది,
+					      hb_iter (ఇది+ligatureCoverage),
+					      class_లెక్క_2, &klass_mapping, new_lig_coverage))
+      return_trace (అబద్ధం);
 
-    return_trace (out->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));
+    return_trace (బహిర్గతం->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));
   }
 
 };
@@ -211,4 +211,4 @@ struct MarkLigPosFormat1_2
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH */

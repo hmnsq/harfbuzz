@@ -1,231 +1,231 @@
-#ifndef OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
-#define OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
+#నిర్వచించు OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
 
-#include "Common.hh"
-#include "SubstLookupSubTable.hh"
+#అన్తర్భావ "Common.hh"
+#అన్తర్భావ "SubstLookupSubTable.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-struct SubstLookup : Lookup
+నిర్మాణం SubstLookup : Lookup
 {
-  using SubTable = SubstLookupSubTable;
+  ఉపయోగించి Sub_పట్టిక = Subst_Lookup_Sub_పట్టిక;
 
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
+  { తిరిగి Lookup::sanitize<Sub_పట్టిక> (c); }
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  స్థిరరాశి Sub_పట్టిక& get_subtable (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి Lookup::get_subtable<Sub_పట్టిక> (i); }
 
-  static inline bool lookup_type_is_reverse (unsigned int lookup_type)
-  { return lookup_type == SubTable::ReverseChainSingle; }
+  స్థిర అంతఃవరుస తార్కిక lookup_type_is_తిరగేయి (గుర్తులేని పూర్ణాంకం lookup_type)
+  { తిరిగి lookup_type == Sub_పట్టిక::తిరగేయి_Chain_Single; }
 
-  bool is_reverse () const
+  తార్కిక is_తిరగేయి () స్థిరరాశి
   {
-    unsigned int type = get_type ();
-    if (unlikely (type == SubTable::Extension) && hb_barrier ())
-      return get_subtable (0).u.extension.is_reverse ();
-    return lookup_type_is_reverse (type);
+    గుర్తులేని పూర్ణాంకం type = get_type ();
+    ఒకవేళ (unlikely (type == Sub_పట్టిక::Extension) && hb_barrier ())
+      తిరిగి get_subtable (0).u.extension.is_తిరగేయి ();
+    తిరిగి lookup_type_is_తిరగేయి (type);
   }
 
-  bool may_have_non_1to1 () const
+  తార్కిక may_have_non_1to1 () స్థిరరాశి
   {
     hb_have_non_1to1_context_t c;
-    return dispatch (&c);
+    తిరిగి dispatch (&c);
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ఇది);
     return_trace (dispatch (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    తిరిగి dispatch (&c);
   }
 
-  hb_closure_context_t::return_t closure (hb_closure_context_t *c, unsigned int this_index) const
+  hb_సంవృతం_context_t::return_t సంవృతం (hb_సంవృతం_context_t *c, గుర్తులేని పూర్ణాంకం this_సూచీ) స్థిరరాశి
   {
-    if (!c->should_visit_lookup (this_index))
-      return hb_closure_context_t::default_return_value ();
+    ఒకవేళ (!c->should_సందర్శించు_lookup (this_సూచీ))
+      తిరిగి hb_సంవృతం_context_t::default_return_విలువ ();
 
-    c->set_recurse_func (dispatch_closure_recurse_func);
+    c->సమితి_recurse_func (dispatch_సంవృతం_recurse_func);
 
-    hb_closure_context_t::return_t ret = dispatch (c);
+    hb_సంవృతం_context_t::return_t ret = dispatch (c);
 
     c->flush ();
 
-    return ret;
+    తిరిగి ret;
   }
 
-  void depend (hb_depend_context_t *c) const
+  శూన్య depend (hb_depend_context_t *c) స్థిరరాశి
   {
-    c->set_recurse_func (dispatch_depend_recurse_func);
+    c->సమితి_recurse_func (dispatch_depend_recurse_func);
     dispatch (c);
   }
 
-  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
+  hb_సంవృతం_lookups_context_t::return_t సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c, గుర్తులేని this_సూచీ) స్థిరరాశి
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    ఒకవేళ (c->is_lookup_సందర్శించిన (this_సూచీ))
+      తిరిగి hb_సంవృతం_lookups_context_t::default_return_విలువ ();
 
-    c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    c->సమితి_lookup_సందర్శించిన (this_సూచీ);
+    ఒకవేళ (!intersects (c->glyphs))
     {
-      c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      c->సమితి_lookup_inactive (this_సూచీ);
+      తిరిగి hb_సంవృతం_lookups_context_t::default_return_విలువ ();
     }
 
-    hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    hb_సంవృతం_lookups_context_t::return_t ret = dispatch (c);
+    తిరిగి ret;
   }
 
-  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    c->set_recurse_func (dispatch_recurse_func<hb_collect_glyphs_context_t>);
-    return dispatch (c);
+    c->సమితి_recurse_func (dispatch_recurse_func<hb_collect_glyphs_context_t>);
+    తిరిగి dispatch (c);
   }
 
-  template <typename set_t>
-  void collect_coverage (set_t *glyphs) const
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య collect_coverage (సమితి_t *glyphs) స్థిరరాశి
   {
-    hb_collect_coverage_context_t<set_t> c (glyphs);
+    hb_collect_coverage_context_t<సమితి_t> c (glyphs);
     dispatch (&c);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-                    const hb_ot_layout_lookup_accelerator_t *accel) const
+  తార్కిక would_apply (hb_would_apply_context_t *c,
+                    స్థిరరాశి hb_ot_layout_lookup_accelerator_t *accel) స్థిరరాశి
   {
-    if (unlikely (!c->len)) return false;
-    if (!accel->may_have (c->glyphs[0])) return false;
-      return dispatch (c);
+    ఒకవేళ (unlikely (!c->len)) తిరిగి అబద్ధం;
+    ఒకవేళ (!accel->may_have (c->glyphs[0])) తిరిగి అబద్ధం;
+      తిరిగి dispatch (c);
   }
 
-  template<typename Glyphs, typename Substitutes,
-	   hb_requires (hb_is_sorted_source_of (Glyphs,
-						const hb_codepoint_t) &&
-			hb_is_source_of (Substitutes,
-					 const hb_codepoint_t))>
-  bool serialize_single (hb_serialize_context_t *c,
+  మూస<రకం_పేరు Glyphs, రకం_పేరు Substitutes,
+	   hb_requires (hb_is_sorted_ఆధారం_యొక్క (Glyphs,
+						స్థిరరాశి hb_codepoint_t) &&
+			hb_is_ఆధారం_యొక్క (Substitutes,
+					 స్థిరరాశి hb_codepoint_t))>
+  తార్కిక serialize_single (hb_serialize_context_t *c,
                          uint32_t lookup_props,
                          Glyphs glyphs,
                          Substitutes substitutes)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Single, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!Lookup::serialize (c, Sub_పట్టిక::Single, lookup_props, 1))) return_trace (అబద్ధం);
+    ఒకవేళ (c->push<Sub_పట్టిక> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->కూడు_link (get_subtables<Sub_పట్టిక> ()[0], c->తీయి_pack ());
+      return_trace (నిజం);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->తీయి_discard ();
+    return_trace (అబద్ధం);
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  uint32_t lookup_props,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Multiple, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.multiple.
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!Lookup::serialize (c, Sub_పట్టిక::గుణిజం, lookup_props, 1))) return_trace (అబద్ధం);
+    ఒకవేళ (c->push<Sub_పట్టిక> ()->u.గుణిజం_2.
         serialize (c, it))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->కూడు_link (get_subtables<Sub_పట్టిక> ()[0], c->తీయి_pack ());
+      return_trace (నిజం);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->తీయి_discard ();
+    return_trace (అబద్ధం);
   }
 
-  template <typename GlyphID>
-  bool serialize_alternate (hb_serialize_context_t *c,
+  మూస <రకం_పేరు GlyphID>
+  తార్కిక serialize_alternate (hb_serialize_context_t *c,
                             uint32_t lookup_props,
                             hb_sorted_array_t<GlyphID> glyphs,
-                            hb_array_t<const unsigned int> alternate_len_list,
+                            hb_array_t<స్థిరరాశి గుర్తులేని పూర్ణాంకం> alternate_len_list,
                             hb_array_t<GlyphID> alternate_glyphs_list)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Alternate, lookup_props, 1))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!Lookup::serialize (c, Sub_పట్టిక::Alternate, lookup_props, 1))) return_trace (అబద్ధం);
 
-    if (c->push<SubTable> ()->u.alternate.
+    ఒకవేళ (c->push<Sub_పట్టిక> ()->u.alternate.
         serialize (c,
                    glyphs,
                    alternate_len_list,
                    alternate_glyphs_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->కూడు_link (get_subtables<Sub_పట్టిక> ()[0], c->తీయి_pack ());
+      return_trace (నిజం);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->తీయి_discard ();
+    return_trace (అబద్ధం);
   }
 
-  template <typename GlyphID>
-  bool serialize_ligature (hb_serialize_context_t *c,
+  మూస <రకం_పేరు GlyphID>
+  తార్కిక serialize_ligature (hb_serialize_context_t *c,
                            uint32_t lookup_props,
-                           hb_sorted_array_t<GlyphID> first_glyphs,
-                           hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                           hb_sorted_array_t<GlyphID> మొదటి_glyphs,
+                           hb_array_t<స్థిరరాశి గుర్తులేని పూర్ణాంకం> ligature_చొప్పున_మొదటి_glyph_లెక్క_list,
                            hb_array_t<GlyphID> ligatures_list,
-                           hb_array_t<const unsigned int> component_count_list,
+                           hb_array_t<స్థిరరాశి గుర్తులేని పూర్ణాంకం> component_లెక్క_list,
                            hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Ligature, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.ligature.
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!Lookup::serialize (c, Sub_పట్టిక::Ligature, lookup_props, 1))) return_trace (అబద్ధం);
+    ఒకవేళ (c->push<Sub_పట్టిక> ()->u.ligature.
         serialize (c,
-                   first_glyphs,
-                   ligature_per_first_glyph_count_list,
+                   మొదటి_glyphs,
+                   ligature_చొప్పున_మొదటి_glyph_లెక్క_list,
                    ligatures_list,
-                   component_count_list,
+                   component_లెక్క_list,
                    component_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
-      return_trace (true);
+      c->కూడు_link (get_subtables<Sub_పట్టిక> ()[0], c->తీయి_pack ());
+      return_trace (నిజం);
     }
-    c->pop_discard ();
-    return_trace (false);
+    c->తీయి_discard ();
+    return_trace (అబద్ధం);
   }
 
-  template <typename context_t>
-  static inline typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  మూస <రకం_పేరు context_t>
+  స్థిర అంతఃవరుస రకం_పేరు context_t::return_t dispatch_recurse_func (context_t *c, గుర్తులేని పూర్ణాంకం lookup_సూచీ);
 
-  static inline typename hb_closure_context_t::return_t closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  స్థిర అంతఃవరుస రకం_పేరు hb_సంవృతం_context_t::return_t సంవృతం_glyphs_recurse_func (hb_సంవృతం_context_t *c, గుర్తులేని lookup_సూచీ, hb_సమితి_t *covered_seq_indices, గుర్తులేని seq_సూచీ, గుర్తులేని చివర_సూచీ);
 
 
-  static inline hb_closure_context_t::return_t dispatch_closure_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  స్థిర అంతఃవరుస hb_సంవృతం_context_t::return_t dispatch_సంవృతం_recurse_func (hb_సంవృతం_context_t *c, గుర్తులేని lookup_సూచీ, hb_సమితి_t *covered_seq_indices, గుర్తులేని seq_సూచీ, గుర్తులేని చివర_సూచీ)
   {
-    if (!c->should_visit_lookup (lookup_index))
-      return hb_empty_t ();
+    ఒకవేళ (!c->should_సందర్శించు_lookup (lookup_సూచీ))
+      తిరిగి hb_ఖాళీలు_t ();
 
-    hb_closure_context_t::return_t ret = closure_glyphs_recurse_func (c, lookup_index, covered_seq_indices, seq_index, end_index);
+    hb_సంవృతం_context_t::return_t ret = సంవృతం_glyphs_recurse_func (c, lookup_సూచీ, covered_seq_indices, seq_సూచీ, చివర_సూచీ);
 
     /* While in theory we should flush here, it will cause timeouts because a recursive
      * lookup can keep growing the glyph set.  Skip, and outer loop will retry up to
      * HB_CLOSURE_MAX_STAGES time, which should be enough for every realistic font. */
     //c->flush ();
 
-    return ret;
+    తిరిగి ret;
   }
 
-  static inline hb_depend_context_t::return_t depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  స్థిర అంతఃవరుస hb_depend_context_t::return_t depend_glyphs_recurse_func (hb_depend_context_t *c, గుర్తులేని lookup_సూచీ, hb_బిట్టు_పుట_t *covered_seq_indices, గుర్తులేని seq_సూచీ, గుర్తులేని చివర_సూచీ);
 
-  static inline hb_depend_context_t::return_t dispatch_depend_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  స్థిర అంతఃవరుస hb_depend_context_t::return_t dispatch_depend_recurse_func (hb_depend_context_t *c, గుర్తులేని lookup_సూచీ, hb_బిట్టు_పుట_t *covered_seq_indices, గుర్తులేని seq_సూచీ, గుర్తులేని చివర_సూచీ)
   {
-    return depend_glyphs_recurse_func (c, lookup_index, covered_seq_indices, seq_index, end_index);
+    తిరిగి depend_glyphs_recurse_func (c, lookup_సూచీ, covered_seq_indices, seq_సూచీ, చివర_సూచీ);
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
+  { తిరిగి Lookup::dispatch<Sub_పట్టిక> (c, std::forward<Ts> (ds)...); }
 
-  bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
+  { తిరిగి Lookup::subset<Sub_పట్టిక> (c); }
 };
 
 
@@ -233,4 +233,4 @@ struct SubstLookup : Lookup
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_SUBSTLOOKUP_HH */
+#అయితే_ముగింపు  /* OT_LAYOUT_GSUB_SUBSTLOOKUP_HH */

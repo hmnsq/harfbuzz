@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_HH
-#define HB_HH
+#నిర్వచితం_కాకపోతే HB_HH
+#నిర్వచించు HB_HH
 
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC
-#ifdef _MSC_VER
-#pragma warning( disable: 4068 ) /* Unknown pragma */
-#endif
-#if defined(__GNUC__) || defined(__clang__)
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC
+#నిర్వచితమైతే _MSC_VER
+#సూచన warning( disable: 4068 ) /* Unknown pragma */
+#అయితే_ముగింపు
+#ఒకవేళ defined(__GNUC__) || defined(__clang__)
 /* Rules:
  *
  * - All pragmas are declared GCC even if they are clang ones.  Otherwise GCC
@@ -46,120 +46,120 @@
  */
 
 /* Setup.  Don't sort order within this category. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
-#pragma GCC diagnostic warning "-Wall"
-#pragma GCC diagnostic warning "-Wextra"
-#endif
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
-#pragma GCC diagnostic ignored "-Wpragmas"
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma GCC diagnostic ignored "-Wunknown-warning-option"
-#endif
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
+#సూచన GCC diagnostic warning "-Wall"
+#సూచన GCC diagnostic warning "-Wextra"
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
+#సూచన GCC diagnostic ignored "-Wpragmas"
+#సూచన GCC diagnostic ignored "-Wunknown-pragmas"
+#సూచన GCC diagnostic ignored "-Wunknown-warning-option"
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
 //#pragma GCC diagnostic warning "-Weverything"
-#endif
+#అయితే_ముగింపు
 
 /* Error.  Should never happen. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR
-#pragma GCC diagnostic error   "-Wbitwise-instead-of-logical"
-#pragma GCC diagnostic error   "-Wcast-align"
-#pragma GCC diagnostic error   "-Wcast-function-type"
-#pragma GCC diagnostic error   "-Wcast-function-type-strict"
-#pragma GCC diagnostic error   "-Wconstant-conversion"
-#pragma GCC diagnostic error   "-Wcomma"
-#pragma GCC diagnostic error   "-Wdelete-non-virtual-dtor"
-#pragma GCC diagnostic error   "-Wembedded-directive"
-#pragma GCC diagnostic error   "-Wextra-semi-stmt"
-#pragma GCC diagnostic error   "-Wformat-security"
-#pragma GCC diagnostic error   "-Wimplicit-function-declaration"
-#pragma GCC diagnostic error   "-Winit-self"
-#pragma GCC diagnostic error   "-Winjected-class-name"
-#pragma GCC diagnostic error   "-Wmissing-braces"
-#pragma GCC diagnostic error   "-Wmissing-declarations"
-#pragma GCC diagnostic error   "-Wmissing-prototypes"
-#pragma GCC diagnostic error   "-Wnarrowing"
-#pragma GCC diagnostic error   "-Wnested-externs"
-#pragma GCC diagnostic error   "-Wold-style-definition"
-#pragma GCC diagnostic error   "-Wpointer-arith"
-#pragma GCC diagnostic error   "-Wredundant-decls"
-#pragma GCC diagnostic error   "-Wreorder"
-#pragma GCC diagnostic error   "-Wsign-compare"
-#pragma GCC diagnostic error   "-Wstrict-flex-arrays"
-#pragma GCC diagnostic error   "-Wstrict-prototypes"
-#pragma GCC diagnostic error   "-Wstring-conversion"
-#pragma GCC diagnostic error   "-Wswitch-enum"
-#pragma GCC diagnostic error   "-Wtautological-overlap-compare"
-#pragma GCC diagnostic error   "-Wunneeded-internal-declaration"
-#pragma GCC diagnostic error   "-Wunused"
-#pragma GCC diagnostic error   "-Wunused-local-typedefs"
-#pragma GCC diagnostic error   "-Wunused-value"
-#pragma GCC diagnostic error   "-Wunused-variable"
-#pragma GCC diagnostic error   "-Wvla"
-#pragma GCC diagnostic error   "-Wwrite-strings"
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR
+#సూచన GCC diagnostic error   "-Wbitwise-instead-of-logical"
+#సూచన GCC diagnostic error   "-Wcast-align"
+#సూచన GCC diagnostic error   "-Wcast-function-type"
+#సూచన GCC diagnostic error   "-Wcast-function-type-strict"
+#సూచన GCC diagnostic error   "-Wconstant-conversion"
+#సూచన GCC diagnostic error   "-Wcomma"
+#సూచన GCC diagnostic error   "-Wdelete-non-virtual-dtor"
+#సూచన GCC diagnostic error   "-Wembedded-directive"
+#సూచన GCC diagnostic error   "-Wextra-semi-stmt"
+#సూచన GCC diagnostic error   "-Wformat-security"
+#సూచన GCC diagnostic error   "-Wimplicit-function-declaration"
+#సూచన GCC diagnostic error   "-Winit-self"
+#సూచన GCC diagnostic error   "-Winjected-class-name"
+#సూచన GCC diagnostic error   "-Wmissing-braces"
+#సూచన GCC diagnostic error   "-Wmissing-declarations"
+#సూచన GCC diagnostic error   "-Wmissing-prototypes"
+#సూచన GCC diagnostic error   "-Wnarrowing"
+#సూచన GCC diagnostic error   "-Wnested-externs"
+#సూచన GCC diagnostic error   "-Wold-style-definition"
+#సూచన GCC diagnostic error   "-Wpointer-arith"
+#సూచన GCC diagnostic error   "-Wredundant-decls"
+#సూచన GCC diagnostic error   "-Wreorder"
+#సూచన GCC diagnostic error   "-Wsign-compare"
+#సూచన GCC diagnostic error   "-Wstrict-flex-arrays"
+#సూచన GCC diagnostic error   "-Wstrict-prototypes"
+#సూచన GCC diagnostic error   "-Wstring-conversion"
+#సూచన GCC diagnostic error   "-Wswitch-enum"
+#సూచన GCC diagnostic error   "-Wtautological-overlap-compare"
+#సూచన GCC diagnostic error   "-Wunneeded-internal-declaration"
+#సూచన GCC diagnostic error   "-Wunused"
+#సూచన GCC diagnostic error   "-Wunused-local-typedefs"
+#సూచన GCC diagnostic error   "-Wunused-value"
+#సూచన GCC diagnostic error   "-Wunused-variable"
+#సూచన GCC diagnostic error   "-Wvla"
+#సూచన GCC diagnostic error   "-Wwrite-strings"
+#అయితే_ముగింపు
 
 /* Warning.  To be investigated if happens. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
-#pragma GCC diagnostic warning "-Wbuiltin-macro-redefined"
-#pragma GCC diagnostic warning "-Wdeprecated"
-#pragma GCC diagnostic warning "-Wdeprecated-declarations"
-#pragma GCC diagnostic warning "-Wdisabled-optimization"
-#pragma GCC diagnostic warning "-Wdouble-promotion"
-#pragma GCC diagnostic warning "-Wformat=2"
-#pragma GCC diagnostic warning "-Wformat-signedness"
-#pragma GCC diagnostic warning "-Wignored-pragma-optimize"
-#pragma GCC diagnostic warning "-Wlogical-op"
-#pragma GCC diagnostic warning "-Wmissing-format-attribute"
-#pragma GCC diagnostic warning "-Wpessimizing-move"
-#pragma GCC diagnostic warning "-Wundef"
-#pragma GCC diagnostic warning "-Wunsafe-loop-optimizations"
-#pragma GCC diagnostic warning "-Wunused-but-set-variable"
-#ifdef __clang__
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
+#సూచన GCC diagnostic warning "-Wbuiltin-macro-redefined"
+#సూచన GCC diagnostic warning "-Wdeprecated"
+#సూచన GCC diagnostic warning "-Wdeprecated-declarations"
+#సూచన GCC diagnostic warning "-Wdisabled-optimization"
+#సూచన GCC diagnostic warning "-Wdouble-promotion"
+#సూచన GCC diagnostic warning "-Wformat=2"
+#సూచన GCC diagnostic warning "-Wformat-signedness"
+#సూచన GCC diagnostic warning "-Wignored-pragma-optimize"
+#సూచన GCC diagnostic warning "-Wlogical-op"
+#సూచన GCC diagnostic warning "-Wmissing-format-attribute"
+#సూచన GCC diagnostic warning "-Wpessimizing-move"
+#సూచన GCC diagnostic warning "-Wundef"
+#సూచన GCC diagnostic warning "-Wunsafe-loop-optimizations"
+#సూచన GCC diagnostic warning "-Wunused-but-set-variable"
+#నిర్వచితమైతే __clang__
 // The following are too buggy on gcc
 // https://github.com/harfbuzz/harfbuzz/issues/5589
 // https://github.com/harfbuzz/harfbuzz/pull/5367
-#pragma GCC diagnostic warning "-Wmaybe-uninitialized"
-#pragma GCC diagnostic warning "-Wuninitialized"
-#else
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#pragma GCC diagnostic ignored "-Wuninitialized"
-#endif
-#endif
+#సూచన GCC diagnostic warning "-Wmaybe-uninitialized"
+#సూచన GCC diagnostic warning "-Wuninitialized"
+#లేకపోతే
+#సూచన GCC diagnostic ignored "-Wmaybe-uninitialized"
+#సూచన GCC diagnostic ignored "-Wuninitialized"
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 /* Ignored currently, but should be fixed at some point. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
-#pragma GCC diagnostic ignored "-Wconversion"			// TODO fix
-#pragma GCC diagnostic ignored "-Wshadow"			// TODO fix
-#pragma GCC diagnostic ignored "-Wunused-parameter"		// TODO fix
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic ignored "-Wunused-result"		// TODO fix
-#endif
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
+#సూచన GCC diagnostic ignored "-Wconversion"			// TODO fix
+#సూచన GCC diagnostic ignored "-Wshadow"			// TODO fix
+#సూచన GCC diagnostic ignored "-Wunused-parameter"		// TODO fix
+#ఒకవేళ defined(__GNUC__) && !defined(__clang__)
+#సూచన GCC diagnostic ignored "-Wunused-result"		// TODO fix
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 /* Ignored intentionally. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
-#pragma GCC diagnostic ignored "-Warray-bounds" // https://github.com/harfbuzz/harfbuzz/issues/5738
-#pragma GCC diagnostic ignored "-Wclass-memaccess"
-#pragma GCC diagnostic ignored "-Wcast-function-type-strict" // https://github.com/harfbuzz/harfbuzz/pull/3859#issuecomment-1295409126
-#pragma GCC diagnostic ignored "-Wdangling-reference" // https://github.com/harfbuzz/harfbuzz/issues/4043
-#pragma GCC diagnostic ignored "-Wdangling-pointer" // Trigerred by hb_decycler_node_t().
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#pragma GCC diagnostic ignored "-Wformat-zero-length"
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#pragma GCC diagnostic ignored "-Wold-style-cast"
-#pragma GCC diagnostic ignored "-Wpacked" // Erratic impl in clang
-#pragma GCC diagnostic ignored "-Wrange-loop-analysis" // https://github.com/harfbuzz/harfbuzz/issues/2834
-#pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#pragma GCC diagnostic ignored "-Wtype-limits"
-#pragma GCC diagnostic ignored "-Wunused-template"
-#pragma GCC diagnostic ignored "-Wc++11-compat" // only gcc raises it
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
+#సూచన GCC diagnostic ignored "-Warray-bounds" // https://github.com/harfbuzz/harfbuzz/issues/5738
+#సూచన GCC diagnostic ignored "-Wclass-memaccess"
+#సూచన GCC diagnostic ignored "-Wcast-function-type-strict" // https://github.com/harfbuzz/harfbuzz/pull/3859#issuecomment-1295409126
+#సూచన GCC diagnostic ignored "-Wdangling-reference" // https://github.com/harfbuzz/harfbuzz/issues/4043
+#సూచన GCC diagnostic ignored "-Wdangling-pointer" // Trigerred by hb_decycler_node_t().
+#సూచన GCC diagnostic ignored "-Wformat-nonliteral"
+#సూచన GCC diagnostic ignored "-Wformat-zero-length"
+#సూచన GCC diagnostic ignored "-Wmissing-field-initializers"
+#సూచన GCC diagnostic ignored "-Wold-style-cast"
+#సూచన GCC diagnostic ignored "-Wpacked" // Erratic impl in clang
+#సూచన GCC diagnostic ignored "-Wrange-loop-analysis" // https://github.com/harfbuzz/harfbuzz/issues/2834
+#సూచన GCC diagnostic ignored "-Wstrict-aliasing"
+#సూచన GCC diagnostic ignored "-Wtype-limits"
+#సూచన GCC diagnostic ignored "-Wunused-template"
+#సూచన GCC diagnostic ignored "-Wc++11-compat" // only gcc raises it
+#అయితే_ముగింపు
 
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 
-#include "hb-config.hh"
+#అన్తర్భావ "hb-config.hh"
 
 
 /*
@@ -168,79 +168,79 @@
  * HarfBuzz and not using our build system.
  */
 /* Enable extensions on AIX 3, Interix.  */
-#ifndef _ALL_SOURCE
-# define _ALL_SOURCE 1
-#endif
+#నిర్వచితం_కాకపోతే ALL_ఆధారం
+# define ALL_ఆధారం 1
+#అయితే_ముగింపు
 /* Enable GNU extensions on systems that have them.  */
-#ifndef _GNU_SOURCE
+#నిర్వచితం_కాకపోతే _GNU_SOURCE
 # define _GNU_SOURCE 1
-#endif
+#అయితే_ముగింపు
 /* Enable threading extensions on Solaris.  */
-#ifndef _POSIX_PTHREAD_SEMANTICS
+#నిర్వచితం_కాకపోతే _POSIX_PTHREAD_SEMANTICS
 # define _POSIX_PTHREAD_SEMANTICS 1
-#endif
+#అయితే_ముగింపు
 /* Enable extensions on HP NonStop.  */
-#ifndef _TANDEM_SOURCE
-# define _TANDEM_SOURCE 1
-#endif
+#నిర్వచితం_కాకపోతే TANDEM_ఆధారం
+# define TANDEM_ఆధారం 1
+#అయితే_ముగింపు
 /* Enable general extensions on Solaris.  */
-#ifndef __EXTENSIONS__
+#నిర్వచితం_కాకపోతే __EXTENSIONS__
 # define __EXTENSIONS__ 1
-#endif
+#అయితే_ముగింపు
 
-#if defined (_MSC_VER) && defined (HB_DLL_EXPORT)
-#define HB_EXTERN __declspec (dllexport) extern
-#endif
+#ఒకవేళ defined (_MSC_VER) && defined (HB_DLL_EXPORT)
+#నిర్వచించు HB_EXTERN __declspec (dllexport) బాహ్య
+#అయితే_ముగింపు
 
 // https://github.com/harfbuzz/harfbuzz/pull/4619
-#ifndef __STDC_FORMAT_MACROS
-#define __STDC_FORMAT_MACROS 1
-#endif
+#నిర్వచితం_కాకపోతే __STDC_FORMAT_MACROS
+#నిర్వచించు __STDC_FORMAT_MACROS 1
+#అయితే_ముగింపు
 
-#include "hb.h"
-#define HB_H_IN
-#include "hb-ot.h"
-#define HB_OT_H_IN
-#include "hb-aat.h"
-#define HB_AAT_H_IN
-#define HB_SUBSET_H_IN
+#అన్తర్భావ "hb.h"
+#నిర్వచించు HB_H_లోపల
+#అన్తర్భావ "hb-ot.h"
+#నిర్వచించు HB_OT_H_లోపల
+#అన్తర్భావ "hb-aat.h"
+#నిర్వచించు HB_AAT_H_లోపల
+#నిర్వచించు HB_SUBSET_H_లోపల
 
-#include <cassert>
-#include <cfloat>
-#include <climits>
-#if defined(_MSC_VER) && !defined(_USE_MATH_DEFINES)
-# define _USE_MATH_DEFINES
-#endif
-#include <cmath>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#అన్తర్భావ <cassert>
+#అన్తర్భావ <cfloat>
+#అన్తర్భావ <climits>
+#ఒకవేళ defined(_MSC_VER) && !defined(USE_MATH_నిర్వచిస్తుంది)
+# define USE_MATH_నిర్వచిస్తుంది
+#అయితే_ముగింపు
+#అన్తర్భావ <cmath>
+#అన్తర్భావ <cstdarg>
+#అన్తర్భావ <cstddef>
+#అన్తర్భావ <cstdio>
+#అన్తర్భావ <cstdlib>
+#అన్తర్భావ <cstring>
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || defined(__MINGW32__)
-#ifdef __MINGW32_VERSION
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN 1
-#endif
-#else
-#include <intrin.h>
-#endif
-#endif
+#ఒకవేళ (defined(_MSC_VER) && _MSC_VER >= 1500) || defined(__MINGW32__)
+#నిర్వచితమైతే __MINGW32_VERSION
+#నిర్వచితం_కాకపోతే WIN32_LEAN_AND_సగటు
+#నిర్వచించు WIN32_LEAN_AND_సగటు 1
+#అయితే_ముగింపు
+#లేకపోతే
+#అన్తర్భావ <intrin.h>
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifdef _WIN32
-#include <windows.h>
-#include <winapifamily.h>
-#endif
+#నిర్వచితమైతే _WIN32
+#అన్తర్భావ <windows.h>
+#అన్తర్భావ <winapifamily.h>
+#అయితే_ముగింపు
 
-#ifndef PRId32
+#నిర్వచితం_కాకపోతే PRId32
 # define PRId32 "d"
 # define PRIu32 "u"
 # define PRIx32 "x"
-#endif
+#అయితే_ముగింపు
 
-#define HB_PASTE1(a,b) a##b
-#define HB_PASTE(a,b) HB_PASTE1(a,b)
+#నిర్వచించు HB_PASTE1(a,b) a##b
+#నిర్వచించు HB_PASTE(a,b) HB_PASTE1(a,b)
 
 
 /*
@@ -249,96 +249,96 @@
 
 // gcc 10 has __has_builtin but not earlier versions. Sanction any gcc >= 5
 // clang defines it so no need.
-#ifdef __has_builtin
-#define hb_has_builtin __has_builtin
-#elif defined(_MSC_VER)
-#define hb_has_builtin(x) 0
-#else
-#define hb_has_builtin(x) ((defined(__GNUC__) && __GNUC__ >= 5))
-#endif
+#నిర్వచితమైతే __has_builtin
+#నిర్వచించు hb_has_builtin __has_builtin
+#లేదావేళ defined(_MSC_VER)
+#నిర్వచించు hb_has_builtin(x) 0
+#లేకపోతే
+#నిర్వచించు hb_has_builtin(x) ((defined(__GNUC__) && __GNUC__ >= 5))
+#అయితే_ముగింపు
 
-#if defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
-#define likely(expr) __builtin_expect (bool(expr), 1)
-#define unlikely(expr) __builtin_expect (bool(expr), 0)
-#else
-#define likely(expr) (expr)
-#define unlikely(expr) (expr)
-#endif
+#ఒకవేళ defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
+#నిర్వచించు likely(సమాసం) __builtin_expect (తార్కిక(సమాసం), 1)
+#నిర్వచించు unlikely(సమాసం) __builtin_expect (తార్కిక(సమాసం), 0)
+#లేకపోతే
+#నిర్వచించు likely(సమాసం) (సమాసం)
+#నిర్వచించు unlikely(సమాసం) (సమాసం)
+#అయితే_ముగింపు
 
-#if !defined(__GNUC__) && !defined(__clang__)
-#undef __attribute__
-#define __attribute__(x)
-#endif
+#ఒకవేళ !defined(__GNUC__) && !defined(__clang__)
+#నిర్వచనం_రద్దు __attribute__
+#నిర్వచించు __attribute__(x)
+#అయితే_ముగింపు
 
-#if defined(__MINGW32__) && (__GNUC__ >= 3) && !defined(__clang__)
-#define HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
-#elif defined(__GNUC__) && (__GNUC__ >= 3)
-#define HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (__printf__, format_idx, arg_idx)))
-#else
-#define HB_PRINTF_FUNC(format_idx, arg_idx)
-#endif
-#if defined(__GNUC__) && (__GNUC__ >= 4) || (__clang__)
-#define HB_UNUSED	__attribute__((unused))
-#elif defined(_MSC_VER) /* https://github.com/harfbuzz/harfbuzz/issues/635 */
-#define HB_UNUSED __pragma(warning(suppress: 4100 4101 4189))
-#else
-#define HB_UNUSED
-#endif
+#ఒకవేళ defined(__MINGW32__) && (__GNUC__ >= 3) && !defined(__clang__)
+#నిర్వచించు HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
+#లేదావేళ defined(__GNUC__) && (__GNUC__ >= 3)
+#నిర్వచించు HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (__printf__, format_idx, arg_idx)))
+#లేకపోతే
+#నిర్వచించు HB_PRINTF_FUNC(format_idx, arg_idx)
+#అయితే_ముగింపు
+#ఒకవేళ defined(__GNUC__) && (__GNUC__ >= 4) || (__clang__)
+#నిర్వచించు HB_వాడని	__attribute__((వాడని_2))
+#లేదావేళ defined(_MSC_VER) /* https://github.com/harfbuzz/harfbuzz/issues/635 */
+#నిర్వచించు HB_వాడని __pragma(warning(suppress: 4100 4101 4189))
+#లేకపోతే
+#నిర్వచించు HB_వాడని
+#అయితే_ముగింపు
 
-#ifndef HB_INTERNAL
-# if !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
-#  define HB_INTERNAL __attribute__((__visibility__("hidden")))
+#నిర్వచితం_కాకపోతే HB_అంతర్గత
+# ఒకవేళ !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
+#  define HB_అంతర్గత __attribute__((__visibility__("hidden")))
 # elif defined(__MINGW32__)
    /* We use -export-symbols on mingw32, since it does not support visibility attributes. */
-#  define HB_INTERNAL
+#  define HB_అంతర్గత
 # elif defined (_MSC_VER) && defined (HB_DLL_EXPORT)
    /* We do not try to export internal symbols on Visual Studio */
-#  define HB_INTERNAL
-#else
-#  define HB_INTERNAL
+#  define HB_అంతర్గత
+#లేకపోతే
+#  define HB_అంతర్గత
 #  define HB_NO_VISIBILITY 1
 # endif
-#endif
+#అయితే_ముగింపు
 
 /* https://github.com/harfbuzz/harfbuzz/issues/1651 */
-#if defined(__clang__) && __clang_major__ < 10
-#define static_const static
-#else
-#define static_const static const
-#endif
+#ఒకవేళ defined(__clang__) && __clang_major__ < 10
+#నిర్వచించు static_const స్థిర
+#లేకపోతే
+#నిర్వచించు static_const స్థిర స్థిరరాశి
+#అయితే_ముగింపు
 
-#if defined(__GNUC__) && (__GNUC__ >= 3)
-#define HB_FUNC __PRETTY_FUNCTION__
-#elif defined(_MSC_VER)
-#define HB_FUNC __FUNCSIG__
-#else
-#define HB_FUNC __func__
-#endif
+#ఒకవేళ defined(__GNUC__) && (__GNUC__ >= 3)
+#నిర్వచించు HB_FUNC __PRETTY_FUNCTION__
+#లేదావేళ defined(_MSC_VER)
+#నిర్వచించు HB_FUNC __FUNCSIG__
+#లేకపోతే
+#నిర్వచించు HB_FUNC __func__
+#అయితే_ముగింపు
 
-#if defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
+#ఒకవేళ defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
 /* https://github.com/harfbuzz/harfbuzz/issues/630 */
-#define __restrict
-#endif
+#నిర్వచించు __restrict
+#అయితే_ముగింపు
 
-#ifndef HB_ALWAYS_INLINE
-#if defined(_MSC_VER)
-#define HB_ALWAYS_INLINE __forceinline
-#else
-#define HB_ALWAYS_INLINE __attribute__((always_inline)) inline
-#endif
-#endif
+#నిర్వచితం_కాకపోతే HB_ALWAYS_INLINE
+#ఒకవేళ defined(_MSC_VER)
+#నిర్వచించు HB_ALWAYS_INLINE __forceinline
+#లేకపోతే
+#నిర్వచించు HB_ALWAYS_INLINE __attribute__((always_inline)) అంతఃవరుస
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifndef HB_NEVER_INLINE
-#if defined(_MSC_VER)
-#define HB_NEVER_INLINE __declspec(noinline)
-#else
-#define HB_NEVER_INLINE __attribute__((noinline))
-#endif
-#endif
+#నిర్వచితం_కాకపోతే HB_NEVER_INLINE
+#ఒకవేళ defined(_MSC_VER)
+#నిర్వచించు HB_NEVER_INLINE __declspec(noinline)
+#లేకపోతే
+#నిర్వచించు HB_NEVER_INLINE __attribute__((noinline))
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifndef HB_HOT
-#define HB_HOT __attribute__((hot))
-#endif
+#నిర్వచితం_కాకపోతే HB_HOT
+#నిర్వచించు HB_HOT __attribute__((hot))
+#అయితే_ముగింపు
 
 /*
  * Borrowed from https://bugzilla.mozilla.org/show_bug.cgi?id=1215411
@@ -356,101 +356,101 @@
  *     return foo;
  * }
  */
-#if defined(__clang__) && __cplusplus >= 201103L
+#ఒకవేళ defined(__clang__) && __cplusplus >= 201103L
    /* clang's fallthrough annotations are only available starting in C++11. */
 #  define HB_FALLTHROUGH [[clang::fallthrough]]
-#elif defined(__GNUC__) && (__GNUC__ >= 7)
+#లేదావేళ defined(__GNUC__) && (__GNUC__ >= 7)
    /* GNU fallthrough attribute is available from GCC7 */
 #  define HB_FALLTHROUGH __attribute__((fallthrough))
-#elif defined(_MSC_VER)
+#లేదావేళ defined(_MSC_VER)
    /*
     * MSVC's __fallthrough annotations are checked by /analyze (Code Analysis):
     * https://msdn.microsoft.com/en-us/library/ms235402%28VS.80%29.aspx
     */
 #  include <sal.h>
 #  define HB_FALLTHROUGH __fallthrough
-#else
+#లేకపోతే
 #  define HB_FALLTHROUGH /* FALLTHROUGH */
-#endif
+#అయితే_ముగింపు
 
 /* A tag to enforce use of return value for a function */
-#if __cplusplus >= 201703L
+#ఒకవేళ __cplusplus >= 201703L
 #  define HB_NODISCARD [[nodiscard]]
-#elif defined(__GNUC__) || defined(__clang__)
-#  define HB_NODISCARD __attribute__((warn_unused_result))
-#elif defined(_MSC_VER)
+#లేదావేళ defined(__GNUC__) || defined(__clang__)
+#  define HB_NODISCARD __attribute__((warn_వాడని_ఫలితం))
+#లేదావేళ defined(_MSC_VER)
 #  define HB_NODISCARD _Check_return_
-#else
+#లేకపోతే
 #  define HB_NODISCARD
-#endif
+#అయితే_ముగింపు
 
 /* Like HB_NODISCARD but can be used on structs */
-#if __cplusplus >= 201703L
+#ఒకవేళ __cplusplus >= 201703L
 #  define HB_NODISCARD_STRUCT [[nodiscard]]
-#else
+#లేకపోతే
 #  define HB_NODISCARD_STRUCT
-#endif
+#అయితే_ముగింపు
 
-#ifdef _WIN32
+#నిర్వచితమైతే _WIN32
    /* We need Windows Vista for both Uniscribe backend and for
     * MemoryBarrier.  We don't support compiling on Windows XP,
     * though we run on it fine. */
-#  if defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
+#  ఒకవేళ defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
 #    undef _WIN32_WINNT
 #  endif
 #  ifndef _WIN32_WINNT
-#    if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#    ఒకవేళ WINAPI_FAMILY_విభజన(WINAPI_విభజన_DESKTOP)
 #      define _WIN32_WINNT 0x0600
 #    endif
 #  endif
-#  ifndef WIN32_LEAN_AND_MEAN
-#    define WIN32_LEAN_AND_MEAN 1
+#  ifndef WIN32_LEAN_AND_సగటు
+#    define WIN32_LEAN_AND_సగటు 1
 #  endif
 #  ifndef STRICT
 #    define STRICT 1
 #  endif
 
-#  if defined(_WIN32_WCE)
+#  ఒకవేళ defined(_WIN32_WCE)
      /* Some things not defined on Windows CE. */
 #    define vsnprintf _vsnprintf
 #    ifndef HB_NO_GETENV
 #      define HB_NO_GETENV
 #    endif
-#    if _WIN32_WCE < 0x800
+#    ఒకవేళ _WIN32_WCE < 0x800
 #      define HB_NO_SETLOCALE
 #      define HB_NO_ERRNO
 #    endif
-#  elif !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#  elif !WINAPI_FAMILY_విభజన(WINAPI_విభజన_DESKTOP)
 #    ifndef HB_NO_GETENV
 #      define HB_NO_GETENV
 #    endif
 #  endif
-#  if defined(_MSC_VER) && _MSC_VER < 1900
+#  ఒకవేళ defined(_MSC_VER) && _MSC_VER < 1900
 #    define snprintf _snprintf
 #  endif
-#endif
+#అయితే_ముగింపు
 
-#ifdef HB_NO_GETENV
-#define getenv(Name) nullptr
-#endif
+#నిర్వచితమైతే HB_NO_GETENV
+#నిర్వచించు getenv(Name) శూన్యసూచిక
+#అయితే_ముగింపు
 
-#ifndef HB_NO_ERRNO
+#నిర్వచితం_కాకపోతే HB_NO_ERRNO
 #  include <cerrno>
-#else
-static int HB_UNUSED _hb_errno = 0;
+#లేకపోతే
+స్థిర పూర్ణాంకం HB_వాడని _hb_errno = 0;
 #  undef errno
 #  define errno _hb_errno
-#endif
+#అయితే_ముగింపు
 
-#define HB_STMT_START do
-#define HB_STMT_END   while (0)
+#నిర్వచించు HB_STMT_ప్రారంభం చేయి
+#నిర్వచించు HB_STMT_చివర   అయితే (0)
 
-#if defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT)
+#ఒకవేళ defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT)
 /* atexit() is only safe to be called from shared libraries on certain
  * platforms.  Whitelist.
  * https://bugs.freedesktop.org/show_bug.cgi?id=82246 */
-#  if defined(__linux) && defined(__GLIBC_PREREQ)
-#    if __GLIBC_PREREQ(2,3)
+#  ఒకవేళ defined(__linux) && defined(__GLIBC_PREREQ)
+#    ఒకవేళ __GLIBC_PREREQ(2,3)
 /* From atexit() manpage, it's safe with glibc 2.2.3 on Linux. */
 #      define HB_USE_ATEXIT 1
 #    endif
@@ -473,124 +473,124 @@ static int HB_UNUSED _hb_errno = 0;
  */
 #    define HB_USE_ATEXIT 1
 #  endif
-#endif /* defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT) */
-#ifdef HB_NO_ATEXIT
+#అయితే_ముగింపు /* defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT) */
+#నిర్వచితమైతే HB_NO_ATEXIT
 #  undef HB_USE_ATEXIT
-#endif
-#ifndef HB_USE_ATEXIT
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_USE_ATEXIT
 #  define HB_USE_ATEXIT 0
-#endif
-#ifndef hb_atexit
-#if !HB_USE_ATEXIT
-#  define hb_atexit(_) HB_STMT_START { if (0) (_) (); } HB_STMT_END
-#else /* HB_USE_ATEXIT */
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే hb_atexit
+#ఒకవేళ !HB_USE_ATEXIT
+#  define hb_atexit(_) HB_STMT_ప్రారంభం { ఒకవేళ (0) (_) (); } HB_STMT_చివర
+#లేకపోతే /* HB_USE_ATEXIT */
 #  ifdef HAVE_ATEXIT
 #    define hb_atexit atexit
-#  else
-     template <void (*function) (void)> struct hb_atexit_t { ~hb_atexit_t () { function (); } };
-#    define hb_atexit(f) static hb_atexit_t<f> _hb_atexit_##__LINE__
+#  లేకపోతే
+     మూస <శూన్య (*function) (శూన్య)> నిర్మాణం hb_atexit_t { ~hb_atexit_t () { function (); } };
+#    define hb_atexit(f) స్థిర hb_atexit_t<f> _hb_atexit_##__LINE__
 #  endif
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 
 // Locale business
 
-#if !defined(HB_NO_SETLOCALE) && (!defined(HAVE_NEWLOCALE) || !defined(HAVE_USELOCALE))
-#define HB_NO_SETLOCALE 1
-#endif
+#ఒకవేళ !defined(HB_NO_SETLOCALE) && (!defined(HAVE_NEWLOCALE) || !defined(HAVE_USELOCALE))
+#నిర్వచించు HB_NO_SETLOCALE 1
+#అయితే_ముగింపు
 
-#ifndef HB_NO_SETLOCALE
+#నిర్వచితం_కాకపోతే HB_NO_SETLOCALE
 
-#include <locale.h>
-#ifdef HAVE_XLOCALE_H
-#include <xlocale.h> // Needed on BSD/OS X for uselocale
-#endif
+#అన్తర్భావ <locale.h>
+#నిర్వచితమైతే HAVE_XLOCALE_H
+#అన్తర్భావ <xlocale.h> // Needed on BSD/OS X for uselocale
+#అయితే_ముగింపు
 
-#ifdef WIN32
-#define hb_locale_t _locale_t
-#else
-#define hb_locale_t locale_t
-#endif
-#define hb_setlocale setlocale
-#define hb_uselocale uselocale
+#నిర్వచితమైతే WIN32
+#నిర్వచించు hb_locale_t _locale_t
+#లేకపోతే
+#నిర్వచించు hb_locale_t locale_t
+#అయితే_ముగింపు
+#నిర్వచించు hb_setlocale setlocale
+#నిర్వచించు hb_uselocale uselocale
 
-#else
+#లేకపోతే
 
-#define hb_locale_t void *
-#define hb_setlocale(Category, Locale) "C"
-#define hb_uselocale(Locale) ((hb_locale_t) 0)
+#నిర్వచించు hb_locale_t శూన్య *
+#నిర్వచించు hb_setlocale(Category, Locale) "C"
+#నిర్వచించు hb_uselocale(Locale) ((hb_locale_t) 0)
 
-#endif
+#అయితే_ముగింపు
 
 
 /* Lets assert int types.  Saves trouble down the road. */
-static_assert ((sizeof (hb_codepoint_t) == 4), "");
-static_assert ((sizeof (hb_position_t) == 4), "");
-static_assert ((sizeof (hb_mask_t) == 4), "");
-static_assert ((sizeof (hb_var_int_t) == 4), "");
+static_assert ((పరిమాణం (hb_codepoint_t) == 4), "");
+static_assert ((పరిమాణం (hb_position_t) == 4), "");
+static_assert ((పరిమాణం (hb_ముసుగు_t) == 4), "");
+static_assert ((పరిమాణం (hb_var_int_t) == 4), "");
 
 
 /* Pie time. */
 // https://github.com/harfbuzz/harfbuzz/issues/4166
-#define HB_PI 3.14159265358979323846f
-#define HB_2_PI (2.f * HB_PI)
+#నిర్వచించు HB_PI 3.14159265358979323846f
+#నిర్వచించు HB_2_PI (2.f * HB_PI)
 
 /* Compile-time custom allocator support. */
 
-#if !defined(HB_CUSTOM_MALLOC) \
+#ఒకవేళ !defined(HB_CUSTOM_MALLOC) \
   && defined(hb_malloc_impl) \
   && defined(hb_calloc_impl) \
   && defined(hb_realloc_impl) \
   && defined(hb_free_impl)
-#define HB_CUSTOM_MALLOC
-#endif
+#నిర్వచించు HB_CUSTOM_MALLOC
+#అయితే_ముగింపు
 
-#ifdef HB_CUSTOM_MALLOC
-extern "C" void* hb_malloc_impl(size_t size);
-extern "C" void* hb_calloc_impl(size_t nmemb, size_t size);
-extern "C" void* hb_realloc_impl(void *ptr, size_t size);
-extern "C" void  hb_free_impl(void *ptr);
-#else
-#define hb_malloc_impl malloc
-#define hb_calloc_impl calloc
-#define hb_realloc_impl realloc
-#define hb_free_impl free
-#endif
+#నిర్వచితమైతే HB_CUSTOM_MALLOC
+బాహ్య "C" శూన్య* hb_malloc_impl(size_t కొలత);
+బాహ్య "C" శూన్య* hb_calloc_impl(size_t nmemb, size_t కొలత);
+బాహ్య "C" శూన్య* hb_realloc_impl(శూన్య *ptr, size_t కొలత);
+బాహ్య "C" శూన్య  hb_free_impl(శూన్య *ptr);
+#లేకపోతే
+#నిర్వచించు hb_malloc_impl జ్ఞాపకం_ఇవ్వు
+#నిర్వచించు hb_calloc_impl సున్నా_జ్ఞాపకం_ఇవ్వు
+#నిర్వచించు hb_realloc_impl realloc
+#నిర్వచించు hb_free_impl విడుదల
+#అయితే_ముగింపు
 
 
 
 /* Headers we include for everyone.  Keep topologically sorted by dependency.
  * They express dependency amongst themselves, but no other file should include
  * them directly.*/
-#include "hb-limits.hh"
-#include "hb-cplusplus.hh"
-#include "hb-meta.hh"
-#include "hb-mutex.hh"
-#include "hb-number.hh"
-#include "hb-atomic.hh"	// Requires: hb-meta
-#include "hb-null.hh"	// Requires: hb-meta
-#include "hb-algs.hh"	// Requires: hb-meta hb-null hb-number
-#include "hb-iter.hh"	// Requires: hb-algs hb-meta
-#include "hb-debug.hh"	// Requires: hb-algs hb-atomic
-#include "hb-array.hh"	// Requires: hb-algs hb-iter hb-null
-#include "hb-vector.hh"	// Requires: hb-array hb-null
-#include "hb-object.hh"	// Requires: hb-atomic hb-mutex hb-vector
+#అన్తర్భావ "hb-limits.hh"
+#అన్తర్భావ "hb-cplusplus.hh"
+#అన్తర్భావ "hb-meta.hh"
+#అన్తర్భావ "hb-mutex.hh"
+#అన్తర్భావ "hb-number.hh"
+#అన్తర్భావ "hb-atomic.hh"	// Requires: hb-meta
+#అన్తర్భావ "hb-null.hh"	// Requires: hb-meta
+#అన్తర్భావ "hb-algs.hh"	// Requires: hb-meta hb-null hb-number
+#అన్తర్భావ "hb-iter.hh"	// Requires: hb-algs hb-meta
+#అన్తర్భావ "hb-debug.hh"	// Requires: hb-algs hb-atomic
+#అన్తర్భావ "hb-array.hh"	// Requires: hb-algs hb-iter hb-null
+#అన్తర్భావ "hb-vector.hh"	// Requires: hb-array hb-null
+#అన్తర్భావ "hb-object.hh"	// Requires: hb-atomic hb-mutex hb-vector
 
 
 /* Library-internal alias for hb::unique_ptr defined in hb-cplusplus.hh.
  * Unique-ownership RAII wrapper around an HB object; destroys on scope exit
  * via the type's hb_*_destroy() function.  Usage: hb_unique_ptr_t<hb_blob_t>.
  * Matches the hb_*_t naming used elsewhere in internal code. */
-template <typename T> using hb_unique_ptr_t = hb::unique_ptr<T>;
+మూస <రకం_పేరు T> ఉపయోగించి hb_unique_ptr_t = hb::unique_ptr<T>;
 
 
 /* Our src/test-*.cc use hb_assert(), such that it's not compiled out under NDEBUG.
  * https://github.com/harfbuzz/harfbuzz/issues/5418 */
-#define hb_always_assert(x) \
-	HB_STMT_START { \
-	  if (!(x)) { fprintf(stderr, "Assertion failed: %s, at %s:%d\n", #x, __FILE__, __LINE__); abort(); } \
-	} HB_STMT_END
+#నిర్వచించు hb_always_assert(x) \
+	HB_STMT_ప్రారంభం { \
+	  ఒకవేళ (!(x)) { fprintf(stderr, "Assertion failed: %s, at %s:%d\n", #x, __FILE__, __LINE__); abort(); } \
+	} HB_STMT_చివర
 
 
-#endif /* HB_HH */
+#అయితే_ముగింపు /* HB_HH */

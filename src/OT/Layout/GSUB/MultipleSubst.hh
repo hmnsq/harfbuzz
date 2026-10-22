@@ -1,52 +1,52 @@
-#ifndef OT_LAYOUT_GSUB_MULTIPLESUBST_HH
-#define OT_LAYOUT_GSUB_MULTIPLESUBST_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_MULTIPLESUBST_HH
+#నిర్వచించు OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 
-#include "Common.hh"
-#include "MultipleSubstFormat1.hh"
+#అన్తర్భావ "Common.hh"
+#అన్తర్భావ "MultipleSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-struct MultipleSubst
+నిర్మాణం గుణిజం_Subst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
-  MultipleSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
-  MultipleSubstFormat1_2<MediumTypes>	format2;
-#endif
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }		format;         /* Format identifier */
+  గుణిజం_Subst_Format1_2<SmallTypes>	format1;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  గుణిజం_Subst_Format1_2<MediumTypes>	format2;
+#అయితే_ముగింపు
   } u;
 
-  public:
+  బహిరంగ:
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ఒకవేళ (unlikely (!c->may_dispatch (ఇది, &u.format.v))) తిరిగి c->no_dispatch_return_విలువ ();
+    TRACE_DISPATCH (ఇది, u.format.v);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (c->default_return_విలువ ());
     }
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (u.format.v))) return_trace (అబద్ధం);
+    గుర్తులేని పూర్ణాంకం format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
-    default:return_trace (false);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
@@ -59,4 +59,4 @@ struct MultipleSubst
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_MULTIPLESUBST_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GSUB_MULTIPLESUBST_HH */

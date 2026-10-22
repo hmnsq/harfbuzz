@@ -23,129 +23,129 @@
  *
  */
 
-#ifndef HB_OT_POST_TABLE_V2SUBSET_HH
-#define HB_OT_POST_TABLE_V2SUBSET_HH
+#నిర్వచితం_కాకపోతే HB_OT_POST_పట్టిక_V2_SUBSET_HH
+#నిర్వచించు HB_OT_POST_పట్టిక_V2_SUBSET_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-post-table.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-post-table.hh"
 
 /*
  * post -- PostScript
  * https://docs.microsoft.com/en-us/typography/opentype/spec/post
  */
 
-namespace OT {
-template<typename Iterator>
-HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
+నామాకాశ OT {
+మూస<రకం_పేరు Iterator>
+HB_అంతర్గత తార్కిక post_V2_తోక::serialize (hb_serialize_context_t *c,
                                         Iterator it,
-                                        const void* _post) const
+                                        స్థిరరాశి శూన్య* _post) స్థిరరాశి
 {
-  TRACE_SERIALIZE (this);
-  auto *out = c->start_embed (this);
-  if (unlikely (!c->check_success (out))) return_trace (false);
-  if (!out->glyphNameIndex.serialize (c, + it
-                                         | hb_map (hb_second)))
-      return_trace (false);
+  TRACE_SERIALIZE (ఇది);
+  స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed (ఇది);
+  ఒకవేళ (unlikely (!c->check_success (బహిర్గతం))) return_trace (అబద్ధం);
+  ఒకవేళ (!బహిర్గతం->glyph_Name_సూచీ.serialize (c, + it
+                                         | hb_map (hb_రెండవ)))
+      return_trace (అబద్ధం);
 
-  hb_set_t copied_indices;
-  for (const auto& _ : + it )
+  hb_సమితి_t copied_indices;
+  కొరకు (స్థిరరాశి స్వయంచాలక& _ : + it )
   {
-    unsigned glyph_id = _.first;
-    unsigned new_index = _.second;
+    గుర్తులేని glyph_id = _.మొదటి;
+    గుర్తులేని new_సూచీ = _.second;
 
-    if (new_index < 258) continue;
-    if (copied_indices.has (new_index)) continue;
-    copied_indices.add (new_index);
+    ఒకవేళ (new_సూచీ < 258) కొనసాగు;
+    ఒకవేళ (copied_indices.has (new_సూచీ)) కొనసాగు;
+    copied_indices.కూడు (new_సూచీ);
 
-    hb_bytes_t s = reinterpret_cast<const post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
-    HBUINT8 *o = c->allocate_size<HBUINT8> (HBUINT8::static_size * (s.length + 1));
-    if (unlikely (!o)) return_trace (false);
-    if (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_size * s.length);
+    hb_బైట్లు_t s = reinterpret_cast<స్థిరరాశి post::accelerator_t*> (_post)->కనుగొను_glyph_name (glyph_id);
+    HBUINT8 *o = c->allocate_కొలత<HBUINT8> (HBUINT8::static_కొలత * (s.నిడివి + 1));
+    ఒకవేళ (unlikely (!o)) return_trace (అబద్ధం);
+    ఒకవేళ (!c->check_కేటాయించు (o[0], s.నిడివి, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)) return_trace (అబద్ధం);
+    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_కొలత * s.నిడివి);
   }
 
-  return_trace (true);
+  return_trace (నిజం);
 }
 
-HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
+HB_అంతర్గత తార్కిక post_V2_తోక::subset (hb_subset_context_t *c) స్థిరరాశి
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (ఇది);
 
-  const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-  unsigned num_glyphs = c->plan->num_output_glyphs ();
-  hb_map_t old_new_index_map, old_gid_new_index_map;
-  unsigned i = 0;
+  స్థిరరాశి hb_map_t &తిరగేయి_glyph_map = *c->plan->తిరగేయి_glyph_map;
+  గుర్తులేని అంకె_glyphs = c->plan->అంకె_output_glyphs ();
+  hb_map_t old_new_సూచీ_map, old_gid_new_సూచీ_map;
+  గుర్తులేని i = 0;
 
-  post::accelerator_t _post (c->plan->source);
+  post::accelerator_t _post (c->plan->ఆధారం);
 
-  hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_index;
+  hb_hashmap_t<hb_బైట్లు_t, uint32_t, నిజం> glyph_name_గమ్యం_new_సూచీ;
 
-  old_new_index_map.alloc (num_glyphs);
-  old_gid_new_index_map.alloc (num_glyphs);
-  glyph_name_to_new_index.alloc (num_glyphs);
+  old_new_సూచీ_map.alloc (అంకె_glyphs);
+  old_gid_new_సూచీ_map.alloc (అంకె_glyphs);
+  glyph_name_గమ్యం_new_సూచీ.alloc (అంకె_glyphs);
 
-  for (auto _ : c->plan->new_to_old_gid_list)
+  కొరకు (స్వయంచాలక _ : c->plan->new_గమ్యం_old_gid_list)
   {
     hb_codepoint_t old_gid = _.second;
-    unsigned old_index = glyphNameIndex[old_gid];
+    గుర్తులేని old_సూచీ = glyph_Name_సూచీ[old_gid];
 
-    unsigned new_index;
-    const uint32_t *new_index2;
-    if (old_index <= 257)
-      new_index = old_index;
-    else if (old_new_index_map.has (old_index, &new_index2))
-      new_index = *new_index2;
-    else
+    గుర్తులేని new_సూచీ;
+    స్థిరరాశి uint32_t *new_index2;
+    ఒకవేళ (old_సూచీ <= 257)
+      new_సూచీ = old_సూచీ;
+    లేకపోతే ఒకవేళ (old_new_సూచీ_map.has (old_సూచీ, &new_index2))
+      new_సూచీ = *new_index2;
+    లేకపోతే
     {
-      hb_bytes_t s = _post.find_glyph_name (old_gid);
-      new_index = glyph_name_to_new_index.get (s);
-      if (new_index == (unsigned)-1)
+      hb_బైట్లు_t s = _post.కనుగొను_glyph_name (old_gid);
+      new_సూచీ = glyph_name_గమ్యం_new_సూచీ.get (s);
+      ఒకవేళ (new_సూచీ == (గుర్తులేని)-1)
       {
-        int standard_glyph_index = -1;
-        for (unsigned i = 0; i < format1_names_length; i++)
+        పూర్ణాంకం standard_glyph_సూచీ = -1;
+        కొరకు (గుర్తులేని i = 0; i < format1_పేర్లు_నిడివి; i++)
         {
-          if (s == format1_names (i))
+          ఒకవేళ (s == format1_పేర్లు (i))
           {
-            standard_glyph_index = i;
-            break;
+            standard_glyph_సూచీ = i;
+            ఆపు;
           }
         }
 
-        if (standard_glyph_index == -1)
+        ఒకవేళ (standard_glyph_సూచీ == -1)
         {
-          new_index = 258 + i;
+          new_సూచీ = 258 + i;
           i++;
         }
-        else
-        { new_index = standard_glyph_index; }
-        glyph_name_to_new_index.set (s, new_index);
+        లేకపోతే
+        { new_సూచీ = standard_glyph_సూచీ; }
+        glyph_name_గమ్యం_new_సూచీ.సమితి (s, new_సూచీ);
       }
-      old_new_index_map.set (old_index, new_index);
+      old_new_సూచీ_map.సమితి (old_సూచీ, new_సూచీ);
     }
-    old_gid_new_index_map.set (old_gid, new_index);
+    old_gid_new_సూచీ_map.సమితి (old_gid, new_సూచీ);
   }
 
-  if (old_gid_new_index_map.in_error())
-    return_trace (false);
+  ఒకవేళ (old_gid_new_సూచీ_map.లోపల_error())
+    return_trace (అబద్ధం);
 
-  auto index_iter =
-  + hb_range (num_glyphs)
-  | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
+  స్వయంచాలక సూచీ_iter =
+  + hb_range (అంకె_glyphs)
+  | hb_map_retains_క్రమీకరణ ([&](hb_codepoint_t new_gid)
                             {
                               hb_codepoint_t *old_gid;
                               /* use 0 for retain-gid holes, which refers to the name .notdef,
                                * as the glyphNameIndex entry for that glyph ID."*/
-                              unsigned new_index = 0;
-                              if (reverse_glyph_map.has (new_gid, &old_gid)) {
-                                new_index = old_gid_new_index_map.get (*old_gid);
-                                return hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
+                              గుర్తులేని new_సూచీ = 0;
+                              ఒకవేళ (తిరగేయి_glyph_map.has (new_gid, &old_gid)) {
+                                new_సూచీ = old_gid_new_సూచీ_map.get (*old_gid);
+                                తిరిగి hb_pair_t<గుర్తులేని, గుర్తులేని> (*old_gid, new_సూచీ);
                               }
-                              return hb_pair_t<unsigned, unsigned> (new_gid, new_index);
+                              తిరిగి hb_pair_t<గుర్తులేని, గుర్తులేని> (new_gid, new_సూచీ);
                             })
   ;
 
-  return_trace (serialize (c->serializer, index_iter, &_post));
+  return_trace (serialize (c->serializer, సూచీ_iter, &_post));
 }
 
 } /* namespace OT */
-#endif /* HB_OT_POST_TABLE_V2SUBSET_HH */
+#అయితే_ముగింపు /* HB_OT_POST_TABLE_V2SUBSET_HH */

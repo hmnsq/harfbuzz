@@ -1,5 +1,5 @@
 
-#line 1 "hb-ot-shaper-myanmar-machine.rl"
+#పంక్తి 1 "hb-ot-shaper-myanmar-machine.rl"
 /*
  * Copyright © 2011,2012  Google, Inc.
  *
@@ -26,60 +26,60 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_MYANMAR_MACHINE_HH
-#define HB_OT_SHAPER_MYANMAR_MACHINE_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPER_MYANMAR_MACHINE_HH
+#నిర్వచించు HB_OT_SHAPER_MYANMAR_MACHINE_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shaper-indic.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
+#అన్తర్భావ "hb-ot-shaper-indic.hh"
 
 /* buffer var allocations */
-#define myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
-#define myanmar_position() ot_shaper_var_u8_auxiliary() /* myanmar_position_t */
+#నిర్వచించు myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
+#నిర్వచించు myanmar_position() ot_shaper_var_u8_auxiliary() /* myanmar_position_t */
 
-using myanmar_category_t = unsigned;
-using myanmar_position_t = ot_position_t;
+ఉపయోగించి myanmar_category_t = గుర్తులేని;
+ఉపయోగించి myanmar_position_t = ot_position_t;
 
-#define M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
+#నిర్వచించు M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
 
-enum myanmar_syllable_type_t {
+గణన myanmar_syllable_type_t {
   myanmar_consonant_syllable,
   myanmar_broken_cluster,
   myanmar_non_myanmar_cluster,
 };
 
 
-#line 51 "hb-ot-shaper-myanmar-machine.hh"
-#define myanmar_syllable_machine_ex_A 9u
-#define myanmar_syllable_machine_ex_As 32u
-#define myanmar_syllable_machine_ex_C 1u
-#define myanmar_syllable_machine_ex_CS 18u
-#define myanmar_syllable_machine_ex_DB 3u
-#define myanmar_syllable_machine_ex_DOTTEDCIRCLE 11u
-#define myanmar_syllable_machine_ex_GB 10u
-#define myanmar_syllable_machine_ex_H 4u
-#define myanmar_syllable_machine_ex_IV 2u
-#define myanmar_syllable_machine_ex_MH 35u
-#define myanmar_syllable_machine_ex_ML 41u
-#define myanmar_syllable_machine_ex_MR 36u
-#define myanmar_syllable_machine_ex_MW 37u
-#define myanmar_syllable_machine_ex_MY 38u
-#define myanmar_syllable_machine_ex_PT 39u
-#define myanmar_syllable_machine_ex_Ra 15u
-#define myanmar_syllable_machine_ex_SM 8u
-#define myanmar_syllable_machine_ex_SMPst 57u
-#define myanmar_syllable_machine_ex_VAbv 20u
-#define myanmar_syllable_machine_ex_VBlw 21u
-#define myanmar_syllable_machine_ex_VPre 22u
-#define myanmar_syllable_machine_ex_VPst 23u
-#define myanmar_syllable_machine_ex_VS 40u
-#define myanmar_syllable_machine_ex_ZWJ 6u
-#define myanmar_syllable_machine_ex_ZWNJ 5u
+#పంక్తి 51 "hb-ot-shaper-myanmar-machine.hh"
+#నిర్వచించు myanmar_syllable_machine_ex_A 9u
+#నిర్వచించు myanmar_syllable_machine_ex_As 32u
+#నిర్వచించు myanmar_syllable_machine_ex_C 1u
+#నిర్వచించు myanmar_syllable_machine_ex_CS 18u
+#నిర్వచించు myanmar_syllable_machine_ex_DB 3u
+#నిర్వచించు myanmar_syllable_machine_ex_DOTTEDCIRCLE 11u
+#నిర్వచించు myanmar_syllable_machine_ex_GB 10u
+#నిర్వచించు myanmar_syllable_machine_ex_H 4u
+#నిర్వచించు myanmar_syllable_machine_ex_IV 2u
+#నిర్వచించు myanmar_syllable_machine_ex_MH 35u
+#నిర్వచించు myanmar_syllable_machine_ex_ML 41u
+#నిర్వచించు myanmar_syllable_machine_ex_MR 36u
+#నిర్వచించు myanmar_syllable_machine_ex_MW 37u
+#నిర్వచించు myanmar_syllable_machine_ex_MY 38u
+#నిర్వచించు myanmar_syllable_machine_ex_PT 39u
+#నిర్వచించు myanmar_syllable_machine_ex_Ra 15u
+#నిర్వచించు myanmar_syllable_machine_ex_SM 8u
+#నిర్వచించు myanmar_syllable_machine_ex_SMPst 57u
+#నిర్వచించు myanmar_syllable_machine_ex_VAbv 20u
+#నిర్వచించు myanmar_syllable_machine_ex_VBlw 21u
+#నిర్వచించు myanmar_syllable_machine_ex_VPre 22u
+#నిర్వచించు myanmar_syllable_machine_ex_VPst 23u
+#నిర్వచించు myanmar_syllable_machine_ex_VS 40u
+#నిర్వచించు myanmar_syllable_machine_ex_ZWJ 6u
+#నిర్వచించు myanmar_syllable_machine_ex_ZWNJ 5u
 
 
-#line 77 "hb-ot-shaper-myanmar-machine.hh"
-static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
+#పంక్తి 77 "hb-ot-shaper-myanmar-machine.hh"
+స్థిర స్థిరరాశి గుర్తులేని అక్షరం myanmar_syllable_machine_trans_కీలకాలు[] = {
 	1u, 57u, 3u, 57u, 5u, 57u, 5u, 57u, 3u, 57u, 5u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 5u, 57u, 1u, 15u, 3u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 
@@ -89,7 +89,7 @@ static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
 	3u, 57u, 3u, 57u, 3u, 57u, 1u, 57u, 1u, 15u, 0
 };
 
-static const char _myanmar_syllable_machine_key_spans[] = {
+స్థిర స్థిరరాశి అక్షరం myanmar_syllable_machine_కీలకం_spans[] = {
 	57, 55, 53, 53, 55, 53, 55, 55, 
 	55, 55, 55, 53, 15, 55, 55, 55, 
 	55, 55, 55, 55, 55, 55, 55, 55, 
@@ -99,7 +99,7 @@ static const char _myanmar_syllable_machine_key_spans[] = {
 	55, 55, 55, 57, 15
 };
 
-static const short _myanmar_syllable_machine_index_offsets[] = {
+స్థిర స్థిరరాశి పొట్టి myanmar_syllable_machine_సూచీ_offsets[] = {
 	0, 58, 114, 168, 222, 278, 332, 388, 
 	444, 500, 556, 612, 666, 682, 738, 794, 
 	850, 906, 962, 1018, 1074, 1130, 1186, 1242, 
@@ -109,7 +109,7 @@ static const short _myanmar_syllable_machine_index_offsets[] = {
 	2594, 2650, 2706, 2762, 2820
 };
 
-static const char _myanmar_syllable_machine_indicies[] = {
+స్థిర స్థిరరాశి అక్షరం _myanmar_syllable_machine_indicies[] = {
 	1, 1, 2, 3, 4, 4, 0, 5, 
 	6, 1, 1, 0, 0, 0, 7, 0, 
 	0, 8, 0, 9, 10, 11, 12, 0, 
@@ -467,7 +467,7 @@ static const char _myanmar_syllable_machine_indicies[] = {
 	60, 60, 1, 60, 0
 };
 
-static const char _myanmar_syllable_machine_trans_targs[] = {
+స్థిర స్థిరరాశి అక్షరం _myanmar_syllable_machine_trans_targs[] = {
 	0, 1, 25, 35, 0, 26, 30, 49, 
 	52, 37, 38, 39, 29, 41, 42, 44, 
 	45, 46, 27, 48, 43, 26, 0, 2, 
@@ -478,7 +478,7 @@ static const char _myanmar_syllable_machine_trans_targs[] = {
 	40, 47, 50, 51, 0
 };
 
-static const char _myanmar_syllable_machine_trans_actions[] = {
+స్థిర స్థిరరాశి అక్షరం _myanmar_syllable_machine_trans_actions[] = {
 	3, 0, 0, 0, 4, 5, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 6, 7, 0, 
@@ -489,7 +489,7 @@ static const char _myanmar_syllable_machine_trans_actions[] = {
 	0, 0, 0, 0, 12
 };
 
-static const char _myanmar_syllable_machine_to_state_actions[] = {
+స్థిర స్థిరరాశి అక్షరం myanmar_syllable_machine_గమ్యం_state_actions[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -499,7 +499,7 @@ static const char _myanmar_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const char _myanmar_syllable_machine_from_state_actions[] = {
+స్థిర స్థిరరాశి అక్షరం _myanmar_syllable_machine_from_state_actions[] = {
 	2, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -509,7 +509,7 @@ static const char _myanmar_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const short _myanmar_syllable_machine_eof_trans[] = {
+స్థిర స్థిరరాశి పొట్టి _myanmar_syllable_machine_eof_trans[] = {
 	0, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
@@ -519,165 +519,165 @@ static const short _myanmar_syllable_machine_eof_trans[] = {
 	48, 23, 23, 48, 61
 };
 
-static const int myanmar_syllable_machine_start = 0;
-static const int myanmar_syllable_machine_first_final = 0;
-static const int myanmar_syllable_machine_error = -1;
+స్థిర స్థిరరాశి పూర్ణాంకం myanmar_syllable_machine_ప్రారంభం = 0;
+స్థిర స్థిరరాశి పూర్ణాంకం myanmar_syllable_machine_మొదటి_final = 0;
+స్థిర స్థిరరాశి పూర్ణాంకం myanmar_syllable_machine_error = -1;
 
-static const int myanmar_syllable_machine_en_main = 0;
-
-
-#line 55 "hb-ot-shaper-myanmar-machine.rl"
+స్థిర స్థిరరాశి పూర్ణాంకం myanmar_syllable_machine_en_main = 0;
 
 
+#పంక్తి 55 "hb-ot-shaper-myanmar-machine.rl"
 
-#line 118 "hb-ot-shaper-myanmar-machine.rl"
 
 
-#define found_syllable(syllable_type) \
-  HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+#పంక్తి 118 "hb-ot-shaper-myanmar-machine.rl"
+
+
+#నిర్వచించు దొరికింది_syllable(syllable_type) \
+  HB_STMT_ప్రారంభం { \
+    ఒకవేళ (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    కొరకు (గుర్తులేని పూర్ణాంకం i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
-  } HB_STMT_END
+    ఒకవేళ (syllable_serial == 16) syllable_serial = 1; \
+  } HB_STMT_చివర
 
-inline void
-find_syllables_myanmar (hb_buffer_t *buffer)
+అంతఃవరుస శూన్య
+కనుగొను_syllables_myanmar (hb_బఫరు_t *బఫరు)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
-  hb_glyph_info_t *info = buffer->info;
+  గుర్తులేని పూర్ణాంకం p, pe, eof, ts, te, act HB_వాడని;
+  పూర్ణాంకం cs;
+  hb_glyph_info_t *info = బఫరు->info;
   
-#line 542 "hb-ot-shaper-myanmar-machine.hh"
+#పంక్తి 542 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	cs = myanmar_syllable_machine_start;
+	cs = myanmar_syllable_machine_ప్రారంభం;
 	ts = 0;
 	te = 0;
 	act = 0;
 	}
 
-#line 138 "hb-ot-shaper-myanmar-machine.rl"
+#పంక్తి 138 "hb-ot-shaper-myanmar-machine.rl"
 
 
   p = 0;
-  pe = eof = buffer->len;
+  pe = eof = బఫరు->len;
 
-  unsigned int syllable_serial = 1;
+  గుర్తులేని పూర్ణాంకం syllable_serial = 1;
   
-#line 554 "hb-ot-shaper-myanmar-machine.hh"
+#పంక్తి 554 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	పూర్ణాంకం _slen;
+	పూర్ణాంకం _trans;
+	స్థిరరాశి గుర్తులేని అక్షరం *కీలకాలు_2;
+	స్థిరరాశి అక్షరం *_inds;
+	ఒకవేళ ( p == pe )
+		వెళ్ళు _test_eof;
 _resume:
-	switch ( _myanmar_syllable_machine_from_state_actions[cs] ) {
-	case 2:
-#line 1 "NONE"
+	ఎంపిక ( _myanmar_syllable_machine_from_state_actions[cs] ) {
+	స్థితి 2:
+#పంక్తి 1 "NONE"
 	{ts = p;}
-	break;
-#line 566 "hb-ot-shaper-myanmar-machine.hh"
+	ఆపు;
+#పంక్తి 566 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	_keys = _myanmar_syllable_machine_trans_keys + (cs<<1);
-	_inds = _myanmar_syllable_machine_indicies + _myanmar_syllable_machine_index_offsets[cs];
+	కీలకాలు_2 = myanmar_syllable_machine_trans_కీలకాలు + (cs<<1);
+	_inds = _myanmar_syllable_machine_indicies + myanmar_syllable_machine_సూచీ_offsets[cs];
 
-	_slen = _myanmar_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].myanmar_category()) &&
-		( info[p].myanmar_category()) <= _keys[1] ?
-		( info[p].myanmar_category()) - _keys[0] : _slen ];
+	_slen = myanmar_syllable_machine_కీలకం_spans[cs];
+	_trans = _inds[ _slen > 0 && కీలకాలు_2[0] <=( info[p].myanmar_category()) &&
+		( info[p].myanmar_category()) <= కీలకాలు_2[1] ?
+		( info[p].myanmar_category()) - కీలకాలు_2[0] : _slen ];
 
 _eof_trans:
 	cs = _myanmar_syllable_machine_trans_targs[_trans];
 
-	if ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	ఒకవేళ ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
+		వెళ్ళు _again;
 
-	switch ( _myanmar_syllable_machine_trans_actions[_trans] ) {
-	case 8:
-#line 111 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 4:
-#line 112 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 10:
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 3:
-#line 114 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 7:
-#line 111 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 9:
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 12:
-#line 114 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 11:
-#line 1 "NONE"
-	{	switch( act ) {
-	case 2:
-	{{p = ((te))-1;} found_syllable (myanmar_non_myanmar_cluster); }
-	break;
-	case 3:
-	{{p = ((te))-1;} found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	ఎంపిక ( _myanmar_syllable_machine_trans_actions[_trans] ) {
+	స్థితి 8:
+#పంక్తి 111 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ దొరికింది_syllable (myanmar_consonant_syllable); }}
+	ఆపు;
+	స్థితి 4:
+#పంక్తి 112 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ దొరికింది_syllable (myanmar_non_myanmar_cluster); }}
+	ఆపు;
+	స్థితి 10:
+#పంక్తి 113 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ దొరికింది_syllable (myanmar_broken_cluster); బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	ఆపు;
+	స్థితి 3:
+#పంక్తి 114 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ దొరికింది_syllable (myanmar_non_myanmar_cluster); }}
+	ఆపు;
+	స్థితి 7:
+#పంక్తి 111 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ దొరికింది_syllable (myanmar_consonant_syllable); }}
+	ఆపు;
+	స్థితి 9:
+#పంక్తి 113 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ దొరికింది_syllable (myanmar_broken_cluster); బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	ఆపు;
+	స్థితి 12:
+#పంక్తి 114 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ దొరికింది_syllable (myanmar_non_myanmar_cluster); }}
+	ఆపు;
+	స్థితి 11:
+#పంక్తి 1 "NONE"
+	{	ఎంపిక( act ) {
+	స్థితి 2:
+	{{p = ((te))-1;} దొరికింది_syllable (myanmar_non_myanmar_cluster); }
+	ఆపు;
+	స్థితి 3:
+	{{p = ((te))-1;} దొరికింది_syllable (myanmar_broken_cluster); బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
+	ఆపు;
 	}
 	}
-	break;
-	case 6:
-#line 1 "NONE"
+	ఆపు;
+	స్థితి 6:
+#పంక్తి 1 "NONE"
 	{te = p+1;}
-#line 112 "hb-ot-shaper-myanmar-machine.rl"
+#పంక్తి 112 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 2;}
-	break;
-	case 5:
-#line 1 "NONE"
+	ఆపు;
+	స్థితి 5:
+#పంక్తి 1 "NONE"
 	{te = p+1;}
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
+#పంక్తి 113 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 3;}
-	break;
-#line 623 "hb-ot-shaper-myanmar-machine.hh"
+	ఆపు;
+#పంక్తి 623 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
 _again:
-	switch ( _myanmar_syllable_machine_to_state_actions[cs] ) {
-	case 1:
-#line 1 "NONE"
+	ఎంపిక ( myanmar_syllable_machine_గమ్యం_state_actions[cs] ) {
+	స్థితి 1:
+#పంక్తి 1 "NONE"
 	{ts = 0;}
-	break;
-#line 630 "hb-ot-shaper-myanmar-machine.hh"
+	ఆపు;
+#పంక్తి 630 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	ఒకవేళ ( ++p != pe )
+		వెళ్ళు _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ఒకవేళ ( p == eof )
 	{
-	if ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
+	ఒకవేళ ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _myanmar_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		వెళ్ళు _eof_trans;
 	}
 	}
 
 	}
 
-#line 146 "hb-ot-shaper-myanmar-machine.rl"
+#పంక్తి 146 "hb-ot-shaper-myanmar-machine.rl"
 
 }
 
-#undef found_syllable
+#నిర్వచనం_రద్దు దొరికింది_syllable
 
-#endif /* HB_OT_SHAPER_MYANMAR_MACHINE_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPER_MYANMAR_MACHINE_HH */

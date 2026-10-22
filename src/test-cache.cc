@@ -22,68 +22,68 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-cache.hh"
+#అన్తర్భావ "hb-cache.hh"
 
-template <unsigned key_bits, unsigned value_bits, unsigned cache_bits, bool thread_safe>
-static void
+మూస <గుర్తులేని కీలకం_బిట్లు, గుర్తులేని విలువ_బిట్లు, గుర్తులేని cache_బిట్లు, తార్కిక thread_సురక్షిత>
+స్థిర శూన్య
 test_cache ()
 {
-  hb_cache_t<key_bits, value_bits, cache_bits, thread_safe> cache;
-  unsigned key_max = (1u << key_bits) - 1;
-  unsigned value = 42;
-  unsigned keys[] = {0, 1, 255, 256, key_max};
-  unsigned overflow_keys[] = {key_max + 1, 32512, 32767, 65535, UINT_MAX};
+  hb_cache_t<కీలకం_బిట్లు, విలువ_బిట్లు, cache_బిట్లు, thread_సురక్షిత> cache;
+  గుర్తులేని కీలకం_max = (1u << కీలకం_బిట్లు) - 1;
+  గుర్తులేని value = 42;
+  గుర్తులేని కీలకాలు[] = {0, 1, 255, 256, కీలకం_max};
+  గుర్తులేని అధికప్రవాహం_కీలకాలు[] = {కీలకం_max + 1, 32512, 32767, 65535, UINT_MAX};
 
-  for (unsigned key : keys)
+  కొరకు (గుర్తులేని key : కీలకాలు)
     hb_always_assert (!cache.get (key, &value));
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  కొరకు (గుర్తులేని key : అధికప్రవాహం_కీలకాలు)
+    ఒకవేళ (key > కీలకం_max)
     {
       hb_always_assert (!cache.get (key, &value));
       hb_always_assert (value == 42);
     }
 
-  for (unsigned key : keys)
+  కొరకు (గుర్తులేని key : కీలకాలు)
   {
-    cache.set (key, 0);
+    cache.సమితి (key, 0);
     hb_always_assert (cache.get (key, &value) && value == 0);
   }
 
-  cache.set (42, cache.MAX_VALUE);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.సమితి (42, cache.MAX_విలువ);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_విలువ);
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  కొరకు (గుర్తులేని key : అధికప్రవాహం_కీలకాలు)
+    ఒకవేళ (key > కీలకం_max)
     {
-      cache.set (key, 0);
+      cache.సమితి (key, 0);
       hb_always_assert (!cache.get (key, &value));
     }
 
-  cache.set (42, cache.MAX_VALUE + 1);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.సమితి (42, cache.MAX_విలువ + 1);
+  hb_always_assert (cache.get (42, &value) && value == cache.MAX_విలువ);
 
   cache.clear ();
-  for (unsigned key : keys)
+  కొరకు (గుర్తులేని key : కీలకాలు)
     hb_always_assert (!cache.get (key, &value));
 }
 
-template <bool thread_safe>
-static void
+మూస <తార్కిక thread_సురక్షిత>
+స్థిర శూన్య
 test_caches ()
 {
   /* Entries with spare bits, and entries that fill the storage type. */
-  test_cache<14, 1, 8, thread_safe> ();
-  test_cache<14, 1, 7, thread_safe> ();
-  test_cache<14, 8, 8, thread_safe> ();
-  test_cache<16, 8, 8, thread_safe> ();
-  test_cache<24, 8, 8, thread_safe> ();
-  test_cache<24, 16, 8, thread_safe> ();
+  test_cache<14, 1, 8, thread_సురక్షిత> ();
+  test_cache<14, 1, 7, thread_సురక్షిత> ();
+  test_cache<14, 8, 8, thread_సురక్షిత> ();
+  test_cache<16, 8, 8, thread_సురక్షిత> ();
+  test_cache<24, 8, 8, thread_సురక్షిత> ();
+  test_cache<24, 16, 8, thread_సురక్షిత> ();
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  test_caches<true> ();
-  test_caches<false> ();
+  test_caches<నిజం> ();
+  test_caches<అబద్ధం> ();
 }

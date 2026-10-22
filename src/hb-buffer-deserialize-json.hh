@@ -1,5 +1,5 @@
 
-#line 1 "hb-buffer-deserialize-json.rl"
+#పంక్తి 1 "hb-buffer-deserialize-json.rl"
 /*
  * Copyright © 2013  Google, Inc.
  *
@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_DESERIALIZE_JSON_HH
-#define HB_BUFFER_DESERIALIZE_JSON_HH
+#నిర్వచితం_కాకపోతే HB_బఫరు_DESERIALIZE_JSON_HH
+#నిర్వచించు HB_బఫరు_DESERIALIZE_JSON_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 
-#line 33 "hb-buffer-deserialize-json.hh"
-static const unsigned char _deserialize_json_trans_keys[] = {
+#పంక్తి 33 "hb-buffer-deserialize-json.hh"
+స్థిర స్థిరరాశి గుర్తులేని అక్షరం deserialize_json_trans_కీలకాలు[] = {
 	0u, 0u, 9u, 34u, 97u, 121u, 120u, 121u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 9u, 93u, 9u, 125u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 108u, 108u, 34u, 34u, 9u, 58u, 9u, 57u, 9u, 125u, 9u, 125u, 
@@ -45,7 +45,7 @@ static const unsigned char _deserialize_json_trans_keys[] = {
 	0
 };
 
-static const char _deserialize_json_key_spans[] = {
+స్థిర స్థిరరాశి అక్షరం deserialize_json_కీలకం_spans[] = {
 	0, 26, 25, 2, 1, 50, 49, 10, 
 	117, 117, 85, 117, 1, 50, 49, 10, 
 	117, 117, 1, 1, 50, 49, 117, 117, 
@@ -56,7 +56,7 @@ static const char _deserialize_json_key_spans[] = {
 	1, 50, 49, 117, 1, 115, 115, 115
 };
 
-static const short _deserialize_json_index_offsets[] = {
+స్థిర స్థిరరాశి పొట్టి deserialize_json_సూచీ_offsets[] = {
 	0, 0, 27, 53, 56, 58, 109, 159, 
 	170, 288, 406, 492, 610, 612, 663, 713, 
 	724, 842, 960, 962, 964, 1015, 1065, 1183, 
@@ -67,7 +67,7 @@ static const short _deserialize_json_index_offsets[] = {
 	3154, 3156, 3207, 3257, 3375, 3377, 3493, 3609
 };
 
-static const char _deserialize_json_indicies[] = {
+స్థిర స్థిరరాశి అక్షరం _deserialize_json_indicies[] = {
 	0, 0, 0, 0, 0, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
@@ -536,7 +536,7 @@ static const char _deserialize_json_indicies[] = {
 	1, 1, 1, 1, 104, 1, 0
 };
 
-static const char _deserialize_json_trans_targs[] = {
+స్థిర స్థిరరాశి అక్షరం _deserialize_json_trans_targs[] = {
 	1, 0, 2, 3, 18, 24, 37, 43, 
 	51, 56, 60, 4, 12, 5, 6, 7, 
 	8, 11, 8, 11, 9, 1, 10, 9, 
@@ -553,7 +553,7 @@ static const char _deserialize_json_trans_targs[] = {
 	1
 };
 
-static const char _deserialize_json_trans_actions[] = {
+స్థిర స్థిరరాశి అక్షరం _deserialize_json_trans_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 1, 
 	1, 1, 0, 0, 2, 2, 2, 0, 
@@ -570,166 +570,166 @@ static const char _deserialize_json_trans_actions[] = {
 	15
 };
 
-static const int deserialize_json_start = 61;
-static const int deserialize_json_first_final = 61;
-static const int deserialize_json_error = 0;
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_json_ప్రారంభం = 61;
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_json_మొదటి_final = 61;
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_json_error = 0;
 
-static const int deserialize_json_en_main = 61;
-
-
-#line 115 "hb-buffer-deserialize-json.rl"
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_json_en_main = 61;
 
 
-static hb_bool_t
-_hb_buffer_deserialize_json (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+#పంక్తి 115 "hb-buffer-deserialize-json.rl"
+
+
+స్థిర hb_bool_t
+hb_బఫరు_deserialize_json (hb_బఫరు_t *బఫరు,
+				    స్థిరరాశి అక్షరం *buf,
+				    గుర్తులేని పూర్ణాంకం buf_len,
+				    స్థిరరాశి అక్షరం **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len;
+  స్థిరరాశి అక్షరం *p = buf, *pe = buf + buf_len;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (శూన్య) hb_బఫరు_get_glyph_positions (బఫరు, శూన్యసూచిక);
 
-  const char *tok = nullptr;
-  int cs;
+  స్థిరరాశి అక్షరం *tok = శూన్యసూచిక;
+  పూర్ణాంకం cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
-#line 594 "hb-buffer-deserialize-json.hh"
+#పంక్తి 594 "hb-buffer-deserialize-json.hh"
 	{
-	cs = deserialize_json_start;
+	cs = deserialize_json_ప్రారంభం;
 	}
 
-#line 597 "hb-buffer-deserialize-json.hh"
+#పంక్తి 597 "hb-buffer-deserialize-json.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	పూర్ణాంకం _slen;
+	పూర్ణాంకం _trans;
+	స్థిరరాశి గుర్తులేని అక్షరం *కీలకాలు_2;
+	స్థిరరాశి అక్షరం *_inds;
+	ఒకవేళ ( p == pe )
+		వెళ్ళు _test_eof;
+	ఒకవేళ ( cs == 0 )
+		వెళ్ళు బహిర్గతం_2;
 _resume:
-	_keys = _deserialize_json_trans_keys + (cs<<1);
-	_inds = _deserialize_json_indicies + _deserialize_json_index_offsets[cs];
+	కీలకాలు_2 = deserialize_json_trans_కీలకాలు + (cs<<1);
+	_inds = _deserialize_json_indicies + deserialize_json_సూచీ_offsets[cs];
 
-	_slen = _deserialize_json_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_json_కీలకం_spans[cs];
+	_trans = _inds[ _slen > 0 && కీలకాలు_2[0] <=(*p) &&
+		(*p) <= కీలకాలు_2[1] ?
+		(*p) - కీలకాలు_2[0] : _slen ];
 
 	cs = _deserialize_json_trans_targs[_trans];
 
-	if ( _deserialize_json_trans_actions[_trans] == 0 )
-		goto _again;
+	ఒకవేళ ( _deserialize_json_trans_actions[_trans] == 0 )
+		వెళ్ళు _again;
 
-	switch ( _deserialize_json_trans_actions[_trans] ) {
-	case 15:
-#line 38 "hb-buffer-deserialize-json.rl"
+	ఎంపిక ( _deserialize_json_trans_actions[_trans] ) {
+	స్థితి 15:
+#పంక్తి 38 "hb-buffer-deserialize-json.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, పరిమాణం (info));
+	hb_memset (&pos , 0, పరిమాణం (pos ));
 }
-	break;
-	case 3:
-#line 43 "hb-buffer-deserialize-json.rl"
+	ఆపు;
+	స్థితి 3:
+#పంక్తి 43 "hb-buffer-deserialize-json.rl"
 	{
-	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	buffer->pos[buffer->len - 1] = pos;
+	బఫరు->కూడు_info (info);
+	ఒకవేళ (unlikely (!బఫరు->successful))
+	  తిరిగి అబద్ధం;
+	బఫరు->pos[బఫరు->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
-	case 1:
-#line 51 "hb-buffer-deserialize-json.rl"
+	ఆపు;
+	స్థితి 1:
+#పంక్తి 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
-#line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 14:
-#line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
-	case 11:
-#line 58 "hb-buffer-deserialize-json.rl"
+	ఆపు;
+	స్థితి 10:
+#పంక్తి 55 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (unlikely (!బఫరు->ensure_glyphs ())) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 14:
+#పంక్తి 56 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (unlikely (!బఫరు->ensure_unicode ())) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 11:
+#పంక్తి 58 "hb-buffer-deserialize-json.rl"
 	{
 	/* TODO Unescape \" and \\ if found. */
-	if (!hb_font_glyph_from_string (font,
+	ఒకవేళ (!hb_font_glyph_from_string (font,
 					tok+1, p - tok - 2, /* Skip "" */
 					&info.codepoint))
-	  return false;
+	  తిరిగి అబద్ధం;
 }
-	break;
-	case 12:
-#line 66 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.codepoint)) return false; }
-	break;
-	case 5:
-#line 67 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
-#line 68 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 7:
-#line 69 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 2:
-#line 70 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 4:
-#line 71 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 8:
-#line 72 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
-#line 51 "hb-buffer-deserialize-json.rl"
+	ఆపు;
+	స్థితి 12:
+#పంక్తి 66 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_uint (tok, p, &info.codepoint)) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 5:
+#పంక్తి 67 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_uint (tok, p, &info.cluster )) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 6:
+#పంక్తి 68 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_int  (tok, p, &pos.x_స్థానభ్రంశం_2 )) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 7:
+#పంక్తి 69 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_int  (tok, p, &pos.y_స్థానభ్రంశం_2 )) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 2:
+#పంక్తి 70 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_int  (tok, p, &pos.x_advance)) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 4:
+#పంక్తి 71 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_int  (tok, p, &pos.y_advance)) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 8:
+#పంక్తి 72 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (!parse_uint (tok, p, &info.ముసుగు    )) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 9:
+#పంక్తి 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-#line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 13:
-#line 51 "hb-buffer-deserialize-json.rl"
+#పంక్తి 55 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (unlikely (!బఫరు->ensure_glyphs ())) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 13:
+#పంక్తి 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-#line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
-#line 689 "hb-buffer-deserialize-json.hh"
+#పంక్తి 56 "hb-buffer-deserialize-json.rl"
+	{ ఒకవేళ (unlikely (!బఫరు->ensure_unicode ())) తిరిగి అబద్ధం; }
+	ఆపు;
+#పంక్తి 689 "hb-buffer-deserialize-json.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	ఒకవేళ ( cs == 0 )
+		వెళ్ళు బహిర్గతం_2;
+	ఒకవేళ ( ++p != pe )
+		వెళ్ళు _resume;
 	_test_eof: {}
-	_out: {}
+	బహిర్గతం_2: {}
 	}
 
-#line 136 "hb-buffer-deserialize-json.rl"
+#పంక్తి 136 "hb-buffer-deserialize-json.rl"
 
 
   *end_ptr = p;
 
-  return p == pe;
+  తిరిగి p == pe;
 }
 
-#endif /* HB_BUFFER_DESERIALIZE_JSON_HH */
+#అయితే_ముగింపు /* HB_BUFFER_DESERIALIZE_JSON_HH */

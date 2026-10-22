@@ -1,410 +1,410 @@
-#ifndef OT_GLYF_GLYF_HH
-#define OT_GLYF_GLYF_HH
+#నిర్వచితం_కాకపోతే OT_GLYF_GLYF_HH
+#నిర్వచించు OT_GLYF_GLYF_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-depend-data.hh"
-#include "../../hb-ot-head-table.hh"
-#include "../../hb-ot-hmtx-table.hh"
-#include "../../hb-ot-var-gvar-table.hh"
-#include "../../hb-draw.hh"
-#include "../../hb-paint.hh"
+#అన్తర్భావ "../../hb-open-type.hh"
+#అన్తర్భావ "../../hb-depend-data.hh"
+#అన్తర్భావ "../../hb-ot-head-table.hh"
+#అన్తర్భావ "../../hb-ot-hmtx-table.hh"
+#అన్తర్భావ "../../hb-ot-var-gvar-table.hh"
+#అన్తర్భావ "../../hb-draw.hh"
+#అన్తర్భావ "../../hb-paint.hh"
 
-#include "glyf-helpers.hh"
-#include "Glyph.hh"
-#include "SubsetGlyph.hh"
-#include "loca.hh"
-#include "path-builder.hh"
+#అన్తర్భావ "glyf-helpers.hh"
+#అన్తర్భావ "Glyph.hh"
+#అన్తర్భావ "SubsetGlyph.hh"
+#అన్తర్భావ "loca.hh"
+#అన్తర్భావ "path-builder.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 
 
 /*
  * glyf -- TrueType Glyph Data
  * https://docs.microsoft.com/en-us/typography/opentype/spec/glyf
  */
-#define HB_OT_TAG_glyf HB_TAG('g','l','y','f')
-#define HB_OT_TAG_GLYF HB_TAG('G','L','Y','F')
+#నిర్వచించు HB_OT_ట్యాగ్_glyf HB_ట్యాగ్('g','l','y','f')
+#నిర్వచించు HB_OT_ట్యాగ్_GLYF HB_ట్యాగ్('G','L','Y','F')
 
-struct glyf
+నిర్మాణం glyf
 {
-  friend struct glyf_accelerator_t;
+  మిత్ర నిర్మాణం glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_glyf;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_glyf;
 
-  static bool has_valid_glyf_format(const hb_face_t* face)
+  స్థిర తార్కిక has_valid_glyf_format(స్థిరరాశి hb_face_t* face)
   {
-    const OT::head &head = *face->table.head;
-    return head.indexToLocFormat <= 1 && head.glyphDataFormat <= 1;
+    స్థిరరాశి OT::తల_2 &తల_2 = *face->పట్టిక.తల_2;
+    తిరిగి తల_2.సూచీ_గమ్యం_Loc_Format <= 1 && తల_2.glyph_దత్తాంశం_Format <= 1;
   }
 
-  static bool has_extended_glyf (hb_face_t *face)
+  స్థిర తార్కిక has_extended_glyf (hb_face_t *face)
   {
-#ifndef HB_NO_BEYOND_64K
-    hb_blob_ptr_t<glyf> GLYF_table = hb_sanitize_context_t ().reference_table<glyf> (face, HB_OT_TAG_GLYF);
-    hb_blob_ptr_t<loca> LOCA_table = hb_sanitize_context_t ().reference_table<loca> (face, HB_OT_TAG_LOCA);
-    bool ret = GLYF_table.get_length () && LOCA_table.get_length ();
-    GLYF_table.destroy ();
-    LOCA_table.destroy ();
-    return ret;
-#else
-    return false;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    hb_blob_ptr_t<glyf> GLYF_పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<glyf> (face, HB_OT_ట్యాగ్_GLYF);
+    hb_blob_ptr_t<loca> LOCA_పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<loca> (face, HB_OT_ట్యాగ్_LOCA);
+    తార్కిక ret = GLYF_పట్టిక.get_నిడివి () && LOCA_పట్టిక.get_నిడివి ();
+    GLYF_పట్టిక.destroy ();
+    LOCA_పట్టిక.destroy ();
+    తిరిగి ret;
+#లేకపోతే
+    తిరిగి అబద్ధం;
+#అయితే_ముగింపు
   }
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  తార్కిక sanitize (hb_sanitize_context_t *c HB_వాడని) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     /* Runtime checks as eager sanitizing each glyph is costy */
-    return_trace (true);
+    return_trace (నిజం);
   }
 
   /* requires source of SubsetGlyph complains the identifier isn't declared */
-  template <typename Iterator>
-  bool serialize (hb_serialize_context_t *c,
+  మూస <రకం_పేరు Iterator>
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  Iterator it,
-                  bool use_short_loca,
-		  const hb_subset_plan_t *plan)
+                  తార్కిక use_short_loca,
+		  స్థిరరాశి hb_subset_plan_t *plan)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    unsigned init_len = c->length ();
-    for (auto &_ : it)
-      if (unlikely (!_.serialize (c, use_short_loca, plan)))
-        return false;
+    గుర్తులేని init_len = c->నిడివి ();
+    కొరకు (స్వయంచాలక &_ : it)
+      ఒకవేళ (unlikely (!_.serialize (c, use_short_loca, plan)))
+        తిరిగి అబద్ధం;
 
     /* As a special case when all glyph in the font are empty, add a zero byte
      * to the table, so that OTS doesn’t reject it, and to make the table work
      * on Windows as well.
      * See https://github.com/khaledhosny/ots/issues/52 */
-    if (init_len == c->length ())
+    ఒకవేళ (init_len == c->నిడివి ())
     {
-      HBUINT8 empty_byte;
-      empty_byte = 0;
-      c->copy (empty_byte);
+      HBUINT8 ఖాళీలు_byte;
+      ఖాళీలు_byte = 0;
+      c->copy (ఖాళీలు_byte);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
   /* Byte region(s) per glyph to output
      unpadded, hints removed if so requested
      If we fail to process a glyph we produce an empty (0-length) glyph */
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ఇది);
 
-    bool extended = has_extended_glyf (c->plan->source);
-#ifndef HB_NO_BEYOND_64K
-    if (extended != (c->table_tag == HB_OT_TAG_GLYF))
-      return_trace (false);
-#endif
+    తార్కిక extended = has_extended_glyf (c->plan->ఆధారం);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (extended != (c->పట్టిక_ట్యాగ్_2 == HB_OT_ట్యాగ్_GLYF))
+      return_trace (అబద్ధం);
+#అయితే_ముగింపు
 
-    if (!has_valid_glyf_format (c->plan->source)) {
+    ఒకవేళ (!has_valid_glyf_format (c->plan->ఆధారం)) {
       // glyf format is unknown don't attempt to subset it.
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_సందేశం (SUBSET, శూన్యసూచిక,
                  "unkown glyf format, dropping from subset.");
-      return_trace (false);
+      return_trace (అబద్ధం);
     }
 
-    hb_font_t *font = nullptr;
-    if (c->plan->normalized_coords)
+    hb_font_t *font = శూన్యసూచిక;
+    ఒకవేళ (c->plan->normalized_coords)
     {
       font = _create_font_for_instancing (c->plan);
-      if (unlikely (!font))
-	return_trace (false);
+      ఒకవేళ (unlikely (!font))
+	return_trace (అబద్ధం);
     }
 
-    hb_vector_t<unsigned> padded_offsets;
-    if (unlikely (!padded_offsets.alloc_exact (c->plan->new_to_old_gid_list.length)))
+    hb_సదిశ_t<గుర్తులేని> padded_offsets;
+    ఒకవేళ (unlikely (!padded_offsets.alloc_exact (c->plan->new_గమ్యం_old_gid_list.నిడివి)))
     {
       hb_font_destroy (font);
-      return_trace (false);
+      return_trace (అబద్ధం);
     }
 
-    hb_vector_t<glyf_impl::SubsetGlyph> glyphs;
+    hb_సదిశ_t<glyf_impl::SubsetGlyph> glyphs;
     /* SubsetGlyphs borrow bytes from this blob until they are serialized. */
-    hb_blob_t *source_glyf = nullptr;
-    if (!_populate_subset_glyphs (c->plan, font, glyphs, &source_glyf))
+    hb_blob_t *ఆధారం_glyf = శూన్యసూచిక;
+    ఒకవేళ (!_populate_subset_glyphs (c->plan, font, glyphs, &ఆధారం_glyf))
     {
-      hb_blob_destroy (source_glyf);
+      hb_blob_destroy (ఆధారం_glyf);
       hb_font_destroy (font);
-      return_trace (false);
+      return_trace (అబద్ధం);
     }
 
-    if (font)
+    ఒకవేళ (font)
       hb_font_destroy (font);
 
-    unsigned max_offset = 0;
-    for (auto &g : glyphs)
+    గుర్తులేని max_స్థానభ్రంశం = 0;
+    కొరకు (స్వయంచాలక &g : glyphs)
     {
-      unsigned size = g.padded_size ();
-      padded_offsets.push (size);
-      max_offset += size;
+      గుర్తులేని కొలత = g.padded_కొలత ();
+      padded_offsets.push (కొలత);
+      max_స్థానభ్రంశం += కొలత;
     }
 
-    bool use_short_loca = false;
-    if (likely (!c->plan->force_long_loca))
-      use_short_loca = max_offset < 0x1FFFF;
+    తార్కిక use_short_loca = అబద్ధం;
+    ఒకవేళ (likely (!c->plan->force_long_loca))
+      use_short_loca = max_స్థానభ్రంశం < 0x1FFFF;
 
-    if (!use_short_loca)
+    ఒకవేళ (!use_short_loca)
     {
       padded_offsets.clear ();
-      for (auto &g : glyphs)
-	padded_offsets.push (g.length ());
+      కొరకు (స్వయంచాలక &g : glyphs)
+	padded_offsets.push (g.నిడివి ());
     }
 
-    auto *glyf_prime = c->serializer->start_embed <glyf> ();
-    bool result = glyf_prime->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
-    if (c->plan->normalized_coords && !c->plan->pinned_at_default)
+    స్వయంచాలక *glyf_ప్రధానసంఖ్య = c->serializer->ప్రారంభం_embed <glyf> ();
+    తార్కిక ఫలితం = glyf_ప్రధానసంఖ్య->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
+    ఒకవేళ (c->plan->normalized_coords && !c->plan->pinned_at_default)
       _free_compiled_subset_glyphs (glyphs);
-    hb_blob_destroy (source_glyf);
+    hb_blob_destroy (ఆధారం_glyf);
 
-    if (unlikely (!c->serializer->check_success (glyf_impl::_add_loca_and_head (c,
+    ఒకవేళ (unlikely (!c->serializer->check_success (glyf_impl::కూడు_loca_and_తల (c,
 						 padded_offsets.iter (),
 						 use_short_loca,
 						 extended))))
-      return_trace (false);
+      return_trace (అబద్ధం);
 
-    return result;
+    తిరిగి ఫలితం;
   }
 
-  bool
-  _populate_subset_glyphs (const hb_subset_plan_t   *plan,
+  తార్కిక
+  _populate_subset_glyphs (స్థిరరాశి hb_subset_plan_t   *plan,
 			   hb_font_t                *font,
-			   hb_vector_t<glyf_impl::SubsetGlyph>& glyphs /* OUT */,
-			   hb_blob_t               **source_glyf /* OUT */) const;
+			   hb_సదిశ_t<glyf_impl::SubsetGlyph>& glyphs /*బహిర్గతం*/,
+			   hb_blob_t               **ఆధారం_glyf /*బహిర్గతం*/) స్థిరరాశి;
 
   hb_font_t *
-  _create_font_for_instancing (const hb_subset_plan_t *plan) const;
+  _create_font_for_instancing (స్థిరరాశి hb_subset_plan_t *plan) స్థిరరాశి;
 
-  void _free_compiled_subset_glyphs (hb_vector_t<glyf_impl::SubsetGlyph> &glyphs) const
+  శూన్య _free_compiled_subset_glyphs (hb_సదిశ_t<glyf_impl::SubsetGlyph> &glyphs) స్థిరరాశి
   {
-    for (auto &g : glyphs)
-      g.free_compiled_bytes ();
+    కొరకు (స్వయంచాలక &g : glyphs)
+      g.free_compiled_బైట్లు ();
   }
 
-  protected:
-  UnsizedArrayOf<HBUINT8>
-		dataZ;	/* Glyphs data. */
-  public:
-  DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
+  రక్షిత:
+  Unsized_Array_యొక్క<HBUINT8>
+		దత్తాంశం_Z;	/* Glyphs data. */
+  బహిరంగ:
+  DEFINE_కొలత_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */
 };
 
-#ifndef HB_NO_BEYOND_64K
-struct GLYF : glyf
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+నిర్మాణం GLYF : glyf
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GLYF;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_GLYF;
 };
-#endif
+#అయితే_ముగింపు
 
-struct glyf_accelerator_t
+నిర్మాణం glyf_accelerator_t
 {
   glyf_accelerator_t (hb_face_t *face)
   {
-    extended = false;
-    short_offset = false;
-    num_glyphs = 0;
-    loca_table = nullptr;
-    glyf_table = nullptr;
-#ifndef HB_NO_VAR
-    gvar = nullptr;
-#endif
-    hmtx = nullptr;
-#ifndef HB_NO_VERTICAL
-    vmtx = nullptr;
-#endif
-    const OT::head &head = *face->table.head;
-    if (!glyf::has_valid_glyf_format (face))
+    extended = అబద్ధం;
+    short_స్థానభ్రంశం = అబద్ధం;
+    అంకె_glyphs = 0;
+    loca_పట్టిక = శూన్యసూచిక;
+    glyf_పట్టిక = శూన్యసూచిక;
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    gvar = శూన్యసూచిక;
+#అయితే_ముగింపు
+    hmtx = శూన్యసూచిక;
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+    vmtx = శూన్యసూచిక;
+#అయితే_ముగింపు
+    స్థిరరాశి OT::తల_2 &తల_2 = *face->పట్టిక.తల_2;
+    ఒకవేళ (!glyf::has_valid_glyf_format (face))
       /* Unknown format.  Leave num_glyphs=0, that takes care of disabling us. */
-      return;
-    short_offset = 0 == head.indexToLocFormat;
+      తిరిగి;
+    short_స్థానభ్రంశం = 0 == తల_2.సూచీ_గమ్యం_Loc_Format;
 
-#ifndef HB_NO_BEYOND_64K
-    hb_blob_ptr_t<glyf> GLYF_table = hb_sanitize_context_t ().reference_table<glyf> (face, HB_OT_TAG_GLYF);
-    hb_blob_ptr_t<loca> LOCA_table = hb_sanitize_context_t ().reference_table<loca> (face, HB_OT_TAG_LOCA);
-    extended = GLYF_table.get_length () && LOCA_table.get_length ();
-    if (extended)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    hb_blob_ptr_t<glyf> GLYF_పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<glyf> (face, HB_OT_ట్యాగ్_GLYF);
+    hb_blob_ptr_t<loca> LOCA_పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<loca> (face, HB_OT_ట్యాగ్_LOCA);
+    extended = GLYF_పట్టిక.get_నిడివి () && LOCA_పట్టిక.get_నిడివి ();
+    ఒకవేళ (extended)
     {
-      glyf_table = std::move (GLYF_table);
-      loca_table = std::move (LOCA_table);
+      glyf_పట్టిక = std::move (GLYF_పట్టిక);
+      loca_పట్టిక = std::move (LOCA_పట్టిక);
     }
-    else
+    లేకపోతే
     {
-      GLYF_table.destroy ();
-      LOCA_table.destroy ();
+      GLYF_పట్టిక.destroy ();
+      LOCA_పట్టిక.destroy ();
     }
-#endif
-    if (!extended)
+#అయితే_ముగింపు
+    ఒకవేళ (!extended)
     {
-      glyf_table = hb_sanitize_context_t ().reference_table<glyf> (face);
-      loca_table = hb_sanitize_context_t ().reference_table<loca> (face);
+      glyf_పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<glyf> (face);
+      loca_పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<loca> (face);
     }
-#ifndef HB_NO_VAR
-    gvar = face->table.gvar;
-#endif
-    hmtx = face->table.hmtx;
-#ifndef HB_NO_VERTICAL
-    vmtx = face->table.vmtx;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    gvar = face->పట్టిక.gvar;
+#అయితే_ముగింపు
+    hmtx = face->పట్టిక.hmtx;
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+    vmtx = face->పట్టిక.vmtx;
+#అయితే_ముగింపు
 
-    num_glyphs = hb_max (1u, loca_table.get_length () / (short_offset ? 2 : 4)) - 1;
-    num_glyphs = hb_min (num_glyphs, face->get_num_glyphs ());
+    అంకె_glyphs = hb_max (1u, loca_పట్టిక.get_నిడివి () / (short_స్థానభ్రంశం ? 2 : 4)) - 1;
+    అంకె_glyphs = hb_min (అంకె_glyphs, face->get_అంకె_glyphs ());
   }
   ~glyf_accelerator_t ()
   {
-    auto *scratch = cached_scratch.get_relaxed ();
-    if (scratch)
+    స్వయంచాలక *scratch = cached_scratch.get_relaxed ();
+    ఒకవేళ (scratch)
     {
       scratch->~hb_glyf_scratch_t ();
       hb_free (scratch);
     }
 
-    glyf_table.destroy ();
-    loca_table.destroy ();
+    glyf_పట్టిక.destroy ();
+    loca_పట్టిక.destroy ();
   }
 
-  bool has_data () const { return num_glyphs; }
-  bool is_extended () const { return extended; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి అంకె_glyphs; }
+  తార్కిక is_extended () స్థిరరాశి { తిరిగి extended; }
 
-  void depend (hb_depend_data_builder_t *builder) const
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *builder) స్థిరరాశి
   {
-    if (!has_data ()) return;
-    for (hb_codepoint_t gid = 0; gid < get_num_glyphs (); gid++)
+    ఒకవేళ (!has_దత్తాంశం ()) తిరిగి;
+    కొరకు (hb_codepoint_t gid = 0; gid < get_అంకె_glyphs (); gid++)
     {
-      auto glyph = glyph_for_gid (gid);
-      for (auto &item : glyph.get_composite_iterator ())
-        builder->add_depend (gid,
-                             extended ? HB_OT_TAG_GLYF : HB_OT_TAG_glyf,
-                             item.get_gid (extended));
+      స్వయంచాలక glyph = glyph_for_gid (gid);
+      కొరకు (స్వయంచాలక &అంశం : glyph.get_సంయుక్త_iterator ())
+        builder->కూడు_depend (gid,
+                             extended ? HB_OT_ట్యాగ్_GLYF : HB_OT_ట్యాగ్_glyf,
+                             అంశం.get_gid (extended));
     }
   }
 
-  protected:
-  template<typename T>
-  bool get_points (hb_font_t *font, hb_codepoint_t gid, T consumer,
-		   hb_array_t<const int> coords,
+  రక్షిత:
+  మూస<రకం_పేరు T>
+  తార్కిక get_points (hb_font_t *font, hb_codepoint_t gid, T వినియోగదారు,
+		   hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
 		   hb_glyf_scratch_t &scratch,
-		   hb_scalar_cache_t *gvar_cache = nullptr,
-		   int64_t *budget = nullptr) const
+		   hb_scalar_cache_t *gvar_cache = శూన్యసూచిక,
+		   int64_t *budget = శూన్యసూచిక) స్థిరరాశి
   {
-    if (gid >= num_glyphs) return false;
+    ఒకవేళ (gid >= అంకె_glyphs) తిరిగి అబద్ధం;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
+    int64_t దొంతర_budget = HB_BUDGET_GLYPH;
+    ఒకవేళ (!budget) budget = &దొంతర_budget;
 
-    auto &all_points = scratch.all_points;
+    స్వయంచాలక &all_points = scratch.all_points;
     all_points.clear ();
 
-    bool phantom_only = !consumer.is_consuming_contour_points ();
-    if (unlikely (!glyph_for_gid (gid).get_points (font, *this, all_points, scratch, nullptr, nullptr, nullptr, true, true, phantom_only, coords, gvar_cache, 0, nullptr, budget)))
-      return false;
+    తార్కిక phantom_only = !వినియోగదారు.is_consuming_contour_points ();
+    ఒకవేళ (unlikely (!glyph_for_gid (gid).get_points (font, *ఇది, all_points, scratch, శూన్యసూచిక, శూన్యసూచిక, శూన్యసూచిక, నిజం, నిజం, phantom_only, coords, gvar_cache, 0, శూన్యసూచిక, budget)))
+      తిరిగి అబద్ధం;
 
-    if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.length)))
-      return false;
+    ఒకవేళ (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.నిడివి)))
+      తిరిగి అబద్ధం;
 
-    unsigned count = all_points.length;
-    assert (count >= glyf_impl::PHANTOM_COUNT);
-    count -= glyf_impl::PHANTOM_COUNT;
+    గుర్తులేని లెక్క = all_points.నిడివి;
+    ప్రతిజ్ఞా (లెక్క >= glyf_impl::PHANTOM_లెక్క);
+    లెక్క -= glyf_impl::PHANTOM_లెక్క;
 
-    if (consumer.is_consuming_contour_points ())
+    ఒకవేళ (వినియోగదారు.is_consuming_contour_points ())
     {
-      auto *points = all_points.arrayZ;
+      స్వయంచాలక *points = all_points.arrayZ;
 
-      if (false)
+      ఒకవేళ (అబద్ధం)
       {
 	/* Our path-builder was designed to work with this simple loop.
 	 * But FreeType and CoreText do it differently, so we match those
 	 * with the other, more complicated, code branch below. */
-	for (unsigned i = 0; i < count; i++)
+	కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
 	{
-	  consumer.consume_point (points[i]);
-	  if (points[i].is_end_point)
-	    consumer.contour_end ();
+	  వినియోగదారు.consume_బిందువు (points[i]);
+	  ఒకవేళ (points[i].is_చివర_బిందువు)
+	    వినియోగదారు.contour_చివర ();
 	}
       }
-      else
+      లేకపోతే
       {
-	for (unsigned i = 0; i < count; i++)
+	కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
 	{
 	  // Start of a contour.
-	  if (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE)
+	  ఒకవేళ (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_వక్రం)
 	  {
 	    // First point is on-curve. Draw the contour.
-	    for (; i < count; i++)
+	    కొరకు (; i < లెక్క; i++)
 	    {
-	      consumer.consume_point (points[i]);
-	      if (points[i].is_end_point)
+	      వినియోగదారు.consume_బిందువు (points[i]);
+	      ఒకవేళ (points[i].is_చివర_బిందువు)
 	      {
-		consumer.contour_end ();
-		break;
+		వినియోగదారు.contour_చివర ();
+		ఆపు;
 	      }
 	    }
 	  }
-	  else
+	  లేకపోతే
 	  {
-	    unsigned start = i;
+	    గుర్తులేని ప్రారంభం = i;
 
 	    // Find end of the contour.
-	    for (; i < count; i++)
-	      if (points[i].is_end_point)
-		break;
+	    కొరకు (; i < లెక్క; i++)
+	      ఒకవేళ (points[i].is_చివర_బిందువు)
+		ఆపు;
 
-	    unsigned end = i;
+	    గుర్తులేని చివర = i;
 
-	    unsigned limit = end;
-#ifndef HB_NO_CUBIC_GLYF
+	    గుర్తులేని హద్దు = చివర;
+#నిర్వచితం_కాకపోతే HB_NO_CUBIC_GLYF
 	    /* Rotating by one control point changes cubic pairing.  Preserve
 	     * the original order when the contour starts and ends off-curve
 	     * with cubic controls, including all-off-curve contours. */
-	    if (likely (end < count) &&
-		(points[start].flag & glyf_impl::SimpleGlyph::FLAG_CUBIC) &&
-		(points[end].flag & (glyf_impl::SimpleGlyph::FLAG_ON_CURVE |
+	    ఒకవేళ (likely (చివర < లెక్క) &&
+		(points[ప్రారంభం].flag & glyf_impl::SimpleGlyph::FLAG_CUBIC) &&
+		(points[చివర].flag & (glyf_impl::SimpleGlyph::FLAG_ON_వక్రం |
 				    glyf_impl::SimpleGlyph::FLAG_CUBIC)) ==
 		 glyf_impl::SimpleGlyph::FLAG_CUBIC)
-	      limit++;
-	    else
-#endif
-	    if (likely (end < count))
-	      consumer.consume_point (points[end]);
+	      హద్దు++;
+	    లేకపోతే
+#అయితే_ముగింపు
+	    ఒకవేళ (likely (చివర < లెక్క))
+	      వినియోగదారు.consume_బిందువు (points[చివర]);
 
-	    for (i = start; i < limit; i++)
-	      consumer.consume_point (points[i]);
-	    i = end;
+	    కొరకు (i = ప్రారంభం; i < హద్దు; i++)
+	      వినియోగదారు.consume_బిందువు (points[i]);
+	    i = చివర;
 
-	    consumer.contour_end ();
+	    వినియోగదారు.contour_చివర ();
 	  }
 	}
       }
 
-      consumer.points_end ();
+      వినియోగదారు.points_చివర ();
     }
 
     /* Where to write phantoms, nullptr if not requested */
-    contour_point_t *phantoms = consumer.get_phantoms_sink ();
-    if (phantoms)
-      for (unsigned i = 0; i < glyf_impl::PHANTOM_COUNT; ++i)
-	phantoms[i] = all_points.arrayZ[count + i];
+    contour_బిందువు_t *phantoms = వినియోగదారు.get_phantoms_sink ();
+    ఒకవేళ (phantoms)
+      కొరకు (గుర్తులేని i = 0; i < glyf_impl::PHANTOM_లెక్క; ++i)
+	phantoms[i] = all_points.arrayZ[లెక్క + i];
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  public:
+  బహిరంగ:
 
-  struct points_aggregator_t
+  నిర్మాణం points_aggregator_t
   {
     hb_font_t *font;
     hb_glyph_extents_t *extents;
-    contour_point_t *phantoms;
-    bool scaled;
+    contour_బిందువు_t *phantoms;
+    తార్కిక scaled;
 
-    struct contour_bounds_t
+    నిర్మాణం contour_bounds_t
     {
       contour_bounds_t () { min_x = min_y = FLT_MAX; max_x = max_y = -FLT_MAX; }
 
-      void add (const contour_point_t &p)
+      శూన్య కూడు (స్థిరరాశి contour_బిందువు_t &p)
       {
 	min_x = hb_min (min_x, p.x);
 	min_y = hb_min (min_y, p.y);
@@ -412,343 +412,343 @@ struct glyf_accelerator_t
 	max_y = hb_max (max_y, p.y);
       }
 
-      bool empty () const { return (min_x >= max_x) || (min_y >= max_y); }
+      తార్కిక ఖాళీలు_2 () స్థిరరాశి { తిరిగి (min_x >= max_x) || (min_y >= max_y); }
 
-      void get_extents (hb_font_t *font, hb_glyph_extents_t *extents, bool scaled)
+      శూన్య get_extents (hb_font_t *font, hb_glyph_extents_t *extents, తార్కిక scaled)
       {
-	if (unlikely (empty ()))
+	ఒకవేళ (unlikely (ఖాళీలు_2 ()))
 	{
-	  extents->width = 0;
+	  extents->వెడల్పు = 0;
 	  extents->x_bearing = 0;
-	  extents->height = 0;
+	  extents->ఎత్తు = 0;
 	  extents->y_bearing = 0;
-	  return;
+	  తిరిగి;
 	}
 	{
-	  double x_bearing = (double) roundf (min_x);
-	  double y_bearing = (double) roundf (max_y);
-	  extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-	  extents->width = hb_clamp_to<hb_position_t> ((double) roundf (max_x) - x_bearing);
-	  extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-	  extents->height = hb_clamp_to<hb_position_t> ((double) roundf (min_y) - y_bearing);
+	  ద్విగుణ x_bearing = (ద్విగుణ) roundf (min_x);
+	  ద్విగుణ y_bearing = (ద్విగుణ) roundf (max_y);
+	  extents->x_bearing = hb_clamp_గమ్యం<hb_position_t> (x_bearing);
+	  extents->వెడల్పు = hb_clamp_గమ్యం<hb_position_t> ((ద్విగుణ) roundf (max_x) - x_bearing);
+	  extents->y_bearing = hb_clamp_గమ్యం<hb_position_t> (y_bearing);
+	  extents->ఎత్తు = hb_clamp_గమ్యం<hb_position_t> ((ద్విగుణ) roundf (min_y) - y_bearing);
 
-	  if (scaled)
+	  ఒకవేళ (scaled)
 	    font->scale_glyph_extents (extents);
 	}
       }
 
-      protected:
-      float min_x, min_y, max_x, max_y;
+      రక్షిత:
+      దశాంశం min_x, min_y, max_x, max_y;
     } bounds;
 
-    points_aggregator_t (hb_font_t *font_, hb_glyph_extents_t *extents_, contour_point_t *phantoms_, bool scaled_)
+    points_aggregator_t (hb_font_t *font_, hb_glyph_extents_t *extents_, contour_బిందువు_t *phantoms_, తార్కిక scaled_)
     {
       font = font_;
       extents = extents_;
       phantoms = phantoms_;
       scaled = scaled_;
-      if (extents) bounds = contour_bounds_t ();
+      ఒకవేళ (extents) bounds = contour_bounds_t ();
     }
 
     HB_ALWAYS_INLINE
-    void consume_point (const contour_point_t &point) { bounds.add (point); }
-    void contour_end () {}
-    void points_end () { bounds.get_extents (font, extents, scaled); }
+    శూన్య consume_బిందువు (స్థిరరాశి contour_బిందువు_t &బిందువు) { bounds.కూడు (బిందువు); }
+    శూన్య contour_చివర () {}
+    శూన్య points_చివర () { bounds.get_extents (font, extents, scaled); }
 
-    bool is_consuming_contour_points () { return extents; }
-    contour_point_t *get_phantoms_sink () { return phantoms; }
+    తార్కిక is_consuming_contour_points () { తిరిగి extents; }
+    contour_బిందువు_t *get_phantoms_sink () { తిరిగి phantoms; }
   };
 
-#ifndef HB_NO_VAR
-  unsigned
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  గుర్తులేని
   get_advance_with_var_unscaled (hb_codepoint_t gid,
 				 hb_font_t *font,
-				 bool is_vertical,
+				 తార్కిక is_vertical,
 				  hb_glyf_scratch_t &scratch,
-				 hb_scalar_cache_t *gvar_cache = nullptr) const
+				 hb_scalar_cache_t *gvar_cache = శూన్యసూచిక) స్థిరరాశి
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    ఒకవేళ (unlikely (gid >= అంకె_glyphs)) తిరిగి 0;
 
-    bool success = false;
+    తార్కిక success = అబద్ధం;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
-    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
+    contour_బిందువు_t phantoms[glyf_impl::PHANTOM_లెక్క];
+    success = get_points (font, gid, points_aggregator_t (font, శూన్యసూచిక, phantoms, అబద్ధం),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->అంకె_coords : 0),
 			  scratch, gvar_cache);
-    if (unlikely (!success))
+    ఒకవేళ (unlikely (!success))
     {
-      unsigned upem = font->face->get_upem ();
-      return is_vertical ? upem : upem / 2;
+      గుర్తులేని upem = font->face->get_upem ();
+      తిరిగి is_vertical ? upem : upem / 2;
     }
 
-    float result = is_vertical
-		 ? phantoms[glyf_impl::PHANTOM_TOP].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
-		 : phantoms[glyf_impl::PHANTOM_RIGHT].x - phantoms[glyf_impl::PHANTOM_LEFT].x;
-    return hb_clamp (roundf (result), 0.f, (float) UINT_MAX / 2);
+    దశాంశం ఫలితం = is_vertical
+		 ? phantoms[glyf_impl::PHANTOM_శిఖరం].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
+		 : phantoms[glyf_impl::PHANTOM_కుడి].x - phantoms[glyf_impl::PHANTOM_ఎడమ].x;
+    తిరిగి hb_clamp (roundf (ఫలితం), 0.f, (దశాంశం) UINT_MAX / 2);
   }
-#endif
+#అయితే_ముగింపు
 
-  float
+  దశాంశం
   get_v_origin_with_var_unscaled (hb_codepoint_t gid,
 				  hb_font_t *font,
 				  hb_glyf_scratch_t &scratch,
-				  hb_scalar_cache_t *gvar_cache = nullptr) const
+				  hb_scalar_cache_t *gvar_cache = శూన్యసూచిక) స్థిరరాశి
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    ఒకవేళ (unlikely (gid >= అంకె_glyphs)) తిరిగి 0;
 
-    bool success = false;
+    తార్కిక success = అబద్ధం;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
-    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
+    contour_బిందువు_t phantoms[glyf_impl::PHANTOM_లెక్క];
+    success = get_points (font, gid, points_aggregator_t (font, శూన్యసూచిక, phantoms, అబద్ధం),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->అంకె_coords : 0),
 			  scratch, gvar_cache);
-    if (unlikely (!success))
+    ఒకవేళ (unlikely (!success))
     {
-      return font->face->get_upem ();
+      తిరిగి font->face->get_upem ();
     }
 
-    return phantoms[glyf_impl::PHANTOM_TOP].y;
+    తిరిగి phantoms[glyf_impl::PHANTOM_శిఖరం].y;
   }
 
-  public:
+  బహిరంగ:
 
-  bool get_extents (hb_font_t *font,
+  తార్కిక get_extents (hb_font_t *font,
 		    hb_codepoint_t gid,
-		    hb_glyph_extents_t *extents) const
-  { return get_extents_at (font, gid, extents, hb_array (font->coords,
-							 font->has_nonzero_coords ? font->num_coords : 0)); }
+		    hb_glyph_extents_t *extents) స్థిరరాశి
+  { తిరిగి get_extents_at (font, gid, extents, hb_array (font->coords,
+							 font->has_nonzero_coords ? font->అంకె_coords : 0)); }
 
-  bool get_extents_at (hb_font_t *font,
+  తార్కిక get_extents_at (hb_font_t *font,
 		       hb_codepoint_t gid,
 		       hb_glyph_extents_t *extents,
-		       hb_array_t<const int> coords,
-		       int64_t *budget = nullptr) const
+		       hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+		       int64_t *budget = శూన్యసూచిక) స్థిరరాశి
   {
-    if (unlikely (gid >= num_glyphs)) return false;
+    ఒకవేళ (unlikely (gid >= అంకె_glyphs)) తిరిగి అబద్ధం;
 
-#ifndef HB_NO_VAR
-    if (coords)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (coords)
     {
       hb_glyf_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return false;
-      bool ret = get_points (font,
+      ఒకవేళ (unlikely (!scratch)) తిరిగి అబద్ధం;
+      తార్కిక ret = get_points (font,
 			     gid,
-			     points_aggregator_t (font, extents, nullptr, true),
+			     points_aggregator_t (font, extents, శూన్యసూచిక, నిజం),
 			     coords,
 			     *scratch,
-			     nullptr,
+			     శూన్యసూచిక,
 			     budget);
       release_scratch (scratch);
-      return ret;
+      తిరిగి ret;
     }
-#endif
-    return glyph_for_gid (gid).get_extents_without_var_scaled (font, *this, extents);
+#అయితే_ముగింపు
+    తిరిగి glyph_for_gid (gid).get_extents_without_var_scaled (font, *ఇది, extents);
   }
 
-  const glyf_impl::Glyph
-  glyph_for_gid (hb_codepoint_t gid, bool needs_padding_removal = false) const
+  స్థిరరాశి glyf_impl::Glyph
+  glyph_for_gid (hb_codepoint_t gid, తార్కిక needs_padding_removal = అబద్ధం) స్థిరరాశి
   {
-    if (unlikely (gid >= num_glyphs)) return glyf_impl::Glyph ();
+    ఒకవేళ (unlikely (gid >= అంకె_glyphs)) తిరిగి glyf_impl::Glyph ();
 
-    unsigned int start_offset, end_offset;
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం, చివర_స్థానభ్రంశం;
 
-    if (short_offset)
+    ఒకవేళ (short_స్థానభ్రంశం)
     {
-      const HBUINT16 *offsets = (const HBUINT16 *) loca_table->dataZ.arrayZ;
-      start_offset = 2 * offsets[gid];
-      end_offset   = 2 * offsets[gid + 1];
+      స్థిరరాశి HBUINT16 *offsets = (స్థిరరాశి HBUINT16 *) loca_పట్టిక->దత్తాంశం_Z.arrayZ;
+      ప్రారంభం_స్థానభ్రంశం = 2 * offsets[gid];
+      చివర_స్థానభ్రంశం   = 2 * offsets[gid + 1];
     }
-    else
+    లేకపోతే
     {
-      const HBUINT32 *offsets = (const HBUINT32 *) loca_table->dataZ.arrayZ;
-      start_offset = offsets[gid];
-      end_offset   = offsets[gid + 1];
+      స్థిరరాశి HBUINT32 *offsets = (స్థిరరాశి HBUINT32 *) loca_పట్టిక->దత్తాంశం_Z.arrayZ;
+      ప్రారంభం_స్థానభ్రంశం = offsets[gid];
+      చివర_స్థానభ్రంశం   = offsets[gid + 1];
     }
 
-    if (unlikely (start_offset > end_offset || end_offset > glyf_table.get_length ()))
-      return glyf_impl::Glyph ();
+    ఒకవేళ (unlikely (ప్రారంభం_స్థానభ్రంశం > చివర_స్థానభ్రంశం || చివర_స్థానభ్రంశం > glyf_పట్టిక.get_నిడివి ()))
+      తిరిగి glyf_impl::Glyph ();
 
-    glyf_impl::Glyph glyph (hb_bytes_t ((const char *) this->glyf_table + start_offset,
-			     end_offset - start_offset), gid, extended);
-    return needs_padding_removal ? glyf_impl::Glyph (glyph.trim_padding (), gid, extended) : glyph;
+    glyf_impl::Glyph glyph (hb_బైట్లు_t ((స్థిరరాశి అక్షరం *) ఇది->glyf_పట్టిక + ప్రారంభం_స్థానభ్రంశం,
+			     చివర_స్థానభ్రంశం - ప్రారంభం_స్థానభ్రంశం), gid, extended);
+    తిరిగి needs_padding_removal ? glyf_impl::Glyph (glyph.trim_padding (), gid, extended) : glyph;
   }
 
-  bool
-  get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
-	    hb_scalar_cache_t *gvar_cache = nullptr,
-	    int64_t *budget = nullptr) const
+  తార్కిక
+  get_మార్గం (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
+	    hb_scalar_cache_t *gvar_cache = శూన్యసూచిక,
+	    int64_t *budget = శూన్యసూచిక) స్థిరరాశి
   {
-    if (!has_data ()) return false;
+    ఒకవేళ (!has_దత్తాంశం ()) తిరిగి అబద్ధం;
 
     hb_glyf_scratch_t *scratch = acquire_scratch ();
-    if (unlikely (!scratch)) return true;
+    ఒకవేళ (unlikely (!scratch)) తిరిగి నిజం;
 
-    bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
+    తార్కిక ret = get_points (font, gid, glyf_impl::మార్గం_builder_t (font, draw_session),
 			   hb_array (font->coords,
-				     font->has_nonzero_coords ? font->num_coords : 0),
+				     font->has_nonzero_coords ? font->అంకె_coords : 0),
 			   *scratch,
 			   gvar_cache,
 			   budget);
 
     release_scratch (scratch);
 
-    return ret;
+    తిరిగి ret;
   }
 
-  bool
-  get_path_at (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
-	       hb_array_t<const int> coords,
+  తార్కిక
+  get_మార్గం_at (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
+	       hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
 	       hb_glyf_scratch_t &scratch,
-	       hb_scalar_cache_t *gvar_cache = nullptr,
-	       int64_t *budget = nullptr) const
+	       hb_scalar_cache_t *gvar_cache = శూన్యసూచిక,
+	       int64_t *budget = శూన్యసూచిక) స్థిరరాశి
   {
-    if (!has_data ()) return false;
-    bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
+    ఒకవేళ (!has_దత్తాంశం ()) తిరిగి అబద్ధం;
+    తార్కిక ret = get_points (font, gid, glyf_impl::మార్గం_builder_t (font, draw_session),
 			   coords,
 			   scratch,
 			   gvar_cache,
 			   budget);
-    return ret;
+    తిరిగి ret;
   }
 
 
-  hb_glyf_scratch_t *acquire_scratch () const
+  hb_glyf_scratch_t *acquire_scratch () స్థిరరాశి
   {
-    if (!has_data ()) return nullptr;
+    ఒకవేళ (!has_దత్తాంశం ()) తిరిగి శూన్యసూచిక;
     hb_glyf_scratch_t *scratch = cached_scratch.get_acquire ();
-    if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+    ఒకవేళ (!scratch || unlikely (!cached_scratch.cmpexch (scratch, శూన్యసూచిక)))
     {
-      scratch = (hb_glyf_scratch_t *) hb_calloc (1, sizeof (hb_glyf_scratch_t));
-      if (unlikely (!scratch))
-	return nullptr;
+      scratch = (hb_glyf_scratch_t *) hb_calloc (1, పరిమాణం (hb_glyf_scratch_t));
+      ఒకవేళ (unlikely (!scratch))
+	తిరిగి శూన్యసూచిక;
     }
-    return scratch;
+    తిరిగి scratch;
   }
-  void release_scratch (hb_glyf_scratch_t *scratch) const
+  శూన్య release_scratch (hb_glyf_scratch_t *scratch) స్థిరరాశి
   {
-    if (!scratch)
-      return;
-    if (!cached_scratch.cmpexch (nullptr, scratch))
+    ఒకవేళ (!scratch)
+      తిరిగి;
+    ఒకవేళ (!cached_scratch.cmpexch (శూన్యసూచిక, scratch))
     {
       scratch->~hb_glyf_scratch_t ();
       hb_free (scratch);
     }
   }
 
-  unsigned int get_num_glyphs () const { return num_glyphs; }
-  hb_blob_t *reference_glyf_table () const
-  { return hb_blob_reference (glyf_table.get_blob ()); }
+  గుర్తులేని పూర్ణాంకం get_అంకె_glyphs () స్థిరరాశి { తిరిగి అంకె_glyphs; }
+  hb_blob_t *reference_glyf_పట్టిక () స్థిరరాశి
+  { తిరిగి hb_blob_reference (glyf_పట్టిక.get_blob ()); }
 
-#ifndef HB_NO_VAR
-  const gvar_accelerator_t *gvar;
-#endif
-  const hmtx_accelerator_t *hmtx;
-#ifndef HB_NO_VERTICAL
-  const vmtx_accelerator_t *vmtx;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  స్థిరరాశి gvar_accelerator_t *gvar;
+#అయితే_ముగింపు
+  స్థిరరాశి hmtx_accelerator_t *hmtx;
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+  స్థిరరాశి vmtx_accelerator_t *vmtx;
+#అయితే_ముగింపు
 
-  private:
-  bool extended;
-  bool short_offset;
-  unsigned int num_glyphs;
-  hb_blob_ptr_t<loca> loca_table;
-  hb_blob_ptr_t<glyf> glyf_table;
-  mutable hb_atomic_t<hb_glyf_scratch_t *> cached_scratch;
+  అంతరంగ:
+  తార్కిక extended;
+  తార్కిక short_స్థానభ్రంశం;
+  గుర్తులేని పూర్ణాంకం అంకె_glyphs;
+  hb_blob_ptr_t<loca> loca_పట్టిక;
+  hb_blob_ptr_t<glyf> glyf_పట్టిక;
+  మార్చదగిన hb_atomic_t<hb_glyf_scratch_t *> cached_scratch;
 };
 
 
-inline bool
-glyf::_populate_subset_glyphs (const hb_subset_plan_t   *plan,
+అంతఃవరుస తార్కిక
+glyf::_populate_subset_glyphs (స్థిరరాశి hb_subset_plan_t   *plan,
 			       hb_font_t *font,
-			       hb_vector_t<glyf_impl::SubsetGlyph>& glyphs /* OUT */,
-			       hb_blob_t **source_glyf /* OUT */) const
+			       hb_సదిశ_t<glyf_impl::SubsetGlyph>& glyphs /*బహిర్గతం*/,
+			       hb_blob_t **ఆధారం_glyf /*బహిర్గతం*/) స్థిరరాశి
 {
-  OT::glyf_accelerator_t glyf (plan->source);
-  if (!glyphs.alloc_exact (plan->new_to_old_gid_list.length)) return false;
-  *source_glyf = glyf.reference_glyf_table ();
+  OT::glyf_accelerator_t glyf (plan->ఆధారం);
+  ఒకవేళ (!glyphs.alloc_exact (plan->new_గమ్యం_old_gid_list.నిడివి)) తిరిగి అబద్ధం;
+  *ఆధారం_glyf = glyf.reference_glyf_పట్టిక ();
 
-  for (const auto &pair : plan->new_to_old_gid_list)
+  కొరకు (స్థిరరాశి స్వయంచాలక &pair : plan->new_గమ్యం_old_gid_list)
   {
-    hb_codepoint_t new_gid = pair.first;
+    hb_codepoint_t new_gid = pair.మొదటి;
     hb_codepoint_t old_gid = pair.second;
     glyf_impl::SubsetGlyph *p = glyphs.push ();
     glyf_impl::SubsetGlyph& subset_glyph = *p;
     subset_glyph.old_gid = old_gid;
 
-    if (unlikely (old_gid == 0 && new_gid == 0 &&
+    ఒకవేళ (unlikely (old_gid == 0 && new_gid == 0 &&
                   !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE)) &&
                   !plan->normalized_coords)
-      subset_glyph.source_glyph = glyf_impl::Glyph ();
-    else
+      subset_glyph.ఆధారం_glyph = glyf_impl::Glyph ();
+    లేకపోతే
     {
       /* If plan has an accelerator, the preprocessing step already trimmed glyphs.
        * Don't trim them again! */
-      subset_glyph.source_glyph = glyf.glyph_for_gid (subset_glyph.old_gid, !plan->accelerator);
+      subset_glyph.ఆధారం_glyph = glyf.glyph_for_gid (subset_glyph.old_gid, !plan->accelerator);
     }
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
-      subset_glyph.drop_hints_bytes ();
-    else
-      subset_glyph.dest_start = subset_glyph.source_glyph.get_bytes ();
+    ఒకవేళ (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      subset_glyph.drop_hints_బైట్లు ();
+    లేకపోతే
+      subset_glyph.dest_ప్రారంభం = subset_glyph.ఆధారం_glyph.get_బైట్లు ();
 
-    if (font)
+    ఒకవేళ (font)
     {
-      if (unlikely (!subset_glyph.compile_bytes_with_deltas (plan, font, glyf)))
+      ఒకవేళ (unlikely (!subset_glyph.compile_బైట్లు_with_deltas (plan, font, glyf)))
       {
         // when pinned at default, only bounds are updated, thus no need to free
-        if (!plan->pinned_at_default)
+        ఒకవేళ (!plan->pinned_at_default)
           _free_compiled_subset_glyphs (glyphs);
-        return false;
+        తిరిగి అబద్ధం;
       }
     }
   }
-  return true;
+  తిరిగి నిజం;
 }
 
-inline hb_font_t *
-glyf::_create_font_for_instancing (const hb_subset_plan_t *plan) const
+అంతఃవరుస hb_font_t *
+glyf::_create_font_for_instancing (స్థిరరాశి hb_subset_plan_t *plan) స్థిరరాశి
 {
-  hb_font_t *font = hb_font_create (plan->source);
-  if (unlikely (font == hb_font_get_empty ())) return nullptr;
+  hb_font_t *font = hb_font_create (plan->ఆధారం);
+  ఒకవేళ (unlikely (font == hb_font_get_ఖాళీలు ())) తిరిగి శూన్యసూచిక;
 
-#ifndef HB_NO_VAR
-  if (plan->has_avar2)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (plan->has_avar2)
   {
     /* Under avar2, instancing applies only to the self-contained pins,
      * whose constant final coordinates the plan holds in normalized_coords.
      * Setting user-space variations would run the full avar2 mapping and
      * bake contributions that remain live in the instance's variations. */
-    hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
-				       plan->normalized_coords.length);
-    return font;
+    hb_font_సమితి_var_coords_normalized (font, plan->normalized_coords.arrayZ,
+				       plan->normalized_coords.నిడివి);
+    తిరిగి font;
   }
-#endif
+#అయితే_ముగింపు
 
-  hb_vector_t<hb_variation_t> vars;
-  if (unlikely (!vars.alloc (plan->user_axes_location.get_population (), true)))
+  hb_సదిశ_t<hb_variation_t> vars;
+  ఒకవేళ (unlikely (!vars.alloc (plan->user_axes_location.get_population (), నిజం)))
   {
     hb_font_destroy (font);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  for (auto _ : plan->user_axes_location)
+  కొరకు (స్వయంచాలక _ : plan->user_axes_location)
   {
     hb_variation_t var;
-    var.tag = _.first;
-    var.value = _.second.middle;
+    var.ట్యాగ్_2 = _.మొదటి;
+    var.value = _.second.మధ్య;
     vars.push (var);
   }
 
-#ifndef HB_NO_VAR
-  hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
-#endif
-  return font;
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  hb_font_సమితి_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
+#అయితే_ముగింపు
+  తిరిగి font;
 }
 
 
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYF_HH */
+#అయితే_ముగింపు /* OT_GLYF_GLYF_HH */

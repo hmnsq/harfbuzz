@@ -7,31 +7,31 @@ Input file:
 """
 
 # https://github.com/harfbuzz/packtab
-import packTab
-import packTab.ucdxml
+దిగుమతి packTab
+దిగుమతి packTab.ucdxml
 
-import sys, re
-import logging
+దిగుమతి sys, re
+దిగుమతి logging
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
-    del sys.argv[1]
+ఒకవేళ పొడవు(sys.argv) > 1 మరియు sys.argv[1] == "--rust":
+    తీసివేయి sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+లేకపోతే:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-if len(sys.argv) not in (2, 3):
+ఒకవేళ పొడవు(sys.argv) కాదు లో (2, 3):
     sys.exit(__doc__)
 
 logging.info("Loading UCDXML...")
-ucdxml = packTab.ucdxml.load_ucdxml(sys.argv[1])
+ucdxml = packTab.ucdxml.ఎక్కించు_ucdxml(sys.argv[1])
 ucd = packTab.ucdxml.ucdxml_get_repertoire(ucdxml)
 
-hb_script_list_h = "hb-script-list.h" if len(sys.argv) < 3 else sys.argv[2]
+hb_script_list_h = "hb-script-list.h" ఒకవేళ పొడవు(sys.argv) < 3 లేకపోతే sys.argv[2]
 
 logging.info("Preparing data tables...")
 
@@ -47,10 +47,10 @@ logging.info("Preparing data tables...")
 # Composition & Decomposition (dm) are encoded elaborately,
 # as discussed below.
 
-gc = [u["gc"] for u in ucd]
-ccc = [int(u["ccc"]) for u in ucd]
-bmg = [int(v, 16) - int(u) if v else 0 for u, v in enumerate(u["bmg"] for u in ucd)]
-sc = [u["sc"] for u in ucd]
+gc = [u["gc"] కొరకు u లో ucd]
+ccc = [పూర్ణాంకం(u["ccc"]) కొరకు u లో ucd]
+bmg = [పూర్ణాంకం(v, 16) - పూర్ణాంకం(u) ఒకవేళ v లేకపోతే 0 కొరకు u, v లో enumerate(u["bmg"] కొరకు u లో ucd)]
+sc = [u["sc"] కొరకు u లో ucd]
 
 
 # Prepare Compose / Decompose data
@@ -58,53 +58,53 @@ sc = [u["sc"] for u in ucd]
 # This code is very dense.  See hb_ucd_compose() / hb_ucd_decompose() for the logic.
 
 dm = {
-    i: tuple(int(v, 16) for v in u["dm"].split())
-    for i, u in enumerate(ucd)
-    if u["dm"] != "#" and u["dt"] == "can" and not (0xAC00 <= i < 0xAC00 + 11172)
+    i: tuple(పూర్ణాంకం(v, 16) కొరకు v లో u["dm"].విభజించు())
+    కొరకు i, u లో enumerate(ucd)
+    ఒకవేళ u["dm"] != "#" మరియు u["dt"] == "can" మరియు కాదు (0xAC00 <= i < 0xAC00 + 11172)
 }
-ce = {i for i, u in enumerate(ucd) if u["Comp_Ex"] == "Y"}
+ce = {i కొరకు i, u లో enumerate(ucd) ఒకవేళ u["Comp_Ex"] == "Y"}
 
-assert not any(v for v in dm.values() if len(v) not in (1, 2))
-dm1 = sorted(set(v for v in dm.values() if len(v) == 1))
-assert all((v[0] >> 16) in (0, 2) for v in dm1)
-dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 0]
-dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 2]
-dm1_order = {v: i + 1 for i, v in enumerate(dm1)}
+ప్రతిజ్ఞా కాదు any(v కొరకు v లో dm.విలువలు() ఒకవేళ పొడవు(v) కాదు లో (1, 2))
+dm1 = sorted(సమితి(v కొరకు v లో dm.విలువలు() ఒకవేళ పొడవు(v) == 1))
+ప్రతిజ్ఞా all((v[0] >> 16) లో (0, 2) కొరకు v లో dm1)
+dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) కొరకు v లో dm1 ఒకవేళ (v[0] >> 16) == 0]
+dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) కొరకు v లో dm1 ఒకవేళ (v[0] >> 16) == 2]
+dm1_క్రమం = {v: i + 1 కొరకు i, v లో enumerate(dm1)}
 
 dm2 = sorted(
-    (v + (i if i not in ce and not ccc[i] else 0,), v)
-    for i, v in dm.items()
-    if len(v) == 2
+    (v + (i ఒకవేళ i కాదు లో ce మరియు కాదు ccc[i] లేకపోతే 0,), v)
+    కొరకు i, v లో dm.వస్తువులు()
+    ఒకవేళ పొడవు(v) == 2
 )
 
-filt = lambda v: (
+filt = అజ్ఞాత v: (
     (v[0] & 0xFFFFF800) == 0x0000
-    and (v[1] & 0xFFFFFF80) == 0x0300
-    and (v[2] & 0xFFF0C000) == 0x0000
+    మరియు (v[1] & 0xFFFFFF80) == 0x0300
+    మరియు (v[2] & 0xFFF0C000) == 0x0000
 )
-dm2_u32_array = [v for v in dm2 if filt(v[0])]
-dm2_u64_array = [v for v in dm2 if not filt(v[0])]
-assert dm2_u32_array + dm2_u64_array == dm2
+dm2_u32_array = [v కొరకు v లో dm2 ఒకవేళ filt(v[0])]
+dm2_u64_array = [v కొరకు v లో dm2 ఒకవేళ కాదు filt(v[0])]
+ప్రతిజ్ఞా dm2_u32_array + dm2_u64_array == dm2
 dm2_u32_array = [
     "HB_CODEPOINT_ENCODE3_11_7_14 (0x%04X, 0x%04X, 0x%04X)" % v[0]
-    for v in dm2_u32_array
+    కొరకు v లో dm2_u32_array
 ]
 dm2_u64_array = [
-    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] for v in dm2_u64_array
+    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] కొరకు v లో dm2_u64_array
 ]
 
-l = 1 + len(dm1_p0_array) + len(dm1_p2_array)
-dm2_order = {v[1]: i + l for i, v in enumerate(dm2)}
+l = 1 + పొడవు(dm1_p0_array) + పొడవు(dm1_p2_array)
+dm2_క్రమం = {v[1]: i + l కొరకు i, v లో enumerate(dm2)}
 
-dm_order = {None: 0}
-dm_order.update(dm1_order)
-dm_order.update(dm2_order)
+dm_క్రమం = {ఏమీలేదు: 0}
+dm_క్రమం.update(dm1_క్రమం)
+dm_క్రమం.update(dm2_క్రమం)
 
 
 # Prepare General_Category / Script mapping arrays
 
-gc_order = dict()
-for i, v in enumerate(
+gc_క్రమం = dict()
+కొరకు i, v లో enumerate(
     (
         "Cc",
         "Cf",
@@ -138,22 +138,22 @@ for i, v in enumerate(
         "Zs",
     )
 ):
-    gc_order[i] = v
-    gc_order[v] = i
+    gc_క్రమం[i] = v
+    gc_క్రమం[v] = i
 
-sc_order = dict()
+sc_క్రమం = dict()
 sc_array = []
 sc_re = re.compile(r"\b(HB_SCRIPT_[_A-Z]*).*HB_TAG [(]'(.)','(.)','(.)','(.)'[)]")
-for line in open(hb_script_list_h):
-    m = sc_re.search(line)
-    if not m:
-        continue
-    name = m.group(1)
-    tag = "".join(m.group(i) for i in range(2, 6))
-    i = len(sc_array)
-    sc_order[tag] = i
-    sc_order[i] = tag
-    if language.name == "rust":
+కొరకు పంక్తి లో open(hb_script_list_h):
+    m = sc_re.శోధన(పంక్తి)
+    ఒకవేళ కాదు m:
+        కొనసాగు
+    name = m.సమూహం(1)
+    ట్యాగ్_2 = "".join(m.సమూహం(i) కొరకు i లో శ్రేణి(2, 6))
+    i = పొడవు(sc_array)
+    sc_క్రమం[ట్యాగ్_2] = i
+    sc_క్రమం[i] = ట్యాగ్_2
+    ఒకవేళ language.name == "rust":
         name = name.replace("HB_SCRIPT_", "script::")
     sc_array.append(name)
 
@@ -171,36 +171,36 @@ compression_level = {
 }
 
 logging.info("Generating output...")
-print("/* == Start of generated table == */")
-print("/*")
-print(" * The following table is generated by running:")
-print(" *")
-print(
+ముద్రించు("/* == Start of generated table == */")
+ముద్రించు("/*")
+ముద్రించు(" * The following table is generated by running:")
+ముద్రించు(" *")
+ముద్రించు(
     " *   ./gen-ucd-table.py %sucd.nounihan.grouped.xml hb-script-list.h"
-    % (("--%s " % language.name) if language.name != "c" else "")
+    % (("--%s " % language.name) ఒకవేళ language.name != "c" లేకపోతే "")
 )
-print(" *")
-print(" * on file with this description:", ucdxml.description)
-print(" */")
-print()
-if language.name == "c":
-    print("#ifndef HB_UCD_TABLE_HH")
-    print("#define HB_UCD_TABLE_HH")
-    print()
-    print('#include "hb.hh"')
-    print()
-elif language.name == "rust":
-    print("pub(crate) mod ucd {")
-    print()
-    print("#![allow(unused_parens)]")
-    print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
-    print()
-    print("use crate::hb::algs::{HB_CODEPOINT_ENCODE3, HB_CODEPOINT_ENCODE3_11_7_14};")
-    print("use crate::hb::common::script;")
-    print("use crate::hb::common::Script as hb_script_t;")
-    print()
-else:
-    assert False, "Unknown language: %s" % language.name
+ముద్రించు(" *")
+ముద్రించు(" * on file with this description:", ucdxml.description)
+ముద్రించు(" */")
+ముద్రించు()
+ఒకవేళ language.name == "c":
+    ముద్రించు("#ifndef HB_UCD_TABLE_HH")
+    ముద్రించు("#define HB_UCD_TABLE_HH")
+    ముద్రించు()
+    ముద్రించు('#include "hb.hh"')
+    ముద్రించు()
+లేదావేళ language.name == "rust":
+    ముద్రించు("pub(crate) mod ucd {")
+    ముద్రించు()
+    ముద్రించు("#![allow(unused_parens)]")
+    ముద్రించు("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
+    ముద్రించు()
+    ముద్రించు("use crate::hb::algs::{HB_CODEPOINT_ENCODE3, HB_CODEPOINT_ENCODE3_11_7_14};")
+    ముద్రించు("use crate::hb::common::script;")
+    ముద్రించు("use crate::hb::common::Script as hb_script_t;")
+    ముద్రించు()
+లేకపోతే:
+    ప్రతిజ్ఞా అబద్ధం, "Unknown language: %s" % language.name
 
 # Write mapping data
 
@@ -208,85 +208,85 @@ uint16_t = language.type_name("u16")
 uint32_t = language.type_name("u32")
 uint64_t = language.type_name("u64")
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
-else:
-    assert False, "Unknown language: %s" % language.name
+ఒకవేళ language.name == "c":
+    అంతరంగ = నిజం
+లేదావేళ language.name == "rust":
+    అంతరంగ = అబద్ధం
+లేకపోతే:
+    ప్రతిజ్ఞా అబద్ధం, "Unknown language: %s" % language.name
 
-code = packTab.Code("_hb_ucd")
-sc_array, _ = code.addArray("hb_script_t", "sc_map", sc_array)
-dm1_p0_array, _ = code.addArray(uint16_t, "dm1_p0_map", dm1_p0_array)
-dm1_p2_array, _ = code.addArray(uint16_t, "dm1_p2_map", dm1_p2_array)
-dm2_u32_array, _ = code.addArray(uint32_t, "dm2_u32_map", dm2_u32_array)
-dm2_u64_array, _ = code.addArray(uint64_t, "dm2_u64_map", dm2_u64_array)
-code.print_code(language=language, private=private)
+సంకేతం_2 = packTab.సంకేతం_3("_hb_ucd")
+sc_array, _ = సంకేతం_2.కూడు_Array("hb_script_t", "sc_map", sc_array)
+dm1_p0_array, _ = సంకేతం_2.కూడు_Array(uint16_t, "dm1_p0_map", dm1_p0_array)
+dm1_p2_array, _ = సంకేతం_2.కూడు_Array(uint16_t, "dm1_p2_map", dm1_p2_array)
+dm2_u32_array, _ = సంకేతం_2.కూడు_Array(uint32_t, "dm2_u32_map", dm2_u32_array)
+dm2_u64_array, _ = సంకేతం_2.కూడు_Array(uint64_t, "dm2_u64_map", dm2_u64_array)
+సంకేతం_2.print_సంకేతం(language=language, అంతరంగ=అంతరంగ)
 
 datasets = [
-    ("gc", gc, "Cn", gc_order),
-    ("ccc", ccc, 0, None),
-    ("bmg", bmg, 0, None),
-    ("sc", sc, "Zzzz", sc_order),
-    ("dm", dm, None, dm_order),
+    ("gc", gc, "Cn", gc_క్రమం),
+    ("ccc", ccc, 0, ఏమీలేదు),
+    ("bmg", bmg, 0, ఏమీలేదు),
+    ("sc", sc, "Zzzz", sc_క్రమం),
+    ("dm", dm, ఏమీలేదు, dm_క్రమం),
 ]
 
 
 # Write main data
 
 modes = {}
-if language.name == "c":
+ఒకవేళ language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#elif !defined(HB_NO_UCD_UNASSIGNED)"
     modes[SLOPPY] = "#else"
-    modes[None] = "#endif"
-else:
+    modes[ఏమీలేదు] = "#endif"
+లేకపోతే:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
-    print()
-    if text:
-        print(text)
-        print()
-    if step is None:
-        continue
+కొరకు అడుగు, పాఠ్యం లో modes.వస్తువులు():
+    ముద్రించు()
+    ఒకవేళ పాఠ్యం:
+        ముద్రించు(పాఠ్యం)
+        ముద్రించు()
+    ఒకవేళ అడుగు అయిన ఏమీలేదు:
+        కొనసాగు
 
-    compression = compression_level[step]
+    compression = compression_level[అడుగు]
     logging.info("  Compression=%d:" % compression)
 
-    if step == SLOPPY:
-        for i in range(len(gc)):
-            if (i % 128) and gc[i] == "Cn":
+    ఒకవేళ అడుగు == SLOPPY:
+        కొరకు i లో శ్రేణి(పొడవు(gc)):
+            ఒకవేళ (i % 128) మరియు gc[i] == "Cn":
                 gc[i] = gc[i - 1]
-        for i in range(len(gc) - 2, -1, -1):
-            if ((i + 1) % 128) and gc[i] == "Cn":
+        కొరకు i లో శ్రేణి(పొడవు(gc) - 2, -1, -1):
+            ఒకవేళ ((i + 1) % 128) మరియు gc[i] == "Cn":
                 gc[i] = gc[i + 1]
-        for i in range(len(sc)):
-            if (i % 128) and sc[i] == "Zzzz":
+        కొరకు i లో శ్రేణి(పొడవు(sc)):
+            ఒకవేళ (i % 128) మరియు sc[i] == "Zzzz":
                 sc[i] = sc[i - 1]
-        for i in range(len(sc) - 2, -1, -1):
-            if ((i + 1) % 128) and sc[i] == "Zzzz":
+        కొరకు i లో శ్రేణి(పొడవు(sc) - 2, -1, -1):
+            ఒకవేళ ((i + 1) % 128) మరియు sc[i] == "Zzzz":
                 sc[i] = sc[i + 1]
 
-    code = packTab.Code("_hb_ucd")
+    సంకేతం_2 = packTab.సంకేతం_3("_hb_ucd")
 
-    for name, data, default, mapping in datasets:
-        sol = packTab.pack_table(
-            data, default, mapping=mapping, compression=compression
+    కొరకు name, దత్తాంశం, అప్రమేయ, mapping లో datasets:
+        sol = packTab.pack_పట్టిక(
+            దత్తాంశం, అప్రమేయ, mapping=mapping, compression=compression
         )
-        logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.fullCost))
-        sol.genCode(code, name, private=private, language=language)
+        logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.నిండిన_ఖర్చు))
+        sol.gen_సంకేతం(సంకేతం_2, name, అంతరంగ=అంతరంగ, language=language)
 
-    code.print_code(language=language)
+    సంకేతం_2.print_సంకేతం(language=language)
 
-    print()
+    ముద్రించు()
 
-if language.name == "c":
-    print("#endif /* HB_UCD_TABLE_HH */")
-elif language.name == "rust":
-    print("}")
-else:
-    assert False, "Unknown language: %s" % language.name
-print()
-print("/* == End of generated table == */")
+ఒకవేళ language.name == "c":
+    ముద్రించు("#endif /* HB_UCD_TABLE_HH */")
+లేదావేళ language.name == "rust":
+    ముద్రించు("}")
+లేకపోతే:
+    ప్రతిజ్ఞా అబద్ధం, "Unknown language: %s" % language.name
+ముద్రించు()
+ముద్రించు("/* == End of generated table == */")
 logging.info("Done.")

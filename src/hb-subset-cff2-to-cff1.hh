@@ -22,29 +22,29 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_SUBSET_CFF2_TO_CFF1_HH
-#define HB_SUBSET_CFF2_TO_CFF1_HH
+#నిర్వచితం_కాకపోతే HB_SUBSET_CFF2_గమ్యం_CFF1_HH
+#నిర్వచించు HB_SUBSET_CFF2_గమ్యం_CFF1_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_SUBSET_CFF
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
 
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-subset-cff-common.hh"
+#అన్తర్భావ "hb-ot-cff1-table.hh"
+#అన్తర్భావ "hb-ot-cff2-table.hh"
+#అన్తర్భావ "hb-subset-cff-common.hh"
 
-namespace OT {
+నామాకాశ OT {
   // Forward declarations - these are defined in hb-subset-cff2.cc
-  struct cff2_subset_plan;
+  నిర్మాణం cff2_subset_plan;
 }
 
-namespace CFF {
+నామాకాశ CFF {
 
 // Forward declaration
-struct cff2_top_dict_values_t;
+నిర్మాణం cff2_శిఖరం_dict_విలువలు_t;
 
 // Default font name for converted CFF1 fonts
-static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
+స్థిర constexpr స్థిరరాశి అక్షరం CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
 
 /*
  * CFF2 to CFF1 Converter
@@ -83,60 +83,60 @@ static constexpr const char CFF1_DEFAULT_FONT_NAME[] = "CFF1Font";
  * - Add endchar to CharStrings (required in CFF1, optional in CFF2)
  */
 
-struct cff1_subset_plan_from_cff2_t
+నిర్మాణం cff1_subset_plan_from_cff2_t
 {
   // Inherits most data from cff2_subset_plan
-  const OT::cff2_subset_plan *cff2_plan;
+  స్థిరరాశి OT::cff2_subset_plan *cff2_plan;
 
   // CFF1-specific additions
-  hb_vector_t<unsigned char> fontName;  // Single font name for Name INDEX
+  hb_సదిశ_t<గుర్తులేని అక్షరం> fontName;  // Single font name for Name INDEX
 
-  bool create (const OT::cff2_subset_plan &cff2_plan_)
+  తార్కిక create (స్థిరరాశి OT::cff2_subset_plan &cff2_plan_)
   {
     cff2_plan = &cff2_plan_;
 
     // Create a simple font name (CFF1 requires a Name INDEX)
-    fontName.resize (strlen (CFF1_DEFAULT_FONT_NAME));
-    if (fontName.in_error ()) return false;
-    memcpy (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, strlen (CFF1_DEFAULT_FONT_NAME));
+    fontName.resize (అక్షరశ్రేణి_పొడవు (CFF1_DEFAULT_FONT_NAME));
+    ఒకవేళ (fontName.లోపల_error ()) తిరిగి అబద్ధం;
+    జ్ఞాపకం_నకలు (fontName.arrayZ, CFF1_DEFAULT_FONT_NAME, అక్షరశ్రేణి_పొడవు (CFF1_DEFAULT_FONT_NAME));
 
-    return true;
+    తిరిగి నిజం;
   }
 };
 
 /* CFF1 Top DICT operator serializer that adds ROS and removes CFF2-specific ops */
-struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
+నిర్మాణం cff1_from_cff2_శిఖరం_dict_op_serializer_t : cff_శిఖరం_dict_op_serializer_t<>
 {
-  bool serialize (hb_serialize_context_t *c,
-                  const op_str_t &opstr,
-                  const cff_sub_table_info_t &info) const
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  స్థిరరాశి op_str_t &opstr,
+                  స్థిరరాశి cff_sub_పట్టిక_info_t &info) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    switch (opstr.op)
+    ఎంపిక (opstr.op)
     {
-      case OpCode_vstore:
+      స్థితి Op_సంకేతం_vstore:
         // CFF2-only operator, skip it
-        return_trace (true);
+        return_trace (నిజం);
 
-      case OpCode_CharStrings:
-        return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
+      స్థితి Op_సంకేతం_Char_అక్షరశ్రేణులు:
+        return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_అక్షరశ్రేణులు_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
-      case OpCode_FDSelect:
+      స్థితి Op_సంకేతం_FDArray:
+      స్థితి Op_సంకేతం_FDSelect:
         // These are explicitly serialized in the main function to ensure they're present
         // even if CFF2 doesn't have them. Skip them here to avoid duplication.
-        return_trace (true);
+        return_trace (నిజం);
 
-      default:
+      అప్రమేయ:
         return_trace (copy_opstr (c, opstr));
     }
   }
 
   // Serialize ROS operator to make this a CID-keyed font
-  bool serialize_ros (hb_serialize_context_t *c) const
+  తార్కిక serialize_ros (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
     // ROS = Registry-Ordering-Supplement
     // We use "Adobe", "Identity", 0 for maximum compatibility
@@ -153,25 +153,25 @@ struct cff1_from_cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
     encoder.encode_int (391);  // Registry SID ("Adobe" in our String INDEX)
     encoder.encode_int (392);  // Ordering SID ("Identity" in our String INDEX)
     encoder.encode_int (0);    // Supplement
-    encoder.encode_op (OpCode_ROS);
+    encoder.encode_op (Op_సంకేతం_ROS);
 
-    if (encoder.in_error ())
-      return_trace (false);
+    ఒకవేళ (encoder.లోపల_error ())
+      return_trace (అబద్ధం);
 
-    auto bytes = buff.as_bytes ();
-    return_trace (c->embed (bytes.arrayZ, bytes.length));
+    స్వయంచాలక బైట్లు = buff.as_బైట్లు ();
+    return_trace (c->embed (బైట్లు.arrayZ, బైట్లు.నిడివి));
   }
 };
 
 /* Main serialization function */
-HB_INTERNAL bool
-serialize_cff2_to_cff1 (hb_serialize_context_t *c,
+HB_అంతర్గత తార్కిక
+serialize_cff2_గమ్యం_cff1 (hb_serialize_context_t *c,
                         OT::cff2_subset_plan &plan,
-                        const cff2_top_dict_values_t &cff2_topDict,
-                        const OT::cff2::accelerator_subset_t &acc);
+                        స్థిరరాశి cff2_శిఖరం_dict_విలువలు_t &cff2_శిఖరం_Dict,
+                        స్థిరరాశి OT::cff2::accelerator_subset_t &acc);
 
 } /* namespace CFF */
 
-#endif /* HB_NO_SUBSET_CFF */
+#అయితే_ముగింపు /* HB_NO_SUBSET_CFF */
 
-#endif /* HB_SUBSET_CFF2_TO_CFF1_HH */
+#అయితే_ముగింపు /* HB_SUBSET_CFF2_TO_CFF1_HH */

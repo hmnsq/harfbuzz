@@ -1,19 +1,19 @@
-#ifndef OT_LAYOUT_GSUB_COMMON_HH
-#define OT_LAYOUT_GSUB_COMMON_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_COMMON_HH
+#నిర్వచించు OT_LAYOUT_GSUB_COMMON_HH
 
-#include "../../../hb-serialize.hh"
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#అన్తర్భావ "../../../hb-serialize.hh"
+#అన్తర్భావ "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template<typename Iterator>
-static void SingleSubst_serialize (hb_serialize_context_t *c,
+మూస<రకం_పేరు Iterator>
+స్థిర శూన్య SingleSubst_serialize (hb_serialize_context_t *c,
                                    Iterator it);
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_COMMON_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GSUB_COMMON_HH */

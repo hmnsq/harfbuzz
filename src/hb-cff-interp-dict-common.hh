@@ -23,179 +23,179 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF_INTERP_DICT_COMMON_HH
-#define HB_CFF_INTERP_DICT_COMMON_HH
+#నిర్వచితం_కాకపోతే HB_CFF_INTERP_DICT_COMMON_HH
+#నిర్వచించు HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#అన్తర్భావ "hb-cff-interp-common.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+నిర్మాణం dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  శూన్య init () {}
+  శూన్య fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+రకనిర్వచనం dict_val_t అంకె_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+మూస <రకం_పేరు VAL> నిర్మాణం dict_విలువలు_t : parsed_విలువలు_t<VAL> {};
 
-template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+మూస <రకం_పేరు OPSTR=op_str_t>
+నిర్మాణం శిఖరం_dict_విలువలు_t : dict_విలువలు_t<OPSTR>
 {
-  void init ()
+  శూన్య init ()
   {
-    dict_values_t<OPSTR>::init ();
-    charStringsOffset = 0;
-    FDArrayOffset = 0;
+    dict_విలువలు_t<OPSTR>::init ();
+    char_అక్షరశ్రేణులు_స్థానభ్రంశం = 0;
+    FDArray_స్థానభ్రంశం = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  శూన్య fini () { dict_విలువలు_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  పూర్ణాంకం  char_అక్షరశ్రేణులు_స్థానభ్రంశం;
+  పూర్ణాంకం  FDArray_స్థానభ్రంశం;
 };
 
-struct dict_opset_t : opset_t<number_t>
+నిర్మాణం dict_opset_t : opset_t<సంఖ్య_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, interp_env_t<సంఖ్య_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_longintdict:  /* 5-byte integer */
+	env.arg_దొంతర.నెట్టు_longint_from_substr (env.str_ref);
+	ఆపు;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      స్థితి Op_సంకేతం_BCD:  /* real number */
+	env.arg_దొంతర.నెట్టు_real (parse_bcd (env.str_ref));
+	ఆపు;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      అప్రమేయ:
+	opset_t<సంఖ్య_t>::process_op (op, env);
+	ఆపు;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  స్థిర ద్విగుణ parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    ఒకవేళ (unlikely (str_ref.లోపల_error ())) తిరిగి .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    గణన Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, చివర_2 };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    అక్షరం buf[32] = {0};
+    గుర్తులేని అక్షరం byte = 0;
+    కొరకు (గుర్తులేని i = 0, లెక్క = 0; లెక్క < ARRAY_నిడివి (buf); ++i, ++లెక్క)
     {
-      unsigned nibble;
-      if (!(i & 1))
+      గుర్తులేని nibble;
+      ఒకవేళ (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	ఒకవేళ (unlikely (!str_ref.avail ())) ఆపు;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      లేకపోతే
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      ఒకవేళ (unlikely (nibble == RESERVED)) ఆపు;
+      లేకపోతే ఒకవేళ (nibble == చివర_2)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	స్థిరరాశి అక్షరం *p = buf;
+	ద్విగుణ pv;
+	ఒకవేళ (unlikely (!hb_parse_double (&p, p + లెక్క, &pv, నిజం/* whole buffer */)))
+	  ఆపు;
+	తిరిగి pv;
       }
-      else
+      లేకపోతే
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[లెక్క] = "0123456789.EE?-?"[nibble];
+	ఒకవేళ (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++లెక్క;
+	  ఒకవేళ (unlikely (లెక్క == ARRAY_నిడివి (buf))) ఆపు;
+	  buf[లెక్క] = '-';
 	}
       }
     }
 
-    str_ref.set_error ();
-    return .0;
+    str_ref.సమితి_error ();
+    తిరిగి .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  స్థిర తార్కిక is_hint_op (op_సంకేతం_t op)
   {
-    switch (op)
+    ఎంపిక (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      స్థితి Op_సంకేతం_Blue_విలువలు:
+      స్థితి Op_సంకేతం_Other_Blues:
+      స్థితి Op_సంకేతం_Family_Blues:
+      స్థితి Op_సంకేతం_Family_Other_Blues:
+      స్థితి Op_సంకేతం_Stem_Snap_H:
+      స్థితి Op_సంకేతం_Stem_Snap_V:
+      స్థితి Op_సంకేతం_Std_HW:
+      స్థితి Op_సంకేతం_Std_VW:
+      స్థితి Op_సంకేతం_Blue_Scale:
+      స్థితి Op_సంకేతం_Blue_జరుపు:
+      స్థితి Op_సంకేతం_Blue_Fuzz:
+      స్థితి Op_సంకేతం_Force_Bold:
+      స్థితి Op_సంకేతం_Language_సమూహం:
+      స్థితి Op_సంకేతం_Expansion_గుణకం:
+	తిరిగి నిజం;
+      అప్రమేయ:
+	తిరిగి అబద్ధం;
     }
   }
 };
 
-template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+మూస <రకం_పేరు VAL=op_str_t>
+నిర్మాణం శిఖరం_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, interp_env_t<సంఖ్య_t>& env, శిఖరం_dict_విలువలు_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
-	env.clear_args ();
-	break;
-      default:
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_Char_అక్షరశ్రేణులు:
+	dictval.char_అక్షరశ్రేణులు_స్థానభ్రంశం = env.arg_దొంతర.తీయి_int ();
+	env.clear_వాదనలు ();
+	ఆపు;
+      స్థితి Op_సంకేతం_FDArray:
+	dictval.FDArray_స్థానభ్రంశం = env.arg_దొంతర.తీయి_int ();
+	env.clear_వాదనలు ();
+	ఆపు;
+      స్థితి Op_సంకేతం_Font_మాతృక:
+	env.clear_వాదనలు ();
+	ఆపు;
+      అప్రమేయ:
 	dict_opset_t::process_op (op, env);
-	break;
+	ఆపు;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+మూస <రకం_పేరు OPSET, రకం_పేరు PARAM, రకం_పేరు ENV=అంకె_interp_env_t>
+నిర్మాణం dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  తార్కిక interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    అయితే (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      ఒకవేళ (unlikely (SUPER::env.లోపల_error ()))
+	తిరిగి అబద్ధం;
     }
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  అంతరంగ:
+  రకనిర్వచనం interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_INTERP_DICT_COMMON_HH */
+#అయితే_ముగింపు /* HB_CFF_INTERP_DICT_COMMON_HH */

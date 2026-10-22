@@ -24,84 +24,84 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_SUBSET_CFF_COMMON_HH
-#define HB_SUBSET_CFF_COMMON_HH
+#నిర్వచితం_కాకపోతే HB_SUBSET_CFF_COMMON_HH
+#నిర్వచించు HB_SUBSET_CFF_COMMON_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-subset-plan.hh"
-#include "hb-cff-interp-cs-common.hh"
+#అన్తర్భావ "hb-subset-plan.hh"
+#అన్తర్భావ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
 /* CFF2 CharStrings may omit a tail of glyphs provided by VARC, in which
  * case FDSelect only covers the CharStrings glyphs.  Use FD 0 for glyphs
  * beyond that. */
-template <typename ACC>
-static inline unsigned
-subset_get_fd (const ACC &acc, hb_codepoint_t glyph)
+మూస <రకం_పేరు ACC>
+స్థిర అంతఃవరుస గుర్తులేని
+subset_get_fd (స్థిరరాశి ACC &acc, hb_codepoint_t glyph)
 {
-  return likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
+  తిరిగి likely (glyph < acc.అంకె_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
 }
 
 /* Used for writing a temporary charstring */
-struct str_encoder_t
+నిర్మాణం str_encoder_t
 {
   str_encoder_t (str_buff_t &buff_)
     : buff (buff_) {}
 
-  void reset () { buff.reset (); }
+  శూన్య reset () { buff.reset (); }
 
-  void encode_byte (unsigned char b)
+  శూన్య encode_byte (గుర్తులేని అక్షరం b)
   {
-    if (likely ((signed) buff.length < buff.allocated))
-      buff.arrayZ[buff.length++] = b;
-    else
+    ఒకవేళ (likely ((గుర్తుగల) buff.నిడివి < buff.allocated))
+      buff.arrayZ[buff.నిడివి++] = b;
+    లేకపోతే
       buff.push (b);
   }
 
-  void encode_int (int v)
+  శూన్య encode_int (పూర్ణాంకం v)
   {
-    if ((-1131 <= v) && (v <= 1131))
+    ఒకవేళ ((-1131 <= v) && (v <= 1131))
     {
-      if ((-107 <= v) && (v <= 107))
+      ఒకవేళ ((-107 <= v) && (v <= 107))
 	encode_byte (v + 139);
-      else if (v > 0)
+      లేకపోతే ఒకవేళ (v > 0)
       {
 	v -= 108;
-	encode_byte ((v >> 8) + OpCode_TwoBytePosInt0);
+	encode_byte ((v >> 8) + Op_సంకేతం_Two_Byte_Pos_Int0);
 	encode_byte (v & 0xFF);
       }
-      else
+      లేకపోతే
       {
 	v = -v - 108;
-	encode_byte ((v >> 8) + OpCode_TwoByteNegInt0);
+	encode_byte ((v >> 8) + Op_సంకేతం_Two_Byte_Neg_Int0);
 	encode_byte (v & 0xFF);
       }
     }
-    else
+    లేకపోతే
     {
-      if (unlikely (v < -32768))
+      ఒకవేళ (unlikely (v < -32768))
 	v = -32768;
-      else if (unlikely (v > 32767))
+      లేకపోతే ఒకవేళ (unlikely (v > 32767))
 	v = 32767;
-      encode_byte (OpCode_shortint);
+      encode_byte (Op_సంకేతం_shortint);
       encode_byte ((v >> 8) & 0xFF);
       encode_byte (v & 0xFF);
     }
   }
 
   // Encode number for CharString
-  void encode_num_cs (const number_t& n)
+  శూన్య encode_అంకె_cs (స్థిరరాశి సంఖ్య_t& n)
   {
-    if (n.in_int_range ())
+    ఒకవేళ (n.లోపల_int_range ())
     {
-      encode_int (n.to_int ());
+      encode_int (n.గమ్యం_int ());
     }
-    else
+    లేకపోతే
     {
-      int32_t v = n.to_fixed ();
-      encode_byte (OpCode_fixedcs);
+      int32_t v = n.గమ్యం_fixed ();
+      encode_byte (Op_సంకేతం_fixedcs);
       encode_byte ((v >> 24) & 0xFF);
       encode_byte ((v >> 16) & 0xFF);
       encode_byte ((v >> 8) & 0xFF);
@@ -110,24 +110,24 @@ struct str_encoder_t
   }
 
   // Encode number for TopDict / Private
-  void encode_num_tp (const number_t& n)
+  శూన్య encode_అంకె_tp (స్థిరరాశి సంఖ్య_t& n)
   {
-    if (n.in_int_range ())
+    ఒకవేళ (n.లోపల_int_range ())
     {
       // TODO longint
-      encode_int (n.to_int ());
+      encode_int (n.గమ్యం_int ());
     }
-    else
+    లేకపోతే
     {
       // Sigh. BCD
       // https://learn.microsoft.com/en-us/typography/opentype/spec/cff2#table-5-nibble-definitions
-      double v = n.to_real ();
-      encode_byte (OpCode_BCD);
+      ద్విగుణ v = n.గమ్యం_real ();
+      encode_byte (Op_సంకేతం_BCD);
 
       // Based on:
       // https://github.com/fonttools/fonttools/blob/0738c41dfbcbc213ab9263f486ef0cccc6eb5ce5/Lib/fontTools/misc/psCharStrings.py#L267-L316
 
-      char buf[16];
+      అక్షరం buf[16];
       /* FontTools has the following comment:
        *
        * # Note: 14 decimal digits seems to be the limitation for CFF real numbers
@@ -136,451 +136,451 @@ struct str_encoder_t
        * We use 8 here to match FontTools X-).
        */
 
-      hb_locale_t clocale HB_UNUSED;
-      hb_locale_t oldlocale HB_UNUSED;
-      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-      snprintf (buf, sizeof (buf), "%.8G", v);
-      (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+      hb_locale_t clocale HB_వాడని;
+      hb_locale_t oldlocale HB_వాడని;
+      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", ఖాళీ));
+      snprintf (buf, పరిమాణం (buf), "%.8G", v);
+      (శూన్య) hb_uselocale (((శూన్య) freelocale (clocale), oldlocale));
 
-      char *s = buf;
+      అక్షరం *s = buf;
       size_t len;
-      char *comma = strchr (s, ',');
-      if (comma) // Comma for some European locales in case no uselocale available.
+      అక్షరం *comma = strchr (s, ',');
+      ఒకవేళ (comma) // Comma for some European locales in case no uselocale available.
 	*comma = '.';
-      if (s[0] == '0' && s[1] == '.')
+      ఒకవేళ (s[0] == '0' && s[1] == '.')
 	s++;
-      else if (s[0] == '-' && s[1] == '0' && s[2] == '.')
+      లేకపోతే ఒకవేళ (s[0] == '-' && s[1] == '0' && s[2] == '.')
       {
 	s[1] = '-';
 	s++;
       }
-      else if ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
+      లేకపోతే ఒకవేళ ((len = అక్షరశ్రేణి_పొడవు (s)) > 3 && !strcmp (s + len - 3, "000"))
       {
-	unsigned exponent = len - 3;
-	char *s2 = s + exponent - 1;
-	while (*s2 == '0' && exponent > 1)
+	గుర్తులేని exponent = len - 3;
+	అక్షరం *s2 = s + exponent - 1;
+	అయితే (*s2 == '0' && exponent > 1)
 	{
 	  s2--;
 	  exponent++;
 	}
-	snprintf (s2 + 1, sizeof (buf) - (s2 + 1 - buf), "E%u", exponent);
+	snprintf (s2 + 1, పరిమాణం (buf) - (s2 + 1 - buf), "E%u", exponent);
       }
-      else
+      లేకపోతే
       {
-	char *dot = strchr (s, '.');
-	char *e = strchr (s, 'E');
-	if (dot && e)
+	అక్షరం *dot = strchr (s, '.');
+	అక్షరం *e = strchr (s, 'E');
+	ఒకవేళ (dot && e)
 	{
 	  memmove (dot, dot + 1, e - (dot + 1));
-	  int exponent = atoi (e + 1);
-	  int new_exponent = exponent - (e - (dot + 1));
-	  if (new_exponent == 1)
+	  పూర్ణాంకం exponent = atoi (e + 1);
+	  పూర్ణాంకం new_exponent = exponent - (e - (dot + 1));
+	  ఒకవేళ (new_exponent == 1)
 	  {
 	    e[-1] = '0';
 	    e[0] = '\0';
 	  }
-	  else
-	    snprintf (e - 1, sizeof (buf) - (e - 1 - buf), "E%d", new_exponent);
+	  లేకపోతే
+	    snprintf (e - 1, పరిమాణం (buf) - (e - 1 - buf), "E%d", new_exponent);
 	}
       }
-      if ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
+      ఒకవేళ ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
       {
-	int sign = s[0] == '-';
-	char *s2 = s + sign + 1;
-	while (*s2 == '0')
+	పూర్ణాంకం sign = s[0] == '-';
+	అక్షరం *s2 = s + sign + 1;
+	అయితే (*s2 == '0')
 	  s2++;
-	len = strlen (s2);
+	len = అక్షరశ్రేణి_పొడవు (s2);
 	memmove (s + sign, s2, len);
-	snprintf (s + sign + len, sizeof (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
+	snprintf (s + sign + len, పరిమాణం (buf) - (s + sign + len - buf), "E-%u", (గుర్తులేని) (అక్షరశ్రేణి_పొడవు (s + sign) - 1));
       }
-      hb_vector_t<char> nibbles;
-      while (*s)
+      hb_సదిశ_t<అక్షరం> nibbles;
+      అయితే (*s)
       {
-	char c = s[0];
+	అక్షరం c = s[0];
 	s++;
 
-	switch (c)
+	ఎంపిక (c)
 	{
-	  case 'E':
+	  స్థితి 'E':
 	  {
-	    char c2 = *s;
-	    if (c2 == '-')
+	    అక్షరం c2 = *s;
+	    ఒకవేళ (c2 == '-')
 	    {
 	      s++;
 	      nibbles.push (0x0C); // E-
-	    } else {
-	      if (c2 == '+')
+	    } లేకపోతే {
+	      ఒకవేళ (c2 == '+')
 		s++;
 	      nibbles.push (0x0B); // E
 	    }
-	    if (*s == '0')
+	    ఒకవేళ (*s == '0')
 	      s++;
-	    continue;
+	    కొనసాగు;
 	  }
 
-	  case '.':
+	  స్థితి '.':
 	    nibbles.push (0x0A); // .
-	    continue;
+	    కొనసాగు;
 
-	  case '-':
+	  స్థితి '-':
 	    nibbles.push (0x0E); // -
-	    continue;
+	    కొనసాగు;
 	}
 
 	nibbles.push (c - '0');
       }
       nibbles.push (0x0F);
-      if (nibbles.length % 2)
+      ఒకవేళ (nibbles.నిడివి % 2)
 	nibbles.push (0x0F);
 
-      unsigned count = nibbles.length;
-      for (unsigned i = 0; i < count; i += 2)
+      గుర్తులేని లెక్క = nibbles.నిడివి;
+      కొరకు (గుర్తులేని i = 0; i < లెక్క; i += 2)
         encode_byte ((nibbles[i] << 4) | nibbles[i+1]);
     }
   }
 
-  void encode_op (op_code_t op)
+  శూన్య encode_op (op_సంకేతం_t op)
   {
-    if (Is_OpCode_ESC (op))
+    ఒకవేళ (Is_Op_సంకేతం_ESC (op))
     {
-      encode_byte (OpCode_escape);
-      encode_byte (Unmake_OpCode_ESC (op));
+      encode_byte (Op_సంకేతం_escape);
+      encode_byte (Unmake_Op_సంకేతం_ESC (op));
     }
-    else
+    లేకపోతే
       encode_byte (op);
   }
 
-  void copy_str (const unsigned char *str, unsigned length)
+  శూన్య copy_str (స్థిరరాశి గుర్తులేని అక్షరం *str, గుర్తులేని నిడివి)
   {
-    assert ((signed) (buff.length + length) <= buff.allocated);
-    hb_memcpy (buff.arrayZ + buff.length, str, length);
-    buff.length += length;
+    ప్రతిజ్ఞా ((గుర్తుగల) (buff.నిడివి + నిడివి) <= buff.allocated);
+    hb_memcpy (buff.arrayZ + buff.నిడివి, str, నిడివి);
+    buff.నిడివి += నిడివి;
   }
 
-  bool in_error () const { return buff.in_error (); }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి buff.లోపల_error (); }
 
-  protected:
+  రక్షిత:
 
   str_buff_t &buff;
 };
 
-struct cff_sub_table_info_t {
-  cff_sub_table_info_t ()
+నిర్మాణం cff_sub_పట్టిక_info_t {
+  cff_sub_పట్టిక_info_t ()
     : fd_array_link (0),
-      char_strings_link (0)
+      char_అక్షరశ్రేణులు_link (0)
   {
     fd_select.init ();
   }
 
-  table_info_t     fd_select;
+  పట్టిక_info_t     fd_select;
   objidx_t     	   fd_array_link;
-  objidx_t     	   char_strings_link;
+  objidx_t     	   char_అక్షరశ్రేణులు_link;
 };
 
-template <typename OPSTR=op_str_t>
-struct cff_top_dict_op_serializer_t : op_serializer_t
+మూస <రకం_పేరు OPSTR=op_str_t>
+నిర్మాణం cff_శిఖరం_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const OPSTR &opstr,
-		  const cff_sub_table_info_t &info) const
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి OPSTR &opstr,
+		  స్థిరరాశి cff_sub_పట్టిక_info_t &info) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    switch (opstr.op)
+    ఎంపిక (opstr.op)
     {
-      case OpCode_CharStrings:
-	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
+      స్థితి Op_సంకేతం_Char_అక్షరశ్రేణులు:
+	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_అక్షరశ్రేణులు_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
+      స్థితి Op_సంకేతం_FDArray:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_array_link, whence_t::Absolute));
 
-      case OpCode_FDSelect:
+      స్థితి Op_సంకేతం_FDSelect:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_select.link, whence_t::Absolute));
 
-      default:
+      అప్రమేయ:
 	return_trace (copy_opstr (c, opstr));
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 };
 
-struct cff_font_dict_op_serializer_t : op_serializer_t
+నిర్మాణం cff_font_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  const table_info_t &privateDictInfo) const
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి op_str_t &opstr,
+		  స్థిరరాశి పట్టిక_info_t &వ్యక్తిగత_Dict_Info) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    if (opstr.op == OpCode_Private)
+    ఒకవేళ (opstr.op == Op_సంకేతం_వ్యక్తిగత)
     {
       /* serialize the private dict size & offset as 2-byte & 4-byte integers */
-      return_trace (UnsizedByteStr::serialize_int2 (c, privateDictInfo.size) &&
-		    Dict::serialize_link4_op (c, opstr.op, privateDictInfo.link, whence_t::Absolute));
+      return_trace (UnsizedByteStr::serialize_int2 (c, వ్యక్తిగత_Dict_Info.కొలత) &&
+		    Dict::serialize_link4_op (c, opstr.op, వ్యక్తిగత_Dict_Info.link, whence_t::Absolute));
     }
-    else
+    లేకపోతే
     {
-      unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-      if (unlikely (!d)) return_trace (false);
+      గుర్తులేని అక్షరం *d = c->allocate_కొలత<గుర్తులేని అక్షరం> (opstr.నిడివి);
+      ఒకవేళ (unlikely (!d)) return_trace (అబద్ధం);
       /* Faster than hb_memcpy for small strings. */
-      for (unsigned i = 0; i < opstr.length; i++)
+      కొరకు (గుర్తులేని i = 0; i < opstr.నిడివి; i++)
 	d[i] = opstr.ptr[i];
       //hb_memcpy (d, opstr.ptr, opstr.length);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 };
 
 /* CharString command for specialization */
-struct cs_command_t
+నిర్మాణం cs_command_t
 {
-  hb_vector_t<number_t> args;
-  hb_vector_t<unsigned char> mask_bytes; /* For hintmask/cntrmask payload bytes. */
-  op_code_t op;
+  hb_సదిశ_t<సంఖ్య_t> వాదనలు;
+  hb_సదిశ_t<గుర్తులేని అక్షరం> ముసుగు_బైట్లు; /* For hintmask/cntrmask payload bytes. */
+  op_సంకేతం_t op;
 
-  cs_command_t () : op (OpCode_Invalid) {}
-  cs_command_t (op_code_t op_) : op (op_) {}
+  cs_command_t () : op (Op_సంకేతం_Invalid) {}
+  cs_command_t (op_సంకేతం_t op_) : op (op_) {}
 };
 
-typedef hb_vector_t<cs_command_t> *cs_command_vec_t;
+రకనిర్వచనం hb_సదిశ_t<cs_command_t> *cs_command_vec_t;
 
-struct cff2_instancing_plan_t;
+నిర్మాణం cff2_instancing_plan_t;
 
-struct flatten_param_t
+నిర్మాణం flatten_param_t
 {
   flatten_param_t (str_buff_t &flatStr_,
-                   bool drop_hints_,
-                   const hb_subset_plan_t *plan_,
-                   cs_command_vec_t commands_ = nullptr)
+                   తార్కిక drop_hints_,
+                   స్థిరరాశి hb_subset_plan_t *plan_,
+                   cs_command_vec_t commands_ = శూన్యసూచిక)
     : flatStr (flatStr_), drop_hints (drop_hints_), plan (plan_), commands (commands_) {}
 
   str_buff_t     &flatStr;
-  bool	drop_hints;
-  const hb_subset_plan_t *plan;
+  తార్కిక	drop_hints;
+  స్థిరరాశి hb_subset_plan_t *plan;
   cs_command_vec_t commands; /* Optional: capture parsed commands for specialization */
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being copied or flattened. */
-  const cff2_instancing_plan_t *instancer = nullptr;
-  bool emitted_blend = false;
+  స్థిరరాశి cff2_instancing_plan_t *instancer = శూన్యసూచిక;
+  తార్కిక emitted_blend = అబద్ధం;
 };
 
-template <typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_flattener_t
+మూస <రకం_పేరు ACC, రకం_పేరు ENV, రకం_పేరు OPSET, op_సంకేతం_t endchar_op=Op_సంకేతం_Invalid>
+నిర్మాణం subr_flattener_t
 {
-  subr_flattener_t (const ACC &acc_,
-		    const hb_subset_plan_t *plan_)
+  subr_flattener_t (స్థిరరాశి ACC &acc_,
+		    స్థిరరాశి hb_subset_plan_t *plan_)
 		   : acc (acc_), plan (plan_) {}
 
-  bool flatten (str_buff_vec_t &flat_charstrings,
-                hb_vector_t<hb_vector_t<cs_command_t>> *command_capture = nullptr)
+  తార్కిక flatten (str_buff_vec_t &flat_charstrings,
+                hb_సదిశ_t<hb_సదిశ_t<cs_command_t>> *command_capture = శూన్యసూచిక)
   {
-    unsigned count = plan->num_output_glyphs ();
-    if (!flat_charstrings.resize_exact (count))
-      return false;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని లెక్క = plan->అంకె_output_glyphs ();
+    ఒకవేళ (!flat_charstrings.resize_exact (లెక్క))
+      తిరిగి అబద్ధం;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       hb_codepoint_t  glyph;
-      if (!plan->old_gid_for_new_gid (i, &glyph))
+      ఒకవేళ (!plan->old_gid_for_new_gid (i, &glyph))
       {
 	/* add an endchar only charstring for a missing glyph if CFF1 */
-	if (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
-	continue;
+	ఒకవేళ (endchar_op != Op_సంకేతం_Invalid) flat_charstrings[i].push (endchar_op);
+	కొనసాగు;
       }
-      const hb_ubytes_t str = (*acc.charStrings)[glyph];
-      unsigned int fd = subset_get_fd (acc, glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
+      స్థిరరాశి hb_ubytes_t str = (*acc.char_అక్షరశ్రేణులు)[glyph];
+      గుర్తులేని పూర్ణాంకం fd = subset_get_fd (acc, glyph);
+      ఒకవేళ (unlikely (fd >= acc.fd_లెక్క))
+	తిరిగి అబద్ధం;
 
 
       ENV env (str, acc, fd,
-	       plan->normalized_coords.arrayZ, plan->normalized_coords.length);
+	       plan->normalized_coords.arrayZ, plan->normalized_coords.నిడివి);
       cs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
       flatten_param_t  param = {
         flat_charstrings.arrayZ[i],
-        (bool) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+        (తార్కిక) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
 	plan,
-	command_capture ? &(*command_capture)[i] : nullptr
+	command_capture ? &(*command_capture)[i] : శూన్యసూచిక
       };
-      if (unlikely (!interp.interpret (param)))
-	return false;
+      ఒకవేళ (unlikely (!interp.interpret (param)))
+	తిరిగి అబద్ధం;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  const ACC &acc;
-  const hb_subset_plan_t *plan;
+  స్థిరరాశి ACC &acc;
+  స్థిరరాశి hb_subset_plan_t *plan;
 };
 
-struct subr_closures_t
+నిర్మాణం subr_closures_t
 {
-  subr_closures_t (unsigned int fd_count) : global_closure (), local_closures ()
+  subr_closures_t (గుర్తులేని పూర్ణాంకం fd_లెక్క_2) : global_సంవృతం (), local_closures ()
   {
-    local_closures.resize_exact (fd_count);
+    local_closures.resize_exact (fd_లెక్క_2);
   }
 
-  void reset ()
+  శూన్య reset ()
   {
-    global_closure.clear();
-    for (unsigned int i = 0; i < local_closures.length; i++)
+    global_సంవృతం.clear();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < local_closures.నిడివి; i++)
       local_closures[i].clear();
   }
 
-  bool in_error () const { return local_closures.in_error (); }
-  hb_set_t  global_closure;
-  hb_vector_t<hb_set_t> local_closures;
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి local_closures.లోపల_error (); }
+  hb_సమితి_t  global_సంవృతం;
+  hb_సదిశ_t<hb_సమితి_t> local_closures;
 };
 
-struct parsed_cs_op_t : op_str_t
+నిర్మాణం parsed_cs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
-    subr_num (subr_num_) {}
+  parsed_cs_op_t (గుర్తులేని పూర్ణాంకం subr_అంకె = 0) :
+    subr_అంకె_2 (subr_అంకె) {}
 
-  bool is_hinting () const { return hinting_flag; }
-  void set_hinting ()       { hinting_flag = true; }
+  తార్కిక is_hinting () స్థిరరాశి { తిరిగి hinting_flag; }
+  శూన్య సమితి_hinting ()       { hinting_flag = నిజం; }
 
   /* The layout of this struct is designed to fit within the
    * padding of op_str_t! */
 
-  protected:
-  bool	  hinting_flag = false;
+  రక్షిత:
+  తార్కిక	  hinting_flag = అబద్ధం;
 
-  public:
-  uint16_t subr_num;
+  బహిరంగ:
+  uint16_t subr_అంకె_2;
 };
 
-struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
+నిర్మాణం parsed_cs_str_t : parsed_విలువలు_t<parsed_cs_op_t>
 {
   parsed_cs_str_t () :
-    parsed (false),
-    hint_dropped (false),
-    has_prefix_ (false),
-    has_calls_ (false),
-    coalescing_ (false)
+    parsed (అబద్ధం),
+    hint_dropped (అబద్ధం),
+    has_ఉపసర్గ (అబద్ధం),
+    has_calls_ (అబద్ధం),
+    coalescing_ (అబద్ధం)
   {
     SUPER::init ();
   }
 
   HB_ALWAYS_INLINE
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref)
+  శూన్య కూడు_op (op_సంకేతం_t op, స్థిరరాశి byte_str_ref_t& str_ref)
   {
-    if (is_parsed ()) return;
-    if (coalescing_)
+    ఒకవేళ (is_parsed ()) తిరిగి;
+    ఒకవేళ (coalescing_)
     {
       /* Do not record individual tokens; only note their boundaries.
        * Bytes are flushed as verbatim segments at call sites and at
        * the end of the string.  Only enabled when per-op granularity
        * is not needed later for hint analysis. */
-      penultimate_end_ = last_end_;
-      last_end_ = str_ref.get_offset ();
-      if (unlikely (op == OpCode_return || op == OpCode_endchar))
-	flush_segment (str_ref, last_end_);
-      return;
+      penultimate_చివర = చివరి_చివర_2;
+      చివరి_చివర_2 = str_ref.get_స్థానభ్రంశం ();
+      ఒకవేళ (unlikely (op == Op_సంకేతం_return || op == Op_సంకేతం_endchar))
+	flush_segment (str_ref, చివరి_చివర_2);
+      తిరిగి;
     }
-    SUPER::add_op (op, str_ref);
+    SUPER::కూడు_op (op, str_ref);
   }
 
-  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned int subr_num)
+  శూన్య కూడు_call_op (op_సంకేతం_t op, స్థిరరాశి byte_str_ref_t& str_ref, గుర్తులేని పూర్ణాంకం subr_అంకె_2)
   {
-    if (is_parsed ()) return;
-    has_calls_ = true;
+    ఒకవేళ (is_parsed ()) తిరిగి;
+    has_calls_ = నిజం;
 
-    if (coalescing_)
+    ఒకవేళ (coalescing_)
     {
       /* Flush bytes preceding the subroutine-number token, then skip
        * over the number: it is re-encoded with the new bias. */
-      flush_segment (str_ref, penultimate_end_);
-      opStart = last_end_;
-      SUPER::add_op (op, str_ref, {subr_num});
-      penultimate_end_ = last_end_ = str_ref.get_offset ();
-      return;
+      flush_segment (str_ref, penultimate_చివర);
+      op_ప్రారంభం = చివరి_చివర_2;
+      SUPER::కూడు_op (op, str_ref, {subr_అంకె_2});
+      penultimate_చివర = చివరి_చివర_2 = str_ref.get_స్థానభ్రంశం ();
+      తిరిగి;
     }
 
     /* Pop the subroutine number. */
-    values.pop ();
+    values.తీయి ();
 
-    SUPER::add_op (op, str_ref, {subr_num});
+    SUPER::కూడు_op (op, str_ref, {subr_అంకె_2});
   }
 
   /* Flush pending bytes [opStart, end) as verbatim segment entries. */
-  void flush_segment (const byte_str_ref_t& str_ref, unsigned end)
+  శూన్య flush_segment (స్థిరరాశి byte_str_ref_t& str_ref, గుర్తులేని చివర)
   {
-    unsigned start = opStart;
-    if (end <= start) return;
-    while (start < end)
+    గుర్తులేని ప్రారంభం = op_ప్రారంభం;
+    ఒకవేళ (చివర <= ప్రారంభం) తిరిగి;
+    అయితే (ప్రారంభం < చివర)
     {
-      auto arr = str_ref.sub_array (start, hb_min (end - start, 255u));
-      if (unlikely (!arr.length)) break;
+      స్వయంచాలక arr = str_ref.sub_array (ప్రారంభం, hb_min (చివర - ప్రారంభం, 255u));
+      ఒకవేళ (unlikely (!arr.నిడివి)) ఆపు;
       parsed_cs_op_t *val = values.push ();
       val->ptr = arr.arrayZ;
-      val->length = arr.length;
-      start += arr.length;
+      val->నిడివి = arr.నిడివి;
+      ప్రారంభం += arr.నిడివి;
     }
-    opStart = end;
+    op_ప్రారంభం = చివర;
   }
 
   /* For coalescing mode: flush any pending bytes through the current
    * position; used where the string ends without an explicit
    * return/endchar op (CFF2). */
-  void flush_coalesced (const byte_str_ref_t& str_ref)
+  శూన్య flush_coalesced (స్థిరరాశి byte_str_ref_t& str_ref)
   {
-    if (coalescing_ && !is_parsed ())
-      flush_segment (str_ref, str_ref.get_offset ());
+    ఒకవేళ (coalescing_ && !is_parsed ())
+      flush_segment (str_ref, str_ref.get_స్థానభ్రంశం ());
   }
 
-  void enable_coalescing () { coalescing_ = true; }
-  bool is_coalescing () const { return coalescing_; }
+  శూన్య enable_coalescing () { coalescing_ = నిజం; }
+  తార్కిక is_coalescing () స్థిరరాశి { తిరిగి coalescing_; }
 
-  void set_prefix (const number_t &num, op_code_t op = OpCode_Invalid)
+  శూన్య సమితి_ఉపసర్గ (స్థిరరాశి సంఖ్య_t &అంకె, op_సంకేతం_t op = Op_సంకేతం_Invalid)
   {
-    has_prefix_ = true;
-    prefix_op_ = op;
-    prefix_num_ = num;
+    has_ఉపసర్గ = నిజం;
+    ఉపసర్గ_op = op;
+    ఉపసర్గ_అంకె = అంకె;
   }
 
-  bool at_end (unsigned int pos) const
+  తార్కిక at_చివర (గుర్తులేని పూర్ణాంకం pos) స్థిరరాశి
   {
-    return ((pos + 1 >= values.length) /* CFF2 */
-	|| (values[pos + 1].op == OpCode_return));
+    తిరిగి ((pos + 1 >= values.నిడివి) /* CFF2 */
+	|| (values[pos + 1].op == Op_సంకేతం_return));
   }
 
-  bool is_parsed () const { return parsed; }
-  void set_parsed ()      { parsed = true; }
+  తార్కిక is_parsed () స్థిరరాశి { తిరిగి parsed; }
+  శూన్య సమితి_parsed ()      { parsed = నిజం; }
 
-  bool is_hint_dropped () const { return hint_dropped; }
-  void set_hint_dropped ()      { hint_dropped = true; }
+  తార్కిక is_hint_dropped () స్థిరరాశి { తిరిగి hint_dropped; }
+  శూన్య సమితి_hint_dropped ()      { hint_dropped = నిజం; }
 
-  bool is_vsindex_dropped () const { return vsindex_dropped; }
-  void set_vsindex_dropped ()      { vsindex_dropped = true; }
+  తార్కిక is_vsindex_dropped () స్థిరరాశి { తిరిగి vsindex_dropped; }
+  శూన్య సమితి_vsindex_dropped ()      { vsindex_dropped = నిజం; }
 
-  bool has_prefix () const          { return has_prefix_; }
-  op_code_t prefix_op () const         { return prefix_op_; }
-  const number_t &prefix_num () const { return prefix_num_; }
+  తార్కిక has_ఉపసర్గ_2 () స్థిరరాశి          { తిరిగి has_ఉపసర్గ; }
+  op_సంకేతం_t ఉపసర్గ_op_2 () స్థిరరాశి         { తిరిగి ఉపసర్గ_op; }
+  స్థిరరాశి సంఖ్య_t &ఉపసర్గ_అంకె_2 () స్థిరరాశి { తిరిగి ఉపసర్గ_అంకె; }
 
-  bool has_calls () const          { return has_calls_; }
+  తార్కిక has_calls () స్థిరరాశి          { తిరిగి has_calls_; }
 
-  void compact ()
+  శూన్య compact ()
   {
-    unsigned count = values.length;
-    if (!count) return;
-    auto &opstr = values.arrayZ;
-    unsigned j = 0;
-    for (unsigned i = 1; i < count; i++)
+    గుర్తులేని లెక్క = values.నిడివి;
+    ఒకవేళ (!లెక్క) తిరిగి;
+    స్వయంచాలక &opstr = values.arrayZ;
+    గుర్తులేని j = 0;
+    కొరకు (గుర్తులేని i = 1; i < లెక్క; i++)
     {
       /* See if we can combine op j and op i. */
-      bool combine =
-        (opstr[j].op != OpCode_callsubr && opstr[j].op != OpCode_callgsubr) &&
-        (opstr[i].op != OpCode_callsubr && opstr[i].op != OpCode_callgsubr) &&
+      తార్కిక combine =
+        (opstr[j].op != Op_సంకేతం_callsubr && opstr[j].op != Op_సంకేతం_callgsubr) &&
+        (opstr[i].op != Op_సంకేతం_callsubr && opstr[i].op != Op_సంకేతం_callgsubr) &&
         (opstr[j].is_hinting () == opstr[i].is_hinting ()) &&
-        (opstr[j].ptr + opstr[j].length == opstr[i].ptr) &&
-        (opstr[j].length + opstr[i].length <= 255);
+        (opstr[j].ptr + opstr[j].నిడివి == opstr[i].ptr) &&
+        (opstr[j].నిడివి + opstr[i].నిడివి <= 255);
 
-      if (combine)
+      ఒకవేళ (combine)
       {
-	opstr[j].length += opstr[i].length;
-	opstr[j].op = OpCode_Invalid;
+	opstr[j].నిడివి += opstr[i].నిడివి;
+	opstr[j].op = Op_సంకేతం_Invalid;
       }
-      else
+      లేకపోతే
       {
 	opstr[++j] = opstr[i];
       }
@@ -588,51 +588,51 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
     values.shrink (j + 1);
   }
 
-  protected:
-  bool    parsed : 1;
-  bool    hint_dropped : 1;
-  bool    vsindex_dropped : 1;
-  bool    has_prefix_ : 1;
-  bool    has_calls_ : 1;
+  రక్షిత:
+  తార్కిక    parsed : 1;
+  తార్కిక    hint_dropped : 1;
+  తార్కిక    vsindex_dropped : 1;
+  తార్కిక    has_ఉపసర్గ : 1;
+  తార్కిక    has_calls_ : 1;
   /* Record verbatim byte segments instead of individual tokens,
    * making a separate compact() pass unnecessary; incompatible with
    * hint analysis. */
-  bool    coalescing_ : 1;
+  తార్కిక    coalescing_ : 1;
   /* End offsets of the last two tokens seen (coalescing mode). */
-  unsigned penultimate_end_ = 0;
-  unsigned last_end_ = 0;
-  op_code_t	prefix_op_;
-  number_t	prefix_num_;
+  గుర్తులేని penultimate_చివర = 0;
+  గుర్తులేని చివరి_చివర_2 = 0;
+  op_సంకేతం_t	ఉపసర్గ_op;
+  సంఖ్య_t	ఉపసర్గ_అంకె;
 
-  private:
-  typedef parsed_values_t<parsed_cs_op_t> SUPER;
+  అంతరంగ:
+  రకనిర్వచనం parsed_విలువలు_t<parsed_cs_op_t> SUPER;
 };
 
-struct parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
+నిర్మాణం parsed_cs_str_vec_t : hb_సదిశ_t<parsed_cs_str_t>
 {
-  private:
-  typedef hb_vector_t<parsed_cs_str_t> SUPER;
+  అంతరంగ:
+  రకనిర్వచనం hb_సదిశ_t<parsed_cs_str_t> SUPER;
 };
 
-struct cff_subset_accelerator_t
+నిర్మాణం cff_subset_accelerator_t
 {
-  static cff_subset_accelerator_t* create (
+  స్థిర cff_subset_accelerator_t* create (
       hb_blob_t* original_blob,
-      const parsed_cs_str_vec_t& parsed_charstrings,
-      const parsed_cs_str_vec_t& parsed_global_subrs,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
+      స్థిరరాశి parsed_cs_str_vec_t& parsed_charstrings,
+      స్థిరరాశి parsed_cs_str_vec_t& parsed_global_subrs,
+      స్థిరరాశి hb_సదిశ_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
-        (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
-    if (unlikely (!accel)) return nullptr;
-    new (accel) cff_subset_accelerator_t (original_blob,
+        (cff_subset_accelerator_t*) hb_malloc (పరిమాణం(cff_subset_accelerator_t));
+    ఒకవేళ (unlikely (!accel)) తిరిగి శూన్యసూచిక;
+    కొత్త (accel) cff_subset_accelerator_t (original_blob,
                                           parsed_charstrings,
                                           parsed_global_subrs,
                                           parsed_local_subrs);
-    return accel;
+    తిరిగి accel;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  స్థిర శూన్య destroy (శూన్య* value) {
+    ఒకవేళ (!value) తిరిగి;
 
     cff_subset_accelerator_t* accel = (cff_subset_accelerator_t*) value;
     accel->~cff_subset_accelerator_t ();
@@ -641,9 +641,9 @@ struct cff_subset_accelerator_t
 
   cff_subset_accelerator_t(
       hb_blob_t* original_blob_,
-      const parsed_cs_str_vec_t& parsed_charstrings_,
-      const parsed_cs_str_vec_t& parsed_global_subrs_,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
+      స్థిరరాశి parsed_cs_str_vec_t& parsed_charstrings_,
+      స్థిరరాశి parsed_cs_str_vec_t& parsed_global_subrs_,
+      స్థిరరాశి hb_సదిశ_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
   {
     parsed_charstrings = parsed_charstrings_;
     parsed_global_subrs = parsed_global_subrs_;
@@ -657,84 +657,84 @@ struct cff_subset_accelerator_t
   ~cff_subset_accelerator_t()
   {
     hb_blob_destroy (original_blob);
-    auto *mapping = glyph_to_sid_map.get_relaxed ();
-    if (mapping)
+    స్వయంచాలక *mapping = glyph_గమ్యం_sid_map.get_relaxed ();
+    ఒకవేళ (mapping)
     {
-      mapping->~glyph_to_sid_map_t ();
+      mapping->~glyph_గమ్యం_sid_map_t ();
       hb_free (mapping);
     }
   }
 
   parsed_cs_str_vec_t parsed_charstrings;
   parsed_cs_str_vec_t parsed_global_subrs;
-  hb_vector_t<parsed_cs_str_vec_t> parsed_local_subrs;
-  mutable hb_atomic_t<glyph_to_sid_map_t *> glyph_to_sid_map;
+  hb_సదిశ_t<parsed_cs_str_vec_t> parsed_local_subrs;
+  మార్చదగిన hb_atomic_t<glyph_గమ్యం_sid_map_t *> glyph_గమ్యం_sid_map;
 
- private:
+ అంతరంగ:
   hb_blob_t* original_blob;
 };
 
-struct subr_subset_param_t
+నిర్మాణం subr_subset_param_t
 {
   subr_subset_param_t (parsed_cs_str_t *parsed_charstring_,
 		       parsed_cs_str_vec_t *parsed_global_subrs_,
 		       parsed_cs_str_vec_t *parsed_local_subrs_,
-		       hb_set_t *global_closure_,
-		       hb_set_t *local_closure_,
-		       bool drop_hints_,
-		       bool coalesce_ = false) :
+		       hb_సమితి_t *global_సంవృతం_2,
+		       hb_సమితి_t *local_సంవృతం,
+		       తార్కిక drop_hints_,
+		       తార్కిక coalesce_ = అబద్ధం) :
       current_parsed_str (parsed_charstring_),
       parsed_charstring (parsed_charstring_),
       parsed_global_subrs (parsed_global_subrs_),
       parsed_local_subrs (parsed_local_subrs_),
-      global_closure (global_closure_),
-      local_closure (local_closure_),
+      global_సంవృతం (global_సంవృతం_2),
+      local_సంవృతం_2 (local_సంవృతం),
       drop_hints (drop_hints_),
       coalesce (coalesce_)
   {
-    if (coalesce) parsed_charstring->enable_coalescing ();
+    ఒకవేళ (coalesce) parsed_charstring->enable_coalescing ();
   }
 
   parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
   {
-    switch (context.type)
+    ఎంపిక (context.type)
     {
-      case CSType_CharString:
-	return parsed_charstring;
+      స్థితి CSType_CharString:
+	తిరిగి parsed_charstring;
 
-      case CSType_LocalSubr:
-	if (likely (context.subr_num < parsed_local_subrs->length))
-	  return &(*parsed_local_subrs)[context.subr_num];
-	break;
+      స్థితి CSType_LocalSubr:
+	ఒకవేళ (likely (context.subr_అంకె_2 < parsed_local_subrs->నిడివి))
+	  తిరిగి &(*parsed_local_subrs)[context.subr_అంకె_2];
+	ఆపు;
 
-      case CSType_GlobalSubr:
-	if (likely (context.subr_num < parsed_global_subrs->length))
-	  return &(*parsed_global_subrs)[context.subr_num];
-	break;
+      స్థితి CSType_GlobalSubr:
+	ఒకవేళ (likely (context.subr_అంకె_2 < parsed_global_subrs->నిడివి))
+	  తిరిగి &(*parsed_global_subrs)[context.subr_అంకె_2];
+	ఆపు;
     }
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  template <typename ENV>
-  void set_current_str (ENV &env, bool calling)
+  మూస <రకం_పేరు ENV>
+  శూన్య సమితి_current_str (ENV &env, తార్కిక calling)
   {
     parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
-    if (unlikely (!parsed_str))
+    ఒకవేళ (unlikely (!parsed_str))
     {
-      env.set_error ();
-      return;
+      env.సమితి_error ();
+      తిరిగి;
     }
     /* If the called subroutine is parsed partially but not completely yet,
      * it must be because we are calling it recursively.
      * Handle it as an error. */
-    if (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
-      env.set_error ();
-    else
+    ఒకవేళ (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.నిడివి > 0)))
+      env.సమితి_error ();
+    లేకపోతే
     {
-      if (!parsed_str->is_parsed ())
+      ఒకవేళ (!parsed_str->is_parsed ())
       {
-        parsed_str->alloc (env.str_ref.total_size ());
-        if (coalesce) parsed_str->enable_coalescing ();
+        parsed_str->alloc (env.str_ref.మొత్తం_కొలత ());
+        ఒకవేళ (coalesce) parsed_str->enable_coalescing ();
       }
       current_parsed_str = parsed_str;
     }
@@ -745,71 +745,71 @@ struct subr_subset_param_t
   parsed_cs_str_t	*parsed_charstring;
   parsed_cs_str_vec_t	*parsed_global_subrs;
   parsed_cs_str_vec_t	*parsed_local_subrs;
-  hb_set_t      *global_closure;
-  hb_set_t      *local_closure;
-  bool	  drop_hints;
-  bool	  coalesce;
+  hb_సమితి_t      *global_సంవృతం;
+  hb_సమితి_t      *local_సంవృతం_2;
+  తార్కిక	  drop_hints;
+  తార్కిక	  coalesce;
 };
 
-struct subr_remap_t : hb_inc_bimap_t
+నిర్మాణం subr_remap_t : hb_inc_bimap_t
 {
-  void create (const hb_set_t *closure)
+  శూన్య create (స్థిరరాశి hb_సమితి_t *సంవృతం)
   {
     /* create a remapping of subroutine numbers from old to new.
      * no optimization based on usage counts. fonttools doesn't appear doing that either.
      */
 
-    alloc (closure->get_population ());
-    for (auto old_num : *closure)
-      add (old_num);
+    alloc (సంవృతం->get_population ());
+    కొరకు (స్వయంచాలక old_అంకె : *సంవృతం)
+      కూడు (old_అంకె);
 
-    if (get_population () < 1240)
+    ఒకవేళ (get_population () < 1240)
       bias = 107;
-    else if (get_population () < 33900)
+    లేకపోతే ఒకవేళ (get_population () < 33900)
       bias = 1131;
-    else
+    లేకపోతే
       bias = 32768;
   }
 
-  int biased_num (unsigned int old_num) const
+  పూర్ణాంకం biased_అంకె (గుర్తులేని పూర్ణాంకం old_అంకె) స్థిరరాశి
   {
-    hb_codepoint_t new_num = get (old_num);
-    return (int)new_num - bias;
+    hb_codepoint_t new_అంకె = get (old_అంకె);
+    తిరిగి (పూర్ణాంకం)new_అంకె - bias;
   }
 
-  protected:
-  int bias;
+  రక్షిత:
+  పూర్ణాంకం bias;
 };
 
-struct subr_remaps_t
+నిర్మాణం subr_remaps_t
 {
-  subr_remaps_t (unsigned int fdCount)
+  subr_remaps_t (గుర్తులేని పూర్ణాంకం fd_లెక్క)
   {
-    local_remaps.resize (fdCount);
+    local_remaps.resize (fd_లెక్క);
   }
 
-  bool in_error()
+  తార్కిక లోపల_error()
   {
-    return local_remaps.in_error ();
+    తిరిగి local_remaps.లోపల_error ();
   }
 
-  void create (subr_closures_t& closures)
+  శూన్య create (subr_closures_t& closures)
   {
-    global_remap.create (&closures.global_closure);
-    for (unsigned int i = 0; i < local_remaps.length; i++)
+    global_remap.create (&closures.global_సంవృతం);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < local_remaps.నిడివి; i++)
       local_remaps.arrayZ[i].create (&closures.local_closures[i]);
   }
 
   subr_remap_t	       global_remap;
-  hb_vector_t<subr_remap_t>  local_remaps;
+  hb_సదిశ_t<subr_remap_t>  local_remaps;
 };
 
-template <typename SUBSETTER, typename SUBRS, typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_subsetter_t
+మూస <రకం_పేరు SUBSETTER, రకం_పేరు SUBRS, రకం_పేరు ACC, రకం_పేరు ENV, రకం_పేరు OPSET, op_సంకేతం_t endchar_op=Op_సంకేతం_Invalid>
+నిర్మాణం subr_subsetter_t
 {
-  subr_subsetter_t (ACC &acc_, const hb_subset_plan_t *plan_)
-      : acc (acc_), plan (plan_), closures(acc_.fdCount),
-        remaps(acc_.fdCount)
+  subr_subsetter_t (ACC &acc_, స్థిరరాశి hb_subset_plan_t *plan_)
+      : acc (acc_), plan (plan_), closures(acc_.fd_లెక్క),
+        remaps(acc_.fd_లెక్క)
   {}
 
   /* Subroutine subsetting with --no-desubroutinize runs in phases:
@@ -826,109 +826,109 @@ struct subr_subsetter_t
    * Assumption: a callsubr/callgsubr operator must immediately follow a (biased) subroutine number
    * within the same charstring/subroutine, e.g., not split across a charstring and a subroutine.
    */
-  bool subset (void)
+  తార్కిక subset (శూన్య)
   {
-    unsigned fd_count = acc.fdCount;
-    const cff_subset_accelerator_t* cff_accelerator = nullptr;
-    if (acc.cff_accelerator) {
+    గుర్తులేని fd_లెక్క_2 = acc.fd_లెక్క;
+    స్థిరరాశి cff_subset_accelerator_t* cff_accelerator = శూన్యసూచిక;
+    ఒకవేళ (acc.cff_accelerator) {
       cff_accelerator = acc.cff_accelerator;
-      fd_count = cff_accelerator->parsed_local_subrs.length;
+      fd_లెక్క_2 = cff_accelerator->parsed_local_subrs.నిడివి;
     }
 
-    if (cff_accelerator) {
+    ఒకవేళ (cff_accelerator) {
       // If we are not dropping hinting then charstrings are not modified so we can
       // just use a reference to the cached copies.
-      cached_charstrings.resize_exact (plan->num_output_glyphs ());
+      cached_charstrings.resize_exact (plan->అంకె_output_glyphs ());
       parsed_global_subrs = &cff_accelerator->parsed_global_subrs;
       parsed_local_subrs = &cff_accelerator->parsed_local_subrs;
-    } else {
-      parsed_charstrings.resize_exact (plan->num_output_glyphs ());
-      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->count);
+    } లేకపోతే {
+      parsed_charstrings.resize_exact (plan->అంకె_output_glyphs ());
+      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->లెక్క);
 
-      if (unlikely (!parsed_local_subrs_storage.resize (fd_count))) return false;
+      ఒకవేళ (unlikely (!parsed_local_subrs_storage.resize (fd_లెక్క_2))) తిరిగి అబద్ధం;
 
-      for (unsigned int i = 0; i < acc.fdCount; i++)
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < acc.fd_లెక్క; i++)
       {
-        unsigned count = acc.privateDicts[i].localSubrs->count;
-        parsed_local_subrs_storage[i].resize (count);
-        if (unlikely (parsed_local_subrs_storage[i].in_error ())) return false;
+        గుర్తులేని లెక్క = acc.వ్యక్తిగత_Dicts[i].localSubrs->లెక్క;
+        parsed_local_subrs_storage[i].resize (లెక్క);
+        ఒకవేళ (unlikely (parsed_local_subrs_storage[i].లోపల_error ())) తిరిగి అబద్ధం;
       }
 
       parsed_global_subrs = &parsed_global_subrs_storage;
       parsed_local_subrs = &parsed_local_subrs_storage;
     }
 
-    if (unlikely (remaps.in_error()
-                  || cached_charstrings.in_error ()
-                  || parsed_charstrings.in_error ()
-                  || parsed_global_subrs->in_error ()
-                  || closures.in_error ())) {
-      return false;
+    ఒకవేళ (unlikely (remaps.లోపల_error()
+                  || cached_charstrings.లోపల_error ()
+                  || parsed_charstrings.లోపల_error ()
+                  || parsed_global_subrs->లోపల_error ()
+                  || closures.లోపల_error ())) {
+      తిరిగి అబద్ధం;
     }
 
     /* When hints are not analyzed (not dropping hints, not populating
      * the accelerator), coalesce parsed tokens as they are added,
      * instead of a separate compact() pass. */
-    bool coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+    తార్కిక coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
 		    !plan->inprogress_accelerator;
 
     /* phase 1 & 2 */
-    for (auto _ : plan->new_to_old_gid_list)
+    కొరకు (స్వయంచాలక _ : plan->new_గమ్యం_old_gid_list)
     {
-      hb_codepoint_t new_glyph = _.first;
+      hb_codepoint_t new_glyph = _.మొదటి;
       hb_codepoint_t old_glyph = _.second;
 
-      const hb_ubytes_t str = (*acc.charStrings)[old_glyph];
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      స్థిరరాశి hb_ubytes_t str = (*acc.char_అక్షరశ్రేణులు)[old_glyph];
+      గుర్తులేని పూర్ణాంకం fd = subset_get_fd (acc, old_glyph);
+      ఒకవేళ (unlikely (fd >= acc.fd_లెక్క))
+        తిరిగి అబద్ధం;
 
-      if (cff_accelerator)
+      ఒకవేళ (cff_accelerator)
       {
         // parsed string already exists in accelerator, copy it and move
         // on.
-        if (cached_charstrings)
+        ఒకవేళ (cached_charstrings)
           cached_charstrings[new_glyph] = &cff_accelerator->parsed_charstrings[old_glyph];
-        else
+        లేకపోతే
           parsed_charstrings[new_glyph] = cff_accelerator->parsed_charstrings[old_glyph];
 
-        continue;
+        కొనసాగు;
       }
 
       ENV env (str, acc, fd);
       cs_interpreter_t<ENV, OPSET, subr_subset_param_t> interp (env);
 
-      parsed_charstrings[new_glyph].alloc (str.length);
+      parsed_charstrings[new_glyph].alloc (str.నిడివి);
       subr_subset_param_t  param (&parsed_charstrings[new_glyph],
                                   &parsed_global_subrs_storage,
                                   &parsed_local_subrs_storage[fd],
-                                  &closures.global_closure,
+                                  &closures.global_సంవృతం,
                                   &closures.local_closures[fd],
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
                                   coalesce);
 
-      if (unlikely (!interp.interpret (param)))
-        return false;
+      ఒకవేళ (unlikely (!interp.interpret (param)))
+        తిరిగి అబద్ధం;
 
       /* complete parsed string esp. copy CFF1 width or CFF2 vsindex to the parsed charstring for encoding */
       SUBSETTER::complete_parsed_str (interp.env, param, parsed_charstrings[new_glyph]);
 
       /* mark hint ops and arguments for drop */
-      if ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
+      ఒకవేళ ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
       {
 	subr_subset_param_t  param (&parsed_charstrings[new_glyph],
 				    &parsed_global_subrs_storage,
 				    &parsed_local_subrs_storage[fd],
-				    &closures.global_closure,
+				    &closures.global_సంవృతం,
 				    &closures.local_closures[fd],
 				    plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
 	drop_hints_param_t  drop;
-	if (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
+	ఒకవేళ (drop_hints_లోపల_str (parsed_charstrings[new_glyph], param, drop))
 	{
-	  parsed_charstrings[new_glyph].set_hint_dropped ();
-	  if (drop.vsindex_dropped)
-	    parsed_charstrings[new_glyph].set_vsindex_dropped ();
+	  parsed_charstrings[new_glyph].సమితి_hint_dropped ();
+	  ఒకవేళ (drop.vsindex_dropped)
+	    parsed_charstrings[new_glyph].సమితి_vsindex_dropped ();
 	}
       }
 
@@ -940,7 +940,7 @@ struct subr_subsetter_t
        *
        * Not needed when tokens were coalesced during parsing.
        */
-      if (!coalesce)
+      ఒకవేళ (!coalesce)
 	parsed_charstrings[new_glyph].compact ();
     }
 
@@ -950,191 +950,191 @@ struct subr_subsetter_t
      *
      * Or if we are dropping hinting, redo closure to get actually used subrs.
      */
-    if ((cff_accelerator ||
+    ఒకవేళ ((cff_accelerator ||
 	(!cff_accelerator && plan->flags & HB_SUBSET_FLAGS_NO_HINTING)) &&
-        !closure_subroutines(*parsed_global_subrs,
+        !సంవృతం_subroutines(*parsed_global_subrs,
                              *parsed_local_subrs))
-      return false;
+      తిరిగి అబద్ధం;
 
     remaps.create (closures);
 
     populate_subset_accelerator ();
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool encode_charstrings (str_buff_vec_t &buffArray, bool encode_prefix = true) const
+  తార్కిక encode_charstrings (str_buff_vec_t &buffArray, తార్కిక encode_ఉపసర్గ = నిజం) స్థిరరాశి
   {
-    unsigned num_glyphs = plan->num_output_glyphs ();
-    if (unlikely (!buffArray.resize_exact (num_glyphs)))
-      return false;
-    hb_codepoint_t last = 0;
-    for (auto _ : plan->new_to_old_gid_list)
+    గుర్తులేని అంకె_glyphs = plan->అంకె_output_glyphs ();
+    ఒకవేళ (unlikely (!buffArray.resize_exact (అంకె_glyphs)))
+      తిరిగి అబద్ధం;
+    hb_codepoint_t చివరి = 0;
+    కొరకు (స్వయంచాలక _ : plan->new_గమ్యం_old_gid_list)
     {
-      hb_codepoint_t gid = _.first;
+      hb_codepoint_t gid = _.మొదటి;
       hb_codepoint_t old_glyph = _.second;
 
-      if (endchar_op != OpCode_Invalid)
-        for (; last < gid; last++)
+      ఒకవేళ (endchar_op != Op_సంకేతం_Invalid)
+        కొరకు (; చివరి < gid; చివరి++)
 	{
 	  // Hack to point vector to static string.
-	  auto &b = buffArray.arrayZ[last];
-	  b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	  స్వయంచాలక &b = buffArray.arrayZ[చివరి];
+	  b.సమితి_storage (const_cast<గుర్తులేని అక్షరం *>(endchar_str), 1);
 	}
 
-      last++; // Skip over gid
-      unsigned int  fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
-      if (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
-	return false;
+      చివరి++; // Skip over gid
+      గుర్తులేని పూర్ణాంకం  fd = subset_get_fd (acc, old_glyph);
+      ఒకవేళ (unlikely (fd >= acc.fd_లెక్క))
+	తిరిగి అబద్ధం;
+      ఒకవేళ (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_ఉపసర్గ)))
+	తిరిగి అబద్ధం;
     }
-    if (endchar_op != OpCode_Invalid)
-      for (; last < num_glyphs; last++)
+    ఒకవేళ (endchar_op != Op_సంకేతం_Invalid)
+      కొరకు (; చివరి < అంకె_glyphs; చివరి++)
       {
 	// Hack to point vector to static string.
-	auto &b = buffArray.arrayZ[last];
-	b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	స్వయంచాలక &b = buffArray.arrayZ[చివరి];
+	b.సమితి_storage (const_cast<గుర్తులేని అక్షరం *>(endchar_str), 1);
       }
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  తార్కిక encode_subrs (స్థిరరాశి parsed_cs_str_vec_t &subrs, స్థిరరాశి subr_remap_t& remap, గుర్తులేని పూర్ణాంకం fd, str_buff_vec_t &buffArray) స్థిరరాశి
   {
-    unsigned int  count = remap.get_population ();
+    గుర్తులేని పూర్ణాంకం  లెక్క = remap.get_population ();
 
-    if (unlikely (!buffArray.resize_exact (count)))
-      return false;
-    for (unsigned int new_num = 0; new_num < count; new_num++)
+    ఒకవేళ (unlikely (!buffArray.resize_exact (లెక్క)))
+      తిరిగి అబద్ధం;
+    కొరకు (గుర్తులేని పూర్ణాంకం new_అంకె = 0; new_అంకె < లెక్క; new_అంకె++)
     {
-      hb_codepoint_t old_num = remap.backward (new_num);
-      assert (old_num != CFF_UNDEF_CODE);
+      hb_codepoint_t old_అంకె = remap.backward (new_అంకె);
+      ప్రతిజ్ఞా (old_అంకె != CFF_UNDEF_సంకేతం);
 
-      if (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
-	return false;
+      ఒకవేళ (unlikely (!encode_str (subrs[old_అంకె], fd, buffArray[new_అంకె])))
+	తిరిగి అబద్ధం;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool encode_globalsubrs (str_buff_vec_t &buffArray)
+  తార్కిక encode_globalsubrs (str_buff_vec_t &buffArray)
   {
-    return encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
+    తిరిగి encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
   }
 
-  bool encode_localsubrs (unsigned int fd, str_buff_vec_t &buffArray) const
+  తార్కిక encode_localsubrs (గుర్తులేని పూర్ణాంకం fd, str_buff_vec_t &buffArray) స్థిరరాశి
   {
-    return encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
+    తిరిగి encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
   }
 
-  protected:
-  struct drop_hints_param_t
+  రక్షిత:
+  నిర్మాణం drop_hints_param_t
   {
     drop_hints_param_t ()
-      : seen_moveto (false),
-	ends_in_hint (false),
-	all_dropped (false),
-	vsindex_dropped (false) {}
+      : చూసిన_moveto (అబద్ధం),
+	చివర్లు_లోపల_hint (అబద్ధం),
+	all_dropped (అబద్ధం),
+	vsindex_dropped (అబద్ధం) {}
 
-    bool  seen_moveto;
-    bool  ends_in_hint;
-    bool  all_dropped;
-    bool  vsindex_dropped;
+    తార్కిక  చూసిన_moveto;
+    తార్కిక  చివర్లు_లోపల_hint;
+    తార్కిక  all_dropped;
+    తార్కిక  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
-			   const subr_subset_param_t &param, drop_hints_param_t &drop)
+  తార్కిక drop_hints_లోపల_subr (parsed_cs_str_t &str, గుర్తులేని పూర్ణాంకం pos,
+			   parsed_cs_str_vec_t &subrs, గుర్తులేని పూర్ణాంకం subr_అంకె_2,
+			   స్థిరరాశి subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    drop.ends_in_hint = false;
-    bool has_hint = drop_hints_in_str (subrs[subr_num], param, drop);
+    drop.చివర్లు_లోపల_hint = అబద్ధం;
+    తార్కిక has_hint = drop_hints_లోపల_str (subrs[subr_అంకె_2], param, drop);
 
     /* if this subr ends with a stem hint (i.e., not a number; potential argument for moveto),
      * then this entire subroutine must be a hint. drop its call. */
-    if (drop.ends_in_hint)
+    ఒకవేళ (drop.చివర్లు_లోపల_hint)
     {
-      str.values[pos].set_hinting ();
+      str.values[pos].సమితి_hinting ();
       /* if this subr call is at the end of the parent subr, propagate the flag
        * otherwise reset the flag */
-      if (!str.at_end (pos))
-	drop.ends_in_hint = false;
+      ఒకవేళ (!str.at_చివర (pos))
+	drop.చివర్లు_లోపల_hint = అబద్ధం;
     }
-    else if (drop.all_dropped)
+    లేకపోతే ఒకవేళ (drop.all_dropped)
     {
-      str.values[pos].set_hinting ();
+      str.values[pos].సమితి_hinting ();
     }
 
-    return has_hint;
+    తిరిగి has_hint;
   }
 
   /* returns true if it sees a hint op before the first moveto */
-  bool drop_hints_in_str (parsed_cs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
+  తార్కిక drop_hints_లోపల_str (parsed_cs_str_t &str, స్థిరరాశి subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    bool  seen_hint = false;
+    తార్కిక  చూసిన_hint = అబద్ధం;
 
-    unsigned count = str.values.length;
-    auto *values = str.values.arrayZ;
-    for (unsigned int pos = 0; pos < count; pos++)
+    గుర్తులేని లెక్క = str.values.నిడివి;
+    స్వయంచాలక *values = str.values.arrayZ;
+    కొరకు (గుర్తులేని పూర్ణాంకం pos = 0; pos < లెక్క; pos++)
     {
-      bool  has_hint = false;
-      switch (values[pos].op)
+      తార్కిక  has_hint = అబద్ధం;
+      ఎంపిక (values[pos].op)
       {
-	case OpCode_callsubr:
-	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_local_subrs, values[pos].subr_num,
+	స్థితి Op_సంకేతం_callsubr:
+	  has_hint = drop_hints_లోపల_subr (str, pos,
+					*param.parsed_local_subrs, values[pos].subr_అంకె_2,
 					param, drop);
-	  break;
+	  ఆపు;
 
-	case OpCode_callgsubr:
-	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_global_subrs, values[pos].subr_num,
+	స్థితి Op_సంకేతం_callgsubr:
+	  has_hint = drop_hints_లోపల_subr (str, pos,
+					*param.parsed_global_subrs, values[pos].subr_అంకె_2,
 					param, drop);
-	  break;
+	  ఆపు;
 
-	case OpCode_rmoveto:
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  drop.seen_moveto = true;
-	  break;
+	స్థితి Op_సంకేతం_rmoveto:
+	స్థితి Op_సంకేతం_hmoveto:
+	స్థితి Op_సంకేతం_vmoveto:
+	  drop.చూసిన_moveto = నిజం;
+	  ఆపు;
 
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  if (drop.seen_moveto)
+	స్థితి Op_సంకేతం_hintmask:
+	స్థితి Op_సంకేతం_cntrmask:
+	  ఒకవేళ (drop.చూసిన_moveto)
 	  {
-	    values[pos].set_hinting ();
-	    break;
+	    values[pos].సమితి_hinting ();
+	    ఆపు;
 	  }
 	  HB_FALLTHROUGH;
 
-	case OpCode_hstemhm:
-	case OpCode_vstemhm:
-	case OpCode_hstem:
-	case OpCode_vstem:
-	  has_hint = true;
-	  values[pos].set_hinting ();
-	  if (str.at_end (pos))
-	    drop.ends_in_hint = true;
-	  break;
+	స్థితి Op_సంకేతం_hstemhm:
+	స్థితి Op_సంకేతం_vstemhm:
+	స్థితి Op_సంకేతం_hstem:
+	స్థితి Op_సంకేతం_vstem:
+	  has_hint = నిజం;
+	  values[pos].సమితి_hinting ();
+	  ఒకవేళ (str.at_చివర (pos))
+	    drop.చివర్లు_లోపల_hint = నిజం;
+	  ఆపు;
 
-	case OpCode_dotsection:
-	  values[pos].set_hinting ();
-	  break;
+	స్థితి Op_సంకేతం_dotsection:
+	  values[pos].సమితి_hinting ();
+	  ఆపు;
 
-	default:
+	అప్రమేయ:
 	  /* NONE */
-	  break;
+	  ఆపు;
       }
-      if (has_hint)
+      ఒకవేళ (has_hint)
       {
-	for (int i = pos - 1; i >= 0; i--)
+	కొరకు (పూర్ణాంకం i = pos - 1; i >= 0; i--)
 	{
-	  parsed_cs_op_t  &csop = values[(unsigned)i];
-	  if (csop.is_hinting ())
-	    break;
-	  csop.set_hinting ();
-	  if (csop.op == OpCode_vsindexcs)
-	    drop.vsindex_dropped = true;
+	  parsed_cs_op_t  &csop = values[(గుర్తులేని)i];
+	  ఒకవేళ (csop.is_hinting ())
+	    ఆపు;
+	  csop.సమితి_hinting ();
+	  ఒకవేళ (csop.op == Op_సంకేతం_vsindexcs)
+	    drop.vsindex_dropped = నిజం;
 	}
-	seen_hint |= has_hint;
+	చూసిన_hint |= has_hint;
       }
     }
 
@@ -1142,147 +1142,147 @@ struct subr_subsetter_t
      * It may happen even after seeing the first moveto if a subr contains
      * only (usually one) hintmask operator, then calls to this subr can be dropped.
      */
-    drop.all_dropped = true;
-    for (unsigned int pos = 0; pos < count; pos++)
+    drop.all_dropped = నిజం;
+    కొరకు (గుర్తులేని పూర్ణాంకం pos = 0; pos < లెక్క; pos++)
     {
       parsed_cs_op_t  &csop = values[pos];
-      if (csop.op == OpCode_return)
-	break;
-      if (!csop.is_hinting ())
+      ఒకవేళ (csop.op == Op_సంకేతం_return)
+	ఆపు;
+      ఒకవేళ (!csop.is_hinting ())
       {
-	drop.all_dropped = false;
-	break;
+	drop.all_dropped = అబద్ధం;
+	ఆపు;
       }
     }
 
-    return seen_hint;
+    తిరిగి చూసిన_hint;
   }
 
-  bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
-                            const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
+  తార్కిక సంవృతం_subroutines (స్థిరరాశి parsed_cs_str_vec_t& global_subrs,
+                            స్థిరరాశి hb_సదిశ_t<parsed_cs_str_vec_t>& local_subrs)
   {
     closures.reset ();
-    for (auto _ : plan->new_to_old_gid_list)
+    కొరకు (స్వయంచాలక _ : plan->new_గమ్యం_old_gid_list)
     {
-      hb_codepoint_t new_glyph = _.first;
+      hb_codepoint_t new_glyph = _.మొదటి;
       hb_codepoint_t old_glyph = _.second;
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      గుర్తులేని పూర్ణాంకం fd = subset_get_fd (acc, old_glyph);
+      ఒకవేళ (unlikely (fd >= acc.fd_లెక్క))
+        తిరిగి అబద్ధం;
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
       subr_subset_param_t  param (const_cast<parsed_cs_str_t*> (&get_parsed_charstring (new_glyph)),
                                   const_cast<parsed_cs_str_vec_t*> (&global_subrs),
                                   const_cast<parsed_cs_str_vec_t*> (&local_subrs[fd]),
-                                  &closures.global_closure,
+                                  &closures.global_సంవృతం,
                                   &closures.local_closures[fd],
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
-      collect_subr_refs_in_str (get_parsed_charstring (new_glyph), param);
+      collect_subr_refs_లోపల_str (get_parsed_charstring (new_glyph), param);
     }
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
-				  hb_set_t *closure,
-				  const subr_subset_param_t &param)
+  శూన్య collect_subr_refs_లోపల_subr (గుర్తులేని పూర్ణాంకం subr_అంకె_2, parsed_cs_str_vec_t &subrs,
+				  hb_సమితి_t *సంవృతం,
+				  స్థిరరాశి subr_subset_param_t &param)
   {
-    if (closure->has (subr_num))
-      return;
-    closure->add (subr_num);
-    collect_subr_refs_in_str (subrs[subr_num], param);
+    ఒకవేళ (సంవృతం->has (subr_అంకె_2))
+      తిరిగి;
+    సంవృతం->కూడు (subr_అంకె_2);
+    collect_subr_refs_లోపల_str (subrs[subr_అంకె_2], param);
   }
 
-  void collect_subr_refs_in_str (const parsed_cs_str_t &str,
-                                 const subr_subset_param_t &param)
+  శూన్య collect_subr_refs_లోపల_str (స్థిరరాశి parsed_cs_str_t &str,
+                                 స్థిరరాశి subr_subset_param_t &param)
   {
-    if (!str.has_calls ())
-      return;
+    ఒకవేళ (!str.has_calls ())
+      తిరిగి;
 
-    for (auto &opstr : str.values)
+    కొరకు (స్వయంచాలక &opstr : str.values)
     {
-      if (!param.drop_hints || !opstr.is_hinting ())
+      ఒకవేళ (!param.drop_hints || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	ఎంపిక (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_local_subrs,
-				       param.local_closure, param);
-	    break;
+	  స్థితి Op_సంకేతం_callsubr:
+	    collect_subr_refs_లోపల_subr (opstr.subr_అంకె_2, *param.parsed_local_subrs,
+				       param.local_సంవృతం_2, param);
+	    ఆపు;
 
-	  case OpCode_callgsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_global_subrs,
-				       param.global_closure, param);
-	    break;
+	  స్థితి Op_సంకేతం_callgsubr:
+	    collect_subr_refs_లోపల_subr (opstr.subr_అంకె_2, *param.parsed_global_subrs,
+				       param.global_సంవృతం, param);
+	    ఆపు;
 
-	  default: break;
+	  అప్రమేయ: ఆపు;
 	}
       }
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  తార్కిక encode_str (స్థిరరాశి parsed_cs_str_t &str, స్థిరరాశి గుర్తులేని పూర్ణాంకం fd, str_buff_t &buff, తార్కిక encode_ఉపసర్గ = నిజం) స్థిరరాశి
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
-    bool hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+    తార్కిక hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
     /* if a prefix (CFF1 width or CFF2 vsindex) has been removed along with hints,
      * re-insert it at the beginning of charstreing */
-    if (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
+    ఒకవేళ (encode_ఉపసర్గ && str.has_ఉపసర్గ_2 () && !hinting && str.is_hint_dropped ())
     {
-      encoder.encode_num_cs (str.prefix_num ());
-      if (str.prefix_op () != OpCode_Invalid)
-	encoder.encode_op (str.prefix_op ());
+      encoder.encode_అంకె_cs (str.ఉపసర్గ_అంకె_2 ());
+      ఒకవేళ (str.ఉపసర్గ_op_2 () != Op_సంకేతం_Invalid)
+	encoder.encode_op (str.ఉపసర్గ_op_2 ());
     }
 
-    unsigned size = 0;
-    for (auto &opstr : str.values)
+    గుర్తులేని కొలత = 0;
+    కొరకు (స్వయంచాలక &opstr : str.values)
     {
-      size += opstr.length;
-      if (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
-        size += 3;
+      కొలత += opstr.నిడివి;
+      ఒకవేళ (opstr.op == Op_సంకేతం_callsubr || opstr.op == Op_సంకేతం_callgsubr)
+        కొలత += 3;
     }
-    if (!buff.alloc_exact (buff.length + size))
-      return false;
+    ఒకవేళ (!buff.alloc_exact (buff.నిడివి + కొలత))
+      తిరిగి అబద్ధం;
 
-    for (auto &opstr : str.values)
+    కొరకు (స్వయంచాలక &opstr : str.values)
     {
-      if (hinting || !opstr.is_hinting ())
+      ఒకవేళ (hinting || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	ఎంపిక (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    encoder.encode_int (remaps.local_remaps[fd].biased_num (opstr.subr_num));
-	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	  స్థితి Op_సంకేతం_callsubr:
+	    encoder.encode_int (remaps.local_remaps[fd].biased_అంకె (opstr.subr_అంకె_2));
+	    encoder.copy_str (opstr.ptr, opstr.నిడివి);
+	    ఆపు;
 
-	  case OpCode_callgsubr:
-	    encoder.encode_int (remaps.global_remap.biased_num (opstr.subr_num));
-	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	  స్థితి Op_సంకేతం_callgsubr:
+	    encoder.encode_int (remaps.global_remap.biased_అంకె (opstr.subr_అంకె_2));
+	    encoder.copy_str (opstr.ptr, opstr.నిడివి);
+	    ఆపు;
 
-	  default:
-	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	  అప్రమేయ:
+	    encoder.copy_str (opstr.ptr, opstr.నిడివి);
+	    ఆపు;
 	}
       }
     }
-    return !encoder.in_error ();
+    తిరిగి !encoder.లోపల_error ();
   }
 
-  void compact_parsed_subrs () const
+  శూన్య compact_parsed_subrs () స్థిరరాశి
   {
-    for (auto &cs : parsed_global_subrs_storage)
+    కొరకు (స్వయంచాలక &cs : parsed_global_subrs_storage)
       cs.compact ();
-    for (auto &vec : parsed_local_subrs_storage)
-      for (auto &cs : vec)
+    కొరకు (స్వయంచాలక &vec : parsed_local_subrs_storage)
+      కొరకు (స్వయంచాలక &cs : vec)
 	cs.compact ();
   }
 
-  void populate_subset_accelerator () const
+  శూన్య populate_subset_accelerator () స్థిరరాశి
   {
-    if (!plan->inprogress_accelerator) return;
+    ఒకవేళ (!plan->inprogress_accelerator) తిరిగి;
 
     compact_parsed_subrs ();
 
@@ -1293,52 +1293,52 @@ struct subr_subsetter_t
                                          parsed_local_subrs_storage);
   }
 
-  const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
+  స్థిరరాశి parsed_cs_str_t& get_parsed_charstring (గుర్తులేని i) స్థిరరాశి
   {
-    if (cached_charstrings) return *(cached_charstrings[i]);
-    return parsed_charstrings[i];
+    ఒకవేళ (cached_charstrings) తిరిగి *(cached_charstrings[i]);
+    తిరిగి parsed_charstrings[i];
   }
 
-  protected:
-  const ACC			&acc;
-  const hb_subset_plan_t	*plan;
+  రక్షిత:
+  స్థిరరాశి ACC			&acc;
+  స్థిరరాశి hb_subset_plan_t	*plan;
 
   subr_closures_t		closures;
 
-  hb_vector_t<const parsed_cs_str_t*>     cached_charstrings;
-  const parsed_cs_str_vec_t*              parsed_global_subrs;
-  const hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
+  hb_సదిశ_t<స్థిరరాశి parsed_cs_str_t*>     cached_charstrings;
+  స్థిరరాశి parsed_cs_str_vec_t*              parsed_global_subrs;
+  స్థిరరాశి hb_సదిశ_t<parsed_cs_str_vec_t>* parsed_local_subrs;
 
   subr_remaps_t			remaps;
 
-  private:
+  అంతరంగ:
 
   parsed_cs_str_vec_t		parsed_charstrings;
   parsed_cs_str_vec_t		parsed_global_subrs_storage;
-  hb_vector_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
-  typedef typename SUBRS::count_type subr_count_type;
+  hb_సదిశ_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
+  రకనిర్వచనం రకం_పేరు SUBRS::లెక్క_type subr_లెక్క_type;
 };
 
 } /* namespace CFF */
 
-HB_INTERNAL bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			    unsigned int fdCount,
-			    const CFF::FDSelect &src, /* IN */
-			    unsigned int src_num_glyphs,
-			    unsigned int &subset_fd_count /* OUT */,
-			    unsigned int &subset_fdselect_size /* OUT */,
-			    unsigned int &subset_fdselect_format /* OUT */,
-			    hb_vector_t<CFF::code_pair_t> &fdselect_ranges /* OUT */,
-			    hb_inc_bimap_t &fdmap /* OUT */);
+HB_అంతర్గత తార్కిక
+hb_plan_subset_cff_fdselect (స్థిరరాశి hb_subset_plan_t *plan,
+			    గుర్తులేని పూర్ణాంకం fd_లెక్క,
+			    స్థిరరాశి CFF::FDSelect &src, /*లోపల*/
+			    గుర్తులేని పూర్ణాంకం src_అంకె_glyphs,
+			    గుర్తులేని పూర్ణాంకం &subset_fd_లెక్క /*బహిర్గతం*/,
+			    గుర్తులేని పూర్ణాంకం &subset_fdselect_కొలత /*బహిర్గతం*/,
+			    గుర్తులేని పూర్ణాంకం &subset_fdselect_format /*బహిర్గతం*/,
+			    hb_సదిశ_t<CFF::సంకేతం_pair_t> &fdselect_ranges /*బహిర్గతం*/,
+			    hb_inc_bimap_t &fdmap /*బహిర్గతం*/);
 
-HB_INTERNAL bool
+HB_అంతర్గత తార్కిక
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			  unsigned int num_glyphs,
-			  const CFF::FDSelect &src,
-			  unsigned int fd_count,
-			  unsigned int fdselect_format,
-			  unsigned int size,
-			  const hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
+			  గుర్తులేని పూర్ణాంకం అంకె_glyphs,
+			  స్థిరరాశి CFF::FDSelect &src,
+			  గుర్తులేని పూర్ణాంకం fd_లెక్క_2,
+			  గుర్తులేని పూర్ణాంకం fdselect_format,
+			  గుర్తులేని పూర్ణాంకం కొలత,
+			  స్థిరరాశి hb_సదిశ_t<CFF::సంకేతం_pair_t> &fdselect_ranges);
 
-#endif /* HB_SUBSET_CFF_COMMON_HH */
+#అయితే_ముగింపు /* HB_SUBSET_CFF_COMMON_HH */

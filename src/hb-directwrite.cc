@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_DIRECTWRITE
+#నిర్వచితమైతే HAVE_DIRECTWRITE
 
-#include "hb-directwrite.hh"
+#అన్తర్భావ "hb-directwrite.hh"
 
-#include "hb-font.hh"
+#అన్తర్భావ "hb-font.hh"
 
 
 /**
@@ -40,40 +40,40 @@
  * Functions for using HarfBuzz with DirectWrite fonts.
  **/
 
-static inline void free_static_directwrite_global ();
+స్థిర అంతఃవరుస శూన్య free_static_directwrite_global ();
 
-static struct hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
+స్థిర నిర్మాణం hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
 								     hb_directwrite_global_lazy_loader_t>
 {
-  static hb_directwrite_global_t * create ()
+  స్థిర hb_directwrite_global_t * create ()
   {
     hb_directwrite_global_t *global = hb_directwrite_object_create<hb_directwrite_global_t> ();
 
-    if (unlikely (!global))
-      return nullptr;
-    if (unlikely (!global->success))
+    ఒకవేళ (unlikely (!global))
+      తిరిగి శూన్యసూచిక;
+    ఒకవేళ (unlikely (!global->success))
     {
       hb_directwrite_object_destroy (global);
-      return nullptr;
+      తిరిగి శూన్యసూచిక;
     }
 
     hb_atexit (free_static_directwrite_global);
 
-    return global;
+    తిరిగి global;
   }
-  static void destroy (hb_directwrite_global_t *l)
+  స్థిర శూన్య destroy (hb_directwrite_global_t *l)
   {
     hb_directwrite_object_destroy (l);
   }
-  static hb_directwrite_global_t * get_null ()
+  స్థిర hb_directwrite_global_t * get_null ()
   {
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 } static_directwrite_global;
 
 
-static inline
-void free_static_directwrite_global ()
+స్థిర అంతఃవరుస
+శూన్య free_static_directwrite_global ()
 {
   static_directwrite_global.free_instance ();
 }
@@ -81,176 +81,176 @@ void free_static_directwrite_global ()
 hb_directwrite_global_t *
 get_directwrite_global ()
 {
-  return static_directwrite_global.get_unconst ();
+  తిరిగి static_directwrite_global.get_unconst ();
 }
 
-DWriteFontFileStream::DWriteFontFileStream (hb_blob_t *blob)
+DWrite_Font_File_ప్రవాహం::DWrite_Font_File_ప్రవాహం (hb_blob_t *blob)
 {
-  auto *global = get_directwrite_global ();
+  స్వయంచాలక *global = get_directwrite_global ();
   mLoader = global->fontFileLoader;
-  mRefCount.init ();
-  mLoader->AddRef ();
+  m_Ref_లెక్క.init ();
+  mLoader->కూడు_Ref ();
   hb_blob_make_immutable (blob);
   mBlob = hb_blob_reference (blob);
-  mData = (uint8_t *) hb_blob_get_data (blob, &mSize);
-  fontFileKey = mLoader->RegisterFontFileStream (this);
+  m_దత్తాంశం = (uint8_t *) hb_blob_get_దత్తాంశం (blob, &m_కొలత);
+  font_File_కీలకం = mLoader->రిజిస్టరు_Font_File_ప్రవాహం (ఇది);
 }
 
-DWriteFontFileStream::~DWriteFontFileStream()
+DWrite_Font_File_ప్రవాహం::~DWrite_Font_File_ప్రవాహం()
 {
-  mLoader->UnregisterFontFileStream (fontFileKey);
+  mLoader->Unregister_Font_File_ప్రవాహం (font_File_కీలకం);
   mLoader->Release ();
   hb_blob_destroy (mBlob);
 }
 
 IDWriteFontFace *
-dw_face_create (hb_blob_t *blob, unsigned index)
+dw_face_create (hb_blob_t *blob, గుర్తులేని సూచీ_2)
 {
-#define FAIL(...) \
-  HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return nullptr; \
-  } HB_STMT_END
+#నిర్వచించు FAIL(...) \
+  HB_STMT_ప్రారంభం { \
+    DEBUG_సందేశం (DIRECTWRITE, శూన్యసూచిక, __VA_ARGS__); \
+    తిరిగి శూన్యసూచిక; \
+  } HB_STMT_చివర
 
-  auto *global = get_directwrite_global ();
-  if (unlikely (!global))
+  స్వయంచాలక *global = get_directwrite_global ();
+  ఒకవేళ (unlikely (!global))
     FAIL ("Couldn't load DirectWrite!");
 
-  DWriteFontFileStream *fontFileStream = hb_directwrite_object_create<DWriteFontFileStream> (blob);
-  if (unlikely (!fontFileStream))
+  DWrite_Font_File_ప్రవాహం *font_File_ప్రవాహం = hb_directwrite_object_create<DWrite_Font_File_ప్రవాహం> (blob);
+  ఒకవేళ (unlikely (!font_File_ప్రవాహం))
     FAIL ("Failed to allocate font file stream!");
 
   IDWriteFontFile *fontFile;
-  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, sizeof (fontFileStream->fontFileKey),
+  స్వయంచాలక hr = global->dwriteFactory->CreateCustomFontFileReference (&font_File_ప్రవాహం->font_File_కీలకం, పరిమాణం (font_File_ప్రవాహం->font_File_కీలకం),
 								  global->fontFileLoader, &fontFile);
 
-  fontFileStream->Release ();
+  font_File_ప్రవాహం->Release ();
 
-  if (FAILED (hr))
+  ఒకవేళ (FAILED (hr))
     FAIL ("Failed to load font file from data!");
 
   BOOL isSupported;
   DWRITE_FONT_FILE_TYPE fileType;
   DWRITE_FONT_FACE_TYPE faceType;
-  uint32_t numberOfFaces;
-  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &numberOfFaces);
-  if (FAILED (hr) || !isSupported)
+  uint32_t సంఖ్య_యొక్క_Faces;
+  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &సంఖ్య_యొక్క_Faces);
+  ఒకవేళ (FAILED (hr) || !isSupported)
   {
     fontFile->Release ();
     FAIL ("Font file is not supported.");
   }
 
-#undef FAIL
+#నిర్వచనం_రద్దు FAIL
 
-  IDWriteFontFace *fontFace = nullptr;
-  global->dwriteFactory->CreateFontFace (faceType, 1, &fontFile, index,
+  IDWriteFontFace *fontFace = శూన్యసూచిక;
+  global->dwriteFactory->CreateFontFace (faceType, 1, &fontFile, సూచీ_2,
 					 DWRITE_FONT_SIMULATIONS_NONE, &fontFace);
   fontFile->Release ();
 
-  return fontFace;
+  తిరిగి fontFace;
 }
 
-struct _hb_directwrite_font_table_context {
+నిర్మాణం hb_directwrite_font_పట్టిక_context {
   IDWriteFontFace *face;
-  void *table_context;
+  శూన్య *పట్టిక_context;
 };
 
-static void
-_hb_directwrite_table_data_release (void *data)
+స్థిర శూన్య
+hb_directwrite_పట్టిక_దత్తాంశం_release (శూన్య *దత్తాంశం)
 {
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) data;
-  context->face->ReleaseFontTable (context->table_context);
+  hb_directwrite_font_పట్టిక_context *context = (hb_directwrite_font_పట్టిక_context *) దత్తాంశం;
+  context->face->Release_Font_పట్టిక (context->పట్టిక_context);
   hb_free (context);
 }
 
-static hb_blob_t *
+స్థిర hb_blob_t *
 _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
 {
-  UINT32 file_count;
-  if (FAILED (dw_face->GetFiles(&file_count, NULL)))
-    return nullptr;
+  UINT32 file_లెక్క;
+  ఒకవేళ (FAILED (dw_face->GetFiles(&file_లెక్క, ఖాళీ)))
+    తిరిగి శూన్యసూచిక;
 
-  hb_vector_t<IDWriteFontFile *> files;
-  if (unlikely (!files.resize_exact (file_count)))
-    return nullptr;
-  if (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
-    return nullptr;
+  hb_సదిశ_t<IDWriteFontFile *> files;
+  ఒకవేళ (unlikely (!files.resize_exact (file_లెక్క)))
+    తిరిగి శూన్యసూచిక;
+  ఒకవేళ (FAILED (dw_face->GetFiles(&file_లెక్క, files.arrayZ)))
+    తిరిగి శూన్యసూచిక;
 
-  hb_blob_t *blob = nullptr;
-  for (UINT32 i = 0; i < file_count; i++)
+  hb_blob_t *blob = శూన్యసూచిక;
+  కొరకు (UINT32 i = 0; i < file_లెక్క; i++)
   {
-    LPCVOID reference_key;
-    UINT32 reference_key_size;
-    if (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
-      continue;
+    LPCVOID reference_కీలకం;
+    UINT32 reference_కీలకం_కొలత;
+    ఒకవేళ (FAILED (files[i]->Get_Reference_కీలకం(&reference_కీలకం, &reference_కీలకం_కొలత)))
+      కొనసాగు;
 
     IDWriteFontFileLoader *loader;
-    if (FAILED (files[i]->GetLoader(&loader)))
-      continue;
+    ఒకవేళ (FAILED (files[i]->GetLoader(&loader)))
+      కొనసాగు;
     
-    IDWriteFontFileStream *stream;
-    if (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
+    IDWrite_Font_File_ప్రవాహం *ప్రవాహం;
+    ఒకవేళ (FAILED (loader->Create_ప్రవాహం_From_కీలకం (reference_కీలకం, reference_కీలకం_కొలత, &ప్రవాహం)))
     {
       loader->Release ();
-      continue;
+      కొనసాగు;
     }
 
-    UINT64 file_size;
-    const void *fragment;
-    void *context;
-    if (FAILED (stream->GetFileSize(&file_size)) ||
-        FAILED (stream->ReadFileFragment (&fragment, 0, file_size, &context)))
+    UINT64 file_కొలత;
+    స్థిరరాశి శూన్య *fragment;
+    శూన్య *context;
+    ఒకవేళ (FAILED (ప్రవాహం->Get_File_కొలత(&file_కొలత)) ||
+        FAILED (ప్రవాహం->ReadFileFragment (&fragment, 0, file_కొలత, &context)))
     {
       loader->Release ();
-      continue;
+      కొనసాగు;
     }
-    blob = hb_blob_create ((const char *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, NULL, NULL);
-    stream->ReleaseFileFragment (context);
+    blob = hb_blob_create ((స్థిరరాశి అక్షరం *) fragment, file_కొలత, HB_జ్ఞాపకం_బహుళకం_DUPLICATE, ఖాళీ, ఖాళీ);
+    ప్రవాహం->ReleaseFileFragment (context);
     loader->Release ();
-    break;
+    ఆపు;
   }
 
-  return blob;
+  తిరిగి blob;
 }
 
-static hb_blob_t *
-_hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+స్థిర hb_blob_t *
+hb_directwrite_reference_పట్టిక (hb_face_t *face HB_వాడని, hb_ట్యాగ్_t ట్యాగ్_2, శూన్య *user_దత్తాంశం)
 {
-  IDWriteFontFace *dw_face = ((IDWriteFontFace *) user_data);
-  const void *data;
-  uint32_t length;
-  void *table_context;
+  IDWriteFontFace *dw_face = ((IDWriteFontFace *) user_దత్తాంశం);
+  స్థిరరాశి శూన్య *దత్తాంశం;
+  uint32_t నిడివి;
+  శూన్య *పట్టిక_context;
   BOOL exists;
-  if (tag == HB_TAG_NONE)
-    return _hb_directwrite_get_file_blob (dw_face);
+  ఒకవేళ (ట్యాగ్_2 == HB_ట్యాగ్_NONE)
+    తిరిగి _hb_directwrite_get_file_blob (dw_face);
 
-  if (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
-					&length, &table_context, &exists)))
-    return nullptr;
+  ఒకవేళ (FAILED (dw_face->Try_Get_Font_పట్టిక (hb_uint32_మార్పిడి (ట్యాగ్_2), &దత్తాంశం,
+					&నిడివి, &పట్టిక_context, &exists)))
+    తిరిగి శూన్యసూచిక;
 
-  if (!data || !exists || !length)
+  ఒకవేళ (!దత్తాంశం || !exists || !నిడివి)
   {
-    dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    dw_face->Release_Font_పట్టిక (పట్టిక_context);
+    తిరిగి శూన్యసూచిక;
   }
 
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (sizeof (_hb_directwrite_font_table_context));
-  if (unlikely (!context))
+  hb_directwrite_font_పట్టిక_context *context = (hb_directwrite_font_పట్టిక_context *) hb_malloc (పరిమాణం (hb_directwrite_font_పట్టిక_context));
+  ఒకవేళ (unlikely (!context))
   {
-    dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    dw_face->Release_Font_పట్టిక (పట్టిక_context);
+    తిరిగి శూన్యసూచిక;
   }
   context->face = dw_face;
-  context->table_context = table_context;
+  context->పట్టిక_context = పట్టిక_context;
 
-  return hb_blob_create ((const char *) data, length, HB_MEMORY_MODE_READONLY,
-			 context, _hb_directwrite_table_data_release);
+  తిరిగి hb_blob_create ((స్థిరరాశి అక్షరం *) దత్తాంశం, నిడివి, HB_జ్ఞాపకం_బహుళకం_READONLY,
+			 context, hb_directwrite_పట్టిక_దత్తాంశం_release);
 }
 
-static void
-_hb_directwrite_face_release (void *data)
+స్థిర శూన్య
+_hb_directwrite_face_release (శూన్య *దత్తాంశం)
 {
-  ((IDWriteFontFace *) data)->Release ();
+  ((IDWriteFontFace *) దత్తాంశం)->Release ();
 }
 
 /**
@@ -266,18 +266,18 @@ _hb_directwrite_face_release (void *data)
 hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face)
 {
-  if (!dw_face)
-    return hb_face_get_empty ();
+  ఒకవేళ (!dw_face)
+    తిరిగి hb_face_get_ఖాళీలు ();
 
-  dw_face->AddRef ();
-  hb_face_t *face = hb_face_create_for_tables (_hb_directwrite_reference_table,
+  dw_face->కూడు_Ref ();
+  hb_face_t *face = hb_face_create_for_tables (hb_directwrite_reference_పట్టిక,
 					       dw_face,
 					       _hb_directwrite_face_release);
 
-  hb_face_set_index (face, dw_face->GetIndex ());
-  hb_face_set_glyph_count (face, dw_face->GetGlyphCount ());
+  hb_face_సమితి_సూచీ (face, dw_face->Get_సూచీ ());
+  hb_face_సమితి_glyph_లెక్క (face, dw_face->Get_Glyph_లెక్క ());
 
-  return face;
+  తిరిగి face;
 }
 
 /**
@@ -297,14 +297,14 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
  * Since: 11.0.0
  */
 hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index)
+hb_directwrite_face_create_from_file_or_fail (స్థిరరాశి అక్షరం   *file_name,
+					      గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
-  auto *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  స్వయంచాలక *blob = hb_blob_create_from_file_or_fail (file_name);
+  ఒకవేళ (unlikely (!blob))
+    తిరిగి శూన్యసూచిక;
 
-  return hb_directwrite_face_create_from_blob_or_fail (blob, index);
+  తిరిగి hb_directwrite_face_create_from_blob_or_fail (blob, సూచీ_2);
 }
 
 /**
@@ -325,23 +325,23 @@ hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
  */
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index)
+					      గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
-  IDWriteFontFace *dw_face = dw_face_create (blob, index);
-  if (unlikely (!dw_face))
-    return nullptr;
+  IDWriteFontFace *dw_face = dw_face_create (blob, సూచీ_2);
+  ఒకవేళ (unlikely (!dw_face))
+    తిరిగి శూన్యసూచిక;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
-  if (unlikely (hb_object_is_immutable (face)))
+  ఒకవేళ (unlikely (hb_object_is_immutable (face)))
   {
     dw_face->Release ();
-    return face;
+    తిరిగి face;
   }
 
   /* Let there be dragons here... */
-  face->data.directwrite.cmpexch (nullptr, (hb_directwrite_face_data_t *) dw_face);
+  face->దత్తాంశం.directwrite.cmpexch (శూన్యసూచిక, (hb_directwrite_face_దత్తాంశం_t *) dw_face);
 
-  return face;
+  తిరిగి face;
 }
 
 /**
@@ -357,10 +357,10 @@ hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
 IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 {
-  return (IDWriteFontFace *) (const void *) face->data.directwrite;
+  తిరిగి (IDWriteFontFace *) (స్థిరరాశి శూన్య *) face->దత్తాంశం.directwrite;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 
 /**
 * hb_directwrite_face_get_font_face:
@@ -376,10 +376,10 @@ hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 IDWriteFontFace *
 hb_directwrite_face_get_font_face (hb_face_t *face)
 {
-  return hb_directwrite_face_get_dw_font_face (face);
+  తిరిగి hb_directwrite_face_get_dw_font_face (face);
 }
 
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_directwrite_font_create:
@@ -394,35 +394,35 @@ hb_directwrite_face_get_font_face (hb_face_t *face)
 hb_font_t *
 hb_directwrite_font_create (IDWriteFontFace *dw_face)
 {
-  IDWriteFontFace5 *dw_face5 = nullptr;
+  IDWriteFontFace5 *dw_face5 = శూన్యసూచిక;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  ఒకవేళ (unlikely (hb_object_is_immutable (font)))
+    తిరిగి font;
 
   /* Copy font variations */
-  if (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (void**) &dw_face5)))
+  ఒకవేళ (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (శూన్య**) &dw_face5)))
   {
-    if (dw_face5->HasVariations ())
+    ఒకవేళ (dw_face5->HasVariations ())
     {
-      hb_vector_t<DWRITE_FONT_AXIS_VALUE> values;
-      uint32_t count = dw_face5->GetFontAxisValueCount ();
-      if (likely (values.resize_exact (count)) &&
-	  SUCCEEDED (dw_face5->GetFontAxisValues (values.arrayZ, count)))
+      hb_సదిశ_t<DWRITE_FONT_AXIS_విలువ> values;
+      uint32_t లెక్క = dw_face5->Get_Font_Axis_విలువ_లెక్క ();
+      ఒకవేళ (likely (values.resize_exact (లెక్క)) &&
+	  SUCCEEDED (dw_face5->Get_Font_Axis_విలువలు (values.arrayZ, లెక్క)))
       {
-	hb_vector_t<hb_variation_t> vars;
-	if (likely (vars.resize_exact (count)))
+	hb_సదిశ_t<hb_variation_t> vars;
+	ఒకవేళ (likely (vars.resize_exact (లెక్క)))
 	{
-	  for (uint32_t i = 0; i < count; ++i)
+	  కొరకు (uint32_t i = 0; i < లెక్క; ++i)
 	  {
-	    hb_tag_t tag = hb_uint32_swap (values[i].axisTag);
-	    float value = values[i].value;
-	    vars[i] = {tag, value};
+	    hb_ట్యాగ్_t ట్యాగ్_2 = hb_uint32_మార్పిడి (values[i].axis_ట్యాగ్);
+	    దశాంశం value = values[i].value;
+	    vars[i] = {ట్యాగ్_2, value};
 	  }
-	  hb_font_set_variations (font, vars.arrayZ, vars.length);
+	  hb_font_సమితి_variations (font, vars.arrayZ, vars.నిడివి);
 	}
       }
     }
@@ -430,10 +430,10 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   }
 
   /* Let there be dragons here... */
-  dw_face->AddRef ();
-  font->data.directwrite.cmpexch (nullptr, (hb_directwrite_font_data_t *) dw_face);
+  dw_face->కూడు_Ref ();
+  font->దత్తాంశం.directwrite.cmpexch (శూన్యసూచిక, (hb_directwrite_font_దత్తాంశం_t *) dw_face);
 
-  return font;
+  తిరిగి font;
 }
 
 /**
@@ -449,10 +449,10 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
 IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 {
-  return (IDWriteFontFace *) (const void *) font->data.directwrite;
+  తిరిగి (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 
 /**
 * hb_directwrite_font_get_dw_font:
@@ -468,9 +468,9 @@ hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 IDWriteFont *
 hb_directwrite_font_get_dw_font (hb_font_t *font)
 {
-  return nullptr;
+  తిరిగి శూన్యసూచిక;
 }
 
-#endif
+#అయితే_ముగింపు
 
-#endif
+#అయితే_ముగింపు

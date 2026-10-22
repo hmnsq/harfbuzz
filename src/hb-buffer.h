@@ -27,16 +27,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_BUFFER_H
-#define HB_BUFFER_H
+#నిర్వచితం_కాకపోతే HB_బఫరు_H
+#నిర్వచించు HB_బఫరు_H
 
-#include "hb-common.h"
-#include "hb-unicode.h"
-#include "hb-font.h"
+#అన్తర్భావ "hb-common.h"
+#అన్తర్భావ "hb-unicode.h"
+#అన్తర్భావ "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -59,10 +59,10 @@ HB_BEGIN_DECLS
  * The #hb_glyph_info_t is the structure that holds information about the
  * glyphs and their relation to input text.
  */
-typedef struct hb_glyph_info_t {
+రకనిర్వచనం నిర్మాణం hb_glyph_info_t {
   hb_codepoint_t codepoint;
   /*< private >*/
-  hb_mask_t      mask;
+  hb_ముసుగు_t      ముసుగు;
   /*< public >*/
   uint32_t       cluster;
 
@@ -157,19 +157,19 @@ typedef struct hb_glyph_info_t {
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
-  HB_GLYPH_FLAG_UNSAFE_TO_BREAK			= 0x00000001,
-  HB_GLYPH_FLAG_UNSAFE_TO_CONCAT		= 0x00000002,
-  HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL		= 0x00000004,
+రకనిర్వచనం గణన { /*< flags >*/
+  HB_GLYPH_FLAG_UNSAFE_గమ్యం_BREAK			= 0x00000001,
+  HB_GLYPH_FLAG_UNSAFE_గమ్యం_CONCAT		= 0x00000002,
+  HB_GLYPH_FLAG_సురక్షిత_గమ్యం_చొప్పించు_TATWEEL		= 0x00000004,
 
   HB_GLYPH_FLAG_DEFINED				= 0x00000007 /* OR of all defined flags */
 } hb_glyph_flags_t;
 
 HB_EXTERN hb_glyph_flags_t
-hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
+hb_glyph_info_get_glyph_flags (స్థిరరాశి hb_glyph_info_t *info);
 
-#define hb_glyph_info_get_glyph_flags(info) \
-	((hb_glyph_flags_t) ((unsigned int) (info)->mask & HB_GLYPH_FLAG_DEFINED))
+#నిర్వచించు hb_glyph_info_get_glyph_flags(info) \
+	((hb_glyph_flags_t) ((గుర్తులేని పూర్ణాంకం) (info)->ముసుగు & HB_GLYPH_FLAG_DEFINED))
 
 
 /**
@@ -188,11 +188,11 @@ hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
  * #hb_glyph_position_t are relative to the current point.
  *
  */
-typedef struct hb_glyph_position_t {
+రకనిర్వచనం నిర్మాణం hb_glyph_position_t {
   hb_position_t  x_advance;
   hb_position_t  y_advance;
-  hb_position_t  x_offset;
-  hb_position_t  y_offset;
+  hb_position_t  x_స్థానభ్రంశం_2;
+  hb_position_t  y_స్థానభ్రంశం_2;
 
   /*< private >*/
   hb_var_int_t   var;
@@ -208,13 +208,13 @@ typedef struct hb_glyph_position_t {
  * set and retrieved using hb_buffer_set_segment_properties() and
  * hb_buffer_get_segment_properties(), respectively.
  */
-typedef struct hb_segment_properties_t {
+రకనిర్వచనం నిర్మాణం hb_segment_properties_t {
   hb_direction_t  direction;
   hb_script_t     script;
   hb_language_t   language;
   /*< private >*/
-  void           *reserved1;
-  void           *reserved2;
+  శూన్య           *reserved1;
+  శూన్య           *reserved2;
 } hb_segment_properties_t;
 
 /**
@@ -222,22 +222,22 @@ typedef struct hb_segment_properties_t {
  *
  * The default #hb_segment_properties_t of of freshly created #hb_buffer_t.
  */
-#define HB_SEGMENT_PROPERTIES_DEFAULT {HB_DIRECTION_INVALID, \
+#నిర్వచించు HB_SEGMENT_PROPERTIES_DEFAULT {HB_DIRECTION_INVALID, \
 				       HB_SCRIPT_INVALID, \
 				       HB_LANGUAGE_INVALID, \
-				       (void *) 0, \
-				       (void *) 0}
+				       (శూన్య *) 0, \
+				       (శూన్య *) 0}
 
 HB_EXTERN hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b);
+hb_segment_properties_equal (స్థిరరాశి hb_segment_properties_t *a,
+			     స్థిరరాశి hb_segment_properties_t *b);
 
-HB_EXTERN unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_segment_properties_hash (స్థిరరాశి hb_segment_properties_t *p);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src);
+			       స్థిరరాశి hb_segment_properties_t *src);
 
 
 /**
@@ -247,37 +247,37 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
  * and output glyphs and their information after shaping.
  */
 
-typedef struct hb_buffer_t hb_buffer_t;
+రకనిర్వచనం నిర్మాణం hb_బఫరు_t hb_బఫరు_t;
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_create (void);
+HB_EXTERN hb_బఫరు_t *
+hb_బఫరు_create (శూన్య);
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src);
+HB_EXTERN hb_బఫరు_t *
+hb_బఫరు_create_similar (స్థిరరాశి hb_బఫరు_t *src);
 
-HB_EXTERN void
-hb_buffer_reset (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_reset (hb_బఫరు_t *బఫరు);
 
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_get_empty (void);
+HB_EXTERN hb_బఫరు_t *
+hb_బఫరు_get_ఖాళీలు (శూన్య);
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_reference (hb_buffer_t *buffer);
+HB_EXTERN hb_బఫరు_t *
+hb_బఫరు_reference (hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_destroy (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_destroy (hb_బఫరు_t *బఫరు);
 
 HB_EXTERN hb_bool_t
-hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+hb_బఫరు_సమితి_user_దత్తాంశం (hb_బఫరు_t        *బఫరు,
+			 hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+			 శూన్య *              దత్తాంశం,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key);
+HB_EXTERN శూన్య *
+hb_బఫరు_get_user_దత్తాంశం (స్థిరరాశి hb_బఫరు_t  *బఫరు,
+			 hb_user_దత్తాంశం_కీలకం_t *కీలకం_2);
 
 
 /**
@@ -288,59 +288,59 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * The type of #hb_buffer_t contents.
  */
-typedef enum {
-  HB_BUFFER_CONTENT_TYPE_INVALID = 0,
-  HB_BUFFER_CONTENT_TYPE_UNICODE,
-  HB_BUFFER_CONTENT_TYPE_GLYPHS
-} hb_buffer_content_type_t;
+రకనిర్వచనం గణన {
+  HB_బఫరు_CONTENT_TYPE_INVALID = 0,
+  HB_బఫరు_CONTENT_TYPE_UNICODE,
+  HB_బఫరు_CONTENT_TYPE_GLYPHS
+} hb_బఫరు_content_type_t;
 
-HB_EXTERN void
-hb_buffer_set_content_type (hb_buffer_t              *buffer,
-			    hb_buffer_content_type_t  content_type);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_content_type (hb_బఫరు_t              *బఫరు,
+			    hb_బఫరు_content_type_t  content_type);
 
-HB_EXTERN hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer);
+HB_EXTERN hb_బఫరు_content_type_t
+hb_బఫరు_get_content_type (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
 
-HB_EXTERN void
-hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_unicode_funcs (hb_బఫరు_t        *బఫరు,
 			     hb_unicode_funcs_t *unicode_funcs);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t  *buffer);
+hb_బఫరు_get_unicode_funcs (స్థిరరాశి hb_బఫరు_t  *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_direction (hb_buffer_t    *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_direction (hb_బఫరు_t    *బఫరు,
 			 hb_direction_t  direction);
 
 HB_EXTERN hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer);
+hb_బఫరు_get_direction (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_script (hb_buffer_t *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_script (hb_బఫరు_t *బఫరు,
 		      hb_script_t  script);
 
 HB_EXTERN hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer);
+hb_బఫరు_get_script (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_language (hb_buffer_t   *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_language (hb_బఫరు_t   *బఫరు,
 			hb_language_t  language);
 
 
 HB_EXTERN hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer);
+hb_బఫరు_get_language (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_segment_properties (hb_బఫరు_t *బఫరు,
+				  స్థిరరాశి hb_segment_properties_t *props);
 
-HB_EXTERN void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_get_segment_properties (స్థిరరాశి hb_బఫరు_t *బఫరు,
 				  hb_segment_properties_t *props);
 
-HB_EXTERN void
-hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_guess_segment_properties (hb_బఫరు_t *బఫరు);
 
 
 /**
@@ -393,26 +393,26 @@ hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_FLAG_DEFAULT			= 0x00000000u,
-  HB_BUFFER_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
-  HB_BUFFER_FLAG_EOT				= 0x00000002u, /* End-of-text */
-  HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES	= 0x00000004u,
-  HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES	= 0x00000008u,
-  HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE	= 0x00000010u,
-  HB_BUFFER_FLAG_VERIFY				= 0x00000020u,
-  HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT	= 0x00000040u,
-  HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL	= 0x00000080u,
+రకనిర్వచనం గణన { /*< flags >*/
+  HB_బఫరు_FLAG_DEFAULT			= 0x00000000u,
+  HB_బఫరు_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
+  HB_బఫరు_FLAG_EOT				= 0x00000002u, /* End-of-text */
+  HB_బఫరు_FLAG_PRESERVE_DEFAULT_IGNORABLES	= 0x00000004u,
+  HB_బఫరు_FLAG_REMOVE_DEFAULT_IGNORABLES	= 0x00000008u,
+  HB_బఫరు_FLAG_DO_NOT_చొప్పించు_DOTTED_CIRCLE	= 0x00000010u,
+  HB_బఫరు_FLAG_VERIFY				= 0x00000020u,
+  HB_బఫరు_FLAG_PRODUCE_UNSAFE_గమ్యం_CONCAT	= 0x00000040u,
+  HB_బఫరు_FLAG_PRODUCE_సురక్షిత_గమ్యం_చొప్పించు_TATWEEL	= 0x00000080u,
 
-  HB_BUFFER_FLAG_DEFINED			= 0x000000FFu
-} hb_buffer_flags_t;
+  HB_బఫరు_FLAG_DEFINED			= 0x000000FFu
+} hb_బఫరు_flags_t;
 
-HB_EXTERN void
-hb_buffer_set_flags (hb_buffer_t       *buffer,
-		     hb_buffer_flags_t  flags);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_flags (hb_బఫరు_t       *బఫరు,
+		     hb_బఫరు_flags_t  flags);
 
-HB_EXTERN hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer);
+HB_EXTERN hb_బఫరు_flags_t
+hb_బఫరు_get_flags (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
 /**
  * hb_buffer_cluster_level_t:
@@ -458,13 +458,13 @@ hb_buffer_get_flags (const hb_buffer_t *buffer);
  *
  * Since: 0.9.42
  */
-typedef enum {
-  HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
-  HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
-  HB_BUFFER_CLUSTER_LEVEL_CHARACTERS		= 2,
-  HB_BUFFER_CLUSTER_LEVEL_GRAPHEMES		= 3,
-  HB_BUFFER_CLUSTER_LEVEL_DEFAULT = HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
-} hb_buffer_cluster_level_t;
+రకనిర్వచనం గణన {
+  HB_బఫరు_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
+  HB_బఫరు_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
+  HB_బఫరు_CLUSTER_LEVEL_CHARACTERS		= 2,
+  HB_బఫరు_CLUSTER_LEVEL_GRAPHEMES		= 3,
+  HB_బఫరు_CLUSTER_LEVEL_DEFAULT = HB_బఫరు_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
+} hb_బఫరు_cluster_level_t;
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE:
@@ -475,10 +475,10 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS))))
+#నిర్వచించు HB_బఫరు_CLUSTER_LEVEL_IS_MONOTONE(level) \
+	((bool) ((1u << (గుర్తులేని) (level)) & \
+		 ((1u << HB_బఫరు_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
+		  (1u << HB_బఫరు_CLUSTER_LEVEL_MONOTONE_CHARACTERS))))
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES:
@@ -489,10 +489,10 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_GRAPHEMES))))
+#నిర్వచించు HB_బఫరు_CLUSTER_LEVEL_IS_GRAPHEMES(level) \
+	((bool) ((1u << (గుర్తులేని) (level)) & \
+		 ((1u << HB_బఫరు_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
+		  (1u << HB_బఫరు_CLUSTER_LEVEL_GRAPHEMES))))
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_CHARACTERS:
@@ -503,17 +503,17 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_CHARACTERS(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_CHARACTERS))))
+#నిర్వచించు HB_బఫరు_CLUSTER_LEVEL_IS_CHARACTERS(level) \
+	((bool) ((1u << (గుర్తులేని) (level)) & \
+		 ((1u << HB_బఫరు_CLUSTER_LEVEL_MONOTONE_CHARACTERS) | \
+		  (1u << HB_బఫరు_CLUSTER_LEVEL_CHARACTERS))))
 
-HB_EXTERN void
-hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
-			     hb_buffer_cluster_level_t  cluster_level);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_cluster_level (hb_బఫరు_t               *బఫరు,
+			     hb_బఫరు_cluster_level_t  cluster_level);
 
-HB_EXTERN hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer);
+HB_EXTERN hb_బఫరు_cluster_level_t
+hb_బఫరు_get_cluster_level (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
 /**
  * HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT:
@@ -523,140 +523,140 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer);
  *
  * Since: 0.9.31
  */
-#define HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT 0xFFFDu
+#నిర్వచించు HB_బఫరు_REPLACEMENT_CODEPOINT_DEFAULT 0xFFFDu
 
-HB_EXTERN void
-hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_replacement_codepoint (hb_బఫరు_t    *బఫరు,
 				     hb_codepoint_t  replacement);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer);
+hb_బఫరు_get_replacement_codepoint (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_invisible_glyph (hb_బఫరు_t    *బఫరు,
 			       hb_codepoint_t  invisible);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer);
+hb_బఫరు_get_invisible_glyph (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
-			       hb_codepoint_t  not_found);
-
-HB_EXTERN hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer);
-
-HB_EXTERN void
-hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
-						  hb_codepoint_t  not_found_variation_selector);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_not_దొరికింది_glyph (hb_బఫరు_t    *బఫరు,
+			       hb_codepoint_t  not_దొరికింది);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer);
+hb_బఫరు_get_not_దొరికింది_glyph (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_set_random_state (hb_buffer_t    *buffer,
-			    unsigned        state);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_not_దొరికింది_variation_selector_glyph (hb_బఫరు_t    *బఫరు,
+						  hb_codepoint_t  not_దొరికింది_variation_selector);
 
-HB_EXTERN unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer);
+HB_EXTERN hb_codepoint_t
+hb_బఫరు_get_not_దొరికింది_variation_selector_glyph (స్థిరరాశి hb_బఫరు_t *బఫరు);
+
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_random_state (hb_బఫరు_t    *బఫరు,
+			    గుర్తులేని        state);
+
+HB_EXTERN గుర్తులేని
+hb_బఫరు_get_random_state (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
 /*
  * Content API.
  */
 
-HB_EXTERN void
-hb_buffer_clear_contents (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_clear_contents (hb_బఫరు_t *బఫరు);
 
 HB_EXTERN hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t  *buffer,
-			unsigned int  size);
+hb_బఫరు_pre_allocate (hb_బఫరు_t  *బఫరు,
+			గుర్తులేని పూర్ణాంకం  కొలత);
 
 
 HB_EXTERN hb_bool_t
-hb_buffer_allocation_successful (hb_buffer_t  *buffer);
+hb_బఫరు_కేటాయింపు_successful (hb_బఫరు_t  *బఫరు);
 
-HB_EXTERN void
-hb_buffer_reverse (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_తిరగేయి (hb_బఫరు_t *బఫరు);
 
-HB_EXTERN void
-hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end);
+HB_EXTERN శూన్య
+hb_బఫరు_తిరగేయి_range (hb_బఫరు_t *బఫరు,
+			 గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర);
 
-HB_EXTERN void
-hb_buffer_reverse_clusters (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_తిరగేయి_clusters (hb_బఫరు_t *బఫరు);
 
 
 /* Filling the buffer in */
 
-HB_EXTERN void
-hb_buffer_add (hb_buffer_t    *buffer,
+HB_EXTERN శూన్య
+hb_బఫరు_కూడు (hb_బఫరు_t    *బఫరు,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster);
+	       గుర్తులేని పూర్ణాంకం    cluster);
 
-HB_EXTERN void
-hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length);
+HB_EXTERN శూన్య
+hb_బఫరు_కూడు_utf8 (hb_బఫరు_t  *బఫరు,
+		    స్థిరరాశి అక్షరం   *పాఠ్యం,
+		    పూర్ణాంకం           పాఠ్యం_నిడివి,
+		    గుర్తులేని పూర్ణాంకం  అంశం_స్థానభ్రంశం,
+		    పూర్ణాంకం           అంశం_నిడివి);
 
-HB_EXTERN void
-hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+HB_EXTERN శూన్య
+hb_బఫరు_కూడు_utf16 (hb_బఫరు_t    *బఫరు,
+		     స్థిరరాశి uint16_t *పాఠ్యం,
+		     పూర్ణాంకం             పాఠ్యం_నిడివి,
+		     గుర్తులేని పూర్ణాంకం    అంశం_స్థానభ్రంశం,
+		     పూర్ణాంకం             అంశం_నిడివి);
 
-HB_EXTERN void
-hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+HB_EXTERN శూన్య
+hb_బఫరు_కూడు_utf32 (hb_బఫరు_t    *బఫరు,
+		     స్థిరరాశి uint32_t *పాఠ్యం,
+		     పూర్ణాంకం             పాఠ్యం_నిడివి,
+		     గుర్తులేని పూర్ణాంకం    అంశం_స్థానభ్రంశం,
+		     పూర్ణాంకం             అంశం_నిడివి);
 
-HB_EXTERN void
-hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length);
+HB_EXTERN శూన్య
+hb_బఫరు_కూడు_latin1 (hb_బఫరు_t   *బఫరు,
+		      స్థిరరాశి uint8_t *పాఠ్యం,
+		      పూర్ణాంకం            పాఠ్యం_నిడివి,
+		      గుర్తులేని పూర్ణాంకం   అంశం_స్థానభ్రంశం,
+		      పూర్ణాంకం            అంశం_నిడివి);
 
-HB_EXTERN void
-hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length);
+HB_EXTERN శూన్య
+hb_బఫరు_కూడు_codepoints (hb_బఫరు_t          *బఫరు,
+			  స్థిరరాశి hb_codepoint_t *పాఠ్యం,
+			  పూర్ణాంకం                   పాఠ్యం_నిడివి,
+			  గుర్తులేని పూర్ణాంకం          అంశం_స్థానభ్రంశం,
+			  పూర్ణాంకం                   అంశం_నిడివి);
 
-HB_EXTERN void
-hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end);
+HB_EXTERN శూన్య
+hb_బఫరు_append (hb_బఫరు_t *బఫరు,
+		  స్థిరరాశి hb_బఫరు_t *ఆధారం,
+		  గుర్తులేని పూర్ణాంకం ప్రారంభం,
+		  గుర్తులేని పూర్ణాంకం చివర);
 
 HB_EXTERN hb_bool_t
-hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length);
+hb_బఫరు_సమితి_నిడివి (hb_బఫరు_t  *బఫరు,
+		      గుర్తులేని పూర్ణాంకం  నిడివి);
 
-HB_EXTERN unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_బఫరు_get_నిడివి (స్థిరరాశి hb_బఫరు_t *బఫరు);
 
 /* Getting glyphs out of the buffer */
 
 HB_EXTERN hb_glyph_info_t *
-hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length);
+hb_బఫరు_get_glyph_infos (hb_బఫరు_t  *బఫరు,
+			   గుర్తులేని పూర్ణాంకం *నిడివి);
 
 HB_EXTERN hb_glyph_position_t *
-hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length);
+hb_బఫరు_get_glyph_positions (hb_బఫరు_t  *బఫరు,
+			       గుర్తులేని పూర్ణాంకం *నిడివి);
 
 HB_EXTERN hb_bool_t
-hb_buffer_has_positions (hb_buffer_t  *buffer);
+hb_బఫరు_has_positions (hb_బఫరు_t  *బఫరు);
 
 
-HB_EXTERN void
-hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_normalize_glyphs (hb_బఫరు_t *బఫరు);
 
 
 /*
@@ -684,17 +684,17 @@ hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES	= 0x00000004u,
-  HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS	= 0x00000008u,
-  HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS		= 0x00000010u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES		= 0x00000020u,
+రకనిర్వచనం గణన { /*< flags >*/
+  HB_బఫరు_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
+  HB_బఫరు_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
+  HB_బఫరు_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
+  HB_బఫరు_SERIALIZE_FLAG_NO_GLYPH_పేర్లు	= 0x00000004u,
+  HB_బఫరు_SERIALIZE_FLAG_GLYPH_EXTENTS	= 0x00000008u,
+  HB_బఫరు_SERIALIZE_FLAG_GLYPH_FLAGS		= 0x00000010u,
+  HB_బఫరు_SERIALIZE_FLAG_NO_ADVANCES		= 0x00000020u,
 
-  HB_BUFFER_SERIALIZE_FLAG_DEFINED		= 0x0000003Fu
-} hb_buffer_serialize_flags_t;
+  HB_బఫరు_SERIALIZE_FLAG_DEFINED		= 0x0000003Fu
+} hb_బఫరు_serialize_flags_t;
 
 /**
  * hb_buffer_serialize_format_t:
@@ -707,67 +707,67 @@ typedef enum { /*< flags >*/
  *
  * Since: 0.9.2
  */
-typedef enum {
-  HB_BUFFER_SERIALIZE_FORMAT_TEXT	= HB_TAG('T','E','X','T'),
-  HB_BUFFER_SERIALIZE_FORMAT_JSON	= HB_TAG('J','S','O','N'),
-  HB_BUFFER_SERIALIZE_FORMAT_INVALID	= HB_TAG_NONE
-} hb_buffer_serialize_format_t;
+రకనిర్వచనం గణన {
+  HB_బఫరు_SERIALIZE_FORMAT_పాఠ్యం	= HB_ట్యాగ్('T','E','X','T'),
+  HB_బఫరు_SERIALIZE_FORMAT_JSON	= HB_ట్యాగ్('J','S','O','N'),
+  HB_బఫరు_SERIALIZE_FORMAT_INVALID	= HB_ట్యాగ్_NONE
+} hb_బఫరు_serialize_format_t;
 
-HB_EXTERN hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len);
+HB_EXTERN hb_బఫరు_serialize_format_t
+hb_బఫరు_serialize_format_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len);
 
-HB_EXTERN const char *
-hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format);
+HB_EXTERN స్థిరరాశి అక్షరం *
+hb_బఫరు_serialize_format_గమ్యం_string (hb_బఫరు_serialize_format_t format);
 
-HB_EXTERN const char **
-hb_buffer_serialize_list_formats (void);
+HB_EXTERN స్థిరరాశి అక్షరం **
+hb_బఫరు_serialize_list_formats (శూన్య);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-			    unsigned int start,
-			    unsigned int end,
-			    char *buf,
-			    unsigned int buf_size,
-			    unsigned int *buf_consumed,
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_glyphs (hb_బఫరు_t *బఫరు,
+			    గుర్తులేని పూర్ణాంకం ప్రారంభం,
+			    గుర్తులేని పూర్ణాంకం చివర,
+			    అక్షరం *buf,
+			    గుర్తులేని పూర్ణాంకం buf_కొలత,
+			    గుర్తులేని పూర్ణాంకం *buf_consumed,
 			    hb_font_t *font,
-			    hb_buffer_serialize_format_t format,
-			    hb_buffer_serialize_flags_t flags);
+			    hb_బఫరు_serialize_format_t format,
+			    hb_బఫరు_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-			     unsigned int start,
-			     unsigned int end,
-			     char *buf,
-			     unsigned int buf_size,
-			     unsigned int *buf_consumed,
-			     hb_buffer_serialize_format_t format,
-			     hb_buffer_serialize_flags_t flags);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize_unicode (hb_బఫరు_t *బఫరు,
+			     గుర్తులేని పూర్ణాంకం ప్రారంభం,
+			     గుర్తులేని పూర్ణాంకం చివర,
+			     అక్షరం *buf,
+			     గుర్తులేని పూర్ణాంకం buf_కొలత,
+			     గుర్తులేని పూర్ణాంకం *buf_consumed,
+			     hb_బఫరు_serialize_format_t format,
+			     hb_బఫరు_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize (hb_buffer_t *buffer,
-		     unsigned int start,
-		     unsigned int end,
-		     char *buf,
-		     unsigned int buf_size,
-		     unsigned int *buf_consumed,
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_బఫరు_serialize (hb_బఫరు_t *బఫరు,
+		     గుర్తులేని పూర్ణాంకం ప్రారంభం,
+		     గుర్తులేని పూర్ణాంకం చివర,
+		     అక్షరం *buf,
+		     గుర్తులేని పూర్ణాంకం buf_కొలత,
+		     గుర్తులేని పూర్ణాంకం *buf_consumed,
 		     hb_font_t *font,
-		     hb_buffer_serialize_format_t format,
-		     hb_buffer_serialize_flags_t flags);
+		     hb_బఫరు_serialize_format_t format,
+		     hb_బఫరు_serialize_flags_t flags);
 
 HB_EXTERN hb_bool_t
-hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-			      const char *buf,
-			      int buf_len,
-			      const char **end_ptr,
+hb_బఫరు_deserialize_glyphs (hb_బఫరు_t *బఫరు,
+			      స్థిరరాశి అక్షరం *buf,
+			      పూర్ణాంకం buf_len,
+			      స్థిరరాశి అక్షరం **end_ptr,
 			      hb_font_t *font,
-			      hb_buffer_serialize_format_t format);
+			      hb_బఫరు_serialize_format_t format);
 
 HB_EXTERN hb_bool_t
-hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-			       const char *buf,
-			       int buf_len,
-			       const char **end_ptr,
-			       hb_buffer_serialize_format_t format);
+hb_బఫరు_deserialize_unicode (hb_బఫరు_t *బఫరు,
+			       స్థిరరాశి అక్షరం *buf,
+			       పూర్ణాంకం buf_len,
+			       స్థిరరాశి అక్షరం **end_ptr,
+			       hb_బఫరు_serialize_format_t format);
 
 
 
@@ -804,39 +804,39 @@ hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_DIFF_FLAG_EQUAL			= 0x0000,
+రకనిర్వచనం గణన { /*< flags >*/
+  HB_బఫరు_DIFF_FLAG_EQUAL			= 0x0000,
 
   /* Buffers with different content_type cannot be meaningfully compared
    * in any further detail. */
-  HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH	= 0x0001,
+  HB_బఫరు_DIFF_FLAG_CONTENT_TYPE_MISMATCH	= 0x0001,
 
   /* For buffers with differing length, the per-glyph comparison is not
    * attempted, though we do still scan reference for dottedcircle / .notdef
    * glyphs. */
-  HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH		= 0x0002,
+  HB_బఫరు_DIFF_FLAG_నిడివి_MISMATCH		= 0x0002,
 
   /* We want to know if dottedcircle / .notdef glyphs are present in the
    * reference, as we may not care so much about other differences in this
    * case. */
-  HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT		= 0x0004,
-  HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT	= 0x0008,
+  HB_బఫరు_DIFF_FLAG_NOTDEF_PRESENT		= 0x0004,
+  HB_బఫరు_DIFF_FLAG_DOTTED_CIRCLE_PRESENT	= 0x0008,
 
   /* If the buffers have the same length, we compare them glyph-by-glyph
    * and report which aspect(s) of the glyph info/position are different. */
-  HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH	= 0x0010,
-  HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH		= 0x0020,
-  HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH	= 0x0040,
-  HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH		= 0x0080
+  HB_బఫరు_DIFF_FLAG_CODEPOINT_MISMATCH	= 0x0010,
+  HB_బఫరు_DIFF_FLAG_CLUSTER_MISMATCH		= 0x0020,
+  HB_బఫరు_DIFF_FLAG_GLYPH_FLAGS_MISMATCH	= 0x0040,
+  HB_బఫరు_DIFF_FLAG_POSITION_MISMATCH		= 0x0080
 
-} hb_buffer_diff_flags_t;
+} hb_బఫరు_diff_flags_t;
 
 /* Compare the contents of two buffers, report types of differences. */
-HB_EXTERN hb_buffer_diff_flags_t
-hb_buffer_diff (hb_buffer_t *buffer,
-		hb_buffer_t *reference,
+HB_EXTERN hb_బఫరు_diff_flags_t
+hb_బఫరు_diff (hb_బఫరు_t *బఫరు,
+		hb_బఫరు_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz);
+		గుర్తులేని పూర్ణాంకం position_fuzz);
 
 
 /*
@@ -860,20 +860,20 @@ hb_buffer_diff (hb_buffer_t *buffer,
  *
  * Since: 1.1.3
  */
-typedef hb_bool_t	(*hb_buffer_message_func_t)	(hb_buffer_t *buffer,
+రకనిర్వచనం hb_bool_t	(*hb_బఫరు_సందేశం_func_t)	(hb_బఫరు_t *బఫరు,
 							 hb_font_t   *font,
-							 const char  *message,
-							 void        *user_data);
+							 స్థిరరాశి అక్షరం  *సందేశం,
+							 శూన్య        *user_దత్తాంశం);
 
-HB_EXTERN void
-hb_buffer_set_message_func (hb_buffer_t *buffer,
-			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN శూన్య
+hb_బఫరు_సమితి_సందేశం_func (hb_బఫరు_t *బఫరు,
+			    hb_బఫరు_సందేశం_func_t func,
+			    శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
-HB_EXTERN void
-hb_buffer_changed (hb_buffer_t *buffer);
+HB_EXTERN శూన్య
+hb_బఫరు_మారింది (hb_బఫరు_t *బఫరు);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_BUFFER_H */
+#అయితే_ముగింపు /* HB_BUFFER_H */

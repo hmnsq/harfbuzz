@@ -1,165 +1,165 @@
-#ifndef OT_LAYOUT_GSUB_SEQUENCE_HH
-#define OT_LAYOUT_GSUB_SEQUENCE_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_SEQUENCE_HH
+#నిర్వచించు OT_LAYOUT_GSUB_SEQUENCE_HH
 
-#include "Common.hh"
+#అన్తర్భావ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template <typename Types>
-struct Sequence
+మూస <రకం_పేరు Types>
+నిర్మాణం Sequence
 {
-  protected:
-  Array16Of<typename Types::HBGlyphID>
+  రక్షిత:
+  Array16_యొక్క<రకం_పేరు Types::HBGlyphID>
                 substitute;             /* String of GlyphIDs to substitute */
-  public:
-  DEFINE_SIZE_ARRAY (2, substitute);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     return_trace (substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (substitute, glyphs); }
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి hb_all (substitute, glyphs); }
 
-  void closure (hb_closure_context_t *c) const
-  { c->output->add_array (substitute.arrayZ, substitute.len); }
+  శూన్య సంవృతం (hb_సంవృతం_context_t *c) స్థిరరాశి
+  { c->output->కూడు_array (substitute.arrayZ, substitute.len); }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t source) const
+  శూన్య depend (hb_depend_context_t *c, hb_codepoint_t ఆధారం) స్థిరరాశి
   {
     + hb_iter (substitute)
-    | hb_apply ([&] (const hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
+    | hb_apply ([&] (స్థిరరాశి hb_codepoint_t &target) { c->depend_దత్తాంశం->కూడు_gsub_lookup (ఆధారం, c->lookup_సూచీ, target); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { c->output->add_array (substitute.arrayZ, substitute.len); }
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
+  { c->output->కూడు_array (substitute.arrayZ, substitute.len); }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
-    unsigned int count = substitute.len;
+    TRACE_APPLY (ఇది);
+    గుర్తులేని పూర్ణాంకం లెక్క = substitute.len;
 
     /* Special-case to make it in-place and not consider this
      * as a "multiplied" substitution. */
-    if (unlikely (count == 1))
+    ఒకవేళ (unlikely (లెక్క == 1))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->బఫరు->sync_so_far ();
+	c->బఫరు->సందేశం (c->font,
 			    "replacing glyph at %u (multiple substitution)",
-			    c->buffer->idx);
+			    c->బఫరు->idx);
       }
 
       c->replace_glyph (substitute.arrayZ[0]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->message (c->font,
+	c->బఫరు->సందేశం (c->font,
 			    "replaced glyph at %u (multiple substitution)",
-			    c->buffer->idx - 1u);
+			    c->బఫరు->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (నిజం);
     }
     /* Spec disallows this, but Uniscribe allows it.
      * https://github.com/harfbuzz/harfbuzz/issues/253 */
-    else if (unlikely (count == 0))
+    లేకపోతే ఒకవేళ (unlikely (లెక్క == 0))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->బఫరు->sync_so_far ();
+	c->బఫరు->సందేశం (c->font,
 			    "deleting glyph at %u (multiple substitution)",
-			    c->buffer->idx);
+			    c->బఫరు->idx);
       }
 
-      c->buffer->delete_glyph ();
+      c->బఫరు->delete_glyph ();
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->బఫరు->sync_so_far ();
+	c->బఫరు->సందేశం (c->font,
 			    "deleted glyph at %u (multiple substitution)",
-			    c->buffer->idx);
+			    c->బఫరు->idx);
       }
 
-      return_trace (true);
+      return_trace (నిజం);
     }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->బఫరు->sync_so_far ();
+      c->బఫరు->సందేశం (c->font,
 			  "multiplying glyph at %u",
-			  c->buffer->idx);
+			  c->బఫరు->idx);
     }
 
-    unsigned int klass = _hb_glyph_info_is_ligature (&c->buffer->cur()) ?
-                         HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH : 0;
-    unsigned lig_id = _hb_glyph_info_get_lig_id (&c->buffer->cur());
+    గుర్తులేని పూర్ణాంకం klass = _hb_glyph_info_is_ligature (&c->బఫరు->cur()) ?
+                         HB_OT_LAYOUT_GLYPH_PROPS_పునాది_GLYPH : 0;
+    గుర్తులేని lig_id = _hb_glyph_info_get_lig_id (&c->బఫరు->cur());
 
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       /* If is attached to a ligature, don't disturb that.
        * https://github.com/harfbuzz/harfbuzz/issues/3069 */
-      if (!lig_id)
-        _hb_glyph_info_set_lig_props_for_component (&c->buffer->cur(), i);
+      ఒకవేళ (!lig_id)
+        hb_glyph_info_సమితి_lig_props_for_component (&c->బఫరు->cur(), i);
       c->output_glyph_for_component (substitute.arrayZ[i], klass);
     }
-    c->buffer->skip_glyph ();
+    c->బఫరు->skip_glyph ();
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->sync_so_far ();
+      c->బఫరు->sync_so_far ();
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      అక్షరం buf[HB_MAX_CONTEXT_నిడివి * 16] = {0};
+      అక్షరం *p = buf;
 
-      for (unsigned i = c->buffer->idx - count; i < c->buffer->idx; i++)
+      కొరకు (గుర్తులేని i = c->బఫరు->idx - లెక్క; i < c->బఫరు->idx; i++)
       {
-	if (buf < p && sizeof(buf) - 1u > unsigned (p - buf))
+	ఒకవేళ (buf < p && పరిమాణం(buf) - 1u > గుర్తులేని (p - buf))
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", i);
-	p += strlen(p);
+	snprintf (p, పరిమాణం(buf) - (p - buf), "%u", i);
+	p += అక్షరశ్రేణి_పొడవు(p);
       }
 
-      c->buffer->message (c->font,
+      c->బఫరు->సందేశం (c->font,
 			  "multiplied glyphs at %s",
 			  buf);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template <typename Iterator,
-            hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  మూస <రకం_పేరు Iterator,
+            hb_requires (hb_is_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c,
                   Iterator subst)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
     return_trace (substitute.serialize (c, subst));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset)) return_trace (false);
+    ఒకవేళ (!intersects (&glyphset)) return_trace (అబద్ధం);
 
-    auto it =
+    స్వయంచాలక it =
     + hb_iter (substitute)
     | hb_map (glyph_map)
     ;
 
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer, it));
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    return_trace (బహిర్గతం->serialize (c->serializer, it));
   }
 };
 
@@ -169,4 +169,4 @@ struct Sequence
 }
 
 
-#endif /* OT_LAYOUT_GSUB_SEQUENCE_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GSUB_SEQUENCE_HH */

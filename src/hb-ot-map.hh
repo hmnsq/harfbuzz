@@ -26,164 +26,164 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_MAP_HH
-#define HB_OT_MAP_HH
+#నిర్వచితం_కాకపోతే HB_OT_MAP_HH
+#నిర్వచించు HB_OT_MAP_HH
 
-#include "hb-buffer.hh"
+#అన్తర్భావ "hb-buffer.hh"
 
 
-#define HB_OT_MAP_MAX_BITS 8u
-#define HB_OT_MAP_MAX_VALUE ((1u << HB_OT_MAP_MAX_BITS) - 1u)
+#నిర్వచించు HB_OT_MAP_MAX_బిట్లు 8u
+#నిర్వచించు HB_OT_MAP_MAX_విలువ ((1u << HB_OT_MAP_MAX_బిట్లు) - 1u)
 
-struct hb_ot_shape_plan_t;
+నిర్మాణం hb_ot_shape_plan_t;
 
-static const hb_tag_t table_tags[2] = {HB_OT_TAG_GSUB, HB_OT_TAG_GPOS};
+స్థిర స్థిరరాశి hb_ట్యాగ్_t పట్టిక_ట్యాగులు[2] = {HB_OT_ట్యాగ్_GSUB, HB_OT_ట్యాగ్_GPOS};
 
-struct hb_ot_map_t
+నిర్మాణం hb_ot_map_t
 {
-  friend struct hb_ot_map_builder_t;
+  మిత్ర నిర్మాణం hb_ot_map_builder_t;
 
-  public:
+  బహిరంగ:
 
-  struct feature_map_t {
-    hb_tag_t tag; /* should be first for our bsearch to work */
-    unsigned int index[2]; /* GSUB/GPOS */
-    unsigned int stage[2]; /* GSUB/GPOS */
-    unsigned int shift;
-    hb_mask_t mask;
-    hb_mask_t _1_mask; /* mask for value=1, for quick access */
-    unsigned int needs_fallback : 1;
-    unsigned int auto_zwnj : 1;
-    unsigned int auto_zwj : 1;
-    unsigned int random : 1;
-    unsigned int per_syllable : 1;
+  నిర్మాణం feature_map_t {
+    hb_ట్యాగ్_t ట్యాగ్_2; /* should be first for our bsearch to work */
+    గుర్తులేని పూర్ణాంకం సూచీ_2[2]; /* GSUB/GPOS */
+    గుర్తులేని పూర్ణాంకం stage[2]; /* GSUB/GPOS */
+    గుర్తులేని పూర్ణాంకం జరుపు;
+    hb_ముసుగు_t ముసుగు;
+    hb_ముసుగు_t _1_mask; /* mask for value=1, for quick access */
+    గుర్తులేని పూర్ణాంకం needs_fallback : 1;
+    గుర్తులేని పూర్ణాంకం auto_zwnj : 1;
+    గుర్తులేని పూర్ణాంకం auto_zwj : 1;
+    గుర్తులేని పూర్ణాంకం random : 1;
+    గుర్తులేని పూర్ణాంకం చొప్పున_syllable : 1;
 
-    int cmp (const hb_tag_t tag_) const
-    { return tag_ < tag ? -1 : tag_ > tag ? 1 : 0; }
+    పూర్ణాంకం cmp (స్థిరరాశి hb_ట్యాగ్_t ట్యాగ్_4) స్థిరరాశి
+    { తిరిగి ట్యాగ్_4 < ట్యాగ్_2 ? -1 : ట్యాగ్_4 > ట్యాగ్_2 ? 1 : 0; }
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
     {
-      const feature_map_t *a = (const feature_map_t *) pa;
-      const feature_map_t *b = (const feature_map_t *) pb;
-      return a->tag < b->tag ? -1 : a->tag > b->tag ? 1 : 0;
+      స్థిరరాశి feature_map_t *a = (స్థిరరాశి feature_map_t *) pa;
+      స్థిరరాశి feature_map_t *b = (స్థిరరాశి feature_map_t *) pb;
+      తిరిగి a->ట్యాగ్_2 < b->ట్యాగ్_2 ? -1 : a->ట్యాగ్_2 > b->ట్యాగ్_2 ? 1 : 0;
     }
   };
 
-  struct lookup_map_t {
-    unsigned short index;
-    unsigned short auto_zwnj : 1;
-    unsigned short auto_zwj : 1;
-    unsigned short random : 1;
-    unsigned short per_syllable : 1;
-    hb_mask_t mask;
-    hb_tag_t feature_tag;
+  నిర్మాణం lookup_map_t {
+    గుర్తులేని పొట్టి సూచీ_2;
+    గుర్తులేని పొట్టి auto_zwnj : 1;
+    గుర్తులేని పొట్టి auto_zwj : 1;
+    గుర్తులేని పొట్టి random : 1;
+    గుర్తులేని పొట్టి చొప్పున_syllable : 1;
+    hb_ముసుగు_t ముసుగు;
+    hb_ట్యాగ్_t feature_ట్యాగ్;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
     {
-      const lookup_map_t *a = (const lookup_map_t *) pa;
-      const lookup_map_t *b = (const lookup_map_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 : 0;
+      స్థిరరాశి lookup_map_t *a = (స్థిరరాశి lookup_map_t *) pa;
+      స్థిరరాశి lookup_map_t *b = (స్థిరరాశి lookup_map_t *) pb;
+      తిరిగి a->సూచీ_2 < b->సూచీ_2 ? -1 : a->సూచీ_2 > b->సూచీ_2 ? 1 : 0;
     }
   };
 
   /* Pause functions return true if new glyph indices might have been
    * added to the buffer.  This is used to update buffer digest. */
-  typedef bool (*pause_func_t) (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer);
+  రకనిర్వచనం తార్కిక (*pause_func_t) (స్థిరరాశి నిర్మాణం hb_ot_shape_plan_t *plan, hb_font_t *font, hb_బఫరు_t *బఫరు);
 
-  struct stage_map_t {
-    unsigned int last_lookup; /* Cumulative */
+  నిర్మాణం stage_map_t {
+    గుర్తులేని పూర్ణాంకం చివరి_lookup; /* Cumulative */
     pause_func_t pause_func;
   };
 
-  void init ()
+  శూన్య init ()
   {
-    hb_memset (this, 0, sizeof (*this));
+    hb_memset (ఇది, 0, పరిమాణం (*ఇది));
 
     features.init0 ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
     {
-      lookups[table_index].init0 ();
-      stages[table_index].init0 ();
+      lookups[పట్టిక_సూచీ].init0 ();
+      stages[పట్టిక_సూచీ].init0 ();
     }
   }
-  void fini ()
+  శూన్య fini ()
   {
     features.fini ();
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
     {
-      lookups[table_index].fini ();
-      stages[table_index].fini ();
+      lookups[పట్టిక_సూచీ].fini ();
+      stages[పట్టిక_సూచీ].fini ();
     }
   }
 
-  hb_mask_t get_global_mask () const { return global_mask; }
+  hb_ముసుగు_t get_global_ముసుగు () స్థిరరాశి { తిరిగి global_ముసుగు; }
 
-  hb_mask_t get_mask (hb_tag_t feature_tag, unsigned int *shift = nullptr) const
+  hb_ముసుగు_t get_ముసుగు (hb_ట్యాగ్_t feature_ట్యాగ్, గుర్తులేని పూర్ణాంకం *జరుపు = శూన్యసూచిక) స్థిరరాశి
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    if (shift) *shift = map ? map->shift : 0;
-    return map ? map->mask : 0;
+    స్థిరరాశి feature_map_t *map = features.bsearch (feature_ట్యాగ్);
+    ఒకవేళ (జరుపు) *జరుపు = map ? map->జరుపు : 0;
+    తిరిగి map ? map->ముసుగు : 0;
   }
 
-  bool needs_fallback (hb_tag_t feature_tag) const
+  తార్కిక needs_fallback (hb_ట్యాగ్_t feature_ట్యాగ్) స్థిరరాశి
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->needs_fallback : false;
+    స్థిరరాశి feature_map_t *map = features.bsearch (feature_ట్యాగ్);
+    తిరిగి map ? map->needs_fallback : అబద్ధం;
   }
 
-  hb_mask_t get_1_mask (hb_tag_t feature_tag) const
+  hb_ముసుగు_t get_1_ముసుగు (hb_ట్యాగ్_t feature_ట్యాగ్) స్థిరరాశి
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->_1_mask : 0;
+    స్థిరరాశి feature_map_t *map = features.bsearch (feature_ట్యాగ్);
+    తిరిగి map ? map->_1_mask : 0;
   }
 
-  unsigned int get_feature_index (unsigned int table_index, hb_tag_t feature_tag) const
+  గుర్తులేని పూర్ణాంకం get_feature_సూచీ (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, hb_ట్యాగ్_t feature_ట్యాగ్) స్థిరరాశి
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->index[table_index] : HB_OT_LAYOUT_NO_FEATURE_INDEX;
+    స్థిరరాశి feature_map_t *map = features.bsearch (feature_ట్యాగ్);
+    తిరిగి map ? map->సూచీ_2[పట్టిక_సూచీ] : HB_OT_LAYOUT_NO_FEATURE_సూచీ;
   }
 
-  unsigned int get_feature_stage (unsigned int table_index, hb_tag_t feature_tag) const
+  గుర్తులేని పూర్ణాంకం get_feature_stage (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, hb_ట్యాగ్_t feature_ట్యాగ్) స్థిరరాశి
   {
-    const feature_map_t *map = features.bsearch (feature_tag);
-    return map ? map->stage[table_index] : UINT_MAX;
+    స్థిరరాశి feature_map_t *map = features.bsearch (feature_ట్యాగ్);
+    తిరిగి map ? map->stage[పట్టిక_సూచీ] : UINT_MAX;
   }
 
-  hb_array_t<const hb_ot_map_t::lookup_map_t>
-  get_stage_lookups (unsigned int table_index, unsigned int stage) const
+  hb_array_t<స్థిరరాశి hb_ot_map_t::lookup_map_t>
+  get_stage_lookups (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, గుర్తులేని పూర్ణాంకం stage) స్థిరరాశి
   {
-    if (unlikely (stage > stages[table_index].length))
-      return hb_array<const hb_ot_map_t::lookup_map_t> (nullptr, 0);
+    ఒకవేళ (unlikely (stage > stages[పట్టిక_సూచీ].నిడివి))
+      తిరిగి hb_array<స్థిరరాశి hb_ot_map_t::lookup_map_t> (శూన్యసూచిక, 0);
 
-    unsigned int start = stage ? stages[table_index][stage - 1].last_lookup : 0;
-    unsigned int end   = stage < stages[table_index].length ? stages[table_index][stage].last_lookup : lookups[table_index].length;
-    return lookups[table_index].as_array ().sub_array (start, end - start);
+    గుర్తులేని పూర్ణాంకం ప్రారంభం = stage ? stages[పట్టిక_సూచీ][stage - 1].చివరి_lookup : 0;
+    గుర్తులేని పూర్ణాంకం చివర   = stage < stages[పట్టిక_సూచీ].నిడివి ? stages[పట్టిక_సూచీ][stage].చివరి_lookup : lookups[పట్టిక_సూచీ].నిడివి;
+    తిరిగి lookups[పట్టిక_సూచీ].as_array ().sub_array (ప్రారంభం, చివర - ప్రారంభం);
   }
 
-  HB_INTERNAL void collect_lookups (unsigned int table_index, hb_set_t *lookups) const;
-  template <typename Proxy>
-  HB_INTERNAL void apply (const Proxy &proxy,
-			  const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void substitute (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (const struct hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL unsigned int get_feature_tags (unsigned int  start_offset,
-					     unsigned int *tag_count, /* IN/OUT */
-					     hb_tag_t     *tags /* OUT */) const;
+  HB_అంతర్గత శూన్య collect_lookups (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, hb_సమితి_t *lookups) స్థిరరాశి;
+  మూస <రకం_పేరు Proxy>
+  HB_అంతర్గత శూన్య apply (స్థిరరాశి Proxy &proxy,
+			  స్థిరరాశి నిర్మాణం hb_ot_shape_plan_t *plan, hb_font_t *font, hb_బఫరు_t *బఫరు) స్థిరరాశి;
+  HB_అంతర్గత శూన్య substitute (స్థిరరాశి నిర్మాణం hb_ot_shape_plan_t *plan, hb_font_t *font, hb_బఫరు_t *బఫరు) స్థిరరాశి;
+  HB_అంతర్గత శూన్య position (స్థిరరాశి నిర్మాణం hb_ot_shape_plan_t *plan, hb_font_t *font, hb_బఫరు_t *బఫరు) స్థిరరాశి;
+  HB_అంతర్గత గుర్తులేని పూర్ణాంకం get_feature_ట్యాగులు (గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+					     గుర్తులేని పూర్ణాంకం *ట్యాగ్_లెక్క, /* IN/OUT */
+					     hb_ట్యాగ్_t     *ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి;
 
-  public:
-  hb_tag_t chosen_script[2];
-  bool found_script[2];
+  బహిరంగ:
+  hb_ట్యాగ్_t chosen_script[2];
+  తార్కిక దొరికింది_script[2];
 
-  private:
+  అంతరంగ:
 
-  hb_mask_t global_mask = 0;
+  hb_ముసుగు_t global_ముసుగు = 0;
 
-  hb_sorted_vector_t<feature_map_t> features;
-  hb_vector_t<lookup_map_t> lookups[2]; /* GSUB/GPOS */
-  hb_vector_t<stage_map_t> stages[2]; /* GSUB/GPOS */
+  hb_sorted_సదిశ_t<feature_map_t> features;
+  hb_సదిశ_t<lookup_map_t> lookups[2]; /* GSUB/GPOS */
+  hb_సదిశ_t<stage_map_t> stages[2]; /* GSUB/GPOS */
 };
 
-enum hb_ot_map_feature_flags_t
+గణన hb_ot_map_feature_flags_t
 {
   F_NONE		= 0x0000u,
   F_GLOBAL		= 0x0001u, /* Feature applies to all characters; results in no mask allocated for it. */
@@ -193,109 +193,109 @@ enum hb_ot_map_feature_flags_t
   F_MANUAL_JOINERS	= F_MANUAL_ZWNJ | F_MANUAL_ZWJ,
   F_GLOBAL_MANUAL_JOINERS= F_GLOBAL | F_MANUAL_JOINERS,
   F_GLOBAL_HAS_FALLBACK = F_GLOBAL | F_HAS_FALLBACK,
-  F_GLOBAL_SEARCH	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
+  F_GLOBAL_శోధన	= 0x0010u, /* If feature not found in LangSys, look for it in global feature list and pick one. */
   F_RANDOM		= 0x0020u, /* Randomly select a glyph from an AlternateSubstFormat1 subtable. */
-  F_PER_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
+  F_చొప్పున_SYLLABLE	= 0x0040u  /* Contain lookup application to within syllable. */
 };
 HB_MARK_AS_FLAG_T (hb_ot_map_feature_flags_t);
 
 
-struct hb_ot_map_feature_t
+నిర్మాణం hb_ot_map_feature_t
 {
-  hb_tag_t tag;
+  hb_ట్యాగ్_t ట్యాగ్_2;
   hb_ot_map_feature_flags_t flags;
 };
 
-struct hb_ot_shape_plan_key_t;
+నిర్మాణం hb_ot_shape_plan_కీలకం_t;
 
-struct hb_ot_map_builder_t
+నిర్మాణం hb_ot_map_builder_t
 {
-  public:
+  బహిరంగ:
 
-  HB_INTERNAL hb_ot_map_builder_t (hb_face_t *face_,
-				   const hb_segment_properties_t &props_);
+  HB_అంతర్గత hb_ot_map_builder_t (hb_face_t *face_,
+				   స్థిరరాశి hb_segment_properties_t &props_);
 
-  HB_INTERNAL ~hb_ot_map_builder_t ();
+  HB_అంతర్గత ~hb_ot_map_builder_t ();
 
-  HB_INTERNAL void add_feature (hb_tag_t tag,
+  HB_అంతర్గత శూన్య కూడు_feature (hb_ట్యాగ్_t ట్యాగ్_2,
 				hb_ot_map_feature_flags_t flags=F_NONE,
-				unsigned int value=1);
+				గుర్తులేని పూర్ణాంకం value=1);
 
-  HB_INTERNAL bool has_feature (hb_tag_t tag);
+  HB_అంతర్గత తార్కిక has_feature (hb_ట్యాగ్_t ట్యాగ్_2);
 
-  void add_feature (const hb_ot_map_feature_t &feat)
-  { add_feature (feat.tag, feat.flags); }
+  శూన్య కూడు_feature (స్థిరరాశి hb_ot_map_feature_t &feat)
+  { కూడు_feature (feat.ట్యాగ్_2, feat.flags); }
 
-  void enable_feature (hb_tag_t tag,
+  శూన్య enable_feature (hb_ట్యాగ్_t ట్యాగ్_2,
 		       hb_ot_map_feature_flags_t flags=F_NONE,
-		       unsigned int value=1)
-  { add_feature (tag, F_GLOBAL | flags, value); }
+		       గుర్తులేని పూర్ణాంకం value=1)
+  { కూడు_feature (ట్యాగ్_2, F_GLOBAL | flags, value); }
 
-  void disable_feature (hb_tag_t tag)
-  { add_feature (tag, F_GLOBAL, 0); }
+  శూన్య disable_feature (hb_ట్యాగ్_t ట్యాగ్_2)
+  { కూడు_feature (ట్యాగ్_2, F_GLOBAL, 0); }
 
-  void add_gsub_pause (hb_ot_map_t::pause_func_t pause_func)
-  { add_pause (0, pause_func); }
-  void add_gpos_pause (hb_ot_map_t::pause_func_t pause_func)
-  { add_pause (1, pause_func); }
+  శూన్య కూడు_gsub_pause (hb_ot_map_t::pause_func_t pause_func)
+  { కూడు_pause (0, pause_func); }
+  శూన్య కూడు_gpos_pause (hb_ot_map_t::pause_func_t pause_func)
+  { కూడు_pause (1, pause_func); }
 
-  HB_INTERNAL void compile (hb_ot_map_t                  &m,
-			    const hb_ot_shape_plan_key_t &key);
+  HB_అంతర్గత శూన్య compile (hb_ot_map_t                  &m,
+			    స్థిరరాశి hb_ot_shape_plan_కీలకం_t &key);
 
-  private:
+  అంతరంగ:
 
-  HB_INTERNAL void add_lookups (hb_ot_map_t  &m,
-				unsigned int  table_index,
-				unsigned int  feature_index,
-				const hb_ot_shape_plan_key_t &key,
-				hb_mask_t     mask,
-				bool          auto_zwnj = true,
-				bool          auto_zwj = true,
-				bool          random = false,
-				bool          per_syllable = false,
-				hb_tag_t      feature_tag = HB_TAG(' ',' ',' ',' '));
+  HB_అంతర్గత శూన్య కూడు_lookups (hb_ot_map_t  &m,
+				గుర్తులేని పూర్ణాంకం  పట్టిక_సూచీ,
+				గుర్తులేని పూర్ణాంకం  feature_సూచీ,
+				స్థిరరాశి hb_ot_shape_plan_కీలకం_t &key,
+				hb_ముసుగు_t     ముసుగు,
+				తార్కిక          auto_zwnj = నిజం,
+				తార్కిక          auto_zwj = నిజం,
+				తార్కిక          random = అబద్ధం,
+				తార్కిక          చొప్పున_syllable = అబద్ధం,
+				hb_ట్యాగ్_t      feature_ట్యాగ్ = HB_ట్యాగ్(' ',' ',' ',' '));
 
-  struct feature_info_t {
-    hb_tag_t tag;
-    unsigned int seq; /* sequence#, used for stable sorting only */
-    unsigned int max_value;
+  నిర్మాణం feature_info_t {
+    hb_ట్యాగ్_t ట్యాగ్_2;
+    గుర్తులేని పూర్ణాంకం seq; /* sequence#, used for stable sorting only */
+    గుర్తులేని పూర్ణాంకం max_విలువ;
     hb_ot_map_feature_flags_t flags;
-    unsigned int default_value; /* for non-global features, what should the unset glyphs take */
-    unsigned int stage[2]; /* GSUB/GPOS */
+    గుర్తులేని పూర్ణాంకం default_విలువ; /* for non-global features, what should the unset glyphs take */
+    గుర్తులేని పూర్ణాంకం stage[2]; /* GSUB/GPOS */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
     {
-      const feature_info_t *a = (const feature_info_t *) pa;
-      const feature_info_t *b = (const feature_info_t *) pb;
-      return (a->tag != b->tag) ?  (a->tag < b->tag ? -1 : 1) :
+      స్థిరరాశి feature_info_t *a = (స్థిరరాశి feature_info_t *) pa;
+      స్థిరరాశి feature_info_t *b = (స్థిరరాశి feature_info_t *) pb;
+      తిరిగి (a->ట్యాగ్_2 != b->ట్యాగ్_2) ?  (a->ట్యాగ్_2 < b->ట్యాగ్_2 ? -1 : 1) :
 	     (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
   };
 
-  struct stage_info_t {
-    unsigned int index;
+  నిర్మాణం stage_info_t {
+    గుర్తులేని పూర్ణాంకం సూచీ_2;
     hb_ot_map_t::pause_func_t pause_func;
   };
 
-  HB_INTERNAL void add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func);
+  HB_అంతర్గత శూన్య కూడు_pause (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, hb_ot_map_t::pause_func_t pause_func);
 
-  public:
+  బహిరంగ:
 
   hb_face_t *face;
   hb_segment_properties_t props;
-  bool is_simple;
+  తార్కిక is_simple;
 
-  hb_tag_t chosen_script[2];
-  bool found_script[2];
-  unsigned int script_index[2], language_index[2];
+  hb_ట్యాగ్_t chosen_script[2];
+  తార్కిక దొరికింది_script[2];
+  గుర్తులేని పూర్ణాంకం script_సూచీ[2], language_సూచీ[2];
 
-  private:
+  అంతరంగ:
 
-  unsigned int current_stage[2]; /* GSUB/GPOS */
-  hb_vector_t<feature_info_t> feature_infos;
-  hb_vector_t<stage_info_t> stages[2]; /* GSUB/GPOS */
+  గుర్తులేని పూర్ణాంకం current_stage[2]; /* GSUB/GPOS */
+  hb_సదిశ_t<feature_info_t> feature_infos;
+  hb_సదిశ_t<stage_info_t> stages[2]; /* GSUB/GPOS */
 };
 
 
 
-#endif /* HB_OT_MAP_HH */
+#అయితే_ముగింపు /* HB_OT_MAP_HH */

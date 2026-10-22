@@ -22,44 +22,44 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ <stdio.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#నిర్వచితమైతే __cplusplus
+బాహ్య "C" {
+#అయితే_ముగింపు
 
-int alloc_state = 0;
+పూర్ణాంకం alloc_state = 0;
 
 __attribute__((no_sanitize("integer")))
-static int fastrand ()
+స్థిర పూర్ణాంకం fastrand ()
 {
-  if (!alloc_state) return 1;
+  ఒకవేళ (!alloc_state) తిరిగి 1;
   /* Based on https://software.intel.com/content/www/us/en/develop/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor.html */
   alloc_state = (214013 * alloc_state + 2531011);
-  return (alloc_state >> 16) & 0x7FFF;
+  తిరిగి (alloc_state >> 16) & 0x7FFF;
 }
 
-void* hb_malloc_impl (size_t size)
+శూన్య* hb_malloc_impl (size_t కొలత)
 {
-  return (fastrand () % 16) ? malloc (size) : NULL;
+  తిరిగి (fastrand () % 16) ? జ్ఞాపకం_ఇవ్వు (కొలత) : ఖాళీ;
 }
 
-void* hb_calloc_impl (size_t nmemb, size_t size)
+శూన్య* hb_calloc_impl (size_t nmemb, size_t కొలత)
 {
-  return (fastrand () % 16) ? calloc (nmemb, size) : NULL;
+  తిరిగి (fastrand () % 16) ? సున్నా_జ్ఞాపకం_ఇవ్వు (nmemb, కొలత) : ఖాళీ;
 }
 
-void* hb_realloc_impl (void *ptr, size_t size)
+శూన్య* hb_realloc_impl (శూన్య *ptr, size_t కొలత)
 {
-  return (fastrand () % 16) ? realloc (ptr, size) : NULL;
+  తిరిగి (fastrand () % 16) ? realloc (ptr, కొలత) : ఖాళీ;
 }
 
-void  hb_free_impl (void *ptr)
+శూన్య  hb_free_impl (శూన్య *ptr)
 {
-  return free (ptr);
+  తిరిగి విడుదల (ptr);
 }
 
-#ifdef __cplusplus
+#నిర్వచితమైతే __cplusplus
 }
-#endif
+#అయితే_ముగింపు

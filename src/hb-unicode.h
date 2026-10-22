@@ -28,14 +28,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_UNICODE_H
-#define HB_UNICODE_H
+#నిర్వచితం_కాకపోతే HB_UNICODE_H
+#నిర్వచించు HB_UNICODE_H
 
-#include "hb-common.h"
+#అన్తర్భావ "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -47,7 +47,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.9.0
  **/
-#define HB_UNICODE_MAX 0x10FFFFu
+#నిర్వచించు HB_UNICODE_MAX 0x10FFFFu
 
 
 /**
@@ -88,12 +88,12 @@ HB_BEGIN_DECLS
  **/
 
 /* Unicode Character Database property: General_Category (gc) */
-typedef enum
+రకనిర్వచనం గణన
 {
   HB_UNICODE_GENERAL_CATEGORY_CONTROL,			/* Cc */
   HB_UNICODE_GENERAL_CATEGORY_FORMAT,			/* Cf */
   HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED,		/* Cn */
-  HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE,		/* Co */
+  HB_UNICODE_GENERAL_CATEGORY_వ్యక్తిగత_USE,		/* Co */
   HB_UNICODE_GENERAL_CATEGORY_SURROGATE,		/* Cs */
   HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER,		/* Ll */
   HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER,		/* Lm */
@@ -103,9 +103,9 @@ typedef enum
   HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK,		/* Mc */
   HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK,		/* Me */
   HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK,		/* Mn */
-  HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER,		/* Nd */
-  HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER,		/* Nl */
-  HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER,		/* No */
+  HB_UNICODE_GENERAL_CATEGORY_DECIMAL_సంఖ్య,		/* Nd */
+  HB_UNICODE_GENERAL_CATEGORY_LETTER_సంఖ్య,		/* Nl */
+  HB_UNICODE_GENERAL_CATEGORY_OTHER_సంఖ్య,		/* No */
   HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION,	/* Pc */
   HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION,		/* Pd */
   HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION,	/* Pe */
@@ -113,11 +113,11 @@ typedef enum
   HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION,	/* Pi */
   HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION,	/* Po */
   HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION,		/* Ps */
-  HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL,		/* Sc */
-  HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL,		/* Sk */
-  HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL,		/* Sm */
-  HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL,		/* So */
-  HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR,		/* Zl */
+  HB_UNICODE_GENERAL_CATEGORY_CURRENCY_చిహ్నం,		/* Sc */
+  HB_UNICODE_GENERAL_CATEGORY_MODIFIER_చిహ్నం,		/* Sk */
+  HB_UNICODE_GENERAL_CATEGORY_MATH_చిహ్నం,		/* Sm */
+  HB_UNICODE_GENERAL_CATEGORY_OTHER_చిహ్నం,		/* So */
+  HB_UNICODE_GENERAL_CATEGORY_పంక్తి_SEPARATOR,		/* Zl */
   HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR,	/* Zp */
   HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR		/* Zs */
 } hb_unicode_general_category_t;
@@ -190,7 +190,7 @@ typedef enum
  * being returned from hb_unicode_combining_class().</note>
  *
  **/
-typedef enum
+రకనిర్వచనం గణన
 {
   HB_UNICODE_COMBINING_CLASS_NOT_REORDERED	= 0,
   HB_UNICODE_COMBINING_CLASS_OVERLAY		= 1,
@@ -249,19 +249,19 @@ typedef enum
   HB_UNICODE_COMBINING_CLASS_CCC132	= 132,
 
 
-  HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT	= 200,
-  HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW		= 202,
+  HB_UNICODE_COMBINING_CLASS_ATTACHED_క్రింద_ఎడమ	= 200,
+  HB_UNICODE_COMBINING_CLASS_ATTACHED_క్రింద		= 202,
   HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE		= 214,
-  HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT	= 216,
-  HB_UNICODE_COMBINING_CLASS_BELOW_LEFT			= 218,
-  HB_UNICODE_COMBINING_CLASS_BELOW			= 220,
-  HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT		= 222,
-  HB_UNICODE_COMBINING_CLASS_LEFT			= 224,
-  HB_UNICODE_COMBINING_CLASS_RIGHT			= 226,
-  HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT			= 228,
+  HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_కుడి	= 216,
+  HB_UNICODE_COMBINING_CLASS_క్రింద_ఎడమ			= 218,
+  HB_UNICODE_COMBINING_CLASS_క్రింద			= 220,
+  HB_UNICODE_COMBINING_CLASS_క్రింద_కుడి		= 222,
+  HB_UNICODE_COMBINING_CLASS_ఎడమ			= 224,
+  HB_UNICODE_COMBINING_CLASS_కుడి			= 226,
+  HB_UNICODE_COMBINING_CLASS_ABOVE_ఎడమ			= 228,
   HB_UNICODE_COMBINING_CLASS_ABOVE			= 230,
-  HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT		= 232,
-  HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW		= 233,
+  HB_UNICODE_COMBINING_CLASS_ABOVE_కుడి		= 232,
+  HB_UNICODE_COMBINING_CLASS_DOUBLE_క్రింద		= 233,
   HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE		= 234,
 
   HB_UNICODE_COMBINING_CLASS_IOTA_SUBSCRIPT		= 240,
@@ -286,49 +286,49 @@ typedef enum
  * needed, and replace the default by calling the setter for a
  * method.
  **/
-typedef struct hb_unicode_funcs_t hb_unicode_funcs_t;
+రకనిర్వచనం నిర్మాణం hb_unicode_funcs_t hb_unicode_funcs_t;
 
 
 /*
  * just give me the best implementation you've got there.
  */
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_default (void);
+hb_unicode_funcs_get_default (శూన్య);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_create (hb_unicode_funcs_t *parent);
+hb_unicode_funcs_create (hb_unicode_funcs_t *మాతృ);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_empty (void);
+hb_unicode_funcs_get_ఖాళీలు (శూన్య);
 
 HB_EXTERN hb_unicode_funcs_t *
 hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_bool_t
-hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t *key,
-				void *              data,
+hb_unicode_funcs_సమితి_user_దత్తాంశం (hb_unicode_funcs_t *ufuncs,
+				hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+				శూన్య *              దత్తాంశం,
 				hb_destroy_func_t   destroy,
 				hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t       *key);
+HB_EXTERN శూన్య *
+hb_unicode_funcs_get_user_దత్తాంశం (స్థిరరాశి hb_unicode_funcs_t *ufuncs,
+				hb_user_దత్తాంశం_కీలకం_t       *కీలకం_2);
 
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_bool_t
 hb_unicode_funcs_is_immutable (hb_unicode_funcs_t *ufuncs);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_unicode_funcs_get_parent (hb_unicode_funcs_t *ufuncs);
+hb_unicode_funcs_get_మాతృ (hb_unicode_funcs_t *ufuncs);
 
 
 /*
@@ -351,9 +351,9 @@ hb_unicode_funcs_get_parent (hb_unicode_funcs_t *ufuncs);
  * Return value: The #hb_unicode_combining_class_t of @unicode
  * 
  **/
-typedef hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_unicode_funcs_t *ufuncs,
+రకనిర్వచనం hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 శూన్య               *user_దత్తాంశం);
 
 /**
  * hb_unicode_general_category_func_t:
@@ -369,9 +369,9 @@ typedef hb_unicode_combining_class_t	(*hb_unicode_combining_class_func_t)	(hb_un
  * Return value: The #hb_unicode_general_category_t of @unicode
  *
  **/
-typedef hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_unicode_funcs_t *ufuncs,
+రకనిర్వచనం hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 శూన్య               *user_దత్తాంశం);
 
 /**
  * hb_unicode_mirroring_func_t:
@@ -391,9 +391,9 @@ typedef hb_unicode_general_category_t	(*hb_unicode_general_category_func_t)	(hb_
  * Return value: The #hb_codepoint_t of the Mirroring Glyph for @unicode
  *
  **/
-typedef hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *ufuncs,
+రకనిర్వచనం hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 శూన్య               *user_దత్తాంశం);
 
 /**
  * hb_unicode_script_func_t:
@@ -409,9 +409,9 @@ typedef hb_codepoint_t			(*hb_unicode_mirroring_func_t)		(hb_unicode_funcs_t *uf
  * Return value: The #hb_script_t of @unicode
  * 
  **/
-typedef hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
+రకనిర్వచనం hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 శూన్య               *user_దత్తాంశం);
 
 /**
  * hb_unicode_compose_func_t:
@@ -432,11 +432,11 @@ typedef hb_script_t			(*hb_unicode_script_func_t)		(hb_unicode_funcs_t *ufuncs,
  * Return value: `true` is @a,@b composed, `false` otherwise
  *
  **/
-typedef hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
+రకనిర్వచనం hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      a,
 										 hb_codepoint_t      b,
 										 hb_codepoint_t     *ab,
-										 void               *user_data);
+										 శూన్య               *user_దత్తాంశం);
 
 /**
  * hb_unicode_decompose_func_t:
@@ -456,11 +456,11 @@ typedef hb_bool_t			(*hb_unicode_compose_func_t)		(hb_unicode_funcs_t *ufuncs,
  * Return value: `true` if @ab decomposed, `false` otherwise
  *
  **/
-typedef hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
+రకనిర్వచనం hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      ab,
 										 hb_codepoint_t     *a,
 										 hb_codepoint_t     *b,
-										 void               *user_data);
+										 శూన్య               *user_దత్తాంశం);
 
 /* func setters */
 
@@ -475,10 +475,10 @@ typedef hb_bool_t			(*hb_unicode_decompose_func_t)		(hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
-hb_unicode_funcs_set_combining_class_func (hb_unicode_funcs_t *ufuncs,
+HB_EXTERN శూన్య
+hb_unicode_funcs_సమితి_combining_class_func (hb_unicode_funcs_t *ufuncs,
 					   hb_unicode_combining_class_func_t func,
-					   void *user_data, hb_destroy_func_t destroy);
+					   శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_general_category_func:
@@ -491,10 +491,10 @@ hb_unicode_funcs_set_combining_class_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
-hb_unicode_funcs_set_general_category_func (hb_unicode_funcs_t *ufuncs,
+HB_EXTERN శూన్య
+hb_unicode_funcs_సమితి_general_category_func (hb_unicode_funcs_t *ufuncs,
 					    hb_unicode_general_category_func_t func,
-					    void *user_data, hb_destroy_func_t destroy);
+					    శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_mirroring_func:
@@ -507,10 +507,10 @@ hb_unicode_funcs_set_general_category_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
-hb_unicode_funcs_set_mirroring_func (hb_unicode_funcs_t *ufuncs,
+HB_EXTERN శూన్య
+hb_unicode_funcs_సమితి_mirroring_func (hb_unicode_funcs_t *ufuncs,
 				     hb_unicode_mirroring_func_t func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_script_func:
@@ -523,10 +523,10 @@ hb_unicode_funcs_set_mirroring_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
-hb_unicode_funcs_set_script_func (hb_unicode_funcs_t *ufuncs,
+HB_EXTERN శూన్య
+hb_unicode_funcs_సమితి_script_func (hb_unicode_funcs_t *ufuncs,
 				  hb_unicode_script_func_t func,
-				  void *user_data, hb_destroy_func_t destroy);
+				  శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_compose_func:
@@ -539,10 +539,10 @@ hb_unicode_funcs_set_script_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
-hb_unicode_funcs_set_compose_func (hb_unicode_funcs_t *ufuncs,
+HB_EXTERN శూన్య
+hb_unicode_funcs_సమితి_compose_func (hb_unicode_funcs_t *ufuncs,
 				   hb_unicode_compose_func_t func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_funcs_set_decompose_func:
@@ -555,10 +555,10 @@ hb_unicode_funcs_set_compose_func (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
-hb_unicode_funcs_set_decompose_func (hb_unicode_funcs_t *ufuncs,
+HB_EXTERN శూన్య
+hb_unicode_funcs_సమితి_decompose_func (hb_unicode_funcs_t *ufuncs,
 				     hb_unicode_decompose_func_t func,
-				     void *user_data, hb_destroy_func_t destroy);
+				     శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /* accessors */
 
@@ -638,6 +638,6 @@ hb_unicode_decompose (hb_unicode_funcs_t *ufuncs,
 		      hb_codepoint_t     *a,
 		      hb_codepoint_t     *b);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_UNICODE_H */
+#అయితే_ముగింపు /* HB_UNICODE_H */

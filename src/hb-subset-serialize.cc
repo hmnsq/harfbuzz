@@ -23,10 +23,10 @@
  *
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-subset-serialize.h"
-#include "hb-repacker.hh"
+#అన్తర్భావ "hb-subset-serialize.h"
+#అన్తర్భావ "hb-repacker.hh"
 
 /**
  * hb_subset_serialize_or_fail:
@@ -43,15 +43,15 @@
  * Since: 10.2.0
  **/
 HB_EXTERN hb_blob_t *
-hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
+hb_subset_serialize_or_fail (hb_ట్యాగ్_t                      పట్టిక_ట్యాగ్_2,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs)
+                             గుర్తులేని                      అంకె_hb_objs)
 {
-  hb_vector_t<const hb_subset_serialize_object_t *> packed;
-  packed.alloc (num_hb_objs + 1);
-  packed.push (nullptr);
-  for (unsigned i = 0 ; i < num_hb_objs ; i++)
+  hb_సదిశ_t<స్థిరరాశి hb_subset_serialize_object_t *> packed;
+  packed.alloc (అంకె_hb_objs + 1);
+  packed.push (శూన్యసూచిక);
+  కొరకు (గుర్తులేని i = 0 ; i < అంకె_hb_objs ; i++)
     packed.push (&(hb_objects[i]));
 
-  return hb_resolve_overflows (packed, table_tag, 20, true);
+  తిరిగి hb_resolve_overflows (packed, పట్టిక_ట్యాగ్_2, 20, నిజం);
 }

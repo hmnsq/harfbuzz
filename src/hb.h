@@ -24,28 +24,28 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_H
-#define HB_H
-#define HB_H_IN
+#నిర్వచితం_కాకపోతే HB_H
+#నిర్వచించు HB_H
+#నిర్వచించు HB_H_లోపల
 
-#include "hb-blob.h"
-#include "hb-buffer.h"
-#include "hb-common.h"
-#include "hb-deprecated.h"
-#include "hb-draw.h"
-#include "hb-face.h"
-#include "hb-font.h"
-#include "hb-map.h"
-#include "hb-paint.h"
-#include "hb-set.h"
-#include "hb-shape.h"
-#include "hb-shape-plan.h"
-#include "hb-style.h"
-#include "hb-unicode.h"
-#include "hb-version.h"
+#అన్తర్భావ "hb-blob.h"
+#అన్తర్భావ "hb-buffer.h"
+#అన్తర్భావ "hb-common.h"
+#అన్తర్భావ "hb-deprecated.h"
+#అన్తర్భావ "hb-draw.h"
+#అన్తర్భావ "hb-face.h"
+#అన్తర్భావ "hb-font.h"
+#అన్తర్భావ "hb-map.h"
+#అన్తర్భావ "hb-paint.h"
+#అన్తర్భావ "hb-set.h"
+#అన్తర్భావ "hb-shape.h"
+#అన్తర్భావ "hb-shape-plan.h"
+#అన్తర్భావ "hb-style.h"
+#అన్తర్భావ "hb-unicode.h"
+#అన్తర్భావ "hb-version.h"
 
 HB_BEGIN_DECLS
-HB_END_DECLS
+HB_చివర_DECLS
 
-#undef HB_H_IN
-#endif /* HB_H */
+#నిర్వచనం_రద్దు HB_H_లోపల
+#అయితే_ముగింపు /* HB_H */

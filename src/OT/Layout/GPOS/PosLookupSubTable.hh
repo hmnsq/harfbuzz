@@ -1,30 +1,30 @@
-#ifndef OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
-#define OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
+#నిర్వచించు OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
 
-#include "SinglePos.hh"
-#include "PairPos.hh"
-#include "CursivePos.hh"
-#include "MarkBasePos.hh"
-#include "MarkLigPos.hh"
-#include "MarkMarkPos.hh"
-#include "ContextPos.hh"
-#include "ChainContextPos.hh"
-#include "ExtensionPos.hh"
+#అన్తర్భావ "SinglePos.hh"
+#అన్తర్భావ "PairPos.hh"
+#అన్తర్భావ "CursivePos.hh"
+#అన్తర్భావ "MarkBasePos.hh"
+#అన్తర్భావ "MarkLigPos.hh"
+#అన్తర్భావ "MarkMarkPos.hh"
+#అన్తర్భావ "ContextPos.hh"
+#అన్తర్భావ "ChainContextPos.hh"
+#అన్తర్భావ "ExtensionPos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-struct PosLookupSubTable
+నిర్మాణం Pos_Lookup_Sub_పట్టిక
 {
-  friend struct ::OT::Lookup;
-  friend struct PosLookup;
+  మిత్ర నిర్మాణం ::OT::Lookup;
+  మిత్ర నిర్మాణం PosLookup;
 
-  enum Type {
+  గణన Type {
     Single              = 1,
     Pair                = 2,
     Cursive             = 3,
-    MarkBase            = 4,
+    Mark_పునాది            = 4,
     MarkLig             = 5,
     MarkMark            = 6,
     Context             = 7,
@@ -32,48 +32,48 @@ struct PosLookupSubTable
     Extension           = 9
   };
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, గుర్తులేని పూర్ణాంకం lookup_type, Ts&&... ds) స్థిరరాశి
   {
-    TRACE_DISPATCH (this, lookup_type);
-    switch (lookup_type) {
-    case Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
-    case Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
-    case Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkBase:              hb_barrier (); return_trace (u.markBase.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
-    case Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
-    case ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
-    case Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
-    default:                    return_trace (c->default_return_value ());
+    TRACE_DISPATCH (ఇది, lookup_type);
+    ఎంపిక (lookup_type) {
+    స్థితి Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి Mark_పునాది:              hb_barrier (); return_trace (u.mark_పునాది.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
+    స్థితి Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
+    అప్రమేయ:                    return_trace (c->default_return_విలువ ());
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం lookup_type) స్థిరరాశి
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    తిరిగి dispatch (&c, lookup_type);
   }
 
-  protected:
-  union {
+  రక్షిత:
+  సంఘం {
   SinglePos             single;
   PairPos               pair;
   CursivePos            cursive;
-  MarkBasePos           markBase;
+  Mark_పునాది_Pos           mark_పునాది;
   MarkLigPos            markLig;
   MarkMarkPos           markMark;
   ContextPos            context;
   ChainContextPos       chainContext;
   ExtensionPos          extension;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (0);
 };
 
 }
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH */
+#అయితే_ముగింపు  /* HB_OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH */

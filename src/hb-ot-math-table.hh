@@ -24,375 +24,375 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#ifndef HB_OT_MATH_TABLE_HH
-#define HB_OT_MATH_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_MATH_పట్టిక_HH
+#నిర్వచించు HB_OT_MATH_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-math.h"
-#include "hb-depend-data.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-layout-common.hh"
+#అన్తర్భావ "hb-ot-layout-gdef-table.hh"
+#అన్తర్భావ "hb-ot-math.h"
+#అన్తర్భావ "hb-depend-data.hh"
 
-namespace OT {
+నామాకాశ OT {
 
 
-struct MathValueRecord
+నిర్మాణం Math_విలువ_రికార్డు
 {
-  hb_position_t get_x_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
-  hb_position_t get_y_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
+  hb_position_t get_x_విలువ (hb_font_t *font, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { తిరిగి hb_saturate_కూడు (font->em_scale_x (value), (పునాది+device_పట్టిక).get_x_delta (font, get_var_store (font, పునాది))); }
+  hb_position_t get_y_విలువ (hb_font_t *font, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { తిరిగి hb_saturate_కూడు (font->em_scale_y (value), (పునాది+device_పట్టిక).get_y_delta (font, get_var_store (font, పునాది))); }
 
-  const ItemVariationStore &get_var_store (hb_font_t *font, const void *base) const
+  స్థిరరాశి అంశం_Variation_Store &get_var_store (hb_font_t *font, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
-    if ((base+deviceTable).is_variation_device ())
-      return font->face->table.GDEF->table->get_var_store ();
-#endif
-    return Null (ItemVariationStore);
+#ఒకవేళ !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
+    ఒకవేళ ((పునాది+device_పట్టిక).is_variation_device ())
+      తిరిగి font->face->పట్టిక.GDEF->పట్టిక->get_var_store ();
+#అయితే_ముగింపు
+    తిరిగి Null (అంశం_Variation_Store);
   }
 
-  MathValueRecord* copy (hb_serialize_context_t *c, const void *base,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+  Math_విలువ_రికార్డు* copy (hb_serialize_context_t *c, స్థిరరాశి శూన్య *పునాది,
+                         స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
-        !c->check_assign (out->value, (int64_t) value + hb_second (*varidx_delta),
-                          HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (nullptr);
-    out->deviceTable.serialize_copy (c, deviceTable, base, 0, hb_serialize_context_t::Head, variation_map);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (శూన్యసూచిక);
+    hb_pair_t<గుర్తులేని, పూర్ణాంకం> *varidx_delta;
+    ఒకవేళ (variation_map->has ((పునాది+device_పట్టిక).get_variation_సూచీ (), &varidx_delta) &&
+        !c->check_కేటాయించు (బహిర్గతం->value, (int64_t) value + hb_రెండవ (*varidx_delta),
+                          HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (శూన్యసూచిక);
+    బహిర్గతం->device_పట్టిక.serialize_copy (c, device_పట్టిక, పునాది, 0, hb_serialize_context_t::తల, variation_map);
 
-    return_trace (out);
+    return_trace (బహిర్గతం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
-  { (base+deviceTable).collect_variation_indices (c); }
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { (పునాది+device_పట్టిక).collect_variation_indices (c); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && deviceTable.sanitize (c, base));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && device_పట్టిక.sanitize (c, పునాది));
   }
 
-  protected:
+  రక్షిత:
   HBINT16		value;		/* The X or Y value in design units */
-  Offset16To<Device>	deviceTable;	/* Offset to the device table - from the
+  Offset16_గమ్యం<Device>	device_పట్టిక;	/* Offset to the device table - from the
 					 * beginning of parent table.  May be NULL.
 					 * Suggested format for device table is 1. */
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct MathConstants
+నిర్మాణం MathConstants
 {
-  friend struct MATH;
+  మిత్ర నిర్మాణం MATH;
 
   MathConstants* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed (ఇది);
 
-    HBINT16 *p = c->allocate_size<HBINT16> (HBINT16::static_size * 2);
-    if (unlikely (!p)) return_trace (nullptr);
-    hb_memcpy (p, percentScaleDown, HBINT16::static_size * 2);
+    HBINT16 *p = c->allocate_కొలత<HBINT16> (HBINT16::static_కొలత * 2);
+    ఒకవేళ (unlikely (!p)) return_trace (శూన్యసూచిక);
+    hb_memcpy (p, percent_Scale_కిందికి, HBINT16::static_కొలత * 2);
 
-    HBUINT16 *m = c->allocate_size<HBUINT16> (HBUINT16::static_size * 2);
-    if (unlikely (!m)) return_trace (nullptr);
-    hb_memcpy (m, minHeight, HBUINT16::static_size * 2);
+    HBUINT16 *m = c->allocate_కొలత<HBUINT16> (HBUINT16::static_కొలత * 2);
+    ఒకవేళ (unlikely (!m)) return_trace (శూన్యసూచిక);
+    hb_memcpy (m, min_ఎత్తు, HBUINT16::static_కొలత * 2);
 
-    unsigned count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecords[i], this, variation_map))
-        return_trace (nullptr);
+    గుర్తులేని లెక్క = ARRAY_నిడివి (math_విలువ_రికార్డులు);
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+      ఒకవేళ (!c->copy (math_విలువ_రికార్డులు[i], ఇది, variation_map))
+        return_trace (శూన్యసూచిక);
 
-    if (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
-    return_trace (out);
+    ఒకవేళ (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (శూన్యసూచిక);
+    return_trace (బహిర్గతం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &record : mathValueRecords)
-      record.collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి స్వయంచాలక &రికార్డు : math_విలువ_రికార్డులు)
+      రికార్డు.collect_variation_indices (c, ఇది);
   }
 
-  bool sanitize_math_value_records (hb_sanitize_context_t *c) const
+  తార్కిక sanitize_math_విలువ_రికార్డులు (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    unsigned int count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecords[i].sanitize (c, this))
-	return_trace (false);
+    గుర్తులేని పూర్ణాంకం లెక్క = ARRAY_నిడివి (math_విలువ_రికార్డులు);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!math_విలువ_రికార్డులు[i].sanitize (c, ఇది))
+	return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && sanitize_math_value_records (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && sanitize_math_విలువ_రికార్డులు (c));
   }
 
-  hb_position_t get_value (hb_ot_math_constant_t constant,
-			   hb_font_t *font) const
+  hb_position_t get_విలువ (hb_ot_math_constant_t constant,
+			   hb_font_t *font) స్థిరరాశి
   {
-    switch (constant) {
+    ఎంపిక (constant) {
 
-    case HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
-    case HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
-      return percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
+    స్థితి HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_కిందికి:
+      తిరిగి percent_Scale_కిందికి[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_కిందికి];
 
-    case HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
-    case HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
-      return font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
+    స్థితి HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_ఎత్తు:
+    స్థితి HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ఎత్తు:
+      తిరిగి font->em_scale_y (min_ఎత్తు[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_ఎత్తు]);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
-    case HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
+    స్థితి HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
+    స్థితి HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
+      తిరిగి math_విలువ_రికార్డులు[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_విలువ (font, ఇది);
 
-    case HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_MATH_LEADING:
-    case HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_ABOVE_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_BELOW_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_TOP_MAX:
-    case HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
+    స్థితి HB_OT_MATH_CONSTANT_ACCENT_పునాది_ఎత్తు:
+    స్థితి HB_OT_MATH_CONSTANT_AXIS_ఎత్తు:
+    స్థితి HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_పునాది_ఎత్తు:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_జరుపు_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_జరుపు_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_జరుపు_పైకి:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_జరుపు_పైకి:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_అంకె_DISPLAY_STYLE_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_FRACTION_నియమం_THICKNESS:
+    స్థితి HB_OT_MATH_CONSTANT_క్రింది_హద్దు_BASELINE_DROP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_క్రింది_హద్దు_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_MATH_LEADING:
+    స్థితి HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
+    స్థితి HB_OT_MATH_CONSTANT_OVERBAR_నియమం_THICKNESS:
+    స్థితి HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_నియమం_THICKNESS:
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
+    స్థితి HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
+    స్థితి HB_OT_MATH_CONSTANT_దొంతర_BOTTOM_DISPLAY_STYLE_జరుపు_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_దొంతర_BOTTOM_జరుపు_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_దొంతర_DISPLAY_STYLE_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_దొంతర_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_దొంతర_శిఖరం_DISPLAY_STYLE_జరుపు_పైకి:
+    స్థితి HB_OT_MATH_CONSTANT_దొంతర_శిఖరం_జరుపు_పైకి:
+    స్థితి HB_OT_MATH_CONSTANT_STRETCH_దొంతర_BOTTOM_జరుపు_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_STRETCH_దొంతర_GAP_ABOVE_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_STRETCH_దొంతర_GAP_క్రింద_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_STRETCH_దొంతర_శిఖరం_జరుపు_పైకి:
+    స్థితి HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_SUBSCRIPT_జరుపు_కిందికి:
+    స్థితి HB_OT_MATH_CONSTANT_SUBSCRIPT_శిఖరం_MAX:
+    స్థితి HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
+    స్థితి HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
+    స్థితి HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_SUPERSCRIPT_జరుపు_పైకి:
+    స్థితి HB_OT_MATH_CONSTANT_SUPERSCRIPT_జరుపు_పైకి_CRAMPED:
+    స్థితి HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
+    స్థితి HB_OT_MATH_CONSTANT_UNDERBAR_నియమం_THICKNESS:
+    స్థితి HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
+    స్థితి HB_OT_MATH_CONSTANT_పై_హద్దు_BASELINE_RISE_MIN:
+    స్థితి HB_OT_MATH_CONSTANT_పై_హద్దు_GAP_MIN:
+      తిరిగి math_విలువ_రికార్డులు[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_విలువ (font, ఇది);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
-      return radicalDegreeBottomRaisePercent;
+    స్థితి HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
+      తిరిగి radicalDegreeBottomRaisePercent;
 
-    default:
-      return 0;
+    అప్రమేయ:
+      తిరిగి 0;
     }
   }
 
-  protected:
-  HBINT16 percentScaleDown[2];
-  HBUINT16 minHeight[2];
-  MathValueRecord mathValueRecords[51];
+  రక్షిత:
+  HBINT16 percent_Scale_కిందికి[2];
+  HBUINT16 min_ఎత్తు[2];
+  Math_విలువ_రికార్డు math_విలువ_రికార్డులు[51];
   HBINT16 radicalDegreeBottomRaisePercent;
 
-  public:
-  DEFINE_SIZE_STATIC (214);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (214);
 };
 
-struct MathItalicsCorrectionInfo
+నిర్మాణం MathItalicsCorrectionInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = c->plan->_glyphset_mathed;
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, italicsCorrection)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->italicsCorrection, this, &c->plan->layout_variation_idx_delta_map), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ఇది+coverage, italicsCorrection)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (serialize_math_రికార్డు_array (c->serializer, బహిర్గతం->italicsCorrection, ఇది, &c->plan->layout_variation_idx_delta_map), hb_రెండవ)
+    | hb_map (hb_మొదటి)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    బహిర్గతం->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &entry : hb_zip (this+coverage, italicsCorrection))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి స్వయంచాలక &నమోదు_2 : hb_zip (ఇది+coverage, italicsCorrection))
+      ఒకవేళ (c->glyph_సమితి->has (hb_మొదటి (నమోదు_2)))
+        hb_రెండవ (నమోదు_2).collect_variation_indices (c, ఇది);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  coverage.sanitize (c, this) &&
-		  italicsCorrection.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  coverage.sanitize (c, ఇది) &&
+		  italicsCorrection.sanitize (c, ఇది));
   }
 
-  hb_position_t get_value (hb_codepoint_t glyph,
-			   hb_font_t *font) const
+  hb_position_t get_విలువ (hb_codepoint_t glyph,
+			   hb_font_t *font) స్థిరరాశి
   {
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    return italicsCorrection[index].get_x_value (font, this);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (glyph);
+    తిరిగి italicsCorrection[సూచీ_2].get_x_విలువ (font, ఇది);
   }
 
-  protected:
-  Offset16To<Coverage>       coverage;		/* Offset to Coverage table -
+  రక్షిత:
+  Offset16_గమ్యం<Coverage>       coverage;		/* Offset to Coverage table -
 						 * from the beginning of
 						 * MathItalicsCorrectionInfo
 						 * table. */
-  Array16Of<MathValueRecord> italicsCorrection;	/* Array of MathValueRecords
+  Array16_యొక్క<Math_విలువ_రికార్డు> italicsCorrection;	/* Array of MathValueRecords
 						 * defining italics correction
 						 * values for each
 						 * covered glyph. */
 
-  public:
-  DEFINE_SIZE_ARRAY (4, italicsCorrection);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, italicsCorrection);
 };
 
-struct MathTopAccentAttachment
+నిర్మాణం Math_శిఖరం_Accent_Attachment
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = c->plan->_glyphset_mathed;
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+topAccentCoverage, topAccentAttachment)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->topAccentAttachment, this, &c->plan->layout_variation_idx_delta_map), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ఇది+శిఖరం_Accent_Coverage, శిఖరం_Accent_Attachment)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (serialize_math_రికార్డు_array (c->serializer, బహిర్గతం->శిఖరం_Accent_Attachment, ఇది, &c->plan->layout_variation_idx_delta_map), hb_రెండవ)
+    | hb_map (hb_మొదటి)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    out->topAccentCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    బహిర్గతం->శిఖరం_Accent_Coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &entry : hb_zip (this+topAccentCoverage, topAccentAttachment))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి స్వయంచాలక &నమోదు_2 : hb_zip (ఇది+శిఖరం_Accent_Coverage, శిఖరం_Accent_Attachment))
+      ఒకవేళ (c->glyph_సమితి->has (hb_మొదటి (నమోదు_2)))
+        hb_రెండవ (నమోదు_2).collect_variation_indices (c, ఇది);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  topAccentCoverage.sanitize (c, this) &&
-		  topAccentAttachment.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  శిఖరం_Accent_Coverage.sanitize (c, ఇది) &&
+		  శిఖరం_Accent_Attachment.sanitize (c, ఇది));
   }
 
-  hb_position_t get_value (hb_codepoint_t glyph,
-			   hb_font_t *font) const
+  hb_position_t get_విలువ (hb_codepoint_t glyph,
+			   hb_font_t *font) స్థిరరాశి
   {
-    unsigned int index = (this+topAccentCoverage).get_coverage (glyph);
-    if (index == NOT_COVERED)
-      return font->get_glyph_h_advance (glyph) / 2;
-    return topAccentAttachment[index].get_x_value (font, this);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+శిఖరం_Accent_Coverage).get_coverage (glyph);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED)
+      తిరిగి font->get_glyph_h_advance (glyph) / 2;
+    తిరిగి శిఖరం_Accent_Attachment[సూచీ_2].get_x_విలువ (font, ఇది);
   }
 
-  protected:
-  Offset16To<Coverage>       topAccentCoverage;   /* Offset to Coverage table -
+  రక్షిత:
+  Offset16_గమ్యం<Coverage>       శిఖరం_Accent_Coverage;   /* Offset to Coverage table -
 						 * from the beginning of
 						 * MathTopAccentAttachment
 						 * table. */
-  Array16Of<MathValueRecord> topAccentAttachment; /* Array of MathValueRecords
+  Array16_యొక్క<Math_విలువ_రికార్డు> శిఖరం_Accent_Attachment; /* Array of MathValueRecords
 						 * defining top accent
 						 * attachment points for each
 						 * covered glyph. */
 
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2, topAccentAttachment);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + 2, శిఖరం_Accent_Attachment);
 };
 
-struct MathKern
+నిర్మాణం MathKern
 {
   MathKern* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed (ఇది);
 
-    if (unlikely (!c->embed (heightCount))) return_trace (nullptr);
+    ఒకవేళ (unlikely (!c->embed (ఎత్తు_లెక్క))) return_trace (శూన్యసూచిక);
 
-    unsigned count = 2 * heightCount + 1;
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
-        return_trace (nullptr);
+    గుర్తులేని లెక్క = 2 * ఎత్తు_లెక్క + 1;
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+      ఒకవేళ (!c->copy (math_విలువ_రికార్డులు_Z.arrayZ[i], ఇది, variation_map))
+        return_trace (శూన్యసూచిక);
 
-    return_trace (out);
+    return_trace (బహిర్గతం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &record : mathValueRecordsZ.as_array (2 * heightCount + 1))
-      record.collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి స్వయంచాలక &రికార్డు : math_విలువ_రికార్డులు_Z.as_array (2 * ఎత్తు_లెక్క + 1))
+      రికార్డు.collect_variation_indices (c, ఇది);
   }
 
-  bool sanitize_math_value_records (hb_sanitize_context_t *c) const
+  తార్కిక sanitize_math_విలువ_రికార్డులు (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    unsigned int count = 2 * heightCount + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    TRACE_SANITIZE (ఇది);
+    గుర్తులేని పూర్ణాంకం లెక్క = 2 * ఎత్తు_లెక్క + 1;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!math_విలువ_రికార్డులు_Z.arrayZ[i].sanitize (c, ఇది)) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  c->check_array (mathValueRecordsZ.arrayZ, 2 * heightCount + 1) &&
-		  sanitize_math_value_records (c));
+		  c->check_array (math_విలువ_రికార్డులు_Z.arrayZ, 2 * ఎత్తు_లెక్క + 1) &&
+		  sanitize_math_విలువ_రికార్డులు (c));
   }
 
-  hb_position_t get_value (hb_position_t correction_height, hb_font_t *font) const
+  hb_position_t get_విలువ (hb_position_t correction_ఎత్తు, hb_font_t *font) స్థిరరాశి
   {
-    const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
-    const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    int sign = font->y_scale < 0 ? -1 : +1;
+    స్థిరరాశి Math_విలువ_రికార్డు* correction_ఎత్తు_2 = math_విలువ_రికార్డులు_Z.arrayZ;
+    స్థిరరాశి Math_విలువ_రికార్డు* kern_విలువ = math_విలువ_రికార్డులు_Z.arrayZ + ఎత్తు_లెక్క;
+    పూర్ణాంకం sign = font->y_scale < 0 ? -1 : +1;
 
     /* According to OpenType spec (v1.9), except for the boundary cases, the index
      * chosen for kern value should be i such that
@@ -400,55 +400,55 @@ struct MathKern
      * We can use the binary search algorithm of std::upper_bound(). Or, we can
      * use the internal hb_bsearch_impl.
      */
-    unsigned int pos;
-    auto cmp = +[](const void* key, const void* p,
-                   int sign, hb_font_t* font, const MathKern* mathKern) -> int {
+    గుర్తులేని పూర్ణాంకం pos;
+    స్వయంచాలక cmp = +[](స్థిరరాశి శూన్య* key, స్థిరరాశి శూన్య* p,
+                   పూర్ణాంకం sign, hb_font_t* font, స్థిరరాశి MathKern* mathKern) -> పూర్ణాంకం {
       hb_position_t a = *(hb_position_t *) key;
-      hb_position_t b = ((MathValueRecord *) p)->get_y_value (font, mathKern);
-      if (a == b) return 0;
-      return sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
+      hb_position_t b = ((Math_విలువ_రికార్డు *) p)->get_y_విలువ (font, mathKern);
+      ఒకవేళ (a == b) తిరిగి 0;
+      తిరిగి sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
     };
-    unsigned int i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
-                                     heightCount, MathValueRecord::static_size,
-                                     cmp, sign, font, this) ? pos + 1 : pos;
-    return kernValue[i].get_x_value (font, this);
+    గుర్తులేని పూర్ణాంకం i = hb_bsearch_impl(&pos, correction_ఎత్తు, correction_ఎత్తు_2,
+                                     ఎత్తు_లెక్క, Math_విలువ_రికార్డు::static_కొలత,
+                                     cmp, sign, font, ఇది) ? pos + 1 : pos;
+    తిరిగి kern_విలువ[i].get_x_విలువ (font, ఇది);
   }
 
-  unsigned int get_entries (unsigned int start_offset,
-			    unsigned int *entries_count, /* IN/OUT */
-			    hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			    hb_font_t *font) const
+  గుర్తులేని పూర్ణాంకం get_entries (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			    గుర్తులేని పూర్ణాంకం *entries_లెక్క, /* IN/OUT */
+			    hb_ot_math_kern_నమోదు_t *kern_entries, /*బహిర్గతం*/
+			    hb_font_t *font) స్థిరరాశి
   {
-    const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
-    const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    const unsigned int entriesCount = heightCount + 1;
+    స్థిరరాశి Math_విలువ_రికార్డు* correction_ఎత్తు_2 = math_విలువ_రికార్డులు_Z.arrayZ;
+    స్థిరరాశి Math_విలువ_రికార్డు* kern_విలువ = math_విలువ_రికార్డులు_Z.arrayZ + ఎత్తు_లెక్క;
+    స్థిరరాశి గుర్తులేని పూర్ణాంకం entries_లెక్క_2 = ఎత్తు_లెక్క + 1;
 
-    if (entries_count && kern_entries)
+    ఒకవేళ (entries_లెక్క && kern_entries)
     {
-      unsigned int start = hb_min (start_offset, entriesCount);
-      unsigned int end = hb_min (start + *entries_count, entriesCount);
-      *entries_count = end - start;
+      గుర్తులేని పూర్ణాంకం ప్రారంభం = hb_min (ప్రారంభం_స్థానభ్రంశం, entries_లెక్క_2);
+      గుర్తులేని పూర్ణాంకం చివర = hb_min (ప్రారంభం + *entries_లెక్క, entries_లెక్క_2);
+      *entries_లెక్క = చివర - ప్రారంభం;
 
-      for (unsigned int i = 0; i < *entries_count; i++) {
-	unsigned int j = start + i;
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < *entries_లెక్క; i++) {
+	గుర్తులేని పూర్ణాంకం j = ప్రారంభం + i;
 
-	hb_position_t max_height;
-	if (j == heightCount) {
-	  max_height = INT32_MAX;
-	} else {
-	  max_height = correctionHeight[j].get_y_value (font, this);
+	hb_position_t max_ఎత్తు;
+	ఒకవేళ (j == ఎత్తు_లెక్క) {
+	  max_ఎత్తు = INT32_MAX;
+	} లేకపోతే {
+	  max_ఎత్తు = correction_ఎత్తు_2[j].get_y_విలువ (font, ఇది);
 	}
 
-	kern_entries[i] = {max_height, kernValue[j].get_x_value (font, this)};
+	kern_entries[i] = {max_ఎత్తు, kern_విలువ[j].get_x_విలువ (font, ఇది)};
       }
     }
-    return entriesCount;
+    తిరిగి entries_లెక్క_2;
   }
 
-  protected:
-  HBUINT16	heightCount;
-  UnsizedArrayOf<MathValueRecord>
-		mathValueRecordsZ;
+  రక్షిత:
+  HBUINT16	ఎత్తు_లెక్క;
+  Unsized_Array_యొక్క<Math_విలువ_రికార్డు>
+		math_విలువ_రికార్డులు_Z;
 				/* Array of correction heights at
 				 * which the kern value changes.
 				 * Sorted by the height value in
@@ -458,747 +458,747 @@ struct MathKern
 				 * to heights. (heightCount+1 entries).
 				 */
 
-  public:
-  DEFINE_SIZE_ARRAY (2, mathValueRecordsZ);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, math_విలువ_రికార్డులు_Z);
 };
 
-struct MathKernInfoRecord
+నిర్మాణం Math_Kern_Info_రికార్డు
 {
-  MathKernInfoRecord* copy (hb_serialize_context_t *c, const void *base,
-                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+  Math_Kern_Info_రికార్డు* copy (hb_serialize_context_t *c, స్థిరరాశి శూన్య *పునాది,
+                            స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (శూన్యసూచిక);
 
-    unsigned count = ARRAY_LENGTH (mathKern);
-    for (unsigned i = 0; i < count; i++)
-      out->mathKern[i].serialize_copy (c, mathKern[i], base, 0, hb_serialize_context_t::Head, variation_map);
+    గుర్తులేని లెక్క = ARRAY_నిడివి (mathKern);
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+      బహిర్గతం->mathKern[i].serialize_copy (c, mathKern[i], పునాది, 0, hb_serialize_context_t::తల, variation_map);
 
-    return_trace (out);
+    return_trace (బహిర్గతం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    for (const auto &offset : mathKern)
-      (base+offset).collect_variation_indices (c);
+    కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : mathKern)
+      (పునాది+స్థానభ్రంశం).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    unsigned int count = ARRAY_LENGTH (mathKern);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!mathKern[i].sanitize (c, base)))
-	return_trace (false);
+    గుర్తులేని పూర్ణాంకం లెక్క = ARRAY_నిడివి (mathKern);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (unlikely (!mathKern[i].sanitize (c, పునాది)))
+	return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
   hb_position_t get_kerning (hb_ot_math_kern_t kern,
-			     hb_position_t correction_height,
+			     hb_position_t correction_ఎత్తు,
 			     hb_font_t *font,
-			     const void *base) const
+			     స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern))) return 0;
-    return (base+mathKern[idx]).get_value (correction_height, font);
+    గుర్తులేని పూర్ణాంకం idx = kern;
+    ఒకవేళ (unlikely (idx >= ARRAY_నిడివి (mathKern))) తిరిగి 0;
+    తిరిగి (పునాది+mathKern[idx]).get_విలువ (correction_ఎత్తు, font);
   }
 
-  unsigned int get_kernings (hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
-			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
+  గుర్తులేని పూర్ణాంకం get_kernings (hb_ot_math_kern_t kern,
+			     గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			     గుర్తులేని పూర్ణాంకం *entries_లెక్క, /* IN/OUT */
+			     hb_ot_math_kern_నమోదు_t *kern_entries, /*బహిర్గతం*/
 			     hb_font_t *font,
-			     const void *base) const
+			     స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
-      if (entries_count) *entries_count = 0;
-      return 0;
+    గుర్తులేని పూర్ణాంకం idx = kern;
+    ఒకవేళ (unlikely (idx >= ARRAY_నిడివి (mathKern)) || !mathKern[idx]) {
+      ఒకవేళ (entries_లెక్క) *entries_లెక్క = 0;
+      తిరిగి 0;
     }
-    return (base+mathKern[idx]).get_entries (start_offset,
-					     entries_count,
+    తిరిగి (పునాది+mathKern[idx]).get_entries (ప్రారంభం_స్థానభ్రంశం,
+					     entries_లెక్క,
 					     kern_entries,
 					     font);
   }
 
-  protected:
+  రక్షిత:
   /* Offset to MathKern table for each corner -
    * from the beginning of MathKernInfo table.  May be NULL. */
-  Offset16To<MathKern> mathKern[4];
+  Offset16_గమ్యం<MathKern> mathKern[4];
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct MathKernInfo
+నిర్మాణం MathKernInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = c->plan->_glyphset_mathed;
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+mathKernCoverage, mathKernInfoRecords)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->mathKernInfoRecords, this, &c->plan->layout_variation_idx_delta_map), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ఇది+mathKernCoverage, math_Kern_Info_రికార్డులు)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (serialize_math_రికార్డు_array (c->serializer, బహిర్గతం->math_Kern_Info_రికార్డులు, ఇది, &c->plan->layout_variation_idx_delta_map), hb_రెండవ)
+    | hb_map (hb_మొదటి)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    out->mathKernCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    బహిర్గతం->mathKernCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &entry : hb_zip (this+mathKernCoverage, mathKernInfoRecords))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి స్వయంచాలక &నమోదు_2 : hb_zip (ఇది+mathKernCoverage, math_Kern_Info_రికార్డులు))
+      ఒకవేళ (c->glyph_సమితి->has (hb_మొదటి (నమోదు_2)))
+        hb_రెండవ (నమోదు_2).collect_variation_indices (c, ఇది);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  mathKernCoverage.sanitize (c, this) &&
-		  mathKernInfoRecords.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  mathKernCoverage.sanitize (c, ఇది) &&
+		  math_Kern_Info_రికార్డులు.sanitize (c, ఇది));
   }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     hb_position_t correction_height,
-			     hb_font_t *font) const
+			     hb_position_t correction_ఎత్తు,
+			     hb_font_t *font) స్థిరరాశి
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+mathKernCoverage).get_coverage (glyph);
+    తిరిగి math_Kern_Info_రికార్డులు[సూచీ_2].get_kerning (kern, correction_ఎత్తు, font, ఇది);
   }
 
-  unsigned int get_kernings (hb_codepoint_t glyph,
+  గుర్తులేని పూర్ణాంకం get_kernings (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
-			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			     hb_font_t *font) const
+			     గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			     గుర్తులేని పూర్ణాంకం *entries_లెక్క, /* IN/OUT */
+			     hb_ot_math_kern_నమోదు_t *kern_entries, /*బహిర్గతం*/
+			     hb_font_t *font) స్థిరరాశి
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kernings (kern,
-						    start_offset,
-						    entries_count,
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+mathKernCoverage).get_coverage (glyph);
+    తిరిగి math_Kern_Info_రికార్డులు[సూచీ_2].get_kernings (kern,
+						    ప్రారంభం_స్థానభ్రంశం,
+						    entries_లెక్క,
 						    kern_entries,
 						    font,
-						    this);
+						    ఇది);
   }
 
-  protected:
-  Offset16To<Coverage>
+  రక్షిత:
+  Offset16_గమ్యం<Coverage>
 		mathKernCoverage;
 				/* Offset to Coverage table -
 				 * from the beginning of the
 				 * MathKernInfo table. */
-  Array16Of<MathKernInfoRecord>
-		mathKernInfoRecords;
+  Array16_యొక్క<Math_Kern_Info_రికార్డు>
+		math_Kern_Info_రికార్డులు;
 				/* Array of MathKernInfoRecords,
 				 * per-glyph information for
 				 * mathematical positioning
 				 * of subscripts and
 				 * superscripts. */
 
-  public:
-  DEFINE_SIZE_ARRAY (4, mathKernInfoRecords);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, math_Kern_Info_రికార్డులు);
 };
 
-struct MathGlyphInfo
+నిర్మాణం MathGlyphInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, this);
-    out->mathTopAccentAttachment.serialize_subset (c, mathTopAccentAttachment, this);
+    బహిర్గతం->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, ఇది);
+    బహిర్గతం->math_శిఖరం_Accent_Attachment.serialize_subset (c, math_శిఖరం_Accent_Attachment, ఇది);
 
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    స్థిరరాశి hb_సమితి_t &glyphset = c->plan->_glyphset_mathed;
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto it =
-    + hb_iter (this+extendedShapeCoverage)
-    | hb_take (c->plan->source->get_num_glyphs ())
+    స్వయంచాలక it =
+    + hb_iter (ఇది+extendedShapeCoverage)
+    | hb_take (c->plan->ఆధారం->get_అంకె_glyphs ())
     | hb_filter (glyphset)
-    | hb_map_retains_sorting (glyph_map)
+    | hb_map_retains_క్రమీకరణ (glyph_map)
     ;
 
-    if (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
-    else out->extendedShapeCoverage = 0;
+    ఒకవేళ (it) బహిర్గతం->extendedShapeCoverage.serialize_serialize (c->serializer, it);
+    లేకపోతే బహిర్గతం->extendedShapeCoverage = 0;
 
-    out->mathKernInfo.serialize_subset (c, mathKernInfo, this);
-    return_trace (true);
+    బహిర్గతం->mathKernInfo.serialize_subset (c, mathKernInfo, ఇది);
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    (this+mathItalicsCorrectionInfo).collect_variation_indices (c);
-    (this+mathTopAccentAttachment).collect_variation_indices (c);
-    (this+mathKernInfo).collect_variation_indices (c);
+    (ఇది+mathItalicsCorrectionInfo).collect_variation_indices (c);
+    (ఇది+math_శిఖరం_Accent_Attachment).collect_variation_indices (c);
+    (ఇది+mathKernInfo).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  mathItalicsCorrectionInfo.sanitize (c, this) &&
-		  mathTopAccentAttachment.sanitize (c, this) &&
-		  extendedShapeCoverage.sanitize (c, this) &&
-		  mathKernInfo.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  mathItalicsCorrectionInfo.sanitize (c, ఇది) &&
+		  math_శిఖరం_Accent_Attachment.sanitize (c, ఇది) &&
+		  extendedShapeCoverage.sanitize (c, ఇది) &&
+		  mathKernInfo.sanitize (c, ఇది));
   }
 
   hb_position_t
-  get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
+  get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) స్థిరరాశి
+  { తిరిగి (ఇది+mathItalicsCorrectionInfo).get_విలువ (glyph, font); }
 
   hb_position_t
-  get_top_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathTopAccentAttachment).get_value (glyph, font); }
+  get_శిఖరం_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) స్థిరరాశి
+  { తిరిగి (ఇది+math_శిఖరం_Accent_Attachment).get_విలువ (glyph, font); }
 
-  bool is_extended_shape (hb_codepoint_t glyph) const
-  { return (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
+  తార్కిక is_extended_shape (hb_codepoint_t glyph) స్థిరరాశి
+  { తిరిగి (ఇది+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     hb_position_t correction_height,
-			     hb_font_t *font) const
-  { return (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
+			     hb_position_t correction_ఎత్తు,
+			     hb_font_t *font) స్థిరరాశి
+  { తిరిగి (ఇది+mathKernInfo).get_kerning (glyph, kern, correction_ఎత్తు, font); }
 
   hb_position_t get_kernings (hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      unsigned int start_offset,
-			      unsigned int *entries_count, /* IN/OUT */
-			      hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			      hb_font_t *font) const
-  { return (this+mathKernInfo).get_kernings (glyph,
+			      గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			      గుర్తులేని పూర్ణాంకం *entries_లెక్క, /* IN/OUT */
+			      hb_ot_math_kern_నమోదు_t *kern_entries, /*బహిర్గతం*/
+			      hb_font_t *font) స్థిరరాశి
+  { తిరిగి (ఇది+mathKernInfo).get_kernings (glyph,
 					     kern,
-					     start_offset,
-					     entries_count,
+					     ప్రారంభం_స్థానభ్రంశం,
+					     entries_లెక్క,
 					     kern_entries,
 					     font); }
 
-  protected:
+  రక్షిత:
   /* Offset to MathItalicsCorrectionInfo table -
    * from the beginning of MathGlyphInfo table. */
-  Offset16To<MathItalicsCorrectionInfo> mathItalicsCorrectionInfo;
+  Offset16_గమ్యం<MathItalicsCorrectionInfo> mathItalicsCorrectionInfo;
 
   /* Offset to MathTopAccentAttachment table -
    * from the beginning of MathGlyphInfo table. */
-  Offset16To<MathTopAccentAttachment> mathTopAccentAttachment;
+  Offset16_గమ్యం<Math_శిఖరం_Accent_Attachment> math_శిఖరం_Accent_Attachment;
 
   /* Offset to coverage table for Extended Shape glyphs -
    * from the beginning of MathGlyphInfo table. When the left or right glyph of
    * a box is an extended shape variant, the (ink) box (and not the default
    * position defined by values in MathConstants table) should be used for
    * vertical positioning purposes.  May be NULL.. */
-  Offset16To<Coverage> extendedShapeCoverage;
+  Offset16_గమ్యం<Coverage> extendedShapeCoverage;
 
    /* Offset to MathKernInfo table -
     * from the beginning of MathGlyphInfo table. */
-  Offset16To<MathKernInfo> mathKernInfo;
+  Offset16_గమ్యం<MathKernInfo> mathKernInfo;
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct MathGlyphVariantRecord
+నిర్మాణం Math_Glyph_Variant_రికార్డు
 {
-  friend struct MathGlyphConstruction;
+  మిత్ర నిర్మాణం MathGlyphConstruction;
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    const hb_map_t& glyph_map = *c->plan->glyph_map;
-    return_trace (c->serializer->check_assign (out->variantGlyph, glyph_map.get (variantGlyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    స్థిరరాశి hb_map_t& glyph_map = *c->plan->glyph_map;
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->variantGlyph, glyph_map.get (variantGlyph), HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
-  { depend_data->add_depend(source, HB_OT_TAG_MATH, variantGlyph); }
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం, గుర్తులేని ఆధారం) స్థిరరాశి
+  { depend_దత్తాంశం->కూడు_depend(ఆధారం, HB_OT_ట్యాగ్_MATH, variantGlyph); }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
-  { variant_glyphs->add (variantGlyph); }
+  శూన్య సంవృతం_glyphs (hb_సమితి_t *variant_glyphs) స్థిరరాశి
+  { variant_glyphs->కూడు (variantGlyph); }
 
-  protected:
+  రక్షిత:
   HBGlyphID16 variantGlyph;       /* Glyph ID for the variant. */
   HBUINT16  advanceMeasurement; /* Advance width/height, in design units, of the
 				 * variant, in the direction of requested
 				 * glyph extension. */
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct PartFlags : HBUINT16
+నిర్మాణం PartFlags : HBUINT16
 {
-  enum Flags {
+  గణన Flags {
     Extender	= 0x0001u, /* If set, the part can be skipped or repeated. */
 
     Defined	= 0x0001u, /* All defined flags. */
   };
 
-  public:
-  DEFINE_SIZE_STATIC (2);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (2);
 };
 
-struct MathGlyphPartRecord
+నిర్మాణం Math_Glyph_Part_రికార్డు
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    const hb_map_t& glyph_map = *c->plan->glyph_map;
-    return_trace (c->serializer->check_assign (out->glyph, glyph_map.get (glyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    స్థిరరాశి hb_map_t& glyph_map = *c->plan->glyph_map;
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->glyph, glyph_map.get (glyph), HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  void extract (hb_ot_math_glyph_part_t &out,
+  శూన్య extract (hb_ot_math_glyph_part_t &బహిర్గతం,
 		int64_t mult,
-		hb_font_t *font) const
+		hb_font_t *font) స్థిరరాశి
   {
-    out.glyph			= glyph;
+    బహిర్గతం.glyph			= glyph;
 
-    out.start_connector_length	= font->em_mult (startConnectorLength, mult);
-    out.end_connector_length	= font->em_mult (endConnectorLength, mult);
-    out.full_advance		= font->em_mult (fullAdvance, mult);
+    బహిర్గతం.ప్రారంభం_connector_నిడివి	= font->em_mult (ప్రారంభం_Connector_నిడివి, mult);
+    బహిర్గతం.చివర_connector_నిడివి	= font->em_mult (చివర_Connector_నిడివి, mult);
+    బహిర్గతం.నిండిన_advance		= font->em_mult (నిండిన_Advance, mult);
 
-    static_assert ((unsigned int) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
-		   (unsigned int) PartFlags::Extender, "");
+    static_assert ((గుర్తులేని పూర్ణాంకం) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
+		   (గుర్తులేని పూర్ణాంకం) PartFlags::Extender, "");
 
-    out.flags = (hb_ot_math_glyph_part_flags_t)
-		(unsigned int)
+    బహిర్గతం.flags = (hb_ot_math_glyph_part_flags_t)
+		(గుర్తులేని పూర్ణాంకం)
 		(partFlags & PartFlags::Defined);
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
-  { depend_data->add_depend(source, HB_OT_TAG_MATH, glyph); }
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం, గుర్తులేని ఆధారం) స్థిరరాశి
+  { depend_దత్తాంశం->కూడు_depend(ఆధారం, HB_OT_ట్యాగ్_MATH, glyph); }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
-  { variant_glyphs->add (glyph); }
+  శూన్య సంవృతం_glyphs (hb_సమితి_t *variant_glyphs) స్థిరరాశి
+  { variant_glyphs->కూడు (glyph); }
 
-  protected:
+  రక్షిత:
   HBGlyphID16	glyph;		/* Glyph ID for the part. */
-  HBUINT16	startConnectorLength;
+  HBUINT16	ప్రారంభం_Connector_నిడివి;
 				/* Advance width/ height of the straight bar
 				 * connector material, in design units, is at
 				 * the beginning of the glyph, in the
 				 * direction of the extension. */
-  HBUINT16	endConnectorLength;
+  HBUINT16	చివర_Connector_నిడివి;
 				/* Advance width/ height of the straight bar
 				 * connector material, in design units, is at
 				 * the end of the glyph, in the direction of
 				 * the extension. */
-  HBUINT16	fullAdvance;	/* Full advance width/height for this part,
+  HBUINT16	నిండిన_Advance;	/* Full advance width/height for this part,
 				 * in the direction of the extension.
 				 * In design units. */
   PartFlags	partFlags;	/* Part qualifiers. */
 
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
-struct MathGlyphAssembly
+నిర్మాణం MathGlyphAssembly
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ఇది);
 
-    if (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
-    if (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
+    ఒకవేళ (!c->serializer->copy (italicsCorrection, ఇది, &c->plan->layout_variation_idx_delta_map)) return_trace (అబద్ధం);
+    ఒకవేళ (!c->serializer->copy<HBUINT16> (part_రికార్డులు.len)) return_trace (అబద్ధం);
 
-    for (const auto& record : partRecords.iter ())
-      if (!record.subset (c)) return_trace (false);
-    return_trace (true);
+    కొరకు (స్థిరరాశి స్వయంచాలక& రికార్డు : part_రికార్డులు.iter ())
+      ఒకవేళ (!రికార్డు.subset (c)) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    italicsCorrection.collect_variation_indices (c, this);
+    italicsCorrection.collect_variation_indices (c, ఇది);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  italicsCorrection.sanitize (c, this) &&
-		  partRecords.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  italicsCorrection.sanitize (c, ఇది) &&
+		  part_రికార్డులు.sanitize (c));
   }
 
-  unsigned int get_parts (hb_direction_t direction,
+  గుర్తులేని పూర్ణాంకం get_parts (hb_direction_t direction,
 			  hb_font_t *font,
-			  unsigned int start_offset,
-			  unsigned int *parts_count, /* IN/OUT */
-			  hb_ot_math_glyph_part_t *parts /* OUT */,
-			  hb_position_t *italics_correction /* OUT */) const
+			  గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			  గుర్తులేని పూర్ణాంకం *parts_లెక్క, /* IN/OUT */
+			  hb_ot_math_glyph_part_t *parts /*బహిర్గతం*/,
+			  hb_position_t *italics_correction /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (parts_count && parts)
+    ఒకవేళ (parts_లెక్క && parts)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_count),
-			    hb_array (parts, *parts_count)))
-	_.first.extract (_.second, mult, font);
+      కొరకు (స్వయంచాలక _ : hb_zip (part_రికార్డులు.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, parts_లెక్క),
+			    hb_array (parts, *parts_లెక్క)))
+	_.మొదటి.extract (_.second, mult, font);
     }
 
-    if (italics_correction)
-      *italics_correction = italicsCorrection.get_x_value (font, this);
+    ఒకవేళ (italics_correction)
+      *italics_correction = italicsCorrection.get_x_విలువ (font, ఇది);
 
-    return partRecords.len;
+    తిరిగి part_రికార్డులు.len;
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం, గుర్తులేని ఆధారం) స్థిరరాశి
   {
-    for (const auto& _ : partRecords.iter ())
-      _.depend (depend_data, source);
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : part_రికార్డులు.iter ())
+      _.depend (depend_దత్తాంశం, ఆధారం);
   }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  శూన్య సంవృతం_glyphs (hb_సమితి_t *variant_glyphs) స్థిరరాశి
   {
-    for (const auto& _ : partRecords.iter ())
-      _.closure_glyphs (variant_glyphs);
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : part_రికార్డులు.iter ())
+      _.సంవృతం_glyphs (variant_glyphs);
   }
 
-  protected:
-  MathValueRecord
+  రక్షిత:
+  Math_విలువ_రికార్డు
 		italicsCorrection;
 				/* Italics correction of this
 				 * MathGlyphAssembly. Should not
 				 * depend on the assembly size. */
-  Array16Of<MathGlyphPartRecord>
-		partRecords;	/* Array of part records, from
+  Array16_యొక్క<Math_Glyph_Part_రికార్డు>
+		part_రికార్డులు;	/* Array of part records, from
 				 * left to right and bottom to
 				 * top. */
 
-  public:
-  DEFINE_SIZE_ARRAY (6, partRecords);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, part_రికార్డులు);
 };
 
-struct MathGlyphConstruction
+నిర్మాణం MathGlyphConstruction
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    out->glyphAssembly.serialize_subset (c, glyphAssembly, this);
+    బహిర్గతం->glyphAssembly.serialize_subset (c, glyphAssembly, ఇది);
 
-    if (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
-    for (const auto& record : mathGlyphVariantRecord.iter ())
-      if (!record.subset (c)) return_trace (false);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->math_Glyph_Variant_రికార్డు.len, math_Glyph_Variant_రికార్డు.len, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
+    కొరకు (స్థిరరాశి స్వయంచాలక& రికార్డు : math_Glyph_Variant_రికార్డు.iter ())
+      ఒకవేళ (!రికార్డు.subset (c)) return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    (this+glyphAssembly).collect_variation_indices (c);
+    (ఇది+glyphAssembly).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  glyphAssembly.sanitize (c, this) &&
-		  mathGlyphVariantRecord.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  glyphAssembly.sanitize (c, ఇది) &&
+		  math_Glyph_Variant_రికార్డు.sanitize (c));
   }
 
-  const MathGlyphAssembly &get_assembly () const { return this+glyphAssembly; }
+  స్థిరరాశి MathGlyphAssembly &get_assembly () స్థిరరాశి { తిరిగి ఇది+glyphAssembly; }
 
-  unsigned int get_variants (hb_direction_t direction,
+  గుర్తులేని పూర్ణాంకం get_variants (hb_direction_t direction,
 			     hb_font_t *font,
-			     unsigned int start_offset,
-			     unsigned int *variants_count, /* IN/OUT */
-			     hb_ot_math_glyph_variant_t *variants /* OUT */) const
+			     గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			     గుర్తులేని పూర్ణాంకం *variants_లెక్క, /* IN/OUT */
+			     hb_ot_math_glyph_variant_t *variants /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (variants_count && variants)
+    ఒకవేళ (variants_లెక్క && variants)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_count),
-			    hb_array (variants, *variants_count)))
-	_.second = {_.first.variantGlyph, font->em_mult (_.first.advanceMeasurement, mult)};
+      కొరకు (స్వయంచాలక _ : hb_zip (math_Glyph_Variant_రికార్డు.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, variants_లెక్క),
+			    hb_array (variants, *variants_లెక్క)))
+	_.second = {_.మొదటి.variantGlyph, font->em_mult (_.మొదటి.advanceMeasurement, mult)};
     }
-    return mathGlyphVariantRecord.len;
+    తిరిగి math_Glyph_Variant_రికార్డు.len;
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం, గుర్తులేని ఆధారం) స్థిరరాశి
   {
-    (this+glyphAssembly).depend (depend_data, source);
+    (ఇది+glyphAssembly).depend (depend_దత్తాంశం, ఆధారం);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
-      _.depend (depend_data, source);
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : math_Glyph_Variant_రికార్డు.iter ())
+      _.depend (depend_దత్తాంశం, ఆధారం);
   }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  శూన్య సంవృతం_glyphs (hb_సమితి_t *variant_glyphs) స్థిరరాశి
   {
-    (this+glyphAssembly).closure_glyphs (variant_glyphs);
+    (ఇది+glyphAssembly).సంవృతం_glyphs (variant_glyphs);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
-      _.closure_glyphs (variant_glyphs);
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : math_Glyph_Variant_రికార్డు.iter ())
+      _.సంవృతం_glyphs (variant_glyphs);
   }
 
-  protected:
+  రక్షిత:
   /* Offset to MathGlyphAssembly table for this shape - from the beginning of
      MathGlyphConstruction table.  May be NULL. */
-  Offset16To<MathGlyphAssembly>	  glyphAssembly;
+  Offset16_గమ్యం<MathGlyphAssembly>	  glyphAssembly;
 
   /* MathGlyphVariantRecords for alternative variants of the glyphs. */
-  Array16Of<MathGlyphVariantRecord> mathGlyphVariantRecord;
+  Array16_యొక్క<Math_Glyph_Variant_రికార్డు> math_Glyph_Variant_రికార్డు;
 
-  public:
-  DEFINE_SIZE_ARRAY (4, mathGlyphVariantRecord);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, math_Glyph_Variant_రికార్డు);
 };
 
-struct MathVariants
+నిర్మాణం MathVariants
 {
-  void depend (hb_depend_data_builder_t *depend_data) const
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం) స్థిరరాశి
   {
-    const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
+    స్థిరరాశి hb_array_t<స్థిరరాశి Offset16_గమ్యం<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vert_Glyph_లెక్క + horiz_Glyph_లెక్క);
 
-    if (vertGlyphCoverage)
+    ఒకవేళ (vertGlyphCoverage)
     {
-      const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
-      + hb_zip (this+vertGlyphCoverage, vert_offsets)
-      | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const Offset16To<MathGlyphConstruction>&> &_)
+      స్థిరరాశి స్వయంచాలక vert_offsets = glyph_construction_offsets.sub_array (0, vert_Glyph_లెక్క);
+      + hb_zip (ఇది+vertGlyphCoverage, vert_offsets)
+      | hb_apply ([&] (స్థిరరాశి hb_pair_t<hb_codepoint_t, స్థిరరాశి Offset16_గమ్యం<MathGlyphConstruction>&> &_)
                   {
-                    const MathGlyphConstruction &mgc = this+_.second;
-                    mgc.depend (depend_data, _.first);
+                    స్థిరరాశి MathGlyphConstruction &mgc = ఇది+_.second;
+                    mgc.depend (depend_దత్తాంశం, _.మొదటి);
                   })
       ;
     }
-    if (horizGlyphCoverage)
+    ఒకవేళ (horizGlyphCoverage)
     {
-      const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
-      + hb_zip (this+horizGlyphCoverage, hori_offsets)
-      | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const Offset16To<MathGlyphConstruction>&> &_)
+      స్థిరరాశి స్వయంచాలక hori_offsets = glyph_construction_offsets.sub_array (vert_Glyph_లెక్క, horiz_Glyph_లెక్క);
+      + hb_zip (ఇది+horizGlyphCoverage, hori_offsets)
+      | hb_apply ([&] (స్థిరరాశి hb_pair_t<hb_codepoint_t, స్థిరరాశి Offset16_గమ్యం<MathGlyphConstruction>&> &_)
                   {
-                    const MathGlyphConstruction &mgc = this+_.second;
-                    mgc.depend (depend_data, _.first);
+                    స్థిరరాశి MathGlyphConstruction &mgc = ఇది+_.second;
+                    mgc.depend (depend_దత్తాంశం, _.మొదటి);
                   })
       ;
     }
   }
 
-  void closure_glyphs (const hb_set_t *glyph_set,
-                       hb_set_t *variant_glyphs) const
+  శూన్య సంవృతం_glyphs (స్థిరరాశి hb_సమితి_t *glyph_సమితి,
+                       hb_సమితి_t *variant_glyphs) స్థిరరాశి
   {
-    const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
+    స్థిరరాశి hb_array_t<స్థిరరాశి Offset16_గమ్యం<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vert_Glyph_లెక్క + horiz_Glyph_లెక్క);
 
-    if (vertGlyphCoverage)
+    ఒకవేళ (vertGlyphCoverage)
     {
-      const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
-      + hb_zip (this+vertGlyphCoverage, vert_offsets)
-      | hb_filter (glyph_set, hb_first)
-      | hb_map (hb_second)
-      | hb_map (hb_add (this))
-      | hb_apply ([=] (const MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
+      స్థిరరాశి స్వయంచాలక vert_offsets = glyph_construction_offsets.sub_array (0, vert_Glyph_లెక్క);
+      + hb_zip (ఇది+vertGlyphCoverage, vert_offsets)
+      | hb_filter (glyph_సమితి, hb_మొదటి)
+      | hb_map (hb_రెండవ)
+      | hb_map (hb_కూడు (ఇది))
+      | hb_apply ([=] (స్థిరరాశి MathGlyphConstruction &_) { _.సంవృతం_glyphs (variant_glyphs); })
       ;
     }
 
-    if (horizGlyphCoverage)
+    ఒకవేళ (horizGlyphCoverage)
     {
-      const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
-      + hb_zip (this+horizGlyphCoverage, hori_offsets)
-      | hb_filter (glyph_set, hb_first)
-      | hb_map (hb_second)
-      | hb_map (hb_add (this))
-      | hb_apply ([=] (const MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
+      స్థిరరాశి స్వయంచాలక hori_offsets = glyph_construction_offsets.sub_array (vert_Glyph_లెక్క, horiz_Glyph_లెక్క);
+      + hb_zip (ఇది+horizGlyphCoverage, hori_offsets)
+      | hb_filter (glyph_సమితి, hb_మొదటి)
+      | hb_map (hb_రెండవ)
+      | hb_map (hb_కూడు (ఇది))
+      | hb_apply ([=] (స్థిరరాశి MathGlyphConstruction &_) { _.సంవృతం_glyphs (variant_glyphs); })
       ;
     }
   }
 
-  void collect_coverage_and_indices (hb_sorted_vector_t<hb_codepoint_t>& new_coverage,
-                                     const Offset16To<Coverage>& coverage,
-                                     unsigned i,
-                                     unsigned end_index,
-                                     hb_set_t& indices,
-                                     const hb_set_t& glyphset,
-                                     const hb_map_t& glyph_map) const
+  శూన్య collect_coverage_and_indices (hb_sorted_సదిశ_t<hb_codepoint_t>& new_coverage,
+                                     స్థిరరాశి Offset16_గమ్యం<Coverage>& coverage,
+                                     గుర్తులేని i,
+                                     గుర్తులేని చివర_సూచీ,
+                                     hb_సమితి_t& indices,
+                                     స్థిరరాశి hb_సమితి_t& glyphset,
+                                     స్థిరరాశి hb_map_t& glyph_map) స్థిరరాశి
   {
-    if (!coverage) return;
+    ఒకవేళ (!coverage) తిరిగి;
 
-    for (const auto _ : (this+coverage).iter ())
+    కొరకు (స్థిరరాశి స్వయంచాలక _ : (ఇది+coverage).iter ())
     {
-      if (i >= end_index) return;
-      if (glyphset.has (_))
+      ఒకవేళ (i >= చివర_సూచీ) తిరిగి;
+      ఒకవేళ (glyphset.has (_))
       {
-        unsigned new_gid = glyph_map.get (_);
+        గుర్తులేని new_gid = glyph_map.get (_);
         new_coverage.push (new_gid);
-        indices.add (i);
+        indices.కూడు (i);
       }
       i++;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_cmaped;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = c->plan->_glyphset_cmaped;
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_vert_coverage;
-    hb_sorted_vector_t<hb_codepoint_t> new_hori_coverage;
-    hb_set_t indices;
-    collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vertGlyphCount, indices, glyphset, glyph_map);
-    collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vertGlyphCount, vertGlyphCount + horizGlyphCount, indices, glyphset, glyph_map);
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_vert_coverage;
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_hori_coverage;
+    hb_సమితి_t indices;
+    collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vert_Glyph_లెక్క, indices, glyphset, glyph_map);
+    collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vert_Glyph_లెక్క, vert_Glyph_లెక్క + horiz_Glyph_లెక్క, indices, glyphset, glyph_map);
 
-    if (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
-    if (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->vert_Glyph_లెక్క, new_vert_coverage.నిడివి, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->horiz_Glyph_లెక్క, new_hori_coverage.నిడివి, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
-    for (unsigned i : indices.iter ())
+    కొరకు (గుర్తులేని i : indices.iter ())
     {
-      auto *o = c->serializer->embed (glyphConstruction[i]);
-      if (!o) return_trace (false);
-      o->serialize_subset (c, glyphConstruction[i], this);
+      స్వయంచాలక *o = c->serializer->embed (glyphConstruction[i]);
+      ఒకవేళ (!o) return_trace (అబద్ధం);
+      o->serialize_subset (c, glyphConstruction[i], ఇది);
     }
 
-    if (new_vert_coverage)
-      out->vertGlyphCoverage.serialize_serialize (c->serializer, new_vert_coverage.iter ());
+    ఒకవేళ (new_vert_coverage)
+      బహిర్గతం->vertGlyphCoverage.serialize_serialize (c->serializer, new_vert_coverage.iter ());
 
-    if (new_hori_coverage)
-    out->horizGlyphCoverage.serialize_serialize (c->serializer, new_hori_coverage.iter ());
-    return_trace (true);
+    ఒకవేళ (new_hori_coverage)
+    బహిర్గతం->horizGlyphCoverage.serialize_serialize (c->serializer, new_hori_coverage.iter ());
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &entry : hb_zip (this+vertGlyphCoverage, glyphConstruction.as_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
-        (this+hb_second (entry)).collect_variation_indices (c);
-    for (const auto &entry : hb_zip (this+horizGlyphCoverage, glyphConstruction.as_array (vertGlyphCount + horizGlyphCount).sub_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
-        (this+hb_second (entry)).collect_variation_indices (c);
+    కొరకు (స్థిరరాశి స్వయంచాలక &నమోదు_2 : hb_zip (ఇది+vertGlyphCoverage, glyphConstruction.as_array (vert_Glyph_లెక్క)))
+      ఒకవేళ (c->glyph_సమితి->has (hb_మొదటి (నమోదు_2)))
+        (ఇది+hb_రెండవ (నమోదు_2)).collect_variation_indices (c);
+    కొరకు (స్థిరరాశి స్వయంచాలక &నమోదు_2 : hb_zip (ఇది+horizGlyphCoverage, glyphConstruction.as_array (vert_Glyph_లెక్క + horiz_Glyph_లెక్క).sub_array (vert_Glyph_లెక్క)))
+      ఒకవేళ (c->glyph_సమితి->has (hb_మొదటి (నమోదు_2)))
+        (ఇది+hb_రెండవ (నమోదు_2)).collect_variation_indices (c);
   }
 
-  bool sanitize_offsets (hb_sanitize_context_t *c) const
+  తార్కిక sanitize_offsets (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    unsigned int count = vertGlyphCount + horizGlyphCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    TRACE_SANITIZE (ఇది);
+    గుర్తులేని పూర్ణాంకం లెక్క = vert_Glyph_లెక్క + horiz_Glyph_లెక్క;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!glyphConstruction.arrayZ[i].sanitize (c, ఇది)) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  vertGlyphCoverage.sanitize (c, this) &&
-		  horizGlyphCoverage.sanitize (c, this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  vertGlyphCoverage.sanitize (c, ఇది) &&
+		  horizGlyphCoverage.sanitize (c, ఇది) &&
 		  hb_barrier () &&
-		  c->check_array (glyphConstruction.arrayZ, vertGlyphCount + horizGlyphCount) &&
+		  c->check_array (glyphConstruction.arrayZ, vert_Glyph_లెక్క + horiz_Glyph_లెక్క) &&
 		  sanitize_offsets (c));
   }
 
   hb_position_t get_min_connector_overlap (hb_direction_t direction,
-						  hb_font_t *font) const
-  { return font->em_scale_dir (minConnectorOverlap, direction); }
+						  hb_font_t *font) స్థిరరాశి
+  { తిరిగి font->em_scale_dir (minConnectorOverlap, direction); }
 
-  unsigned int get_glyph_variants (hb_codepoint_t glyph,
+  గుర్తులేని పూర్ణాంకం get_glyph_variants (hb_codepoint_t glyph,
 				   hb_direction_t direction,
 				   hb_font_t *font,
-				   unsigned int start_offset,
-				   unsigned int *variants_count, /* IN/OUT */
-				   hb_ot_math_glyph_variant_t *variants /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
-	   .get_variants (direction, font, start_offset, variants_count, variants); }
+				   గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				   గుర్తులేని పూర్ణాంకం *variants_లెక్క, /* IN/OUT */
+				   hb_ot_math_glyph_variant_t *variants /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి get_glyph_construction (glyph, direction, font)
+	   .get_variants (direction, font, ప్రారంభం_స్థానభ్రంశం, variants_లెక్క, variants); }
 
-  unsigned int get_glyph_parts (hb_codepoint_t glyph,
+  గుర్తులేని పూర్ణాంకం get_glyph_parts (hb_codepoint_t glyph,
 				hb_direction_t direction,
 				hb_font_t *font,
-				unsigned int start_offset,
-				unsigned int *parts_count, /* IN/OUT */
-				hb_ot_math_glyph_part_t *parts /* OUT */,
-				hb_position_t *italics_correction /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+				గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				గుర్తులేని పూర్ణాంకం *parts_లెక్క, /* IN/OUT */
+				hb_ot_math_glyph_part_t *parts /*బహిర్గతం*/,
+				hb_position_t *italics_correction /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి get_glyph_construction (glyph, direction, font)
 	   .get_assembly ()
 	   .get_parts (direction, font,
-		       start_offset, parts_count, parts,
+		       ప్రారంభం_స్థానభ్రంశం, parts_లెక్క, parts,
 		       italics_correction); }
 
-  private:
-  const MathGlyphConstruction &
+  అంతరంగ:
+  స్థిరరాశి MathGlyphConstruction &
   get_glyph_construction (hb_codepoint_t glyph,
 			  hb_direction_t direction,
-			  hb_font_t *font HB_UNUSED) const
+			  hb_font_t *font HB_వాడని) స్థిరరాశి
   {
-    bool vertical = HB_DIRECTION_IS_VERTICAL (direction);
-    unsigned int count = vertical ? vertGlyphCount : horizGlyphCount;
-    const Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
+    తార్కిక vertical = HB_DIRECTION_IS_VERTICAL (direction);
+    గుర్తులేని పూర్ణాంకం లెక్క = vertical ? vert_Glyph_లెక్క : horiz_Glyph_లెక్క;
+    స్థిరరాశి Offset16_గమ్యం<Coverage> &coverage = vertical ? vertGlyphCoverage
 						  : horizGlyphCoverage;
 
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    if (unlikely (index >= count)) return Null (MathGlyphConstruction);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (glyph);
+    ఒకవేళ (unlikely (సూచీ_2 >= లెక్క)) తిరిగి Null (MathGlyphConstruction);
 
-    if (!vertical)
-      index += vertGlyphCount;
+    ఒకవేళ (!vertical)
+      సూచీ_2 += vert_Glyph_లెక్క;
 
-    return this+glyphConstruction[index];
+    తిరిగి ఇది+glyphConstruction[సూచీ_2];
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	minConnectorOverlap;
 				/* Minimum overlap of connecting
 				 * glyphs during glyph construction,
 				 * in design units. */
-  Offset16To<Coverage> vertGlyphCoverage;
+  Offset16_గమ్యం<Coverage> vertGlyphCoverage;
 				/* Offset to Coverage table -
 				 * from the beginning of MathVariants
 				 * table. */
-  Offset16To<Coverage> horizGlyphCoverage;
+  Offset16_గమ్యం<Coverage> horizGlyphCoverage;
 				/* Offset to Coverage table -
 				 * from the beginning of MathVariants
 				 * table. */
-  HBUINT16	vertGlyphCount;	/* Number of glyphs for which
+  HBUINT16	vert_Glyph_లెక్క;	/* Number of glyphs for which
 				 * information is provided for
 				 * vertically growing variants. */
-  HBUINT16	horizGlyphCount;/* Number of glyphs for which
+  HBUINT16	horiz_Glyph_లెక్క;/* Number of glyphs for which
 				 * information is provided for
 				 * horizontally growing variants. */
 
   /* Array of offsets to MathGlyphConstruction tables - from the beginning of
      the MathVariants table, for shapes growing in vertical/horizontal
      direction. */
-  UnsizedArrayOf<Offset16To<MathGlyphConstruction>>
+  Unsized_Array_యొక్క<Offset16_గమ్యం<MathGlyphConstruction>>
 			glyphConstruction;
 
-  public:
-  DEFINE_SIZE_ARRAY (10, glyphConstruction);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (10, glyphConstruction);
 };
 
 
@@ -1207,102 +1207,102 @@ struct MathVariants
  * https://docs.microsoft.com/en-us/typography/opentype/spec/math
  */
 
-struct MATH
+నిర్మాణం MATH
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_MATH;
 
-  bool has_data () const { return version.to_int (); }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int (); }
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం) స్థిరరాశి
   {
-    if (mathVariants)
-      (this+mathVariants).depend (depend_data);
+    ఒకవేళ (mathVariants)
+      (ఇది+mathVariants).depend (depend_దత్తాంశం);
   }
 
-  void closure_glyphs (hb_set_t *glyph_set) const
+  శూన్య సంవృతం_glyphs (hb_సమితి_t *glyph_సమితి) స్థిరరాశి
   {
-    if (mathVariants)
+    ఒకవేళ (mathVariants)
     {
-      hb_set_t variant_glyphs;
-      (this+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
-      hb_set_union (glyph_set, &variant_glyphs);
+      hb_సమితి_t variant_glyphs;
+      (ఇది+mathVariants).సంవృతం_glyphs (glyph_సమితి, &variant_glyphs);
+      hb_సమితి_union (glyph_సమితి, &variant_glyphs);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->mathConstants.serialize_copy (c->serializer, mathConstants, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, this);
-    out->mathVariants.serialize_subset (c, mathVariants, this);
-    return_trace (true);
+    బహిర్గతం->mathConstants.serialize_copy (c->serializer, mathConstants, ఇది, 0, hb_serialize_context_t::తల, &c->plan->layout_variation_idx_delta_map);
+    బహిర్గతం->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, ఇది);
+    బహిర్గతం->mathVariants.serialize_subset (c, mathVariants, ఇది);
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const hb_set_t *variant_glyph_set) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c, స్థిరరాశి hb_సమితి_t *variant_glyph_సమితి) స్థిరరాశి
   {
-    (this+mathConstants).collect_variation_indices (c);
-    (this+mathGlyphInfo).collect_variation_indices (c);
-    auto *glyph_set = c->glyph_set;
-    c->glyph_set = variant_glyph_set;
-    (this+mathVariants).collect_variation_indices (c);
-    c->glyph_set = glyph_set;
+    (ఇది+mathConstants).collect_variation_indices (c);
+    (ఇది+mathGlyphInfo).collect_variation_indices (c);
+    స్వయంచాలక *glyph_సమితి = c->glyph_సమితి;
+    c->glyph_సమితి = variant_glyph_సమితి;
+    (ఇది+mathVariants).collect_variation_indices (c);
+    c->glyph_సమితి = glyph_సమితి;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
-		  likely (version.major == 1) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (సంస్కరణ.sanitize (c) &&
+		  likely (సంస్కరణ.major == 1) &&
 		  hb_barrier () &&
-		  mathConstants.sanitize (c, this) &&
-		  mathGlyphInfo.sanitize (c, this) &&
-		  mathVariants.sanitize (c, this));
+		  mathConstants.sanitize (c, ఇది) &&
+		  mathGlyphInfo.sanitize (c, ఇది) &&
+		  mathVariants.sanitize (c, ఇది));
   }
 
   // https://github.com/harfbuzz/harfbuzz/issues/4653
-  HB_INTERNAL bool is_bad_cambria (hb_font_t *font) const
+  HB_అంతర్గత తార్కిక is_bad_cambria (hb_font_t *font) స్థిరరాశి
   {
-#ifndef HB_NO_MATH
-    switch HB_CODEPOINT_ENCODE3 (font->face->table.MATH.get_blob ()->length,
-                                 (this+mathConstants).minHeight[1], // displayOperatorMinHeight
-                                 (this+mathConstants).minHeight[0]) // delimitedSubFormulaMinHeight
+#నిర్వచితం_కాకపోతే HB_NO_MATH
+    ఎంపిక HB_CODEPOINT_ENCODE3 (font->face->పట్టిక.MATH.get_blob ()->నిడివి,
+                                 (ఇది+mathConstants).min_ఎత్తు[1], // displayOperatorMinHeight
+                                 (ఇది+mathConstants).min_ఎత్తు[0]) // delimitedSubFormulaMinHeight
     {
       /* sha1sum:ab4a4fe054d23061f3c039493d6f665cfda2ecf5  cambria.ttc
        * sha1sum:086855301bff644f9d8827b88491fcf73a6d4cb9  cambria.ttc
        * sha1sum:b1e5a3feaca2ea3dfcf79ccb377de749ecf60343  cambria.ttc */
-      case HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
-        return true;
+      స్థితి HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
+        తిరిగి నిజం;
     }
-#endif
-    return false;
+#అయితే_ముగింపు
+    తిరిగి అబద్ధం;
   }
 
   hb_position_t get_constant (hb_ot_math_constant_t  constant,
-			      hb_font_t		   *font) const
-  { return (this+mathConstants).get_value (constant, font); }
+			      hb_font_t		   *font) స్థిరరాశి
+  { తిరిగి (ఇది+mathConstants).get_విలువ (constant, font); }
 
-  const MathGlyphInfo &get_glyph_info () const { return this+mathGlyphInfo; }
+  స్థిరరాశి MathGlyphInfo &get_glyph_info () స్థిరరాశి { తిరిగి ఇది+mathGlyphInfo; }
 
-  const MathVariants &get_variants () const    { return this+mathVariants; }
+  స్థిరరాశి MathVariants &get_variants () స్థిరరాశి    { తిరిగి ఇది+mathVariants; }
 
-  protected:
-  FixedVersion<>version;	/* Version of the MATH table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the MATH table
 				 * initially set to 0x00010000u */
-  Offset16To<MathConstants>
+  Offset16_గమ్యం<MathConstants>
 		mathConstants;	/* MathConstants table */
-  Offset16To<MathGlyphInfo>
+  Offset16_గమ్యం<MathGlyphInfo>
 		mathGlyphInfo;	/* MathGlyphInfo table */
-  Offset16To<MathVariants>
+  Offset16_గమ్యం<MathVariants>
 		mathVariants;	/* MathVariants table */
 
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_MATH_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_MATH_TABLE_HH */

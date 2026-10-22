@@ -24,22 +24,22 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ఒకవేళ !defined(HB_OT_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb-ot.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_OT_FONT_H
-#define HB_OT_FONT_H
+#నిర్వచితం_కాకపోతే HB_OT_FONT_H
+#నిర్వచించు HB_OT_FONT_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
-hb_ot_font_set_funcs (hb_font_t *font);
+HB_EXTERN శూన్య
+hb_ot_font_సమితి_funcs (hb_font_t *font);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_OT_FONT_H */
+#అయితే_ముగింపు /* HB_OT_FONT_H */

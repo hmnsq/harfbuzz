@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-subset-instancer-solver.hh"
+#అన్తర్భావ "hb-subset-instancer-solver.hh"
 
 /* This file is a straight port of the following:
  *
@@ -32,56 +32,56 @@
  * This should be safe.
  */
 
-constexpr static float EPSILON = 1.f / (1 << 14);
-constexpr static float MAX_F2DOT14 = float (0x7FFF) / (1 << 14);
+constexpr స్థిర దశాంశం EPSILON = 1.f / (1 << 14);
+constexpr స్థిర దశాంశం MAX_F2DOT14 = దశాంశం (0x7FFF) / (1 << 14);
 
-static inline Triple _reverse_negate(const Triple &v)
-{ return {-v.maximum, -v.middle, -v.minimum}; }
+స్థిర అంతఃవరుస Triple తిరగేయి_negate(స్థిరరాశి Triple &v)
+{ తిరిగి {-v.గరిష్ఠ, -v.మధ్య, -v.minimum}; }
 
 
-static inline float supportScalar (float coord, const Triple &tent)
+స్థిర అంతఃవరుస దశాంశం supportScalar (దశాంశం coord, స్థిరరాశి Triple &tent)
 {
   /* Copied from VarRegionAxis::evaluate() */
-  float start = tent.minimum, peak = tent.middle, end = tent.maximum;
+  దశాంశం ప్రారంభం = tent.minimum, peak = tent.మధ్య, చివర = tent.గరిష్ఠ;
 
-  if (unlikely (start > peak || peak > end))
-    return 1.f;
-  if (unlikely (start < 0 && end > 0 && peak != 0))
-    return 1.f;
+  ఒకవేళ (unlikely (ప్రారంభం > peak || peak > చివర))
+    తిరిగి 1.f;
+  ఒకవేళ (unlikely (ప్రారంభం < 0 && చివర > 0 && peak != 0))
+    తిరిగి 1.f;
 
-  if (peak == 0 || coord == peak)
-    return 1.f;
+  ఒకవేళ (peak == 0 || coord == peak)
+    తిరిగి 1.f;
 
-  if (coord <= start || end <= coord)
-    return 0.f;
+  ఒకవేళ (coord <= ప్రారంభం || చివర <= coord)
+    తిరిగి 0.f;
 
   /* Interpolate */
-  if (coord < peak)
-    return (coord - start) / (peak - start);
-  else
-    return  (end - coord) / (end - peak);
+  ఒకవేళ (coord < peak)
+    తిరిగి (coord - ప్రారంభం) / (peak - ప్రారంభం);
+  లేకపోతే
+    తిరిగి  (చివర - coord) / (చివర - peak);
 }
 
-static inline void
-_solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative = false)
+స్థిర అంతఃవరుస శూన్య
+_solve (Triple tent, Triple axis_హద్దు_2, rebase_tent_ఫలితం_t &బహిర్గతం, తార్కిక negative = అబద్ధం)
 {
-  out.reset();
-  float axisMin = axisLimit.minimum;
-  float axisDef = axisLimit.middle;
-  float axisMax = axisLimit.maximum;
-  float lower = tent.minimum;
-  float peak  = tent.middle;
-  float upper = tent.maximum;
+  బహిర్గతం.reset();
+  దశాంశం axisMin = axis_హద్దు_2.minimum;
+  దశాంశం axisDef = axis_హద్దు_2.మధ్య;
+  దశాంశం axisMax = axis_హద్దు_2.గరిష్ఠ;
+  దశాంశం క్రింది = tent.minimum;
+  దశాంశం peak  = tent.మధ్య;
+  దశాంశం పై = tent.గరిష్ఠ;
 
   // Mirror the problem such that axisDef <= peak
-  if (axisDef > peak)
+  ఒకవేళ (axisDef > peak)
   {
-    _solve (_reverse_negate (tent), _reverse_negate (axisLimit), out, !negative);
+    _solve (తిరగేయి_negate (tent), తిరగేయి_negate (axis_హద్దు_2), బహిర్గతం, !negative);
 
-    for (auto &p : out)
-      p = hb_pair (p.first, _reverse_negate (p.second));
+    కొరకు (స్వయంచాలక &p : బహిర్గతం)
+      p = hb_pair (p.మొదటి, తిరగేయి_negate (p.second));
 
-    return;
+    తిరిగి;
   }
   // axisDef <= peak
 
@@ -96,8 +96,8 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *  0---|-----------|----------|-------- o         o----1
    *    axisMin     axisDef    axisMax   lower     upper
    */
-  if (axisMax <= lower && axisMax < peak)
-      return;  // No overlap
+  ఒకవేళ (axisMax <= క్రింది && axisMax < peak)
+      తిరిగి;  // No overlap
 
   /* case 2: Only the peak and outermost bound fall outside the new limit;
    * we keep the deltaset, update peak and outermost bound and scale deltas
@@ -127,28 +127,28 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                                  |
    *                                axisMax
    */
-  if (axisMax < peak)
+  ఒకవేళ (axisMax < peak)
   {
-    float mult = supportScalar (axisMax, tent);
-    tent = Triple{lower, axisMax, axisMax};
+    దశాంశం mult = supportScalar (axisMax, tent);
+    tent = Triple{క్రింది, axisMax, axisMax};
 
-    _solve (tent, axisLimit, out);
+    _solve (tent, axis_హద్దు_2, బహిర్గతం);
 
-    for (auto &p : out)
-      p = hb_pair (p.first * mult, p.second);
+    కొరకు (స్వయంచాలక &p : బహిర్గతం)
+      p = hb_pair (p.మొదటి * mult, p.second);
 
-    return;
+    తిరిగి;
   }
 
   // lower <= axisDef <= peak <= axisMax
 
-  float gain = supportScalar (axisDef, tent);
-  out.push(hb_pair (gain, Triple{}));
+  దశాంశం gain = supportScalar (axisDef, tent);
+  బహిర్గతం.push(hb_pair (gain, Triple{}));
 
   // First, the positive side
 
   // outGain is the scalar of axisMax at the tent.
-  float outGain = supportScalar (axisMax, tent);
+  దశాంశం బహిర్గతం_Gain = supportScalar (axisMax, tent);
 
   /* Case 3a: Gain is more than outGain. The tent down-slope crosses
    * the axis into negative. We have to split it into multiples.
@@ -167,18 +167,18 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                           |
    *                      crossing
    */
-  if (gain >= outGain)
+  ఒకవేళ (gain >= బహిర్గతం_Gain)
   {
     // Note that this is the branch taken if both gain and outGain are 0.
 
     // Crossing point on the axis.
-    float crossing = peak + (1 - gain) * (upper - peak);
+    దశాంశం దాటడం = peak + (1 - gain) * (పై - peak);
 
-    Triple loc{hb_max (lower, axisDef), peak, crossing};
-    float scalar = 1.f;
+    Triple loc{hb_max (క్రింది, axisDef), peak, దాటడం};
+    దశాంశం scalar = 1.f;
 
     // The part before the crossing point.
-    out.push (hb_pair (scalar - gain, loc));
+    బహిర్గతం.push (hb_pair (scalar - gain, loc));
 
     /* The part after the crossing point may use one or two tents,
      * depending on whether upper is before axisMax or not, in one
@@ -187,12 +187,12 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      * Case 3a1, similar to case 1neg; just one tent needed, as in
      * the drawing above.
      */
-    if (upper >= axisMax)
+    ఒకవేళ (పై >= axisMax)
     {
-      Triple loc {crossing, axisMax, axisMax};
-      float scalar = outGain;
+      Triple loc {దాటడం, axisMax, axisMax};
+      దశాంశం scalar = బహిర్గతం_Gain;
 
-      out.push (hb_pair (scalar - gain, loc));
+      బహిర్గతం.push (hb_pair (scalar - gain, loc));
     }
 
     /* Case 3a2: Similar to case 2neg; two tents needed, to keep
@@ -212,30 +212,30 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *                           |
      *                      crossing
      */
-    else
+    లేకపోతే
     {
       // A tent's peak cannot fall on axis default. Nudge it.
-      if (upper == axisDef)
-	upper += EPSILON;
+      ఒకవేళ (పై == axisDef)
+	పై += EPSILON;
 
       // Downslope.
-      Triple loc1 {crossing, upper, axisMax};
-      float scalar1 = 0.f;
+      Triple loc1 {దాటడం, పై, axisMax};
+      దశాంశం scalar1 = 0.f;
 
       // Eternity justify.
-      Triple loc2 {upper, axisMax, axisMax};
-      float scalar2 = 0.f;
+      Triple loc2 {పై, axisMax, axisMax};
+      దశాంశం scalar2 = 0.f;
 
-      out.push (hb_pair (scalar1 - gain, loc1));
-      out.push (hb_pair (scalar2 - gain, loc2));
+      బహిర్గతం.push (hb_pair (scalar1 - gain, loc1));
+      బహిర్గతం.push (hb_pair (scalar2 - gain, loc2));
     }
   }
 
-  else
+  లేకపోతే
   {
     // Special-case if peak is at axisMax.
-    if (axisMax == peak)
-	upper = peak;
+    ఒకవేళ (axisMax == peak)
+	పై = peak;
 
     /* Case 3:
      * we keep deltas as is and only scale the axis upper to achieve
@@ -253,25 +253,25 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *                    |      |  newUpper
      *              axisDef      axisMax
      */
-    float newUpper = peak + (1 - gain) * (upper - peak);
-    assert (axisMax <= newUpper);  // Because outGain > gain
+    దశాంశం new_పై = peak + (1 - gain) * (పై - peak);
+    ప్రతిజ్ఞా (axisMax <= new_పై);  // Because outGain > gain
     /* Disabled because ots doesn't like us:
      * https://github.com/fonttools/fonttools/issues/3350 */
 
-    if (false && (newUpper <= axisDef + (axisMax - axisDef) * 2))
+    ఒకవేళ (అబద్ధం && (new_పై <= axisDef + (axisMax - axisDef) * 2))
     {
-      upper = newUpper;
-      if (!negative && axisDef + (axisMax - axisDef) * MAX_F2DOT14 < upper)
+      పై = new_పై;
+      ఒకవేళ (!negative && axisDef + (axisMax - axisDef) * MAX_F2DOT14 < పై)
       {
 	// we clamp +2.0 to the max F2Dot14 (~1.99994) for convenience
-	upper = axisDef + (axisMax - axisDef) * MAX_F2DOT14;
-	assert (peak < upper);
+	పై = axisDef + (axisMax - axisDef) * MAX_F2DOT14;
+	ప్రతిజ్ఞా (peak < పై);
       }
 
-      Triple loc {hb_max (axisDef, lower), peak, upper};
-      float scalar = 1.f;
+      Triple loc {hb_max (axisDef, క్రింది), peak, పై};
+      దశాంశం scalar = 1.f;
 
-      out.push (hb_pair (scalar - gain, loc));
+      బహిర్గతం.push (hb_pair (scalar - gain, loc));
     }
 
     /* Case 4: New limit doesn't fit; we need to chop into two tents,
@@ -290,18 +290,18 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
      *            |        |
      *          axisDef  axisMax
      */
-    else
+    లేకపోతే
     {
-      Triple loc1 {hb_max (axisDef, lower), peak, axisMax};
-      float scalar1 = 1.f;
+      Triple loc1 {hb_max (axisDef, క్రింది), peak, axisMax};
+      దశాంశం scalar1 = 1.f;
 
       Triple loc2 {peak, axisMax, axisMax};
-      float scalar2 = outGain;
+      దశాంశం scalar2 = బహిర్గతం_Gain;
 
-      out.push (hb_pair (scalar1 - gain, loc1));
+      బహిర్గతం.push (hb_pair (scalar1 - gain, loc1));
       // Don't add a dirac delta!
-      if (peak < axisMax)
-	out.push (hb_pair (scalar2 - gain, loc2));
+      ఒకవేళ (peak < axisMax)
+	బహిర్గతం.push (hb_pair (scalar2 - gain, loc2));
     }
   }
 
@@ -321,12 +321,12 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                     |   |
    *               axisMin   axisDef
    */
-  if (lower <= axisMin)
+  ఒకవేళ (క్రింది <= axisMin)
   {
     Triple loc {axisMin, axisMin, axisDef};
-    float scalar = supportScalar (axisMin, tent);
+    దశాంశం scalar = supportScalar (axisMin, tent);
 
-    out.push (hb_pair (scalar - gain, loc));
+    బహిర్గతం.push (hb_pair (scalar - gain, loc));
   }
 
   /* Case 2neg: Lower is betwen axisMin and axisDef: we add two
@@ -344,112 +344,112 @@ _solve (Triple tent, Triple axisLimit, rebase_tent_result_t &out, bool negative 
    *                      |
    *                    axisDef
    */
-  else
+  లేకపోతే
   {
     // A tent's peak cannot fall on axis default. Nudge it.
-    if (lower == axisDef)
-      lower -= EPSILON;
+    ఒకవేళ (క్రింది == axisDef)
+      క్రింది -= EPSILON;
 
     // Downslope.
-    Triple loc1 {axisMin, lower, axisDef};
-    float scalar1 = 0.f;
+    Triple loc1 {axisMin, క్రింది, axisDef};
+    దశాంశం scalar1 = 0.f;
 
     // Eternity justify.
-    Triple loc2 {axisMin, axisMin, lower};
-    float scalar2 = 0.f;
+    Triple loc2 {axisMin, axisMin, క్రింది};
+    దశాంశం scalar2 = 0.f;
 
-    out.push (hb_pair (scalar1 - gain, loc1));
-    out.push (hb_pair (scalar2 - gain, loc2));
+    బహిర్గతం.push (hb_pair (scalar1 - gain, loc1));
+    బహిర్గతం.push (hb_pair (scalar2 - gain, loc2));
   }
 }
 
-static inline TripleDistances _reverse_triple_distances (const TripleDistances &v)
-{ return TripleDistances (v.positive, v.negative); }
+స్థిర అంతఃవరుస TripleDistances తిరగేయి_triple_distances (స్థిరరాశి TripleDistances &v)
+{ తిరిగి TripleDistances (v.positive, v.negative); }
 
-float renormalizeValue (float v, const Triple &triple,
-                         const TripleDistances &triple_distances, bool extrapolate)
+దశాంశం renormalize_విలువ (దశాంశం v, స్థిరరాశి Triple &triple,
+                         స్థిరరాశి TripleDistances &triple_distances, తార్కిక extrapolate)
 {
-  float lower = triple.minimum, def = triple.middle, upper = triple.maximum;
-  if (unlikely (!(lower <= def && def <= upper)))
-    return hb_clamp (v, -1.f, +1.f);
+  దశాంశం క్రింది = triple.minimum, def = triple.మధ్య, పై = triple.గరిష్ఠ;
+  ఒకవేళ (unlikely (!(క్రింది <= def && def <= పై)))
+    తిరిగి hb_clamp (v, -1.f, +1.f);
 
-  if (!extrapolate)
-    v = hb_clamp (v, lower, upper);
+  ఒకవేళ (!extrapolate)
+    v = hb_clamp (v, క్రింది, పై);
 
-  if (v == def)
-    return 0.f;
+  ఒకవేళ (v == def)
+    తిరిగి 0.f;
 
-  if (def < 0.f)
-    return -renormalizeValue (-v, _reverse_negate (triple),
-                              _reverse_triple_distances (triple_distances), extrapolate);
+  ఒకవేళ (def < 0.f)
+    తిరిగి -renormalize_విలువ (-v, తిరగేయి_negate (triple),
+                              తిరగేయి_triple_distances (triple_distances), extrapolate);
 
   /* default >= 0 and v != default */
-  if (v > def)
+  ఒకవేళ (v > def)
   {
-    float positive_range = upper - def;
-    if (unlikely (!positive_range))
-      return +1.f;
-    return (v - def) / positive_range;
+    దశాంశం ధనాత్మక_range = పై - def;
+    ఒకవేళ (unlikely (!ధనాత్మక_range))
+      తిరిగి +1.f;
+    తిరిగి (v - def) / ధనాత్మక_range;
   }
 
   /* v < def */
-  if (lower >= 0.f)
+  ఒకవేళ (క్రింది >= 0.f)
   {
-    float negative_range = def - lower;
-    if (unlikely (!negative_range))
-      return -1.f;
-    return (v - def) / negative_range;
+    దశాంశం negative_range = def - క్రింది;
+    ఒకవేళ (unlikely (!negative_range))
+      తిరిగి -1.f;
+    తిరిగి (v - def) / negative_range;
   }
 
   /* lower < 0 and v < default */
-  float total_distance = triple_distances.negative * (-lower) + triple_distances.positive * def;
-  if (unlikely (!total_distance))
-    return 0.f;
+  దశాంశం మొత్తం_దూరం = triple_distances.negative * (-క్రింది) + triple_distances.positive * def;
+  ఒకవేళ (unlikely (!మొత్తం_దూరం))
+    తిరిగి 0.f;
 
-  float v_distance;
-  if (v >= 0.f)
-    v_distance = (def - v) * triple_distances.positive;
-  else
-    v_distance = (-v) * triple_distances.negative + triple_distances.positive * def;
+  దశాంశం v_దూరం;
+  ఒకవేళ (v >= 0.f)
+    v_దూరం = (def - v) * triple_distances.positive;
+  లేకపోతే
+    v_దూరం = (-v) * triple_distances.negative + triple_distances.positive * def;
 
-  return (-v_distance) /total_distance;
+  తిరిగి (-v_దూరం) /మొత్తం_దూరం;
 }
 
-void
-rebase_tent (Triple tent, Triple axisLimit, TripleDistances axis_triple_distances,
-	     rebase_tent_result_t &out,
-	     rebase_tent_result_t &scratch)
+శూన్య
+rebase_tent (Triple tent, Triple axis_హద్దు_2, TripleDistances axis_triple_distances,
+	     rebase_tent_ఫలితం_t &బహిర్గతం,
+	     rebase_tent_ఫలితం_t &scratch)
 {
-  if (unlikely (!(-1.f <= axisLimit.minimum &&
-                  axisLimit.minimum <= axisLimit.middle &&
-                  axisLimit.middle <= axisLimit.maximum &&
-                  axisLimit.maximum <= +1.f) ||
+  ఒకవేళ (unlikely (!(-1.f <= axis_హద్దు_2.minimum &&
+                  axis_హద్దు_2.minimum <= axis_హద్దు_2.మధ్య &&
+                  axis_హద్దు_2.మధ్య <= axis_హద్దు_2.గరిష్ఠ &&
+                  axis_హద్దు_2.గరిష్ఠ <= +1.f) ||
                 !(-2.f <= tent.minimum &&
-                  tent.minimum <= tent.middle &&
-                  tent.middle <= tent.maximum &&
-                  tent.maximum <= +2.f) ||
-                tent.middle == 0.f))
+                  tent.minimum <= tent.మధ్య &&
+                  tent.మధ్య <= tent.గరిష్ఠ &&
+                  tent.గరిష్ఠ <= +2.f) ||
+                tent.మధ్య == 0.f))
   {
-    out.reset ();
-    return;
+    బహిర్గతం.reset ();
+    తిరిగి;
   }
 
-  rebase_tent_result_t &sols = scratch;
-  _solve (tent, axisLimit, sols);
+  rebase_tent_ఫలితం_t &sols = scratch;
+  _solve (tent, axis_హద్దు_2, sols);
 
-  auto n = [&axisLimit, &axis_triple_distances] (float v) { return renormalizeValue (v, axisLimit, axis_triple_distances); };
+  స్వయంచాలక n = [&axis_హద్దు_2, &axis_triple_distances] (దశాంశం v) { తిరిగి renormalize_విలువ (v, axis_హద్దు_2, axis_triple_distances); };
 
-  out.reset();
-  for (auto &p : sols)
+  బహిర్గతం.reset();
+  కొరకు (స్వయంచాలక &p : sols)
   {
-    if (!p.first) continue;
-    if (p.second == Triple{})
+    ఒకవేళ (!p.మొదటి) కొనసాగు;
+    ఒకవేళ (p.second == Triple{})
     {
-      out.push (p);
-      continue;
+      బహిర్గతం.push (p);
+      కొనసాగు;
     }
     Triple t = p.second;
-    out.push (hb_pair (p.first,
-		       Triple{n (t.minimum), n (t.middle), n (t.maximum)}));
+    బహిర్గతం.push (hb_pair (p.మొదటి,
+		       Triple{n (t.minimum), n (t.మధ్య), n (t.గరిష్ఠ)}));
   }
 }

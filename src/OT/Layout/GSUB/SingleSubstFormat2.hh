@@ -1,205 +1,205 @@
-#ifndef OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
-#define OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
+#నిర్వచించు OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
 
-#include "Common.hh"
+#అన్తర్భావ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template <typename Types>
-struct SingleSubstFormat2_4
+మూస <రకం_పేరు Types>
+నిర్మాణం SingleSubstFormat2_4
 {
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 2 */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of Substitution table */
-  typename Types::template ArrayOf<typename Types::HBGlyphID>
+  రకం_పేరు Types::మూస Array_యొక్క<రకం_పేరు Types::HBGlyphID>
                 substitute;             /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
 
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, substitute);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + Types::LOffset::static_కొలత + Types::HBUINT::static_కొలత, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && substitute.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (coverage.sanitize (c, ఇది) && substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి (ఇది+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  తార్కిక may_have_non_1to1 () స్థిరరాశి
+  { తిరిగి అబద్ధం; }
 
-  void depend (hb_depend_context_t *c) const
+  శూన్య depend (hb_depend_context_t *c) స్థిరరాశి
   {
-    auto &cov = this+coverage;
-    auto &glyph_set = c->parent_active_glyphs ();
+    స్వయంచాలక &cov = ఇది+coverage;
+    స్వయంచాలక &glyph_సమితి = c->మాతృ_చురుకైన_glyphs ();
 
     // Filter by active glyphs like closure does
-    if (substitute.len > glyph_set.get_population () * 4)
+    ఒకవేళ (substitute.len > glyph_సమితి.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      కొరకు (స్వయంచాలక g : glyph_సమితి)
       {
-	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
-	c->depend_data->add_gsub_lookup (g, c->lookup_index, substitute.arrayZ[i]);
+	గుర్తులేని i = cov.get_coverage (g);
+	ఒకవేళ (i == NOT_COVERED || i >= substitute.len)
+	  కొనసాగు;
+	c->depend_దత్తాంశం->కూడు_gsub_lookup (g, c->lookup_సూచీ, substitute.arrayZ[i]);
       }
 
-      return;
+      తిరిగి;
     }
 
     + hb_zip (cov, substitute)
-    | hb_filter (glyph_set, hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    | hb_filter (glyph_సమితి, hb_మొదటి)
+    | hb_apply ([&] (స్థిరరాశి hb_codepoint_pair_t &_) { c->depend_దత్తాంశం->కూడు_gsub_lookup (_.మొదటి, c->lookup_సూచీ, _.second); })
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  శూన్య సంవృతం (hb_సంవృతం_context_t *c) స్థిరరాశి
   {
-    auto &cov = this+coverage;
-    auto &glyph_set = c->parent_active_glyphs ();
+    స్వయంచాలక &cov = ఇది+coverage;
+    స్వయంచాలక &glyph_సమితి = c->మాతృ_చురుకైన_glyphs ();
 
-    if (substitute.len > glyph_set.get_population () * 4)
+    ఒకవేళ (substitute.len > glyph_సమితి.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      కొరకు (స్వయంచాలక g : glyph_సమితి)
       {
-	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
-	c->output->add (substitute.arrayZ[i]);
+	గుర్తులేని i = cov.get_coverage (g);
+	ఒకవేళ (i == NOT_COVERED || i >= substitute.len)
+	  కొనసాగు;
+	c->output->కూడు (substitute.arrayZ[i]);
       }
 
-      return;
+      తిరిగి;
     }
 
     + hb_zip (cov, substitute)
-    | hb_filter (glyph_set, hb_first)
-    | hb_map (hb_second)
+    | hb_filter (glyph_సమితి, hb_మొదటి)
+    | hb_map (hb_రెండవ)
     | hb_sink (c->output)
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  శూన్య సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c) స్థిరరాశి {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, substitute)
-    | hb_map (hb_second)
+    ఒకవేళ (unlikely (!(ఇది+coverage).collect_coverage (c->ఆదానం))) తిరిగి;
+    + hb_zip (ఇది+coverage, substitute)
+    | hb_map (hb_రెండవ)
     | hb_sink (c->output)
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  స్థిరరాశి Coverage &get_coverage () స్థిరరాశి { తిరిగి ఇది+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  తార్కిక would_apply (hb_would_apply_context_t *c) స్థిరరాశి
+  { తిరిగి c->len == 1 && (ఇది+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  unsigned
+  గుర్తులేని
   get_glyph_alternates (hb_codepoint_t  glyph_id,
-                        unsigned        start_offset,
-                        unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+                        గుర్తులేని        ప్రారంభం_స్థానభ్రంశం,
+                        గుర్తులేని       *alternate_లెక్క  /* IN/OUT.  May be NULL. */,
+                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) స్థిరరాశి
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (likely (index == NOT_COVERED))
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (glyph_id);
+    ఒకవేళ (likely (సూచీ_2 == NOT_COVERED))
     {
-      if (alternate_count)
-        *alternate_count = 0;
-      return 0;
+      ఒకవేళ (alternate_లెక్క)
+        *alternate_లెక్క = 0;
+      తిరిగి 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    ఒకవేళ (alternate_లెక్క && *alternate_లెక్క && alternate_glyphs)
     {
-      glyph_id = substitute[index];
+      glyph_id = substitute[సూచీ_2];
 
       *alternate_glyphs = glyph_id;
-      *alternate_count = 1;
+      *alternate_లెక్క = 1;
     }
 
-    return 1;
+    తిరిగి 1;
   }
 
-  void
-  collect_glyph_alternates (hb_map_t  *alternate_count /* IN/OUT */,
-			    hb_map_t  *alternate_glyphs /* IN/OUT */) const
+  శూన్య
+  collect_glyph_alternates (hb_map_t  *alternate_లెక్క /* IN/OUT */,
+			    hb_map_t  *alternate_glyphs /* IN/OUT */) స్థిరరాశి
   {
-    + hb_zip (this+coverage, substitute)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
-		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+    + hb_zip (ఇది+coverage, substitute)
+    | hb_apply ([&] (స్థిరరాశి hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> శూన్య
+		{ hb_collect_glyph_alternates_కూడు (p.మొదటి, p.second,
+						    alternate_లెక్క, alternate_glyphs); })
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ఇది);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (c->బఫరు->cur().codepoint);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED) return_trace (అబద్ధం);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    ఒకవేళ (unlikely (సూచీ_2 >= substitute.len)) return_trace (అబద్ధం);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->బఫరు->sync_so_far ();
+      c->బఫరు->సందేశం (c->font,
 			  "replacing glyph at %u (single substitution)",
-			  c->buffer->idx);
+			  c->బఫరు->idx);
     }
 
-    c->replace_glyph (substitute[index]);
+    c->replace_glyph (substitute[సూచీ_2]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->message (c->font,
+      c->బఫరు->సందేశం (c->font,
 			  "replaced glyph at %u (single substitution)",
-			  c->buffer->idx - 1u);
+			  c->బఫరు->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template<typename Iterator,
-           hb_requires (hb_is_sorted_source_of (Iterator,
+  మూస<రకం_పేరు Iterator,
+           hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator,
                                                 hb_codepoint_pair_t))>
-  bool serialize (hb_serialize_context_t *c,
+  తార్కిక serialize (hb_serialize_context_t *c,
                   Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    auto substitutes =
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక substitutes =
       + it
-      | hb_map (hb_second)
+      | hb_map (hb_రెండవ)
       ;
-    auto glyphs =
+    స్వయంచాలక glyphs =
       + it
-      | hb_map_retains_sorting (hb_first)
+      | hb_map_retains_క్రమీకరణ (hb_మొదటి)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!substitute.serialize (c, substitutes))) return_trace (false);
-    if (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
-    return_trace (true);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!substitute.serialize (c, substitutes))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto it =
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    స్వయంచాలక it =
+    + hb_zip (ఇది+coverage, substitute)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (glyphset, hb_రెండవ)
+    | hb_map_retains_క్రమీకరణ ([&] (hb_pair_t<hb_codepoint_t, స్థిరరాశి రకం_పేరు Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { తిరిగి hb_pair (glyph_map[p.మొదటి], glyph_map[p.second]); })
     ;
 
-    bool ret = bool (it);
+    తార్కిక ret = తార్కిక (it);
     SingleSubst_serialize (c->serializer, it);
     return_trace (ret);
   }
@@ -209,4 +209,4 @@ struct SingleSubstFormat2_4
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH */

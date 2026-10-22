@@ -24,182 +24,182 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_BIMAP_HH
-#define HB_BIMAP_HH
+#నిర్వచితం_కాకపోతే HB_BIMAP_HH
+#నిర్వచించు HB_BIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-map.hh"
 
 /* Bi-directional map */
-struct hb_bimap_t
+నిర్మాణం hb_bimap_t
 {
-  void reset ()
+  శూన్య reset ()
   {
     forw_map.reset ();
-    back_map.reset ();
+    వెనుక_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  శూన్య alloc (గుర్తులేని తీయి)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (తీయి);
+    వెనుక_map.alloc (తీయి);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి forw_map.లోపల_error () || వెనుక_map.లోపల_error (); }
 
-  void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
+  శూన్య సమితి (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    ఒకవేళ (లోపల_error ()) తిరిగి;
+    ఒకవేళ (unlikely (lhs == HB_MAP_విలువ_INVALID)) తిరిగి;
+    ఒకవేళ (unlikely (rhs == HB_MAP_విలువ_INVALID)) { del (lhs); తిరిగి; }
 
-    forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    forw_map.సమితి (lhs, rhs);
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
 
-    back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    వెనుక_map.సమితి (rhs, lhs);
+    ఒకవేళ (unlikely (లోపల_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t get (hb_codepoint_t lhs) స్థిరరాశి { తిరిగి forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) స్థిరరాశి { తిరిగి వెనుక_map.get (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t క్రియాకారకం [] (hb_codepoint_t lhs) స్థిరరాశి { తిరిగి get (lhs); }
+  తార్కిక has (hb_codepoint_t lhs) స్థిరరాశి { తిరిగి forw_map.has (lhs); }
 
 
-  void del (hb_codepoint_t lhs)
+  శూన్య del (hb_codepoint_t lhs)
   {
-    back_map.del (get (lhs));
+    వెనుక_map.del (get (lhs));
     forw_map.del (lhs);
   }
 
-  void clear ()
+  శూన్య clear ()
   {
     forw_map.clear ();
-    back_map.clear ();
+    వెనుక_map.clear ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  తార్కిక is_empty () స్థిరరాశి { తిరిగి forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  గుర్తులేని పూర్ణాంకం get_population () స్థిరరాశి { తిరిగి forw_map.get_population (); }
 
-  protected:
+  రక్షిత:
   hb_map_t  forw_map;
-  hb_map_t  back_map;
+  hb_map_t  వెనుక_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ forw_map.keys())
-  auto values () const HB_AUTO_RETURN (+ forw_map.values())
-  auto iter () const HB_AUTO_RETURN (+ forw_map.iter())
+  బహిరంగ:
+  స్వయంచాలక కీలకాలు () స్థిరరాశి HB_AUTO_RETURN (+ forw_map.కీలకాలు())
+  స్వయంచాలక values () స్థిరరాశి HB_AUTO_RETURN (+ forw_map.values())
+  స్వయంచాలక iter () స్థిరరాశి HB_AUTO_RETURN (+ forw_map.iter())
 };
 
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
-struct hb_inc_bimap_t
+నిర్మాణం hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి forw_map.లోపల_error () || వెనుక_map.లోపల_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  గుర్తులేని పూర్ణాంకం get_population () స్థిరరాశి { తిరిగి forw_map.get_population (); }
 
-  void reset ()
+  శూన్య reset ()
   {
     forw_map.reset ();
-    back_map.reset ();
+    వెనుక_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  శూన్య alloc (గుర్తులేని తీయి)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (తీయి);
+    వెనుక_map.alloc (తీయి);
   }
 
-  void clear ()
+  శూన్య clear ()
   {
     forw_map.clear ();
-    back_map.clear ();
+    వెనుక_map.clear ();
   }
 
   /* Add a mapping from lhs to rhs with a unique value if lhs is unknown.
    * Return the rhs value as the result.
    */
-  hb_codepoint_t add (hb_codepoint_t lhs)
+  hb_codepoint_t కూడు (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    ఒకవేళ (rhs == HB_MAP_విలువ_INVALID)
     {
-      rhs = back_map.length;
-      forw_map.set (lhs, rhs);
-      back_map.push (lhs);
+      rhs = వెనుక_map.నిడివి;
+      forw_map.సమితి (lhs, rhs);
+      వెనుక_map.push (lhs);
     }
-    return rhs;
+    తిరిగి rhs;
   }
 
   hb_codepoint_t skip ()
   {
-    hb_codepoint_t start = back_map.length;
-    back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    hb_codepoint_t ప్రారంభం = వెనుక_map.నిడివి;
+    వెనుక_map.push (HB_MAP_విలువ_INVALID);
+    తిరిగి ప్రారంభం;
   }
 
-  hb_codepoint_t skip (unsigned count)
+  hb_codepoint_t skip (గుర్తులేని లెక్క)
   {
-    hb_codepoint_t start = back_map.length;
-    back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
-      back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    hb_codepoint_t ప్రారంభం = వెనుక_map.నిడివి;
+    వెనుక_map.alloc (వెనుక_map.నిడివి + లెక్క);
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+      వెనుక_map.push (HB_MAP_విలువ_INVALID);
+    తిరిగి ప్రారంభం;
   }
 
-  hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  hb_codepoint_t get_తదుపరి_విలువ () స్థిరరాశి
+  { తిరిగి వెనుక_map.నిడివి; }
 
-  void add_set (const hb_set_t *set)
+  శూన్య కూడు_సమితి (స్థిరరాశి hb_సమితి_t *సమితి)
   {
-    for (auto i : *set) add (i);
+    కొరకు (స్వయంచాలక i : *సమితి) కూడు (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  తార్కిక తటస్థం (గుర్తులేని పూర్ణాంకం కొలత)
   {
     clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    కొరకు (hb_codepoint_t i = 0; i < కొలత; i++) కూడు (i);
+    తిరిగి !లోపల_error ();
   }
 
-  protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  రక్షిత:
+  స్థిర పూర్ణాంకం cmp_id (స్థిరరాశి శూన్య* a, స్థిరరాశి శూన్య* b)
+  { తిరిగి (పూర్ణాంకం)*(స్థిరరాశి hb_codepoint_t *)a - (పూర్ణాంకం)*(స్థిరరాశి hb_codepoint_t *)b; }
 
-  public:
+  బహిరంగ:
   /* Optional: after finished adding all mappings in a random order,
    * reassign rhs to lhs so that they are in the same order. */
-  void sort ()
+  శూన్య sort ()
   {
-    hb_codepoint_t  count = get_population ();
-    hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    hb_codepoint_t  లెక్క = get_population ();
+    hb_సదిశ_t <hb_codepoint_t> work;
+    ఒకవేళ (unlikely (!work.resize_dirty  (లెక్క))) తిరిగి;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
-      work.arrayZ[rhs] = back_map[rhs];
+    కొరకు (hb_codepoint_t rhs = 0; rhs < లెక్క; rhs++)
+      work.arrayZ[rhs] = వెనుక_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
-      add (work.arrayZ[rhs]);
+    కొరకు (hb_codepoint_t rhs = 0; rhs < లెక్క; rhs++)
+      కూడు (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t get (hb_codepoint_t lhs) స్థిరరాశి { తిరిగి forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) స్థిరరాశి { తిరిగి వెనుక_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t క్రియాకారకం [] (hb_codepoint_t lhs) స్థిరరాశి { తిరిగి get (lhs); }
+  తార్కిక has (hb_codepoint_t lhs) స్థిరరాశి { తిరిగి forw_map.has (lhs); }
 
-  protected:
+  రక్షిత:
   hb_map_t forw_map;
-  hb_vector_t<hb_codepoint_t> back_map;
+  hb_సదిశ_t<hb_codepoint_t> వెనుక_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ back_map.iter())
+  బహిరంగ:
+  స్వయంచాలక కీలకాలు () స్థిరరాశి HB_AUTO_RETURN (+ వెనుక_map.iter())
 };
 
-#endif /* HB_BIMAP_HH */
+#అయితే_ముగింపు /* HB_BIMAP_HH */

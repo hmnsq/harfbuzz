@@ -24,54 +24,54 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_HH
-#define HB_AAT_LAYOUT_HH
+#నిర్వచితం_కాకపోతే HB_AAT_LAYOUT_HH
+#నిర్వచించు HB_AAT_LAYOUT_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-aat-ltag-table.hh"
+#అన్తర్భావ "hb-ot-shape.hh"
+#అన్తర్భావ "hb-aat-ltag-table.hh"
 
 /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
-#define HB_CORETEXT_DEFAULT_FONT_SIZE 12.f
+#నిర్వచించు HB_CORETEXT_DEFAULT_FONT_కొలత 12.f
 
-struct hb_aat_feature_mapping_t
+నిర్మాణం hb_aat_feature_mapping_t
 {
-  hb_tag_t otFeatureTag;
+  hb_ట్యాగ్_t ot_Feature_ట్యాగ్;
   hb_aat_layout_feature_type_t aatFeatureType;
-  hb_aat_layout_feature_selector_t selectorToEnable;
-  hb_aat_layout_feature_selector_t selectorToDisable;
+  hb_aat_layout_feature_selector_t selector_గమ్యం_Enable;
+  hb_aat_layout_feature_selector_t selector_గమ్యం_Disable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t key) స్థిరరాశి
+  { తిరిగి key < ot_Feature_ట్యాగ్ ? -1 : key > ot_Feature_ట్యాగ్ ? 1 : 0; }
 };
 
-HB_INTERNAL const hb_aat_feature_mapping_t *
-hb_aat_layout_find_feature_mapping (hb_tag_t tag);
+HB_అంతర్గత స్థిరరాశి hb_aat_feature_mapping_t *
+hb_aat_layout_కనుగొను_feature_mapping (hb_ట్యాగ్_t ట్యాగ్_2);
 
-HB_INTERNAL void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+HB_అంతర్గత శూన్య
+hb_aat_layout_compile_map (స్థిరరాశి hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map);
 
-HB_INTERNAL void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య
+hb_aat_layout_substitute (స్థిరరాశి hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features);
+			  hb_బఫరు_t *బఫరు,
+			  స్థిరరాశి hb_feature_t *features,
+			  గుర్తులేని అంకె_features);
 
-HB_INTERNAL void
-hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer);
+HB_అంతర్గత శూన్య
+hb_aat_layout_remove_deleted_glyphs (hb_బఫరు_t *బఫరు);
 
-HB_INTERNAL void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య
+hb_aat_layout_position (స్థిరరాశి hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer);
+			hb_బఫరు_t *బఫరు);
 
-HB_INTERNAL void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య
+hb_aat_layout_track (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer);
+		     hb_బఫరు_t *బఫరు);
 
 
-#endif /* HB_AAT_LAYOUT_HH */
+#అయితే_ముగింపు /* HB_AAT_LAYOUT_HH */

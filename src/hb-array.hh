@@ -24,103 +24,103 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ARRAY_HH
-#define HB_ARRAY_HH
+#నిర్వచితం_కాకపోతే HB_ARRAY_HH
+#నిర్వచించు HB_ARRAY_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-iter.hh"
-#include "hb-null.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-algs.hh"
+#అన్తర్భావ "hb-iter.hh"
+#అన్తర్భావ "hb-null.hh"
 
 
-template <typename Type>
-struct hb_sorted_array_t;
+మూస <రకం_పేరు Type>
+నిర్మాణం hb_sorted_array_t;
 
-enum hb_not_found_t
+గణన hb_not_దొరికింది_t
 {
-  HB_NOT_FOUND_DONT_STORE,
-  HB_NOT_FOUND_STORE,
-  HB_NOT_FOUND_STORE_CLOSEST,
+  HB_NOT_దొరికింది_DONT_STORE,
+  HB_NOT_దొరికింది_STORE,
+  HB_NOT_దొరికింది_STORE_CLOSEST,
 };
 
 
-template <typename Type>
-struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
+మూస <రకం_పేరు Type>
+నిర్మాణం hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 {
-  static constexpr bool realloc_move = true;
+  స్థిర constexpr తార్కిక realloc_move = నిజం;
 
   /*
    * Constructors.
    */
-  hb_array_t () = default;
-  hb_array_t (const hb_array_t&) = default;
-  ~hb_array_t () = default;
-  hb_array_t& operator= (const hb_array_t&) = default;
-  hb_array_t& operator= (hb_array_t&&) = default;
+  hb_array_t () = అప్రమేయ;
+  hb_array_t (స్థిరరాశి hb_array_t&) = అప్రమేయ;
+  ~hb_array_t () = అప్రమేయ;
+  hb_array_t& క్రియాకారకం= (స్థిరరాశి hb_array_t&) = అప్రమేయ;
+  hb_array_t& క్రియాకారకం= (hb_array_t&&) = అప్రమేయ;
 
-  constexpr hb_array_t (Type *array_, unsigned int length_) : arrayZ (array_), length (length_) {}
-  template <unsigned int length_>
-  constexpr hb_array_t (Type (&array_)[length_]) : hb_array_t (array_, length_) {}
+  constexpr hb_array_t (Type *array_, గుర్తులేని పూర్ణాంకం నిడివి_2) : arrayZ (array_), నిడివి (నిడివి_2) {}
+  మూస <గుర్తులేని పూర్ణాంకం నిడివి_2>
+  constexpr hb_array_t (Type (&array_)[నిడివి_2]) : hb_array_t (array_, నిడివి_2) {}
 
-  template <typename U,
+  మూస <రకం_పేరు U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_array_t (const hb_array_t<U> &o) :
+  constexpr hb_array_t (స్థిరరాశి hb_array_t<U> &o) :
     hb_iter_with_fallback_t<hb_array_t, Type&> (),
-    arrayZ (o.arrayZ), length (o.length), backwards_length (o.backwards_length) {}
-  template <typename U,
+    arrayZ (o.arrayZ), నిడివి (o.నిడివి), backwards_నిడివి (o.backwards_నిడివి) {}
+  మూస <రకం_పేరు U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_array_t& operator = (const hb_array_t<U> &o)
-  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; return *this; }
+  hb_array_t& క్రియాకారకం = (స్థిరరాశి hb_array_t<U> &o)
+  { arrayZ = o.arrayZ; నిడివి = o.నిడివి; backwards_నిడివి = o.backwards_నిడివి; తిరిగి *ఇది; }
 
   /*
    * Iterator implementation.
    */
-  typedef Type& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool has_fast_len = true;
-  Type& __item__ () const
+  రకనిర్వచనం Type& __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator = నిజం;
+  స్థిర constexpr తార్కిక has_fast_len = నిజం;
+  Type& __item__ () స్థిరరాశి
   {
-    if (unlikely (!length)) return CrapOrNull (Type);
-    return *arrayZ;
+    ఒకవేళ (unlikely (!నిడివి)) తిరిగి CrapOrNull (Type);
+    తిరిగి *arrayZ;
   }
-  Type& __item_at__ (unsigned i) const
+  Type& __item_at__ (గుర్తులేని i) స్థిరరాశి
   {
-    if (unlikely (i >= length)) return CrapOrNull (Type);
-    return arrayZ[i];
+    ఒకవేళ (unlikely (i >= నిడివి)) తిరిగి CrapOrNull (Type);
+    తిరిగి arrayZ[i];
   }
-  void __next__ ()
+  శూన్య __next__ ()
   {
-    if (unlikely (!length))
-      return;
-    length--;
-    backwards_length++;
+    ఒకవేళ (unlikely (!నిడివి))
+      తిరిగి;
+    నిడివి--;
+    backwards_నిడివి++;
     arrayZ++;
   }
-  void __forward__ (unsigned n)
+  శూన్య __forward__ (గుర్తులేని n)
   {
-    if (unlikely (n > length))
-      n = length;
-    length -= n;
-    backwards_length += n;
+    ఒకవేళ (unlikely (n > నిడివి))
+      n = నిడివి;
+    నిడివి -= n;
+    backwards_నిడివి += n;
     arrayZ += n;
   }
-  void __prev__ ()
+  శూన్య __prev__ ()
   {
-    if (unlikely (!backwards_length))
-      return;
-    length++;
-    backwards_length--;
+    ఒకవేళ (unlikely (!backwards_నిడివి))
+      తిరిగి;
+    నిడివి++;
+    backwards_నిడివి--;
     arrayZ--;
   }
-  void __rewind__ (unsigned n)
+  శూన్య __rewind__ (గుర్తులేని n)
   {
-    if (unlikely (n > backwards_length))
-      n = backwards_length;
-    length += n;
-    backwards_length -= n;
+    ఒకవేళ (unlikely (n > backwards_నిడివి))
+      n = backwards_నిడివి;
+    నిడివి += n;
+    backwards_నిడివి -= n;
     arrayZ -= n;
   }
-  unsigned __len__ () const { return length; }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి నిడివి; }
   /* Ouch. The operator== compares the contents of the array.  For range-based for loops,
    * it's best if we can just compare arrayZ, though comparing contents is still fast,
    * but also would require that Type has operator==.  As such, we optimize this operator
@@ -128,33 +128,33 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    *
    * The above comment is outdated now because we implemented separate begin/end to
    * objects that were using hb_array_t for range-based loop before. */
-  bool operator != (const hb_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_array_t& o) స్థిరరాశి
+  { తిరిగి ఇది->arrayZ != o.arrayZ || ఇది->నిడివి != o.నిడివి; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () స్థిరరాశి { తిరిగి arrayZ; }
+  Type *చివర () స్థిరరాశి { తిరిగి arrayZ + నిడివి; }
 
 
   /* Extra operators.
    */
-  Type * operator & () const { return arrayZ; }
-  operator hb_array_t<const Type> () { return hb_array_t<const Type> (arrayZ, length); }
-  template <typename T> operator T * () const { return arrayZ; }
+  Type * క్రియాకారకం & () స్థిరరాశి { తిరిగి arrayZ; }
+  క్రియాకారకం hb_array_t<స్థిరరాశి Type> () { తిరిగి hb_array_t<స్థిరరాశి Type> (arrayZ, నిడివి); }
+  మూస <రకం_పేరు T> క్రియాకారకం T * () స్థిరరాశి { తిరిగి arrayZ; }
 
-  HB_INTERNAL bool operator == (const hb_array_t &o) const;
+  HB_అంతర్గత తార్కిక క్రియాకారకం == (స్థిరరాశి hb_array_t &o) స్థిరరాశి;
 
-  uint32_t hash () const
+  uint32_t hash () స్థిరరాశి
   {
     // FNV-1a hash function
     // https://github.com/harfbuzz/harfbuzz/pull/4228
     uint32_t current = /*cbf29ce4*/0x84222325;
-    for (auto &v : *this)
+    కొరకు (స్వయంచాలక &v : *ఇది)
     {
       current = current ^ hb_hash (v);
       current = current * 16777619;
     }
-    return current;
+    తిరిగి current;
   }
 
   /*
@@ -162,371 +162,371 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    */
 
   /* Note: our compare is NOT lexicographic; it also does NOT call Type::cmp. */
-  int cmp (const hb_array_t &a) const
+  పూర్ణాంకం cmp (స్థిరరాశి hb_array_t &a) స్థిరరాశి
   {
-    if (length != a.length)
-      return (int) a.length - (int) length;
-    return hb_memcmp (a.arrayZ, arrayZ, get_size ());
+    ఒకవేళ (నిడివి != a.నిడివి)
+      తిరిగి (పూర్ణాంకం) a.నిడివి - (పూర్ణాంకం) నిడివి;
+    తిరిగి hb_memcmp (a.arrayZ, arrayZ, get_కొలత ());
   }
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
   {
     hb_array_t *a = (hb_array_t *) pa;
     hb_array_t *b = (hb_array_t *) pb;
-    return b->cmp (*a);
+    తిరిగి b->cmp (*a);
   }
 
-  template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
+  మూస <రకం_పేరు T>
+  Type *lsearch (స్థిరరాశి T &x, Type *not_దొరికింది = శూన్యసూచిక)
   {
-    unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    గుర్తులేని i;
+    తిరిగి lfind (x, &i) ? &ఇది->arrayZ[i] : not_దొరికింది;
   }
-  template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
+  మూస <రకం_పేరు T>
+  స్థిరరాశి Type *lsearch (స్థిరరాశి T &x, స్థిరరాశి Type *not_దొరికింది = శూన్యసూచిక) స్థిరరాశి
   {
-    unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    గుర్తులేని i;
+    తిరిగి lfind (x, &i) ? &ఇది->arrayZ[i] : not_దొరికింది;
   }
-  template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+  మూస <రకం_పేరు T>
+  తార్కిక lfind (స్థిరరాశి T &x, గుర్తులేని *pos = శూన్యసూచిక,
+	      hb_not_దొరికింది_t not_దొరికింది = HB_NOT_దొరికింది_DONT_STORE,
+	      గుర్తులేని పూర్ణాంకం గమ్యం_store = (గుర్తులేని పూర్ణాంకం) -1) స్థిరరాశి
   {
-    for (unsigned i = 0; i < length; ++i)
-      if (hb_equal (x, this->arrayZ[i]))
+    కొరకు (గుర్తులేని i = 0; i < నిడివి; ++i)
+      ఒకవేళ (hb_equal (x, ఇది->arrayZ[i]))
       {
-	if (pos)
+	ఒకవేళ (pos)
 	  *pos = i;
-	return true;
+	తిరిగి నిజం;
       }
 
-    if (pos)
+    ఒకవేళ (pos)
     {
-      switch (not_found)
+      ఎంపిక (not_దొరికింది)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	స్థితి HB_NOT_దొరికింది_DONT_STORE:
+	  ఆపు;
 
-	case HB_NOT_FOUND_STORE:
-	  *pos = to_store;
-	  break;
+	స్థితి HB_NOT_దొరికింది_STORE:
+	  *pos = గమ్యం_store;
+	  ఆపు;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
-	  *pos = length;
-	  break;
+	స్థితి HB_NOT_దొరికింది_STORE_CLOSEST:
+	  *pos = నిడివి;
+	  ఆపు;
       }
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  hb_sorted_array_t<Type> qsort (int (*cmp)(const void*, const void*))
+  hb_sorted_array_t<Type> qsort (పూర్ణాంకం (*cmp)(స్థిరరాశి శూన్య*, స్థిరరాశి శూన్య*))
   {
-    if (likely (length))
-      hb_qsort (arrayZ, length, this->get_item_size (), cmp);
-    return hb_sorted_array_t<Type> (*this);
+    ఒకవేళ (likely (నిడివి))
+      hb_qsort (arrayZ, నిడివి, ఇది->get_అంశం_కొలత (), cmp);
+    తిరిగి hb_sorted_array_t<Type> (*ఇది);
   }
 
   /* Comparator follows the C qsort convention: returns
    * negative / zero / positive int. */
-  template <typename Compar>
+  మూస <రకం_పేరు Compar>
   hb_sorted_array_t<Type> qsort (Compar compar)
   {
-    if (likely (length))
-      hb_qsort_inline (arrayZ, length, compar);
-    return hb_sorted_array_t<Type> (*this);
+    ఒకవేళ (likely (నిడివి))
+      hb_qsort_inline (arrayZ, నిడివి, compar);
+    తిరిగి hb_sorted_array_t<Type> (*ఇది);
   }
 
-  private:
-  template <typename T = Type,
+  అంతరంగ:
+  మూస <రకం_పేరు T = Type,
 	    hb_enable_if (std::is_move_assignable<T>::value)>
-  hb_sorted_array_t<Type> _qsort (hb_priority<1>)
+  hb_sorted_array_t<Type> _qsort (hb_ప్రాధాన్యత<1>)
   {
-    return qsort ([] (const Type &a, const Type &b) { return Type::cmp (&a, &b); });
+    తిరిగి qsort ([] (స్థిరరాశి Type &a, స్థిరరాశి Type &b) { తిరిగి Type::cmp (&a, &b); });
   }
-  hb_sorted_array_t<Type> _qsort (hb_priority<0>)
+  hb_sorted_array_t<Type> _qsort (hb_ప్రాధాన్యత<0>)
   {
-    return qsort ((int(*)(const void*, const void*)) Type::cmp);
+    తిరిగి qsort ((పూర్ణాంకం(*)(స్థిరరాశి శూన్య*, స్థిరరాశి శూన్య*)) Type::cmp);
   }
-  public:
+  బహిరంగ:
 
   hb_sorted_array_t<Type> qsort ()
   {
-    return _qsort (hb_prioritize);
+    తిరిగి _qsort (hb_prioritize);
   }
 
   /*
    * Other methods.
    */
 
-  size_t get_size () const { return length * this->get_item_size (); }
+  size_t get_కొలత () స్థిరరాశి { తిరిగి నిడివి * ఇది->get_అంశం_కొలత (); }
 
   /*
    * Reverse the order of items in this array in the range [start, end).
    */
-  void reverse (unsigned start = 0, unsigned end = -1)
+  శూన్య reverse (గుర్తులేని ప్రారంభం = 0, గుర్తులేని చివర = -1)
   {
-    start = hb_min (start, length);
-    end = hb_min (end, length);
+    ప్రారంభం = hb_min (ప్రారంభం, నిడివి);
+    చివర = hb_min (చివర, నిడివి);
 
-    if (end < start + 2)
-      return;
+    ఒకవేళ (చివర < ప్రారంభం + 2)
+      తిరిగి;
 
-    unsigned stop = start + (end - start) / 2;
-    for (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
-      hb_swap (arrayZ[rhs], arrayZ[lhs]);
+    గుర్తులేని stop = ప్రారంభం + (చివర - ప్రారంభం) / 2;
+    కొరకు (గుర్తులేని lhs = ప్రారంభం, rhs = చివర - 1; lhs < stop; lhs++, rhs--)
+      hb_మార్పిడి (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం = 0, గుర్తులేని పూర్ణాంకం *seg_లెక్క = శూన్యసూచిక /* IN/OUT */) స్థిరరాశి
   {
-    if (!start_offset && !seg_count)
-      return *this;
+    ఒకవేళ (!ప్రారంభం_స్థానభ్రంశం && !seg_లెక్క)
+      తిరిగి *ఇది;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
-      count = 0;
-    else
-      count -= start_offset;
-    if (seg_count)
-      count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+    గుర్తులేని పూర్ణాంకం లెక్క = నిడివి;
+    ఒకవేళ (unlikely (ప్రారంభం_స్థానభ్రంశం > లెక్క))
+      లెక్క = 0;
+    లేకపోతే
+      లెక్క -= ప్రారంభం_స్థానభ్రంశం;
+    ఒకవేళ (seg_లెక్క)
+      లెక్క = *seg_లెక్క = hb_min (లెక్క, *seg_లెక్క);
+    తిరిగి hb_array_t (arrayZ + ప్రారంభం_స్థానభ్రంశం, లెక్క);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం, గుర్తులేని పూర్ణాంకం seg_లెక్క) స్థిరరాశి
+  { తిరిగి sub_array (ప్రారంభం_స్థానభ్రంశం, &seg_లెక్క); }
 
-  hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_array_t truncate (గుర్తులేని నిడివి) స్థిరరాశి { తిరిగి sub_array (0, నిడివి); }
 
-  template <typename T,
-	    unsigned P = sizeof (Type),
+  మూస <రకం_పేరు T,
+	    గుర్తులేని P = పరిమాణం (Type),
 	    hb_enable_if (P == 1)>
-  const T *as () const
-  { return length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
+  స్థిరరాశి T *as () స్థిరరాశి
+  { తిరిగి నిడివి < hb_min_కొలత (T) ? &Null (T) : reinterpret_cast<స్థిరరాశి T *> (arrayZ); }
 
-  template <typename T,
-	    unsigned P = sizeof (Type),
+  మూస <రకం_పేరు T,
+	    గుర్తులేని P = పరిమాణం (Type),
 	    hb_enable_if (P == 1)>
-  bool check_range (const T *p, unsigned int size = T::static_size) const
+  తార్కిక check_range (స్థిరరాశి T *p, గుర్తులేని పూర్ణాంకం కొలత = T::static_కొలత) స్థిరరాశి
   {
-    return arrayZ <= ((const char *) p)
-	&& ((const char *) p) <= arrayZ + length
-	&& (unsigned int) (arrayZ + length - (const char *) p) >= size;
+    తిరిగి arrayZ <= ((స్థిరరాశి అక్షరం *) p)
+	&& ((స్థిరరాశి అక్షరం *) p) <= arrayZ + నిడివి
+	&& (గుర్తులేని పూర్ణాంకం) (arrayZ + నిడివి - (స్థిరరాశి అక్షరం *) p) >= కొలత;
   }
 
-  template <unsigned P = sizeof (Type),
+  మూస <గుర్తులేని P = పరిమాణం (Type),
 	    hb_enable_if (P == 1)>
-  bool check_end (const void *p) const
+  తార్కిక check_చివర (స్థిరరాశి శూన్య *p) స్థిరరాశి
   {
-    return (uintptr_t) (((const char *) p) - arrayZ) <= length;
+    తిరిగి (uintptr_t) (((స్థిరరాశి అక్షరం *) p) - arrayZ) <= నిడివి;
   }
 
   /* Only call if you allocated the underlying array using hb_malloc() or similar. */
-  void fini ()
-  { hb_free ((void *) arrayZ); arrayZ = nullptr; length = 0; }
+  శూన్య fini ()
+  { hb_free ((శూన్య *) arrayZ); arrayZ = శూన్యసూచిక; నిడివి = 0; }
 
-  template <typename hb_serialize_context_t,
-	    typename U = Type,
-	    hb_enable_if (!(sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+  మూస <రకం_పేరు hb_serialize_context_t,
+	    రకం_పేరు U = Type,
+	    hb_enable_if (!(పరిమాణం (U) < పరిమాణం (దీర్ఘ దీర్ఘ) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
+  hb_array_t copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    for (unsigned i = 0; i < length; i++)
-      out[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
-    return_trace (hb_array_t (out, length));
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక* బహిర్గతం = c->ప్రారంభం_embed (arrayZ);
+    ఒకవేళ (unlikely (!c->extend_కొలత (బహిర్గతం, get_కొలత (), అబద్ధం))) return_trace (hb_array_t ());
+    కొరకు (గుర్తులేని i = 0; i < నిడివి; i++)
+      బహిర్గతం[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
+    return_trace (hb_array_t (బహిర్గతం, నిడివి));
   }
 
-  template <typename hb_serialize_context_t,
-	    typename U = Type,
-	    hb_enable_if (sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+  మూస <రకం_పేరు hb_serialize_context_t,
+	    రకం_పేరు U = Type,
+	    hb_enable_if (పరిమాణం (U) < పరిమాణం (దీర్ఘ దీర్ఘ) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
+  hb_array_t copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    hb_memcpy (out, arrayZ, get_size ());
-    return_trace (hb_array_t (out, length));
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక* బహిర్గతం = c->ప్రారంభం_embed (arrayZ);
+    ఒకవేళ (unlikely (!c->extend_కొలత (బహిర్గతం, get_కొలత (), అబద్ధం))) return_trace (hb_array_t ());
+    hb_memcpy (బహిర్గతం, arrayZ, get_కొలత ());
+    return_trace (hb_array_t (బహిర్గతం, నిడివి));
   }
 
-  template <typename hb_sanitize_context_t>
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return c->check_array (arrayZ, length); }
+  మూస <రకం_పేరు hb_sanitize_context_t>
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
+  { తిరిగి c->check_array (arrayZ, నిడివి); }
 
   /*
    * Members
    */
 
-  public:
-  Type *arrayZ = nullptr;
-  unsigned int length = 0;
-  unsigned int backwards_length = 0;
+  బహిరంగ:
+  Type *arrayZ = శూన్యసూచిక;
+  గుర్తులేని పూర్ణాంకం నిడివి = 0;
+  గుర్తులేని పూర్ణాంకం backwards_నిడివి = 0;
 };
-template <typename T> inline hb_array_t<T>
+మూస <రకం_పేరు T> అంతఃవరుస hb_array_t<T>
 hb_array ()
-{ return hb_array_t<T> (); }
-template <typename T> inline hb_array_t<T>
-hb_array (T *array, unsigned int length)
-{ return hb_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_array_t<T>
-hb_array (T (&array_)[length_])
-{ return hb_array_t<T> (array_); }
+{ తిరిగి hb_array_t<T> (); }
+మూస <రకం_పేరు T> అంతఃవరుస hb_array_t<T>
+hb_array (T *array, గుర్తులేని పూర్ణాంకం నిడివి)
+{ తిరిగి hb_array_t<T> (array, నిడివి); }
+మూస <రకం_పేరు T, గుర్తులేని పూర్ణాంకం నిడివి_2> అంతఃవరుస hb_array_t<T>
+hb_array (T (&array_)[నిడివి_2])
+{ తిరిగి hb_array_t<T> (array_); }
 
-template <typename Type>
-struct hb_sorted_array_t :
+మూస <రకం_పేరు Type>
+నిర్మాణం hb_sorted_array_t :
 	hb_array_t<Type>,
 	hb_iter_t<hb_sorted_array_t<Type>, Type&>
 {
-  typedef hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
-  HB_ITER_USING (iter_base_t);
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  static constexpr bool has_fast_len = true;
+  రకనిర్వచనం hb_iter_t<hb_sorted_array_t, Type&> iter_పునాది_t;
+  HB_ITER_USING (iter_పునాది_t);
+  స్థిర constexpr తార్కిక is_random_access_iterator = నిజం;
+  స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+  స్థిర constexpr తార్కిక has_fast_len = నిజం;
 
-  hb_sorted_array_t () = default;
-  hb_sorted_array_t (const hb_sorted_array_t&) = default;
-  ~hb_sorted_array_t () = default;
-  hb_sorted_array_t& operator= (const hb_sorted_array_t&) = default;
-  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = default;
+  hb_sorted_array_t () = అప్రమేయ;
+  hb_sorted_array_t (స్థిరరాశి hb_sorted_array_t&) = అప్రమేయ;
+  ~hb_sorted_array_t () = అప్రమేయ;
+  hb_sorted_array_t& క్రియాకారకం= (స్థిరరాశి hb_sorted_array_t&) = అప్రమేయ;
+  hb_sorted_array_t& క్రియాకారకం= (hb_sorted_array_t&&) = అప్రమేయ;
 
-  constexpr hb_sorted_array_t (Type *array_, unsigned int length_) : hb_array_t<Type> (array_, length_) {}
-  template <unsigned int length_>
-  constexpr hb_sorted_array_t (Type (&array_)[length_]) : hb_array_t<Type> (array_) {}
+  constexpr hb_sorted_array_t (Type *array_, గుర్తులేని పూర్ణాంకం నిడివి_2) : hb_array_t<Type> (array_, నిడివి_2) {}
+  మూస <గుర్తులేని పూర్ణాంకం నిడివి_2>
+  constexpr hb_sorted_array_t (Type (&array_)[నిడివి_2]) : hb_array_t<Type> (array_) {}
 
-  template <typename U,
+  మూస <రకం_పేరు U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_sorted_array_t (const hb_array_t<U> &o) :
+  constexpr hb_sorted_array_t (స్థిరరాశి hb_array_t<U> &o) :
     hb_array_t<Type> (o),
     hb_iter_t<hb_sorted_array_t, Type&> () {}
-  template <typename U,
+  మూస <రకం_పేరు U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_sorted_array_t& operator = (const hb_array_t<U> &o)
-  { hb_array_t<Type> (*this) = o; return *this; }
+  hb_sorted_array_t& క్రియాకారకం = (స్థిరరాశి hb_array_t<U> &o)
+  { hb_array_t<Type> (*ఇది) = o; తిరిగి *ఇది; }
 
   /* Iterator implementation. */
 
   /* See comment in hb_array_of::operator != */
-  bool operator != (const hb_sorted_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_sorted_array_t& o) స్థిరరాశి
+  { తిరిగి ఇది->arrayZ != o.arrayZ || ఇది->నిడివి != o.నిడివి; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return this->arrayZ; }
-  Type *end () const { return this->arrayZ + this->length; }
+  Type *begin () స్థిరరాశి { తిరిగి ఇది->arrayZ; }
+  Type *చివర () స్థిరరాశి { తిరిగి ఇది->arrayZ + ఇది->నిడివి; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం, గుర్తులేని పూర్ణాంకం *seg_లెక్క /* IN/OUT */) స్థిరరాశి
+  { తిరిగి hb_sorted_array_t (((స్థిరరాశి hb_array_t<Type> *) (ఇది))->sub_array (ప్రారంభం_స్థానభ్రంశం, seg_లెక్క)); }
+  hb_sorted_array_t sub_array (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం, గుర్తులేని పూర్ణాంకం seg_లెక్క) స్థిరరాశి
+  { తిరిగి sub_array (ప్రారంభం_స్థానభ్రంశం, &seg_లెక్క); }
 
-  hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_sorted_array_t truncate (గుర్తులేని నిడివి) స్థిరరాశి { తిరిగి sub_array (0, నిడివి); }
 
-  template <typename T>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
+  మూస <రకం_పేరు T>
+  Type *bsearch (స్థిరరాశి T &x, Type *not_దొరికింది = శూన్యసూచిక)
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    గుర్తులేని పూర్ణాంకం i;
+    తిరిగి bfind (x, &i) ? &ఇది->arrayZ[i] : not_దొరికింది;
   }
-  template <typename T>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
+  మూస <రకం_పేరు T>
+  స్థిరరాశి Type *bsearch (స్థిరరాశి T &x, స్థిరరాశి Type *not_దొరికింది = శూన్యసూచిక) స్థిరరాశి
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    గుర్తులేని పూర్ణాంకం i;
+    తిరిగి bfind (x, &i) ? &ఇది->arrayZ[i] : not_దొరికింది;
   }
-  template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+  మూస <రకం_పేరు T>
+  తార్కిక bfind (స్థిరరాశి T &x, గుర్తులేని పూర్ణాంకం *i = శూన్యసూచిక,
+	      hb_not_దొరికింది_t not_దొరికింది = HB_NOT_దొరికింది_DONT_STORE,
+	      గుర్తులేని పూర్ణాంకం గమ్యం_store = (గుర్తులేని పూర్ణాంకం) -1) స్థిరరాశి
   {
-    unsigned pos;
+    గుర్తులేని pos;
 
-    if (bsearch_impl (x, &pos))
+    ఒకవేళ (bsearch_impl (x, &pos))
     {
-      if (i)
+      ఒకవేళ (i)
 	*i = pos;
-      return true;
+      తిరిగి నిజం;
     }
 
-    if (i)
+    ఒకవేళ (i)
     {
-      switch (not_found)
+      ఎంపిక (not_దొరికింది)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	స్థితి HB_NOT_దొరికింది_DONT_STORE:
+	  ఆపు;
 
-	case HB_NOT_FOUND_STORE:
-	  *i = to_store;
-	  break;
+	స్థితి HB_NOT_దొరికింది_STORE:
+	  *i = గమ్యం_store;
+	  ఆపు;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	స్థితి HB_NOT_దొరికింది_STORE_CLOSEST:
 	  *i = pos;
-	  break;
+	  ఆపు;
       }
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
-  template <typename T, typename ...Ts>
-  bool bsearch_impl (const T &x, unsigned *pos, Ts... ds) const
+  మూస <రకం_పేరు T, రకం_పేరు ...Ts>
+  తార్కిక bsearch_impl (స్థిరరాశి T &x, గుర్తులేని *pos, Ts... ds) స్థిరరాశి
   {
-    return hb_bsearch_impl (pos,
+    తిరిగి hb_bsearch_impl (pos,
 			    x,
-			    this->arrayZ,
-			    this->length,
-			    sizeof (Type),
-			    _hb_cmp_method<T, Type, Ts...>,
+			    ఇది->arrayZ,
+			    ఇది->నిడివి,
+			    పరిమాణం (Type),
+			    hb_cmp_పద్ధతి<T, Type, Ts...>,
 			    std::forward<Ts> (ds)...);
   }
 };
-template <typename T> inline hb_sorted_array_t<T>
-hb_sorted_array (T *array, unsigned int length)
-{ return hb_sorted_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_sorted_array_t<T>
-hb_sorted_array (T (&array_)[length_])
-{ return hb_sorted_array_t<T> (array_); }
+మూస <రకం_పేరు T> అంతఃవరుస hb_sorted_array_t<T>
+hb_sorted_array (T *array, గుర్తులేని పూర్ణాంకం నిడివి)
+{ తిరిగి hb_sorted_array_t<T> (array, నిడివి); }
+మూస <రకం_పేరు T, గుర్తులేని పూర్ణాంకం నిడివి_2> అంతఃవరుస hb_sorted_array_t<T>
+hb_sorted_array (T (&array_)[నిడివి_2])
+{ తిరిగి hb_sorted_array_t<T> (array_); }
 
-template <typename T>
-inline bool hb_array_t<T>::operator == (const hb_array_t<T> &o) const
+మూస <రకం_పేరు T>
+అంతఃవరుస తార్కిక hb_array_t<T>::క్రియాకారకం == (స్థిరరాశి hb_array_t<T> &o) స్థిరరాశి
 {
-  if (o.length != this->length) return false;
-  for (unsigned int i = 0; i < this->length; i++) {
-    if (this->arrayZ[i] != o.arrayZ[i]) return false;
+  ఒకవేళ (o.నిడివి != ఇది->నిడివి) తిరిగి అబద్ధం;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ఇది->నిడివి; i++) {
+    ఒకవేళ (ఇది->arrayZ[i] != o.arrayZ[i]) తిరిగి అబద్ధం;
   }
-  return true;
+  తిరిగి నిజం;
 }
-template <>
-inline bool hb_array_t<const char>::operator == (const hb_array_t<const char> &o) const
+మూస <>
+అంతఃవరుస తార్కిక hb_array_t<స్థిరరాశి అక్షరం>::క్రియాకారకం == (స్థిరరాశి hb_array_t<స్థిరరాశి అక్షరం> &o) స్థిరరాశి
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  ఒకవేళ (o.నిడివి != ఇది->నిడివి) తిరిగి అబద్ధం;
+  తిరిగి 0 == hb_memcmp (arrayZ, o.arrayZ, నిడివి);
 }
-template <>
-inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const unsigned char> &o) const
+మూస <>
+అంతఃవరుస తార్కిక hb_array_t<స్థిరరాశి గుర్తులేని అక్షరం>::క్రియాకారకం == (స్థిరరాశి hb_array_t<స్థిరరాశి గుర్తులేని అక్షరం> &o) స్థిరరాశి
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  ఒకవేళ (o.నిడివి != ఇది->నిడివి) తిరిగి అబద్ధం;
+  తిరిగి 0 == hb_memcmp (arrayZ, o.arrayZ, నిడివి);
 }
 
 
 /* Specialize hash() for byte arrays. */
 
-#ifndef HB_OPTIMIZE_SIZE_MORE
-template <>
-inline uint32_t hb_array_t<const char>::hash () const
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత_మరిన్ని
+మూస <>
+అంతఃవరుస uint32_t hb_array_t<స్థిరరాశి అక్షరం>::hash () స్థిరరాశి
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  తిరిగి fasthash32(arrayZ, నిడివి, 0xf437ffe6 /* magic? */);
 }
 
-template <>
-inline uint32_t hb_array_t<const unsigned char>::hash () const
+మూస <>
+అంతఃవరుస uint32_t hb_array_t<స్థిరరాశి గుర్తులేని అక్షరం>::hash () స్థిరరాశి
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  తిరిగి fasthash32(arrayZ, నిడివి, 0xf437ffe6 /* magic? */);
 }
-#endif
+#అయితే_ముగింపు
 
 
-typedef hb_array_t<const char> hb_bytes_t;
-typedef hb_array_t<const unsigned char> hb_ubytes_t;
+రకనిర్వచనం hb_array_t<స్థిరరాశి అక్షరం> hb_బైట్లు_t;
+రకనిర్వచనం hb_array_t<స్థిరరాశి గుర్తులేని అక్షరం> hb_ubytes_t;
 
 
 
-#endif /* HB_ARRAY_HH */
+#అయితే_ముగింపు /* HB_ARRAY_HH */

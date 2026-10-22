@@ -22,198 +22,198 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_BUFFER_HH
-#define HB_WASM_API_BUFFER_HH
+#నిర్వచితం_కాకపోతే HB_WASM_API_బఫరు_HH
+#నిర్వచించు HB_WASM_API_బఫరు_HH
 
-#include "hb-wasm-api.hh"
+#అన్తర్భావ "hb-wasm-api.hh"
 
-#include "hb-buffer.hh"
+#అన్తర్భావ "hb-buffer.hh"
 
-namespace hb {
-namespace wasm {
+నామాకాశ hb {
+నామాకాశ wasm {
 
-static_assert (sizeof (glyph_info_t) == sizeof (hb_glyph_info_t), "");
-static_assert (sizeof (glyph_position_t) == sizeof (hb_glyph_position_t), "");
+static_assert (పరిమాణం (glyph_info_t) == పరిమాణం (hb_glyph_info_t), "");
+static_assert (పరిమాణం (glyph_position_t) == పరిమాణం (hb_glyph_position_t), "");
 
-HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
-					       ptr_d(buffer_contents_t, contents),
-					       uint32_t size)
+HB_WASM_API (bool_t, బఫరు_contents_realloc) (HB_WASM_EXEC_ENV
+					       ptr_d(బఫరు_contents_t, contents),
+					       uint32_t కొలత)
 {
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  HB_PTR_PARAM (బఫరు_contents_t, contents);
+  ఒకవేళ (unlikely (!contents))
+    తిరిగి అబద్ధం;
 
-  if (size <= contents->length)
-    return true;
+  ఒకవేళ (కొలత <= contents->నిడివి)
+    తిరిగి నిజం;
 
-  unsigned bytes;
-  if (hb_unsigned_mul_overflows (size, sizeof (glyph_info_t), &bytes))
-    return false;
+  గుర్తులేని బైట్లు;
+  ఒకవేళ (hb_unsigned_mul_overflows (కొలత, పరిమాణం (glyph_info_t), &బైట్లు))
+    తిరిగి అబద్ధం;
 
-  glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, contents->length);
-  glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, contents->length);
+  glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, contents->నిడివి);
+  glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, contents->నిడివి);
 
-  if (unlikely (!info || !pos))
-    return false;
+  ఒకవేళ (unlikely (!info || !pos))
+    తిరిగి అబద్ధం;
 
-  glyph_info_t *new_info = nullptr;
-  uint32_t new_inforef = module_malloc (bytes, (void **) &new_info);
-  glyph_position_t *new_pos = nullptr;
-  uint32_t new_posref = module_malloc (bytes, (void **) &new_pos);
+  glyph_info_t *new_info = శూన్యసూచిక;
+  uint32_t new_inforef = module_malloc (బైట్లు, (శూన్య **) &new_info);
+  glyph_position_t *new_pos = శూన్యసూచిక;
+  uint32_t new_posref = module_malloc (బైట్లు, (శూన్య **) &new_pos);
 
-  unsigned old_bytes = contents->length * sizeof (glyph_info_t);
-  if (likely (new_inforef))
+  గుర్తులేని old_బైట్లు = contents->నిడివి * పరిమాణం (glyph_info_t);
+  ఒకవేళ (likely (new_inforef))
   {
-    hb_memcpy (new_info, info, old_bytes);
+    hb_memcpy (new_info, info, old_బైట్లు);
     module_free (contents->info);
     contents->info = new_inforef;
   }
-  if (likely (new_posref))
+  ఒకవేళ (likely (new_posref))
   {
-    hb_memcpy (new_pos, pos, old_bytes);
+    hb_memcpy (new_pos, pos, old_బైట్లు);
     module_free (contents->pos);
     contents->pos = new_posref;
   }
 
-  if (likely (new_info && new_pos))
+  ఒకవేళ (likely (new_info && new_pos))
   {
-    contents->length = size;
-    return true;
+    contents->నిడివి = కొలత;
+    తిరిగి నిజం;
   }
 
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
-					  ptr_d(buffer_contents_t, contents))
+HB_WASM_API (శూన్య, బఫరు_contents_free) (HB_WASM_EXEC_ENV
+					  ptr_d(బఫరు_contents_t, contents))
 {
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return;
+  HB_PTR_PARAM (బఫరు_contents_t, contents);
+  ఒకవేళ (unlikely (!contents))
+    తిరిగి;
 
   module_free (contents->info);
   module_free (contents->pos);
 
   contents->info = nullref;
   contents->pos = nullref;
-  contents->length = 0;
+  contents->నిడివి = 0;
 }
 
-HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
-					    ptr_d(buffer_t, buffer),
-					    ptr_d(buffer_contents_t, contents))
+HB_WASM_API (bool_t, బఫరు_copy_contents) (HB_WASM_EXEC_ENV
+					    ptr_d(బఫరు_t, బఫరు),
+					    ptr_d(బఫరు_contents_t, contents))
 {
-  HB_REF2OBJ (buffer);
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  HB_REF2OBJ (బఫరు);
+  HB_PTR_PARAM (బఫరు_contents_t, contents);
+  ఒకవేళ (unlikely (!contents))
+    తిరిగి అబద్ధం;
 
-  if (buffer->have_output)
-    buffer->sync ();
-  if (!buffer->have_positions)
-    buffer->clear_positions ();
+  ఒకవేళ (బఫరు->have_output)
+    బఫరు->సమకాలీకరణ ();
+  ఒకవేళ (!బఫరు->have_positions)
+    బఫరు->clear_positions ();
 
-  unsigned length = buffer->len;
+  గుర్తులేని నిడివి = బఫరు->len;
 
-  if (length <= contents->length)
+  ఒకవేళ (నిడివి <= contents->నిడివి)
   {
-    glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, length);
-    glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, length);
+    glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, నిడివి);
+    glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, నిడివి);
 
-    if (unlikely (!info || !pos))
+    ఒకవేళ (unlikely (!info || !pos))
     {
-      contents->length = 0;
-      return false;
+      contents->నిడివి = 0;
+      తిరిగి అబద్ధం;
     }
 
-    unsigned bytes = length * sizeof (hb_glyph_info_t);
-    hb_memcpy (info, buffer->info, bytes);
-    hb_memcpy (pos, buffer->pos, bytes);
+    గుర్తులేని బైట్లు = నిడివి * పరిమాణం (hb_glyph_info_t);
+    hb_memcpy (info, బఫరు->info, బైట్లు);
+    hb_memcpy (pos, బఫరు->pos, బైట్లు);
 
-    return true;
+    తిరిగి నిజం;
   }
 
   module_free (contents->info);
   module_free (contents->pos);
 
-  contents->length = length;
-  unsigned bytes = length * sizeof (hb_glyph_info_t);
-  contents->info = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->info, bytes);
-  contents->pos = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->pos, bytes);
+  contents->నిడివి = నిడివి;
+  గుర్తులేని బైట్లు = నిడివి * పరిమాణం (hb_glyph_info_t);
+  contents->info = wasm_runtime_module_dup_దత్తాంశం (module_inst, (స్థిరరాశి అక్షరం *) బఫరు->info, బైట్లు);
+  contents->pos = wasm_runtime_module_dup_దత్తాంశం (module_inst, (స్థిరరాశి అక్షరం *) బఫరు->pos, బైట్లు);
 
-  if (length && (!contents->info || !contents->pos))
+  ఒకవేళ (నిడివి && (!contents->info || !contents->pos))
   {
-    contents->length = 0;
-    return false;
+    contents->నిడివి = 0;
+    తిరిగి అబద్ధం;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer),
-					   ptr_d(const buffer_contents_t, contents))
+HB_WASM_API (bool_t, బఫరు_సమితి_contents) (HB_WASM_EXEC_ENV
+					   ptr_d(బఫరు_t, బఫరు),
+					   ptr_d(స్థిరరాశి బఫరు_contents_t, contents))
 {
-  HB_REF2OBJ (buffer);
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  HB_REF2OBJ (బఫరు);
+  HB_PTR_PARAM (బఫరు_contents_t, contents);
+  ఒకవేళ (unlikely (!contents))
+    తిరిగి అబద్ధం;
 
-  unsigned length = contents->length;
-  unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (length, sizeof (buffer->info[0]), &bytes)))
-    return false;
+  గుర్తులేని నిడివి = contents->నిడివి;
+  గుర్తులేని బైట్లు;
+  ఒకవేళ (unlikely (hb_unsigned_mul_overflows (నిడివి, పరిమాణం (బఫరు->info[0]), &బైట్లు)))
+    తిరిగి అబద్ధం;
 
-  glyph_info_t *info = (glyph_info_t *) (validate_app_addr (contents->info, bytes) ? addr_app_to_native (contents->info) : nullptr);
-  glyph_position_t *pos = (glyph_position_t *) (validate_app_addr (contents->pos, bytes) ? addr_app_to_native (contents->pos) : nullptr);
-  if (unlikely (!info || !pos))
-    return false;
+  glyph_info_t *info = (glyph_info_t *) (validate_app_addr (contents->info, బైట్లు) ? addr_app_గమ్యం_native (contents->info) : శూన్యసూచిక);
+  glyph_position_t *pos = (glyph_position_t *) (validate_app_addr (contents->pos, బైట్లు) ? addr_app_గమ్యం_native (contents->pos) : శూన్యసూచిక);
+  ఒకవేళ (unlikely (!info || !pos))
+    తిరిగి అబద్ధం;
 
-  if (unlikely (!buffer->resize (length)))
-    return false;
+  ఒకవేళ (unlikely (!బఫరు->resize (నిడివి)))
+    తిరిగి అబద్ధం;
 
-  if (!buffer->have_positions)
-    buffer->clear_positions (); /* This is wasteful. */
+  ఒకవేళ (!బఫరు->have_positions)
+    బఫరు->clear_positions (); /* This is wasteful. */
 
-  hb_memcpy (buffer->info, info, bytes);
-  hb_memcpy (buffer->pos, pos, bytes);
-  buffer->len = length;
+  hb_memcpy (బఫరు->info, info, బైట్లు);
+  hb_memcpy (బఫరు->pos, pos, బైట్లు);
+  బఫరు->len = నిడివి;
 
-  return true;
+  తిరిగి నిజం;
 }
 
-HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
-						 ptr_d(buffer_t, buffer))
+HB_WASM_API (direction_t, బఫరు_get_direction) (HB_WASM_EXEC_ENV
+						 ptr_d(బఫరు_t, బఫరు))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (బఫరు);
 
-  return (direction_t) hb_buffer_get_direction (buffer);
+  తిరిగి (direction_t) hb_బఫరు_get_direction (బఫరు);
 }
 
-HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer))
+HB_WASM_API (script_t, బఫరు_get_script) (HB_WASM_EXEC_ENV
+					   ptr_d(బఫరు_t, బఫరు))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (బఫరు);
 
-  return hb_script_to_iso15924_tag (hb_buffer_get_script (buffer));
+  తిరిగి hb_script_గమ్యం_iso15924_ట్యాగ్ (hb_బఫరు_get_script (బఫరు));
 }
 
-HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
-				    ptr_d(buffer_t, buffer))
+HB_WASM_API (శూన్య, బఫరు_తిరగేయి) (HB_WASM_EXEC_ENV
+				    ptr_d(బఫరు_t, బఫరు))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (బఫరు);
 
-  hb_buffer_reverse (buffer);
+  hb_బఫరు_తిరగేయి (బఫరు);
 }
 
-HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
-					     ptr_d(buffer_t, buffer))
+HB_WASM_API (శూన్య, బఫరు_తిరగేయి_clusters) (HB_WASM_EXEC_ENV
+					     ptr_d(బఫరు_t, బఫరు))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (బఫరు);
 
-  hb_buffer_reverse_clusters (buffer);
+  hb_బఫరు_తిరగేయి_clusters (బఫరు);
 }
 
 }}
 
-#endif /* HB_WASM_API_BUFFER_HH */
+#అయితే_ముగింపు /* HB_WASM_API_BUFFER_HH */

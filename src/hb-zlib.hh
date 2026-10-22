@@ -1,37 +1,37 @@
-#ifndef HB_ZLIB_HH
-#define HB_ZLIB_HH
+#నిర్వచితం_కాకపోతే HB_ZLIB_HH
+#నిర్వచించు HB_ZLIB_HH
 
-#include "hb-blob.hh"
+#అన్తర్భావ "hb-blob.hh"
 
-static inline bool
-hb_blob_is_gzip (const char *data,
-                 unsigned    data_len)
+స్థిర అంతఃవరుస తార్కిక
+hb_blob_is_gzip (స్థిరరాశి అక్షరం *దత్తాంశం,
+                 గుర్తులేని    దత్తాంశం_len)
 {
-  return data_len >= 3 &&
-         (unsigned char) data[0] == 0x1Fu &&
-         (unsigned char) data[1] == 0x8Bu &&
-         (unsigned char) data[2] == 0x08u;
+  తిరిగి దత్తాంశం_len >= 3 &&
+         (గుర్తులేని అక్షరం) దత్తాంశం[0] == 0x1Fu &&
+         (గుర్తులేని అక్షరం) దత్తాంశం[1] == 0x8Bu &&
+         (గుర్తులేని అక్షరం) దత్తాంశం[2] == 0x08u;
 }
 
-static inline bool
-hb_gzip_get_uncompressed_size (const char *data,
-                               unsigned    data_len,
-                               uint32_t   *size)
+స్థిర అంతఃవరుస తార్కిక
+hb_gzip_get_uncompressed_కొలత (స్థిరరాశి అక్షరం *దత్తాంశం,
+                               గుర్తులేని    దత్తాంశం_len,
+                               uint32_t   *కొలత)
 {
-  if (data_len < 4)
-    return false;
+  ఒకవేళ (దత్తాంశం_len < 4)
+    తిరిగి అబద్ధం;
 
-  const unsigned char *trailer = (const unsigned char *) data + data_len - 4;
-  if (size)
-    *size = (uint32_t) trailer[0] |
+  స్థిరరాశి గుర్తులేని అక్షరం *trailer = (స్థిరరాశి గుర్తులేని అక్షరం *) దత్తాంశం + దత్తాంశం_len - 4;
+  ఒకవేళ (కొలత)
+    *కొలత = (uint32_t) trailer[0] |
             ((uint32_t) trailer[1] << 8) |
             ((uint32_t) trailer[2] << 16) |
             ((uint32_t) trailer[3] << 24);
-  return true;
+  తిరిగి నిజం;
 }
 
-HB_INTERNAL hb_blob_t *
+HB_అంతర్గత hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len);
+                         గుర్తులేని   max_output_len);
 
-#endif /* HB_ZLIB_HH */
+#అయితే_ముగింపు /* HB_ZLIB_HH */

@@ -24,27 +24,27 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_H
-#define HB_OT_H
-#define HB_OT_H_IN
+#నిర్వచితం_కాకపోతే HB_OT_H
+#నిర్వచించు HB_OT_H
+#నిర్వచించు HB_OT_H_లోపల
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include "hb-ot-fetch.h"
-#include "hb-ot-color.h"
-#include "hb-ot-deprecated.h"
-#include "hb-ot-font.h"
-#include "hb-ot-layout.h"
-#include "hb-ot-math.h"
-#include "hb-ot-meta.h"
-#include "hb-ot-metrics.h"
-#include "hb-ot-name.h"
-#include "hb-ot-shape.h"
-#include "hb-ot-var.h"
+#అన్తర్భావ "hb-ot-fetch.h"
+#అన్తర్భావ "hb-ot-color.h"
+#అన్తర్భావ "hb-ot-deprecated.h"
+#అన్తర్భావ "hb-ot-font.h"
+#అన్తర్భావ "hb-ot-layout.h"
+#అన్తర్భావ "hb-ot-math.h"
+#అన్తర్భావ "hb-ot-meta.h"
+#అన్తర్భావ "hb-ot-metrics.h"
+#అన్తర్భావ "hb-ot-name.h"
+#అన్తర్భావ "hb-ot-shape.h"
+#అన్తర్భావ "hb-ot-var.h"
 
 HB_BEGIN_DECLS
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#undef HB_OT_H_IN
-#endif /* HB_OT_H */
+#నిర్వచనం_రద్దు HB_OT_H_లోపల
+#అయితే_ముగింపు /* HB_OT_H */

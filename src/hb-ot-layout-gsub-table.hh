@@ -26,186 +26,186 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GSUB_TABLE_HH
-#define HB_OT_LAYOUT_GSUB_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_LAYOUT_GSUB_పట్టిక_HH
+#నిర్వచించు HB_OT_LAYOUT_GSUB_పట్టిక_HH
 
-#include "OT/Layout/GSUB/GSUB.hh"
+#అన్తర్భావ "OT/Layout/GSUB/GSUB.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
 // TODO(garretrieger): Move into the new layout directory.
 /* Out-of-class implementation for methods recursing */
 
-#ifndef HB_NO_OT_LAYOUT
-/*static*/ inline bool ExtensionSubst::is_reverse () const
+#నిర్వచితం_కాకపోతే HB_NO_OT_LAYOUT
+/*static*/ అంతఃవరుస తార్కిక ExtensionSubst::is_తిరగేయి () స్థిరరాశి
 {
-  return SubstLookup::lookup_type_is_reverse (get_type ());
+  తిరిగి SubstLookup::lookup_type_is_తిరగేయి (get_type ());
 }
-template <typename context_t>
-/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+మూస <రకం_పేరు context_t>
+/*static*/ రకం_పేరు context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, గుర్తులేని పూర్ణాంకం lookup_సూచీ)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
-}
-
-/*static*/ typename hb_closure_context_t::return_t SubstLookup::closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
-{
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  if (l.may_have_non_1to1 ())
-      hb_set_add_range (covered_seq_indices, seq_index, end_index);
-  return l.dispatch (c);
+  స్థిరరాశి SubstLookup &l = c->face->పట్టిక.GSUB.get_relaxed ()->పట్టిక->get_lookup (lookup_సూచీ);
+  తిరిగి l.dispatch (c);
 }
 
-/*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+/*static*/ రకం_పేరు hb_సంవృతం_context_t::return_t SubstLookup::సంవృతం_glyphs_recurse_func (hb_సంవృతం_context_t *c, గుర్తులేని lookup_సూచీ, hb_సమితి_t *covered_seq_indices, గుర్తులేని seq_సూచీ, గుర్తులేని చివర_సూచీ)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
+  స్థిరరాశి SubstLookup &l = c->face->పట్టిక.GSUB.get_relaxed ()->పట్టిక->get_lookup (lookup_సూచీ);
+  ఒకవేళ (l.may_have_non_1to1 ())
+      hb_సమితి_కూడు_range (covered_seq_indices, seq_సూచీ, చివర_సూచీ);
+  తిరిగి l.dispatch (c);
+}
+
+/*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, గుర్తులేని lookup_సూచీ, hb_బిట్టు_పుట_t *covered_seq_indices, గుర్తులేని seq_సూచీ, గుర్తులేని చివర_సూచీ)
+{
+  స్థిరరాశి SubstLookup &l = c->face->పట్టిక.GSUB.get_relaxed ()->పట్టిక->get_lookup (lookup_సూచీ);
   /* After a non-1-to-1 lookup (expansion/contraction), subsequent lookups in the same
    * contextual rule see all glyphs, not position-specific ones. This matches closure behavior.
    * Mark sequence positions as covered so later lookups use the full glyph set. */
-  if (l.may_have_non_1to1 ())
-      covered_seq_indices->add_range (seq_index, end_index);
+  ఒకవేళ (l.may_have_non_1to1 ())
+      covered_seq_indices->కూడు_range (seq_సూచీ, చివర_సూచీ);
 
-  hb_depend_context_t::recurse_key_t key;
-  if (!c->get_recurse_key (lookup_index, &key))
-    return hb_empty_t ();
+  hb_depend_context_t::recurse_కీలకం_t key;
+  ఒకవేళ (!c->get_recurse_కీలకం (lookup_సూచీ, &key))
+    తిరిగి hb_ఖాళీలు_t ();
 
   hb_depend_context_t::return_t ret = l.dispatch (c);
-  c->finish_recurse (key);
-  return ret;
+  c->ముగింపు_recurse (key);
+  తిరిగి ret;
 }
 
-template <>
-inline hb_closure_lookups_context_t::return_t
-SubstLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
+మూస <>
+అంతఃవరుస hb_సంవృతం_lookups_context_t::return_t
+SubstLookup::dispatch_recurse_func<hb_సంవృతం_lookups_context_t> (hb_సంవృతం_lookups_context_t *c, గుర్తులేని this_సూచీ)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  స్థిరరాశి SubstLookup &l = c->face->పట్టిక.GSUB.get_relaxed ()->పట్టిక->get_lookup (this_సూచీ);
+  తిరిగి l.సంవృతం_lookups (c, this_సూచీ);
 }
 
-template <>
-inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+మూస <>
+అంతఃవరుస తార్కిక SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, గుర్తులేని పూర్ణాంకం lookup_సూచీ)
 {
-  auto *gsub = c->face->table.GSUB.get_relaxed ();
-  const SubstLookup &l = gsub->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
-  c->set_lookup_index (lookup_index);
-  c->set_lookup_props (l.get_props ());
+  స్వయంచాలక *gsub = c->face->పట్టిక.GSUB.get_relaxed ();
+  స్థిరరాశి SubstLookup &l = gsub->పట్టిక->get_lookup (lookup_సూచీ);
+  గుర్తులేని పూర్ణాంకం saved_lookup_props = c->lookup_props;
+  గుర్తులేని పూర్ణాంకం saved_lookup_సూచీ = c->lookup_సూచీ;
+  c->సమితి_lookup_సూచీ (lookup_సూచీ);
+  c->సమితి_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
-  hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
-  hb_swap (c->match_positions, saved_match_positions);
+  uint32_t దొంతర_సరిపోలిక_positions[8];
+  hb_సదిశ_t<uint32_t> saved_సరిపోలిక_positions;
+  saved_సరిపోలిక_positions.సమితి_storage (దొంతర_సరిపోలిక_positions);
+  hb_మార్పిడి (c->సరిపోలిక_positions, saved_సరిపోలిక_positions);
 
-  bool ret = false;
-  auto *accel = gsub->get_accel (lookup_index);
-  ret = accel && accel->apply (c, false);
+  తార్కిక ret = అబద్ధం;
+  స్వయంచాలక *accel = gsub->get_accel (lookup_సూచీ);
+  ret = accel && accel->apply (c, అబద్ధం);
 
-  c->set_lookup_index (saved_lookup_index);
-  c->set_lookup_props (saved_lookup_props);
+  c->సమితి_lookup_సూచీ (saved_lookup_సూచీ);
+  c->సమితి_lookup_props (saved_lookup_props);
 
-  hb_swap (c->match_positions, saved_match_positions);
+  hb_మార్పిడి (c->సరిపోలిక_positions, saved_సరిపోలిక_positions);
 
-  return ret;
+  తిరిగి ret;
 }
-#endif
+#అయితే_ముగింపు
 
 } /* namespace GSUB_impl */
 } /* namespace Layout */
 
-inline void
-GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) const
+అంతఃవరుస శూన్య
+GSUB_accelerator_t::depend (hb_depend_దత్తాంశం_builder_t *builder, hb_face_t *face) స్థిరరాశి
 {
-  if (!this->table->has_data ()) return;
+  ఒకవేళ (!ఇది->పట్టిక->has_దత్తాంశం ()) తిరిగి;
 
-  unsigned num_features = this->table->get_feature_count ();
-  unsigned num_lookups  = this->table->get_lookup_count ();
+  గుర్తులేని అంకె_features = ఇది->పట్టిక->get_feature_లెక్క ();
+  గుర్తులేని అంకె_lookups  = ఇది->పట్టిక->get_lookup_లెక్క ();
 
-  hb_vector_t<hb_tag_t> feature_tags;
-  if (!builder->check_success (feature_tags.resize (num_features)))
-    return;
-  this->table->get_feature_tags (0, &num_features, feature_tags.arrayZ);
+  hb_సదిశ_t<hb_ట్యాగ్_t> feature_ట్యాగులు;
+  ఒకవేళ (!builder->check_success (feature_ట్యాగులు.resize (అంకె_features)))
+    తిరిగి;
+  ఇది->పట్టిక->get_feature_ట్యాగులు (0, &అంకె_features, feature_ట్యాగులు.arrayZ);
 
-  if (!builder->init_lookup_features (num_lookups))
-    return;
+  ఒకవేళ (!builder->init_lookup_features (అంకె_lookups))
+    తిరిగి;
 
-  hb_vector_t<hb_tag_t> feature_query_v;
+  hb_సదిశ_t<hb_ట్యాగ్_t> feature_query_v;
   feature_query_v.resize (2);
   feature_query_v[1] = 0;
 
-  hb_set_t seen_features;
-  hb_set_t feature_indexes, lookup_indexes;
+  hb_సమితి_t చూసిన_features;
+  hb_సమితి_t feature_indexes, lookup_indexes;
 
-  for (auto ft : feature_tags)
+  కొరకు (స్వయంచాలక ft : feature_ట్యాగులు)
   {
-    if (seen_features.has (ft)) continue;
-    seen_features.add (ft);
+    ఒకవేళ (చూసిన_features.has (ft)) కొనసాగు;
+    చూసిన_features.కూడు (ft);
     feature_query_v[0] = ft;
     feature_indexes.reset ();
-    hb_ot_layout_collect_features (face, HB_OT_TAG_GSUB, nullptr, nullptr,
+    hb_ot_layout_collect_features (face, HB_OT_ట్యాగ్_GSUB, శూన్యసూచిక, శూన్యసూచిక,
                                    feature_query_v.arrayZ, &feature_indexes);
     lookup_indexes.reset ();
-    for (auto feature_index : feature_indexes)
-      this->table->get_feature (feature_index).add_lookup_indexes_to (&lookup_indexes);
+    కొరకు (స్వయంచాలక feature_సూచీ : feature_indexes)
+      ఇది->పట్టిక->get_feature (feature_సూచీ).కూడు_lookup_indexes_గమ్యం (&lookup_indexes);
 
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+    కొరకు (స్వయంచాలక lookup_సూచీ : lookup_indexes)
+      ఒకవేళ (unlikely (!builder->కూడు_lookup_feature (lookup_సూచీ, ft)))
+	తిరిగి;
 
-    auto &fv = this->table->get_feature_variations ();
-    auto fi_count = fv.record_count ();
-    for (unsigned i = 0; i < fi_count; i++)
+    స్వయంచాలక &fv = ఇది->పట్టిక->get_feature_variations ();
+    స్వయంచాలక fi_లెక్క = fv.రికార్డు_లెక్క ();
+    కొరకు (గుర్తులేని i = 0; i < fi_లెక్క; i++)
     {
       lookup_indexes.reset ();
-      for (auto feature_index : feature_indexes)
+      కొరకు (స్వయంచాలక feature_సూచీ : feature_indexes)
       {
-	auto feature_ptr = fv.find_substitute (i, feature_index);
-	if (feature_ptr != nullptr)
-	  feature_ptr->add_lookup_indexes_to (&lookup_indexes);
+	స్వయంచాలక feature_ptr = fv.కనుగొను_substitute (i, feature_సూచీ);
+	ఒకవేళ (feature_ptr != శూన్యసూచిక)
+	  feature_ptr->కూడు_lookup_indexes_గమ్యం (&lookup_indexes);
       }
-      for (auto lookup_index : lookup_indexes)
-	if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	  return;
+      కొరకు (స్వయంచాలక lookup_సూచీ : lookup_indexes)
+	ఒకవేళ (unlikely (!builder->కూడు_lookup_feature (lookup_సూచీ, ft)))
+	  తిరిగి;
     }
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
     lookup_indexes.reset ();
     fv.collect_lookup_variation_lookups (&feature_indexes, &lookup_indexes);
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
-#endif
+    కొరకు (స్వయంచాలక lookup_సూచీ : lookup_indexes)
+      ఒకవేళ (unlikely (!builder->కూడు_lookup_feature (lookup_సూచీ, ft)))
+	తిరిగి;
+#అయితే_ముగింపు
   }
 
-  if (unlikely (!builder->finish_lookup_features ()))
-    return;
+  ఒకవేళ (unlikely (!builder->ముగింపు_lookup_features ()))
+    తిరిగి;
 
-  hb_set_t all_glyphs;
-  all_glyphs.add_range (0, face->get_num_glyphs () - 1);
+  hb_సమితి_t all_glyphs;
+  all_glyphs.కూడు_range (0, face->get_అంకె_glyphs () - 1);
 
   hb_depend_context_t c (builder, face, &all_glyphs);
 
-  for (unsigned i = 0; i < num_lookups; i++)
+  కొరకు (గుర్తులేని i = 0; i < అంకె_lookups; i++)
   {
-    auto features = builder->get_lookup_features (i);
-    if (!features)
+    స్వయంచాలక features = builder->get_lookup_features (i);
+    ఒకవేళ (!features)
     {
-      DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+      DEBUG_సందేశం_LEVEL (DEPEND, శూన్యసూచిక, 1, 0,
                        "Skipping lookup %u (no features)", i);
-      continue;
+      కొనసాగు;
     }
-    DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+    DEBUG_సందేశం_LEVEL (DEPEND, శూన్యసూచిక, 1, 0,
                      "Processing lookup %u with features:", i);
-    c.lookup_index = i;
+    c.lookup_సూచీ = i;
     c.reset_recurse_cache ();
-    c.lookups_seen.clear ();
-    c.lookups_seen.add (i);  /* Seed for A→B→A cycle detection in recurse(). */
-    this->table->get_lookup (i).depend (&c);
+    c.lookups_చూసిన.clear ();
+    c.lookups_చూసిన.కూడు (i);  /* Seed for A→B→A cycle detection in recurse(). */
+    ఇది->పట్టిక->get_lookup (i).depend (&c);
   }
 }
 
 } /* namespace OT */
 
-#endif /* HB_OT_LAYOUT_GSUB_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_LAYOUT_GSUB_TABLE_HH */

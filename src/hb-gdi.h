@@ -22,18 +22,18 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_GDI_H
-#define HB_GDI_H
+#నిర్వచితం_కాకపోతే HB_GDI_H
+#నిర్వచించు HB_GDI_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include <windows.h>
+#అన్తర్భావ <windows.h>
 
 HB_BEGIN_DECLS
 
 HB_EXTERN hb_face_t *
 hb_gdi_face_create (HFONT hfont);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_GDI_H */
+#అయితే_ముగింపు /* HB_GDI_H */

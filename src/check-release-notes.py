@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-import sys
+దిగుమతి sys
 
 
-news_path = sys.argv[1]
+news_మార్గం = sys.argv[1]
 release = sys.argv[2]
 
-with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+తోడుగా open(news_మార్గం, "r", encoding="utf-8") ఇవ news_file:
+    పంక్తులు = news_file.readlines()
 
-start = None
-end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
-            end = i
-            break
-        if line.endswith(release):  # Start of the release
-            start = i + 3  # Skip the header lines
+ప్రారంభం = ఏమీలేదు
+చివర = ఏమీలేదు
+కొరకు i, పంక్తి లో enumerate(పంక్తులు):
+    పంక్తి = పంక్తి.rstrip()
+    ఒకవేళ పంక్తి.startswith("Overview of changes leading to"):
+        ఒకవేళ ప్రారంభం అయిన కాదు ఏమీలేదు:  # Start of next release
+            చివర = i
+            ఆపు
+        ఒకవేళ పంక్తి.endswith(release):  # Start of the release
+            ప్రారంభం = i + 3  # Skip the header lines
 
-assert start and end and end > start
+ప్రతిజ్ఞా ప్రారంభం మరియు చివర మరియు చివర > ప్రారంభం
 
-print("".join(lines[start:end]))
+ముద్రించు("".join(పంక్తులు[ప్రారంభం:చివర]))

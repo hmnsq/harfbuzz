@@ -26,27 +26,27 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ICU_H
-#define HB_ICU_H
+#నిర్వచితం_కాకపోతే HB_ICU_H
+#నిర్వచించు HB_ICU_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include <unicode/uscript.h>
+#అన్తర్భావ <unicode/uscript.h>
 
 HB_BEGIN_DECLS
 
 
 HB_EXTERN hb_script_t
-hb_icu_script_to_script (UScriptCode script);
+hb_icu_script_గమ్యం_script (UScript_సంకేతం script);
 
-HB_EXTERN UScriptCode
+HB_EXTERN UScript_సంకేతం
 hb_icu_script_from_script (hb_script_t script);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_icu_get_unicode_funcs (void);
+hb_icu_get_unicode_funcs (శూన్య);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_ICU_H */
+#అయితే_ముగింపు /* HB_ICU_H */

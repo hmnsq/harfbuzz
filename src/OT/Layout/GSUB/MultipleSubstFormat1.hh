@@ -1,137 +1,137 @@
-#ifndef OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
-#define OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
+#నిర్వచించు OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
 
-#include "Common.hh"
-#include "Sequence.hh"
+#అన్తర్భావ "Common.hh"
+#అన్తర్భావ "Sequence.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template <typename Types>
-struct MultipleSubstFormat1_2
+మూస <రకం_పేరు Types>
+నిర్మాణం గుణిజం_Subst_Format1_2
 {
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of Substitution table */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<Sequence<Types>>>
+  రకం_పేరు Types::మూస Array_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Sequence<Types>>>
                 sequence;               /* Array of Sequence tables
                                          * ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, sequence);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + Types::LOffset::static_కొలత + Types::HBUINT::static_కొలత, sequence);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && sequence.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (coverage.sanitize (c, ఇది) && sequence.sanitize (c, ఇది));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి (ఇది+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  తార్కిక may_have_non_1to1 () స్థిరరాశి
+  { తిరిగి నిజం; }
 
-  void closure (hb_closure_context_t *c) const
+  శూన్య సంవృతం (hb_సంవృతం_context_t *c) స్థిరరాశి
   {
-    + hb_zip (this+coverage, sequence)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Sequence<Types> &_) { _.closure (c); })
+    + hb_zip (ఇది+coverage, sequence)
+    | hb_filter (c->మాతృ_చురుకైన_glyphs (), hb_మొదటి)
+    | hb_map (hb_రెండవ)
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([c] (స్థిరరాశి Sequence<Types> &_) { _.సంవృతం (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c) const
+  శూన్య depend (hb_depend_context_t *c) స్థిరరాశి
   {
     // Filter by parent_active_glyphs like closure does
-    + hb_zip (this+coverage, sequence)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const typename Types::template OffsetTo<Sequence<Types>>&> &_)
+    + hb_zip (ఇది+coverage, sequence)
+    | hb_filter (c->మాతృ_చురుకైన_glyphs (), hb_మొదటి)
+    | hb_apply ([&] (స్థిరరాశి hb_pair_t<hb_codepoint_t, స్థిరరాశి రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Sequence<Types>>&> &_)
                 {
-                  const Sequence<Types>& s = this+_.second;
-                  s.depend (c, _.first);
+                  స్థిరరాశి Sequence<Types>& s = ఇది+_.second;
+                  s.depend (c, _.మొదటి);
                 })
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  శూన్య సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c) స్థిరరాశి {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, sequence)
-    | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Sequence<Types> &_) { _.collect_glyphs (c); })
+    ఒకవేళ (unlikely (!(ఇది+coverage).collect_coverage (c->ఆదానం))) తిరిగి;
+    + hb_zip (ఇది+coverage, sequence)
+    | hb_map (hb_రెండవ)
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([c] (స్థిరరాశి Sequence<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  స్థిరరాశి Coverage &get_coverage () స్థిరరాశి { తిరిగి ఇది+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  తార్కిక would_apply (hb_would_apply_context_t *c) స్థిరరాశి
+  { తిరిగి c->len == 1 && (ఇది+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ఇది);
 
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (c->బఫరు->cur().codepoint);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED) return_trace (అబద్ధం);
 
-    return_trace ((this+sequence[index]).apply (c));
+    return_trace ((ఇది+sequence[సూచీ_2]).apply (c));
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    auto sequences =
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక sequences =
       + it
-      | hb_map (hb_second)
+      | hb_map (hb_రెండవ)
       ;
-    auto glyphs =
+    స్వయంచాలక glyphs =
       + it
-      | hb_map_retains_sorting (hb_first)
+      | hb_map_retains_క్రమీకరణ (hb_మొదటి)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    if (unlikely (!sequence.serialize (c, sequences.length))) return_trace (false);
+    ఒకవేళ (unlikely (!sequence.serialize (c, sequences.నిడివి))) return_trace (అబద్ధం);
 
-    for (auto& pair : hb_zip (sequences, sequence))
+    కొరకు (స్వయంచాలక& pair : hb_zip (sequences, sequence))
     {
-      if (unlikely (!pair.second
-		    .serialize_serialize (c, pair.first)))
-        return_trace (false);
+      ఒకవేళ (unlikely (!pair.second
+		    .serialize_serialize (c, pair.మొదటి)))
+        return_trace (అబద్ధం);
     }
 
     return_trace (coverage.serialize_serialize (c, glyphs));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    బహిర్గతం->format = format;
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, sequence)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->sequence, this), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ఇది+coverage, sequence)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (subset_స్థానభ్రంశం_array (c, బహిర్గతం->sequence, ఇది), hb_రెండవ)
+    | hb_map (hb_మొదటి)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    బహిర్గతం->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (తార్కిక (new_coverage));
   }
 };
 
@@ -140,4 +140,4 @@ struct MultipleSubstFormat1_2
 }
 
 
-#endif /* OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH */

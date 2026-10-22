@@ -24,115 +24,115 @@
  *
  */
 
-#ifndef OT_COLOR_COLR_COLRV1_CLOSURE_HH
-#define OT_COLOR_COLR_COLRV1_CLOSURE_HH
+#నిర్వచితం_కాకపోతే OT_COLOR_COLR_COLRV1_సంవృతం_HH
+#నిర్వచించు OT_COLOR_COLR_COLRV1_సంవృతం_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#అన్తర్భావ "../../../hb-open-type.hh"
+#అన్తర్భావ "COLR.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-namespace OT {
+నామాకాశ OT {
 
-HB_INTERNAL void PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintColrLayers::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  c->add_layer_indices (firstLayerIndex, numLayers);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  c->కూడు_layer_indices (మొదటి_Layer_సూచీ, అంకె_Layers);
+  స్థిరరాశి LayerList &paint_స్థానభ్రంశం_lists = c->get_colr_పట్టిక ()->get_layerList ();
+  కొరకు (గుర్తులేని i = మొదటి_Layer_సూచీ; i < మొదటి_Layer_సూచీ + అంకె_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    స్థిరరాశి Paint &paint = paint_స్థానభ్రంశం_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
-template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) const
+మూస <రకం_పేరు Types>
+HB_అంతర్గత శూన్య PaintGlyph<Types>::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  c->add_glyph (gid);
-  (this+paint).dispatch (c);
+  c->కూడు_glyph (gid);
+  (ఇది+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintColrGlyph::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
-  c->add_glyph (gid);
+  స్థిరరాశి COLR *colr_పట్టిక = c->get_colr_పట్టిక ();
+  స్థిరరాశి పునాది_Glyph_Paint_రికార్డు* baseglyph_paintrecord = colr_పట్టిక->get_పునాది_glyph_paintrecord (gid);
+  ఒకవేళ (!baseglyph_paintrecord) తిరిగి;
+  c->కూడు_glyph (gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  స్థిరరాశి పునాది_Glyph_List &baseglyph_list = colr_పట్టిక->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) const
+మూస <మూస<రకం_పేరు> తరగతి Var>
+HB_అంతర్గత శూన్య PaintTransform<Var>::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  (this+transform).closurev1 (c);
+  (ఇది+src).dispatch (c);
+  (ఇది+transform).closurev1 (c);
 }
 
-HB_INTERNAL void PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintTranslate::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScale::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintScale::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintScaleAroundCenter::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య Paint_Scale_ఏకరీతి::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య Paint_Scale_ఏకరీతి_Around_Center::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintRotate::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintRotateAroundCenter::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintSkew::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య PaintSkewAroundCenter::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (ఇది+src).dispatch (c);
+  c->అంకె_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_అంతర్గత శూన్య Paint_సంయుక్త::closurev1 (hb_colrv1_సంవృతం_context_t* c) స్థిరరాశి
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (ఇది+src).dispatch (c);
+  (ఇది+backdrop).dispatch (c);
 }
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */
+#అయితే_ముగింపు /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */

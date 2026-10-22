@@ -26,51 +26,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_SHAPE_H
-#define HB_SHAPE_H
+#నిర్వచితం_కాకపోతే HB_SHAPE_H
+#నిర్వచించు HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#అన్తర్భావ "hb-common.h"
+#అన్తర్భావ "hb-buffer.h"
+#అన్తర్భావ "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_shape (hb_font_t           *font,
-	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  hb_బఫరు_t         *బఫరు,
+	  స్థిరరాశి hb_feature_t  *features,
+	  గుర్తులేని పూర్ణాంకం         అంకె_features);
 
 HB_EXTERN hb_bool_t
-hb_shape_full (hb_font_t          *font,
-	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+hb_shape_నిండిన (hb_font_t          *font,
+	       hb_బఫరు_t        *బఫరు,
+	       స్థిరరాశి hb_feature_t *features,
+	       గుర్తులేని పూర్ణాంకం        అంకె_features,
+	       స్థిరరాశి అక్షరం * స్థిరరాశి *shaper_list);
 
-#ifdef HB_EXPERIMENTAL_API
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
-		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
-		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
-#endif
+		  hb_బఫరు_t        *బఫరు,
+		  స్థిరరాశి hb_feature_t *features,
+		  గుర్తులేని పూర్ణాంకం        అంకె_features,
+		  స్థిరరాశి అక్షరం * స్థిరరాశి *shaper_list,
+		  దశాంశం               min_లక్ష్యం_advance,
+		  దశాంశం               max_లక్ష్యం_advance,
+		  దశాంశం              *advance, /* IN/OUT */
+		  hb_ట్యాగ్_t           *var_ట్యాగ్, /*బహిర్గతం*/
+		  దశాంశం              *var_విలువ /*బహిర్గతం*/);
+#అయితే_ముగింపు
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN స్థిరరాశి అక్షరం **
+hb_shape_list_shapers (శూన్య);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_SHAPE_H */
+#అయితే_ముగింపు /* HB_SHAPE_H */

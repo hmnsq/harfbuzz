@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#అన్తర్భావ "graph.hh"
+#అన్తర్భావ "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_GSUBGPOS_CONTEXT_HH
+#నిర్వచించు లేఖాచిత్రం_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-struct Lookup;
+నిర్మాణం Lookup;
 
-struct gsubgpos_graph_context_t
+నిర్మాణం gsubgpos_లేఖాచిత్రం_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_అంతర్గత స్థిర లేఖాచిత్రం_ఫలితం_t<gsubgpos_లేఖాచిత్రం_context_t> create (hb_ట్యాగ్_t పట్టిక_ట్యాగ్_3,
+                                                                      లేఖాచిత్రం_t& లేఖాచిత్రం_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_ట్యాగ్_t పట్టిక_ట్యాగ్_2;
+  లేఖాచిత్రం_t& లేఖాచిత్రం;
+  గుర్తులేని lookup_list_సూచీ;
+  hb_hashmap_t<గుర్తులేని, లేఖాచిత్రం::Lookup*> lookups;
+  hb_hashmap_t<గుర్తులేని, గుర్తులేని> subtable_గమ్యం_extension;
+  hb_hashmap_t<గుర్తులేని, hb_సదిశ_t<గుర్తులేని>> విభజించు_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_అంతర్గత లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> create_కణుపు (గుర్తులేని కొలత);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> కూడు_బఫరు (అక్షరం* బఫరు)
   {
-    return graph.add_buffer (buffer);
+    తిరిగి లేఖాచిత్రం.కూడు_బఫరు (బఫరు);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ అంతరంగ:
+  HB_అంతర్గత gsubgpos_లేఖాచిత్రం_context_t (hb_ట్యాగ్_t పట్టిక_ట్యాగ్_3,
+                                        లేఖాచిత్రం_t& లేఖాచిత్రం_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_అంతర్గత గుర్తులేని అంకె_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#అయితే_ముగింపు  // GRAPH_GSUBGPOS_CONTEXT

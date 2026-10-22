@@ -22,23 +22,23 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_COMMON_HH
-#define HB_WASM_API_COMMON_HH
+#నిర్వచితం_కాకపోతే HB_WASM_API_COMMON_HH
+#నిర్వచించు HB_WASM_API_COMMON_HH
 
-#include "hb-wasm-api.hh"
+#అన్తర్భావ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+నామాకాశ hb {
+నామాకాశ wasm {
 
 
 HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 							    script_t script)
 {
-  return (direction_t)
-	 hb_script_get_horizontal_direction (hb_script_from_iso15924_tag (script));
+  తిరిగి (direction_t)
+	 hb_script_get_horizontal_direction (hb_script_from_iso15924_ట్యాగ్ (script));
 }
 
 
 }}
 
-#endif /* HB_WASM_API_COMMON_HH */
+#అయితే_ముగింపు /* HB_WASM_API_COMMON_HH */

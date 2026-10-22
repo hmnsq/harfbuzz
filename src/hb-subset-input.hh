@@ -24,132 +24,132 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#నిర్వచితం_కాకపోతే HB_SUBSET_ఆదానం_HH
+#నిర్వచించు HB_SUBSET_ఆదానం_HH
 
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#అన్తర్భావ "hb-subset.h"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ "hb-set.hh"
+#అన్తర్భావ "hb-cplusplus.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+నిర్మాణం hb_ot_name_రికార్డు_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
-  hb_ot_name_record_ids_t (unsigned platform_id_,
-                           unsigned encoding_id_,
-                           unsigned language_id_,
-                           unsigned name_id_)
+  hb_ot_name_రికార్డు_ids_t () = అప్రమేయ;
+  hb_ot_name_రికార్డు_ids_t (గుర్తులేని platform_id_,
+                           గుర్తులేని encoding_id_,
+                           గుర్తులేని language_id_,
+                           గుర్తులేని name_id_)
       :platform_id (platform_id_),
       encoding_id (encoding_id_),
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ot_name_రికార్డు_ids_t o) స్థిరరాశి
+  { తిరిగి !(*ఇది == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  అంతఃవరుస తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ot_name_రికార్డు_ids_t& o) స్థిరరాశి
   {
-    return platform_id == o.platform_id &&
+    తిరిగి platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  అంతఃవరుస uint32_t hash () స్థిరరాశి
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    తిరిగి current;
   }
 
-  unsigned platform_id;
-  unsigned encoding_id;
-  unsigned language_id;
-  unsigned name_id;
+  గుర్తులేని platform_id;
+  గుర్తులేని encoding_id;
+  గుర్తులేని language_id;
+  గుర్తులేని name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+రకనిర్వచనం నిర్మాణం hb_ot_name_రికార్డు_ids_t hb_ot_name_రికార్డు_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+నిర్మాణం hb_subset_ఆదానం_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_అంతర్గత hb_subset_ఆదానం_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_ఆదానం_t ()
   {
     sets.~sets_t ();
 
-#ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+    కొరకు (స్వయంచాలక _ : name_పట్టిక_overrides.values ())
       _.fini ();
-#endif
+#అయితే_ముగింపు
   }
 
-  hb_object_header_t header;
+  hb_object_శీర్షిక_t శీర్షిక;
 
-  struct sets_t {
-    hb::shared_ptr<hb_set_t> glyphs;
-    hb::shared_ptr<hb_set_t> unicodes;
-    hb::shared_ptr<hb_set_t> no_subset_tables;
-    hb::shared_ptr<hb_set_t> drop_tables;
-    hb::shared_ptr<hb_set_t> name_ids;
-    hb::shared_ptr<hb_set_t> name_languages;
-    hb::shared_ptr<hb_set_t> layout_features;
-    hb::shared_ptr<hb_set_t> layout_scripts;
+  నిర్మాణం sets_t {
+    hb::shared_ptr<hb_సమితి_t> glyphs;
+    hb::shared_ptr<hb_సమితి_t> unicodes;
+    hb::shared_ptr<hb_సమితి_t> no_subset_tables;
+    hb::shared_ptr<hb_సమితి_t> drop_tables;
+    hb::shared_ptr<hb_సమితి_t> name_ids;
+    hb::shared_ptr<hb_సమితి_t> name_languages;
+    hb::shared_ptr<hb_సమితి_t> layout_features;
+    hb::shared_ptr<hb_సమితి_t> layout_scripts;
   };
 
-  union {
+  సంఘం {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_సమితి_t> సమితి_ptrs[పరిమాణం (sets_t) / పరిమాణం (hb_సమితి_t*)];
   };
 
-  unsigned flags;
-  bool attach_accelerator_data = false;
+  గుర్తులేని flags;
+  తార్కిక attach_accelerator_దత్తాంశం = అబద్ధం;
 
   // If set loca format will always be the long version.
-  bool force_long_loca = false;
+  తార్కిక force_long_loca = అబద్ధం;
 
-  hb_hashmap_t<hb_tag_t, Triple> axes_location;
+  hb_hashmap_t<hb_ట్యాగ్_t, Triple> axes_location;
   hb_map_t glyph_map;
-#ifdef HB_EXPERIMENTAL_API
-  hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
-#endif
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+  hb_hashmap_t<hb_ot_name_రికార్డు_ids_t, hb_బైట్లు_t> name_పట్టిక_overrides;
+#అయితే_ముగింపు
 
-  inline unsigned num_sets () const
+  అంతఃవరుస గుర్తులేని అంకె_sets () స్థిరరాశి
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    తిరిగి పరిమాణం (సమితి_ptrs) / పరిమాణం (hb_సమితి_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  అంతఃవరుస hb_array_t<hb::shared_ptr<hb_సమితి_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    తిరిగి hb_array (సమితి_ptrs);
   }
 
-  bool in_error () const
+  తార్కిక లోపల_error () స్థిరరాశి
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    కొరకు (గుర్తులేని i = 0; i < అంకె_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      ఒకవేళ (unlikely (సమితి_ptrs[i]->లోపల_error ()))
+        తిరిగి నిజం;
     }
 
-    return axes_location.in_error ()
-#ifdef HB_EXPERIMENTAL_API
-	|| name_table_overrides.in_error ()
-#endif
+    తిరిగి axes_location.లోపల_error ()
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+	|| name_పట్టిక_overrides.లోపల_error ()
+#అయితే_ముగింపు
 	;
   }
 };
 
 
-#endif /* HB_SUBSET_INPUT_HH */
+#అయితే_ముగింపు /* HB_SUBSET_INPUT_HH */

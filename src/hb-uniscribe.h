@@ -24,12 +24,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_UNISCRIBE_H
-#define HB_UNISCRIBE_H
+#నిర్వచితం_కాకపోతే HB_UNISCRIBE_H
+#నిర్వచించు HB_UNISCRIBE_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include <windows.h>
+#అన్తర్భావ <windows.h>
 
 HB_BEGIN_DECLS
 
@@ -41,6 +41,6 @@ HB_EXTERN HFONT
 hb_uniscribe_font_get_hfont (hb_font_t *font);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_UNISCRIBE_H */
+#అయితే_ముగింపు /* HB_UNISCRIBE_H */

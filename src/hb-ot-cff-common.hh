@@ -23,358 +23,358 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_OT_CFF_COMMON_HH
-#define HB_OT_CFF_COMMON_HH
+#నిర్వచితం_కాకపోతే HB_OT_CFF_COMMON_HH
+#నిర్వచించు HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-bimap.hh"
+#అన్తర్భావ "hb-ot-layout-common.hh"
+#అన్తర్భావ "hb-cff-interp-dict-common.hh"
+#అన్తర్భావ "hb-subset-plan.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
-#define CFF_UNDEF_CODE  0xFFFFFFFF
+#నిర్వచించు CFF_UNDEF_సంకేతం  0xFFFFFFFF
 
-using objidx_t = hb_serialize_context_t::objidx_t;
-using whence_t = hb_serialize_context_t::whence_t;
+ఉపయోగించి objidx_t = hb_serialize_context_t::objidx_t;
+ఉపయోగించి whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
-template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+మూస<రకం_పేరు Type, రకం_పేరు ...Ts>
+స్థిర అంతఃవరుస స్థిరరాశి Type& Struct_At_స్థానభ్రంశం_Or_Null (స్థిరరాశి శూన్య *P, పూర్ణాంకం స్థానభ్రంశం, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  ఒకవేళ (!స్థానభ్రంశం) తిరిగి Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  స్థిరరాశి అక్షరం *p = (స్థిరరాశి అక్షరం *) P + స్థానభ్రంశం;
+  ఒకవేళ (!sc.check_బిందువు (p)) తిరిగి Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  స్థిరరాశి Type &obj = *reinterpret_cast<స్థిరరాశి Type *> (p);
+  ఒకవేళ (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) తిరిగి Null (Type);
 
-  return obj;
+  తిరిగి obj;
 }
 
 
-struct code_pair_t
+నిర్మాణం సంకేతం_pair_t
 {
-  unsigned code;
+  గుర్తులేని సంకేతం_2;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
-using str_buff_vec_t = hb_vector_t<str_buff_t>;
-using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
+ఉపయోగించి str_buff_t = hb_సదిశ_t<గుర్తులేని అక్షరం>;
+ఉపయోగించి str_buff_vec_t = hb_సదిశ_t<str_buff_t>;
+ఉపయోగించి glyph_గమ్యం_sid_map_t = hb_సదిశ_t<సంకేతం_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+నిర్మాణం Dict : UnsizedByteStr
 {
-  template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
-  bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+  మూస <రకం_పేరు DICTVAL, రకం_పేరు OP_SERIALIZER, రకం_పేరు ...Ts>
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
-	return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < dictval.get_లెక్క (); i++)
+      ఒకవేళ (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+	return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  మూస <రకం_పేరు T, రకం_పేరు V>
+  స్థిర తార్కిక serialize_int_op (hb_serialize_context_t *c, op_సంకేతం_t op, V value, op_సంకేతం_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    ఒకవేళ (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      తిరిగి అబద్ధం;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_కొలత<HBUINT8> (Op_సంకేతం_కొలత (op), అబద్ధం);
+    ఒకవేళ (unlikely (!p)) return_trace (అబద్ధం);
+    ఒకవేళ (Is_Op_సంకేతం_ESC (op))
     {
-      *p = OpCode_escape;
-      op = Unmake_OpCode_ESC (op);
+      *p = Op_సంకేతం_escape;
+      op = Unmake_Op_సంకేతం_ESC (op);
       p++;
     }
     *p = op;
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  మూస <రకం_పేరు V>
+  స్థిర తార్కిక serialize_int4_op (hb_serialize_context_t *c, op_సంకేతం_t op, V value)
+  { తిరిగి serialize_int_op<HBINT32> (c, op, value, Op_సంకేతం_longintdict); }
 
-  template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  మూస <రకం_పేరు V>
+  స్థిర తార్కిక serialize_int2_op (hb_serialize_context_t *c, op_సంకేతం_t op, V value)
+  { తిరిగి serialize_int_op<HBINT16> (c, op, value, Op_సంకేతం_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  మూస <రకం_పేరు T, పూర్ణాంకం int_op>
+  స్థిర తార్కిక serialize_link_op (hb_serialize_context_t *c, op_సంకేతం_t op, objidx_t link, whence_t whence)
   {
-    T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
-    c->add_link (ofs, link, whence);
-    return true;
+    T &ofs = *(T *) (c->తల_2 + Op_సంకేతం_కొలత (int_op));
+    ఒకవేళ (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) తిరిగి అబద్ధం;
+    c->కూడు_link (ofs, link, whence);
+    తిరిగి నిజం;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  స్థిర తార్కిక serialize_link4_op (hb_serialize_context_t *c, op_సంకేతం_t op, objidx_t link, whence_t whence = whence_t::తల)
+  { తిరిగి serialize_link_op<HBINT32, Op_సంకేతం_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  స్థిర తార్కిక serialize_link2_op (hb_serialize_context_t *c, op_సంకేతం_t op, objidx_t link, whence_t whence = whence_t::తల)
+  { తిరిగి serialize_link_op<HBINT16, Op_సంకేతం_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+నిర్మాణం శిఖరం_Dict : Dict {};
+నిర్మాణం FontDict : Dict {};
+నిర్మాణం వ్యక్తిగత_Dict : Dict {};
 
-struct table_info_t
+నిర్మాణం పట్టిక_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  శూన్య init () { స్థానభ్రంశం = కొలత = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  గుర్తులేని పూర్ణాంకం    స్థానభ్రంశం;
+  గుర్తులేని పూర్ణాంకం    కొలత;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+మూస <రకం_పేరు లెక్క_3>
+నిర్మాణం FDArray : CFFIndex<లెక్క_3>
 {
-  template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c,
+  మూస <రకం_పేరు DICTVAL, రకం_పేరు INFO, రకం_పేరు Iterator, రకం_పేరు OP_SERIALIZER>
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
     /* serialize INDEX data */
-    hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    hb_సదిశ_t<గుర్తులేని> sizes;
+    ఒకవేళ (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    అక్షరం *దత్తాంశం_పునాది = c->తల_2;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (స్థిరరాశి hb_pair_t<స్థిరరాశి DICTVAL&, స్థిరరాశి INFO&> &_)
     {
-      FontDict *dict = c->start_embed<FontDict> ();
-		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+      FontDict *dict = c->ప్రారంభం_embed<FontDict> ();
+		dict->serialize (c, _.మొదటి, opszr, _.second);
+		తిరిగి c->తల_2 - (స్థిరరాశి అక్షరం*)dict;
 	      })
     | hb_sink (sizes)
     ;
-    unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    గుర్తులేని దత్తాంశం_కొలత = c->తల_2 - దత్తాంశం_పునాది;
+    c->తీయి_pack (అబద్ధం);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    ఒకవేళ (unlikely (sizes.లోపల_error ())) return_trace (అబద్ధం);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<లెక్క_3>::serialize_శీర్షిక (c, hb_iter (sizes), దత్తాంశం_కొలత));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+నిర్మాణం FDSelect0 {
+  తార్కిక sanitize (hb_sanitize_context_t *c, గుర్తులేని పూర్ణాంకం fdcount,
+                 గుర్తులేని పూర్ణాంకం glyph_లెక్క = HB_CODEPOINT_INVALID) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!(c->check_struct (ఇది))))
+      return_trace (అబద్ధం);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
-      return_trace (false);
+    ఒకవేళ (unlikely (!c->check_array (fds, glyph_లెక్క == HB_CODEPOINT_INVALID ?
+                                     c->get_అంకె_glyphs () : glyph_లెక్క)))
+      return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  గుర్తులేని get_fd (hb_codepoint_t glyph) స్థిరరాశి
+  { తిరిగి fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<గుర్తులేని, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) స్థిరరాశి
+  { తిరిగి {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_కొలత (గుర్తులేని పూర్ణాంకం అంకె_glyphs) స్థిరరాశి
+  { తిరిగి hb_unsigned_mul_saturate (HBUINT8::static_కొలత, అంకె_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
-  DEFINE_SIZE_MIN (0);
+  DEFINE_కొలత_MIN (0);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+మూస <రకం_పేరు GID_TYPE, రకం_పేరు FD_TYPE>
+నిర్మాణం FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య * /*nullptr*/, గుర్తులేని పూర్ణాంకం fdcount) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  మొదటి < c->get_అంకె_glyphs () && (fd < fdcount));
   }
 
-  GID_TYPE    first;
+  GID_TYPE    మొదటి;
   FD_TYPE     fd;
-  public:
-  DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (GID_TYPE::static_కొలత + FD_TYPE::static_కొలత);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+మూస <రకం_పేరు GID_TYPE, రకం_పేరు FD_TYPE>
+నిర్మాణం FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_కూడు_saturate ((size_t) GID_TYPE::static_కొలత * 2, ranges.get_కొలత ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, గుర్తులేని పూర్ణాంకం fdcount,
+                 గుర్తులేని పూర్ణాంకం min_glyphs = HB_CODEPOINT_INVALID) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
-		    ranges.sanitize (c, nullptr, fdcount) &&
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!(c->check_struct (ఇది) &&
+		    ranges.sanitize (c, శూన్యసూచిక, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
-		    ranges[0].first == 0)))
-      return_trace (false);
+		    ranges[0].మొదటి == 0)))
+      return_trace (అబద్ధం);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
-	return_trace (false);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < nRanges (); i++)
+      ఒకవేళ (unlikely (ranges[i - 1].మొదటి >= ranges[i].మొదటి))
+	return_trace (అబద్ధం);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    ఒకవేళ (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
-                   sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() > ranges[nRanges () - 1].మొదటి &&
+                   sentinel() <= c->get_అంకె_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
-      return_trace (false);
+                                  c->get_అంకె_glyphs () : min_glyphs))))
+      return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  స్థిర పూర్ణాంకం _cmp_range (స్థిరరాశి శూన్య *కీలకం_3, స్థిరరాశి శూన్య *అంశం_2)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
-    FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) కీలకం_3;
+    FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) అంశం_2;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    ఒకవేళ (glyph < range[0].మొదటి) తిరిగి -1;
+    ఒకవేళ (glyph < range[1].మొదటి) తిరిగి 0;
+    తిరిగి +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  గుర్తులేని get_fd (hb_codepoint_t glyph) స్థిరరాశి
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    స్వయంచాలక *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, పరిమాణం (ranges[0]), _cmp_range);
+    తిరిగి range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<గుర్తులేని, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) స్థిరరాశి
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
-    hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    స్వయంచాలక *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, పరిమాణం (ranges[0]), _cmp_range);
+    గుర్తులేని fd = range ? range->fd : ranges[nRanges () - 1].fd;
+    hb_codepoint_t చివర = range ? range[1].మొదటి : ranges[nRanges () - 1].మొదటి;
+    తిరిగి {fd, చివర};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { తిరిగి ranges.len; }
+  GID_TYPE         nRanges () స్థిరరాశి { తిరిగి ranges.len; }
+  GID_TYPE       &sentinel ()       { తిరిగి StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  స్థిరరాశి GID_TYPE &sentinel () స్థిరరాశి { తిరిగి StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
-  ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
+  Array_యొక్క<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
 
-  DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
+  DEFINE_కొలత_ARRAY (GID_TYPE::static_కొలత, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+రకనిర్వచనం FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+రకనిర్వచనం FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+నిర్మాణం FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  తార్కిక serialize (hb_serialize_context_t *c, స్థిరరాశి FDSelect &src, గుర్తులేని పూర్ణాంకం అంకె_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
-    hb_memcpy (dest, &src, size);
-    return_trace (true);
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని పూర్ణాంకం కొలత = src.get_కొలత (అంకె_glyphs);
+    FDSelect *dest = c->allocate_కొలత<FDSelect> (కొలత, అబద్ధం);
+    ఒకవేళ (unlikely (!dest)) return_trace (అబద్ధం);
+    hb_memcpy (dest, &src, కొలత);
+    return_trace (నిజం);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_కొలత (గుర్తులేని పూర్ణాంకం అంకె_glyphs) స్థిరరాశి
   {
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    స్థితి 0: hb_barrier (); తిరిగి hb_unsigned_కూడు_saturate (format.static_కొలత, u.format0.get_కొలత (అంకె_glyphs));
+    స్థితి 3: hb_barrier (); తిరిగి hb_unsigned_కూడు_saturate (format.static_కొలత, u.format3.get_కొలత ());
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  గుర్తులేని get_fd (hb_codepoint_t glyph) స్థిరరాశి
   {
-    if (this == &Null (FDSelect)) return 0;
+    ఒకవేళ (ఇది == &Null (FDSelect)) తిరిగి 0;
 
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_fd (glyph);
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_fd (glyph);
+    అప్రమేయ:తిరిగి 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<గుర్తులేని, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) స్థిరరాశి
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    ఒకవేళ (ఇది == &Null (FDSelect)) తిరిగి {0, 1};
 
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_fd_range (glyph);
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_fd_range (glyph);
+    అప్రమేయ:తిరిగి {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, గుర్తులేని పూర్ణాంకం fdcount) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది)))
+      return_trace (అబద్ధం);
     hb_barrier ();
 
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    స్థితి 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    స్థితి 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
   HBUINT8	format;
-  union {
+  సంఘం {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
-  DEFINE_SIZE_MIN (1);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+మూస <రకం_పేరు లెక్క_3>
+నిర్మాణం Subrs : CFFIndex<లెక్క_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  రకనిర్వచనం లెక్క_3 లెక్క_type;
+  రకనిర్వచనం CFFIndex<లెక్క_3> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_OT_CFF_COMMON_HH */
+#అయితే_ముగింపు /* HB_OT_CFF_COMMON_HH */

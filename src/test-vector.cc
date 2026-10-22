@@ -23,179 +23,179 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-vector.hh"
-#include "hb-set.hh"
-#include "hb-map.hh"
-#include <string>
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-vector.hh"
+#అన్తర్భావ "hb-set.hh"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ <string>
 
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  hb_always_assert (sizeof (hb_vector_t<int>) == sizeof (hb_sorted_vector_t<int>));
+  hb_always_assert (పరిమాణం (hb_సదిశ_t<పూర్ణాంకం>) == పరిమాణం (hb_sorted_సదిశ_t<పూర్ణాంకం>));
 
   /* Test copy constructor. */
   {
-    hb_vector_t<int> v1 {1, 2};
-    hb_vector_t<int> v2 {v1};
-    hb_vector_t<int> V2 {v1};
-    hb_always_assert (v1.length == 2);
+    hb_సదిశ_t<పూర్ణాంకం> v1 {1, 2};
+    hb_సదిశ_t<పూర్ణాంకం> v2 {v1};
+    hb_సదిశ_t<పూర్ణాంకం> V2 {v1};
+    hb_always_assert (v1.నిడివి == 2);
     hb_always_assert (v1[0] == 1);
     hb_always_assert (v1[1] == 2);
-    hb_always_assert (v2.length == 2);
+    hb_always_assert (v2.నిడివి == 2);
     hb_always_assert (v2[0] == 1);
     hb_always_assert (v2[1] == 2);
   }
 
   /* Test copy assignment. */
   {
-    hb_vector_t<int> v1 {1, 2};
-    hb_vector_t<int> v2 = v1;
-    hb_vector_t<int> V2 = v1;
-    hb_always_assert (v1.length == 2);
+    hb_సదిశ_t<పూర్ణాంకం> v1 {1, 2};
+    hb_సదిశ_t<పూర్ణాంకం> v2 = v1;
+    hb_సదిశ_t<పూర్ణాంకం> V2 = v1;
+    hb_always_assert (v1.నిడివి == 2);
     hb_always_assert (v1[0] == 1);
     hb_always_assert (v1[1] == 2);
-    hb_always_assert (v2.length == 2);
+    hb_always_assert (v2.నిడివి == 2);
     hb_always_assert (v2[0] == 1);
     hb_always_assert (v2[1] == 2);
   }
 
   /* Self-copy assignment must preserve both trivial and nontrivial items. */
   {
-    hb_vector_t<int> v {1, 2};
-    const auto &self = v;
+    hb_సదిశ_t<పూర్ణాంకం> v {1, 2};
+    స్థిరరాశి స్వయంచాలక &self = v;
     v = self;
-    hb_always_assert (v.length == 2);
+    hb_always_assert (v.నిడివి == 2);
     hb_always_assert (v[0] == 1);
     hb_always_assert (v[1] == 2);
   }
   {
-    hb_vector_t<std::string> v;
+    hb_సదిశ_t<std::string> v;
     v.push (std::string ("one"));
     v.push (std::string ("two"));
-    const auto &self = v;
+    స్థిరరాశి స్వయంచాలక &self = v;
     v = self;
-    hb_always_assert (v.length == 2);
+    hb_always_assert (v.నిడివి == 2);
     hb_always_assert (v[0] == "one");
     hb_always_assert (v[1] == "two");
   }
 
   /* Test pushing an element of the vector itself while it grows. */
   {
-    hb_vector_t<int> v {7};
-    for (unsigned i = 0; i < 1000; i++)
+    hb_సదిశ_t<పూర్ణాంకం> v {7};
+    కొరకు (గుర్తులేని i = 0; i < 1000; i++)
       v.push (v.arrayZ[0]);
-    hb_always_assert (v.length == 1001);
-    for (unsigned i = 0; i < v.length; i++)
+    hb_always_assert (v.నిడివి == 1001);
+    కొరకు (గుర్తులేని i = 0; i < v.నిడివి; i++)
       hb_always_assert (v[i] == 7);
   }
   {
-    hb_vector_t<std::string> v;
+    hb_సదిశ_t<std::string> v;
     v.push (std::string ("a string longer than the small-string buffer"));
-    for (unsigned i = 0; i < 1000; i++)
+    కొరకు (గుర్తులేని i = 0; i < 1000; i++)
       v.push (v.arrayZ[i]);
-    hb_always_assert (v.length == 1001);
-    for (unsigned i = 0; i < v.length; i++)
+    hb_always_assert (v.నిడివి == 1001);
+    కొరకు (గుర్తులేని i = 0; i < v.నిడివి; i++)
       hb_always_assert (v[i] == "a string longer than the small-string buffer");
   }
   {
-    hb_vector_t<hb_vector_t<int>> v;
-    v.push (hb_vector_t<int> {1, 2, 3});
-    for (unsigned i = 0; i < 1000; i++)
+    hb_సదిశ_t<hb_సదిశ_t<పూర్ణాంకం>> v;
+    v.push (hb_సదిశ_t<పూర్ణాంకం> {1, 2, 3});
+    కొరకు (గుర్తులేని i = 0; i < 1000; i++)
       v.push (v.arrayZ[0]);
-    hb_always_assert (v.length == 1001);
-    for (unsigned i = 0; i < v.length; i++)
-      hb_always_assert (v[i].length == 3 && v[i][2] == 3);
+    hb_always_assert (v.నిడివి == 1001);
+    కొరకు (గుర్తులేని i = 0; i < v.నిడివి; i++)
+      hb_always_assert (v[i].నిడివి == 3 && v[i][2] == 3);
   }
   {
-    hb_vector_t<hb_vector_t<int>> v {hb_vector_t<int> {1, 2, 3}};
+    hb_సదిశ_t<hb_సదిశ_t<పూర్ణాంకం>> v {hb_సదిశ_t<పూర్ణాంకం> {1, 2, 3}};
     v.push (std::move (v[0]));
-    hb_always_assert (v.length == 2 && v[0].length == 0);
-    hb_always_assert (v[1].length == 3 && v[1][2] == 3);
+    hb_always_assert (v.నిడివి == 2 && v[0].నిడివి == 0);
+    hb_always_assert (v[1].నిడివి == 3 && v[1][2] == 3);
   }
   {
-    hb_vector_t<std::string> v {"one"};
+    hb_సదిశ_t<std::string> v {"one"};
     v.push (3, v[0][0]);
-    hb_always_assert (v.length == 2);
+    hb_always_assert (v.నిడివి == 2);
     hb_always_assert (v[0] == "one" && v[1] == "ooo");
   }
   {
-    hb_vector_t<int> v {1, 2, 3};
+    hb_సదిశ_t<పూర్ణాంకం> v {1, 2, 3};
     v.extend (v.as_array ());
-    hb_always_assert (v.length == 6);
+    hb_always_assert (v.నిడివి == 6);
     hb_always_assert (v[3] == 1 && v[4] == 2 && v[5] == 3);
   }
   {
-    hb_vector_t<int> v {1, 2, 3};
-    v.extend (hb_array_t<const int> (v.arrayZ + 1, 2));
-    hb_always_assert (v.length == 5);
+    hb_సదిశ_t<పూర్ణాంకం> v {1, 2, 3};
+    v.extend (hb_array_t<స్థిరరాశి పూర్ణాంకం> (v.arrayZ + 1, 2));
+    hb_always_assert (v.నిడివి == 5);
     hb_always_assert (v[3] == 2 && v[4] == 3);
   }
   {
-    hb_vector_t<std::string> v {"one", "two", "three"};
+    hb_సదిశ_t<std::string> v {"one", "two", "three"};
     v.extend (v.as_array ());
-    hb_always_assert (v.length == 6);
-    for (unsigned i = 0; i < 3; i++)
+    hb_always_assert (v.నిడివి == 6);
+    కొరకు (గుర్తులేని i = 0; i < 3; i++)
       hb_always_assert (v[i] == v[i + 3]);
   }
   {
-    hb_vector_t<std::string> v {"one", "two", "three"};
+    hb_సదిశ_t<std::string> v {"one", "two", "three"};
     v.extend (v);
-    hb_always_assert (v.length == 6);
-    for (unsigned i = 0; i < 3; i++)
+    hb_always_assert (v.నిడివి == 6);
+    కొరకు (గుర్తులేని i = 0; i < 3; i++)
       hb_always_assert (v[i] == v[i + 3]);
   }
 
   /* A failed vector must not move from an aliased argument. */
   {
-    hb_vector_t<std::string> v {"one"};
-    v.set_error ();
-    hb_always_assert (!v.push_or_fail (std::move (v[0])));
-    hb_always_assert (v.length == 1 && v[0] == "one");
+    hb_సదిశ_t<std::string> v {"one"};
+    v.సమితి_error ();
+    hb_always_assert (!v.నెట్టు_or_fail (std::move (v[0])));
+    hb_always_assert (v.నిడివి == 1 && v[0] == "one");
   }
 
   /* Test move constructor. */
   {
-    hb_vector_t<int> s {1, 2};
-    hb_sorted_vector_t<int> S {1, 2};
-    hb_vector_t<int> v (std::move (s));
-    hb_sorted_vector_t<int> V (std::move (S));
-    hb_always_assert (s.length == 0);
-    hb_always_assert (S.length == 0);
-    hb_always_assert (v.length == 2);
+    hb_సదిశ_t<పూర్ణాంకం> s {1, 2};
+    hb_sorted_సదిశ_t<పూర్ణాంకం> S {1, 2};
+    hb_సదిశ_t<పూర్ణాంకం> v (std::move (s));
+    hb_sorted_సదిశ_t<పూర్ణాంకం> V (std::move (S));
+    hb_always_assert (s.నిడివి == 0);
+    hb_always_assert (S.నిడివి == 0);
+    hb_always_assert (v.నిడివి == 2);
     hb_always_assert (v[0] == 1);
     hb_always_assert (v[1] == 2);
   }
 
   /* Test move assignment. */
   {
-    hb_vector_t<int> s {1, 2};
-    hb_sorted_vector_t<int> S {1, 2};
-    hb_vector_t<int> v;
-    hb_sorted_vector_t<int> V;
+    hb_సదిశ_t<పూర్ణాంకం> s {1, 2};
+    hb_sorted_సదిశ_t<పూర్ణాంకం> S {1, 2};
+    hb_సదిశ_t<పూర్ణాంకం> v;
+    hb_sorted_సదిశ_t<పూర్ణాంకం> V;
     v = std::move (s);
     V = std::move (S);
-    hb_always_assert (s.length == 0);
-    hb_always_assert (S.length == 0);
-    hb_always_assert (v.length == 2);
-    hb_always_assert (V.length == 2);
+    hb_always_assert (s.నిడివి == 0);
+    hb_always_assert (S.నిడివి == 0);
+    hb_always_assert (v.నిడివి == 2);
+    hb_always_assert (V.నిడివి == 2);
     hb_always_assert (v[0] == 1);
     hb_always_assert (v[1] == 2);
   }
 
   /* Test initializing from iterable. */
   {
-    hb_set_t s;
+    hb_సమితి_t s;
 
-    s.add (18);
-    s.add (12);
+    s.కూడు (18);
+    s.కూడు (12);
 
-    hb_vector_t<int> v (s);
-    hb_sorted_vector_t<int> V (s);
+    hb_సదిశ_t<పూర్ణాంకం> v (s);
+    hb_sorted_సదిశ_t<పూర్ణాంకం> V (s);
 
-    hb_always_assert (v.length == 2);
-    hb_always_assert (V.length == 2);
+    hb_always_assert (v.నిడివి == 2);
+    hb_always_assert (V.నిడివి == 2);
     hb_always_assert (v[0] == 12);
     hb_always_assert (V[0] == 12);
     hb_always_assert (v[1] == 18);
@@ -204,16 +204,16 @@ main (int argc, char **argv)
 
   /* Test initializing from iterator. */
   {
-    hb_set_t s;
+    hb_సమితి_t s;
 
-    s.add (18);
-    s.add (12);
+    s.కూడు (18);
+    s.కూడు (12);
 
-    hb_vector_t<int> v (hb_iter (s));
-    hb_vector_t<int> V (hb_iter (s));
+    hb_సదిశ_t<పూర్ణాంకం> v (hb_iter (s));
+    hb_సదిశ_t<పూర్ణాంకం> V (hb_iter (s));
 
-    hb_always_assert (v.length == 2);
-    hb_always_assert (V.length == 2);
+    hb_always_assert (v.నిడివి == 2);
+    hb_always_assert (V.నిడివి == 2);
     hb_always_assert (v[0] == 12);
     hb_always_assert (V[0] == 12);
     hb_always_assert (v[1] == 18);
@@ -222,37 +222,37 @@ main (int argc, char **argv)
 
   /* Test initializing from initializer list and swapping. */
   {
-    hb_vector_t<int> v1 {1, 2, 3};
-    hb_vector_t<int> v2 {4, 5};
-    hb_swap (v1, v2);
-    hb_always_assert (v1.length == 2);
+    hb_సదిశ_t<పూర్ణాంకం> v1 {1, 2, 3};
+    hb_సదిశ_t<పూర్ణాంకం> v2 {4, 5};
+    hb_మార్పిడి (v1, v2);
+    hb_always_assert (v1.నిడివి == 2);
     hb_always_assert (v1[0] == 4);
-    hb_always_assert (v2.length == 3);
+    hb_always_assert (v2.నిడివి == 3);
     hb_always_assert (v2[2] == 3);
   }
 
   /* Test initializing sorted-vector from initializer list and swapping. */
   {
-    hb_sorted_vector_t<int> v1 {1, 2, 3};
-    hb_sorted_vector_t<int> v2 {4, 5};
-    hb_swap (v1, v2);
-    hb_always_assert (v1.length == 2);
+    hb_sorted_సదిశ_t<పూర్ణాంకం> v1 {1, 2, 3};
+    hb_sorted_సదిశ_t<పూర్ణాంకం> v2 {4, 5};
+    hb_మార్పిడి (v1, v2);
+    hb_always_assert (v1.నిడివి == 2);
     hb_always_assert (v1[0] == 4);
-    hb_always_assert (v2.length == 3);
+    hb_always_assert (v2.నిడివి == 3);
     hb_always_assert (v2[2] == 3);
   }
 
   {
-    hb_vector_t<std::string> v;
+    hb_సదిశ_t<std::string> v;
 
     std::string s;
-    for (unsigned i = 1; i < 100; i++)
+    కొరకు (గుర్తులేని i = 1; i < 100; i++)
     {
       s += "x";
       v.push (s);
     }
 
-    hb_vector_t<std::string> v2;
+    hb_సదిశ_t<std::string> v2;
 
     v2 = v;
 
@@ -261,8 +261,8 @@ main (int argc, char **argv)
   }
 
   {
-    hb_vector_t<hb_set_t> v;
-    hb_set_t s {1, 5, 7};
+    hb_సదిశ_t<hb_సమితి_t> v;
+    hb_సమితి_t s {1, 5, 7};
     v.push (s);
     v << s;
     hb_always_assert (s.get_population () == 3);
@@ -271,15 +271,15 @@ main (int argc, char **argv)
   }
 
   {
-    hb_vector_t<hb_map_t> v;
+    hb_సదిశ_t<hb_map_t> v;
     hb_map_t m;
     v.push (m);
   }
   {
-    hb_vector_t<hb_map_t> v;
+    hb_సదిశ_t<hb_map_t> v;
     hb_map_t m;
     v.push (m);
   }
 
-  return 0;
+  తిరిగి 0;
 }

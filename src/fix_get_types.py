@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import re
-import argparse
+దిగుమతి re
+దిగుమతి argparse
 
-parser = argparse.ArgumentParser ()
-parser.add_argument ('input')
-parser.add_argument ('output')
-args = parser.parse_args ()
+parser = argparse.వాదం_Parser ()
+parser.కూడు_వాదం ('input')
+parser.కూడు_వాదం ('output')
+వాదనలు = parser.parse_వాదనలు ()
 
-with open (args.input, 'r') as inp, open (args.output, 'w') as out:
-    for l in inp.readlines ():
+తోడుగా open (వాదనలు.ఆదానం, 'r') ఇవ inp, open (వాదనలు.output, 'w') ఇవ బహిర్గతం:
+    కొరకు l లో inp.readlines ():
         l = re.sub ('_t_get_type', '_get_type', l)
         l = re.sub (r'_T \(', ' (', l)
-        out.write (l)
+        బహిర్గతం.లిఖ (l)

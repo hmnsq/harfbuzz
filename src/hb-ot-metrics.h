@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ఒకవేళ !defined(HB_OT_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb-ot.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_OT_METRICS_H
-#define HB_OT_METRICS_H
+#నిర్వచితం_కాకపోతే HB_OT_METRICS_H
+#నిర్వచించు HB_OT_METRICS_H
 
-#include "hb.h"
-#include "hb-ot-name.h"
+#అన్తర్భావ "hb.h"
+#అన్తర్భావ "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -71,59 +71,59 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
-  HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER		= HB_TAG ('h','a','s','c'),
-  HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER	= HB_TAG ('h','d','s','c'),
-  HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP		= HB_TAG ('h','l','g','p'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT	= HB_TAG ('h','c','l','a'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT	= HB_TAG ('h','c','l','d'),
-  HB_OT_METRICS_TAG_VERTICAL_ASCENDER		= HB_TAG ('v','a','s','c'),
-  HB_OT_METRICS_TAG_VERTICAL_DESCENDER		= HB_TAG ('v','d','s','c'),
-  HB_OT_METRICS_TAG_VERTICAL_LINE_GAP		= HB_TAG ('v','l','g','p'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE	= HB_TAG ('h','c','r','s'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN	= HB_TAG ('h','c','r','n'),
-  HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET	= HB_TAG ('h','c','o','f'),
-  HB_OT_METRICS_TAG_VERTICAL_CARET_RISE		= HB_TAG ('v','c','r','s'),
-  HB_OT_METRICS_TAG_VERTICAL_CARET_RUN		= HB_TAG ('v','c','r','n'),
-  HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET	= HB_TAG ('v','c','o','f'),
-  HB_OT_METRICS_TAG_X_HEIGHT			= HB_TAG ('x','h','g','t'),
-  HB_OT_METRICS_TAG_CAP_HEIGHT			= HB_TAG ('c','p','h','t'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE		= HB_TAG ('s','b','x','s'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE		= HB_TAG ('s','b','y','s'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET	= HB_TAG ('s','b','x','o'),
-  HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET	= HB_TAG ('s','b','y','o'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE	= HB_TAG ('s','p','x','s'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE	= HB_TAG ('s','p','y','s'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET	= HB_TAG ('s','p','x','o'),
-  HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET	= HB_TAG ('s','p','y','o'),
-  HB_OT_METRICS_TAG_STRIKEOUT_SIZE		= HB_TAG ('s','t','r','s'),
-  HB_OT_METRICS_TAG_STRIKEOUT_OFFSET		= HB_TAG ('s','t','r','o'),
-  HB_OT_METRICS_TAG_UNDERLINE_SIZE		= HB_TAG ('u','n','d','s'),
-  HB_OT_METRICS_TAG_UNDERLINE_OFFSET		= HB_TAG ('u','n','d','o'),
+రకనిర్వచనం గణన {
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_ASCENDER		= HB_ట్యాగ్ ('h','a','s','c'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_DESCENDER	= HB_ట్యాగ్ ('h','d','s','c'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_పంక్తి_GAP		= HB_ట్యాగ్ ('h','l','g','p'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CLIPPING_ASCENT	= HB_ట్యాగ్ ('h','c','l','a'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CLIPPING_DESCENT	= HB_ట్యాగ్ ('h','c','l','d'),
+  HB_OT_METRICS_ట్యాగ్_VERTICAL_ASCENDER		= HB_ట్యాగ్ ('v','a','s','c'),
+  HB_OT_METRICS_ట్యాగ్_VERTICAL_DESCENDER		= HB_ట్యాగ్ ('v','d','s','c'),
+  HB_OT_METRICS_ట్యాగ్_VERTICAL_పంక్తి_GAP		= HB_ట్యాగ్ ('v','l','g','p'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CARET_RISE	= HB_ట్యాగ్ ('h','c','r','s'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CARET_నిరంతరం	= HB_ట్యాగ్ ('h','c','r','n'),
+  HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CARET_స్థానభ్రంశం	= HB_ట్యాగ్ ('h','c','o','f'),
+  HB_OT_METRICS_ట్యాగ్_VERTICAL_CARET_RISE		= HB_ట్యాగ్ ('v','c','r','s'),
+  HB_OT_METRICS_ట్యాగ్_VERTICAL_CARET_నిరంతరం		= HB_ట్యాగ్ ('v','c','r','n'),
+  HB_OT_METRICS_ట్యాగ్_VERTICAL_CARET_స్థానభ్రంశం	= HB_ట్యాగ్ ('v','c','o','f'),
+  HB_OT_METRICS_ట్యాగ్_X_ఎత్తు			= HB_ట్యాగ్ ('x','h','g','t'),
+  HB_OT_METRICS_ట్యాగ్_CAP_ఎత్తు			= HB_ట్యాగ్ ('c','p','h','t'),
+  HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_X_కొలత		= HB_ట్యాగ్ ('s','b','x','s'),
+  HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_Y_కొలత		= HB_ట్యాగ్ ('s','b','y','s'),
+  HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_X_స్థానభ్రంశం	= HB_ట్యాగ్ ('s','b','x','o'),
+  HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_Y_స్థానభ్రంశం	= HB_ట్యాగ్ ('s','b','y','o'),
+  HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_X_కొలత	= HB_ట్యాగ్ ('s','p','x','s'),
+  HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_Y_కొలత	= HB_ట్యాగ్ ('s','p','y','s'),
+  HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_X_స్థానభ్రంశం	= HB_ట్యాగ్ ('s','p','x','o'),
+  HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_Y_స్థానభ్రంశం	= HB_ట్యాగ్ ('s','p','y','o'),
+  HB_OT_METRICS_ట్యాగ్_STRIKEOUT_కొలత		= HB_ట్యాగ్ ('s','t','r','s'),
+  HB_OT_METRICS_ట్యాగ్_STRIKEOUT_స్థానభ్రంశం		= HB_ట్యాగ్ ('s','t','r','o'),
+  HB_OT_METRICS_ట్యాగ్_UNDERLINE_కొలత		= HB_ట్యాగ్ ('u','n','d','s'),
+  HB_OT_METRICS_ట్యాగ్_UNDERLINE_స్థానభ్రంశం		= HB_ట్యాగ్ ('u','n','d','o'),
 
   /*< private >*/
-  _HB_OT_METRICS_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_metrics_tag_t;
+  HB_OT_METRICS_ట్యాగ్_MAX_విలువ = HB_ట్యాగ్_MAX_SIGNED /*< skip >*/
+} hb_ot_metrics_ట్యాగ్_t;
 
 HB_EXTERN hb_bool_t
 hb_ot_metrics_get_position (hb_font_t           *font,
-			    hb_ot_metrics_tag_t  metrics_tag,
+			    hb_ot_metrics_ట్యాగ్_t  metrics_ట్యాగ్,
 			    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
-					  hb_ot_metrics_tag_t  metrics_tag,
-					  hb_position_t       *position     /* OUT */);
+					  hb_ot_metrics_ట్యాగ్_t  metrics_ట్యాగ్,
+					  hb_position_t       *position     /*బహిర్గతం*/);
 
-HB_EXTERN float
-hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
-
-HB_EXTERN hb_position_t
-hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
+HB_EXTERN దశాంశం
+hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_ట్యాగ్_t metrics_ట్యాగ్);
 
 HB_EXTERN hb_position_t
-hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag);
+hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_ట్యాగ్_t metrics_ట్యాగ్);
 
-HB_END_DECLS
+HB_EXTERN hb_position_t
+hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_ట్యాగ్_t metrics_ట్యాగ్);
 
-#endif /* HB_OT_METRICS_H */
+HB_చివర_DECLS
+
+#అయితే_ముగింపు /* HB_OT_METRICS_H */

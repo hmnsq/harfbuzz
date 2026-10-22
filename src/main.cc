@@ -26,322 +26,322 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#నిర్వచితమైతే HAVE_CONFIG_H
+#అన్తర్భావ "config.h"
+#అయితే_ముగింపు
 
-#include "hb.h"
-#include "hb-ot.h"
+#అన్తర్భావ "hb.h"
+#అన్తర్భావ "hb-ot.h"
 
-#include <cassert>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+#అన్తర్భావ <cassert>
+#అన్తర్భావ <cstdlib>
+#అన్తర్భావ <cstdio>
+#అన్తర్భావ <cstring>
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
-#ifndef HB_NO_SVG
-static void
-svg_dump (hb_face_t *face, unsigned face_index)
+#ఒకవేళ !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
+#నిర్వచితం_కాకపోతే HB_NO_SVG
+స్థిర శూన్య
+svg_dump (hb_face_t *face, గుర్తులేని face_సూచీ)
 {
-  unsigned glyph_count = hb_face_get_glyph_count (face);
+  గుర్తులేని glyph_లెక్క = hb_face_get_glyph_లెక్క (face);
 
-  for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+  కొరకు (గుర్తులేని glyph_id = 0; glyph_id < glyph_లెక్క; ++glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_svg (face, glyph_id);
 
-    if (hb_blob_get_length (blob) == 0) continue;
+    ఒకవేళ (hb_blob_get_నిడివి (blob) == 0) కొనసాగు;
 
-    unsigned length;
-    const char *data = hb_blob_get_data (blob, &length);
+    గుర్తులేని నిడివి;
+    స్థిరరాశి అక్షరం *దత్తాంశం = hb_blob_get_దత్తాంశం (blob, &నిడివి);
 
-    char output_path[255];
-    snprintf (output_path, sizeof output_path,
+    అక్షరం output_మార్గం[255];
+    snprintf (output_మార్గం, పరిమాణం output_మార్గం,
 	     "out/svg-%u-%u.svg%s",
 	     glyph_id,
-	     face_index,
+	     face_సూచీ,
 	     // append "z" if the content is gzipped, https://stackoverflow.com/a/6059405
-	     (length > 2 && (data[0] == '\x1F') && (data[1] == '\x8B')) ? "z" : "");
+	     (నిడివి > 2 && (దత్తాంశం[0] == '\x1F') && (దత్తాంశం[1] == '\x8B')) ? "z" : "");
 
-    FILE *f = fopen (output_path, "wb");
-    fwrite (data, 1, length, f);
+    FILE *f = fopen (output_మార్గం, "wb");
+    fwrite (దత్తాంశం, 1, నిడివి, f);
     fclose (f);
 
     hb_blob_destroy (blob);
   }
 }
-#endif
+#అయితే_ముగింపు
 
 /* _png API is so easy to use unlike the below code, don't get confused */
-static void
-png_dump (hb_face_t *face, unsigned face_index)
+స్థిర శూన్య
+png_dump (hb_face_t *face, గుర్తులేని face_సూచీ)
 {
-  unsigned glyph_count = hb_face_get_glyph_count (face);
+  గుర్తులేని glyph_లెక్క = hb_face_get_glyph_లెక్క (face);
   hb_font_t *font = hb_font_create (face);
 
   /* scans the font for strikes */
-  unsigned sample_glyph_id;
+  గుర్తులేని sample_glyph_id;
   /* we don't care about different strikes for different glyphs at this point */
-  for (sample_glyph_id = 0; sample_glyph_id < glyph_count; ++sample_glyph_id)
+  కొరకు (sample_glyph_id = 0; sample_glyph_id < glyph_లెక్క; ++sample_glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
-    unsigned blob_length = hb_blob_get_length (blob);
+    గుర్తులేని blob_నిడివి = hb_blob_get_నిడివి (blob);
     hb_blob_destroy (blob);
-    if (blob_length != 0)
-      break;
+    ఒకవేళ (blob_నిడివి != 0)
+      ఆపు;
   }
 
-  unsigned upem = hb_face_get_upem (face);
-  unsigned blob_length = 0;
-  unsigned strike = 0;
-  for (unsigned ppem = 1; ppem < upem; ++ppem)
+  గుర్తులేని upem = hb_face_get_upem (face);
+  గుర్తులేని blob_నిడివి = 0;
+  గుర్తులేని strike = 0;
+  కొరకు (గుర్తులేని ppem = 1; ppem < upem; ++ppem)
   {
-    hb_font_set_ppem (font, ppem, ppem);
+    hb_font_సమితి_ppem (font, ppem, ppem);
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
-    unsigned new_blob_length = hb_blob_get_length (blob);
+    గుర్తులేని new_blob_నిడివి = hb_blob_get_నిడివి (blob);
     hb_blob_destroy (blob);
-    if (new_blob_length != blob_length)
+    ఒకవేళ (new_blob_నిడివి != blob_నిడివి)
     {
-      for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+      కొరకు (గుర్తులేని glyph_id = 0; glyph_id < glyph_లెక్క; ++glyph_id)
       {
 	hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, glyph_id);
 
-	if (hb_blob_get_length (blob) == 0) continue;
+	ఒకవేళ (hb_blob_get_నిడివి (blob) == 0) కొనసాగు;
 
-	unsigned length;
-	const char *data = hb_blob_get_data (blob, &length);
+	గుర్తులేని నిడివి;
+	స్థిరరాశి అక్షరం *దత్తాంశం = hb_blob_get_దత్తాంశం (blob, &నిడివి);
 
-	char output_path[255];
-	snprintf (output_path, sizeof output_path, "out/png-%u-%u-%u.png", glyph_id, strike, face_index);
+	అక్షరం output_మార్గం[255];
+	snprintf (output_మార్గం, పరిమాణం output_మార్గం, "out/png-%u-%u-%u.png", glyph_id, strike, face_సూచీ);
 
-	FILE *f = fopen (output_path, "wb");
-	fwrite (data, 1, length, f);
+	FILE *f = fopen (output_మార్గం, "wb");
+	fwrite (దత్తాంశం, 1, నిడివి, f);
 	fclose (f);
 
 	hb_blob_destroy (blob);
       }
 
       strike++;
-      blob_length = new_blob_length;
+      blob_నిడివి = new_blob_నిడివి;
     }
   }
 
   hb_font_destroy (font);
 }
 
-struct draw_data_t
+నిర్మాణం draw_దత్తాంశం_t
 {
   FILE *f;
   hb_position_t ascender;
 };
 
-static void
-move_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+స్థిర శూన్య
+move_గమ్యం (hb_draw_funcs_t *, draw_దత్తాంశం_t *draw_దత్తాంశం,
 	 hb_draw_state_t *,
-	 float to_x, float to_y,
-	 void *)
+	 దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+	 శూన్య *)
 {
-  fprintf (draw_data->f, "M%g,%g", to_x, draw_data->ascender - to_y);
+  fprintf (draw_దత్తాంశం->f, "M%g,%g", గమ్యం_x, draw_దత్తాంశం->ascender - గమ్యం_y);
 }
 
-static void
-line_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+స్థిర శూన్య
+పంక్తి_గమ్యం (hb_draw_funcs_t *, draw_దత్తాంశం_t *draw_దత్తాంశం,
 	 hb_draw_state_t *,
-	 float to_x, float to_y,
-	 void *)
+	 దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+	 శూన్య *)
 {
-  fprintf (draw_data->f, "L%g,%g", to_x, draw_data->ascender - to_y);
+  fprintf (draw_దత్తాంశం->f, "L%g,%g", గమ్యం_x, draw_దత్తాంశం->ascender - గమ్యం_y);
 }
 
-static void
-quadratic_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+స్థిర శూన్య
+quadratic_గమ్యం (hb_draw_funcs_t *, draw_దత్తాంశం_t *draw_దత్తాంశం,
 	      hb_draw_state_t *,
-	      float control_x, float control_y,
-	      float to_x, float to_y,
-	      void *)
+	      దశాంశం control_x, దశాంశం control_y,
+	      దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+	      శూన్య *)
 {
-  fprintf (draw_data->f, "Q%g,%g %g,%g", control_x, draw_data->ascender - control_y,
-					to_x, draw_data->ascender - to_y);
+  fprintf (draw_దత్తాంశం->f, "Q%g,%g %g,%g", control_x, draw_దత్తాంశం->ascender - control_y,
+					గమ్యం_x, draw_దత్తాంశం->ascender - గమ్యం_y);
 }
 
-static void
-cubic_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+స్థిర శూన్య
+cubic_గమ్యం (hb_draw_funcs_t *, draw_దత్తాంశం_t *draw_దత్తాంశం,
 	  hb_draw_state_t *,
-	  float control1_x, float control1_y,
-	  float control2_x, float control2_y,
-	  float to_x, float to_y,
-	  void *)
+	  దశాంశం control1_x, దశాంశం control1_y,
+	  దశాంశం control2_x, దశాంశం control2_y,
+	  దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+	  శూన్య *)
 {
-  fprintf (draw_data->f, "C%g,%g %g,%g %g,%g", control1_x, draw_data->ascender - control1_y,
-					       control2_x, draw_data->ascender - control2_y,
-					       to_x, draw_data->ascender - to_y);
+  fprintf (draw_దత్తాంశం->f, "C%g,%g %g,%g %g,%g", control1_x, draw_దత్తాంశం->ascender - control1_y,
+					       control2_x, draw_దత్తాంశం->ascender - control2_y,
+					       గమ్యం_x, draw_దత్తాంశం->ascender - గమ్యం_y);
 }
 
-static void
-close_path (hb_draw_funcs_t *, draw_data_t *draw_data,
+స్థిర శూన్య
+close_మార్గం (hb_draw_funcs_t *, draw_దత్తాంశం_t *draw_దత్తాంశం,
 	    hb_draw_state_t *,
-	    void *)
+	    శూన్య *)
 {
-  fprintf (draw_data->f, "Z");
+  fprintf (draw_దత్తాంశం->f, "Z");
 }
 
-static void
-layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
+స్థిర శూన్య
+layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, గుర్తులేని face_సూచీ)
 {
   hb_face_t *face = hb_font_get_face (font);
-  unsigned palette_count = hb_ot_color_palette_get_count (face);
-  for (unsigned palette = 0; palette < palette_count; ++palette)
+  గుర్తులేని palette_లెక్క = hb_ot_color_palette_get_లెక్క (face);
+  కొరకు (గుర్తులేని palette = 0; palette < palette_లెక్క; ++palette)
   {
-    unsigned num_colors = hb_ot_color_palette_get_colors (face, palette, 0, nullptr, nullptr);
-    if (!num_colors) continue;
+    గుర్తులేని అంకె_colors = hb_ot_color_palette_get_colors (face, palette, 0, శూన్యసూచిక, శూన్యసూచిక);
+    ఒకవేళ (!అంకె_colors) కొనసాగు;
 
-    hb_color_t *colors = (hb_color_t*) calloc (num_colors, sizeof (hb_color_t));
-    hb_ot_color_palette_get_colors (face, palette, 0, &num_colors, colors);
-    if (!num_colors)
+    hb_color_t *colors = (hb_color_t*) సున్నా_జ్ఞాపకం_ఇవ్వు (అంకె_colors, పరిమాణం (hb_color_t));
+    hb_ot_color_palette_get_colors (face, palette, 0, &అంకె_colors, colors);
+    ఒకవేళ (!అంకె_colors)
     {
-      free (colors);
-      continue;
+      విడుదల (colors);
+      కొనసాగు;
     }
 
-    unsigned num_glyphs = hb_face_get_glyph_count (face);
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; ++gid)
+    గుర్తులేని అంకె_glyphs = hb_face_get_glyph_లెక్క (face);
+    కొరకు (hb_codepoint_t gid = 0; gid < అంకె_glyphs; ++gid)
     {
-      unsigned num_layers = hb_ot_color_glyph_get_layers (face, gid, 0, nullptr, nullptr);
-      if (!num_layers) continue;
+      గుర్తులేని అంకె_layers = hb_ot_color_glyph_get_layers (face, gid, 0, శూన్యసూచిక, శూన్యసూచిక);
+      ఒకవేళ (!అంకె_layers) కొనసాగు;
 
-      hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) malloc (num_layers * sizeof (hb_ot_color_layer_t));
+      hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) జ్ఞాపకం_ఇవ్వు (అంకె_layers * పరిమాణం (hb_ot_color_layer_t));
 
-      hb_ot_color_glyph_get_layers (face, gid, 0, &num_layers, layers);
-      if (num_layers)
+      hb_ot_color_glyph_get_layers (face, gid, 0, &అంకె_layers, layers);
+      ఒకవేళ (అంకె_layers)
       {
 	hb_font_extents_t font_extents;
 	hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
 	hb_glyph_extents_t extents = {0, 0, 0, 0};
-	if (!hb_font_get_glyph_extents (font, gid, &extents))
+	ఒకవేళ (!hb_font_get_glyph_extents (font, gid, &extents))
 	{
-	  printf ("Skip gid: %u\n", gid);
-	  continue;
+	  రాయి ("Skip gid: %u\n", gid);
+	  కొనసాగు;
 	}
 
-	char output_path[255];
-	snprintf (output_path, sizeof output_path, "out/colr-%u-%u-%u.svg", gid, palette, face_index);
-	FILE *f = fopen (output_path, "wb");
+	అక్షరం output_మార్గం[255];
+	snprintf (output_మార్గం, పరిమాణం output_మార్గం, "out/colr-%u-%u-%u.svg", gid, palette, face_సూచీ);
+	FILE *f = fopen (output_మార్గం, "wb");
 	fprintf (f, "<svg xmlns=\"http://www.w3.org/2000/svg\""
 		    " viewBox=\"%d %d %lld %lld\">\n",
 		    extents.x_bearing, 0,
-		    (long long) extents.x_bearing + extents.width,
-		    -(long long) extents.height);
-	draw_data_t draw_data;
-	draw_data.ascender = extents.y_bearing;
-	draw_data.f = f;
+		    (దీర్ఘ దీర్ఘ) extents.x_bearing + extents.వెడల్పు,
+		    -(దీర్ఘ దీర్ఘ) extents.ఎత్తు);
+	draw_దత్తాంశం_t draw_దత్తాంశం;
+	draw_దత్తాంశం.ascender = extents.y_bearing;
+	draw_దత్తాంశం.f = f;
 
-	for (unsigned layer = 0; layer < num_layers; ++layer)
+	కొరకు (గుర్తులేని layer = 0; layer < అంకె_layers; ++layer)
 	{
 	  hb_color_t color = 0x000000FF;
-	  if (layers[layer].color_index != 0xFFFF)
-	    color = colors[layers[layer].color_index];
+	  ఒకవేళ (layers[layer].color_సూచీ != 0xFFFF)
+	    color = colors[layers[layer].color_సూచీ];
 	  fprintf (f, "<path fill=\"#%02X%02X%02X\" ",
 		   hb_color_get_red (color), hb_color_get_green (color), hb_color_get_green (color));
-	  if (hb_color_get_alpha (color) != 255)
-	    fprintf (f, "fill-opacity=\"%.3f\"", (double) hb_color_get_alpha (color) / 255.);
+	  ఒకవేళ (hb_color_get_alpha (color) != 255)
+	    fprintf (f, "fill-opacity=\"%.3f\"", (ద్విగుణ) hb_color_get_alpha (color) / 255.);
 	  fprintf (f, "d=\"");
-	  hb_font_draw_glyph (font, layers[layer].glyph, funcs, &draw_data);
+	  hb_font_draw_glyph (font, layers[layer].glyph, funcs, &draw_దత్తాంశం);
 	  fprintf (f, "\"/>\n");
 	}
 
 	fprintf (f, "</svg>");
 	fclose (f);
       }
-      free (layers);
+      విడుదల (layers);
     }
 
-    free (colors);
+    విడుదల (colors);
   }
 }
 
-static void
-dump_glyphs (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
+స్థిర శూన్య
+dump_glyphs (hb_font_t *font, hb_draw_funcs_t *funcs, గుర్తులేని face_సూచీ)
 {
-  unsigned num_glyphs = hb_face_get_glyph_count (hb_font_get_face (font));
-  for (unsigned gid = 0; gid < num_glyphs; ++gid)
+  గుర్తులేని అంకె_glyphs = hb_face_get_glyph_లెక్క (hb_font_get_face (font));
+  కొరకు (గుర్తులేని gid = 0; gid < అంకె_glyphs; ++gid)
   {
     hb_font_extents_t font_extents;
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     hb_glyph_extents_t extents = {0, 0, 0, 0};
-    if (!hb_font_get_glyph_extents (font, gid, &extents))
+    ఒకవేళ (!hb_font_get_glyph_extents (font, gid, &extents))
     {
-      printf ("Skip gid: %u\n", gid);
-      continue;
+      రాయి ("Skip gid: %u\n", gid);
+      కొనసాగు;
     }
 
-    char output_path[255];
-    snprintf (output_path, sizeof output_path, "out/%u-%u.svg", face_index, gid);
-    FILE *f = fopen (output_path, "wb");
+    అక్షరం output_మార్గం[255];
+    snprintf (output_మార్గం, పరిమాణం output_మార్గం, "out/%u-%u.svg", face_సూచీ, gid);
+    FILE *f = fopen (output_మార్గం, "wb");
     fprintf (f, "<svg xmlns=\"http://www.w3.org/2000/svg\""
 		" viewBox=\"%d %d %lld %lld\"><path d=\"",
 		extents.x_bearing, 0,
-		(long long) extents.x_bearing + extents.width,
-		(long long) font_extents.ascender - font_extents.descender);
-    draw_data_t draw_data;
-    draw_data.ascender = font_extents.ascender;
-    draw_data.f = f;
-    hb_font_draw_glyph (font, gid, funcs, &draw_data);
+		(దీర్ఘ దీర్ఘ) extents.x_bearing + extents.వెడల్పు,
+		(దీర్ఘ దీర్ఘ) font_extents.ascender - font_extents.descender);
+    draw_దత్తాంశం_t draw_దత్తాంశం;
+    draw_దత్తాంశం.ascender = font_extents.ascender;
+    draw_దత్తాంశం.f = f;
+    hb_font_draw_glyph (font, gid, funcs, &draw_దత్తాంశం);
     fprintf (f, "\"/></svg>");
     fclose (f);
   }
 }
 
-static void
-dump_glyphs (hb_blob_t *blob, const char *font_name)
+స్థిర శూన్య
+dump_glyphs (hb_blob_t *blob, స్థిరరాశి అక్షరం *font_name)
 {
   FILE *font_name_file = fopen ("out/.dumped_font_name", "r");
-  if (font_name_file)
+  ఒకవేళ (font_name_file)
   {
     fprintf (stderr, "Purge or rename ./out folder if you like to run a glyph dump,\n"
 		     "run it like `rm -rf out && mkdir out && src/main font-file.ttf`\n");
-    return;
+    తిరిగి;
   }
 
   font_name_file = fopen ("out/.dumped_font_name", "w");
-  if (!font_name_file)
+  ఒకవేళ (!font_name_file)
   {
     fprintf (stderr, "./out is not accessible as a folder, create it please\n");
-    return;
+    తిరిగి;
   }
-  fwrite (font_name, 1, strlen (font_name), font_name_file);
+  fwrite (font_name, 1, అక్షరశ్రేణి_పొడవు (font_name), font_name_file);
   fclose (font_name_file);
 
   hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-  hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) move_to, nullptr, nullptr);
-  hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) line_to, nullptr, nullptr);
-  hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) quadratic_to, nullptr, nullptr);
-  hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) cubic_to, nullptr, nullptr);
-  hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) close_path, nullptr, nullptr);
+  hb_draw_funcs_సమితి_move_గమ్యం_func (funcs, (hb_draw_move_గమ్యం_func_t) move_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+  hb_draw_funcs_సమితి_పంక్తి_గమ్యం_func (funcs, (hb_draw_పంక్తి_గమ్యం_func_t) పంక్తి_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+  hb_draw_funcs_సమితి_quadratic_గమ్యం_func (funcs, (hb_draw_quadratic_గమ్యం_func_t) quadratic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+  hb_draw_funcs_సమితి_cubic_గమ్యం_func (funcs, (hb_draw_cubic_గమ్యం_func_t) cubic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+  hb_draw_funcs_సమితి_close_మార్గం_func (funcs, (hb_draw_close_మార్గం_func_t) close_మార్గం, శూన్యసూచిక, శూన్యసూచిక);
 
-  unsigned num_faces = hb_face_count (blob);
-  for (unsigned face_index = 0; face_index < num_faces; ++face_index)
+  గుర్తులేని అంకె_faces = hb_face_లెక్క (blob);
+  కొరకు (గుర్తులేని face_సూచీ = 0; face_సూచీ < అంకె_faces; ++face_సూచీ)
   {
-    hb_face_t *face = hb_face_create (blob, face_index);
+    hb_face_t *face = hb_face_create (blob, face_సూచీ);
     hb_font_t *font = hb_font_create (face);
 
-    if (hb_ot_color_has_png (face))
-      printf ("Dumping png (CBDT/sbix)...\n");
-    png_dump (face, face_index);
+    ఒకవేళ (hb_ot_color_has_png (face))
+      రాయి ("Dumping png (CBDT/sbix)...\n");
+    png_dump (face, face_సూచీ);
 
-#ifndef HB_NO_SVG
-    if (hb_ot_color_has_svg (face))
-      printf ("Dumping svg (SVG )...\n");
-    svg_dump (face, face_index);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_SVG
+    ఒకవేళ (hb_ot_color_has_svg (face))
+      రాయి ("Dumping svg (SVG )...\n");
+    svg_dump (face, face_సూచీ);
+#అయితే_ముగింపు
 
-    if (hb_ot_color_has_layers (face) && hb_ot_color_has_palettes (face))
-      printf ("Dumping layered color glyphs (COLR/CPAL)...\n");
-    layered_glyph_dump (font, funcs, face_index);
+    ఒకవేళ (hb_ot_color_has_layers (face) && hb_ot_color_has_palettes (face))
+      రాయి ("Dumping layered color glyphs (COLR/CPAL)...\n");
+    layered_glyph_dump (font, funcs, face_సూచీ);
 
-    dump_glyphs (font, funcs, face_index);
+    dump_glyphs (font, funcs, face_సూచీ);
 
     hb_font_destroy (font);
     hb_face_destroy (face);
@@ -349,191 +349,191 @@ dump_glyphs (hb_blob_t *blob, const char *font_name)
 
   hb_draw_funcs_destroy (funcs);
 }
-#endif
+#అయితే_ముగింపు
 
-#ifndef MAIN_CC_NO_PRIVATE_API
+#నిర్వచితం_కాకపోతే MAIN_CC_NO_వ్యక్తిగత_API
 /* Only this part of this mini app uses private API */
-#include "hb-static.cc"
-#include "hb-open-file.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsubgpos.hh"
+#అన్తర్భావ "hb-static.cc"
+#అన్తర్భావ "hb-open-file.hh"
+#అన్తర్భావ "hb-ot-layout-gdef-table.hh"
+#అన్తర్భావ "hb-ot-layout-gsubgpos.hh"
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
-static void
-print_layout_info_using_private_api (hb_blob_t *blob)
+స్థిర శూన్య
+print_layout_info_using_వ్యక్తిగత_api (hb_blob_t *blob)
 {
-  const char *font_data = hb_blob_get_data (blob, nullptr);
+  స్థిరరాశి అక్షరం *font_దత్తాంశం = hb_blob_get_దత్తాంశం (blob, శూన్యసూచిక);
   hb_blob_t *font_blob = hb_sanitize_context_t ().sanitize_blob<OpenTypeFontFile> (blob);
-  const OpenTypeFontFile* sanitized = font_blob->as<OpenTypeFontFile> ();
-  if (!font_blob->data)
+  స్థిరరాశి OpenTypeFontFile* sanitized = font_blob->as<OpenTypeFontFile> ();
+  ఒకవేళ (!font_blob->దత్తాంశం)
   {
-    printf ("Sanitization of the file wasn't successful. Exit");
-    exit (1);
+    రాయి ("Sanitization of the file wasn't successful. Exit");
+    నిష్క్రమించు (1);
   }
-  const OpenTypeFontFile& ot = *sanitized;
+  స్థిరరాశి OpenTypeFontFile& ot = *sanitized;
 
-  switch (ot.get_tag ())
+  ఎంపిక (ot.get_ట్యాగ్ ())
   {
-  case OpenTypeFontFile::TrueTypeTag:
-    printf ("OpenType font with TrueType outlines\n");
-    break;
-  case OpenTypeFontFile::CFFTag:
-    printf ("OpenType font with CFF (Type1) outlines\n");
-    break;
-  case OpenTypeFontFile::TTCTag:
-    printf ("TrueType Collection of OpenType fonts\n");
-    break;
-  case OpenTypeFontFile::TrueTag:
-    printf ("Obsolete Apple TrueType font\n");
-    break;
-  case OpenTypeFontFile::Typ1Tag:
-    printf ("Obsolete Apple Type1 font in SFNT container\n");
-    break;
-  case OpenTypeFontFile::DFontTag:
-    printf ("DFont Mac Resource Fork\n");
-    break;
-  default:
-    printf ("Unknown font format\n");
-    break;
+  స్థితి OpenTypeFontFile::True_Type_ట్యాగ్:
+    రాయి ("OpenType font with TrueType outlines\n");
+    ఆపు;
+  స్థితి OpenTypeFontFile::CFFTag:
+    రాయి ("OpenType font with CFF (Type1) outlines\n");
+    ఆపు;
+  స్థితి OpenTypeFontFile::TTCTag:
+    రాయి ("TrueType Collection of OpenType fonts\n");
+    ఆపు;
+  స్థితి OpenTypeFontFile::True_ట్యాగ్:
+    రాయి ("Obsolete Apple TrueType font\n");
+    ఆపు;
+  స్థితి OpenTypeFontFile::Typ1_ట్యాగ్:
+    రాయి ("Obsolete Apple Type1 font in SFNT container\n");
+    ఆపు;
+  స్థితి OpenTypeFontFile::DFont_ట్యాగ్:
+    రాయి ("DFont Mac Resource Fork\n");
+    ఆపు;
+  అప్రమేయ:
+    రాయి ("Unknown font format\n");
+    ఆపు;
   }
 
-  unsigned num_faces = hb_face_count (blob);
-  printf ("%u font(s) found in file\n", num_faces);
-  for (unsigned n_font = 0; n_font < num_faces; ++n_font)
+  గుర్తులేని అంకె_faces = hb_face_లెక్క (blob);
+  రాయి ("%u font(s) found in file\n", అంకె_faces);
+  కొరకు (గుర్తులేని n_font = 0; n_font < అంకె_faces; ++n_font)
   {
-    const OpenTypeFontFace &font = ot.get_face (n_font);
-    printf ("Font %u of %u:\n", n_font, num_faces);
+    స్థిరరాశి OpenTypeFontFace &font = ot.get_face (n_font);
+    రాయి ("Font %u of %u:\n", n_font, అంకె_faces);
 
-    unsigned num_tables = font.get_table_count ();
-    printf ("  %u table(s) found in font\n", num_tables);
-    for (unsigned n_table = 0; n_table < num_tables; ++n_table)
+    గుర్తులేని అంకె_tables = font.get_పట్టిక_లెక్క ();
+    రాయి ("  %u table(s) found in font\n", అంకె_tables);
+    కొరకు (గుర్తులేని n_పట్టిక = 0; n_పట్టిక < అంకె_tables; ++n_పట్టిక)
     {
-      const OpenTypeTable &table = font.get_table (n_table);
-      printf ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_table, num_tables,
-	      (const char *) table.tag,
-	      (unsigned) table.offset,
-	      (unsigned) table.length);
+      స్థిరరాశి Open_Type_పట్టిక &పట్టిక = font.get_పట్టిక (n_పట్టిక);
+      రాయి ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_పట్టిక, అంకె_tables,
+	      (స్థిరరాశి అక్షరం *) పట్టిక.ట్యాగ్_2,
+	      (గుర్తులేని) పట్టిక.స్థానభ్రంశం,
+	      (గుర్తులేని) పట్టిక.నిడివి);
 
-      switch (table.tag)
+      ఎంపిక (పట్టిక.ట్యాగ్_2)
       {
 
-      case HB_OT_TAG_GSUB:
-      case HB_OT_TAG_GPOS:
+      స్థితి HB_OT_ట్యాగ్_GSUB:
+      స్థితి HB_OT_ట్యాగ్_GPOS:
 	{
 
-	const GSUBGPOS &g = *reinterpret_cast<const GSUBGPOS *> (font_data + table.offset);
+	స్థిరరాశి GSUBGPOS &g = *reinterpret_cast<స్థిరరాశి GSUBGPOS *> (font_దత్తాంశం + పట్టిక.స్థానభ్రంశం);
 
-	unsigned num_scripts = g.get_script_count ();
-	printf ("    %u script(s) found in table\n", num_scripts);
-	for (unsigned n_script = 0; n_script < num_scripts; ++n_script)
+	గుర్తులేని అంకె_scripts = g.get_script_లెక్క ();
+	రాయి ("    %u script(s) found in table\n", అంకె_scripts);
+	కొరకు (గుర్తులేని n_script = 0; n_script < అంకె_scripts; ++n_script)
 	{
-	  const Script &script = g.get_script (n_script);
-	  printf ("    Script %2u of %2u: %.4s\n", n_script, num_scripts,
-		  (const char *) g.get_script_tag (n_script));
+	  స్థిరరాశి Script &script = g.get_script (n_script);
+	  రాయి ("    Script %2u of %2u: %.4s\n", n_script, అంకె_scripts,
+		  (స్థిరరాశి అక్షరం *) g.get_script_ట్యాగ్ (n_script));
 
-	  if (!script.has_default_lang_sys ())
-	    printf ("      No default language system\n");
-	  int num_langsys = script.get_lang_sys_count ();
-	  printf ("      %d language system(s) found in script\n", num_langsys);
-	  for (int n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < num_langsys; ++n_langsys)
+	  ఒకవేళ (!script.has_default_lang_sys ())
+	    రాయి ("      No default language system\n");
+	  పూర్ణాంకం అంకె_langsys = script.get_lang_sys_లెక్క ();
+	  రాయి ("      %d language system(s) found in script\n", అంకె_langsys);
+	  కొరకు (పూర్ణాంకం n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < అంకె_langsys; ++n_langsys)
 	  {
-	    const LangSys &langsys = n_langsys == -1
+	    స్థిరరాశి LangSys &langsys = n_langsys == -1
 				   ? script.get_default_lang_sys ()
 				   : script.get_lang_sys (n_langsys);
-	    if (n_langsys == -1)
-	      printf ("      Default Language System\n");
-	    else
-	      printf ("      Language System %2d of %2d: %.4s\n", n_langsys, num_langsys,
-		      (const char *) script.get_lang_sys_tag (n_langsys));
-	    if (!langsys.has_required_feature ())
-	      printf ("        No required feature\n");
-	    else
-	      printf ("        Required feature index: %u\n",
-		      langsys.get_required_feature_index ());
+	    ఒకవేళ (n_langsys == -1)
+	      రాయి ("      Default Language System\n");
+	    లేకపోతే
+	      రాయి ("      Language System %2d of %2d: %.4s\n", n_langsys, అంకె_langsys,
+		      (స్థిరరాశి అక్షరం *) script.get_lang_sys_ట్యాగ్ (n_langsys));
+	    ఒకవేళ (!langsys.has_required_feature ())
+	      రాయి ("        No required feature\n");
+	    లేకపోతే
+	      రాయి ("        Required feature index: %u\n",
+		      langsys.get_required_feature_సూచీ ());
 
-	    unsigned num_features = langsys.get_feature_count ();
-	    printf ("        %u feature(s) found in language system\n", num_features);
-	    for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	    గుర్తులేని అంకె_features = langsys.get_feature_లెక్క ();
+	    రాయి ("        %u feature(s) found in language system\n", అంకె_features);
+	    కొరకు (గుర్తులేని n_feature = 0; n_feature < అంకె_features; ++n_feature)
 	    {
-	      printf ("        Feature index %2u of %2u: %u\n", n_feature, num_features,
-		      langsys.get_feature_index (n_feature));
+	      రాయి ("        Feature index %2u of %2u: %u\n", n_feature, అంకె_features,
+		      langsys.get_feature_సూచీ (n_feature));
 	    }
 	  }
 	}
 
-	unsigned num_features = g.get_feature_count ();
-	printf ("    %u feature(s) found in table\n", num_features);
-	for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	గుర్తులేని అంకె_features = g.get_feature_లెక్క ();
+	రాయి ("    %u feature(s) found in table\n", అంకె_features);
+	కొరకు (గుర్తులేని n_feature = 0; n_feature < అంకె_features; ++n_feature)
 	{
-	  const Feature &feature = g.get_feature (n_feature);
-	  unsigned num_lookups = feature.get_lookup_count ();
-	  printf ("    Feature %2u of %2u: %c%c%c%c\n", n_feature, num_features,
-		  HB_UNTAG (g.get_feature_tag (n_feature)));
+	  స్థిరరాశి Feature &feature = g.get_feature (n_feature);
+	  గుర్తులేని అంకె_lookups = feature.get_lookup_లెక్క ();
+	  రాయి ("    Feature %2u of %2u: %c%c%c%c\n", n_feature, అంకె_features,
+		  HB_UNTAG (g.get_feature_ట్యాగ్ (n_feature)));
 
-	  printf ("        %u lookup(s) found in feature\n", num_lookups);
-	  for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup) {
-	    printf ("        Lookup index %2u of %2u: %u\n", n_lookup, num_lookups,
-		    feature.get_lookup_index (n_lookup));
+	  రాయి ("        %u lookup(s) found in feature\n", అంకె_lookups);
+	  కొరకు (గుర్తులేని n_lookup = 0; n_lookup < అంకె_lookups; ++n_lookup) {
+	    రాయి ("        Lookup index %2u of %2u: %u\n", n_lookup, అంకె_lookups,
+		    feature.get_lookup_సూచీ (n_lookup));
 	  }
 	}
 
-	unsigned num_lookups = g.get_lookup_count ();
-	printf ("    %u lookup(s) found in table\n", num_lookups);
-	for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup)
+	గుర్తులేని అంకె_lookups = g.get_lookup_లెక్క ();
+	రాయి ("    %u lookup(s) found in table\n", అంకె_lookups);
+	కొరకు (గుర్తులేని n_lookup = 0; n_lookup < అంకె_lookups; ++n_lookup)
 	{
-	  const Lookup &lookup = g.get_lookup (n_lookup);
-	  printf ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, num_lookups,
+	  స్థిరరాశి Lookup &lookup = g.get_lookup (n_lookup);
+	  రాయి ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, అంకె_lookups,
 		  lookup.get_type (), lookup.get_props ());
 	}
 
 	}
-	break;
+	ఆపు;
 
-      case GDEF::tableTag:
+      స్థితి GDEF::పట్టిక_ట్యాగ్:
 	{
 
-	const GDEF &gdef = *reinterpret_cast<const GDEF *> (font_data + table.offset);
+	స్థిరరాశి GDEF &gdef = *reinterpret_cast<స్థిరరాశి GDEF *> (font_దత్తాంశం + పట్టిక.స్థానభ్రంశం);
 
-	printf ("    Has %sglyph classes\n",
+	రాయి ("    Has %sglyph classes\n",
 		  gdef.has_glyph_classes () ? "" : "no ");
-	printf ("    Has %smark attachment types\n",
+	రాయి ("    Has %smark attachment types\n",
 		  gdef.has_mark_attachment_types () ? "" : "no ");
-	printf ("    Has %sattach list\n",
+	రాయి ("    Has %sattach list\n",
 		  gdef.has_attach_list () ? "" : "no ");
-	printf ("    Has %slig carets\n",
+	రాయి ("    Has %slig carets\n",
 		  gdef.has_lig_carets () ? "" : "no ");
-	printf ("    Has %smark glyph sets\n",
+	రాయి ("    Has %smark glyph sets\n",
 		  gdef.has_mark_glyph_sets () ? "" : "no ");
-	break;
+	ఆపు;
 	}
       }
     }
   }
 }
 /* end of private API use */
-#endif
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  if (argc != 2)
+  ఒకవేళ (argc != 2)
   {
     fprintf (stderr, "usage: %s font-file.ttf\n\n"
 		     "This tools is unsupported and crashes on bad data.\nDon't use it.\n", argv[0]);
-    exit (1);
+    నిష్క్రమించు (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
-  printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
-#ifndef MAIN_CC_NO_PRIVATE_API
-  print_layout_info_using_private_api (blob);
-#endif
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
+  ప్రతిజ్ఞా (blob);
+  రాయి ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_నిడివి (blob));
+#నిర్వచితం_కాకపోతే MAIN_CC_NO_వ్యక్తిగత_API
+  print_layout_info_using_వ్యక్తిగత_api (blob);
+#అయితే_ముగింపు
+#ఒకవేళ !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
   dump_glyphs (blob, argv[1]);
-#endif
+#అయితే_ముగింపు
   hb_blob_destroy (blob);
 
-  return 0;
+  తిరిగి 0;
 }

@@ -23,15 +23,15 @@
  *
  */
 
-#ifndef HB_SUBSET_SERIALIZE_H
-#define HB_SUBSET_SERIALIZE_H
+#నిర్వచితం_కాకపోతే HB_SUBSET_SERIALIZE_H
+#నిర్వచించు HB_SUBSET_SERIALIZE_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ఒకవేళ !defined(HB_SUBSET_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
 // Disabled to not break pre-existing users.
 //#error "Include <hb-subset.h> instead."
-#endif
+#అయితే_ముగింపు
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -47,10 +47,10 @@ HB_BEGIN_DECLS
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_link_t {
-  unsigned int width;
-  unsigned int position;
-  unsigned int objidx;
+రకనిర్వచనం నిర్మాణం hb_subset_serialize_link_t {
+  గుర్తులేని పూర్ణాంకం వెడల్పు;
+  గుర్తులేని పూర్ణాంకం position;
+  గుర్తులేని పూర్ణాంకం objidx;
 } hb_subset_serialize_link_t;
 
 /**
@@ -68,21 +68,21 @@ typedef struct hb_subset_serialize_link_t {
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_object_t {
-  char *head;
-  char *tail;
-  unsigned int num_real_links;
+రకనిర్వచనం నిర్మాణం hb_subset_serialize_object_t {
+  అక్షరం *తల_2;
+  అక్షరం *తోక;
+  గుర్తులేని పూర్ణాంకం అంకె_real_links;
   hb_subset_serialize_link_t *real_links;
-  unsigned int num_virtual_links;
+  గుర్తులేని పూర్ణాంకం అంకె_virtual_links;
   hb_subset_serialize_link_t *virtual_links;
 } hb_subset_serialize_object_t;
 
 HB_EXTERN hb_blob_t *
-hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
+hb_subset_serialize_or_fail (hb_ట్యాగ్_t                      పట్టిక_ట్యాగ్_2,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs);
+                             గుర్తులేని                      అంకె_hb_objs);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_SUBSET_SERIALIZE_H */
+#అయితే_ముగింపు /* HB_SUBSET_SERIALIZE_H */

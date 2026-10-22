@@ -1,111 +1,111 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURESET_HH
-#define OT_LAYOUT_GSUB_LIGATURESET_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_LIGATURESET_HH
+#నిర్వచించు OT_LAYOUT_GSUB_LIGATURESET_HH
 
-#include "Common.hh"
-#include "Ligature.hh"
+#అన్తర్భావ "Common.hh"
+#అన్తర్భావ "Ligature.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template <typename Types>
-struct LigatureSet
+మూస <రకం_పేరు Types>
+నిర్మాణం Ligature_సమితి
 {
-  public:
-  Array16Of<typename Types::template OffsetTo<Ligature<Types>>>
+  బహిరంగ:
+  Array16_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Ligature<Types>>>
                 ligature;               /* Array LigatureSet tables
                                          * ordered by preference */
   
-  DEFINE_SIZE_ARRAY (2, ligature);
+  DEFINE_కొలత_ARRAY (2, ligature);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (ligature.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (ligature.sanitize (c, ఇది));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    return
+    తిరిగి
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { return _.intersects (glyphs); })
+    | hb_map (hb_కూడు (ఇది))
+    | hb_map ([glyphs] (స్థిరరాశి Ligature<Types> &_) { తిరిగి _.intersects (glyphs); })
     | hb_any
     ;
   }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
+  తార్కిక intersects_lig_glyph (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    return
+    తిరిగి
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { 
-      return _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
+    | hb_map (hb_కూడు (ఇది))
+    | hb_map ([glyphs] (స్థిరరాశి Ligature<Types> &_) { 
+      తిరిగి _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
     })
     | hb_any
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  శూన్య సంవృతం (hb_సంవృతం_context_t *c) స్థిరరాశి
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.closure (c); })
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([c] (స్థిరరాశి Ligature<Types> &_) { _.సంవృతం (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  శూన్య depend (hb_depend_context_t *c, hb_codepoint_t మొదటి) స్థిరరాశి
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const Ligature<Types> &_) { _.depend (c, first); })
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([&] (స్థిరరాశి Ligature<Types> &_) { _.depend (c, మొదటి); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.collect_glyphs (c); })
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([c] (స్థిరరాశి Ligature<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  template <typename set_t>
-  void collect_seconds (set_t &s) const
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య collect_seconds (సమితి_t &s) స్థిరరాశి
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&s] (const Ligature<Types> &_) { _.collect_second (s); })
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([&s] (స్థిరరాశి Ligature<Types> &_) { _.collect_రెండవ (s); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  తార్కిక would_apply (hb_would_apply_context_t *c) స్థిరరాశి
   {
-    return
+    తిరిగి
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([c] (const Ligature<Types> &_) { return _.would_apply (c); })
+    | hb_map (hb_కూడు (ఇది))
+    | hb_map ([c] (స్థిరరాశి Ligature<Types> &_) { తిరిగి _.would_apply (c); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c, const hb_set_digest_t *seconds = nullptr) const
+  తార్కిక apply (hb_ot_apply_context_t *c, స్థిరరాశి hb_సమితి_digest_t *seconds = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ఇది);
 
-    unsigned int num_ligs = ligature.len;
+    గుర్తులేని పూర్ణాంకం అంకె_ligs = ligature.len;
 
-#ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_RULESETS_FAST_మార్గం
+    ఒకవేళ (HB_OPTIMIZE_కొలత_VAL || అంకె_ligs <= 1)
+#అయితే_ముగింపు
     {
     slow:
-      for (unsigned int i = 0; i < num_ligs; i++)
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_ligs; i++)
       {
-	const auto &lig = this+ligature.arrayZ[i];
-	if (lig.apply (c)) return_trace (true);
+	స్థిరరాశి స్వయంచాలక &lig = ఇది+ligature.arrayZ[i];
+	ఒకవేళ (lig.apply (c)) return_trace (నిజం);
       }
-      return_trace (false);
+      return_trace (అబద్ధం);
     }
 
     /* This version is optimized for speed by matching the second component
@@ -113,93 +113,93 @@ struct LigatureSet
      *
      * This is replicated in ChainRuleSet and RuleSet. */
 
-    auto &skippy_iter = c->iter_context;
-    skippy_iter.reset (c->buffer->idx);
-    skippy_iter.set_match_func (match_always, nullptr);
-    skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
-    unsigned unsafe_to;
-    hb_codepoint_t second = (unsigned) -1;
-    bool matched = skippy_iter.next (&unsafe_to);
-    if (likely (matched))
+    స్వయంచాలక &skippy_iter = c->iter_context;
+    skippy_iter.reset (c->బఫరు->idx);
+    skippy_iter.సమితి_సరిపోలిక_func (సరిపోలిక_always, శూన్యసూచిక);
+    skippy_iter.సమితి_glyph_దత్తాంశం ((HBUINT16 *) శూన్యసూచిక);
+    గుర్తులేని unsafe_గమ్యం;
+    hb_codepoint_t second = (గుర్తులేని) -1;
+    తార్కిక matched = skippy_iter.next (&unsafe_గమ్యం);
+    ఒకవేళ (likely (matched))
     {
-      second = c->buffer->info[skippy_iter.idx].codepoint;
-      unsafe_to = skippy_iter.idx + 1;
+      second = c->బఫరు->info[skippy_iter.idx].codepoint;
+      unsafe_గమ్యం = skippy_iter.idx + 1;
 
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      ఒకవేళ (skippy_iter.may_skip (c->బఫరు->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        వెళ్ళు slow;
       }
     }
-    else
-      goto slow;
+    లేకపోతే
+      వెళ్ళు slow;
 
-    if (seconds && !seconds->may_have (second))
+    ఒకవేళ (seconds && !seconds->may_have (second))
     {
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-      return_trace (false);
+      c->బఫరు->unsafe_గమ్యం_concat (c->బఫరు->idx, unsafe_గమ్యం);
+      return_trace (అబద్ధం);
     }
-    bool unsafe_to_concat = false;
-    for (unsigned int i = 0; i < num_ligs; i++)
+    తార్కిక unsafe_గమ్యం_concat = అబద్ధం;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_ligs; i++)
     {
-      const auto &lig = this+ligature.arrayZ[i];
-      if (unlikely (lig.component.lenP1 <= 1) ||
+      స్థిరరాశి స్వయంచాలక &lig = ఇది+ligature.arrayZ[i];
+      ఒకవేళ (unlikely (lig.component.lenP1 <= 1) ||
 	  lig.component.arrayZ[0] == second)
       {
-	if (lig.apply (c))
+	ఒకవేళ (lig.apply (c))
 	{
-	  if (unsafe_to_concat)
-	    c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	  return_trace (true);
+	  ఒకవేళ (unsafe_గమ్యం_concat)
+	    c->బఫరు->unsafe_గమ్యం_concat (c->బఫరు->idx, unsafe_గమ్యం);
+	  return_trace (నిజం);
 	}
       }
-      else if (likely (lig.component.lenP1 > 1))
-        unsafe_to_concat = true;
+      లేకపోతే ఒకవేళ (likely (lig.component.lenP1 > 1))
+        unsafe_గమ్యం_concat = నిజం;
     }
-    if (likely (unsafe_to_concat))
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
+    ఒకవేళ (likely (unsafe_గమ్యం_concat))
+      c->బఫరు->unsafe_గమ్యం_concat (c->బఫరు->idx, unsafe_గమ్యం);
 
-    return_trace (false);
+    return_trace (అబద్ధం);
   }
 
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  మూస <రకం_పేరు GlyphID>
+  తార్కిక serialize (hb_serialize_context_t *c,
                   hb_array_t<GlyphID> ligatures,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<స్థిరరాశి గుర్తులేని పూర్ణాంకం> component_లెక్క_list,
                   hb_array_t<GlyphID> &component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
-    for (unsigned int i = 0; i < ligatures.length; i++)
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!ligature.serialize (c, ligatures.నిడివి))) return_trace (అబద్ధం);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ligatures.నిడివి; i++)
     {
-      unsigned int component_count = (unsigned) hb_max ((int) component_count_list[i] - 1, 0);
-      if (unlikely (!ligature[i].serialize_serialize (c,
+      గుర్తులేని పూర్ణాంకం component_లెక్క = (గుర్తులేని) hb_max ((పూర్ణాంకం) component_లెక్క_list[i] - 1, 0);
+      ఒకవేళ (unlikely (!ligature[i].serialize_serialize (c,
                                                       ligatures[i],
-                                                      component_list.sub_array (0, component_count))))
-        return_trace (false);
-      component_list += component_count;
+                                                      component_list.sub_array (0, component_లెక్క))))
+        return_trace (అబద్ధం);
+      component_list += component_లెక్క;
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  తార్కిక subset (hb_subset_context_t *c, గుర్తులేని coverage_idx) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
     + hb_iter (ligature)
-    | hb_filter (subset_offset_array (c, out->ligature, this, coverage_idx))
+    | hb_filter (subset_స్థానభ్రంశం_array (c, బహిర్గతం->ligature, ఇది, coverage_idx))
     | hb_drain
     ;
 
-    if (bool (out->ligature))
+    ఒకవేళ (తార్కిక (బహిర్గతం->ligature))
       // Ensure Coverage table is always packed after this.
-      c->serializer->add_virtual_link (coverage_idx);
+      c->serializer->కూడు_virtual_link (coverage_idx);
 
-    return_trace (bool (out->ligature));
+    return_trace (తార్కిక (బహిర్గతం->ligature));
   }
 };
 
@@ -207,4 +207,4 @@ struct LigatureSet
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURESET_HH */
+#అయితే_ముగింపు  /* OT_LAYOUT_GSUB_LIGATURESET_HH */

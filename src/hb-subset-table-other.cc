@@ -1,43 +1,43 @@
-#include "hb-subset-table.hh"
+#అన్తర్భావ "hb-subset-table.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-hdmx-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-post-table.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-ot-glyf-table.hh"
+#అన్తర్భావ "hb-ot-hdmx-table.hh"
+#అన్తర్భావ "hb-ot-hhea-table.hh"
+#అన్తర్భావ "hb-ot-hmtx-table.hh"
+#అన్తర్భావ "hb-ot-maxp-table.hh"
+#అన్తర్భావ "hb-ot-os2-table.hh"
+#అన్తర్భావ "hb-ot-name-table.hh"
+#అన్తర్భావ "hb-ot-post-table.hh"
 
-bool _hb_subset_table_other		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+తార్కిక hb_subset_పట్టిక_other		(hb_subset_plan_t *plan, hb_సదిశ_t<అక్షరం> &buf, hb_ట్యాగ్_t ట్యాగ్_2, తార్కిక *success)
 {
-  switch (tag)
+  ఎంపిక (ట్యాగ్_2)
   {
-  case HB_TAG('g','l','y','f'): *success = _hb_subset_table<const OT::glyf> (plan, buf); return true;
-  case HB_TAG('h','d','m','x'): *success = _hb_subset_table<const OT::hdmx> (plan, buf); return true;
-  case HB_TAG('n','a','m','e'): *success = _hb_subset_table<const OT::name> (plan, buf); return true;
-  case HB_TAG('h','h','e','a'): *success = true; return true; /* skip hhea, handled by hmtx */
-  case HB_TAG('h','m','t','x'): *success = _hb_subset_table<const OT::hmtx> (plan, buf); return true;
-  case HB_TAG('v','h','e','a'): *success = true; return true; /* skip vhea, handled by vmtx */
-  case HB_TAG('v','m','t','x'): *success = _hb_subset_table<const OT::vmtx> (plan, buf); return true;
-  case HB_TAG('m','a','x','p'): *success = _hb_subset_table<const OT::maxp> (plan, buf); return true;
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','L','Y','F'): *success = _hb_subset_table<const OT::GLYF> (plan, buf); return true;
-  case HB_TAG('H','H','E','A'): *success = true; return true; /* skip HHEA, handled by HMTX */
-  case HB_TAG('H','M','T','X'): *success = _hb_subset_table<const OT::HMTX> (plan, buf); return true;
-  case HB_TAG('V','H','E','A'): *success = true; return true; /* skip VHEA, handled by VMTX */
-  case HB_TAG('V','M','T','X'): *success = _hb_subset_table<const OT::VMTX> (plan, buf); return true;
-  case HB_TAG('M','A','X','P'): *success = _hb_subset_table<const OT::MAXP> (plan, buf); return true;
-#endif
-  case HB_TAG('l','o','c','a'): *success = true; return true; /* skip loca, handled by glyf */
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('L','O','C','A'): *success = true; return true; /* skip LOCA, handled by GLYF */
-#endif
-  case HB_TAG('c','m','a','p'): *success = _hb_subset_table<const OT::cmap> (plan, buf); return true;
-  case HB_TAG('D','M','A','P'): *success = _hb_subset_table<const OT::DMAP> (plan, buf); return true;
-  case HB_TAG('O','S','/','2'): *success = _hb_subset_table<const OT::OS2 > (plan, buf); return true;
-  case HB_TAG('p','o','s','t'): *success = _hb_subset_table<const OT::post> (plan, buf); return true;
+  స్థితి HB_ట్యాగ్('g','l','y','f'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::glyf> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('h','d','m','x'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::hdmx> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('n','a','m','e'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::name> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('h','h','e','a'): *success = నిజం; తిరిగి నిజం; /* skip hhea, handled by hmtx */
+  స్థితి HB_ట్యాగ్('h','m','t','x'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::hmtx> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('v','h','e','a'): *success = నిజం; తిరిగి నిజం; /* skip vhea, handled by vmtx */
+  స్థితి HB_ట్యాగ్('v','m','t','x'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::vmtx> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('m','a','x','p'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::maxp> (plan, buf); తిరిగి నిజం;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  స్థితి HB_ట్యాగ్('G','L','Y','F'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::GLYF> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('H','H','E','A'): *success = నిజం; తిరిగి నిజం; /* skip HHEA, handled by HMTX */
+  స్థితి HB_ట్యాగ్('H','M','T','X'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::HMTX> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('V','H','E','A'): *success = నిజం; తిరిగి నిజం; /* skip VHEA, handled by VMTX */
+  స్థితి HB_ట్యాగ్('V','M','T','X'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::VMTX> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('M','A','X','P'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::MAXP> (plan, buf); తిరిగి నిజం;
+#అయితే_ముగింపు
+  స్థితి HB_ట్యాగ్('l','o','c','a'): *success = నిజం; తిరిగి నిజం; /* skip loca, handled by glyf */
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  స్థితి HB_ట్యాగ్('L','O','C','A'): *success = నిజం; తిరిగి నిజం; /* skip LOCA, handled by GLYF */
+#అయితే_ముగింపు
+  స్థితి HB_ట్యాగ్('c','m','a','p'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::cmap> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('D','M','A','P'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::DMAP> (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('O','S','/','2'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::OS2 > (plan, buf); తిరిగి నిజం;
+  స్థితి HB_ట్యాగ్('p','o','s','t'): *success = hb_subset_పట్టిక<స్థిరరాశి OT::post> (plan, buf); తిరిగి నిజం;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }

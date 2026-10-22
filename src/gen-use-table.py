@@ -15,26 +15,26 @@ Input files:
 * ms-use/IndicPositionalCategory-Additional.txt
 """
 
-import os
-import packTab
+దిగుమతి os
+దిగుమతి packTab
 
-import sys
-import logging
+దిగుమతి sys
+దిగుమతి logging
 
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
-    del sys.argv[1]
+ఒకవేళ పొడవు(sys.argv) > 1 మరియు sys.argv[1] == "--rust":
+    తీసివేయి sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+లేకపోతే:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-import sys
+దిగుమతి sys
 
-if len (sys.argv) != 10:
+ఒకవేళ పొడవు (sys.argv) != 10:
 	sys.exit (__doc__)
 
 DISABLED_SCRIPTS = {
@@ -45,71 +45,71 @@ DISABLED_SCRIPTS = {
 	'Thai',
 }
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') కొరకు x లో sys.argv[1:]]
 
-headers = [[f.readline () for i in range (2)] for j,f in enumerate(files) if j != 4]
-for j in range(7, 9):
-	for line in files[j]:
-		line = line.rstrip()
-		if not line:
-			break
-		headers[j - 1].append(line)
-headers.append (["UnicodeData.txt does not have a header."])
+శీర్షికలు = [[f.readline () కొరకు i లో శ్రేణి (2)] కొరకు j,f లో enumerate(files) ఒకవేళ j != 4]
+కొరకు j లో శ్రేణి(7, 9):
+	కొరకు పంక్తి లో files[j]:
+		పంక్తి = పంక్తి.rstrip()
+		ఒకవేళ కాదు పంక్తి:
+			ఆపు
+		శీర్షికలు[j - 1].append(పంక్తి)
+శీర్షికలు.append (["UnicodeData.txt does not have a header."])
 
-unicode_data = [{} for _ in files]
-values = [{} for _ in files]
-for i, f in enumerate (files):
-	for line in f:
+unicode_దత్తాంశం = [{} కొరకు _ లో files]
+విలువలు = [{} కొరకు _ లో files]
+కొరకు i, f లో enumerate (files):
+	కొరకు పంక్తి లో f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = పంక్తి.కనుగొను ('#')
+		ఒకవేళ j >= 0:
+			పంక్తి = పంక్తి[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () కొరకు x లో పంక్తి.విభజించు (';')]
+		ఒకవేళ పొడవు (fields) == 1:
+			కొనసాగు
 
-		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
-			end = start
-		else:
-			end = int (uu[1], 16)
+		uu = fields[0].విభజించు ('..')
+		ప్రారంభం = పూర్ణాంకం (uu[0], 16)
+		ఒకవేళ పొడవు (uu) == 1:
+			చివర = ప్రారంభం
+		లేకపోతే:
+			చివర = పూర్ణాంకం (uu[1], 16)
 
-		t = fields[1 if i not in [2, 4] else 2]
+		t = fields[1 ఒకవేళ i కాదు లో [2, 4] లేకపోతే 2]
 
-		if i == 2:
+		ఒకవేళ i == 2:
 			t = 'jt_' + t
-		elif i == 3 and t != 'Default_Ignorable_Code_Point':
-			continue
-		elif i == 7 and t == 'Consonant_Final_Modifier':
+		లేదావేళ i == 3 మరియు t != 'Default_Ignorable_Code_Point':
+			కొనసాగు
+		లేదావేళ i == 7 మరియు t == 'Consonant_Final_Modifier':
 			# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/336
 			t = 'Syllable_Modifier'
-		elif i == 8 and t == 'NA':
+		లేదావేళ i == 8 మరియు t == 'NA':
 			t = 'Not_Applicable'
 
-		i0 = i if i < 7 else i - 7
-		for u in range (start, end + 1):
-			unicode_data[i0][u] = t
-		values[i0][t] = values[i0].get (t, 0) + end - start + 1
+		i0 = i ఒకవేళ i < 7 లేకపోతే i - 7
+		కొరకు u లో శ్రేణి (ప్రారంభం, చివర + 1):
+			unicode_దత్తాంశం[i0][u] = t
+		విలువలు[i0][t] = విలువలు[i0].get (t, 0) + చివర - ప్రారంభం + 1
 
 defaults = ('Other', 'Not_Applicable', 'jt_X', '', 'Cn', 'No_Block', 'Unknown')
 
 # Merge data into one dict:
-for i,v in enumerate (defaults):
-	values[i][v] = values[i].get (v, 0) + 1
+కొరకు i,v లో enumerate (defaults):
+	విలువలు[i][v] = విలువలు[i].get (v, 0) + 1
 combined = {}
-for i,d in enumerate (unicode_data):
-	for u,v in d.items ():
-		if not u in combined:
-			if i >= 4:
-				continue
+కొరకు i,d లో enumerate (unicode_దత్తాంశం):
+	కొరకు u,v లో d.వస్తువులు ():
+		ఒకవేళ కాదు u లో combined:
+			ఒకవేళ i >= 4:
+				కొనసాగు
 			combined[u] = list (defaults)
 		combined[u][i] = v
-combined = {k: v for k, v in combined.items() if v[6] not in DISABLED_SCRIPTS}
+combined = {k: v కొరకు k, v లో combined.వస్తువులు() ఒకవేళ v[6] కాదు లో DISABLED_SCRIPTS}
 
 
-property_names = [
+property_పేర్లు = [
 	# General_Category
 	'Cc', 'Cf', 'Cn', 'Co', 'Cs', 'Ll', 'Lm', 'Lo', 'Lt', 'Lu', 'Mc',
 	'Me', 'Mn', 'Nd', 'Nl', 'No', 'Pc', 'Pd', 'Pe', 'Pf', 'Pi', 'Po',
@@ -188,121 +188,121 @@ property_names = [
 	'jt_X',
 ]
 
-class PropertyValue(object):
-	def __init__(self, name_):
+తరగతి Property_విలువ(object):
+	నిర్వచనం __init__(self, name_):
 		self.name = name_
-	def __str__(self):
-		return self.name
-	def __eq__(self, other):
-		return self.name == (other if isinstance(other, str) else other.name)
-	def __ne__(self, other):
-		return not (self == other)
-	def __hash__(self):
-		return hash(str(self))
+	నిర్వచనం __str__(self):
+		తిరిగి self.name
+	నిర్వచనం __eq__(self, other):
+		తిరిగి self.name == (other ఒకవేళ isinstance(other, str) లేకపోతే other.name)
+	నిర్వచనం __ne__(self, other):
+		తిరిగి కాదు (self == other)
+	నిర్వచనం __hash__(self):
+		తిరిగి hash(str(self))
 
-property_values = {}
+property_విలువలు = {}
 
-for name in property_names:
-	value = PropertyValue(name)
-	assert value not in property_values
-	assert value not in globals()
-	property_values[name] = value
-globals().update(property_values)
+కొరకు name లో property_పేర్లు:
+	విలువ_2 = Property_విలువ(name)
+	ప్రతిజ్ఞా విలువ_2 కాదు లో property_విలువలు
+	ప్రతిజ్ఞా విలువ_2 కాదు లో globals()
+	property_విలువలు[name] = విలువ_2
+globals().update(property_విలువలు)
 
 
-def is_BASE(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Number, Consonant, Consonant_Head_Letter,
+నిర్వచనం is_పునాది(U, UISC, UDI, UGC, AJT):
+	తిరిగి (UISC లో [సంఖ్య, Consonant, Consonant_తల_Letter,
 			Tone_Letter,
 			Vowel_Independent,
-			] or
+			] లేదా
 		# TODO: https://github.com/MicrosoftDocs/typography-issues/issues/484
-		AJT in [jt_C, jt_D, jt_L, jt_R] and UISC != Joiner or
-		(UGC == Lo and UISC in [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
+		AJT లో [jt_C, jt_D, jt_L, jt_R] మరియు UISC != Joiner లేదా
+		(UGC == Lo మరియు UISC లో [Avagraha, Bindu, Consonant_Final, Consonant_Medial,
 					Consonant_Subjoined, Vowel, Vowel_Dependent]))
-def is_BASE_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Brahmi_Joining_Number
-def is_BASE_OTHER(U, UISC, UDI, UGC, AJT):
-	if UISC == Consonant_Placeholder: return True
-	return U in [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
-def is_CGJ(U, UISC, UDI, UGC, AJT):
+నిర్వచనం is_పునాది_అంకె(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Brahmi_Joining_సంఖ్య
+నిర్వచనం is_పునాది_OTHER(U, UISC, UDI, UGC, AJT):
+	ఒకవేళ UISC == Consonant_Placeholder: తిరిగి నిజం
+	తిరిగి U లో [0x2015, 0x2022, 0x25FB, 0x25FC, 0x25FD, 0x25FE]
+నిర్వచనం is_CGJ(U, UISC, UDI, UGC, AJT):
 	# Also includes VARIATION_SELECTOR and ZWJ
-	return UISC == Joiner or UDI and UGC in [Mc, Me, Mn]
-def is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
-	return ((UISC == Consonant_Final and UGC != Lo) or
+	తిరిగి UISC == Joiner లేదా UDI మరియు UGC లో [Mc, Me, Mn]
+నిర్వచనం is_CONS_FINAL(U, UISC, UDI, UGC, AJT):
+	తిరిగి ((UISC == Consonant_Final మరియు UGC != Lo) లేదా
 		UISC == Consonant_Succeeding_Repha)
-def is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Syllable_Modifier
-def is_CONS_MED(U, UISC, UDI, UGC, AJT):
+నిర్వచనం is_CONS_FINAL_MOD(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Syllable_Modifier
+నిర్వచనం is_CONS_MED(U, UISC, UDI, UGC, AJT):
 	# Consonant_Initial_Postfixed is new in Unicode 11; not in the spec.
-	return (UISC == Consonant_Medial and UGC != Lo or
+	తిరిగి (UISC == Consonant_Medial మరియు UGC != Lo లేదా
 		UISC == Consonant_Initial_Postfixed)
-def is_CONS_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC in [Nukta, Gemination_Mark, Consonant_Killer]
-def is_CONS_SUB(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_Subjoined and UGC != Lo
-def is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
-	return UISC == Consonant_With_Stacker
-def is_HALANT(U, UISC, UDI, UGC, AJT):
-	return UISC == Virama and not is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
-def is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
+నిర్వచనం is_CONS_MOD(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC లో [Nukta, Gemination_Mark, Consonant_Killer]
+నిర్వచనం is_CONS_SUB(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Consonant_Subjoined మరియు UGC != Lo
+నిర్వచనం is_CONS_WITH_STACKER(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Consonant_With_Stacker
+నిర్వచనం is_HALANT(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Virama మరియు కాదు is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT)
+నిర్వచనం is_HALANT_OR_VOWEL_MODIFIER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x0DCA
-def is_HALANT_NUM(U, UISC, UDI, UGC, AJT):
-	return UISC == Number_Joiner
-def is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph
-def is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Joiner
-def is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Mirror
-def is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Hieroglyph_Modifier
-def is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
-def is_HIEROGLYPH_SEGMENT_END(U, UISC, UDI, UGC, AJT):
-	return UISC in [Hieroglyph_Mark_End, Hieroglyph_Segment_End]
-def is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
+	తిరిగి U == 0x0DCA
+నిర్వచనం is_HALANT_అంకె(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == సంఖ్య_Joiner
+నిర్వచనం is_HIEROGLYPH(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Hieroglyph
+నిర్వచనం is_HIEROGLYPH_JOINER(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Hieroglyph_Joiner
+నిర్వచనం is_HIEROGLYPH_MIRROR(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Hieroglyph_Mirror
+నిర్వచనం is_HIEROGLYPH_MOD(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Hieroglyph_Modifier
+నిర్వచనం is_HIEROGLYPH_SEGMENT_BEGIN(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC లో [Hieroglyph_Mark_Begin, Hieroglyph_Segment_Begin]
+నిర్వచనం is_HIEROGLYPH_SEGMENT_చివర(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC లో [Hieroglyph_Mark_చివర, Hieroglyph_Segment_చివర]
+నిర్వచనం is_INVISIBLE_STACKER(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return (UISC == Invisible_Stacker
-		and not is_SAKOT(U, UISC, UDI, UGC, AJT)
+	తిరిగి (UISC == Invisible_Stacker
+		మరియు కాదు is_SAKOT(U, UISC, UDI, UGC, AJT)
 	)
-def is_ZWNJ(U, UISC, UDI, UGC, AJT):
-	return UISC == Non_Joiner
-def is_OTHER(U, UISC, UDI, UGC, AJT):
+నిర్వచనం is_ZWNJ(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Non_Joiner
+నిర్వచనం is_OTHER(U, UISC, UDI, UGC, AJT):
 	# Also includes BASE_IND and SYM
-	return ((UGC == Po or UISC in [Consonant_Dead, Joiner, Modifying_Letter, Other])
-		and not is_BASE(U, UISC, UDI, UGC, AJT)
-		and not is_BASE_OTHER(U, UISC, UDI, UGC, AJT)
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-		and not is_SYM_MOD(U, UISC, UDI, UGC, AJT)
-		and not is_Word_Joiner(U, UISC, UDI, UGC, AJT)
+	తిరిగి ((UGC == Po లేదా UISC లో [Consonant_Dead, Joiner, Modifying_Letter, Other])
+		మరియు కాదు is_పునాది(U, UISC, UDI, UGC, AJT)
+		మరియు కాదు is_పునాది_OTHER(U, UISC, UDI, UGC, AJT)
+		మరియు కాదు is_CGJ(U, UISC, UDI, UGC, AJT)
+		మరియు కాదు is_SYM_MOD(U, UISC, UDI, UGC, AJT)
+		మరియు కాదు is_మాట_Joiner(U, UISC, UDI, UGC, AJT)
 	)
-def is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
-	return UISC == Reordering_Killer
-def is_REPHA(U, UISC, UDI, UGC, AJT):
-	return UISC in [Consonant_Preceding_Repha, Consonant_Prefixed]
-def is_SAKOT(U, UISC, UDI, UGC, AJT):
+నిర్వచనం is_REORDERING_KILLER(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == Reordering_Killer
+నిర్వచనం is_REPHA(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC లో [Consonant_Preceding_Repha, Consonant_Prefixed]
+నిర్వచనం is_SAKOT(U, UISC, UDI, UGC, AJT):
 	# Split off of HALANT
-	return U == 0x1A60
-def is_SYM_MOD(U, UISC, UDI, UGC, AJT):
-	return UISC == Symbol_Modifier
-def is_VOWEL(U, UISC, UDI, UGC, AJT):
-	return (UISC == Pure_Killer or
-		UGC != Lo and UISC in [Vowel, Vowel_Dependent])
-def is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
-	return (UISC in [Tone_Mark, Cantillation_Mark, Register_Shifter, Visarga] or
-		UGC != Lo and UISC == Bindu)
-def is_Word_Joiner(U, UISC, UDI, UGC, AJT):
+	తిరిగి U == 0x1A60
+నిర్వచనం is_SYM_MOD(U, UISC, UDI, UGC, AJT):
+	తిరిగి UISC == చిహ్నం_Modifier
+నిర్వచనం is_VOWEL(U, UISC, UDI, UGC, AJT):
+	తిరిగి (UISC == శుద్ధ_Killer లేదా
+		UGC != Lo మరియు UISC లో [Vowel, Vowel_Dependent])
+నిర్వచనం is_VOWEL_MOD(U, UISC, UDI, UGC, AJT):
+	తిరిగి (UISC లో [Tone_Mark, Cantillation_Mark, రిజిస్టరు_Shifter, Visarga] లేదా
+		UGC != Lo మరియు UISC == Bindu)
+నిర్వచనం is_మాట_Joiner(U, UISC, UDI, UGC, AJT):
 	# Also includes Rsv
-	return (UDI and U not in [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
-		and UISC == Other
-		and not is_CGJ(U, UISC, UDI, UGC, AJT)
-	) or UGC == Cn
+	తిరిగి (UDI మరియు U కాదు లో [0x115F, 0x1160, 0x3164, 0xFFA0, 0x1BCA0, 0x1BCA1, 0x1BCA2, 0x1BCA3]
+		మరియు UISC == Other
+		మరియు కాదు is_CGJ(U, UISC, UDI, UGC, AJT)
+	) లేదా UGC == Cn
 
 use_mapping = {
-	'B':	is_BASE,
-	'N':	is_BASE_NUM,
-	'GB':	is_BASE_OTHER,
+	'B':	is_పునాది,
+	'N':	is_పునాది_అంకె,
+	'GB':	is_పునాది_OTHER,
 	'CGJ':	is_CGJ,
 	'F':	is_CONS_FINAL,
 	'FM':	is_CONS_FINAL_MOD,
@@ -312,14 +312,14 @@ use_mapping = {
 	'CS':	is_CONS_WITH_STACKER,
 	'H':	is_HALANT,
 	'HVM':	is_HALANT_OR_VOWEL_MODIFIER,
-	'HN':	is_HALANT_NUM,
+	'HN':	is_HALANT_అంకె,
 	'IS':	is_INVISIBLE_STACKER,
 	'G':	is_HIEROGLYPH,
 	'HM':	is_HIEROGLYPH_MOD,
 	'HR':	is_HIEROGLYPH_MIRROR,
 	'J':	is_HIEROGLYPH_JOINER,
 	'SB':	is_HIEROGLYPH_SEGMENT_BEGIN,
-	'SE':	is_HIEROGLYPH_SEGMENT_END,
+	'SE':	is_HIEROGLYPH_SEGMENT_చివర,
 	'ZWNJ':	is_ZWNJ,
 	'O':	is_OTHER,
 	'RK':	is_REORDERING_KILLER,
@@ -328,156 +328,156 @@ use_mapping = {
 	'SM':	is_SYM_MOD,
 	'V':	is_VOWEL,
 	'VM':	is_VOWEL_MOD,
-	'WJ':	is_Word_Joiner,
+	'WJ':	is_మాట_Joiner,
 }
 
 use_positions = {
 	'F': {
-		'Abv': [Top],
+		'Abv': [శిఖరం],
 		'Blw': [Bottom],
-		'Pst': [Right],
+		'Pst': [కుడి_2],
 	},
 	'M': {
-		'Abv': [Top],
-		'Blw': [Bottom, Bottom_And_Left, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Bottom_And_Left],
+		'Abv': [శిఖరం],
+		'Blw': [Bottom, Bottom_And_ఎడమ, Bottom_And_కుడి],
+		'Pst': [కుడి_2],
+		'Pre': [ఎడమ_2, శిఖరం_And_Bottom_And_ఎడమ],
 	},
 	'CM': {
-		'Abv': [Top],
+		'Abv': [శిఖరం],
 		'Blw': [Bottom, Overstruck],
 	},
 	'V': {
-		'Abv': [Top, Top_And_Bottom, Top_And_Bottom_And_Right, Top_And_Right],
-		'Blw': [Bottom, Overstruck, Bottom_And_Right],
-		'Pst': [Right],
-		'Pre': [Left, Top_And_Left, Top_And_Left_And_Right, Left_And_Right],
+		'Abv': [శిఖరం, శిఖరం_And_Bottom, శిఖరం_And_Bottom_And_కుడి, శిఖరం_And_కుడి],
+		'Blw': [Bottom, Overstruck, Bottom_And_కుడి],
+		'Pst': [కుడి_2],
+		'Pre': [ఎడమ_2, శిఖరం_And_ఎడమ, శిఖరం_And_ఎడమ_And_కుడి, ఎడమ_And_కుడి],
 	},
 	'VM': {
-		'Abv': [Top],
+		'Abv': [శిఖరం],
 		'Blw': [Bottom, Overstruck],
-		'Pst': [Right],
-		'Pre': [Left],
+		'Pst': [కుడి_2],
+		'Pre': [ఎడమ_2],
 	},
 	'SM': {
-		'Abv': [Top],
+		'Abv': [శిఖరం],
 		'Blw': [Bottom],
 	},
-	'H': None,
-	'HM': None,
-	'HR': None,
-	'HVM': None,
-	'IS': None,
-	'B': None,
+	'H': ఏమీలేదు,
+	'HM': ఏమీలేదు,
+	'HR': ఏమీలేదు,
+	'HVM': ఏమీలేదు,
+	'IS': ఏమీలేదు,
+	'B': ఏమీలేదు,
 	'FM': {
-		'Abv': [Top],
+		'Abv': [శిఖరం],
 		'Blw': [Bottom],
 		'Pst': [Not_Applicable],
 	},
-	'R': None,
-	'RK': None,
-	'SUB': None,
+	'R': ఏమీలేదు,
+	'RK': ఏమీలేదు,
+	'SUB': ఏమీలేదు,
 }
 
-def map_to_use(data):
-	out = {}
-	items = use_mapping.items()
-	for U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) in data.items():
+నిర్వచనం map_గమ్యం_use(దత్తాంశం):
+	బహిర్గతం = {}
+	వస్తువులు = use_mapping.వస్తువులు()
+	కొరకు U, (UISC, UIPC, AJT, UDI, UGC, UBlock, _) లో దత్తాంశం.వస్తువులు():
 
 		# Resolve Indic_Syllabic_Category
 
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
+		ఒకవేళ 0x1CE2 <= U <= 0x1CE8: UISC = Cantillation_Mark
 
 		# Tibetan:
 		# TODO: These don't have UISC assigned in Unicode 13.0.0, but have UIPC
-		if 0x0F18 <= U <= 0x0F19 or 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
+		ఒకవేళ 0x0F18 <= U <= 0x0F19 లేదా 0x0F3E <= U <= 0x0F3F: UISC = Vowel_Dependent
 
 		# TODO: U+1CED should only be allowed after some of
 		# the nasalization marks, maybe only for U+1CE9..U+1CF1.
-		if U == 0x1CED: UISC = Tone_Mark
+		ఒకవేళ U == 0x1CED: UISC = Tone_Mark
 
-		values = [k for k,v in items if v(U, UISC, UDI, UGC, AJT)]
-		assert len(values) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, values)
-		USE = values[0]
+		విలువలు = [k కొరకు k,v లో వస్తువులు ఒకవేళ v(U, UISC, UDI, UGC, AJT)]
+		ప్రతిజ్ఞా పొడవు(విలువలు) == 1, "%s %s %s %s %s %s" % (hex(U), UISC, UDI, UGC, AJT, విలువలు)
+		USE = విలువలు[0]
 
 		# Resolve Indic_Positional_Category
 
 		# TODO: https://github.com/harfbuzz/harfbuzz/pull/1037
 		#  and https://github.com/harfbuzz/harfbuzz/issues/1631
-		if U in [0x11302, 0x11303, 0x114C1]: UIPC = Top
+		ఒకవేళ U లో [0x11302, 0x11303, 0x114C1]: UIPC = శిఖరం
 
-		assert (UIPC in [Not_Applicable, Visual_Order_Left] or
-			U == 0x0F7F or
-			USE in use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
+		ప్రతిజ్ఞా (UIPC లో [Not_Applicable, Visual_క్రమం_ఎడమ] లేదా
+			U == 0x0F7F లేదా
+			USE లో use_positions), "%s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT)
 
-		pos_mapping = use_positions.get(USE, None)
-		if pos_mapping:
-			values = [k for k,v in pos_mapping.items() if v and UIPC in v]
-			assert len(values) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, values)
-			USE = USE + values[0]
+		pos_mapping = use_positions.get(USE, ఏమీలేదు)
+		ఒకవేళ pos_mapping:
+			విలువలు = [k కొరకు k,v లో pos_mapping.వస్తువులు() ఒకవేళ v మరియు UIPC లో v]
+			ప్రతిజ్ఞా పొడవు(విలువలు) == 1, "%s %s %s %s %s %s %s %s" % (hex(U), UIPC, USE, UISC, UDI, UGC, AJT, విలువలు)
+			USE = USE + విలువలు[0]
 
-		out[U] = (USE, UBlock)
-	return out
+		బహిర్గతం[U] = (USE, UBlock)
+	తిరిగి బహిర్గతం
 
-use_data = map_to_use(combined)
+use_దత్తాంశం = map_గమ్యం_use(combined)
 
-print ("/* == Start of generated table == */")
-print ("/*")
-print (" * The following table is generated by running:")
-print (" *")
-print (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShaping.txt DerivedCoreProperties.txt UnicodeData.txt Blocks.txt Scripts.txt IndicSyllabicCategory-Additional.txt IndicPositionalCategory-Additional.txt".format (os.path.basename (sys.argv[0])))
-print (" *")
-print (" * on files with these headers:")
-print (" *")
-for h in headers:
-	for l in h:
-		print (" * %s" % (l.strip()))
-print (" */")
-print ()
-if language.name == "c":
-    print ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
-    print ("#define HB_OT_SHAPER_USE_TABLE_HH")
-    print ()
-    print ('#include "hb.hh"')
-    print ()
-    print ('#include "hb-ot-shaper-use-machine.hh"')
-    print ()
+ముద్రించు ("/* == Start of generated table == */")
+ముద్రించు ("/*")
+ముద్రించు (" * The following table is generated by running:")
+ముద్రించు (" *")
+ముద్రించు (" *   {} IndicSyllabicCategory.txt IndicPositionalCategory.txt ArabicShaping.txt DerivedCoreProperties.txt UnicodeData.txt Blocks.txt Scripts.txt IndicSyllabicCategory-Additional.txt IndicPositionalCategory-Additional.txt".format (os.మార్గం.basename (sys.argv[0])))
+ముద్రించు (" *")
+ముద్రించు (" * on files with these headers:")
+ముద్రించు (" *")
+కొరకు h లో శీర్షికలు:
+	కొరకు l లో h:
+		ముద్రించు (" * %s" % (l.strip()))
+ముద్రించు (" */")
+ముద్రించు ()
+ఒకవేళ language.name == "c":
+    ముద్రించు ("#ifndef HB_OT_SHAPER_USE_TABLE_HH")
+    ముద్రించు ("#define HB_OT_SHAPER_USE_TABLE_HH")
+    ముద్రించు ()
+    ముద్రించు ('#include "hb.hh"')
+    ముద్రించు ()
+    ముద్రించు ('#include "hb-ot-shaper-use-machine.hh"')
+    ముద్రించు ()
 
-    print ('#pragma GCC diagnostic push')
-    print ('#pragma GCC diagnostic ignored "-Wunused-macros"')
-    for k,v in sorted(use_mapping.items()):
-        if k in use_positions and use_positions[k]: continue
-        print ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
-            tag = k + suf
-            print ("#define %s	USE(%s)" % (tag, tag))
-    print ('#pragma GCC diagnostic pop')
-    print ("")
+    ముద్రించు ('#pragma GCC diagnostic push')
+    ముద్రించు ('#pragma GCC diagnostic ignored "-Wunused-macros"')
+    కొరకు k,v లో sorted(use_mapping.వస్తువులు()):
+        ఒకవేళ k లో use_positions మరియు use_positions[k]: కొనసాగు
+        ముద్రించు ("#define %s	USE(%s)	/* %s */" % (k, k, v.__name__[3:]))
+    కొరకు k,v లో sorted(use_positions.వస్తువులు()):
+        ఒకవేళ కాదు v: కొనసాగు
+        కొరకు suf లో v.కీలకాలు():
+            ట్యాగ్_2 = k + suf
+            ముద్రించు ("#define %s	USE(%s)" % (ట్యాగ్_2, ట్యాగ్_2))
+    ముద్రించు ('#pragma GCC diagnostic pop')
+    ముద్రించు ("")
 
-elif language.name == "rust":
-    print()
-    print("#![allow(unused_parens)]")
-    print("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
-    print()
-    print("use super::ot_shaper_use::category::*;")
-    print()
-else:
-    assert False, "Unknown language: %s" % language.name
+లేదావేళ language.name == "rust":
+    ముద్రించు()
+    ముద్రించు("#![allow(unused_parens)]")
+    ముద్రించు("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
+    ముద్రించు()
+    ముద్రించు("use super::ot_shaper_use::category::*;")
+    ముద్రించు()
+లేకపోతే:
+    ప్రతిజ్ఞా అబద్ధం, "Unknown language: %s" % language.name
 
-uu = sorted (use_data.keys ())
+uu = sorted (use_దత్తాంశం.కీలకాలు ())
 
-data = {u:v[0] for u,v in use_data.items()}
+దత్తాంశం = {u:v[0] కొరకు u,v లో use_దత్తాంశం.వస్తువులు()}
 
-if language.name == "c":
-    private = True
-elif language.name == "rust":
-    private = False
-    language.public_function_linkage = "pub(crate)"
-else:
-    assert False, "Unknown language: %s" % language.name
+ఒకవేళ language.name == "c":
+    అంతరంగ = నిజం
+లేదావేళ language.name == "rust":
+    అంతరంగ = అబద్ధం
+    language.ప్రజా_function_linkage = "pub(crate)"
+లేకపోతే:
+    ప్రతిజ్ఞా అబద్ధం, "Unknown language: %s" % language.name
 
 
 DEFAULT = "DEFAULT"
@@ -489,46 +489,46 @@ compression_level = {
 }
 
 modes = {}
-if language.name == "c":
+ఒకవేళ language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#else"
-    modes[None] = "#endif"
-else:
+    modes[ఏమీలేదు] = "#endif"
+లేకపోతే:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
-    print()
-    if text:
-        print(text)
-        print()
-    if step is None:
-        continue
+కొరకు అడుగు, పాఠ్యం లో modes.వస్తువులు():
+    ముద్రించు()
+    ఒకవేళ పాఠ్యం:
+        ముద్రించు(పాఠ్యం)
+        ముద్రించు()
+    ఒకవేళ అడుగు అయిన ఏమీలేదు:
+        కొనసాగు
 
-    compression = compression_level[step]
+    compression = compression_level[అడుగు]
     logging.info("  Compression=%d:" % compression)
 
-    code = packTab.Code('hb_use')
-    sol = packTab.pack_table(data, compression=compression, default='O')
-    logging.info('      FullCost=%d' % (sol.fullCost))
-    sol.genCode(code, f'get_category', language=language, private=private)
-    code.print_code(language=language, private=private)
-    print ()
+    సంకేతం_2 = packTab.సంకేతం_3('hb_use')
+    sol = packTab.pack_పట్టిక(దత్తాంశం, compression=compression, అప్రమేయ='O')
+    logging.info('      FullCost=%d' % (sol.నిండిన_ఖర్చు))
+    sol.gen_సంకేతం(సంకేతం_2, f'get_category', language=language, అంతరంగ=అంతరంగ)
+    సంకేతం_2.print_సంకేతం(language=language, అంతరంగ=అంతరంగ)
+    ముద్రించు ()
 
-if language.name == "c":
-    print ()
-    for k in sorted(use_mapping.keys()):
-        if k in use_positions and use_positions[k]: continue
-        print ("#undef %s" % k)
-    for k,v in sorted(use_positions.items()):
-        if not v: continue
-        for suf in v.keys():
-            tag = k + suf
-            print ("#undef %s" % tag)
-    print ()
-    print ()
-    print ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
-elif language.name == "rust":
-    pass
-else:
-    assert False, "Unknown language: %s" % language.name
-print ("/* == End of generated table == */")
+ఒకవేళ language.name == "c":
+    ముద్రించు ()
+    కొరకు k లో sorted(use_mapping.కీలకాలు()):
+        ఒకవేళ k లో use_positions మరియు use_positions[k]: కొనసాగు
+        ముద్రించు ("#undef %s" % k)
+    కొరకు k,v లో sorted(use_positions.వస్తువులు()):
+        ఒకవేళ కాదు v: కొనసాగు
+        కొరకు suf లో v.కీలకాలు():
+            ట్యాగ్_2 = k + suf
+            ముద్రించు ("#undef %s" % ట్యాగ్_2)
+    ముద్రించు ()
+    ముద్రించు ()
+    ముద్రించు ("#endif /* HB_OT_SHAPER_USE_TABLE_HH */")
+లేదావేళ language.name == "rust":
+    దాటు
+లేకపోతే:
+    ప్రతిజ్ఞా అబద్ధం, "Unknown language: %s" % language.name
+ముద్రించు ("/* == End of generated table == */")

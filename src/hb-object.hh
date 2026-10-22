@@ -29,107 +29,107 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OBJECT_HH
-#define HB_OBJECT_HH
+#నిర్వచితం_కాకపోతే HB_OBJECT_HH
+#నిర్వచించు HB_OBJECT_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-mutex.hh"
-#include "hb-vector.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-atomic.hh"
+#అన్తర్భావ "hb-mutex.hh"
+#అన్తర్భావ "hb-vector.hh"
 
 
 /*
  * Lockable set
  */
 
-template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+మూస <రకం_పేరు అంశం_t, రకం_పేరు తాళం_t>
+నిర్మాణం hb_lockable_సమితి_t
 {
-  hb_vector_t<item_t> items;
+  hb_సదిశ_t<అంశం_t> వస్తువులు;
 
-  void init () { items.init (); }
+  శూన్య init () { వస్తువులు.init (); }
 
-  template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  మూస <రకం_పేరు T>
+  అంశం_t *replace_or_చొప్పించు (T v, తాళం_t &l, తార్కిక replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
-	item_t old = *item;
-	*item = v;
+    అంశం_t *అంశం = వస్తువులు.lsearch (v);
+    ఒకవేళ (అంశం) {
+      ఒకవేళ (replace) {
+	అంశం_t old = *అంశం;
+	*అంశం = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
-	item = nullptr;
+      లేకపోతే {
+	అంశం = శూన్యసూచిక;
 	l.unlock ();
       }
-    } else {
-      item = items.push (v);
+    } లేకపోతే {
+      అంశం = వస్తువులు.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    తిరిగి వస్తువులు.లోపల_error () ? శూన్యసూచిక : అంశం;
   }
 
-  template <typename T>
-  void remove (T v, lock_t &l)
+  మూస <రకం_పేరు T>
+  శూన్య remove (T v, తాళం_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    అంశం_t *అంశం = వస్తువులు.lsearch (v);
+    ఒకవేళ (అంశం)
     {
-      item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      అంశం_t old = *అంశం;
+      *అంశం = std::move (వస్తువులు.తోక ());
+      వస్తువులు.తీయి ();
       l.unlock ();
       old.fini ();
-    } else {
+    } లేకపోతే {
       l.unlock ();
     }
   }
 
-  template <typename T>
-  bool find (T v, item_t *i, lock_t &l)
+  మూస <రకం_పేరు T>
+  తార్కిక find (T v, అంశం_t *i, తాళం_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
-      *i = *item;
+    అంశం_t *అంశం = వస్తువులు.lsearch (v);
+    ఒకవేళ (అంశం)
+      *i = *అంశం;
     l.unlock ();
-    return !!item;
+    తిరిగి !!అంశం;
   }
 
-  template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  మూస <రకం_పేరు T>
+  అంశం_t *కనుగొను_or_చొప్పించు (T v, తాళం_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
-    if (!item) {
-      item = items.push (v);
+    అంశం_t *అంశం = వస్తువులు.find (v);
+    ఒకవేళ (!అంశం) {
+      అంశం = వస్తువులు.push (v);
     }
     l.unlock ();
-    return item;
+    తిరిగి అంశం;
   }
 
-  void fini (lock_t &l)
+  శూన్య fini (తాళం_t &l)
   {
-    if (!items.length)
+    ఒకవేళ (!వస్తువులు.నిడివి)
     {
       /* No need to lock. */
-      items.fini ();
-      return;
+      వస్తువులు.fini ();
+      తిరిగి;
     }
     l.lock ();
-    while (items.length)
+    అయితే (వస్తువులు.నిడివి)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      అంశం_t old = వస్తువులు.తోక ();
+      వస్తువులు.తీయి ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    వస్తువులు.fini ();
     l.unlock ();
   }
 
@@ -140,68 +140,68 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+నిర్మాణం hb_reference_లెక్క_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  మార్చదగిన hb_atomic_t<పూర్ణాంకం> ref_లెక్క_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  శూన్య init (పూర్ణాంకం v = 1) { ref_లెక్క_2 = v; }
+  పూర్ణాంకం get_relaxed () స్థిరరాశి { తిరిగి ref_లెక్క_2; }
+  పూర్ణాంకం inc () స్థిరరాశి { తిరిగి ref_లెక్క_2.inc (); }
+  పూర్ణాంకం dec () స్థిరరాశి { తిరిగి ref_లెక్క_2.dec (); }
+  శూన్య fini () { ref_లెక్క_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  తార్కిక is_inert () స్థిరరాశి { తిరిగి !ref_లెక్క_2; }
+  తార్కిక is_valid () స్థిరరాశి { తిరిగి ref_లెక్క_2 > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+నిర్మాణం hb_user_దత్తాంశం_array_t
 {
-  struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
-    void *data;
+  నిర్మాణం hb_user_దత్తాంశం_అంశం_t {
+    hb_user_దత్తాంశం_కీలకం_t *key;
+    శూన్య *దత్తాంశం;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    తార్కిక క్రియాకారకం == (స్థిరరాశి hb_user_దత్తాంశం_కీలకం_t *other_కీలకం) స్థిరరాశి { తిరిగి key == other_కీలకం; }
+    తార్కిక క్రియాకారకం == (స్థిరరాశి hb_user_దత్తాంశం_అంశం_t &other) స్థిరరాశి { తిరిగి key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    శూన్య fini () { ఒకవేళ (destroy) destroy (దత్తాంశం); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_సమితి_t<hb_user_దత్తాంశం_అంశం_t, hb_mutex_t> వస్తువులు;
 
-  void init () { lock.init (); items.init (); }
+  శూన్య init () { lock.init (); వస్తువులు.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  శూన్య fini () { వస్తువులు.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
-	    void *              data,
+  తార్కిక సమితి (hb_user_దత్తాంశం_కీలకం_t *key,
+	    శూన్య *              దత్తాంశం,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    ఒకవేళ (!key)
+      తిరిగి అబద్ధం;
 
-    if (replace) {
-      if (!data && !destroy) {
-	items.remove (key, lock);
-	return true;
+    ఒకవేళ (replace) {
+      ఒకవేళ (!దత్తాంశం && !destroy) {
+	వస్తువులు.remove (key, lock);
+	తిరిగి నిజం;
       }
     }
-    hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    hb_user_దత్తాంశం_అంశం_t అంశం = {key, దత్తాంశం, destroy};
+    తార్కిక ret = !!వస్తువులు.replace_or_చొప్పించు (అంశం, lock, (తార్కిక) replace);
 
-    return ret;
+    తిరిగి ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  శూన్య *get (hb_user_దత్తాంశం_కీలకం_t *key)
   {
-    hb_user_data_item_t item = {nullptr, nullptr, nullptr};
+    hb_user_దత్తాంశం_అంశం_t అంశం = {శూన్యసూచిక, శూన్యసూచిక, శూన్యసూచిక};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    తిరిగి వస్తువులు.find (key, &అంశం, lock) ? అంశం.దత్తాంశం : శూన్యసూచిక;
   }
 };
 
@@ -210,163 +210,163 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+నిర్మాణం hb_object_శీర్షిక_t
 {
-  hb_reference_count_t ref_count;
-  mutable hb_atomic_t<bool> writable = false;
-  hb_atomic_t<hb_user_data_array_t *> user_data;
+  hb_reference_లెక్క_t ref_లెక్క_2;
+  మార్చదగిన hb_atomic_t<తార్కిక> writable = అబద్ధం;
+  hb_atomic_t<hb_user_దత్తాంశం_array_t *> user_దత్తాంశం;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  తార్కిక is_inert () స్థిరరాశి { తిరిగి !ref_లెక్క_2.get_relaxed (); }
 };
-#define HB_OBJECT_HEADER_STATIC {}
+#నిర్వచించు HB_OBJECT_శీర్షిక_STATIC {}
 
 
 /*
  * Object
  */
 
-template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య hb_object_trace (స్థిరరాశి Type *obj, స్థిరరాశి అక్షరం *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_సందేశం (OBJECT, (శూన్య *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->శీర్షిక.ref_లెక్క_2.get_relaxed () : 0);
 }
 
-template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+మూస <రకం_పేరు Type, రకం_పేరు ...Ts>
+స్థిర అంతఃవరుస Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, పరిమాణం (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  ఒకవేళ (unlikely (!obj))
+    తిరిగి obj;
 
-  new (obj) Type (std::forward<Ts> (ds)...);
+  కొత్త (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  తిరిగి obj;
 }
-template <typename Type>
-static inline void hb_object_init (Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
-  obj->header.writable = true;
-  obj->header.user_data.init ();
+  obj->శీర్షిక.ref_లెక్క_2.init ();
+  obj->శీర్షిక.writable = నిజం;
+  obj->శీర్షిక.user_దత్తాంశం.init ();
 }
-template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస తార్కిక hb_object_is_valid (స్థిరరాశి Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  తిరిగి likely (obj->శీర్షిక.ref_లెక్క_2.is_valid ());
 }
-template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస తార్కిక hb_object_is_immutable (స్థిరరాశి Type *obj)
 {
-  return !obj->header.writable;
+  తిరిగి !obj->శీర్షిక.writable;
 }
-template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య hb_object_make_immutable (స్థిరరాశి Type *obj)
 {
-  obj->header.writable = false;
+  obj->శీర్షిక.writable = అబద్ధం;
 }
-template <typename Type>
-static inline void hb_object_fini (Type *obj);
-template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
-{
-  hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
-  assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
-  return obj;
-}
-template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య hb_object_fini (Type *obj);
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  ఒకవేళ (unlikely (!obj || obj->శీర్షిక.is_inert ()))
+    తిరిగి obj;
+  ప్రతిజ్ఞా (hb_object_is_valid (obj));
+  obj->శీర్షిక.ref_లెక్క_2.inc ();
+  తిరిగి obj;
+}
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస తార్కిక hb_object_should_destroy (Type *obj)
+{
+  hb_object_trace (obj, HB_FUNC);
+  ఒకవేళ (unlikely (!obj || obj->శీర్షిక.is_inert ()))
+    తిరిగి అబద్ధం;
+  ప్రతిజ్ఞా (hb_object_is_valid (obj));
+  ఒకవేళ (obj->శీర్షిక.ref_లెక్క_2.dec () != 1)
+    తిరిగి అబద్ధం;
+  తిరిగి నిజం;
 }
 
-template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  ఒకవేళ (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
-template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస తార్కిక hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  ఒకవేళ (!hb_object_should_destroy (obj))
+    తిరిగి అబద్ధం;
 
   hb_object_actually_destroy (obj);
-  return true;
+  తిరిగి నిజం;
 }
-template <typename Type>
-static inline void hb_object_fini (Type *obj)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  obj->శీర్షిక.ref_లెక్క_2.fini (); /* Do this before user_data */
+  hb_user_దత్తాంశం_array_t *user_దత్తాంశం = obj->శీర్షిక.user_దత్తాంశం.get_acquire ();
+  ఒకవేళ (user_దత్తాంశం)
   {
-    user_data->fini ();
-    hb_free (user_data);
-    obj->header.user_data.set_relaxed (nullptr);
+    user_దత్తాంశం->fini ();
+    hb_free (user_దత్తాంశం);
+    obj->శీర్షిక.user_దత్తాంశం.సమితి_relaxed (శూన్యసూచిక);
   }
 }
-template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
-					    void *              data,
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస తార్కిక hb_object_సమితి_user_దత్తాంశం (Type               *obj,
+					    hb_user_దత్తాంశం_కీలకం_t *key,
+					    శూన్య *              దత్తాంశం,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
+  ఒకవేళ (unlikely (!obj || obj->శీర్షిక.is_inert ()))
+    తిరిగి అబద్ధం;
+  ప్రతిజ్ఞా (hb_object_is_valid (obj));
 
 retry:
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  hb_user_దత్తాంశం_array_t *user_దత్తాంశం = obj->శీర్షిక.user_దత్తాంశం.get_acquire ();
+  ఒకవేళ (unlikely (!user_దత్తాంశం))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
-    user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    user_దత్తాంశం = (hb_user_దత్తాంశం_array_t *) hb_calloc (1, పరిమాణం (hb_user_దత్తాంశం_array_t));
+    ఒకవేళ (unlikely (!user_దత్తాంశం))
+      తిరిగి అబద్ధం;
+    user_దత్తాంశం->init ();
+    ఒకవేళ (unlikely (!obj->శీర్షిక.user_దత్తాంశం.cmpexch (శూన్యసూచిక, user_దత్తాంశం)))
     {
-      user_data->fini ();
-      hb_free (user_data);
-      goto retry;
+      user_దత్తాంశం->fini ();
+      hb_free (user_దత్తాంశం);
+      వెళ్ళు retry;
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  తిరిగి user_దత్తాంశం->సమితి (key, దత్తాంశం, destroy, replace);
 }
 
-template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+మూస <రకం_పేరు Type>
+స్థిర అంతఃవరుస శూన్య *hb_object_get_user_దత్తాంశం (Type               *obj,
+					     hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
-  assert (hb_object_is_valid (obj));
-  hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  ఒకవేళ (unlikely (!obj || obj->శీర్షిక.is_inert ()))
+    తిరిగి శూన్యసూచిక;
+  ప్రతిజ్ఞా (hb_object_is_valid (obj));
+  hb_user_దత్తాంశం_array_t *user_దత్తాంశం = obj->శీర్షిక.user_దత్తాంశం.get_acquire ();
+  ఒకవేళ (!user_దత్తాంశం)
+    తిరిగి శూన్యసూచిక;
+  తిరిగి user_దత్తాంశం->get (key);
 }
 
 
-#endif /* HB_OBJECT_HH */
+#అయితే_ముగింపు /* HB_OBJECT_HH */

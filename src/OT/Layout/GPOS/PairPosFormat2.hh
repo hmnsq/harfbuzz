@@ -1,273 +1,273 @@
-#ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
-#define OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
+#నిర్వచించు OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
 
-#include "ValueFormat.hh"
+#అన్తర్భావ "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-HB_INTERNAL inline
-void collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
-                                     const ValueBase *base,
-                                     const Coverage &coverage,
-                                     const ClassDef &class_def1,
-                                     const ClassDef &class_def2,
-                                     const ValueFormat &valueFormat1,
-                                     const ValueFormat &valueFormat2,
-                                     unsigned class1_count,
-                                     unsigned class2_count,
-                                     const ValueRecord &values)
+HB_అంతర్గత అంతఃవరుస
+శూన్య collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
+                                     స్థిరరాశి విలువ_పునాది *పునాది,
+                                     స్థిరరాశి Coverage &coverage,
+                                     స్థిరరాశి ClassDef &class_def1,
+                                     స్థిరరాశి ClassDef &class_def2,
+                                     స్థిరరాశి విలువ_Format &విలువ_Format1,
+                                     స్థిరరాశి విలువ_Format &విలువ_Format2,
+                                     గుర్తులేని class1_లెక్క,
+                                     గుర్తులేని class2_లెక్క,
+                                     స్థిరరాశి విలువ_రికార్డు &values)
 {
-  if (!coverage.intersects (c->glyph_set) ||
-      !class_def2.intersects (c->glyph_set)) return;
-  if ((!valueFormat1.has_device ()) && (!valueFormat2.has_device ())) return;
+  ఒకవేళ (!coverage.intersects (c->glyph_సమితి) ||
+      !class_def2.intersects (c->glyph_సమితి)) తిరిగి;
+  ఒకవేళ ((!విలువ_Format1.has_device ()) && (!విలువ_Format2.has_device ())) తిరిగి;
 
-  hb_set_t klass1_glyphs, klass2_glyphs;
-  if (!class_def1.collect_coverage (&klass1_glyphs)) return;
-  if (!class_def2.collect_coverage (&klass2_glyphs)) return;
+  hb_సమితి_t klass1_glyphs, klass2_glyphs;
+  ఒకవేళ (!class_def1.collect_coverage (&klass1_glyphs)) తిరిగి;
+  ఒకవేళ (!class_def2.collect_coverage (&klass2_glyphs)) తిరిగి;
 
-  hb_set_t class1_set, class2_set;
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (coverage))
+  hb_సమితి_t class1_సమితి, class2_సమితి;
+  కొరకు (స్థిరరాశి గుర్తులేని cp : + c->glyph_సమితి->iter () | hb_filter (coverage))
   {
-    if (!klass1_glyphs.has (cp)) class1_set.add (0);
-    else
+    ఒకవేళ (!klass1_glyphs.has (cp)) class1_సమితి.కూడు (0);
+    లేకపోతే
     {
-      unsigned klass1 = class_def1.get (cp);
-      class1_set.add (klass1);
+      గుర్తులేని klass1 = class_def1.get (cp);
+      class1_సమితి.కూడు (klass1);
     }
   }
 
-  class2_set.add (0);
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (klass2_glyphs))
+  class2_సమితి.కూడు (0);
+  కొరకు (స్థిరరాశి గుర్తులేని cp : + c->glyph_సమితి->iter () | hb_filter (klass2_glyphs))
   {
-    unsigned klass2 = class_def2.get (cp);
-    class2_set.add (klass2);
+    గుర్తులేని klass2 = class_def2.get (cp);
+    class2_సమితి.కూడు (klass2);
   }
 
-  if (class1_set.is_empty ()
-      || class2_set.is_empty ()
-      || (class2_set.get_population() == 1 && class2_set.has(0)))
-    return;
+  ఒకవేళ (class1_సమితి.is_empty ()
+      || class2_సమితి.is_empty ()
+      || (class2_సమితి.get_population() == 1 && class2_సమితి.has(0)))
+    తిరిగి;
 
-  unsigned len1 = valueFormat1.get_len ();
-  unsigned len2 = valueFormat2.get_len ();
-  const hb_array_t<const Value> values_array = values.as_array ((unsigned)class1_count * (unsigned) class2_count * (len1 + len2));
-  for (const unsigned class1_idx : class1_set.iter ())
+  గుర్తులేని len1 = విలువ_Format1.get_len ();
+  గుర్తులేని len2 = విలువ_Format2.get_len ();
+  స్థిరరాశి hb_array_t<స్థిరరాశి విలువ> విలువలు_array = values.as_array ((గుర్తులేని)class1_లెక్క * (గుర్తులేని) class2_లెక్క * (len1 + len2));
+  కొరకు (స్థిరరాశి గుర్తులేని class1_idx : class1_సమితి.iter ())
   {
-    for (const unsigned class2_idx : class2_set.iter ())
+    కొరకు (స్థిరరాశి గుర్తులేని class2_idx : class2_సమితి.iter ())
     {
-      unsigned start_offset = (class1_idx * (unsigned) class2_count + class2_idx) * (len1 + len2);
-      if (valueFormat1.has_device ())
-        valueFormat1.collect_variation_indices (c, base, values_array.sub_array (start_offset, len1));
+      గుర్తులేని ప్రారంభం_స్థానభ్రంశం = (class1_idx * (గుర్తులేని) class2_లెక్క + class2_idx) * (len1 + len2);
+      ఒకవేళ (విలువ_Format1.has_device ())
+        విలువ_Format1.collect_variation_indices (c, పునాది, విలువలు_array.sub_array (ప్రారంభం_స్థానభ్రంశం, len1));
 
-      if (valueFormat2.has_device ())
-        valueFormat2.collect_variation_indices (c, base, values_array.sub_array (start_offset+len1, len2));
+      ఒకవేళ (విలువ_Format2.has_device ())
+        విలువ_Format2.collect_variation_indices (c, పునాది, విలువలు_array.sub_array (ప్రారంభం_స్థానభ్రంశం+len1, len2));
     }
   }
 }
 
 /* Keep class-matrix traversal independent of the source table width. */
-struct pair_pos_class_values_t
+నిర్మాణం pair_pos_class_విలువలు_t
 {
-  const ValueBase *base;
-  const ValueRecord &values;
-  const ValueFormat &valueFormat1;
-  const ValueFormat &valueFormat2;
-  unsigned class1_count;
-  unsigned class2_count;
+  స్థిరరాశి విలువ_పునాది *పునాది;
+  స్థిరరాశి విలువ_రికార్డు &values;
+  స్థిరరాశి విలువ_Format &విలువ_Format1;
+  స్థిరరాశి విలువ_Format &విలువ_Format2;
+  గుర్తులేని class1_లెక్క;
+  గుర్తులేని class2_లెక్క;
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_map_t &klass1_map,
-                                                               const hb_map_t &klass2_map,
-                                                               bool strip_hints, bool strip_empty,
-                                                               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<గుర్తులేని, గుర్తులేని> compute_effective_విలువ_formats (స్థిరరాశి hb_map_t &klass1_map,
+                                                               స్థిరరాశి hb_map_t &klass2_map,
+                                                               తార్కిక strip_hints, తార్కిక strip_ఖాళీలు,
+                                                               స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *varidx_delta_map = శూన్యసూచిక) స్థిరరాశి
   {
-    unsigned len1 = valueFormat1.get_len ();
-    unsigned len2 = valueFormat2.get_len ();
-    unsigned record_size = len1 + len2;
+    గుర్తులేని len1 = విలువ_Format1.get_len ();
+    గుర్తులేని len2 = విలువ_Format2.get_len ();
+    గుర్తులేని రికార్డు_కొలత = len1 + len2;
 
-    unsigned format1 = 0;
-    unsigned format2 = 0;
+    గుర్తులేని format1 = 0;
+    గుర్తులేని format2 = 0;
 
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    కొరకు (గుర్తులేని class1_idx : + hb_range (class1_లెక్క) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : + hb_range (class2_count) | hb_filter (klass2_map))
+      కొరకు (గుర్తులేని class2_idx : + hb_range (class2_లెక్క) | hb_filter (klass2_map))
       {
-        unsigned idx = (class1_idx * class2_count + class2_idx) * record_size;
-        format1 = format1 | valueFormat1.get_effective_format (&values[idx], strip_hints, strip_empty, base, varidx_delta_map);
-        format2 = format2 | valueFormat2.get_effective_format (&values[idx + len1], strip_hints, strip_empty, base, varidx_delta_map);
+        గుర్తులేని idx = (class1_idx * class2_లెక్క + class2_idx) * రికార్డు_కొలత;
+        format1 = format1 | విలువ_Format1.get_effective_format (&values[idx], strip_hints, strip_ఖాళీలు, పునాది, varidx_delta_map);
+        format2 = format2 | విలువ_Format2.get_effective_format (&values[idx + len1], strip_hints, strip_ఖాళీలు, పునాది, varidx_delta_map);
       }
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat1 && format2 == valueFormat2)
-        break;
+      ఒకవేళ (!varidx_delta_map &&
+          format1 == విలువ_Format1 && format2 == విలువ_Format2)
+        ఆపు;
     }
 
-    return hb_pair (format1, format2);
+    తిరిగి hb_pair (format1, format2);
   }
 
-  bool serialize (hb_subset_context_t *c,
-                  const hb_map_t &klass1_map,
-                  const hb_map_t &klass2_map,
-                  ValueFormat newFormat1,
-                  ValueFormat newFormat2) const
+  తార్కిక serialize (hb_subset_context_t *c,
+                  స్థిరరాశి hb_map_t &klass1_map,
+                  స్థిరరాశి hb_map_t &klass2_map,
+                  విలువ_Format newFormat1,
+                  విలువ_Format newFormat2) స్థిరరాశి
   {
-    unsigned len1 = valueFormat1.get_len ();
-    unsigned len2 = valueFormat2.get_len ();
-    unsigned total_len = len1 + len2;
-    hb_vector_t<unsigned> class2_idxs (+ hb_range (class2_count) | hb_filter (klass2_map));
-    if (unlikely (!c->serializer->propagate_error (class2_idxs)))
-      return false;
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    గుర్తులేని len1 = విలువ_Format1.get_len ();
+    గుర్తులేని len2 = విలువ_Format2.get_len ();
+    గుర్తులేని మొత్తం_len = len1 + len2;
+    hb_సదిశ_t<గుర్తులేని> class2_idxs (+ hb_range (class2_లెక్క) | hb_filter (klass2_map));
+    ఒకవేళ (unlikely (!c->serializer->propagate_error (class2_idxs)))
+      తిరిగి అబద్ధం;
+    కొరకు (గుర్తులేని class1_idx : + hb_range (class1_లెక్క) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : class2_idxs)
+      కొరకు (గుర్తులేని class2_idx : class2_idxs)
       {
-        unsigned idx = (class1_idx * class2_count + class2_idx) * total_len;
-        valueFormat1.copy_values (c->serializer, newFormat1, base, &values[idx], &c->plan->layout_variation_idx_delta_map);
-        valueFormat2.copy_values (c->serializer, newFormat2, base, &values[idx + len1], &c->plan->layout_variation_idx_delta_map);
+        గుర్తులేని idx = (class1_idx * class2_లెక్క + class2_idx) * మొత్తం_len;
+        విలువ_Format1.copy_విలువలు (c->serializer, newFormat1, పునాది, &values[idx], &c->plan->layout_variation_idx_delta_map);
+        విలువ_Format2.copy_విలువలు (c->serializer, newFormat2, పునాది, &values[idx + len1], &c->plan->layout_variation_idx_delta_map);
       }
     }
 
-    return true;
+    తిరిగి నిజం;
   }
 };
 
-template <typename Types>
-struct PairPosFormat2_4 : ValueBase
+మూస <రకం_పేరు Types>
+నిర్మాణం PairPosFormat2_4 : విలువ_పునాది
 {
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 2 */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat1;           /* ValueRecord definition--for the
+  విలువ_Format   విలువ_Format1;           /* ValueRecord definition--for the
                                          * first glyph of the pair--may be zero
                                          * (0) */
-  ValueFormat   valueFormat2;           /* ValueRecord definition--for the
+  విలువ_Format   విలువ_Format2;           /* ValueRecord definition--for the
                                          * second glyph of the pair--may be
                                          * zero (0) */
-  typename Types::template LOffsetTo<ClassDef>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<ClassDef>
                 classDef1;              /* Offset to ClassDef table--from
                                          * beginning of PairPos subtable--for
                                          * the first glyph of the pair */
-  typename Types::template LOffsetTo<ClassDef>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<ClassDef>
                 classDef2;              /* Offset to ClassDef table--from
                                          * beginning of PairPos subtable--for
                                          * the second glyph of the pair */
-  HBUINT16      class1Count;            /* Number of classes in ClassDef1
+  HBUINT16      class1_లెక్క_2;            /* Number of classes in ClassDef1
                                          * table--includes Class0 */
-  HBUINT16      class2Count;            /* Number of classes in ClassDef2
+  HBUINT16      class2_లెక్క_2;            /* Number of classes in ClassDef2
                                          * table--includes Class0 */
-  ValueRecord   values;                 /* Matrix of value pairs:
+  విలువ_రికార్డు   values;                 /* Matrix of value pairs:
                                          * class1-major, class2-minor,
                                          * Each entry has value1 and value2 */
-  public:
-  DEFINE_SIZE_ARRAY (10 + 3 * Types::LOffset::static_size, values);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (10 + 3 * Types::LOffset::static_కొలత, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this)
-       && coverage.sanitize (c, this)
-       && classDef1.sanitize (c, this)
-       && classDef2.sanitize (c, this))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!(c->check_struct (ఇది)
+       && coverage.sanitize (c, ఇది)
+       && classDef1.sanitize (c, ఇది)
+       && classDef2.sanitize (c, ఇది))) return_trace (అబద్ధం);
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int stride = HBUINT16::static_size * (len1 + len2);
-    unsigned int count = (unsigned int) class1Count * (unsigned int) class2Count;
-    return_trace (c->check_range ((const void *) values,
-                                  count,
+    గుర్తులేని పూర్ణాంకం len1 = విలువ_Format1.get_len ();
+    గుర్తులేని పూర్ణాంకం len2 = విలువ_Format2.get_len ();
+    గుర్తులేని పూర్ణాంకం stride = HBUINT16::static_కొలత * (len1 + len2);
+    గుర్తులేని పూర్ణాంకం లెక్క = (గుర్తులేని పూర్ణాంకం) class1_లెక్క_2 * (గుర్తులేని పూర్ణాంకం) class2_లెక్క_2;
+    return_trace (c->check_range ((స్థిరరాశి శూన్య *) values,
+                                  లెక్క,
                                   stride) &&
 		  (c->lazy_some_gpos ||
-		   (valueFormat1.sanitize_values_stride_unsafe (c, this, &values[0], count, stride) &&
-		    valueFormat2.sanitize_values_stride_unsafe (c, this, &values[len1], count, stride))));
+		   (విలువ_Format1.sanitize_విలువలు_stride_unsafe (c, ఇది, &values[0], లెక్క, stride) &&
+		    విలువ_Format2.sanitize_విలువలు_stride_unsafe (c, ఇది, &values[len1], లెక్క, stride))));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    return (this+coverage).intersects (glyphs) &&
-           (this+classDef2).intersects (glyphs);
+    తిరిగి (ఇది+coverage).intersects (glyphs) &&
+           (ఇది+classDef2).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c) స్థిరరాశి {}
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    collect_pair_variation_indices (c, this, this+coverage,
-                                    this+classDef1, this+classDef2,
-                                    valueFormat1, valueFormat2,
-                                    class1Count, class2Count, values);
+    collect_pair_variation_indices (c, ఇది, ఇది+coverage,
+                                    ఇది+classDef1, ఇది+classDef2,
+                                    విలువ_Format1, విలువ_Format2,
+                                    class1_లెక్క_2, class2_లెక్క_2, values);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+classDef2).collect_coverage (c->input))) return;
+    ఒకవేళ (unlikely (!(ఇది+coverage).collect_coverage (c->ఆదానం))) తిరిగి;
+    ఒకవేళ (unlikely (!(ఇది+classDef2).collect_coverage (c->ఆదానం))) తిరిగి;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  స్థిరరాశి Coverage &get_coverage () స్థిరరాశి { తిరిగి ఇది+coverage; }
 
-  struct external_cache_t
+  నిర్మాణం external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
-    hb_ot_layout_mapping_cache_t first;
+    hb_ot_layout_mapping_cache_t మొదటి;
     hb_ot_layout_mapping_cache_t second;
   };
-  void *external_cache_create () const
+  శూన్య *external_cache_create () స్థిరరాశి
   {
-    external_cache_t *cache = (external_cache_t *) hb_malloc (sizeof (external_cache_t));
-    if (likely (cache))
+    external_cache_t *cache = (external_cache_t *) hb_malloc (పరిమాణం (external_cache_t));
+    ఒకవేళ (likely (cache))
     {
       cache->coverage.clear ();
-      cache->first.clear ();
+      cache->మొదటి.clear ();
       cache->second.clear ();
     }
-    return cache;
+    తిరిగి cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  తార్కిక apply (hb_ot_apply_context_t *c, శూన్య *external_cache) స్థిరరాశి
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ఇది);
 
-    hb_buffer_t *buffer = c->buffer;
+    hb_బఫరు_t *బఫరు = c->బఫరు;
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#నిర్వచితం_కాకపోతే HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-#endif
-    if (index == NOT_COVERED) return_trace (false);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage  (బఫరు->cur().codepoint, cache ? &cache->coverage : శూన్యసూచిక);
+#లేకపోతే
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage  (బఫరు->cur().codepoint);
+#అయితే_ముగింపు
+    ఒకవేళ (సూచీ_2 == NOT_COVERED) return_trace (అబద్ధం);
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
-    unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    స్వయంచాలక &skippy_iter = c->iter_ఆదానం;
+    skippy_iter.reset_fast (బఫరు->idx);
+    గుర్తులేని unsafe_గమ్యం;
+    ఒకవేళ (unlikely (!skippy_iter.next (&unsafe_గమ్యం)))
     {
-      buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat (బఫరు->idx, unsafe_గమ్యం);
+      return_trace (అబద్ధం);
     }
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint, cache ? &cache->first : nullptr);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint, cache ? &cache->second : nullptr);
-#else
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint);
-#endif
-    if (unlikely (klass1 >= class1Count || klass2 >= class2Count))
+#నిర్వచితం_కాకపోతే HB_NO_OT_LAYOUT_LOOKUP_CACHE
+    గుర్తులేని పూర్ణాంకం klass1 = (ఇది+classDef1).get_class (బఫరు->cur().codepoint, cache ? &cache->మొదటి : శూన్యసూచిక);
+    గుర్తులేని పూర్ణాంకం klass2 = (ఇది+classDef2).get_class (బఫరు->info[skippy_iter.idx].codepoint, cache ? &cache->second : శూన్యసూచిక);
+#లేకపోతే
+    గుర్తులేని పూర్ణాంకం klass1 = (ఇది+classDef1).get_class (బఫరు->cur().codepoint);
+    గుర్తులేని పూర్ణాంకం klass2 = (ఇది+classDef2).get_class (బఫరు->info[skippy_iter.idx].codepoint);
+#అయితే_ముగింపు
+    ఒకవేళ (unlikely (klass1 >= class1_లెక్క_2 || klass2 >= class2_లెక్క_2))
     {
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat (బఫరు->idx, skippy_iter.idx + 1);
+      return_trace (అబద్ధం);
     }
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int record_len = len1 + len2;
+    గుర్తులేని పూర్ణాంకం len1 = విలువ_Format1.get_len ();
+    గుర్తులేని పూర్ణాంకం len2 = విలువ_Format2.get_len ();
+    గుర్తులేని పూర్ణాంకం రికార్డు_len = len1 + len2;
 
-    const Value *v = &values[record_len * (klass1 * class2Count + klass2)];
+    స్థిరరాశి విలువ *v = &values[రికార్డు_len * (klass1 * class2_లెక్క_2 + klass2)];
 
-    bool applied_first = false, applied_second = false;
+    తార్కిక applied_మొదటి = అబద్ధం, applied_రెండవ = అబద్ధం;
 
 
     /* Isolate simple kerning and apply it half to each side.
@@ -277,155 +277,155 @@ struct PairPosFormat2_4 : ValueBase
      * https://github.com/harfbuzz/harfbuzz/issues/3408
      * https://github.com/harfbuzz/harfbuzz/pull/3235#issuecomment-1029814978
      */
-#ifndef HB_SPLIT_KERN
-    if (false)
-#endif
+#నిర్వచితం_కాకపోతే HB_విభజించు_KERN
+    ఒకవేళ (అబద్ధం)
+#అయితే_ముగింపు
     {
-      if (!len2)
+      ఒకవేళ (!len2)
       {
-        const hb_direction_t dir = buffer->props.direction;
-        const bool horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
-        const bool backward = HB_DIRECTION_IS_BACKWARD (dir);
-        unsigned mask = horizontal ? ValueFormat::xAdvance : ValueFormat::yAdvance;
-        if (backward)
-          mask |= mask >> 2; /* Add eg. xPlacement in RTL. */
+        స్థిరరాశి hb_direction_t dir = బఫరు->props.direction;
+        స్థిరరాశి తార్కిక horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
+        స్థిరరాశి తార్కిక backward = HB_DIRECTION_IS_BACKWARD (dir);
+        గుర్తులేని ముసుగు = horizontal ? విలువ_Format::xAdvance : విలువ_Format::yAdvance;
+        ఒకవేళ (backward)
+          ముసుగు |= ముసుగు >> 2; /* Add eg. xPlacement in RTL. */
         /* Add Devices. */
-        mask |= mask << 4;
+        ముసుగు |= ముసుగు << 4;
 
-        if (valueFormat1 & ~mask)
-          goto bail;
+        ఒకవేళ (విలువ_Format1 & ~ముసుగు)
+          వెళ్ళు bail;
 
         /* Is simple kern. Apply value on an empty position slot,
          * then split it between sides. */
 
         hb_glyph_position_t pos{};
-        if (valueFormat1.apply_value (c, this, v, pos))
+        ఒకవేళ (విలువ_Format1.apply_విలువ (c, ఇది, v, pos))
         {
           hb_position_t *src  = &pos.x_advance;
-          hb_position_t *dst1 = &buffer->cur_pos().x_advance;
-          hb_position_t *dst2 = &buffer->pos[skippy_iter.idx].x_advance;
-          unsigned i = horizontal ? 0 : 1;
+          hb_position_t *dst1 = &బఫరు->cur_pos().x_advance;
+          hb_position_t *dst2 = &బఫరు->pos[skippy_iter.idx].x_advance;
+          గుర్తులేని i = horizontal ? 0 : 1;
 
           hb_position_t kern  = src[i];
           hb_position_t kern1 = kern >> 1;
           hb_position_t kern2 = kern - kern1;
 
-          if (!backward)
+          ఒకవేళ (!backward)
           {
-            dst1[i] = hb_saturate_add (dst1[i], kern1);
-            dst2[i] = hb_saturate_add (dst2[i], kern2);
-            dst2[i + 2] = hb_saturate_add (dst2[i + 2], kern2);
+            dst1[i] = hb_saturate_కూడు (dst1[i], kern1);
+            dst2[i] = hb_saturate_కూడు (dst2[i], kern2);
+            dst2[i + 2] = hb_saturate_కూడు (dst2[i + 2], kern2);
           }
-          else
+          లేకపోతే
           {
-            dst1[i] = hb_saturate_add (dst1[i], kern1);
-            dst1[i + 2] = hb_clamp_to<hb_position_t> ((int64_t) dst1[i + 2] + src[i + 2] - kern2);
-            dst2[i] = hb_saturate_add (dst2[i], kern2);
+            dst1[i] = hb_saturate_కూడు (dst1[i], kern1);
+            dst1[i + 2] = hb_clamp_గమ్యం<hb_position_t> ((int64_t) dst1[i + 2] + src[i + 2] - kern2);
+            dst2[i] = hb_saturate_కూడు (dst2[i], kern2);
           }
 
-          applied_first = applied_second = kern != 0;
-          goto success;
+          applied_మొదటి = applied_రెండవ = kern != 0;
+          వెళ్ళు success;
         }
-        goto boring;
+        వెళ్ళు boring;
       }
     }
     bail:
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->message (c->font,
+      c->బఫరు->సందేశం (c->font,
 			  "try kerning glyphs at %u,%u",
-			  c->buffer->idx, skippy_iter.idx);
+			  c->బఫరు->idx, skippy_iter.idx);
     }
 
-    applied_first = len1 && valueFormat1.apply_value (c, this, v, buffer->cur_pos());
-    applied_second = len2 && valueFormat2.apply_value (c, this, v + len1, buffer->pos[skippy_iter.idx]);
+    applied_మొదటి = len1 && విలువ_Format1.apply_విలువ (c, ఇది, v, బఫరు->cur_pos());
+    applied_రెండవ = len2 && విలువ_Format2.apply_విలువ (c, ఇది, v + len1, బఫరు->pos[skippy_iter.idx]);
 
-    if (applied_first || applied_second)
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (applied_మొదటి || applied_రెండవ)
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->message (c->font,
+	c->బఫరు->సందేశం (c->font,
 			    "kerned glyphs at %u,%u",
-			    c->buffer->idx, skippy_iter.idx);
+			    c->బఫరు->idx, skippy_iter.idx);
       }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->message (c->font,
+      c->బఫరు->సందేశం (c->font,
 			  "tried kerning glyphs at %u,%u",
-			  c->buffer->idx, skippy_iter.idx);
+			  c->బఫరు->idx, skippy_iter.idx);
     }
 
     success:
-    if (applied_first || applied_second)
-      buffer->unsafe_to_break (buffer->idx, skippy_iter.idx + 1);
-    else
+    ఒకవేళ (applied_మొదటి || applied_రెండవ)
+      బఫరు->unsafe_గమ్యం_break (బఫరు->idx, skippy_iter.idx + 1);
+    లేకపోతే
     boring:
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
+      బఫరు->unsafe_గమ్యం_concat (బఫరు->idx, skippy_iter.idx + 1);
 
-    if (len2)
+    ఒకవేళ (len2)
     {
       skippy_iter.idx++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
       // https://github.com/harfbuzz/harfbuzz/issues/3888#issuecomment-1326781116
-      buffer->unsafe_to_break (buffer->idx, skippy_iter.idx + 1);
+      బఫరు->unsafe_గమ్యం_break (బఫరు->idx, skippy_iter.idx + 1);
     }
 
-    buffer->idx = skippy_iter.idx;
+    బఫరు->idx = skippy_iter.idx;
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    బహిర్గతం->format = format;
 
     hb_map_t klass1_map;
-    out->classDef1.serialize_subset (c, classDef1, this, &klass1_map, true, true, &(this + coverage));
-    out->class1Count = klass1_map.get_population ();
+    బహిర్గతం->classDef1.serialize_subset (c, classDef1, ఇది, &klass1_map, నిజం, నిజం, &(ఇది + coverage));
+    బహిర్గతం->class1_లెక్క_2 = klass1_map.get_population ();
 
     hb_map_t klass2_map;
-    out->classDef2.serialize_subset (c, classDef2, this, &klass2_map, true, false);
-    out->class2Count = klass2_map.get_population ();
+    బహిర్గతం->classDef2.serialize_subset (c, classDef2, ఇది, &klass2_map, నిజం, అబద్ధం);
+    బహిర్గతం->class2_లెక్క_2 = klass2_map.get_population ();
 
-    pair_pos_class_values_t class_values {this, values, valueFormat1, valueFormat2,
-                                         class1Count, class2Count};
+    pair_pos_class_విలువలు_t class_విలువలు {ఇది, values, విలువ_Format1, విలువ_Format2,
+                                         class1_లెక్క_2, class2_లెక్క_2};
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat1, valueFormat2);
+    hb_pair_t<గుర్తులేని, గుర్తులేని> newFormats = hb_pair (విలువ_Format1, విలువ_Format2);
 
-    if (c->plan->normalized_coords)
+    ఒకవేళ (c->plan->normalized_coords)
     {
       /* in case of full instancing, all var device flags will be dropped so no
        * need to strip hints here */
-      newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = class_విలువలు.compute_effective_విలువ_formats (klass1_map, klass2_map, అబద్ధం, అబద్ధం, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    లేకపోతే ఒకవేళ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
-      hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      hb_blob_t* blob = hb_face_reference_పట్టిక (c->plan->ఆధారం, HB_ట్యాగ్ ('f','v','a','r'));
+      తార్కిక has_fvar = (blob != hb_blob_get_ఖాళీలు ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      తార్కిక strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, strip, true);
+      ఒకవేళ (has_fvar && !c->plan->has_gdef_varstore)
+        strip = నిజం;
+      newFormats = class_విలువలు.compute_effective_విలువ_formats (klass1_map, klass2_map, strip, నిజం);
     }
 
-    out->valueFormat1 = newFormats.first;
-    out->valueFormat2 = newFormats.second;
+    బహిర్గతం->విలువ_Format1 = newFormats.మొదటి;
+    బహిర్గతం->విలువ_Format2 = newFormats.second;
 
-    if (!class_values.serialize (c, klass1_map, klass2_map,
-                                 out->valueFormat1, out->valueFormat2))
-      return_trace (false);
+    ఒకవేళ (!class_విలువలు.serialize (c, klass1_map, klass2_map,
+                                 బహిర్గతం->విలువ_Format1, బహిర్గతం->విలువ_Format2))
+      return_trace (అబద్ధం);
 
-    bool ret = out->coverage.serialize_subset(c, coverage, this);
-    return_trace (out->class1Count && out->class2Count && ret);
+    తార్కిక ret = బహిర్గతం->coverage.serialize_subset(c, coverage, ఇది);
+    return_trace (బహిర్గతం->class1_లెక్క_2 && బహిర్గతం->class2_లెక్క_2 && ret);
   }
 };
 
@@ -433,4 +433,4 @@ struct PairPosFormat2_4 : ValueBase
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
+#అయితే_ముగింపు  // OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH

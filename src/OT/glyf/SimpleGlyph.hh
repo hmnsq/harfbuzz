@@ -1,19 +1,19 @@
-#ifndef OT_GLYF_SIMPLEGLYPH_HH
-#define OT_GLYF_SIMPLEGLYPH_HH
+#నిర్వచితం_కాకపోతే OT_GLYF_SIMPLEGLYPH_HH
+#నిర్వచించు OT_GLYF_SIMPLEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#అన్తర్భావ "../../hb-open-type.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+నామాకాశ OT {
+నామాకాశ glyf_impl {
 
 
-struct SimpleGlyph
+నిర్మాణం SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  గణన simple_glyph_flag_t
   {
-    FLAG_ON_CURVE       = 0x01,
+    FLAG_ON_వక్రం       = 0x01,
     FLAG_X_SHORT        = 0x02,
     FLAG_Y_SHORT        = 0x04,
     FLAG_REPEAT         = 0x08,
@@ -23,286 +23,286 @@ struct SimpleGlyph
     FLAG_CUBIC          = 0x80
   };
 
-  const GlyphHeader &header;
-  hb_bytes_t bytes;
-  SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
-    header (header_), bytes (bytes_) {}
+  స్థిరరాశి Glyph_శీర్షిక &శీర్షిక;
+  hb_బైట్లు_t బైట్లు;
+  SimpleGlyph (స్థిరరాశి Glyph_శీర్షిక &శీర్షిక_2, hb_బైట్లు_t బైట్లు_2) :
+    శీర్షిక (శీర్షిక_2), బైట్లు (బైట్లు_2) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  గుర్తులేని పూర్ణాంకం instruction_len_స్థానభ్రంశం () స్థిరరాశి
+  { తిరిగి Glyph_శీర్షిక::static_కొలత + 2 * శీర్షిక.సంఖ్య_యొక్క_Contours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  గుర్తులేని పూర్ణాంకం నిడివి (గుర్తులేని పూర్ణాంకం instruction_len) స్థిరరాశి
+  { తిరిగి instruction_len_స్థానభ్రంశం () + 2 + instruction_len; }
 
-  bool has_instructions_length () const
+  తార్కిక has_instructions_నిడివి () స్థిరరాశి
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    తిరిగి instruction_len_స్థానభ్రంశం () + 2 <= బైట్లు.నిడివి;
   }
 
-  unsigned int instructions_length () const
+  గుర్తులేని పూర్ణాంకం instructions_నిడివి () స్థిరరాశి
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    గుర్తులేని పూర్ణాంకం instruction_నిడివి_స్థానభ్రంశం = instruction_len_స్థానభ్రంశం ();
+    ఒకవేళ (unlikely (instruction_నిడివి_స్థానభ్రంశం + 2 > బైట్లు.నిడివి)) తిరిగి 0;
 
-    const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
+    స్థిరరాశి HBUINT16 &instruction_నిడివి = Struct_At_స్థానభ్రంశం<HBUINT16> (&బైట్లు, instruction_నిడివి_స్థానభ్రంశం);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    ఒకవేళ (unlikely (నిడివి (instruction_నిడివి) > బైట్లు.నిడివి)) తిరిగి 0;
+    తిరిగి instruction_నిడివి;
   }
 
-  const hb_bytes_t trim_padding () const
+  స్థిరరాశి hb_బైట్లు_t trim_padding () స్థిరరాశి
   {
     /* based on FontTools _g_l_y_f.py::trim */
-    const uint8_t *glyph = (uint8_t*) bytes.arrayZ;
-    const uint8_t *glyph_end = glyph + bytes.length;
+    స్థిరరాశి uint8_t *glyph = (uint8_t*) బైట్లు.arrayZ;
+    స్థిరరాశి uint8_t *glyph_చివర = glyph + బైట్లు.నిడివి;
     /* simple glyph w/contours, possibly trimmable */
-    glyph += instruction_len_offset ();
+    glyph += instruction_len_స్థానభ్రంశం ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    ఒకవేళ (unlikely (glyph + 2 >= glyph_చివర)) తిరిగి hb_బైట్లు_t ();
+    గుర్తులేని పూర్ణాంకం అంకె_coordinates = Struct_At_స్థానభ్రంశం<HBUINT16> (glyph - 2, 0) + 1;
+    గుర్తులేని పూర్ణాంకం అంకె_instructions = Struct_At_స్థానభ్రంశం<HBUINT16> (glyph, 0);
 
-    glyph += 2 + num_instructions;
+    glyph += 2 + అంకె_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    గుర్తులేని పూర్ణాంకం coord_బైట్లు = 0;
+    గుర్తులేని పూర్ణాంకం coords_with_flags = 0;
+    అయితే (glyph < glyph_చివర)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      గుర్తులేని పూర్ణాంకం repeat = 1;
+      ఒకవేళ (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	ఒకవేళ (unlikely (glyph >= glyph_చివర)) తిరిగి hb_బైట్లు_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
-      xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      గుర్తులేని పూర్ణాంకం x_బైట్లు, y_బైట్లు;
+      x_బైట్లు = y_బైట్లు = 0;
+      ఒకవేళ (flag & FLAG_X_SHORT) x_బైట్లు = 1;
+      లేకపోతే ఒకవేళ ((flag & FLAG_X_SAME) == 0) x_బైట్లు = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      ఒకవేళ (flag & FLAG_Y_SHORT) y_బైట్లు = 1;
+      లేకపోతే ఒకవేళ ((flag & FLAG_Y_SAME) == 0) y_బైట్లు = 2;
 
-      coord_bytes += (xBytes + yBytes) * repeat;
+      coord_బైట్లు += (x_బైట్లు + y_బైట్లు) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      ఒకవేళ (coords_with_flags >= అంకె_coordinates) ఆపు;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    ఒకవేళ (unlikely (coords_with_flags != అంకె_coordinates)) తిరిగి hb_బైట్లు_t ();
+    తిరిగి బైట్లు.sub_array (0, బైట్లు.నిడివి + coord_బైట్లు - (glyph_చివర - glyph));
   }
 
   /* zero instruction length */
-  void drop_hints ()
+  శూన్య drop_hints ()
   {
-    if (!has_instructions_length ()) return;
-    GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
-    (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
+    ఒకవేళ (!has_instructions_నిడివి ()) తిరిగి;
+    Glyph_శీర్షిక &glyph_శీర్షిక = const_cast<Glyph_శీర్షిక &> (శీర్షిక);
+    (HBUINT16 &) Struct_At_స్థానభ్రంశం<HBUINT16> (&glyph_శీర్షిక, instruction_len_స్థానభ్రంశం ()) = 0;
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  శూన్య drop_hints_బైట్లు (hb_బైట్లు_t &dest_ప్రారంభం, hb_బైట్లు_t &dest_చివర) స్థిరరాశి
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
-    dest_start = bytes.sub_array (0, glyph_length - instructions_len);
-    dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
+    గుర్తులేని పూర్ణాంకం instructions_len = instructions_నిడివి ();
+    గుర్తులేని పూర్ణాంకం glyph_నిడివి = నిడివి (instructions_len);
+    dest_ప్రారంభం = బైట్లు.sub_array (0, glyph_నిడివి - instructions_len);
+    dest_చివర = బైట్లు.sub_array (glyph_నిడివి, బైట్లు.నిడివి - glyph_నిడివి);
   }
 
-  void set_overlaps_flag ()
+  శూన్య సమితి_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    ఒకవేళ (unlikely (!శీర్షిక.సంఖ్య_యొక్క_Contours)) తిరిగి;
 
-    unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    గుర్తులేని flags_స్థానభ్రంశం = నిడివి (instructions_నిడివి ());
+    ఒకవేళ (unlikely (flags_స్థానభ్రంశం + 1 > బైట్లు.నిడివి)) తిరిగి;
 
-    HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
-    first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
+    HBUINT8 &మొదటి_flag = (HBUINT8 &) Struct_At_స్థానభ్రంశం<HBUINT16> (&బైట్లు, flags_స్థానభ్రంశం);
+    మొదటి_flag = (uint8_t) మొదటి_flag | FLAG_OVERLAP_SIMPLE;
   }
 
-  static bool read_flags (const HBUINT8 *&p /* IN/OUT */,
-			  hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			  const HBUINT8 *end,
-			  bool extended)
+  స్థిర తార్కిక read_flags (స్థిరరాశి HBUINT8 *&p /* IN/OUT */,
+			  hb_array_t<contour_బిందువు_t> points_ /* IN/OUT */,
+			  స్థిరరాశి HBUINT8 *చివర,
+			  తార్కిక extended)
   {
-    auto *points = points_.arrayZ;
-    unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    స్వయంచాలక *points = points_.arrayZ;
+    గుర్తులేని లెక్క = points_.నిడివి;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      ఒకవేళ (unlikely (p + 1 > చివర)) తిరిగి అబద్ధం;
       uint8_t flag = *p++;
-      if (!extended)
+      ఒకవేళ (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      ఒకవేళ (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
-	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	ఒకవేళ (unlikely (p + 1 > చివర)) తిరిగి అబద్ధం;
+	గుర్తులేని పూర్ణాంకం repeat_లెక్క = *p++;
+	గుర్తులేని stop = hb_min (i + repeat_లెక్క, లెక్క);
+	కొరకు (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  static bool read_points (const HBUINT8 *&p /* IN/OUT */,
-			   hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			   const HBUINT8 *end,
-			   float contour_point_t::*m,
-			   const simple_glyph_flag_t short_flag,
-			   const simple_glyph_flag_t same_flag)
+  స్థిర తార్కిక read_points (స్థిరరాశి HBUINT8 *&p /* IN/OUT */,
+			   hb_array_t<contour_బిందువు_t> points_ /* IN/OUT */,
+			   స్థిరరాశి HBUINT8 *చివర,
+			   దశాంశం contour_బిందువు_t::*m,
+			   స్థిరరాశి simple_glyph_flag_t short_flag,
+			   స్థిరరాశి simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    పూర్ణాంకం v = 0;
 
-    for (auto &point : points_)
+    కొరకు (స్వయంచాలక &బిందువు : points_)
     {
-      unsigned flag = point.flag;
-      if (flag & short_flag)
+      గుర్తులేని flag = బిందువు.flag;
+      ఒకవేళ (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
-	v += (bool(flag & same_flag) * 2 - 1) * *p++;
+	ఒకవేళ (unlikely (p + 1 > చివర)) తిరిగి అబద్ధం;
+	v += (తార్కిక(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      లేకపోతే
       {
-	if (!(flag & same_flag))
+	ఒకవేళ (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
-	  v += *(const HBINT16 *) p;
-	  p += HBINT16::static_size;
+	  ఒకవేళ (unlikely (p + HBINT16::static_కొలత > చివర)) తిరిగి అబద్ధం;
+	  v += *(స్థిరరాశి HBINT16 *) p;
+	  p += HBINT16::static_కొలత;
 	}
       }
-      point.*m = v;
+      బిందువు.*m = v;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool get_contour_points (contour_point_vector_t &points /* OUT */,
-			   bool extended,
-			   bool phantom_only = false,
-			   int64_t *budget = nullptr) const
+  తార్కిక get_contour_points (contour_బిందువు_సదిశ_t &points /*బహిర్గతం*/,
+			   తార్కిక extended,
+			   తార్కిక phantom_only = అబద్ధం,
+			   int64_t *budget = శూన్యసూచిక) స్థిరరాశి
   {
-    const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
-    assert (num_contours > 0);
+    స్థిరరాశి HBUINT16 *చివర_Pts_యొక్క_Contours = &StructAfter<HBUINT16> (శీర్షిక);
+    పూర్ణాంకం అంకె_contours = శీర్షిక.సంఖ్య_యొక్క_Contours;
+    ప్రతిజ్ఞా (అంకె_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    ఒకవేళ (unlikely (!బైట్లు.check_range (&చివర_Pts_యొక్క_Contours[అంకె_contours]))) తిరిగి అబద్ధం;
+    గుర్తులేని పూర్ణాంకం అంకె_points = చివర_Pts_యొక్క_Contours[అంకె_contours - 1] + 1;
+    ఒకవేళ (unlikely (అంకె_points < (గుర్తులేని) అంకె_contours)) తిరిగి అబద్ధం;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    ఒకవేళ (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, అంకె_points))) తిరిగి అబద్ధం;
 
-    unsigned old_length = points.length;
-    points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
-    auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    గుర్తులేని old_నిడివి = points.నిడివి;
+    points.alloc (points.నిడివి + అంకె_points + 4); // Allocate for phantom points, to avoid a possible copy
+    ఒకవేళ (unlikely (!points.resize_dirty (points.నిడివి + అంకె_points))) తిరిగి అబద్ధం;
+    స్వయంచాలక points_ = points.as_array ().sub_array (old_నిడివి);
+    ఒకవేళ (!phantom_only)
+      hb_memset (points_.arrayZ, 0, పరిమాణం (contour_బిందువు_t) * అంకె_points);
+    ఒకవేళ (phantom_only) తిరిగి నిజం;
 
-    for (int i = 0; i < num_contours; i++)
-      points_[endPtsOfContours[i]].is_end_point = true;
+    కొరకు (పూర్ణాంకం i = 0; i < అంకె_contours; i++)
+      points_[చివర_Pts_యొక్క_Contours[i]].is_చివర_బిందువు = నిజం;
 
     /* Skip instructions */
-    const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
-						 endPtsOfContours[num_contours]);
+    స్థిరరాశి HBUINT8 *p = &Struct_At_స్థానభ్రంశం<HBUINT8> (&చివర_Pts_యొక్క_Contours[అంకె_contours + 1],
+						 చివర_Pts_యొక్క_Contours[అంకె_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
-    const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    ఒకవేళ (unlikely ((స్థిరరాశి అక్షరం *) p < బైట్లు.arrayZ)) తిరిగి అబద్ధం; /* Unlikely overflow */
+    స్థిరరాశి HBUINT8 *చివర = (స్థిరరాశి HBUINT8 *) (బైట్లు.arrayZ + బైట్లు.నిడివి);
+    ఒకవేళ (unlikely (p >= చివర)) తిరిగి అబద్ధం;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
-        && read_points (p, points_, end, &contour_point_t::x,
+    తిరిగి read_flags (p, points_, చివర, extended)
+        && read_points (p, points_, చివర, &contour_బిందువు_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
-	&& read_points (p, points_, end, &contour_point_t::y,
+	&& read_points (p, points_, చివర, &contour_బిందువు_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
-                            unsigned &flag,
-                            const simple_glyph_flag_t short_flag,
-                            const simple_glyph_flag_t same_flag,
-                            hb_vector_t<uint8_t> &coords /* OUT */)
+  స్థిర శూన్య encode_coord (పూర్ణాంకం value,
+                            గుర్తులేని &flag,
+                            స్థిరరాశి simple_glyph_flag_t short_flag,
+                            స్థిరరాశి simple_glyph_flag_t same_flag,
+                            hb_సదిశ_t<uint8_t> &coords /*బహిర్గతం*/)
   {
-    if (value == 0)
+    ఒకవేళ (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    లేకపోతే ఒకవేళ (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      ఒకవేళ (value > 0) flag |= same_flag;
+      లేకపోతే value = -value;
 
-      coords.arrayZ[coords.length++] = (uint8_t) value;
+      coords.arrayZ[coords.నిడివి++] = (uint8_t) value;
     }
-    else
+    లేకపోతే
     {
       int16_t val = value;
-      coords.arrayZ[coords.length++] = val >> 8;
-      coords.arrayZ[coords.length++] = val & 0xff;
+      coords.arrayZ[coords.నిడివి++] = val >> 8;
+      coords.arrayZ[coords.నిడివి++] = val & 0xff;
     }
   }
 
-  static void encode_flag (unsigned flag,
-                           unsigned &repeat,
-                           unsigned lastflag,
-                           hb_vector_t<uint8_t> &flags /* OUT */)
+  స్థిర శూన్య encode_flag (గుర్తులేని flag,
+                           గుర్తులేని &repeat,
+                           గుర్తులేని lastflag,
+                           hb_సదిశ_t<uint8_t> &flags /*బహిర్గతం*/)
   {
-    if (flag == lastflag && repeat != 255)
+    ఒకవేళ (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      ఒకవేళ (repeat == 1)
       {
         /* We know there's room. */
-        flags.arrayZ[flags.length++] = flag;
+        flags.arrayZ[flags.నిడివి++] = flag;
       }
-      else
+      లేకపోతే
       {
-        unsigned len = flags.length;
+        గుర్తులేని len = flags.నిడివి;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    లేకపోతే
     {
       repeat = 0;
-      flags.arrayZ[flags.length++] = flag;
+      flags.arrayZ[flags.నిడివి++] = flag;
     }
   }
 
-  bool compile_bytes_with_deltas (const contour_point_vector_t &all_points,
-                                  bool no_hinting,
-                                  hb_bytes_t &dest_bytes /* OUT */)
+  తార్కిక compile_బైట్లు_with_deltas (స్థిరరాశి contour_బిందువు_సదిశ_t &all_points,
+                                  తార్కిక no_hinting,
+                                  hb_బైట్లు_t &dest_బైట్లు /*బహిర్గతం*/)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    ఒకవేళ (శీర్షిక.సంఖ్య_యొక్క_Contours == 0 || all_points.నిడివి <= 4)
     {
-      dest_bytes = hb_bytes_t ();
-      return true;
+      dest_బైట్లు = hb_బైట్లు_t ();
+      తిరిగి నిజం;
     }
-    unsigned num_points = all_points.length - 4;
+    గుర్తులేని అంకె_points = all_points.నిడివి - 4;
 
-    hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    hb_సదిశ_t<uint8_t> flags, x_coords, y_coords;
+    ఒకవేళ (unlikely (!flags.alloc_exact (అంకె_points))) తిరిగి అబద్ధం;
+    ఒకవేళ (unlikely (!x_coords.alloc_exact (2*అంకె_points))) తిరిగి అబద్ధం;
+    ఒకవేళ (unlikely (!y_coords.alloc_exact (2*అంకె_points))) తిరిగి అబద్ధం;
 
-    unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    గుర్తులేని lastflag = 255, repeat = 0;
+    పూర్ణాంకం prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    కొరకు (గుర్తులేని i = 0; i < అంకె_points; i++)
     {
-      unsigned flag = all_points.arrayZ[i].flag;
-      flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
+      గుర్తులేని flag = all_points.arrayZ[i].flag;
+      flag &= FLAG_ON_వక్రం | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      పూర్ణాంకం cur_x = roundf (all_points.arrayZ[i].x);
+      పూర్ణాంకం cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -312,39 +312,39 @@ struct SimpleGlyph
       lastflag = flag;
     }
 
-    unsigned len_before_instrs = 2 * header.numberOfContours + 2;
-    unsigned len_instrs = instructions_length ();
-    unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
+    గుర్తులేని len_before_instrs = 2 * శీర్షిక.సంఖ్య_యొక్క_Contours + 2;
+    గుర్తులేని len_instrs = instructions_నిడివి ();
+    గుర్తులేని మొత్తం_len = len_before_instrs + flags.నిడివి + x_coords.నిడివి + y_coords.నిడివి;
 
-    if (!no_hinting)
-      total_len += len_instrs;
+    ఒకవేళ (!no_hinting)
+      మొత్తం_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    అక్షరం *p = (అక్షరం *) hb_malloc (మొత్తం_len);
+    ఒకవేళ (unlikely (!p)) తిరిగి అబద్ధం;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    స్థిరరాశి అక్షరం *src = బైట్లు.arrayZ + Glyph_శీర్షిక::static_కొలత;
+    అక్షరం *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    ఒకవేళ (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
     }
 
-    hb_memcpy (cur, flags.arrayZ, flags.length);
-    cur += flags.length;
+    hb_memcpy (cur, flags.arrayZ, flags.నిడివి);
+    cur += flags.నిడివి;
 
-    hb_memcpy (cur, x_coords.arrayZ, x_coords.length);
-    cur += x_coords.length;
+    hb_memcpy (cur, x_coords.arrayZ, x_coords.నిడివి);
+    cur += x_coords.నిడివి;
 
-    hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
+    hb_memcpy (cur, y_coords.arrayZ, y_coords.నిడివి);
 
-    dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    dest_బైట్లు = hb_బైట్లు_t (p, మొత్తం_len);
+    తిరిగి నిజం;
   }
 };
 
@@ -353,4 +353,4 @@ struct SimpleGlyph
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_SIMPLEGLYPH_HH */
+#అయితే_ముగింపు /* OT_GLYF_SIMPLEGLYPH_HH */

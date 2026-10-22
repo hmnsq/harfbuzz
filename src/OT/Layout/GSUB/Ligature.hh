@@ -1,227 +1,227 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURE_HH
-#define OT_LAYOUT_GSUB_LIGATURE_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_LIGATURE_HH
+#నిర్వచించు OT_LAYOUT_GSUB_LIGATURE_HH
 
-#include "Common.hh"
+#అన్తర్భావ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template <typename Types>
-struct Ligature
+మూస <రకం_పేరు Types>
+నిర్మాణం Ligature
 {
-  public:
-  typename Types::HBGlyphID
+  బహిరంగ:
+  రకం_పేరు Types::HBGlyphID
 		ligGlyph;               /* GlyphID of ligature to substitute */
-  HeadlessArray16Of<typename Types::HBGlyphID>
+  Headless_Array16_యొక్క<రకం_పేరు Types::HBGlyphID>
 		component;              /* Array of component GlyphIDs--start
                                          * with the second  component--ordered
                                          * in writing direction */
-  public:
-  DEFINE_SIZE_ARRAY (Types::size + 2, component);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (Types::కొలత + 2, component);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     return_trace (ligGlyph.sanitize (c) && component.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి hb_all (component, glyphs); }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  తార్కిక intersects_lig_glyph (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి glyphs->has(ligGlyph); }
 
-  void closure (hb_closure_context_t *c) const
+  శూన్య సంవృతం (hb_సంవృతం_context_t *c) స్థిరరాశి
   {
-    if (!intersects (c->glyphs)) return;
-    c->output->add (ligGlyph);
+    ఒకవేళ (!intersects (c->glyphs)) తిరిగి;
+    c->output->కూడు (ligGlyph);
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  శూన్య depend (hb_depend_context_t *c, hb_codepoint_t మొదటి) స్థిరరాశి
   {
     // Build the complete ligature set upfront before adding any edges
-    hb_set_t complete_ligset;
-    complete_ligset.add (first);
+    hb_సమితి_t complete_ligset;
+    complete_ligset.కూడు (మొదటి);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    ఒకవేళ (unlikely (complete_ligset.లోపల_error ()))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_దత్తాంశం->fail ();
+      తిరిగి;
     }
 
-    bool ligset_created;
-    hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
+    తార్కిక ligset_created;
+    hb_codepoint_t ligset_idx = c->depend_దత్తాంశం->కనుగొను_or_create_సమితి (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    ఒకవేళ (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      తిరిగి;
 
     // Track whether any edge using this ligset_idx was actually added
-    bool any_added = false;
+    తార్కిక any_added = అబద్ధం;
 
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
-          any_added = true;
+        ఒకవేళ (c->depend_దత్తాంశం->కూడు_gsub_lookup (gid, c->lookup_సూచీ, ligGlyph, ligset_idx))
+          any_added = నిజం;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
-      c->depend_data->discard_set (ligset_idx);
+    ఒకవేళ (!any_added && ligset_created)
+      c->depend_దత్తాంశం->discard_సమితి (ligset_idx);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
-    c->output->add (ligGlyph);
+    c->ఆదానం->కూడు_array (component.arrayZ, component.get_నిడివి ());
+    c->output->కూడు (ligGlyph);
   }
 
-  template <typename set_t>
-  void collect_second (set_t &s) const
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య collect_రెండవ (సమితి_t &s) స్థిరరాశి
   {
-    if (unlikely (!component.get_length ()))
+    ఒకవేళ (unlikely (!component.get_నిడివి ()))
     {
       // A ligature without any components. Anything matches.
-      s = set_t::full ();
-      return;
+      s = సమితి_t::నిండిన ();
+      తిరిగి;
     }
-    s.add (component.arrayZ[0]);
+    s.కూడు (component.arrayZ[0]);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  తార్కిక would_apply (hb_would_apply_context_t *c) స్థిరరాశి
   {
-    if (c->len != component.lenP1)
-      return false;
+    ఒకవేళ (c->len != component.lenP1)
+      తిరిగి అబద్ధం;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < c->len; i++)
+      ఒకవేళ (likely (c->glyphs[i] != component[i]))
+        తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    TRACE_APPLY (ఇది);
+    గుర్తులేని పూర్ణాంకం లెక్క = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    ఒకవేళ (unlikely (!లెక్క)) return_trace (అబద్ధం);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    ఒకవేళ (unlikely (లెక్క == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->బఫరు->sync_so_far ();
+	c->బఫరు->సందేశం (c->font,
 			    "replacing glyph at %u (ligature substitution)",
-			    c->buffer->idx);
+			    c->బఫరు->idx);
       }
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->message (c->font,
+	c->బఫరు->సందేశం (c->font,
 			    "replaced glyph at %u (ligature substitution)",
-			    c->buffer->idx - 1u);
+			    c->బఫరు->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (నిజం);
     }
 
-    unsigned int total_component_count = 0;
+    గుర్తులేని పూర్ణాంకం మొత్తం_component_లెక్క = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    ఒకవేళ (unlikely (లెక్క > HB_MAX_CONTEXT_నిడివి)) తిరిగి అబద్ధం;
+    గుర్తులేని పూర్ణాంకం సరిపోలిక_చివర = 0;
 
-    if (likely (!match_input (c, count,
+    ఒకవేళ (likely (!సరిపోలిక_ఆదానం (c, లెక్క,
                               &component[1],
-                              match_glyph,
-                              nullptr,
-                              &match_end,
-                              &total_component_count)))
+                              సరిపోలిక_glyph,
+                              శూన్యసూచిక,
+                              &సరిపోలిక_చివర,
+                              &మొత్తం_component_లెక్క)))
     {
-      c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-      return_trace (false);
+      c->బఫరు->unsafe_గమ్యం_concat (c->బఫరు->idx, సరిపోలిక_చివర);
+      return_trace (అబద్ధం);
     }
 
-    unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    గుర్తులేని pos = 0;
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      unsigned delta = c->buffer->sync_so_far ();
+      గుర్తులేని delta = c->బఫరు->sync_so_far ();
 
-      pos = c->buffer->idx;
+      pos = c->బఫరు->idx;
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      అక్షరం buf[HB_MAX_CONTEXT_నిడివి * 16] = {0};
+      అక్షరం *p = buf;
 
-      match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      సరిపోలిక_చివర += delta;
+      కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       {
-	c->match_positions[i] += delta;
-	if (i)
+	c->సరిపోలిక_positions[i] += delta;
+	ఒకవేళ (i)
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
-	p += strlen(p);
+	snprintf (p, పరిమాణం(buf) - (p - buf), "%u", c->సరిపోలిక_positions[i]);
+	p += అక్షరశ్రేణి_పొడవు(p);
       }
 
-      c->buffer->message (c->font,
+      c->బఫరు->సందేశం (c->font,
 			  "ligating glyphs at %s",
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
-                  match_end,
+    ligate_ఆదానం (c,
+                  లెక్క,
+                  సరిపోలిక_చివర,
                   ligGlyph,
-                  total_component_count);
+                  మొత్తం_component_లెక్క);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->బఫరు->sync_so_far ();
+      c->బఫరు->సందేశం (c->font,
 			  "ligated glyph at %u",
 			  pos);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template <typename Iterator,
-            hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  మూస <రకం_పేరు Iterator,
+            hb_requires (hb_is_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c,
                   hb_codepoint_t ligature,
                   Iterator components /* Starting from second */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
-    return_trace (true);
+    ఒకవేళ (unlikely (!component.serialize (c, components))) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  తార్కిక subset (hb_subset_context_t *c, గుర్తులేని coverage_idx) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    ఒకవేళ (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (అబద్ధం);
     // Ensure Coverage table is always packed after this.
-    c->serializer->add_virtual_link (coverage_idx);
+    c->serializer->కూడు_virtual_link (coverage_idx);
 
-    auto it =
+    స్వయంచాలక it =
       + hb_iter (component)
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer,
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    return_trace (బహిర్గతం->serialize (c->serializer,
                                   glyph_map[ligGlyph],
                                   it));  }
 };
@@ -231,4 +231,4 @@ struct Ligature
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURE_HH */
+#అయితే_ముగింపు  /* OT_LAYOUT_GSUB_LIGATURE_HH */

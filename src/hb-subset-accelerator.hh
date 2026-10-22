@@ -24,55 +24,55 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_SUBSET_ACCELERATOR_HH
-#define HB_SUBSET_ACCELERATOR_HH
+#నిర్వచితం_కాకపోతే HB_SUBSET_ACCELERATOR_HH
+#నిర్వచించు HB_SUBSET_ACCELERATOR_HH
 
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ "hb-multimap.hh"
+#అన్తర్భావ "hb-set.hh"
 
-extern HB_INTERNAL hb_user_data_key_t _hb_subset_accelerator_user_data_key;
+బాహ్య HB_అంతర్గత hb_user_దత్తాంశం_కీలకం_t hb_subset_accelerator_user_దత్తాంశం_కీలకం;
 
-namespace CFF {
-struct cff_subset_accelerator_t;
+నామాకాశ CFF {
+నిర్మాణం cff_subset_accelerator_t;
 }
 
-namespace OT {
-struct SubtableUnicodesCache;
-struct cff1_subset_accelerator_t;
-struct cff2_subset_accelerator_t;
+నామాకాశ OT {
+నిర్మాణం SubtableUnicodesCache;
+నిర్మాణం cff1_subset_accelerator_t;
+నిర్మాణం cff2_subset_accelerator_t;
 }
 
-struct hb_subset_accelerator_t
+నిర్మాణం hb_subset_accelerator_t
 {
-  static hb_user_data_key_t* user_data_key()
+  స్థిర hb_user_దత్తాంశం_కీలకం_t* user_దత్తాంశం_కీలకం()
   {
-    return &_hb_subset_accelerator_user_data_key;
+    తిరిగి &hb_subset_accelerator_user_దత్తాంశం_కీలకం;
   }
 
-  static hb_subset_accelerator_t* create(hb_face_t *source,
-					 const hb_map_t& unicode_to_gid_,
-					 const hb_set_t& unicodes_,
-					 bool has_seac_) {
+  స్థిర hb_subset_accelerator_t* create(hb_face_t *ఆధారం,
+					 స్థిరరాశి hb_map_t& unicode_గమ్యం_gid,
+					 స్థిరరాశి hb_సమితి_t& unicodes_,
+					 తార్కిక has_seac_) {
     hb_subset_accelerator_t* accel =
-        (hb_subset_accelerator_t*) hb_calloc (1, sizeof(hb_subset_accelerator_t));
+        (hb_subset_accelerator_t*) hb_calloc (1, పరిమాణం(hb_subset_accelerator_t));
 
-    if (unlikely (!accel)) return accel;
+    ఒకవేళ (unlikely (!accel)) తిరిగి accel;
 
-    new (accel) hb_subset_accelerator_t (source,
-					 unicode_to_gid_,
+    కొత్త (accel) hb_subset_accelerator_t (ఆధారం,
+					 unicode_గమ్యం_gid,
 					 unicodes_,
 					 has_seac_);
 
-    return accel;
+    తిరిగి accel;
   }
 
-  static void destroy (void* p)
+  స్థిర శూన్య destroy (శూన్య* p)
   {
-    if (!p) return;
+    ఒకవేళ (!p) తిరిగి;
 
     hb_subset_accelerator_t *accel = (hb_subset_accelerator_t *) p;
 
@@ -81,61 +81,61 @@ struct hb_subset_accelerator_t
     hb_free (accel);
   }
 
-  hb_subset_accelerator_t (hb_face_t *source,
-			   const hb_map_t& unicode_to_gid_,
-			   const hb_set_t& unicodes_,
-			   bool has_seac_) :
-    unicode_to_gid(unicode_to_gid_),
+  hb_subset_accelerator_t (hb_face_t *ఆధారం,
+			   స్థిరరాశి hb_map_t& unicode_గమ్యం_gid,
+			   స్థిరరాశి hb_సమితి_t& unicodes_,
+			   తార్కిక has_seac_) :
+    unicode_గమ్యం_gid_2(unicode_గమ్యం_gid),
     unicodes(unicodes_),
-    cmap_cache(nullptr),
-    destroy_cmap_cache(nullptr),
+    cmap_cache(శూన్యసూచిక),
+    destroy_cmap_cache(శూన్యసూచిక),
     has_seac(has_seac_),
-    source(hb_face_reference (source))
+    ఆధారం(hb_face_reference (ఆధారం))
   {
-    gid_to_unicodes.alloc (unicode_to_gid.get_population ());
-    for (const auto &_ : unicode_to_gid)
+    gid_గమ్యం_unicodes.alloc (unicode_గమ్యం_gid_2.get_population ());
+    కొరకు (స్థిరరాశి స్వయంచాలక &_ : unicode_గమ్యం_gid_2)
     {
-      auto unicode = _.first;
-      auto gid = _.second;
-      gid_to_unicodes.add (gid, unicode);
+      స్వయంచాలక unicode = _.మొదటి;
+      స్వయంచాలక gid = _.second;
+      gid_గమ్యం_unicodes.కూడు (gid, unicode);
     }
   }
 
-  HB_INTERNAL ~hb_subset_accelerator_t ();
+  HB_అంతర్గత ~hb_subset_accelerator_t ();
 
   // Generic
 
-  mutable hb_mutex_t sanitized_table_cache_lock;
-  mutable hb_hashmap_t<hb_tag_t, hb::unique_ptr<hb_blob_t>> sanitized_table_cache;
+  మార్చదగిన hb_mutex_t sanitized_పట్టిక_cache_తాళం;
+  మార్చదగిన hb_hashmap_t<hb_ట్యాగ్_t, hb::unique_ptr<hb_blob_t>> sanitized_పట్టిక_cache;
 
-  hb_map_t unicode_to_gid;
-  hb_multimap_t gid_to_unicodes;
-  hb_set_t unicodes;
+  hb_map_t unicode_గమ్యం_gid_2;
+  hb_multimap_t gid_గమ్యం_unicodes;
+  hb_సమితి_t unicodes;
 
   // cmap
-  const OT::SubtableUnicodesCache* cmap_cache;
+  స్థిరరాశి OT::SubtableUnicodesCache* cmap_cache;
   hb_destroy_func_t destroy_cmap_cache;
 
   // CFF
-  bool has_seac;
+  తార్కిక has_seac;
 
   // TODO(garretrieger): cumulative glyf checksum map
 
-  bool in_error () const
+  తార్కిక లోపల_error () స్థిరరాశి
   {
-    return unicode_to_gid.in_error () ||
-	   gid_to_unicodes.in_error () ||
-	   unicodes.in_error () ||
-	   sanitized_table_cache.in_error ();
+    తిరిగి unicode_గమ్యం_gid_2.లోపల_error () ||
+	   gid_గమ్యం_unicodes.లోపల_error () ||
+	   unicodes.లోపల_error () ||
+	   sanitized_పట్టిక_cache.లోపల_error ();
   }
 
-  hb_face_t *source;
-#ifndef HB_NO_SUBSET_CFF
+  hb_face_t *ఆధారం;
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
   // These have to be immediately after source:
-  mutable hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
-  mutable hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
-#endif
+  మార్చదగిన hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
+  మార్చదగిన hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
+#అయితే_ముగింపు
 };
 
 
-#endif /* HB_SUBSET_ACCELERATOR_HH */
+#అయితే_ముగింపు /* HB_SUBSET_ACCELERATOR_HH */

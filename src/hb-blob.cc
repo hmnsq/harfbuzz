@@ -25,15 +25,15 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-blob.hh"
 
-#ifdef HAVE_SYS_MMAN_H
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-#include <sys/mman.h>
-#endif /* HAVE_SYS_MMAN_H */
+#నిర్వచితమైతే HAVE_SYS_MMAN_H
+#నిర్వచితమైతే HAVE_UNISTD_H
+#అన్తర్భావ <unistd.h>
+#అయితే_ముగింపు /* HAVE_UNISTD_H */
+#అన్తర్భావ <sys/mman.h>
+#అయితే_ముగింపు /* HAVE_SYS_MMAN_H */
 
 
 /**
@@ -66,22 +66,22 @@
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
-		hb_memory_mode_t   mode,
-		void              *user_data,
+hb_blob_create (స్థిరరాశి అక్షరం        *దత్తాంశం,
+		గుర్తులేని పూర్ణాంకం       నిడివి,
+		hb_జ్ఞాపకం_బహుళకం_t   బహుళకం,
+		శూన్య              *user_దత్తాంశం,
 		hb_destroy_func_t  destroy)
 {
-  if (!length)
+  ఒకవేళ (!నిడివి)
   {
-    if (destroy)
-      destroy (user_data);
-    return hb_blob_get_empty ();
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి hb_blob_get_ఖాళీలు ();
   }
 
-  hb_blob_t *blob = hb_blob_create_or_fail (data, length, mode,
-					    user_data, destroy);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  hb_blob_t *blob = hb_blob_create_or_fail (దత్తాంశం, నిడివి, బహుళకం,
+					    user_దత్తాంశం, destroy);
+  తిరిగి likely (blob) ? blob : hb_blob_get_ఖాళీలు ();
 }
 
 /**
@@ -104,45 +104,45 @@ hb_blob_create (const char        *data,
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
-			hb_memory_mode_t   mode,
-			void              *user_data,
+hb_blob_create_or_fail (స్థిరరాశి అక్షరం        *దత్తాంశం,
+			గుర్తులేని పూర్ణాంకం       నిడివి,
+			hb_జ్ఞాపకం_బహుళకం_t   బహుళకం,
+			శూన్య              *user_దత్తాంశం,
 			hb_destroy_func_t  destroy)
 {
   hb_blob_t *blob;
 
-  if (length >= 1u << 31 ||
+  ఒకవేళ (నిడివి >= 1u << 31 ||
       !(blob = hb_object_create<hb_blob_t> ()))
   {
-    if (destroy)
-      destroy (user_data);
-    return nullptr;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి శూన్యసూచిక;
   }
 
-  blob->data = data;
-  blob->length = length;
-  blob->mode = mode;
+  blob->దత్తాంశం = దత్తాంశం;
+  blob->నిడివి = నిడివి;
+  blob->బహుళకం = బహుళకం;
 
-  blob->user_data = user_data;
+  blob->user_దత్తాంశం = user_దత్తాంశం;
   blob->destroy = destroy;
 
-  if (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
-    blob->mode = HB_MEMORY_MODE_READONLY;
-    if (!blob->try_make_writable ())
+  ఒకవేళ (blob->బహుళకం == HB_జ్ఞాపకం_బహుళకం_DUPLICATE) {
+    blob->బహుళకం = HB_జ్ఞాపకం_బహుళకం_READONLY;
+    ఒకవేళ (!blob->try_make_writable ())
     {
       hb_blob_destroy (blob);
-      return nullptr;
+      తిరిగి శూన్యసూచిక;
     }
   }
 
-  return blob;
+  తిరిగి blob;
 }
 
-static void
-_hb_blob_destroy (void *data)
+స్థిర శూన్య
+_hb_blob_destroy (శూన్య *దత్తాంశం)
 {
-  hb_blob_destroy ((hb_blob_t *) data);
+  hb_blob_destroy ((hb_blob_t *) దత్తాంశం);
 }
 
 /**
@@ -166,24 +166,24 @@ _hb_blob_destroy (void *data)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length)
+hb_blob_create_sub_blob (hb_blob_t    *మాతృ,
+			 గుర్తులేని పూర్ణాంకం  స్థానభ్రంశం,
+			 గుర్తులేని పూర్ణాంకం  నిడివి)
 {
   hb_blob_t *blob;
 
-  if (!length || !parent || offset >= parent->length)
-    return hb_blob_get_empty ();
+  ఒకవేళ (!నిడివి || !మాతృ || స్థానభ్రంశం >= మాతృ->నిడివి)
+    తిరిగి hb_blob_get_ఖాళీలు ();
 
-  hb_blob_make_immutable (parent);
+  hb_blob_make_immutable (మాతృ);
 
-  blob = hb_blob_create (parent->data + offset,
-			 hb_min (length, parent->length - offset),
-			 HB_MEMORY_MODE_READONLY,
-			 hb_blob_reference (parent),
+  blob = hb_blob_create (మాతృ->దత్తాంశం + స్థానభ్రంశం,
+			 hb_min (నిడివి, మాతృ->నిడివి - స్థానభ్రంశం),
+			 HB_జ్ఞాపకం_బహుళకం_READONLY,
+			 hb_blob_reference (మాతృ),
 			 _hb_blob_destroy);
 
-  return blob;
+  తిరిగి blob;
 }
 
 /**
@@ -199,16 +199,16 @@ hb_blob_create_sub_blob (hb_blob_t    *parent,
 hb_blob_t *
 hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 {
-  blob = hb_blob_create (blob->data,
-			 blob->length,
-			 HB_MEMORY_MODE_DUPLICATE,
-			 nullptr,
-			 nullptr);
+  blob = hb_blob_create (blob->దత్తాంశం,
+			 blob->నిడివి,
+			 HB_జ్ఞాపకం_బహుళకం_DUPLICATE,
+			 శూన్యసూచిక,
+			 శూన్యసూచిక);
 
-  if (unlikely (blob == hb_blob_get_empty ()))
-    blob = nullptr;
+  ఒకవేళ (unlikely (blob == hb_blob_get_ఖాళీలు ()))
+    blob = శూన్యసూచిక;
 
-  return blob;
+  తిరిగి blob;
 }
 
 /**
@@ -223,9 +223,9 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_blob_get_empty ()
+hb_blob_get_ఖాళీలు ()
 {
-  return const_cast<hb_blob_t *> (&Null (hb_blob_t));
+  తిరిగి const_cast<hb_blob_t *> (&Null (hb_blob_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_blob_get_empty ()
 hb_blob_t *
 hb_blob_reference (hb_blob_t *blob)
 {
-  return hb_object_reference (blob);
+  తిరిగి hb_object_reference (blob);
 }
 
 /**
@@ -258,10 +258,10 @@ hb_blob_reference (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_blob_destroy (hb_blob_t *blob)
 {
-  if (!hb_object_destroy (blob)) return;
+  ఒకవేళ (!hb_object_destroy (blob)) తిరిగి;
 
   hb_free (blob);
 }
@@ -281,13 +281,13 @@ hb_blob_destroy (hb_blob_t *blob)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_blob_set_user_data (hb_blob_t          *blob,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_blob_సమితి_user_దత్తాంశం (hb_blob_t          *blob,
+		       hb_user_దత్తాంశం_కీలకం_t *key,
+		       శూన్య *              దత్తాంశం,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (blob, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (blob, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -302,11 +302,11 @@ hb_blob_set_user_data (hb_blob_t          *blob,
  *
  * Since: 0.9.2
  **/
-void *
-hb_blob_get_user_data (const hb_blob_t    *blob,
-		       hb_user_data_key_t *key)
+శూన్య *
+hb_blob_get_user_దత్తాంశం (స్థిరరాశి hb_blob_t    *blob,
+		       hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  return hb_object_get_user_data (blob, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (blob, key);
 }
 
 
@@ -318,11 +318,11 @@ hb_blob_get_user_data (const hb_blob_t    *blob,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_blob_make_immutable (hb_blob_t *blob)
 {
-  if (hb_object_is_immutable (blob))
-    return;
+  ఒకవేళ (hb_object_is_immutable (blob))
+    తిరిగి;
 
   hb_object_make_immutable (blob);
 }
@@ -340,7 +340,7 @@ hb_blob_make_immutable (hb_blob_t *blob)
 hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob)
 {
-  return hb_object_is_immutable (blob);
+  తిరిగి hb_object_is_immutable (blob);
 }
 
 
@@ -354,10 +354,10 @@ hb_blob_is_immutable (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_blob_get_length (hb_blob_t *blob)
+గుర్తులేని పూర్ణాంకం
+hb_blob_get_నిడివి (hb_blob_t *blob)
 {
-  return blob->length;
+  తిరిగి blob->నిడివి;
 }
 
 /**
@@ -371,13 +371,13 @@ hb_blob_get_length (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
+స్థిరరాశి అక్షరం *
+hb_blob_get_దత్తాంశం (hb_blob_t *blob, గుర్తులేని పూర్ణాంకం *నిడివి)
 {
-  if (length)
-    *length = blob->length;
+  ఒకవేళ (నిడివి)
+    *నిడివి = blob->నిడివి;
 
-  return blob->data;
+  తిరిగి blob->దత్తాంశం;
 }
 
 /**
@@ -396,200 +396,200 @@ hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
  *
  * Since: 0.9.2
  **/
-char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length)
+అక్షరం *
+hb_blob_get_దత్తాంశం_writable (hb_blob_t *blob, గుర్తులేని పూర్ణాంకం *నిడివి)
 {
-  if (hb_object_is_immutable (blob) ||
+  ఒకవేళ (hb_object_is_immutable (blob) ||
      !blob->try_make_writable ())
   {
-    if (length) *length = 0;
-    return nullptr;
+    ఒకవేళ (నిడివి) *నిడివి = 0;
+    తిరిగి శూన్యసూచిక;
   }
 
-  if (length) *length = blob->length;
-  return const_cast<char *> (blob->data);
+  ఒకవేళ (నిడివి) *నిడివి = blob->నిడివి;
+  తిరిగి const_cast<అక్షరం *> (blob->దత్తాంశం);
 }
 
 
-bool
+తార్కిక
 hb_blob_t::try_make_writable_inplace_unix ()
 {
-#if defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
-  uintptr_t pagesize = -1, mask, length;
-  const char *addr;
+#ఒకవేళ defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
+  uintptr_t pagesize = -1, ముసుగు, నిడివి;
+  స్థిరరాశి అక్షరం *addr;
 
-#if defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
-  pagesize = (uintptr_t) sysconf (_SC_PAGE_SIZE);
-#elif defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
+#ఒకవేళ defined(HAVE_SYSCONF) && defined(SC_పుట_కొలత)
+  pagesize = (uintptr_t) sysconf (SC_పుట_కొలత);
+#లేదావేళ defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGESIZE);
-#elif defined(HAVE_GETPAGESIZE)
+#లేదావేళ defined(HAVE_GETPAGESIZE)
   pagesize = (uintptr_t) getpagesize ();
-#endif
+#అయితే_ముగింపు
 
-  if ((uintptr_t) -1L == pagesize) {
-    DEBUG_MSG_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
-    return false;
+  ఒకవేళ ((uintptr_t) -1L == pagesize) {
+    DEBUG_సందేశం_FUNC (BLOB, ఇది, "failed to get pagesize: %s", strerror (errno));
+    తిరిగి అబద్ధం;
   }
-  DEBUG_MSG_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
+  DEBUG_సందేశం_FUNC (BLOB, ఇది, "pagesize is %lu", (గుర్తులేని దీర్ఘ) pagesize);
 
-  mask = ~(pagesize-1);
-  addr = (const char *) (((uintptr_t) this->data) & mask);
-  length = (const char *) (((uintptr_t) this->data + this->length + pagesize-1) & mask)  - addr;
-  DEBUG_MSG_FUNC (BLOB, this,
+  ముసుగు = ~(pagesize-1);
+  addr = (స్థిరరాశి అక్షరం *) (((uintptr_t) ఇది->దత్తాంశం) & ముసుగు);
+  నిడివి = (స్థిరరాశి అక్షరం *) (((uintptr_t) ఇది->దత్తాంశం + ఇది->నిడివి + pagesize-1) & ముసుగు)  - addr;
+  DEBUG_సందేశం_FUNC (BLOB, ఇది,
 		  "calling mprotect on [%p..%p] (%lu bytes)",
-		  addr, addr+length, (unsigned long) length);
-  if (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
-    DEBUG_MSG_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
-    return false;
+		  addr, addr+నిడివి, (గుర్తులేని దీర్ఘ) నిడివి);
+  ఒకవేళ (-1 == mprotect ((శూన్య *) addr, నిడివి, PROT_READ | PROT_WRITE)) {
+    DEBUG_సందేశం_FUNC (BLOB, ఇది, "mprotect failed: %s", strerror (errno));
+    తిరిగి అబద్ధం;
   }
 
-  this->mode = HB_MEMORY_MODE_WRITABLE;
+  ఇది->బహుళకం = HB_జ్ఞాపకం_బహుళకం_WRITABLE;
 
-  DEBUG_MSG_FUNC (BLOB, this,
+  DEBUG_సందేశం_FUNC (BLOB, ఇది,
 		  "successfully made [%p..%p] (%lu bytes) writable\n",
-		  addr, addr+length, (unsigned long) length);
-  return true;
-#else
-  return false;
-#endif
+		  addr, addr+నిడివి, (గుర్తులేని దీర్ఘ) నిడివి);
+  తిరిగి నిజం;
+#లేకపోతే
+  తిరిగి అబద్ధం;
+#అయితే_ముగింపు
 }
 
-bool
+తార్కిక
 hb_blob_t::try_make_writable_inplace ()
 {
-  DEBUG_MSG_FUNC (BLOB, this, "making writable inplace\n");
+  DEBUG_సందేశం_FUNC (BLOB, ఇది, "making writable inplace\n");
 
-  if (this->try_make_writable_inplace_unix ())
-    return true;
+  ఒకవేళ (ఇది->try_make_writable_inplace_unix ())
+    తిరిగి నిజం;
 
-  DEBUG_MSG_FUNC (BLOB, this, "making writable -> FAILED\n");
+  DEBUG_సందేశం_FUNC (BLOB, ఇది, "making writable -> FAILED\n");
 
   /* Failed to make writable inplace, mark that */
-  this->mode = HB_MEMORY_MODE_READONLY;
-  return false;
+  ఇది->బహుళకం = HB_జ్ఞాపకం_బహుళకం_READONLY;
+  తిరిగి అబద్ధం;
 }
 
-bool
+తార్కిక
 hb_blob_t::try_make_writable ()
 {
-  if (unlikely (!length))
-    mode = HB_MEMORY_MODE_WRITABLE;
+  ఒకవేళ (unlikely (!నిడివి))
+    బహుళకం = HB_జ్ఞాపకం_బహుళకం_WRITABLE;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  ఒకవేళ (ఇది->బహుళకం == HB_జ్ఞాపకం_బహుళకం_WRITABLE)
+    తిరిగి నిజం;
 
-  if (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
-    return true;
+  ఒకవేళ (ఇది->బహుళకం == HB_జ్ఞాపకం_బహుళకం_READONLY_MAY_MAKE_WRITABLE && ఇది->try_make_writable_inplace ())
+    తిరిగి నిజం;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  ఒకవేళ (ఇది->బహుళకం == HB_జ్ఞాపకం_బహుళకం_WRITABLE)
+    తిరిగి నిజం;
 
 
-  DEBUG_MSG_FUNC (BLOB, this, "current data is -> %p\n", this->data);
+  DEBUG_సందేశం_FUNC (BLOB, ఇది, "current data is -> %p\n", ఇది->దత్తాంశం);
 
-  char *new_data;
+  అక్షరం *new_దత్తాంశం;
 
-  new_data = (char *) hb_malloc (this->length);
-  if (unlikely (!new_data))
-    return false;
+  new_దత్తాంశం = (అక్షరం *) hb_malloc (ఇది->నిడివి);
+  ఒకవేళ (unlikely (!new_దత్తాంశం))
+    తిరిగి అబద్ధం;
 
-  DEBUG_MSG_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
+  DEBUG_సందేశం_FUNC (BLOB, ఇది, "dupped successfully -> %p\n", ఇది->దత్తాంశం);
 
-  hb_memcpy (new_data, this->data, this->length);
-  this->destroy_user_data ();
-  this->mode = HB_MEMORY_MODE_WRITABLE;
-  this->data = new_data;
-  this->user_data = new_data;
-  this->destroy = hb_free;
+  hb_memcpy (new_దత్తాంశం, ఇది->దత్తాంశం, ఇది->నిడివి);
+  ఇది->destroy_user_దత్తాంశం ();
+  ఇది->బహుళకం = HB_జ్ఞాపకం_బహుళకం_WRITABLE;
+  ఇది->దత్తాంశం = new_దత్తాంశం;
+  ఇది->user_దత్తాంశం = new_దత్తాంశం;
+  ఇది->destroy = hb_free;
 
-  return true;
+  తిరిగి నిజం;
 }
 
 /*
  * Mmap
  */
 
-#ifndef HB_NO_OPEN
-#ifdef HAVE_MMAP
-# if !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
+#నిర్వచితం_కాకపోతే HB_NO_OPEN
+#నిర్వచితమైతే HAVE_MMAP
+# ఒకవేళ !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
 #  include <sys/paths.h>
 # endif
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-#endif
+#అయితే_ముగింపు
 
-#ifdef _WIN32
+#నిర్వచితమైతే _WIN32
 # include <windows.h>
-#else
-# ifndef O_BINARY
-#  define O_BINARY 0
+#లేకపోతే
+# ifndef O_ద్విమాన
+#  define O_ద్విమాన 0
 # endif
-#endif
+#అయితే_ముగింపు
 
-#ifndef MAP_NORESERVE
+#నిర్వచితం_కాకపోతే MAP_NORESERVE
 # define MAP_NORESERVE 0
-#endif
+#అయితే_ముగింపు
 
-struct hb_mapped_file_t
+నిర్మాణం hb_mapped_file_t
 {
-  char *contents;
-  unsigned long length;
-#ifdef _WIN32
+  అక్షరం *contents;
+  గుర్తులేని దీర్ఘ నిడివి;
+#నిర్వచితమైతే _WIN32
   HANDLE mapping;
-#endif
+#అయితే_ముగింపు
 };
 
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-static void
-_hb_mapped_file_destroy (void *file_)
+#ఒకవేళ (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+స్థిర శూన్య
+_hb_mapped_file_destroy (శూన్య *file_)
 {
   hb_mapped_file_t *file = (hb_mapped_file_t *) file_;
-#ifdef HAVE_MMAP
-  munmap (file->contents, file->length);
-#elif defined(_WIN32)
-  UnmapViewOfFile (file->contents);
+#నిర్వచితమైతే HAVE_MMAP
+  munmap (file->contents, file->నిడివి);
+#లేదావేళ defined(_WIN32)
+  Unmap_View_యొక్క_File (file->contents);
   CloseHandle (file->mapping);
-#else
-  assert (0); // If we don't have mmap we shouldn't reach here
-#endif
+#లేకపోతే
+  ప్రతిజ్ఞా (0); // If we don't have mmap we shouldn't reach here
+#అయితే_ముగింపు
 
   hb_free (file);
 }
-#endif
+#అయితే_ముగింపు
 
-#ifdef _PATH_RSRCFORKSPEC
-static int
-_open_resource_fork (const char *file_name, hb_mapped_file_t *file)
+#నిర్వచితమైతే మార్గం_RSRCFORKSPEC
+స్థిర పూర్ణాంకం
+_open_resource_fork (స్థిరరాశి అక్షరం *file_name, hb_mapped_file_t *file)
 {
-  size_t name_len = strlen (file_name);
-  size_t len = name_len + sizeof (_PATH_RSRCFORKSPEC);
+  size_t name_len = అక్షరశ్రేణి_పొడవు (file_name);
+  size_t len = name_len + పరిమాణం (మార్గం_RSRCFORKSPEC);
 
-  char *rsrc_name = (char *) hb_malloc (len);
-  if (unlikely (!rsrc_name)) return -1;
+  అక్షరం *rsrc_name = (అక్షరం *) hb_malloc (len);
+  ఒకవేళ (unlikely (!rsrc_name)) తిరిగి -1;
 
   strncpy (rsrc_name, file_name, name_len);
-  strncpy (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
-	   sizeof (_PATH_RSRCFORKSPEC));
+  strncpy (rsrc_name + name_len, మార్గం_RSRCFORKSPEC,
+	   పరిమాణం (మార్గం_RSRCFORKSPEC));
 
-  int fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
+  పూర్ణాంకం fd = open (rsrc_name, O_RDONLY | O_ద్విమాన, 0);
   hb_free (rsrc_name);
 
-  if (fd != -1)
+  ఒకవేళ (fd != -1)
   {
-    struct stat st;
-    if (fstat (fd, &st) != -1)
-      file->length = (unsigned long) st.st_size;
-    else
+    నిర్మాణం stat st;
+    ఒకవేళ (fstat (fd, &st) != -1)
+      file->నిడివి = (గుర్తులేని దీర్ఘ) st.st_కొలత;
+    లేకపోతే
     {
       close (fd);
       fd = -1;
     }
   }
 
-  return fd;
+  తిరిగి fd;
 }
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_blob_create_from_file:
@@ -609,163 +609,163 @@ _open_resource_fork (const char *file_name, hb_mapped_file_t *file)
  * Since: 1.7.7
  **/
 hb_blob_t *
-hb_blob_create_from_file (const char *file_name)
+hb_blob_create_from_file (స్థిరరాశి అక్షరం *file_name)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  తిరిగి likely (blob) ? blob : hb_blob_get_ఖాళీలు ();
 }
 
-#if defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
-static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+#ఒకవేళ defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
+స్థిర hb_blob_t *
+_hb_blob_try_mmap (స్థిరరాశి అక్షరం *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
-  auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, పరిమాణం (hb_mapped_file_t));
+  ఒకవేళ (unlikely (!file)) తిరిగి శూన్యసూచిక;
+  స్వయంచాలక file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  int fd = open (file_name, O_RDONLY | O_BINARY, 0);
-  if (unlikely (fd == -1)) return nullptr;
-  auto fd_guard = hb_make_scope_guard ([&]() { close (fd); });
+  పూర్ణాంకం fd = open (file_name, O_RDONLY | O_ద్విమాన, 0);
+  ఒకవేళ (unlikely (fd == -1)) తిరిగి శూన్యసూచిక;
+  స్వయంచాలక fd_guard = hb_make_scope_guard ([&]() { close (fd); });
 
-  struct stat st;
-  if (unlikely (fstat (fd, &st) == -1)) return nullptr;
+  నిర్మాణం stat st;
+  ఒకవేళ (unlikely (fstat (fd, &st) == -1)) తిరిగి శూన్యసూచిక;
 
-  file->length = (unsigned long) st.st_size;
+  file->నిడివి = (గుర్తులేని దీర్ఘ) st.st_కొలత;
 
-#ifdef _PATH_RSRCFORKSPEC
-  if (unlikely (file->length == 0))
+#నిర్వచితమైతే మార్గం_RSRCFORKSPEC
+  ఒకవేళ (unlikely (file->నిడివి == 0))
   {
-    int rfd = _open_resource_fork (file_name, file);
-    if (rfd != -1)
+    పూర్ణాంకం rfd = _open_resource_fork (file_name, file);
+    ఒకవేళ (rfd != -1)
     {
       close (fd);
       fd = rfd;
     }
   }
-#endif
+#అయితే_ముగింపు
 
-  file->contents = (char *) mmap (nullptr, file->length, PROT_READ,
-				  MAP_PRIVATE | MAP_NORESERVE, fd, 0);
-  if (unlikely (file->contents == MAP_FAILED)) return nullptr;
+  file->contents = (అక్షరం *) mmap (శూన్యసూచిక, file->నిడివి, PROT_READ,
+				  MAP_వ్యక్తిగత | MAP_NORESERVE, fd, 0);
+  ఒకవేళ (unlikely (file->contents == MAP_FAILED)) తిరిగి శూన్యసూచిక;
 
   file_guard.release ();
   /* fd_guard closes fd on return (ownership ends after mmap). */
-  return hb_blob_create_or_fail (file->contents, file->length,
-				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
+  తిరిగి hb_blob_create_or_fail (file->contents, file->నిడివి,
+				 HB_జ్ఞాపకం_బహుళకం_READONLY_MAY_MAKE_WRITABLE, (శూన్య *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
-#elif defined(_WIN32) && !defined(HB_NO_MMAP)
-static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+#లేదావేళ defined(_WIN32) && !defined(HB_NO_MMAP)
+స్థిర hb_blob_t *
+_hb_blob_try_mmap (స్థిరరాశి అక్షరం *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
-  auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, పరిమాణం (hb_mapped_file_t));
+  ఒకవేళ (unlikely (!file)) తిరిగి శూన్యసూచిక;
+  స్వయంచాలక file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  size_t size = strlen (file_name) + 1;
-  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (sizeof (wchar_t) * size);
-  if (unlikely (!wchar_file_name)) return nullptr;
+  size_t కొలత = అక్షరశ్రేణి_పొడవు (file_name) + 1;
+  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (పరిమాణం (wchar_t) * కొలత);
+  ఒకవేళ (unlikely (!wchar_file_name)) తిరిగి శూన్యసూచిక;
 
   /* Assume file name is given in UTF-8 encoding */
-  int conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
-  if (conversion <= 0)
+  పూర్ణాంకం conversion = Multi_Byte_గమ్యం_Wide_Char (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, కొలత);
+  ఒకవేళ (conversion <= 0)
   {
     /* Conversion failed due to invalid UTF-8 characters,
        Repeat conversion based on system code page */
-    mbstowcs (wchar_file_name, file_name, size);
+    mbstowcs (wchar_file_name, file_name, కొలత);
   }
 
   HANDLE fd;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ఒకవేళ !WINAPI_FAMILY_విభజన(WINAPI_విభజన_DESKTOP) && WINAPI_FAMILY_విభజన(WINAPI_విభజన_APP)
   {
     CREATEFILE2_EXTENDED_PARAMETERS ceparams = { 0 };
-    ceparams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-    ceparams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFFF;
-    ceparams.dwFileFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFF00000;
-    ceparams.dwSecurityQosFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0x000F0000;
-    ceparams.lpSecurityAttributes = nullptr;
-    ceparams.hTemplateFile = nullptr;
+    ceparams.dw_కొలత = పరిమాణం(CREATEFILE2_EXTENDED_PARAMETERS);
+    ceparams.dw_File_లక్షణాలు = FILE_ATTRIBUTE_సాధారణ | FILE_FLAG_OVERLAPPED & 0xFFFF;
+    ceparams.dwFileFlags = FILE_ATTRIBUTE_సాధారణ | FILE_FLAG_OVERLAPPED & 0xFFF00000;
+    ceparams.dwSecurityQosFlags = FILE_ATTRIBUTE_సాధారణ | FILE_FLAG_OVERLAPPED & 0x000F0000;
+    ceparams.lp_Security_లక్షణాలు = శూన్యసూచిక;
+    ceparams.hTemplateFile = శూన్యసూచిక;
     fd = CreateFile2 (wchar_file_name, GENERIC_READ, FILE_SHARE_READ,
 		      OPEN_EXISTING, &ceparams);
   }
-#else
-  fd = CreateFileW (wchar_file_name, GENERIC_READ, FILE_SHARE_READ, nullptr,
-		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
-		    nullptr);
-#endif
+#లేకపోతే
+  fd = CreateFileW (wchar_file_name, GENERIC_READ, FILE_SHARE_READ, శూన్యసూచిక,
+		    OPEN_EXISTING, FILE_ATTRIBUTE_సాధారణ|FILE_FLAG_OVERLAPPED,
+		    శూన్యసూచిక);
+#అయితే_ముగింపు
   hb_free (wchar_file_name);
 
-  if (unlikely (fd == INVALID_HANDLE_VALUE)) return nullptr;
-  auto fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
+  ఒకవేళ (unlikely (fd == INVALID_HANDLE_విలువ)) తిరిగి శూన్యసూచిక;
+  స్వయంచాలక fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ఒకవేళ !WINAPI_FAMILY_విభజన(WINAPI_విభజన_DESKTOP) && WINAPI_FAMILY_విభజన(WINAPI_విభజన_APP)
   {
-    LARGE_INTEGER length;
-    GetFileSizeEx (fd, &length);
-    file->length = length.LowPart;
-    file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, length.QuadPart, nullptr);
+    LARGE_INTEGER నిడివి;
+    Get_File_కొలత_Ex (fd, &నిడివి);
+    file->నిడివి = నిడివి.దిగువ_Part;
+    file->mapping = CreateFileMappingFromApp (fd, శూన్యసూచిక, పుట_READONLY, నిడివి.QuadPart, శూన్యసూచిక);
   }
-#else
-  file->length = (unsigned long) GetFileSize (fd, nullptr);
-  file->mapping = CreateFileMapping (fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
-#endif
-  if (unlikely (!file->mapping)) return nullptr;
+#లేకపోతే
+  file->నిడివి = (గుర్తులేని దీర్ఘ) Get_File_కొలత (fd, శూన్యసూచిక);
+  file->mapping = CreateFileMapping (fd, శూన్యసూచిక, పుట_READONLY, 0, 0, శూన్యసూచిక);
+#అయితే_ముగింపు
+  ఒకవేళ (unlikely (!file->mapping)) తిరిగి శూన్యసూచిక;
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-  file->contents = (char *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
-#else
-  file->contents = (char *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
-#endif
-  if (unlikely (!file->contents)) return nullptr;
+#ఒకవేళ !WINAPI_FAMILY_విభజన(WINAPI_విభజన_DESKTOP) && WINAPI_FAMILY_విభజన(WINAPI_విభజన_APP)
+  file->contents = (అక్షరం *) Map_View_యొక్క_File_From_App (file->mapping, FILE_MAP_READ, 0, 0);
+#లేకపోతే
+  file->contents = (అక్షరం *) Map_View_యొక్క_File (file->mapping, FILE_MAP_READ, 0, 0, 0);
+#అయితే_ముగింపు
+  ఒకవేళ (unlikely (!file->contents)) తిరిగి శూన్యసూచిక;
 
   file_guard.release ();
   /* fd_guard closes fd on return. */
-  return hb_blob_create_or_fail (file->contents, file->length,
-				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
+  తిరిగి hb_blob_create_or_fail (file->contents, file->నిడివి,
+				 HB_జ్ఞాపకం_బహుళకం_READONLY_MAY_MAKE_WRITABLE, (శూన్య *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
-#endif
+#అయితే_ముగింపు
 
 /* Read a file without knowing its size beforehand.  Used as a fallback
  * for systems without mmap or to read from pipes. */
-static hb_blob_t *
-_hb_blob_read_file (const char *file_name)
+స్థిర hb_blob_t *
+_hb_blob_read_file (స్థిరరాశి అక్షరం *file_name)
 {
-  unsigned long len = 0, allocated = BUFSIZ * 16;
-  char *data = (char *) hb_malloc (allocated);
-  if (unlikely (!data)) return nullptr;
-  auto data_guard = hb_make_scope_guard ([&]() { hb_free (data); });
+  గుర్తులేని దీర్ఘ len = 0, allocated = BUFSIZ * 16;
+  అక్షరం *దత్తాంశం = (అక్షరం *) hb_malloc (allocated);
+  ఒకవేళ (unlikely (!దత్తాంశం)) తిరిగి శూన్యసూచిక;
+  స్వయంచాలక దత్తాంశం_guard = hb_make_scope_guard ([&]() { hb_free (దత్తాంశం); });
 
   FILE *fp = fopen (file_name, "rb");
-  if (unlikely (!fp)) return nullptr;
+  ఒకవేళ (unlikely (!fp)) తిరిగి శూన్యసూచిక;
   HB_SCOPE_GUARD (fclose (fp));
 
-  while (!feof (fp))
+  అయితే (!feof (fp))
   {
-    if (allocated - len < BUFSIZ)
+    ఒకవేళ (allocated - len < BUFSIZ)
     {
       allocated *= 2;
       /* Don't allocate and go more than ~536MB, our mmap reader still
 	 can cover files like that but lets limit our fallback reader */
-      if (unlikely (allocated > (2 << 28))) return nullptr;
-      char *new_data = (char *) hb_realloc (data, allocated);
-      if (unlikely (!new_data)) return nullptr;
-      data = new_data;
+      ఒకవేళ (unlikely (allocated > (2 << 28))) తిరిగి శూన్యసూచిక;
+      అక్షరం *new_దత్తాంశం = (అక్షరం *) hb_realloc (దత్తాంశం, allocated);
+      ఒకవేళ (unlikely (!new_దత్తాంశం)) తిరిగి శూన్యసూచిక;
+      దత్తాంశం = new_దత్తాంశం;
     }
 
-    unsigned long addition = fread (data + len, 1, allocated - len, fp);
+    గుర్తులేని దీర్ఘ addition = fread (దత్తాంశం + len, 1, allocated - len, fp);
 
-    int err = ferror (fp);
-#ifdef EINTR // armcc doesn't have it
-    if (unlikely (err == EINTR)) continue;
-#endif
-    if (unlikely (err)) return nullptr;
+    పూర్ణాంకం err = ferror (fp);
+#నిర్వచితమైతే EINTR // armcc doesn't have it
+    ఒకవేళ (unlikely (err == EINTR)) కొనసాగు;
+#అయితే_ముగింపు
+    ఒకవేళ (unlikely (err)) తిరిగి శూన్యసూచిక;
 
     len += addition;
   }
 
-  data_guard.release ();
-  return hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
+  దత్తాంశం_guard.release ();
+  తిరిగి hb_blob_create_or_fail (దత్తాంశం, len, HB_జ్ఞాపకం_బహుళకం_WRITABLE, దత్తాంశం,
 				 (hb_destroy_func_t) hb_free);
 }
 
@@ -786,14 +786,14 @@ _hb_blob_read_file (const char *file_name)
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name)
+hb_blob_create_from_file_or_fail (స్థిరరాశి అక్షరం *file_name)
 {
   /* Adopted from glib's gmappedfile.c with Matthias Clasen and
      Allison Lortie permission but changed a lot to suit our need. */
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-  if (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
-    return blob;
-#endif
-  return _hb_blob_read_file (file_name);
+#ఒకవేళ (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+  ఒకవేళ (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
+    తిరిగి blob;
+#అయితే_ముగింపు
+  తిరిగి _hb_blob_read_file (file_name);
 }
-#endif /* !HB_NO_OPEN */
+#అయితే_ముగింపు /* !HB_NO_OPEN */

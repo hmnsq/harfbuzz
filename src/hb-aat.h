@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_H
-#define HB_AAT_H
-#define HB_AAT_H_IN
+#నిర్వచితం_కాకపోతే HB_AAT_H
+#నిర్వచించు HB_AAT_H
+#నిర్వచించు HB_AAT_H_లోపల
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include "hb-aat-layout.h"
+#అన్తర్భావ "hb-aat-layout.h"
 
 HB_BEGIN_DECLS
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#undef HB_AAT_H_IN
-#endif /* HB_AAT_H */
+#నిర్వచనం_రద్దు HB_AAT_H_లోపల
+#అయితే_ముగింపు /* HB_AAT_H */

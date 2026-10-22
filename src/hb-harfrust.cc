@@ -22,45 +22,45 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_HARFRUST
+#నిర్వచితమైతే HAVE_HARFRUST
 
-#include "hb-shaper-impl.hh"
+#అన్తర్భావ "hb-shaper-impl.hh"
 
-#include "hb-utf.hh"
+#అన్తర్భావ "hb-utf.hh"
 
 
 /*
  * buffer
  */
-extern "C" void *
-_hb_harfrust_buffer_create_rs (void);
+బాహ్య "C" శూన్య *
+hb_harfrust_బఫరు_create_rs (శూన్య);
 
-extern "C" void
-_hb_harfrust_buffer_destroy_rs (void *data);
+బాహ్య "C" శూన్య
+hb_harfrust_బఫరు_destroy_rs (శూన్య *దత్తాంశం);
 
 
 /*
  * shaper face data
  */
 
-extern "C" void *
-_hb_harfrust_shaper_face_data_create_rs (hb_face_t *face);
+బాహ్య "C" శూన్య *
+hb_harfrust_shaper_face_దత్తాంశం_create_rs (hb_face_t *face);
 
-hb_harfrust_face_data_t *
-_hb_harfrust_shaper_face_data_create (hb_face_t *face)
+hb_harfrust_face_దత్తాంశం_t *
+hb_harfrust_shaper_face_దత్తాంశం_create (hb_face_t *face)
 {
-  return (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
+  తిరిగి (hb_harfrust_face_దత్తాంశం_t *) hb_harfrust_shaper_face_దత్తాంశం_create_rs (face);
 }
 
-extern "C" void
-_hb_harfrust_shaper_face_data_destroy_rs (void *data);
+బాహ్య "C" శూన్య
+hb_harfrust_shaper_face_దత్తాంశం_destroy_rs (శూన్య *దత్తాంశం);
 
-void
-_hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
+శూన్య
+hb_harfrust_shaper_face_దత్తాంశం_destroy (hb_harfrust_face_దత్తాంశం_t *దత్తాంశం)
 {
-  _hb_harfrust_shaper_face_data_destroy_rs (data);
+  hb_harfrust_shaper_face_దత్తాంశం_destroy_rs (దత్తాంశం);
 }
 
 
@@ -68,23 +68,23 @@ _hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
  * shaper font data
  */
 
-extern "C" void *
-_hb_harfrust_shaper_font_data_create_rs (hb_font_t *font, const void *face_data);
+బాహ్య "C" శూన్య *
+hb_harfrust_shaper_font_దత్తాంశం_create_rs (hb_font_t *font, స్థిరరాశి శూన్య *face_దత్తాంశం);
 
-hb_harfrust_font_data_t *
-_hb_harfrust_shaper_font_data_create (hb_font_t *font)
+hb_harfrust_font_దత్తాంశం_t *
+hb_harfrust_shaper_font_దత్తాంశం_create (hb_font_t *font)
 {
-  const hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
-  return (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
+  స్థిరరాశి hb_harfrust_face_దత్తాంశం_t *face_దత్తాంశం = font->face->దత్తాంశం.harfrust;
+  తిరిగి (hb_harfrust_font_దత్తాంశం_t *) hb_harfrust_shaper_font_దత్తాంశం_create_rs (font, face_దత్తాంశం);
 }
 
-extern "C" void
-_hb_harfrust_shaper_font_data_destroy_rs (void *data);
+బాహ్య "C" శూన్య
+hb_harfrust_shaper_font_దత్తాంశం_destroy_rs (శూన్య *దత్తాంశం);
 
-void
-_hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
+శూన్య
+hb_harfrust_shaper_font_దత్తాంశం_destroy (hb_harfrust_font_దత్తాంశం_t *దత్తాంశం)
 {
-  _hb_harfrust_shaper_font_data_destroy_rs (data);
+  hb_harfrust_shaper_font_దత్తాంశం_destroy_rs (దత్తాంశం);
 }
 
 
@@ -92,96 +92,96 @@ _hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
  * shape plan
  */
 
-extern "C" void *
-_hb_harfrust_shape_plan_create_rs (const void *font_data,
+బాహ్య "C" శూన్య *
+_hb_harfrust_shape_plan_create_rs (స్థిరరాశి శూన్య *font_దత్తాంశం,
 				   hb_script_t script,
 				   hb_language_t language,
 				   hb_direction_t direction,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   స్థిరరాశి hb_feature_t *features,
+				   గుర్తులేని పూర్ణాంకం        అంకె_features);
 
-extern "C" void
-_hb_harfrust_shape_plan_destroy_rs (void *data);
+బాహ్య "C" శూన్య
+_hb_harfrust_shape_plan_destroy_rs (శూన్య *దత్తాంశం);
 
 
 /*
  * shaper
  */
 
-extern "C" hb_bool_t
-_hb_harfrust_shape_rs (const void         *font_data,
-		       const void         *rs_shape_plan,
-		       const void         *rs_buffer,
+బాహ్య "C" hb_bool_t
+_hb_harfrust_shape_rs (స్థిరరాశి శూన్య         *font_దత్తాంశం,
+		       స్థిరరాశి శూన్య         *rs_shape_plan,
+		       స్థిరరాశి శూన్య         *rs_బఫరు,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_codepoint_t *pre_context,
+		       hb_బఫరు_t        *బఫరు,
+		       స్థిరరాశి hb_codepoint_t *pre_context,
 		       uint32_t            pre_context_len,
-		       const hb_codepoint_t *post_context,
+		       స్థిరరాశి hb_codepoint_t *post_context,
 		       uint32_t            post_context_len,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       స్థిరరాశి hb_feature_t *features,
+		       గుర్తులేని పూర్ణాంకం        అంకె_features);
 
-static hb_user_data_key_t hb_buffer_key = {0};
+స్థిర hb_user_దత్తాంశం_కీలకం_t hb_బఫరు_కీలకం = {0};
 
 hb_bool_t
 _hb_harfrust_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
-		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    hb_బఫరు_t        *బఫరు,
+		    స్థిరరాశి hb_feature_t *features,
+		    గుర్తులేని పూర్ణాంకం        అంకె_features)
 {
-  const hb_harfrust_font_data_t *font_data = font->data.harfrust;
+  స్థిరరాశి hb_harfrust_font_దత్తాంశం_t *font_దత్తాంశం = font->దత్తాంశం.harfrust;
 
-retry_buffer:
-  void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_key);
-  if (unlikely (!hr_buffer))
+retry_బఫరు:
+  శూన్య *hr_బఫరు = hb_బఫరు_get_user_దత్తాంశం (బఫరు, &hb_బఫరు_కీలకం);
+  ఒకవేళ (unlikely (!hr_బఫరు))
   {
-    hr_buffer = _hb_harfrust_buffer_create_rs ();
-    if (unlikely (!hr_buffer))
-      return false;
+    hr_బఫరు = hb_harfrust_బఫరు_create_rs ();
+    ఒకవేళ (unlikely (!hr_బఫరు))
+      తిరిగి అబద్ధం;
 
-    if (!hb_buffer_set_user_data (buffer,
-				  &hb_buffer_key,
-				  hr_buffer,
-				  _hb_harfrust_buffer_destroy_rs,
-				  false))
+    ఒకవేళ (!hb_బఫరు_సమితి_user_దత్తాంశం (బఫరు,
+				  &hb_బఫరు_కీలకం,
+				  hr_బఫరు,
+				  hb_harfrust_బఫరు_destroy_rs,
+				  అబద్ధం))
     {
-      _hb_harfrust_buffer_destroy_rs (hr_buffer);
-      goto retry_buffer;
+      hb_harfrust_బఫరు_destroy_rs (hr_బఫరు);
+      వెళ్ళు retry_బఫరు;
     }
   }
 
-  void *hr_shape_plan = nullptr;
+  శూన్య *hr_shape_plan = శూన్యసూచిక;
 
 retry_shape_plan:
-  hr_shape_plan = shape_plan->harfrust_data.get_acquire ();
-  if (unlikely (!hr_shape_plan))
+  hr_shape_plan = shape_plan->harfrust_దత్తాంశం.get_acquire ();
+  ఒకవేళ (unlikely (!hr_shape_plan))
   {
-    hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_data,
+    hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_దత్తాంశం,
 						       shape_plan->key.props.script,
 						       shape_plan->key.props.language,
 						       shape_plan->key.props.direction,
-						       features, num_features);
-    if (hr_shape_plan &&
-	!shape_plan->harfrust_data.cmpexch (nullptr, hr_shape_plan))
+						       features, అంకె_features);
+    ఒకవేళ (hr_shape_plan &&
+	!shape_plan->harfrust_దత్తాంశం.cmpexch (శూన్యసూచిక, hr_shape_plan))
     {
       _hb_harfrust_shape_plan_destroy_rs (hr_shape_plan);
-      goto retry_shape_plan;
+      వెళ్ళు retry_shape_plan;
     }
   }
 
-  return _hb_harfrust_shape_rs (font_data,
+  తిరిగి _hb_harfrust_shape_rs (font_దత్తాంశం,
 				hr_shape_plan,
-				hr_buffer,
+				hr_బఫరు,
 				font,
-				buffer,
-				buffer->context[0],
-				buffer->context_len[0],
-				buffer->context[1],
-				buffer->context_len[1],
+				బఫరు,
+				బఫరు->context[0],
+				బఫరు->context_len[0],
+				బఫరు->context[1],
+				బఫరు->context_len[1],
 				features,
-				num_features);
+				అంకె_features);
 }
 
 
-#endif
+#అయితే_ముగింపు

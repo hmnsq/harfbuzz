@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_NAME
+#నిర్వచితం_కాకపోతే HB_NO_NAME
 
-#include "hb-ot-name-table.hh"
+#అన్తర్భావ "hb-ot-name-table.hh"
 
-#include "hb-utf.hh"
+#అన్తర్భావ "hb-utf.hh"
 
 
 /**
@@ -55,48 +55,48 @@
  * Returns: (transfer none) (array length=num_entries): Array of available name entries.
  * Since: 2.1.0
  **/
-const hb_ot_name_entry_t *
-hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+స్థిరరాశి hb_ot_name_నమోదు_t *
+hb_ot_name_list_పేర్లు (hb_face_t    *face,
+		       గుర్తులేని పూర్ణాంకం *అంకె_entries /*బహిర్గతం*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
-  return (const hb_ot_name_entry_t *) name.names;
+  స్థిరరాశి OT::name_accelerator_t &name = *face->పట్టిక.name;
+  ఒకవేళ (అంకె_entries) *అంకె_entries = name.పేర్లు.నిడివి;
+  తిరిగి (స్థిరరాశి hb_ot_name_నమోదు_t *) name.పేర్లు;
 }
 
-template <typename utf_t>
-static inline unsigned int
+మూస <రకం_పేరు utf_t>
+స్థిర అంతఃవరుస గుర్తులేని పూర్ణాంకం
 hb_ot_name_get_utf (hb_face_t       *face,
 		    hb_ot_name_id_t  name_id,
 		    hb_language_t    language,
-		    unsigned int    *text_size /* IN/OUT */,
-		    typename utf_t::codepoint_t *text /* OUT */)
+		    గుర్తులేని పూర్ణాంకం    *పాఠ్యం_కొలత /* IN/OUT */,
+		    రకం_పేరు utf_t::codepoint_t *పాఠ్యం /*బహిర్గతం*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
+  స్థిరరాశి OT::name_accelerator_t &name = *face->పట్టిక.name;
 
-  if (!language)
+  ఒకవేళ (!language)
     language = hb_language_from_string ("en", 2);
 
-  unsigned int width;
-  int idx = name.get_index (name_id, language, &width);
-  if (idx != -1)
+  గుర్తులేని పూర్ణాంకం వెడల్పు;
+  పూర్ణాంకం idx = name.get_సూచీ (name_id, language, &వెడల్పు);
+  ఒకవేళ (idx != -1)
   {
-    hb_bytes_t bytes = name.get_name (idx);
+    hb_బైట్లు_t బైట్లు = name.get_name (idx);
 
-    if (width == 2) /* UTF16-BE */
-      return OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
+    ఒకవేళ (వెడల్పు == 2) /* UTF16-BE */
+      తిరిగి OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (బైట్లు, పాఠ్యం_కొలత, పాఠ్యం);
 
-    if (width == 1) /* ASCII */
-      return OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
+    ఒకవేళ (వెడల్పు == 1) /* ASCII */
+      తిరిగి OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (బైట్లు, పాఠ్యం_కొలత, పాఠ్యం);
   }
 
-  if (text_size)
+  ఒకవేళ (పాఠ్యం_కొలత)
   {
-    if (*text_size)
-      *text = 0;
-    *text_size = 0;
+    ఒకవేళ (*పాఠ్యం_కొలత)
+      *పాఠ్యం = 0;
+    *పాఠ్యం_కొలత = 0;
   }
-  return 0;
+  తిరిగి 0;
 }
 
 /**
@@ -116,15 +116,15 @@ hb_ot_name_get_utf (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */)
+		     గుర్తులేని పూర్ణాంకం    *పాఠ్యం_కొలత /* IN/OUT */,
+		     అక్షరం            *పాఠ్యం      /*బహిర్గతం*/)
 {
-  return hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
-					(hb_utf8_t::codepoint_t *) text);
+  తిరిగి hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, పాఠ్యం_కొలత,
+					(hb_utf8_t::codepoint_t *) పాఠ్యం);
 }
 
 /**
@@ -144,14 +144,14 @@ hb_ot_name_get_utf8 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint16_t        *text      /* OUT */)
+		      గుర్తులేని పూర్ణాంకం    *పాఠ్యం_కొలత /* IN/OUT */,
+		      uint16_t        *పాఠ్యం      /*బహిర్గతం*/)
 {
-  return hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
+  తిరిగి hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, పాఠ్యం_కొలత, పాఠ్యం);
 }
 
 /**
@@ -171,14 +171,14 @@ hb_ot_name_get_utf16 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint32_t        *text      /* OUT */)
+		      గుర్తులేని పూర్ణాంకం    *పాఠ్యం_కొలత /* IN/OUT */,
+		      uint32_t        *పాఠ్యం      /*బహిర్గతం*/)
 {
-  return hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
+  తిరిగి hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, పాఠ్యం_కొలత, పాఠ్యం);
 }
 
-#endif
+#అయితే_ముగింపు

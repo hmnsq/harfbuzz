@@ -24,25 +24,25 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#అన్తర్భావ "hb.h"
+#అన్తర్భావ "hb-ot.h"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#నిర్వచితమైతే HAVE_FREETYPE
+#అన్తర్భావ "hb-ft.h"
+#అయితే_ముగింపు
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  if (argc != 4 && argc != 5) {
+  ఒకవేళ (argc != 4 && argc != 5) {
     fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
-    exit (1);
+    నిష్క్రమించు (1);
   }
 
   /* Create the face */
@@ -50,18 +50,18 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = శూన్యసూచిక;
 
   hb_font_t *font = hb_font_create (face);
-#ifdef HAVE_FREETYPE
-  hb_ft_font_set_funcs (font);
-#endif
+#నిర్వచితమైతే HAVE_FREETYPE
+  hb_ft_font_సమితి_funcs (font);
+#అయితే_ముగింపు
 
-  unsigned int len = argc - 3;
+  గుర్తులేని పూర్ణాంకం len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  ఒకవేళ (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    తిరిగి 2;
+  తిరిగి !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], శూన్యసూచిక, 0), glyphs, len, అబద్ధం);
 }

@@ -26,65 +26,65 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_HEAD_TABLE_HH
-#define HB_OT_HEAD_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_తల_పట్టిక_HH
+#నిర్వచించు HB_OT_తల_పట్టిక_HH
 
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 /*
  * head -- Font Header
  * https://docs.microsoft.com/en-us/typography/opentype/spec/head
  */
-#define HB_OT_TAG_head HB_TAG('h','e','a','d')
+#నిర్వచించు HB_OT_ట్యాగ్_తల HB_ట్యాగ్('h','e','a','d')
 
 
-namespace OT {
+నామాకాశ OT {
 
 
-struct head
+నిర్మాణం తల_2
 {
-  friend struct OpenTypeOffsetTable;
+  మిత్ర నిర్మాణం Open_Type_స్థానభ్రంశం_పట్టిక;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_head;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_తల;
 
-  unsigned int get_upem () const
+  గుర్తులేని పూర్ణాంకం get_upem () స్థిరరాశి
   {
-    unsigned int upem = unitsPerEm;
+    గుర్తులేని పూర్ణాంకం upem = units_చొప్పున_Em;
     /* If no valid head table found, assume 1000, which matches typical Type1 usage. */
-    return 16 <= upem && upem <= 16384 ? upem : 1000;
+    తిరిగి 16 <= upem && upem <= 16384 ? upem : 1000;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  తార్కిక serialize (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace ((bool) c->embed (this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace ((తార్కిక) c->embed (ఇది));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    head *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    తల_2 *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    if (c->plan->normalized_coords)
+    ఒకవేళ (c->plan->normalized_coords)
     {
-      if (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
+      ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (బహిర్గతం->xMin, c->plan->తల_maxp_info.xMin,
+                                                  HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+        return_trace (అబద్ధం);
+      ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (బహిర్గతం->xMax, c->plan->తల_maxp_info.xMax,
+                                                  HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+        return_trace (అబద్ధం);
+      ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (బహిర్గతం->yMin, c->plan->తల_maxp_info.yMin,
+                                                  HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+        return_trace (అబద్ధం);
+      ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (బహిర్గతం->yMax, c->plan->తల_maxp_info.yMax,
+                                                  HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+        return_trace (అబద్ధం);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  enum mac_style_flag_t {
+  గణన mac_style_flag_t {
     BOLD	= 1u<<0,
     ITALIC	= 1u<<1,
     UNDERLINE	= 1u<<2,
@@ -94,31 +94,31 @@ struct head
     EXPANDED	= 1u<<6,
   };
 
-  bool is_bold () const      { return macStyle & BOLD; }
-  bool is_italic () const    { return macStyle & ITALIC; }
-  bool is_condensed () const { return macStyle & CONDENSED; }
-  bool is_expanded () const  { return macStyle & EXPANDED; }
+  తార్కిక is_bold () స్థిరరాశి      { తిరిగి macStyle & BOLD; }
+  తార్కిక is_italic () స్థిరరాశి    { తిరిగి macStyle & ITALIC; }
+  తార్కిక is_condensed () స్థిరరాశి { తిరిగి macStyle & CONDENSED; }
+  తార్కిక is_expanded () స్థిరరాశి  { తిరిగి macStyle & EXPANDED; }
 
-  unsigned get_mac_style () const { return macStyle; }
+  గుర్తులేని get_mac_style () స్థిరరాశి { తిరిగి macStyle; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  version.major == 1 &&
-		  magicNumber == 0x5F0F3CF5u);
+		  సంస్కరణ.major == 1 &&
+		  magic_సంఖ్య == 0x5F0F3CF5u);
   }
 
-  protected:
-  FixedVersion<>version;		/* Version of the head table--currently
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;		/* Version of the head table--currently
 					 * 0x00010000u for version 1.0. */
-  FixedVersion<>fontRevision;		/* Set by font manufacturer. */
-  HBUINT32	checkSumAdjustment;	/* To compute: set it to 0, sum the
+  Fixed_సంస్కరణ<>fontRevision;		/* Set by font manufacturer. */
+  HBUINT32	check_కూడిక_Adjustment;	/* To compute: set it to 0, sum the
 					 * entire font as HBUINT32, then store
 					 * 0xB1B0AFBAu - sum. */
-  HBUINT32	magicNumber;		/* Set to 0x5F0F3CF5u. */
-  public:
+  HBUINT32	magic_సంఖ్య;		/* Set to 0x5F0F3CF5u. */
+  బహిరంగ:
   HBUINT16	flags;			/* Bit 0: Baseline for font at y=0;
 					 * Bit 1: Left sidebearing point at x=0;
 					 * Bit 2: Instructions may depend on point size;
@@ -163,20 +163,20 @@ struct head
 					 * encoded in the cmap subtables represent proper
 					 * support for those code points.
 					 * Bit 15: Reserved, set to 0. */
-  protected:
-  HBUINT16	unitsPerEm;		/* Valid range is from 16 to 16384. This value
+  రక్షిత:
+  HBUINT16	units_చొప్పున_Em;		/* Valid range is from 16 to 16384. This value
 					 * should be a power of 2 for fonts that have
 					 * TrueType outlines. */
   LONGDATETIME	created;		/* Number of seconds since 12:00 midnight,
 					   January 1, 1904. 64-bit integer */
   LONGDATETIME	modified;		/* Number of seconds since 12:00 midnight,
 					   January 1, 1904. 64-bit integer */
-  public:
+  బహిరంగ:
   HBINT16	xMin;			/* For all glyph bounding boxes. */
   HBINT16	yMin;			/* For all glyph bounding boxes. */
   HBINT16	xMax;			/* For all glyph bounding boxes. */
   HBINT16	yMax;			/* For all glyph bounding boxes. */
-  protected:
+  రక్షిత:
   HBUINT16	macStyle;		/* Bit 0: Bold (if set to 1);
 					 * Bit 1: Italic (if set to 1)
 					 * Bit 2: Underline (if set to 1)
@@ -185,22 +185,22 @@ struct head
 					 * Bit 5: Condensed (if set to 1)
 					 * Bit 6: Extended (if set to 1)
 					 * Bits 7-15: Reserved (set to 0). */
-  HBUINT16	lowestRecPPEM;		/* Smallest readable size in pixels. */
+  HBUINT16	అత్యల్ప_Rec_PPEM;		/* Smallest readable size in pixels. */
   HBINT16	fontDirectionHint;	/* Deprecated (Set to 2).
 					 * 0: Fully mixed directional glyphs;
 					 * 1: Only strongly left to right;
 					 * 2: Like 1 but also contains neutrals;
 					 * -1: Only strongly right to left;
 					 * -2: Like -1 but also contains neutrals. */
-  public:
-  HBUINT16	indexToLocFormat;	/* 0 for short offsets, 1 for long. */
-  HBUINT16	glyphDataFormat;	/* 0 for current format. */
+  బహిరంగ:
+  HBUINT16	సూచీ_గమ్యం_Loc_Format;	/* 0 for short offsets, 1 for long. */
+  HBUINT16	glyph_దత్తాంశం_Format;	/* 0 for current format. */
 
-  DEFINE_SIZE_STATIC (54);
+  DEFINE_కొలత_STATIC (54);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HEAD_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_HEAD_TABLE_HH */

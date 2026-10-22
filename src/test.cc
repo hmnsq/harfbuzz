@@ -24,72 +24,72 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#నిర్వచితమైతే HAVE_FREETYPE
+#అన్తర్భావ "hb-ft.h"
+#అయితే_ముగింపు
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  if (argc != 2) {
+  ఒకవేళ (argc != 2) {
     fprintf (stderr, "usage: %s font-file.ttf\n", argv[0]);
-    exit (1);
+    నిష్క్రమించు (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
-  printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
+  ప్రతిజ్ఞా (blob);
+  రాయి ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_నిడివి (blob));
 
   /* Create the face */
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
-  unsigned int upem = hb_face_get_upem (face);
+  blob = శూన్యసూచిక;
+  గుర్తులేని పూర్ణాంకం upem = hb_face_get_upem (face);
 
   hb_font_t *font = hb_font_create (face);
-  hb_font_set_scale (font, upem, upem);
+  hb_font_సమితి_scale (font, upem, upem);
 
-#ifdef HAVE_FREETYPE
-  hb_ft_font_set_funcs (font);
-#endif
+#నిర్వచితమైతే HAVE_FREETYPE
+  hb_ft_font_సమితి_funcs (font);
+#అయితే_ముగింపు
 
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_బఫరు_t *బఫరు = hb_బఫరు_create ();
 
-  hb_buffer_add_utf8 (buffer, "\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb0\xe0\xa5\x8d\xe0\xa4\x95", -1, 0, -1);
-  hb_buffer_guess_segment_properties (buffer);
+  hb_బఫరు_కూడు_utf8 (బఫరు, "\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb0\xe0\xa5\x8d\xe0\xa4\x95", -1, 0, -1);
+  hb_బఫరు_guess_segment_properties (బఫరు);
 
-  hb_shape (font, buffer, nullptr, 0);
+  hb_shape (font, బఫరు, శూన్యసూచిక, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
-  hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
+  గుర్తులేని పూర్ణాంకం లెక్క = hb_బఫరు_get_నిడివి (బఫరు);
+  hb_glyph_info_t *infos = hb_బఫరు_get_glyph_infos (బఫరు, శూన్యసూచిక);
+  hb_glyph_position_t *positions = hb_బఫరు_get_glyph_positions (బఫరు, శూన్యసూచిక);
 
-  for (unsigned int i = 0; i < count; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];
 
-    printf ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
+    రాయి ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
 	    info->cluster,
 	    info->codepoint,
-	    pos->x_offset,
-	    pos->y_offset,
+	    pos->x_స్థానభ్రంశం_2,
+	    pos->y_స్థానభ్రంశం_2,
 	    pos->x_advance,
 	    pos->y_advance);
 
   }
 
-  hb_buffer_destroy (buffer);
+  hb_బఫరు_destroy (బఫరు);
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  తిరిగి 0;
 }
 
 

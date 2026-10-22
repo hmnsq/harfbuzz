@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_SET_H
-#define HB_SET_H
+#నిర్వచితం_కాకపోతే HB_సమితి_H
+#నిర్వచించు HB_సమితి_H
 
-#include "hb-common.h"
+#అన్తర్భావ "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -43,7 +43,7 @@ HB_BEGIN_DECLS
  *
  * Since: 0.9.21
  */
-#define HB_SET_VALUE_INVALID HB_CODEPOINT_INVALID
+#నిర్వచించు HB_సమితి_విలువ_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_set_t:
@@ -54,154 +54,154 @@ HB_BEGIN_DECLS
  * values.
  *
  **/
-typedef struct hb_set_t hb_set_t;
+రకనిర్వచనం నిర్మాణం hb_సమితి_t hb_సమితి_t;
 
 
-HB_EXTERN hb_set_t *
-hb_set_create (void);
+HB_EXTERN hb_సమితి_t *
+hb_సమితి_create (శూన్య);
 
-HB_EXTERN hb_set_t *
-hb_set_get_empty (void);
+HB_EXTERN hb_సమితి_t *
+hb_సమితి_get_ఖాళీలు (శూన్య);
 
-HB_EXTERN hb_set_t *
-hb_set_reference (hb_set_t *set);
+HB_EXTERN hb_సమితి_t *
+hb_సమితి_reference (hb_సమితి_t *సమితి);
 
-HB_EXTERN void
-hb_set_destroy (hb_set_t *set);
+HB_EXTERN శూన్య
+hb_సమితి_destroy (hb_సమితి_t *సమితి);
 
 HB_EXTERN hb_bool_t
-hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_సమితి_సమితి_user_దత్తాంశం (hb_సమితి_t           *సమితి,
+		      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+		      శూన్య *              దత్తాంశం,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key);
+HB_EXTERN శూన్య *
+hb_సమితి_get_user_దత్తాంశం (స్థిరరాశి hb_సమితి_t     *సమితి,
+		      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_set_allocation_successful (const hb_set_t *set);
+hb_సమితి_కేటాయింపు_successful (స్థిరరాశి hb_సమితి_t *సమితి);
 
-HB_EXTERN hb_set_t *
-hb_set_copy (const hb_set_t *set);
+HB_EXTERN hb_సమితి_t *
+hb_సమితి_copy (స్థిరరాశి hb_సమితి_t *సమితి);
 
-HB_EXTERN void
-hb_set_clear (hb_set_t *set);
-
-HB_EXTERN hb_bool_t
-hb_set_is_empty (const hb_set_t *set);
-
-HB_EXTERN void
-hb_set_invert (hb_set_t *set);
+HB_EXTERN శూన్య
+hb_సమితి_clear (hb_సమితి_t *సమితి);
 
 HB_EXTERN hb_bool_t
-hb_set_is_inverted (const hb_set_t *set);
+hb_సమితి_is_ఖాళీలు (స్థిరరాశి hb_సమితి_t *సమితి);
+
+HB_EXTERN శూన్య
+hb_సమితి_invert (hb_సమితి_t *సమితి);
 
 HB_EXTERN hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_సమితి_is_inverted (స్థిరరాశి hb_సమితి_t *సమితి);
+
+HB_EXTERN hb_bool_t
+hb_సమితి_has (స్థిరరాశి hb_సమితి_t *సమితి,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_add (hb_set_t       *set,
+HB_EXTERN శూన్య
+hb_సమితి_కూడు (hb_సమితి_t       *సమితి,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_add_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last);
+HB_EXTERN శూన్య
+hb_సమితి_కూడు_range (hb_సమితి_t       *సమితి,
+		  hb_codepoint_t  మొదటి,
+		  hb_codepoint_t  చివరి);
 
-HB_EXTERN void
-hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints);
+HB_EXTERN శూన్య
+hb_సమితి_కూడు_sorted_array (hb_సమితి_t             *సమితి,
+		         స్థిరరాశి hb_codepoint_t *sorted_codepoints,
+		         గుర్తులేని పూర్ణాంకం          అంకె_codepoints);
 
-HB_EXTERN void
-hb_set_del (hb_set_t       *set,
+HB_EXTERN శూన్య
+hb_సమితి_del (hb_సమితి_t       *సమితి,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_del_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last);
+HB_EXTERN శూన్య
+hb_సమితి_del_range (hb_సమితి_t       *సమితి,
+		  hb_codepoint_t  మొదటి,
+		  hb_codepoint_t  చివరి);
 
 HB_EXTERN hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other);
+hb_సమితి_is_equal (స్థిరరాశి hb_సమితి_t *సమితి,
+		 స్థిరరాశి hb_సమితి_t *other);
 
 HB_EXTERN hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other);
+hb_సమితి_intersects (స్థిరరాశి hb_సమితి_t *సమితి,
+		   స్థిరరాశి hb_సమితి_t *other);
 
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_సమితి_hash (స్థిరరాశి hb_సమితి_t *సమితి);
 
 HB_EXTERN hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set);
+hb_సమితి_is_subset (స్థిరరాశి hb_సమితి_t *సమితి,
+		  స్థిరరాశి hb_సమితి_t *larger_సమితి);
 
-HB_EXTERN void
-hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other);
+HB_EXTERN శూన్య
+hb_సమితి_సమితి (hb_సమితి_t       *సమితి,
+	    స్థిరరాశి hb_సమితి_t *other);
 
-HB_EXTERN void
-hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other);
+HB_EXTERN శూన్య
+hb_సమితి_union (hb_సమితి_t       *సమితి,
+	      స్థిరరాశి hb_సమితి_t *other);
 
-HB_EXTERN void
-hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other);
+HB_EXTERN శూన్య
+hb_సమితి_intersect (hb_సమితి_t       *సమితి,
+		  స్థిరరాశి hb_సమితి_t *other);
 
-HB_EXTERN void
-hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other);
+HB_EXTERN శూన్య
+hb_సమితి_వ్యవకలనం (hb_సమితి_t       *సమితి,
+		 స్థిరరాశి hb_సమితి_t *other);
 
-HB_EXTERN void
-hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other);
+HB_EXTERN శూన్య
+hb_సమితి_సౌష్ఠవ_difference (hb_సమితి_t       *సమితి,
+			     స్థిరరాశి hb_సమితి_t *other);
 
-HB_EXTERN unsigned int
-hb_set_get_population (const hb_set_t *set);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_సమితి_get_population (స్థిరరాశి hb_సమితి_t *సమితి);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
 HB_EXTERN hb_codepoint_t
-hb_set_get_min (const hb_set_t *set);
+hb_సమితి_get_min (స్థిరరాశి hb_సమితి_t *సమితి);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
 HB_EXTERN hb_codepoint_t
-hb_set_get_max (const hb_set_t *set);
+hb_సమితి_get_max (స్థిరరాశి hb_సమితి_t *సమితి);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
 HB_EXTERN hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_సమితి_తదుపరి (స్థిరరాశి hb_సమితి_t *సమితి,
 	     hb_codepoint_t *codepoint);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
 HB_EXTERN hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_సమితి_మునుపటి (స్థిరరాశి hb_సమితి_t *సమితి,
 		 hb_codepoint_t *codepoint);
 
 /* Pass HB_SET_VALUE_INVALID for first and last to get started. */
 HB_EXTERN hb_bool_t
-hb_set_next_range (const hb_set_t *set,
-		   hb_codepoint_t *first,
-		   hb_codepoint_t *last);
+hb_సమితి_తదుపరి_range (స్థిరరాశి hb_సమితి_t *సమితి,
+		   hb_codepoint_t *మొదటి,
+		   hb_codepoint_t *చివరి);
 
 /* Pass HB_SET_VALUE_INVALID for first and last to get started. */
 HB_EXTERN hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
-		       hb_codepoint_t *first,
-		       hb_codepoint_t *last);
+hb_సమితి_మునుపటి_range (స్థిరరాశి hb_సమితి_t *సమితి,
+		       hb_codepoint_t *మొదటి,
+		       hb_codepoint_t *చివరి);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
-HB_EXTERN unsigned int
-hb_set_next_many (const hb_set_t *set,
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_సమితి_తదుపరి_many (స్థిరరాశి hb_సమితి_t *సమితి,
 		  hb_codepoint_t  codepoint,
-		  hb_codepoint_t *out,
-		  unsigned int    size);
+		  hb_codepoint_t *బహిర్గతం,
+		  గుర్తులేని పూర్ణాంకం    కొలత);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_SET_H */
+#అయితే_ముగింపు /* HB_SET_H */

@@ -1,58 +1,58 @@
-#ifndef OT_VAR_VARC_COORD_SETTER_HH
-#define OT_VAR_VARC_COORD_SETTER_HH
+#నిర్వచితం_కాకపోతే OT_VAR_VARC_COORD_SETTER_HH
+#నిర్వచించు OT_VAR_VARC_COORD_SETTER_HH
 
 
-#include "../../../hb.hh"
+#అన్తర్భావ "../../../hb.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 //namespace Var {
 
 
-struct coord_setter_t
+నిర్మాణం coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<స్థిరరాశి పూర్ణాంకం> coords_)
   {
-    length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    నిడివి = coords_.నిడివి;
+    ఒకవేళ (నిడివి <= ARRAY_నిడివి (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, నిడివి * పరిమాణం (పూర్ణాంకం));
+    లేకపోతే
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  పూర్ణాంకం& క్రియాకారకం [] (గుర్తులేని idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    ఒకవేళ (unlikely (idx >= HB_VAR_సంయుక్త_MAX_AXES))
+      తిరిగి Crap(పూర్ణాంకం);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    ఒకవేళ (నిడివి <= ARRAY_నిడివి (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      ఒకవేళ (idx < ARRAY_నిడివి (static_coords))
       {
-        while (length <= idx)
-	  static_coords[length++] = 0;
-	return static_coords[idx];
+        అయితే (నిడివి <= idx)
+	  static_coords[నిడివి++] = 0;
+	తిరిగి static_coords[idx];
       }
-      else
-        dynamic_coords.extend (hb_array (static_coords, length));
+      లేకపోతే
+        dynamic_coords.extend (hb_array (static_coords, నిడివి));
     }
 
-    if (dynamic_coords.length <= idx)
+    ఒకవేళ (dynamic_coords.నిడివి <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
-      length = idx + 1;
+      ఒకవేళ (unlikely (!dynamic_coords.resize (idx + 1)))
+	తిరిగి Crap(పూర్ణాంకం);
+      నిడివి = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    తిరిగి dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<పూర్ణాంకం> get_coords ()
+  { తిరిగి నిడివి <= ARRAY_నిడివి (static_coords) ? hb_array (static_coords, నిడివి) : dynamic_coords.as_array (); }
 
-  private:
-  hb_vector_t<int> dynamic_coords;
-  unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  అంతరంగ:
+  hb_సదిశ_t<పూర్ణాంకం> dynamic_coords;
+  గుర్తులేని నిడివి;
+  పూర్ణాంకం static_coords[పరిమాణం (శూన్య *) * 8];
 };
 
 
@@ -60,4 +60,4 @@ struct coord_setter_t
 
 } // namespace OT
 
-#endif /* OT_VAR_VARC_COORD_SETTER_HH */
+#అయితే_ముగింపు /* OT_VAR_VARC_COORD_SETTER_HH */

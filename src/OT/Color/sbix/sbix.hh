@@ -25,425 +25,425 @@
  * Google Author(s): Calder Kitagawa
  */
 
-#ifndef OT_COLOR_SBIX_SBIX_HH
-#define OT_COLOR_SBIX_SBIX_HH
+#నిర్వచితం_కాకపోతే OT_COLOR_SBIX_SBIX_HH
+#నిర్వచించు OT_COLOR_SBIX_SBIX_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-paint.hh"
+#అన్తర్భావ "../../../hb-open-type.hh"
+#అన్తర్భావ "../../../hb-paint.hh"
 
 /*
  * sbix -- Standard Bitmap Graphics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/sbix
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6sbix.html
  */
-#define HB_OT_TAG_sbix HB_TAG('s','b','i','x')
+#నిర్వచించు HB_OT_ట్యాగ్_sbix HB_ట్యాగ్('s','b','i','x')
 
 
-namespace OT {
+నామాకాశ OT {
 
 
-struct SBIXGlyph
+నిర్మాణం SBIXGlyph
 {
-  SBIXGlyph* copy (hb_serialize_context_t *c, unsigned int data_length) const
+  SBIXGlyph* copy (hb_serialize_context_t *c, గుర్తులేని పూర్ణాంకం దత్తాంశం_నిడివి) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    SBIXGlyph* new_glyph = c->start_embed<SBIXGlyph> ();
-    if (unlikely (!c->extend_min (new_glyph))) return_trace (nullptr);
+    TRACE_SERIALIZE (ఇది);
+    SBIXGlyph* new_glyph = c->ప్రారంభం_embed<SBIXGlyph> ();
+    ఒకవేళ (unlikely (!c->extend_min (new_glyph))) return_trace (శూన్యసూచిక);
 
-    new_glyph->xOffset = xOffset;
-    new_glyph->yOffset = yOffset;
+    new_glyph->x_స్థానభ్రంశం = x_స్థానభ్రంశం;
+    new_glyph->y_స్థానభ్రంశం = y_స్థానభ్రంశం;
     new_glyph->graphicType = graphicType;
-    data.copy (c, data_length);
+    దత్తాంశం.copy (c, దత్తాంశం_నిడివి);
     return_trace (new_glyph);
   }
 
-  HBINT16	xOffset;	/* The horizontal (x-axis) offset from the left
+  HBINT16	x_స్థానభ్రంశం;	/* The horizontal (x-axis) offset from the left
 				 * edge of the graphic to the glyph’s origin.
 				 * That is, the x-coordinate of the point on the
 				 * baseline at the left edge of the glyph. */
-  HBINT16	yOffset;	/* The vertical (y-axis) offset from the bottom
+  HBINT16	y_స్థానభ్రంశం;	/* The vertical (y-axis) offset from the bottom
 				 * edge of the graphic to the glyph’s origin.
 				 * That is, the y-coordinate of the point on the
 				 * baseline at the left edge of the glyph. */
-  Tag		graphicType;	/* Indicates the format of the embedded graphic
+  ట్యాగ్		graphicType;	/* Indicates the format of the embedded graphic
 				 * data: one of 'jpg ', 'png ' or 'tiff', or the
 				 * special format 'dupe'. */
-  UnsizedArrayOf<HBUINT8>
-		data;		/* The actual embedded graphic data. The total
+  Unsized_Array_యొక్క<HBUINT8>
+		దత్తాంశం;		/* The actual embedded graphic data. The total
 				 * length is inferred from sequential entries in
 				 * the glyphDataOffsets array and the fixed size
 				 * (8 bytes) of the preceding fields. */
-  public:
-  DEFINE_SIZE_ARRAY (8, data);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (8, దత్తాంశం);
 };
 
-struct SBIXStrike
+నిర్మాణం SBIXStrike
 {
-  static size_t get_size (unsigned num_glyphs)
-  { return min_size + num_glyphs * HBUINT32::static_size; }
+  స్థిర size_t get_కొలత (గుర్తులేని అంకె_glyphs)
+  { తిరిగి min_కొలత + అంకె_glyphs * HBUINT32::static_కొలత; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  imageOffsetsZ.sanitize_shallow (c, c->get_num_glyphs () + 1));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  imageOffsetsZ.sanitize_shallow (c, c->get_అంకె_glyphs () + 1));
   }
 
-  hb_blob_t *get_glyph_blob (unsigned int  glyph_id,
+  hb_blob_t *get_glyph_blob (గుర్తులేని పూర్ణాంకం  glyph_id,
 			     hb_blob_t    *sbix_blob,
-			     hb_tag_t      file_type,
-			     int          *x_offset,
-			     int          *y_offset,
-			     unsigned int  num_glyphs,
-			     unsigned int *strike_ppem) const
+			     hb_ట్యాగ్_t      file_type,
+			     పూర్ణాంకం          *x_స్థానభ్రంశం_2,
+			     పూర్ణాంకం          *y_స్థానభ్రంశం_2,
+			     గుర్తులేని పూర్ణాంకం  అంకె_glyphs,
+			     గుర్తులేని పూర్ణాంకం *strike_ppem) స్థిరరాశి
   {
-    if (unlikely (!ppem)) return hb_blob_get_empty (); /* To get Null() object out of the way. */
+    ఒకవేళ (unlikely (!ppem)) తిరిగి hb_blob_get_ఖాళీలు (); /* To get Null() object out of the way. */
 
-    unsigned int retry_count = 8;
-    unsigned int sbix_len = sbix_blob->length;
-    unsigned int strike_offset = (const char *) this - (const char *) sbix_blob->data;
-    assert (strike_offset < sbix_len);
+    గుర్తులేని పూర్ణాంకం retry_లెక్క = 8;
+    గుర్తులేని పూర్ణాంకం sbix_len = sbix_blob->నిడివి;
+    గుర్తులేని పూర్ణాంకం strike_స్థానభ్రంశం = (స్థిరరాశి అక్షరం *) ఇది - (స్థిరరాశి అక్షరం *) sbix_blob->దత్తాంశం;
+    ప్రతిజ్ఞా (strike_స్థానభ్రంశం < sbix_len);
 
   retry:
-    if (unlikely (glyph_id >= num_glyphs ||
+    ఒకవేళ (unlikely (glyph_id >= అంకె_glyphs ||
 		  imageOffsetsZ[glyph_id + 1] <= imageOffsetsZ[glyph_id] ||
-		  imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] <= SBIXGlyph::min_size ||
-		  (unsigned int) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_offset))
-      return hb_blob_get_empty ();
+		  imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] <= SBIXGlyph::min_కొలత ||
+		  (గుర్తులేని పూర్ణాంకం) imageOffsetsZ[glyph_id + 1] > sbix_len - strike_స్థానభ్రంశం))
+      తిరిగి hb_blob_get_ఖాళీలు ();
 
-    unsigned int glyph_offset = strike_offset + (unsigned int) imageOffsetsZ[glyph_id] + SBIXGlyph::min_size;
-    unsigned int glyph_length = imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] - SBIXGlyph::min_size;
+    గుర్తులేని పూర్ణాంకం glyph_స్థానభ్రంశం = strike_స్థానభ్రంశం + (గుర్తులేని పూర్ణాంకం) imageOffsetsZ[glyph_id] + SBIXGlyph::min_కొలత;
+    గుర్తులేని పూర్ణాంకం glyph_నిడివి = imageOffsetsZ[glyph_id + 1] - imageOffsetsZ[glyph_id] - SBIXGlyph::min_కొలత;
 
-    const SBIXGlyph *glyph = &(this+imageOffsetsZ[glyph_id]);
+    స్థిరరాశి SBIXGlyph *glyph = &(ఇది+imageOffsetsZ[glyph_id]);
 
-    if (glyph->graphicType == HB_TAG ('d','u','p','e'))
+    ఒకవేళ (glyph->graphicType == HB_ట్యాగ్ ('d','u','p','e'))
     {
-      if (glyph_length >= 2)
+      ఒకవేళ (glyph_నిడివి >= 2)
       {
-	glyph_id = *((HBUINT16 *) &glyph->data);
-	if (retry_count--)
-	  goto retry;
+	glyph_id = *((HBUINT16 *) &glyph->దత్తాంశం);
+	ఒకవేళ (retry_లెక్క--)
+	  వెళ్ళు retry;
       }
-      return hb_blob_get_empty ();
+      తిరిగి hb_blob_get_ఖాళీలు ();
     }
 
-    if (unlikely (file_type != glyph->graphicType))
-      return hb_blob_get_empty ();
+    ఒకవేళ (unlikely (file_type != glyph->graphicType))
+      తిరిగి hb_blob_get_ఖాళీలు ();
 
-    if (strike_ppem) *strike_ppem = ppem;
-    if (x_offset) *x_offset = glyph->xOffset;
-    if (y_offset) *y_offset = glyph->yOffset;
-    return hb_blob_create_sub_blob (sbix_blob, glyph_offset, glyph_length);
+    ఒకవేళ (strike_ppem) *strike_ppem = ppem;
+    ఒకవేళ (x_స్థానభ్రంశం_2) *x_స్థానభ్రంశం_2 = glyph->x_స్థానభ్రంశం;
+    ఒకవేళ (y_స్థానభ్రంశం_2) *y_స్థానభ్రంశం_2 = glyph->y_స్థానభ్రంశం;
+    తిరిగి hb_blob_create_sub_blob (sbix_blob, glyph_స్థానభ్రంశం, glyph_నిడివి);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned int available_len) const
+  తార్కిక subset (hb_subset_context_t *c, గుర్తులేని పూర్ణాంకం అందుబాటు_len) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    unsigned int num_output_glyphs = c->plan->num_output_glyphs ();
+    TRACE_SUBSET (ఇది);
+    గుర్తులేని పూర్ణాంకం అంకె_output_glyphs = c->plan->అంకె_output_glyphs ();
 
-    auto* out = c->serializer->start_embed<SBIXStrike> ();
-    auto snap = c->serializer->snapshot ();
-    if (unlikely (!c->serializer->extend (out, num_output_glyphs + 1))) return_trace (false);
-    out->ppem = ppem;
-    out->resolution = resolution;
-    HBUINT32 head;
-    head = get_size (num_output_glyphs + 1);
+    స్వయంచాలక* బహిర్గతం = c->serializer->ప్రారంభం_embed<SBIXStrike> ();
+    స్వయంచాలక snap = c->serializer->snapshot ();
+    ఒకవేళ (unlikely (!c->serializer->extend (బహిర్గతం, అంకె_output_glyphs + 1))) return_trace (అబద్ధం);
+    బహిర్గతం->ppem = ppem;
+    బహిర్గతం->resolution = resolution;
+    HBUINT32 తల_2;
+    తల_2 = get_కొలత (అంకె_output_glyphs + 1);
 
-    bool has_glyphs = false;
-    for (unsigned new_gid = 0; new_gid < num_output_glyphs; new_gid++)
+    తార్కిక has_glyphs = అబద్ధం;
+    కొరకు (గుర్తులేని new_gid = 0; new_gid < అంకె_output_glyphs; new_gid++)
     {
       hb_codepoint_t old_gid;
-      if (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
+      ఒకవేళ (!c->plan->old_gid_for_new_gid (new_gid, &old_gid) ||
 	  unlikely (imageOffsetsZ[old_gid].is_null () ||
 		    imageOffsetsZ[old_gid + 1].is_null () ||
 		    imageOffsetsZ[old_gid + 1] <= imageOffsetsZ[old_gid] ||
-		    imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid] <= SBIXGlyph::min_size) ||
-		    (unsigned int) imageOffsetsZ[old_gid + 1] > available_len)
+		    imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid] <= SBIXGlyph::min_కొలత) ||
+		    (గుర్తులేని పూర్ణాంకం) imageOffsetsZ[old_gid + 1] > అందుబాటు_len)
       {
-	out->imageOffsetsZ[new_gid] = head;
-	continue;
+	బహిర్గతం->imageOffsetsZ[new_gid] = తల_2;
+	కొనసాగు;
       }
-      has_glyphs = true;
-      unsigned int delta = imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid];
-      unsigned int glyph_data_length = delta - SBIXGlyph::min_size;
-      if (!(this+imageOffsetsZ[old_gid]).copy (c->serializer, glyph_data_length))
-	return_trace (false);
-      out->imageOffsetsZ[new_gid] = head;
-      head += delta;
+      has_glyphs = నిజం;
+      గుర్తులేని పూర్ణాంకం delta = imageOffsetsZ[old_gid + 1] - imageOffsetsZ[old_gid];
+      గుర్తులేని పూర్ణాంకం glyph_దత్తాంశం_నిడివి = delta - SBIXGlyph::min_కొలత;
+      ఒకవేళ (!(ఇది+imageOffsetsZ[old_gid]).copy (c->serializer, glyph_దత్తాంశం_నిడివి))
+	return_trace (అబద్ధం);
+      బహిర్గతం->imageOffsetsZ[new_gid] = తల_2;
+      తల_2 += delta;
     }
-    if (has_glyphs)
-      out->imageOffsetsZ[num_output_glyphs] = head;
-    else
+    ఒకవేళ (has_glyphs)
+      బహిర్గతం->imageOffsetsZ[అంకె_output_glyphs] = తల_2;
+    లేకపోతే
       c->serializer->revert (snap);
     return_trace (has_glyphs);
   }
 
-  public:
+  బహిరంగ:
   HBUINT16	ppem;		/* The PPEM size for which this strike was designed. */
   HBUINT16	resolution;	/* The device pixel density (in PPI) for which this
 				 * strike was designed. (E.g., 96 PPI, 192 PPI.) */
-  protected:
-  UnsizedArrayOf<Offset32To<SBIXGlyph>>
+  రక్షిత:
+  Unsized_Array_యొక్క<Offset32_గమ్యం<SBIXGlyph>>
 		imageOffsetsZ;	/* Offset from the beginning of the strike data header
 				 * to bitmap data for an individual glyph ID. */
-  public:
-  DEFINE_SIZE_ARRAY (4, imageOffsetsZ);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, imageOffsetsZ);
 };
 
-struct sbix
+నిర్మాణం sbix
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_sbix;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_sbix;
 
-  bool has_data () const { return version; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ; }
 
-  const SBIXStrike &get_strike (unsigned int i) const { return this+strikes[i]; }
+  స్థిరరాశి SBIXStrike &get_strike (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి { తిరిగి ఇది+strikes[i]; }
 
-  struct accelerator_t
+  నిర్మాణం accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<sbix> (face);
-      num_glyphs = face->get_num_glyphs ();
+      పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<sbix> (face);
+      అంకె_glyphs = face->get_అంకె_glyphs ();
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { పట్టిక.destroy (); }
 
-    bool has_data () const { return table->has_data (); }
+    తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పట్టిక->has_దత్తాంశం (); }
 
-    bool get_extents (hb_font_t          *font,
+    తార్కిక get_extents (hb_font_t          *font,
 		      hb_codepoint_t      glyph,
 		      hb_glyph_extents_t *extents,
-		      bool                scale = true) const
+		      తార్కిక                scale = నిజం) స్థిరరాశి
     {
       /* We only support PNG right now, and following function checks type. */
-      return get_png_extents (font, glyph, extents, scale);
+      తిరిగి get_png_extents (font, glyph, extents, scale);
     }
 
     hb_blob_t *reference_png (hb_font_t      *font,
 			      hb_codepoint_t  glyph_id,
-			      int            *x_offset,
-			      int            *y_offset,
-			      unsigned int   *available_ppem) const
+			      పూర్ణాంకం            *x_స్థానభ్రంశం_2,
+			      పూర్ణాంకం            *y_స్థానభ్రంశం_2,
+			      గుర్తులేని పూర్ణాంకం   *అందుబాటు_ppem) స్థిరరాశి
     {
-      return choose_strike (font).get_glyph_blob (glyph_id, table.get_blob (),
-						  HB_TAG ('p','n','g',' '),
-						  x_offset, y_offset,
-						  num_glyphs, available_ppem);
+      తిరిగి ఎంచుకో_strike (font).get_glyph_blob (glyph_id, పట్టిక.get_blob (),
+						  HB_ట్యాగ్ ('p','n','g',' '),
+						  x_స్థానభ్రంశం_2, y_స్థానభ్రంశం_2,
+						  అంకె_glyphs, అందుబాటు_ppem);
     }
 
-    bool paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    తార్కిక paint_glyph (hb_font_t *font, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, శూన్య *దత్తాంశం) స్థిరరాశి
     {
-      if (!has_data ())
-        return false;
+      ఒకవేళ (!has_దత్తాంశం ())
+        తిరిగి అబద్ధం;
 
-      int x_offset = 0, y_offset = 0;
-      unsigned int strike_ppem = 0;
+      పూర్ణాంకం x_స్థానభ్రంశం_2 = 0, y_స్థానభ్రంశం_2 = 0;
+      గుర్తులేని పూర్ణాంకం strike_ppem = 0;
       hb_glyph_extents_t extents;
       hb_glyph_extents_t pixel_extents;
 
-      if (!font->get_glyph_extents (glyph, &extents, false))
-        return false;
+      ఒకవేళ (!font->get_glyph_extents (glyph, &extents, అబద్ధం))
+        తిరిగి అబద్ధం;
 
-      if (unlikely (!get_extents (font, glyph, &pixel_extents, false)))
-        return false;
+      ఒకవేళ (unlikely (!get_extents (font, glyph, &pixel_extents, అబద్ధం)))
+        తిరిగి అబద్ధం;
 
-      hb_blob_t *blob = reference_png (font, glyph, &x_offset, &y_offset, &strike_ppem);
-      if (hb_blob_is_immutable (blob))
-        return false;
+      hb_blob_t *blob = reference_png (font, glyph, &x_స్థానభ్రంశం_2, &y_స్థానభ్రంశం_2, &strike_ppem);
+      ఒకవేళ (hb_blob_is_immutable (blob))
+        తిరిగి అబద్ధం;
 
-      bool ret = funcs->image (data,
+      తార్కిక ret = funcs->image (దత్తాంశం,
 			       blob,
-			       pixel_extents.width, -pixel_extents.height,
+			       pixel_extents.వెడల్పు, -pixel_extents.ఎత్తు,
 			       HB_PAINT_IMAGE_FORMAT_PNG,
 			       0.f,
 			       &extents);
 
       hb_blob_destroy (blob);
 
-      return ret;
+      తిరిగి ret;
     }
 
-    private:
+    అంతరంగ:
 
-    const SBIXStrike &choose_strike (hb_font_t *font) const
+    స్థిరరాశి SBIXStrike &ఎంచుకో_strike (hb_font_t *font) స్థిరరాశి
     {
-      unsigned count = table->strikes.len;
-      if (unlikely (!count))
-	return Null (SBIXStrike);
+      గుర్తులేని లెక్క = పట్టిక->strikes.len;
+      ఒకవేళ (unlikely (!లెక్క))
+	తిరిగి Null (SBIXStrike);
 
-      unsigned int requested_ppem = hb_max (font->x_ppem, font->y_ppem);
-      if (!requested_ppem)
+      గుర్తులేని పూర్ణాంకం requested_ppem = hb_max (font->x_ppem, font->y_ppem);
+      ఒకవేళ (!requested_ppem)
 	requested_ppem = 1<<30; /* Choose largest strike. */
       /* TODO Add DPI sensitivity as well? */
-      unsigned int best_i = 0;
-      unsigned int best_ppem = table->get_strike (0).ppem;
+      గుర్తులేని పూర్ణాంకం ఉత్తమ_i = 0;
+      గుర్తులేని పూర్ణాంకం ఉత్తమ_ppem = పట్టిక->get_strike (0).ppem;
 
-      for (unsigned int i = 1; i < count; i++)
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < లెక్క; i++)
       {
-	unsigned int ppem = (table->get_strike (i)).ppem;
-	if ((requested_ppem <= ppem && ppem < best_ppem) ||
-	    (requested_ppem > best_ppem && ppem > best_ppem))
+	గుర్తులేని పూర్ణాంకం ppem = (పట్టిక->get_strike (i)).ppem;
+	ఒకవేళ ((requested_ppem <= ppem && ppem < ఉత్తమ_ppem) ||
+	    (requested_ppem > ఉత్తమ_ppem && ppem > ఉత్తమ_ppem))
 	{
-	  best_i = i;
-	  best_ppem = ppem;
+	  ఉత్తమ_i = i;
+	  ఉత్తమ_ppem = ppem;
 	}
       }
 
-      return table->get_strike (best_i);
+      తిరిగి పట్టిక->get_strike (ఉత్తమ_i);
     }
 
-    struct PNGHeader
+    నిర్మాణం PNGHeader
     {
       HBUINT8	signature[8];
-      struct
+      నిర్మాణం
       {
-	struct
+	నిర్మాణం
 	{
-	  HBUINT32	length;
-	  Tag		type;
-	}		header;
-	HBUINT32	width;
-	HBUINT32	height;
-	HBUINT8		bitDepth;
+	  HBUINT32	నిడివి;
+	  ట్యాగ్		type;
+	}		శీర్షిక;
+	HBUINT32	వెడల్పు;
+	HBUINT32	ఎత్తు;
+	HBUINT8		బిట్టు_లోతు;
 	HBUINT8		colorType;
-	HBUINT8		compressionMethod;
-	HBUINT8		filterMethod;
-	HBUINT8		interlaceMethod;
+	HBUINT8		compression_పద్ధతి;
+	HBUINT8		filter_పద్ధతి;
+	HBUINT8		interlace_పద్ధతి;
       } IHDR;
 
-      public:
-      DEFINE_SIZE_STATIC (29);
+      బహిరంగ:
+      DEFINE_కొలత_STATIC (29);
     };
 
-    bool get_png_extents (hb_font_t          *font,
+    తార్కిక get_png_extents (hb_font_t          *font,
 			  hb_codepoint_t      glyph,
 			  hb_glyph_extents_t *extents,
-			  bool                scale = true) const
+			  తార్కిక                scale = నిజం) స్థిరరాశి
     {
       /* Following code is safe to call even without data.
        * But faster to short-circuit. */
-      if (!has_data ())
-	return false;
+      ఒకవేళ (!has_దత్తాంశం ())
+	తిరిగి అబద్ధం;
 
-      int x_offset = 0, y_offset = 0;
-      unsigned int strike_ppem = 0;
-      hb_blob_t *blob = reference_png (font, glyph, &x_offset, &y_offset, &strike_ppem);
+      పూర్ణాంకం x_స్థానభ్రంశం_2 = 0, y_స్థానభ్రంశం_2 = 0;
+      గుర్తులేని పూర్ణాంకం strike_ppem = 0;
+      hb_blob_t *blob = reference_png (font, glyph, &x_స్థానభ్రంశం_2, &y_స్థానభ్రంశం_2, &strike_ppem);
 
-      const PNGHeader &png = *blob->as<PNGHeader>();
+      స్థిరరాశి PNGHeader &png = *blob->as<PNGHeader>();
 
-      if (png.IHDR.height >= 65536 || png.IHDR.width >= 65536)
+      ఒకవేళ (png.IHDR.ఎత్తు >= 65536 || png.IHDR.వెడల్పు >= 65536)
       {
 	hb_blob_destroy (blob);
-	return false;
+	తిరిగి అబద్ధం;
       }
 
-      extents->x_bearing = x_offset;
-      extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) (unsigned int) png.IHDR.height + y_offset);
-      extents->width     = (hb_position_t) (unsigned int) png.IHDR.width;
-      extents->height    = -(hb_position_t) (unsigned int) png.IHDR.height;
+      extents->x_bearing = x_స్థానభ్రంశం_2;
+      extents->y_bearing = hb_clamp_గమ్యం<hb_position_t> ((int64_t) (గుర్తులేని పూర్ణాంకం) png.IHDR.ఎత్తు + y_స్థానభ్రంశం_2);
+      extents->వెడల్పు     = (hb_position_t) (గుర్తులేని పూర్ణాంకం) png.IHDR.వెడల్పు;
+      extents->ఎత్తు    = -(hb_position_t) (గుర్తులేని పూర్ణాంకం) png.IHDR.ఎత్తు;
 
       /* Convert to font units. */
-      if (strike_ppem && scale)
+      ఒకవేళ (strike_ppem && scale)
       {
-	float scale = font->face->get_upem () / (float) strike_ppem;
-	extents->x_bearing = hb_clamp_to<hb_position_t> (roundf (extents->x_bearing * scale));
-	extents->y_bearing = hb_clamp_to<hb_position_t> (roundf (extents->y_bearing * scale));
-	extents->width = hb_clamp_to<hb_position_t> (roundf (extents->width * scale));
-	extents->height = hb_clamp_to<hb_position_t> (roundf (extents->height * scale));
+	దశాంశం scale = font->face->get_upem () / (దశాంశం) strike_ppem;
+	extents->x_bearing = hb_clamp_గమ్యం<hb_position_t> (roundf (extents->x_bearing * scale));
+	extents->y_bearing = hb_clamp_గమ్యం<hb_position_t> (roundf (extents->y_bearing * scale));
+	extents->వెడల్పు = hb_clamp_గమ్యం<hb_position_t> (roundf (extents->వెడల్పు * scale));
+	extents->ఎత్తు = hb_clamp_గమ్యం<hb_position_t> (roundf (extents->ఎత్తు * scale));
       }
 
-      if (scale)
+      ఒకవేళ (scale)
 	font->scale_glyph_extents (extents);
 
       hb_blob_destroy (blob);
 
-      return strike_ppem;
+      తిరిగి strike_ppem;
     }
 
-    private:
-    hb_blob_ptr_t<sbix> table;
+    అంతరంగ:
+    hb_blob_ptr_t<sbix> పట్టిక;
 
-    unsigned int num_glyphs;
+    గుర్తులేని పూర్ణాంకం అంకె_glyphs;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  version >= 1 &&
-			  strikes.sanitize (c, this)));
+			  సంస్కరణ >= 1 &&
+			  strikes.sanitize (c, ఇది)));
   }
 
-  bool
-  add_strike (hb_subset_context_t *c, unsigned i) const
+  తార్కిక
+  కూడు_strike (hb_subset_context_t *c, గుర్తులేని i) స్థిరరాశి
   {
-    if (strikes[i].is_null () || c->source_blob->length < (unsigned) strikes[i])
-      return false;
+    ఒకవేళ (strikes[i].is_null () || c->ఆధారం_blob->నిడివి < (గుర్తులేని) strikes[i])
+      తిరిగి అబద్ధం;
 
-    return (this+strikes[i]).subset (c, c->source_blob->length - (unsigned) strikes[i]);
+    తిరిగి (ఇది+strikes[i]).subset (c, c->ఆధారం_blob->నిడివి - (గుర్తులేని) strikes[i]);
   }
 
-  bool serialize_strike_offsets (hb_subset_context_t *c) const
+  తార్కిక serialize_strike_offsets (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    auto *out = c->serializer->start_embed<Array32OfOffset32To<SBIXStrike>> ();
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed<Array32_యొక్క_Offset32_గమ్యం<SBIXStrike>> ();
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    hb_vector_t<Offset32To<SBIXStrike>*> new_strikes;
-    hb_vector_t<hb_serialize_context_t::objidx_t> objidxs;
-    for (int i = strikes.len - 1; i >= 0; --i)
+    hb_సదిశ_t<Offset32_గమ్యం<SBIXStrike>*> new_strikes;
+    hb_సదిశ_t<hb_serialize_context_t::objidx_t> objidxs;
+    కొరకు (పూర్ణాంకం i = strikes.len - 1; i >= 0; --i)
     {
-      auto* o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
+      స్వయంచాలక* o = బహిర్గతం->serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!o)) return_trace (అబద్ధం);
       *o = 0;
-      auto snap = c->serializer->snapshot ();
+      స్వయంచాలక snap = c->serializer->snapshot ();
       c->serializer->push ();
-      bool ret = add_strike (c, i);
-      if (!ret)
+      తార్కిక ret = కూడు_strike (c, i);
+      ఒకవేళ (!ret)
       {
-	c->serializer->pop_discard ();
-	out->pop ();
+	c->serializer->తీయి_discard ();
+	బహిర్గతం->తీయి ();
 	c->serializer->revert (snap);
       }
-      else
+      లేకపోతే
       {
-	objidxs.push (c->serializer->pop_pack ());
+	objidxs.push (c->serializer->తీయి_pack ());
 	new_strikes.push (o);
       }
     }
-    for (unsigned int i = 0; i < new_strikes.length; ++i)
-      c->serializer->add_link (*new_strikes[i], objidxs[new_strikes.length - 1 - i]);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < new_strikes.నిడివి; ++i)
+      c->serializer->కూడు_link (*new_strikes[i], objidxs[new_strikes.నిడివి - 1 - i]);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t* c) const
+  తార్కిక subset (hb_subset_context_t* c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ఇది);
 
-    if (unlikely (!c->serializer->embed (this->version))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->flags))) return_trace (false);
+    ఒకవేళ (unlikely (!c->serializer->embed (ఇది->సంస్కరణ))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->serializer->embed (ఇది->flags))) return_trace (అబద్ధం);
 
     return_trace (serialize_strike_offsets (c));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number — set to 1 */
+  రక్షిత:
+  HBUINT16	సంస్కరణ;	/* Table version number — set to 1 */
   HBUINT16	flags;		/* Bit 0: Set to 1. Bit 1: Draw outlines.
 				 * Bits 2 to 15: reserved (set to 0). */
-  Array32OfOffset32To<SBIXStrike>
+  Array32_యొక్క_Offset32_గమ్యం<SBIXStrike>
 		strikes;	/* Offsets from the beginning of the 'sbix'
 				 * table to data for each individual bitmap strike. */
-  public:
-  DEFINE_SIZE_ARRAY (8, strikes);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (8, strikes);
 };
 
-struct sbix_accelerator_t : sbix::accelerator_t {
+నిర్మాణం sbix_accelerator_t : sbix::accelerator_t {
   sbix_accelerator_t (hb_face_t *face) : sbix::accelerator_t (face) {}
 };
 
 
 } /* namespace OT */
 
-#endif /* OT_COLOR_SBIX_SBIX_HH */
+#అయితే_ముగింపు /* OT_COLOR_SBIX_SBIX_HH */

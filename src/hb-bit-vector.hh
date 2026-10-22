@@ -22,174 +22,174 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_VECTOR_HH
-#define HB_BIT_VECTOR_HH
+#నిర్వచితం_కాకపోతే HB_బిట్టు_సదిశ_HH
+#నిర్వచించు HB_బిట్టు_సదిశ_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-atomic.hh"
+#అన్తర్భావ "hb-atomic.hh"
 
-struct hb_min_max_t
+నిర్మాణం hb_min_max_t
 {
-  void add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  శూన్య కూడు (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
+  శూన్య కూడు_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     min_v = hb_min (min_v, a);
     max_v = hb_max (max_v, b);
   }
 
-  template <typename set_t>
-  void union_ (const set_t &set)
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య union_ (స్థిరరాశి సమితి_t &సమితి)
   {
-    hb_codepoint_t set_min = set.get_min ();
-    if (unlikely (set_min == HB_CODEPOINT_INVALID))
-      return;
-    hb_codepoint_t set_max = set.get_max ();
-    min_v = hb_min (min_v, set_min);
-    max_v = hb_max (max_v, set_max);
+    hb_codepoint_t సమితి_min = సమితి.get_min ();
+    ఒకవేళ (unlikely (సమితి_min == HB_CODEPOINT_INVALID))
+      తిరిగి;
+    hb_codepoint_t సమితి_max = సమితి.get_max ();
+    min_v = hb_min (min_v, సమితి_min);
+    max_v = hb_max (max_v, సమితి_max);
   }
 
-  hb_codepoint_t get_min () const { return min_v; }
-  hb_codepoint_t get_max () const { return max_v; }
+  hb_codepoint_t get_min () స్థిరరాశి { తిరిగి min_v; }
+  hb_codepoint_t get_max () స్థిరరాశి { తిరిగి max_v; }
 
-  private:
+  అంతరంగ:
   hb_codepoint_t min_v = HB_CODEPOINT_INVALID;
   hb_codepoint_t max_v = 0;
 };
 
-template <bool atomic = false>
-struct hb_bit_vector_t
+మూస <తార్కిక atomic = అబద్ధం>
+నిర్మాణం hb_బిట్టు_సదిశ_t
 {
-  using int_t = uint64_t;
-  using elt_t = typename std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
+  ఉపయోగించి int_t = uint64_t;
+  ఉపయోగించి elt_t = రకం_పేరు std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
 
-  hb_bit_vector_t () = delete;
-  hb_bit_vector_t (const hb_bit_vector_t &other) = delete;
-  hb_bit_vector_t &operator= (const hb_bit_vector_t &other) = delete;
+  hb_బిట్టు_సదిశ_t () = తొలగించు;
+  hb_బిట్టు_సదిశ_t (స్థిరరాశి hb_బిట్టు_సదిశ_t &other) = తొలగించు;
+  hb_బిట్టు_సదిశ_t &క్రియాకారకం= (స్థిరరాశి hb_బిట్టు_సదిశ_t &other) = తొలగించు;
 
   // Move
-  hb_bit_vector_t (hb_bit_vector_t &&other)
-		: min_v (other.min_v), max_v (other.max_v), count (other.count), elts (other.elts)
+  hb_బిట్టు_సదిశ_t (hb_బిట్టు_సదిశ_t &&other)
+		: min_v (other.min_v), max_v (other.max_v), లెక్క (other.లెక్క), elts (other.elts)
   {
-    other.min_v = other.max_v = other.count = 0;
-    other.elts = nullptr;
+    other.min_v = other.max_v = other.లెక్క = 0;
+    other.elts = శూన్యసూచిక;
   }
-  hb_bit_vector_t &operator= (hb_bit_vector_t &&other)
+  hb_బిట్టు_సదిశ_t &క్రియాకారకం= (hb_బిట్టు_సదిశ_t &&other)
   {
-    hb_swap (min_v, other.min_v);
-    hb_swap (max_v, other.max_v);
-    hb_swap (count, other.count);
-    hb_swap (elts, other.elts);
-    return *this;
+    hb_మార్పిడి (min_v, other.min_v);
+    hb_మార్పిడి (max_v, other.max_v);
+    hb_మార్పిడి (లెక్క, other.లెక్క);
+    hb_మార్పిడి (elts, other.elts);
+    తిరిగి *ఇది;
   }
 
-  hb_bit_vector_t (unsigned min_v, unsigned max_v)
+  hb_బిట్టు_సదిశ_t (గుర్తులేని min_v, గుర్తులేని max_v)
     : min_v (min_v), max_v (max_v)
   {
-    if (unlikely (min_v >= max_v))
+    ఒకవేళ (unlikely (min_v >= max_v))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = లెక్క = 0;
+      తిరిగి;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
-    if (unlikely (!elts))
+    గుర్తులేని అంకె = (max_v - min_v + పరిమాణం (int_t) * 8) / (పరిమాణం (int_t) * 8);
+    elts = (elt_t *) hb_calloc (అంకె, పరిమాణం (int_t));
+    ఒకవేళ (unlikely (!elts))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = లెక్క = 0;
+      తిరిగి;
     }
 
-    count = max_v - min_v + 1;
+    లెక్క = max_v - min_v + 1;
   }
-  ~hb_bit_vector_t ()
+  ~hb_బిట్టు_సదిశ_t ()
   {
     hb_free (elts);
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  శూన్య కూడు (hb_codepoint_t g) { elt (g) |= ముసుగు (g); }
+  శూన్య del (hb_codepoint_t g) { elt (g) &= ~ముసుగు (g); }
+  శూన్య సమితి (hb_codepoint_t g, తార్కిక value) { ఒకవేళ (value) కూడు (g); లేకపోతే del (g); }
+  తార్కిక get (hb_codepoint_t g) స్థిరరాశి { తిరిగి elt (g) & ముసుగు (g); }
+  తార్కిక has (hb_codepoint_t g) స్థిరరాశి { తిరిగి get (g); }
+  తార్కిక may_have (hb_codepoint_t g) స్థిరరాశి { తిరిగి get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
+  తార్కిక క్రియాకారకం [] (hb_codepoint_t g) స్థిరరాశి { తిరిగి get (g); }
+  తార్కిక క్రియాకారకం () (hb_codepoint_t g) స్థిరరాశి { తిరిగి get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  శూన్య కూడు_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    ఒకవేళ (unlikely (!లెక్క || a > b || a < min_v || b > max_v))
+      తిరిగి;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
-      *la |= (mask (b) << 1) - mask(a);
-    else
+    ఒకవేళ (la == lb)
+      *la |= (ముసుగు (b) << 1) - ముసుగు(a);
+    లేకపోతే
     {
-      *la |= ~(mask (a) - 1llu);
+      *la |= ~(ముసుగు (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (అక్షరం *) lb - (అక్షరం *) la);
 
-      *lb |= ((mask (b) << 1) - 1llu);
+      *lb |= ((ముసుగు (b) << 1) - 1llu);
     }
   }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  శూన్య del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    ఒకవేళ (unlikely (!లెక్క || a > b || a < min_v || b > max_v))
+      తిరిగి;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
-      *la &= ~((mask (b) << 1llu) - mask(a));
-    else
+    ఒకవేళ (la == lb)
+      *la &= ~((ముసుగు (b) << 1llu) - ముసుగు(a));
+    లేకపోతే
     {
-      *la &= mask (a) - 1;
+      *la &= ముసుగు (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (అక్షరం *) lb - (అక్షరం *) la);
 
-      *lb &= ~((mask (b) << 1) - 1llu);
+      *lb &= ~((ముసుగు (b) << 1) - 1llu);
     }
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  శూన్య సమితి_range (hb_codepoint_t a, hb_codepoint_t b, తార్కిక v)
+  { ఒకవేళ (v) కూడు_range (a, b); లేకపోతే del_range (a, b); }
 
-  template <typename set_t>
-  void union_ (const set_t &set)
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య union_ (స్థిరరాశి సమితి_t &సమితి)
   {
-    for (hb_codepoint_t g : set)
-      add (g);
+    కొరకు (hb_codepoint_t g : సమితి)
+      కూడు (g);
   }
 
-  static const unsigned int ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  స్థిర స్థిరరాశి గుర్తులేని పూర్ణాంకం ELT_బిట్లు = పరిమాణం (elt_t) * 8;
+  స్థిర constexpr గుర్తులేని ELT_ముసుగు = ELT_బిట్లు - 1;
 
-  static constexpr elt_t zero = 0;
+  స్థిర constexpr elt_t zero = 0;
 
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Crap(elt_t);
-    return elts[g / ELT_BITS];
+    ఒకవేళ (unlikely (g >= లెక్క))
+      తిరిగి Crap(elt_t);
+    తిరిగి elts[g / ELT_బిట్లు];
   }
-  const elt_t& elt (hb_codepoint_t g) const
+  స్థిరరాశి elt_t& elt (hb_codepoint_t g) స్థిరరాశి
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Null(elt_t);
-    return elts[g / ELT_BITS];
+    ఒకవేళ (unlikely (g >= లెక్క))
+      తిరిగి Null(elt_t);
+    తిరిగి elts[g / ELT_బిట్లు];
   }
 
-  static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  స్థిర constexpr int_t ముసుగు (hb_codepoint_t g) { తిరిగి elt_t (1) << (g & ELT_ముసుగు); }
 
-  hb_codepoint_t min_v = 0, max_v = 0, count = 0;
-  elt_t *elts = nullptr;
+  hb_codepoint_t min_v = 0, max_v = 0, లెక్క = 0;
+  elt_t *elts = శూన్యసూచిక;
 };
 
 
-#endif /* HB_BIT_VECTOR_HH */
+#అయితే_ముగింపు /* HB_BIT_VECTOR_HH */

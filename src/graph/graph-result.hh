@@ -24,44 +24,44 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_లేఖాచిత్రం_ఫలితం_HH
+#నిర్వచించు లేఖాచిత్రం_లేఖాచిత్రం_ఫలితం_HH
 
-#include "../hb-result.hh"
+#అన్తర్భావ "../hb-result.hh"
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-enum graph_error_t {
-  ALLOCATION_FAILURE,
-  LIMIT_EXCEEDED,
-  INVALID_ARGUMENT,
-  CYCLE_DETECTED,
+గణన లేఖాచిత్రం_error_t {
+  కేటాయింపు_FAILURE,
+  హద్దు_EXCEEDED,
+  INVALID_వాదం,
+  చక్రం_DETECTED,
   SANITIZE_FAILURE,
-  OUT_OF_BOUNDS,
+  బహిర్గతం_యొక్క_BOUNDS,
   ORPHANED_NODES,
-  OVERFLOW_RESOLUTION_FAILED,
+  అధికప్రవాహం_RESOLUTION_FAILED,
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+స్థిర అంతఃవరుస స్థిరరాశి అక్షరం* to_string(లేఖాచిత్రం_error_t e) {
+  ఎంపిక (e) {
+    స్థితి కేటాయింపు_FAILURE: తిరిగి "Memory Allocation Failed";
+    స్థితి హద్దు_EXCEEDED: తిరిగి "Limit Exceeded";
+    స్థితి INVALID_వాదం: తిరిగి "Invalid Argument";
+    స్థితి చక్రం_DETECTED: తిరిగి "Cycle in Graph";
+    స్థితి SANITIZE_FAILURE: తిరిగి "Failed Sanitization";
+    స్థితి బహిర్గతం_యొక్క_BOUNDS: తిరిగి "Out of Bounds";
+    స్థితి ORPHANED_NODES: తిరిగి "Graph is not fully connected";
+    స్థితి అధికప్రవాహం_RESOLUTION_FAILED: తిరిగి "Overflows are not able to be resolved";
+    స్థితి UNKNOWN:
+    అప్రమేయ:
+      తిరిగి "Unknown Error";
   }
 }
 
-template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+మూస<రకం_పేరు T>
+ఉపయోగించి లేఖాచిత్రం_ఫలితం_t = hb_ఫలితం_t<T, లేఖాచిత్రం_error_t>;
 
 } // namespace graph
 
-#endif /* GRAPH_GRAPH_RESULT_HH */
+#అయితే_ముగింపు /* GRAPH_GRAPH_RESULT_HH */

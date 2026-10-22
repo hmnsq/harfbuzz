@@ -25,314 +25,314 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OUTLINE
+#నిర్వచితం_కాకపోతే HB_NO_OUTLINE
 
-#include "hb-outline.hh"
+#అన్తర్భావ "hb-outline.hh"
 
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
-void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
+శూన్య hb_outline_t::replay (hb_draw_funcs_t *pen, శూన్య *pen_దత్తాంశం) స్థిరరాశి
 {
   hb_draw_state_t st = HB_DRAW_STATE_DEFAULT;
 
-  unsigned first = 0;
-  for (unsigned contour : contours)
+  గుర్తులేని మొదటి = 0;
+  కొరకు (గుర్తులేని contour : contours)
   {
-    auto it = points.as_array ().sub_array (first, contour - first);
-    while (it)
+    స్వయంచాలక it = points.as_array ().sub_array (మొదటి, contour - మొదటి);
+    అయితే (it)
     {
-      hb_outline_point_t p1 = *it++;
-      switch (p1.type)
+      hb_outline_బిందువు_t p1 = *it++;
+      ఎంపిక (p1.type)
       {
-	case hb_outline_point_t::type_t::MOVE_TO:
+	స్థితి hb_outline_బిందువు_t::type_t::MOVE_గమ్యం:
 	{
-	  pen->move_to (pen_data, st,
+	  pen->move_గమ్యం (pen_దత్తాంశం, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	ఆపు;
+	స్థితి hb_outline_బిందువు_t::type_t::పంక్తి_గమ్యం_2:
 	{
-	  pen->line_to (pen_data, st,
+	  pen->పంక్తి_గమ్యం (pen_దత్తాంశం, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::QUADRATIC_TO:
+	ఆపు;
+	స్థితి hb_outline_బిందువు_t::type_t::QUADRATIC_గమ్యం:
 	{
-	  hb_outline_point_t p2 = *it++;
-	  pen->quadratic_to (pen_data, st,
+	  hb_outline_బిందువు_t p2 = *it++;
+	  pen->quadratic_గమ్యం (pen_దత్తాంశం, st,
 				p1.x, p1.y,
 				p2.x, p2.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::CUBIC_TO:
+	ఆపు;
+	స్థితి hb_outline_బిందువు_t::type_t::CUBIC_గమ్యం:
 	{
-	  hb_outline_point_t p2 = *it++;
-	  hb_outline_point_t p3 = *it++;
-	  pen->cubic_to (pen_data, st,
+	  hb_outline_బిందువు_t p2 = *it++;
+	  hb_outline_బిందువు_t p3 = *it++;
+	  pen->cubic_గమ్యం (pen_దత్తాంశం, st,
 			    p1.x, p1.y,
 			    p2.x, p2.y,
 			    p3.x, p3.y);
 	}
-	break;
+	ఆపు;
       }
     }
-    pen->close_path (pen_data, st);
-    first = contour;
+    pen->close_మార్గం (pen_దత్తాంశం, st);
+    మొదటి = contour;
   }
 }
 
-void hb_outline_t::translate (float dx, float dy)
+శూన్య hb_outline_t::translate (దశాంశం dx, దశాంశం dy)
 {
-  for (auto &p : points)
+  కొరకు (స్వయంచాలక &p : points)
   {
     p.x += dx;
     p.y += dy;
   }
 }
 
-void hb_outline_t::slant (float slant_xy)
+శూన్య hb_outline_t::slant (దశాంశం slant_xy)
 {
-  for (auto &p : points)
+  కొరకు (స్వయంచాలక &p : points)
     p.x += slant_xy * p.y;
 }
 
-float hb_outline_t::control_area () const
+దశాంశం hb_outline_t::control_area () స్థిరరాశి
 {
-  float a = 0;
-  unsigned first = 0;
-  for (unsigned contour : contours)
+  దశాంశం a = 0;
+  గుర్తులేని మొదటి = 0;
+  కొరకు (గుర్తులేని contour : contours)
   {
-    for (unsigned i = first; i < contour; i++)
+    కొరకు (గుర్తులేని i = మొదటి; i < contour; i++)
     {
-      unsigned j = i + 1 < contour ? i + 1 : first;
+      గుర్తులేని j = i + 1 < contour ? i + 1 : మొదటి;
 
-      auto &pi = points[i];
-      auto &pj = points[j];
+      స్వయంచాలక &pi = points[i];
+      స్వయంచాలక &pj = points[j];
       a += pi.x * pj.y - pi.y * pj.x;
     }
 
-    first = contour;
+    మొదటి = contour;
   }
-  return a * .5f;
+  తిరిగి a * .5f;
 }
 
-void hb_outline_t::embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift)
+శూన్య hb_outline_t::embolden (దశాంశం x_strength, దశాంశం y_strength,
+			     దశాంశం x_జరుపు, దశాంశం y_జరుపు)
 {
   /* This function is a straight port of FreeType's FT_Outline_EmboldenXY.
    * Permission has been obtained from the FreeType authors of the code
    * to relicense it under the HarfBuzz license. */
 
-  if (!x_strength && !y_strength) return;
-  if (!points) return;
+  ఒకవేళ (!x_strength && !y_strength) తిరిగి;
+  ఒకవేళ (!points) తిరిగి;
 
   x_strength /= 2.f;
   y_strength /= 2.f;
 
-  bool orientation_negative = control_area () < 0;
+  తార్కిక orientation_negative = control_area () < 0;
 
-  signed first = 0;
-  for (unsigned c = 0; c < contours.length; c++)
+  గుర్తుగల మొదటి = 0;
+  కొరకు (గుర్తులేని c = 0; c < contours.నిడివి; c++)
   {
-    hb_outline_vector_t in, out, anchor, shift;
-    float l_in, l_out, l_anchor = 0, l, q, d;
+    hb_outline_సదిశ_t లోపల, బహిర్గతం, anchor, జరుపు;
+    దశాంశం l_లోపల, l_బహిర్గతం, l_anchor = 0, l, q, d;
 
-    l_in = 0;
-    signed last = (int) contours[c] - 1;
+    l_లోపల = 0;
+    గుర్తుగల చివరి = (పూర్ణాంకం) contours[c] - 1;
 
     /* pacify compiler */
-    in.x = in.y = anchor.x = anchor.y = 0;
+    లోపల.x = లోపల.y = anchor.x = anchor.y = 0;
 
     /* Counter j cycles though the points; counter i advances only  */
     /* when points are moved; anchor k marks the first moved point. */
-    for ( signed i = last, j = first, k = -1;
+    కొరకు ( గుర్తుగల i = చివరి, j = మొదటి, k = -1;
 	  j != i && i != k;
-	  j = j < last ? j + 1 : first )
+	  j = j < చివరి ? j + 1 : మొదటి )
     {
-      if ( j != k )
+      ఒకవేళ ( j != k )
       {
-	out.x = points[j].x - points[i].x;
-	out.y = points[j].y - points[i].y;
-	l_out = out.normalize_len ();
+	బహిర్గతం.x = points[j].x - points[i].x;
+	బహిర్గతం.y = points[j].y - points[i].y;
+	l_బహిర్గతం = బహిర్గతం.normalize_len ();
 
-	if ( l_out == 0 )
-	  continue;
+	ఒకవేళ ( l_బహిర్గతం == 0 )
+	  కొనసాగు;
       }
-      else
+      లేకపోతే
       {
-	out   = anchor;
-	l_out = l_anchor;
+	బహిర్గతం   = anchor;
+	l_బహిర్గతం = l_anchor;
       }
 
-      if ( l_in != 0 )
+      ఒకవేళ ( l_లోపల != 0 )
       {
-	if ( k < 0 )
+	ఒకవేళ ( k < 0 )
 	{
 	  k        = i;
-	  anchor   = in;
-	  l_anchor = l_in;
+	  anchor   = లోపల;
+	  l_anchor = l_లోపల;
 	}
 
-	d = in.x * out.x + in.y * out.y;
+	d = లోపల.x * బహిర్గతం.x + లోపల.y * బహిర్గతం.y;
 
 	/* shift only if turn is less than ~160 degrees */
-	if ( d > -15.f/16.f )
+	ఒకవేళ ( d > -15.f/16.f )
 	{
 	  d = d + 1.f;
 
 	  /* shift components along lateral bisector in proper orientation */
-	  shift.x = in.y + out.y;
-	  shift.y = in.x + out.x;
+	  జరుపు.x = లోపల.y + బహిర్గతం.y;
+	  జరుపు.y = లోపల.x + బహిర్గతం.x;
 
-	  if ( orientation_negative )
-	    shift.x = -shift.x;
-	  else
-	    shift.y = -shift.y;
+	  ఒకవేళ ( orientation_negative )
+	    జరుపు.x = -జరుపు.x;
+	  లేకపోతే
+	    జరుపు.y = -జరుపు.y;
 
 	  /* restrict shift magnitude to better handle collapsing segments */
-	  q = out.x * in.y - out.y * in.x;
-	  if ( orientation_negative )
+	  q = బహిర్గతం.x * లోపల.y - బహిర్గతం.y * లోపల.x;
+	  ఒకవేళ ( orientation_negative )
 	    q = -q;
 
-	  l = hb_min (l_in, l_out);
+	  l = hb_min (l_లోపల, l_బహిర్గతం);
 
 	  /* non-strict inequalities avoid divide-by-zero when q == l == 0 */
-	  if (x_strength * q <= l * d)
-	    shift.x = shift.x * x_strength / d;
-	  else
-	    shift.x = shift.x * l / q;
+	  ఒకవేళ (x_strength * q <= l * d)
+	    జరుపు.x = జరుపు.x * x_strength / d;
+	  లేకపోతే
+	    జరుపు.x = జరుపు.x * l / q;
 
 
-	  if (y_strength * q <= l * d)
-	    shift.y = shift.y * y_strength / d;
-	  else
-	    shift.y = shift.y * l / q;
+	  ఒకవేళ (y_strength * q <= l * d)
+	    జరుపు.y = జరుపు.y * y_strength / d;
+	  లేకపోతే
+	    జరుపు.y = జరుపు.y * l / q;
 	}
-	else
-	  shift.x = shift.y = 0;
+	లేకపోతే
+	  జరుపు.x = జరుపు.y = 0;
 
-	for ( ;
+	కొరకు ( ;
 	      i != j;
-	      i = i < last ? i + 1 : first )
+	      i = i < చివరి ? i + 1 : మొదటి )
 	{
-	  points[i].x += x_shift + shift.x;
-	  points[i].y += y_shift + shift.y;
+	  points[i].x += x_జరుపు + జరుపు.x;
+	  points[i].y += y_జరుపు + జరుపు.y;
 	}
       }
-      else
+      లేకపోతే
 	i = j;
 
-      in   = out;
-      l_in = l_out;
+      లోపల   = బహిర్గతం;
+      l_లోపల = l_బహిర్గతం;
     }
 
-    first = last + 1;
+    మొదటి = చివరి + 1;
   }
 }
 
-static void
-hb_outline_recording_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+స్థిర శూన్య
+hb_outline_recording_pen_move_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				  శూన్య *దత్తాంశం,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) దత్తాంశం;
 
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::MOVE_TO});
+  c->points.push (hb_outline_బిందువు_t {గమ్యం_x, గమ్యం_y, hb_outline_బిందువు_t::type_t::MOVE_గమ్యం});
 }
 
-static void
-hb_outline_recording_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+స్థిర శూన్య
+hb_outline_recording_pen_పంక్తి_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				  శూన్య *దత్తాంశం,
 				  hb_draw_state_t *st,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) దత్తాంశం;
 
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::LINE_TO});
+  c->points.push (hb_outline_బిందువు_t {గమ్యం_x, గమ్యం_y, hb_outline_బిందువు_t::type_t::పంక్తి_గమ్యం_2});
 }
 
-static void
-hb_outline_recording_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				       void *data,
+స్థిర శూన్య
+hb_outline_recording_pen_quadratic_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				       శూన్య *దత్తాంశం,
 				       hb_draw_state_t *st,
-				       float control_x, float control_y,
-				       float to_x, float to_y,
-				       void *user_data HB_UNUSED)
+				       దశాంశం control_x, దశాంశం control_y,
+				       దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) దత్తాంశం;
 
-  c->points.push (hb_outline_point_t {control_x, control_y, hb_outline_point_t::type_t::QUADRATIC_TO});
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::QUADRATIC_TO});
+  c->points.push (hb_outline_బిందువు_t {control_x, control_y, hb_outline_బిందువు_t::type_t::QUADRATIC_గమ్యం});
+  c->points.push (hb_outline_బిందువు_t {గమ్యం_x, గమ్యం_y, hb_outline_బిందువు_t::type_t::QUADRATIC_గమ్యం});
 }
 
-static void
-hb_outline_recording_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				   void *data,
+స్థిర శూన్య
+hb_outline_recording_pen_cubic_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				   శూన్య *దత్తాంశం,
 				   hb_draw_state_t *st,
-				   float control1_x, float control1_y,
-				   float control2_x, float control2_y,
-				   float to_x, float to_y,
-				   void *user_data HB_UNUSED)
+				   దశాంశం control1_x, దశాంశం control1_y,
+				   దశాంశం control2_x, దశాంశం control2_y,
+				   దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) దత్తాంశం;
 
-  c->points.push (hb_outline_point_t {control1_x, control1_y, hb_outline_point_t::type_t::CUBIC_TO});
-  c->points.push (hb_outline_point_t {control2_x, control2_y, hb_outline_point_t::type_t::CUBIC_TO});
-  c->points.push (hb_outline_point_t {to_x, to_y, hb_outline_point_t::type_t::CUBIC_TO});
+  c->points.push (hb_outline_బిందువు_t {control1_x, control1_y, hb_outline_బిందువు_t::type_t::CUBIC_గమ్యం});
+  c->points.push (hb_outline_బిందువు_t {control2_x, control2_y, hb_outline_బిందువు_t::type_t::CUBIC_గమ్యం});
+  c->points.push (hb_outline_బిందువు_t {గమ్యం_x, గమ్యం_y, hb_outline_బిందువు_t::type_t::CUBIC_గమ్యం});
 }
 
-static void
-hb_outline_recording_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				     void *data,
+స్థిర శూన్య
+hb_outline_recording_pen_close_మార్గం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				     శూన్య *దత్తాంశం,
 				     hb_draw_state_t *st,
-				     void *user_data HB_UNUSED)
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) దత్తాంశం;
 
-  c->contours.push (c->points.length);
+  c->contours.push (c->points.నిడివి);
 }
 
-static int64_t *
-hb_outline_recording_pen_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED,
-					       void *data,
-					       void *user_data HB_UNUSED)
+స్థిర int64_t *
+hb_outline_recording_pen_get_budget_మిగిలిన (hb_draw_funcs_t *dfuncs HB_వాడని,
+					       శూన్య *దత్తాంశం,
+					       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_outline_t *c = (hb_outline_t *) data;
+  hb_outline_t *c = (hb_outline_t *) దత్తాంశం;
 
-  return c->budget_remaining;
+  తిరిగి c->budget_మిగిలిన;
 }
 
-static inline void free_static_outline_recording_pen_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_outline_recording_pen_funcs ();
 
-static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  స్థిర hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_outline_recording_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_outline_recording_pen_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_outline_recording_pen_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_outline_recording_pen_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, hb_outline_recording_pen_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_outline_recording_pen_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_సమితి_move_గమ్యం_func (funcs, hb_outline_recording_pen_move_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_పంక్తి_గమ్యం_func (funcs, hb_outline_recording_pen_పంక్తి_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_quadratic_గమ్యం_func (funcs, hb_outline_recording_pen_quadratic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_cubic_గమ్యం_func (funcs, hb_outline_recording_pen_cubic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_close_మార్గం_func (funcs, hb_outline_recording_pen_close_మార్గం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_get_budget_మిగిలిన_func (funcs, hb_outline_recording_pen_get_budget_మిగిలిన, శూన్యసూచిక, శూన్యసూచిక);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_outline_recording_pen_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_outline_recording_pen_funcs;
 
-static inline
-void free_static_outline_recording_pen_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_outline_recording_pen_funcs ()
 {
   static_outline_recording_pen_funcs.free_instance ();
 }
@@ -340,8 +340,8 @@ void free_static_outline_recording_pen_funcs ()
 hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ()
 {
-  return static_outline_recording_pen_funcs.get_unconst ();
+  తిరిగి static_outline_recording_pen_funcs.get_unconst ();
 }
 
 
-#endif
+#అయితే_ముగింపు

@@ -24,19 +24,19 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  if (argc != 2) {
+  ఒకవేళ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    నిష్క్రమించు (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
@@ -44,46 +44,46 @@ main (int argc, char **argv)
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_font_t *font = hb_font_create (face);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = శూన్యసూచిక;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  స్థిరరాశి గుర్తులేని పూర్ణాంకం అంకె_glyphs = hb_face_get_glyph_లెక్క (face);
+  పూర్ణాంకం	ఫలితం = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  కొరకు (hb_codepoint_t gid = 0; gid < అంకె_glyphs; gid++)
   {
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    అక్షరం buf[64];
+    గుర్తులేని పూర్ణాంకం buf_కొలత = పరిమాణం (buf);
+    ఒకవేళ (hb_font_get_glyph_name (font, gid, buf, buf_కొలత))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      ఒకవేళ (hb_font_get_glyph_from_name(font, buf, అక్షరశ్రేణి_పొడవు (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	ఒకవేళ (gid == gid_inv)
 	{
-	  printf ("%u <-> %s\n", gid, buf);
+	  రాయి ("%u <-> %s\n", gid, buf);
 	}
-	else
+	లేకపోతే
 	{
-	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
-	  result = 0;
+	  రాయి ("%u -> %s -> %u\n", gid, buf, gid_inv);
+	  ఫలితం = 0;
 	}
       }
-      else
+      లేకపోతే
       {
-	printf ("%u -> %s -> ?\n", gid, buf);
-	result = 0;
+	రాయి ("%u -> %s -> ?\n", gid, buf);
+	ఫలితం = 0;
       }
     }
-    else
+    లేకపోతే
     {
-      printf ("%u -> ?\n", gid);
-      result = 0;
+      రాయి ("%u -> ?\n", gid);
+      ఫలితం = 0;
     }
   }
 
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  తిరిగి !ఫలితం;
 }

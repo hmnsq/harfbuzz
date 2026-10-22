@@ -1,11 +1,11 @@
-#ifndef OT_LAYOUT_GPOS_COMMON_HH
-#define OT_LAYOUT_GPOS_COMMON_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_COMMON_HH
+#నిర్వచించు OT_LAYOUT_GPOS_COMMON_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-enum attach_type_t {
+గణన attach_type_t {
   ATTACH_TYPE_NONE      = 0X00,
 
   /* Each attachment should be either a mark or a cursive; can't be both. */
@@ -14,24 +14,24 @@ enum attach_type_t {
 };
 
 /* buffer **position** var allocations */
-#define attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
-#define attach_type() var.u8[2] /* attachment type */
+#నిర్వచించు attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
+#నిర్వచించు attach_type() var.u8[2] /* attachment type */
 /* Note! if attach_chain() is zero, the value of attach_type() is irrelevant. */
 
-struct ValueBase;
-struct ValueFormat;
+నిర్మాణం విలువ_పునాది;
+నిర్మాణం విలువ_Format;
 
-template<typename Iterator>
-static void SinglePos_serialize (hb_serialize_context_t *c,
-                                 const ValueBase *src,
-                                 ValueFormat src_format,
+మూస<రకం_పేరు Iterator>
+స్థిర శూన్య SinglePos_serialize (hb_serialize_context_t *c,
+                                 స్థిరరాశి విలువ_పునాది *src,
+                                 విలువ_Format src_format,
                                  Iterator it,
-                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                                 unsigned new_format);
+                                 స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map,
+                                 గుర్తులేని new_format);
 
 
 }
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_COMMON_HH
+#అయితే_ముగింపు  // OT_LAYOUT_GPOS_COMMON_HH

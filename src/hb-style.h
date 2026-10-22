@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_STYLE_H
-#define HB_STYLE_H
+#నిర్వచితం_కాకపోతే HB_STYLE_H
+#నిర్వచించు HB_STYLE_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -59,23 +59,23 @@ HB_BEGIN_DECLS
  *
  * Since: 3.0.0
  **/
-typedef enum
+రకనిర్వచనం గణన
 {
-  HB_STYLE_TAG_ITALIC		= HB_TAG ('i','t','a','l'),
-  HB_STYLE_TAG_OPTICAL_SIZE	= HB_TAG ('o','p','s','z'),
-  HB_STYLE_TAG_SLANT_ANGLE	= HB_TAG ('s','l','n','t'),
-  HB_STYLE_TAG_SLANT_RATIO	= HB_TAG ('S','l','n','t'),
-  HB_STYLE_TAG_WIDTH		= HB_TAG ('w','d','t','h'),
-  HB_STYLE_TAG_WEIGHT		= HB_TAG ('w','g','h','t'),
+  HB_STYLE_ట్యాగ్_ITALIC		= HB_ట్యాగ్ ('i','t','a','l'),
+  HB_STYLE_ట్యాగ్_OPTICAL_కొలత	= HB_ట్యాగ్ ('o','p','s','z'),
+  HB_STYLE_ట్యాగ్_SLANT_ANGLE	= HB_ట్యాగ్ ('s','l','n','t'),
+  HB_STYLE_ట్యాగ్_SLANT_నిష్పత్తి	= HB_ట్యాగ్ ('S','l','n','t'),
+  HB_STYLE_ట్యాగ్_వెడల్పు		= HB_ట్యాగ్ ('w','d','t','h'),
+  HB_STYLE_ట్యాగ్_బరువు		= HB_ట్యాగ్ ('w','g','h','t'),
 
   /*< private >*/
-  _HB_STYLE_TAG_MAX_VALUE	= HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_style_tag_t;
+  HB_STYLE_ట్యాగ్_MAX_విలువ	= HB_ట్యాగ్_MAX_SIGNED /*< skip >*/
+} hb_style_ట్యాగ్_t;
 
 
-HB_EXTERN float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag);
+HB_EXTERN దశాంశం
+hb_style_get_విలువ (hb_font_t *font, hb_style_ట్యాగ్_t style_ట్యాగ్);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_STYLE_H */
+#అయితే_ముగింపు /* HB_STYLE_H */

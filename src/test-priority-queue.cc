@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-priority-queue.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-priority-queue.hh"
 
-static void
-test_insert ()
+స్థిర శూన్య
+test_చొప్పించు ()
 {
-  hb_priority_queue_t<int64_t> queue;
-  hb_always_assert (queue.is_empty ());
+  hb_ప్రాధాన్యత_వరుస_t<int64_t> వరుస;
+  hb_always_assert (వరుస.is_empty ());
 
-  queue.insert (10, 0);
-  hb_always_assert (!queue.is_empty ());
-  hb_always_assert (queue.minimum () == hb_pair (10, 0));
+  వరుస.insert (10, 0);
+  hb_always_assert (!వరుస.is_empty ());
+  hb_always_assert (వరుస.minimum () == hb_pair (10, 0));
 
-  queue.insert (20, 1);
-  hb_always_assert (queue.minimum () == hb_pair (10, 0));
+  వరుస.insert (20, 1);
+  hb_always_assert (వరుస.minimum () == hb_pair (10, 0));
 
-  queue.insert (5, 2);
-  hb_always_assert (queue.minimum () == hb_pair (5, 2));
+  వరుస.insert (5, 2);
+  hb_always_assert (వరుస.minimum () == hb_pair (5, 2));
 
-  queue.insert (15, 3);
-  hb_always_assert (queue.minimum () == hb_pair (5, 2));
+  వరుస.insert (15, 3);
+  hb_always_assert (వరుస.minimum () == hb_pair (5, 2));
 
-  queue.insert (1, 4);
-  hb_always_assert (queue.minimum () == hb_pair (1, 4));
+  వరుస.insert (1, 4);
+  hb_always_assert (వరుస.minimum () == hb_pair (1, 4));
 }
 
-static void
-test_extract ()
+స్థిర శూన్య
+test_వెలికితీయి ()
 {
-  hb_priority_queue_t<int32_t> queue;
-  queue.insert (0, 0);
-  queue.insert (60, 6);
-  queue.insert (30, 3);
-  queue.insert (40 ,4);
-  queue.insert (20, 2);
-  queue.insert (50, 5);
-  queue.insert (70, 7);
-  queue.insert (10, 1);
+  hb_ప్రాధాన్యత_వరుస_t<int32_t> వరుస;
+  వరుస.insert (0, 0);
+  వరుస.insert (60, 6);
+  వరుస.insert (30, 3);
+  వరుస.insert (40 ,4);
+  వరుస.insert (20, 2);
+  వరుస.insert (50, 5);
+  వరుస.insert (70, 7);
+  వరుస.insert (10, 1);
 
-  for (int i = 0; i < 8; i++)
+  కొరకు (పూర్ణాంకం i = 0; i < 8; i++)
   {
-    hb_always_assert (!queue.is_empty ());
-    hb_always_assert (queue.minimum () == hb_pair (i * 10, i));
-    hb_always_assert (queue.pop_minimum () == hb_pair (i * 10, i));
+    hb_always_assert (!వరుస.is_empty ());
+    hb_always_assert (వరుస.minimum () == hb_pair (i * 10, i));
+    hb_always_assert (వరుస.తీయి_minimum () == hb_pair (i * 10, i));
   }
 
-  hb_always_assert (queue.is_empty ());
+  hb_always_assert (వరుస.is_empty ());
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  test_insert ();
-  test_extract ();
+  test_చొప్పించు ();
+  test_వెలికితీయి ();
 }

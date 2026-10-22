@@ -26,12 +26,12 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ITER_HH
-#define HB_ITER_HH
+#నిర్వచితం_కాకపోతే HB_ITER_HH
+#నిర్వచించు HB_ITER_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-meta.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-algs.hh"
+#అన్తర్భావ "hb-meta.hh"
 
 
 /* Unified iterator object.
@@ -55,195 +55,195 @@
  */
 
 /* Base class for all iterators. */
-template <typename iter_t, typename Item = typename iter_t::__item_t__>
-struct hb_iter_t
+మూస <రకం_పేరు iter_t, రకం_పేరు అంశం_3 = రకం_పేరు iter_t::__item_t__>
+నిర్మాణం hb_iter_t
 {
-  typedef Item item_t;
-  constexpr unsigned get_item_size () const { return hb_static_size (Item); }
-  static constexpr bool is_iterator = true;
-  static constexpr bool is_random_access_iterator = false;
-  static constexpr bool is_sorted_iterator = false;
-  static constexpr bool has_fast_len = false; // Should be checked in combination with is_random_access_iterator.
+  రకనిర్వచనం అంశం_3 అంశం_t;
+  constexpr గుర్తులేని get_అంశం_కొలత () స్థిరరాశి { తిరిగి hb_static_కొలత (అంశం_3); }
+  స్థిర constexpr తార్కిక is_iterator = నిజం;
+  స్థిర constexpr తార్కిక is_random_access_iterator = అబద్ధం;
+  స్థిర constexpr తార్కిక is_sorted_iterator = అబద్ధం;
+  స్థిర constexpr తార్కిక has_fast_len = అబద్ధం; // Should be checked in combination with is_random_access_iterator.
 
-  private:
+  అంతరంగ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  స్థిరరాశి iter_t* thiz () స్థిరరాశి { తిరిగి static_cast<స్థిరరాశి iter_t *> (ఇది); }
+	iter_t* thiz ()       { తిరిగి static_cast<      iter_t *> (ఇది); }
+  బహిరంగ:
 
   /* Operators. */
-  iter_t iter () const { return *thiz(); }
-  iter_t operator + () const { return *thiz(); }
-  iter_t _begin () const { return *thiz(); }
-  iter_t begin () const { return _begin (); }
-  iter_t _end () const { return thiz()->__end__ (); }
-  iter_t end () const { return _end (); }
-  explicit operator bool () const { return thiz()->__more__ (); }
-  unsigned len () const { return thiz()->__len__ (); }
+  iter_t iter () స్థిరరాశి { తిరిగి *thiz(); }
+  iter_t క్రియాకారకం + () స్థిరరాశి { తిరిగి *thiz(); }
+  iter_t _begin () స్థిరరాశి { తిరిగి *thiz(); }
+  iter_t begin () స్థిరరాశి { తిరిగి _begin (); }
+  iter_t చివర_3 () స్థిరరాశి { తిరిగి thiz()->__end__ (); }
+  iter_t చివర () స్థిరరాశి { తిరిగి చివర_3 (); }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి thiz()->__more__ (); }
+  గుర్తులేని len () స్థిరరాశి { తిరిగి thiz()->__len__ (); }
   /* The following can only be enabled if item_t is reference type.  Otherwise
    * it will be returning pointer to temporary rvalue. */
-  template <typename T = item_t,
+  మూస <రకం_పేరు T = అంశం_t,
 	    hb_enable_if (std::is_reference<T>::value)>
-  hb_remove_reference<item_t>* operator -> () const { return std::addressof (**thiz()); }
-  item_t operator * () const { return thiz()->__item__ (); }
-  item_t operator * () { return thiz()->__item__ (); }
-  item_t operator [] (unsigned i) const { return thiz()->__item_at__ (i); }
-  item_t operator [] (unsigned i) { return thiz()->__item_at__ (i); }
-  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); return *thiz(); }
-  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); return *thiz(); }
-  iter_t& operator ++ () &  { thiz()->__next__ (); return *thiz(); }
-  iter_t  operator ++ () && { thiz()->__next__ (); return *thiz(); }
-  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t& operator -- () &  { thiz()->__prev__ (); return *thiz(); }
-  iter_t  operator -- () && { thiz()->__prev__ (); return *thiz(); }
-  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; return c; }
-  friend iter_t operator + (unsigned count, const iter_t &it) { return it + count; }
-  iter_t operator ++ (int) { iter_t c (*thiz()); ++*thiz(); return c; }
-  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; return c; }
-  iter_t operator -- (int) { iter_t c (*thiz()); --*thiz(); return c; }
-  template <typename T>
-  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t& operator << (const T v) &  { **thiz() = v; ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t  operator << (const T v) && { **thiz() = v; ++*thiz(); return *thiz(); }
+  hb_remove_reference<అంశం_t>* క్రియాకారకం -> () స్థిరరాశి { తిరిగి std::addressof (**thiz()); }
+  అంశం_t క్రియాకారకం * () స్థిరరాశి { తిరిగి thiz()->__item__ (); }
+  అంశం_t క్రియాకారకం * () { తిరిగి thiz()->__item__ (); }
+  అంశం_t క్రియాకారకం [] (గుర్తులేని i) స్థిరరాశి { తిరిగి thiz()->__item_at__ (i); }
+  అంశం_t క్రియాకారకం [] (గుర్తులేని i) { తిరిగి thiz()->__item_at__ (i); }
+  iter_t& క్రియాకారకం += (గుర్తులేని లెక్క) &  { thiz()->__forward__ (లెక్క); తిరిగి *thiz(); }
+  iter_t  క్రియాకారకం += (గుర్తులేని లెక్క) && { thiz()->__forward__ (లెక్క); తిరిగి *thiz(); }
+  iter_t& క్రియాకారకం ++ () &  { thiz()->__next__ (); తిరిగి *thiz(); }
+  iter_t  క్రియాకారకం ++ () && { thiz()->__next__ (); తిరిగి *thiz(); }
+  iter_t& క్రియాకారకం -= (గుర్తులేని లెక్క) &  { thiz()->__rewind__ (లెక్క); తిరిగి *thiz(); }
+  iter_t  క్రియాకారకం -= (గుర్తులేని లెక్క) && { thiz()->__rewind__ (లెక్క); తిరిగి *thiz(); }
+  iter_t& క్రియాకారకం -- () &  { thiz()->__prev__ (); తిరిగి *thiz(); }
+  iter_t  క్రియాకారకం -- () && { thiz()->__prev__ (); తిరిగి *thiz(); }
+  iter_t క్రియాకారకం + (గుర్తులేని లెక్క) స్థిరరాశి { స్వయంచాలక c = thiz()->iter (); c += లెక్క; తిరిగి c; }
+  మిత్ర iter_t క్రియాకారకం + (గుర్తులేని లెక్క, స్థిరరాశి iter_t &it) { తిరిగి it + లెక్క; }
+  iter_t క్రియాకారకం ++ (పూర్ణాంకం) { iter_t c (*thiz()); ++*thiz(); తిరిగి c; }
+  iter_t క్రియాకారకం - (గుర్తులేని లెక్క) స్థిరరాశి { స్వయంచాలక c = thiz()->iter (); c -= లెక్క; తిరిగి c; }
+  iter_t క్రియాకారకం -- (పూర్ణాంకం) { iter_t c (*thiz()); --*thiz(); తిరిగి c; }
+  మూస <రకం_పేరు T>
+  iter_t& క్రియాకారకం >> (T &v) &  { v = **thiz(); ++*thiz(); తిరిగి *thiz(); }
+  మూస <రకం_పేరు T>
+  iter_t  క్రియాకారకం >> (T &v) && { v = **thiz(); ++*thiz(); తిరిగి *thiz(); }
+  మూస <రకం_పేరు T>
+  iter_t& క్రియాకారకం << (స్థిరరాశి T v) &  { **thiz() = v; ++*thiz(); తిరిగి *thiz(); }
+  మూస <రకం_పేరు T>
+  iter_t  క్రియాకారకం << (స్థిరరాశి T v) && { **thiz() = v; ++*thiz(); తిరిగి *thiz(); }
 
-  protected:
-  hb_iter_t () = default;
-  hb_iter_t (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t (hb_iter_t &&o HB_UNUSED) = default;
-  hb_iter_t& operator = (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t& operator = (hb_iter_t &&o HB_UNUSED) = default;
+  రక్షిత:
+  hb_iter_t () = అప్రమేయ;
+  hb_iter_t (స్థిరరాశి hb_iter_t &o HB_వాడని) = అప్రమేయ;
+  hb_iter_t (hb_iter_t &&o HB_వాడని) = అప్రమేయ;
+  hb_iter_t& క్రియాకారకం = (స్థిరరాశి hb_iter_t &o HB_వాడని) = అప్రమేయ;
+  hb_iter_t& క్రియాకారకం = (hb_iter_t &&o HB_వాడని) = అప్రమేయ;
 };
 
-#define HB_ITER_USING(Name) \
-  using item_t = typename Name::item_t; \
-  using Name::_begin; \
-  using Name::begin; \
-  using Name::_end; \
-  using Name::end; \
-  using Name::get_item_size; \
-  using Name::is_iterator; \
-  using Name::iter; \
-  using Name::operator bool; \
-  using Name::len; \
-  using Name::operator ->; \
-  using Name::operator *; \
-  using Name::operator []; \
-  using Name::operator +=; \
-  using Name::operator ++; \
-  using Name::operator -=; \
-  using Name::operator --; \
-  using Name::operator +; \
-  using Name::operator -; \
-  using Name::operator >>; \
-  using Name::operator <<; \
-  static_assert (true, "")
+#నిర్వచించు HB_ITER_USING(Name) \
+  ఉపయోగించి అంశం_t = రకం_పేరు Name::అంశం_t; \
+  ఉపయోగించి Name::_begin; \
+  ఉపయోగించి Name::begin; \
+  ఉపయోగించి Name::చివర_3; \
+  ఉపయోగించి Name::చివర; \
+  ఉపయోగించి Name::get_అంశం_కొలత; \
+  ఉపయోగించి Name::is_iterator; \
+  ఉపయోగించి Name::iter; \
+  ఉపయోగించి Name::క్రియాకారకం తార్కిక; \
+  ఉపయోగించి Name::len; \
+  ఉపయోగించి Name::క్రియాకారకం ->; \
+  ఉపయోగించి Name::క్రియాకారకం *; \
+  ఉపయోగించి Name::క్రియాకారకం []; \
+  ఉపయోగించి Name::క్రియాకారకం +=; \
+  ఉపయోగించి Name::క్రియాకారకం ++; \
+  ఉపయోగించి Name::క్రియాకారకం -=; \
+  ఉపయోగించి Name::క్రియాకారకం --; \
+  ఉపయోగించి Name::క్రియాకారకం +; \
+  ఉపయోగించి Name::క్రియాకారకం -; \
+  ఉపయోగించి Name::క్రియాకారకం >>; \
+  ఉపయోగించి Name::క్రియాకారకం <<; \
+  static_assert (నిజం, "")
 
 /* Returns iterator / item type of a type. */
-template <typename Iterable>
-using hb_iter_type = decltype (hb_deref (hb_declval (Iterable)).iter ());
-template <typename Iterable>
-using hb_item_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
+మూస <రకం_పేరు Iterable>
+ఉపయోగించి hb_iter_type = decltype (hb_deref (hb_declval (Iterable)).iter ());
+మూస <రకం_పేరు Iterable>
+ఉపయోగించి hb_అంశం_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
 
 
-template <typename> struct hb_array_t;
-template <typename> struct hb_sorted_array_t;
+మూస <రకం_పేరు> నిర్మాణం hb_array_t;
+మూస <రకం_పేరు> నిర్మాణం hb_sorted_array_t;
 
-struct
+నిర్మాణం
 {
-  template <typename T> hb_iter_type<T>
-  operator () (T&& c) const
-  { return hb_deref (std::forward<T> (c)).iter (); }
+  మూస <రకం_పేరు T> hb_iter_type<T>
+  క్రియాకారకం () (T&& c) స్థిరరాశి
+  { తిరిగి hb_deref (std::forward<T> (c)).iter (); }
 
   /* Specialization for C arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (Type *array, unsigned int length) const
-  { return hb_array_t<Type> (array, length); }
+  మూస <రకం_పేరు Type> అంతఃవరుస hb_array_t<Type>
+  క్రియాకారకం () (Type *array, గుర్తులేని పూర్ణాంకం నిడివి) స్థిరరాశి
+  { తిరిగి hb_array_t<Type> (array, నిడివి); }
 
-  template <typename Type, unsigned int length> hb_array_t<Type>
-  operator () (Type (&array)[length]) const
-  { return hb_array_t<Type> (array, length); }
+  మూస <రకం_పేరు Type, గుర్తులేని పూర్ణాంకం నిడివి> hb_array_t<Type>
+  క్రియాకారకం () (Type (&array)[నిడివి]) స్థిరరాశి
+  { తిరిగి hb_array_t<Type> (array, నిడివి); }
 
 }
 HB_FUNCOBJ (hb_iter);
-struct
+నిర్మాణం
 {
-  template <typename T> auto
-  impl (T&& c, hb_priority<1>) const HB_RETURN (unsigned, c.len ())
+  మూస <రకం_పేరు T> స్వయంచాలక
+  impl (T&& c, hb_ప్రాధాన్యత<1>) స్థిరరాశి HB_RETURN (గుర్తులేని, c.len ())
 
-  template <typename T> auto
-  impl (T&& c, hb_priority<0>) const HB_RETURN (unsigned, c.len)
+  మూస <రకం_పేరు T> స్వయంచాలక
+  impl (T&& c, hb_ప్రాధాన్యత<0>) స్థిరరాశి HB_RETURN (గుర్తులేని, c.len)
 
-  public:
+  బహిరంగ:
 
-  template <typename T> auto
-  operator () (T&& c) const HB_RETURN (unsigned, impl (std::forward<T> (c), hb_prioritize))
+  మూస <రకం_పేరు T> స్వయంచాలక
+  క్రియాకారకం () (T&& c) స్థిరరాశి HB_RETURN (గుర్తులేని, impl (std::forward<T> (c), hb_prioritize))
 }
 HB_FUNCOBJ (hb_len);
 
 /* Mixin to fill in what the subclass doesn't provide. */
-template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_fallback_mixin_t
+మూస <రకం_పేరు iter_t, రకం_పేరు అంశం_t = రకం_పేరు iter_t::__item_t__>
+నిర్మాణం hb_iter_fallback_mixin_t
 {
-  private:
+  అంతరంగ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  స్థిరరాశి iter_t* thiz () స్థిరరాశి { తిరిగి static_cast<స్థిరరాశి iter_t *> (ఇది); }
+	iter_t* thiz ()       { తిరిగి static_cast<      iter_t *> (ఇది); }
+  బహిరంగ:
 
   /* Access: Implement __item__(), or __item_at__() if random-access. */
-  item_t __item__ () const { return (*thiz())[0]; }
-  item_t __item_at__ (unsigned i) const { return *(*thiz() + i); }
+  అంశం_t __item__ () స్థిరరాశి { తిరిగి (*thiz())[0]; }
+  అంశం_t __item_at__ (గుర్తులేని i) స్థిరరాశి { తిరిగి *(*thiz() + i); }
 
   /* Termination: Implement __more__(), or __len__() if random-access. */
-  bool __more__ () const { return bool (thiz()->len ()); }
-  unsigned __len__ () const
-  { iter_t c (*thiz()); unsigned l = 0; while (c) { c++; l++; } return l; }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి తార్కిక (thiz()->len ()); }
+  గుర్తులేని __len__ () స్థిరరాశి
+  { iter_t c (*thiz()); గుర్తులేని l = 0; అయితే (c) { c++; l++; } తిరిగి l; }
 
   /* Advancing: Implement __next__(), or __forward__() if random-access. */
-  void __next__ () { *thiz() += 1; }
-  void __forward__ (unsigned n) { while (*thiz() && n--) ++*thiz(); }
+  శూన్య __next__ () { *thiz() += 1; }
+  శూన్య __forward__ (గుర్తులేని n) { అయితే (*thiz() && n--) ++*thiz(); }
 
   /* Rewinding: Implement __prev__() or __rewind__() if bidirectional. */
-  void __prev__ () { *thiz() -= 1; }
-  void __rewind__ (unsigned n) { while (*thiz() && n--) --*thiz(); }
+  శూన్య __prev__ () { *thiz() -= 1; }
+  శూన్య __rewind__ (గుర్తులేని n) { అయితే (*thiz() && n--) --*thiz(); }
 
   /* Range-based for: Implement __end__() if can be done faster,
    * and operator!=. */
-  iter_t __end__ () const
+  iter_t __end__ () స్థిరరాశి
   {
-    if (thiz()->is_random_access_iterator)
-      return *thiz() + thiz()->len ();
+    ఒకవేళ (thiz()->is_random_access_iterator)
+      తిరిగి *thiz() + thiz()->len ();
     /* Above expression loops twice. Following loops once. */
-    auto it = *thiz();
-    while (it) ++it;
-    return it;
+    స్వయంచాలక it = *thiz();
+    అయితే (it) ++it;
+    తిరిగి it;
   }
 
-  protected:
-  hb_iter_fallback_mixin_t () = default;
-  hb_iter_fallback_mixin_t (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
+  రక్షిత:
+  hb_iter_fallback_mixin_t () = అప్రమేయ;
+  hb_iter_fallback_mixin_t (స్థిరరాశి hb_iter_fallback_mixin_t &o HB_వాడని) = అప్రమేయ;
+  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_వాడని) = అప్రమేయ;
+  hb_iter_fallback_mixin_t& క్రియాకారకం = (స్థిరరాశి hb_iter_fallback_mixin_t &o HB_వాడని) = అప్రమేయ;
+  hb_iter_fallback_mixin_t& క్రియాకారకం = (hb_iter_fallback_mixin_t &&o HB_వాడని) = అప్రమేయ;
 };
 
-template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_with_fallback_t :
-  hb_iter_t<iter_t, item_t>,
-  hb_iter_fallback_mixin_t<iter_t, item_t>
+మూస <రకం_పేరు iter_t, రకం_పేరు అంశం_t = రకం_పేరు iter_t::__item_t__>
+నిర్మాణం hb_iter_with_fallback_t :
+  hb_iter_t<iter_t, అంశం_t>,
+  hb_iter_fallback_mixin_t<iter_t, అంశం_t>
 {
-  protected:
-  hb_iter_with_fallback_t () = default;
-  hb_iter_with_fallback_t (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
+  రక్షిత:
+  hb_iter_with_fallback_t () = అప్రమేయ;
+  hb_iter_with_fallback_t (స్థిరరాశి hb_iter_with_fallback_t &o HB_వాడని) = అప్రమేయ;
+  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_వాడని) = అప్రమేయ;
+  hb_iter_with_fallback_t& క్రియాకారకం = (స్థిరరాశి hb_iter_with_fallback_t &o HB_వాడని) = అప్రమేయ;
+  hb_iter_with_fallback_t& క్రియాకారకం = (hb_iter_with_fallback_t &&o HB_వాడని) = అప్రమేయ;
 };
 
 /*
@@ -252,109 +252,109 @@ struct hb_iter_with_fallback_t :
 
 /* hb_is_iterator() / hb_is_iterator_of() */
 
-template<typename Iter, typename Item>
-struct hb_is_iterator_of
+మూస<రకం_పేరు Iter, రకం_పేరు అంశం_3>
+నిర్మాణం hb_is_iterator_యొక్క
 {
-  template <typename Item2 = Item>
-  static hb_true_type impl (hb_priority<2>, hb_iter_t<Iter, hb_type_identity<Item2>> *);
-  static hb_false_type impl (hb_priority<0>, const void *);
+  మూస <రకం_పేరు Item2 = అంశం_3>
+  స్థిర hb_true_type impl (hb_ప్రాధాన్యత<2>, hb_iter_t<Iter, hb_type_తటస్థం<Item2>> *);
+  స్థిర hb_false_type impl (hb_ప్రాధాన్యత<0>, స్థిరరాశి శూన్య *);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
+  బహిరంగ:
+  స్థిర constexpr తార్కిక value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
 };
-#define hb_is_iterator_of(Iter, Item) hb_is_iterator_of<Iter, Item>::value
-#define hb_is_iterator(Iter) hb_is_iterator_of (Iter, typename Iter::item_t)
-#define hb_is_sorted_iterator_of(Iter, Item) (hb_is_iterator_of<Iter, Item>::value && Iter::is_sorted_iterator)
-#define hb_is_sorted_iterator(Iter) hb_is_sorted_iterator_of (Iter, typename Iter::item_t)
+#నిర్వచించు hb_is_iterator_యొక్క(Iter, అంశం_3) hb_is_iterator_యొక్క<Iter, అంశం_3>::value
+#నిర్వచించు hb_is_iterator(Iter) hb_is_iterator_యొక్క (Iter, రకం_పేరు Iter::అంశం_t)
+#నిర్వచించు hb_is_sorted_iterator_యొక్క(Iter, అంశం_3) (hb_is_iterator_యొక్క<Iter, అంశం_3>::value && Iter::is_sorted_iterator)
+#నిర్వచించు hb_is_sorted_iterator(Iter) hb_is_sorted_iterator_యొక్క (Iter, రకం_పేరు Iter::అంశం_t)
 
 /* hb_is_iterable() */
 
-template <typename T>
-struct hb_is_iterable
+మూస <రకం_పేరు T>
+నిర్మాణం hb_is_iterable
 {
-  private:
+  అంతరంగ:
 
-  template <typename U>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
+  మూస <రకం_పేరు U>
+  స్థిర స్వయంచాలక impl (hb_ప్రాధాన్యత<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
 
-  template <typename>
-  static hb_false_type impl (hb_priority<0>);
+  మూస <రకం_పేరు>
+  స్థిర hb_false_type impl (hb_ప్రాధాన్యత<0>);
 
-  public:
-  static constexpr bool value = decltype (impl<T> (hb_prioritize))::value;
+  బహిరంగ:
+  స్థిర constexpr తార్కిక value = decltype (impl<T> (hb_prioritize))::value;
 };
-#define hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
+#నిర్వచించు hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
 
 /* hb_is_source_of() / hb_is_sink_of() */
 
-template<typename Iter, typename Item>
-struct hb_is_source_of
+మూస<రకం_పేరు Iter, రకం_పేరు అంశం_3>
+నిర్మాణం hb_is_ఆధారం_యొక్క
 {
-  private:
-  template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<const Item>))>
-  static hb_true_type impl (hb_priority<2>);
-  template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) >> hb_declval (Item &), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  అంతరంగ:
+  మూస <రకం_పేరు Iter2 = Iter,
+	    hb_enable_if (hb_is_convertible (రకం_పేరు Iter2::అంశం_t, hb_కూడు_lvalue_reference<స్థిరరాశి అంశం_3>))>
+  స్థిర hb_true_type impl (hb_ప్రాధాన్యత<2>);
+  మూస <రకం_పేరు Iter2 = Iter>
+  స్థిర స్వయంచాలక impl (hb_ప్రాధాన్యత<1>) -> decltype (hb_declval (Iter2) >> hb_declval (అంశం_3 &), hb_true_type ());
+  స్థిర hb_false_type impl (hb_ప్రాధాన్యత<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  బహిరంగ:
+  స్థిర constexpr తార్కిక value = decltype (impl (hb_prioritize))::value;
 };
-#define hb_is_source_of(Iter, Item) hb_is_source_of<Iter, Item>::value
+#నిర్వచించు hb_is_ఆధారం_యొక్క(Iter, అంశం_3) hb_is_ఆధారం_యొక్క<Iter, అంశం_3>::value
 
-template<typename Iter, typename Item>
-struct hb_is_sink_of
+మూస<రకం_పేరు Iter, రకం_పేరు అంశం_3>
+నిర్మాణం hb_is_sink_యొక్క
 {
-  private:
-  template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<Item>))>
-  static hb_true_type impl (hb_priority<2>);
-  template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) << hb_declval (Item), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  అంతరంగ:
+  మూస <రకం_పేరు Iter2 = Iter,
+	    hb_enable_if (hb_is_convertible (రకం_పేరు Iter2::అంశం_t, hb_కూడు_lvalue_reference<అంశం_3>))>
+  స్థిర hb_true_type impl (hb_ప్రాధాన్యత<2>);
+  మూస <రకం_పేరు Iter2 = Iter>
+  స్థిర స్వయంచాలక impl (hb_ప్రాధాన్యత<1>) -> decltype (hb_declval (Iter2) << hb_declval (అంశం_3), hb_true_type ());
+  స్థిర hb_false_type impl (hb_ప్రాధాన్యత<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  బహిరంగ:
+  స్థిర constexpr తార్కిక value = decltype (impl (hb_prioritize))::value;
 };
-#define hb_is_sink_of(Iter, Item) hb_is_sink_of<Iter, Item>::value
+#నిర్వచించు hb_is_sink_యొక్క(Iter, అంశం_3) hb_is_sink_యొక్క<Iter, అంశం_3>::value
 
 /* This is commonly used, so define: */
-#define hb_is_sorted_source_of(Iter, Item) \
-	(hb_is_source_of(Iter, Item) && Iter::is_sorted_iterator)
+#నిర్వచించు hb_is_sorted_ఆధారం_యొక్క(Iter, అంశం_3) \
+	(hb_is_ఆధారం_యొక్క(Iter, అంశం_3) && Iter::is_sorted_iterator)
 
 
-struct
+నిర్మాణం
 {
-  template <typename Iterable,
+  మూస <రకం_పేరు Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  unsigned operator () (const Iterable &_) const { return hb_len (hb_iter (_)); }
+  గుర్తులేని క్రియాకారకం () (స్థిరరాశి Iterable &_) స్థిరరాశి { తిరిగి hb_len (hb_iter (_)); }
 
-  unsigned operator () (unsigned _) const { return _; }
+  గుర్తులేని క్రియాకారకం () (గుర్తులేని _) స్థిరరాశి { తిరిగి _; }
 }
-HB_FUNCOBJ (hb_len_of);
+HB_FUNCOBJ (hb_len_యొక్క);
 
 /* Range-based 'for' for iterables. */
 
-template <typename Iterable,
+మూస <రకం_పేరు Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+స్థిర అంతఃవరుస స్వయంచాలక begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
-template <typename Iterable,
+మూస <రకం_పేరు Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+స్థిర అంతఃవరుస స్వయంచాలక చివర (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).చివర ())
 
 /* begin()/end() are NOT looked up non-ADL.  So each namespace must declare them.
  * Do it for namespace OT. */
-namespace OT {
+నామాకాశ OT {
 
-template <typename Iterable,
+మూస <రకం_పేరు Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+స్థిర అంతఃవరుస స్వయంచాలక begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
-template <typename Iterable,
+మూస <రకం_పేరు Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+స్థిర అంతఃవరుస స్వయంచాలక చివర (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).చివర ())
 
 }
 
@@ -363,196 +363,196 @@ static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).
  * Adaptors, combiners, etc.
  */
 
-template <typename Lhs, typename Rhs,
+మూస <రకం_పేరు Lhs, రకం_పేరు Rhs,
 	  hb_requires (hb_is_iterator (Lhs))>
-static inline auto
-operator | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
+స్థిర అంతఃవరుస స్వయంచాలక
+క్రియాకారకం | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
 
 /* hb_map(), hb_filter(), hb_reduce() */
 
-enum  class hb_function_sortedness_t {
+గణన  తరగతి hb_function_sortedness_t {
   NOT_SORTED,
-  RETAINS_SORTING,
+  RETAINS_క్రమీకరణ,
   SORTED,
 };
 
-template <typename Iter, typename Proj, hb_function_sortedness_t Sorted,
+మూస <రకం_పేరు Iter, రకం_పేరు Proj, hb_function_sortedness_t Sorted,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_map_iter_t :
+నిర్మాణం hb_map_iter_t :
   hb_iter_t<hb_map_iter_t<Iter, Proj, Sorted>,
 	    decltype (hb_get (hb_declval (Proj), *hb_declval (Iter)))>
 {
-  hb_map_iter_t (const Iter& it, Proj f_) : it (it), f (f_) {}
+  hb_map_iter_t (స్థిరరాశి Iter& it, Proj f_) : it (it), f (f_) {}
 
-  typedef decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator =
-    Sorted == hb_function_sortedness_t::SORTED ? true :
-    Sorted == hb_function_sortedness_t::RETAINS_SORTING ? Iter::is_sorted_iterator :
-    false;
-  __item_t__ __item__ () const { return hb_get (f.get (), *it); }
-  __item_t__ __item_at__ (unsigned i) const { return hb_get (f.get (), it[i]); }
-  bool __more__ () const { return bool (it); }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
-  hb_map_iter_t __end__ () const { return hb_map_iter_t (it._end (), f); }
-  bool operator != (const hb_map_iter_t& o) const
-  { return it != o.it; }
+  రకనిర్వచనం decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator = Iter::is_random_access_iterator;
+  స్థిర constexpr తార్కిక is_sorted_iterator =
+    Sorted == hb_function_sortedness_t::SORTED ? నిజం :
+    Sorted == hb_function_sortedness_t::RETAINS_క్రమీకరణ ? Iter::is_sorted_iterator :
+    అబద్ధం;
+  __item_t__ __item__ () స్థిరరాశి { తిరిగి hb_get (f.get (), *it); }
+  __item_t__ __item_at__ (గుర్తులేని i) స్థిరరాశి { తిరిగి hb_get (f.get (), it[i]); }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి తార్కిక (it); }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి it.len (); }
+  శూన్య __next__ () { ++it; }
+  శూన్య __forward__ (గుర్తులేని n) { it += n; }
+  శూన్య __prev__ () { --it; }
+  శూన్య __rewind__ (గుర్తులేని n) { it -= n; }
+  hb_map_iter_t __end__ () స్థిరరాశి { తిరిగి hb_map_iter_t (it.చివర_3 (), f); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_map_iter_t& o) స్థిరరాశి
+  { తిరిగి it != o.it; }
 
-  private:
+  అంతరంగ:
   Iter it;
-  mutable hb_reference_wrapper<Proj> f;
+  మార్చదగిన hb_reference_wrapper<Proj> f;
 };
 
-template <typename Proj, hb_function_sortedness_t Sorted>
-struct hb_map_iter_factory_t
+మూస <రకం_పేరు Proj, hb_function_sortedness_t Sorted>
+నిర్మాణం hb_map_iter_factory_t
 {
   hb_map_iter_factory_t (Proj f) : f (f) {}
 
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
   hb_map_iter_t<Iter, Proj, Sorted>
-  operator () (Iter it)
-  { return hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
+  క్రియాకారకం () (Iter it)
+  { తిరిగి hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
 
-  private:
+  అంతరంగ:
   Proj f;
 };
-struct
+నిర్మాణం
 {
-  template <typename Proj>
+  మూస <రకం_పేరు Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
+  క్రియాకారకం () (Proj&& f) స్థిరరాశి
+  { తిరిగి hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map);
-struct
+నిర్మాణం
 {
-  template <typename Proj>
-  hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
+  మూస <రకం_పేరు Proj>
+  hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_క్రమీకరణ>
+  క్రియాకారకం () (Proj&& f) స్థిరరాశి
+  { తిరిగి hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_క్రమీకరణ> (f); }
 }
-HB_FUNCOBJ (hb_map_retains_sorting);
-struct
+HB_FUNCOBJ (hb_map_retains_క్రమీకరణ);
+నిర్మాణం
 {
-  template <typename Proj>
+  మూస <రకం_పేరు Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
+  క్రియాకారకం () (Proj&& f) స్థిరరాశి
+  { తిరిగి hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map_sorted);
 
-template <typename Iter, typename Pred, typename Proj,
+మూస <రకం_పేరు Iter, రకం_పేరు Pred, రకం_పేరు Proj,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_filter_iter_t :
+నిర్మాణం hb_filter_iter_t :
   hb_iter_with_fallback_t<hb_filter_iter_t<Iter, Pred, Proj>,
-			  typename Iter::item_t>
+			  రకం_పేరు Iter::అంశం_t>
 {
-  hb_filter_iter_t (const Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
-  { while (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
+  hb_filter_iter_t (స్థిరరాశి Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
+  { అయితే (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
 
-  typedef typename Iter::item_t __item_t__;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
-  __item_t__ __item__ () const { return *it; }
-  bool __more__ () const { return bool (it); }
-  void __next__ () { do ++it; while (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
-  void __prev__ ()
+  రకనిర్వచనం రకం_పేరు Iter::అంశం_t __item_t__;
+  స్థిర constexpr తార్కిక is_sorted_iterator = Iter::is_sorted_iterator;
+  __item_t__ __item__ () స్థిరరాశి { తిరిగి *it; }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి తార్కిక (it); }
+  శూన్య __next__ () { చేయి ++it; అయితే (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
+  శూన్య __prev__ ()
   {
-    unsigned count = 0;
-    do
+    గుర్తులేని లెక్క = 0;
+    చేయి
     {
       Iter old = it;
       --it;
-      if (!(it != old))
+      ఒకవేళ (!(it != old))
       {
-	it += count;
-	return;
+	it += లెక్క;
+	తిరిగి;
       }
-      count++;
+      లెక్క++;
     }
-    while (!hb_has (p.get (), hb_get (f.get (), *it)));
+    అయితే (!hb_has (p.get (), hb_get (f.get (), *it)));
   }
-  hb_filter_iter_t __end__ () const { return hb_filter_iter_t (it._end (), p, f); }
-  bool operator != (const hb_filter_iter_t& o) const
-  { return it != o.it; }
+  hb_filter_iter_t __end__ () స్థిరరాశి { తిరిగి hb_filter_iter_t (it.చివర_3 (), p, f); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_filter_iter_t& o) స్థిరరాశి
+  { తిరిగి it != o.it; }
 
-  private:
+  అంతరంగ:
   Iter it;
-  mutable hb_reference_wrapper<Pred> p;
-  mutable hb_reference_wrapper<Proj> f;
+  మార్చదగిన hb_reference_wrapper<Pred> p;
+  మార్చదగిన hb_reference_wrapper<Proj> f;
 };
-template <typename Pred, typename Proj>
-struct hb_filter_iter_factory_t
+మూస <రకం_పేరు Pred, రకం_పేరు Proj>
+నిర్మాణం hb_filter_iter_factory_t
 {
   hb_filter_iter_factory_t (Pred p, Proj f) : p (p), f (f) {}
 
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
   hb_filter_iter_t<Iter, Pred, Proj>
-  operator () (Iter it)
-  { return hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
+  క్రియాకారకం () (Iter it)
+  { తిరిగి hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
 
-  private:
+  అంతరంగ:
   Pred p;
   Proj f;
 };
-struct
+నిర్మాణం
 {
-  template <typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity))>
+  మూస <రకం_పేరు Pred = decltype ((hb_తటస్థం)),
+	    రకం_పేరు Proj = decltype ((hb_తటస్థం))>
   hb_filter_iter_factory_t<Pred, Proj>
-  operator () (Pred&& p = hb_identity, Proj&& f = hb_identity) const
-  { return hb_filter_iter_factory_t<Pred, Proj> (p, f); }
+  క్రియాకారకం () (Pred&& p = hb_తటస్థం, Proj&& f = hb_తటస్థం) స్థిరరాశి
+  { తిరిగి hb_filter_iter_factory_t<Pred, Proj> (p, f); }
 }
 HB_FUNCOBJ (hb_filter);
 
-template <typename Redu, typename InitT>
-struct hb_reduce_t
+మూస <రకం_పేరు Redu, రకం_పేరు InitT>
+నిర్మాణం hb_reduce_t
 {
-  hb_reduce_t (Redu r, InitT init_value) : r (r), init_value (init_value) {}
+  hb_reduce_t (Redu r, InitT init_విలువ) : r (r), init_విలువ (init_విలువ) {}
 
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter)),
-	    typename AccuT = hb_decay<decltype (hb_declval (Redu) (hb_declval (InitT), hb_declval (typename Iter::item_t)))>>
+	    రకం_పేరు AccuT = hb_decay<decltype (hb_declval (Redu) (hb_declval (InitT), hb_declval (రకం_పేరు Iter::అంశం_t)))>>
   AccuT
-  operator () (Iter it)
+  క్రియాకారకం () (Iter it)
   {
-    AccuT value = init_value;
-    for (; it; ++it)
+    AccuT value = init_విలువ;
+    కొరకు (; it; ++it)
       value = r (value, *it);
-    return value;
+    తిరిగి value;
   }
 
-  private:
+  అంతరంగ:
   Redu r;
-  InitT init_value;
+  InitT init_విలువ;
 };
-struct
+నిర్మాణం
 {
-  template <typename Redu, typename InitT>
+  మూస <రకం_పేరు Redu, రకం_పేరు InitT>
   hb_reduce_t<Redu, InitT>
-  operator () (Redu&& r, InitT init_value) const
-  { return hb_reduce_t<Redu, InitT> (r, init_value); }
+  క్రియాకారకం () (Redu&& r, InitT init_విలువ) స్థిరరాశి
+  { తిరిగి hb_reduce_t<Redu, InitT> (r, init_విలువ); }
 }
 HB_FUNCOBJ (hb_reduce);
 
 
 /* hb_zip() */
 
-template <typename A, typename B>
-struct hb_zip_iter_t :
+మూస <రకం_పేరు A, రకం_పేరు B>
+నిర్మాణం hb_zip_iter_t :
   hb_iter_t<hb_zip_iter_t<A, B>,
-	    hb_pair_t<typename A::item_t, typename B::item_t>>
+	    hb_pair_t<రకం_పేరు A::అంశం_t, రకం_పేరు B::అంశం_t>>
 {
   hb_zip_iter_t () {}
-  hb_zip_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_zip_iter_t (స్థిరరాశి A& a, స్థిరరాశి B& b) : a (a), b (b) {}
 
-  typedef hb_pair_t<typename A::item_t, typename B::item_t> __item_t__;
-  static constexpr bool is_random_access_iterator =
+  రకనిర్వచనం hb_pair_t<రకం_పేరు A::అంశం_t, రకం_పేరు B::అంశం_t> __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
   /* Note.  The following categorization is only valid if A is strictly sorted,
@@ -579,452 +579,452 @@ struct hb_zip_iter_t :
    * This semantical limitation does NOT affect logic in any other place I
    * know of as of this writing.
    */
-  static constexpr bool is_sorted_iterator = A::is_sorted_iterator;
+  స్థిర constexpr తార్కిక is_sorted_iterator = A::is_sorted_iterator;
 
-  __item_t__ __item__ () const { return __item_t__ (*a, *b); }
-  __item_t__ __item_at__ (unsigned i) const { return __item_t__ (a[i], b[i]); }
-  bool __more__ () const { return bool (a) && bool (b); }
-  unsigned __len__ () const { return hb_min (a.len (), b.len ()); }
-  void __next__ () { ++a; ++b; }
-  void __forward__ (unsigned n) { a += n; b += n; }
-  void __prev__ () { --a; --b; }
-  void __rewind__ (unsigned n) { a -= n; b -= n; }
-  hb_zip_iter_t __end__ () const { return hb_zip_iter_t (a._end (), b._end ()); }
+  __item_t__ __item__ () స్థిరరాశి { తిరిగి __item_t__ (*a, *b); }
+  __item_t__ __item_at__ (గుర్తులేని i) స్థిరరాశి { తిరిగి __item_t__ (a[i], b[i]); }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి తార్కిక (a) && తార్కిక (b); }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి hb_min (a.len (), b.len ()); }
+  శూన్య __next__ () { ++a; ++b; }
+  శూన్య __forward__ (గుర్తులేని n) { a += n; b += n; }
+  శూన్య __prev__ () { --a; --b; }
+  శూన్య __rewind__ (గుర్తులేని n) { a -= n; b -= n; }
+  hb_zip_iter_t __end__ () స్థిరరాశి { తిరిగి hb_zip_iter_t (a.చివర_3 (), b.చివర_3 ()); }
   /* Note, we should stop if ANY of the iters reaches end.  As such two compare
    * unequal if both items are unequal, NOT if either is unequal. */
-  bool operator != (const hb_zip_iter_t& o) const
-  { return a != o.a && b != o.b; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_zip_iter_t& o) స్థిరరాశి
+  { తిరిగి a != o.a && b != o.b; }
 
-  private:
+  అంతరంగ:
   A a;
   B b;
 };
-struct
+నిర్మాణం
 { HB_PARTIALIZE(2);
-  template <typename A, typename B,
+  మూస <రకం_పేరు A, రకం_పేరు B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  క్రియాకారకం () (A&& a, B&& b) స్థిరరాశి
+  { తిరిగి hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_zip);
 
 /* hb_concat() */
 
-template <typename A, typename B>
-struct hb_concat_iter_t :
-    hb_iter_t<hb_concat_iter_t<A, B>, typename A::item_t>
+మూస <రకం_పేరు A, రకం_పేరు B>
+నిర్మాణం hb_concat_iter_t :
+    hb_iter_t<hb_concat_iter_t<A, B>, రకం_పేరు A::అంశం_t>
 {
   hb_concat_iter_t () {}
   hb_concat_iter_t (A& a, B& b) : a (a), b (b) {}
-  hb_concat_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_concat_iter_t (స్థిరరాశి A& a, స్థిరరాశి B& b) : a (a), b (b) {}
 
 
-  typedef typename A::item_t __item_t__;
-  static constexpr bool is_random_access_iterator =
+  రకనిర్వచనం రకం_పేరు A::అంశం_t __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = false;
+  స్థిర constexpr తార్కిక is_sorted_iterator = అబద్ధం;
 
-  __item_t__ __item__ () const
+  __item_t__ __item__ () స్థిరరాశి
   {
-    if (!a)
-      return *b;
-    return *a;
+    ఒకవేళ (!a)
+      తిరిగి *b;
+    తిరిగి *a;
   }
 
-  __item_t__ __item_at__ (unsigned i) const
+  __item_t__ __item_at__ (గుర్తులేని i) స్థిరరాశి
   {
-    unsigned a_len = a.len ();
-    if (i < a_len)
-      return a[i];
-    return b[i - a_len];
+    గుర్తులేని a_len = a.len ();
+    ఒకవేళ (i < a_len)
+      తిరిగి a[i];
+    తిరిగి b[i - a_len];
   }
 
-  bool __more__ () const { return bool (a) || bool (b); }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి తార్కిక (a) || తార్కిక (b); }
 
-  unsigned __len__ () const { return a.len () + b.len (); }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి a.len () + b.len (); }
 
-  void __next__ ()
+  శూన్య __next__ ()
   {
-    if (a)
+    ఒకవేళ (a)
       ++a;
-    else
+    లేకపోతే
       ++b;
   }
 
-  void __forward__ (unsigned n)
+  శూన్య __forward__ (గుర్తులేని n)
   {
-    if (!n) return;
-    if (!is_random_access_iterator) {
-      while (n-- && *this) {
-        (*this)++;
+    ఒకవేళ (!n) తిరిగి;
+    ఒకవేళ (!is_random_access_iterator) {
+      అయితే (n-- && *ఇది) {
+        (*ఇది)++;
       }
-      return;
+      తిరిగి;
     }
 
-    unsigned a_len = a.len ();
-    if (n > a_len) {
+    గుర్తులేని a_len = a.len ();
+    ఒకవేళ (n > a_len) {
       n -= a_len;
       a.__forward__ (a_len);
       b.__forward__ (n);
-    } else {
+    } లేకపోతే {
       a.__forward__ (n);
     }
   }
 
-  hb_concat_iter_t __end__ () const { return hb_concat_iter_t (a._end (), b._end ()); }
-  bool operator != (const hb_concat_iter_t& o) const
+  hb_concat_iter_t __end__ () స్థిరరాశి { తిరిగి hb_concat_iter_t (a.చివర_3 (), b.చివర_3 ()); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_concat_iter_t& o) స్థిరరాశి
   {
-    return a != o.a
+    తిరిగి a != o.a
         || b != o.b;
   }
 
-  private:
+  అంతరంగ:
   A a;
   B b;
 };
-struct
+నిర్మాణం
 { HB_PARTIALIZE(2);
-  template <typename A, typename B,
+  మూస <రకం_పేరు A, రకం_పేరు B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  క్రియాకారకం () (A&& a, B&& b) స్థిరరాశి
+  { తిరిగి hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_concat);
 
 /* hb_apply() */
 
-template <typename Appl>
-struct hb_apply_t
+మూస <రకం_పేరు Appl>
+నిర్మాణం hb_apply_t
 {
   hb_apply_t (Appl a) : a (a) {}
 
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  శూన్య క్రియాకారకం () (Iter it)
   {
-    for (; it; ++it)
-      (void) hb_invoke (a, *it);
+    కొరకు (; it; ++it)
+      (శూన్య) hb_invoke (a, *it);
   }
 
-  private:
+  అంతరంగ:
   Appl a;
 };
-struct
+నిర్మాణం
 {
-  template <typename Appl> hb_apply_t<Appl>
-  operator () (Appl&& a) const
-  { return hb_apply_t<Appl> (a); }
+  మూస <రకం_పేరు Appl> hb_apply_t<Appl>
+  క్రియాకారకం () (Appl&& a) స్థిరరాశి
+  { తిరిగి hb_apply_t<Appl> (a); }
 
-  template <typename Appl> hb_apply_t<Appl&>
-  operator () (Appl *a) const
-  { return hb_apply_t<Appl&> (*a); }
+  మూస <రకం_పేరు Appl> hb_apply_t<Appl&>
+  క్రియాకారకం () (Appl *a) స్థిరరాశి
+  { తిరిగి hb_apply_t<Appl&> (*a); }
 }
 HB_FUNCOBJ (hb_apply);
 
 /* hb_range()/hb_iota()/hb_repeat() */
 
-template <typename T, typename S>
-struct hb_range_iter_t :
+మూస <రకం_పేరు T, రకం_పేరు S>
+నిర్మాణం hb_range_iter_t :
   hb_iter_t<hb_range_iter_t<T, S>, T>
 {
-  hb_range_iter_t (T start, T end_, S step) : v (start), end_ (end_for (start, end_, step)), step (step) {}
+  hb_range_iter_t (T ప్రారంభం, T చివర_4, S అడుగు) : v (ప్రారంభం), చివర_4 (చివర_for (ప్రారంభం, చివర_4, అడుగు)), అడుగు (అడుగు) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  __item_t__ __item_at__ (unsigned j) const { return v + j * step; }
-  bool __more__ () const { return v != end_; }
-  unsigned __len__ () const { return !step ? UINT_MAX : (end_ - v) / step; }
-  void __next__ () { v += step; }
-  void __forward__ (unsigned n) { v += n * step; }
-  void __prev__ () { v -= step; }
-  void __rewind__ (unsigned n) { v -= n * step; }
-  hb_range_iter_t __end__ () const { return hb_range_iter_t (end_, end_, step); }
-  bool operator != (const hb_range_iter_t& o) const
-  { return v != o.v; }
+  రకనిర్వచనం T __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator = నిజం;
+  స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+  __item_t__ __item__ () స్థిరరాశి { తిరిగి hb_ridentity (v); }
+  __item_t__ __item_at__ (గుర్తులేని j) స్థిరరాశి { తిరిగి v + j * అడుగు; }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి v != చివర_4; }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి !అడుగు ? UINT_MAX : (చివర_4 - v) / అడుగు; }
+  శూన్య __next__ () { v += అడుగు; }
+  శూన్య __forward__ (గుర్తులేని n) { v += n * అడుగు; }
+  శూన్య __prev__ () { v -= అడుగు; }
+  శూన్య __rewind__ (గుర్తులేని n) { v -= n * అడుగు; }
+  hb_range_iter_t __end__ () స్థిరరాశి { తిరిగి hb_range_iter_t (చివర_4, చివర_4, అడుగు); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_range_iter_t& o) స్థిరరాశి
+  { తిరిగి v != o.v; }
 
-  private:
-  static inline T end_for (T start, T end_, S step)
+  అంతరంగ:
+  స్థిర అంతఃవరుస T చివర_for (T ప్రారంభం, T చివర_4, S అడుగు)
   {
-    if (!step)
-      return end_;
-    auto res = (end_ - start) % step;
-    if (!res)
-      return end_;
-    end_ += step - res;
-    return end_;
+    ఒకవేళ (!అడుగు)
+      తిరిగి చివర_4;
+    స్వయంచాలక res = (చివర_4 - ప్రారంభం) % అడుగు;
+    ఒకవేళ (!res)
+      తిరిగి చివర_4;
+    చివర_4 += అడుగు - res;
+    తిరిగి చివర_4;
   }
 
-  private:
+  అంతరంగ:
   T v;
-  T end_;
-  S step;
+  T చివర_4;
+  S అడుగు;
 };
-struct
+నిర్మాణం
 {
-  template <typename T = unsigned> hb_range_iter_t<T, unsigned>
-  operator () (T end = (unsigned) -1) const
-  { return hb_range_iter_t<T, unsigned> (0, end, 1u); }
+  మూస <రకం_పేరు T = గుర్తులేని> hb_range_iter_t<T, గుర్తులేని>
+  క్రియాకారకం () (T చివర = (గుర్తులేని) -1) స్థిరరాశి
+  { తిరిగి hb_range_iter_t<T, గుర్తులేని> (0, చివర, 1u); }
 
-  template <typename T, typename S = unsigned> hb_range_iter_t<T, S>
-  operator () (T start, T end, S step = 1u) const
-  { return hb_range_iter_t<T, S> (start, end, step); }
+  మూస <రకం_పేరు T, రకం_పేరు S = గుర్తులేని> hb_range_iter_t<T, S>
+  క్రియాకారకం () (T ప్రారంభం, T చివర, S అడుగు = 1u) స్థిరరాశి
+  { తిరిగి hb_range_iter_t<T, S> (ప్రారంభం, చివర, అడుగు); }
 }
 HB_FUNCOBJ (hb_range);
 
-template <typename T, typename S>
-struct hb_iota_iter_t :
+మూస <రకం_పేరు T, రకం_పేరు S>
+నిర్మాణం hb_iota_iter_t :
   hb_iter_with_fallback_t<hb_iota_iter_t<T, S>, T>
 {
-  hb_iota_iter_t (T start, S step) : v (start), step (step) {}
+  hb_iota_iter_t (T ప్రారంభం, S అడుగు) : v (ప్రారంభం), అడుగు (అడుగు) {}
 
-  private:
+  అంతరంగ:
 
-  template <typename S2 = S>
-  auto
-  inc (hb_type_identity<S2> s, hb_priority<1>)
-    -> hb_void_t<decltype (hb_invoke (std::forward<hb_type_identity<S2>> (s),
+  మూస <రకం_పేరు S2 = S>
+  స్వయంచాలక
+  inc (hb_type_తటస్థం<S2> s, hb_ప్రాధాన్యత<1>)
+    -> hb_void_t<decltype (hb_invoke (std::forward<hb_type_తటస్థం<S2>> (s),
                                       hb_declval<T&> ()))>
-  { v = hb_invoke (std::forward<hb_type_identity<S2>> (s), v); }
+  { v = hb_invoke (std::forward<hb_type_తటస్థం<S2>> (s), v); }
 
-  void
-  inc (S s, hb_priority<0>)
+  శూన్య
+  inc (S s, hb_ప్రాధాన్యత<0>)
   { v += s; }
 
-  public:
+  బహిరంగ:
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () { inc (step, hb_prioritize); }
-  void __prev__ () { v -= step; }
-  hb_iota_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_iota_iter_t& o) const { return true; }
+  రకనిర్వచనం T __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator = నిజం;
+  స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+  __item_t__ __item__ () స్థిరరాశి { తిరిగి hb_ridentity (v); }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి నిజం; }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి UINT_MAX; }
+  శూన్య __next__ () { inc (అడుగు, hb_prioritize); }
+  శూన్య __prev__ () { v -= అడుగు; }
+  hb_iota_iter_t __end__ () స్థిరరాశి { తిరిగి *ఇది; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_iota_iter_t& o) స్థిరరాశి { తిరిగి నిజం; }
 
-  private:
+  అంతరంగ:
   T v;
-  S step;
+  S అడుగు;
 };
-struct
+నిర్మాణం
 {
-  template <typename T = unsigned, typename S = unsigned> hb_iota_iter_t<T, S>
-  operator () (T start = 0u, S step = 1u) const
-  { return hb_iota_iter_t<T, S> (start, step); }
+  మూస <రకం_పేరు T = గుర్తులేని, రకం_పేరు S = గుర్తులేని> hb_iota_iter_t<T, S>
+  క్రియాకారకం () (T ప్రారంభం = 0u, S అడుగు = 1u) స్థిరరాశి
+  { తిరిగి hb_iota_iter_t<T, S> (ప్రారంభం, అడుగు); }
 }
 HB_FUNCOBJ (hb_iota);
 
-template <typename T>
-struct hb_repeat_iter_t :
+మూస <రకం_పేరు T>
+నిర్మాణం hb_repeat_iter_t :
   hb_iter_t<hb_repeat_iter_t<T>, T>
 {
   hb_repeat_iter_t (T value) : v (value) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return v; }
-  __item_t__ __item_at__ (unsigned j) const { return v; }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () {}
-  void __forward__ (unsigned) {}
-  void __prev__ () {}
-  void __rewind__ (unsigned) {}
-  hb_repeat_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_repeat_iter_t& o) const { return true; }
+  రకనిర్వచనం T __item_t__;
+  స్థిర constexpr తార్కిక is_random_access_iterator = నిజం;
+  స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+  __item_t__ __item__ () స్థిరరాశి { తిరిగి v; }
+  __item_t__ __item_at__ (గుర్తులేని j) స్థిరరాశి { తిరిగి v; }
+  తార్కిక __more__ () స్థిరరాశి { తిరిగి నిజం; }
+  గుర్తులేని __len__ () స్థిరరాశి { తిరిగి UINT_MAX; }
+  శూన్య __next__ () {}
+  శూన్య __forward__ (గుర్తులేని) {}
+  శూన్య __prev__ () {}
+  శూన్య __rewind__ (గుర్తులేని) {}
+  hb_repeat_iter_t __end__ () స్థిరరాశి { తిరిగి *ఇది; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_repeat_iter_t& o) స్థిరరాశి { తిరిగి నిజం; }
 
-  private:
+  అంతరంగ:
   T v;
 };
-struct
+నిర్మాణం
 {
-  template <typename T> hb_repeat_iter_t<T>
-  operator () (T value) const
-  { return hb_repeat_iter_t<T> (value); }
+  మూస <రకం_పేరు T> hb_repeat_iter_t<T>
+  క్రియాకారకం () (T value) స్థిరరాశి
+  { తిరిగి hb_repeat_iter_t<T> (value); }
 }
 HB_FUNCOBJ (hb_repeat);
 
 /* hb_enumerate()/hb_take() */
 
-struct
+నిర్మాణం
 {
-  template <typename Iterable,
-	    typename Index = unsigned,
+  మూస <రకం_పేరు Iterable,
+	    రకం_పేరు సూచీ = గుర్తులేని,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, Index start = 0u) const HB_AUTO_RETURN
-  ( hb_zip (hb_iota (start), it) )
+  స్వయంచాలక క్రియాకారకం () (Iterable&& it, సూచీ ప్రారంభం = 0u) స్థిరరాశి HB_AUTO_RETURN
+  ( hb_zip (hb_iota (ప్రారంభం), it) )
 }
 HB_FUNCOBJ (hb_enumerate);
 
-struct
+నిర్మాణం
 { HB_PARTIALIZE(2);
-  template <typename Iterable,
+  మూస <రకం_పేరు Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, unsigned count) const HB_AUTO_RETURN
-  ( hb_zip (hb_range (count), it) | hb_map_retains_sorting (hb_second) )
+  స్వయంచాలక క్రియాకారకం () (Iterable&& it, గుర్తులేని లెక్క) స్థిరరాశి HB_AUTO_RETURN
+  ( hb_zip (hb_range (లెక్క), it) | hb_map_retains_క్రమీకరణ (hb_రెండవ) )
 
   /* Specialization arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (hb_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  మూస <రకం_పేరు Type> అంతఃవరుస hb_array_t<Type>
+  క్రియాకారకం () (hb_array_t<Type> array, గుర్తులేని లెక్క) స్థిరరాశి
+  { తిరిగి array.sub_array (0, లెక్క); }
 
-  template <typename Type> inline hb_sorted_array_t<Type>
-  operator () (hb_sorted_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  మూస <రకం_పేరు Type> అంతఃవరుస hb_sorted_array_t<Type>
+  క్రియాకారకం () (hb_sorted_array_t<Type> array, గుర్తులేని లెక్క) స్థిరరాశి
+  { తిరిగి array.sub_array (0, లెక్క); }
 }
 HB_FUNCOBJ (hb_take);
 
-struct
+నిర్మాణం
 { HB_PARTIALIZE(2);
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  auto operator () (Iter it, unsigned count) const HB_AUTO_RETURN
+  స్వయంచాలక క్రియాకారకం () (Iter it, గుర్తులేని లెక్క) స్థిరరాశి HB_AUTO_RETURN
   (
-    + hb_iota (it, hb_add (count))
-    | hb_map (hb_take (count))
-    | hb_take ((hb_len (it) + count - 1) / count)
+    + hb_iota (it, hb_కూడు (లెక్క))
+    | hb_map (hb_take (లెక్క))
+    | hb_take ((hb_len (it) + లెక్క - 1) / లెక్క)
   )
 }
 HB_FUNCOBJ (hb_chop);
 
 /* hb_sink() */
 
-template <typename Sink>
-struct hb_sink_t
+మూస <రకం_పేరు Sink>
+నిర్మాణం hb_sink_t
 {
   hb_sink_t (Sink s) : s (s) {}
 
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  శూన్య క్రియాకారకం () (Iter it)
   {
-    for (; it; ++it)
+    కొరకు (; it; ++it)
       s << *it;
   }
 
-  private:
+  అంతరంగ:
   Sink s;
 };
-struct
+నిర్మాణం
 {
-  template <typename Sink> hb_sink_t<Sink>
-  operator () (Sink&& s) const
-  { return hb_sink_t<Sink> (s); }
+  మూస <రకం_పేరు Sink> hb_sink_t<Sink>
+  క్రియాకారకం () (Sink&& s) స్థిరరాశి
+  { తిరిగి hb_sink_t<Sink> (s); }
 
-  template <typename Sink> hb_sink_t<Sink&>
-  operator () (Sink *s) const
-  { return hb_sink_t<Sink&> (*s); }
+  మూస <రకం_పేరు Sink> hb_sink_t<Sink&>
+  క్రియాకారకం () (Sink *s) స్థిరరాశి
+  { తిరిగి hb_sink_t<Sink&> (*s); }
 }
 HB_FUNCOBJ (hb_sink);
 
 /* hb-drain: hb_sink to void / blackhole / /dev/null. */
 
-struct
+నిర్మాణం
 {
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it) const
+  శూన్య క్రియాకారకం () (Iter it) స్థిరరాశి
   {
-    for (; it; ++it)
-      (void) *it;
+    కొరకు (; it; ++it)
+      (శూన్య) *it;
   }
 }
 HB_FUNCOBJ (hb_drain);
 
 /* hb_unzip(): unzip and sink to two sinks. */
 
-template <typename Sink1, typename Sink2>
-struct hb_unzip_t
+మూస <రకం_పేరు Sink1, రకం_పేరు Sink2>
+నిర్మాణం hb_unzip_t
 {
   hb_unzip_t (Sink1 s1, Sink2 s2) : s1 (s1), s2 (s2) {}
 
-  template <typename Iter,
+  మూస <రకం_పేరు Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  శూన్య క్రియాకారకం () (Iter it)
   {
-    for (; it; ++it)
+    కొరకు (; it; ++it)
     {
-      const auto &v = *it;
-      s1 << v.first;
+      స్థిరరాశి స్వయంచాలక &v = *it;
+      s1 << v.మొదటి;
       s2 << v.second;
     }
   }
 
-  private:
+  అంతరంగ:
   Sink1 s1;
   Sink2 s2;
 };
-struct
+నిర్మాణం
 {
-  template <typename Sink1, typename Sink2> hb_unzip_t<Sink1, Sink2>
-  operator () (Sink1&& s1, Sink2&& s2) const
-  { return hb_unzip_t<Sink1, Sink2> (s1, s2); }
+  మూస <రకం_పేరు Sink1, రకం_పేరు Sink2> hb_unzip_t<Sink1, Sink2>
+  క్రియాకారకం () (Sink1&& s1, Sink2&& s2) స్థిరరాశి
+  { తిరిగి hb_unzip_t<Sink1, Sink2> (s1, s2); }
 
-  template <typename Sink1, typename Sink2> hb_unzip_t<Sink1&, Sink2&>
-  operator () (Sink1 *s1, Sink2 *s2) const
-  { return hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
+  మూస <రకం_పేరు Sink1, రకం_పేరు Sink2> hb_unzip_t<Sink1&, Sink2&>
+  క్రియాకారకం () (Sink1 *s1, Sink2 *s2) స్థిరరాశి
+  { తిరిగి hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
 }
 HB_FUNCOBJ (hb_unzip);
 
 
 /* hb-all, hb-any, hb-none. */
 
-struct
+నిర్మాణం
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  మూస <రకం_పేరు Iterable,
+	    రకం_పేరు Pred = decltype ((hb_తటస్థం)),
+	    రకం_పేరు Proj = decltype ((hb_తటస్థం)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  తార్కిక క్రియాకారకం () (Iterable&& c,
+		    Pred&& p = hb_తటస్థం,
+		    Proj&& f = hb_తటస్థం) స్థిరరాశి
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (!hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    కొరకు (స్వయంచాలక it = hb_iter (c); it; ++it)
+      ఒకవేళ (!hb_సరిపోలిక (p, hb_get (f, *it)))
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 }
 HB_FUNCOBJ (hb_all);
-struct
+నిర్మాణం
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  మూస <రకం_పేరు Iterable,
+	    రకం_పేరు Pred = decltype ((hb_తటస్థం)),
+	    రకం_పేరు Proj = decltype ((hb_తటస్థం)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  తార్కిక క్రియాకారకం () (Iterable&& c,
+		    Pred&& p = hb_తటస్థం,
+		    Proj&& f = hb_తటస్థం) స్థిరరాశి
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return true;
-    return false;
+    కొరకు (స్వయంచాలక it = hb_iter (c); it; ++it)
+      ఒకవేళ (hb_సరిపోలిక (p, hb_get (f, *it)))
+	తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 }
 HB_FUNCOBJ (hb_any);
-struct
+నిర్మాణం
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  మూస <రకం_పేరు Iterable,
+	    రకం_పేరు Pred = decltype ((hb_తటస్థం)),
+	    రకం_పేరు Proj = decltype ((hb_తటస్థం)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  తార్కిక క్రియాకారకం () (Iterable&& c,
+		    Pred&& p = hb_తటస్థం,
+		    Proj&& f = hb_తటస్థం) స్థిరరాశి
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    కొరకు (స్వయంచాలక it = hb_iter (c); it; ++it)
+      ఒకవేళ (hb_సరిపోలిక (p, hb_get (f, *it)))
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 }
 HB_FUNCOBJ (hb_none);
@@ -1033,21 +1033,21 @@ HB_FUNCOBJ (hb_none);
  * Algorithms operating on iterators.
  */
 
-template <typename C, typename V,
+మూస <రకం_పేరు C, రకం_పేరు V,
 	  hb_requires (hb_is_iterable (C))>
-inline void
-hb_fill (C&& c, const V &v)
+అంతఃవరుస శూన్య
+hb_fill (C&& c, స్థిరరాశి V &v)
 {
-  for (auto i = hb_iter (c); i; i++)
+  కొరకు (స్వయంచాలక i = hb_iter (c); i; i++)
     *i = v;
 }
 
-template <typename S, typename D>
-inline void
+మూస <రకం_పేరు S, రకం_పేరు D>
+అంతఃవరుస శూన్య
 hb_copy (S&& is, D&& id)
 {
   hb_iter (is) | hb_sink (id);
 }
 
 
-#endif /* HB_ITER_HH */
+#అయితే_ముగింపు /* HB_ITER_HH */

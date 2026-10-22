@@ -24,121 +24,121 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_KERN_HH
-#define HB_KERN_HH
+#నిర్వచితం_కాకపోతే HB_KERN_HH
+#నిర్వచించు HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
-
-
-namespace OT {
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-aat-layout-common.hh"
+#అన్తర్భావ "hb-ot-layout-gpos-table.hh"
 
 
-template <typename Driver>
-struct hb_kern_machine_t
+నామాకాశ OT {
+
+
+మూస <రకం_పేరు Driver>
+నిర్మాణం hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (స్థిరరాశి Driver &driver_,
+		     తార్కిక cross_ప్రవాహం_2 = అబద్ధం) :
 		       driver (driver_),
-		       crossStream (crossStream_) {}
+		       cross_ప్రవాహం (cross_ప్రవాహం_2) {}
 
-  void kern (hb_font_t   *font,
-	     hb_buffer_t *buffer,
-	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+  శూన్య kern (hb_font_t   *font,
+	     hb_బఫరు_t *బఫరు,
+	     hb_ముసుగు_t    kern_ముసుగు,
+	     తార్కిక         scale = నిజం) స్థిరరాశి
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    ఒకవేళ (!బఫరు->సందేశం (font, "start kern"))
+      తిరిగి;
 
-    buffer->unsafe_to_concat ();
-    OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
-    c.set_lookup_mask (kern_mask);
-    c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    బఫరు->unsafe_గమ్యం_concat ();
+    OT::hb_ot_apply_context_t c (1, font, బఫరు, hb_blob_get_ఖాళీలు ());
+    c.సమితి_lookup_ముసుగు (kern_ముసుగు);
+    c.సమితి_lookup_props (OT::LookupFlag::IgnoreMarks);
+    స్వయంచాలక &skippy_iter = c.iter_ఆదానం;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    తార్కిక horizontal = HB_DIRECTION_IS_HORIZONTAL (బఫరు->props.direction);
+    గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+    hb_glyph_info_t *info = బఫరు->info;
+    hb_glyph_position_t *pos = బఫరు->pos;
+    కొరకు (గుర్తులేని పూర్ణాంకం idx = 0; idx < లెక్క;)
     {
-      if (!(info[idx].mask & kern_mask))
+      ఒకవేళ (!(info[idx].ముసుగు & kern_ముసుగు))
       {
 	idx++;
-	continue;
+	కొనసాగు;
       }
 
       skippy_iter.reset_fast (idx);
-      unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      గుర్తులేని unsafe_గమ్యం;
+      ఒకవేళ (unlikely (!skippy_iter.next (&unsafe_గమ్యం)))
       {
-	idx = unsafe_to;
-	continue;
+	idx = unsafe_గమ్యం;
+	కొనసాగు;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      గుర్తులేని పూర్ణాంకం i = idx;
+      గుర్తులేని పూర్ణాంకం j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      ఒకవేళ (likely (!kern))
+	వెళ్ళు skip;
 
-      if (horizontal)
+      ఒకవేళ (horizontal)
       {
-	if (scale)
+	ఒకవేళ (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	ఒకవేళ (cross_ప్రవాహం)
 	{
-	  pos[j].y_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].y_స్థానభ్రంశం_2 = kern;
+	  బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	లేకపోతే
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].x_advance = hb_saturate_add (pos[i].x_advance, kern1);
-	  pos[j].x_advance = hb_saturate_add (pos[j].x_advance, kern2);
-	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
+	  pos[i].x_advance = hb_saturate_కూడు (pos[i].x_advance, kern1);
+	  pos[j].x_advance = hb_saturate_కూడు (pos[j].x_advance, kern2);
+	  pos[j].x_స్థానభ్రంశం_2 = hb_saturate_కూడు (pos[j].x_స్థానభ్రంశం_2, kern2);
 	}
       }
-      else
+      లేకపోతే
       {
-	if (scale)
+	ఒకవేళ (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	ఒకవేళ (cross_ప్రవాహం)
 	{
-	  pos[j].x_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].x_స్థానభ్రంశం_2 = kern;
+	  బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	లేకపోతే
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].y_advance = hb_saturate_add (pos[i].y_advance, kern1);
-	  pos[j].y_advance = hb_saturate_add (pos[j].y_advance, kern2);
-	  pos[j].y_offset = hb_saturate_add (pos[j].y_offset, kern2);
+	  pos[i].y_advance = hb_saturate_కూడు (pos[i].y_advance, kern1);
+	  pos[j].y_advance = hb_saturate_కూడు (pos[j].y_advance, kern2);
+	  pos[j].y_స్థానభ్రంశం_2 = hb_saturate_కూడు (pos[j].y_స్థానభ్రంశం_2, kern2);
 	}
       }
 
-      buffer->unsafe_to_break (i, j + 1);
+      బఫరు->unsafe_గమ్యం_break (i, j + 1);
 
     skip:
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (శూన్య) బఫరు->సందేశం (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  స్థిరరాశి Driver &driver;
+  తార్కిక cross_ప్రవాహం;
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_KERN_HH */
+#అయితే_ముగింపు /* HB_KERN_HH */

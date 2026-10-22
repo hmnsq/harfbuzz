@@ -2,39 +2,39 @@
 
 "This tool is intended to be used from meson"
 
-import os, sys, shutil, re
+దిగుమతి os, sys, shutil, re
 
-if len (sys.argv) < 4:
+ఒకవేళ పొడవు (sys.argv) < 4:
 	sys.exit(__doc__)
 
-version = sys.argv[1]
-major, minor, micro = version.split (".")
+సంస్కరణ = sys.argv[1]
+major, minor, micro = సంస్కరణ.విభజించు (".")
 
 OUTPUT = sys.argv[2]
-INPUT = sys.argv[3]
-CURRENT_SOURCE_DIR = os.path.dirname(INPUT)
+ఆదానం_2 = sys.argv[3]
+CURRENT_ఆధారం_DIR = os.మార్గం.dirname(ఆదానం_2)
 
-try:
-	with open (OUTPUT, "r", encoding='utf-8') as old_output:
-		for line in old_output:
-			old_version = re.match (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", line)
-			if old_version and old_version[1] == version:
+ప్రయత్నించు:
+	తోడుగా open (OUTPUT, "r", encoding='utf-8') ఇవ old_output:
+		కొరకు పంక్తి లో old_output:
+			old_సంస్కరణ = re.సరిపోలిక (r"#define HB_VERSION_STRING \"(\d.\d.\d)\"", పంక్తి)
+			ఒకవేళ old_సంస్కరణ మరియు old_సంస్కరణ[1] == సంస్కరణ:
 				sys.exit ()
-except IOError:
-	pass
+మినహాయింపు IOError:
+	దాటు
 
-with open (INPUT, "r", encoding='utf-8') as template:
-	with open (OUTPUT, "wb") as output:
-		output.write (template.read ()
+తోడుగా open (ఆదానం_2, "r", encoding='utf-8') ఇవ template:
+	తోడుగా open (OUTPUT, "wb") ఇవ output:
+		output.లిఖ (template.పఠ ()
 			.replace ("@HB_VERSION_MAJOR@", major)
 			.replace ("@HB_VERSION_MINOR@", minor)
 			.replace ("@HB_VERSION_MICRO@", micro)
-			.replace ("@HB_VERSION@", version)
+			.replace ("@HB_VERSION@", సంస్కరణ)
 			.encode ())
 
 # copy it also to the source tree, but only if it has changed
-baseline_filename = os.path.join (CURRENT_SOURCE_DIR, os.path.basename (OUTPUT))
-with open(baseline_filename, "rb") as baseline:
-	with open(OUTPUT, "rb") as generated:
-		if baseline.read() != generated.read():
+baseline_filename = os.మార్గం.join (CURRENT_ఆధారం_DIR, os.మార్గం.basename (OUTPUT))
+తోడుగా open(baseline_filename, "rb") ఇవ baseline:
+	తోడుగా open(OUTPUT, "rb") ఇవ generated:
+		ఒకవేళ baseline.పఠ() != generated.పఠ():
 			shutil.copyfile (OUTPUT, baseline_filename)

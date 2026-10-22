@@ -27,30 +27,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_ICU
+#నిర్వచితమైతే HAVE_ICU
 
-#pragma GCC diagnostic push
+#సూచన GCC diagnostic push
 
 // https://github.com/harfbuzz/harfbuzz/issues/4915
-#pragma GCC diagnostic ignored "-Wredundant-decls"
+#సూచన GCC diagnostic ignored "-Wredundant-decls"
 
-#include "hb-icu.h"
+#అన్తర్భావ "hb-icu.h"
 
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
-#include <unicode/uchar.h>
-#include <unicode/unorm2.h>
-#include <unicode/ustring.h>
-#include <unicode/utf16.h>
-#include <unicode/uversion.h>
+#అన్తర్భావ <unicode/uchar.h>
+#అన్తర్భావ <unicode/unorm2.h>
+#అన్తర్భావ <unicode/ustring.h>
+#అన్తర్భావ <unicode/utf16.h>
+#అన్తర్భావ <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
-#define HB_ICU_EXTRA_SEMI_IGNORED
-#pragma GCC diagnostic ignored "-Wextra-semi-stmt"
-#endif
+#ఒకవేళ U_ICU_సంస్కరణ_MAJOR_అంకె < 65 && (defined(__GNUC__) || defined(__clang__))
+#నిర్వచించు HB_ICU_EXTRA_SEMI_IGNORED
+#సూచన GCC diagnostic ignored "-Wextra-semi-stmt"
+#అయితే_ముగింపు
 
 /**
  * SECTION:hb-icu
@@ -76,12 +76,12 @@
  **/
 
 hb_script_t
-hb_icu_script_to_script (UScriptCode script)
+hb_icu_script_గమ్యం_script (UScript_సంకేతం script)
 {
-  if (unlikely (script == USCRIPT_INVALID_CODE))
-    return HB_SCRIPT_INVALID;
+  ఒకవేళ (unlikely (script == USCRIPT_INVALID_సంకేతం))
+    తిరిగి HB_SCRIPT_INVALID;
 
-  return hb_script_from_string (uscript_getShortName (script), -1);
+  తిరిగి hb_script_from_string (uscript_getShortName (script), -1);
 }
 
 /**
@@ -94,180 +94,180 @@ hb_icu_script_to_script (UScriptCode script)
  * Return value: the UScriptCode identifier found
  *
  **/
-UScriptCode
+UScript_సంకేతం
 hb_icu_script_from_script (hb_script_t script)
 {
-  UScriptCode out = USCRIPT_INVALID_CODE;
+  UScript_సంకేతం బహిర్గతం = USCRIPT_INVALID_సంకేతం;
 
-  if (unlikely (script == HB_SCRIPT_INVALID))
-    return out;
+  ఒకవేళ (unlikely (script == HB_SCRIPT_INVALID))
+    తిరిగి బహిర్గతం;
 
-  UErrorCode icu_err = U_ZERO_ERROR;
-  const unsigned char buf[5] = {HB_UNTAG (script), 0};
-  uscript_getCode ((const char *) buf, &out, 1, &icu_err);
+  UError_సంకేతం icu_err = U_ZERO_ERROR;
+  స్థిరరాశి గుర్తులేని అక్షరం buf[5] = {HB_UNTAG (script), 0};
+  uscript_get_సంకేతం ((స్థిరరాశి అక్షరం *) buf, &బహిర్గతం, 1, &icu_err);
 
-  return out;
+  తిరిగి బహిర్గతం;
 }
 
 
-static hb_unicode_combining_class_t
-hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_unicode_combining_class_t
+hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_వాడని,
 				hb_codepoint_t      unicode,
-				void               *user_data HB_UNUSED)
+				శూన్య               *user_దత్తాంశం HB_వాడని)
 
 {
-  return (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
+  తిరిగి (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
 }
 
-static hb_unicode_general_category_t
-hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_unicode_general_category_t
+hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_వాడని,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
+  ఎంపిక (u_get_Int_Property_విలువ(unicode, UCHAR_GENERAL_CATEGORY))
   {
-  case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  స్థితి U_UNASSIGNED:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
-  case U_UPPERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
-  case U_LOWERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
-  case U_TITLECASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
-  case U_MODIFIER_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
-  case U_OTHER_LETTER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  స్థితి U_UPPERCASE_LETTER:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
+  స్థితి U_LOWERCASE_LETTER:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
+  స్థితి U_TITLECASE_LETTER:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
+  స్థితి U_MODIFIER_LETTER:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
+  స్థితి U_OTHER_LETTER:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 
-  case U_NON_SPACING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
-  case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
-  case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
+  స్థితి U_NON_SPACING_MARK:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
+  స్థితి U_ENCLOSING_MARK:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
+  స్థితి U_COMBINING_SPACING_MARK:	తిరిగి HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  స్థితి U_DECIMAL_DIGIT_సంఖ్య:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_DECIMAL_సంఖ్య;
+  స్థితి U_LETTER_సంఖ్య:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_LETTER_సంఖ్య;
+  స్థితి U_OTHER_సంఖ్య:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_OTHER_సంఖ్య;
 
-  case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
-  case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
+  స్థితి U_SPACE_SEPARATOR:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
+  స్థితి U_పంక్తి_SEPARATOR:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_పంక్తి_SEPARATOR;
+  స్థితి U_PARAGRAPH_SEPARATOR:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
-  case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
-  case U_FORMAT_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_FORMAT;
-  case U_PRIVATE_USE_CHAR:		return HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
-  case U_SURROGATE:			return HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
+  స్థితి U_CONTROL_CHAR:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_CONTROL;
+  స్థితి U_FORMAT_CHAR:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_FORMAT;
+  స్థితి U_వ్యక్తిగత_USE_CHAR:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_వ్యక్తిగత_USE;
+  స్థితి U_SURROGATE:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
 
 
-  case U_DASH_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
-  case U_START_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
-  case U_END_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
-  case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
-  case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
+  స్థితి U_DASH_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
+  స్థితి U_ప్రారంభం_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
+  స్థితి U_చివర_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
+  స్థితి U_CONNECTOR_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
+  స్థితి U_OTHER_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  స్థితి U_MATH_చిహ్నం:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_MATH_చిహ్నం;
+  స్థితి U_CURRENCY_చిహ్నం:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_CURRENCY_చిహ్నం;
+  స్థితి U_MODIFIER_చిహ్నం:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_MODIFIER_చిహ్నం;
+  స్థితి U_OTHER_చిహ్నం:			తిరిగి HB_UNICODE_GENERAL_CATEGORY_OTHER_చిహ్నం;
 
-  case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
-  case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
+  స్థితి U_INITIAL_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
+  స్థితి U_FINAL_PUNCTUATION:		తిరిగి HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
   }
 
-  return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  తిరిగి HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 }
 
-static hb_codepoint_t
-hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_codepoint_t
+hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  return u_charMirror(unicode);
+  తిరిగి u_charMirror(unicode);
 }
 
-static hb_script_t
-hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_script_t
+hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_వాడని,
 		       hb_codepoint_t      unicode,
-		       void               *user_data HB_UNUSED)
+		       శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  UErrorCode status = U_ZERO_ERROR;
-  UScriptCode scriptCode = uscript_getScript(unicode, &status);
+  UError_సంకేతం స్థితి_2 = U_ZERO_ERROR;
+  UScript_సంకేతం script_సంకేతం = uscript_getScript(unicode, &స్థితి_2);
 
-  if (unlikely (U_FAILURE (status)))
-    return HB_SCRIPT_UNKNOWN;
+  ఒకవేళ (unlikely (U_FAILURE (స్థితి_2)))
+    తిరిగి HB_SCRIPT_UNKNOWN;
 
-  return hb_icu_script_to_script (scriptCode);
+  తిరిగి hb_icu_script_గమ్యం_script (script_సంకేతం);
 }
 
-static hb_bool_t
-hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_bool_t
+hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			hb_codepoint_t      a,
 			hb_codepoint_t      b,
 			hb_codepoint_t     *ab,
-			void               *user_data)
+			శూన్య               *user_దత్తాంశం)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  స్థిరరాశి UNormalizer2 *normalizer = (స్థిరరాశి UNormalizer2 *) user_దత్తాంశం;
   UChar32 ret = unorm2_composePair (normalizer, a, b);
-  if (ret < 0) return false;
+  ఒకవేళ (ret < 0) తిరిగి అబద్ధం;
   *ab = ret;
-  return true;
+  తిరిగి నిజం;
 }
 
-static hb_bool_t
-hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_bool_t
+hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			  hb_codepoint_t      ab,
 			  hb_codepoint_t     *a,
 			  hb_codepoint_t     *b,
-			  void               *user_data)
+			  శూన్య               *user_దత్తాంశం)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  స్థిరరాశి UNormalizer2 *normalizer = (స్థిరరాశి UNormalizer2 *) user_దత్తాంశం;
   UChar decomposed[4];
-  int len;
-  UErrorCode icu_err = U_ZERO_ERROR;
+  పూర్ణాంకం len;
+  UError_సంకేతం icu_err = U_ZERO_ERROR;
   len = unorm2_getRawDecomposition (normalizer, ab, decomposed,
-				    ARRAY_LENGTH (decomposed), &icu_err);
-  if (U_FAILURE (icu_err) || len < 0) return false;
+				    ARRAY_నిడివి (decomposed), &icu_err);
+  ఒకవేళ (U_FAILURE (icu_err) || len < 0) తిరిగి అబద్ధం;
 
-  len = u_countChar32 (decomposed, len);
-  if (len == 1)
+  len = u_లెక్క_Char32 (decomposed, len);
+  ఒకవేళ (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
     *b = 0;
-    return *a != ab;
+    తిరిగి *a != ab;
   }
-  else if (len == 2)
+  లేకపోతే ఒకవేళ (len == 2)
   {
     len = 0;
-    U16_NEXT_UNSAFE (decomposed, len, *a);
-    U16_NEXT_UNSAFE (decomposed, len, *b);
+    U16_తదుపరి_UNSAFE (decomposed, len, *a);
+    U16_తదుపరి_UNSAFE (decomposed, len, *b);
   }
-  return true;
+  తిరిగి నిజం;
 }
 
 
-static inline void free_static_icu_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_icu_funcs ();
 
-static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  స్థిర hb_unicode_funcs_t *create ()
   {
-    void *user_data = nullptr;
-    UErrorCode icu_err = U_ZERO_ERROR;
-    user_data = (void *) unorm2_getNFCInstance (&icu_err);
-    assert (user_data);
+    శూన్య *user_దత్తాంశం = శూన్యసూచిక;
+    UError_సంకేతం icu_err = U_ZERO_ERROR;
+    user_దత్తాంశం = (శూన్య *) unorm2_getNFCInstance (&icu_err);
+    ప్రతిజ్ఞా (user_దత్తాంశం);
 
-    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
+    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (శూన్యసూచిక);
 
-    hb_unicode_funcs_set_combining_class_func (funcs, hb_icu_unicode_combining_class, nullptr, nullptr);
-    hb_unicode_funcs_set_general_category_func (funcs, hb_icu_unicode_general_category, nullptr, nullptr);
-    hb_unicode_funcs_set_mirroring_func (funcs, hb_icu_unicode_mirroring, nullptr, nullptr);
-    hb_unicode_funcs_set_script_func (funcs, hb_icu_unicode_script, nullptr, nullptr);
-    hb_unicode_funcs_set_compose_func (funcs, hb_icu_unicode_compose, user_data, nullptr);
-    hb_unicode_funcs_set_decompose_func (funcs, hb_icu_unicode_decompose, user_data, nullptr);
+    hb_unicode_funcs_సమితి_combining_class_func (funcs, hb_icu_unicode_combining_class, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_general_category_func (funcs, hb_icu_unicode_general_category, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_mirroring_func (funcs, hb_icu_unicode_mirroring, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_script_func (funcs, hb_icu_unicode_script, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_compose_func (funcs, hb_icu_unicode_compose, user_దత్తాంశం, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_decompose_func (funcs, hb_icu_unicode_decompose, user_దత్తాంశం, శూన్యసూచిక);
 
     hb_unicode_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_icu_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_icu_funcs;
 
-static inline
-void free_static_icu_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_icu_funcs ()
 {
   static_icu_funcs.free_instance ();
 }
@@ -285,9 +285,9 @@ void free_static_icu_funcs ()
 hb_unicode_funcs_t *
 hb_icu_get_unicode_funcs ()
 {
-  return static_icu_funcs.get_unconst ();
+  తిరిగి static_icu_funcs.get_unconst ();
 }
 
-#pragma GCC diagnostic pop
+#సూచన GCC diagnostic తీయి
 
-#endif
+#అయితే_ముగింపు

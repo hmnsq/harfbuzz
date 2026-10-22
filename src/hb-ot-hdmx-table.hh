@@ -24,154 +24,154 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_OT_HDMX_TABLE_HH
-#define HB_OT_HDMX_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_HDMX_పట్టిక_HH
+#నిర్వచించు HB_OT_HDMX_పట్టిక_HH
 
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/hdmx
  */
-#define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
+#నిర్వచించు HB_OT_ట్యాగ్_hdmx HB_ట్యాగ్('h','d','m','x')
 
 
-namespace OT {
+నామాకాశ OT {
 
 
-struct DeviceRecord
+నిర్మాణం Device_రికార్డు
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  స్థిర size_t get_కొలత (గుర్తులేని లెక్క)
+  { తిరిగి hb_ceil_గమ్యం_4 (hb_unsigned_mul_కూడు_saturate (లెక్క, HBUINT8::static_కొలత, min_కొలత)); }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned pixelSize,
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  గుర్తులేని pixel_కొలత,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  స్థిరరాశి hb_సదిశ_t<hb_codepoint_pair_t> new_గమ్యం_old_gid_list,
+		  గుర్తులేని అంకె_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    ఒకవేళ (unlikely (!c->extend (ఇది, అంకె_glyphs)))  return_trace (అబద్ధం);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    ఇది->pixel_కొలత = pixel_కొలత;
+    ఇది->max_వెడల్పు =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
-      widthsZ[_.first] = *it++;
+    కొరకు (స్వయంచాలక &_ : new_గమ్యం_old_gid_list)
+      widthsZ[_.మొదటి] = *it++;
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, గుర్తులేని కొలత_Device_రికార్డు) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (ఇది, కొలత_Device_రికార్డు)));
   }
 
-  HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
-  HBUINT8			maxWidth;	/* Maximum width. */
-  UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
-  DEFINE_SIZE_UNBOUNDED (2);
+  HBUINT8			pixel_కొలత;	/* Pixel size for following widths (as ppem). */
+  HBUINT8			max_వెడల్పు;	/* Maximum width. */
+  Unsized_Array_యొక్క<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
+  బహిరంగ:
+  DEFINE_కొలత_UNBOUNDED (2);
 };
 
 
-struct hdmx
+నిర్మాణం hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_mul_కూడు_saturate (అంకె_రికార్డులు_2, కొలత_Device_రికార్డు, min_కొలత); }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned version,
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  గుర్తులేని సంస్కరణ,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<స్థిరరాశి hb_codepoint_pair_t> new_గమ్యం_old_gid_list,
+		  గుర్తులేని అంకె_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    ఒకవేళ (unlikely (!c->extend_min ((*ఇది))))  return_trace (అబద్ధం);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    ఇది->సంస్కరణ = సంస్కరణ;
+    ఇది->అంకె_రికార్డులు_2 = it.len ();
+    ఇది->కొలత_Device_రికార్డు = Device_రికార్డు::get_కొలత (అంకె_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    కొరకు (స్థిరరాశి hb_అంశం_type<Iterator>& _ : +it)
+      c->ప్రారంభం_embed<Device_రికార్డు> ()->serialize (c, _.మొదటి, _.second, new_గమ్యం_old_gid_list, అంకె_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ఇది);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    స్వయంచాలక *hdmx_ప్రధానసంఖ్య = c->serializer->ప్రారంభం_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
-    auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    గుర్తులేని అంకె_ఆదానం_glyphs = get_అంకె_glyphs ();
+    స్వయంచాలక it =
+    + hb_range ((గుర్తులేని) అంకె_రికార్డులు_2)
+    | hb_map ([c, అంకె_ఆదానం_glyphs, ఇది] (గుర్తులేని _)
 	{
-	  const DeviceRecord *device_record =
-	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
-					   _ * sizeDeviceRecord);
-	  auto row =
-	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	  స్థిరరాశి Device_రికార్డు *device_రికార్డు =
+	    &Struct_At_స్థానభ్రంశం<Device_రికార్డు> (&మొదటి_Device_రికార్డు,
+					   _ * కొలత_Device_రికార్డు);
+	  స్వయంచాలక అడ్డువరుస =
+	    + hb_iter (c->plan->new_గమ్యం_old_gid_list)
+	    | hb_map ([అంకె_ఆదానం_glyphs, device_రికార్డు] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			తిరిగి device_రికార్డు->widthsZ.as_array (అంకె_ఆదానం_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  తిరిగి hb_pair ((గుర్తులేని) device_రికార్డు->pixel_కొలత, +అడ్డువరుస);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
-			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+    hdmx_ప్రధానసంఖ్య->serialize (c->serializer, సంస్కరణ, it,
+			   c->plan->new_గమ్యం_old_gid_list,
+			   c->plan->అంకె_output_glyphs ());
+    return_trace (నిజం);
   }
 
-  unsigned get_num_glyphs () const
+  గుర్తులేని get_అంకె_glyphs () స్థిరరాశి
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    తిరిగి కొలత_Device_రికార్డు - Device_రికార్డు::min_కొలత;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
-		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  !hb_unsigned_mul_overflows (అంకె_రికార్డులు_2, కొలత_Device_రికార్డు) &&
+                  min_కొలత + అంకె_రికార్డులు_2 * కొలత_Device_రికార్డు > అంకె_రికార్డులు_2 * కొలత_Device_రికార్డు &&
+		  కొలత_Device_రికార్డు >= Device_రికార్డు::min_కొలత &&
+		  c->check_range (ఇది, get_కొలత ()));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
-  HBUINT32	sizeDeviceRecord;
+  రక్షిత:
+  HBUINT16	సంస్కరణ;	/* Table version number (0) */
+  HBUINT16	అంకె_రికార్డులు_2;	/* Number of device records. */
+  HBUINT32	కొలత_Device_రికార్డు;
 				/* Size of a device record, 32-bit aligned. */
-  DeviceRecord	firstDeviceRecord;
+  Device_రికార్డు	మొదటి_Device_రికార్డు;
 				/* Array of device records. */
-  public:
-  DEFINE_SIZE_MIN (8);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (8);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HDMX_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_HDMX_TABLE_HH */

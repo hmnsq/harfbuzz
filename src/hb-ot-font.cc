@@ -24,31 +24,31 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_FONT
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT
 
-#include "hb-ot.h"
+#అన్తర్భావ "hb-ot.h"
 
-#include "hb-cache.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
-#include "hb-ot-face.hh"
+#అన్తర్భావ "hb-cache.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-machinery.hh"
+#అన్తర్భావ "hb-ot-face.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-var-gvar-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-ot-vorg-table.hh"
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/sbix/sbix.hh"
-#include "OT/Color/svg/svg.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-ot-glyf-table.hh"
+#అన్తర్భావ "hb-ot-var-gvar-table.hh"
+#అన్తర్భావ "hb-ot-cff2-table.hh"
+#అన్తర్భావ "hb-ot-cff1-table.hh"
+#అన్తర్భావ "hb-ot-hmtx-table.hh"
+#అన్తర్భావ "hb-ot-post-table.hh"
+#అన్తర్భావ "hb-ot-stat-table.hh"
+#అన్తర్భావ "hb-ot-var-varc-table.hh"
+#అన్తర్భావ "hb-ot-vorg-table.hh"
+#అన్తర్భావ "OT/Color/CBDT/CBDT.hh"
+#అన్తర్భావ "OT/Color/COLR/COLR.hh"
+#అన్తర్భావ "OT/Color/sbix/sbix.hh"
+#అన్తర్భావ "OT/Color/svg/svg.hh"
 
 
 /**
@@ -62,96 +62,96 @@
  * never need to call these functions directly.
  **/
 
-using hb_ot_font_advance_cache_t = hb_cache_t<24, 16>;
-static_assert (sizeof (hb_ot_font_advance_cache_t) == 1024, "");
+ఉపయోగించి hb_ot_font_advance_cache_t = hb_cache_t<24, 16>;
+static_assert (పరిమాణం (hb_ot_font_advance_cache_t) == 1024, "");
 
-using hb_ot_font_origin_cache_t = hb_cache_t<20, 20>;
-static_assert (sizeof (hb_ot_font_origin_cache_t) == 1024, "");
+ఉపయోగించి hb_ot_font_origin_cache_t = hb_cache_t<20, 20>;
+static_assert (పరిమాణం (hb_ot_font_origin_cache_t) == 1024, "");
 
-struct hb_ot_font_t
+నిర్మాణం hb_ot_font_t
 {
-  const hb_ot_face_t *ot_face;
+  స్థిరరాశి hb_ot_face_t *ot_face;
 
-  mutable hb_atomic_t<int> cached_serial;
-  mutable hb_atomic_t<int> cached_coords_serial;
+  మార్చదగిన hb_atomic_t<పూర్ణాంకం> cached_serial;
+  మార్చదగిన hb_atomic_t<పూర్ణాంకం> cached_coords_serial;
 
-  struct direction_cache_t
+  నిర్మాణం direction_cache_t
   {
-    mutable hb_atomic_t<hb_ot_font_advance_cache_t *> advance_cache;
-    mutable hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
+    మార్చదగిన hb_atomic_t<hb_ot_font_advance_cache_t *> advance_cache;
+    మార్చదగిన hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
 
     ~direction_cache_t ()
     {
       clear ();
     }
 
-    hb_ot_font_advance_cache_t *acquire_advance_cache () const
+    hb_ot_font_advance_cache_t *acquire_advance_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = advance_cache.get_acquire ();
-      if (!cache)
+      స్వయంచాలక *cache = advance_cache.get_acquire ();
+      ఒకవేళ (!cache)
       {
-        cache = (hb_ot_font_advance_cache_t *) hb_malloc (sizeof (hb_ot_font_advance_cache_t));
-	if (!cache)
-	  return nullptr;
-	new (cache) hb_ot_font_advance_cache_t;
-	return cache;
+        cache = (hb_ot_font_advance_cache_t *) hb_malloc (పరిమాణం (hb_ot_font_advance_cache_t));
+	ఒకవేళ (!cache)
+	  తిరిగి శూన్యసూచిక;
+	కొత్త (cache) hb_ot_font_advance_cache_t;
+	తిరిగి cache;
       }
-      if (advance_cache.cmpexch (cache, nullptr))
-        return cache;
-      else
-        goto retry;
+      ఒకవేళ (advance_cache.cmpexch (cache, శూన్యసూచిక))
+        తిరిగి cache;
+      లేకపోతే
+        వెళ్ళు retry;
     }
-    void release_advance_cache (hb_ot_font_advance_cache_t *cache) const
+    శూన్య release_advance_cache (hb_ot_font_advance_cache_t *cache) స్థిరరాశి
     {
-      if (!cache)
-        return;
-      if (!advance_cache.cmpexch (nullptr, cache))
+      ఒకవేళ (!cache)
+        తిరిగి;
+      ఒకవేళ (!advance_cache.cmpexch (శూన్యసూచిక, cache))
         hb_free (cache);
     }
-    void clear_advance_cache () const
+    శూన్య clear_advance_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = advance_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (advance_cache.cmpexch (cache, nullptr))
+      స్వయంచాలక *cache = advance_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (advance_cache.cmpexch (cache, శూన్యసూచిక))
 	hb_free (cache);
-      else
-        goto retry;
+      లేకపోతే
+        వెళ్ళు retry;
     }
 
-    OT::hb_scalar_cache_t *acquire_varStore_cache (const OT::ItemVariationStore &varStore) const
+    OT::hb_scalar_cache_t *acquire_varStore_cache (స్థిరరాశి OT::అంశం_Variation_Store &varStore) స్థిరరాశి
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return varStore.create_cache ();
-      if (varStore_cache.cmpexch (cache, nullptr))
-	return cache;
-      else
-	goto retry;
+      స్వయంచాలక *cache = varStore_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి varStore.create_cache ();
+      ఒకవేళ (varStore_cache.cmpexch (cache, శూన్యసూచిక))
+	తిరిగి cache;
+      లేకపోతే
+	వెళ్ళు retry;
     }
-    void release_varStore_cache (OT::hb_scalar_cache_t *cache) const
+    శూన్య release_varStore_cache (OT::hb_scalar_cache_t *cache) స్థిరరాశి
     {
-      if (!cache)
-	return;
-      if (!varStore_cache.cmpexch (nullptr, cache))
-	OT::ItemVariationStore::destroy_cache (cache);
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (!varStore_cache.cmpexch (శూన్యసూచిక, cache))
+	OT::అంశం_Variation_Store::destroy_cache (cache);
     }
-    void clear_varStore_cache () const
+    శూన్య clear_varStore_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (varStore_cache.cmpexch (cache, nullptr))
-	OT::ItemVariationStore::destroy_cache (cache);
-      else
-	goto retry;
+      స్వయంచాలక *cache = varStore_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (varStore_cache.cmpexch (cache, శూన్యసూచిక))
+	OT::అంశం_Variation_Store::destroy_cache (cache);
+      లేకపోతే
+	వెళ్ళు retry;
     }
 
-    void clear () const
+    శూన్య clear () స్థిరరాశి
     {
       clear_advance_cache ();
       clear_varStore_cache ();
@@ -159,148 +159,148 @@ struct hb_ot_font_t
 
   } h, v;
 
-  struct origin_cache_t
+  నిర్మాణం origin_cache_t
   {
-    mutable hb_atomic_t<hb_ot_font_origin_cache_t *> origin_cache;
-    mutable hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
+    మార్చదగిన hb_atomic_t<hb_ot_font_origin_cache_t *> origin_cache;
+    మార్చదగిన hb_atomic_t<OT::hb_scalar_cache_t *> varStore_cache;
 
     ~origin_cache_t ()
     {
       clear ();
     }
 
-    hb_ot_font_origin_cache_t *acquire_origin_cache () const
+    hb_ot_font_origin_cache_t *acquire_origin_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = origin_cache.get_acquire ();
-      if (!cache)
+      స్వయంచాలక *cache = origin_cache.get_acquire ();
+      ఒకవేళ (!cache)
       {
-        cache = (hb_ot_font_origin_cache_t *) hb_malloc (sizeof (hb_ot_font_origin_cache_t));
-	if (!cache)
-	  return nullptr;
-	new (cache) hb_ot_font_origin_cache_t;
-	return cache;
+        cache = (hb_ot_font_origin_cache_t *) hb_malloc (పరిమాణం (hb_ot_font_origin_cache_t));
+	ఒకవేళ (!cache)
+	  తిరిగి శూన్యసూచిక;
+	కొత్త (cache) hb_ot_font_origin_cache_t;
+	తిరిగి cache;
       }
-      if (origin_cache.cmpexch (cache, nullptr))
-        return cache;
-      else
-        goto retry;
+      ఒకవేళ (origin_cache.cmpexch (cache, శూన్యసూచిక))
+        తిరిగి cache;
+      లేకపోతే
+        వెళ్ళు retry;
     }
-    void release_origin_cache (hb_ot_font_origin_cache_t *cache) const
+    శూన్య release_origin_cache (hb_ot_font_origin_cache_t *cache) స్థిరరాశి
     {
-      if (!cache)
-        return;
-      if (!origin_cache.cmpexch (nullptr, cache))
+      ఒకవేళ (!cache)
+        తిరిగి;
+      ఒకవేళ (!origin_cache.cmpexch (శూన్యసూచిక, cache))
         hb_free (cache);
     }
-    void clear_origin_cache () const
+    శూన్య clear_origin_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = origin_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (origin_cache.cmpexch (cache, nullptr))
+      స్వయంచాలక *cache = origin_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (origin_cache.cmpexch (cache, శూన్యసూచిక))
 	hb_free (cache);
-      else
-        goto retry;
+      లేకపోతే
+        వెళ్ళు retry;
     }
 
-    OT::hb_scalar_cache_t *acquire_varStore_cache (const OT::ItemVariationStore &varStore) const
+    OT::hb_scalar_cache_t *acquire_varStore_cache (స్థిరరాశి OT::అంశం_Variation_Store &varStore) స్థిరరాశి
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return varStore.create_cache ();
-      if (varStore_cache.cmpexch (cache, nullptr))
-	return cache;
-      else
-	goto retry;
+      స్వయంచాలక *cache = varStore_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి varStore.create_cache ();
+      ఒకవేళ (varStore_cache.cmpexch (cache, శూన్యసూచిక))
+	తిరిగి cache;
+      లేకపోతే
+	వెళ్ళు retry;
     }
-    void release_varStore_cache (OT::hb_scalar_cache_t *cache) const
+    శూన్య release_varStore_cache (OT::hb_scalar_cache_t *cache) స్థిరరాశి
     {
-      if (!cache)
-	return;
-      if (!varStore_cache.cmpexch (nullptr, cache))
-	OT::ItemVariationStore::destroy_cache (cache);
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (!varStore_cache.cmpexch (శూన్యసూచిక, cache))
+	OT::అంశం_Variation_Store::destroy_cache (cache);
     }
-    void clear_varStore_cache () const
+    శూన్య clear_varStore_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = varStore_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (varStore_cache.cmpexch (cache, nullptr))
-	OT::ItemVariationStore::destroy_cache (cache);
-      else
-	goto retry;
+      స్వయంచాలక *cache = varStore_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (varStore_cache.cmpexch (cache, శూన్యసూచిక))
+	OT::అంశం_Variation_Store::destroy_cache (cache);
+      లేకపోతే
+	వెళ్ళు retry;
     }
 
-    void clear () const
+    శూన్య clear () స్థిరరాశి
     {
       clear_origin_cache ();
       clear_varStore_cache ();
     }
   } v_origin;
 
-  struct draw_cache_t
+  నిర్మాణం draw_cache_t
   {
-    mutable hb_atomic_t<OT::hb_scalar_cache_t *> gvar_cache;
+    మార్చదగిన hb_atomic_t<OT::hb_scalar_cache_t *> gvar_cache;
 
     ~draw_cache_t ()
     {
       clear ();
     }
 
-    OT::hb_scalar_cache_t *acquire_gvar_cache (const OT::gvar_accelerator_t &gvar) const
+    OT::hb_scalar_cache_t *acquire_gvar_cache (స్థిరరాశి OT::gvar_accelerator_t &gvar) స్థిరరాశి
     {
     retry:
-      auto *cache = gvar_cache.get_acquire ();
-      if (!cache)
-	return gvar.create_cache ();
-      if (gvar_cache.cmpexch (cache, nullptr))
-	return cache;
-      else
-	goto retry;
+      స్వయంచాలక *cache = gvar_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి gvar.create_cache ();
+      ఒకవేళ (gvar_cache.cmpexch (cache, శూన్యసూచిక))
+	తిరిగి cache;
+      లేకపోతే
+	వెళ్ళు retry;
     }
-    void release_gvar_cache (OT::hb_scalar_cache_t *cache) const
+    శూన్య release_gvar_cache (OT::hb_scalar_cache_t *cache) స్థిరరాశి
     {
-      if (!cache)
-	return;
-      if (!gvar_cache.cmpexch (nullptr, cache))
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (!gvar_cache.cmpexch (శూన్యసూచిక, cache))
 	OT::gvar_accelerator_t::destroy_cache (cache);
     }
-    void clear_gvar_cache () const
+    శూన్య clear_gvar_cache () స్థిరరాశి
     {
     retry:
-      auto *cache = gvar_cache.get_acquire ();
-      if (!cache)
-	return;
-      if (gvar_cache.cmpexch (cache, nullptr))
+      స్వయంచాలక *cache = gvar_cache.get_acquire ();
+      ఒకవేళ (!cache)
+	తిరిగి;
+      ఒకవేళ (gvar_cache.cmpexch (cache, శూన్యసూచిక))
 	OT::gvar_accelerator_t::destroy_cache (cache);
-      else
-	goto retry;
+      లేకపోతే
+	వెళ్ళు retry;
     }
 
-    void clear () const
+    శూన్య clear () స్థిరరాశి
     {
       clear_gvar_cache ();
     }
   } draw;
 
-  void check_serial (hb_font_t *font) const
+  శూన్య check_serial (hb_font_t *font) స్థిరరాశి
   {
-    int font_serial = font->serial.get_acquire ();
-    if (cached_serial.get_acquire () != font_serial)
+    పూర్ణాంకం font_serial = font->serial.get_acquire ();
+    ఒకవేళ (cached_serial.get_acquire () != font_serial)
     {
       /* These caches are dependent on scale and synthetic settings.
        * Any change to the font invalidates them. */
       v_origin.clear ();
 
-      cached_serial.set_release (font_serial);
+      cached_serial.సమితి_release (font_serial);
     }
 
-    int font_serial_coords = font->serial_coords.get_acquire ();
-    if (cached_coords_serial.get_acquire () != font_serial_coords)
+    పూర్ణాంకం font_serial_coords = font->serial_coords.get_acquire ();
+    ఒకవేళ (cached_coords_serial.get_acquire () != font_serial_coords)
     {
       /* These caches are independent of scale or synthetic settings.
        * Just variation changes will invalidate them. */
@@ -308,352 +308,352 @@ struct hb_ot_font_t
       v.clear ();
       draw.clear ();
 
-      cached_coords_serial.set_release (font_serial_coords);
+      cached_coords_serial.సమితి_release (font_serial_coords);
     }
   }
 };
 
-static hb_ot_font_t *
+స్థిర hb_ot_font_t *
 _hb_ot_font_create (hb_font_t *font)
 {
-  hb_ot_font_t *ot_font = (hb_ot_font_t *) hb_calloc (1, sizeof (hb_ot_font_t));
-  if (unlikely (!ot_font))
-    return nullptr;
+  hb_ot_font_t *ot_font = (hb_ot_font_t *) hb_calloc (1, పరిమాణం (hb_ot_font_t));
+  ఒకవేళ (unlikely (!ot_font))
+    తిరిగి శూన్యసూచిక;
 
-  ot_font->ot_face = &font->face->table;
+  ot_font->ot_face = &font->face->పట్టిక;
 
-  return ot_font;
+  తిరిగి ot_font;
 }
 
-static void
-_hb_ot_font_destroy (void *font_data)
+స్థిర శూన్య
+_hb_ot_font_destroy (శూన్య *font_దత్తాంశం)
 {
-  hb_ot_font_t *ot_font = (hb_ot_font_t *) font_data;
+  hb_ot_font_t *ot_font = (hb_ot_font_t *) font_దత్తాంశం;
 
   ot_font->~hb_ot_font_t ();
 
   hb_free (ot_font);
 }
 
-static hb_bool_t
-hb_ot_get_nominal_glyph (hb_font_t *font HB_UNUSED,
-			 void *font_data,
+స్థిర hb_bool_t
+hb_ot_get_nominal_glyph (hb_font_t *font HB_వాడని,
+			 శూన్య *font_దత్తాంశం,
 			 hb_codepoint_t unicode,
 			 hb_codepoint_t *glyph,
-			 void *user_data HB_UNUSED)
+			 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_nominal_glyph (unicode, glyph);
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
+  తిరిగి ot_face->cmap->get_nominal_glyph (unicode, glyph);
 }
 
-static unsigned int
-hb_ot_get_nominal_glyphs (hb_font_t *font HB_UNUSED,
-			  void *font_data,
-			  unsigned int count,
-			  const hb_codepoint_t *first_unicode,
-			  unsigned int unicode_stride,
-			  hb_codepoint_t *first_glyph,
-			  unsigned int glyph_stride,
-			  void *user_data HB_UNUSED)
+స్థిర గుర్తులేని పూర్ణాంకం
+hb_ot_get_nominal_glyphs (hb_font_t *font HB_వాడని,
+			  శూన్య *font_దత్తాంశం,
+			  గుర్తులేని పూర్ణాంకం లెక్క,
+			  స్థిరరాశి hb_codepoint_t *మొదటి_unicode,
+			  గుర్తులేని పూర్ణాంకం unicode_stride,
+			  hb_codepoint_t *మొదటి_glyph,
+			  గుర్తులేని పూర్ణాంకం glyph_stride,
+			  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_nominal_glyphs (count,
-					    first_unicode, unicode_stride,
-					    first_glyph, glyph_stride);
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
+  తిరిగి ot_face->cmap->get_nominal_glyphs (లెక్క,
+					    మొదటి_unicode, unicode_stride,
+					    మొదటి_glyph, glyph_stride);
 }
 
-static hb_bool_t
-hb_ot_get_variation_glyph (hb_font_t *font HB_UNUSED,
-			   void *font_data,
+స్థిర hb_bool_t
+hb_ot_get_variation_glyph (hb_font_t *font HB_వాడని,
+			   శూన్య *font_దత్తాంశం,
 			   hb_codepoint_t unicode,
 			   hb_codepoint_t variation_selector,
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  return ot_face->cmap->get_variation_glyph (unicode,
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
+  తిరిగి ot_face->cmap->get_variation_glyph (unicode,
                                              variation_selector, glyph);
 }
 
-static void
-hb_ot_get_glyph_h_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
-			    const hb_codepoint_t *first_glyph,
-			    unsigned glyph_stride,
-			    hb_position_t *first_advance,
-			    unsigned advance_stride,
-			    void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_ot_get_glyph_h_advances (hb_font_t* font, శూన్య* font_దత్తాంశం,
+			    గుర్తులేని లెక్క,
+			    స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			    గుర్తులేని glyph_stride,
+			    hb_position_t *మొదటి_advance,
+			    గుర్తులేని advance_stride,
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
   // Duplicated in v_advances. Ugly. Keep in sync'ish.
 
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  const OT::hmtx_accelerator_t &hmtx = *ot_face->hmtx;
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
+  స్థిరరాశి OT::hmtx_accelerator_t &hmtx = *ot_face->hmtx;
 
-  if (unlikely (!hmtx.has_data ()))
+  ఒకవేళ (unlikely (!hmtx.has_దత్తాంశం ()))
   {
     hb_position_t advance = font->face->get_upem () / 2;
     advance = font->em_scale_x (advance);
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      *first_advance = advance;
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = advance;
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
-    return;
+    తిరిగి;
   }
 
-#ifndef HB_NO_VAR
-  if (!font->has_nonzero_coords)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (!font->has_nonzero_coords)
   {
   fallback:
-#else
+#లేకపోతే
   {
-#endif
+#అయితే_ముగింపు
     // Just plain htmx data. No need to cache.
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      *first_advance = font->em_scale_x (hmtx.get_advance_without_var_unscaled (*first_glyph));
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->em_scale_x (hmtx.get_advance_without_var_unscaled (*మొదటి_glyph));
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
-    return;
+    తిరిగి;
   }
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
   /* has_nonzero_coords. */
 
   ot_font->check_serial (font);
   hb_ot_font_advance_cache_t *advance_cache = ot_font->h.acquire_advance_cache ();
-  if (!advance_cache)
+  ఒకవేళ (!advance_cache)
   {
     // malloc failure. Just use the fallback non-variable path.
-    goto fallback;
+    వెళ్ళు fallback;
   }
 
   /* If HVAR is present, use it.*/
-  const OT::HVAR &HVAR = *hmtx.var_table;
-  if (HVAR.has_data ())
+  స్థిరరాశి OT::HVAR &HVAR = *hmtx.var_పట్టిక;
+  ఒకవేళ (HVAR.has_దత్తాంశం ())
   {
-    const OT::ItemVariationStore &varStore = &HVAR + HVAR.varStore;
+    స్థిరరాశి OT::అంశం_Variation_Store &varStore = &HVAR + HVAR.varStore;
     OT::hb_scalar_cache_t *varStore_cache = ot_font->h.acquire_varStore_cache (varStore);
 
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      గుర్తులేని cv;
+      ఒకవేళ (advance_cache->get (*మొదటి_glyph, &cv))
 	v = cv;
-      else
+      లేకపోతే
       {
-        v = hmtx.get_advance_with_var_unscaled (*first_glyph, font, varStore_cache);
-	advance_cache->set (*first_glyph, v);
+        v = hmtx.get_advance_with_var_unscaled (*మొదటి_glyph, font, varStore_cache);
+	advance_cache->సమితి (*మొదటి_glyph, v);
       }
-      *first_advance = font->em_scale_x (v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->em_scale_x (v);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
 
     ot_font->h.release_varStore_cache (varStore_cache);
     ot_font->h.release_advance_cache (advance_cache);
-    return;
+    తిరిగి;
   }
 
-  const auto &gvar = *ot_face->gvar;
-  if (gvar.has_data ())
+  స్థిరరాశి స్వయంచాలక &gvar = *ot_face->gvar;
+  ఒకవేళ (gvar.has_దత్తాంశం ())
   {
-    const auto &glyf = *ot_face->glyf;
-    auto *scratch = glyf.acquire_scratch ();
-    if (unlikely (!scratch))
+    స్థిరరాశి స్వయంచాలక &glyf = *ot_face->glyf;
+    స్వయంచాలక *scratch = glyf.acquire_scratch ();
+    ఒకవేళ (unlikely (!scratch))
     {
       ot_font->h.release_advance_cache (advance_cache);
-      goto fallback;
+      వెళ్ళు fallback;
     }
     OT::hb_scalar_cache_t *gvar_cache = ot_font->draw.acquire_gvar_cache (gvar);
 
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      గుర్తులేని cv;
+      ఒకవేళ (advance_cache->get (*మొదటి_glyph, &cv))
 	v = cv;
-      else
+      లేకపోతే
       {
-        v = glyf.get_advance_with_var_unscaled (*first_glyph, font, false, *scratch, gvar_cache);
-	advance_cache->set (*first_glyph, v);
+        v = glyf.get_advance_with_var_unscaled (*మొదటి_glyph, font, అబద్ధం, *scratch, gvar_cache);
+	advance_cache->సమితి (*మొదటి_glyph, v);
       }
-      *first_advance = font->em_scale_x (v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->em_scale_x (v);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
 
     ot_font->draw.release_gvar_cache (gvar_cache);
     glyf.release_scratch (scratch);
     ot_font->h.release_advance_cache (advance_cache);
-    return;
+    తిరిగి;
   }
 
   ot_font->h.release_advance_cache (advance_cache);
   // No HVAR or GVAR.  Just use the fallback non-variable path.
-  goto fallback;
-#endif
+  వెళ్ళు fallback;
+#అయితే_ముగింపు
 }
 
-#ifndef HB_NO_VERTICAL
-static void
-hb_ot_get_glyph_v_advances (hb_font_t* font, void* font_data,
-			    unsigned count,
-			    const hb_codepoint_t *first_glyph,
-			    unsigned glyph_stride,
-			    hb_position_t *first_advance,
-			    unsigned advance_stride,
-			    void *user_data HB_UNUSED)
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+స్థిర శూన్య
+hb_ot_get_glyph_v_advances (hb_font_t* font, శూన్య* font_దత్తాంశం,
+			    గుర్తులేని లెక్క,
+			    స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			    గుర్తులేని glyph_stride,
+			    hb_position_t *మొదటి_advance,
+			    గుర్తులేని advance_stride,
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
   // Duplicated from h_advances. Ugly. Keep in sync'ish.
 
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
-  const OT::vmtx_accelerator_t &vmtx = *ot_face->vmtx;
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
+  స్థిరరాశి OT::vmtx_accelerator_t &vmtx = *ot_face->vmtx;
 
-  if (unlikely (!vmtx.has_data ()))
+  ఒకవేళ (unlikely (!vmtx.has_దత్తాంశం ()))
   {
     hb_font_extents_t font_extents;
     font->get_h_extents_with_fallback (&font_extents);
     hb_position_t advance = font_extents.descender - font_extents.ascender;
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      *first_advance = advance;
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = advance;
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
-    return;
+    తిరిగి;
   }
 
-#ifndef HB_NO_VAR
-  if (!font->has_nonzero_coords)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (!font->has_nonzero_coords)
   {
   fallback:
-#else
+#లేకపోతే
   {
-#endif
+#అయితే_ముగింపు
     // Just plain vtmx data. No need to cache.
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      *first_advance = font->em_scale_y (- (int) vmtx.get_advance_without_var_unscaled (*first_glyph));
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->em_scale_y (- (పూర్ణాంకం) vmtx.get_advance_without_var_unscaled (*మొదటి_glyph));
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
-    return;
+    తిరిగి;
   }
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
   /* has_nonzero_coords. */
 
   ot_font->check_serial (font);
   hb_ot_font_advance_cache_t *advance_cache = ot_font->v.acquire_advance_cache ();
-  if (!advance_cache)
+  ఒకవేళ (!advance_cache)
   {
     // malloc failure. Just use the fallback non-variable path.
-    goto fallback;
+    వెళ్ళు fallback;
   }
 
   /* If VVAR is present, use it.*/
-  const OT::VVAR &VVAR = *vmtx.var_table;
-  if (VVAR.has_data ())
+  స్థిరరాశి OT::VVAR &VVAR = *vmtx.var_పట్టిక;
+  ఒకవేళ (VVAR.has_దత్తాంశం ())
   {
-    const OT::ItemVariationStore &varStore = &VVAR + VVAR.varStore;
+    స్థిరరాశి OT::అంశం_Variation_Store &varStore = &VVAR + VVAR.varStore;
     OT::hb_scalar_cache_t *varStore_cache = ot_font->v.acquire_varStore_cache (varStore);
 
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      గుర్తులేని cv;
+      ఒకవేళ (advance_cache->get (*మొదటి_glyph, &cv))
 	v = cv;
-      else
+      లేకపోతే
       {
-        v = vmtx.get_advance_with_var_unscaled (*first_glyph, font, varStore_cache);
-	advance_cache->set (*first_glyph, v);
+        v = vmtx.get_advance_with_var_unscaled (*మొదటి_glyph, font, varStore_cache);
+	advance_cache->సమితి (*మొదటి_glyph, v);
       }
-      *first_advance = font->em_scale_y (- (int) v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->em_scale_y (- (పూర్ణాంకం) v);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
 
     ot_font->v.release_varStore_cache (varStore_cache);
     ot_font->v.release_advance_cache (advance_cache);
-    return;
+    తిరిగి;
   }
 
-  const auto &gvar = *ot_face->gvar;
-  if (gvar.has_data ())
+  స్థిరరాశి స్వయంచాలక &gvar = *ot_face->gvar;
+  ఒకవేళ (gvar.has_దత్తాంశం ())
   {
-    const auto &glyf = *ot_face->glyf;
-    auto *scratch = glyf.acquire_scratch ();
-    if (unlikely (!scratch))
+    స్థిరరాశి స్వయంచాలక &glyf = *ot_face->glyf;
+    స్వయంచాలక *scratch = glyf.acquire_scratch ();
+    ఒకవేళ (unlikely (!scratch))
     {
       ot_font->v.release_advance_cache (advance_cache);
-      goto fallback;
+      వెళ్ళు fallback;
     }
     OT::hb_scalar_cache_t *gvar_cache = ot_font->draw.acquire_gvar_cache (gvar);
 
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       hb_position_t v;
-      unsigned cv;
-      if (advance_cache->get (*first_glyph, &cv))
+      గుర్తులేని cv;
+      ఒకవేళ (advance_cache->get (*మొదటి_glyph, &cv))
 	v = cv;
-      else
+      లేకపోతే
       {
-        v = glyf.get_advance_with_var_unscaled (*first_glyph, font, true, *scratch, gvar_cache);
-	advance_cache->set (*first_glyph, v);
+        v = glyf.get_advance_with_var_unscaled (*మొదటి_glyph, font, నిజం, *scratch, gvar_cache);
+	advance_cache->సమితి (*మొదటి_glyph, v);
       }
-      *first_advance = font->em_scale_y (- (int) v);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->em_scale_y (- (పూర్ణాంకం) v);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
 
     ot_font->draw.release_gvar_cache (gvar_cache);
     glyf.release_scratch (scratch);
     ot_font->v.release_advance_cache (advance_cache);
-    return;
+    తిరిగి;
   }
 
   ot_font->v.release_advance_cache (advance_cache);
   // No VVAR or GVAR.  Just use the fallback non-variable path.
-  goto fallback;
-#endif
+  వెళ్ళు fallback;
+#అయితే_ముగింపు
 }
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_VERTICAL
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
 HB_HOT
-static hb_bool_t
+స్థిర hb_bool_t
 hb_ot_get_glyph_v_origins (hb_font_t *font,
-			   void *font_data,
-			   unsigned int count,
-			   const hb_codepoint_t *first_glyph,
-			   unsigned glyph_stride,
-			   hb_position_t *first_x,
-			   unsigned x_stride,
-			   hb_position_t *first_y,
-			   unsigned y_stride,
-			   void *user_data HB_UNUSED)
+			   శూన్య *font_దత్తాంశం,
+			   గుర్తులేని పూర్ణాంకం లెక్క,
+			   స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			   గుర్తులేని glyph_stride,
+			   hb_position_t *మొదటి_x,
+			   గుర్తులేని x_stride,
+			   hb_position_t *మొదటి_y,
+			   గుర్తులేని y_stride,
+			   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
 
   ot_font->check_serial (font);
 
   /* First, set all the x values to half the advance width. */
-  font->get_glyph_h_advances (count,
-			      first_glyph, glyph_stride,
-			      first_x, x_stride);
-  for (unsigned i = 0; i < count; i++)
+  font->get_glyph_h_advances (లెక్క,
+			      మొదటి_glyph, glyph_stride,
+			      మొదటి_x, x_stride);
+  కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
   {
-    *first_x /= 2;
-    first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
+    *మొదటి_x /= 2;
+    మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
   }
 
   /* The vertical origin business is messy...
@@ -664,355 +664,355 @@ hb_ot_get_glyph_v_origins (hb_font_t *font,
   hb_ot_font_origin_cache_t *origin_cache = ot_font->v_origin.acquire_origin_cache ();
 
   /* If there is VORG, always use it. It uses VVAR for variations if necessary. */
-  const OT::VORG &VORG = *ot_face->VORG;
-  if (origin_cache && VORG.has_data ())
+  స్థిరరాశి OT::VORG &VORG = *ot_face->VORG;
+  ఒకవేళ (origin_cache && VORG.has_దత్తాంశం ())
   {
-#ifndef HB_NO_VAR
-    if (!font->has_nonzero_coords)
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (!font->has_nonzero_coords)
+#అయితే_ముగింపు
     {
-      for (unsigned i = 0; i < count; i++)
+      కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       {
 	hb_position_t origin;
-	unsigned cv;
-	if (origin_cache->get (*first_glyph, &cv))
+	గుర్తులేని cv;
+	ఒకవేళ (origin_cache->get (*మొదటి_glyph, &cv))
 	  origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-	else
+	లేకపోతే
 	{
-	  origin = font->em_scalef_y (VORG.get_y_origin (*first_glyph));
-	  origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	  origin = font->em_scalef_y (VORG.get_y_origin (*మొదటి_glyph));
+	  origin_cache->సమితి (*మొదటి_glyph, font->y_scale < 0 ? -origin : origin);
 	}
 
-	*first_y = origin;
+	*మొదటి_y = origin;
 
-	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-	first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+	మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+	మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
       }
     }
-#ifndef HB_NO_VAR
-    else
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    లేకపోతే
     {
-      const OT::VVAR &VVAR = *ot_face->vmtx->var_table;
-      const auto &varStore = &VVAR + VVAR.varStore;
-      auto *varStore_cache = ot_font->v_origin.acquire_varStore_cache (varStore);
-      for (unsigned i = 0; i < count; i++)
+      స్థిరరాశి OT::VVAR &VVAR = *ot_face->vmtx->var_పట్టిక;
+      స్థిరరాశి స్వయంచాలక &varStore = &VVAR + VVAR.varStore;
+      స్వయంచాలక *varStore_cache = ot_font->v_origin.acquire_varStore_cache (varStore);
+      కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       {
 	hb_position_t origin;
-	unsigned cv;
-	if (origin_cache->get (*first_glyph, &cv))
+	గుర్తులేని cv;
+	ఒకవేళ (origin_cache->get (*మొదటి_glyph, &cv))
 	  origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-	else
+	లేకపోతే
 	{
-	  origin = font->em_scalef_y (VORG.get_y_origin (*first_glyph) +
-				      VVAR.get_vorg_delta_unscaled (*first_glyph,
-								    font->coords, font->num_coords,
+	  origin = font->em_scalef_y (VORG.get_y_origin (*మొదటి_glyph) +
+				      VVAR.get_vorg_delta_unscaled (*మొదటి_glyph,
+								    font->coords, font->అంకె_coords,
 								    varStore_cache));
-	  origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	  origin_cache->సమితి (*మొదటి_glyph, font->y_scale < 0 ? -origin : origin);
 	}
 
-	*first_y = origin;
+	*మొదటి_y = origin;
 
-	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-	first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+	మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+	మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
       }
       ot_font->v_origin.release_varStore_cache (varStore_cache);
     }
-#endif
+#అయితే_ముగింపు
     ot_font->v_origin.release_origin_cache (origin_cache);
-    return true;
+    తిరిగి నిజం;
   }
 
   /* If and only if `vmtx` is present and it's a `glyf` font,
    * we use the top phantom point, deduced from vmtx,glyf[,gvar]. */
-  const auto &vmtx = *ot_face->vmtx;
-  const auto &glyf = *ot_face->glyf;
-  if (origin_cache && vmtx.has_data() && glyf.has_data ())
+  స్థిరరాశి స్వయంచాలక &vmtx = *ot_face->vmtx;
+  స్థిరరాశి స్వయంచాలక &glyf = *ot_face->glyf;
+  ఒకవేళ (origin_cache && vmtx.has_దత్తాంశం() && glyf.has_దత్తాంశం ())
   {
-    auto *scratch = glyf.acquire_scratch ();
-    if (unlikely (!scratch))
+    స్వయంచాలక *scratch = glyf.acquire_scratch ();
+    ఒకవేళ (unlikely (!scratch))
     {
       ot_font->v_origin.release_origin_cache (origin_cache);
-      return false;
+      తిరిగి అబద్ధం;
     }
-    OT::hb_scalar_cache_t *gvar_cache = nullptr;
-#ifndef HB_NO_VAR
+    OT::hb_scalar_cache_t *gvar_cache = శూన్యసూచిక;
+#నిర్వచితం_కాకపోతే HB_NO_VAR
     gvar_cache = font->has_nonzero_coords ?
 					ot_font->draw.acquire_gvar_cache (*ot_face->gvar) :
-					nullptr;
-#endif
+					శూన్యసూచిక;
+#అయితే_ముగింపు
 
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
       hb_position_t origin;
-      unsigned cv;
-      if (origin_cache->get (*first_glyph, &cv))
+      గుర్తులేని cv;
+      ఒకవేళ (origin_cache->get (*మొదటి_glyph, &cv))
 	origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-      else
+      లేకపోతే
       {
-	origin = font->em_scalef_y (glyf.get_v_origin_with_var_unscaled (*first_glyph, font, *scratch, gvar_cache));
-	origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	origin = font->em_scalef_y (glyf.get_v_origin_with_var_unscaled (*మొదటి_glyph, font, *scratch, gvar_cache));
+	origin_cache->సమితి (*మొదటి_glyph, font->y_scale < 0 ? -origin : origin);
       }
 
-      *first_y = origin;
+      *మొదటి_y = origin;
 
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
     }
 
-#ifndef HB_NO_VAR
-    if (gvar_cache)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (gvar_cache)
       ot_font->draw.release_gvar_cache (gvar_cache);
-#endif
+#అయితే_ముగింపు
     glyf.release_scratch (scratch);
     ot_font->v_origin.release_origin_cache (origin_cache);
-    return true;
+    తిరిగి నిజం;
   }
 
   /* Otherwise, use glyph extents to center the glyph vertically.
    * If getting glyph extents failed, just use the font ascender. */
-  if (origin_cache && font->has_glyph_extents_func ())
+  ఒకవేళ (origin_cache && font->has_glyph_extents_func ())
   {
     hb_font_extents_t font_extents;
     font->get_h_extents_with_fallback (&font_extents);
     hb_position_t font_advance = font_extents.ascender - font_extents.descender;
 
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
       hb_position_t origin;
-      unsigned cv;
+      గుర్తులేని cv;
 
-      if (origin_cache->get (*first_glyph, &cv))
+      ఒకవేళ (origin_cache->get (*మొదటి_glyph, &cv))
 	origin = font->y_scale < 0 ? -static_cast<hb_position_t>(cv) : static_cast<hb_position_t>(cv);
-      else
+      లేకపోతే
       {
 	hb_glyph_extents_t extents = {0};
-	if (likely (font->get_glyph_extents (*first_glyph, &extents)))
-	  origin = hb_clamp_to<hb_position_t> ((int64_t) extents.y_bearing +
-					 (((int64_t) font_advance + extents.height) >> 1));
-	else
+	ఒకవేళ (likely (font->get_glyph_extents (*మొదటి_glyph, &extents)))
+	  origin = hb_clamp_గమ్యం<hb_position_t> ((int64_t) extents.y_bearing +
+					 (((int64_t) font_advance + extents.ఎత్తు) >> 1));
+	లేకపోతే
 	  origin = font_extents.ascender;
 
-	origin_cache->set (*first_glyph, font->y_scale < 0 ? -origin : origin);
+	origin_cache->సమితి (*మొదటి_glyph, font->y_scale < 0 ? -origin : origin);
       }
 
-      *first_y = origin;
+      *మొదటి_y = origin;
 
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
     }
   }
 
   ot_font->v_origin.release_origin_cache (origin_cache);
-  return true;
+  తిరిగి నిజం;
 }
-#endif
+#అయితే_ముగింపు
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_ot_get_glyph_extents (hb_font_t *font,
-			 void *font_data,
+			 శూన్య *font_దత్తాంశం,
 			 hb_codepoint_t glyph,
 			 hb_glyph_extents_t *extents,
-			 void *user_data HB_UNUSED)
+			 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
 
-#if !defined(HB_NO_OT_FONT_BITMAP) && !defined(HB_NO_COLOR)
-  if (ot_face->sbix->get_extents (font, glyph, extents)) return true;
-  if (ot_face->CBDT->get_extents (font, glyph, extents)) return true;
-#endif
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_PAINT)
-  if (ot_face->COLR->get_extents (font, glyph, extents)) return true;
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  if (ot_face->VARC->get_extents (font, glyph, extents)) return true;
-#endif
-  if (ot_face->glyf->get_extents (font, glyph, extents)) return true;
-#ifndef HB_NO_OT_FONT_CFF
-  if (ot_face->cff2->get_extents (font, glyph, extents)) return true;
-  if (ot_face->cff1->get_extents (font, glyph, extents)) return true;
-#endif
+#ఒకవేళ !defined(HB_NO_OT_FONT_BITMAP) && !defined(HB_NO_COLOR)
+  ఒకవేళ (ot_face->sbix->get_extents (font, glyph, extents)) తిరిగి నిజం;
+  ఒకవేళ (ot_face->CBDT->get_extents (font, glyph, extents)) తిరిగి నిజం;
+#అయితే_ముగింపు
+#ఒకవేళ !defined(HB_NO_COLOR) && !defined(HB_NO_PAINT)
+  ఒకవేళ (ot_face->COLR->get_extents (font, glyph, extents)) తిరిగి నిజం;
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
+  ఒకవేళ (ot_face->VARC->get_extents (font, glyph, extents)) తిరిగి నిజం;
+#అయితే_ముగింపు
+  ఒకవేళ (ot_face->glyf->get_extents (font, glyph, extents)) తిరిగి నిజం;
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_CFF
+  ఒకవేళ (ot_face->cff2->get_extents (font, glyph, extents)) తిరిగి నిజం;
+  ఒకవేళ (ot_face->cff1->get_extents (font, glyph, extents)) తిరిగి నిజం;
+#అయితే_ముగింపు
 
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
-static hb_bool_t
-hb_ot_get_glyph_name (hb_font_t *font HB_UNUSED,
-		      void *font_data,
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_GLYPH_పేర్లు
+స్థిర hb_bool_t
+hb_ot_get_glyph_name (hb_font_t *font HB_వాడని,
+		      శూన్య *font_దత్తాంశం,
 		      hb_codepoint_t glyph,
-		      char *name, unsigned int size,
-		      void *user_data HB_UNUSED)
+		      అక్షరం *name, గుర్తులేని పూర్ణాంకం కొలత,
+		      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
 
-  if (ot_face->post->get_glyph_name (glyph, name, size)) return true;
-#ifndef HB_NO_OT_FONT_CFF
-  if (ot_face->cff1->get_glyph_name (glyph, name, size)) return true;
-#endif
-  return false;
+  ఒకవేళ (ot_face->post->get_glyph_name (glyph, name, కొలత)) తిరిగి నిజం;
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_CFF
+  ఒకవేళ (ot_face->cff1->get_glyph_name (glyph, name, కొలత)) తిరిగి నిజం;
+#అయితే_ముగింపు
+  తిరిగి అబద్ధం;
 }
-static hb_bool_t
-hb_ot_get_glyph_from_name (hb_font_t *font HB_UNUSED,
-			   void *font_data,
-			   const char *name, int len,
+స్థిర hb_bool_t
+hb_ot_get_glyph_from_name (hb_font_t *font HB_వాడని,
+			   శూన్య *font_దత్తాంశం,
+			   స్థిరరాశి అక్షరం *name, పూర్ణాంకం len,
 			   hb_codepoint_t *glyph,
-			   void *user_data HB_UNUSED)
+			   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  const hb_ot_face_t *ot_face = ot_font->ot_face;
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  స్థిరరాశి hb_ot_face_t *ot_face = ot_font->ot_face;
 
-  if (ot_face->post->get_glyph_from_name (name, len, glyph)) return true;
-#ifndef HB_NO_OT_FONT_CFF
-    if (ot_face->cff1->get_glyph_from_name (name, len, glyph)) return true;
-#endif
-  return false;
+  ఒకవేళ (ot_face->post->get_glyph_from_name (name, len, glyph)) తిరిగి నిజం;
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_CFF
+    ఒకవేళ (ot_face->cff1->get_glyph_from_name (name, len, glyph)) తిరిగి నిజం;
+#అయితే_ముగింపు
+  తిరిగి అబద్ధం;
 }
-#endif
+#అయితే_ముగింపు
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_ot_get_font_h_extents (hb_font_t *font,
-			  void *font_data HB_UNUSED,
+			  శూన్య *font_దత్తాంశం HB_వాడని,
 			  hb_font_extents_t *metrics,
-			  void *user_data HB_UNUSED)
+			  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  return _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER, &metrics->ascender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER, &metrics->descender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP, &metrics->line_gap);
+  తిరిగి _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ట్యాగ్_HORIZONTAL_ASCENDER, &metrics->ascender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ట్యాగ్_HORIZONTAL_DESCENDER, &metrics->descender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ట్యాగ్_HORIZONTAL_పంక్తి_GAP, &metrics->పంక్తి_gap);
 }
 
-#ifndef HB_NO_VERTICAL
-static hb_bool_t
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+స్థిర hb_bool_t
 hb_ot_get_font_v_extents (hb_font_t *font,
-			  void *font_data HB_UNUSED,
+			  శూన్య *font_దత్తాంశం HB_వాడని,
 			  hb_font_extents_t *metrics,
-			  void *user_data HB_UNUSED)
+			  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  return _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_ASCENDER, &metrics->ascender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_DESCENDER, &metrics->descender) &&
-	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_TAG_VERTICAL_LINE_GAP, &metrics->line_gap);
+  తిరిగి _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ట్యాగ్_VERTICAL_ASCENDER, &metrics->ascender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ట్యాగ్_VERTICAL_DESCENDER, &metrics->descender) &&
+	 _hb_ot_metrics_get_position_common (font, HB_OT_METRICS_ట్యాగ్_VERTICAL_పంక్తి_GAP, &metrics->పంక్తి_gap);
 }
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_DRAW
-static hb_bool_t
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
+స్థిర hb_bool_t
 hb_ot_draw_glyph_or_fail (hb_font_t *font,
-			  void *font_data HB_UNUSED,
+			  శూన్య *font_దత్తాంశం HB_వాడని,
 			  hb_codepoint_t glyph,
-			  hb_draw_funcs_t *draw_funcs, void *draw_data,
-			  void *user_data)
+			  hb_draw_funcs_t *draw_funcs, శూన్య *draw_దత్తాంశం,
+			  శూన్య *user_దత్తాంశం)
 {
-  const hb_ot_font_t *ot_font = (const hb_ot_font_t *) font_data;
-  hb_draw_session_t draw_session {draw_funcs, draw_data};
+  స్థిరరాశి hb_ot_font_t *ot_font = (స్థిరరాశి hb_ot_font_t *) font_దత్తాంశం;
+  hb_draw_session_t draw_session {draw_funcs, draw_దత్తాంశం};
 
-  OT::hb_scalar_cache_t *gvar_cache = nullptr;
-#ifndef HB_NO_VAR
-  if (font->num_coords)
+  OT::hb_scalar_cache_t *gvar_cache = శూన్యసూచిక;
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (font->అంకె_coords)
   {
     ot_font->check_serial (font);
     gvar_cache = ot_font->draw.acquire_gvar_cache (*ot_font->ot_face->gvar);
   }
-#endif
+#అయితే_ముగింపు
   HB_SCOPE_GUARD (ot_font->draw.release_gvar_cache (gvar_cache));
 
-#ifndef HB_NO_VAR_COMPOSITES
-  if (font->face->table.VARC->get_path (font, glyph, draw_session)) return true;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
+  ఒకవేళ (font->face->పట్టిక.VARC->get_మార్గం (font, glyph, draw_session)) తిరిగి నిజం;
+#అయితే_ముగింపు
   // Keep the following in synch with VARC::get_path_at()
-  if (font->face->table.glyf->get_path (font, glyph, draw_session, gvar_cache,
-				       &draw_session.get_budget ())) return true;
+  ఒకవేళ (font->face->పట్టిక.glyf->get_మార్గం (font, glyph, draw_session, gvar_cache,
+				       &draw_session.get_budget ())) తిరిగి నిజం;
 
-#ifndef HB_NO_CFF
-  if (font->face->table.cff2->get_path (font, glyph, draw_session,
-				       &draw_session.get_budget ())) return true;
-  if (font->face->table.cff1->get_path (font, glyph, draw_session,
-				       &draw_session.get_budget ())) return true;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_CFF
+  ఒకవేళ (font->face->పట్టిక.cff2->get_మార్గం (font, glyph, draw_session,
+				       &draw_session.get_budget ())) తిరిగి నిజం;
+  ఒకవేళ (font->face->పట్టిక.cff1->get_మార్గం (font, glyph, draw_session,
+				       &draw_session.get_budget ())) తిరిగి నిజం;
+#అయితే_ముగింపు
 
-  return false;
+  తిరిగి అబద్ధం;
 }
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_PAINT
-static hb_bool_t
+#నిర్వచితం_కాకపోతే HB_NO_PAINT
+స్థిర hb_bool_t
 hb_ot_paint_glyph_or_fail (hb_font_t *font,
-			   void *font_data,
+			   శూన్య *font_దత్తాంశం,
 			   hb_codepoint_t glyph,
-			   hb_paint_funcs_t *paint_funcs, void *paint_data,
-			   unsigned int palette,
+			   hb_paint_funcs_t *paint_funcs, శూన్య *paint_దత్తాంశం,
+			   గుర్తులేని పూర్ణాంకం palette,
 			   hb_color_t foreground,
-			   void *user_data)
+			   శూన్య *user_దత్తాంశం)
 {
-#ifndef HB_NO_COLOR
-  if (font->face->table.COLR->paint_glyph (font, glyph, paint_funcs, paint_data, palette, foreground)) return true;
-#ifndef HB_NO_SVG
-  if (font->face->table.SVG->paint_glyph (font, glyph, paint_funcs, paint_data)) return true;
-#endif
-#ifndef HB_NO_OT_FONT_BITMAP
-  if (font->face->table.CBDT->paint_glyph (font, glyph, paint_funcs, paint_data)) return true;
-  if (font->face->table.sbix->paint_glyph (font, glyph, paint_funcs, paint_data)) return true;
-#endif
-#endif
-  return false;
+#నిర్వచితం_కాకపోతే HB_NO_COLOR
+  ఒకవేళ (font->face->పట్టిక.COLR->paint_glyph (font, glyph, paint_funcs, paint_దత్తాంశం, palette, foreground)) తిరిగి నిజం;
+#నిర్వచితం_కాకపోతే HB_NO_SVG
+  ఒకవేళ (font->face->పట్టిక.SVG->paint_glyph (font, glyph, paint_funcs, paint_దత్తాంశం)) తిరిగి నిజం;
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_BITMAP
+  ఒకవేళ (font->face->పట్టిక.CBDT->paint_glyph (font, glyph, paint_funcs, paint_దత్తాంశం)) తిరిగి నిజం;
+  ఒకవేళ (font->face->పట్టిక.sbix->paint_glyph (font, glyph, paint_funcs, paint_దత్తాంశం)) తిరిగి నిజం;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+  తిరిగి అబద్ధం;
 }
-#endif
+#అయితే_ముగింపు
 
-static inline void free_static_ot_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_ot_funcs ();
 
-static struct hb_ot_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ot_font_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_ot_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_ot_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  స్థిర hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyph_func (funcs, hb_ot_get_nominal_glyph, nullptr, nullptr);
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_ot_get_nominal_glyphs, nullptr, nullptr);
-    hb_font_funcs_set_variation_glyph_func (funcs, hb_ot_get_variation_glyph, nullptr, nullptr);
+    hb_font_funcs_సమితి_nominal_glyph_func (funcs, hb_ot_get_nominal_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_nominal_glyphs_func (funcs, hb_ot_get_nominal_glyphs, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_variation_glyph_func (funcs, hb_ot_get_variation_glyph, శూన్యసూచిక, శూన్యసూచిక);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_ot_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_ot_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_సమితి_font_h_extents_func (funcs, hb_ot_get_font_h_extents, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_h_advances_func (funcs, hb_ot_get_glyph_h_advances, శూన్యసూచిక, శూన్యసూచిక);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_font_v_extents_func (funcs, hb_ot_get_font_v_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_advances_func (funcs, hb_ot_get_glyph_v_advances, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origins_func (funcs, hb_ot_get_glyph_v_origins, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+    hb_font_funcs_సమితి_font_v_extents_func (funcs, hb_ot_get_font_v_extents, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_v_advances_func (funcs, hb_ot_get_glyph_v_advances, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_v_origins_func (funcs, hb_ot_get_glyph_v_origins, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_ot_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
+    hb_font_funcs_సమితి_draw_glyph_or_fail_func (funcs, hb_ot_draw_glyph_or_fail, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-#ifndef HB_NO_PAINT
-    hb_font_funcs_set_paint_glyph_or_fail_func (funcs, hb_ot_paint_glyph_or_fail, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_PAINT
+    hb_font_funcs_సమితి_paint_glyph_or_fail_func (funcs, hb_ot_paint_glyph_or_fail, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_ot_get_glyph_extents, nullptr, nullptr);
+    hb_font_funcs_సమితి_glyph_extents_func (funcs, hb_ot_get_glyph_extents, శూన్యసూచిక, శూన్యసూచిక);
     //hb_font_funcs_set_glyph_contour_point_func (funcs, hb_ot_get_glyph_contour_point, nullptr, nullptr);
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
-    hb_font_funcs_set_glyph_name_func (funcs, hb_ot_get_glyph_name, nullptr, nullptr);
-    hb_font_funcs_set_glyph_from_name_func (funcs, hb_ot_get_glyph_from_name, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_GLYPH_పేర్లు
+    hb_font_funcs_సమితి_glyph_name_func (funcs, hb_ot_get_glyph_name, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_from_name_func (funcs, hb_ot_get_glyph_from_name, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_ot_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_ot_funcs;
 
-static inline
-void free_static_ot_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_ot_funcs ()
 {
   static_ot_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+స్థిర hb_font_funcs_t *
 _hb_ot_get_font_funcs ()
 {
-  return static_ot_funcs.get_unconst ();
+  తిరిగి static_ot_funcs.get_unconst ();
 }
 
 
@@ -1026,17 +1026,17 @@ _hb_ot_get_font_funcs ()
  *
  * Since: 0.9.28
  **/
-void
-hb_ot_font_set_funcs (hb_font_t *font)
+శూన్య
+hb_ot_font_సమితి_funcs (hb_font_t *font)
 {
   hb_ot_font_t *ot_font = _hb_ot_font_create (font);
-  if (unlikely (!ot_font))
-    return;
+  ఒకవేళ (unlikely (!ot_font))
+    తిరిగి;
 
-  hb_font_set_funcs (font,
+  hb_font_సమితి_funcs (font,
 		     _hb_ot_get_font_funcs (),
 		     ot_font,
 		     _hb_ot_font_destroy);
 }
 
-#endif
+#అయితే_ముగింపు

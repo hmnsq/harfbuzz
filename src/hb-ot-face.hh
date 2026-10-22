@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_HH
-#define HB_OT_FACE_HH
+#నిర్వచితం_కాకపోతే HB_OT_FACE_HH
+#నిర్వచించు HB_OT_FACE_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
 /*
@@ -39,36 +39,36 @@
  */
 
 /* Declare tables. */
-#define HB_OT_TABLE(Namespace, Type) namespace Namespace { struct Type; }
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#నిర్వచించు HB_OT_పట్టిక(Namespace, Type) నామాకాశ Namespace { నిర్మాణం Type; }
+#నిర్వచించు HB_OT_ACCELERATOR(Namespace, Type) HB_OT_పట్టిక (Namespace, Type##_accelerator_t)
+#అన్తర్భావ "hb-ot-face-table-list.hh"
+#నిర్వచనం_రద్దు HB_OT_ACCELERATOR
+#నిర్వచనం_రద్దు HB_OT_పట్టిక
 
-struct hb_ot_face_t
+నిర్మాణం hb_ot_face_t
 {
-  HB_INTERNAL void init0 (hb_face_t *face);
-  HB_INTERNAL void fini ();
+  HB_అంతర్గత శూన్య init0 (hb_face_t *face);
+  HB_అంతర్గత శూన్య fini ();
 
-#define HB_OT_TABLE_ORDER(Namespace, Type) \
-    HB_PASTE (ORDER_, HB_PASTE (Namespace, HB_PASTE (_, Type)))
-  enum order_t
+#నిర్వచించు HB_OT_పట్టిక_క్రమం(Namespace, Type) \
+    HB_PASTE (క్రమం_2, HB_PASTE (Namespace, HB_PASTE (_, Type)))
+  గణన క్రమం_t
   {
-    ORDER_ZERO,
-#define HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+    క్రమం_ZERO,
+#నిర్వచించు HB_OT_పట్టిక(Namespace, Type) HB_OT_పట్టిక_క్రమం (Namespace, Type),
+#అన్తర్భావ "hb-ot-face-table-list.hh"
+#నిర్వచనం_రద్దు HB_OT_పట్టిక
   };
 
   hb_face_t *face; /* MUST be JUST before the lazy loaders. */
-#define HB_OT_TABLE(Namespace, Type) \
-  hb_table_lazy_loader_t<Namespace::Type, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#define HB_OT_ACCELERATOR(Namespace, Type) \
-  hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#నిర్వచించు HB_OT_పట్టిక(Namespace, Type) \
+  hb_పట్టిక_lazy_loader_t<Namespace::Type, HB_OT_పట్టిక_క్రమం (Namespace, Type)> Type;
+#నిర్వచించు HB_OT_ACCELERATOR(Namespace, Type) \
+  hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_పట్టిక_క్రమం (Namespace, Type)> Type;
+#అన్తర్భావ "hb-ot-face-table-list.hh"
+#నిర్వచనం_రద్దు HB_OT_ACCELERATOR
+#నిర్వచనం_రద్దు HB_OT_పట్టిక
 };
 
 
-#endif /* HB_OT_FACE_HH */
+#అయితే_ముగింపు /* HB_OT_FACE_HH */

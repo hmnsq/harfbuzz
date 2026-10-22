@@ -25,1214 +25,1214 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_HH
-#define HB_BIT_SET_HH
+#నిర్వచితం_కాకపోతే HB_బిట్టు_సమితి_HH
+#నిర్వచించు HB_బిట్టు_సమితి_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-bit-page.hh"
 
-struct hb_bit_set_t
+నిర్మాణం hb_బిట్టు_సమితి_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_బిట్టు_సమితి_t () = అప్రమేయ;
+  ~hb_బిట్టు_సమితి_t () = అప్రమేయ;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_బిట్టు_సమితి_t (స్థిరరాశి hb_బిట్టు_సమితి_t& other) : hb_బిట్టు_సమితి_t () { సమితి (other, నిజం); }
+  hb_బిట్టు_సమితి_t ( hb_బిట్టు_సమితి_t&& other)  noexcept : hb_బిట్టు_సమితి_t () { hb_మార్పిడి (*ఇది, other); }
+  hb_బిట్టు_సమితి_t& క్రియాకారకం= (స్థిరరాశి hb_బిట్టు_సమితి_t& other) { సమితి (other); తిరిగి *ఇది; }
+  hb_బిట్టు_సమితి_t& క్రియాకారకం= (hb_బిట్టు_సమితి_t&& other)  noexcept { hb_మార్పిడి (*ఇది, other); తిరిగి *ఇది; }
+  మిత్ర శూన్య swap (hb_బిట్టు_సమితి_t &a, hb_బిట్టు_సమితి_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
-    hb_swap (a.population, b.population);
-    hb_swap (a.last_page_lookup, b.last_page_lookup);
-    hb_swap (a.page_map, b.page_map);
-    hb_swap (a.pages, b.pages);
+    ఒకవేళ (likely (!a.successful || !b.successful))
+      తిరిగి;
+    hb_మార్పిడి (a.population, b.population);
+    hb_మార్పిడి (a.చివరి_పుట_lookup, b.చివరి_పుట_lookup);
+    hb_మార్పిడి (a.పుట_map, b.పుట_map);
+    hb_మార్పిడి (a.పుటలు, b.పుటలు);
   }
 
-  void init ()
+  శూన్య init ()
   {
-    successful = true;
+    successful = నిజం;
     population = 0;
-    last_page_lookup = 0;
-    page_map.init ();
-    pages.init ();
+    చివరి_పుట_lookup = 0;
+    పుట_map.init ();
+    పుటలు.init ();
   }
-  void fini ()
+  శూన్య fini ()
   {
-    page_map.fini ();
-    pages.fini ();
+    పుట_map.fini ();
+    పుటలు.fini ();
   }
 
-  using page_t = hb_bit_page_t;
-  struct page_map_t
+  ఉపయోగించి పుట_t = hb_బిట్టు_పుట_t;
+  నిర్మాణం పుట_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    పూర్ణాంకం cmp (స్థిరరాశి పుట_map_t &o) స్థిరరాశి { తిరిగి cmp (o.major); }
+    పూర్ణాంకం cmp (uint32_t o_major) స్థిరరాశి { తిరిగి (పూర్ణాంకం) o_major - (పూర్ణాంకం) major; }
 
     uint32_t major;
-    uint32_t index;
+    uint32_t సూచీ_2;
   };
 
-  bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
-  mutable hb_atomic_t<unsigned> last_page_lookup = 0;
-  hb_sorted_vector_t<page_map_t> page_map;
-  hb_vector_t<page_t> pages;
+  తార్కిక successful = నిజం; /* Allocations successful */
+  మార్చదగిన గుర్తులేని పూర్ణాంకం population = 0;
+  మార్చదగిన hb_atomic_t<గుర్తులేని> చివరి_పుట_lookup = 0;
+  hb_sorted_సదిశ_t<పుట_map_t> పుట_map;
+  hb_సదిశ_t<పుట_t> పుటలు;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  శూన్య err () { ఒకవేళ (successful) successful = అబద్ధం; } /* TODO Remove */
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  తార్కిక resize (గుర్తులేని పూర్ణాంకం లెక్క, తార్కిక clear = నిజం, తార్కిక exact_కొలత = అబద్ధం)
   {
-    if (unlikely (!successful)) return false;
+    ఒకవేళ (unlikely (!successful)) తిరిగి అబద్ధం;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    ఒకవేళ (పుటలు.నిడివి < లెక్క && (గుర్తులేని) పుటలు.allocated < లెక్క && లెక్క <= 2)
+      exact_కొలత = నిజం; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    ఒకవేళ (unlikely (!పుటలు.resize_నిండిన (లెక్క, clear, exact_కొలత) ||
+	!పుట_map.resize_నిండిన (లెక్క, clear, అబద్ధం)))
     {
-      pages.resize_full (page_map.length, clear, exact_size);
-      successful = false;
-      return false;
+      పుటలు.resize_నిండిన (పుట_map.నిడివి, clear, exact_కొలత);
+      successful = అబద్ధం;
+      తిరిగి అబద్ధం;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  void alloc (unsigned sz)
+  శూన్య alloc (గుర్తులేని sz)
   {
-    sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
-    pages.alloc (sz);
-    page_map.alloc (sz);
+    sz >>= (పుట_t::పుట_బిట్లు_LOG_2 - 1);
+    పుటలు.alloc (sz);
+    పుట_map.alloc (sz);
   }
 
-  hb_bit_set_t& reset ()
+  hb_బిట్టు_సమితి_t& reset ()
   {
-    successful = true;
+    successful = నిజం;
     clear ();
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  void clear ()
+  శూన్య clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
-    pages.clear ();
-    page_map.clear ();
+    ఒకవేళ (!పుటలు.నిడివి && !population) తిరిగి;
+    పుటలు.clear ();
+    పుట_map.clear ();
     population = 0;
   }
-  bool is_empty () const
+  తార్కిక is_empty () స్థిరరాశి
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    గుర్తులేని పూర్ణాంకం లెక్క = పుటలు.నిడివి;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!పుటలు[i].is_empty ())
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
-  explicit operator bool () const { return !is_empty (); }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () స్థిరరాశి
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    కొరకు (స్వయంచాలక &map : పుట_map)
     {
-      auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
-      h = h * 31 + hb_hash (map.major) + hb_hash (page);
+      స్వయంచాలక &పుట = పుటలు.arrayZ[map.సూచీ_2];
+      ఒకవేళ (unlikely (పుట.is_empty ())) కొనసాగు;
+      h = h * 31 + hb_hash (map.major) + hb_hash (పుట);
     }
-    return h;
+    తిరిగి h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  అంతరంగ:
+  శూన్య dirty () { population = UINT_MAX; }
+  బహిరంగ:
 
-  void add (hb_codepoint_t g)
+  శూన్య కూడు (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
+    ఒకవేళ (unlikely (g == INVALID)) తిరిగి;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add (g);
+    పుట_t *పుట = పుట_for (g, నిజం); ఒకవేళ (unlikely (!పుట)) తిరిగి;
+    పుట->కూడు (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  శూన్య కూడు_బిట్లు (hb_codepoint_t g, uint64_t బిట్లు)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    ఒకవేళ (unlikely (!successful) || unlikely (!బిట్లు)) తిరిగి;
+    ప్రతిజ్ఞా (!(g & (పుట_t::ELT_బిట్లు - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
-    page->add_bits (g, bits);
+    పుట_t *పుట = పుట_for (g, నిజం); ఒకవేళ (unlikely (!పుట)) తిరిగి;
+    పుట->కూడు_బిట్లు (g, బిట్లు);
   }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  తార్కిక కూడు_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    ఒకవేళ (unlikely (!successful)) తిరిగి నిజం; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    ఒకవేళ (unlikely (a > b || a == INVALID || b == INVALID)) తిరిగి అబద్ధం;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    గుర్తులేని పూర్ణాంకం ma = get_major (a);
+    గుర్తులేని పూర్ణాంకం mb = get_major (b);
+    ఒకవేళ (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, b);
+      పుట_t *పుట = పుట_for (a, నిజం); ఒకవేళ (unlikely (!పుట)) తిరిగి అబద్ధం;
+      పుట->కూడు_range (a, b);
     }
-    else
+    లేకపోతే
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
-      page->add_range (a, major_start (ma + 1) - 1);
+      పుట_t *పుట = పుట_for (a, నిజం); ఒకవేళ (unlikely (!పుట)) తిరిగి అబద్ధం;
+      పుట->కూడు_range (a, major_ప్రారంభం (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      కొరకు (గుర్తులేని పూర్ణాంకం m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
-	page->init1 ();
+	పుట = పుట_for (major_ప్రారంభం (m), నిజం); ఒకవేళ (unlikely (!పుట)) తిరిగి అబద్ధం;
+	పుట->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
-      page->add_range (major_start (mb), b);
+      పుట = పుట_for (b, నిజం); ఒకవేళ (unlikely (!పుట)) తిరిగి అబద్ధం;
+      పుట->కూడు_range (major_ప్రారంభం (mb), b);
     }
-    return true;
+    తిరిగి నిజం;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
-  template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  మూస<రకం_పేరు Type>
+  స్థిర అంతఃవరుస స్థిరరాశి Type& Struct_At_స్థానభ్రంశం_Unaligned(స్థిరరాశి శూన్య *P, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం)
   {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#సూచన GCC diagnostic push
+#సూచన GCC diagnostic ignored "-Wcast-align"
+    తిరిగి * reinterpret_cast<స్థిరరాశి Type*> ((స్థిరరాశి అక్షరం *) P + స్థానభ్రంశం);
+#సూచన GCC diagnostic తీయి
   }
 
-  template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  మూస <రకం_పేరు T>
+  శూన్య సమితి_array (తార్కిక v, స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
+    ఒకవేళ (!లెక్క) తిరిగి;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    అయితే (లెక్క)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      గుర్తులేని పూర్ణాంకం m = get_major (g);
+      పుట_t *పుట = పుట_for (g, v); ఒకవేళ (unlikely (v && !పుట)) తిరిగి;
+      గుర్తులేని పూర్ణాంకం ప్రారంభం = major_ప్రారంభం (m);
+      గుర్తులేని పూర్ణాంకం చివర = major_ప్రారంభం (m + 1);
+      చేయి
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        ఒకవేళ (g != INVALID && (v || పుట)) /* The v check is to optimize out the page check if v is true. */
+	  పుట->సమితి (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_స్థానభ్రంశం_Unaligned<T> (array, stride);
+	లెక్క--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      అయితే (లెక్క && (g = *array, ప్రారంభం <= g && g < చివర));
     }
   }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
+  { సమితి_array (నిజం, array, లెక్క, stride); }
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_array (స్థిరరాశి hb_array_t<స్థిరరాశి T>& arr) { కూడు_array (&arr, arr.len ()); }
 
-  template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
-  template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  శూన్య del_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
+  { సమితి_array (అబద్ధం, array, లెక్క, stride); }
+  మూస <రకం_పేరు T>
+  శూన్య del_array (స్థిరరాశి hb_array_t<స్థిరరాశి T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  మూస <రకం_పేరు T>
+  తార్కిక సమితి_sorted_array (తార్కిక v, స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    ఒకవేళ (unlikely (!successful)) తిరిగి నిజం; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    ఒకవేళ (unlikely (!లెక్క)) తిరిగి నిజం;
     dirty ();
     hb_codepoint_t g = *array;
-    hb_codepoint_t last_g = g;
-    while (count)
+    hb_codepoint_t చివరి_g = g;
+    అయితే (లెక్క)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      గుర్తులేని పూర్ణాంకం m = get_major (g);
+      పుట_t *పుట = పుట_for (g, v); ఒకవేళ (unlikely (v && !పుట)) తిరిగి అబద్ధం;
+      గుర్తులేని పూర్ణాంకం చివర = major_ప్రారంభం (m + 1);
+      చేయి
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
-	last_g = g;
+	ఒకవేళ (g < చివరి_g) తిరిగి అబద్ధం;
+	చివరి_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
-	  page->set (g, v);
+        ఒకవేళ (g != INVALID && (v || పుట)) /* The v check is to optimize out the page check if v is true. */
+	  పుట->సమితి (g, v);
 
-	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	array = &Struct_At_స్థానభ్రంశం_Unaligned<T> (array, stride);
+	లెక్క--;
       }
-      while (count && (g = *array, g < end));
+      అయితే (లెక్క && (g = *array, g < చివర));
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  తార్కిక కూడు_sorted_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
+  { తిరిగి సమితి_sorted_array (నిజం, array, లెక్క, stride); }
+  మూస <రకం_పేరు T>
+  తార్కిక కూడు_sorted_array (స్థిరరాశి hb_sorted_array_t<స్థిరరాశి T>& arr) { తిరిగి కూడు_sorted_array (&arr, arr.len ()); }
 
-  template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
-  template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  తార్కిక del_sorted_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
+  { తిరిగి సమితి_sorted_array (అబద్ధం, array, లెక్క, stride); }
+  మూస <రకం_పేరు T>
+  తార్కిక del_sorted_array (స్థిరరాశి hb_sorted_array_t<స్థిరరాశి T>& arr) { తిరిగి del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  శూన్య del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
+    పుట_t *పుట = పుట_for (g);
+    ఒకవేళ (!పుట)
+      తిరిగి;
     dirty ();
-    page->del (g);
+    పుట->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  శూన్య del_బిట్లు (hb_codepoint_t g, uint64_t బిట్లు)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
-    page_t *page = page_for (g);
-    if (!page)
-      return;
+    ఒకవేళ (unlikely (!successful) || unlikely (!బిట్లు)) తిరిగి;
+    ప్రతిజ్ఞా (!(g & (పుట_t::ELT_బిట్లు - 1)));
+    పుట_t *పుట = పుట_for (g);
+    ఒకవేళ (!పుట)
+      తిరిగి;
     dirty ();
-    page->del_bits (g, bits);
+    పుట->del_బిట్లు (g, బిట్లు);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  అంతరంగ:
+  శూన్య del_పుటలు (పూర్ణాంకం ds, పూర్ణాంకం de)
   {
-    if (ds <= de)
+    ఒకవేళ (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
-      hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      hb_సదిశ_t<గుర్తులేని> compact_workspace;
+      ఒకవేళ (unlikely (!allocate_compact_workspace (compact_workspace))) తిరిగి;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      గుర్తులేని పూర్ణాంకం write_సూచీ = 0;
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < పుట_map.నిడివి; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
-	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
+	పూర్ణాంకం m = (పూర్ణాంకం) పుట_map.arrayZ[i].major;
+	ఒకవేళ (m < ds || de < m)
+	  పుట_map.arrayZ[write_సూచీ++] = పుట_map.arrayZ[i];
       }
-      compact (compact_workspace, write_index);
-      resize (write_index);
+      compact (compact_workspace, write_సూచీ);
+      resize (write_సూచీ);
     }
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  బహిరంగ:
+  శూన్య del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
+    ఒకవేళ (unlikely (a > b || a == INVALID)) తిరిగి;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    గుర్తులేని పూర్ణాంకం ma = get_major (a);
+    గుర్తులేని పూర్ణాంకం mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    పూర్ణాంకం ds = (a == major_ప్రారంభం (ma))? (పూర్ణాంకం) ma: (పూర్ణాంకం) (ma + 1);
+    పూర్ణాంకం de = (b + 1 == major_ప్రారంభం (mb + 1))? (పూర్ణాంకం) mb: ((పూర్ణాంకం) mb - 1);
+    ఒకవేళ (ds > de || (పూర్ణాంకం) ma < ds)
     {
-      page_t *page = page_for (a);
-      if (page)
+      పుట_t *పుట = పుట_for (a);
+      ఒకవేళ (పుట)
       {
-	if (ma == mb)
-	  page->del_range (a, b);
-	else
-	  page->del_range (a, major_start (ma + 1) - 1);
+	ఒకవేళ (ma == mb)
+	  పుట->del_range (a, b);
+	లేకపోతే
+	  పుట->del_range (a, major_ప్రారంభం (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    ఒకవేళ (de < (పూర్ణాంకం) mb && ma != mb)
     {
-      page_t *page = page_for (b);
-      if (page)
-	page->del_range (major_start (mb), b);
+      పుట_t *పుట = పుట_for (b);
+      ఒకవేళ (పుట)
+	పుట->del_range (major_ప్రారంభం (mb), b);
     }
-    del_pages (ds, de);
+    del_పుటలు (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  తార్కిక get (hb_codepoint_t g) స్థిరరాశి
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    స్థిరరాశి పుట_t *పుట = పుట_for (g);
+    ఒకవేళ (!పుట)
+      తిరిగి అబద్ధం;
+    తిరిగి పుట->get (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  తార్కిక may_have (hb_codepoint_t g) స్థిరరాశి { తిరిగి get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  తార్కిక క్రియాకారకం [] (hb_codepoint_t k) స్థిరరాశి { తిరిగి get (k); }
+  తార్కిక has (hb_codepoint_t k) స్థిరరాశి { తిరిగి (*ఇది)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  తార్కిక క్రియాకారకం () (hb_codepoint_t k) స్థిరరాశి { తిరిగి has (k); }
 
   /* Sink interface. */
-  hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_బిట్టు_సమితి_t& క్రియాకారకం << (hb_codepoint_t v)
+  { కూడు (v); తిరిగి *ఇది; }
+  hb_బిట్టు_సమితి_t& క్రియాకారకం << (స్థిరరాశి hb_codepoint_pair_t& range)
+  { కూడు_range (range.మొదటి, range.second); తిరిగి *ఇది; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  తార్కిక intersects (స్థిరరాశి hb_బిట్టు_సమితి_t &other) స్థిరరాశి
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    గుర్తులేని పూర్ణాంకం na = పుటలు.నిడివి;
+    గుర్తులేని పూర్ణాంకం nb = other.పుటలు.నిడివి;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    గుర్తులేని పూర్ణాంకం a = 0, b = 0;
+    కొరకు (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      ఒకవేళ (పుట_map.arrayZ[a].major == other.పుట_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	ఒకవేళ (పుట_at (a).intersects (other.పుట_at (b)))
+	  తిరిగి నిజం;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      లేకపోతే ఒకవేళ (పుట_map.arrayZ[a].major < other.పుట_map.arrayZ[b].major)
 	a++;
-      else
+      లేకపోతే
 	b++;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  తార్కిక may_intersect (స్థిరరాశి hb_బిట్టు_సమితి_t &other) స్థిరరాశి
+  { తిరిగి intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  తార్కిక intersects (hb_codepoint_t మొదటి, hb_codepoint_t చివరి) స్థిరరాశి
   {
-    hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    hb_codepoint_t c = మొదటి - 1;
+    తిరిగి next (&c) && c <= చివరి;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  శూన్య సమితి (స్థిరరాశి hb_బిట్టు_సమితి_t &other, తార్కిక exact_కొలత = అబద్ధం)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
+    గుర్తులేని పూర్ణాంకం లెక్క = other.పుటలు.నిడివి;
+    ఒకవేళ (unlikely (!resize  (లెక్క, అబద్ధం, exact_కొలత)))
+      తిరిగి;
     population = other.population;
 
-    page_map = other.page_map;
-    pages = other.pages;
+    పుట_map = other.పుట_map;
+    పుటలు = other.పుటలు;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  తార్కిక is_equal (స్థిరరాశి hb_బిట్టు_సమితి_t &other) స్థిరరాశి
   {
-    if (has_population () && other.has_population () &&
+    ఒకవేళ (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      తిరిగి అబద్ధం;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    గుర్తులేని పూర్ణాంకం na = పుటలు.నిడివి;
+    గుర్తులేని పూర్ణాంకం nb = other.పుటలు.నిడివి;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    గుర్తులేని పూర్ణాంకం a = 0, b = 0;
+    కొరకు (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
-	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+      ఒకవేళ (పుట_at (a).is_empty ()) { a++; కొనసాగు; }
+      ఒకవేళ (other.పుట_at (b).is_empty ()) { b++; కొనసాగు; }
+      ఒకవేళ (పుట_map.arrayZ[a].major != other.పుట_map.arrayZ[b].major ||
+	  !పుట_at (a).is_equal (other.పుట_at (b)))
+	తిరిగి అబద్ధం;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    కొరకు (; a < na; a++)
+      ఒకవేళ (!పుట_at (a).is_empty ()) { తిరిగి అబద్ధం; }
+    కొరకు (; b < nb; b++)
+      ఒకవేళ (!other.పుట_at (b).is_empty ()) { తిరిగి అబద్ధం; }
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  తార్కిక is_subset (స్థిరరాశి hb_బిట్టు_సమితి_t &larger_సమితి) స్థిరరాశి
   {
-    if (has_population () && larger_set.has_population () &&
-	population > larger_set.population)
-      return false;
+    ఒకవేళ (has_population () && larger_సమితి.has_population () &&
+	population > larger_సమితి.population)
+      తిరిగి అబద్ధం;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    అయితే (spi < పుట_map.నిడివి && lpi < larger_సమితి.పుట_map.నిడివి)
     {
-      uint32_t spm = page_map.arrayZ[spi].major;
-      uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
-      auto sp = page_at (spi);
+      uint32_t spm = పుట_map.arrayZ[spi].major;
+      uint32_t lpm = larger_సమితి.పుట_map.arrayZ[lpi].major;
+      స్వయంచాలక sp = పుట_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      ఒకవేళ (spm < lpm) {
+        ఒకవేళ (!sp.is_empty ())
+          తిరిగి అబద్ధం;
         spi++;
-        continue;
+        కొనసాగు;
       }
 
-      if (lpm < spm) {
+      ఒకవేళ (lpm < spm) {
         lpi++;
-        continue;
+        కొనసాగు;
       }
 
-      auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      స్వయంచాలక lp = larger_సమితి.పుట_at (lpi);
+      ఒకవేళ (!sp.is_subset (lp))
+        తిరిగి అబద్ధం;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    అయితే (spi < పుట_map.నిడివి)
+      ఒకవేళ (!పుట_at (spi++).is_empty ())
+        తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  అంతరంగ:
+  తార్కిక allocate_compact_workspace (hb_సదిశ_t<గుర్తులేని>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    ఒకవేళ (unlikely (!workspace.resize_exact (పుటలు.నిడివి)))
     {
-      successful = false;
-      return false;
+      successful = అబద్ధం;
+      తిరిగి అబద్ధం;
     }
 
-    return true;
+    తిరిగి నిజం;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  శూన్య compact (hb_సదిశ_t<గుర్తులేని>& workspace,
+                గుర్తులేని పూర్ణాంకం నిడివి)
   {
-    assert(workspace.length == pages.length);
-    hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
+    ప్రతిజ్ఞా(workspace.నిడివి == పుటలు.నిడివి);
+    hb_సదిశ_t<గుర్తులేని>& old_సూచీ_గమ్యం_పుట_map_సూచీ = workspace;
 
-    hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
-      old_index_to_page_map_index[page_map[i].index] =  i;
+    hb_fill (old_సూచీ_గమ్యం_పుట_map_సూచీ.writer(), 0xFFFFFFFF);
+    కొరకు (గుర్తులేని i = 0; i < నిడివి; i++)
+      old_సూచీ_గమ్యం_పుట_map_సూచీ[పుట_map[i].సూచీ_2] =  i;
 
-    compact_pages (old_index_to_page_map_index);
+    compact_పుటలు (old_సూచీ_గమ్యం_పుట_map_సూచీ);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  శూన్య compact_పుటలు (స్థిరరాశి hb_సదిశ_t<గుర్తులేని>& old_సూచీ_గమ్యం_పుట_map_సూచీ)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    గుర్తులేని పూర్ణాంకం write_సూచీ = 0;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < పుటలు.నిడివి; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      ఒకవేళ (old_సూచీ_గమ్యం_పుట_map_సూచీ[i] == 0xFFFFFFFF) కొనసాగు;
 
-      if (write_index < i)
-	pages[write_index] = pages[i];
+      ఒకవేళ (write_సూచీ < i)
+	పుటలు[write_సూచీ] = పుటలు[i];
 
-      page_map[old_index_to_page_map_index[i]].index = write_index;
-      write_index++;
+      పుట_map[old_సూచీ_గమ్యం_పుట_map_సూచీ[i]].సూచీ_2 = write_సూచీ;
+      write_సూచీ++;
     }
   }
-  public:
+  బహిరంగ:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
-		 hb_vector_t<unsigned> *workspace = nullptr)
+  శూన్య process_ (hb_బిట్టు_పుట_t::సదిశ_t (*op) (స్థిరరాశి hb_బిట్టు_పుట_t::సదిశ_t &, స్థిరరాశి hb_బిట్టు_పుట_t::సదిశ_t &),
+		 తార్కిక passthru_ఎడమ, తార్కిక passthru_కుడి,
+		 స్థిరరాశి hb_బిట్టు_సమితి_t &other,
+		 hb_సదిశ_t<గుర్తులేని> *workspace = శూన్యసూచిక)
   {
-    if (unlikely (!successful)) return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    గుర్తులేని పూర్ణాంకం na = పుటలు.నిడివి;
+    గుర్తులేని పూర్ణాంకం nb = other.పుటలు.నిడివి;
+    గుర్తులేని పూర్ణాంకం తదుపరి_పుట = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    గుర్తులేని పూర్ణాంకం లెక్క = 0, new_లెక్క = 0;
+    గుర్తులేని పూర్ణాంకం a = 0, b = 0;
+    గుర్తులేని పూర్ణాంకం write_సూచీ = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
-    hb_vector_t<unsigned> local_workspace;
-    hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    hb_సదిశ_t<గుర్తులేని> local_workspace;
+    hb_సదిశ_t<గుర్తులేని> &compact_workspace = workspace ? *workspace : local_workspace;
+    ఒకవేళ (!passthru_ఎడమ)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      తార్కిక allocated = workspace ? compact_workspace.resize (పుటలు.నిడివి)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      ఒకవేళ (unlikely (!allocated))
       {
-	successful = false;
-	return;
+	successful = అబద్ధం;
+	తిరిగి;
       }
     }
 
-    for (; a < na && b < nb; )
+    కొరకు (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      ఒకవేళ (పుట_map.arrayZ[a].major == other.పుట_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	ఒకవేళ (!passthru_ఎడమ)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
-	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
-	  write_index++;
+	  ఒకవేళ (write_సూచీ < a)
+	    పుట_map.arrayZ[write_సూచీ] = పుట_map.arrayZ[a];
+	  write_సూచీ++;
 	}
 
-	count++;
+	లెక్క++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      లేకపోతే ఒకవేళ (పుట_map.arrayZ[a].major < other.పుట_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	ఒకవేళ (passthru_ఎడమ)
+	  లెక్క++;
 	a++;
       }
-      else
+      లేకపోతే
       {
-	if (passthru_right)
-	  count++;
+	ఒకవేళ (passthru_కుడి)
+	  లెక్క++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    ఒకవేళ (passthru_ఎడమ)
+      లెక్క += na - a;
+    ఒకవేళ (passthru_కుడి)
+      లెక్క += nb - b;
 
-    if (!passthru_left)
+    ఒకవేళ (!passthru_ఎడమ)
     {
-      na  = write_index;
-      next_page = write_index;
-      compact (compact_workspace, write_index);
+      na  = write_సూచీ;
+      తదుపరి_పుట = write_సూచీ;
+      compact (compact_workspace, write_సూచీ);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    ఒకవేళ (unlikely (!resize (లెక్క)))
+      తిరిగి;
 
-    newCount = count;
+    new_లెక్క = లెక్క;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    కొరకు (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      ఒకవేళ (పుట_map.arrayZ[a - 1].major == other.పుట_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	లెక్క--;
+	పుట_map.arrayZ[లెక్క] = పుట_map.arrayZ[a];
+	పుట_at (లెక్క).v = op (పుట_at (a).v, other.పుట_at (b).v);
+	పుట_at (లెక్క).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      లేకపోతే ఒకవేళ (పుట_map.arrayZ[a - 1].major > other.పుట_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	ఒకవేళ (passthru_ఎడమ)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  లెక్క--;
+	  పుట_map.arrayZ[లెక్క] = పుట_map.arrayZ[a];
 	}
       }
-      else
+      లేకపోతే
       {
 	b--;
-	if (passthru_right)
+	ఒకవేళ (passthru_కుడి)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  లెక్క--;
+	  పుట_map.arrayZ[లెక్క].major = other.పుట_map.arrayZ[b].major;
+	  పుట_map.arrayZ[లెక్క].సూచీ_2 = తదుపరి_పుట++;
+	  పుట_at (లెక్క) = other.పుట_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    ఒకవేళ (passthru_ఎడమ)
+      అయితే (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	లెక్క--;
+	పుట_map.arrayZ[లెక్క] = పుట_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    ఒకవేళ (passthru_కుడి)
+      అయితే (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	లెక్క--;
+	పుట_map.arrayZ[లెక్క].major = other.పుట_map.arrayZ[b].major;
+	పుట_map.arrayZ[లెక్క].సూచీ_2 = తదుపరి_పుట++;
+	పుట_at (లెక్క) = other.పుట_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    ప్రతిజ్ఞా (!లెక్క);
+    resize (new_లెక్క);
   }
-  template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  మూస <రకం_పేరు Op>
+  స్థిర hb_బిట్టు_పుట_t::సదిశ_t
+  op_ (స్థిరరాశి hb_బిట్టు_పుట_t::సదిశ_t &a, స్థిరరాశి hb_బిట్టు_పుట_t::సదిశ_t &b)
+  { తిరిగి Op{} (a, b); }
+  మూస <రకం_పేరు Op>
+  శూన్య process (స్థిరరాశి Op& op,
+		స్థిరరాశి hb_బిట్టు_సమితి_t &other,
+		hb_సదిశ_t<గుర్తులేని> *workspace = శూన్యసూచిక)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  శూన్య union_ (స్థిరరాశి hb_బిట్టు_సమితి_t &other) { process (hb_bitwise_or, other); }
+  శూన్య intersect (స్థిరరాశి hb_బిట్టు_సమితి_t &other,
+		  hb_సదిశ_t<గుర్తులేని> *workspace = శూన్యసూచిక)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  శూన్య వ్యవకలనం (స్థిరరాశి hb_బిట్టు_సమితి_t &other) { process (hb_bitwise_gt, other); }
+  శూన్య సౌష్ఠవ_difference (స్థిరరాశి hb_బిట్టు_సమితి_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  తార్కిక next (hb_codepoint_t *codepoint) స్థిరరాశి
   {
-    if (unlikely (*codepoint == INVALID)) {
+    ఒకవేళ (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      తిరిగి *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    స్థిరరాశి స్వయంచాలక* పుట_map_array = పుట_map.arrayZ;
+    గుర్తులేని పూర్ణాంకం major = get_major (*codepoint);
+    గుర్తులేని పూర్ణాంకం i = చివరి_పుట_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    ఒకవేళ (unlikely (i >= పుట_map.నిడివి || పుట_map_array[i].major != major))
     {
-      page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      పుట_map.bfind (major, &i, HB_NOT_దొరికింది_STORE_CLOSEST);
+      ఒకవేళ (i >= పుట_map.నిడివి) {
         *codepoint = INVALID;
-        return false;
+        తిరిగి అబద్ధం;
       }
-      last_page_lookup = i;
+      చివరి_పుట_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    స్థిరరాశి స్వయంచాలక* పుటలు_array = పుటలు.arrayZ;
+    స్థిరరాశి పుట_map_t &current = పుట_map_array[i];
+    ఒకవేళ (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      ఒకవేళ (పుటలు_array[current.సూచీ_2].next (codepoint))
       {
-        *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        *codepoint += current.major * పుట_t::పుట_బిట్లు;
+        తిరిగి నిజం;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    కొరకు (; i < పుట_map.నిడివి; i++)
     {
-      const page_map_t &current = page_map_array[i];
-      hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      స్థిరరాశి పుట_map_t &current = పుట_map_array[i];
+      hb_codepoint_t m = పుటలు_array[current.సూచీ_2].get_min ();
+      ఒకవేళ (m != INVALID)
       {
-	*codepoint = current.major * page_t::PAGE_BITS + m;
-        last_page_lookup = i;
-	return true;
+	*codepoint = current.major * పుట_t::పుట_బిట్లు + m;
+        చివరి_పుట_lookup = i;
+	తిరిగి నిజం;
       }
     }
     *codepoint = INVALID;
-    return false;
+    తిరిగి అబద్ధం;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  తార్కిక తదుపరి_బిట్లు (hb_codepoint_t *codepoint, uint64_t *బిట్లు) స్థిరరాశి
   {
-    static_assert (page_t::ELT_BITS == 64, "");
+    static_assert (పుట_t::ELT_బిట్లు == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    గుర్తులేని పూర్ణాంకం i = 0;
+    గుర్తులేని పూర్ణాంకం elt = 0;
+    ఒకవేళ (likely (*codepoint != INVALID))
     {
-      hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
-      base += page_t::ELT_BITS;
+      hb_codepoint_t పునాది = *codepoint & ~పుట_t::ELT_ముసుగు;
+      ఒకవేళ (unlikely (పునాది >= INVALID - పుట_t::ELT_బిట్లు + 1))
+        వెళ్ళు పూర్తి;
+      పునాది += పుట_t::ELT_బిట్లు;
 
-      unsigned int major = get_major (base);
-      i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      గుర్తులేని పూర్ణాంకం major = get_major (పునాది);
+      i = చివరి_పుట_lookup;
+      ఒకవేళ (unlikely (i >= పుట_map.నిడివి || పుట_map.arrayZ[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	పుట_map.bfind (major, &i, HB_NOT_దొరికింది_STORE_CLOSEST);
+	ఒకవేళ (i >= పుట_map.నిడివి)
+	  వెళ్ళు పూర్తి;
       }
-      if (page_map.arrayZ[i].major == major)
-	elt = page_remainder (base) / page_t::ELT_BITS;
+      ఒకవేళ (పుట_map.arrayZ[i].major == major)
+	elt = పుట_remainder (పునాది) / పుట_t::ELT_బిట్లు;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    కొరకు (; i < పుట_map.నిడివి; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      స్థిరరాశి పుట_map_t &map = పుట_map.arrayZ[i];
+      స్థిరరాశి పుట_t &పుట = పుటలు.arrayZ[map.సూచీ_2];
+      కొరకు (; elt < పుట_t::len (); elt++)
+	ఒకవేళ (పుట.v[elt])
 	{
-	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
-	  *bits = page.v[elt];
-	  last_page_lookup = i;
-	  return true;
+	  *codepoint = major_ప్రారంభం (map.major) + elt * పుట_t::ELT_బిట్లు;
+	  *బిట్లు = పుట.v[elt];
+	  చివరి_పుట_lookup = i;
+	  తిరిగి నిజం;
 	}
     }
 
-  done:
+  పూర్తి:
     *codepoint = INVALID;
-    *bits = 0;
-    return false;
+    *బిట్లు = 0;
+    తిరిగి అబద్ధం;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  తార్కిక మునుపటి (hb_codepoint_t *codepoint) స్థిరరాశి
   {
-    if (unlikely (*codepoint == INVALID)) {
+    ఒకవేళ (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      తిరిగి *codepoint != INVALID;
     }
 
-    page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
-    page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    పుట_map_t map = {get_major (*codepoint), 0};
+    గుర్తులేని పూర్ణాంకం i;
+    పుట_map.bfind (map, &i, HB_NOT_దొరికింది_STORE_CLOSEST);
+    ఒకవేళ (i < పుట_map.నిడివి && పుట_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      ఒకవేళ (పుటలు[పుట_map.arrayZ[i].సూచీ_2].మునుపటి (codepoint))
       {
-	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	*codepoint += పుట_map.arrayZ[i].major * పుట_t::పుట_బిట్లు;
+	తిరిగి నిజం;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    కొరకు (; (పూర్ణాంకం) i >= 0; i--)
     {
-      hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      hb_codepoint_t m = పుటలు.arrayZ[పుట_map.arrayZ[i].సూచీ_2].get_max ();
+      ఒకవేళ (m != INVALID)
       {
-	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	*codepoint = పుట_map.arrayZ[i].major * పుట_t::పుట_బిట్లు + m;
+	తిరిగి నిజం;
       }
     }
     *codepoint = INVALID;
-    return false;
+    తిరిగి అబద్ధం;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  తార్కిక తదుపరి_range (hb_codepoint_t *మొదటి, hb_codepoint_t *చివరి) స్థిరరాశి
   {
     hb_codepoint_t i;
 
-    i = *last;
-    if (!next (&i))
+    i = *చివరి;
+    ఒకవేళ (!next (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *చివరి = *మొదటి = INVALID;
+      తిరిగి అబద్ధం;
     }
 
-    *last = *first = i;
+    *చివరి = *మొదటి = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    స్థిరరాశి స్వయంచాలక* పుట_map_array = పుట_map.arrayZ;
+    స్థిరరాశి స్వయంచాలక* పుటలు_array = పుటలు.arrayZ;
+    గుర్తులేని పూర్ణాంకం major = get_major (*చివరి);
+    గుర్తులేని పూర్ణాంకం p_సూచీ = చివరి_పుట_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    ఒకవేళ (unlikely (p_సూచీ >= పుట_map.నిడివి || పుట_map_array[p_సూచీ].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      పుట_map.bfind (major, &p_సూచీ, HB_NOT_దొరికింది_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      ప్రతిజ్ఞా(p_సూచీ < పుట_map.నిడివి && పుట_map_array[p_సూచీ].major == major);
+      చివరి_పుట_lookup = p_సూచీ;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    గుర్తులేని పూర్ణాంకం rem = పుట_remainder (*చివరి);
+    గుర్తులేని పూర్ణాంకం elt = rem / పుట_t::ELT_బిట్లు;
+    గుర్తులేని పూర్ణాంకం bit = rem & పుట_t::ELT_ముసుగు;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
-    *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    స్థిరరాశి పుట_t *పుట = &పుటలు_array[పుట_map_array[p_సూచీ].సూచీ_2];
+    గుర్తులేని పూర్ణాంకం నిరంతరం = hb_ctz (~(పుట->v[elt] >> bit));
+    *చివరి += నిరంతరం - 1;
+    ఒకవేళ (నిరంతరం < పుట_t::ELT_బిట్లు - bit)
+      తిరిగి నిజం;
 
     elt++;
 
-    while (true)
+    అయితే (నిజం)
     {
-      for (; elt < page_t::len (); elt++)
+      కొరకు (; elt < పుట_t::len (); elt++)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = పుట->v[elt];
+        ఒకవేళ (w == (uint64_t) -1)
         {
-          *last += page_t::ELT_BITS;
-          continue;
+          *చివరి += పుట_t::ELT_బిట్లు;
+          కొనసాగు;
         }
         uint64_t inv = ~w;
-        *last += hb_ctz (inv);
-        return true;
+        *చివరి += hb_ctz (inv);
+        తిరిగి నిజం;
       }
 
-      p_index++;
+      p_సూచీ++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      ఒకవేళ (p_సూచీ >= పుట_map.నిడివి || పుట_map_array[p_సూచీ].major != major + 1)
+        తిరిగి నిజం;
 
-      const auto& entry = page_map_array[p_index];
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
+      స్థిరరాశి స్వయంచాలక& నమోదు_2 = పుట_map_array[p_సూచీ];
+      major = నమోదు_2.major;
+      చివరి_పుట_lookup = p_సూచీ;
+      పుట = &పుటలు_array[నమోదు_2.సూచీ_2];
       elt = 0;
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  తార్కిక మునుపటి_range (hb_codepoint_t *మొదటి, hb_codepoint_t *చివరి) స్థిరరాశి
   {
     hb_codepoint_t i;
 
-    i = *first;
-    if (!previous (&i))
+    i = *మొదటి;
+    ఒకవేళ (!మునుపటి (&i))
     {
-      *last = *first = INVALID;
-      return false;
+      *చివరి = *మొదటి = INVALID;
+      తిరిగి అబద్ధం;
     }
 
-    *last = *first = i;
+    *చివరి = *మొదటి = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    స్థిరరాశి స్వయంచాలక* పుట_map_array = పుట_map.arrayZ;
+    స్థిరరాశి స్వయంచాలక* పుటలు_array = పుటలు.arrayZ;
+    గుర్తులేని పూర్ణాంకం major = get_major (*మొదటి);
+    గుర్తులేని పూర్ణాంకం p_సూచీ = చివరి_పుట_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    ఒకవేళ (unlikely (p_సూచీ >= పుట_map.నిడివి || పుట_map_array[p_సూచీ].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      పుట_map.bfind (major, &p_సూచీ, HB_NOT_దొరికింది_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      ప్రతిజ్ఞా(p_సూచీ < పుట_map.నిడివి && పుట_map_array[p_సూచీ].major == major);
+      చివరి_పుట_lookup = p_సూచీ;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    గుర్తులేని పూర్ణాంకం rem = పుట_remainder (*మొదటి);
+    పూర్ణాంకం elt = rem / పుట_t::ELT_బిట్లు;
+    గుర్తులేని పూర్ణాంకం bit = rem & పుట_t::ELT_ముసుగు;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-    *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    స్థిరరాశి పుట_t *పుట = &పుటలు_array[పుట_map_array[p_సూచీ].సూచీ_2];
+    uint64_t inv = ~(పుట->v[elt] << (63 - bit));
+    గుర్తులేని పూర్ణాంకం నిరంతరం = hb_బిట్టు_storage (inv) ? (పుట_t::ELT_బిట్లు - hb_బిట్టు_storage (inv)) : పుట_t::ELT_బిట్లు;
+    *మొదటి -= నిరంతరం - 1;
+    ఒకవేళ (నిరంతరం < bit + 1)
+      తిరిగి నిజం;
 
     elt--;
 
-    while (true)
+    అయితే (నిజం)
     {
-      for (; elt >= 0; elt--)
+      కొరకు (; elt >= 0; elt--)
       {
-        uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        uint64_t w = పుట->v[elt];
+        ఒకవేళ (w == (uint64_t) -1)
         {
-          *first -= page_t::ELT_BITS;
-          continue;
+          *మొదటి -= పుట_t::ELT_బిట్లు;
+          కొనసాగు;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
-        *first -= zeros;
-        return true;
+        గుర్తులేని పూర్ణాంకం zeros = hb_బిట్టు_storage (inv) ? (పుట_t::ELT_బిట్లు - hb_బిట్టు_storage (inv)) : పుట_t::ELT_బిట్లు;
+        *మొదటి -= zeros;
+        తిరిగి నిజం;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      ఒకవేళ (p_సూచీ == 0 || పుట_map_array[p_సూచీ - 1].major != major - 1)
+        తిరిగి నిజం;
 
-      p_index--;
-      const auto& entry = page_map_array[p_index];
+      p_సూచీ--;
+      స్థిరరాశి స్వయంచాలక& నమోదు_2 = పుట_map_array[p_సూచీ];
 
-      major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
-      elt = page_t::len () - 1;
+      major = నమోదు_2.major;
+      చివరి_పుట_lookup = p_సూచీ;
+      పుట = &పుటలు_array[నమోదు_2.సూచీ_2];
+      elt = పుట_t::len () - 1;
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
-			  hb_codepoint_t *out,
-			  unsigned int    size) const
+  గుర్తులేని పూర్ణాంకం తదుపరి_many (hb_codepoint_t  codepoint,
+			  hb_codepoint_t *బహిర్గతం,
+			  గుర్తులేని పూర్ణాంకం    కొలత) స్థిరరాశి
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_పుట = 0;
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_పుట_విలువ = 0;
+    ఒకవేళ (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      స్థిరరాశి స్వయంచాలక* పుట_map_array = పుట_map.arrayZ;
+      గుర్తులేని పూర్ణాంకం major = get_major (codepoint);
+      గుర్తులేని పూర్ణాంకం i = చివరి_పుట_lookup;
+      ఒకవేళ (unlikely (i >= పుట_map.నిడివి || పుట_map_array[i].major != major))
       {
-	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	పుట_map.bfind (major, &i, HB_NOT_దొరికింది_STORE_CLOSEST);
+	ఒకవేళ (i >= పుట_map.నిడివి)
+	  తిరిగి 0;  // codepoint is greater than our max element.
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      ప్రారంభం_పుట = i;
+      ఒకవేళ (పుట_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        ప్రారంభం_పుట_విలువ = పుట_remainder (codepoint + 1);
+        ఒకవేళ (unlikely (ప్రారంభం_పుట_విలువ == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          ప్రారంభం_పుట++;
+          ప్రారంభం_పుట_విలువ = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    గుర్తులేని పూర్ణాంకం initial_కొలత = కొలత;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం_పుట; i < పుట_map.నిడివి && కొలత; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t పునాది = major_ప్రారంభం (పుట_map.arrayZ[i].major);
+      గుర్తులేని పూర్ణాంకం n = పుటలు[పుట_map.arrayZ[i].సూచీ_2].లిఖ (పునాది, ప్రారంభం_పుట_విలువ, బహిర్గతం, కొలత);
+      బహిర్గతం += n;
+      కొలత -= n;
+      ప్రారంభం_పుట_విలువ = 0;
     }
-    return initial_size - size;
+    తిరిగి initial_కొలత - కొలత;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
-				   hb_codepoint_t *out,
-				   unsigned int    size) const
+  గుర్తులేని పూర్ణాంకం తదుపరి_many_inverted (hb_codepoint_t  codepoint,
+				   hb_codepoint_t *బహిర్గతం,
+				   గుర్తులేని పూర్ణాంకం    కొలత) స్థిరరాశి
   {
-    unsigned int initial_size = size;
+    గుర్తులేని పూర్ణాంకం initial_కొలత = కొలత;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_పుట = 0;
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_పుట_విలువ = 0;
+    ఒకవేళ (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      స్థిరరాశి స్వయంచాలక* పుట_map_array = పుట_map.arrayZ;
+      గుర్తులేని పూర్ణాంకం major = get_major (codepoint);
+      గుర్తులేని పూర్ణాంకం i = చివరి_పుట_lookup;
+      ఒకవేళ (unlikely (i >= పుట_map.నిడివి || పుట_map_array[i].major != major))
       {
-        page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        పుట_map.bfind(major, &i, HB_NOT_దొరికింది_STORE_CLOSEST);
+        ఒకవేళ (unlikely (i >= పుట_map.నిడివి))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          అయితే (++codepoint != INVALID && కొలత)
           {
-            *out++ = codepoint;
-            size--;
+            *బహిర్గతం++ = codepoint;
+            కొలత--;
           }
-          return initial_size - size;
+          తిరిగి initial_కొలత - కొలత;
         }
       }
-      start_page = i;
-      if (page_map_array[i].major == major)
+      ప్రారంభం_పుట = i;
+      ఒకవేళ (పుట_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        ప్రారంభం_పుట_విలువ = పుట_remainder (codepoint + 1);
+        ఒకవేళ (unlikely (ప్రారంభం_పుట_విలువ == 0))
         {
           // The export-after value was last in the page. Start on next page.
-          start_page++;
-          start_page_value = 0;
+          ప్రారంభం_పుట++;
+          ప్రారంభం_పుట_విలువ = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t తదుపరి_విలువ = codepoint + 1;
+    కొరకు (గుర్తులేని పూర్ణాంకం i=ప్రారంభం_పుట; i<పుట_map.నిడివి && కొలత; i++)
     {
-      uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
-      out += n;
-      size -= n;
-      start_page_value = 0;
+      uint32_t పునాది = major_ప్రారంభం (పుట_map.arrayZ[i].major);
+      గుర్తులేని పూర్ణాంకం n = పుటలు[పుట_map.arrayZ[i].సూచీ_2].write_inverted (పునాది, ప్రారంభం_పుట_విలువ, బహిర్గతం, కొలత, &తదుపరి_విలువ);
+      బహిర్గతం += n;
+      కొలత -= n;
+      ప్రారంభం_పుట_విలువ = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
-      size--;
+    అయితే (తదుపరి_విలువ < HB_సమితి_విలువ_INVALID && కొలత) {
+      *బహిర్గతం++ = తదుపరి_విలువ++;
+      కొలత--;
     }
-    return initial_size - size;
+    తిరిగి initial_కొలత - కొలత;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  తార్కిక has_population () స్థిరరాశి { తిరిగి population != UINT_MAX; }
+  గుర్తులేని పూర్ణాంకం get_population () స్థిరరాశి
   {
-    if (has_population ())
-      return population;
+    ఒకవేళ (has_population ())
+      తిరిగి population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    గుర్తులేని పూర్ణాంకం తీయి = 0;
+    గుర్తులేని పూర్ణాంకం లెక్క = పుటలు.నిడివి;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      తీయి += పుటలు[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = తీయి;
+    తిరిగి తీయి;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  తార్కిక get_singleton (hb_codepoint_t *codepoint) స్థిరరాశి
   {
-    if (has_population ())
+    ఒకవేళ (has_population ())
     {
-      if (population != 1) return false;
+      ఒకవేళ (population != 1) తిరిగి అబద్ధం;
       *codepoint = get_min ();
-      return true;
+      తిరిగి నిజం;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    కొరకు (స్థిరరాశి స్వయంచాలక &map : పుట_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      స్థిరరాశి స్వయంచాలక &పుట = పుటలు.arrayZ[map.సూచీ_2];
+      కొరకు (గుర్తులేని i = 0; i < పుట_t::len (); i++)
       {
-	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
-	singleton = map.major * page_t::PAGE_BITS +
-		    i * page_t::ELT_BITS + hb_ctz (bits);
+	పుట_t::elt_t బిట్లు = పుట.v[i];
+	ఒకవేళ (!బిట్లు) కొనసాగు;
+	ఒకవేళ (singleton != INVALID || (బిట్లు & (బిట్లు - 1)))
+	  తిరిగి అబద్ధం;
+	singleton = map.major * పుట_t::పుట_బిట్లు +
+		    i * పుట_t::ELT_బిట్లు + hb_ctz (బిట్లు);
       }
     }
 
-    if (singleton == INVALID)
+    ఒకవేళ (singleton == INVALID)
     {
       population = 0;
-      return false;
+      తిరిగి అబద్ధం;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    తిరిగి నిజం;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () స్థిరరాశి
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    గుర్తులేని లెక్క = పుటలు.నిడివి;
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      స్థిరరాశి స్వయంచాలక& map = పుట_map.arrayZ[i];
+      స్థిరరాశి స్వయంచాలక& పుట = పుటలు.arrayZ[map.సూచీ_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      ఒకవేళ (!పుట.is_empty ())
+	తిరిగి map.major * పుట_t::పుట_బిట్లు + పుట.get_min ();
     }
-    return INVALID;
+    తిరిగి INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () స్థిరరాశి
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    గుర్తులేని లెక్క = పుటలు.నిడివి;
+    కొరకు (గుర్తుగల i = లెక్క - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      స్థిరరాశి స్వయంచాలక& map = పుట_map.arrayZ[(గుర్తులేని) i];
+      స్థిరరాశి స్వయంచాలక& పుట = పుటలు.arrayZ[map.సూచీ_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      ఒకవేళ (!పుట.is_empty ())
+	తిరిగి map.major * పుట_t::పుట_బిట్లు + పుట.get_max ();
     }
-    return INVALID;
+    తిరిగి INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  స్థిర constexpr hb_codepoint_t INVALID = పుట_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  నిర్మాణం iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
-	    bool init = true) : s (&s_), v (INVALID), l(0)
+    స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+    స్థిర constexpr తార్కిక has_fast_len = నిజం;
+    iter_t (స్థిరరాశి hb_బిట్టు_సమితి_t &s_ = Null (hb_బిట్టు_సమితి_t),
+	    తార్కిక init = నిజం) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      ఒకవేళ (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    రకనిర్వచనం hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () స్థిరరాశి { తిరిగి v; }
+    తార్కిక __more__ () స్థిరరాశి { తిరిగి v != INVALID; }
+    శూన్య __next__ () { s->next (&v); ఒకవేళ (l) l--; }
+    శూన్య __prev__ () { s->మునుపటి (&v); }
+    గుర్తులేని __len__ () స్థిరరాశి { తిరిగి l; }
+    iter_t చివర () స్థిరరాశి { తిరిగి iter_t (*s, అబద్ధం); }
+    తార్కిక క్రియాకారకం != (స్థిరరాశి iter_t& o) స్థిరరాశి
+    { తిరిగి v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    రక్షిత:
+    స్థిరరాశి hb_బిట్టు_సమితి_t *s;
     hb_codepoint_t v;
-    unsigned l;
+    గుర్తులేని l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () స్థిరరాశి { తిరిగి iter_t (*ఇది); }
+  క్రియాకారకం iter_t () స్థిరరాశి { తిరిగి iter (); }
 
-  protected:
+  రక్షిత:
 
-  page_t *page_for (hb_codepoint_t g, bool insert = false)
+  పుట_t *పుట_for (hb_codepoint_t g, తార్కిక insert = అబద్ధం)
   {
-    unsigned major = get_major (g);
+    గుర్తులేని major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    గుర్తులేని i = చివరి_పుట_lookup;
+    ఒకవేళ (likely (i < పుట_map.నిడివి))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      స్వయంచాలక &cached_పుట = పుట_map.arrayZ[i];
+      ఒకవేళ (cached_పుట.major == major)
+	తిరిగి &పుటలు.arrayZ[cached_పుట.సూచీ_2];
     }
 
-    page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    పుట_map_t map = {major, పుటలు.నిడివి};
+    ఒకవేళ (!పుట_map.bfind (map, &i, HB_NOT_దొరికింది_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      ఒకవేళ (!insert)
+        తిరిగి శూన్యసూచిక;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      ఒకవేళ (unlikely (!resize (పుటలు.నిడివి + 1)))
+	తిరిగి శూన్యసూచిక;
 
-      pages.arrayZ[map.index].init0 ();
-      memmove (page_map.arrayZ + i + 1,
-	       page_map.arrayZ + i,
-	       (page_map.length - 1 - i) * page_map.item_size);
-      page_map.arrayZ[i] = map;
+      పుటలు.arrayZ[map.సూచీ_2].init0 ();
+      memmove (పుట_map.arrayZ + i + 1,
+	       పుట_map.arrayZ + i,
+	       (పుట_map.నిడివి - 1 - i) * పుట_map.అంశం_కొలత);
+      పుట_map.arrayZ[i] = map;
     }
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    చివరి_పుట_lookup = i;
+    తిరిగి &పుటలు.arrayZ[పుట_map.arrayZ[i].సూచీ_2];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  స్థిరరాశి పుట_t *పుట_for (hb_codepoint_t g) స్థిరరాశి
   {
-    unsigned major = get_major (g);
+    గుర్తులేని major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    గుర్తులేని i = చివరి_పుట_lookup;
+    ఒకవేళ (likely (i < పుట_map.నిడివి))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      స్వయంచాలక &cached_పుట = పుట_map.arrayZ[i];
+      ఒకవేళ (cached_పుట.major == major)
+	తిరిగి &పుటలు.arrayZ[cached_పుట.సూచీ_2];
     }
 
-    page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    పుట_map_t key = {major};
+    ఒకవేళ (!పుట_map.bfind (key, &i))
+      తిరిగి శూన్యసూచిక;
 
-    last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    చివరి_పుట_lookup = i;
+    తిరిగి &పుటలు.arrayZ[పుట_map.arrayZ[i].సూచీ_2];
   }
-  page_t &page_at (unsigned int i)
+  పుట_t &పుట_at (గుర్తులేని పూర్ణాంకం i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    ప్రతిజ్ఞా (i < పుట_map.నిడివి);
+    తిరిగి పుటలు.arrayZ[పుట_map.arrayZ[i].సూచీ_2];
   }
-  const page_t &page_at (unsigned int i) const
+  స్థిరరాశి పుట_t &పుట_at (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    ప్రతిజ్ఞా (i < పుట_map.నిడివి);
+    తిరిగి పుటలు.arrayZ[పుట_map.arrayZ[i].సూచీ_2];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  గుర్తులేని పూర్ణాంకం get_major (hb_codepoint_t g) స్థిరరాశి { తిరిగి g >> పుట_t::పుట_బిట్లు_LOG_2; }
+  గుర్తులేని పూర్ణాంకం పుట_remainder (hb_codepoint_t g) స్థిరరాశి { తిరిగి g & పుట_t::పుట_BITMASK; }
+  hb_codepoint_t major_ప్రారంభం (గుర్తులేని పూర్ణాంకం major) స్థిరరాశి { తిరిగి major << పుట_t::పుట_బిట్లు_LOG_2; }
 };
 
 
-#endif /* HB_BIT_SET_HH */
+#అయితే_ముగింపు /* HB_BIT_SET_HH */

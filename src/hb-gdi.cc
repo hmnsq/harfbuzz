@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_GDI
+#నిర్వచితమైతే HAVE_GDI
 
-#include "hb-gdi.h"
+#అన్తర్భావ "hb-gdi.h"
 
 
 /**
@@ -38,32 +38,32 @@
  * Functions for using HarfBuzz with GDI fonts.
  **/
 
-static hb_blob_t *
-_hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+స్థిర hb_blob_t *
+hb_gdi_reference_పట్టిక (hb_face_t *face HB_వాడని, hb_ట్యాగ్_t ట్యాగ్_2, శూన్య *user_దత్తాంశం)
 {
-  char *buffer = nullptr;
-  DWORD length = 0;
+  అక్షరం *బఫరు = శూన్యసూచిక;
+  DWORD నిడివి = 0;
 
-  HDC hdc = GetDC (nullptr);
-  if (unlikely (!SelectObject (hdc, (HFONT) user_data)))
-    return hb_blob_get_empty ();
-  HB_SCOPE_GUARD (ReleaseDC (nullptr, hdc));
+  HDC hdc = GetDC (శూన్యసూచిక);
+  ఒకవేళ (unlikely (!SelectObject (hdc, (HFONT) user_దత్తాంశం)))
+    తిరిగి hb_blob_get_ఖాళీలు ();
+  HB_SCOPE_GUARD (ReleaseDC (శూన్యసూచిక, hdc));
 
-  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  నిడివి = Get_Font_దత్తాంశం (hdc, hb_uint32_మార్పిడి (ట్యాగ్_2), 0, బఫరు, నిడివి);
+  ఒకవేళ (unlikely (నిడివి == GDI_ERROR))
+    తిరిగి hb_blob_get_ఖాళీలు ();
 
-  buffer = (char *) hb_malloc (length);
-  if (unlikely (!buffer))
-    return hb_blob_get_empty ();
-  auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
+  బఫరు = (అక్షరం *) hb_malloc (నిడివి);
+  ఒకవేళ (unlikely (!బఫరు))
+    తిరిగి hb_blob_get_ఖాళీలు ();
+  స్వయంచాలక బఫరు_guard = hb_make_scope_guard ([&]() { hb_free (బఫరు); });
 
-  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  నిడివి = Get_Font_దత్తాంశం (hdc, hb_uint32_మార్పిడి (ట్యాగ్_2), 0, బఫరు, నిడివి);
+  ఒకవేళ (unlikely (నిడివి == GDI_ERROR))
+    తిరిగి hb_blob_get_ఖాళీలు ();
 
-  buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, hb_free);
+  బఫరు_guard.release ();
+  తిరిగి hb_blob_create ((స్థిరరాశి అక్షరం *) బఫరు, నిడివి, HB_జ్ఞాపకం_బహుళకం_WRITABLE, బఫరు, hb_free);
 }
 
 /**
@@ -79,7 +79,7 @@ _hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_dat
 hb_face_t *
 hb_gdi_face_create (HFONT hfont)
 {
-  return hb_face_create_for_tables (_hb_gdi_reference_table, (void *) hfont, nullptr);
+  తిరిగి hb_face_create_for_tables (hb_gdi_reference_పట్టిక, (శూన్య *) hfont, శూన్యసూచిక);
 }
 
-#endif
+#అయితే_ముగింపు

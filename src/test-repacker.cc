@@ -24,83 +24,83 @@
  * Google Author(s): Garret Rieger
  */
 
-#include <cstdint>
-#include <string>
+#అన్తర్భావ <cstdint>
+#అన్తర్భావ <string>
 
-#include "hb-repacker.hh"
-#include "hb-open-type.hh"
-#include "graph/serialize.hh"
+#అన్తర్భావ "hb-repacker.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "graph/serialize.hh"
 
-static void extend (const char* value,
-                    unsigned len,
+స్థిర శూన్య extend (స్థిరరాశి అక్షరం* value,
+                    గుర్తులేని len,
                     hb_serialize_context_t* c)
 {
-  char* obj = c->allocate_size<char> (len);
+  అక్షరం* obj = c->allocate_కొలత<అక్షరం> (len);
   hb_memcpy (obj, value, len);
 }
 
-static void start_object(const char* tag,
-                         unsigned len,
+స్థిర శూన్య ప్రారంభం_object(స్థిరరాశి అక్షరం* ట్యాగ్_2,
+                         గుర్తులేని len,
                          hb_serialize_context_t* c)
 {
   c->push ();
-  extend (tag, len, c);
+  extend (ట్యాగ్_2, len, c);
 }
 
-static unsigned add_object(const char* tag,
-                           unsigned len,
+స్థిర గుర్తులేని కూడు_object(స్థిరరాశి అక్షరం* ట్యాగ్_2,
+                           గుర్తులేని len,
                            hb_serialize_context_t* c,
-                           bool shared = false)
+                           తార్కిక shared = అబద్ధం)
 {
-  start_object (tag, len, c);
-  return c->pop_pack (shared);
+  ప్రారంభం_object (ట్యాగ్_2, len, c);
+  తిరిగి c->తీయి_pack (shared);
 }
 
 
-static void add_offset (unsigned id,
+స్థిర శూన్య కూడు_స్థానభ్రంశం (గుర్తులేని id,
                         hb_serialize_context_t* c)
 {
-  OT::Offset16* offset = c->start_embed<OT::Offset16> ();
-  c->extend_min (offset);
-  c->add_link (*offset, id);
+  OT::Offset16* స్థానభ్రంశం = c->ప్రారంభం_embed<OT::Offset16> ();
+  c->extend_min (స్థానభ్రంశం);
+  c->కూడు_link (*స్థానభ్రంశం, id);
 }
 
-static void add_24_offset (unsigned id,
+స్థిర శూన్య కూడు_24_స్థానభ్రంశం (గుర్తులేని id,
                            hb_serialize_context_t* c)
 {
-  OT::Offset24* offset = c->start_embed<OT::Offset24> ();
-  c->extend_min (offset);
-  c->add_link (*offset, id);
+  OT::Offset24* స్థానభ్రంశం = c->ప్రారంభం_embed<OT::Offset24> ();
+  c->extend_min (స్థానభ్రంశం);
+  c->కూడు_link (*స్థానభ్రంశం, id);
 }
 
-static void add_wide_offset (unsigned id,
+స్థిర శూన్య కూడు_wide_స్థానభ్రంశం (గుర్తులేని id,
                              hb_serialize_context_t* c)
 {
-  OT::Offset32* offset = c->start_embed<OT::Offset32> ();
-  c->extend_min (offset);
-  c->add_link (*offset, id);
+  OT::Offset32* స్థానభ్రంశం = c->ప్రారంభం_embed<OT::Offset32> ();
+  c->extend_min (స్థానభ్రంశం);
+  c->కూడు_link (*స్థానభ్రంశం, id);
 }
 
-static void add_gsubgpos_header (unsigned lookup_list,
+స్థిర శూన్య కూడు_gsubgpos_శీర్షిక (గుర్తులేని lookup_list,
                                  hb_serialize_context_t* c)
 {
-  char header[] = {
+  అక్షరం శీర్షిక[] = {
     0, 1, // major
     0, 0, // minor
     0, 0, // script list
     0, 0, // feature list
   };
 
-  start_object (header, 8, c);
-  add_offset (lookup_list, c);
-  c->pop_pack (false);
+  ప్రారంభం_object (శీర్షిక, 8, c);
+  కూడు_స్థానభ్రంశం (lookup_list, c);
+  c->తీయి_pack (అబద్ధం);
 }
 
-static void add_gsubgpos_header_1_2 (unsigned lookup_list,
+స్థిర శూన్య కూడు_gsubgpos_శీర్షిక_1_2 (గుర్తులేని lookup_list,
                                      hb_serialize_context_t* c)
 {
-  char header[] = {
-    0, 1, 0, 2, // version
+  అక్షరం శీర్షిక[] = {
+    0, 1, 0, 2, //సంస్కరణ
     0, 0, // script list
     0, 0, // feature list
     0, 0, // lookup list
@@ -109,451 +109,451 @@ static void add_gsubgpos_header_1_2 (unsigned lookup_list,
     0, 0, 0, 0, // feature list 2
   };
 
-  start_object (header, sizeof (header), c);
-  add_wide_offset (lookup_list, c);
-  c->pop_pack (false);
+  ప్రారంభం_object (శీర్షిక, పరిమాణం (శీర్షిక), c);
+  కూడు_wide_స్థానభ్రంశం (lookup_list, c);
+  c->తీయి_pack (అబద్ధం);
 }
 
-static unsigned add_lookup_list (const unsigned* lookups,
-                                 char count,
+స్థిర గుర్తులేని కూడు_lookup_list (స్థిరరాశి గుర్తులేని* lookups,
+                                 అక్షరం లెక్క,
                                  hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object  ((char *) &lookup_count, 2, c);
+  అక్షరం lookup_లెక్క[] = {0, లెక్క};
+  ప్రారంభం_object  ((అక్షరం *) &lookup_లెక్క, 2, c);
 
-  for (int i = 0; i < count; i++)
-    add_offset (lookups[i], c);
+  కొరకు (పూర్ణాంకం i = 0; i < లెక్క; i++)
+    కూడు_స్థానభ్రంశం (lookups[i], c);
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-static unsigned add_lookup_list_1_2 (const unsigned* lookups,
-                                     char count,
+స్థిర గుర్తులేని కూడు_lookup_list_1_2 (స్థిరరాశి గుర్తులేని* lookups,
+                                     అక్షరం లెక్క,
                                      hb_serialize_context_t* c)
 {
-  char lookup_count[] = {0, count};
-  start_object ((char *) &lookup_count, 2, c);
+  అక్షరం lookup_లెక్క[] = {0, లెక్క};
+  ప్రారంభం_object ((అక్షరం *) &lookup_లెక్క, 2, c);
 
-  for (int i = 0; i < count; i++)
-    add_wide_offset (lookups[i], c);
+  కొరకు (పూర్ణాంకం i = 0; i < లెక్క; i++)
+    కూడు_wide_స్థానభ్రంశం (lookups[i], c);
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-static void start_lookup (int8_t type,
-                          int8_t num_subtables,
+స్థిర శూన్య ప్రారంభం_lookup (int8_t type,
+                          int8_t అంకె_subtables,
                           hb_serialize_context_t* c)
 {
-  char lookup[] = {
-    0, (char)type, // type
-    0, (char)2, // flag
-    0, (char)num_subtables, // num subtables
+  అక్షరం lookup[] = {
+    0, (అక్షరం)type, // type
+    0, (అక్షరం)2, // flag
+    0, (అక్షరం)అంకె_subtables, // num subtables
   };
 
-  start_object (lookup, 6, c);
+  ప్రారంభం_object (lookup, 6, c);
 }
 
-static unsigned finish_lookup (hb_serialize_context_t* c)
+స్థిర గుర్తులేని ముగింపు_lookup (hb_serialize_context_t* c)
 {
-  char filter[] = {0, 0};
+  అక్షరం filter[] = {0, 0};
   extend (filter, 2, c);
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-static unsigned add_extension (unsigned child,
+స్థిర గుర్తులేని కూడు_extension (గుర్తులేని బిడ్డ,
                                uint8_t type,
                                hb_serialize_context_t* c)
 {
-  char ext[] = {
+  అక్షరం ext[] = {
     0, 1,
-    0, (char) type,
+    0, (అక్షరం) type,
   };
 
-  start_object (ext, 4, c);
-  add_wide_offset (child, c);
+  ప్రారంభం_object (ext, 4, c);
+  కూడు_wide_స్థానభ్రంశం (బిడ్డ, c);
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 
 }
 
 // Adds coverage table fro [start, end]
-static unsigned add_coverage (unsigned start, unsigned end,
+స్థిర గుర్తులేని కూడు_coverage (గుర్తులేని ప్రారంభం, గుర్తులేని చివర,
                               hb_serialize_context_t* c,
-                              bool shared = false)
+                              తార్కిక shared = అబద్ధం)
 {
-  if (end - start == 0) {
+  ఒకవేళ (చివర - ప్రారంభం == 0) {
     uint8_t coverage[] = {
       0, 1, // format
-      0, 1, // count
+      0, 1, //లెక్క
 
-      (uint8_t) ((start >> 8) & 0xFF),
-      (uint8_t) (start & 0xFF), // glyph[0]
+      (uint8_t) ((ప్రారంభం >> 8) & 0xFF),
+      (uint8_t) (ప్రారంభం & 0xFF), // glyph[0]
     };
-    return add_object ((char*) coverage, 6, c, shared);
+    తిరిగి కూడు_object ((అక్షరం*) coverage, 6, c, shared);
   }
 
-  if (end - start == 1)
+  ఒకవేళ (చివర - ప్రారంభం == 1)
   {
     uint8_t coverage[] = {
       0, 1, // format
-      0, 2, // count
+      0, 2, //లెక్క
 
-      (uint8_t) ((start >> 8) & 0xFF),
-      (uint8_t) (start & 0xFF), // glyph[0]
+      (uint8_t) ((ప్రారంభం >> 8) & 0xFF),
+      (uint8_t) (ప్రారంభం & 0xFF), // glyph[0]
 
-      (uint8_t) ((end >> 8) & 0xFF),
-      (uint8_t) (end & 0xFF), // glyph[1]
+      (uint8_t) ((చివర >> 8) & 0xFF),
+      (uint8_t) (చివర & 0xFF), // glyph[1]
     };
-    return add_object ((char*) coverage, 8, c, shared);
+    తిరిగి కూడు_object ((అక్షరం*) coverage, 8, c, shared);
   }
 
   uint8_t coverage[] = {
     0, 2, // format
     0, 1, // range count
 
-    (uint8_t) ((start >> 8) & 0xFF),
-    (uint8_t) (start & 0xFF), // start
+    (uint8_t) ((ప్రారంభం >> 8) & 0xFF),
+    (uint8_t) (ప్రారంభం & 0xFF), //ప్రారంభం
 
-    (uint8_t) ((end >> 8) & 0xFF),
-    (uint8_t) (end & 0xFF), // end
+    (uint8_t) ((చివర >> 8) & 0xFF),
+    (uint8_t) (చివర & 0xFF), //చివర
 
     0, 0,
   };
-  return add_object ((char*) coverage, 10, c, shared);
+  తిరిగి కూడు_object ((అక్షరం*) coverage, 10, c, shared);
 }
 
 
-template<typename It>
-static unsigned add_coverage (It it,
+మూస<రకం_పేరు It>
+స్థిర గుర్తులేని కూడు_coverage (It it,
                               hb_serialize_context_t* c)
 {
   c->push ();
   OT::Layout::Common::Coverage_serialize (c, it);
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
 // Adds a class that maps glyphs from [start_glyph, end_glyph)
 // to classes 1...n
-static unsigned add_class_def (uint16_t start_glyph,
-                               uint16_t end_glyph,
+స్థిర గుర్తులేని కూడు_class_def (uint16_t ప్రారంభం_glyph,
+                               uint16_t చివర_glyph,
                                hb_serialize_context_t* c)
 {
-  unsigned count = end_glyph - start_glyph;
-  uint8_t header[] = {
+  గుర్తులేని లెక్క = చివర_glyph - ప్రారంభం_glyph;
+  uint8_t శీర్షిక[] = {
     0, 1, // format
 
-    (uint8_t) ((start_glyph >> 8) & 0xFF),
-    (uint8_t) (start_glyph & 0xFF), // start_glyph
+    (uint8_t) ((ప్రారంభం_glyph >> 8) & 0xFF),
+    (uint8_t) (ప్రారంభం_glyph & 0xFF), // start_glyph
 
-    (uint8_t) ((count >> 8) & 0xFF),
-    (uint8_t) (count & 0xFF), // count
+    (uint8_t) ((లెక్క >> 8) & 0xFF),
+    (uint8_t) (లెక్క & 0xFF), //లెక్క
   };
 
-  start_object ((char*) header, 6, c);
-  for (uint16_t i = 1; i <= count; i++)
+  ప్రారంభం_object ((అక్షరం*) శీర్షిక, 6, c);
+  కొరకు (uint16_t i = 1; i <= లెక్క; i++)
   {
-    uint8_t class_value[] = {
+    uint8_t class_విలువ_2[] = {
       (uint8_t) ((i >> 8) & 0xFF),
-      (uint8_t) (i & 0xFF), // count
+      (uint8_t) (i & 0xFF), //లెక్క
     };
-    extend ((char*) class_value, 2, c);
+    extend ((అక్షరం*) class_విలువ_2, 2, c);
   }
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-static unsigned add_pair_pos_1 (unsigned* pair_sets,
-                                char count,
-                                unsigned coverage,
+స్థిర గుర్తులేని కూడు_pair_pos_1 (గుర్తులేని* pair_sets,
+                                అక్షరం లెక్క,
+                                గుర్తులేని coverage,
                                 hb_serialize_context_t* c)
 {
-  char format[] = {
+  అక్షరం format[] = {
     0, 1
   };
 
-  start_object (format, 2, c);
-  add_offset (coverage, c);
+  ప్రారంభం_object (format, 2, c);
+  కూడు_స్థానభ్రంశం (coverage, c);
 
-  char value_format[] = {
+  అక్షరం విలువ_format[] = {
     0, 0,
     0, 0,
-    0, count,
+    0, లెక్క,
   };
-  extend (value_format, 6, c);
+  extend (విలువ_format, 6, c);
 
-  for (char i = 0; i < count; i++)
-    add_offset (pair_sets[(unsigned) i], c);
+  కొరకు (అక్షరం i = 0; i < లెక్క; i++)
+    కూడు_స్థానభ్రంశం (pair_sets[(గుర్తులేని) i], c);
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-static void add_liga_set_header (char liga_count,
+స్థిర శూన్య కూడు_liga_సమితి_శీర్షిక (అక్షరం liga_లెక్క,
                                  hb_serialize_context_t* c)
 {
-  uint8_t liga_count_bytes[] = {
-    (uint8_t) (0xFF & (liga_count >> 8)),
-    (uint8_t) (0xFF & liga_count),
+  uint8_t liga_లెక్క_బైట్లు[] = {
+    (uint8_t) (0xFF & (liga_లెక్క >> 8)),
+    (uint8_t) (0xFF & liga_లెక్క),
   };
 
-  start_object ((const char*) liga_count_bytes, 2, c);
+  ప్రారంభం_object ((స్థిరరాశి అక్షరం*) liga_లెక్క_బైట్లు, 2, c);
 }
 
-static void add_liga_header (unsigned coverage, unsigned liga_set_count, hb_serialize_context_t* c)
+స్థిర శూన్య కూడు_liga_శీర్షిక (గుర్తులేని coverage, గుర్తులేని liga_సమితి_లెక్క, hb_serialize_context_t* c)
 {
   uint8_t format[] = {0, 1};
-  start_object ((const char*) format, 2, c);
-  add_offset(coverage, c);
+  ప్రారంభం_object ((స్థిరరాశి అక్షరం*) format, 2, c);
+  కూడు_స్థానభ్రంశం(coverage, c);
 
-  uint8_t liga_set_count_bytes[] = {
-    (uint8_t) (0xFF & (liga_set_count >> 8)),
-    (uint8_t) (0xFF & liga_set_count),
+  uint8_t liga_సమితి_లెక్క_బైట్లు[] = {
+    (uint8_t) (0xFF & (liga_సమితి_లెక్క >> 8)),
+    (uint8_t) (0xFF & liga_సమితి_లెక్క),
   };
 
-  extend((const char *) liga_set_count_bytes, 2, c);
+  extend((స్థిరరాశి అక్షరం *) liga_సమితి_లెక్క_బైట్లు, 2, c);
 }
 
-static unsigned add_pair_pos_2 (unsigned starting_class,
-                                unsigned coverage,
-                                unsigned class_def_1, uint16_t class_def_1_count,
-                                unsigned class_def_2, uint16_t class_def_2_count,
-                                unsigned* device_tables,
+స్థిర గుర్తులేని కూడు_pair_pos_2 (గుర్తులేని starting_class,
+                                గుర్తులేని coverage,
+                                గుర్తులేని class_def_1, uint16_t class_def_1_లెక్క,
+                                గుర్తులేని class_def_2, uint16_t class_def_2_లెక్క,
+                                గుర్తులేని* device_tables,
                                 hb_serialize_context_t* c)
 {
   uint8_t format[] = {
     0, 2
   };
 
-  start_object ((char*) format, 2, c);
-  add_offset (coverage, c);
+  ప్రారంభం_object ((అక్షరం*) format, 2, c);
+  కూడు_స్థానభ్రంశం (coverage, c);
 
-  unsigned num_values = 4;
+  గుర్తులేని అంకె_విలువలు_3 = 4;
   uint8_t format1 = 0x01 | 0x02 | 0x08;
   uint8_t format2 = 0x04;
-  if (device_tables) {
+  ఒకవేళ (device_tables) {
     format2 |= 0x20;
-    num_values += 1;
+    అంకె_విలువలు_3 += 1;
   }
-  uint8_t value_format[] = {
+  uint8_t విలువ_format[] = {
     0, format1,
     0, format2,
   };
 
-  extend ((char*) value_format, 4, c);
+  extend ((అక్షరం*) విలువ_format, 4, c);
 
-  add_offset (class_def_1, c);
-  add_offset (class_def_2, c);
+  కూడు_స్థానభ్రంశం (class_def_1, c);
+  కూడు_స్థానభ్రంశం (class_def_2, c);
 
   uint8_t class_counts[] = {
-    (uint8_t) ((class_def_1_count >> 8) & 0xFF),
-    (uint8_t) (class_def_1_count & 0xFF),
-    (uint8_t) ((class_def_2_count >> 8) & 0xFF),
-    (uint8_t) (class_def_2_count & 0xFF),
+    (uint8_t) ((class_def_1_లెక్క >> 8) & 0xFF),
+    (uint8_t) (class_def_1_లెక్క & 0xFF),
+    (uint8_t) ((class_def_2_లెక్క >> 8) & 0xFF),
+    (uint8_t) (class_def_2_లెక్క & 0xFF),
   };
-  extend ((char*) class_counts, 4, c);
+  extend ((అక్షరం*) class_counts, 4, c);
 
-  unsigned num_bytes_per_record = class_def_2_count * num_values * 2;
-  uint8_t* record = (uint8_t*) calloc (1, num_bytes_per_record);
-  int device_index = 0;
-  for (uint16_t i = 0; i < class_def_1_count; i++)
+  గుర్తులేని అంకె_బైట్లు_చొప్పున_రికార్డు = class_def_2_లెక్క * అంకె_విలువలు_3 * 2;
+  uint8_t* రికార్డు = (uint8_t*) సున్నా_జ్ఞాపకం_ఇవ్వు (1, అంకె_బైట్లు_చొప్పున_రికార్డు);
+  పూర్ణాంకం device_సూచీ = 0;
+  కొరకు (uint16_t i = 0; i < class_def_1_లెక్క; i++)
   {
 
-    for (uint16_t j = 0; j < class_def_2_count; j++)
+    కొరకు (uint16_t j = 0; j < class_def_2_లెక్క; j++)
     {
-      for (int k = 0; k < 4; k++) {
+      కొరకు (పూర్ణాంకం k = 0; k < 4; k++) {
         uint8_t value[] = {
           (uint8_t) (i + starting_class),
           (uint8_t) (i + starting_class),
         };
-        extend ((char*) value, 2, c);
+        extend ((అక్షరం*) value, 2, c);
       }
 
-      if (device_tables) {
-        add_offset (device_tables[device_index++], c);
+      ఒకవేళ (device_tables) {
+        కూడు_స్థానభ్రంశం (device_tables[device_సూచీ++], c);
       }
     }
   }
-  free (record);
+  విడుదల (రికార్డు);
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-static unsigned add_mark_base_pos_1 (unsigned mark_coverage,
-                                     unsigned base_coverage,
-                                     unsigned mark_array,
-                                     unsigned base_array,
-                                     unsigned class_count,
+స్థిర గుర్తులేని కూడు_mark_పునాది_pos_1 (గుర్తులేని mark_coverage,
+                                     గుర్తులేని పునాది_coverage,
+                                     గుర్తులేని mark_array,
+                                     గుర్తులేని పునాది_array,
+                                     గుర్తులేని class_లెక్క,
                                      hb_serialize_context_t* c)
 {
   uint8_t format[] = {
     0, 1
   };
 
-  start_object ((char*) format, 2, c);
-  add_offset (mark_coverage, c);
-  add_offset (base_coverage, c);
+  ప్రారంభం_object ((అక్షరం*) format, 2, c);
+  కూడు_స్థానభ్రంశం (mark_coverage, c);
+  కూడు_స్థానభ్రంశం (పునాది_coverage, c);
 
-  uint8_t count[] = {
-    (uint8_t) ((class_count >> 8) & 0xFF),
-    (uint8_t) (class_count & 0xFF),
+  uint8_t లెక్క[] = {
+    (uint8_t) ((class_లెక్క >> 8) & 0xFF),
+    (uint8_t) (class_లెక్క & 0xFF),
   };
-  extend ((char*) count, 2, c);
+  extend ((అక్షరం*) లెక్క, 2, c);
 
-  add_offset (mark_array, c);
-  add_offset (base_array, c);
+  కూడు_స్థానభ్రంశం (mark_array, c);
+  కూడు_స్థానభ్రంశం (పునాది_array, c);
 
-  return c->pop_pack (false);
+  తిరిగి c->తీయి_pack (అబద్ధం);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-struct MarkBasePosBuffers
+మూస<పూర్ణాంకం mark_లెక్క,
+    పూర్ణాంకం class_లెక్క,
+    పూర్ణాంకం పునాది_లెక్క,
+    పూర్ణాంకం పట్టిక_లెక్క_2>
+నిర్మాణం Mark_పునాది_Pos_Buffers
 {
-  unsigned base_anchors[class_count * base_count];
-  unsigned mark_anchors[mark_count];
-  uint8_t anchor_buffers[class_count * base_count + 100];
-  uint8_t class_buffer[class_count * 2];
+  గుర్తులేని పునాది_anchors[class_లెక్క * పునాది_లెక్క];
+  గుర్తులేని mark_anchors[mark_లెక్క];
+  uint8_t anchor_buffers[class_లెక్క * పునాది_లెక్క + 100];
+  uint8_t class_బఫరు[class_లెక్క * 2];
 
-  MarkBasePosBuffers(hb_serialize_context_t* c)
+  Mark_పునాది_Pos_Buffers(hb_serialize_context_t* c)
   {
-    for (unsigned i = 0; i < sizeof(anchor_buffers) / 2; i++)
+    కొరకు (గుర్తులేని i = 0; i < పరిమాణం(anchor_buffers) / 2; i++)
     {
       OT::HBUINT16* value = (OT::HBUINT16*) (&anchor_buffers[2*i]);
       *value = i;
     }
 
-    for (unsigned i = 0; i < class_count * base_count; i++)
+    కొరకు (గుర్తులేని i = 0; i < class_లెక్క * పునాది_లెక్క; i++)
     {
-      base_anchors[i] = add_object ((char*) &anchor_buffers[i], 100, c);
-      if (i < class_count) {
-        class_buffer[i*2] = (uint8_t) ((i >> 8) & 0xFF);
-        class_buffer[i*2 + 1] = (uint8_t) (i & 0xFF);
+      పునాది_anchors[i] = కూడు_object ((అక్షరం*) &anchor_buffers[i], 100, c);
+      ఒకవేళ (i < class_లెక్క) {
+        class_బఫరు[i*2] = (uint8_t) ((i >> 8) & 0xFF);
+        class_బఫరు[i*2 + 1] = (uint8_t) (i & 0xFF);
       }
     }
 
-    for (unsigned i = 0; i < mark_count; i++)
+    కొరకు (గుర్తులేని i = 0; i < mark_లెక్క; i++)
     {
-      mark_anchors[i] = add_object ((char*) &anchor_buffers[i], 4, c);
+      mark_anchors[i] = కూడు_object ((అక్షరం*) &anchor_buffers[i], 4, c);
     }
   }
 
-  unsigned create_mark_base_pos_1 (unsigned table_index, hb_serialize_context_t* c)
+  గుర్తులేని create_mark_పునాది_pos_1 (గుర్తులేని పట్టిక_సూచీ, hb_serialize_context_t* c)
   {
-    unsigned class_per_table = class_count / table_count;
-    unsigned mark_per_class = mark_count / class_count;
-    unsigned start_class = class_per_table * table_index;
-    unsigned end_class = class_per_table * (table_index + 1) - 1;
+    గుర్తులేని class_చొప్పున_పట్టిక = class_లెక్క / పట్టిక_లెక్క_2;
+    గుర్తులేని mark_చొప్పున_class = mark_లెక్క / class_లెక్క;
+    గుర్తులేని ప్రారంభం_class = class_చొప్పున_పట్టిక * పట్టిక_సూచీ;
+    గుర్తులేని చివర_class = class_చొప్పున_పట్టిక * (పట్టిక_సూచీ + 1) - 1;
 
     // baseArray
-    uint8_t base_count_buffer[] = {
-      (uint8_t) ((base_count >> 8) & 0xFF),
-      (uint8_t) (base_count & 0xFF),
+    uint8_t పునాది_లెక్క_బఫరు[] = {
+      (uint8_t) ((పునాది_లెక్క >> 8) & 0xFF),
+      (uint8_t) (పునాది_లెక్క & 0xFF),
 
     };
-    start_object ((char*) base_count_buffer, 2, c);
-    for (unsigned base = 0; base < base_count; base++)
+    ప్రారంభం_object ((అక్షరం*) పునాది_లెక్క_బఫరు, 2, c);
+    కొరకు (గుర్తులేని పునాది = 0; పునాది < పునాది_లెక్క; పునాది++)
     {
-      for (unsigned klass = start_class; klass <= end_class; klass++)
+      కొరకు (గుర్తులేని klass = ప్రారంభం_class; klass <= చివర_class; klass++)
       {
-        unsigned i = base * class_count + klass;
-        add_offset (base_anchors[i], c);
+        గుర్తులేని i = పునాది * class_లెక్క + klass;
+        కూడు_స్థానభ్రంశం (పునాది_anchors[i], c);
       }
     }
-    unsigned base_array = c->pop_pack (false);
+    గుర్తులేని పునాది_array = c->తీయి_pack (అబద్ధం);
 
     // markArray
-    unsigned num_marks = class_per_table * mark_per_class;
-    uint8_t mark_count_buffer[] = {
-      (uint8_t) ((num_marks >> 8) & 0xFF),
-      (uint8_t) (num_marks & 0xFF),
+    గుర్తులేని అంకె_marks = class_చొప్పున_పట్టిక * mark_చొప్పున_class;
+    uint8_t mark_లెక్క_బఫరు[] = {
+      (uint8_t) ((అంకె_marks >> 8) & 0xFF),
+      (uint8_t) (అంకె_marks & 0xFF),
     };
-    start_object ((char*) mark_count_buffer, 2, c);
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    ప్రారంభం_object ((అక్షరం*) mark_లెక్క_బఫరు, 2, c);
+    కొరకు (గుర్తులేని mark = 0; mark < mark_లెక్క; mark++)
     {
-      unsigned klass = mark % class_count;
-      if (klass < start_class || klass > end_class) continue;
-      klass -= start_class;
+      గుర్తులేని klass = mark % class_లెక్క;
+      ఒకవేళ (klass < ప్రారంభం_class || klass > చివర_class) కొనసాగు;
+      klass -= ప్రారంభం_class;
 
-      extend ((char*) &class_buffer[2 * klass], 2, c);
-      add_offset (mark_anchors[mark], c);
+      extend ((అక్షరం*) &class_బఫరు[2 * klass], 2, c);
+      కూడు_స్థానభ్రంశం (mark_anchors[mark], c);
     }
-    unsigned mark_array = c->pop_pack (false);
+    గుర్తులేని mark_array = c->తీయి_pack (అబద్ధం);
 
     // markCoverage
-    auto it =
-        + hb_range ((hb_codepoint_t) mark_count)
+    స్వయంచాలక it =
+        + hb_range ((hb_codepoint_t) mark_లెక్క)
         | hb_filter ([&] (hb_codepoint_t mark) {
-          unsigned klass = mark % class_count;
-          return klass >= class_per_table * table_index &&
-              klass < class_per_table * (table_index + 1);
+          గుర్తులేని klass = mark % class_లెక్క;
+          తిరిగి klass >= class_చొప్పున_పట్టిక * పట్టిక_సూచీ &&
+              klass < class_చొప్పున_పట్టిక * (పట్టిక_సూచీ + 1);
         })
         ;
-    unsigned mark_coverage = add_coverage (it, c);
+    గుర్తులేని mark_coverage = కూడు_coverage (it, c);
 
     // baseCoverage
-    unsigned base_coverage = add_coverage (10, 10 + base_count - 1, c);
+    గుర్తులేని పునాది_coverage = కూడు_coverage (10, 10 + పునాది_లెక్క - 1, c);
 
-    return add_mark_base_pos_1 (mark_coverage,
-                                base_coverage,
+    తిరిగి కూడు_mark_పునాది_pos_1 (mark_coverage,
+                                పునాది_coverage,
                                 mark_array,
-                                base_array,
-                                class_per_table,
+                                పునాది_array,
+                                class_చొప్పున_పట్టిక,
                                 c);
   }
 };
 
-static void run_resolve_overflow_test (const char* name,
+స్థిర శూన్య నిరంతరం_resolve_అధికప్రవాహం_test (స్థిరరాశి అక్షరం* name,
                                        hb_serialize_context_t& overflowing,
                                        hb_serialize_context_t& expected,
-                                       unsigned num_iterations = 0,
-                                       bool recalculate_extensions = false,
-                                       hb_tag_t tag = HB_TAG ('G', 'S', 'U', 'B'),
-                                       bool check_binary_equivalence = false)
+                                       గుర్తులేని అంకె_iterations = 0,
+                                       తార్కిక recalculate_extensions = అబద్ధం,
+                                       hb_ట్యాగ్_t ట్యాగ్_2 = HB_ట్యాగ్ ('G', 'S', 'U', 'B'),
+                                       తార్కిక check_ద్విమాన_equivalence = అబద్ధం)
 {
-  printf (">>> Testing overflowing resolution for %s\n",
+  రాయి (">>> Testing overflowing resolution for %s\n",
           name);
 
-  graph_t graph = graph_t::create (overflowing.object_graph ()).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (overflowing.object_లేఖాచిత్రం ()).value ();
 
-  graph_t expected_graph = graph_t::create (expected.object_graph ()).value ();
-  if (graph::will_overflow (expected_graph).value ())
+  లేఖాచిత్రం_t expected_లేఖాచిత్రం = లేఖాచిత్రం_t::create (expected.object_లేఖాచిత్రం ()).value ();
+  ఒకవేళ (లేఖాచిత్రం::will_అధికప్రవాహం (expected_లేఖాచిత్రం).value ())
   {
-    if (check_binary_equivalence) {
-      printf("when binary equivalence checking is enabled, the expected graph cannot overflow.");
-      hb_always_assert(!check_binary_equivalence);
+    ఒకవేళ (check_ద్విమాన_equivalence) {
+      రాయి("when binary equivalence checking is enabled, the expected graph cannot overflow.");
+      hb_always_assert(!check_ద్విమాన_equivalence);
     }
-    hb_always_assert (expected_graph.assign_spaces ().is_ok ());
-    hb_always_assert (expected_graph.sort_shortest_distance ().is_ok ());
+    hb_always_assert (expected_లేఖాచిత్రం.కేటాయించు_spaces ().is_ok ());
+    hb_always_assert (expected_లేఖాచిత్రం.క్రమీకరించు_అతితక్కువ_దూరం ().is_ok ());
   }
 
   // Check that overflow resolution succeeds
-  hb_always_assert (overflowing.offset_overflow ());
-  auto r = hb_resolve_graph_overflows (tag,
-                                      num_iterations,
+  hb_always_assert (overflowing.స్థానభ్రంశం_అధికప్రవాహం ());
+  స్వయంచాలక r = hb_resolve_లేఖాచిత్రం_overflows (ట్యాగ్_2,
+                                      అంకె_iterations,
                                       recalculate_extensions,
-                                      graph);
-  if (r.is_err())
-    printf("run_resolve_overflow_test: overflow resolution failed, cause: %s\n", graph::to_string(r.error()));
+                                      లేఖాచిత్రం);
+  ఒకవేళ (r.is_err())
+    రాయి("run_resolve_overflow_test: overflow resolution failed, cause: %s\n", లేఖాచిత్రం::to_string(r.error()));
   hb_always_assert (r.is_ok());
 
   // Check the graphs can be serialized.
-  hb_blob_t* out1 = graph::serialize (graph).value ();
+  hb_blob_t* out1 = లేఖాచిత్రం::serialize (లేఖాచిత్రం).value ();
   hb_always_assert (out1);
-  hb_blob_t* out2 = graph::serialize (expected_graph).value ();
+  hb_blob_t* out2 = లేఖాచిత్రం::serialize (expected_లేఖాచిత్రం).value ();
   hb_always_assert (out2);
-  if (check_binary_equivalence) {
-    unsigned l1, l2;
-    const char* d1 = hb_blob_get_data(out1, &l1);
-    const char* d2 = hb_blob_get_data(out2, &l2);
+  ఒకవేళ (check_ద్విమాన_equivalence) {
+    గుర్తులేని l1, l2;
+    స్థిరరాశి అక్షరం* d1 = hb_blob_get_దత్తాంశం(out1, &l1);
+    స్థిరరాశి అక్షరం* d2 = hb_blob_get_దత్తాంశం(out2, &l2);
 
-    bool match = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
-    if (!match) {
-      printf("## Result:\n");
-      graph.print();
-      printf("## Expected:\n");
-      expected_graph.print();
-      hb_always_assert(match);
+    తార్కిక సరిపోలిక = (l1 == l2) && (memcmp(d1, d2, l1) == 0);
+    ఒకవేళ (!సరిపోలిక) {
+      రాయి("## Result:\n");
+      లేఖాచిత్రం.print();
+      రాయి("## Expected:\n");
+      expected_లేఖాచిత్రం.print();
+      hb_always_assert(సరిపోలిక);
     }
   }
 
@@ -561,2360 +561,2360 @@ static void run_resolve_overflow_test (const char* name,
   hb_blob_destroy (out2);
 
   // Check the graphs are equivalent
-  graph.normalize ();
-  expected_graph.normalize ();
-  if (!(graph == expected_graph)) {
-    printf("## Expected:\n");
-    expected_graph.print();
-    printf("## Result:\n");
-    graph.print();
+  లేఖాచిత్రం.normalize ();
+  expected_లేఖాచిత్రం.normalize ();
+  ఒకవేళ (!(లేఖాచిత్రం == expected_లేఖాచిత్రం)) {
+    రాయి("## Expected:\n");
+    expected_లేఖాచిత్రం.print();
+    రాయి("## Result:\n");
+    లేఖాచిత్రం.print();
   }
-  hb_always_assert (graph == expected_graph);
+  hb_always_assert (లేఖాచిత్రం == expected_లేఖాచిత్రం);
 }
 
-static void add_virtual_offset (unsigned id,
+స్థిర శూన్య కూడు_virtual_స్థానభ్రంశం (గుర్తులేని id,
                                 hb_serialize_context_t* c)
 {
-  c->add_virtual_link (id);
+  c->కూడు_virtual_link (id);
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_simple (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_1 = add_object ("ghi", 3, c);
-  unsigned obj_2 = add_object ("def", 3, c);
+  గుర్తులేని obj_1 = కూడు_object ("ghi", 3, c);
+  గుర్తులేని obj_2 = కూడు_object ("def", 3, c);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_1, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("abc", 3, c);
+  కూడు_స్థానభ్రంశం (obj_2, c);
+  కూడు_స్థానభ్రంశం (obj_1, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_virtual (hb_serialize_context_t* c, bool with_overflow)
+స్థిర శూన్య
+populate_serializer_virtual (hb_serialize_context_t* c, తార్కిక with_అధికప్రవాహం)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_4, obj_5;
-  if (with_overflow) {
-    obj_5 = add_object("55555", 5, c);
-    obj_4 = add_object(large_string.c_str(), 50000, c);
-  } else {
-    obj_4 = add_object(large_string.c_str(), 50000, c);
-    obj_5 = add_object("55555", 5, c);
+  గుర్తులేని obj_4, obj_5;
+  ఒకవేళ (with_అధికప్రవాహం) {
+    obj_5 = కూడు_object("55555", 5, c);
+    obj_4 = కూడు_object(large_string.c_str(), 50000, c);
+  } లేకపోతే {
+    obj_4 = కూడు_object(large_string.c_str(), 50000, c);
+    obj_5 = కూడు_object("55555", 5, c);
   }
 
-  start_object(large_string.c_str(), 20000, c);
-  add_offset(obj_5, c);
-  unsigned obj_3 = c->pop_pack(false);
+  ప్రారంభం_object(large_string.c_str(), 20000, c);
+  కూడు_స్థానభ్రంశం(obj_5, c);
+  గుర్తులేని obj_3 = c->తీయి_pack(అబద్ధం);
 
-  start_object("2", 2, c);
-  add_virtual_offset(obj_5, c);
-  unsigned obj_2 = c->pop_pack(false);
+  ప్రారంభం_object("2", 2, c);
+  కూడు_virtual_స్థానభ్రంశం(obj_5, c);
+  గుర్తులేని obj_2 = c->తీయి_pack(అబద్ధం);
 
   // obj 1
-  start_object("1", 1, c);
-  add_offset(obj_2, c);
-  add_offset(obj_3, c);
-  add_offset(obj_4, c);
-  c->pop_pack(false);
+  ప్రారంభం_object("1", 1, c);
+  కూడు_స్థానభ్రంశం(obj_2, c);
+  కూడు_స్థానభ్రంశం(obj_3, c);
+  కూడు_స్థానభ్రంశం(obj_4, c);
+  c->తీయి_pack(అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_overflow (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_అధికప్రవాహం (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_1 = add_object (large_string.c_str(), 10000, c);
-  unsigned obj_2 = add_object (large_string.c_str(), 20000, c);
-  unsigned obj_3 = add_object (large_string.c_str(), 50000, c);
+  గుర్తులేని obj_1 = కూడు_object (large_string.c_str(), 10000, c);
+  గుర్తులేని obj_2 = కూడు_object (large_string.c_str(), 20000, c);
+  గుర్తులేని obj_3 = కూడు_object (large_string.c_str(), 50000, c);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_1, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("abc", 3, c);
+  కూడు_స్థానభ్రంశం (obj_3, c);
+  కూడు_స్థానభ్రంశం (obj_2, c);
+  కూడు_స్థానభ్రంశం (obj_1, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_priority_overflow (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_ప్రాధాన్యత_అధికప్రవాహం (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_e = add_object ("e", 1, c);
-  unsigned obj_d = add_object ("d", 1, c);
+  గుర్తులేని obj_e = కూడు_object ("e", 1, c);
+  గుర్తులేని obj_d = కూడు_object ("d", 1, c);
 
-  start_object (large_string.c_str (), 50000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 50000, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 20000, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 20000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_offset (obj_c, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_priority_overflow_expected (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_ప్రాధాన్యత_అధికప్రవాహం_expected (hb_serialize_context_t* c)
 {
   std::string large_string(50000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_e = add_object ("e", 1, c);
+  గుర్తులేని obj_e = కూడు_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 50000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 50000, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  unsigned obj_d = add_object ("d", 1, c);
+  గుర్తులేని obj_d = కూడు_object ("d", 1, c);
 
-  start_object (large_string.c_str (), 20000, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 20000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_offset (obj_c, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
 
-static void
-populate_serializer_with_dedup_overflow (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_dedup_అధికప్రవాహం (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_1 = add_object ("def", 3, c);
+  గుర్తులేని obj_1 = కూడు_object ("def", 3, c);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_1, c);
-  unsigned obj_2 = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_1, c);
+  గుర్తులేని obj_2 = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_2, c);
-  add_offset (obj_1, c);
-  c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 10000, c);
+  కూడు_స్థానభ్రంశం (obj_2, c);
+  కూడు_స్థానభ్రంశం (obj_1, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_multiple_dedup_overflow (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_గుణిజం_dedup_అధికప్రవాహం (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned leaf = add_object("def", 3, c);
+  గుర్తులేని ఆకు = కూడు_object("def", 3, c);
 
-  constexpr unsigned num_mid_nodes = 20;
-  unsigned mid_nodes[num_mid_nodes];
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
-    start_object(large_string.c_str(), 10000 + i, c);
-    add_offset(leaf, c);
-    mid_nodes[i] = c->pop_pack(false);
+  constexpr గుర్తులేని అంకె_mid_nodes = 20;
+  గుర్తులేని mid_nodes[అంకె_mid_nodes];
+  కొరకు (గుర్తులేని i = 0; i < అంకె_mid_nodes; i++) {
+    ప్రారంభం_object(large_string.c_str(), 10000 + i, c);
+    కూడు_స్థానభ్రంశం(ఆకు, c);
+    mid_nodes[i] = c->తీయి_pack(అబద్ధం);
   }
 
-  start_object("abc", 3, c);
-  for (unsigned i = 0; i < num_mid_nodes; i++) {
-    add_wide_offset(mid_nodes[i], c);
+  ప్రారంభం_object("abc", 3, c);
+  కొరకు (గుర్తులేని i = 0; i < అంకె_mid_nodes; i++) {
+    కూడు_wide_స్థానభ్రంశం(mid_nodes[i], c);
   }
-  c->pop_pack(false);
+  c->తీయి_pack(అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_isolation_అధికప్రవాహం (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_4 = add_object ("4", 1, c);
+  గుర్తులేని obj_4 = కూడు_object ("4", 1, c);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_4, c);
+  గుర్తులేని obj_3 = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_4, c);
-  unsigned obj_2 = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 10000, c);
+  కూడు_స్థానభ్రంశం (obj_4, c);
+  గుర్తులేని obj_2 = c->తీయి_pack (అబద్ధం);
 
-  start_object ("1", 1, c);
-  add_wide_offset (obj_3, c);
-  add_offset (obj_2, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("1", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_3, c);
+  కూడు_స్థానభ్రంశం (obj_2, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow_complex (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_isolation_అధికప్రవాహం_complex (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_f = add_object ("f", 1, c);
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
 
-  start_object ("e", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object ("e", 1, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object ("d", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object ("d", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d, c);
-  unsigned obj_h = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_h = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_c, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  కూడు_స్థానభ్రంశం (obj_h, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_d, c);
-  unsigned obj_g = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 10000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_g = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 11000, c);
-  add_offset (obj_d, c);
-  unsigned obj_i = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 11000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_i = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_offset (obj_g, c);
-  add_offset (obj_i, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_స్థానభ్రంశం (obj_g, c);
+  కూడు_స్థానభ్రంశం (obj_i, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow_complex_expected (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_isolation_అధికప్రవాహం_complex_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
 
   // space 1
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  గుర్తులేని obj_f_ప్రధానసంఖ్య = కూడు_object ("f", 1, c);
 
-  start_object ("e", 1, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_e_prime = c->pop_pack (false);
+  ప్రారంభం_object ("e", 1, c);
+  కూడు_స్థానభ్రంశం (obj_f_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_e_ప్రధానసంఖ్య = c->తీయి_pack (అబద్ధం);
 
-  start_object ("d", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_d_prime = c->pop_pack (false);
+  ప్రారంభం_object ("d", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_d_ప్రధానసంఖ్య = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d_prime, c);
-  unsigned obj_h = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_d_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_h = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_c, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  కూడు_స్థానభ్రంశం (obj_h, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
   // space 0
 
-  unsigned obj_f = add_object ("f", 1, c);
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
 
-  start_object ("e", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object ("e", 1, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
 
-  start_object ("d", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object ("d", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 11000, c);
-  add_offset (obj_d, c);
-  unsigned obj_i = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 11000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_i = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 10000, c);
-  add_offset (obj_d, c);
-  unsigned obj_g = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 10000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_g = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_offset (obj_g, c);
-  add_offset (obj_i, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_స్థానభ్రంశం (obj_g, c);
+  కూడు_స్థానభ్రంశం (obj_i, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_isolation_overflow_spaces (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_isolation_అధికప్రవాహం_spaces (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_d = add_object ("f", 1, c);
-  unsigned obj_e = add_object ("f", 1, c);
+  గుర్తులేని obj_d = కూడు_object ("f", 1, c);
+  గుర్తులేని obj_e = కూడు_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack ();
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack ();
 
-  start_object (large_string.c_str(), 60000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack ();
+  ప్రారంభం_object (large_string.c_str(), 60000, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack ();
 
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack ();
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack ();
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_repack_last (hb_serialize_context_t* c, bool with_overflow)
+స్థిర శూన్య
+populate_serializer_with_repack_చివరి (hb_serialize_context_t* c, తార్కిక with_అధికప్రవాహం)
 {
   std::string large_string(70000, 'c');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
   c->push();
 
   // Obj E
-  unsigned obj_e_1, obj_e_2;
-  if (with_overflow) {
-    obj_e_1 = add_object("a", 1, c);
+  గుర్తులేని obj_e_1, obj_e_2;
+  ఒకవేళ (with_అధికప్రవాహం) {
+    obj_e_1 = కూడు_object("a", 1, c);
     obj_e_2 = obj_e_1;
-  } else {
-    obj_e_2 = add_object("a", 1, c);
+  } లేకపోతే {
+    obj_e_2 = కూడు_object("a", 1, c);
   }
 
   // Obj D
   c->push();
-  add_offset(obj_e_2, c);
+  కూడు_స్థానభ్రంశం(obj_e_2, c);
   extend(large_string.c_str(), 30000, c);
-  unsigned obj_d = c->pop_pack(false);
+  గుర్తులేని obj_d = c->తీయి_pack(అబద్ధం);
 
-  add_offset(obj_d, c);
-  hb_always_assert(c->last_added_child_index() == obj_d);
+  కూడు_స్థానభ్రంశం(obj_d, c);
+  hb_always_assert(c->చివరి_added_బిడ్డ_సూచీ() == obj_d);
 
-  if (!with_overflow) {
-    obj_e_1 = add_object("a", 1, c);
+  ఒకవేళ (!with_అధికప్రవాహం) {
+    obj_e_1 = కూడు_object("a", 1, c);
   }
 
   // Obj C
   c->push();
-  add_offset(obj_e_1, c);
+  కూడు_స్థానభ్రంశం(obj_e_1, c);
   extend(large_string.c_str(), 40000, c);
-  unsigned obj_c = c->pop_pack(false);
+  గుర్తులేని obj_c = c->తీయి_pack(అబద్ధం);
 
-  add_offset(obj_c, c);
+  కూడు_స్థానభ్రంశం(obj_c, c);
 
   // Obj B
-  unsigned obj_b = add_object("b", 1, c);
-  add_offset(obj_b, c);
+  గుర్తులేని obj_b = కూడు_object("b", 1, c);
+  కూడు_స్థానభ్రంశం(obj_b, c);
 
   // Obj A
-  c->repack_last(obj_d);
-  c->pop_pack(false);
+  c->repack_చివరి(obj_d);
+  c->తీయి_pack(అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_spaces (hb_serialize_context_t* c, bool with_overflow)
+స్థిర శూన్య
+populate_serializer_spaces (hb_serialize_context_t* c, తార్కిక with_అధికప్రవాహం)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_i;
+  గుర్తులేని obj_i;
 
-  if (with_overflow)
-    obj_i = add_object ("i", 1, c);
+  ఒకవేళ (with_అధికప్రవాహం)
+    obj_i = కూడు_object ("i", 1, c);
 
   // Space 2
-  unsigned obj_h = add_object ("h", 1, c);
+  గుర్తులేని obj_h = కూడు_object ("h", 1, c);
 
-  start_object (large_string.c_str(), 30000, c);
-  add_offset (obj_h, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 30000, c);
+  కూడు_స్థానభ్రంశం (obj_h, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
   // Space 1
-  if (!with_overflow)
-    obj_i = add_object ("i", 1, c);
+  ఒకవేళ (!with_అధికప్రవాహం)
+    obj_i = కూడు_object ("i", 1, c);
 
-  start_object (large_string.c_str(), 30000, c);
-  add_offset (obj_i, c);
-  unsigned obj_g = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 30000, c);
+  కూడు_స్థానభ్రంశం (obj_i, c);
+  గుర్తులేని obj_g = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 30000, c);
-  add_offset (obj_i, c);
-  unsigned obj_f = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 30000, c);
+  కూడు_స్థానభ్రంశం (obj_i, c);
+  గుర్తులేని obj_f = c->తీయి_pack (అబద్ధం);
 
-  start_object ("d", 1, c);
-  add_offset (obj_g, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object ("d", 1, c);
+  కూడు_స్థానభ్రంశం (obj_g, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  కూడు_wide_స్థానభ్రంశం (obj_d, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_spaces_16bit_connection (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_g = add_object ("g", 1, c);
-  unsigned obj_h = add_object ("h", 1, c);
+  గుర్తులేని obj_g = కూడు_object ("g", 1, c);
+  గుర్తులేని obj_h = కూడు_object ("h", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_g, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_h, c);
-  unsigned obj_f = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_h, c);
+  గుర్తులేని obj_f = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object ("d", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object ("d", 1, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_e, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  కూడు_స్థానభ్రంశం (obj_h, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  కూడు_wide_స్థానభ్రంశం (obj_d, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_spaces_16bit_connection_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_g_prime = add_object ("g", 1, c);
+  గుర్తులేని obj_g_ప్రధానసంఖ్య = కూడు_object ("g", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g_prime, c);
-  unsigned obj_e_prime = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_g_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_e_ప్రధానసంఖ్య = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  unsigned obj_h_prime = add_object ("h", 1, c);
+  గుర్తులేని obj_h_ప్రధానసంఖ్య = కూడు_object ("h", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_h_prime, c);
-  unsigned obj_f = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_h_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_f = c->తీయి_pack (అబద్ధం);
 
-  start_object ("d", 1, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object ("d", 1, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  unsigned obj_g = add_object ("g", 1, c);
+  గుర్తులేని obj_g = కూడు_object ("g", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_g, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  unsigned obj_h = add_object ("h", 1, c);
+  గుర్తులేని obj_h = కూడు_object ("h", 1, c);
 
-  start_object ("b", 1, c);
-  add_offset (obj_e, c);
-  add_offset (obj_h, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  కూడు_స్థానభ్రంశం (obj_h, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  కూడు_wide_స్థానభ్రంశం (obj_d, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize ();
+  c->చివర_serialize ();
 }
 
-static void
-populate_serializer_short_and_wide_subgraph_root (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_short_and_wide_subgraph_మూలం (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_e = add_object ("e", 1, c);
+  గుర్తులేని obj_e = కూడు_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_c, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_c, c);
-  add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  కూడు_wide_స్థానభ్రంశం (obj_d, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_short_and_wide_subgraph_root_expected (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_short_and_wide_subgraph_మూలం_expected (hb_serialize_context_t* c)
 {
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_e_prime = add_object ("e", 1, c);
+  గుర్తులేని obj_e_ప్రధానసంఖ్య = కూడు_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e_prime, c);
-  unsigned obj_c_prime = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_e_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_c_ప్రధానసంఖ్య = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_c_prime, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_c_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  unsigned obj_e = add_object ("e", 1, c);
+  గుర్తులేని obj_e = కూడు_object ("e", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
 
-  start_object ("b", 1, c);
-  add_offset (obj_c, c);
-  add_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_c_prime, c);
-  add_wide_offset (obj_d, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c_ప్రధానసంఖ్య, c);
+  కూడు_wide_స్థానభ్రంశం (obj_d, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_split_spaces (hb_serialize_context_t* c)
-{
-  // Overflow needs to be resolved by splitting the single space
-  std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
-
-  unsigned obj_f = add_object ("f", 1, c);
-
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
-
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
-
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
-
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
-
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
-
-  c->end_serialize();
-}
-
-static void
-populate_serializer_with_split_spaces_2 (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_విభజించు_spaces (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_f = add_object ("f", 1, c);
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_split_spaces_expected (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_విభజించు_spaces_2 (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
-
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  unsigned obj_f = add_object ("f", 1, c);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_wide_offset (obj_b, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
-
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_split_spaces_expected_2 (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_విభజించు_spaces_expected (hb_serialize_context_t* c)
 {
   // Overflow needs to be resolved by splitting the single space
 
   std::string large_string(70000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
+
+  గుర్తులేని obj_f_ప్రధానసంఖ్య = కూడు_object ("f", 1, c);
+
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
+
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
+
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
+
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
+
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
+
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
+
+  c->చివర_serialize();
+}
+
+స్థిర శూన్య
+populate_serializer_with_విభజించు_spaces_expected_2 (hb_serialize_context_t* c)
+{
+  // Overflow needs to be resolved by splitting the single space
+
+  std::string large_string(70000, 'a');
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
   // Space 2
 
-  unsigned obj_f_double_prime = add_object ("f", 1, c);
+  గుర్తులేని obj_f_double_ప్రధానసంఖ్య = కూడు_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_double_prime, c);
-  unsigned obj_d_prime = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f_double_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_d_ప్రధానసంఖ్య = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d_prime, c);
-  unsigned obj_b_prime = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_d_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_b_ప్రధానసంఖ్య = c->తీయి_pack (అబద్ధం);
 
   // Space 1
 
-  unsigned obj_f_prime = add_object ("f", 1, c);
+  గుర్తులేని obj_f_ప్రధానసంఖ్య = కూడు_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f_prime, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f_ప్రధానసంఖ్య, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
   // Space 0
 
-  unsigned obj_f = add_object ("f", 1, c);
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
 
-  start_object (large_string.c_str(), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str(), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  // Root
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_wide_offset (obj_b_prime, c);
-  add_wide_offset (obj_c, c);
-  c->pop_pack (false);
+  //మూలం
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_wide_స్థానభ్రంశం (obj_b_ప్రధానసంఖ్య, c);
+  కూడు_wide_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_complex_2 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_5 = add_object ("mn", 2, c);
+  గుర్తులేని obj_5 = కూడు_object ("mn", 2, c);
 
-  unsigned obj_4 = add_object ("jkl", 3, c);
+  గుర్తులేని obj_4 = కూడు_object ("jkl", 3, c);
 
-  start_object ("ghi", 3, c);
-  add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  ప్రారంభం_object ("ghi", 3, c);
+  కూడు_స్థానభ్రంశం (obj_4, c);
+  గుర్తులేని obj_3 = c->తీయి_pack (అబద్ధం);
 
-  start_object ("def", 3, c);
-  add_offset (obj_3, c);
-  unsigned obj_2 = c->pop_pack (false);
+  ప్రారంభం_object ("def", 3, c);
+  కూడు_స్థానభ్రంశం (obj_3, c);
+  గుర్తులేని obj_2 = c->తీయి_pack (అబద్ధం);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_4, c);
-  add_offset (obj_5, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("abc", 3, c);
+  కూడు_స్థానభ్రంశం (obj_2, c);
+  కూడు_స్థానభ్రంశం (obj_4, c);
+  కూడు_స్థానభ్రంశం (obj_5, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_complex_3 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_6 = add_object ("opqrst", 6, c);
+  గుర్తులేని obj_6 = కూడు_object ("opqrst", 6, c);
 
-  unsigned obj_5 = add_object ("mn", 2, c);
+  గుర్తులేని obj_5 = కూడు_object ("mn", 2, c);
 
-  start_object ("jkl", 3, c);
-  add_offset (obj_6, c);
-  unsigned obj_4 = c->pop_pack (false);
+  ప్రారంభం_object ("jkl", 3, c);
+  కూడు_స్థానభ్రంశం (obj_6, c);
+  గుర్తులేని obj_4 = c->తీయి_pack (అబద్ధం);
 
-  start_object ("ghi", 3, c);
-  add_offset (obj_4, c);
-  unsigned obj_3 = c->pop_pack (false);
+  ప్రారంభం_object ("ghi", 3, c);
+  కూడు_స్థానభ్రంశం (obj_4, c);
+  గుర్తులేని obj_3 = c->తీయి_pack (అబద్ధం);
 
-  start_object ("def", 3, c);
-  add_offset (obj_3, c);
-  unsigned obj_2 = c->pop_pack (false);
+  ప్రారంభం_object ("def", 3, c);
+  కూడు_స్థానభ్రంశం (obj_3, c);
+  గుర్తులేని obj_2 = c->తీయి_pack (అబద్ధం);
 
-  start_object ("abc", 3, c);
-  add_offset (obj_2, c);
-  add_offset (obj_4, c);
-  add_offset (obj_5, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("abc", 3, c);
+  కూడు_స్థానభ్రంశం (obj_2, c);
+  కూడు_స్థానభ్రంశం (obj_4, c);
+  కూడు_స్థానభ్రంశం (obj_5, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_virtual_link (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_d = add_object ("d", 1, c);
+  గుర్తులేని obj_d = కూడు_object ("d", 1, c);
 
-  start_object ("b", 1, c);
-  add_offset (obj_d, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_స్థానభ్రంశం (obj_d, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("e", 1, c);
-  add_virtual_offset (obj_b, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object ("e", 1, c);
+  కూడు_virtual_స్థానభ్రంశం (obj_b, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object ("c", 1, c);
-  add_offset (obj_e, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object ("c", 1, c);
+  కూడు_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_offset (obj_b, c);
-  add_offset (obj_c, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_స్థానభ్రంశం (obj_b, c);
+  కూడు_స్థానభ్రంశం (obj_c, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_24_and_32_bit_offsets (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_24_and_32_బిట్టు_offsets (hb_serialize_context_t* c)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_f = add_object ("f", 1, c);
-  unsigned obj_g = add_object ("g", 1, c);
-  unsigned obj_j = add_object ("j", 1, c);
-  unsigned obj_k = add_object ("k", 1, c);
+  గుర్తులేని obj_f = కూడు_object ("f", 1, c);
+  గుర్తులేని obj_g = కూడు_object ("g", 1, c);
+  గుర్తులేని obj_j = కూడు_object ("j", 1, c);
+  గుర్తులేని obj_k = కూడు_object ("k", 1, c);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_f, c);
-  unsigned obj_c = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_f, c);
+  గుర్తులేని obj_c = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_g, c);
-  unsigned obj_d = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_g, c);
+  గుర్తులేని obj_d = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_j, c);
-  unsigned obj_h = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_j, c);
+  గుర్తులేని obj_h = c->తీయి_pack (అబద్ధం);
 
-  start_object (large_string.c_str (), 40000, c);
-  add_offset (obj_k, c);
-  unsigned obj_i = c->pop_pack (false);
+  ప్రారంభం_object (large_string.c_str (), 40000, c);
+  కూడు_స్థానభ్రంశం (obj_k, c);
+  గుర్తులేని obj_i = c->తీయి_pack (అబద్ధం);
 
-  start_object ("e", 1, c);
-  add_wide_offset (obj_h, c);
-  add_wide_offset (obj_i, c);
-  unsigned obj_e = c->pop_pack (false);
+  ప్రారంభం_object ("e", 1, c);
+  కూడు_wide_స్థానభ్రంశం (obj_h, c);
+  కూడు_wide_స్థానభ్రంశం (obj_i, c);
+  గుర్తులేని obj_e = c->తీయి_pack (అబద్ధం);
 
-  start_object ("b", 1, c);
-  add_24_offset (obj_c, c);
-  add_24_offset (obj_d, c);
-  add_24_offset (obj_e, c);
-  unsigned obj_b = c->pop_pack (false);
+  ప్రారంభం_object ("b", 1, c);
+  కూడు_24_స్థానభ్రంశం (obj_c, c);
+  కూడు_24_స్థానభ్రంశం (obj_d, c);
+  కూడు_24_స్థానభ్రంశం (obj_e, c);
+  గుర్తులేని obj_b = c->తీయి_pack (అబద్ధం);
 
-  start_object ("a", 1, c);
-  add_24_offset (obj_b, c);
-  c->pop_pack (false);
+  ప్రారంభం_object ("a", 1, c);
+  కూడు_24_స్థానభ్రంశం (obj_b, c);
+  c->తీయి_pack (అబద్ధం);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
+స్థిర శూన్య
 populate_serializer_with_extension_promotion (hb_serialize_context_t* c,
-                                              int num_extensions = 0,
-                                              bool shared_subtables = false,
-                                              bool version_1_2 = false)
+                                              పూర్ణాంకం అంకె_extensions = 0,
+                                              తార్కిక shared_subtables = అబద్ధం,
+                                              తార్కిక సంస్కరణ_1_2 = అబద్ధం)
 {
-  constexpr int num_lookups = 5;
-  constexpr int num_subtables = num_lookups * 2;
-  unsigned int lookups[num_lookups];
-  unsigned int subtables[num_subtables];
-  unsigned int extensions[num_subtables];
+  constexpr పూర్ణాంకం అంకె_lookups = 5;
+  constexpr పూర్ణాంకం అంకె_subtables = అంకె_lookups * 2;
+  గుర్తులేని పూర్ణాంకం lookups[అంకె_lookups];
+  గుర్తులేని పూర్ణాంకం subtables[అంకె_subtables];
+  గుర్తులేని పూర్ణాంకం extensions[అంకె_subtables];
 
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
 
-  for (int i = num_subtables - 1; i >= 0; i--)
-    subtables[i] = add_object(large_string.c_str (), 15000 + i, c);
+  కొరకు (పూర్ణాంకం i = అంకె_subtables - 1; i >= 0; i--)
+    subtables[i] = కూడు_object(large_string.c_str (), 15000 + i, c);
 
-  for (int i = num_subtables - 1;
-       i >= (num_lookups - num_extensions) * 2;
+  కొరకు (పూర్ణాంకం i = అంకె_subtables - 1;
+       i >= (అంకె_lookups - అంకె_extensions) * 2;
        i--)
   {
-    extensions[i] = add_extension (subtables[i], 5, c);
+    extensions[i] = కూడు_extension (subtables[i], 5, c);
   }
 
-  for (int i = num_lookups - 1; i >= 0; i--)
+  కొరకు (పూర్ణాంకం i = అంకె_lookups - 1; i >= 0; i--)
   {
-    bool is_ext = (i >= (num_lookups - num_extensions));
+    తార్కిక is_ext = (i >= (అంకె_lookups - అంకె_extensions));
 
-    start_lookup (is_ext ? (char) 7 : (char) 5,
+    ప్రారంభం_lookup (is_ext ? (అక్షరం) 7 : (అక్షరం) 5,
                   shared_subtables && i > 2 ? 3 : 2,
                   c);
 
-    if (is_ext) {
-      if (shared_subtables && i > 2) {
-        add_offset (extensions[i * 2 - 1], c);
+    ఒకవేళ (is_ext) {
+      ఒకవేళ (shared_subtables && i > 2) {
+        కూడు_స్థానభ్రంశం (extensions[i * 2 - 1], c);
       }
-      add_offset (extensions[i * 2], c);
-      add_offset (extensions[i * 2 + 1], c);
-    } else {
-      if (shared_subtables && i > 2) {
-        add_offset (subtables[i * 2 - 1], c);
+      కూడు_స్థానభ్రంశం (extensions[i * 2], c);
+      కూడు_స్థానభ్రంశం (extensions[i * 2 + 1], c);
+    } లేకపోతే {
+      ఒకవేళ (shared_subtables && i > 2) {
+        కూడు_స్థానభ్రంశం (subtables[i * 2 - 1], c);
       }
-      add_offset (subtables[i * 2], c);
-      add_offset (subtables[i * 2 + 1], c);
+      కూడు_స్థానభ్రంశం (subtables[i * 2], c);
+      కూడు_స్థానభ్రంశం (subtables[i * 2 + 1], c);
     }
 
-    lookups[i] = finish_lookup (c);
+    lookups[i] = ముగింపు_lookup (c);
   }
 
-  unsigned lookup_list = version_1_2
-                         ? add_lookup_list_1_2 (lookups, num_lookups, c)
-                         : add_lookup_list (lookups, num_lookups, c);
+  గుర్తులేని lookup_list = సంస్కరణ_1_2
+                         ? కూడు_lookup_list_1_2 (lookups, అంకె_lookups, c)
+                         : కూడు_lookup_list (lookups, అంకె_lookups, c);
 
-  if (version_1_2)
-    add_gsubgpos_header_1_2 (lookup_list, c);
-  else
-    add_gsubgpos_header (lookup_list, c);
+  ఒకవేళ (సంస్కరణ_1_2)
+    కూడు_gsubgpos_శీర్షిక_1_2 (lookup_list, c);
+  లేకపోతే
+    కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-template<int num_pair_pos_1, int num_pair_set>
-static void
+మూస<పూర్ణాంకం అంకె_pair_pos_1, పూర్ణాంకం అంకె_pair_సమితి>
+స్థిర శూన్య
 populate_serializer_with_large_pair_pos_1 (hb_serialize_context_t* c,
-                                           bool as_extension = false)
+                                           తార్కిక as_extension = అబద్ధం)
 {
   std::string large_string(60000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  constexpr int total_pair_set = num_pair_pos_1 * num_pair_set;
-  unsigned pair_set[total_pair_set];
-  unsigned coverage[num_pair_pos_1];
-  unsigned pair_pos_1[num_pair_pos_1];
+  constexpr పూర్ణాంకం మొత్తం_pair_సమితి = అంకె_pair_pos_1 * అంకె_pair_సమితి;
+  గుర్తులేని pair_సమితి_2[మొత్తం_pair_సమితి];
+  గుర్తులేని coverage[అంకె_pair_pos_1];
+  గుర్తులేని pair_pos_1[అంకె_pair_pos_1];
 
-  for (int i = num_pair_pos_1 - 1; i >= 0; i--)
+  కొరకు (పూర్ణాంకం i = అంకె_pair_pos_1 - 1; i >= 0; i--)
   {
-    for (int j = (i + 1) * num_pair_set - 1; j >= i * num_pair_set; j--)
-      pair_set[j] = add_object (large_string.c_str (), 30000 + j, c);
+    కొరకు (పూర్ణాంకం j = (i + 1) * అంకె_pair_సమితి - 1; j >= i * అంకె_pair_సమితి; j--)
+      pair_సమితి_2[j] = కూడు_object (large_string.c_str (), 30000 + j, c);
 
-    coverage[i] = add_coverage (i * num_pair_set,
-                                (i + 1) * num_pair_set - 1, c);
+    coverage[i] = కూడు_coverage (i * అంకె_pair_సమితి,
+                                (i + 1) * అంకె_pair_సమితి - 1, c);
 
-    pair_pos_1[i] = add_pair_pos_1 (&pair_set[i * num_pair_set],
-                                    num_pair_set,
+    pair_pos_1[i] = కూడు_pair_pos_1 (&pair_సమితి_2[i * అంకె_pair_సమితి],
+                                    అంకె_pair_సమితి,
                                     coverage[i],
                                     c);
   }
 
-  unsigned pair_pos_2 = add_object (large_string.c_str(), 200, c);
+  గుర్తులేని pair_pos_2 = కూడు_object (large_string.c_str(), 200, c);
 
-  if (as_extension) {
-    pair_pos_2 = add_extension (pair_pos_2, 2, c);
-    for (int i = num_pair_pos_1 - 1; i >= 0; i--)
-      pair_pos_1[i] = add_extension (pair_pos_1[i], 2, c);
+  ఒకవేళ (as_extension) {
+    pair_pos_2 = కూడు_extension (pair_pos_2, 2, c);
+    కొరకు (పూర్ణాంకం i = అంకె_pair_pos_1 - 1; i >= 0; i--)
+      pair_pos_1[i] = కూడు_extension (pair_pos_1[i], 2, c);
   }
 
-  start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_1, c);
+  ప్రారంభం_lookup (as_extension ? 9 : 2, 1 + అంకె_pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_1; i++)
-    add_offset (pair_pos_1[i], c);
-  add_offset (pair_pos_2, c);
+  కొరకు (పూర్ణాంకం i = 0; i < అంకె_pair_pos_1; i++)
+    కూడు_స్థానభ్రంశం (pair_pos_1[i], c);
+  కూడు_స్థానభ్రంశం (pair_pos_2, c);
 
-  unsigned lookup = finish_lookup (c);
+  గుర్తులేని lookup = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-template<int num_pair_pos_2, int num_class_1, int num_class_2>
-static void
+మూస<పూర్ణాంకం అంకె_pair_pos_2, పూర్ణాంకం అంకె_class_1, పూర్ణాంకం అంకె_class_2>
+స్థిర శూన్య
 populate_serializer_with_large_pair_pos_2 (hb_serialize_context_t* c,
-                                           bool as_extension = false,
-                                           bool with_device_tables = false,
-                                           bool extra_table = true)
+                                           తార్కిక as_extension = అబద్ధం,
+                                           తార్కిక with_device_tables = అబద్ధం,
+                                           తార్కిక extra_పట్టిక = నిజం)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned coverage[num_pair_pos_2];
-  unsigned class_def_1[num_pair_pos_2];
-  unsigned class_def_2[num_pair_pos_2];
-  unsigned pair_pos_2[num_pair_pos_2];
+  గుర్తులేని coverage[అంకె_pair_pos_2];
+  గుర్తులేని class_def_1[అంకె_pair_pos_2];
+  గుర్తులేని class_def_2[అంకె_pair_pos_2];
+  గుర్తులేని pair_pos_2[అంకె_pair_pos_2];
 
-  unsigned* device_tables = (unsigned*) calloc (num_pair_pos_2 * num_class_1 * num_class_2,
-                                                sizeof(unsigned));
+  గుర్తులేని* device_tables = (గుర్తులేని*) సున్నా_జ్ఞాపకం_ఇవ్వు (అంకె_pair_pos_2 * అంకె_class_1 * అంకె_class_2,
+                                                పరిమాణం(గుర్తులేని));
 
   // Total glyphs = num_class_1 * num_pair_pos_2
-  for (int i = num_pair_pos_2 - 1; i >= 0; i--)
+  కొరకు (పూర్ణాంకం i = అంకె_pair_pos_2 - 1; i >= 0; i--)
   {
-    unsigned start_glyph = 5 + i * num_class_1;
-    if (num_class_2 >= num_class_1)
+    గుర్తులేని ప్రారంభం_glyph = 5 + i * అంకె_class_1;
+    ఒకవేళ (అంకె_class_2 >= అంకె_class_1)
     {
-      class_def_2[i] = add_class_def (11,
-                                      10 + num_class_2, c);
-      class_def_1[i] = add_class_def (start_glyph + 1,
-                                      start_glyph + num_class_1,
+      class_def_2[i] = కూడు_class_def (11,
+                                      10 + అంకె_class_2, c);
+      class_def_1[i] = కూడు_class_def (ప్రారంభం_glyph + 1,
+                                      ప్రారంభం_glyph + అంకె_class_1,
                                       c);
-    } else {
-      class_def_1[i] = add_class_def (start_glyph + 1,
-                                      start_glyph + num_class_1,
+    } లేకపోతే {
+      class_def_1[i] = కూడు_class_def (ప్రారంభం_glyph + 1,
+                                      ప్రారంభం_glyph + అంకె_class_1,
                                       c);
-      class_def_2[i] = add_class_def (11,
-                                      10 + num_class_2, c);
+      class_def_2[i] = కూడు_class_def (11,
+                                      10 + అంకె_class_2, c);
     }
 
-    coverage[i] = add_coverage (start_glyph,
-                                start_glyph + num_class_1 - 1,
+    coverage[i] = కూడు_coverage (ప్రారంభం_glyph,
+                                ప్రారంభం_glyph + అంకె_class_1 - 1,
                                 c);
 
-    if (with_device_tables)
+    ఒకవేళ (with_device_tables)
     {
-      for(int j = (i + 1) * num_class_1 * num_class_2 - 1;
-          j >= i * num_class_1 * num_class_2;
+      కొరకు(పూర్ణాంకం j = (i + 1) * అంకె_class_1 * అంకె_class_2 - 1;
+          j >= i * అంకె_class_1 * అంకె_class_2;
           j--)
       {
-        uint8_t table[] = {
+        uint8_t పట్టిక[] = {
           (uint8_t) ((j >> 8) & 0xFF),
           (uint8_t) (j & 0xFF),
         };
-        device_tables[j] = add_object ((char*) table, 2, c);
+        device_tables[j] = కూడు_object ((అక్షరం*) పట్టిక, 2, c);
       }
     }
 
-    pair_pos_2[i] = add_pair_pos_2 (1 + i * num_class_1,
+    pair_pos_2[i] = కూడు_pair_pos_2 (1 + i * అంకె_class_1,
                                     coverage[i],
-                                    class_def_1[i], num_class_1,
-                                    class_def_2[i], num_class_2,
+                                    class_def_1[i], అంకె_class_1,
+                                    class_def_2[i], అంకె_class_2,
                                     with_device_tables
-                                    ? &device_tables[i * num_class_1 * num_class_2]
-                                    : nullptr,
+                                    ? &device_tables[i * అంకె_class_1 * అంకె_class_2]
+                                    : శూన్యసూచిక,
                                     c);
   }
 
 
-  unsigned pair_pos_1 = 0;
-  if (extra_table) pair_pos_1 = add_object (large_string.c_str(), 100000, c);
+  గుర్తులేని pair_pos_1 = 0;
+  ఒకవేళ (extra_పట్టిక) pair_pos_1 = కూడు_object (large_string.c_str(), 100000, c);
 
-  if (as_extension) {
-    for (int i = num_pair_pos_2 - 1; i >= 0; i--)
-      pair_pos_2[i] = add_extension (pair_pos_2[i], 2, c);
+  ఒకవేళ (as_extension) {
+    కొరకు (పూర్ణాంకం i = అంకె_pair_pos_2 - 1; i >= 0; i--)
+      pair_pos_2[i] = కూడు_extension (pair_pos_2[i], 2, c);
 
-    if (extra_table)
-      pair_pos_1 = add_extension (pair_pos_1, 2, c);
+    ఒకవేళ (extra_పట్టిక)
+      pair_pos_1 = కూడు_extension (pair_pos_1, 2, c);
   }
 
-  start_lookup (as_extension ? 9 : 2, 1 + num_pair_pos_2, c);
+  ప్రారంభం_lookup (as_extension ? 9 : 2, 1 + అంకె_pair_pos_2, c);
 
-  if (extra_table)
-    add_offset (pair_pos_1, c);
+  ఒకవేళ (extra_పట్టిక)
+    కూడు_స్థానభ్రంశం (pair_pos_1, c);
 
-  for (int i = 0; i < num_pair_pos_2; i++)
-    add_offset (pair_pos_2[i], c);
+  కొరకు (పూర్ణాంకం i = 0; i < అంకె_pair_pos_2; i++)
+    కూడు_స్థానభ్రంశం (pair_pos_2[i], c);
 
-  unsigned lookup = finish_lookup (c);
+  గుర్తులేని lookup = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 
-  free (device_tables);
+  విడుదల (device_tables);
 }
 
-template<int mark_count,
-    int class_count,
-    int base_count,
-    int table_count>
-static void
-populate_serializer_with_large_mark_base_pos_1 (hb_serialize_context_t* c)
+మూస<పూర్ణాంకం mark_లెక్క,
+    పూర్ణాంకం class_లెక్క,
+    పూర్ణాంకం పునాది_లెక్క,
+    పూర్ణాంకం పట్టిక_లెక్క_2>
+స్థిర శూన్య
+populate_serializer_with_large_mark_పునాది_pos_1 (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  MarkBasePosBuffers<mark_count, class_count, base_count, table_count> buffers (c);
+  Mark_పునాది_Pos_Buffers<mark_లెక్క, class_లెక్క, పునాది_లెక్క, పట్టిక_లెక్క_2> buffers (c);
 
-  unsigned mark_base_pos[table_count];
-  for (unsigned i = 0; i < table_count; i++)
-    mark_base_pos[i] = buffers.create_mark_base_pos_1 (i, c);
+  గుర్తులేని mark_పునాది_pos[పట్టిక_లెక్క_2];
+  కొరకు (గుర్తులేని i = 0; i < పట్టిక_లెక్క_2; i++)
+    mark_పునాది_pos[i] = buffers.create_mark_పునాది_pos_1 (i, c);
 
-  for (int i = 0; i < table_count; i++)
-    mark_base_pos[i] = add_extension (mark_base_pos[i], 4, c);
+  కొరకు (పూర్ణాంకం i = 0; i < పట్టిక_లెక్క_2; i++)
+    mark_పునాది_pos[i] = కూడు_extension (mark_పునాది_pos[i], 4, c);
 
-  start_lookup (9, table_count, c);
+  ప్రారంభం_lookup (9, పట్టిక_లెక్క_2, c);
 
-  for (int i = 0; i < table_count; i++)
-    add_offset (mark_base_pos[i], c);
+  కొరకు (పూర్ణాంకం i = 0; i < పట్టిక_లెక్క_2; i++)
+    కూడు_స్థానభ్రంశం (mark_పునాది_pos[i], c);
 
-  unsigned lookup = finish_lookup (c);
+  గుర్తులేని lookup = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-template<unsigned LigSubstCount,
-         unsigned LigaSetCount,
-         unsigned LigaPerSetCount,
-         unsigned LigaSize>
-static void populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
-                                                    bool sequential_liga_sets,
-                                                    bool shared,
-                                                    unsigned *liga_subst_id,
-                                                    bool unique_lig_str = false)
+మూస<గుర్తులేని Lig_Subst_లెక్క,
+         గుర్తులేని Liga_సమితి_లెక్క,
+         గుర్తులేని Liga_చొప్పున_సమితి_లెక్క,
+         గుర్తులేని Liga_కొలత>
+స్థిర శూన్య populate_serializer_with_large_ligsubst(hb_serialize_context_t* c,
+                                                    తార్కిక sequential_liga_sets,
+                                                    తార్కిక shared,
+                                                    గుర్తులేని *liga_subst_id,
+                                                    తార్కిక unique_lig_str = అబద్ధం)
 {
-  char ch = 'a';
+  అక్షరం ch = 'a';
 
-  unsigned liga[LigaSetCount * LigaPerSetCount];
-  unsigned liga_set[LigaSetCount];
-  for (unsigned l = 0; l < LigSubstCount; l++) {
-    unsigned coverage_start = 0;
-    unsigned coverage_end = LigaSetCount - 1;
-    if (sequential_liga_sets) {
-      coverage_start = l * LigaSetCount;
-      coverage_end = (l + 1) * LigaSetCount - 1;
+  గుర్తులేని liga[Liga_సమితి_లెక్క * Liga_చొప్పున_సమితి_లెక్క];
+  గుర్తులేని liga_సమితి[Liga_సమితి_లెక్క];
+  కొరకు (గుర్తులేని l = 0; l < Lig_Subst_లెక్క; l++) {
+    గుర్తులేని coverage_ప్రారంభం = 0;
+    గుర్తులేని coverage_చివర = Liga_సమితి_లెక్క - 1;
+    ఒకవేళ (sequential_liga_sets) {
+      coverage_ప్రారంభం = l * Liga_సమితి_లెక్క;
+      coverage_చివర = (l + 1) * Liga_సమితి_లెక్క - 1;
     }
-    unsigned coverage = add_coverage(coverage_start, coverage_end, c, shared);
+    గుర్తులేని coverage = కూడు_coverage(coverage_ప్రారంభం, coverage_చివర, c, shared);
 
-    for (unsigned i = 0; i < LigaSetCount; i++) {
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+    కొరకు (గుర్తులేని i = 0; i < Liga_సమితి_లెక్క; i++) {
+      కొరకు (గుర్తులేని j = 0; j < Liga_చొప్పున_సమితి_లెక్క; j++)
       {
         std::string large_string(100000, ch);
-        start_object (large_string.c_str(), LigaSize, c);
-        if (unique_lig_str)
+        ప్రారంభం_object (large_string.c_str(), Liga_కొలత, c);
+        ఒకవేళ (unique_lig_str)
           ch += 1;
-        add_virtual_offset(coverage, c);
-        liga[i * LigaPerSetCount + j] = c->pop_pack (shared);
+        కూడు_virtual_స్థానభ్రంశం(coverage, c);
+        liga[i * Liga_చొప్పున_సమితి_లెక్క + j] = c->తీయి_pack (shared);
       }
 
-      add_liga_set_header(LigaPerSetCount, c);
-      add_virtual_offset(coverage, c);
-      for (unsigned j = 0; j < LigaPerSetCount; j++)
+      కూడు_liga_సమితి_శీర్షిక(Liga_చొప్పున_సమితి_లెక్క, c);
+      కూడు_virtual_స్థానభ్రంశం(coverage, c);
+      కొరకు (గుర్తులేని j = 0; j < Liga_చొప్పున_సమితి_లెక్క; j++)
       {
-        add_offset(liga[i * LigaPerSetCount + j], c);
+        కూడు_స్థానభ్రంశం(liga[i * Liga_చొప్పున_సమితి_లెక్క + j], c);
       }
 
-      liga_set[i] = c->pop_pack(shared);
+      liga_సమితి[i] = c->తీయి_pack(shared);
     }
 
-    add_liga_header(coverage, LigaSetCount, c);
-    for (unsigned i = 0; i < LigaSetCount; i++)
+    కూడు_liga_శీర్షిక(coverage, Liga_సమితి_లెక్క, c);
+    కొరకు (గుర్తులేని i = 0; i < Liga_సమితి_లెక్క; i++)
     {
-      add_offset(liga_set[i], c);
+      కూడు_స్థానభ్రంశం(liga_సమితి[i], c);
     }
 
-    liga_subst_id[l] = c->pop_pack(shared);
+    liga_subst_id[l] = c->తీయి_pack(shared);
   }
 
-  for (unsigned l = 0; l < LigSubstCount; l++) {
-    liga_subst_id[l] = add_extension(liga_subst_id[l], 4, c);
+  కొరకు (గుర్తులేని l = 0; l < Lig_Subst_లెక్క; l++) {
+    liga_subst_id[l] = కూడు_extension(liga_subst_id[l], 4, c);
   }
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
-         unsigned liga_size>
-static void
-populate_serializer_with_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
+మూస<గుర్తులేని liga_subst_లెక్క,
+         గుర్తులేని liga_సమితి_లెక్క,
+         గుర్తులేని liga_చొప్పున_సమితి_లెక్క,
+         గుర్తులేని liga_కొలత>
+స్థిర శూన్య
+populate_serializer_with_large_liga (hb_serialize_context_t* c, తార్కిక sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned liga_subst[liga_subst_count];
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, false, liga_subst);
+  గుర్తులేని liga_subst[liga_subst_లెక్క];
+  populate_serializer_with_large_ligsubst<liga_subst_లెక్క, liga_సమితి_లెక్క, liga_చొప్పున_సమితి_లెక్క, liga_కొలత>(c, sequential_liga_sets, అబద్ధం, liga_subst);
 
-  start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
-    add_offset(liga_subst[l], c);
+  ప్రారంభం_lookup (7, liga_subst_లెక్క, c);
+  కొరకు (గుర్తులేని l = 0; l < liga_subst_లెక్క; l++) {
+    కూడు_స్థానభ్రంశం(liga_subst[l], c);
   }
 
-  unsigned lookup = finish_lookup (c);
+  గుర్తులేని lookup = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void
-populate_serializer_with_large_liga_overlapping_clone_result (hb_serialize_context_t* c)
+స్థిర శూన్య
+populate_serializer_with_large_liga_overlapping_clone_ఫలితం (hb_serialize_context_t* c)
 {
   std::string large_string(100000, 'a');
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  constexpr unsigned liga_size = 30000;
+  constexpr గుర్తులేని liga_కొలత = 30000;
 
-  unsigned liga[6];
-  unsigned liga_subst[3];
-  unsigned liga_set[2];
+  గుర్తులేని liga[6];
+  గుర్తులేని liga_subst[3];
+  గుర్తులేని liga_సమితి[2];
 
   // LigaSubst 3
-  unsigned coverage = add_coverage(1, 1, c);
-  for (int i = 1; i >= 0; i--) {
-    start_object (large_string.c_str(), liga_size, c);
-    add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+  గుర్తులేని coverage = కూడు_coverage(1, 1, c);
+  కొరకు (పూర్ణాంకం i = 1; i >= 0; i--) {
+    ప్రారంభం_object (large_string.c_str(), liga_కొలత, c);
+    కూడు_virtual_స్థానభ్రంశం(coverage, c);
+    liga[i] = c->తీయి_pack (అబద్ధం);
   }
 
-  add_liga_set_header(2, c);
-  add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
-    add_offset(liga[i], c);
-  liga_set[0] = c->pop_pack(false);
+  కూడు_liga_సమితి_శీర్షిక(2, c);
+  కూడు_virtual_స్థానభ్రంశం(coverage, c);
+  కొరకు (గుర్తులేని i = 0; i < 2; i++)
+    కూడు_స్థానభ్రంశం(liga[i], c);
+  liga_సమితి[0] = c->తీయి_pack(అబద్ధం);
 
-  add_liga_header(coverage, 1, c);
-  add_offset(liga_set[0], c);
-  liga_subst[2] = c->pop_pack(false);
+  కూడు_liga_శీర్షిక(coverage, 1, c);
+  కూడు_స్థానభ్రంశం(liga_సమితి[0], c);
+  liga_subst[2] = c->తీయి_pack(అబద్ధం);
 
   // LigaSubst 2
-  coverage = add_coverage(0, 1, c);
-  for (int i = 1; i >= 0; i--) {
-    start_object (large_string.c_str(), liga_size, c);
-    add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+  coverage = కూడు_coverage(0, 1, c);
+  కొరకు (పూర్ణాంకం i = 1; i >= 0; i--) {
+    ప్రారంభం_object (large_string.c_str(), liga_కొలత, c);
+    కూడు_virtual_స్థానభ్రంశం(coverage, c);
+    liga[i] = c->తీయి_pack (అబద్ధం);
   }
 
-  add_liga_set_header(1, c);
-  add_virtual_offset(coverage, c);
-  add_offset(liga[1], c);
-  liga_set[1] = c->pop_pack(false);
+  కూడు_liga_సమితి_శీర్షిక(1, c);
+  కూడు_virtual_స్థానభ్రంశం(coverage, c);
+  కూడు_స్థానభ్రంశం(liga[1], c);
+  liga_సమితి[1] = c->తీయి_pack(అబద్ధం);
 
-  add_liga_set_header(1, c);
-  add_virtual_offset(coverage, c);
-  add_offset(liga[0], c);
-  liga_set[0] = c->pop_pack(false);
+  కూడు_liga_సమితి_శీర్షిక(1, c);
+  కూడు_virtual_స్థానభ్రంశం(coverage, c);
+  కూడు_స్థానభ్రంశం(liga[0], c);
+  liga_సమితి[0] = c->తీయి_pack(అబద్ధం);
 
-  add_liga_header(coverage, 2, c);
-  add_offset(liga_set[0], c);
-  add_offset(liga_set[1], c);
-  liga_subst[1] = c->pop_pack(false);
+  కూడు_liga_శీర్షిక(coverage, 2, c);
+  కూడు_స్థానభ్రంశం(liga_సమితి[0], c);
+  కూడు_స్థానభ్రంశం(liga_సమితి[1], c);
+  liga_subst[1] = c->తీయి_pack(అబద్ధం);
 
   // LigaSubst 1
-  coverage = add_coverage(0, 0, c);
-  for (int i = 1; i >= 0; i--) {
-    start_object (large_string.c_str(), liga_size, c);
-    add_virtual_offset(coverage, c);
-    liga[i] = c->pop_pack (false);
+  coverage = కూడు_coverage(0, 0, c);
+  కొరకు (పూర్ణాంకం i = 1; i >= 0; i--) {
+    ప్రారంభం_object (large_string.c_str(), liga_కొలత, c);
+    కూడు_virtual_స్థానభ్రంశం(coverage, c);
+    liga[i] = c->తీయి_pack (అబద్ధం);
   }
 
-  add_liga_set_header(2, c);
-  add_virtual_offset(coverage, c);
-  for (unsigned i = 0; i < 2; i++)
-    add_offset(liga[i], c);
-  liga_set[0] = c->pop_pack(false);
+  కూడు_liga_సమితి_శీర్షిక(2, c);
+  కూడు_virtual_స్థానభ్రంశం(coverage, c);
+  కొరకు (గుర్తులేని i = 0; i < 2; i++)
+    కూడు_స్థానభ్రంశం(liga[i], c);
+  liga_సమితి[0] = c->తీయి_pack(అబద్ధం);
 
-  add_liga_header(coverage, 1, c);
-  add_offset(liga_set[0], c);
-  liga_subst[0] = c->pop_pack(false);
+  కూడు_liga_శీర్షిక(coverage, 1, c);
+  కూడు_స్థానభ్రంశం(liga_సమితి[0], c);
+  liga_subst[0] = c->తీయి_pack(అబద్ధం);
 
-  for (int l = 2; l >= 0; l--) {
-    liga_subst[l] = add_extension(liga_subst[l], 4, c);
+  కొరకు (పూర్ణాంకం l = 2; l >= 0; l--) {
+    liga_subst[l] = కూడు_extension(liga_subst[l], 4, c);
   }
 
-  start_lookup (7, 3, c);
-  for (unsigned l = 0; l < 3; l++) {
-    add_offset(liga_subst[l], c);
+  ప్రారంభం_lookup (7, 3, c);
+  కొరకు (గుర్తులేని l = 0; l < 3; l++) {
+    కూడు_స్థానభ్రంశం(liga_subst[l], c);
   }
 
-  unsigned lookup = finish_lookup (c);
+  గుర్తులేని lookup = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, c);
 
-  add_gsubgpos_header (lookup_list, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
-         unsigned liga_size>
-static void
-populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, bool sequential_liga_sets)
+మూస<గుర్తులేని liga_subst_లెక్క,
+         గుర్తులేని liga_సమితి_లెక్క,
+         గుర్తులేని liga_చొప్పున_సమితి_లెక్క,
+         గుర్తులేని liga_కొలత>
+స్థిర శూన్య
+populate_serializer_with_shared_large_liga (hb_serialize_context_t* c, తార్కిక sequential_liga_sets)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned lookups[2];
+  గుర్తులేని lookups[2];
   // Lookup
   // LigSubst: shared with another Lookup table, needs splitting
-  unsigned liga_subst_idx[liga_subst_count];
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, liga_subst_idx, true);
+  గుర్తులేని liga_subst_idx[liga_subst_లెక్క];
+  populate_serializer_with_large_ligsubst<liga_subst_లెక్క, liga_సమితి_లెక్క, liga_చొప్పున_సమితి_లెక్క, liga_కొలత>(c, sequential_liga_sets, నిజం, liga_subst_idx, నిజం);
 
-  start_lookup (7, liga_subst_count, c);
-  for (unsigned l = 0; l < liga_subst_count; l++) {
-    add_offset(liga_subst_idx[l], c);
+  ప్రారంభం_lookup (7, liga_subst_లెక్క, c);
+  కొరకు (గుర్తులేని l = 0; l < liga_subst_లెక్క; l++) {
+    కూడు_స్థానభ్రంశం(liga_subst_idx[l], c);
   }
 
-  lookups[0] = finish_lookup (c);
+  lookups[0] = ముగింపు_lookup (c);
 
   // Lookup with 2 LigSubst tables
-  unsigned liga_subst[liga_subst_count + 1];
+  గుర్తులేని liga_subst[liga_subst_లెక్క + 1];
   // LigSubst: small one, not shared, no split
-  populate_serializer_with_large_ligsubst<1, 1, 1, 10>(c, sequential_liga_sets, false, liga_subst);
+  populate_serializer_with_large_ligsubst<1, 1, 1, 10>(c, sequential_liga_sets, అబద్ధం, liga_subst);
 
   // LigSubst: shared, needs splitting
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, sequential_liga_sets, true, &liga_subst[1], true);
+  populate_serializer_with_large_ligsubst<liga_subst_లెక్క, liga_సమితి_లెక్క, liga_చొప్పున_సమితి_లెక్క, liga_కొలత>(c, sequential_liga_sets, నిజం, &liga_subst[1], నిజం);
 
-  start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
-    add_offset(liga_subst[l], c);
+  ప్రారంభం_lookup (7, liga_subst_లెక్క + 1, c);
+  కొరకు (గుర్తులేని l = 0; l <= liga_subst_లెక్క; l++) {
+    కూడు_స్థానభ్రంశం(liga_subst[l], c);
   }
 
-  lookups[1] = finish_lookup (c);
+  lookups[1] = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (lookups, 2, c);
-  add_gsubgpos_header (lookup_list, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (lookups, 2, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-template<unsigned liga_subst_count,
-         unsigned liga_set_count,
-         unsigned liga_per_set_count,
-         unsigned liga_size>
-static void
+మూస<గుర్తులేని liga_subst_లెక్క,
+         గుర్తులేని liga_సమితి_లెక్క,
+         గుర్తులేని liga_చొప్పున_సమితి_లెక్క,
+         గుర్తులేని liga_కొలత>
+స్థిర శూన్య
 populate_serializer_with_liga_shared_coverage (hb_serialize_context_t* c)
 {
-  c->start_serialize<char> ();
+  c->ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned liga_subst[liga_subst_count + 1];
+  గుర్తులేని liga_subst[liga_subst_లెక్క + 1];
   // LigSubst: small one, no split, coverage shared
-  populate_serializer_with_large_ligsubst<1, 6, 2, 10>(c, true, true, liga_subst, true);
+  populate_serializer_with_large_ligsubst<1, 6, 2, 10>(c, నిజం, నిజం, liga_subst, నిజం);
 
   // LigSubst: shared coverage, needs splitting
-  populate_serializer_with_large_ligsubst<liga_subst_count, liga_set_count, liga_per_set_count, liga_size>(c, true, true, &liga_subst[1], true);
+  populate_serializer_with_large_ligsubst<liga_subst_లెక్క, liga_సమితి_లెక్క, liga_చొప్పున_సమితి_లెక్క, liga_కొలత>(c, నిజం, నిజం, &liga_subst[1], నిజం);
 
-  start_lookup (7, liga_subst_count + 1, c);
-  for (unsigned l = 0; l <= liga_subst_count; l++) {
-    add_offset(liga_subst[l], c);
+  ప్రారంభం_lookup (7, liga_subst_లెక్క + 1, c);
+  కొరకు (గుర్తులేని l = 0; l <= liga_subst_లెక్క; l++) {
+    కూడు_స్థానభ్రంశం(liga_subst[l], c);
   }
 
-  unsigned lookup = finish_lookup (c);
+  గుర్తులేని lookup = ముగింపు_lookup (c);
 
-  unsigned lookup_list = add_lookup_list (&lookup, 1, c);
-  add_gsubgpos_header (lookup_list, c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, c);
 
-  c->end_serialize();
+  c->చివర_serialize();
 }
 
-static void test_sort_shortest ()
+స్థిర శూన్య test_క్రమీకరించు_అతితక్కువ ()
 {
-  size_t buffer_size = 100;
-  void* buffer_a = malloc (buffer_size);
-  void* buffer_e = malloc (buffer_size);
-  hb_serialize_context_t a (buffer_a, buffer_size);
-  hb_serialize_context_t e (buffer_e, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు_a = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  శూన్య* బఫరు_e = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t a (బఫరు_a, బఫరు_కొలత);
+  hb_serialize_context_t e (బఫరు_e, బఫరు_కొలత);
   populate_serializer_complex_2 (&a);
 
-  graph_t graph = graph_t::create (a.object_graph ()).value ();
-  hb_always_assert (graph.sort_shortest_distance ().is_ok());
-  graph.normalize();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (a.object_లేఖాచిత్రం ()).value ();
+  hb_always_assert (లేఖాచిత్రం.క్రమీకరించు_అతితక్కువ_దూరం ().is_ok());
+  లేఖాచిత్రం.normalize();
 
   // Expected graph
-  e.start_serialize();
-  unsigned jkl = add_object ("jkl", 3, &e);
+  e.ప్రారంభం_serialize();
+  గుర్తులేని jkl = కూడు_object ("jkl", 3, &e);
 
-  start_object("ghi", 3, &e);
-  add_offset(jkl, &e);
-  unsigned ghi = e.pop_pack(false);
+  ప్రారంభం_object("ghi", 3, &e);
+  కూడు_స్థానభ్రంశం(jkl, &e);
+  గుర్తులేని ghi = e.తీయి_pack(అబద్ధం);
 
-  start_object("def", 3, &e);
-  add_offset(ghi, &e);
-  unsigned def = e.pop_pack(false);
+  ప్రారంభం_object("def", 3, &e);
+  కూడు_స్థానభ్రంశం(ghi, &e);
+  గుర్తులేని def = e.తీయి_pack(అబద్ధం);
 
-  unsigned mn = add_object("mn", 2, &e);
+  గుర్తులేని mn = కూడు_object("mn", 2, &e);
 
-  start_object ("abc", 3, &e);
-  add_offset (def, &e);
-  add_offset (jkl, &e);
-  add_offset (mn, &e);
-  e.pop_pack (false);
-  e.end_serialize();
+  ప్రారంభం_object ("abc", 3, &e);
+  కూడు_స్థానభ్రంశం (def, &e);
+  కూడు_స్థానభ్రంశం (jkl, &e);
+  కూడు_స్థానభ్రంశం (mn, &e);
+  e.తీయి_pack (అబద్ధం);
+  e.చివర_serialize();
 
-  graph_t expected = graph_t::create (e.object_graph ()).value ();
+  లేఖాచిత్రం_t expected = లేఖాచిత్రం_t::create (e.object_లేఖాచిత్రం ()).value ();
   expected.normalize();
 
-  assert(expected == graph);
+  ప్రతిజ్ఞా(expected == లేఖాచిత్రం);
 
-  free (buffer_a);
-  free (buffer_e);
+  విడుదల (బఫరు_a);
+  విడుదల (బఫరు_e);
 }
 
-static void test_duplicate_leaf ()
+స్థిర శూన్య test_duplicate_ఆకు ()
 {
-  size_t buffer_size = 100;
-  void* buffer_a = malloc (buffer_size);
-  void* buffer_e = malloc (buffer_size);
-  hb_serialize_context_t a (buffer_a, buffer_size);
-  hb_serialize_context_t e (buffer_e, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు_a = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  శూన్య* బఫరు_e = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t a (బఫరు_a, బఫరు_కొలత);
+  hb_serialize_context_t e (బఫరు_e, బఫరు_కొలత);
   populate_serializer_complex_2 (&a);
 
-  graph_t graph = graph_t::create (a.object_graph ()).value ();
-  hb_always_assert (graph.duplicate (4, 1, false).is_ok ());
-  graph.normalize();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (a.object_లేఖాచిత్రం ()).value ();
+  hb_always_assert (లేఖాచిత్రం.duplicate (4, 1, అబద్ధం).is_ok ());
+  లేఖాచిత్రం.normalize();
 
-  e.start_serialize();
-  unsigned mn = add_object("mn", 2, &e);
-  unsigned jkl_2 = add_object("jkl", 3, &e);
+  e.ప్రారంభం_serialize();
+  గుర్తులేని mn = కూడు_object("mn", 2, &e);
+  గుర్తులేని jkl_2 = కూడు_object("jkl", 3, &e);
 
-  start_object("ghi", 3, &e);
-  add_offset(jkl_2, &e);
-  unsigned ghi = e.pop_pack(false);
+  ప్రారంభం_object("ghi", 3, &e);
+  కూడు_స్థానభ్రంశం(jkl_2, &e);
+  గుర్తులేని ghi = e.తీయి_pack(అబద్ధం);
 
-  start_object("def", 3, &e);
-  add_offset(ghi, &e);
-  unsigned def = e.pop_pack(false);
+  ప్రారంభం_object("def", 3, &e);
+  కూడు_స్థానభ్రంశం(ghi, &e);
+  గుర్తులేని def = e.తీయి_pack(అబద్ధం);
 
-  unsigned jkl_1 = add_object("jkl", 3, &e);
+  గుర్తులేని jkl_1 = కూడు_object("jkl", 3, &e);
 
-  start_object("abc", 3, &e);
-  add_offset(def, &e);
-  add_offset(jkl_1, &e);
-  add_offset(mn, &e);
-  e.pop_pack(false);
+  ప్రారంభం_object("abc", 3, &e);
+  కూడు_స్థానభ్రంశం(def, &e);
+  కూడు_స్థానభ్రంశం(jkl_1, &e);
+  కూడు_స్థానభ్రంశం(mn, &e);
+  e.తీయి_pack(అబద్ధం);
 
-  graph_t expected = graph_t::create (e.object_graph ()).value ();
+  లేఖాచిత్రం_t expected = లేఖాచిత్రం_t::create (e.object_లేఖాచిత్రం ()).value ();
   expected.normalize();
 
-  assert(expected == graph);
+  ప్రతిజ్ఞా(expected == లేఖాచిత్రం);
 
-  free (buffer_a);
-  free (buffer_e);
+  విడుదల (బఫరు_a);
+  విడుదల (బఫరు_e);
 }
 
-static void test_duplicate_interior ()
+స్థిర శూన్య test_duplicate_interior ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_complex_3 (&c);
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
-  hb_always_assert (graph.duplicate (3, 2, false).is_ok ());
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
+  hb_always_assert (లేఖాచిత్రం.duplicate (3, 2, అబద్ధం).is_ok ());
 
-  hb_always_assert(strncmp (graph.object (6).head, "jkl", 3) == 0);
-  hb_always_assert(graph.object (6).real_links.length == 1);
-  hb_always_assert(graph.object (6).real_links[0].objidx == 0);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (6).తల_2, "jkl", 3) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (6).real_links.నిడివి == 1);
+  hb_always_assert(లేఖాచిత్రం.object (6).real_links[0].objidx == 0);
 
-  hb_always_assert(strncmp (graph.object (5).head, "abc", 3) == 0);
-  hb_always_assert(graph.object (5).real_links.length == 3);
-  hb_always_assert(graph.object (5).real_links[0].objidx == 4);
-  hb_always_assert(graph.object (5).real_links[1].objidx == 2);
-  hb_always_assert(graph.object (5).real_links[2].objidx == 1);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (5).తల_2, "abc", 3) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (5).real_links.నిడివి == 3);
+  hb_always_assert(లేఖాచిత్రం.object (5).real_links[0].objidx == 4);
+  hb_always_assert(లేఖాచిత్రం.object (5).real_links[1].objidx == 2);
+  hb_always_assert(లేఖాచిత్రం.object (5).real_links[2].objidx == 1);
 
-  hb_always_assert(strncmp (graph.object (4).head, "def", 3) == 0);
-  hb_always_assert(graph.object (4).real_links.length == 1);
-  hb_always_assert(graph.object (4).real_links[0].objidx == 3);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (4).తల_2, "def", 3) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (4).real_links.నిడివి == 1);
+  hb_always_assert(లేఖాచిత్రం.object (4).real_links[0].objidx == 3);
 
-  hb_always_assert(strncmp (graph.object (3).head, "ghi", 3) == 0);
-  hb_always_assert(graph.object (3).real_links.length == 1);
-  hb_always_assert(graph.object (3).real_links[0].objidx == 6);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (3).తల_2, "ghi", 3) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (3).real_links.నిడివి == 1);
+  hb_always_assert(లేఖాచిత్రం.object (3).real_links[0].objidx == 6);
 
-  hb_always_assert(strncmp (graph.object (2).head, "jkl", 3) == 0);
-  hb_always_assert(graph.object (2).real_links.length == 1);
-  hb_always_assert(graph.object (2).real_links[0].objidx == 0);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (2).తల_2, "jkl", 3) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (2).real_links.నిడివి == 1);
+  hb_always_assert(లేఖాచిత్రం.object (2).real_links[0].objidx == 0);
 
-  hb_always_assert(strncmp (graph.object (1).head, "mn", 2) == 0);
-  hb_always_assert(graph.object (1).real_links.length == 0);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (1).తల_2, "mn", 2) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (1).real_links.నిడివి == 0);
 
-  hb_always_assert(strncmp (graph.object (0).head, "opqrst", 6) == 0);
-  hb_always_assert(graph.object (0).real_links.length == 0);
+  hb_always_assert(అక్షరశ్రేణి_పోలిక (లేఖాచిత్రం.object (0).తల_2, "opqrst", 6) == 0);
+  hb_always_assert(లేఖాచిత్రం.object (0).real_links.నిడివి == 0);
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void
+స్థిర శూన్య
 test_serialize ()
 {
-  size_t buffer_size = 100;
-  void* buffer_1 = malloc (buffer_size);
-  hb_serialize_context_t c1 (buffer_1, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు_1 = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c1 (బఫరు_1, బఫరు_కొలత);
   populate_serializer_simple (&c1);
-  hb_bytes_t expected = c1.copy_bytes ();
+  hb_బైట్లు_t expected = c1.copy_బైట్లు ();
 
-  graph_t graph = graph_t::create (c1.object_graph ()).value ();
-  hb_blob_t* out = graph::serialize (graph).value ();
-  free (buffer_1);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c1.object_లేఖాచిత్రం ()).value ();
+  hb_blob_t* బహిర్గతం = లేఖాచిత్రం::serialize (లేఖాచిత్రం).value ();
+  విడుదల (బఫరు_1);
 
-  hb_bytes_t actual = out->as_bytes ();
+  hb_బైట్లు_t actual = బహిర్గతం->as_బైట్లు ();
   hb_always_assert (actual == expected);
   expected.fini ();
-  hb_blob_destroy (out);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_will_overflow_1 ()
+స్థిర శూన్య test_will_అధికప్రవాహం_1 ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
 
   populate_serializer_complex_2 (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_always_assert (!graph::will_overflow (graph, nullptr).value ());
+  hb_always_assert (!లేఖాచిత్రం::will_అధికప్రవాహం (లేఖాచిత్రం, శూన్యసూచిక).value ());
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void test_will_overflow_2 ()
+స్థిర శూన్య test_will_అధికప్రవాహం_2 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_అధికప్రవాహం (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_always_assert (graph::will_overflow (graph, nullptr).value ());
+  hb_always_assert (లేఖాచిత్రం::will_అధికప్రవాహం (లేఖాచిత్రం, శూన్యసూచిక).value ());
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void test_will_overflow_3 ()
+స్థిర శూన్య test_will_అధికప్రవాహం_3 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_dedup_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_dedup_అధికప్రవాహం (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_always_assert (graph::will_overflow (graph, nullptr).value ());
+  hb_always_assert (లేఖాచిత్రం::will_అధికప్రవాహం (లేఖాచిత్రం, శూన్యసూచిక).value ());
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void test_resolve_overflows_via_sort ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_క్రమీకరించు ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_అధికప్రవాహం (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == (80000 + 3 + 3 * 2));
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్_NONE);
+  hb_always_assert (బహిర్గతం);
+  hb_బైట్లు_t ఫలితం = బహిర్గతం->as_బైట్లు ();
+  hb_always_assert (ఫలితం.నిడివి == (80000 + 3 + 3 * 2));
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_resolve_overflows_via_duplication ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_duplication ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_dedup_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_dedup_అధికప్రవాహం (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == (10000 + 2 * 2 + 60000 + 2 + 3 * 2));
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్_NONE);
+  hb_always_assert (బహిర్గతం);
+  hb_బైట్లు_t ఫలితం = బహిర్గతం->as_బైట్లు ();
+  hb_always_assert (ఫలితం.నిడివి == (10000 + 2 * 2 + 60000 + 2 + 3 * 2));
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_resolve_overflows_via_multiple_duplications ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_గుణిజం_duplications ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_multiple_dedup_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 300000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_గుణిజం_dedup_అధికప్రవాహం (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE, 5);
-  hb_always_assert (out);
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్_NONE, 5);
+  hb_always_assert (బహిర్గతం);
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_resolve_overflows_via_space_assignment ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_space_assignment ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_spaces (&c, true);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_spaces (&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_spaces (&e, false);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_spaces (&e, అబద్ధం);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_space_assignment",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_space_assignment",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_overflows_via_isolation ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_isolation ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_isolation_overflow (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_isolation_అధికప్రవాహం (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_always_assert (c.offset_overflow ());
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG ('G', 'S', 'U', 'B'), 0);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == (1 + 10000 + 60000 + 1 + 1
+  hb_always_assert (c.స్థానభ్రంశం_అధికప్రవాహం ());
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్ ('G', 'S', 'U', 'B'), 0);
+  hb_always_assert (బహిర్గతం);
+  hb_బైట్లు_t ఫలితం = బహిర్గతం->as_బైట్లు ();
+  hb_always_assert (ఫలితం.నిడివి == (1 + 10000 + 60000 + 1 + 1
                             + 4 + 3 * 2));
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_resolve_overflows_via_isolation_with_recursive_duplication ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_isolation_with_recursive_duplication ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_isolation_overflow_complex (&c);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_isolation_అధికప్రవాహం_complex (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_isolation_overflow_complex_expected (&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_isolation_అధికప్రవాహం_complex_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_isolation_with_recursive_duplication",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_isolation_with_recursive_duplication",
                              c,
                              e);
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_overflows_via_isolating_16bit_space ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_isolating_16bit_space ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_spaces_16bit_connection (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
   populate_serializer_spaces_16bit_connection_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_isolating_16bit_space",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_isolating_16bit_space",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_overflows_via_isolating_16bit_space_2 ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_isolating_16bit_space_2 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_short_and_wide_subgraph_root (&c);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_short_and_wide_subgraph_మూలం (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_short_and_wide_subgraph_root_expected (&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_short_and_wide_subgraph_మూలం_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_isolating_16bit_space_2",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_isolating_16bit_space_2",
                              c,
                              e);
 
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_overflows_via_isolation_spaces ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_isolation_spaces ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_isolation_overflow_spaces (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_isolation_అధికప్రవాహం_spaces (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_always_assert (c.offset_overflow ());
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG ('G', 'S', 'U', 'B'), 0);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
+  hb_always_assert (c.స్థానభ్రంశం_అధికప్రవాహం ());
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్ ('G', 'S', 'U', 'B'), 0);
+  hb_always_assert (బహిర్గతం);
+  hb_బైట్లు_t ఫలితం = బహిర్గతం->as_బైట్లు ();
 
-  unsigned expected_length = 3 + 2 * 60000; // objects
-  expected_length += 2 * 4 + 2 * 2; // links
-  hb_always_assert (result.length == expected_length);
+  గుర్తులేని expected_నిడివి = 3 + 2 * 60000; // objects
+  expected_నిడివి += 2 * 4 + 2 * 2; // links
+  hb_always_assert (ఫలితం.నిడివి == expected_నిడివి);
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_resolve_mixed_overflows_via_isolation_spaces ()
+స్థిర శూన్య test_resolve_mixed_overflows_ద్వారా_isolation_spaces ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_24_and_32_bit_offsets (&c);
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_24_and_32_బిట్టు_offsets (&c);
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_always_assert (c.offset_overflow ());
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG ('G', 'S', 'U', 'B'), 0);
-  hb_always_assert (out);
-  hb_bytes_t result = out->as_bytes ();
+  hb_always_assert (c.స్థానభ్రంశం_అధికప్రవాహం ());
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్ ('G', 'S', 'U', 'B'), 0);
+  hb_always_assert (బహిర్గతం);
+  hb_బైట్లు_t ఫలితం = బహిర్గతం->as_బైట్లు ();
 
-  unsigned expected_length =
+  గుర్తులేని expected_నిడివి =
       // Objects
       7 +
       4 * 40000;
 
-  expected_length +=
+  expected_నిడివి +=
       // Links
       2 * 4 +  // 32
       4 * 3 +  // 24
       4 * 2;   // 16
 
-  hb_always_assert (result.length == expected_length);
+  hb_always_assert (ఫలితం.నిడివి == expected_నిడివి);
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void test_resolve_with_extension_promotion ()
+స్థిర శూన్య test_resolve_with_extension_promotion ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_with_extension_promotion (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
   populate_serializer_with_extension_promotion (&e, 3);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_promotion",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_extension_promotion",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             నిజం);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_shared_extension_promotion ()
+స్థిర శూన్య test_resolve_with_shared_extension_promotion ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&c, 0, true);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_extension_promotion (&c, 0, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&e, 3, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_extension_promotion (&e, 3, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_promotion",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_extension_promotion",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             నిజం);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-#ifndef HB_NO_BEYOND_64K
-static void test_resolve_with_extension_promotion_1_2 ()
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+స్థిర శూన్య test_resolve_with_extension_promotion_1_2 ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&c, 0, false, true);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_extension_promotion (&c, 0, అబద్ధం, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_extension_promotion (&e, 3, false, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_extension_promotion (&e, 3, అబద్ధం, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_promotion_1_2",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_extension_promotion_1_2",
                              c,
                              e,
                              20,
-                             true);
-  free (buffer);
-  free (expected_buffer);
+                             నిజం);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
-#endif
+#అయితే_ముగింపు
 
-static void test_resolve_with_repeated_extension_promotion ()
+స్థిర శూన్య test_resolve_with_repeated_extension_promotion ()
 {
-  size_t buffer_size = 1000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 1000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
 
-  c.start_serialize<char> ();
-  unsigned subtable = add_object ("subt", 4, &c);
-  start_lookup (5, 2, &c);
-  add_offset (subtable, &c);
-  add_offset (subtable, &c);
-  unsigned lookup = finish_lookup (&c);
-  unsigned lookup_list = add_lookup_list (&lookup, 1, &c);
-  add_gsubgpos_header (lookup_list, &c);
-  c.end_serialize ();
+  c.ప్రారంభం_serialize<అక్షరం> ();
+  గుర్తులేని subtable = కూడు_object ("subt", 4, &c);
+  ప్రారంభం_lookup (5, 2, &c);
+  కూడు_స్థానభ్రంశం (subtable, &c);
+  కూడు_స్థానభ్రంశం (subtable, &c);
+  గుర్తులేని lookup = ముగింపు_lookup (&c);
+  గుర్తులేని lookup_list = కూడు_lookup_list (&lookup, 1, &c);
+  కూడు_gsubgpos_శీర్షిక (lookup_list, &c);
+  c.చివర_serialize ();
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
-  auto context = graph::gsubgpos_graph_context_t::create (HB_TAG ('G', 'S', 'U', 'B'),
-                                                          graph).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
+  స్వయంచాలక context = లేఖాచిత్రం::gsubgpos_లేఖాచిత్రం_context_t::create (HB_ట్యాగ్ ('G', 'S', 'U', 'B'),
+                                                          లేఖాచిత్రం).value ();
   hb_always_assert (context.lookups.get_population () == 1);
-  unsigned lookup_index = *context.lookups.keys ();
-  graph::Lookup* lookup_table = context.lookups.get (lookup_index);
-  hb_always_assert (lookup_table->make_extension (context, lookup_index).is_ok ());
+  గుర్తులేని lookup_సూచీ = *context.lookups.కీలకాలు ();
+  లేఖాచిత్రం::Lookup* lookup_పట్టిక_2 = context.lookups.get (lookup_సూచీ);
+  hb_always_assert (lookup_పట్టిక_2->make_extension (context, lookup_సూచీ).is_ok ());
 
-  const auto& lookup_vertex = graph.vertices_[lookup_index];
-  hb_always_assert (lookup_vertex.obj ().real_links.length == 2);
-  unsigned extension_index = lookup_vertex.obj ().real_links[0].objidx;
-  hb_always_assert (lookup_vertex.obj ().real_links[1].objidx == extension_index);
+  స్థిరరాశి స్వయంచాలక& lookup_శీర్షం = లేఖాచిత్రం.vertices_[lookup_సూచీ];
+  hb_always_assert (lookup_శీర్షం.obj ().real_links.నిడివి == 2);
+  గుర్తులేని extension_సూచీ = lookup_శీర్షం.obj ().real_links[0].objidx;
+  hb_always_assert (lookup_శీర్షం.obj ().real_links[1].objidx == extension_సూచీ);
 
-  auto* extension = graph.vertices_[extension_index].as<
-      graph::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
-  unsigned promoted_subtable = extension->get_subtable_index (graph, extension_index).value ();
-  hb_always_assert (graph.vertices_[promoted_subtable].table_size () == 4);
-  hb_always_assert (graph.update_parents ().is_ok ());
-  hb_always_assert (graph.vertices_[extension_index].incoming_edges () == 2);
-  hb_always_assert (graph.vertices_[promoted_subtable].incoming_edges () == 1);
+  స్వయంచాలక* extension = లేఖాచిత్రం.vertices_[extension_సూచీ].as<
+      లేఖాచిత్రం::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
+  గుర్తులేని promoted_subtable = extension->get_subtable_సూచీ (లేఖాచిత్రం, extension_సూచీ).value ();
+  hb_always_assert (లేఖాచిత్రం.vertices_[promoted_subtable].పట్టిక_కొలత () == 4);
+  hb_always_assert (లేఖాచిత్రం.update_parents ().is_ok ());
+  hb_always_assert (లేఖాచిత్రం.vertices_[extension_సూచీ].incoming_అంచులు_2 () == 2);
+  hb_always_assert (లేఖాచిత్రం.vertices_[promoted_subtable].incoming_అంచులు_2 () == 1);
 
-  hb_blob_t* out = graph::serialize (graph).value ();
-  hb_blob_destroy (out);
-  free (buffer);
+  hb_blob_t* బహిర్గతం = లేఖాచిత్రం::serialize (లేఖాచిత్రం).value ();
+  hb_blob_destroy (బహిర్గతం);
+  విడుదల (బఫరు);
 }
 
-static void test_resolve_with_basic_pair_pos_1_split ()
+స్థిర శూన్య test_resolve_with_basic_pair_pos_1_విభజించు ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_with_large_pair_pos_1 <1, 4>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_pair_pos_1_split",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_basic_pair_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'P', 'O', 'S'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_extension_pair_pos_1_split ()
+స్థిర శూన్య test_resolve_with_extension_pair_pos_1_విభజించు ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <1, 4>(&c, true);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_1 <1, 4>(&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_1 <2, 2>(&e, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_extension_pair_pos_1_split",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_extension_pair_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'P', 'O', 'S'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_basic_pair_pos_2_split ()
+స్థిర శూన్య test_resolve_with_basic_pair_pos_2_విభజించు ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 300000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_with_large_pair_pos_2 <1, 4, 3000>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 2, 3000>(&e, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_2 <2, 2, 3000>(&e, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_pair_pos_2_split",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_basic_pair_pos_2_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'P', 'O', 'S'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_close_to_limit_pair_pos_2_split ()
+స్థిర శూన్య test_resolve_with_close_గమ్యం_హద్దు_pair_pos_2_విభజించు ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <1, 1636, 10>(&c, true, false, false);
+  size_t బఫరు_కొలత = 300000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_2 <1, 1636, 10>(&c, నిజం, అబద్ధం, అబద్ధం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 818, 10>(&e, true, false, false);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_2 <2, 818, 10>(&e, నిజం, అబద్ధం, అబద్ధం);
 
-  run_resolve_overflow_test ("test_resolve_with_close_to_limit_pair_pos_2_split",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_close_to_limit_pair_pos_2_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'P', 'O', 'S'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_pair_pos_2_split_with_device_tables ()
+స్థిర శూన్య test_resolve_with_pair_pos_2_విభజించు_with_device_tables ()
 {
-  size_t buffer_size = 300000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <1, 4, 2000>(&c, false, true);
+  size_t బఫరు_కొలత = 300000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_2 <1, 4, 2000>(&c, అబద్ధం, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_pair_pos_2 <2, 2, 2000>(&e, true, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_pair_pos_2 <2, 2, 2000>(&e, నిజం, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_pair_pos_2_split_with_device_tables",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_pair_pos_2_split_with_device_tables",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'P', 'O', 'S'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_basic_mark_base_pos_1_split ()
+స్థిర శూన్య test_resolve_with_basic_mark_పునాది_pos_1_విభజించు ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_mark_base_pos_1 <40, 10, 110, 1>(&c);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_mark_పునాది_pos_1 <40, 10, 110, 1>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_mark_base_pos_1 <40, 10, 110, 2>(&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_mark_పునాది_pos_1 <40, 10, 110, 2>(&e);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_mark_base_pos_1_split",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_basic_mark_base_pos_1_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'P', 'O', 'S'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'P', 'O', 'S'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_basic_liga_split ()
+స్థిర శూన్య test_resolve_with_basic_liga_విభజించు ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 1, 2, 40000>(&c, false);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_liga<1, 1, 2, 40000>(&c, అబద్ధం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga<2, 1, 1, 40000>(&e, false);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_liga<2, 1, 1, 40000>(&e, అబద్ధం);
 
-  run_resolve_overflow_test ("test_resolve_with_basic_liga_split",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_basic_liga_split",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'S', 'U', 'B'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_liga_split_move ()
+స్థిర శూన్య test_resolve_with_liga_విభజించు_move ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 6, 2, 16000>(&c, true);
+  size_t బఫరు_కొలత = 400000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_liga<1, 6, 2, 16000>(&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga<3, 2, 2, 16000>(&e, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_liga<3, 2, 2, 16000>(&e, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_move",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_liga_split_move",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'S', 'U', 'B'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_liga_split_overlapping_clone ()
+స్థిర శూన్య test_resolve_with_liga_విభజించు_overlapping_clone ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_large_liga<1, 2, 3, 30000>(&c, true);
+  size_t బఫరు_కొలత = 400000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_liga<1, 2, 3, 30000>(&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_large_liga_overlapping_clone_result(&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_large_liga_overlapping_clone_ఫలితం(&e);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_overlapping_clone",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_liga_split_overlapping_clone",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'S', 'U', 'B'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_liga_split_shared_table ()
+స్థిర శూన్య test_resolve_with_liga_విభజించు_shared_పట్టిక ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_shared_large_liga<1, 6, 2, 16000>(&c, true);
+  size_t బఫరు_కొలత = 400000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_shared_large_liga<1, 6, 2, 16000>(&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_shared_large_liga<3, 2, 2, 16000>(&e, true);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_shared_large_liga<3, 2, 2, 16000>(&e, నిజం);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_shared_table",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_liga_split_shared_table",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'S', 'U', 'B'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_with_liga_split_shared_coverage ()
+స్థిర శూన్య test_resolve_with_liga_విభజించు_shared_coverage ()
 {
-  size_t buffer_size = 400000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 400000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_with_liga_shared_coverage<1, 6, 2, 16000>(&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
   populate_serializer_with_liga_shared_coverage<3, 2, 2, 16000>(&e);
 
-  run_resolve_overflow_test ("test_resolve_with_liga_split_shared_coverage",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_with_liga_split_shared_coverage",
                              c,
                              e,
                              20,
-                             true,
-                             HB_TAG('G', 'S', 'U', 'B'));
-  free (buffer);
-  free (expected_buffer);
+                             నిజం,
+                             HB_ట్యాగ్('G', 'S', 'U', 'B'));
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_overflows_via_splitting_spaces ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_splitting_spaces ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_split_spaces (&c);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_విభజించు_spaces (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_split_spaces_expected (&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_విభజించు_spaces_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_splitting_spaces",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_splitting_spaces",
                              c,
                              e,
                              1);
 
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 
 }
 
-static void test_resolve_overflows_via_splitting_spaces_2 ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_splitting_spaces_2 ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_split_spaces_2 (&c);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_విభజించు_spaces_2 (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_split_spaces_expected_2 (&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_విభజించు_spaces_expected_2 (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_splitting_spaces_2",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_splitting_spaces_2",
                              c,
                              e,
                              1);
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void test_resolve_overflows_via_priority ()
+స్థిర శూన్య test_resolve_overflows_ద్వారా_ప్రాధాన్యత ()
 {
-  size_t buffer_size = 160000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_priority_overflow (&c);
+  size_t బఫరు_కొలత = 160000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_ప్రాధాన్యత_అధికప్రవాహం (&c);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_priority_overflow_expected (&e);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_ప్రాధాన్యత_అధికప్రవాహం_expected (&e);
 
-  run_resolve_overflow_test ("test_resolve_overflows_via_priority",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_resolve_overflows_via_priority",
                              c,
                              e,
                              3);
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
 
-static void test_virtual_link ()
+స్థిర శూన్య test_virtual_link ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_virtual_link (&c);
 
-  hb_blob_t* out = hb_resolve_overflows (c.object_graph (), HB_TAG_NONE);
-  hb_always_assert (out);
+  hb_blob_t* బహిర్గతం = hb_resolve_overflows (c.object_లేఖాచిత్రం (), HB_ట్యాగ్_NONE);
+  hb_always_assert (బహిర్గతం);
 
-  hb_bytes_t result = out->as_bytes ();
-  hb_always_assert (result.length == 5 + 4 * 2);
-  hb_always_assert (result[0]  == 'a');
-  hb_always_assert (result[5]  == 'c');
-  hb_always_assert (result[8]  == 'e');
-  hb_always_assert (result[9]  == 'b');
-  hb_always_assert (result[12] == 'd');
+  hb_బైట్లు_t ఫలితం = బహిర్గతం->as_బైట్లు ();
+  hb_always_assert (ఫలితం.నిడివి == 5 + 4 * 2);
+  hb_always_assert (ఫలితం[0]  == 'a');
+  hb_always_assert (ఫలితం[5]  == 'c');
+  hb_always_assert (ఫలితం[8]  == 'e');
+  hb_always_assert (ఫలితం[9]  == 'b');
+  hb_always_assert (ఫలితం[12] == 'd');
 
-  free (buffer);
-  hb_blob_destroy (out);
+  విడుదల (బఫరు);
+  hb_blob_destroy (బహిర్గతం);
 }
 
-static void
-test_shared_node_with_virtual_links ()
+స్థిర శూన్య
+test_shared_కణుపు_with_virtual_links ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
 
-  c.start_serialize<char> ();
+  c.ప్రారంభం_serialize<అక్షరం> ();
 
-  unsigned obj_b = add_object ("b", 1, &c);
-  unsigned obj_c = add_object ("c", 1, &c);
+  గుర్తులేని obj_b = కూడు_object ("b", 1, &c);
+  గుర్తులేని obj_c = కూడు_object ("c", 1, &c);
 
-  start_object ("d", 1, &c);
-  add_virtual_offset (obj_b, &c);
-  unsigned obj_d_1 = c.pop_pack ();
+  ప్రారంభం_object ("d", 1, &c);
+  కూడు_virtual_స్థానభ్రంశం (obj_b, &c);
+  గుర్తులేని obj_d_1 = c.తీయి_pack ();
 
-  start_object ("d", 1, &c);
-  add_virtual_offset (obj_c, &c);
-  unsigned obj_d_2 = c.pop_pack ();
+  ప్రారంభం_object ("d", 1, &c);
+  కూడు_virtual_స్థానభ్రంశం (obj_c, &c);
+  గుర్తులేని obj_d_2 = c.తీయి_pack ();
 
   hb_always_assert (obj_d_1 == obj_d_2);
 
-  start_object ("a", 1, &c);
-  add_offset (obj_b, &c);
-  add_offset (obj_c, &c);
-  add_offset (obj_d_1, &c);
-  add_offset (obj_d_2, &c);
-  c.pop_pack ();
-  c.end_serialize ();
+  ప్రారంభం_object ("a", 1, &c);
+  కూడు_స్థానభ్రంశం (obj_b, &c);
+  కూడు_స్థానభ్రంశం (obj_c, &c);
+  కూడు_స్థానభ్రంశం (obj_d_1, &c);
+  కూడు_స్థానభ్రంశం (obj_d_2, &c);
+  c.తీయి_pack ();
+  c.చివర_serialize ();
 
-  hb_always_assert(c.object_graph() [obj_d_1]->virtual_links.length == 2);
-  hb_always_assert(c.object_graph() [obj_d_1]->virtual_links[0].objidx == obj_b);
-  hb_always_assert(c.object_graph() [obj_d_1]->virtual_links[1].objidx == obj_c);
-  free(buffer);
+  hb_always_assert(c.object_లేఖాచిత్రం() [obj_d_1]->virtual_links.నిడివి == 2);
+  hb_always_assert(c.object_లేఖాచిత్రం() [obj_d_1]->virtual_links[0].objidx == obj_b);
+  hb_always_assert(c.object_లేఖాచిత్రం() [obj_d_1]->virtual_links[1].objidx == obj_c);
+  విడుదల(బఫరు);
 }
 
-static void
-test_repack_last ()
+స్థిర శూన్య
+test_repack_చివరి ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_with_repack_last (&c, true);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_with_repack_చివరి (&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_with_repack_last (&e, false);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_with_repack_చివరి (&e, అబద్ధం);
 
-  run_resolve_overflow_test ("test_repack_last",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_repack_last",
                              c,
                              e,
                              20,
-                             false,
-                             HB_TAG('a', 'b', 'c', 'd'),
-                             true);
+                             అబద్ధం,
+                             HB_ట్యాగ్('a', 'b', 'c', 'd'),
+                             నిజం);
 
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void
+స్థిర శూన్య
 test_dont_duplicate_virtual ()
 {
-  size_t buffer_size = 200000;
-  void* buffer = malloc (buffer_size);
-  hb_always_assert (buffer);
-  hb_serialize_context_t c (buffer, buffer_size);
-  populate_serializer_virtual (&c, true);
+  size_t బఫరు_కొలత = 200000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (బఫరు);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
+  populate_serializer_virtual (&c, నిజం);
 
-  void* expected_buffer = malloc (buffer_size);
-  hb_always_assert (expected_buffer);
-  hb_serialize_context_t e (expected_buffer, buffer_size);
-  populate_serializer_virtual (&e, false);
+  శూన్య* expected_బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_always_assert (expected_బఫరు);
+  hb_serialize_context_t e (expected_బఫరు, బఫరు_కొలత);
+  populate_serializer_virtual (&e, అబద్ధం);
 
-  run_resolve_overflow_test ("test_dont_duplicate_virtual",
+  నిరంతరం_resolve_అధికప్రవాహం_test ("test_dont_duplicate_virtual",
                              c,
                              e,
                              20,
-                             false,
-                             HB_TAG('a', 'b', 'c', 'd'),
-                             true);
+                             అబద్ధం,
+                             HB_ట్యాగ్('a', 'b', 'c', 'd'),
+                             నిజం);
 
-  free (buffer);
-  free (expected_buffer);
+  విడుదల (బఫరు);
+  విడుదల (expected_బఫరు);
 }
 
-static void
-test_deep_graph_traversal ()
+స్థిర శూన్య
+test_deep_లేఖాచిత్రం_traversal ()
 {
-  size_t buffer_size = 1000000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 1000000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
 
-  c.start_serialize ();
-  unsigned prev = add_object ("leaf", 4, &c);
-  for (unsigned i = 0; i < 2000; i++)
+  c.ప్రారంభం_serialize ();
+  గుర్తులేని prev = కూడు_object ("leaf", 4, &c);
+  కొరకు (గుర్తులేని i = 0; i < 2000; i++)
   {
-    start_object ("node", 4, &c);
-    add_offset (prev, &c);
-    prev = c.pop_pack (false);
+    ప్రారంభం_object ("node", 4, &c);
+    కూడు_స్థానభ్రంశం (prev, &c);
+    prev = c.తీయి_pack (అబద్ధం);
   }
-  c.end_serialize ();
+  c.చివర_serialize ();
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
   // Test find_subgraph (set)
-  hb_set_t visited_set;
-  hb_always_assert (graph.find_subgraph (graph.root_idx (), visited_set).is_ok ());
-  hb_always_assert (visited_set.get_population () == 2001);
+  hb_సమితి_t సందర్శించిన_సమితి;
+  hb_always_assert (లేఖాచిత్రం.కనుగొను_subgraph (లేఖాచిత్రం.మూలం_idx (), సందర్శించిన_సమితి).is_ok ());
+  hb_always_assert (సందర్శించిన_సమితి.get_population () == 2001);
 
   // Test find_subgraph_size
-  hb_set_t size_set;
-  size_t sz = graph.find_subgraph_size (graph.root_idx (), size_set).value ();
+  hb_సమితి_t కొలత_సమితి;
+  size_t sz = లేఖాచిత్రం.కనుగొను_subgraph_కొలత (లేఖాచిత్రం.మూలం_idx (), కొలత_సమితి).value ();
   hb_always_assert (sz == 4 + 2000 * 6);
 
   // Test find_subgraph (map)
   hb_map_t map;
-  map.set (graph.root_idx (), 1);
-  hb_always_assert (graph.find_subgraph (graph.root_idx (), map).is_ok ());
+  map.సమితి (లేఖాచిత్రం.మూలం_idx (), 1);
+  hb_always_assert (లేఖాచిత్రం.కనుగొను_subgraph (లేఖాచిత్రం.మూలం_idx (), map).is_ok ());
   hb_always_assert (map.get_population () == 2001);
 
   // Test assign_spaces (which exercises find_connected_nodes and find_space_roots)
-  hb_always_assert (graph.assign_spaces ().is_ok ());
+  hb_always_assert (లేఖాచిత్రం.కేటాయించు_spaces ().is_ok ());
 
   // Test duplicate_subgraph
-  hb_map_t index_map;
-  hb_always_assert (graph.duplicate_subgraph (graph.root_idx (), index_map).is_ok ());
-  hb_always_assert (index_map.get_population () == 2001);
+  hb_map_t సూచీ_map;
+  hb_always_assert (లేఖాచిత్రం.duplicate_subgraph (లేఖాచిత్రం.మూలం_idx (), సూచీ_map).is_ok ());
+  hb_always_assert (సూచీ_map.get_population () == 2001);
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void
+స్థిర శూన్య
 test_32bit_roots_traversal ()
 {
-  size_t buffer_size = 1000;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 1000;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
 
-  c.start_serialize ();
-  unsigned leaf1 = add_object ("l1", 2, &c);
-  unsigned leaf2 = add_object ("l2", 2, &c);
+  c.ప్రారంభం_serialize ();
+  గుర్తులేని leaf1 = కూడు_object ("l1", 2, &c);
+  గుర్తులేని leaf2 = కూడు_object ("l2", 2, &c);
 
-  start_object ("mid", 3, &c);
-  add_wide_offset (leaf1, &c);
-  unsigned mid = c.pop_pack (false);
+  ప్రారంభం_object ("mid", 3, &c);
+  కూడు_wide_స్థానభ్రంశం (leaf1, &c);
+  గుర్తులేని mid = c.తీయి_pack (అబద్ధం);
 
-  start_object ("root", 4, &c);
-  add_offset (mid, &c);
-  add_wide_offset (leaf2, &c);
-  c.pop_pack (false);
-  c.end_serialize ();
+  ప్రారంభం_object ("root", 4, &c);
+  కూడు_స్థానభ్రంశం (mid, &c);
+  కూడు_wide_స్థానభ్రంశం (leaf2, &c);
+  c.తీయి_pack (అబద్ధం);
+  c.చివర_serialize ();
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
-  hb_set_t roots;
-  hb_always_assert (graph.find_32bit_roots (graph.root_idx (), roots).is_ok ());
+  hb_సమితి_t roots;
+  hb_always_assert (లేఖాచిత్రం.కనుగొను_32bit_roots (లేఖాచిత్రం.మూలం_idx (), roots).is_ok ());
   hb_always_assert (roots.has (leaf1 - 1));
   hb_always_assert (roots.has (leaf2 - 1));
   hb_always_assert (!roots.has (mid - 1));
   hb_always_assert (roots.get_population () == 2);
 
-  free (buffer);
+  విడుదల (బఫరు);
 
   // Test case where DFS fails but BFS succeeds:
   // root -16-> a
@@ -2925,125 +2925,125 @@ test_32bit_roots_traversal ()
   // and consider b a root. However, b should not be a root since it's not a top level 32 bit link.
   // BFS will handle this correctly by discovering a as a top level root and then avoiding further
   // exploring it.
-  buffer_size = 1000;
-  buffer = malloc (buffer_size);
-  hb_serialize_context_t c2 (buffer, buffer_size);
+  బఫరు_కొలత = 1000;
+  బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c2 (బఫరు, బఫరు_కొలత);
 
-  c2.start_serialize ();
-  unsigned b = add_object ("b", 1, &c2);
+  c2.ప్రారంభం_serialize ();
+  గుర్తులేని b = కూడు_object ("b", 1, &c2);
 
-  start_object ("a", 1, &c2);
-  add_wide_offset (b, &c2);
-  unsigned a = c2.pop_pack (false);
+  ప్రారంభం_object ("a", 1, &c2);
+  కూడు_wide_స్థానభ్రంశం (b, &c2);
+  గుర్తులేని a = c2.తీయి_pack (అబద్ధం);
 
-  start_object ("r", 1, &c2);
-  add_offset (a, &c2);
-  add_wide_offset (a, &c2);
-  c2.pop_pack (false);
+  ప్రారంభం_object ("r", 1, &c2);
+  కూడు_స్థానభ్రంశం (a, &c2);
+  కూడు_wide_స్థానభ్రంశం (a, &c2);
+  c2.తీయి_pack (అబద్ధం);
 
-  c2.end_serialize ();
+  c2.చివర_serialize ();
 
-  graph_t graph2 = graph_t::create (c2.object_graph ()).value ();
+  లేఖాచిత్రం_t graph2 = లేఖాచిత్రం_t::create (c2.object_లేఖాచిత్రం ()).value ();
 
-  hb_set_t roots2;
-  hb_always_assert (graph2.find_32bit_roots (graph2.root_idx (), roots2).is_ok ());
+  hb_సమితి_t roots2;
+  hb_always_assert (graph2.కనుగొను_32bit_roots (graph2.మూలం_idx (), roots2).is_ok ());
   hb_always_assert (roots2.get_population () == 1);
   hb_always_assert (roots2.has (a - 1));
   hb_always_assert (!roots2.has (b - 1));
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void test_invalid_link_objidx ()
+స్థిర శూన్య test_invalid_link_objidx ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_complex_2 (&c);
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
   // Poison a link to point to (unsigned) -1
-  auto links = graph.vertices_[graph.root_idx ()].real_links_writer();
-  links->objidx = (unsigned) -1;
+  స్వయంచాలక links = లేఖాచిత్రం.vertices_[లేఖాచిత్రం.మూలం_idx ()].real_links_writer();
+  links->objidx = (గుర్తులేని) -1;
 
   // Running Dijkstra / shortest distance sorting must not crash or OOB access,
   // and must return an error.
-  hb_always_assert (!graph.sort_shortest_distance ().is_ok ());
+  hb_always_assert (!లేఖాచిత్రం.క్రమీకరించు_అతితక్కువ_దూరం ().is_ok ());
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
-static void test_invalid_link_add_and_move ()
+స్థిర శూన్య test_invalid_link_కూడు_and_move ()
 {
-  size_t buffer_size = 100;
-  void* buffer = malloc (buffer_size);
-  hb_serialize_context_t c (buffer, buffer_size);
+  size_t బఫరు_కొలత = 100;
+  శూన్య* బఫరు = జ్ఞాపకం_ఇవ్వు (బఫరు_కొలత);
+  hb_serialize_context_t c (బఫరు, బఫరు_కొలత);
   populate_serializer_complex_2 (&c);
 
-  graph_t graph = graph_t::create (c.object_graph ()).value ();
+  లేఖాచిత్రం_t లేఖాచిత్రం = లేఖాచిత్రం_t::create (c.object_లేఖాచిత్రం ()).value ();
 
   // add_link with out-of-bounds child
   OT::Offset16 dummy;
-  hb_always_assert (!graph.add_link (&dummy, 0, (unsigned) -1).is_ok ());
+  hb_always_assert (!లేఖాచిత్రం.కూడు_link (&dummy, 0, (గుర్తులేని) -1).is_ok ());
 
   // move_child with non-existent offset
-  auto res = graph.move_child (0, &dummy, 1, &dummy);
+  స్వయంచాలక res = లేఖాచిత్రం.move_బిడ్డ (0, &dummy, 1, &dummy);
   hb_always_assert (!res.is_ok ());
 
-  free (buffer);
+  విడుదల (బఫరు);
 }
 
 // TODO(garretrieger): update will_overflow tests to check the overflows array.
 // TODO(garretrieger): add tests for priority raising.
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
   test_invalid_link_objidx ();
-  test_invalid_link_add_and_move ();
+  test_invalid_link_కూడు_and_move ();
   test_serialize ();
-  test_sort_shortest ();
-  test_will_overflow_1 ();
-  test_will_overflow_2 ();
-  test_will_overflow_3 ();
-  test_resolve_overflows_via_sort ();
-  test_resolve_overflows_via_duplication ();
-  test_resolve_overflows_via_multiple_duplications ();
-  test_resolve_overflows_via_priority ();
-  test_resolve_overflows_via_space_assignment ();
-  test_resolve_overflows_via_isolation ();
-  test_resolve_overflows_via_isolation_with_recursive_duplication ();
-  test_resolve_overflows_via_isolation_spaces ();
-  test_resolve_overflows_via_isolating_16bit_space ();
-  test_resolve_overflows_via_isolating_16bit_space_2 ();
-  test_resolve_overflows_via_splitting_spaces ();
-  test_resolve_overflows_via_splitting_spaces_2 ();
-  test_resolve_mixed_overflows_via_isolation_spaces ();
-  test_duplicate_leaf ();
+  test_క్రమీకరించు_అతితక్కువ ();
+  test_will_అధికప్రవాహం_1 ();
+  test_will_అధికప్రవాహం_2 ();
+  test_will_అధికప్రవాహం_3 ();
+  test_resolve_overflows_ద్వారా_క్రమీకరించు ();
+  test_resolve_overflows_ద్వారా_duplication ();
+  test_resolve_overflows_ద్వారా_గుణిజం_duplications ();
+  test_resolve_overflows_ద్వారా_ప్రాధాన్యత ();
+  test_resolve_overflows_ద్వారా_space_assignment ();
+  test_resolve_overflows_ద్వారా_isolation ();
+  test_resolve_overflows_ద్వారా_isolation_with_recursive_duplication ();
+  test_resolve_overflows_ద్వారా_isolation_spaces ();
+  test_resolve_overflows_ద్వారా_isolating_16bit_space ();
+  test_resolve_overflows_ద్వారా_isolating_16bit_space_2 ();
+  test_resolve_overflows_ద్వారా_splitting_spaces ();
+  test_resolve_overflows_ద్వారా_splitting_spaces_2 ();
+  test_resolve_mixed_overflows_ద్వారా_isolation_spaces ();
+  test_duplicate_ఆకు ();
   test_duplicate_interior ();
   test_virtual_link ();
-  test_repack_last();
-  test_shared_node_with_virtual_links ();
+  test_repack_చివరి();
+  test_shared_కణుపు_with_virtual_links ();
   test_resolve_with_extension_promotion ();
   test_resolve_with_shared_extension_promotion ();
-#ifndef HB_NO_BEYOND_64K
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
   test_resolve_with_extension_promotion_1_2 ();
-#endif
+#అయితే_ముగింపు
   test_resolve_with_repeated_extension_promotion ();
-  test_resolve_with_basic_pair_pos_1_split ();
-  test_resolve_with_extension_pair_pos_1_split ();
-  test_resolve_with_basic_pair_pos_2_split ();
-  test_resolve_with_pair_pos_2_split_with_device_tables ();
-  test_resolve_with_close_to_limit_pair_pos_2_split ();
-  test_resolve_with_basic_mark_base_pos_1_split ();
-  test_resolve_with_basic_liga_split ();
-  test_resolve_with_liga_split_move ();
+  test_resolve_with_basic_pair_pos_1_విభజించు ();
+  test_resolve_with_extension_pair_pos_1_విభజించు ();
+  test_resolve_with_basic_pair_pos_2_విభజించు ();
+  test_resolve_with_pair_pos_2_విభజించు_with_device_tables ();
+  test_resolve_with_close_గమ్యం_హద్దు_pair_pos_2_విభజించు ();
+  test_resolve_with_basic_mark_పునాది_pos_1_విభజించు ();
+  test_resolve_with_basic_liga_విభజించు ();
+  test_resolve_with_liga_విభజించు_move ();
   test_dont_duplicate_virtual ();
-  test_resolve_with_liga_split_overlapping_clone ();
-  test_resolve_with_liga_split_shared_table ();
-  test_resolve_with_liga_split_shared_coverage ();
-  test_deep_graph_traversal ();
+  test_resolve_with_liga_విభజించు_overlapping_clone ();
+  test_resolve_with_liga_విభజించు_shared_పట్టిక ();
+  test_resolve_with_liga_విభజించు_shared_coverage ();
+  test_deep_లేఖాచిత్రం_traversal ();
   test_32bit_roots_traversal ();
 
   // TODO(grieger): have run overflow tests compare graph equality not final packed binary.

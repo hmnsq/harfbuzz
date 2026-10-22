@@ -47,67 +47,67 @@
  * UnicodeData.txt does not have a header.
  */
 
-#ifndef HB_OT_SHAPER_USE_TABLE_HH
-#define HB_OT_SHAPER_USE_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPER_USE_పట్టిక_HH
+#నిర్వచించు HB_OT_SHAPER_USE_పట్టిక_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-ot-shaper-use-machine.hh"
+#అన్తర్భావ "hb-ot-shaper-use-machine.hh"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-macros"
-#define B	USE(B)	/* BASE */
-#define CGJ	USE(CGJ)	/* CGJ */
-#define CS	USE(CS)	/* CONS_WITH_STACKER */
-#define G	USE(G)	/* HIEROGLYPH */
-#define GB	USE(GB)	/* BASE_OTHER */
-#define H	USE(H)	/* HALANT */
-#define HM	USE(HM)	/* HIEROGLYPH_MOD */
-#define HN	USE(HN)	/* HALANT_NUM */
-#define HR	USE(HR)	/* HIEROGLYPH_MIRROR */
-#define HVM	USE(HVM)	/* HALANT_OR_VOWEL_MODIFIER */
-#define IS	USE(IS)	/* INVISIBLE_STACKER */
-#define J	USE(J)	/* HIEROGLYPH_JOINER */
-#define N	USE(N)	/* BASE_NUM */
-#define O	USE(O)	/* OTHER */
-#define R	USE(R)	/* REPHA */
-#define RK	USE(RK)	/* REORDERING_KILLER */
-#define SB	USE(SB)	/* HIEROGLYPH_SEGMENT_BEGIN */
-#define SE	USE(SE)	/* HIEROGLYPH_SEGMENT_END */
-#define SUB	USE(SUB)	/* CONS_SUB */
-#define Sk	USE(Sk)	/* SAKOT */
-#define WJ	USE(WJ)	/* Word_Joiner */
-#define ZWNJ	USE(ZWNJ)	/* ZWNJ */
-#define CMAbv	USE(CMAbv)
-#define CMBlw	USE(CMBlw)
-#define FAbv	USE(FAbv)
-#define FBlw	USE(FBlw)
-#define FPst	USE(FPst)
-#define FMAbv	USE(FMAbv)
-#define FMBlw	USE(FMBlw)
-#define FMPst	USE(FMPst)
-#define MAbv	USE(MAbv)
-#define MBlw	USE(MBlw)
-#define MPst	USE(MPst)
-#define MPre	USE(MPre)
-#define SMAbv	USE(SMAbv)
-#define SMBlw	USE(SMBlw)
-#define VAbv	USE(VAbv)
-#define VBlw	USE(VBlw)
-#define VPst	USE(VPst)
-#define VPre	USE(VPre)
-#define VMAbv	USE(VMAbv)
-#define VMBlw	USE(VMBlw)
-#define VMPst	USE(VMPst)
-#define VMPre	USE(VMPre)
-#pragma GCC diagnostic pop
+#సూచన GCC diagnostic push
+#సూచన GCC diagnostic ignored "-Wunused-macros"
+#నిర్వచించు B	USE(B)	/* BASE */
+#నిర్వచించు CGJ	USE(CGJ)	/* CGJ */
+#నిర్వచించు CS	USE(CS)	/* CONS_WITH_STACKER */
+#నిర్వచించు G	USE(G)	/* HIEROGLYPH */
+#నిర్వచించు GB	USE(GB)	/* BASE_OTHER */
+#నిర్వచించు H	USE(H)	/* HALANT */
+#నిర్వచించు HM	USE(HM)	/* HIEROGLYPH_MOD */
+#నిర్వచించు HN	USE(HN)	/* HALANT_NUM */
+#నిర్వచించు HR	USE(HR)	/* HIEROGLYPH_MIRROR */
+#నిర్వచించు HVM	USE(HVM)	/* HALANT_OR_VOWEL_MODIFIER */
+#నిర్వచించు IS	USE(IS)	/* INVISIBLE_STACKER */
+#నిర్వచించు J	USE(J)	/* HIEROGLYPH_JOINER */
+#నిర్వచించు N	USE(N)	/* BASE_NUM */
+#నిర్వచించు O	USE(O)	/* OTHER */
+#నిర్వచించు R	USE(R)	/* REPHA */
+#నిర్వచించు RK	USE(RK)	/* REORDERING_KILLER */
+#నిర్వచించు SB	USE(SB)	/* HIEROGLYPH_SEGMENT_BEGIN */
+#నిర్వచించు SE	USE(SE)	/* HIEROGLYPH_SEGMENT_END */
+#నిర్వచించు SUB	USE(SUB)	/* CONS_SUB */
+#నిర్వచించు Sk	USE(Sk)	/* SAKOT */
+#నిర్వచించు WJ	USE(WJ)	/* Word_Joiner */
+#నిర్వచించు ZWNJ	USE(ZWNJ)	/* ZWNJ */
+#నిర్వచించు CMAbv	USE(CMAbv)
+#నిర్వచించు CMBlw	USE(CMBlw)
+#నిర్వచించు FAbv	USE(FAbv)
+#నిర్వచించు FBlw	USE(FBlw)
+#నిర్వచించు FPst	USE(FPst)
+#నిర్వచించు FMAbv	USE(FMAbv)
+#నిర్వచించు FMBlw	USE(FMBlw)
+#నిర్వచించు FMPst	USE(FMPst)
+#నిర్వచించు MAbv	USE(MAbv)
+#నిర్వచించు MBlw	USE(MBlw)
+#నిర్వచించు MPst	USE(MPst)
+#నిర్వచించు MPre	USE(MPre)
+#నిర్వచించు SMAbv	USE(SMAbv)
+#నిర్వచించు SMBlw	USE(SMBlw)
+#నిర్వచించు VAbv	USE(VAbv)
+#నిర్వచించు VBlw	USE(VBlw)
+#నిర్వచించు VPst	USE(VPst)
+#నిర్వచించు VPre	USE(VPre)
+#నిర్వచించు VMAbv	USE(VMAbv)
+#నిర్వచించు VMBlw	USE(VMBlw)
+#నిర్వచించు VMPst	USE(VMPst)
+#నిర్వచించు VMPre	USE(VMPre)
+#సూచన GCC diagnostic తీయి
 
 
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
 
-#include <stdint.h>
+#అన్తర్భావ <stdint.h>
 
-static const uint8_t hb_use_u8[3359]=
+స్థిర స్థిరరాశి uint8_t hb_use_u8[3359]=
 {
      33,    3,    0,    0,    0,    4,    0,   80,  118,  128,    9,   10,   11,  192,  208,   14,
       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -320,7 +320,7 @@ static const uint8_t hb_use_u8[3359]=
     SUB,  SUB,   GB,CMAbv,   IS, VBlw,   IS,    R, MBlw,   GB, VAbv,    R,VMPst,    J,   SB,   SE,
       J,   HR,    G,    G,   HM,    G,    O, MPre, MPre, MPst,VMAbv, MBlw, VBlw,    O, VBlw,
 };
-static const uint16_t hb_use_u16[864]=
+స్థిర స్థిరరాశి uint16_t hb_use_u16[864]=
 {
      0,   0,   0,   0,   0,   0,   0,   0,   8,   8,   8,   8,   8,   8,   8,   8,
     16,  16,  16,  16,  16,  16,  16,  16,  24,  24,  24,  24,  24,  24,  24,  24,
@@ -378,22 +378,22 @@ static const uint16_t hb_use_u16[864]=
     40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  40,  16,
 };
 
-static inline uint8_t hb_use_b4 (const uint8_t* a, unsigned i)
+స్థిర అంతఃవరుస uint8_t hb_use_b4 (స్థిరరాశి uint8_t* a, గుర్తులేని i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  తిరిగి (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t hb_use_get_category (unsigned u)
+స్థిర అంతఃవరుస uint8_t hb_use_get_category (గుర్తులేని u)
 {
   /* packtab: [2^4,2^5,2^3,2^3,2^1] */
-  return u<921600u ? (uint8_t)(hb_use_u8[2969u+((hb_use_u8[625u+hb_use_u16[((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((u)>>1))>>3))>>3))>>5)))<<5)+((((((((u)>>1))>>3))>>3))&31)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
+  తిరిగి u<921600u ? (uint8_t)(hb_use_u8[2969u+((hb_use_u8[625u+hb_use_u16[((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((u)>>1))>>3))>>3))>>5)))<<5)+((((((((u)>>1))>>3))>>3))&31)])<<3)+((((((u)>>1))>>3))&7)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
 }
 
 
-#else
+#లేకపోతే
 
-#include <stdint.h>
+#అన్తర్భావ <stdint.h>
 
-static const uint8_t hb_use_u8[3679]=
+స్థిర స్థిరరాశి uint8_t hb_use_u8[3679]=
 {
      33,    3,    0,    0,    0,    4,    0,   80,  118,  128,    9,   10,   11,  192,  208,   14,
       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -626,7 +626,7 @@ static const uint8_t hb_use_u8[3679]=
     SUB,  SUB,   GB,CMAbv,   IS, VBlw,   IS,    R, MBlw,   GB, VAbv,    R,VMPst,    J,   SB,   SE,
       J,   HR,    G,    G,   HM,    G,    O, MPre, MPre, MPst,VMAbv, MBlw, VBlw,    O, VBlw,
 };
-static const uint16_t hb_use_u16[492]=
+స్థిర స్థిరరాశి uint16_t hb_use_u16[492]=
 {
      0,   0,   8,   8,  16,  16,  24,  24,  40,  40,   0,  24,  32,   0,   0, 120,
    136,  24,  56,   0, 168,  24, 240,  24, 272,  32, 280, 288,   0, 296, 304,   0,
@@ -661,65 +661,65 @@ static const uint16_t hb_use_u16[492]=
   2304,   0,2312,  32,2320,  32,2328, 104,2336,  32,  40,  16,
 };
 
-static inline uint8_t hb_use_b4 (const uint8_t* a, unsigned i)
+స్థిర అంతఃవరుస uint8_t hb_use_b4 (స్థిరరాశి uint8_t* a, గుర్తులేని i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  తిరిగి (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t hb_use_get_category (unsigned u)
+స్థిర అంతఃవరుస uint8_t hb_use_get_category (గుర్తులేని u)
 {
   /* packtab: [2^4,2^4,2^3,2^1,2^3,2^1] */
-  return u<921600u ? (uint8_t)(hb_use_u8[3289u+((hb_use_u8[945u+hb_use_u16[((hb_use_u8[369u+((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((((u)>>1))>>3))>>1))>>3))>>4)))<<4)+((((((((((u)>>1))>>3))>>1))>>3))&15)])<<3)+((((((((u)>>1))>>3))>>1))&7)])<<1)+((((((u)>>1))>>3))&1)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
+  తిరిగి u<921600u ? (uint8_t)(hb_use_u8[3289u+((hb_use_u8[945u+hb_use_u16[((hb_use_u8[369u+((hb_use_u8[113u+((hb_use_b4(hb_use_u8,((((((((((u)>>1))>>3))>>1))>>3))>>4)))<<4)+((((((((((u)>>1))>>3))>>1))>>3))&15)])<<3)+((((((((u)>>1))>>3))>>1))&7)])<<1)+((((((u)>>1))>>3))&1)]+((((u)>>1))&7)])<<1)+((u)&1)]) : O;
 }
 
 
-#endif
+#అయితే_ముగింపు
 
 
-#undef B
-#undef CGJ
-#undef CS
-#undef G
-#undef GB
-#undef H
-#undef HM
-#undef HN
-#undef HR
-#undef HVM
-#undef IS
-#undef J
-#undef N
-#undef O
-#undef R
-#undef RK
-#undef SB
-#undef SE
-#undef SUB
-#undef Sk
-#undef WJ
-#undef ZWNJ
-#undef CMAbv
-#undef CMBlw
-#undef FAbv
-#undef FBlw
-#undef FPst
-#undef FMAbv
-#undef FMBlw
-#undef FMPst
-#undef MAbv
-#undef MBlw
-#undef MPst
-#undef MPre
-#undef SMAbv
-#undef SMBlw
-#undef VAbv
-#undef VBlw
-#undef VPst
-#undef VPre
-#undef VMAbv
-#undef VMBlw
-#undef VMPst
-#undef VMPre
+#నిర్వచనం_రద్దు B
+#నిర్వచనం_రద్దు CGJ
+#నిర్వచనం_రద్దు CS
+#నిర్వచనం_రద్దు G
+#నిర్వచనం_రద్దు GB
+#నిర్వచనం_రద్దు H
+#నిర్వచనం_రద్దు HM
+#నిర్వచనం_రద్దు HN
+#నిర్వచనం_రద్దు HR
+#నిర్వచనం_రద్దు HVM
+#నిర్వచనం_రద్దు IS
+#నిర్వచనం_రద్దు J
+#నిర్వచనం_రద్దు N
+#నిర్వచనం_రద్దు O
+#నిర్వచనం_రద్దు R
+#నిర్వచనం_రద్దు RK
+#నిర్వచనం_రద్దు SB
+#నిర్వచనం_రద్దు SE
+#నిర్వచనం_రద్దు SUB
+#నిర్వచనం_రద్దు Sk
+#నిర్వచనం_రద్దు WJ
+#నిర్వచనం_రద్దు ZWNJ
+#నిర్వచనం_రద్దు CMAbv
+#నిర్వచనం_రద్దు CMBlw
+#నిర్వచనం_రద్దు FAbv
+#నిర్వచనం_రద్దు FBlw
+#నిర్వచనం_రద్దు FPst
+#నిర్వచనం_రద్దు FMAbv
+#నిర్వచనం_రద్దు FMBlw
+#నిర్వచనం_రద్దు FMPst
+#నిర్వచనం_రద్దు MAbv
+#నిర్వచనం_రద్దు MBlw
+#నిర్వచనం_రద్దు MPst
+#నిర్వచనం_రద్దు MPre
+#నిర్వచనం_రద్దు SMAbv
+#నిర్వచనం_రద్దు SMBlw
+#నిర్వచనం_రద్దు VAbv
+#నిర్వచనం_రద్దు VBlw
+#నిర్వచనం_రద్దు VPst
+#నిర్వచనం_రద్దు VPre
+#నిర్వచనం_రద్దు VMAbv
+#నిర్వచనం_రద్దు VMBlw
+#నిర్వచనం_రద్దు VMPst
+#నిర్వచనం_రద్దు VMPre
 
 
-#endif /* HB_OT_SHAPER_USE_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPER_USE_TABLE_HH */
 /* == End of generated table == */

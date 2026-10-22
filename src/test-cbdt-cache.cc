@@ -22,147 +22,147 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#define hb_malloc cbdt_test_malloc
-#define hb_calloc cbdt_test_calloc
-#define hb_realloc cbdt_test_realloc
-#define hb_free cbdt_test_free
+#నిర్వచించు hb_malloc cbdt_test_malloc
+#నిర్వచించు hb_calloc cbdt_test_calloc
+#నిర్వచించు hb_realloc cbdt_test_realloc
+#నిర్వచించు hb_free cbdt_test_free
 
-#include "hb-subset.hh"
-#include "OT/Color/CBDT/CBDT.hh"
+#అన్తర్భావ "hb-subset.hh"
+#అన్తర్భావ "OT/Color/CBDT/CBDT.hh"
 
-static unsigned fail_after;
-static unsigned allocation_count;
+స్థిర గుర్తులేని fail_after;
+స్థిర గుర్తులేని కేటాయింపు_లెక్క;
 
-static bool
-fail_allocation ()
+స్థిర తార్కిక
+fail_కేటాయింపు ()
 {
-  allocation_count++;
-  return fail_after && !--fail_after;
+  కేటాయింపు_లెక్క++;
+  తిరిగి fail_after && !--fail_after;
 }
 
-extern "C" void *cbdt_test_malloc (size_t size)
-{ return fail_allocation () ? nullptr : malloc (size); }
-extern "C" void *cbdt_test_calloc (size_t count, size_t size)
-{ return fail_allocation () ? nullptr : calloc (count, size); }
-extern "C" void *cbdt_test_realloc (void *ptr, size_t size)
-{ return fail_allocation () ? nullptr : realloc (ptr, size); }
-extern "C" void cbdt_test_free (void *ptr)
-{ free (ptr); }
+బాహ్య "C" శూన్య *cbdt_test_malloc (size_t కొలత)
+{ తిరిగి fail_కేటాయింపు () ? శూన్యసూచిక : జ్ఞాపకం_ఇవ్వు (కొలత); }
+బాహ్య "C" శూన్య *cbdt_test_calloc (size_t లెక్క, size_t కొలత)
+{ తిరిగి fail_కేటాయింపు () ? శూన్యసూచిక : సున్నా_జ్ఞాపకం_ఇవ్వు (లెక్క, కొలత); }
+బాహ్య "C" శూన్య *cbdt_test_realloc (శూన్య *ptr, size_t కొలత)
+{ తిరిగి fail_కేటాయింపు () ? శూన్యసూచిక : realloc (ptr, కొలత); }
+బాహ్య "C" శూన్య cbdt_test_free (శూన్య *ptr)
+{ విడుదల (ptr); }
 
-static hb_blob_t *
-subset_strike (const OT::BitmapSizeTable &strike,
-	       const OT::CBLC *cblc,
+స్థిర hb_blob_t *
+subset_strike (స్థిరరాశి OT::Bitmap_కొలత_పట్టిక &strike,
+	       స్థిరరాశి OT::CBLC *cblc,
 	       hb_subset_plan_t *plan,
-	       hb_bytes_t cbdt,
-	       hb_vector_t<char> *data,
+	       hb_బైట్లు_t cbdt,
+	       hb_సదిశ_t<అక్షరం> *దత్తాంశం,
 	       OT::cbdt_dedup_context_t *dedup)
 {
-  char buffer[4096];
-  hb_serialize_context_t serializer (buffer, sizeof (buffer));
-  serializer.start_serialize<OT::BitmapSizeTable> ();
-  hb_subset_context_t context (nullptr, plan, &serializer, HB_OT_TAG_CBLC);
-  hb_always_assert (strike.subset (&context, cblc, cbdt.arrayZ, cbdt.length,
-				  data, dedup));
-  serializer.end_serialize ();
-  hb_always_assert (!serializer.in_error ());
-  return serializer.copy_blob ();
+  అక్షరం బఫరు[4096];
+  hb_serialize_context_t serializer (బఫరు, పరిమాణం (బఫరు));
+  serializer.ప్రారంభం_serialize<OT::Bitmap_కొలత_పట్టిక> ();
+  hb_subset_context_t context (శూన్యసూచిక, plan, &serializer, HB_OT_ట్యాగ్_CBLC);
+  hb_always_assert (strike.subset (&context, cblc, cbdt.arrayZ, cbdt.నిడివి,
+				  దత్తాంశం, dedup));
+  serializer.చివర_serialize ();
+  hb_always_assert (!serializer.లోపల_error ());
+  తిరిగి serializer.copy_blob ();
 }
 
-static unsigned
-test_required_allocations (const OT::BitmapSizeTable &strike,
-			   const OT::CBLC *cblc,
+స్థిర గుర్తులేని
+test_required_allocations (స్థిరరాశి OT::Bitmap_కొలత_పట్టిక &strike,
+			   స్థిరరాశి OT::CBLC *cblc,
 			   hb_subset_plan_t *plan,
-			   hb_bytes_t cbdt,
-			   unsigned failure)
+			   hb_బైట్లు_t cbdt,
+			   గుర్తులేని failure)
 {
-  char buffer[4096];
-  hb_serialize_context_t serializer (buffer, sizeof (buffer));
-  serializer.start_serialize<OT::BitmapSizeTable> ();
-  hb_subset_context_t context (nullptr, plan, &serializer, HB_OT_TAG_CBLC);
-  hb_vector_t<char> data;
+  అక్షరం బఫరు[4096];
+  hb_serialize_context_t serializer (బఫరు, పరిమాణం (బఫరు));
+  serializer.ప్రారంభం_serialize<OT::Bitmap_కొలత_పట్టిక> ();
+  hb_subset_context_t context (శూన్యసూచిక, plan, &serializer, HB_OT_ట్యాగ్_CBLC);
+  hb_సదిశ_t<అక్షరం> దత్తాంశం;
   fail_after = failure;
-  allocation_count = 0;
-  bool success = strike.subset (&context, cblc, cbdt.arrayZ, cbdt.length,
-			       &data, nullptr);
-  unsigned count = allocation_count;
+  కేటాయింపు_లెక్క = 0;
+  తార్కిక success = strike.subset (&context, cblc, cbdt.arrayZ, cbdt.నిడివి,
+			       &దత్తాంశం, శూన్యసూచిక);
+  గుర్తులేని లెక్క = కేటాయింపు_లెక్క;
   hb_always_assert (!fail_after);
   /* Required image/offset allocations must fail serialization instead of
    * being mistaken for a strike that can simply be discarded. */
-  hb_always_assert (success || serializer.in_error ());
-  serializer.end_serialize ();
-  return count;
+  hb_always_assert (success || serializer.లోపల_error ());
+  serializer.చివర_serialize ();
+  తిరిగి లెక్క;
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
   hb_always_assert (argc == 2);
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0);
   hb_blob_destroy (blob);
-  hb_subset_input_t *input = hb_subset_input_create_or_fail ();
-  hb_always_assert (input);
-  hb_set_t *unicodes = hb_subset_input_unicode_set (input);
-  hb_set_add (unicodes, 0x38);
-  hb_set_add (unicodes, 0xAE);
-  hb_set_add (unicodes, 0x2049);
-  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (face, input);
+  hb_subset_ఆదానం_t *ఆదానం = hb_subset_ఆదానం_create_or_fail ();
+  hb_always_assert (ఆదానం);
+  hb_సమితి_t *unicodes = hb_subset_ఆదానం_unicode_సమితి (ఆదానం);
+  hb_సమితి_కూడు (unicodes, 0x38);
+  hb_సమితి_కూడు (unicodes, 0xAE);
+  hb_సమితి_కూడు (unicodes, 0x2049);
+  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (face, ఆదానం);
   hb_always_assert (plan);
 
   hb_blob_ptr_t<OT::CBLC> cblc =
-      hb_sanitize_context_t ().reference_table<OT::CBLC> (face);
+      hb_sanitize_context_t ().reference_పట్టిక<OT::CBLC> (face);
   hb_blob_ptr_t<OT::CBDT> cbdt =
-      hb_sanitize_context_t ().reference_table<OT::CBDT> (face);
-  hb_always_assert (cblc.get_length () >= 8 + 2 * OT::BitmapSizeTable::static_size);
-  const auto *strikes = reinterpret_cast<const OT::BitmapSizeTable *> (
-      reinterpret_cast<const char *> (cblc.get ()) + 8);
+      hb_sanitize_context_t ().reference_పట్టిక<OT::CBDT> (face);
+  hb_always_assert (cblc.get_నిడివి () >= 8 + 2 * OT::Bitmap_కొలత_పట్టిక::static_కొలత);
+  స్థిరరాశి స్వయంచాలక *strikes = reinterpret_cast<స్థిరరాశి OT::Bitmap_కొలత_పట్టిక *> (
+      reinterpret_cast<స్థిరరాశి అక్షరం *> (cblc.get ()) + 8);
 
-  unsigned required_allocations = test_required_allocations (
-      strikes[0], cblc.get (), plan, cbdt.get_blob ()->as_bytes (), 0);
+  గుర్తులేని required_allocations = test_required_allocations (
+      strikes[0], cblc.get (), plan, cbdt.get_blob ()->as_బైట్లు (), 0);
   hb_always_assert (required_allocations);
-  for (unsigned failure = 1; failure <= required_allocations; failure++)
+  కొరకు (గుర్తులేని failure = 1; failure <= required_allocations; failure++)
     test_required_allocations (strikes[0], cblc.get (), plan,
-			       cbdt.get_blob ()->as_bytes (), failure);
+			       cbdt.get_blob ()->as_బైట్లు (), failure);
 
-  hb_vector_t<char> expected_data;
+  hb_సదిశ_t<అక్షరం> expected_దత్తాంశం;
   hb_blob_t *expected[2];
-  for (unsigned i = 0; i < 2; i++)
-    expected[i] = subset_strike (strikes[i], cblc.get (), plan, cbdt.get_blob ()->as_bytes (),
-				&expected_data, nullptr);
+  కొరకు (గుర్తులేని i = 0; i < 2; i++)
+    expected[i] = subset_strike (strikes[i], cblc.get (), plan, cbdt.get_blob ()->as_బైట్లు (),
+				&expected_దత్తాంశం, శూన్యసూచిక);
 
   /* Fail the entries vector, lengths vector, and map allocations in turn.
    * A disabled cache must preserve both strikes and every image byte. */
-  for (unsigned failure = 1; failure <= 3; failure++)
+  కొరకు (గుర్తులేని failure = 1; failure <= 3; failure++)
   {
     OT::cbdt_dedup_context_t dedup;
-    hb_vector_t<unsigned> lengths {1};
+    hb_సదిశ_t<గుర్తులేని> lengths {1};
     fail_after = failure;
-    hb_always_assert (!dedup.add (0, 0, lengths));
+    hb_always_assert (!dedup.కూడు (0, 0, lengths));
     hb_always_assert (!fail_after);
-    hb_always_assert (dedup.entries.in_error () || dedup.lengths.in_error () ||
-		      dedup.map.in_error ());
+    hb_always_assert (dedup.entries.లోపల_error () || dedup.lengths.లోపల_error () ||
+		      dedup.map.లోపల_error ());
 
-    hb_vector_t<char> actual_data;
-    for (unsigned i = 0; i < 2; i++)
+    hb_సదిశ_t<అక్షరం> actual_దత్తాంశం;
+    కొరకు (గుర్తులేని i = 0; i < 2; i++)
     {
       hb_blob_t *actual = subset_strike (strikes[i], cblc.get (), plan,
-					cbdt.get_blob ()->as_bytes (), &actual_data, &dedup);
-      hb_always_assert (hb_blob_get_length (actual) == hb_blob_get_length (expected[i]));
-      hb_always_assert (!hb_memcmp (hb_blob_get_data (actual, nullptr),
-				   hb_blob_get_data (expected[i], nullptr),
-				   hb_blob_get_length (actual)));
+					cbdt.get_blob ()->as_బైట్లు (), &actual_దత్తాంశం, &dedup);
+      hb_always_assert (hb_blob_get_నిడివి (actual) == hb_blob_get_నిడివి (expected[i]));
+      hb_always_assert (!hb_memcmp (hb_blob_get_దత్తాంశం (actual, శూన్యసూచిక),
+				   hb_blob_get_దత్తాంశం (expected[i], శూన్యసూచిక),
+				   hb_blob_get_నిడివి (actual)));
       hb_blob_destroy (actual);
     }
-    hb_always_assert (actual_data.as_bytes () == expected_data.as_bytes ());
+    hb_always_assert (actual_దత్తాంశం.as_బైట్లు () == expected_దత్తాంశం.as_బైట్లు ());
   }
 
-  for (hb_blob_t *expected_blob : expected)
+  కొరకు (hb_blob_t *expected_blob : expected)
     hb_blob_destroy (expected_blob);
   cbdt.destroy ();
   cblc.destroy ();
   hb_subset_plan_destroy (plan);
-  hb_subset_input_destroy (input);
+  hb_subset_ఆదానం_destroy (ఆదానం);
   hb_face_destroy (face);
-  return 0;
+  తిరిగి 0;
 }

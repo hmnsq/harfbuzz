@@ -22,73 +22,73 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-paint-extents.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-paint-extents.hh"
 
 
-struct budget_probe_t
+నిర్మాణం budget_probe_t
 {
   int64_t observed = -1;
 };
 
-static hb_bool_t
-draw_budget_probe (hb_font_t *, void *font_data, hb_codepoint_t,
-		   hb_draw_funcs_t *draw_funcs, void *draw_data, void *)
+స్థిర hb_bool_t
+draw_budget_probe (hb_font_t *, శూన్య *font_దత్తాంశం, hb_codepoint_t,
+		   hb_draw_funcs_t *draw_funcs, శూన్య *draw_దత్తాంశం, శూన్య *)
 {
-  auto *probe = (budget_probe_t *) font_data;
-  probe->observed = hb_draw_get_budget_remaining (draw_funcs, draw_data);
+  స్వయంచాలక *probe = (budget_probe_t *) font_దత్తాంశం;
+  probe->observed = hb_draw_get_budget_మిగిలిన (draw_funcs, draw_దత్తాంశం);
 
   hb_draw_state_t state = HB_DRAW_STATE_DEFAULT;
-  hb_draw_move_to (draw_funcs, draw_data, &state, 10.f, 20.f);
-  hb_draw_line_to (draw_funcs, draw_data, &state, 30.f, 40.f);
-  return true;
+  hb_draw_move_గమ్యం (draw_funcs, draw_దత్తాంశం, &state, 10.f, 20.f);
+  hb_draw_పంక్తి_గమ్యం (draw_funcs, draw_దత్తాంశం, &state, 30.f, 40.f);
+  తిరిగి నిజం;
 }
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc HB_వాడని, అక్షరం **argv HB_వాడని)
 {
   hb_paint_funcs_t *paint_funcs = hb_paint_extents_get_funcs ();
 
   /* COLR caches this context in zero-allocated scratch storage. */
-  auto *zeroed = (hb_paint_extents_context_t *)
-		 hb_calloc (1, sizeof (hb_paint_extents_context_t));
+  స్వయంచాలక *zeroed = (hb_paint_extents_context_t *)
+		 hb_calloc (1, పరిమాణం (hb_paint_extents_context_t));
   hb_always_assert (zeroed);
   zeroed->clear ();
   hb_always_assert (hb_paint_get_budget (paint_funcs, zeroed) == HB_BUDGET_DEFAULT);
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, zeroed) > 0);
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, zeroed) > 0);
   zeroed->~hb_paint_extents_context_t ();
   hb_free (zeroed);
 
   hb_paint_extents_context_t context;
 
   hb_always_assert (hb_paint_get_budget (paint_funcs, &context) == HB_BUDGET_DEFAULT);
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) > 0);
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) < HB_BUDGET_UNLIMITED);
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, &context) > 0);
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, &context) < HB_BUDGET_UNLIMITED);
 
   budget_probe_t probe;
   hb_font_funcs_t *font_funcs = hb_font_funcs_create ();
-  hb_font_funcs_set_draw_glyph_or_fail_func (font_funcs, draw_budget_probe, nullptr, nullptr);
-  hb_font_t *font = hb_font_create (hb_face_get_empty ());
-  hb_font_set_funcs (font, font_funcs, &probe, nullptr);
+  hb_font_funcs_సమితి_draw_glyph_or_fail_func (font_funcs, draw_budget_probe, శూన్యసూచిక, శూన్యసూచిక);
+  hb_font_t *font = hb_font_create (hb_face_get_ఖాళీలు ());
+  hb_font_సమితి_funcs (font, font_funcs, &probe, శూన్యసూచిక);
   hb_font_funcs_destroy (font_funcs);
 
-  hb_always_assert (hb_paint_set_budget (paint_funcs, &context, 1));
-  hb_paint_push_clip_glyph (paint_funcs, &context, 0, font);
+  hb_always_assert (hb_paint_సమితి_budget (paint_funcs, &context, 1));
+  hb_paint_నెట్టు_clip_glyph (paint_funcs, &context, 0, font);
   hb_always_assert (probe.observed == 1);
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) < 0);
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, &context) < 0);
 
   context.clear ();
   hb_always_assert (hb_paint_get_budget (paint_funcs, &context) == 1);
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) == 1);
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, &context) == 1);
 
-  hb_always_assert (hb_paint_set_budget (paint_funcs, &context, HB_BUDGET_UNLIMITED));
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) == HB_BUDGET_UNLIMITED);
+  hb_always_assert (hb_paint_సమితి_budget (paint_funcs, &context, HB_BUDGET_UNLIMITED));
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, &context) == HB_BUDGET_UNLIMITED);
 
-  hb_always_assert (hb_paint_set_budget (paint_funcs, &context, 0));
+  hb_always_assert (hb_paint_సమితి_budget (paint_funcs, &context, 0));
   context.clear ();
   hb_always_assert (hb_paint_get_budget (paint_funcs, &context) == 0);
-  hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) == 0);
+  hb_always_assert (hb_paint_get_budget_మిగిలిన (paint_funcs, &context) == 0);
 
   hb_font_destroy (font);
-  return 0;
+  తిరిగి 0;
 }

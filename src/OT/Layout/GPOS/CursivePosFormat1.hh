@@ -1,162 +1,162 @@
-#ifndef OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
+#నిర్వచించు OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
 
-#include "Anchor.hh"
-#include "../../../hb-limits.hh"
+#అన్తర్భావ "Anchor.hh"
+#అన్తర్భావ "../../../hb-limits.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-template <typename Types>
-struct CursivePosFormat1_2;
+మూస <రకం_పేరు Types>
+నిర్మాణం CursivePosFormat1_2;
 
-template <typename Types>
-struct EntryExitRecord
+మూస <రకం_పేరు Types>
+నిర్మాణం నమోదు_Exit_రికార్డు
 {
-  template <typename Types2> friend struct CursivePosFormat1_2;
+  మూస <రకం_పేరు Types2> మిత్ర నిర్మాణం CursivePosFormat1_2;
 
-  bool sanitize (hb_sanitize_context_t *c, const struct CursivePosFormat1_2<Types> *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి నిర్మాణం CursivePosFormat1_2<Types> *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (entryAnchor.sanitize (c, base) && exitAnchor.sanitize (c, base));
+    TRACE_SANITIZE (ఇది);
+    return_trace (నమోదు_Anchor.sanitize (c, పునాది) && exitAnchor.sanitize (c, పునాది));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const struct CursivePosFormat1_2<Types> *src_base) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  స్థిరరాశి నిర్మాణం CursivePosFormat1_2<Types> *src_పునాది) స్థిరరాశి
   {
-    (src_base+entryAnchor).collect_variation_indices (c);
-    (src_base+exitAnchor).collect_variation_indices (c);
+    (src_పునాది+నమోదు_Anchor).collect_variation_indices (c);
+    (src_పునాది+exitAnchor).collect_variation_indices (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const struct CursivePosFormat1_2<Types> *src_base) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       స్థిరరాశి నిర్మాణం CursivePosFormat1_2<Types> *src_పునాది) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    bool ret = false;
-    ret |= out->entryAnchor.serialize_subset (c, entryAnchor, src_base);
-    ret |= out->exitAnchor.serialize_subset (c, exitAnchor, src_base);
+    తార్కిక ret = అబద్ధం;
+    ret |= బహిర్గతం->నమోదు_Anchor.serialize_subset (c, నమోదు_Anchor, src_పునాది);
+    ret |= బహిర్గతం->exitAnchor.serialize_subset (c, exitAnchor, src_పునాది);
     return_trace (ret);
   }
 
-  protected:
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
-                entryAnchor;            /* Offset to EntryAnchor table--from
+  రక్షిత:
+  రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Anchor, నిర్మాణం CursivePosFormat1_2<Types>>
+                నమోదు_Anchor;            /* Offset to EntryAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Anchor, నిర్మాణం CursivePosFormat1_2<Types>>
                 exitAnchor;             /* Offset to ExitAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  public:
-  DEFINE_SIZE_STATIC (2 * Types::size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (2 * Types::కొలత);
 };
 
-static inline void
-reverse_cursive_minor_offset (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+స్థిర అంతఃవరుస శూన్య
+తిరగేయి_cursive_minor_స్థానభ్రంశం (hb_glyph_position_t *pos,
+                              గుర్తులేని పూర్ణాంకం len,
+                              గుర్తులేని పూర్ణాంకం i,
                               hb_direction_t direction,
-                              unsigned int new_parent,
-                              unsigned nesting_level = 0)
+                              గుర్తులేని పూర్ణాంకం new_మాతృ,
+                              గుర్తులేని nesting_level = 0)
 {
-  if (nesting_level > HB_MAX_NESTING_LEVEL)
-    return;
+  ఒకవేళ (nesting_level > HB_MAX_NESTING_LEVEL)
+    తిరిగి;
 
-  int chain = pos[i].attach_chain(), type = pos[i].attach_type();
-  if (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
-    return;
+  పూర్ణాంకం chain = pos[i].attach_chain(), type = pos[i].attach_type();
+  ఒకవేళ (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
+    తిరిగి;
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  గుర్తులేని పూర్ణాంకం j = (పూర్ణాంకం) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  ఒకవేళ (unlikely (j >= len))
+    తిరిగి;
 
   /* Stop if we see new parent in the chain. */
-  if (j == new_parent)
-    return;
+  ఒకవేళ (j == new_మాతృ)
+    తిరిగి;
 
   int16_t reversed_chain = -chain;
   /* The old edge was cleared above; if the reversed distance truncates,
    * keep it detached instead of storing a poisoned chain.
    */
-  if (unlikely (reversed_chain != -chain))
-    return;
+  ఒకవేళ (unlikely (reversed_chain != -chain))
+    తిరిగి;
 
-  reverse_cursive_minor_offset (pos, len, j, direction, new_parent, nesting_level + 1);
+  తిరగేయి_cursive_minor_స్థానభ్రంశం (pos, len, j, direction, new_మాతృ, nesting_level + 1);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
-    pos[j].y_offset = hb_saturate_neg (pos[i].y_offset);
-  else
-    pos[j].x_offset = hb_saturate_neg (pos[i].x_offset);
+  ఒకవేళ (HB_DIRECTION_IS_HORIZONTAL (direction))
+    pos[j].y_స్థానభ్రంశం_2 = hb_saturate_neg (pos[i].y_స్థానభ్రంశం_2);
+  లేకపోతే
+    pos[j].x_స్థానభ్రంశం_2 = hb_saturate_neg (pos[i].x_స్థానభ్రంశం_2);
 
   pos[j].attach_chain() = reversed_chain;
   pos[j].attach_type() = type;
 }
 
 
-static inline bool
+స్థిర అంతఃవరుస తార్కిక
 apply_cursive_attachment (hb_ot_apply_context_t *c,
-                          const Anchor &exit_anchor,
-                          const Anchor &entry_anchor,
-                          unsigned i)
+                          స్థిరరాశి Anchor &exit_anchor,
+                          స్థిరరాశి Anchor &నమోదు_anchor,
+                          గుర్తులేని i)
 {
-  hb_buffer_t *buffer = c->buffer;
-  unsigned int j = buffer->idx;
+  hb_బఫరు_t *బఫరు = c->బఫరు;
+  గుర్తులేని పూర్ణాంకం j = బఫరు->idx;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
   {
-    c->buffer->message (c->font,
+    c->బఫరు->సందేశం (c->font,
 			  "cursive attaching glyph at %u to glyph at %u",
 			  i, j);
   }
 
-  buffer->unsafe_to_break (i, j + 1);
-  float entry_x, entry_y, exit_x, exit_y;
-  exit_anchor.get_anchor (c, buffer->info[i].codepoint, &exit_x, &exit_y);
-  entry_anchor.get_anchor (c, buffer->info[j].codepoint, &entry_x, &entry_y);
+  బఫరు->unsafe_గమ్యం_break (i, j + 1);
+  దశాంశం నమోదు_x, నమోదు_y, exit_x, exit_y;
+  exit_anchor.get_anchor (c, బఫరు->info[i].codepoint, &exit_x, &exit_y);
+  నమోదు_anchor.get_anchor (c, బఫరు->info[j].codepoint, &నమోదు_x, &నమోదు_y);
 
-  hb_glyph_position_t *pos = buffer->pos;
+  hb_glyph_position_t *pos = బఫరు->pos;
 
   hb_position_t d;
   /* Main-direction adjustment */
-  switch (c->direction) {
-    case HB_DIRECTION_LTR:
-      pos[i].x_advance = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
+  ఎంపిక (c->direction) {
+    స్థితి HB_DIRECTION_LTR:
+      pos[i].x_advance = hb_saturate_కూడు ((hb_position_t) roundf (exit_x), pos[i].x_స్థానభ్రంశం_2);
 
-      d = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
+      d = hb_saturate_కూడు ((hb_position_t) roundf (నమోదు_x), pos[j].x_స్థానభ్రంశం_2);
       pos[j].x_advance = hb_saturate_sub (pos[j].x_advance, d);
-      pos[j].x_offset = hb_saturate_sub (pos[j].x_offset, d);
-      break;
-    case HB_DIRECTION_RTL:
-      d = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
+      pos[j].x_స్థానభ్రంశం_2 = hb_saturate_sub (pos[j].x_స్థానభ్రంశం_2, d);
+      ఆపు;
+    స్థితి HB_DIRECTION_RTL:
+      d = hb_saturate_కూడు ((hb_position_t) roundf (exit_x), pos[i].x_స్థానభ్రంశం_2);
       pos[i].x_advance = hb_saturate_sub (pos[i].x_advance, d);
-      pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, d);
+      pos[i].x_స్థానభ్రంశం_2 = hb_saturate_sub (pos[i].x_స్థానభ్రంశం_2, d);
 
-      pos[j].x_advance = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
-      break;
-    case HB_DIRECTION_TTB:
-      pos[i].y_advance = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
+      pos[j].x_advance = hb_saturate_కూడు ((hb_position_t) roundf (నమోదు_x), pos[j].x_స్థానభ్రంశం_2);
+      ఆపు;
+    స్థితి HB_DIRECTION_TTB:
+      pos[i].y_advance = hb_saturate_కూడు ((hb_position_t) roundf (exit_y), pos[i].y_స్థానభ్రంశం_2);
 
-      d = hb_saturate_add ((hb_position_t) roundf (entry_y), pos[j].y_offset);
+      d = hb_saturate_కూడు ((hb_position_t) roundf (నమోదు_y), pos[j].y_స్థానభ్రంశం_2);
       pos[j].y_advance = hb_saturate_sub (pos[j].y_advance, d);
-      pos[j].y_offset = hb_saturate_sub (pos[j].y_offset, d);
-      break;
-    case HB_DIRECTION_BTT:
-      d = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
+      pos[j].y_స్థానభ్రంశం_2 = hb_saturate_sub (pos[j].y_స్థానభ్రంశం_2, d);
+      ఆపు;
+    స్థితి HB_DIRECTION_BTT:
+      d = hb_saturate_కూడు ((hb_position_t) roundf (exit_y), pos[i].y_స్థానభ్రంశం_2);
       pos[i].y_advance = hb_saturate_sub (pos[i].y_advance, d);
-      pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, d);
+      pos[i].y_స్థానభ్రంశం_2 = hb_saturate_sub (pos[i].y_స్థానభ్రంశం_2, d);
 
-      pos[j].y_advance = (hb_position_t) roundf (entry_y);
-      break;
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+      pos[j].y_advance = (hb_position_t) roundf (నమోదు_y);
+      ఆపు;
+    స్థితి HB_DIRECTION_INVALID:
+    అప్రమేయ:
+      ఆపు;
   }
 
   /* Cross-direction adjustment */
@@ -167,17 +167,17 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    *
    * Optimize things for the case of RightToLeft, as that's most common in
    * Arabic. */
-  unsigned int child  = i;
-  unsigned int parent = j;
-  hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
-  hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  గుర్తులేని పూర్ణాంకం బిడ్డ  = i;
+  గుర్తులేని పూర్ణాంకం మాతృ = j;
+  hb_position_t x_స్థానభ్రంశం_2 = (hb_position_t) roundf (నమోదు_x - exit_x);
+  hb_position_t y_స్థానభ్రంశం_2 = (hb_position_t) roundf (నమోదు_y - exit_y);
+  ఒకవేళ  (!(c->lookup_props & LookupFlag::కుడి_గమ్యం_ఎడమ))
   {
-    unsigned int k = child;
-    child = parent;
-    parent = k;
-    x_offset = -x_offset;
-    y_offset = -y_offset;
+    గుర్తులేని పూర్ణాంకం k = బిడ్డ;
+    బిడ్డ = మాతృ;
+    మాతృ = k;
+    x_స్థానభ్రంశం_2 = -x_స్థానభ్రంశం_2;
+    y_స్థానభ్రంశం_2 = -y_స్థానభ్రంశం_2;
   }
 
   /* If child was already connected to someone else, walk through its old
@@ -185,167 +185,167 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    * previous connection now attaches to new parent.  Watch out for case
    * where new parent is on the path from old chain...
    */
-  reverse_cursive_minor_offset (pos, buffer->len, child, c->direction, parent);
+  తిరగేయి_cursive_minor_స్థానభ్రంశం (pos, బఫరు->len, బిడ్డ, c->direction, మాతృ);
 
-  pos[child].attach_chain() = (int) parent - (int) child;
-  if (pos[child].attach_chain() != (int) parent - (int) child)
+  pos[బిడ్డ].attach_chain() = (పూర్ణాంకం) మాతృ - (పూర్ణాంకం) బిడ్డ;
+  ఒకవేళ (pos[బిడ్డ].attach_chain() != (పూర్ణాంకం) మాతృ - (పూర్ణాంకం) బిడ్డ)
   {
-    pos[child].attach_chain() = 0;
-    goto overflow;
+    pos[బిడ్డ].attach_chain() = 0;
+    వెళ్ళు అధికప్రవాహం;
   }
-  pos[child].attach_type() = ATTACH_TYPE_CURSIVE;
-  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
-  if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
-    pos[child].y_offset = y_offset;
-  else
-    pos[child].x_offset = x_offset;
+  pos[బిడ్డ].attach_type() = ATTACH_TYPE_CURSIVE;
+  బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+  ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+    pos[బిడ్డ].y_స్థానభ్రంశం_2 = y_స్థానభ్రంశం_2;
+  లేకపోతే
+    pos[బిడ్డ].x_స్థానభ్రంశం_2 = x_స్థానభ్రంశం_2;
 
   /* If parent was attached to child, separate them.
    * https://github.com/harfbuzz/harfbuzz/issues/2469
    */
-  if (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
+  ఒకవేళ (unlikely (pos[మాతృ].attach_chain() == -pos[బిడ్డ].attach_chain()))
   {
-    pos[parent].attach_chain() = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
-	pos[parent].y_offset = 0;
-    else
-	pos[parent].x_offset = 0;
+    pos[మాతృ].attach_chain() = 0;
+    ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+	pos[మాతృ].y_స్థానభ్రంశం_2 = 0;
+    లేకపోతే
+	pos[మాతృ].x_స్థానభ్రంశం_2 = 0;
   }
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
   {
-    c->buffer->message (c->font,
+    c->బఫరు->సందేశం (c->font,
 			  "cursive attached glyph at %u to glyph at %u",
 			  i, j);
   }
 
-overflow:
-  buffer->idx++;
-  return true;
+అధికప్రవాహం:
+  బఫరు->idx++;
+  తిరిగి నిజం;
 }
 
-template <typename Types>
-struct CursivePosFormat1_2
+మూస <రకం_పేరు Types>
+నిర్మాణం CursivePosFormat1_2
 {
 
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 coverage;               /* Offset to Coverage table--from beginning of subtable */
-  typename Types::template ArrayOf<EntryExitRecord<Types>>
-                entryExitRecord;        /* Array of EntryExit records--in
+  రకం_పేరు Types::మూస Array_యొక్క<నమోదు_Exit_రికార్డు<Types>>
+                నమోదు_Exit_రికార్డు_2;        /* Array of EntryExit records--in
                                          * Coverage Index order */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, entryExitRecord);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + Types::LOffset::static_కొలత + Types::HBUINT::static_కొలత, నమోదు_Exit_రికార్డు_2);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!coverage.sanitize (c, this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!coverage.sanitize (c, ఇది)))
+      return_trace (అబద్ధం);
 
-    if (c->lazy_some_gpos)
-      return_trace (entryExitRecord.sanitize_shallow (c));
-    else
-      return_trace (entryExitRecord.sanitize (c, this));
+    ఒకవేళ (c->lazy_some_gpos)
+      return_trace (నమోదు_Exit_రికార్డు_2.sanitize_shallow (c));
+    లేకపోతే
+      return_trace (నమోదు_Exit_రికార్డు_2.sanitize (c, ఇది));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి (ఇది+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  శూన్య సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c) స్థిరరాశి {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    + hb_zip (this+coverage, entryExitRecord)
-    | hb_filter (c->glyph_set, hb_first)
-    | hb_map (hb_second)
-    | hb_apply ([&] (const EntryExitRecord<Types>& record) { record.collect_variation_indices (c, this); })
+    + hb_zip (ఇది+coverage, నమోదు_Exit_రికార్డు_2)
+    | hb_filter (c->glyph_సమితి, hb_మొదటి)
+    | hb_map (hb_రెండవ)
+    | hb_apply ([&] (స్థిరరాశి నమోదు_Exit_రికార్డు<Types>& రికార్డు) { రికార్డు.collect_variation_indices (c, ఇది); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
+  { ఒకవేళ (unlikely (!(ఇది+coverage).collect_coverage (c->ఆదానం))) తిరిగి; }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+coverage).collect_coverage (digest); }
+  శూన్య collect_రెండవ_glyphs (hb_సమితి_digest_t *digest) స్థిరరాశి
+  { (ఇది+coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  స్థిరరాశి Coverage &get_coverage () స్థిరరాశి { తిరిగి ఇది+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
+    TRACE_APPLY (ఇది);
+    hb_బఫరు_t *బఫరు = c->బఫరు;
 
-    const EntryExitRecord<Types> &this_record = entryExitRecord[(this+coverage).get_coverage  (buffer->cur().codepoint)];
-    if (!this_record.entryAnchor ||
-	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
+    స్థిరరాశి నమోదు_Exit_రికార్డు<Types> &this_రికార్డు = నమోదు_Exit_రికార్డు_2[(ఇది+coverage).get_coverage  (బఫరు->cur().codepoint)];
+    ఒకవేళ (!this_రికార్డు.నమోదు_Anchor ||
+	unlikely (!this_రికార్డు.నమోదు_Anchor.sanitize (&c->sanitizer, ఇది))) return_trace (అబద్ధం);
     hb_barrier ();
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
-    unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    స్వయంచాలక &skippy_iter = c->iter_ఆదానం;
+    skippy_iter.reset_fast (బఫరు->idx);
+    గుర్తులేని unsafe_from;
+    ఒకవేళ (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
-      buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat_from_outbuffer (unsafe_from, బఫరు->idx + 1);
+      return_trace (అబద్ధం);
     }
 
-    const EntryExitRecord<Types> &prev_record = entryExitRecord[(this+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
-    if (!prev_record.exitAnchor ||
-	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, this)))
+    స్థిరరాశి నమోదు_Exit_రికార్డు<Types> &prev_రికార్డు = నమోదు_Exit_రికార్డు_2[(ఇది+coverage).get_coverage  (బఫరు->info[skippy_iter.idx].codepoint)];
+    ఒకవేళ (!prev_రికార్డు.exitAnchor ||
+	unlikely (!prev_రికార్డు.exitAnchor.sanitize (&c->sanitizer, ఇది)))
     {
-      buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      బఫరు->unsafe_గమ్యం_concat_from_outbuffer (skippy_iter.idx, బఫరు->idx + 1);
+      return_trace (అబద్ధం);
     }
     hb_barrier ();
 
     return_trace (apply_cursive_attachment (c,
-                                            this+prev_record.exitAnchor,
-                                            this+this_record.entryAnchor,
+                                            ఇది+prev_రికార్డు.exitAnchor,
+                                            ఇది+this_రికార్డు.నమోదు_Anchor,
                                             skippy_iter.idx));
   }
 
-  template <typename Iterator,
+  మూస <రకం_పేరు Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_subset_context_t *c,
+  శూన్య serialize (hb_subset_context_t *c,
                   Iterator it,
-                  const struct CursivePosFormat1_2<Types> *src_base)
+                  స్థిరరాశి నిర్మాణం CursivePosFormat1_2<Types> *src_పునాది)
   {
-    if (unlikely (!c->serializer->extend_min ((*this)))) return;
-    this->format = src_base->format;
-    this->entryExitRecord.len = it.len ();
+    ఒకవేళ (unlikely (!c->serializer->extend_min ((*ఇది)))) తిరిగి;
+    ఇది->format = src_పునాది->format;
+    ఇది->నమోదు_Exit_రికార్డు_2.len = it.len ();
 
-    for (const EntryExitRecord<Types>& entry_record : + it
-                                                      | hb_map (hb_second))
-      entry_record.subset (c, src_base);
+    కొరకు (స్థిరరాశి నమోదు_Exit_రికార్డు<Types>& నమోదు_రికార్డు : + it
+                                                      | hb_map (hb_రెండవ))
+      నమోదు_రికార్డు.subset (c, src_పునాది);
 
-    auto glyphs =
+    స్వయంచాలక glyphs =
     + it
-    | hb_map_retains_sorting (hb_first)
+    | hb_map_retains_క్రమీకరణ (hb_మొదటి)
     ;
 
     coverage.serialize_serialize (c->serializer, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
 
-    auto it =
-    + hb_zip (this+coverage, entryExitRecord)
-    | hb_filter (glyphset, hb_first)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&> p)
-                              -> hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&>
-                              { return hb_pair (glyph_map[p.first], p.second);})
+    స్వయంచాలక it =
+    + hb_zip (ఇది+coverage, నమోదు_Exit_రికార్డు_2)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_map_retains_క్రమీకరణ ([&] (hb_pair_t<hb_codepoint_t, స్థిరరాశి నమోదు_Exit_రికార్డు<Types>&> p)
+                              -> hb_pair_t<hb_codepoint_t, స్థిరరాశి నమోదు_Exit_రికార్డు<Types>&>
+                              { తిరిగి hb_pair (glyph_map[p.మొదటి], p.second);})
     ;
 
-    bool ret = bool (it);
-    out->serialize (c, it, this);
+    తార్కిక ret = తార్కిక (it);
+    బహిర్గతం->serialize (c, it, ఇది);
     return_trace (ret);
   }
 };
@@ -355,4 +355,4 @@ struct CursivePosFormat1_2
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH */

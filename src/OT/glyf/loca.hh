@@ -1,38 +1,38 @@
-#ifndef OT_GLYF_LOCA_HH
-#define OT_GLYF_LOCA_HH
+#నిర్వచితం_కాకపోతే OT_GLYF_LOCA_HH
+#నిర్వచించు OT_GLYF_LOCA_HH
 
 
-#include "../../hb-open-type.hh"
+#అన్తర్భావ "../../hb-open-type.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 
 
 /*
  * loca -- Index to Location
  * https://docs.microsoft.com/en-us/typography/opentype/spec/loca
  */
-#define HB_OT_TAG_loca HB_TAG('l','o','c','a')
-#define HB_OT_TAG_LOCA HB_TAG('L','O','C','A')
+#నిర్వచించు HB_OT_ట్యాగ్_loca HB_ట్యాగ్('l','o','c','a')
+#నిర్వచించు HB_OT_ట్యాగ్_LOCA HB_ట్యాగ్('L','O','C','A')
 
-struct loca
+నిర్మాణం loca
 {
-  friend struct glyf;
-  friend struct glyf_accelerator_t;
+  మిత్ర నిర్మాణం glyf;
+  మిత్ర నిర్మాణం glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_loca;
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  తార్కిక sanitize (hb_sanitize_context_t *c HB_వాడని) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (true);
+    TRACE_SANITIZE (ఇది);
+    return_trace (నిజం);
   }
 
-  protected:
-  UnsizedArrayOf<HBUINT8>
-		dataZ;	/* Location data. */
-  public:
-  DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
+  రక్షిత:
+  Unsized_Array_యొక్క<HBUINT8>
+		దత్తాంశం_Z;	/* Location data. */
+  బహిరంగ:
+  DEFINE_కొలత_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */
 };
@@ -41,4 +41,4 @@ struct loca
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_LOCA_HH */
+#అయితే_ముగింపు /* OT_GLYF_LOCA_HH */

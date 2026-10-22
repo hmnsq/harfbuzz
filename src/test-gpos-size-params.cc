@@ -24,21 +24,21 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#అన్తర్భావ "hb.h"
+#అన్తర్భావ "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#నిర్వచితమైతే HB_NO_OPEN
+#నిర్వచించు hb_blob_create_from_file_or_fail(x)  hb_blob_get_ఖాళీలు ()
+#అయితే_ముగింపు
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  if (argc != 2) {
+  ఒకవేళ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    నిష్క్రమించు (1);
   }
 
   /* Create the face */
@@ -46,17 +46,17 @@ main (int argc, char **argv)
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = శూన్యసూచిక;
 
-  bool ret = true;
+  తార్కిక ret = నిజం;
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  unsigned int p[5];
-  ret = hb_ot_layout_get_size_params (face, p, p+1, (p+2), p+3, p+4);
-  printf ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_LAYOUT_FEATURE_PARAMS
+  గుర్తులేని పూర్ణాంకం p[5];
+  ret = hb_ot_layout_get_కొలత_params (face, p, p+1, (p+2), p+3, p+4);
+  రాయి ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
+#అయితే_ముగింపు
 
   hb_face_destroy (face);
 
-  return !ret;
+  తిరిగి !ret;
 }

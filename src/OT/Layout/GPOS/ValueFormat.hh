@@ -1,21 +1,21 @@
-#ifndef OT_LAYOUT_GPOS_VALUEFORMAT_HH
-#define OT_LAYOUT_GPOS_VALUEFORMAT_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_VALUEFORMAT_HH
+#నిర్వచించు OT_LAYOUT_GPOS_VALUEFORMAT_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#అన్తర్భావ "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-typedef HBUINT16 Value;
+రకనిర్వచనం HBUINT16 విలువ;
 
-struct ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
+నిర్మాణం విలువ_పునాది {}; // Dummy base class tag for OffsetTo<Value> bases.
 
-typedef UnsizedArrayOf<Value> ValueRecord;
+రకనిర్వచనం Unsized_Array_యొక్క<విలువ> విలువ_రికార్డు;
 
-struct ValueFormat : HBUINT16
+నిర్మాణం విలువ_Format : HBUINT16
 {
-  enum Flags {
+  గణన Flags {
     xPlacement  = 0x0001u,      /* Includes horizontal adjustment for placement */
     yPlacement  = 0x0002u,      /* Includes vertical adjustment for placement */
     xAdvance    = 0x0004u,      /* Includes horizontal adjustment for advance */
@@ -31,7 +31,7 @@ struct ValueFormat : HBUINT16
   };
 
 /* All fields are options.  Only those available advance the value pointer. */
-#if 0
+#ఒకవేళ 0
   HBINT16               xPlacement;     /* Horizontal adjustment for
                                          * placement--in design units */
   HBINT16               yPlacement;     /* Vertical adjustment for
@@ -42,429 +42,429 @@ struct ValueFormat : HBUINT16
   HBINT16               yAdvance;       /* Vertical adjustment for advance--in
                                          * design units (only used for vertical
                                          * writing) */
-  Offset16To<Device>    xPlaDevice;     /* Offset to Device table for
+  Offset16_గమ్యం<Device>    xPlaDevice;     /* Offset to Device table for
                                          * horizontal placement--measured from
                                          * beginning of PosTable (may be NULL) */
-  Offset16To<Device>    yPlaDevice;     /* Offset to Device table for vertical
+  Offset16_గమ్యం<Device>    yPlaDevice;     /* Offset to Device table for vertical
                                          * placement--measured from beginning
                                          * of PosTable (may be NULL) */
-  Offset16To<Device>    xAdvDevice;     /* Offset to Device table for
+  Offset16_గమ్యం<Device>    xAdvDevice;     /* Offset to Device table for
                                          * horizontal advance--measured from
                                          * beginning of PosTable (may be NULL) */
-  Offset16To<Device>    yAdvDevice;     /* Offset to Device table for vertical
+  Offset16_గమ్యం<Device>    yAdvDevice;     /* Offset to Device table for vertical
                                          * advance--measured from beginning of
                                          * PosTable (may be NULL) */
-#endif
+#అయితే_ముగింపు
 
-  NumType& operator = (uint16_t i) { v = i; return *this; }
+  అంకె_Type& క్రియాకారకం = (uint16_t i) { v = i; తిరిగి *ఇది; }
 
   // Note: spec says skip 2 bytes per bit in the valueformat. But reports
   // from Microsoft developers indicate that only the fields that are
   // currently defined are counted. We don't expect any new fields to
   // be added to ValueFormat. As such, we use the faster hb_popcount8
   // that only processes the lowest 8 bits.
-  unsigned int get_len () const  { return hb_popcount8 ((uint8_t) *this); }
-  size_t get_size () const { return get_len () * Value::static_size; }
+  గుర్తులేని పూర్ణాంకం get_len () స్థిరరాశి  { తిరిగి hb_popcount8 ((uint8_t) *ఇది); }
+  size_t get_కొలత () స్థిరరాశి { తిరిగి get_len () * విలువ::static_కొలత; }
 
-  hb_vector_t<unsigned> get_device_table_indices () const {
-    unsigned i = 0;
-    hb_vector_t<unsigned> result;
-    unsigned format = *this;
+  hb_సదిశ_t<గుర్తులేని> get_device_పట్టిక_indices () స్థిరరాశి {
+    గుర్తులేని i = 0;
+    hb_సదిశ_t<గుర్తులేని> ఫలితం;
+    గుర్తులేని format = *ఇది;
 
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance)   i++;
-    if (format & yAdvance)   i++;
+    ఒకవేళ (format & xPlacement) i++;
+    ఒకవేళ (format & yPlacement) i++;
+    ఒకవేళ (format & xAdvance)   i++;
+    ఒకవేళ (format & yAdvance)   i++;
 
-    if (format & xPlaDevice) result.push (i++);
-    if (format & yPlaDevice) result.push (i++);
-    if (format & xAdvDevice) result.push (i++);
-    if (format & yAdvDevice) result.push (i++);
+    ఒకవేళ (format & xPlaDevice) ఫలితం.push (i++);
+    ఒకవేళ (format & yPlaDevice) ఫలితం.push (i++);
+    ఒకవేళ (format & xAdvDevice) ఫలితం.push (i++);
+    ఒకవేళ (format & yAdvDevice) ఫలితం.push (i++);
 
-    return result;
+    తిరిగి ఫలితం;
   }
 
-  bool apply_value (hb_ot_apply_context_t *c,
-                    const ValueBase       *base,
-                    const Value           *values,
-                    hb_glyph_position_t   &glyph_pos) const
+  తార్కిక apply_విలువ (hb_ot_apply_context_t *c,
+                    స్థిరరాశి విలువ_పునాది       *పునాది,
+                    స్థిరరాశి విలువ           *values,
+                    hb_glyph_position_t   &glyph_pos) స్థిరరాశి
   {
-    bool ret = false;
-    unsigned int format = *this;
-    if (!format) return ret;
+    తార్కిక ret = అబద్ధం;
+    గుర్తులేని పూర్ణాంకం format = *ఇది;
+    ఒకవేళ (!format) తిరిగి ret;
 
     hb_font_t *font = c->font;
-    bool horizontal =
-#ifndef HB_NO_VERTICAL
+    తార్కిక horizontal =
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
       HB_DIRECTION_IS_HORIZONTAL (c->direction)
-#else
-      true
-#endif
+#లేకపోతే
+      నిజం
+#అయితే_ముగింపు
       ;
 
-    if (format & xPlacement)
-      glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, font->em_scale_x (get_short (values++, &ret)));
-    if (format & yPlacement)
-      glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, font->em_scale_y (get_short (values++, &ret)));
-    if (format & xAdvance) {
-      if (likely (horizontal))
-	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, font->em_scale_x (get_short (values, &ret)));
+    ఒకవేళ (format & xPlacement)
+      glyph_pos.x_స్థానభ్రంశం_2 = hb_saturate_కూడు (glyph_pos.x_స్థానభ్రంశం_2, font->em_scale_x (get_short (values++, &ret)));
+    ఒకవేళ (format & yPlacement)
+      glyph_pos.y_స్థానభ్రంశం_2 = hb_saturate_కూడు (glyph_pos.y_స్థానభ్రంశం_2, font->em_scale_y (get_short (values++, &ret)));
+    ఒకవేళ (format & xAdvance) {
+      ఒకవేళ (likely (horizontal))
+	glyph_pos.x_advance = hb_saturate_కూడు (glyph_pos.x_advance, font->em_scale_x (get_short (values, &ret)));
       values++;
     }
     /* y_advance values grow downward but font-space grows upward, hence negation */
-    if (format & yAdvance) {
-      if (unlikely (!horizontal))
+    ఒకవేళ (format & yAdvance) {
+      ఒకవేళ (unlikely (!horizontal))
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, font->em_scale_y (get_short (values, &ret)));
       values++;
     }
 
-    if (!has_device ()) return ret;
+    ఒకవేళ (!has_device ()) తిరిగి ret;
 
-    bool use_x_device = font->x_ppem || font->has_nonzero_coords;
-    bool use_y_device = font->y_ppem || font->has_nonzero_coords;
+    తార్కిక use_x_device = font->x_ppem || font->has_nonzero_coords;
+    తార్కిక use_y_device = font->y_ppem || font->has_nonzero_coords;
 
-    if (!use_x_device && !use_y_device) return ret;
+    ఒకవేళ (!use_x_device && !use_y_device) తిరిగి ret;
 
-    const ItemVariationStore &store = c->var_store;
-    auto *cache = c->var_store_cache;
+    స్థిరరాశి అంశం_Variation_Store &store = c->var_store;
+    స్వయంచాలక *cache = c->var_store_cache;
 
     /* pixel -> fractional pixel */
-    if (format & xPlaDevice)
+    ఒకవేళ (format & xPlaDevice)
     {
-      if (use_x_device)
-	glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
+      ఒకవేళ (use_x_device)
+	glyph_pos.x_స్థానభ్రంశం_2 = hb_saturate_కూడు (glyph_pos.x_స్థానభ్రంశం_2, get_device (values, &ret, పునాది, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yPlaDevice)
+    ఒకవేళ (format & yPlaDevice)
     {
-      if (use_y_device)
-	glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
+      ఒకవేళ (use_y_device)
+	glyph_pos.y_స్థానభ్రంశం_2 = hb_saturate_కూడు (glyph_pos.y_స్థానభ్రంశం_2, get_device (values, &ret, పునాది, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    if (format & xAdvDevice)
+    ఒకవేళ (format & xAdvDevice)
     {
-      if (horizontal && use_x_device)
-	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
+      ఒకవేళ (horizontal && use_x_device)
+	glyph_pos.x_advance = hb_saturate_కూడు (glyph_pos.x_advance, get_device (values, &ret, పునాది, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yAdvDevice)
+    ఒకవేళ (format & yAdvDevice)
     {
       /* y_advance values grow downward but font-space grows upward, hence negation */
-      if (!horizontal && use_y_device)
-	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
+      ఒకవేళ (!horizontal && use_y_device)
+	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, get_device (values, &ret, పునాది, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    return ret;
+    తిరిగి ret;
   }
 
-  void position_single (hb_font_t *font,
-                        hb_blob_t *table_blob,
+  శూన్య position_single (hb_font_t *font,
+                        hb_blob_t *పట్టిక_blob,
                         hb_direction_t direction,
-                        const ValueBase *base,
-                        const Value *values,
-                        hb_glyph_position_t &pos) const
+                        స్థిరరాశి విలువ_పునాది *పునాది,
+                        స్థిరరాశి విలువ *values,
+                        hb_glyph_position_t &pos) స్థిరరాశి
   {
     /* This is ugly... */
-    hb_buffer_t buffer {};
-    buffer.props.direction = direction;
-    hb_ot_apply_context_t c (1, font, &buffer, table_blob);
+    hb_బఫరు_t బఫరు {};
+    బఫరు.props.direction = direction;
+    hb_ot_apply_context_t c (1, font, &బఫరు, పట్టిక_blob);
 
-    apply_value (&c, base, values, pos);
+    apply_విలువ (&c, పునాది, values, pos);
   }
 
-  unsigned int get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  గుర్తులేని పూర్ణాంకం get_effective_format (స్థిరరాశి విలువ *values, తార్కిక strip_hints, తార్కిక strip_ఖాళీలు, స్థిరరాశి విలువ_పునాది *పునాది,
+                                     స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *varidx_delta_map) స్థిరరాశి
   {
-    unsigned int format = *this;
-    for (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
-      if (format & flag)
+    గుర్తులేని పూర్ణాంకం format = *ఇది;
+    కొరకు (గుర్తులేని flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
+      ఒకవేళ (format & flag)
       {
-        if (strip_hints && flag >= xPlaDevice)
+        ఒకవేళ (strip_hints && flag >= xPlaDevice)
         {
           format = format & ~flag;
           values++;
-          continue;
+          కొనసాగు;
         }
-        if (varidx_delta_map && flag >= xPlaDevice)
+        ఒకవేళ (varidx_delta_map && flag >= xPlaDevice)
         {
-          update_var_flag (values++, (Flags) flag, &format, base, varidx_delta_map);
-          continue;
+          update_var_flag (values++, (Flags) flag, &format, పునాది, varidx_delta_map);
+          కొనసాగు;
         }
         /* do not strip empty when instancing, cause we don't know whether the new
          * default value is 0 or not */
-        if (strip_empty) should_drop (*values, (Flags) flag, &format);
+        ఒకవేళ (strip_ఖాళీలు) should_drop (*values, (Flags) flag, &format);
         values++;
       }
     }
 
-    return format;
+    తిరిగి format;
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const {
-    unsigned int new_format = 0;
+  గుర్తులేని పూర్ణాంకం get_effective_format (Iterator it, తార్కిక strip_hints, తార్కిక strip_ఖాళీలు, స్థిరరాశి విలువ_పునాది *పునాది,
+                                     స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *varidx_delta_map) స్థిరరాశి {
+    గుర్తులేని పూర్ణాంకం new_format = 0;
 
-    for (const hb_array_t<const Value>& values : it)
-      new_format = new_format | get_effective_format (&values, strip_hints, strip_empty, base, varidx_delta_map);
+    కొరకు (స్థిరరాశి hb_array_t<స్థిరరాశి విలువ>& values : it)
+      new_format = new_format | get_effective_format (&values, strip_hints, strip_ఖాళీలు, పునాది, varidx_delta_map);
 
-    return new_format;
+    తిరిగి new_format;
   }
 
-  void copy_values (hb_serialize_context_t *c,
-                    unsigned int new_format,
-                    const ValueBase *base,
-                    const Value *values,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  శూన్య copy_విలువలు (hb_serialize_context_t *c,
+                    గుర్తులేని పూర్ణాంకం new_format,
+                    స్థిరరాశి విలువ_పునాది *పునాది,
+                    స్థిరరాశి విలువ *values,
+                    స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map) స్థిరరాశి
   {
-    unsigned int format = *this;
-    if (!format) return;
+    గుర్తులేని పూర్ణాంకం format = *ఇది;
+    ఒకవేళ (!format) తిరిగి;
 
-    HBINT16 *x_placement = nullptr, *y_placement = nullptr, *x_adv = nullptr, *y_adv = nullptr;
-    if ((format | new_format) & xPlacement)
-      x_placement = copy_value (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & yPlacement)
-      y_placement = copy_value (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & xAdvance)
-      x_adv = copy_value (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (Value));
-    if ((format | new_format) & yAdvance)
-      y_adv = copy_value (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (Value));
+    HBINT16 *x_placement = శూన్యసూచిక, *y_placement = శూన్యసూచిక, *x_adv = శూన్యసూచిక, *y_adv = శూన్యసూచిక;
+    ఒకవేళ ((format | new_format) & xPlacement)
+      x_placement = copy_విలువ (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (విలువ));
+    ఒకవేళ ((format | new_format) & yPlacement)
+      y_placement = copy_విలువ (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (విలువ));
+    ఒకవేళ ((format | new_format) & xAdvance)
+      x_adv = copy_విలువ (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (విలువ));
+    ఒకవేళ ((format | new_format) & yAdvance)
+      y_adv = copy_విలువ (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (విలువ));
 
-    if (!has_device ())
-      return;
+    ఒకవేళ (!has_device ())
+      తిరిగి;
 
-    if (format & xPlaDevice)
+    ఒకవేళ (format & xPlaDevice)
     {
-      add_delta_to_value (x_placement, base, values, layout_variation_idx_delta_map);
-      copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
+      కూడు_delta_గమ్యం_విలువ (x_placement, పునాది, values, layout_variation_idx_delta_map);
+      copy_device (c, పునాది, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
     }
 
-    if (format & yPlaDevice)
+    ఒకవేళ (format & yPlaDevice)
     {
-      add_delta_to_value (y_placement, base, values, layout_variation_idx_delta_map);
-      copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
+      కూడు_delta_గమ్యం_విలువ (y_placement, పునాది, values, layout_variation_idx_delta_map);
+      copy_device (c, పునాది, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
     }
 
-    if (format & xAdvDevice)
+    ఒకవేళ (format & xAdvDevice)
     {
-      add_delta_to_value (x_adv, base, values, layout_variation_idx_delta_map);
-      copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
+      కూడు_delta_గమ్యం_విలువ (x_adv, పునాది, values, layout_variation_idx_delta_map);
+      copy_device (c, పునాది, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
     }
 
-    if (format & yAdvDevice)
+    ఒకవేళ (format & yAdvDevice)
     {
-      add_delta_to_value (y_adv, base, values, layout_variation_idx_delta_map);
-      copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
+      కూడు_delta_గమ్యం_విలువ (y_adv, పునాది, values, layout_variation_idx_delta_map);
+      copy_device (c, పునాది, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
     }
   }
 
-  HBINT16* copy_value (hb_serialize_context_t *c,
-                       unsigned int new_format,
+  HBINT16* copy_విలువ (hb_serialize_context_t *c,
+                       గుర్తులేని పూర్ణాంకం new_format,
                        Flags flag,
-                       Value value) const
+                       విలువ value) స్థిరరాశి
   {
     // Filter by new format.
-    if (!(new_format & flag)) return nullptr;
-    return reinterpret_cast<HBINT16 *> (c->copy (value));
+    ఒకవేళ (!(new_format & flag)) తిరిగి శూన్యసూచిక;
+    తిరిగి reinterpret_cast<HBINT16 *> (c->copy (value));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueBase *base,
-                                  const hb_array_t<const Value>& values) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  స్థిరరాశి విలువ_పునాది *పునాది,
+                                  స్థిరరాశి hb_array_t<స్థిరరాశి విలువ>& values) స్థిరరాశి
   {
-    unsigned format = *this;
-    unsigned i = 0;
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance) i++;
-    if (format & yAdvance) i++;
-    if (format & xPlaDevice)
+    గుర్తులేని format = *ఇది;
+    గుర్తులేని i = 0;
+    ఒకవేళ (format & xPlacement) i++;
+    ఒకవేళ (format & yPlacement) i++;
+    ఒకవేళ (format & xAdvance) i++;
+    ఒకవేళ (format & yAdvance) i++;
+    ఒకవేళ (format & xPlaDevice)
     {
-      (base + get_device (&(values[i]))).collect_variation_indices (c);
+      (పునాది + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yPlaDevice)
+    ఒకవేళ (format & విలువ_Format::yPlaDevice)
     {
-      (base + get_device (&(values[i]))).collect_variation_indices (c);
+      (పునాది + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::xAdvDevice)
+    ఒకవేళ (format & విలువ_Format::xAdvDevice)
     {
-      (base + get_device (&(values[i]))).collect_variation_indices (c);
+      (పునాది + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yAdvDevice)
+    ఒకవేళ (format & విలువ_Format::yAdvDevice)
     {
-      (base + get_device (&(values[i]))).collect_variation_indices (c);
+      (పునాది + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
   }
 
-  private:
-  bool sanitize_value_devices (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  అంతరంగ:
+  తార్కిక sanitize_విలువ_devices (hb_sanitize_context_t *c, స్థిరరాశి విలువ_పునాది *పునాది, స్థిరరాశి విలువ *values) స్థిరరాశి
   {
-    unsigned int format = *this;
+    గుర్తులేని పూర్ణాంకం format = *ఇది;
 
-    if (format & xPlacement) values++;
-    if (format & yPlacement) values++;
-    if (format & xAdvance)   values++;
-    if (format & yAdvance)   values++;
+    ఒకవేళ (format & xPlacement) values++;
+    ఒకవేళ (format & yPlacement) values++;
+    ఒకవేళ (format & xAdvance)   values++;
+    ఒకవేళ (format & yAdvance)   values++;
 
-    if ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
+    ఒకవేళ ((format & xPlaDevice) && !get_device (values++).sanitize (c, పునాది)) తిరిగి అబద్ధం;
+    ఒకవేళ ((format & yPlaDevice) && !get_device (values++).sanitize (c, పునాది)) తిరిగి అబద్ధం;
+    ఒకవేళ ((format & xAdvDevice) && !get_device (values++).sanitize (c, పునాది)) తిరిగి అబద్ధం;
+    ఒకవేళ ((format & yAdvDevice) && !get_device (values++).sanitize (c, పునాది)) తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  static inline Offset16To<Device, ValueBase>& get_device (Value* value)
+  స్థిర అంతఃవరుస Offset16_గమ్యం<Device, విలువ_పునాది>& get_device (విలువ* value)
   {
-    return *static_cast<Offset16To<Device, ValueBase> *> (value);
+    తిరిగి *static_cast<Offset16_గమ్యం<Device, విలువ_పునాది> *> (value);
   }
-  static inline const Offset16To<Device, ValueBase>& get_device (const Value* value)
+  స్థిర అంతఃవరుస స్థిరరాశి Offset16_గమ్యం<Device, విలువ_పునాది>& get_device (స్థిరరాశి విలువ* value)
   {
-    return *static_cast<const Offset16To<Device, ValueBase> *> (value);
+    తిరిగి *static_cast<స్థిరరాశి Offset16_గమ్యం<Device, విలువ_పునాది> *> (value);
   }
-  static inline const Device& get_device (const Value* value,
-					  bool *worked,
-					  const ValueBase *base,
+  స్థిర అంతఃవరుస స్థిరరాశి Device& get_device (స్థిరరాశి విలువ* value,
+					  తార్కిక *worked,
+					  స్థిరరాశి విలువ_పునాది *పునాది,
 					  hb_sanitize_context_t &c)
   {
-    if (worked) *worked |= bool (*value);
-    auto &offset = *static_cast<const Offset16To<Device> *> (value);
+    ఒకవేళ (worked) *worked |= తార్కిక (*value);
+    స్వయంచాలక &స్థానభ్రంశం = *static_cast<స్థిరరాశి Offset16_గమ్యం<Device> *> (value);
 
-    if (unlikely (!offset.sanitize (&c, base)))
-      return Null(Device);
+    ఒకవేళ (unlikely (!స్థానభ్రంశం.sanitize (&c, పునాది)))
+      తిరిగి Null(Device);
     hb_barrier ();
 
-    return base + offset;
+    తిరిగి పునాది + స్థానభ్రంశం;
   }
 
-  void add_delta_to_value (HBINT16 *value,
-                           const ValueBase *base,
-                           const Value *src_value,
-                           const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  శూన్య కూడు_delta_గమ్యం_విలువ (HBINT16 *value,
+                           స్థిరరాశి విలువ_పునాది *పునాది,
+                           స్థిరరాశి విలువ *src_విలువ,
+                           స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map) స్థిరరాశి
   {
-    if (!value) return;
-    unsigned varidx = (base + get_device (src_value)).get_variation_index ();
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) return;
+    ఒకవేళ (!value) తిరిగి;
+    గుర్తులేని varidx = (పునాది + get_device (src_విలువ)).get_variation_సూచీ ();
+    hb_pair_t<గుర్తులేని, పూర్ణాంకం> *varidx_delta;
+    ఒకవేళ (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) తిరిగి;
 
-    *value += hb_second (*varidx_delta);
+    *value += hb_రెండవ (*varidx_delta);
   }
 
-  bool copy_device (hb_serialize_context_t *c,
-                    const ValueBase *base,
-                    const Value *src_value,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                    unsigned int new_format, Flags flag) const
+  తార్కిక copy_device (hb_serialize_context_t *c,
+                    స్థిరరాశి విలువ_పునాది *పునాది,
+                    స్థిరరాశి విలువ *src_విలువ,
+                    స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map,
+                    గుర్తులేని పూర్ణాంకం new_format, Flags flag) స్థిరరాశి
   {
     // Filter by new format.
-    if (!(new_format & flag)) return true;
+    ఒకవేళ (!(new_format & flag)) తిరిగి నిజం;
 
-    Value       *dst_value = c->copy (*src_value);
+    విలువ       *dst_విలువ = c->copy (*src_విలువ);
 
-    if (!dst_value) return false;
-    if (*dst_value == 0) return true;
+    ఒకవేళ (!dst_విలువ) తిరిగి అబద్ధం;
+    ఒకవేళ (*dst_విలువ == 0) తిరిగి నిజం;
 
-    *dst_value = 0;
+    *dst_విలువ = 0;
     c->push ();
-    if ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
+    ఒకవేళ ((పునాది + get_device (src_విలువ)).copy (c, layout_variation_idx_delta_map))
     {
-      c->add_link (*dst_value, c->pop_pack ());
-      return true;
+      c->కూడు_link (*dst_విలువ, c->తీయి_pack ());
+      తిరిగి నిజం;
     }
-    else
+    లేకపోతే
     {
-      c->pop_discard ();
-      return false;
+      c->తీయి_discard ();
+      తిరిగి అబద్ధం;
     }
   }
 
-  static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
+  స్థిర అంతఃవరుస స్థిరరాశి HBINT16& get_short (స్థిరరాశి విలువ* value, తార్కిక *worked=శూన్యసూచిక)
   {
-    if (worked) *worked |= bool (*value);
-    return *reinterpret_cast<const HBINT16 *> (value);
+    ఒకవేళ (worked) *worked |= తార్కిక (*value);
+    తిరిగి *reinterpret_cast<స్థిరరాశి HBINT16 *> (value);
   }
 
-  public:
+  బహిరంగ:
 
-  bool has_device () const
+  తార్కిక has_device () స్థిరరాశి
   {
-    unsigned int format = *this;
-    return (format & devices) != 0;
+    గుర్తులేని పూర్ణాంకం format = *ఇది;
+    తిరిగి (format & devices) != 0;
   }
 
-  bool sanitize_value (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  తార్కిక sanitize_విలువ (hb_sanitize_context_t *c, స్థిరరాశి విలువ_పునాది *పునాది, స్థిరరాశి విలువ *values) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    if (unlikely (!c->check_range (values, get_size ()))) return_trace (false);
+    ఒకవేళ (unlikely (!c->check_range (values, get_కొలత ()))) return_trace (అబద్ధం);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    ఒకవేళ (c->lazy_some_gpos)
+      return_trace (నిజం);
 
-    return_trace (!has_device () || sanitize_value_devices (c, base, values));
+    return_trace (!has_device () || sanitize_విలువ_devices (c, పునాది, values));
   }
 
-  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count) const
+  తార్కిక sanitize_విలువలు (hb_sanitize_context_t *c, స్థిరరాశి విలువ_పునాది *పునాది, స్థిరరాశి విలువ *values, గుర్తులేని పూర్ణాంకం లెక్క) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    unsigned size = get_size ();
+    TRACE_SANITIZE (ఇది);
+    గుర్తులేని కొలత = get_కొలత ();
 
-    if (!c->check_range (values, count, size)) return_trace (false);
+    ఒకవేళ (!c->check_range (values, లెక్క, కొలత)) return_trace (అబద్ధం);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    ఒకవేళ (c->lazy_some_gpos)
+      return_trace (నిజం);
 
     hb_barrier ();
-    return_trace (sanitize_values_stride_unsafe (c, base, values, count, size));
+    return_trace (sanitize_విలువలు_stride_unsafe (c, పునాది, values, లెక్క, కొలత));
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count, unsigned int stride) const
+  తార్కిక sanitize_విలువలు_stride_unsafe (hb_sanitize_context_t *c, స్థిరరాశి విలువ_పునాది *పునాది, స్థిరరాశి విలువ *values, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    if (!has_device ()) return_trace (true);
+    ఒకవేళ (!has_device ()) return_trace (నిజం);
 
-    for (unsigned int i = 0; i < count; i++) {
-      if (!sanitize_value_devices (c, base, values))
-        return_trace (false);
-      values = &StructAtOffset<const Value> (values, stride);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++) {
+      ఒకవేళ (!sanitize_విలువ_devices (c, పునాది, values))
+        return_trace (అబద్ధం);
+      values = &Struct_At_స్థానభ్రంశం<స్థిరరాశి విలువ> (values, stride);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
- private:
+ అంతరంగ:
 
-  void should_drop (Value value, Flags flag, unsigned int* format) const
+  శూన్య should_drop (విలువ value, Flags flag, గుర్తులేని పూర్ణాంకం* format) స్థిరరాశి
   {
-    if (value) return;
+    ఒకవేళ (value) తిరిగి;
     *format = *format & ~flag;
   }
 
-  void update_var_flag (const Value* value, Flags flag,
-                        unsigned int* format, const ValueBase *base,
-                        const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  శూన్య update_var_flag (స్థిరరాశి విలువ* value, Flags flag,
+                        గుర్తులేని పూర్ణాంకం* format, స్థిరరాశి విలువ_పునాది *పునాది,
+                        స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *varidx_delta_map) స్థిరరాశి
   {
-    if (*value)
+    ఒకవేళ (*value)
     {
-      unsigned varidx = (base + get_device (value)).get_variation_index ();
-      hb_pair_t<unsigned, int> *varidx_delta;
-      if (varidx_delta_map->has (varidx, &varidx_delta))
+      గుర్తులేని varidx = (పునాది + get_device (value)).get_variation_సూచీ ();
+      hb_pair_t<గుర్తులేని, పూర్ణాంకం> *varidx_delta;
+      ఒకవేళ (varidx_delta_map->has (varidx, &varidx_delta))
       {
         /* A device-only value needs a base field for its instanced delta. */
-        if (varidx_delta->second)
+        ఒకవేళ (varidx_delta->second)
           *format |= flag >> 4;
-        if (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          return;
+        ఒకవేళ (varidx_delta->మొదటి != HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
+          తిరిగి;
       }
     }
     *format = *format & ~flag;
@@ -475,4 +475,4 @@ struct ValueFormat : HBUINT16
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_GPOS_VALUEFORMAT_HH
+#అయితే_ముగింపు  // #ifndef OT_LAYOUT_GPOS_VALUEFORMAT_HH

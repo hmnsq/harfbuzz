@@ -26,16 +26,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef OT_LAYOUT_GDEF_GDEF_HH
-#define OT_LAYOUT_GDEF_GDEF_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GDEF_GDEF_HH
+#నిర్వచించు OT_LAYOUT_GDEF_GDEF_HH
 
-#include "../../../hb-ot-var-common.hh"
+#అన్తర్భావ "../../../hb-ot-var-common.hh"
 
-#include "../../../hb-font.hh"
-#include "../../../hb-cache.hh"
+#అన్తర్భావ "../../../hb-font.hh"
+#అన్తర్భావ "../../../hb-cache.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 
 
 /*
@@ -43,545 +43,545 @@ namespace OT {
  */
 
 /* Array of contour point indices--in increasing numerical order */
-struct AttachPoint : Array16Of<HBUINT16>
+నిర్మాణం Attach_బిందువు : Array16_యొక్క<HBUINT16>
 {
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer, + iter ()));
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    return_trace (బహిర్గతం->serialize (c->serializer, + iter ()));
   }
 };
 
 /* AttachList is referenced by both GDEF attachListOffset and
  * attachListOffset2. The v1.4 top-level offset widens, but the
  * AttachList table itself keeps Offset16 internals. */
-struct AttachList
+నిర్మాణం AttachList
 {
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
+  గుర్తులేని పూర్ణాంకం get_attach_points (hb_codepoint_t glyph_id,
+				  గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం *బిందువు_లెక్క /* IN/OUT */,
+				  గుర్తులేని పూర్ణాంకం *బిందువు_array /*బహిర్గతం*/) స్థిరరాశి
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (glyph_id);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED)
     {
-      if (point_count)
-	*point_count = 0;
-      return 0;
+      ఒకవేళ (బిందువు_లెక్క)
+	*బిందువు_లెక్క = 0;
+      తిరిగి 0;
     }
 
-    const AttachPoint &points = this+attachPoint[index];
+    స్థిరరాశి Attach_బిందువు &points = ఇది+attach_బిందువు[సూచీ_2];
 
-    if (point_count && point_array)
+    ఒకవేళ (బిందువు_లెక్క && బిందువు_array)
     {
-      + points.as_array ().sub_array (start_offset, point_count)
-      | hb_sink (hb_array (point_array, *point_count))
+      + points.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, బిందువు_లెక్క)
+      | hb_sink (hb_array (బిందువు_array, *బిందువు_లెక్క))
       ;
     }
 
-    return points.len;
+    తిరిగి points.len;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, attachPoint)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->attachPoint, this), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ఇది+coverage, attach_బిందువు)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (subset_స్థానభ్రంశం_array (c, బహిర్గతం->attach_బిందువు, ఇది), hb_రెండవ)
+    | hb_map (hb_మొదటి)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    బహిర్గతం->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (తార్కిక (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && attachPoint.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (coverage.sanitize (c, ఇది) && attach_బిందువు.sanitize (c, ఇది));
   }
 
-  protected:
-  Offset16To<Coverage>
+  రక్షిత:
+  Offset16_గమ్యం<Coverage>
 		coverage;		/* Offset to Coverage table -- from
 					 * beginning of AttachList table */
-  Array16OfOffset16To<AttachPoint>
-		attachPoint;		/* Array of AttachPoint tables
+  Array16_యొక్క_Offset16_గమ్యం<Attach_బిందువు>
+		attach_బిందువు;		/* Array of AttachPoint tables
 					 * in Coverage Index order */
-  public:
-  DEFINE_SIZE_ARRAY (4, attachPoint);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, attach_బిందువు);
 };
 
 /*
  * Ligature Caret Table
  */
 
-struct CaretValueFormat1
+నిర్మాణం Caret_విలువ_Format1
 {
-  friend struct CaretValue;
-  bool subset (hb_subset_context_t *c) const
+  మిత్ర నిర్మాణం Caret_విలువ;
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    return_trace (true);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction) const
+  అంతరంగ:
+  hb_position_t get_caret_విలువ (hb_font_t *font, hb_direction_t direction) స్థిరరాశి
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 1 */
+  రక్షిత:
+  HBUINT16	caret_విలువ_Format;	/* Format identifier--format = 1 */
   FWORD		coordinate;		/* X or Y value, in design units */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct CaretValueFormat2
+నిర్మాణం Caret_విలువ_Format2
 {
-  friend struct CaretValue;
-  bool subset (hb_subset_context_t *c) const
+  మిత్ర నిర్మాణం Caret_విలువ;
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    return_trace (true);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) const
+  అంతరంగ:
+  hb_position_t get_caret_విలువ (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) స్థిరరాశి
   {
     hb_position_t x, y;
-    font->get_glyph_contour_point_for_origin (glyph_id, caretValuePoint, direction, &x, &y);
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
+    font->get_glyph_contour_బిందువు_for_origin (glyph_id, caret_విలువ_బిందువు, direction, &x, &y);
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 2 */
-  HBUINT16	caretValuePoint;	/* Contour point index on glyph */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  రక్షిత:
+  HBUINT16	caret_విలువ_Format;	/* Format identifier--format = 2 */
+  HBUINT16	caret_విలువ_బిందువు;	/* Contour point index on glyph */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct CaretValueFormat3
+నిర్మాణం Caret_విలువ_Format3
 {
-  friend struct CaretValue;
+  మిత్ర నిర్మాణం Caret_విలువ;
 
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction,
-				 const ItemVariationStore &var_store) const
+  hb_position_t get_caret_విలువ (hb_font_t *font, hb_direction_t direction,
+				 స్థిరరాశి అంశం_Variation_Store &var_store) స్థిరరాశి
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ?
-	   hb_saturate_add (font->em_scale_x (coordinate), (this+deviceTable).get_x_delta (font, var_store)) :
-	   hb_saturate_add (font->em_scale_y (coordinate), (this+deviceTable).get_y_delta (font, var_store));
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (direction) ?
+	   hb_saturate_కూడు (font->em_scale_x (coordinate), (ఇది+device_పట్టిక).get_x_delta (font, var_store)) :
+	   hb_saturate_కూడు (font->em_scale_y (coordinate), (ఇది+device_పట్టిక).get_y_delta (font, var_store));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (!c->serializer->embed (caretValueFormat)) return_trace (false);
-    if (!c->serializer->embed (coordinate)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (!c->serializer->embed (caret_విలువ_Format)) return_trace (అబద్ధం);
+    ఒకవేళ (!c->serializer->embed (coordinate)) return_trace (అబద్ధం);
 
-    unsigned varidx = (this+deviceTable).get_variation_index ();
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
-      uint32_t new_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+    గుర్తులేని varidx = (ఇది+device_పట్టిక).get_variation_సూచీ ();
+    hb_pair_t<గుర్తులేని, పూర్ణాంకం> *new_varidx_delta;
+    ఒకవేళ (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
+      uint32_t new_varidx = hb_మొదటి (*new_varidx_delta);
+      పూర్ణాంకం delta = hb_రెండవ (*new_varidx_delta);
+      ఒకవేళ (delta != 0)
       {
-        if (!c->serializer->check_assign (out->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+          return_trace (అబద్ధం);
       }
 
-      if (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        return_trace (c->serializer->check_assign (out->caretValueFormat, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+      ఒకవేళ (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
+        return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->caret_విలువ_Format, 1, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
     }
 
-    if (!c->serializer->embed (deviceTable))
-      return_trace (false);
+    ఒకవేళ (!c->serializer->embed (device_పట్టిక))
+      return_trace (అబద్ధం);
 
-    return_trace (out->deviceTable.serialize_copy (c->serializer, deviceTable, this, c->serializer->to_bias (out),
-						   hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map));
+    return_trace (బహిర్గతం->device_పట్టిక.serialize_copy (c->serializer, device_పట్టిక, ఇది, c->serializer->గమ్యం_bias (బహిర్గతం),
+						   hb_serialize_context_t::తల, &c->plan->layout_variation_idx_delta_map));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
-  { (this+deviceTable).collect_variation_indices (c); }
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
+  { (ఇది+device_పట్టిక).collect_variation_indices (c); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && deviceTable.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && device_పట్టిక.sanitize (c, ఇది));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 3 */
+  రక్షిత:
+  HBUINT16	caret_విలువ_Format;	/* Format identifier--format = 3 */
   FWORD		coordinate;		/* X or Y value, in design units */
-  Offset16To<Device>
-		deviceTable;		/* Offset to Device table for X or Y
+  Offset16_గమ్యం<Device>
+		device_పట్టిక;		/* Offset to Device table for X or Y
 					 * value--from beginning of CaretValue
 					 * table */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct CaretValue
+నిర్మాణం Caret_విలువ
 {
-  hb_position_t get_caret_value (hb_font_t *font,
+  hb_position_t get_caret_విలువ (hb_font_t *font,
 				 hb_direction_t direction,
 				 hb_codepoint_t glyph_id,
-				 const ItemVariationStore &var_store) const
+				 స్థిరరాశి అంశం_Variation_Store &var_store) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_caret_value (font, direction);
-    case 2: hb_barrier (); return u.format2.get_caret_value (font, direction, glyph_id);
-    case 3: hb_barrier (); return u.format3.get_caret_value (font, direction, var_store);
-    default:return 0;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_caret_విలువ (font, direction);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.get_caret_విలువ (font, direction, glyph_id);
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_caret_విలువ (font, direction, var_store);
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    ఒకవేళ (unlikely (!c->may_dispatch (ఇది, &u.format.v))) తిరిగి c->no_dispatch_return_విలువ ();
+    TRACE_DISPATCH (ఇది, u.format.v);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    స్థితి 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    స్థితి 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    అప్రమేయ:return_trace (c->default_return_విలువ ());
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1:
-    case 2:
-      return;
-    case 3:
+    ఎంపిక (u.format.v) {
+    స్థితి 1:
+    స్థితి 2:
+      తిరిగి;
+    స్థితి 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      తిరిగి;
+    అప్రమేయ: తిరిగి;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!u.format.v.sanitize (c)) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    స్థితి 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
-  CaretValueFormat1	format1;
-  CaretValueFormat2	format2;
-  CaretValueFormat3	format3;
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }	format;		/* Format identifier */
+  Caret_విలువ_Format1	format1;
+  Caret_విలువ_Format2	format2;
+  Caret_విలువ_Format3	format3;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (2, format.v);
 };
 
-struct LigGlyph
+నిర్మాణం LigGlyph
 {
-  unsigned get_lig_carets (hb_font_t            *font,
+  గుర్తులేని get_lig_carets (hb_font_t            *font,
 			   hb_direction_t        direction,
 			   hb_codepoint_t        glyph_id,
-			   const ItemVariationStore &var_store,
-			   unsigned              start_offset,
-			   unsigned             *caret_count /* IN/OUT */,
-			   hb_position_t        *caret_array /* OUT */) const
+			   స్థిరరాశి అంశం_Variation_Store &var_store,
+			   గుర్తులేని              ప్రారంభం_స్థానభ్రంశం,
+			   గుర్తులేని             *caret_లెక్క /* IN/OUT */,
+			   hb_position_t        *caret_array /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (caret_count && caret_array)
+    ఒకవేళ (caret_లెక్క && caret_array)
     {
-      + carets.as_array ().sub_array (start_offset, caret_count)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const CaretValue &value) { return value.get_caret_value (font, direction, glyph_id, var_store); })
-      | hb_sink (hb_array (caret_array, *caret_count))
+      + carets.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, caret_లెక్క)
+      | hb_map (hb_కూడు (ఇది))
+      | hb_map ([&] (స్థిరరాశి Caret_విలువ &value) { తిరిగి value.get_caret_విలువ (font, direction, glyph_id, var_store); })
+      | hb_sink (hb_array (caret_array, *caret_లెక్క))
       ;
     }
 
-    return carets.len;
+    తిరిగి carets.len;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
     + hb_iter (carets)
-    | hb_apply (subset_offset_array (c, out->carets, this))
+    | hb_apply (subset_స్థానభ్రంశం_array (c, బహిర్గతం->carets, ఇది))
     ;
 
-    return_trace (bool (out->carets));
+    return_trace (తార్కిక (బహిర్గతం->carets));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const Offset16To<CaretValue>& offset : carets.iter ())
-      (this+offset).collect_variation_indices (c);
+    కొరకు (స్థిరరాశి Offset16_గమ్యం<Caret_విలువ>& స్థానభ్రంశం : carets.iter ())
+      (ఇది+స్థానభ్రంశం).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (carets.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (carets.sanitize (c, ఇది));
   }
 
-  protected:
-  Array16OfOffset16To<CaretValue>
+  రక్షిత:
+  Array16_యొక్క_Offset16_గమ్యం<Caret_విలువ>
 		carets;			/* Offset array of CaretValue tables
 					 * --from beginning of LigGlyph table
 					 * --in increasing coordinate order */
-  public:
-  DEFINE_SIZE_ARRAY (2, carets);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, carets);
 };
 
 /* LigCaretList2 widens the LigCaretList coverage, count, and LigGlyph
  * offsets. The LigGlyph table itself keeps Offset16 caretValueOffsets. */
-template <typename Types>
-struct LigCaretList
+మూస <రకం_పేరు Types>
+నిర్మాణం LigCaretList
 {
-  unsigned int get_lig_carets (hb_font_t *font,
+  గుర్తులేని పూర్ణాంకం get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       const ItemVariationStore &var_store,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
-			       hb_position_t *caret_array /* OUT */) const
+			       స్థిరరాశి అంశం_Variation_Store &var_store,
+			       గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం *caret_లెక్క /* IN/OUT */,
+			       hb_position_t *caret_array /*బహిర్గతం*/) స్థిరరాశి
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (glyph_id);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED)
     {
-      if (caret_count)
-	*caret_count = 0;
-      return 0;
+      ఒకవేళ (caret_లెక్క)
+	*caret_లెక్క = 0;
+      తిరిగి 0;
     }
-    const LigGlyph &lig_glyph = this+ligGlyph[index];
-    return lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_count, caret_array);
+    స్థిరరాశి LigGlyph &lig_glyph = ఇది+ligGlyph[సూచీ_2];
+    తిరిగి lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, ప్రారంభం_స్థానభ్రంశం, caret_లెక్క, caret_array);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ligGlyph)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ligGlyph, this), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_సదిశ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (ఇది+coverage, ligGlyph)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (subset_స్థానభ్రంశం_array (c, బహిర్గతం->ligGlyph, ఇది), hb_రెండవ)
+    | hb_map (hb_మొదటి)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    బహిర్గతం->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (తార్కిక (new_coverage));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    + hb_zip (this+coverage, ligGlyph)
-    | hb_filter (c->glyph_set, hb_first)
-    | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const LigGlyph& _) { _.collect_variation_indices (c); })
+    + hb_zip (ఇది+coverage, ligGlyph)
+    | hb_filter (c->glyph_సమితి, hb_మొదటి)
+    | hb_map (hb_రెండవ)
+    | hb_map (hb_కూడు (ఇది))
+    | hb_apply ([c] (స్థిరరాశి LigGlyph& _) { _.collect_variation_indices (c); })
     ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ligGlyph.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (coverage.sanitize (c, ఇది) && ligGlyph.sanitize (c, ఇది));
   }
 
-  protected:
-  typename Types::template LOffsetTo<Coverage>
+  రక్షిత:
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
 		coverage;		/* Offset to Coverage table--from
 					 * beginning of LigCaretList table */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<LigGlyph>>
+  రకం_పేరు Types::మూస Array_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<LigGlyph>>
 		ligGlyph;		/* Array of LigGlyph tables
 					 * in Coverage Index order */
-  public:
-  DEFINE_SIZE_ARRAY (Types::LOffset::static_size + Types::HBUINT::static_size, ligGlyph);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (Types::LOffset::static_కొలత + Types::HBUINT::static_కొలత, ligGlyph);
 };
 
-#ifndef HB_NO_BEYOND_64K
-static_assert (LigCaretList<MediumTypes>::min_size ==
-	       Offset32::static_size + HBUINT24::static_size, "");
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+static_assert (LigCaretList<MediumTypes>::min_కొలత ==
+	       Offset32::static_కొలత + HBUINT24::static_కొలత, "");
+#అయితే_ముగింపు
 
 
-struct MarkGlyphSetsFormat1
+నిర్మాణం MarkGlyphSetsFormat1
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return (this+coverage[set_index]).get_coverage (glyph_id) != NOT_COVERED; }
+  తార్కిక covers (గుర్తులేని పూర్ణాంకం సమితి_సూచీ, hb_codepoint_t glyph_id) స్థిరరాశి
+  { తిరిగి (ఇది+coverage[సమితి_సూచీ]).get_coverage (glyph_id) != NOT_COVERED; }
 
-  void collect_used_mark_sets (const hb_set_t& glyph_set,
-                               hb_set_t& used_mark_sets /* OUT */) const
+  శూన్య collect_వాడిన_mark_sets (స్థిరరాశి hb_సమితి_t& glyph_సమితి,
+                               hb_సమితి_t& వాడిన_mark_sets /*బహిర్గతం*/) స్థిరరాశి
   {
-    unsigned i = 0;
-    for (const auto &offset : coverage)
+    గుర్తులేని i = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : coverage)
      {
-       const auto &cov = this+offset;
-       if (cov.intersects (&glyph_set))
-         used_mark_sets.add (i);
+       స్థిరరాశి స్వయంచాలక &cov = ఇది+స్థానభ్రంశం;
+       ఒకవేళ (cov.intersects (&glyph_సమితి))
+         వాడిన_mark_sets.కూడు (i);
 
        i++;
      }
   }
 
-  template <typename set_t>
-  void collect_coverage (hb_vector_t<set_t> &sets) const
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య collect_coverage (hb_సదిశ_t<సమితి_t> &sets) స్థిరరాశి
   {
-     for (const auto &offset : coverage)
+     కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : coverage)
      {
-       const auto &cov = this+offset;
+       స్థిరరాశి స్వయంచాలక &cov = ఇది+స్థానభ్రంశం;
        cov.collect_coverage (sets.push ());
      }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    బహిర్గతం->format = format;
 
-    bool ret = true;
-    for (const Offset32To<Coverage>& offset : coverage.iter ())
+    తార్కిక ret = నిజం;
+    కొరకు (స్థిరరాశి Offset32_గమ్యం<Coverage>& స్థానభ్రంశం : coverage.iter ())
     {
-      auto snap = c->serializer->snapshot ();
-      auto *o = out->coverage.serialize_append (c->serializer);
-      if (unlikely (!o))
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      స్వయంచాలక *o = బహిర్గతం->coverage.serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = అబద్ధం;
+	ఆపు;
       }
 
       //skip empty coverage
       c->serializer->push ();
-      bool res = false;
-      if (offset) res = c->dispatch (this+offset);
-      if (!res)
+      తార్కిక res = అబద్ధం;
+      ఒకవేళ (స్థానభ్రంశం) res = c->dispatch (ఇది+స్థానభ్రంశం);
+      ఒకవేళ (!res)
       {
-        c->serializer->pop_discard ();
+        c->serializer->తీయి_discard ();
         c->serializer->revert (snap);
-        (out->coverage.len)--;
-        continue;
+        (బహిర్గతం->coverage.len)--;
+        కొనసాగు;
       }
-      c->serializer->add_link (*o, c->serializer->pop_pack ());
+      c->serializer->కూడు_link (*o, c->serializer->తీయి_pack ());
     }
 
-    return_trace (ret && out->coverage.len);
+    return_trace (ret && బహిర్గతం->coverage.len);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (coverage.sanitize (c, ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;			/* Format identifier--format = 1 */
-  Array16Of<Offset32To<Coverage>>
+  Array16_యొక్క<Offset32_గమ్యం<Coverage>>
 		coverage;		/* Array of long offsets to mark set
 					 * coverage tables */
-  public:
-  DEFINE_SIZE_ARRAY (4, coverage);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, coverage);
 };
 
-struct MarkGlyphSets
+నిర్మాణం MarkGlyphSets
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+  తార్కిక covers (గుర్తులేని పూర్ణాంకం సమితి_సూచీ, hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.covers (set_index, glyph_id);
-    default:return false;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.covers (సమితి_సూచీ, glyph_id);
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
-  template <typename set_t>
-  void collect_coverage (hb_vector_t<set_t> &sets) const
+  మూస <రకం_పేరు సమితి_t>
+  శూన్య collect_coverage (hb_సదిశ_t<సమితి_t> &sets) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_coverage (sets); return;
-    default:return;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); u.format1.collect_coverage (sets); తిరిగి;
+    అప్రమేయ:తిరిగి;
     }
   }
 
-  void collect_used_mark_sets (const hb_set_t& glyph_set,
-                               hb_set_t& used_mark_sets /* OUT */) const
+  శూన్య collect_వాడిన_mark_sets (స్థిరరాశి hb_సమితి_t& glyph_సమితి,
+                               hb_సమితి_t& వాడిన_mark_sets /*బహిర్గతం*/) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_used_mark_sets (glyph_set, used_mark_sets); return;
-    default:return;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); u.format1.collect_వాడిన_mark_sets (glyph_సమితి, వాడిన_mark_sets); తిరిగి;
+    అప్రమేయ:తిరిగి;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c));
-    default:return_trace (false);
+    TRACE_SUBSET (ఇది);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.subset (c));
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!u.format.v.sanitize (c)) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    default:return_trace (true);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }	format;		/* Format identifier */
   MarkGlyphSetsFormat1	format1;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (2, format.v);
 };
 
 
@@ -591,631 +591,631 @@ struct MarkGlyphSets
  */
 
 
-struct GDEF
+నిర్మాణం GDEF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GDEF;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_GDEF;
 
-  enum GlyphClasses {
+  గణన GlyphClasses {
     UnclassifiedGlyph	= 0,
-    BaseGlyph		= 1,
+    పునాది_Glyph		= 1,
     LigatureGlyph	= 2,
     MarkGlyph		= 3,
     ComponentGlyph	= 4
   };
 
-  size_t get_size () const
+  size_t get_కొలత () స్థిరరాశి
   {
-    if (version.major != 1) return version.static_size;
+    ఒకవేళ (సంస్కరణ.major != 1) తిరిగి సంస్కరణ.static_కొలత;
 
-    return min_size +
-	   (version.to_int () >= 0x00010002u ? markGlyphSetsDef.static_size : 0) +
-	   (version.to_int () >= 0x00010003u ? varStore.static_size : 0) +
-#ifndef HB_NO_BEYOND_64K
-	   (version.to_int () >= 0x00010004u ? 5 * Offset32::static_size : 0)
-#else
+    తిరిగి min_కొలత +
+	   (సంస్కరణ.గమ్యం_int () >= 0x00010002u ? markGlyphSetsDef.static_కొలత : 0) +
+	   (సంస్కరణ.గమ్యం_int () >= 0x00010003u ? varStore.static_కొలత : 0) +
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+	   (సంస్కరణ.గమ్యం_int () >= 0x00010004u ? 5 * Offset32::static_కొలత : 0)
+#లేకపోతే
 	   0
-#endif
+#అయితే_ముగింపు
 	   ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
-		  version.major != 1 ||
-		  !c->check_range (this, get_size ())))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!సంస్కరణ.sanitize (c) ||
+		  సంస్కరణ.major != 1 ||
+		  !c->check_range (ఇది, get_కొలత ())))
+      return_trace (అబద్ధం);
     hb_barrier ();
 
-    bool glyph_class_def_ok = glyphClassDef.sanitize (c, this);
-    bool attach_list_ok = attachList.sanitize (c, this);
-    bool lig_caret_list_ok = ligCaretList.sanitize (c, this);
-    bool mark_attach_class_def_ok = markAttachClassDef.sanitize (c, this);
-    bool mark_glyph_sets_def_ok = version.to_int () < 0x00010002u ||
-				  markGlyphSetsDef.sanitize (c, this);
+    తార్కిక glyph_class_def_ok = glyphClassDef.sanitize (c, ఇది);
+    తార్కిక attach_list_ok = attachList.sanitize (c, ఇది);
+    తార్కిక lig_caret_list_ok = ligCaretList.sanitize (c, ఇది);
+    తార్కిక mark_attach_class_def_ok = markAttachClassDef.sanitize (c, ఇది);
+    తార్కిక mark_glyph_sets_def_ok = సంస్కరణ.గమ్యం_int () < 0x00010002u ||
+				  markGlyphSetsDef.sanitize (c, ఇది);
 
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u)
     {
-      if (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, this);
-      if (attachList2) attach_list_ok = attachList2.sanitize (c, this);
-      if (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, this);
-      if (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, this);
-      if (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, this);
+      ఒకవేళ (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, ఇది);
+      ఒకవేళ (attachList2) attach_list_ok = attachList2.sanitize (c, ఇది);
+      ఒకవేళ (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, ఇది);
+      ఒకవేళ (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, ఇది);
+      ఒకవేళ (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, ఇది);
     }
-#endif
+#అయితే_ముగింపు
 
     return_trace (glyph_class_def_ok &&
 		  attach_list_ok &&
 		  lig_caret_list_ok &&
 		  mark_attach_class_def_ok &&
 		  mark_glyph_sets_def_ok &&
-		  (version.to_int () < 0x00010003u || varStore.sanitize (c, this)));
+		  (సంస్కరణ.గమ్యం_int () < 0x00010003u || varStore.sanitize (c, ఇది)));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (సంస్కరణ.major != 1) return_trace (అబద్ధం);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
     // Push var store first (if it's needed) so that it's last in the
     // serialization order. Some font consumers assume that varstore runs to
     // the end of the GDEF table.
     // See: https://github.com/harfbuzz/harfbuzz/issues/4636
-    auto snapshot_version0 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010002u && hb_barrier () &&
+    స్వయంచాలక snapshot_version0 = c->serializer->snapshot ();
+    ఒకవేళ (unlikely (సంస్కరణ.గమ్యం_int () >= 0x00010002u && hb_barrier () &&
 		  !c->serializer->embed (markGlyphSetsDef)))
-      return_trace (false);
+      return_trace (అబద్ధం);
 
-    auto snapshot_version2 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010003u && hb_barrier () &&
+    స్వయంచాలక snapshot_version2 = c->serializer->snapshot ();
+    ఒకవేళ (unlikely (సంస్కరణ.గమ్యం_int () >= 0x00010003u && hb_barrier () &&
 		  !c->serializer->embed (varStore)))
-      return_trace (false);
+      return_trace (అబద్ధం);
 
-    bool use_v14 = false;
-#ifndef HB_NO_BEYOND_64K
-    use_v14 = version.to_int () >= 0x00010004u &&
+    తార్కిక use_v14 = అబద్ధం;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    use_v14 = సంస్కరణ.గమ్యం_int () >= 0x00010004u &&
 	      (glyphClassDef2 || attachList2 || ligCaretList2 ||
 	       markAttachClassDef2 || markGlyphSetsDef2);
-    if (unlikely (version.to_int () >= 0x00010004u && hb_barrier () &&
-		  !c->serializer->extend_size (out, get_size ())))
-      return_trace (false);
-#endif
+    ఒకవేళ (unlikely (సంస్కరణ.గమ్యం_int () >= 0x00010004u && hb_barrier () &&
+		  !c->serializer->extend_కొలత (బహిర్గతం, get_కొలత ())))
+      return_trace (అబద్ధం);
+#అయితే_ముగింపు
 
-    bool subset_varstore = false;
-    unsigned varstore_index = (unsigned) -1;
-    if (version.to_int () >= 0x00010003u && hb_barrier ())
+    తార్కిక subset_varstore = అబద్ధం;
+    గుర్తులేని varstore_సూచీ = (గుర్తులేని) -1;
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010003u && hb_barrier ())
     {
-      if (c->plan->all_axes_pinned)
-	out->varStore = 0;
-      else if (c->plan->normalized_coords)
+      ఒకవేళ (c->plan->all_axes_pinned)
+	బహిర్గతం->varStore = 0;
+      లేకపోతే ఒకవేళ (c->plan->normalized_coords)
       {
-	if (varStore)
+	ఒకవేళ (varStore)
 	{
-	  item_variations_t item_vars;
-	  if (unlikely (!c->serializer->check_success (
-                  item_vars.instantiate (this+varStore, c->plan, true, true,
-                                          c->plan->gdef_varstore_inner_maps.as_array (), true))))
-            return_trace (false);
-	  subset_varstore = out->varStore.serialize_serialize (c->serializer,
-							     item_vars.has_long_word (),
-							     c->plan->axis_tags,
-							     item_vars.get_region_list (),
-							     item_vars.get_vardata_encodings ());
-	  varstore_index = c->serializer->last_added_child_index();
-	  remap_varidx_after_instantiation (item_vars.get_varidx_map (),
+	  అంశం_variations_t అంశం_vars;
+	  ఒకవేళ (unlikely (!c->serializer->check_success (
+                  అంశం_vars.instantiate (ఇది+varStore, c->plan, నిజం, నిజం,
+                                          c->plan->gdef_varstore_inner_maps.as_array (), నిజం))))
+            return_trace (అబద్ధం);
+	  subset_varstore = బహిర్గతం->varStore.serialize_serialize (c->serializer,
+							     అంశం_vars.has_long_మాట (),
+							     c->plan->axis_ట్యాగులు,
+							     అంశం_vars.get_region_list (),
+							     అంశం_vars.get_vardata_encodings ());
+	  varstore_సూచీ = c->serializer->చివరి_added_బిడ్డ_సూచీ();
+	  remap_varidx_after_instantiation (అంశం_vars.get_varidx_map (),
 					    c->plan->layout_variation_idx_delta_map);
-          remap_varidx_after_instantiation (item_vars.get_varidx_map (),
-                                            c->plan->layout_condition_idx_value_map);
+          remap_varidx_after_instantiation (అంశం_vars.get_varidx_map (),
+                                            c->plan->layout_condition_idx_విలువ_map);
 	}
       }
-      else
+      లేకపోతే
       {
-	subset_varstore = out->varStore.serialize_subset (c, varStore, this,
+	subset_varstore = బహిర్గతం->varStore.serialize_subset (c, varStore, ఇది,
 							  c->plan->gdef_varstore_inner_maps.as_array ());
-	varstore_index = c->serializer->last_added_child_index();
+	varstore_సూచీ = c->serializer->చివరి_added_బిడ్డ_సూచీ();
       }
     }
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
+    బహిర్గతం->సంస్కరణ.major = సంస్కరణ.major;
+    బహిర్గతం->సంస్కరణ.minor = సంస్కరణ.minor;
 
-    if (!subset_varstore && version.to_int () >= 0x00010002u && !use_v14) {
+    ఒకవేళ (!subset_varstore && సంస్కరణ.గమ్యం_int () >= 0x00010002u && !use_v14) {
       c->serializer->revert (snapshot_version2);
     }
-    if (!subset_varstore)
-      out->varStore = 0;
-    else
-      c->plan->has_gdef_varstore = true;
+    ఒకవేళ (!subset_varstore)
+      బహిర్గతం->varStore = 0;
+    లేకపోతే
+      c->plan->has_gdef_varstore = నిజం;
 
-    bool subset_markglyphsetsdef = false;
-    if (version.to_int () >= 0x00010002u && hb_barrier ())
+    తార్కిక subset_markglyphsetsdef = అబద్ధం;
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010002u && hb_barrier ())
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14 && markGlyphSetsDef2)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      ఒకవేళ (use_v14 && markGlyphSetsDef2)
       {
-	out->markGlyphSetsDef = 0;
-	subset_markglyphsetsdef = serialize_subset_offset (c, out->markGlyphSetsDef2,
-							   markGlyphSetsDef2, this);
+	బహిర్గతం->markGlyphSetsDef = 0;
+	subset_markglyphsetsdef = serialize_subset_స్థానభ్రంశం (c, బహిర్గతం->markGlyphSetsDef2,
+							   markGlyphSetsDef2, ఇది);
       }
-      else
-#endif
+      లేకపోతే
+#అయితే_ముగింపు
       {
-#ifndef HB_NO_BEYOND_64K
-	if (use_v14) out->markGlyphSetsDef2 = 0;
-#endif
-	subset_markglyphsetsdef = out->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, this);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+	ఒకవేళ (use_v14) బహిర్గతం->markGlyphSetsDef2 = 0;
+#అయితే_ముగింపు
+	subset_markglyphsetsdef = బహిర్గతం->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, ఇది);
       }
     }
 
-    if (use_v14)
+    ఒకవేళ (use_v14)
     {
-      out->version.minor = 4;
-    } else if (subset_varstore) {
-      out->version.minor = 3;
-    } else if (subset_markglyphsetsdef) {
-      out->version.minor = 2;
-    } else  {
-      out->version.minor = 0;
+      బహిర్గతం->సంస్కరణ.minor = 4;
+    } లేకపోతే ఒకవేళ (subset_varstore) {
+      బహిర్గతం->సంస్కరణ.minor = 3;
+    } లేకపోతే ఒకవేళ (subset_markglyphsetsdef) {
+      బహిర్గతం->సంస్కరణ.minor = 2;
+    } లేకపోతే  {
+      బహిర్గతం->సంస్కరణ.minor = 0;
       c->serializer->revert (snapshot_version0);
     }
 
-    bool subset_glyphclassdef = false;
-    bool subset_attachlist = false;
-    bool subset_markattachclassdef = false;
-    bool subset_ligcaretlist = false;
+    తార్కిక subset_glyphclassdef = అబద్ధం;
+    తార్కిక subset_attachlist = అబద్ధం;
+    తార్కిక subset_markattachclassdef = అబద్ధం;
+    తార్కిక subset_ligcaretlist = అబద్ధం;
 
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && glyphClassDef2)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (use_v14 && glyphClassDef2)
     {
-      out->glyphClassDef = 0;
-      subset_glyphclassdef = serialize_subset_offset (c, out->glyphClassDef2,
-						      glyphClassDef2, this, nullptr, false, true);
+      బహిర్గతం->glyphClassDef = 0;
+      subset_glyphclassdef = serialize_subset_స్థానభ్రంశం (c, బహిర్గతం->glyphClassDef2,
+						      glyphClassDef2, ఇది, శూన్యసూచిక, అబద్ధం, నిజం);
     }
-    else
-#endif
+    లేకపోతే
+#అయితే_ముగింపు
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->glyphClassDef2 = 0;
-#endif
-      subset_glyphclassdef = out->glyphClassDef.serialize_subset (c, glyphClassDef, this, nullptr, false, true);
-    }
-
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && attachList2)
-    {
-      out->attachList = 0;
-      subset_attachlist = serialize_subset_offset (c, out->attachList2, attachList2, this);
-    }
-    else
-#endif
-    {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->attachList2 = 0;
-#endif
-      subset_attachlist = out->attachList.serialize_subset (c, attachList, this);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      ఒకవేళ (use_v14) బహిర్గతం->glyphClassDef2 = 0;
+#అయితే_ముగింపు
+      subset_glyphclassdef = బహిర్గతం->glyphClassDef.serialize_subset (c, glyphClassDef, ఇది, శూన్యసూచిక, అబద్ధం, నిజం);
     }
 
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && markAttachClassDef2)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (use_v14 && attachList2)
     {
-      out->markAttachClassDef = 0;
-      subset_markattachclassdef = serialize_subset_offset (c, out->markAttachClassDef2,
-							   markAttachClassDef2, this, nullptr, false, true);
+      బహిర్గతం->attachList = 0;
+      subset_attachlist = serialize_subset_స్థానభ్రంశం (c, బహిర్గతం->attachList2, attachList2, ఇది);
     }
-    else
-#endif
+    లేకపోతే
+#అయితే_ముగింపు
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->markAttachClassDef2 = 0;
-#endif
-      subset_markattachclassdef = out->markAttachClassDef.serialize_subset (c, markAttachClassDef,
-									   this, nullptr, false, true);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      ఒకవేళ (use_v14) బహిర్గతం->attachList2 = 0;
+#అయితే_ముగింపు
+      subset_attachlist = బహిర్గతం->attachList.serialize_subset (c, attachList, ఇది);
     }
 
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && ligCaretList2)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (use_v14 && markAttachClassDef2)
     {
-      out->ligCaretList = 0;
-      subset_ligcaretlist = serialize_subset_offset (c, out->ligCaretList2, ligCaretList2, this);
+      బహిర్గతం->markAttachClassDef = 0;
+      subset_markattachclassdef = serialize_subset_స్థానభ్రంశం (c, బహిర్గతం->markAttachClassDef2,
+							   markAttachClassDef2, ఇది, శూన్యసూచిక, అబద్ధం, నిజం);
     }
-    else
-#endif
+    లేకపోతే
+#అయితే_ముగింపు
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->ligCaretList2 = 0;
-#endif
-      subset_ligcaretlist = out->ligCaretList.serialize_subset (c, ligCaretList, this);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      ఒకవేళ (use_v14) బహిర్గతం->markAttachClassDef2 = 0;
+#అయితే_ముగింపు
+      subset_markattachclassdef = బహిర్గతం->markAttachClassDef.serialize_subset (c, markAttachClassDef,
+									   ఇది, శూన్యసూచిక, అబద్ధం, నిజం);
     }
 
-    if (subset_varstore && varstore_index != (unsigned) -1) {
-      c->serializer->repack_last(varstore_index);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (use_v14 && ligCaretList2)
+    {
+      బహిర్గతం->ligCaretList = 0;
+      subset_ligcaretlist = serialize_subset_స్థానభ్రంశం (c, బహిర్గతం->ligCaretList2, ligCaretList2, ఇది);
+    }
+    లేకపోతే
+#అయితే_ముగింపు
+    {
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      ఒకవేళ (use_v14) బహిర్గతం->ligCaretList2 = 0;
+#అయితే_ముగింపు
+      subset_ligcaretlist = బహిర్గతం->ligCaretList.serialize_subset (c, ligCaretList, ఇది);
+    }
+
+    ఒకవేళ (subset_varstore && varstore_సూచీ != (గుర్తులేని) -1) {
+      c->serializer->repack_చివరి(varstore_సూచీ);
     }
 
     return_trace (subset_glyphclassdef || subset_attachlist ||
 		  subset_ligcaretlist || subset_markattachclassdef ||
-		  (out->version.to_int () >= 0x00010002u && subset_markglyphsetsdef) ||
-		  (out->version.to_int () >= 0x00010003u && subset_varstore));
+		  (బహిర్గతం->సంస్కరణ.గమ్యం_int () >= 0x00010002u && subset_markglyphsetsdef) ||
+		  (బహిర్గతం->సంస్కరణ.గమ్యం_int () >= 0x00010003u && subset_varstore));
   }
 
-  bool has_glyph_classes () const
+  తార్కిక has_glyph_classes () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return true;
-#endif
-    return glyphClassDef != 0;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && glyphClassDef2) తిరిగి నిజం;
+#అయితే_ముగింపు
+    తిరిగి glyphClassDef != 0;
   }
-  const ClassDef &get_glyph_class_def () const
+  స్థిరరాశి ClassDef &get_glyph_class_def () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return this+glyphClassDef2;
-#endif
-    return this+glyphClassDef;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && glyphClassDef2) తిరిగి ఇది+glyphClassDef2;
+#అయితే_ముగింపు
+    తిరిగి ఇది+glyphClassDef;
   }
-  bool has_attach_list () const
+  తార్కిక has_attach_list () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return true;
-#endif
-    return attachList != 0;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && attachList2) తిరిగి నిజం;
+#అయితే_ముగింపు
+    తిరిగి attachList != 0;
   }
-  const AttachList &get_attach_list () const
+  స్థిరరాశి AttachList &get_attach_list () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return this+attachList2;
-#endif
-    return this+attachList;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && attachList2) తిరిగి ఇది+attachList2;
+#అయితే_ముగింపు
+    తిరిగి ఇది+attachList;
   }
-  bool has_lig_carets () const
+  తార్కిక has_lig_carets () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2) return true;
-#endif
-    return ligCaretList != 0;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && ligCaretList2) తిరిగి నిజం;
+#అయితే_ముగింపు
+    తిరిగి ligCaretList != 0;
   }
-  bool has_mark_attachment_types () const
+  తార్కిక has_mark_attachment_types () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return true;
-#endif
-    return markAttachClassDef != 0;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && markAttachClassDef2) తిరిగి నిజం;
+#అయితే_ముగింపు
+    తిరిగి markAttachClassDef != 0;
   }
-  const ClassDef &get_mark_attach_class_def () const
+  స్థిరరాశి ClassDef &get_mark_attach_class_def () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return this+markAttachClassDef2;
-#endif
-    return this+markAttachClassDef;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && markAttachClassDef2) తిరిగి ఇది+markAttachClassDef2;
+#అయితే_ముగింపు
+    తిరిగి ఇది+markAttachClassDef;
   }
-  bool has_mark_glyph_sets () const
+  తార్కిక has_mark_glyph_sets () స్థిరరాశి
   {
-    if (version.to_int () < 0x00010002u) return false;
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return true;
-#endif
-    return markGlyphSetsDef != 0;
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () < 0x00010002u) తిరిగి అబద్ధం;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && markGlyphSetsDef2) తిరిగి నిజం;
+#అయితే_ముగింపు
+    తిరిగి markGlyphSetsDef != 0;
   }
-  const MarkGlyphSets &get_mark_glyph_sets () const
+  స్థిరరాశి MarkGlyphSets &get_mark_glyph_sets () స్థిరరాశి
   {
-    if (version.to_int () < 0x00010002u) return Null(MarkGlyphSets);
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return this+markGlyphSetsDef2;
-#endif
-    return this+markGlyphSetsDef;
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () < 0x00010002u) తిరిగి Null(MarkGlyphSets);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && markGlyphSetsDef2) తిరిగి ఇది+markGlyphSetsDef2;
+#అయితే_ముగింపు
+    తిరిగి ఇది+markGlyphSetsDef;
   }
-  bool has_var_store () const
+  తార్కిక has_var_store () స్థిరరాశి
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () && varStore != 0;
+    తిరిగి సంస్కరణ.గమ్యం_int () >= 0x00010003u && hb_barrier () && varStore != 0;
   }
-  const ItemVariationStore &get_var_store () const
+  స్థిరరాశి అంశం_Variation_Store &get_var_store () స్థిరరాశి
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () ? this+varStore : Null(ItemVariationStore);
+    తిరిగి సంస్కరణ.గమ్యం_int () >= 0x00010003u && hb_barrier () ? ఇది+varStore : Null(అంశం_Variation_Store);
   }
 
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_glyph_class (hb_codepoint_t glyph) const
-  { return get_glyph_class_def ().get_class (glyph); }
-  void get_glyphs_in_class (unsigned int klass, hb_set_t *glyphs) const
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int (); }
+  గుర్తులేని పూర్ణాంకం get_glyph_class (hb_codepoint_t glyph) స్థిరరాశి
+  { తిరిగి get_glyph_class_def ().get_class (glyph); }
+  శూన్య get_glyphs_లోపల_class (గుర్తులేని పూర్ణాంకం klass, hb_సమితి_t *glyphs) స్థిరరాశి
   { get_glyph_class_def ().collect_class (glyphs, klass); }
 
-  unsigned int get_mark_attachment_type (hb_codepoint_t glyph) const
-  { return get_mark_attach_class_def ().get_class (glyph); }
+  గుర్తులేని పూర్ణాంకం get_mark_attachment_type (hb_codepoint_t glyph) స్థిరరాశి
+  { తిరిగి get_mark_attach_class_def ().get_class (glyph); }
 
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
-  { return get_attach_list ().get_attach_points (glyph_id, start_offset, point_count, point_array); }
+  గుర్తులేని పూర్ణాంకం get_attach_points (hb_codepoint_t glyph_id,
+				  గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం *బిందువు_లెక్క /* IN/OUT */,
+				  గుర్తులేని పూర్ణాంకం *బిందువు_array /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి get_attach_list ().get_attach_points (glyph_id, ప్రారంభం_స్థానభ్రంశం, బిందువు_లెక్క, బిందువు_array); }
 
-  unsigned int get_lig_carets (hb_font_t *font,
+  గుర్తులేని పూర్ణాంకం get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
-			       hb_position_t *caret_array /* OUT */) const
+			       గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం *caret_లెక్క /* IN/OUT */,
+			       hb_position_t *caret_array /*బహిర్గతం*/) స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
-      return (this+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
-						  start_offset, caret_count, caret_array);
-#endif
-    return (this+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
-					       start_offset, caret_count, caret_array);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && ligCaretList2)
+      తిరిగి (ఇది+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
+						  ప్రారంభం_స్థానభ్రంశం, caret_లెక్క, caret_array);
+#అయితే_ముగింపు
+    తిరిగి (ఇది+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
+					       ప్రారంభం_స్థానభ్రంశం, caret_లెక్క, caret_array);
   }
 
-  bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return get_mark_glyph_sets ().covers (set_index, glyph_id); }
+  తార్కిక mark_సమితి_covers (గుర్తులేని పూర్ణాంకం సమితి_సూచీ, hb_codepoint_t glyph_id) స్థిరరాశి
+  { తిరిగి get_mark_glyph_sets ().covers (సమితి_సూచీ, glyph_id); }
 
   /* glyph_props is a 16-bit integer where the lower 8-bit have bits representing
    * glyph class and other bits, and high 8-bit the mark attachment type (if any).
    * Not to be confused with lookup_props which is very similar. */
-  unsigned int get_glyph_props (hb_codepoint_t glyph) const
+  గుర్తులేని పూర్ణాంకం get_glyph_props (hb_codepoint_t glyph) స్థిరరాశి
   {
-    unsigned int klass = get_glyph_class (glyph);
+    గుర్తులేని పూర్ణాంకం klass = get_glyph_class (glyph);
 
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH == (unsigned int) LookupFlag::IgnoreBaseGlyphs), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (unsigned int) LookupFlag::IgnoreLigatures), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (unsigned int) LookupFlag::IgnoreMarks), "");
+    static_assert (((గుర్తులేని పూర్ణాంకం) HB_OT_LAYOUT_GLYPH_PROPS_పునాది_GLYPH == (గుర్తులేని పూర్ణాంకం) LookupFlag::Ignore_పునాది_Glyphs), "");
+    static_assert (((గుర్తులేని పూర్ణాంకం) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (గుర్తులేని పూర్ణాంకం) LookupFlag::IgnoreLigatures), "");
+    static_assert (((గుర్తులేని పూర్ణాంకం) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (గుర్తులేని పూర్ణాంకం) LookupFlag::IgnoreMarks), "");
 
-    switch (klass) {
-    default:			return HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
-    case BaseGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
-    case LigatureGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
-    case MarkGlyph:
+    ఎంపిక (klass) {
+    అప్రమేయ:			తిరిగి HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
+    స్థితి పునాది_Glyph:		తిరిగి HB_OT_LAYOUT_GLYPH_PROPS_పునాది_GLYPH;
+    స్థితి LigatureGlyph:		తిరిగి HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
+    స్థితి MarkGlyph:
 	  klass = get_mark_attachment_type (glyph);
-	  return HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
+	  తిరిగి HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
     }
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-				   hb_face_t *face) const;
+  HB_అంతర్గత తార్కిక is_blocklisted (hb_blob_t *blob,
+				   hb_face_t *face) స్థిరరాశి;
 
-  struct accelerator_t
+  నిర్మాణం accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<GDEF> (face);
-      if (unlikely (table->is_blocklisted (table.get_blob (), face)))
+      పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<GDEF> (face);
+      ఒకవేళ (unlikely (పట్టిక->is_blocklisted (పట్టిక.get_blob (), face)))
       {
-	hb_blob_destroy (table.get_blob ());
-	table = hb_blob_get_empty ();
+	hb_blob_destroy (పట్టిక.get_blob ());
+	పట్టిక = hb_blob_get_ఖాళీలు ();
       }
 
-#ifndef HB_NO_GDEF_CACHE
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
       /* Flatten each mark set whose glyphs span fewer than PAGE_BITS
        * gids into a single bit-page biased at its first glyph, for
        * O(1) exact answers.  Wider sets, or on allocation failure,
        * fall back to the table. */
       {
-	hb_vector_t<hb_set_t> sets;
-	table->get_mark_glyph_sets ().collect_coverage (sets);
-	if (!sets.in_error () &&
-	    mark_glyph_set_bitmaps.resize (sets.length))
-	  for (unsigned i = 0; i < sets.length; i++)
+	hb_సదిశ_t<hb_సమితి_t> sets;
+	పట్టిక->get_mark_glyph_sets ().collect_coverage (sets);
+	ఒకవేళ (!sets.లోపల_error () &&
+	    mark_glyph_సమితి_bitmaps.resize (sets.నిడివి))
+	  కొరకు (గుర్తులేని i = 0; i < sets.నిడివి; i++)
 	  {
-	    auto &bitmap = mark_glyph_set_bitmaps.arrayZ[i];
-	    bitmap.bias = HB_SET_VALUE_INVALID;
-	    const auto &set = sets.arrayZ[i];
-	    if (unlikely (set.in_error ())) continue;
-	    hb_codepoint_t min_gid = HB_SET_VALUE_INVALID;
-	    hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
-	    hb_set_next (&set, &min_gid);
-	    hb_set_previous (&set, &max_gid);
-	    if (max_gid == HB_SET_VALUE_INVALID)
-	      continue;
-	    if (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
+	    స్వయంచాలక &bitmap = mark_glyph_సమితి_bitmaps.arrayZ[i];
+	    bitmap.bias = HB_సమితి_విలువ_INVALID;
+	    స్థిరరాశి స్వయంచాలక &సమితి = sets.arrayZ[i];
+	    ఒకవేళ (unlikely (సమితి.లోపల_error ())) కొనసాగు;
+	    hb_codepoint_t min_gid = HB_సమితి_విలువ_INVALID;
+	    hb_codepoint_t max_gid = HB_సమితి_విలువ_INVALID;
+	    hb_సమితి_తదుపరి (&సమితి, &min_gid);
+	    hb_సమితి_మునుపటి (&సమితి, &max_gid);
+	    ఒకవేళ (max_gid == HB_సమితి_విలువ_INVALID)
+	      కొనసాగు;
+	    ఒకవేళ (max_gid - min_gid >= hb_బిట్టు_పుట_t::పుట_బిట్లు)
 	    {
 	      /* Too wide for one page; a digest pre-filter instead. */
-	      for (hb_codepoint_t gid : set)
-		bitmap.u.digest.add (gid);
-	      continue;
+	      కొరకు (hb_codepoint_t gid : సమితి)
+		bitmap.u.digest.కూడు (gid);
+	      కొనసాగు;
 	    }
 	    bitmap.bias = min_gid;
-	    for (hb_codepoint_t gid : set)
-	      bitmap.u.page.add (gid - min_gid);
+	    కొరకు (hb_codepoint_t gid : సమితి)
+	      bitmap.u.పుట.కూడు (gid - min_gid);
 	  }
       }
-#endif
+#అయితే_ముగింపు
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { పట్టిక.destroy (); }
 
-    unsigned int get_glyph_props (hb_codepoint_t glyph) const
+    గుర్తులేని పూర్ణాంకం get_glyph_props (hb_codepoint_t glyph) స్థిరరాశి
     {
-      unsigned v;
+      గుర్తులేని v;
 
-#ifndef HB_NO_GDEF_CACHE
-      if (glyph_props_cache.get (glyph, &v))
-        return v;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
+      ఒకవేళ (glyph_props_cache.get (glyph, &v))
+        తిరిగి v;
+#అయితే_ముగింపు
 
-      v = table->get_glyph_props (glyph);
+      v = పట్టిక->get_glyph_props (glyph);
 
-#ifndef HB_NO_GDEF_CACHE
-      if (likely (table.get_blob ())) // Don't try setting if we are the null instance!
-	glyph_props_cache.set (glyph, v);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
+      ఒకవేళ (likely (పట్టిక.get_blob ())) // Don't try setting if we are the null instance!
+	glyph_props_cache.సమితి (glyph, v);
+#అయితే_ముగింపు
 
-      return v;
+      తిరిగి v;
 
     }
 
     HB_ALWAYS_INLINE
-    bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+    తార్కిక mark_సమితి_covers (గుర్తులేని పూర్ణాంకం సమితి_సూచీ, hb_codepoint_t glyph_id) స్థిరరాశి
     {
-#ifndef HB_NO_GDEF_CACHE
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
       // We can access arrayZ directly because of sanitize_lookup_props() guarantee.
-      const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (likely (bitmap.bias != HB_SET_VALUE_INVALID))
+      స్థిరరాశి స్వయంచాలక &bitmap = mark_glyph_సమితి_bitmaps.arrayZ[సమితి_సూచీ];
+      ఒకవేళ (likely (bitmap.bias != HB_సమితి_విలువ_INVALID))
       {
 	hb_codepoint_t biased = glyph_id - bitmap.bias;
-	return biased < hb_bit_page_t::PAGE_BITS &&
-	       bitmap.u.page.get (biased);
+	తిరిగి biased < hb_బిట్టు_పుట_t::పుట_బిట్లు &&
+	       bitmap.u.పుట.get (biased);
       }
-      return mark_set_covers_slow (set_index, glyph_id);
-#else
-      return table->mark_set_covers (set_index, glyph_id);
-#endif
+      తిరిగి mark_సమితి_covers_slow (సమితి_సూచీ, glyph_id);
+#లేకపోతే
+      తిరిగి పట్టిక->mark_సమితి_covers (సమితి_సూచీ, glyph_id);
+#అయితే_ముగింపు
     }
 
-#ifndef HB_NO_GDEF_CACHE
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
     HB_NEVER_INLINE
-    bool mark_set_covers_slow (unsigned int set_index, hb_codepoint_t glyph_id) const
+    తార్కిక mark_సమితి_covers_slow (గుర్తులేని పూర్ణాంకం సమితి_సూచీ, hb_codepoint_t glyph_id) స్థిరరాశి
     {
-      const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (!bitmap.u.digest.may_have (glyph_id))
-	return false;
-      return table->mark_set_covers (set_index, glyph_id);
+      స్థిరరాశి స్వయంచాలక &bitmap = mark_glyph_సమితి_bitmaps.arrayZ[సమితి_సూచీ];
+      ఒకవేళ (!bitmap.u.digest.may_have (glyph_id))
+	తిరిగి అబద్ధం;
+      తిరిగి పట్టిక->mark_సమితి_covers (సమితి_సూచీ, glyph_id);
     }
-#endif
+#అయితే_ముగింపు
 
-    unsigned sanitize_lookup_props (unsigned lookup_props) const
+    గుర్తులేని sanitize_lookup_props (గుర్తులేని lookup_props) స్థిరరాశి
     {
-#ifndef HB_NO_GDEF_CACHE
-      if (lookup_props & LookupFlag::UseMarkFilteringSet &&
-	  (lookup_props >> 16) >= mark_glyph_set_bitmaps.length)
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
+      ఒకవేళ (lookup_props & LookupFlag::Use_Mark_Filtering_సమితి &&
+	  (lookup_props >> 16) >= mark_glyph_సమితి_bitmaps.నిడివి)
       {
         // Invalid mark filtering set index; unset the flag.
-	lookup_props &= ~LookupFlag::UseMarkFilteringSet;
+	lookup_props &= ~LookupFlag::Use_Mark_Filtering_సమితి;
       }
-#endif
-      return lookup_props;
+#అయితే_ముగింపు
+      తిరిగి lookup_props;
     }
 
-    hb_blob_ptr_t<GDEF> table;
-#ifndef HB_NO_GDEF_CACHE
-    struct mark_glyph_set_bitmap_t
+    hb_blob_ptr_t<GDEF> పట్టిక;
+#నిర్వచితం_కాకపోతే HB_NO_GDEF_CACHE
+    నిర్మాణం mark_glyph_సమితి_bitmap_t
     {
       /* Gid of the first bit (not page-aligned) for an exact one-page
        * set, or HB_SET_VALUE_INVALID; then digest is a pre-filter for
        * the table.  The all-zeros state is valid for both members. */
-      hb_codepoint_t bias = HB_SET_VALUE_INVALID;
-      union u_t {
-	u_t () : page () {}
-	hb_bit_page_t page;
-	hb_set_digest_t digest;
+      hb_codepoint_t bias = HB_సమితి_విలువ_INVALID;
+      సంఘం u_t {
+	u_t () : పుట () {}
+	hb_బిట్టు_పుట_t పుట;
+	hb_సమితి_digest_t digest;
       } u;
     };
 
-    hb_vector_t<mark_glyph_set_bitmap_t> mark_glyph_set_bitmaps;
-    mutable hb_cache_t<21, 3> glyph_props_cache;
-    static_assert (sizeof (glyph_props_cache) == 512, "");
-#endif
+    hb_సదిశ_t<mark_glyph_సమితి_bitmap_t> mark_glyph_సమితి_bitmaps;
+    మార్చదగిన hb_cache_t<21, 3> glyph_props_cache;
+    static_assert (పరిమాణం (glyph_props_cache) == 512, "");
+#అయితే_ముగింపు
   };
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010004u && ligCaretList2)
     {
-      (this+ligCaretList2).collect_variation_indices (c);
-      return;
+      (ఇది+ligCaretList2).collect_variation_indices (c);
+      తిరిగి;
     }
-#endif
-    (this+ligCaretList).collect_variation_indices (c);
+#అయితే_ముగింపు
+    (ఇది+ligCaretList).collect_variation_indices (c);
   }
 
-  protected:
-  template <typename Key>
-  static void remap_varidx_after_instantiation (const hb_map_t& varidx_map,
-                                                hb_hashmap_t<Key, hb_pair_t<unsigned, int>>& layout_variation_idx_delta_map /* IN/OUT */)
+  రక్షిత:
+  మూస <రకం_పేరు కీలకం>
+  స్థిర శూన్య remap_varidx_after_instantiation (స్థిరరాశి hb_map_t& varidx_map,
+                                                hb_hashmap_t<కీలకం, hb_pair_t<గుర్తులేని, పూర్ణాంకం>>& layout_variation_idx_delta_map /* IN/OUT */)
   {
     /* varidx_map is empty which means varstore is empty after instantiation,
      * no variations, map all varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX.
      * varidx_map doesn't have original varidx, indicating delta row is all
      * zeros, map varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX */
-    for (auto _ : layout_variation_idx_delta_map.iter_ref ())
+    కొరకు (స్వయంచాలక _ : layout_variation_idx_delta_map.iter_ref ())
     {
       /* old_varidx->(varidx, delta) mapping generated for subsetting, then this
        * varidx is used as key of varidx_map during instantiation */
-      uint32_t varidx = _.second.first;
+      uint32_t varidx = _.second.మొదటి;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
-	_.second.first = *new_varidx;
-      else
-	_.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+      ఒకవేళ (varidx_map.has (varidx, &new_varidx))
+	_.second.మొదటి = *new_varidx;
+      లేకపోతే
+	_.second.మొదటి = HB_OT_LAYOUT_NO_VARIATIONS_సూచీ;
     }
   }
 
-  template <typename OffsetOut, typename OffsetIn, typename Base, typename ...Ts>
-  static bool serialize_subset_offset (hb_subset_context_t *c,
-				       OffsetOut& out,
-				       const OffsetIn& in,
-				       const Base *base,
+  మూస <రకం_పేరు స్థానభ్రంశం_బహిర్గతం, రకం_పేరు స్థానభ్రంశం_లోపల, రకం_పేరు పునాది_3, రకం_పేరు ...Ts>
+  స్థిర తార్కిక serialize_subset_స్థానభ్రంశం (hb_subset_context_t *c,
+				       స్థానభ్రంశం_బహిర్గతం& బహిర్గతం,
+				       స్థిరరాశి స్థానభ్రంశం_లోపల& లోపల,
+				       స్థిరరాశి పునాది_3 *పునాది,
 				       Ts&&... ds)
   {
-    out = 0;
-    if (in.is_null ()) return false;
+    బహిర్గతం = 0;
+    ఒకవేళ (లోపల.is_null ()) తిరిగి అబద్ధం;
 
-    auto *s = c->serializer;
+    స్వయంచాలక *s = c->serializer;
     s->push ();
-    bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    తార్కిక ret = c->dispatch (పునాది+లోపల, std::forward<Ts> (ds)...);
+    ఒకవేళ (ret) s->కూడు_link (బహిర్గతం, s->తీయి_pack ());
+    లేకపోతే s->తీయి_discard ();
+    తిరిగి ret;
   }
 
-  FixedVersion<>version;		/* Version of the GDEF table--currently
+  Fixed_సంస్కరణ<>సంస్కరణ;		/* Version of the GDEF table--currently
 					 * 0x00010004u */
-  Offset16To<ClassDef>
+  Offset16_గమ్యం<ClassDef>
 		glyphClassDef;		/* Offset to class definition table
 					 * for glyph type--from beginning of
 					 * GDEF header (may be Null) */
-  Offset16To<AttachList>
+  Offset16_గమ్యం<AttachList>
 		attachList;		/* Offset to list of glyphs with
 					 * attachment points--from beginning
 					 * of GDEF header (may be Null) */
-  Offset16To<LigCaretList<SmallTypes>>
+  Offset16_గమ్యం<LigCaretList<SmallTypes>>
 		ligCaretList;		/* Offset to list of positioning points
 					 * for ligature carets--from beginning
 					 * of GDEF header (may be Null) */
-  Offset16To<ClassDef>
+  Offset16_గమ్యం<ClassDef>
 		markAttachClassDef;	/* Offset to class definition table for
 					 * mark attachment type--from beginning
 					 * of GDEF header (may be Null) */
-  Offset16To<MarkGlyphSets>
+  Offset16_గమ్యం<MarkGlyphSets>
 		markGlyphSetsDef;	/* Offset to the table of mark set
 					 * definitions--from beginning of GDEF
 					 * header (may be NULL).  Introduced
 					 * in version 0x00010002. */
-  Offset32To<ItemVariationStore>
+  Offset32_గమ్యం<అంశం_Variation_Store>
 		varStore;		/* Offset to the table of Item Variation
 					 * Store--from beginning of GDEF
 					 * header (may be NULL).  Introduced
 					 * in version 0x00010003. */
-#ifndef HB_NO_BEYOND_64K
-  Offset32To<ClassDef>
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  Offset32_గమ్యం<ClassDef>
 		glyphClassDef2;		/* 32-bit offset to class definition
 					 * table for glyph type.  Introduced
 					 * in version 0x00010004. */
-  Offset32To<AttachList>
+  Offset32_గమ్యం<AttachList>
 		attachList2;		/* 32-bit offset to list of glyphs
 					 * with attachment points.  Introduced
 					 * in version 0x00010004. */
-  Offset32To<LigCaretList<MediumTypes>>
+  Offset32_గమ్యం<LigCaretList<MediumTypes>>
 		ligCaretList2;		/* 32-bit offset to LigCaretList2.
 					 * Introduced in version 0x00010004. */
-  Offset32To<ClassDef>
+  Offset32_గమ్యం<ClassDef>
 		markAttachClassDef2;	/* 32-bit offset to class definition
 					 * table for mark attachment type.
 					 * Introduced in version 0x00010004. */
-  Offset32To<MarkGlyphSets>
+  Offset32_గమ్యం<MarkGlyphSets>
 		markGlyphSetsDef2;	/* 32-bit offset to the table of mark
 					 * set definitions.  Introduced in
 					 * version 0x00010004. */
-#endif
-  public:
-  DEFINE_SIZE_MIN (12);
+#అయితే_ముగింపు
+  బహిరంగ:
+  DEFINE_కొలత_MIN (12);
 };
 
-struct GDEF_accelerator_t : GDEF::accelerator_t {
+నిర్మాణం GDEF_accelerator_t : GDEF::accelerator_t {
   GDEF_accelerator_t (hb_face_t *face) : GDEF::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* OT_LAYOUT_GDEF_GDEF_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GDEF_GDEF_HH */

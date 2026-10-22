@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FT_H
-#define HB_FT_H
+#నిర్వచితం_కాకపోతే HB_FT_H
+#నిర్వచించు HB_FT_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#అన్తర్భావ <ft2build.h>
+#అన్తర్భావ FT_FREETYPE_H
 
 HB_BEGIN_DECLS
 
@@ -85,12 +85,12 @@ HB_EXTERN hb_face_t *
 hb_ft_face_create_referenced (FT_Face ft_face);
 
 HB_EXTERN hb_face_t *
-hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index);
+hb_ft_face_create_from_file_or_fail (స్థిరరాశి అక్షరం   *file_name,
+				     గుర్తులేని పూర్ణాంకం  సూచీ_2);
 
 HB_EXTERN hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index);
+				     గుర్తులేని పూర్ణాంకం  సూచీ_2);
 
 /*
  * hb-font from ft-face.
@@ -118,42 +118,42 @@ HB_EXTERN FT_Face
 hb_ft_font_get_ft_face (hb_font_t *font);
 
 HB_EXTERN FT_Face
-hb_ft_font_lock_face (hb_font_t *font);
+hb_ft_font_తాళం_face (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ft_font_unlock_face (hb_font_t *font);
 
-HB_EXTERN void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags);
+HB_EXTERN శూన్య
+hb_ft_font_సమితి_ఎక్కించు_flags (hb_font_t *font, పూర్ణాంకం ఎక్కించు_flags);
 
-HB_EXTERN int
-hb_ft_font_get_load_flags (hb_font_t *font);
+HB_EXTERN పూర్ణాంకం
+hb_ft_font_get_ఎక్కించు_flags (hb_font_t *font);
 
 /* Call when size or variations settings on underlying FT_Face changed,
  * and you want to update the hb_font_t from it. */
-HB_EXTERN void
-hb_ft_font_changed (hb_font_t *font);
+HB_EXTERN శూన్య
+hb_ft_font_మారింది (hb_font_t *font);
 
 /* Call when size or variations settings on underlying hb_font_t may have
  * changed, and you want to update the FT_Face from it.  This call is fast
  * if nothing changed on hb_font_t. Returns true if changed. */
 HB_EXTERN hb_bool_t
-hb_ft_hb_font_changed (hb_font_t *font);
+hb_ft_hb_font_మారింది_2 (hb_font_t *font);
 
 /* Makes an hb_font_t use FreeType internally to implement font functions.
  * Note: this internally creates an FT_Face.  Use it when you create your
  * hb_face_t using hb_face_create(). */
-HB_EXTERN void
-hb_ft_font_set_funcs (hb_font_t *font);
+HB_EXTERN శూన్య
+hb_ft_font_సమితి_funcs (hb_font_t *font);
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 
 HB_DEPRECATED_FOR (hb_ft_font_get_ft_face)
 HB_EXTERN FT_Face
 hb_ft_font_get_face (hb_font_t *font);
 
-#endif
+#అయితే_ముగింపు
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_FT_H */
+#అయితే_ముగింపు /* HB_FT_H */

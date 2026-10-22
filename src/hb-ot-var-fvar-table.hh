@@ -24,477 +24,477 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_VAR_FVAR_TABLE_HH
-#define HB_OT_VAR_FVAR_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_VAR_FVAR_పట్టిక_HH
+#నిర్వచించు HB_OT_VAR_FVAR_పట్టిక_HH
 
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 /*
  * fvar -- Font Variations
  * https://docs.microsoft.com/en-us/typography/opentype/spec/fvar
  */
 
-#define HB_OT_TAG_fvar HB_TAG('f','v','a','r')
+#నిర్వచించు HB_OT_ట్యాగ్_fvar HB_ట్యాగ్('f','v','a','r')
 
 
-namespace OT {
+నామాకాశ OT {
 
-static bool axis_coord_pinned_or_within_axis_range (const hb_array_t<const F16DOT16> coords,
-                                                    unsigned axis_index,
-                                                    Triple axis_limit)
+స్థిర తార్కిక axis_coord_pinned_or_within_axis_range (స్థిరరాశి hb_array_t<స్థిరరాశి F16DOT16> coords,
+                                                    గుర్తులేని axis_సూచీ,
+                                                    Triple axis_హద్దు)
 {
-  float axis_coord = coords[axis_index].to_float ();
-  if (axis_limit.is_point ())
+  దశాంశం axis_coord = coords[axis_సూచీ].గమ్యం_float ();
+  ఒకవేళ (axis_హద్దు.is_బిందువు ())
   {
-    if (axis_limit.minimum != axis_coord)
-      return false;
+    ఒకవేళ (axis_హద్దు.minimum != axis_coord)
+      తిరిగి అబద్ధం;
   }
-  else
+  లేకపోతే
   {
-    if (axis_coord < axis_limit.minimum ||
-        axis_coord > axis_limit.maximum)
-      return false;
+    ఒకవేళ (axis_coord < axis_హద్దు.minimum ||
+        axis_coord > axis_హద్దు.గరిష్ఠ)
+      తిరిగి అబద్ధం;
   }
-  return true;
+  తిరిగి నిజం;
 }
 
-struct InstanceRecord
+నిర్మాణం Instance_రికార్డు
 {
-  friend struct fvar;
+  మిత్ర నిర్మాణం fvar;
 
-  hb_array_t<const F16DOT16> get_coordinates (unsigned int axis_count) const
-  { return coordinatesZ.as_array (axis_count); }
+  hb_array_t<స్థిరరాశి F16DOT16> get_coordinates (గుర్తులేని పూర్ణాంకం axis_లెక్క) స్థిరరాశి
+  { తిరిగి coordinatesZ.as_array (axis_లెక్క); }
 
-  bool keep_instance (unsigned axis_count,
-                      const hb_map_t *axes_index_tag_map,
-                      const hb_hashmap_t<hb_tag_t, Triple> *axes_location) const
+  తార్కిక keep_instance (గుర్తులేని axis_లెక్క,
+                      స్థిరరాశి hb_map_t *axes_సూచీ_ట్యాగ్_map,
+                      స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> *axes_location) స్థిరరాశి
   {
-    if (axes_location->is_empty ()) return true;
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    for (unsigned i = 0 ; i < axis_count; i++)
+    ఒకవేళ (axes_location->is_empty ()) తిరిగి నిజం;
+    స్థిరరాశి hb_array_t<స్థిరరాశి F16DOT16> coords = get_coordinates (axis_లెక్క);
+    కొరకు (గుర్తులేని i = 0 ; i < axis_లెక్క; i++)
     {
-      uint32_t *axis_tag;
-      if (!axes_index_tag_map->has (i, &axis_tag))
-        return false;
-      if (!axes_location->has (*axis_tag))
-        continue;
+      uint32_t *axis_ట్యాగ్_2;
+      ఒకవేళ (!axes_సూచీ_ట్యాగ్_map->has (i, &axis_ట్యాగ్_2))
+        తిరిగి అబద్ధం;
+      ఒకవేళ (!axes_location->has (*axis_ట్యాగ్_2))
+        కొనసాగు;
 
-      Triple axis_limit = axes_location->get (*axis_tag);
-      if (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
-        return false;
+      Triple axis_హద్దు = axes_location->get (*axis_ట్యాగ్_2);
+      ఒకవేళ (!axis_coord_pinned_or_within_axis_range (coords, i, axis_హద్దు))
+        తిరిగి అబద్ధం;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool subset (hb_subset_context_t *c,
-               unsigned axis_count,
-               bool has_postscript_nameid) const
+  తార్కిక subset (hb_subset_context_t *c,
+               గుర్తులేని axis_లెక్క,
+               తార్కిక has_postscript_nameid) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (false);
-    if (unlikely (!c->serializer->embed (flags))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->serializer->embed (flags))) return_trace (అబద్ధం);
 
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    const hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
-    for (unsigned i = 0 ; i < axis_count; i++)
+    స్థిరరాశి hb_array_t<స్థిరరాశి F16DOT16> coords = get_coordinates (axis_లెక్క);
+    స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> *axes_location = &c->plan->user_axes_location;
+    కొరకు (గుర్తులేని i = 0 ; i < axis_లెక్క; i++)
     {
-      uint32_t *axis_tag;
-      Triple *axis_limit;
+      uint32_t *axis_ట్యాగ్_2;
+      Triple *axis_హద్దు;
       // only keep instances whose coordinates == pinned axis location
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (false);
-      if (axes_location->has (*axis_tag, &axis_limit))
+      ఒకవేళ (!c->plan->axes_old_సూచీ_ట్యాగ్_map.has (i, &axis_ట్యాగ్_2)) return_trace (అబద్ధం);
+      ఒకవేళ (axes_location->has (*axis_ట్యాగ్_2, &axis_హద్దు))
       {
-        if (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
-          return_trace (false);
+        ఒకవేళ (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_హద్దు))
+          return_trace (అబద్ధం);
 
         //skip axes dropped from fvar (pinned; or self-contained under avar2,
         //where other pinned axes stay in fvar as hidden)
-        if (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
-          continue;
+        ఒకవేళ (axis_హద్దు->is_బిందువు () && !c->plan->axes_సూచీ_map.has (i))
+          కొనసాగు;
       }
 
-      if (!c->serializer->embed (coords[i]))
-        return_trace (false);
+      ఒకవేళ (!c->serializer->embed (coords[i]))
+        return_trace (అబద్ధం);
     }
 
-    if (has_postscript_nameid)
+    ఒకవేళ (has_postscript_nameid)
     {
       NameID name_id;
       name_id = StructAfter<NameID> (coords);
-      if (!c->serializer->embed (name_id))
-        return_trace (false);
+      ఒకవేళ (!c->serializer->embed (name_id))
+        return_trace (అబద్ధం);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int axis_count) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, గుర్తులేని పూర్ణాంకం axis_లెక్క) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  c->check_array (coordinatesZ.arrayZ, axis_count));
+		  c->check_array (coordinatesZ.arrayZ, axis_లెక్క));
   }
 
-  protected:
+  రక్షిత:
   NameID	subfamilyNameID;/* The name ID for entries in the 'name' table
 				 * that provide subfamily names for this instance. */
   HBUINT16	flags;		/* Reserved for future use — set to 0. */
-  UnsizedArrayOf<F16DOT16>
+  Unsized_Array_యొక్క<F16DOT16>
 		coordinatesZ;	/* The coordinates array for this instance. */
   //NameID	postScriptNameIDX;/*Optional. The name ID for entries in the 'name'
   //				  * table that provide PostScript names for this
   //				  * instance. */
 
-  public:
-  DEFINE_SIZE_UNBOUNDED (4);
+  బహిరంగ:
+  DEFINE_కొలత_UNBOUNDED (4);
 };
 
-struct AxisRecord
+నిర్మాణం Axis_రికార్డు
 {
-  int cmp (hb_tag_t key) const { return axisTag.cmp (key); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t key) స్థిరరాశి { తిరిగి axis_ట్యాగ్.cmp (key); }
 
-  enum
+  గణన
   {
     AXIS_FLAG_HIDDEN	= 0x0001,
   };
 
-#ifndef HB_DISABLE_DEPRECATED
-  void get_axis_deprecated (hb_ot_var_axis_t *info) const
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
+  శూన్య get_axis_deprecated (hb_ot_var_axis_t *info) స్థిరరాశి
   {
-    info->tag = axisTag;
+    info->ట్యాగ్_2 = axis_ట్యాగ్;
     info->name_id = axisNameID;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    get_coordinates (info->min_విలువ, info->default_విలువ, info->max_విలువ);
   }
-#endif
+#అయితే_ముగింపు
 
-  void get_axis_info (unsigned axis_index, hb_ot_var_axis_info_t *info) const
+  శూన్య get_axis_info (గుర్తులేని axis_సూచీ, hb_ot_var_axis_info_t *info) స్థిరరాశి
   {
-    info->axis_index = axis_index;
-    info->tag = axisTag;
+    info->axis_సూచీ = axis_సూచీ;
+    info->ట్యాగ్_2 = axis_ట్యాగ్;
     info->name_id = axisNameID;
-    info->flags = (hb_ot_var_axis_flags_t) (unsigned int) flags;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    info->flags = (hb_ot_var_axis_flags_t) (గుర్తులేని పూర్ణాంకం) flags;
+    get_coordinates (info->min_విలువ, info->default_విలువ, info->max_విలువ);
     info->reserved = 0;
   }
 
-  hb_tag_t get_axis_tag () const { return axisTag; }
+  hb_ట్యాగ్_t get_axis_ట్యాగ్ () స్థిరరాశి { తిరిగి axis_ట్యాగ్; }
 
-  bool is_hidden () const { return flags & AXIS_FLAG_HIDDEN; }
+  తార్కిక is_hidden () స్థిరరాశి { తిరిగి flags & AXIS_FLAG_HIDDEN; }
 
-  float normalize_axis_value (float v) const
+  దశాంశం normalize_axis_విలువ (దశాంశం v) స్థిరరాశి
   {
-    float min_value, default_value, max_value;
-    get_coordinates (min_value, default_value, max_value);
+    దశాంశం min_విలువ, default_విలువ, max_విలువ;
+    get_coordinates (min_విలువ, default_విలువ, max_విలువ);
 
-    v = hb_clamp (v, min_value, max_value);
+    v = hb_clamp (v, min_విలువ, max_విలువ);
 
-    if (v == default_value)
-      return 0;
-    else if (v < default_value)
-      return (v - default_value) / (default_value - min_value);
-    else
-      return (v - default_value) / (max_value - default_value);
+    ఒకవేళ (v == default_విలువ)
+      తిరిగి 0;
+    లేకపోతే ఒకవేళ (v < default_విలువ)
+      తిరిగి (v - default_విలువ) / (default_విలువ - min_విలువ);
+    లేకపోతే
+      తిరిగి (v - default_విలువ) / (max_విలువ - default_విలువ);
   }
 
-  hb_ot_name_id_t get_name_id () const { return axisNameID; }
+  hb_ot_name_id_t get_name_id () స్థిరరాశి { తిరిగి axisNameID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  void get_coordinates (float &min, float &default_, float &max) const
+  శూన్య get_coordinates (దశాంశం &min, దశాంశం &default_, దశాంశం &max) స్థిరరాశి
   {
-    default_ = defaultValue.to_float ();
+    default_ = default_విలువ_2.గమ్యం_float ();
     /* Ensure order, to simplify client math. */
-    min = hb_min (default_, minValue.to_float ());
-    max = hb_max (default_, maxValue.to_float ());
+    min = hb_min (default_, min_విలువ_2.గమ్యం_float ());
+    max = hb_max (default_, max_విలువ_2.గమ్యం_float ());
   }
 
-  float get_default () const
+  దశాంశం get_default () స్థిరరాశి
   {
-    return defaultValue.to_float ();
+    తిరిగి default_విలువ_2.గమ్యం_float ();
   }
 
-  TripleDistances get_triple_distances () const
+  TripleDistances get_triple_distances () స్థిరరాశి
   {
-    float min, default_, max;
+    దశాంశం min, default_, max;
     get_coordinates (min, default_, max);
-    return TripleDistances (min, default_, max);
+    తిరిగి TripleDistances (min, default_, max);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
-    Triple *axis_limit;
-    if (user_axes_location.has (axisTag, &axis_limit))
+    స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple>& user_axes_location = c->plan->user_axes_location;
+    Triple *axis_హద్దు;
+    ఒకవేళ (user_axes_location.has (axis_ట్యాగ్, &axis_హద్దు))
     {
-      if (c->plan->has_avar2 && axis_limit->is_point ())
+      ఒకవేళ (c->plan->has_avar2 && axis_హద్దు->is_బిందువు ())
       {
         /* Pinned axis in avar2 mode: keep in fvar as hidden with
          * min=default=max=pinned_value. */
-        out->minValue.set_float (axis_limit->middle);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->middle);
-        out->flags = out->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
+        బహిర్గతం->min_విలువ_2.సమితి_float (axis_హద్దు->మధ్య);
+        బహిర్గతం->default_విలువ_2.సమితి_float (axis_హద్దు->మధ్య);
+        బహిర్గతం->max_విలువ_2.సమితి_float (axis_హద్దు->మధ్య);
+        బహిర్గతం->flags = బహిర్గతం->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
       }
-      else
+      లేకపోతే
       {
-        out->minValue.set_float (axis_limit->minimum);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->maximum);
+        బహిర్గతం->min_విలువ_2.సమితి_float (axis_హద్దు->minimum);
+        బహిర్గతం->default_విలువ_2.సమితి_float (axis_హద్దు->మధ్య);
+        బహిర్గతం->max_విలువ_2.సమితి_float (axis_హద్దు->గరిష్ఠ);
       }
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  public:
-  Tag		axisTag;	/* Tag identifying the design variation for the axis. */
-  protected:
-  F16DOT16	minValue;	/* The minimum coordinate value for the axis. */
-  F16DOT16	defaultValue;	/* The default coordinate value for the axis. */
-  F16DOT16	maxValue;	/* The maximum coordinate value for the axis. */
-  public:
+  బహిరంగ:
+  ట్యాగ్		axis_ట్యాగ్;	/* Tag identifying the design variation for the axis. */
+  రక్షిత:
+  F16DOT16	min_విలువ_2;	/* The minimum coordinate value for the axis. */
+  F16DOT16	default_విలువ_2;	/* The default coordinate value for the axis. */
+  F16DOT16	max_విలువ_2;	/* The maximum coordinate value for the axis. */
+  బహిరంగ:
   HBUINT16	flags;		/* Axis flags. */
   NameID	axisNameID;	/* The name ID for entries in the 'name' table that
 				 * provide a display name for this axis. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (20);
 };
 
-struct fvar
+నిర్మాణం fvar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_fvar;
 
-  bool has_data () const { return version.to_int (); }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (సంస్కరణ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  likely (సంస్కరణ.major == 1) &&
+		  c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  axisSize == 20 && /* Assumed in our code. */
-		  instanceSize >= axisCount * 4 + 4 &&
+		  axis_కొలత == 20 && /* Assumed in our code. */
+		  instance_కొలత >= axis_లెక్క_2 * 4 + 4 &&
 		  get_axes ().sanitize (c) &&
-		  c->check_range (&StructAfter<InstanceRecord> (get_axes ()),
-				  instanceCount, instanceSize));
+		  c->check_range (&StructAfter<Instance_రికార్డు> (get_axes ()),
+				  instance_లెక్క, instance_కొలత));
   }
 
-  unsigned int get_axis_count () const { return axisCount; }
+  గుర్తులేని పూర్ణాంకం get_axis_లెక్క () స్థిరరాశి { తిరిగి axis_లెక్క_2; }
 
-#ifndef HB_DISABLE_DEPRECATED
-  unsigned int get_axes_deprecated (unsigned int      start_offset,
-				    unsigned int     *axes_count /* IN/OUT */,
-				    hb_ot_var_axis_t *axes_array /* OUT */) const
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
+  గుర్తులేని పూర్ణాంకం get_axes_deprecated (గుర్తులేని పూర్ణాంకం      ప్రారంభం_స్థానభ్రంశం,
+				    గుర్తులేని పూర్ణాంకం     *axes_లెక్క /* IN/OUT */,
+				    hb_ot_var_axis_t *axes_array /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (axes_count && axes_array)
+    ఒకవేళ (axes_లెక్క && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      hb_array_t<స్థిరరాశి Axis_రికార్డు> arr = get_axes ().sub_array (ప్రారంభం_స్థానభ్రంశం, axes_లెక్క);
+      కొరకు (గుర్తులేని i = 0; i < arr.నిడివి; ++i)
 	arr[i].get_axis_deprecated (&axes_array[i]);
     }
-    return axisCount;
+    తిరిగి axis_లెక్క_2;
   }
-#endif
+#అయితే_ముగింపు
 
-  unsigned int get_axis_infos (unsigned int           start_offset,
-			       unsigned int          *axes_count /* IN/OUT */,
-			       hb_ot_var_axis_info_t *axes_array /* OUT */) const
+  గుర్తులేని పూర్ణాంకం get_axis_infos (గుర్తులేని పూర్ణాంకం           ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం          *axes_లెక్క /* IN/OUT */,
+			       hb_ot_var_axis_info_t *axes_array /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (axes_count && axes_array)
+    ఒకవేళ (axes_లెక్క && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
-	arr[i].get_axis_info (start_offset + i, &axes_array[i]);
+      hb_array_t<స్థిరరాశి Axis_రికార్డు> arr = get_axes ().sub_array (ప్రారంభం_స్థానభ్రంశం, axes_లెక్క);
+      కొరకు (గుర్తులేని i = 0; i < arr.నిడివి; ++i)
+	arr[i].get_axis_info (ప్రారంభం_స్థానభ్రంశం + i, &axes_array[i]);
     }
-    return axisCount;
+    తిరిగి axis_లెక్క_2;
   }
 
-#ifndef HB_DISABLE_DEPRECATED
-  bool
-  find_axis_deprecated (hb_tag_t tag, unsigned *axis_index, hb_ot_var_axis_t *info) const
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
+  తార్కిక
+  కనుగొను_axis_deprecated (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని *axis_సూచీ, hb_ot_var_axis_t *info) స్థిరరాశి
   {
-    unsigned i;
-    if (!axis_index) axis_index = &i;
-    *axis_index = HB_OT_VAR_NO_AXIS_INDEX;
-    auto axes = get_axes ();
-    return axes.lfind (tag, axis_index) && ((void) axes[*axis_index].get_axis_deprecated (info), true);
+    గుర్తులేని i;
+    ఒకవేళ (!axis_సూచీ) axis_సూచీ = &i;
+    *axis_సూచీ = HB_OT_VAR_NO_AXIS_సూచీ;
+    స్వయంచాలక axes = get_axes ();
+    తిరిగి axes.lfind (ట్యాగ్_2, axis_సూచీ) && ((శూన్య) axes[*axis_సూచీ].get_axis_deprecated (info), నిజం);
   }
-#endif
-  bool
-  find_axis_info (hb_tag_t tag, hb_ot_var_axis_info_t *info) const
+#అయితే_ముగింపు
+  తార్కిక
+  కనుగొను_axis_info (hb_ట్యాగ్_t ట్యాగ్_2, hb_ot_var_axis_info_t *info) స్థిరరాశి
   {
-    unsigned i;
-    auto axes = get_axes ();
-    return axes.lfind (tag, &i) && ((void) axes[i].get_axis_info (i, info), true);
-  }
-
-  float normalize_axis_value (unsigned int axis_index, float v) const
-  { return get_axes ()[axis_index].normalize_axis_value (v); }
-
-  unsigned int get_instance_count () const { return instanceCount; }
-
-  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned int instance_index) const
-  {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    return instance->subfamilyNameID;
+    గుర్తులేని i;
+    స్వయంచాలక axes = get_axes ();
+    తిరిగి axes.lfind (ట్యాగ్_2, &i) && ((శూన్య) axes[i].get_axis_info (i, info), నిజం);
   }
 
-  hb_ot_name_id_t get_instance_postscript_name_id (unsigned int instance_index) const
+  దశాంశం normalize_axis_విలువ (గుర్తులేని పూర్ణాంకం axis_సూచీ, దశాంశం v) స్థిరరాశి
+  { తిరిగి get_axes ()[axis_సూచీ].normalize_axis_విలువ (v); }
+
+  గుర్తులేని పూర్ణాంకం get_instance_లెక్క () స్థిరరాశి { తిరిగి instance_లెక్క; }
+
+  hb_ot_name_id_t get_instance_subfamily_name_id (గుర్తులేని పూర్ణాంకం instance_సూచీ) స్థిరరాశి
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    if (instanceSize >= axisCount * 4 + 6)
-      return StructAfter<NameID> (instance->get_coordinates (axisCount));
-    return HB_OT_NAME_ID_INVALID;
+    స్థిరరాశి Instance_రికార్డు *instance = get_instance (instance_సూచీ);
+    ఒకవేళ (unlikely (!instance)) తిరిగి HB_OT_NAME_ID_INVALID;
+    తిరిగి instance->subfamilyNameID;
   }
 
-  unsigned int get_instance_coords (unsigned int  instance_index,
-				    unsigned int *coords_length, /* IN/OUT */
-				    float        *coords         /* OUT */) const
+  hb_ot_name_id_t get_instance_postscript_name_id (గుర్తులేని పూర్ణాంకం instance_సూచీ) స్థిరరాశి
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance))
+    స్థిరరాశి Instance_రికార్డు *instance = get_instance (instance_సూచీ);
+    ఒకవేళ (unlikely (!instance)) తిరిగి HB_OT_NAME_ID_INVALID;
+    ఒకవేళ (instance_కొలత >= axis_లెక్క_2 * 4 + 6)
+      తిరిగి StructAfter<NameID> (instance->get_coordinates (axis_లెక్క_2));
+    తిరిగి HB_OT_NAME_ID_INVALID;
+  }
+
+  గుర్తులేని పూర్ణాంకం get_instance_coords (గుర్తులేని పూర్ణాంకం  instance_సూచీ,
+				    గుర్తులేని పూర్ణాంకం *coords_నిడివి, /* IN/OUT */
+				    దశాంశం        *coords         /*బహిర్గతం*/) స్థిరరాశి
+  {
+    స్థిరరాశి Instance_రికార్డు *instance = get_instance (instance_సూచీ);
+    ఒకవేళ (unlikely (!instance))
     {
-      if (coords_length)
-	*coords_length = 0;
-      return 0;
-    }
-
-    if (coords_length && *coords_length && coords)
-    {
-      hb_array_t<const F16DOT16> instanceCoords = instance->get_coordinates (axisCount)
-							 .sub_array (0, coords_length);
-      for (unsigned int i = 0; i < instanceCoords.length; i++)
-	coords[i] = instanceCoords.arrayZ[i].to_float ();
-    }
-    return axisCount;
-  }
-
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-			 hb_map_t *axes_old_index_tag_map,
-			 hb_set_t *nameids  /* IN/OUT */) const
-  {
-    if (!has_data ()) return;
-
-    auto axis_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
-    {
-      hb_tag_t axis_tag = axis_records[i].get_axis_tag ();
-      if (user_axes_location->has (axis_tag) &&
-          user_axes_location->get (axis_tag).is_point ())
-        continue;
-
-      nameids->add (axis_records[i].get_name_id ());
+      ఒకవేళ (coords_నిడివి)
+	*coords_నిడివి = 0;
+      తిరిగి 0;
     }
 
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    ఒకవేళ (coords_నిడివి && *coords_నిడివి && coords)
     {
-      const InstanceRecord *instance = get_instance (i);
+      hb_array_t<స్థిరరాశి F16DOT16> instanceCoords = instance->get_coordinates (axis_లెక్క_2)
+							 .sub_array (0, coords_నిడివి);
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < instanceCoords.నిడివి; i++)
+	coords[i] = instanceCoords.arrayZ[i].గమ్యం_float ();
+    }
+    తిరిగి axis_లెక్క_2;
+  }
 
-      if (!instance->keep_instance (axisCount, axes_old_index_tag_map, user_axes_location))
-        continue;
+  శూన్య collect_name_ids (hb_hashmap_t<hb_ట్యాగ్_t, Triple> *user_axes_location,
+			 hb_map_t *axes_old_సూచీ_ట్యాగ్_map,
+			 hb_సమితి_t *nameids  /* IN/OUT */) స్థిరరాశి
+  {
+    ఒకవేళ (!has_దత్తాంశం ()) తిరిగి;
 
-      nameids->add (instance->subfamilyNameID);
+    స్వయంచాలక axis_రికార్డులు = get_axes ();
+    కొరకు (గుర్తులేని i = 0 ; i < (గుర్తులేని)axis_లెక్క_2; i++)
+    {
+      hb_ట్యాగ్_t axis_ట్యాగ్_2 = axis_రికార్డులు[i].get_axis_ట్యాగ్ ();
+      ఒకవేళ (user_axes_location->has (axis_ట్యాగ్_2) &&
+          user_axes_location->get (axis_ట్యాగ్_2).is_బిందువు ())
+        కొనసాగు;
 
-      if (instanceSize >= axisCount * 4 + 6)
+      nameids->కూడు (axis_రికార్డులు[i].get_name_id ());
+    }
+
+    కొరకు (గుర్తులేని i = 0 ; i < (గుర్తులేని)instance_లెక్క; i++)
+    {
+      స్థిరరాశి Instance_రికార్డు *instance = get_instance (i);
+
+      ఒకవేళ (!instance->keep_instance (axis_లెక్క_2, axes_old_సూచీ_ట్యాగ్_map, user_axes_location))
+        కొనసాగు;
+
+      nameids->కూడు (instance->subfamilyNameID);
+
+      ఒకవేళ (instance_కొలత >= axis_లెక్క_2 * 4 + 6)
       {
-        unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axisCount));
-        if (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
+        గుర్తులేని post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axis_లెక్క_2));
+        ఒకవేళ (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->కూడు (post_script_name_id);
       }
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    గుర్తులేని retained_axis_లెక్క = c->plan->axes_సూచీ_map.get_population ();
+    ఒకవేళ (!retained_axis_లెక్క) //all axes are pinned
+      return_trace (అబద్ధం);
 
-    fvar *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    fvar *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->axis_లెక్క_2, retained_axis_లెక్క, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
-    bool has_postscript_nameid = false;
-    if (instanceSize >= axisCount * 4 + 6)
-      has_postscript_nameid = true;
+    తార్కిక has_postscript_nameid = అబద్ధం;
+    ఒకవేళ (instance_కొలత >= axis_లెక్క_2 * 4 + 6)
+      has_postscript_nameid = నిజం;
 
-    if (!c->serializer->check_assign (out->instanceSize, retained_axis_count * 4 + (has_postscript_nameid ? 6 : 4),
-                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->instance_కొలత, retained_axis_లెక్క * 4 + (has_postscript_nameid ? 6 : 4),
+                                      HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
-    auto axes_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    స్వయంచాలక axes_రికార్డులు = get_axes ();
+    కొరకు (గుర్తులేని i = 0 ; i < (గుర్తులేని)axis_లెక్క_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue;
-      if (unlikely (!axes_records[i].subset (c)))
-        return_trace (false);
+      ఒకవేళ (!c->plan->axes_సూచీ_map.has (i)) కొనసాగు;
+      ఒకవేళ (unlikely (!axes_రికార్డులు[i].subset (c)))
+        return_trace (అబద్ధం);
     }
 
-    if (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->మొదటి_Axis, get_కొలత (), HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
-    unsigned num_retained_instances = 0;
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    గుర్తులేని అంకె_retained_instances = 0;
+    కొరకు (గుర్తులేని i = 0 ; i < (గుర్తులేని)instance_లెక్క; i++)
     {
-      const InstanceRecord *instance = get_instance (i);
-      auto snap = c->serializer->snapshot ();
-      if (!instance->subset (c, axisCount, has_postscript_nameid))
+      స్థిరరాశి Instance_రికార్డు *instance = get_instance (i);
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      ఒకవేళ (!instance->subset (c, axis_లెక్క_2, has_postscript_nameid))
         c->serializer->revert (snap);
-      else
-        num_retained_instances++;
+      లేకపోతే
+        అంకె_retained_instances++;
     }
 
-    return_trace (c->serializer->check_assign (out->instanceCount, num_retained_instances, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->instance_లెక్క, అంకె_retained_instances, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  public:
-  hb_array_t<const AxisRecord> get_axes () const
-  { return hb_array (&(this+firstAxis), axisCount); }
+  బహిరంగ:
+  hb_array_t<స్థిరరాశి Axis_రికార్డు> get_axes () స్థిరరాశి
+  { తిరిగి hb_array (&(ఇది+మొదటి_Axis), axis_లెక్క_2); }
 
-  const InstanceRecord *get_instance (unsigned int i) const
+  స్థిరరాశి Instance_రికార్డు *get_instance (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-    if (unlikely (i >= instanceCount)) return nullptr;
-   return &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
-					   i * instanceSize);
+    ఒకవేళ (unlikely (i >= instance_లెక్క)) తిరిగి శూన్యసూచిక;
+   తిరిగి &Struct_At_స్థానభ్రంశం<Instance_రికార్డు> (&StructAfter<Instance_రికార్డు> (get_axes ()),
+					   i * instance_కొలత);
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the fvar table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the fvar table
 				 * initially set to 0x00010000u */
-  Offset16To<AxisRecord>
-		firstAxis;	/* Offset in bytes from the beginning of the table
+  Offset16_గమ్యం<Axis_రికార్డు>
+		మొదటి_Axis;	/* Offset in bytes from the beginning of the table
 				 * to the start of the AxisRecord array. */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 2. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font (the
+  HBUINT16	axis_లెక్క_2;	/* The number of variation axes in the font (the
 				 * number of records in the axes array). */
-  HBUINT16	axisSize;	/* The size in bytes of each VariationAxisRecord —
+  HBUINT16	axis_కొలత;	/* The size in bytes of each VariationAxisRecord —
 				 * set to 20 (0x0014) for this version. */
-  HBUINT16	instanceCount;	/* The number of named instances defined in the font
+  HBUINT16	instance_లెక్క;	/* The number of named instances defined in the font
 				 * (the number of records in the instances array). */
-  HBUINT16	instanceSize;	/* The size in bytes of each InstanceRecord — set
+  HBUINT16	instance_కొలత;	/* The size in bytes of each InstanceRecord — set
 				 * to either axisCount * sizeof(F16DOT16) + 4, or to
 				 * axisCount * sizeof(F16DOT16) + 6. */
 
-  public:
-  DEFINE_SIZE_STATIC (16);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (16);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_VAR_FVAR_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_VAR_FVAR_TABLE_HH */

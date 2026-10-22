@@ -24,289 +24,289 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SERIALIZE_HH
-#define GRAPH_SERIALIZE_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_SERIALIZE_HH
+#నిర్వచించు లేఖాచిత్రం_SERIALIZE_HH
 
-#include "graph-result.hh"
+#అన్తర్భావ "graph-result.hh"
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-struct overflow_record_t
+నిర్మాణం అధికప్రవాహం_రికార్డు_t
 {
-  unsigned parent;
-  unsigned child;
+  గుర్తులేని మాతృ;
+  గుర్తులేని బిడ్డ;
 
-  bool operator != (const overflow_record_t o) const
-  { return !(*this == o); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి అధికప్రవాహం_రికార్డు_t o) స్థిరరాశి
+  { తిరిగి !(*ఇది == o); }
 
-  inline bool operator == (const overflow_record_t& o) const
+  అంతఃవరుస తార్కిక క్రియాకారకం == (స్థిరరాశి అధికప్రవాహం_రికార్డు_t& o) స్థిరరాశి
   {
-    return parent == o.parent &&
-        child == o.child;
+    తిరిగి మాతృ == o.మాతృ &&
+        బిడ్డ == o.బిడ్డ;
   }
 
-  inline uint32_t hash () const
+  అంతఃవరుస uint32_t hash () స్థిరరాశి
   {
     uint32_t current = 0;
-    current = current * 31 + hb_hash (parent);
-    current = current * 31 + hb_hash (child);
-    return current;
+    current = current * 31 + hb_hash (మాతృ);
+    current = current * 31 + hb_hash (బిడ్డ);
+    తిరిగి current;
   }
 };
 
-inline
-int64_t compute_offset (
-    const graph_t& graph,
-    unsigned parent_idx,
-    const hb_serialize_context_t::object_t::link_t& link)
+అంతఃవరుస
+int64_t compute_స్థానభ్రంశం (
+    స్థిరరాశి లేఖాచిత్రం_t& లేఖాచిత్రం,
+    గుర్తులేని మాతృ_idx,
+    స్థిరరాశి hb_serialize_context_t::object_t::link_t& link)
 {
-  const auto& parent = graph.vertices_[parent_idx];
-  const auto& child = graph.vertices_[link.objidx];
-  int64_t offset = 0;
-  switch ((hb_serialize_context_t::whence_t) link.whence) {
-    case hb_serialize_context_t::whence_t::Head:
-      offset = child.start - parent.start; break;
-    case hb_serialize_context_t::whence_t::Tail:
-      offset = child.start - parent.end; break;
-    case hb_serialize_context_t::whence_t::Absolute:
-      offset = child.start; break;
+  స్థిరరాశి స్వయంచాలక& మాతృ = లేఖాచిత్రం.vertices_[మాతృ_idx];
+  స్థిరరాశి స్వయంచాలక& బిడ్డ = లేఖాచిత్రం.vertices_[link.objidx];
+  int64_t స్థానభ్రంశం = 0;
+  ఎంపిక ((hb_serialize_context_t::whence_t) link.whence) {
+    స్థితి hb_serialize_context_t::whence_t::తల:
+      స్థానభ్రంశం = బిడ్డ.ప్రారంభం - మాతృ.ప్రారంభం; ఆపు;
+    స్థితి hb_serialize_context_t::whence_t::తోక_2:
+      స్థానభ్రంశం = బిడ్డ.ప్రారంభం - మాతృ.చివర; ఆపు;
+    స్థితి hb_serialize_context_t::whence_t::Absolute:
+      స్థానభ్రంశం = బిడ్డ.ప్రారంభం; ఆపు;
   }
 
-  assert (offset >= link.bias);
-  offset -= link.bias;
-  return offset;
+  ప్రతిజ్ఞా (స్థానభ్రంశం >= link.bias);
+  స్థానభ్రంశం -= link.bias;
+  తిరిగి స్థానభ్రంశం;
 }
 
-inline
-bool is_valid_offset (int64_t offset,
-                      const hb_serialize_context_t::object_t::link_t& link)
+అంతఃవరుస
+తార్కిక is_valid_స్థానభ్రంశం (int64_t స్థానభ్రంశం,
+                      స్థిరరాశి hb_serialize_context_t::object_t::link_t& link)
 {
-  if (unlikely (!link.width))
+  ఒకవేళ (unlikely (!link.వెడల్పు))
     // Virtual links can't overflow.
-    return link.is_signed || offset >= 0;
+    తిరిగి link.is_signed || స్థానభ్రంశం >= 0;
 
-  if (link.is_signed)
+  ఒకవేళ (link.is_signed)
   {
-    if (link.width == 4)
-      return offset >= -((int64_t) 1 << 31) && offset < ((int64_t) 1 << 31);
-    else
-      return offset >= -(1 << 15) && offset < (1 << 15);
+    ఒకవేళ (link.వెడల్పు == 4)
+      తిరిగి స్థానభ్రంశం >= -((int64_t) 1 << 31) && స్థానభ్రంశం < ((int64_t) 1 << 31);
+    లేకపోతే
+      తిరిగి స్థానభ్రంశం >= -(1 << 15) && స్థానభ్రంశం < (1 << 15);
   }
-  else
+  లేకపోతే
   {
-    if (link.width == 4)
-      return offset >= 0 && offset < ((int64_t) 1 << 32);
-    else if (link.width == 3)
-      return offset >= 0 && offset < ((int32_t) 1 << 24);
-    else
-      return offset >= 0 && offset < (1 << 16);
+    ఒకవేళ (link.వెడల్పు == 4)
+      తిరిగి స్థానభ్రంశం >= 0 && స్థానభ్రంశం < ((int64_t) 1 << 32);
+    లేకపోతే ఒకవేళ (link.వెడల్పు == 3)
+      తిరిగి స్థానభ్రంశం >= 0 && స్థానభ్రంశం < ((int32_t) 1 << 24);
+    లేకపోతే
+      తిరిగి స్థానభ్రంశం >= 0 && స్థానభ్రంశం < (1 << 16);
   }
 }
 
 /*
  * Will any offsets overflow on graph when it's serialized?
  */
-inline graph_result_t<bool>
-will_overflow (graph_t& graph,
-               hb_vector_t<overflow_record_t>* overflows = nullptr)
+అంతఃవరుస లేఖాచిత్రం_ఫలితం_t<తార్కిక>
+will_అధికప్రవాహం (లేఖాచిత్రం_t& లేఖాచిత్రం,
+               hb_సదిశ_t<అధికప్రవాహం_రికార్డు_t>* overflows = శూన్యసూచిక)
 {
-  if (overflows) overflows->clear ();
-  graph.update_positions ();
+  ఒకవేళ (overflows) overflows->clear ();
+  లేఖాచిత్రం.update_positions ();
 
-  hb_hashmap_t<overflow_record_t, bool> record_set;
-  const auto& vertices = graph.vertices_;
-  for (unsigned parent_idx : graph.ordering_)
+  hb_hashmap_t<అధికప్రవాహం_రికార్డు_t, తార్కిక> రికార్డు_సమితి;
+  స్థిరరాశి స్వయంచాలక& vertices = లేఖాచిత్రం.vertices_;
+  కొరకు (గుర్తులేని మాతృ_idx : లేఖాచిత్రం.ordering_)
   {
     // Don't need to check virtual links for overflow
-    for (const auto& link : vertices.arrayZ[parent_idx].obj ().real_links)
+    కొరకు (స్థిరరాశి స్వయంచాలక& link : vertices.arrayZ[మాతృ_idx].obj ().real_links)
     {
-      int64_t offset = compute_offset (graph, parent_idx, link);
-      if (likely (is_valid_offset (offset, link)))
-        continue;
+      int64_t స్థానభ్రంశం = compute_స్థానభ్రంశం (లేఖాచిత్రం, మాతృ_idx, link);
+      ఒకవేళ (likely (is_valid_స్థానభ్రంశం (స్థానభ్రంశం, link)))
+        కొనసాగు;
 
-      if (!overflows) return Ok(true);
+      ఒకవేళ (!overflows) తిరిగి Ok(నిజం);
 
-      overflow_record_t r;
-      r.parent = parent_idx;
-      r.child = link.objidx;
-      if (record_set.has(r)) continue; // don't keep duplicate overflows.
+      అధికప్రవాహం_రికార్డు_t r;
+      r.మాతృ = మాతృ_idx;
+      r.బిడ్డ = link.objidx;
+      ఒకవేళ (రికార్డు_సమితి.has(r)) కొనసాగు; // don't keep duplicate overflows.
 
       overflows->push (r);
-      record_set.set (r, true);
+      రికార్డు_సమితి.సమితి (r, నిజం);
     }
   }
 
-  TRY (graph_result_t<void>::from (record_set, ALLOCATION_FAILURE));
-  if (overflows)
-    TRY (graph_result_t<void>::from (*overflows, ALLOCATION_FAILURE));
+  TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (రికార్డు_సమితి, కేటాయింపు_FAILURE));
+  ఒకవేళ (overflows)
+    TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (*overflows, కేటాయింపు_FAILURE));
 
-  return Ok((bool) (overflows && overflows->length));
+  తిరిగి Ok((తార్కిక) (overflows && overflows->నిడివి));
 }
 
-inline
-void print_overflows (graph_t& graph,
-                      const hb_vector_t<overflow_record_t>& overflows)
+అంతఃవరుస
+శూన్య print_overflows (లేఖాచిత్రం_t& లేఖాచిత్రం,
+                      స్థిరరాశి hb_సదిశ_t<అధికప్రవాహం_రికార్డు_t>& overflows)
 {
-  if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+  ఒకవేళ (!DEBUG_ENABLED(SUBSET_REPACK)) తిరిగి;
 
-  auto r = graph.update_parents ();
-  if (r.is_err()) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to print overflows due to error updating parent links: %s",
+  స్వయంచాలక r = లేఖాచిత్రం.update_parents ();
+  ఒకవేళ (r.is_err()) {
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక, "Unable to print overflows due to error updating parent links: %s",
       to_string(r.error()));
-    return;
+    తిరిగి;
   }
 
-  int limit = 10;
-  for (const auto& o : overflows)
+  పూర్ణాంకం హద్దు = 10;
+  కొరకు (స్థిరరాశి స్వయంచాలక& o : overflows)
   {
-    if (!limit--) break;
-    const auto& parent = graph.vertices_[o.parent];
-    const auto& child = graph.vertices_[o.child];
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    ఒకవేళ (!హద్దు--) ఆపు;
+    స్థిరరాశి స్వయంచాలక& మాతృ = లేఖాచిత్రం.vertices_[o.మాతృ];
+    స్థిరరాశి స్వయంచాలక& బిడ్డ = లేఖాచిత్రం.vertices_[o.బిడ్డ];
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక,
                "  overflow from "
                "%4u (%4u in, %4u out, space %2u) => "
                "%4u (%4u in, %4u out, space %2u)",
-               o.parent,
-               parent.incoming_edges (),
-               parent.obj ().real_links.length + parent.obj ().virtual_links.length,
-               graph.space_for (o.parent),
-               o.child,
-               child.incoming_edges (),
-               child.obj ().real_links.length + child.obj ().virtual_links.length,
-               graph.space_for (o.child));
+               o.మాతృ,
+               మాతృ.incoming_అంచులు_2 (),
+               మాతృ.obj ().real_links.నిడివి + మాతృ.obj ().virtual_links.నిడివి,
+               లేఖాచిత్రం.space_for (o.మాతృ),
+               o.బిడ్డ,
+               బిడ్డ.incoming_అంచులు_2 (),
+               బిడ్డ.obj ().real_links.నిడివి + బిడ్డ.obj ().virtual_links.నిడివి,
+               లేఖాచిత్రం.space_for (o.బిడ్డ));
   }
-  if (overflows.length > 10) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  ... plus %u more overflows.", overflows.length - 10);
+  ఒకవేళ (overflows.నిడివి > 10) {
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక, "  ... plus %u more overflows.", overflows.నిడివి - 10);
   }
 }
 
-template <typename O> inline void
-serialize_link_of_type (const hb_serialize_context_t::object_t::link_t& link,
-                        char* head,
-                        unsigned size,
-                        const hb_vector_t<unsigned>& id_map,
+మూస <రకం_పేరు O> అంతఃవరుస శూన్య
+serialize_link_యొక్క_type (స్థిరరాశి hb_serialize_context_t::object_t::link_t& link,
+                        అక్షరం* తల_2,
+                        గుర్తులేని కొలత,
+                        స్థిరరాశి hb_సదిశ_t<గుర్తులేని>& id_map,
                         hb_serialize_context_t* c)
 {
   // A link must never write outside the bounds of its parent object.
-  if (unlikely (link.position + link.width > size))
+  ఒకవేళ (unlikely (link.position + link.వెడల్పు > కొలత))
   {
     c->err (HB_SERIALIZE_ERROR_OTHER);
-    return;
+    తిరిగి;
   }
 
-  OT::Offset<O>* offset = reinterpret_cast<OT::Offset<O>*> (head + link.position);
-  *offset = 0;
-  c->add_link (*offset,
+  OT::స్థానభ్రంశం_2<O>* స్థానభ్రంశం = reinterpret_cast<OT::స్థానభ్రంశం_2<O>*> (తల_2 + link.position);
+  *స్థానభ్రంశం = 0;
+  c->కూడు_link (*స్థానభ్రంశం,
                id_map[link.objidx],
                (hb_serialize_context_t::whence_t) link.whence,
                link.bias);
 }
 
-inline
-void serialize_link (const hb_serialize_context_t::object_t::link_t& link,
-                     char* head,
-                     unsigned size,
-                     const hb_vector_t<unsigned>& id_map,
+అంతఃవరుస
+శూన్య serialize_link (స్థిరరాశి hb_serialize_context_t::object_t::link_t& link,
+                     అక్షరం* తల_2,
+                     గుర్తులేని కొలత,
+                     స్థిరరాశి hb_సదిశ_t<గుర్తులేని>& id_map,
                      hb_serialize_context_t* c)
 {
-  switch (link.width)
+  ఎంపిక (link.వెడల్పు)
   {
-    case 0:
+    స్థితి 0:
       // Virtual links aren't serialized.
-      return;
-    case 4:
-      if (link.is_signed)
+      తిరిగి;
+    స్థితి 4:
+      ఒకవేళ (link.is_signed)
       {
-        serialize_link_of_type<OT::HBINT32> (link, head, size, id_map, c);
-      } else {
-        serialize_link_of_type<OT::HBUINT32> (link, head, size, id_map, c);
+        serialize_link_యొక్క_type<OT::HBINT32> (link, తల_2, కొలత, id_map, c);
+      } లేకపోతే {
+        serialize_link_యొక్క_type<OT::HBUINT32> (link, తల_2, కొలత, id_map, c);
       }
-      return;
-    case 2:
-      if (link.is_signed)
+      తిరిగి;
+    స్థితి 2:
+      ఒకవేళ (link.is_signed)
       {
-        serialize_link_of_type<OT::HBINT16> (link, head, size, id_map, c);
-      } else {
-        serialize_link_of_type<OT::HBUINT16> (link, head, size, id_map, c);
+        serialize_link_యొక్క_type<OT::HBINT16> (link, తల_2, కొలత, id_map, c);
+      } లేకపోతే {
+        serialize_link_యొక్క_type<OT::HBUINT16> (link, తల_2, కొలత, id_map, c);
       }
-      return;
-    case 3:
-      serialize_link_of_type<OT::HBUINT24> (link, head, size, id_map, c);
-      return;
-    default:
+      తిరిగి;
+    స్థితి 3:
+      serialize_link_యొక్క_type<OT::HBUINT24> (link, తల_2, కొలత, id_map, c);
+      తిరిగి;
+    అప్రమేయ:
       // Unexpected link width.
-      assert (0);
+      ప్రతిజ్ఞా (0);
   }
 }
 
 /*
  * serialize graph into the provided serialization buffer.
  */
-inline graph_result_t<hb_blob_t*> serialize (const graph_t& graph)
+అంతఃవరుస లేఖాచిత్రం_ఫలితం_t<hb_blob_t*> serialize (స్థిరరాశి లేఖాచిత్రం_t& లేఖాచిత్రం)
 {
-  hb_vector_t<char> buffer;
-  size_t size = graph.total_size_in_bytes ();
+  hb_సదిశ_t<అక్షరం> బఫరు;
+  size_t కొలత = లేఖాచిత్రం.మొత్తం_కొలత_లోపల_బైట్లు ();
 
-  if (!size) return Ok(hb_blob_get_empty ());
+  ఒకవేళ (!కొలత) తిరిగి Ok(hb_blob_get_ఖాళీలు ());
 
-  if (unlikely (!buffer.alloc (size))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate output buffer.");
-    return Err(ALLOCATION_FAILURE);
+  ఒకవేళ (unlikely (!బఫరు.alloc (కొలత))) {
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక, "Unable to allocate output buffer.");
+    తిరిగి Err(కేటాయింపు_FAILURE);
   }
-  hb_serialize_context_t c((void *) buffer, size);
+  hb_serialize_context_t c((శూన్య *) బఫరు, కొలత);
 
-  c.start_serialize<void> ();
-  const auto& vertices = graph.vertices_;
+  c.ప్రారంభం_serialize<శూన్య> ();
+  స్థిరరాశి స్వయంచాలక& vertices = లేఖాచిత్రం.vertices_;
 
   // Objects are placed in the serializer in reverse order since children need
   // to be inserted before their parents.
 
   // Maps from our obj id's to the id's used during this serialization.
-  hb_vector_t<unsigned> id_map;
-  if (unlikely (!id_map.resize(graph.ordering_.length))) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Unable to allocate id_map buffer.");
-    return Err(ALLOCATION_FAILURE);
+  hb_సదిశ_t<గుర్తులేని> id_map;
+  ఒకవేళ (unlikely (!id_map.resize(లేఖాచిత్రం.ordering_.నిడివి))) {
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక, "Unable to allocate id_map buffer.");
+    తిరిగి Err(కేటాయింపు_FAILURE);
   }
 
-  for (int pos = graph.ordering_.length - 1; pos >= 0; pos--) {
-    unsigned i = graph.ordering_[pos];
+  కొరకు (పూర్ణాంకం pos = లేఖాచిత్రం.ordering_.నిడివి - 1; pos >= 0; pos--) {
+    గుర్తులేని i = లేఖాచిత్రం.ordering_[pos];
     c.push ();
 
-    auto& v = vertices[i];
+    స్వయంచాలక& v = vertices[i];
 
-    size_t size = v.table_size ();
+    size_t కొలత = v.పట్టిక_కొలత ();
 
-    char* start = c.allocate_size <char> (size);
-    if (unlikely (!start)) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Buffer out of space.");
-      return Err(ALLOCATION_FAILURE);
+    అక్షరం* ప్రారంభం = c.allocate_కొలత <అక్షరం> (కొలత);
+    ఒకవేళ (unlikely (!ప్రారంభం)) {
+      DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక, "Buffer out of space.");
+      తిరిగి Err(కేటాయింపు_FAILURE);
     }
 
-    hb_memcpy (start, v.obj ().head, size);
+    hb_memcpy (ప్రారంభం, v.obj ().తల_2, కొలత);
 
     // Only real links needs to be serialized.
-    for (const auto& link : v.obj ().real_links)
-      serialize_link (link, start, size, id_map, &c);
+    కొరకు (స్థిరరాశి స్వయంచాలక& link : v.obj ().real_links)
+      serialize_link (link, ప్రారంభం, కొలత, id_map, &c);
 
     // All duplications are already encoded in the graph, so don't
     // enable sharing during packing.
-    id_map[i] = c.pop_pack (false);
+    id_map[i] = c.తీయి_pack (అబద్ధం);
   }
-  c.end_serialize ();
+  c.చివర_serialize ();
 
-  if (unlikely (c.in_error ())) {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Error during serialization. Err flag: %d",
+  ఒకవేళ (unlikely (c.లోపల_error ())) {
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక, "Error during serialization. Err flag: %d",
                c.errors);
-    if (c.errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)
-      return Err(OVERFLOW_RESOLUTION_FAILED);
-    return Err(ALLOCATION_FAILURE);
+    ఒకవేళ (c.errors & HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం)
+      తిరిగి Err(అధికప్రవాహం_RESOLUTION_FAILED);
+    తిరిగి Err(కేటాయింపు_FAILURE);
   }
 
-  auto* blob = c.copy_blob ();
-  if (unlikely (!blob)) return Err(ALLOCATION_FAILURE);
-  return Ok(blob);
+  స్వయంచాలక* blob = c.copy_blob ();
+  ఒకవేళ (unlikely (!blob)) తిరిగి Err(కేటాయింపు_FAILURE);
+  తిరిగి Ok(blob);
 }
 
 } // namespace graph
 
-#endif // GRAPH_SERIALIZE_HH
+#అయితే_ముగింపు // GRAPH_SERIALIZE_HH

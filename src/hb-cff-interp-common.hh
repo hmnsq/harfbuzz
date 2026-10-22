@@ -23,636 +23,636 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF_INTERP_COMMON_HH
-#define HB_CFF_INTERP_COMMON_HH
+#నిర్వచితం_కాకపోతే HB_CFF_INTERP_COMMON_HH
+#నిర్వచించు HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+బాహ్య HB_అంతర్గత స్థిరరాశి గుర్తులేని అక్షరం *endchar_str;
 
-namespace CFF {
+నామాకాశ CFF {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
-typedef unsigned int op_code_t;
+రకనిర్వచనం గుర్తులేని పూర్ణాంకం op_సంకేతం_t;
 
 
 /* === Dict operators === */
 
 /* One byte operators (0-31) */
-#define OpCode_version		  0 /* CFF Top */
-#define OpCode_Notice		  1 /* CFF Top */
-#define OpCode_FullName		  2 /* CFF Top */
-#define OpCode_FamilyName	  3 /* CFF Top */
-#define OpCode_Weight		  4 /* CFF Top */
-#define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
-#define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
-#define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
-#define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
-#define OpCode_StdHW		 10 /* CFF Private, CFF2 Private */
-#define OpCode_StdVW		 11 /* CFF Private, CFF2 Private */
-#define OpCode_escape		 12 /* All. Shared with CS */
-#define OpCode_UniqueID		 13 /* CFF Top */
-#define OpCode_XUID		 14 /* CFF Top */
-#define OpCode_charset		 15 /* CFF Top (0) */
-#define OpCode_Encoding		 16 /* CFF Top (0) */
-#define OpCode_CharStrings	 17 /* CFF Top, CFF2 Top */
-#define OpCode_Private		 18 /* CFF Top, CFF2 FD */
-#define OpCode_Subrs		 19 /* CFF Private, CFF2 Private */
-#define OpCode_defaultWidthX	 20 /* CFF Private (0) */
-#define OpCode_nominalWidthX	 21 /* CFF Private (0) */
-#define OpCode_vsindexdict	 22 /* CFF2 Private/CS */
-#define OpCode_blenddict	 23 /* CFF2 Private/CS */
-#define OpCode_vstore		 24 /* CFF2 Top */
-#define OpCode_reserved25	 25
-#define OpCode_reserved26	 26
-#define OpCode_reserved27	 27
+#నిర్వచించు Op_సంకేతం_సంస్కరణ		  0 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_Notice		  1 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_నిండిన_Name		  2 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_Family_Name	  3 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_బరువు		  4 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_Font_BBox		  5 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_Blue_విలువలు	  6 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Other_Blues	  7 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Family_Blues	  8 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Family_Other_Blues	  9 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Std_HW		 10 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Std_VW		 11 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_escape		 12 /* All. Shared with CS */
+#నిర్వచించు Op_సంకేతం_Unique_ID		 13 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_XUID		 14 /* CFF Top */
+#నిర్వచించు Op_సంకేతం_charset		 15 /* CFF Top (0) */
+#నిర్వచించు Op_సంకేతం_Encoding		 16 /* CFF Top (0) */
+#నిర్వచించు Op_సంకేతం_Char_అక్షరశ్రేణులు	 17 /* CFF Top, CFF2 Top */
+#నిర్వచించు Op_సంకేతం_వ్యక్తిగత		 18 /* CFF Top, CFF2 FD */
+#నిర్వచించు Op_సంకేతం_Subrs		 19 /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_default_వెడల్పు_X	 20 /* CFF Private (0) */
+#నిర్వచించు Op_సంకేతం_nominal_వెడల్పు_X	 21 /* CFF Private (0) */
+#నిర్వచించు Op_సంకేతం_vsindexdict	 22 /* CFF2 Private/CS */
+#నిర్వచించు Op_సంకేతం_blenddict	 23 /* CFF2 Private/CS */
+#నిర్వచించు Op_సంకేతం_vstore		 24 /* CFF2 Top */
+#నిర్వచించు Op_సంకేతం_reserved25	 25
+#నిర్వచించు Op_సంకేతం_reserved26	 26
+#నిర్వచించు Op_సంకేతం_reserved27	 27
 
 /* Numbers */
-#define OpCode_shortint		 28 /* 16-bit integer, All */
-#define OpCode_longintdict	 29 /* 32-bit integer, All */
-#define OpCode_BCD		 30 /* Real number, CFF2 Top/FD */
-#define OpCode_reserved31	 31
+#నిర్వచించు Op_సంకేతం_shortint		 28 /* 16-bit integer, All */
+#నిర్వచించు Op_సంకేతం_longintdict	 29 /* 32-bit integer, All */
+#నిర్వచించు Op_సంకేతం_BCD		 30 /* Real number, CFF2 Top/FD */
+#నిర్వచించు Op_సంకేతం_reserved31	 31
 
 /* 1-byte integers */
-#define OpCode_OneByteIntFirst	 32 /* All. beginning of the range of first byte ints */
-#define OpCode_OneByteIntLast	246 /* All. ending of the range of first byte int */
+#నిర్వచించు Op_సంకేతం_One_Byte_Int_మొదటి	 32 /* All. beginning of the range of first byte ints */
+#నిర్వచించు Op_సంకేతం_One_Byte_Int_చివరి	246 /* All. ending of the range of first byte int */
 
 /* 2-byte integers */
-#define OpCode_TwoBytePosInt0	247 /* All. first byte of two byte positive int (+108 to +1131) */
-#define OpCode_TwoBytePosInt1	248
-#define OpCode_TwoBytePosInt2	249
-#define OpCode_TwoBytePosInt3	250
+#నిర్వచించు Op_సంకేతం_Two_Byte_Pos_Int0	247 /* All. first byte of two byte positive int (+108 to +1131) */
+#నిర్వచించు Op_సంకేతం_Two_Byte_Pos_Int1	248
+#నిర్వచించు Op_సంకేతం_Two_Byte_Pos_Int2	249
+#నిర్వచించు Op_సంకేతం_Two_Byte_Pos_Int3	250
 
-#define OpCode_TwoByteNegInt0	251 /* All. first byte of two byte negative int (-1131 to -108) */
-#define OpCode_TwoByteNegInt1	252
-#define OpCode_TwoByteNegInt2	253
-#define OpCode_TwoByteNegInt3	254
+#నిర్వచించు Op_సంకేతం_Two_Byte_Neg_Int0	251 /* All. first byte of two byte negative int (-1131 to -108) */
+#నిర్వచించు Op_సంకేతం_Two_Byte_Neg_Int1	252
+#నిర్వచించు Op_సంకేతం_Two_Byte_Neg_Int2	253
+#నిర్వచించు Op_సంకేతం_Two_Byte_Neg_Int3	254
 
 /* Two byte escape operators 12, (0-41) */
-#define OpCode_ESC_Base		256
-#define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
+#నిర్వచించు Op_సంకేతం_ESC_పునాది		256
+#నిర్వచించు Make_Op_సంకేతం_ESC(byte2)	((op_సంకేతం_t)(Op_సంకేతం_ESC_పునాది + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+అంతఃవరుస op_సంకేతం_t Unmake_Op_సంకేతం_ESC (op_సంకేతం_t op)  { తిరిగి (op_సంకేతం_t)(op - Op_సంకేతం_ESC_పునాది); }
+అంతఃవరుస తార్కిక Is_Op_సంకేతం_ESC (op_సంకేతం_t op) { తిరిగి op >= Op_సంకేతం_ESC_పునాది; }
+అంతఃవరుస గుర్తులేని పూర్ణాంకం Op_సంకేతం_కొలత (op_సంకేతం_t op) { తిరిగి Is_Op_సంకేతం_ESC (op) ? 2: 1; }
 
-#define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
-#define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
-#define OpCode_ItalicAngle	Make_OpCode_ESC(2) /* CFF Top (0) */
-#define OpCode_UnderlinePosition Make_OpCode_ESC(3) /* CFF Top (-100) */
-#define OpCode_UnderlineThickness Make_OpCode_ESC(4) /* CFF Top (50) */
-#define OpCode_PaintType	Make_OpCode_ESC(5) /* CFF Top (0) */
-#define OpCode_CharstringType	Make_OpCode_ESC(6) /* CFF Top (2) */
-#define OpCode_FontMatrix	Make_OpCode_ESC(7) /* CFF Top, CFF2 Top (.001 0 0 .001 0 0)*/
-#define OpCode_StrokeWidth	Make_OpCode_ESC(8) /* CFF Top (0) */
-#define OpCode_BlueScale	Make_OpCode_ESC(9) /* CFF Private, CFF2 Private (0.039625) */
-#define OpCode_BlueShift	Make_OpCode_ESC(10) /* CFF Private, CFF2 Private (7) */
-#define OpCode_BlueFuzz		Make_OpCode_ESC(11) /* CFF Private, CFF2 Private (1) */
-#define OpCode_StemSnapH	Make_OpCode_ESC(12) /* CFF Private, CFF2 Private */
-#define OpCode_StemSnapV	Make_OpCode_ESC(13) /* CFF Private, CFF2 Private */
-#define OpCode_ForceBold	Make_OpCode_ESC(14) /* CFF Private (false) */
-#define OpCode_reservedESC15	Make_OpCode_ESC(15)
-#define OpCode_reservedESC16	Make_OpCode_ESC(16)
-#define OpCode_LanguageGroup	Make_OpCode_ESC(17) /* CFF Private, CFF2 Private (0) */
-#define OpCode_ExpansionFactor	Make_OpCode_ESC(18) /* CFF Private, CFF2 Private (0.06) */
-#define OpCode_initialRandomSeed Make_OpCode_ESC(19) /* CFF Private (0) */
-#define OpCode_SyntheticBase	Make_OpCode_ESC(20) /* CFF Top */
-#define OpCode_PostScript	Make_OpCode_ESC(21) /* CFF Top */
-#define OpCode_BaseFontName	Make_OpCode_ESC(22) /* CFF Top */
-#define OpCode_BaseFontBlend	Make_OpCode_ESC(23) /* CFF Top */
-#define OpCode_reservedESC24	Make_OpCode_ESC(24)
-#define OpCode_reservedESC25	Make_OpCode_ESC(25)
-#define OpCode_reservedESC26	Make_OpCode_ESC(26)
-#define OpCode_reservedESC27	Make_OpCode_ESC(27)
-#define OpCode_reservedESC28	Make_OpCode_ESC(28)
-#define OpCode_reservedESC29	Make_OpCode_ESC(29)
-#define OpCode_ROS		Make_OpCode_ESC(30) /* CFF Top_CID */
-#define OpCode_CIDFontVersion	Make_OpCode_ESC(31) /* CFF Top_CID (0) */
-#define OpCode_CIDFontRevision	Make_OpCode_ESC(32) /* CFF Top_CID (0) */
-#define OpCode_CIDFontType	Make_OpCode_ESC(33) /* CFF Top_CID (0) */
-#define OpCode_CIDCount		Make_OpCode_ESC(34) /* CFF Top_CID (8720) */
-#define OpCode_UIDBase		Make_OpCode_ESC(35) /* CFF Top_CID */
-#define OpCode_FDArray		Make_OpCode_ESC(36) /* CFF Top_CID, CFF2 Top */
-#define OpCode_FDSelect		Make_OpCode_ESC(37) /* CFF Top_CID, CFF2 Top */
-#define OpCode_FontName		Make_OpCode_ESC(38) /* CFF Top_CID */
+#నిర్వచించు Op_సంకేతం_Copyright	Make_Op_సంకేతం_ESC(0) /* CFF Top */
+#నిర్వచించు Op_సంకేతం_is_Fixed_Pitch	Make_Op_సంకేతం_ESC(1) /* CFF Top (false) */
+#నిర్వచించు Op_సంకేతం_Italic_Angle	Make_Op_సంకేతం_ESC(2) /* CFF Top (0) */
+#నిర్వచించు Op_సంకేతం_Underline_Position Make_Op_సంకేతం_ESC(3) /* CFF Top (-100) */
+#నిర్వచించు Op_సంకేతం_Underline_Thickness Make_Op_సంకేతం_ESC(4) /* CFF Top (50) */
+#నిర్వచించు Op_సంకేతం_Paint_Type	Make_Op_సంకేతం_ESC(5) /* CFF Top (0) */
+#నిర్వచించు Op_సంకేతం_Charstring_Type	Make_Op_సంకేతం_ESC(6) /* CFF Top (2) */
+#నిర్వచించు Op_సంకేతం_Font_మాతృక	Make_Op_సంకేతం_ESC(7) /* CFF Top, CFF2 Top (.001 0 0 .001 0 0)*/
+#నిర్వచించు Op_సంకేతం_Stroke_వెడల్పు	Make_Op_సంకేతం_ESC(8) /* CFF Top (0) */
+#నిర్వచించు Op_సంకేతం_Blue_Scale	Make_Op_సంకేతం_ESC(9) /* CFF Private, CFF2 Private (0.039625) */
+#నిర్వచించు Op_సంకేతం_Blue_జరుపు	Make_Op_సంకేతం_ESC(10) /* CFF Private, CFF2 Private (7) */
+#నిర్వచించు Op_సంకేతం_Blue_Fuzz		Make_Op_సంకేతం_ESC(11) /* CFF Private, CFF2 Private (1) */
+#నిర్వచించు Op_సంకేతం_Stem_Snap_H	Make_Op_సంకేతం_ESC(12) /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Stem_Snap_V	Make_Op_సంకేతం_ESC(13) /* CFF Private, CFF2 Private */
+#నిర్వచించు Op_సంకేతం_Force_Bold	Make_Op_సంకేతం_ESC(14) /* CFF Private (false) */
+#నిర్వచించు Op_సంకేతం_reserved_ESC15	Make_Op_సంకేతం_ESC(15)
+#నిర్వచించు Op_సంకేతం_reserved_ESC16	Make_Op_సంకేతం_ESC(16)
+#నిర్వచించు Op_సంకేతం_Language_సమూహం	Make_Op_సంకేతం_ESC(17) /* CFF Private, CFF2 Private (0) */
+#నిర్వచించు Op_సంకేతం_Expansion_గుణకం	Make_Op_సంకేతం_ESC(18) /* CFF Private, CFF2 Private (0.06) */
+#నిర్వచించు Op_సంకేతం_initial_Random_విత్తనం Make_Op_సంకేతం_ESC(19) /* CFF Private (0) */
+#నిర్వచించు Op_సంకేతం_Synthetic_పునాది	Make_Op_సంకేతం_ESC(20) /* CFF Top */
+#నిర్వచించు Op_సంకేతం_Post_Script	Make_Op_సంకేతం_ESC(21) /* CFF Top */
+#నిర్వచించు Op_సంకేతం_పునాది_Font_Name	Make_Op_సంకేతం_ESC(22) /* CFF Top */
+#నిర్వచించు Op_సంకేతం_పునాది_Font_Blend	Make_Op_సంకేతం_ESC(23) /* CFF Top */
+#నిర్వచించు Op_సంకేతం_reserved_ESC24	Make_Op_సంకేతం_ESC(24)
+#నిర్వచించు Op_సంకేతం_reserved_ESC25	Make_Op_సంకేతం_ESC(25)
+#నిర్వచించు Op_సంకేతం_reserved_ESC26	Make_Op_సంకేతం_ESC(26)
+#నిర్వచించు Op_సంకేతం_reserved_ESC27	Make_Op_సంకేతం_ESC(27)
+#నిర్వచించు Op_సంకేతం_reserved_ESC28	Make_Op_సంకేతం_ESC(28)
+#నిర్వచించు Op_సంకేతం_reserved_ESC29	Make_Op_సంకేతం_ESC(29)
+#నిర్వచించు Op_సంకేతం_ROS		Make_Op_సంకేతం_ESC(30) /* CFF Top_CID */
+#నిర్వచించు Op_సంకేతం_CIDFont_సంస్కరణ	Make_Op_సంకేతం_ESC(31) /* CFF Top_CID (0) */
+#నిర్వచించు Op_సంకేతం_CIDFont_Revision	Make_Op_సంకేతం_ESC(32) /* CFF Top_CID (0) */
+#నిర్వచించు Op_సంకేతం_CIDFont_Type	Make_Op_సంకేతం_ESC(33) /* CFF Top_CID (0) */
+#నిర్వచించు Op_సంకేతం_CIDCount		Make_Op_సంకేతం_ESC(34) /* CFF Top_CID (8720) */
+#నిర్వచించు Op_సంకేతం_UIDBase		Make_Op_సంకేతం_ESC(35) /* CFF Top_CID */
+#నిర్వచించు Op_సంకేతం_FDArray		Make_Op_సంకేతం_ESC(36) /* CFF Top_CID, CFF2 Top */
+#నిర్వచించు Op_సంకేతం_FDSelect		Make_Op_సంకేతం_ESC(37) /* CFF Top_CID, CFF2 Top */
+#నిర్వచించు Op_సంకేతం_Font_Name		Make_Op_సంకేతం_ESC(38) /* CFF Top_CID */
 
 
 /* === CharString operators === */
 
-#define OpCode_hstem		  1 /* CFF, CFF2 */
-#define OpCode_Reserved2	  2
-#define OpCode_vstem		  3 /* CFF, CFF2 */
-#define OpCode_vmoveto		  4 /* CFF, CFF2 */
-#define OpCode_rlineto		  5 /* CFF, CFF2 */
-#define OpCode_hlineto		  6 /* CFF, CFF2 */
-#define OpCode_vlineto		  7 /* CFF, CFF2 */
-#define OpCode_rrcurveto	  8 /* CFF, CFF2 */
-#define OpCode_Reserved9	  9
-#define OpCode_callsubr		 10 /* CFF, CFF2 */
-#define OpCode_return		 11 /* CFF */
+#నిర్వచించు Op_సంకేతం_hstem		  1 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_Reserved2	  2
+#నిర్వచించు Op_సంకేతం_vstem		  3 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_vmoveto		  4 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_rlineto		  5 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_hlineto		  6 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_vlineto		  7 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_rrcurveto	  8 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_Reserved9	  9
+#నిర్వచించు Op_సంకేతం_callsubr		 10 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_return		 11 /* CFF */
 //#define OpCode_escape		 12 /* CFF, CFF2 */
-#define OpCode_Reserved13	 13
-#define OpCode_endchar		 14 /* CFF */
-#define OpCode_vsindexcs	 15 /* CFF2 */
-#define OpCode_blendcs		 16 /* CFF2 */
-#define OpCode_Reserved17	 17
-#define OpCode_hstemhm		 18 /* CFF, CFF2 */
-#define OpCode_hintmask		 19 /* CFF, CFF2 */
-#define OpCode_cntrmask		 20 /* CFF, CFF2 */
-#define OpCode_rmoveto		 21 /* CFF, CFF2 */
-#define OpCode_hmoveto		 22 /* CFF, CFF2 */
-#define OpCode_vstemhm		 23 /* CFF, CFF2 */
-#define OpCode_rcurveline	 24 /* CFF, CFF2 */
-#define OpCode_rlinecurve	 25 /* CFF, CFF2 */
-#define OpCode_vvcurveto	 26 /* CFF, CFF2 */
-#define OpCode_hhcurveto	 27 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_Reserved13	 13
+#నిర్వచించు Op_సంకేతం_endchar		 14 /* CFF */
+#నిర్వచించు Op_సంకేతం_vsindexcs	 15 /* CFF2 */
+#నిర్వచించు Op_సంకేతం_blendcs		 16 /* CFF2 */
+#నిర్వచించు Op_సంకేతం_Reserved17	 17
+#నిర్వచించు Op_సంకేతం_hstemhm		 18 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_hintmask		 19 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_cntrmask		 20 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_rmoveto		 21 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_hmoveto		 22 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_vstemhm		 23 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_rcurveline	 24 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_rlinecurve	 25 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_vvcurveto	 26 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_hhcurveto	 27 /* CFF, CFF2 */
 //#define OpCode_shortint	 28 /* CFF, CFF2 */
-#define OpCode_callgsubr	 29 /* CFF, CFF2 */
-#define OpCode_vhcurveto	 30 /* CFF, CFF2 */
-#define OpCode_hvcurveto	 31 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_callgsubr	 29 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_vhcurveto	 30 /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_hvcurveto	 31 /* CFF, CFF2 */
 
-#define OpCode_fixedcs		255 /* 32-bit fixed */
+#నిర్వచించు Op_సంకేతం_fixedcs		255 /* 32-bit fixed */
 
 /* Two byte escape operators 12, (0-41) */
-#define OpCode_dotsection	Make_OpCode_ESC(0) /* CFF (obsoleted) */
-#define OpCode_ReservedESC1	Make_OpCode_ESC(1)
-#define OpCode_ReservedESC2	Make_OpCode_ESC(2)
-#define OpCode_and		Make_OpCode_ESC(3) /* CFF */
-#define OpCode_or		Make_OpCode_ESC(4) /* CFF */
-#define OpCode_not		Make_OpCode_ESC(5) /* CFF */
-#define OpCode_ReservedESC6	Make_OpCode_ESC(6)
-#define OpCode_ReservedESC7	Make_OpCode_ESC(7)
-#define OpCode_ReservedESC8	Make_OpCode_ESC(8)
-#define OpCode_abs		Make_OpCode_ESC(9) /* CFF */
-#define OpCode_add		Make_OpCode_ESC(10) /* CFF */
-#define OpCode_sub		Make_OpCode_ESC(11) /* CFF */
-#define OpCode_div		Make_OpCode_ESC(12) /* CFF */
-#define OpCode_ReservedESC13	Make_OpCode_ESC(13)
-#define OpCode_neg		Make_OpCode_ESC(14) /* CFF */
-#define OpCode_eq		Make_OpCode_ESC(15) /* CFF */
-#define OpCode_ReservedESC16	Make_OpCode_ESC(16)
-#define OpCode_ReservedESC17	Make_OpCode_ESC(17)
-#define OpCode_drop		Make_OpCode_ESC(18) /* CFF */
-#define OpCode_ReservedESC19	Make_OpCode_ESC(19)
-#define OpCode_put		Make_OpCode_ESC(20) /* CFF */
-#define OpCode_get		Make_OpCode_ESC(21) /* CFF */
-#define OpCode_ifelse		Make_OpCode_ESC(22) /* CFF */
-#define OpCode_random		Make_OpCode_ESC(23) /* CFF */
-#define OpCode_mul		Make_OpCode_ESC(24) /* CFF */
+#నిర్వచించు Op_సంకేతం_dotsection	Make_Op_సంకేతం_ESC(0) /* CFF (obsoleted) */
+#నిర్వచించు Op_సంకేతం_Reserved_ESC1	Make_Op_సంకేతం_ESC(1)
+#నిర్వచించు Op_సంకేతం_Reserved_ESC2	Make_Op_సంకేతం_ESC(2)
+#నిర్వచించు Op_సంకేతం_and		Make_Op_సంకేతం_ESC(3) /* CFF */
+#నిర్వచించు Op_సంకేతం_or		Make_Op_సంకేతం_ESC(4) /* CFF */
+#నిర్వచించు Op_సంకేతం_not		Make_Op_సంకేతం_ESC(5) /* CFF */
+#నిర్వచించు Op_సంకేతం_Reserved_ESC6	Make_Op_సంకేతం_ESC(6)
+#నిర్వచించు Op_సంకేతం_Reserved_ESC7	Make_Op_సంకేతం_ESC(7)
+#నిర్వచించు Op_సంకేతం_Reserved_ESC8	Make_Op_సంకేతం_ESC(8)
+#నిర్వచించు Op_సంకేతం_abs		Make_Op_సంకేతం_ESC(9) /* CFF */
+#నిర్వచించు Op_సంకేతం_కూడు		Make_Op_సంకేతం_ESC(10) /* CFF */
+#నిర్వచించు Op_సంకేతం_sub		Make_Op_సంకేతం_ESC(11) /* CFF */
+#నిర్వచించు Op_సంకేతం_div		Make_Op_సంకేతం_ESC(12) /* CFF */
+#నిర్వచించు Op_సంకేతం_Reserved_ESC13	Make_Op_సంకేతం_ESC(13)
+#నిర్వచించు Op_సంకేతం_neg		Make_Op_సంకేతం_ESC(14) /* CFF */
+#నిర్వచించు Op_సంకేతం_eq		Make_Op_సంకేతం_ESC(15) /* CFF */
+#నిర్వచించు Op_సంకేతం_Reserved_ESC16	Make_Op_సంకేతం_ESC(16)
+#నిర్వచించు Op_సంకేతం_Reserved_ESC17	Make_Op_సంకేతం_ESC(17)
+#నిర్వచించు Op_సంకేతం_drop		Make_Op_సంకేతం_ESC(18) /* CFF */
+#నిర్వచించు Op_సంకేతం_Reserved_ESC19	Make_Op_సంకేతం_ESC(19)
+#నిర్వచించు Op_సంకేతం_put		Make_Op_సంకేతం_ESC(20) /* CFF */
+#నిర్వచించు Op_సంకేతం_get		Make_Op_సంకేతం_ESC(21) /* CFF */
+#నిర్వచించు Op_సంకేతం_ifelse		Make_Op_సంకేతం_ESC(22) /* CFF */
+#నిర్వచించు Op_సంకేతం_random		Make_Op_సంకేతం_ESC(23) /* CFF */
+#నిర్వచించు Op_సంకేతం_mul		Make_Op_సంకేతం_ESC(24) /* CFF */
 //#define OpCode_reservedESC25	Make_OpCode_ESC(25)
-#define OpCode_sqrt		Make_OpCode_ESC(26) /* CFF */
-#define OpCode_dup		Make_OpCode_ESC(27) /* CFF */
-#define OpCode_exch		Make_OpCode_ESC(28) /* CFF */
-#define OpCode_index		Make_OpCode_ESC(29) /* CFF */
-#define OpCode_roll		Make_OpCode_ESC(30) /* CFF */
-#define OpCode_reservedESC31	Make_OpCode_ESC(31)
-#define OpCode_reservedESC32	Make_OpCode_ESC(32)
-#define OpCode_reservedESC33	Make_OpCode_ESC(33)
-#define OpCode_hflex		Make_OpCode_ESC(34) /* CFF, CFF2 */
-#define OpCode_flex		Make_OpCode_ESC(35) /* CFF, CFF2 */
-#define OpCode_hflex1		Make_OpCode_ESC(36) /* CFF, CFF2 */
-#define OpCode_flex1		Make_OpCode_ESC(37) /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_sqrt		Make_Op_సంకేతం_ESC(26) /* CFF */
+#నిర్వచించు Op_సంకేతం_dup		Make_Op_సంకేతం_ESC(27) /* CFF */
+#నిర్వచించు Op_సంకేతం_exch		Make_Op_సంకేతం_ESC(28) /* CFF */
+#నిర్వచించు Op_సంకేతం_సూచీ		Make_Op_సంకేతం_ESC(29) /* CFF */
+#నిర్వచించు Op_సంకేతం_roll		Make_Op_సంకేతం_ESC(30) /* CFF */
+#నిర్వచించు Op_సంకేతం_reserved_ESC31	Make_Op_సంకేతం_ESC(31)
+#నిర్వచించు Op_సంకేతం_reserved_ESC32	Make_Op_సంకేతం_ESC(32)
+#నిర్వచించు Op_సంకేతం_reserved_ESC33	Make_Op_సంకేతం_ESC(33)
+#నిర్వచించు Op_సంకేతం_hflex		Make_Op_సంకేతం_ESC(34) /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_flex		Make_Op_సంకేతం_ESC(35) /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_hflex1		Make_Op_సంకేతం_ESC(36) /* CFF, CFF2 */
+#నిర్వచించు Op_సంకేతం_flex1		Make_Op_సంకేతం_ESC(37) /* CFF, CFF2 */
 
 
-#define OpCode_Invalid		0xFFFFu
+#నిర్వచించు Op_సంకేతం_Invalid		0xFFFFu
 
 
-struct number_t
+నిర్మాణం సంఖ్య_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  శూన్య సమితి_int (పూర్ణాంకం v)       { value = v; }
+  తార్కిక గమ్యం_int (పూర్ణాంకం *v) స్థిరరాశి
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    ఒకవేళ (unlikely (!(value >= INT_MIN && value <= గరిష్ఠ_పూర్ణాంకం)))
     {
       *v = 0;
-      return false;
+      తిరిగి అబద్ధం;
     }
-    *v = (int) value;
-    return true;
+    *v = (పూర్ణాంకం) value;
+    తిరిగి నిజం;
   }
-  int to_int () const
+  పూర్ణాంకం గమ్యం_int () స్థిరరాశి
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    పూర్ణాంకం v;
+    ఒకవేళ (likely (గమ్యం_int (&v))) తిరిగి v;
+    తిరిగి value < 0 ? INT_MIN : value > 0 ? గరిష్ఠ_పూర్ణాంకం : 0;
   }
 
-  void set_fixed (int32_t v) { value = v / 65536.0; }
-  int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  శూన్య సమితి_fixed (int32_t v) { value = v / 65536.0; }
+  int32_t గమ్యం_fixed () స్థిరరాశి
+  { తిరిగి (int32_t) hb_clamp (value * 65536.0, (ద్విగుణ) INT32_MIN, (ద్విగుణ) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  శూన్య సమితి_real (ద్విగుణ v)   { value = v; }
+  ద్విగుణ గమ్యం_real () స్థిరరాశి    { తిరిగి value; }
 
-  bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  తార్కిక లోపల_int_range () స్థిరరాశి
+  { తిరిగి value >= INT16_MIN && value <= INT16_MAX && (ద్విగుణ) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  తార్కిక క్రియాకారకం >  (స్థిరరాశి సంఖ్య_t &n) స్థిరరాశి { తిరిగి value > n.గమ్యం_real (); }
+  తార్కిక క్రియాకారకం <  (స్థిరరాశి సంఖ్య_t &n) స్థిరరాశి { తిరిగి n > *ఇది; }
+  తార్కిక క్రియాకారకం >= (స్థిరరాశి సంఖ్య_t &n) స్థిరరాశి { తిరిగి !(*ఇది < n); }
+  తార్కిక క్రియాకారకం <= (స్థిరరాశి సంఖ్య_t &n) స్థిరరాశి { తిరిగి !(*ఇది > n); }
 
-  const number_t &operator += (const number_t &n)
+  స్థిరరాశి సంఖ్య_t &క్రియాకారకం += (స్థిరరాశి సంఖ్య_t &n)
   {
-    set_real (to_real () + n.to_real ());
+    సమితి_real (గమ్యం_real () + n.గమ్యం_real ());
 
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  protected:
-  double value = 0.;
+  రక్షిత:
+  ద్విగుణ value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+నిర్మాణం UnsizedByteStr : Unsized_Array_యొక్క <HBUINT8>
 {
-  hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  hb_ubytes_t as_ubytes (గుర్తులేని l) స్థిరరాశి
+  { తిరిగి hb_ubytes_t ((స్థిరరాశి గుర్తులేని అక్షరం *) ఇది, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
-  template <typename T, typename V>
-  static bool serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
+  మూస <రకం_పేరు T, రకం_పేరు V>
+  స్థిర తార్కిక serialize_int (hb_serialize_context_t *c, op_సంకేతం_t intOp, V value)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    HBUINT8 *p = c->allocate_కొలత<HBUINT8> (1);
+    ఒకవేళ (unlikely (!p)) return_trace (అబద్ధం);
     *p = intOp;
 
-    T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
-    return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    T *ip = c->allocate_కొలత<T> (T::static_కొలత);
+    ఒకవేళ (unlikely (!ip)) return_trace (అబద్ధం);
+    return_trace (c->check_కేటాయించు (*ip, value, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  template <typename V>
-  static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  మూస <రకం_పేరు V>
+  స్థిర తార్కిక serialize_int4 (hb_serialize_context_t *c, V value)
+  { తిరిగి serialize_int<HBINT32> (c, Op_సంకేతం_longintdict, value); }
 
-  template <typename V>
-  static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  మూస <రకం_పేరు V>
+  స్థిర తార్కిక serialize_int2 (hb_serialize_context_t *c, V value)
+  { తిరిగి serialize_int<HBINT16> (c, Op_సంకేతం_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
    * checked before access.
    */
-  DEFINE_SIZE_MIN(0);
+  DEFINE_కొలత_MIN(0);
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+నిర్మాణం byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
-    : str (str_) { set_offset (offset_); }
+  byte_str_ref_t (స్థిరరాశి hb_ubytes_t &str_, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం_3 = 0)
+    : str (str_) { సమితి_స్థానభ్రంశం (స్థానభ్రంశం_3); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  శూన్య reset (స్థిరరాశి hb_ubytes_t &str_, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం_3 = 0)
   {
     str = str_;
-    set_offset (offset_);
+    సమితి_స్థానభ్రంశం (స్థానభ్రంశం_3);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  స్థిరరాశి గుర్తులేని అక్షరం& క్రియాకారకం [] (పూర్ణాంకం i) {
+    ఒకవేళ (unlikely ((గుర్తులేని పూర్ణాంకం) (get_స్థానభ్రంశం () + i) >= str.నిడివి))
     {
-      set_error ();
-      return Null (unsigned char);
+      సమితి_error ();
+      తిరిగి Null (గుర్తులేని అక్షరం);
     }
-    return str.arrayZ[get_offset () + i];
+    తిరిగి str.arrayZ[get_స్థానభ్రంశం () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  గుర్తులేని అక్షరం తల_unchecked () స్థిరరాశి { తిరిగి str.arrayZ[get_స్థానభ్రంశం ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  క్రియాకారకం hb_ubytes_t () స్థిరరాశి { తిరిగి str.sub_array (get_స్థానభ్రంశం ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (గుర్తులేని పూర్ణాంకం స్థానభ్రంశం_3, గుర్తులేని పూర్ణాంకం len_) స్థిరరాశి
+  { తిరిగి str.sub_array (స్థానభ్రంశం_3, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  తార్కిక avail (గుర్తులేని పూర్ణాంకం లెక్క=1) స్థిరరాశి
+  { తిరిగి get_స్థానభ్రంశం () + లెక్క <= str.నిడివి; }
+  శూన్య inc (గుర్తులేని పూర్ణాంకం లెక్క=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    సమితి_స్థానభ్రంశం (get_స్థానభ్రంశం () + లెక్క);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
-  void set_offset (unsigned offset) { str.backwards_length = offset; }
+  గుర్తులేని get_స్థానభ్రంశం () స్థిరరాశి { తిరిగి str.backwards_నిడివి; }
+  శూన్య సమితి_స్థానభ్రంశం (గుర్తులేని స్థానభ్రంశం) { str.backwards_నిడివి = స్థానభ్రంశం; }
 
-  void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  శూన్య సమితి_error ()      { str.backwards_నిడివి = str.నిడివి + 1; }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి str.backwards_నిడివి > str.నిడివి; }
 
-  unsigned total_size () const { return str.length; }
+  గుర్తులేని మొత్తం_కొలత () స్థిరరాశి { తిరిగి str.నిడివి; }
 
-  protected:
+  రక్షిత:
   hb_ubytes_t       str;
 };
 
-/* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+/*దొంతర*/
+మూస <రకం_పేరు ELEM, పూర్ణాంకం హద్దు_2>
+నిర్మాణం cff_దొంతర_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& క్రియాకారకం [] (గుర్తులేని పూర్ణాంకం i)
   {
-    if (unlikely (i >= length))
+    ఒకవేళ (unlikely (i >= నిడివి))
     {
-      set_error ();
-      return Crap (ELEM);
+      సమితి_error ();
+      తిరిగి Crap (ELEM);
     }
-    return arrayZ[i];
+    తిరిగి arrayZ[i];
   }
 
-  void push (const ELEM &v)
+  శూన్య push (స్థిరరాశి ELEM &v)
   {
-    if (likely (length < LIMIT))
-      arrayZ[length++] = v;
-    else
-      set_error ();
+    ఒకవేళ (likely (నిడివి < హద్దు_2))
+      arrayZ[నిడివి++] = v;
+    లేకపోతే
+      సమితి_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    ఒకవేళ (likely (నిడివి < హద్దు_2))
+      తిరిగి arrayZ[నిడివి++];
+    లేకపోతే
     {
-      set_error ();
-      return Crap (ELEM);
+      సమితి_error ();
+      తిరిగి Crap (ELEM);
     }
   }
 
-  ELEM& pop ()
+  ELEM& తీయి ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    ఒకవేళ (likely (నిడివి > 0))
+      తిరిగి arrayZ[--నిడివి];
+    లేకపోతే
     {
-      set_error ();
-      return Crap (ELEM);
+      సమితి_error ();
+      తిరిగి Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  శూన్య తీయి (గుర్తులేని పూర్ణాంకం n)
   {
-    if (likely (length >= n))
-      length -= n;
-    else
-      set_error ();
+    ఒకవేళ (likely (నిడివి >= n))
+      నిడివి -= n;
+    లేకపోతే
+      సమితి_error ();
   }
 
-  const ELEM& peek ()
+  స్థిరరాశి ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    ఒకవేళ (unlikely (నిడివి == 0))
     {
-      set_error ();
-      return Null (ELEM);
+      సమితి_error ();
+      తిరిగి Null (ELEM);
     }
-    return arrayZ[length - 1];
+    తిరిగి arrayZ[నిడివి - 1];
   }
 
-  void unpop ()
+  శూన్య unpop ()
   {
-    if (likely (length < LIMIT))
-      length++;
-    else
-      set_error ();
+    ఒకవేళ (likely (నిడివి < హద్దు_2))
+      నిడివి++;
+    లేకపోతే
+      సమితి_error ();
   }
 
-  void clear () { length = 0; }
+  శూన్య clear () { నిడివి = 0; }
 
-  bool in_error () const { return (error); }
-  void set_error ()      { error = true; }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి (error); }
+  శూన్య సమితి_error ()      { error = నిజం; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  గుర్తులేని పూర్ణాంకం get_లెక్క () స్థిరరాశి { తిరిగి నిడివి; }
+  తార్కిక is_empty () స్థిరరాశి          { తిరిగి !నిడివి; }
 
-  hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  hb_array_t<స్థిరరాశి ELEM> sub_array (గుర్తులేని ప్రారంభం, గుర్తులేని నిడివి) స్థిరరాశి
+  { తిరిగి hb_array_t<స్థిరరాశి ELEM> (arrayZ).sub_array (ప్రారంభం, నిడివి); }
 
-  bool error = false;
-  unsigned int length = 0;
-  ELEM arrayZ[LIMIT];
+  తార్కిక error = అబద్ధం;
+  గుర్తులేని పూర్ణాంకం నిడివి = 0;
+  ELEM arrayZ[హద్దు_2];
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+మూస <రకం_పేరు ARG=సంఖ్య_t>
+నిర్మాణం arg_దొంతర_t : cff_దొంతర_t<ARG, 513>
 {
-  void push_int (int v)
+  శూన్య నెట్టు_int (పూర్ణాంకం v)
   {
     ARG &n = S::push ();
-    n.set_int (v);
+    n.సమితి_int (v);
   }
 
-  void push_fixed (int32_t v)
+  శూన్య నెట్టు_fixed (int32_t v)
   {
     ARG &n = S::push ();
-    n.set_fixed (v);
+    n.సమితి_fixed (v);
   }
 
-  void push_real (double v)
+  శూన్య నెట్టు_real (ద్విగుణ v)
   {
     ARG &n = S::push ();
-    n.set_real (v);
+    n.సమితి_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& తీయి_అంకె () { తిరిగి ఇది->తీయి (); }
 
-  int pop_int ()
+  పూర్ణాంకం తీయి_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
-      S::set_error ();
-    return v;
+    పూర్ణాంకం v;
+    ఒకవేళ (unlikely (!ఇది->తీయి ().గమ్యం_int (&v)))
+      S::సమితి_error ();
+    తిరిగి v;
   }
 
-  unsigned int pop_uint ()
+  గుర్తులేని పూర్ణాంకం తీయి_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    పూర్ణాంకం i = తీయి_int ();
+    ఒకవేళ (unlikely (i < 0))
     {
       i = 0;
-      S::set_error ();
+      S::సమితి_error ();
     }
-    return (unsigned) i;
+    తిరిగి (గుర్తులేని) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  శూన్య నెట్టు_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    నెట్టు_int ((పూర్ణాంకం) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  తార్కిక నెట్టు_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    ఒకవేళ (unlikely (!str_ref.avail (4)))
+      తిరిగి అబద్ధం;
+    నెట్టు_fixed ((int32_t)*(స్థిరరాశి HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    తిరిగి నిజం;
   }
 
-  private:
-  typedef cff_stack_t<ARG, 513> S;
+  అంతరంగ:
+  రకనిర్వచనం cff_దొంతర_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+నిర్మాణం op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  స్థిరరాశి గుర్తులేని అక్షరం *ptr = శూన్యసూచిక;
 
-  op_code_t  op = OpCode_Invalid;
+  op_సంకేతం_t  op = Op_సంకేతం_Invalid;
 
-  uint8_t length = 0;
+  uint8_t నిడివి = 0;
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+నిర్మాణం op_serializer_t
 {
-  protected:
-  bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
+  రక్షిత:
+  తార్కిక copy_opstr (hb_serialize_context_t *c, స్థిరరాశి op_str_t& opstr) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    గుర్తులేని అక్షరం *d = c->allocate_కొలత<గుర్తులేని అక్షరం> (opstr.నిడివి);
+    ఒకవేళ (unlikely (!d)) return_trace (అబద్ధం);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    కొరకు (గుర్తులేని i = 0; i < opstr.నిడివి; i++)
       d[i] = opstr.ptr[i];
-    return_trace (true);
+    return_trace (నిజం);
   }
 };
 
-template <typename VAL>
-struct parsed_values_t
+మూస <రకం_పేరు VAL>
+నిర్మాణం parsed_విలువలు_t
 {
-  void init ()
+  శూన్య init ()
   {
-    opStart = 0;
+    op_ప్రారంభం = 0;
     values.init ();
   }
-  void fini () { values.fini (); }
+  శూన్య fini () { values.fini (); }
 
-  void alloc (unsigned n)
+  శూన్య alloc (గుర్తులేని n)
   {
     values.alloc_exact (n);
   }
 
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref = byte_str_ref_t (), const VAL &v = VAL ())
+  శూన్య కూడు_op (op_సంకేతం_t op, స్థిరరాశి byte_str_ref_t& str_ref = byte_str_ref_t (), స్థిరరాశి VAL &v = VAL ())
   {
     VAL *val = values.push (v);
     val->op = op;
-    auto arr = str_ref.sub_array (opStart, str_ref.get_offset () - opStart);
+    స్వయంచాలక arr = str_ref.sub_array (op_ప్రారంభం, str_ref.get_స్థానభ్రంశం () - op_ప్రారంభం);
     val->ptr = arr.arrayZ;
-    val->length = arr.length;
-    opStart = str_ref.get_offset ();
+    val->నిడివి = arr.నిడివి;
+    op_ప్రారంభం = str_ref.get_స్థానభ్రంశం ();
   }
 
-  bool has_op (op_code_t op) const
+  తార్కిక has_op (op_సంకేతం_t op) స్థిరరాశి
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    కొరకు (స్థిరరాశి స్వయంచాలక& v : values)
+      ఒకవేళ (v.op == op) తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  గుర్తులేని get_లెక్క () స్థిరరాశి { తిరిగి values.నిడివి; }
+  స్థిరరాశి VAL &క్రియాకారకం [] (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి { తిరిగి values[i]; }
 
-  unsigned int       opStart;
-  hb_vector_t<VAL>   values;
+  గుర్తులేని పూర్ణాంకం       op_ప్రారంభం;
+  hb_సదిశ_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
-struct interp_env_t
+మూస <రకం_పేరు ARG=సంఖ్య_t>
+నిర్మాణం interp_env_t
 {
   interp_env_t () {}
-  interp_env_t (const hb_ubytes_t &str_)
+  interp_env_t (స్థిరరాశి hb_ubytes_t &str_)
   {
     str_ref.reset (str_);
   }
-  bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  తార్కిక లోపల_error () స్థిరరాశి
+  { తిరిగి str_ref.లోపల_error () || arg_దొంతర.లోపల_error (); }
 
-  void set_error () { str_ref.set_error (); }
+  శూన్య సమితి_error () { str_ref.సమితి_error (); }
 
-  op_code_t fetch_op ()
+  op_సంకేతం_t fetch_op ()
   {
-    op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
-    op = (op_code_t) str_ref.head_unchecked ();
+    op_సంకేతం_t  op = Op_సంకేతం_Invalid;
+    ఒకవేళ (unlikely (!str_ref.avail ()))
+      తిరిగి Op_సంకేతం_Invalid;
+    op = (op_సంకేతం_t) str_ref.తల_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
-      op = Make_OpCode_ESC (str_ref.head_unchecked ());
+    ఒకవేళ (op == Op_సంకేతం_escape) {
+      ఒకవేళ (unlikely (!str_ref.avail ()))
+	తిరిగి Op_సంకేతం_Invalid;
+      op = Make_Op_సంకేతం_ESC (str_ref.తల_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    తిరిగి op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  స్థిరరాశి ARG& eval_arg (గుర్తులేని పూర్ణాంకం i) { తిరిగి arg_దొంతర[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& తీయి_arg () { తిరిగి arg_దొంతర.తీయి (); }
+  శూన్య తీయి_n_వాదనలు (గుర్తులేని పూర్ణాంకం n) { arg_దొంతర.తీయి (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  శూన్య clear_వాదనలు () { తీయి_n_వాదనలు (arg_దొంతర.get_లెక్క ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_దొంతర_t<ARG>
+		arg_దొంతర;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+ఉపయోగించి అంకె_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
-struct opset_t
+మూస <రకం_పేరు ARG=సంఖ్య_t>
+నిర్మాణం opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<ARG>& env)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, interp_env_t<ARG>& env)
   {
-    switch (op) {
-      case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_shortint:
+	env.arg_దొంతర.నెట్టు_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	ఆపు;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+      స్థితి Op_సంకేతం_Two_Byte_Pos_Int0: స్థితి Op_సంకేతం_Two_Byte_Pos_Int1:
+      స్థితి Op_సంకేతం_Two_Byte_Pos_Int2: స్థితి Op_సంకేతం_Two_Byte_Pos_Int3:
+	env.arg_దొంతర.నెట్టు_int ((int16_t)((op - Op_సంకేతం_Two_Byte_Pos_Int0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	ఆపు;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+      స్థితి Op_సంకేతం_Two_Byte_Neg_Int0: స్థితి Op_సంకేతం_Two_Byte_Neg_Int1:
+      స్థితి Op_సంకేతం_Two_Byte_Neg_Int2: స్థితి Op_సంకేతం_Two_Byte_Neg_Int3:
+	env.arg_దొంతర.నెట్టు_int ((-(int16_t)(op - Op_సంకేతం_Two_Byte_Neg_Int0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	ఒకవేళ (likely ((Op_సంకేతం_One_Byte_Int_మొదటి <= op) && (op <= Op_సంకేతం_One_Byte_Int_చివరి)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.arg_దొంతర.నెట్టు_int ((పూర్ణాంకం)op - 139);
+	} లేకపోతే {
 	  /* invalid unknown operator */
-	  env.clear_args ();
+	  env.clear_వాదనలు ();
 	}
-	break;
+	ఆపు;
     }
   }
 };
 
-template <typename ENV>
-struct interpreter_t
+మూస <రకం_పేరు ENV>
+నిర్మాణం interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;
@@ -660,4 +660,4 @@ struct interpreter_t
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_INTERP_COMMON_HH */
+#అయితే_ముగింపు /* HB_CFF_INTERP_COMMON_HH */

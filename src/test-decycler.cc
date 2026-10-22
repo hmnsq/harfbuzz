@@ -24,93 +24,93 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-decycler.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-decycler.hh"
 
-static void
-tree_recurse_binary (unsigned value,
-		     unsigned max_value,
+స్థిర శూన్య
+వృక్షం_recurse_ద్విమాన (గుర్తులేని value,
+		     గుర్తులేని max_విలువ,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  ఒకవేళ (value >= max_విలువ)
+		తిరిగి;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_కణుపు_t node (decycler);
 
-  bool ret = node.visit (value);
+  తార్కిక ret = node.సందర్శించు (value);
   hb_always_assert (ret);
 
-  tree_recurse_binary (value * 2 + 1, max_value, decycler);
-  tree_recurse_binary (value * 2 + 2, max_value, decycler);
+  వృక్షం_recurse_ద్విమాన (value * 2 + 1, max_విలువ, decycler);
+  వృక్షం_recurse_ద్విమాన (value * 2 + 2, max_విలువ, decycler);
 }
 
-static void
-tree_recurse_tertiary (unsigned value,
-		       unsigned max_value,
+స్థిర శూన్య
+వృక్షం_recurse_tertiary (గుర్తులేని value,
+		       గుర్తులేని max_విలువ,
 		       hb_decycler_t &decycler)
 {
   /* This function implements an alternative way to use the
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  ఒకవేళ (value >= max_విలువ)
+    తిరిగి;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_కణుపు_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  కొరకు (గుర్తులేని i = 1; i <= 3; i++)
   {
-    bool ret = node.visit (value + i);
+    తార్కిక ret = node.సందర్శించు (value + i);
     hb_always_assert (ret);
 
-    tree_recurse_tertiary (value + i, max_value, decycler);
+    వృక్షం_recurse_tertiary (value + i, max_విలువ, decycler);
   }
 }
 
-static void
-test_tree ()
+స్థిర శూన్య
+test_వృక్షం ()
 {
   hb_decycler_t decycler;
-  tree_recurse_binary (0, 64, decycler);
-  tree_recurse_tertiary (0, 1000, decycler);
+  వృక్షం_recurse_ద్విమాన (0, 64, decycler);
+  వృక్షం_recurse_tertiary (0, 1000, decycler);
 }
 
-static void
-cycle_recurse (signed value,
-	       signed cycle_length,
+స్థిర శూన్య
+చక్రం_recurse (గుర్తుగల value,
+	       గుర్తుగల చక్రం_నిడివి,
 	       hb_decycler_t &decycler)
 {
-  hb_always_assert (cycle_length > 0);
+  hb_always_assert (చక్రం_నిడివి > 0);
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_కణుపు_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  ఒకవేళ (!node.సందర్శించు (value))
+    తిరిగి;
 
-  if (value >= cycle_length)
-    value = value % cycle_length;
+  ఒకవేళ (value >= చక్రం_నిడివి)
+    value = value % చక్రం_నిడివి;
 
-  cycle_recurse (value + 1, cycle_length, decycler);
+  చక్రం_recurse (value + 1, చక్రం_నిడివి, decycler);
 }
 
-static void
-test_cycle ()
+స్థిర శూన్య
+test_చక్రం ()
 {
   hb_decycler_t decycler;
-  cycle_recurse (0, 1, decycler);
-  cycle_recurse (0, 2, decycler);
-  cycle_recurse (2, 3, decycler);
-  cycle_recurse (-20, 8, decycler);
+  చక్రం_recurse (0, 1, decycler);
+  చక్రం_recurse (0, 2, decycler);
+  చక్రం_recurse (2, 3, decycler);
+  చక్రం_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  test_tree ();
-  test_cycle ();
+  test_వృక్షం ();
+  test_చక్రం ();
 
-  return 0;
+  తిరిగి 0;
 }
 

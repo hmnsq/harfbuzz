@@ -26,30 +26,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 
-#include "hb-ot-map.hh"
-#include "hb-ot-shape.hh"
-#include "hb-ot-layout.hh"
+#అన్తర్భావ "hb-ot-map.hh"
+#అన్తర్భావ "hb-ot-shape.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
 
 
-void hb_ot_map_t::collect_lookups (unsigned int table_index, hb_set_t *lookups_out) const
+శూన్య hb_ot_map_t::collect_lookups (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, hb_సమితి_t *lookups_బహిర్గతం) స్థిరరాశి
 {
-  for (unsigned int i = 0; i < lookups[table_index].length; i++)
-    lookups_out->add (lookups[table_index][i].index);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < lookups[పట్టిక_సూచీ].నిడివి; i++)
+    lookups_బహిర్గతం->కూడు (lookups[పట్టిక_సూచీ][i].సూచీ_2);
 }
 
 
 hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
-					  const hb_segment_properties_t &props_)
+					  స్థిరరాశి hb_segment_properties_t &props_)
 {
-  hb_memset (this, 0, sizeof (*this));
+  hb_memset (ఇది, 0, పరిమాణం (*ఇది));
 
   feature_infos.init ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].init ();
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
+    stages[పట్టిక_సూచీ].init ();
 
   face = face_;
   props = props_;
@@ -57,203 +57,203 @@ hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
   /* Fetch script/language indices for GSUB/GPOS.  We need these later to skip
    * features not available in either table and not waste precious bits for them. */
 
-  unsigned int script_count = HB_OT_MAX_TAGS_PER_SCRIPT;
-  unsigned int language_count = HB_OT_MAX_TAGS_PER_LANGUAGE;
-  hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
-  hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
+  గుర్తులేని పూర్ణాంకం script_లెక్క = HB_OT_MAX_ట్యాగులు_చొప్పున_SCRIPT;
+  గుర్తులేని పూర్ణాంకం language_లెక్క = HB_OT_MAX_ట్యాగులు_చొప్పున_LANGUAGE;
+  hb_ట్యాగ్_t script_ట్యాగులు[HB_OT_MAX_ట్యాగులు_చొప్పున_SCRIPT];
+  hb_ట్యాగ్_t language_ట్యాగులు[HB_OT_MAX_ట్యాగులు_చొప్పున_LANGUAGE];
 
-  hb_ot_tags_from_script_and_language (props.script,
+  hb_ot_ట్యాగులు_from_script_and_language (props.script,
 				       props.language,
-				       &script_count,
-				       script_tags,
-				       &language_count,
-				       language_tags);
+				       &script_లెక్క,
+				       script_ట్యాగులు,
+				       &language_లెక్క,
+				       language_ట్యాగులు);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
   {
-    hb_tag_t table_tag = table_tags[table_index];
-    found_script[table_index] = (bool) hb_ot_layout_table_select_script (face,
-									 table_tag,
-									 script_count,
-									 script_tags,
-									 &script_index[table_index],
-									 &chosen_script[table_index]);
+    hb_ట్యాగ్_t పట్టిక_ట్యాగ్_2 = పట్టిక_ట్యాగులు[పట్టిక_సూచీ];
+    దొరికింది_script[పట్టిక_సూచీ] = (తార్కిక) hb_ot_layout_పట్టిక_select_script (face,
+									 పట్టిక_ట్యాగ్_2,
+									 script_లెక్క,
+									 script_ట్యాగులు,
+									 &script_సూచీ[పట్టిక_సూచీ],
+									 &chosen_script[పట్టిక_సూచీ]);
     hb_ot_layout_script_select_language (face,
-					 table_tag,
-					 script_index[table_index],
-					 language_count,
-					 language_tags,
-					 &language_index[table_index]);
+					 పట్టిక_ట్యాగ్_2,
+					 script_సూచీ[పట్టిక_సూచీ],
+					 language_లెక్క,
+					 language_ట్యాగులు,
+					 &language_సూచీ[పట్టిక_సూచీ]);
   }
 }
 
 hb_ot_map_builder_t::~hb_ot_map_builder_t ()
 {
   feature_infos.fini ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].fini ();
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
+    stages[పట్టిక_సూచీ].fini ();
 }
 
-void hb_ot_map_builder_t::add_feature (hb_tag_t tag,
+శూన్య hb_ot_map_builder_t::కూడు_feature (hb_ట్యాగ్_t ట్యాగ్_2,
 				       hb_ot_map_feature_flags_t flags,
-				       unsigned int value)
+				       గుర్తులేని పూర్ణాంకం value)
 {
-  if (unlikely (!tag)) return;
+  ఒకవేళ (unlikely (!ట్యాగ్_2)) తిరిగి;
   feature_info_t *info = feature_infos.push();
-  info->tag = tag;
-  info->seq = feature_infos.length;
-  info->max_value = value;
+  info->ట్యాగ్_2 = ట్యాగ్_2;
+  info->seq = feature_infos.నిడివి;
+  info->max_విలువ = value;
   info->flags = flags;
-  info->default_value = (flags & F_GLOBAL) ? value : 0;
+  info->default_విలువ = (flags & F_GLOBAL) ? value : 0;
   info->stage[0] = current_stage[0];
   info->stage[1] = current_stage[1];
 }
 
-bool hb_ot_map_builder_t::has_feature (hb_tag_t tag)
+తార్కిక hb_ot_map_builder_t::has_feature (hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
   {
-    if (hb_ot_layout_language_find_feature (face,
-					    table_tags[table_index],
-					    script_index[table_index],
-					    language_index[table_index],
-					    tag,
-					    nullptr))
-      return true;
+    ఒకవేళ (hb_ot_layout_language_కనుగొను_feature (face,
+					    పట్టిక_ట్యాగులు[పట్టిక_సూచీ],
+					    script_సూచీ[పట్టిక_సూచీ],
+					    language_సూచీ[పట్టిక_సూచీ],
+					    ట్యాగ్_2,
+					    శూన్యసూచిక))
+      తిరిగి నిజం;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-void
-hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
-				  unsigned int  table_index,
-				  unsigned int  feature_index,
-				  const hb_ot_shape_plan_key_t &key,
-				  hb_mask_t     mask,
-				  bool          auto_zwnj,
-				  bool          auto_zwj,
-				  bool          random,
-				  bool          per_syllable,
-				  hb_tag_t      feature_tag)
+శూన్య
+hb_ot_map_builder_t::కూడు_lookups (hb_ot_map_t  &m,
+				  గుర్తులేని పూర్ణాంకం  పట్టిక_సూచీ,
+				  గుర్తులేని పూర్ణాంకం  feature_సూచీ,
+				  స్థిరరాశి hb_ot_shape_plan_కీలకం_t &key,
+				  hb_ముసుగు_t     ముసుగు,
+				  తార్కిక          auto_zwnj,
+				  తార్కిక          auto_zwj,
+				  తార్కిక          random,
+				  తార్కిక          చొప్పున_syllable,
+				  hb_ట్యాగ్_t      feature_ట్యాగ్)
 {
-  unsigned int lookup_indices[32];
-  unsigned int offset, len;
-  unsigned int table_lookup_count;
+  గుర్తులేని పూర్ణాంకం lookup_indices[32];
+  గుర్తులేని పూర్ణాంకం స్థానభ్రంశం, len;
+  గుర్తులేని పూర్ణాంకం పట్టిక_lookup_లెక్క;
 
-  table_lookup_count = hb_ot_layout_table_get_lookup_count (face, table_tags[table_index]);
+  పట్టిక_lookup_లెక్క = hb_ot_layout_పట్టిక_get_lookup_లెక్క (face, పట్టిక_ట్యాగులు[పట్టిక_సూచీ]);
 
-  hb_set_t varied_lookups;
-  if (key.get_lookup_variations (face, table_index, feature_index, &varied_lookups))
+  hb_సమితి_t varied_lookups;
+  ఒకవేళ (key.get_lookup_variations (face, పట్టిక_సూచీ, feature_సూచీ, &varied_lookups))
   {
-    if (unlikely (varied_lookups.in_error ()))
+    ఒకవేళ (unlikely (varied_lookups.లోపల_error ()))
     {
-      m.lookups[table_index].ensure_error ();
-      return;
+      m.lookups[పట్టిక_సూచీ].ensure_error ();
+      తిరిగి;
     }
-    for (unsigned int lookup_index : varied_lookups)
+    కొరకు (గుర్తులేని పూర్ణాంకం lookup_సూచీ : varied_lookups)
     {
-      if (lookup_index >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
-      lookup->mask = mask;
-      lookup->index = lookup_index;
+      ఒకవేళ (lookup_సూచీ >= పట్టిక_lookup_లెక్క)
+	కొనసాగు;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[పట్టిక_సూచీ].push ();
+      lookup->ముసుగు = ముసుగు;
+      lookup->సూచీ_2 = lookup_సూచీ;
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
-      lookup->per_syllable = per_syllable;
-      lookup->feature_tag = feature_tag;
+      lookup->చొప్పున_syllable = చొప్పున_syllable;
+      lookup->feature_ట్యాగ్ = feature_ట్యాగ్;
     }
-    return;
+    తిరిగి;
   }
 
-  offset = 0;
-  do {
-    len = ARRAY_LENGTH (lookup_indices);
+  స్థానభ్రంశం = 0;
+  చేయి {
+    len = ARRAY_నిడివి (lookup_indices);
     hb_ot_layout_feature_with_variations_get_lookups (face,
-					      table_tags[table_index],
-					      feature_index,
-					      key.variations_index[table_index],
-						      offset, &len,
+					      పట్టిక_ట్యాగులు[పట్టిక_సూచీ],
+					      feature_సూచీ,
+					      key.variations_సూచీ[పట్టిక_సూచీ],
+						      స్థానభ్రంశం, &len,
 						      lookup_indices);
 
-    for (unsigned int i = 0; i < len; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < len; i++)
     {
-      if (lookup_indices[i] >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
-      lookup->mask = mask;
-      lookup->index = lookup_indices[i];
+      ఒకవేళ (lookup_indices[i] >= పట్టిక_lookup_లెక్క)
+	కొనసాగు;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[పట్టిక_సూచీ].push ();
+      lookup->ముసుగు = ముసుగు;
+      lookup->సూచీ_2 = lookup_indices[i];
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
-      lookup->per_syllable = per_syllable;
-      lookup->feature_tag = feature_tag;
+      lookup->చొప్పున_syllable = చొప్పున_syllable;
+      lookup->feature_ట్యాగ్ = feature_ట్యాగ్;
     }
 
-    offset += len;
-  } while (len == ARRAY_LENGTH (lookup_indices));
+    స్థానభ్రంశం += len;
+  } అయితే (len == ARRAY_నిడివి (lookup_indices));
 }
 
 
-void hb_ot_map_builder_t::add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func)
+శూన్య hb_ot_map_builder_t::కూడు_pause (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ, hb_ot_map_t::pause_func_t pause_func)
 {
-  stage_info_t *s = stages[table_index].push ();
-  s->index = current_stage[table_index];
+  stage_info_t *s = stages[పట్టిక_సూచీ].push ();
+  s->సూచీ_2 = current_stage[పట్టిక_సూచీ];
   s->pause_func = pause_func;
 
-  current_stage[table_index]++;
+  current_stage[పట్టిక_సూచీ]++;
 }
 
-void
+శూన్య
 hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
-			      const hb_ot_shape_plan_key_t &key)
+			      స్థిరరాశి hb_ot_shape_plan_కీలకం_t &key)
 {
-  unsigned int global_bit_shift = 8 * sizeof (hb_mask_t) - 1;
-  unsigned int global_bit_mask = 1u << global_bit_shift;
+  గుర్తులేని పూర్ణాంకం global_బిట్టు_జరుపు = 8 * పరిమాణం (hb_ముసుగు_t) - 1;
+  గుర్తులేని పూర్ణాంకం global_బిట్టు_ముసుగు = 1u << global_బిట్టు_జరుపు;
 
-  m.global_mask = global_bit_mask;
+  m.global_ముసుగు = global_బిట్టు_ముసుగు;
 
-  unsigned int required_feature_index[2];
-  hb_tag_t required_feature_tag[2];
+  గుర్తులేని పూర్ణాంకం required_feature_సూచీ[2];
+  hb_ట్యాగ్_t required_feature_ట్యాగ్[2];
   /* We default to applying required feature in stage 0.  If the required
    * feature has a tag that is known to the shaper, we apply required feature
    * in the stage for that tag.
    */
-  unsigned int required_feature_stage[2] = {0, 0};
+  గుర్తులేని పూర్ణాంకం required_feature_stage[2] = {0, 0};
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
   {
-    m.chosen_script[table_index] = chosen_script[table_index];
-    m.found_script[table_index] = found_script[table_index];
+    m.chosen_script[పట్టిక_సూచీ] = chosen_script[పట్టిక_సూచీ];
+    m.దొరికింది_script[పట్టిక_సూచీ] = దొరికింది_script[పట్టిక_సూచీ];
 
     hb_ot_layout_language_get_required_feature (face,
-						table_tags[table_index],
-						script_index[table_index],
-						language_index[table_index],
-						&required_feature_index[table_index],
-						&required_feature_tag[table_index]);
+						పట్టిక_ట్యాగులు[పట్టిక_సూచీ],
+						script_సూచీ[పట్టిక_సూచీ],
+						language_సూచీ[పట్టిక_సూచీ],
+						&required_feature_సూచీ[పట్టిక_సూచీ],
+						&required_feature_ట్యాగ్[పట్టిక_సూచీ]);
   }
 
   /* Sort features and merge duplicates */
-  if (feature_infos.length)
+  ఒకవేళ (feature_infos.నిడివి)
   {
-    if (!is_simple)
+    ఒకవేళ (!is_simple)
       feature_infos.qsort ();
-    auto *f = feature_infos.arrayZ;
-    unsigned int j = 0;
-    unsigned count = feature_infos.length;
-    for (unsigned int i = 1; i < count; i++)
-      if (f[i].tag != f[j].tag)
+    స్వయంచాలక *f = feature_infos.arrayZ;
+    గుర్తులేని పూర్ణాంకం j = 0;
+    గుర్తులేని లెక్క = feature_infos.నిడివి;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < లెక్క; i++)
+      ఒకవేళ (f[i].ట్యాగ్_2 != f[j].ట్యాగ్_2)
 	f[++j] = f[i];
-      else {
-	if (f[i].flags & F_GLOBAL) {
+      లేకపోతే {
+	ఒకవేళ (f[i].flags & F_GLOBAL) {
 	  f[j].flags |= F_GLOBAL;
-	  f[j].max_value = f[i].max_value;
-	  f[j].default_value = f[i].default_value;
-	} else {
-	  if (f[j].flags & F_GLOBAL)
+	  f[j].max_విలువ = f[i].max_విలువ;
+	  f[j].default_విలువ = f[i].default_విలువ;
+	} లేకపోతే {
+	  ఒకవేళ (f[j].flags & F_GLOBAL)
 	    f[j].flags ^= F_GLOBAL;
-	  f[j].max_value = hb_max (f[j].max_value, f[i].max_value);
+	  f[j].max_విలువ = hb_max (f[j].max_విలువ, f[i].max_విలువ);
 	  /* Inherit default_value from j */
 	}
 	f[j].flags |= (f[i].flags & F_HAS_FALLBACK);
@@ -264,169 +264,169 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
   }
 
   hb_map_t feature_indices[2];
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
     hb_ot_layout_collect_features_map (face,
-				       table_tags[table_index],
-				       script_index[table_index],
-				       language_index[table_index],
-				       &feature_indices[table_index]);
+				       పట్టిక_ట్యాగులు[పట్టిక_సూచీ],
+				       script_సూచీ[పట్టిక_సూచీ],
+				       language_సూచీ[పట్టిక_సూచీ],
+				       &feature_indices[పట్టిక_సూచీ]);
 
   /* Allocate bits now */
   static_assert ((!(HB_GLYPH_FLAG_DEFINED & (HB_GLYPH_FLAG_DEFINED + 1))), "");
-  unsigned int next_bit = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
+  గుర్తులేని పూర్ణాంకం తదుపరి_బిట్టు = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
 
-  unsigned count = feature_infos.length;
-  for (unsigned int i = 0; i < count; i++)
+  గుర్తులేని లెక్క = feature_infos.నిడివి;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    const feature_info_t *info = &feature_infos[i];
+    స్థిరరాశి feature_info_t *info = &feature_infos[i];
 
-    unsigned int bits_needed;
+    గుర్తులేని పూర్ణాంకం బిట్లు_needed;
 
-    if ((info->flags & F_GLOBAL) && info->max_value == 1)
+    ఒకవేళ ((info->flags & F_GLOBAL) && info->max_విలువ == 1)
       /* Uses the global bit */
-      bits_needed = 0;
-    else
+      బిట్లు_needed = 0;
+    లేకపోతే
       /* Limit bits per feature. */
-      bits_needed = hb_min (HB_OT_MAP_MAX_BITS, hb_bit_storage (info->max_value));
+      బిట్లు_needed = hb_min (HB_OT_MAP_MAX_బిట్లు, hb_బిట్టు_storage (info->max_విలువ));
 
-    if (!info->max_value || next_bit + bits_needed >= global_bit_shift)
-      continue; /* Feature disabled, or not enough bits. */
+    ఒకవేళ (!info->max_విలువ || తదుపరి_బిట్టు + బిట్లు_needed >= global_బిట్టు_జరుపు)
+      కొనసాగు; /* Feature disabled, or not enough bits. */
 
-    bool found = false;
-    unsigned int feature_index[2];
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    తార్కిక దొరికింది = అబద్ధం;
+    గుర్తులేని పూర్ణాంకం feature_సూచీ[2];
+    కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
     {
-      if (required_feature_tag[table_index] == info->tag)
-	required_feature_stage[table_index] = info->stage[table_index];
+      ఒకవేళ (required_feature_ట్యాగ్[పట్టిక_సూచీ] == info->ట్యాగ్_2)
+	required_feature_stage[పట్టిక_సూచీ] = info->stage[పట్టిక_సూచీ];
 
-      hb_codepoint_t *index;
-      if (feature_indices[table_index].has (info->tag, &index))
+      hb_codepoint_t *సూచీ_2;
+      ఒకవేళ (feature_indices[పట్టిక_సూచీ].has (info->ట్యాగ్_2, &సూచీ_2))
       {
-        feature_index[table_index] = *index;
-        found = true;
+        feature_సూచీ[పట్టిక_సూచీ] = *సూచీ_2;
+        దొరికింది = నిజం;
       }
-      else
-        feature_index[table_index] = HB_OT_LAYOUT_NO_FEATURE_INDEX;
+      లేకపోతే
+        feature_సూచీ[పట్టిక_సూచీ] = HB_OT_LAYOUT_NO_FEATURE_సూచీ;
     }
-    if (!found && (info->flags & F_GLOBAL_SEARCH))
+    ఒకవేళ (!దొరికింది && (info->flags & F_GLOBAL_శోధన))
     {
-      for (unsigned int table_index = 0; table_index < 2; table_index++)
+      కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
       {
-	found |= (bool) hb_ot_layout_table_find_feature (face,
-							 table_tags[table_index],
-							 info->tag,
-							 &feature_index[table_index]);
+	దొరికింది |= (తార్కిక) hb_ot_layout_పట్టిక_కనుగొను_feature (face,
+							 పట్టిక_ట్యాగులు[పట్టిక_సూచీ],
+							 info->ట్యాగ్_2,
+							 &feature_సూచీ[పట్టిక_సూచీ]);
       }
     }
-    if (!found && !(info->flags & F_HAS_FALLBACK))
-      continue;
+    ఒకవేళ (!దొరికింది && !(info->flags & F_HAS_FALLBACK))
+      కొనసాగు;
 
 
     hb_ot_map_t::feature_map_t *map = m.features.push ();
 
-    map->tag = info->tag;
-    map->index[0] = feature_index[0];
-    map->index[1] = feature_index[1];
+    map->ట్యాగ్_2 = info->ట్యాగ్_2;
+    map->సూచీ_2[0] = feature_సూచీ[0];
+    map->సూచీ_2[1] = feature_సూచీ[1];
     map->stage[0] = info->stage[0];
     map->stage[1] = info->stage[1];
     map->auto_zwnj = !(info->flags & F_MANUAL_ZWNJ);
     map->auto_zwj = !(info->flags & F_MANUAL_ZWJ);
     map->random = !!(info->flags & F_RANDOM);
-    map->per_syllable = !!(info->flags & F_PER_SYLLABLE);
-    if ((info->flags & F_GLOBAL) && info->max_value == 1) {
+    map->చొప్పున_syllable = !!(info->flags & F_చొప్పున_SYLLABLE);
+    ఒకవేళ ((info->flags & F_GLOBAL) && info->max_విలువ == 1) {
       /* Uses the global bit */
-      map->shift = global_bit_shift;
-      map->mask = global_bit_mask;
-    } else {
-      map->shift = next_bit;
-      map->mask = (1u << (next_bit + bits_needed)) - (1u << next_bit);
-      next_bit += bits_needed;
-      m.global_mask |= (info->default_value << map->shift) & map->mask;
+      map->జరుపు = global_బిట్టు_జరుపు;
+      map->ముసుగు = global_బిట్టు_ముసుగు;
+    } లేకపోతే {
+      map->జరుపు = తదుపరి_బిట్టు;
+      map->ముసుగు = (1u << (తదుపరి_బిట్టు + బిట్లు_needed)) - (1u << తదుపరి_బిట్టు);
+      తదుపరి_బిట్టు += బిట్లు_needed;
+      m.global_ముసుగు |= (info->default_విలువ << map->జరుపు) & map->ముసుగు;
     }
-    map->_1_mask = (1u << map->shift) & map->mask;
-    map->needs_fallback = !found;
+    map->_1_mask = (1u << map->జరుపు) & map->ముసుగు;
+    map->needs_fallback = !దొరికింది;
   }
   //feature_infos.shrink (0); /* Done with these */
-  if (is_simple)
+  ఒకవేళ (is_simple)
     m.features.qsort ();
 
-  add_gsub_pause (nullptr);
-  add_gpos_pause (nullptr);
+  కూడు_gsub_pause (శూన్యసూచిక);
+  కూడు_gpos_pause (శూన్యసూచిక);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  కొరకు (గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ = 0; పట్టిక_సూచీ < 2; పట్టిక_సూచీ++)
   {
     /* Collect lookup indices for features */
-    auto &lookups = m.lookups[table_index];
+    స్వయంచాలక &lookups = m.lookups[పట్టిక_సూచీ];
 
-    unsigned int stage_index = 0;
-    unsigned int last_num_lookups = 0;
-    for (unsigned stage = 0; stage < current_stage[table_index]; stage++)
+    గుర్తులేని పూర్ణాంకం stage_సూచీ = 0;
+    గుర్తులేని పూర్ణాంకం చివరి_అంకె_lookups = 0;
+    కొరకు (గుర్తులేని stage = 0; stage < current_stage[పట్టిక_సూచీ]; stage++)
     {
-      if (required_feature_index[table_index] != HB_OT_LAYOUT_NO_FEATURE_INDEX &&
-	  required_feature_stage[table_index] == stage)
-	add_lookups (m, table_index,
-		     required_feature_index[table_index],
+      ఒకవేళ (required_feature_సూచీ[పట్టిక_సూచీ] != HB_OT_LAYOUT_NO_FEATURE_సూచీ &&
+	  required_feature_stage[పట్టిక_సూచీ] == stage)
+	కూడు_lookups (m, పట్టిక_సూచీ,
+		     required_feature_సూచీ[పట్టిక_సూచీ],
 		     key,
-		     global_bit_mask);
+		     global_బిట్టు_ముసుగు);
 
-      for (auto &feature : m.features)
+      కొరకు (స్వయంచాలక &feature : m.features)
       {
-	if (feature.stage[table_index] == stage)
-	  add_lookups (m, table_index,
-		       feature.index[table_index],
+	ఒకవేళ (feature.stage[పట్టిక_సూచీ] == stage)
+	  కూడు_lookups (m, పట్టిక_సూచీ,
+		       feature.సూచీ_2[పట్టిక_సూచీ],
 		       key,
-		       feature.mask,
+		       feature.ముసుగు,
 		       feature.auto_zwnj,
 		       feature.auto_zwj,
 		       feature.random,
-		       feature.per_syllable,
-		       feature.tag);
+		       feature.చొప్పున_syllable,
+		       feature.ట్యాగ్_2);
       }
 
       /* Sort lookups and merge duplicates */
-      if (last_num_lookups + 1 < lookups.length)
+      ఒకవేళ (చివరి_అంకె_lookups + 1 < lookups.నిడివి)
       {
-	lookups.as_array ().sub_array (last_num_lookups, lookups.length - last_num_lookups).qsort ();
+	lookups.as_array ().sub_array (చివరి_అంకె_lookups, lookups.నిడివి - చివరి_అంకె_lookups).qsort ();
 
-	unsigned int j = last_num_lookups;
-	for (unsigned int i = j + 1; i < lookups.length; i++)
-	  if (lookups.arrayZ[i].index != lookups.arrayZ[j].index)
+	గుర్తులేని పూర్ణాంకం j = చివరి_అంకె_lookups;
+	కొరకు (గుర్తులేని పూర్ణాంకం i = j + 1; i < lookups.నిడివి; i++)
+	  ఒకవేళ (lookups.arrayZ[i].సూచీ_2 != lookups.arrayZ[j].సూచీ_2)
 	    lookups.arrayZ[++j] = lookups.arrayZ[i];
-	  else
+	  లేకపోతే
 	  {
-	    lookups.arrayZ[j].mask |= lookups.arrayZ[i].mask;
+	    lookups.arrayZ[j].ముసుగు |= lookups.arrayZ[i].ముసుగు;
 	    lookups.arrayZ[j].auto_zwnj &= lookups.arrayZ[i].auto_zwnj;
 	    lookups.arrayZ[j].auto_zwj &= lookups.arrayZ[i].auto_zwj;
 	  }
 	lookups.shrink (j + 1);
       }
 
-      last_num_lookups = lookups.length;
+      చివరి_అంకె_lookups = lookups.నిడివి;
 
-      if (stage_index < stages[table_index].length && stages[table_index][stage_index].index == stage) {
-	hb_ot_map_t::stage_map_t *stage_map = m.stages[table_index].push ();
-	stage_map->last_lookup = last_num_lookups;
-	stage_map->pause_func = stages[table_index][stage_index].pause_func;
+      ఒకవేళ (stage_సూచీ < stages[పట్టిక_సూచీ].నిడివి && stages[పట్టిక_సూచీ][stage_సూచీ].సూచీ_2 == stage) {
+	hb_ot_map_t::stage_map_t *stage_map = m.stages[పట్టిక_సూచీ].push ();
+	stage_map->చివరి_lookup = చివరి_అంకె_lookups;
+	stage_map->pause_func = stages[పట్టిక_సూచీ][stage_సూచీ].pause_func;
 
-	stage_index++;
+	stage_సూచీ++;
       }
     }
   }
 }
 
-unsigned int hb_ot_map_t::get_feature_tags (unsigned int start_offset, unsigned int *tag_count, hb_tag_t *tags) const
+గుర్తులేని పూర్ణాంకం hb_ot_map_t::get_feature_ట్యాగులు (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం, గుర్తులేని పూర్ణాంకం *ట్యాగ్_లెక్క, hb_ట్యాగ్_t *ట్యాగులు) స్థిరరాశి
 {
-  if (tag_count)
+  ఒకవేళ (ట్యాగ్_లెక్క)
   {
-    auto sub_features = features.as_array ().sub_array (start_offset, tag_count);
-    if (tags)
+    స్వయంచాలక sub_features = features.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, ట్యాగ్_లెక్క);
+    ఒకవేళ (ట్యాగులు)
     {
-      for (unsigned int i = 0; i < sub_features.length; i++)
-        tags[i] = sub_features[i].tag;
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < sub_features.నిడివి; i++)
+        ట్యాగులు[i] = sub_features[i].ట్యాగ్_2;
     }
   }
 
-  return features.length;
+  తిరిగి features.నిడివి;
 }
 
-#endif
+#అయితే_ముగింపు

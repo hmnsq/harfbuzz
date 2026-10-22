@@ -22,228 +22,228 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_JUST_TABLE_HH
-#define HB_AAT_LAYOUT_JUST_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_AAT_LAYOUT_JUST_పట్టిక_HH
+#నిర్వచించు HB_AAT_LAYOUT_JUST_పట్టిక_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-aat-layout-common.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
-#include "hb-aat-layout-morx-table.hh"
+#అన్తర్భావ "hb-aat-layout-morx-table.hh"
 
 /*
  * just -- Justification
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6just.html
  */
-#define HB_AAT_TAG_just HB_TAG('j','u','s','t')
+#నిర్వచించు HB_AAT_ట్యాగ్_just HB_ట్యాగ్('j','u','s','t')
 
 
-namespace AAT {
+నామాకాశ AAT {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
 
-struct ActionSubrecordHeader
+నిర్మాణం Action_Subrecord_శీర్షిక
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
   HBUINT16	actionClass;	/* The JustClass value associated with this
 				 * ActionSubrecord. */
   HBUINT16	actionType;	/* The type of postcompensation action. */
-  HBUINT16	actionLength;	/* Length of this ActionSubrecord record, which
+  HBUINT16	action_నిడివి;	/* Length of this ActionSubrecord record, which
 				 * must be a multiple of 4. */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct DecompositionAction
+నిర్మాణం DecompositionAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  ActionSubrecordHeader
-		header;
-  F16DOT16	lowerLimit;	/* If the distance factor is less than this value,
+  Action_Subrecord_శీర్షిక
+		శీర్షిక;
+  F16DOT16	క్రింది_హద్దు;	/* If the distance factor is less than this value,
 				 * then the ligature is decomposed. */
-  F16DOT16	upperLimit;	/* If the distance factor is greater than this value,
+  F16DOT16	పై_హద్దు;	/* If the distance factor is greater than this value,
 				 * then the ligature is decomposed. */
-  HBUINT16	order;		/* Numerical order in which this ligature will
+  HBUINT16	క్రమం;		/* Numerical order in which this ligature will
 				 * be decomposed; you may want infrequent ligatures
 				 * to decompose before more frequent ones. The ligatures
 				 * on the line of text will decompose in increasing
 				 * value of this field. */
-  Array16Of<HBUINT16>
+  Array16_యొక్క<HBUINT16>
 		decomposedglyphs;
 				/* Number of 16-bit glyph indexes that follow;
 				 * the ligature will be decomposed into these glyphs.
 				 *
 				 * Array of decomposed glyphs. */
-  public:
-  DEFINE_SIZE_ARRAY (18, decomposedglyphs);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (18, decomposedglyphs);
 };
 
-struct UnconditionalAddGlyphAction
+నిర్మాణం Unconditional_కూడు_Glyph_Action
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
-  HBGlyphID16	addGlyph;	/* Glyph that should be added if the distance factor
+  రక్షిత:
+  Action_Subrecord_శీర్షిక
+		శీర్షిక;
+  HBGlyphID16	కూడు_Glyph;	/* Glyph that should be added if the distance factor
 				 * is growing. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct ConditionalAddGlyphAction
+నిర్మాణం Conditional_కూడు_Glyph_Action
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
-  F16DOT16	substThreshold; /* Distance growth factor (in ems) at which
+  రక్షిత:
+  Action_Subrecord_శీర్షిక
+		శీర్షిక;
+  F16DOT16	subst_పరిమితి; /* Distance growth factor (in ems) at which
 				 * this glyph is replaced and the growth factor
 				 * recalculated. */
-  HBGlyphID16	addGlyph;	/* Glyph to be added as kashida. If this value is
+  HBGlyphID16	కూడు_Glyph;	/* Glyph to be added as kashida. If this value is
 				 * 0xFFFF, no extra glyph will be added. Note that
 				 * generally when a glyph is added, justification
 				 * will need to be redone. */
   HBGlyphID16	substGlyph;	/* Glyph to be substituted for this glyph if the
 				 * growth factor equals or exceeds the value of
 				 * substThreshold. */
-  public:
-  DEFINE_SIZE_STATIC (14);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (14);
 };
 
-struct DuctileGlyphAction
+నిర్మాణం DuctileGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
+  రక్షిత:
+  Action_Subrecord_శీర్షిక
+		శీర్షిక;
   HBUINT32	variationAxis;	/* The 4-byte tag identifying the ductile axis.
 				 * This would normally be 0x64756374 ('duct'),
 				 * but you may use any axis the font contains. */
-  F16DOT16	minimumLimit;	/* The lowest value for the ductility axis that
+  F16DOT16	minimum_హద్దు;	/* The lowest value for the ductility axis that
 				 * still yields an acceptable appearance. Normally
 				 * this will be 1.0. */
-  F16DOT16	noStretchValue; /* This is the default value that corresponds to
+  F16DOT16	no_Stretch_విలువ; /* This is the default value that corresponds to
 				 * no change in appearance. Normally, this will
 				 * be 1.0. */
-  F16DOT16	maximumLimit;	/* The highest value for the ductility axis that
+  F16DOT16	గరిష్ఠ_హద్దు;	/* The highest value for the ductility axis that
 				 * still yields an acceptable appearance. */
-  public:
-  DEFINE_SIZE_STATIC (22);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (22);
 };
 
-struct RepeatedAddGlyphAction
+నిర్మాణం Repeated_కూడు_Glyph_Action
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
-  ActionSubrecordHeader
-		header;
+  రక్షిత:
+  Action_Subrecord_శీర్షిక
+		శీర్షిక;
   HBUINT16	flags;		/* Currently unused; set to 0. */
   HBGlyphID16	glyph;		/* Glyph that should be added if the distance factor
 				 * is growing. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
-struct ActionSubrecord
+నిర్మాణం ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  గుర్తులేని పూర్ణాంకం get_నిడివి () స్థిరరాశి { తిరిగి u.శీర్షిక.action_నిడివి; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది)))
+      return_trace (అబద్ధం);
     hb_barrier ();
 
-    switch (u.header.actionType)
+    ఎంపిక (u.శీర్షిక.actionType)
     {
-    case 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
-    case 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
+    స్థితి 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    స్థితి 1: hb_barrier ();  return_trace (u.unconditional_కూడు_Glyph_Action.sanitize (c));
+    స్థితి 2: hb_barrier ();  return_trace (u.conditional_కూడు_Glyph_Action.sanitize (c));
     // case 3: hb_barrier (); return_trace (u.stretchGlyphAction.sanitize (c));
-    case 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    default: return_trace (true);
+    స్థితి 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    స్థితి 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    అప్రమేయ: return_trace (నిజం);
     }
   }
 
-  protected:
-  union	{
-  ActionSubrecordHeader		header;
+  రక్షిత:
+  సంఘం	{
+  Action_Subrecord_శీర్షిక		శీర్షిక;
   DecompositionAction		decompositionAction;
-  UnconditionalAddGlyphAction	unconditionalAddGlyphAction;
-  ConditionalAddGlyphAction	conditionalAddGlyphAction;
+  Unconditional_కూడు_Glyph_Action	unconditional_కూడు_Glyph_Action;
+  Conditional_కూడు_Glyph_Action	conditional_కూడు_Glyph_Action;
   /* StretchGlyphAction stretchGlyphAction; -- Not supported by CoreText */
   DuctileGlyphAction		ductileGlyphAction;
-  RepeatedAddGlyphAction	repeatedAddGlyphAction;
+  Repeated_కూడు_Glyph_Action	repeated_కూడు_Glyph_Action;
   } u;				/* Data. The format of this data depends on
 				 * the value of the actionType field. */
-  public:
-  DEFINE_SIZE_UNION (6, header);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (6, శీర్షిక);
 };
 
-struct PostcompensationActionChain
+నిర్మాణం PostcompensationActionChain
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది)))
+      return_trace (అబద్ధం);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం స్థానభ్రంశం = min_కొలత;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
-      offset += subrecord.get_length ();
+      స్థిరరాశి ActionSubrecord& subrecord = Struct_At_స్థానభ్రంశం<ActionSubrecord> (ఇది, స్థానభ్రంశం);
+      ఒకవేళ (unlikely (!subrecord.sanitize (c))) return_trace (అబద్ధం);
+      స్థానభ్రంశం += subrecord.get_నిడివి ();
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  protected:
-  HBUINT32	count;
+  రక్షిత:
+  HBUINT32	లెక్క;
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct JustWidthDeltaEntry
+నిర్మాణం Just_వెడల్పు_Delta_నమోదు
 {
-  enum Flags
+  గణన Flags
   {
     Reserved1		=0xE000,/* Reserved. You should set these bits to zero. */
     UnlimiteGap		=0x1000,/* The glyph can take unlimited gap. When this
@@ -251,10 +251,10 @@ struct JustWidthDeltaEntry
 				 * it and any other glyphs on the line having this
 				 * bit set absorb all the remaining gap. */
     Reserved2		=0x0FF0,/* Reserved. You should set these bits to zero. */
-    Priority		=0x000F /* The justification priority of the glyph. */
+    ప్రాధాన్యత_2		=0x000F /* The justification priority of the glyph. */
   };
 
-  enum Priority
+  గణన ప్రాధాన్యత_2
   {
     Kashida		= 0,	/* Kashida priority. This is the highest priority
 				 * during justification. */
@@ -263,7 +263,7 @@ struct JustWidthDeltaEntry
 				 * get this priority. */
     InterCharacter	= 2,	/* Inter-character priority. Give this to any
 				 * remaining glyphs. */
-    NullPriority	= 3	/* Null priority. You should set this priority for
+    Null_ప్రాధాన్యత	= 3	/* Null priority. You should set this priority for
 				 * glyphs that only participate in justification
 				 * after the above priorities. Normally all glyphs
 				 * have one of the previous three values. If you
@@ -272,55 +272,55 @@ struct JustWidthDeltaEntry
 				 * you may instead assign it to the null priority. */
   };
 
-  protected:
-  F16DOT16	beforeGrowLimit;/* The ratio by which the advance width of the
+  రక్షిత:
+  F16DOT16	before_Grow_హద్దు;/* The ratio by which the advance width of the
 				 * glyph is permitted to grow on the left or top side. */
-  F16DOT16	beforeShrinkLimit;
+  F16DOT16	before_Shrink_హద్దు;
 				/* The ratio by which the advance width of the
 				 * glyph is permitted to shrink on the left or top side. */
-  F16DOT16	afterGrowLimit;	/* The ratio by which the advance width of the glyph
+  F16DOT16	after_Grow_హద్దు;	/* The ratio by which the advance width of the glyph
 				 * is permitted to shrink on the left or top side. */
-  F16DOT16	afterShrinkLimit;
+  F16DOT16	after_Shrink_హద్దు;
 				/* The ratio by which the advance width of the glyph
 				 * is at most permitted to shrink on the right or
 				 * bottom side. */
   HBUINT16	growFlags;	/* Flags controlling the grow case. */
   HBUINT16	shrinkFlags;	/* Flags controlling the shrink case. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (20);
 };
 
-struct WidthDeltaPair
+నిర్మాణం వెడల్పు_Delta_Pair
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT32	justClass;	/* The justification category associated
 				 * with the wdRecord field. Only 7 bits of
 				 * this field are used. (The other bits are
 				 * used as padding to guarantee longword
 				 * alignment of the following record). */
-  JustWidthDeltaEntry
-		wdRecord;	/* The actual width delta record. */
+  Just_వెడల్పు_Delta_నమోదు
+		wd_రికార్డు;	/* The actual width delta record. */
 
-  public:
-  DEFINE_SIZE_STATIC (24);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (24);
 };
 
-typedef OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
+రకనిర్వచనం OT::Array32_యొక్క<వెడల్పు_Delta_Pair> వెడల్పు_Delta_Cluster;
 
-struct JustificationCategory
+నిర్మాణం JustificationCategory
 {
-  typedef void EntryData;
+  రకనిర్వచనం శూన్య నమోదు_దత్తాంశం;
 
-  enum Flags
+  గణన Flags
   {
-    SetMark		=0x8000,/* If set, make the current glyph the marked
+    సమితి_Mark		=0x8000,/* If set, make the current glyph the marked
 				 * glyph. */
     DontAdvance		=0x4000,/* If set, don't advance to the next glyph before
 				 * going to the new state. */
@@ -330,91 +330,91 @@ struct JustificationCategory
 				 * glyph if nonzero. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  morphHeader.sanitize (c) &&
-			  stHeader.sanitize (c)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  morph_శీర్షిక.sanitize (c) &&
+			  st_శీర్షిక.sanitize (c)));
   }
 
-  protected:
+  రక్షిత:
   ChainSubtable<ObsoleteTypes>
-		morphHeader;	/* Metamorphosis-style subtable header. */
-  StateTable<ObsoleteTypes, EntryData>
-		stHeader;	/* The justification insertion state table header */
-  public:
-  DEFINE_SIZE_STATIC (30);
+		morph_శీర్షిక;	/* Metamorphosis-style subtable header. */
+  State_పట్టిక<ObsoleteTypes, నమోదు_దత్తాంశం>
+		st_శీర్షిక;	/* The justification insertion state table header */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (30);
 };
 
-struct JustificationHeader
+నిర్మాణం Justification_శీర్షిక
 {
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  justClassTable.sanitize (c, base, base) &&
-			  wdcTable.sanitize (c, base) &&
-			  pcTable.sanitize (c, base) &&
-			  lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  just_Class_పట్టిక.sanitize (c, పునాది, పునాది) &&
+			  wdc_పట్టిక.sanitize (c, పునాది) &&
+			  pc_పట్టిక.sanitize (c, పునాది) &&
+			  lookup_పట్టిక.sanitize (c, పునాది)));
   }
 
-  protected:
-  Offset16To<JustificationCategory>
-		justClassTable;	/* Offset to the justification category state table. */
-  Offset16To<WidthDeltaCluster>
-		wdcTable;	/* Offset from start of justification table to start
+  రక్షిత:
+  Offset16_గమ్యం<JustificationCategory>
+		just_Class_పట్టిక;	/* Offset to the justification category state table. */
+  Offset16_గమ్యం<వెడల్పు_Delta_Cluster>
+		wdc_పట్టిక;	/* Offset from start of justification table to start
 				 * of the subtable containing the width delta factors
 				 * for the glyphs in your font.
 				 *
 				 * The width delta clusters table. */
-  Offset16To<PostcompensationActionChain>
-		pcTable;	/* Offset from start of justification table to start
+  Offset16_గమ్యం<PostcompensationActionChain>
+		pc_పట్టిక;	/* Offset from start of justification table to start
 				 * of postcompensation subtable (set to zero if none).
 				 *
 				 * The postcompensation subtable, if present in the font. */
-  Lookup<Offset16To<WidthDeltaCluster>>
-		lookupTable;	/* Lookup table associating glyphs with width delta
+  Lookup<Offset16_గమ్యం<వెడల్పు_Delta_Cluster>>
+		lookup_పట్టిక;	/* Lookup table associating glyphs with width delta
 				 * clusters. See the description of Width Delta Clusters
 				 * table for details on how to interpret the lookup values. */
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (8);
 };
 
-struct just
+నిర్మాణం just
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_AAT_ట్యాగ్_just;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  సంస్కరణ.major == 1 &&
+			  horiz_దత్తాంశం.sanitize (c, ఇది, ఇది) &&
+			  vert_దత్తాంశం.sanitize (c, ఇది, ఇది)));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the justification table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the justification table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the justification table (set to 0). */
-  Offset16To<JustificationHeader>
-		horizData;	/* Byte offset from the start of the justification table
+  Offset16_గమ్యం<Justification_శీర్షిక>
+		horiz_దత్తాంశం;	/* Byte offset from the start of the justification table
 				 * to the header for tables that contain justification
 				 * information for horizontal text.
 				 * If you are not including this information,
 				 * store 0. */
-  Offset16To<JustificationHeader>
-		vertData;	/* ditto, vertical */
+  Offset16_గమ్యం<Justification_శీర్షిక>
+		vert_దత్తాంశం;	/* ditto, vertical */
 
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_JUST_TABLE_HH */
+#అయితే_ముగింపు /* HB_AAT_LAYOUT_JUST_TABLE_HH */

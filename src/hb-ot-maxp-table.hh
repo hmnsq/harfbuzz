@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_MAXP_TABLE_HH
-#define HB_OT_MAXP_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_MAXP_పట్టిక_HH
+#నిర్వచించు HB_OT_MAXP_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-dual.hh"
 
-namespace OT {
+నామాకాశ OT {
 
 
 /*
@@ -38,21 +38,21 @@ namespace OT {
  * https://docs.microsoft.com/en-us/typography/opentype/spec/maxp
  */
 
-#define HB_OT_TAG_maxp HB_TAG('m','a','x','p')
-#define HB_OT_TAG_MAXP HB_TAG('M','A','X','P')
+#నిర్వచించు HB_OT_ట్యాగ్_maxp HB_ట్యాగ్('m','a','x','p')
+#నిర్వచించు HB_OT_ట్యాగ్_MAXP HB_ట్యాగ్('M','A','X','P')
 
-struct maxpV1Tail
+నిర్మాణం maxp_V1_తోక
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
   HBUINT16 maxPoints;		  /* Maximum points in a non-composite glyph. */
   HBUINT16 maxContours;		  /* Maximum contours in a non-composite glyph. */
-  HBUINT16 maxCompositePoints;	  /* Maximum points in a composite glyph. */
-  HBUINT16 maxCompositeContours;  /* Maximum contours in a composite glyph. */
+  HBUINT16 max_సంయుక్త_Points;	  /* Maximum points in a composite glyph. */
+  HBUINT16 max_సంయుక్త_Contours;  /* Maximum contours in a composite glyph. */
   HBUINT16 maxZones;		  /* 1 if instructions do not use the twilight zone (Z0),
 				   * or 2 if instructions do use Z0; should be set to 2 in
 				   * most cases. */
@@ -60,154 +60,154 @@ struct maxpV1Tail
   HBUINT16 maxStorage;		  /* Number of Storage Area locations. */
   HBUINT16 maxFunctionDefs;	  /* Number of FDEFs, equal to the highest function number + 1. */
   HBUINT16 maxInstructionDefs;	  /* Number of IDEFs. */
-  HBUINT16 maxStackElements;	  /* Maximum stack depth. (This includes Font and CVT
+  HBUINT16 max_దొంతర_Elements;	  /* Maximum stack depth. (This includes Font and CVT
 				   * Programs, as well as the instructions for each glyph.) */
-  HBUINT16 maxSizeOfInstructions; /* Maximum byte count for glyph instructions. */
+  HBUINT16 max_కొలత_యొక్క_Instructions; /* Maximum byte count for glyph instructions. */
   HBUINT16 maxComponentElements;  /* Maximum number of components referenced at
 				   * "top level" for any composite glyph. */
-  HBUINT16 maxComponentDepth;	  /* Maximum levels of recursion; 1 for simple components. */
- public:
-  DEFINE_SIZE_STATIC (26);
+  HBUINT16 max_Component_లోతు;	  /* Maximum levels of recursion; 1 for simple components. */
+ బహిరంగ:
+  DEFINE_కొలత_STATIC (26);
 };
 
 
-template <typename Types>
-struct maxp_MAXP
+మూస <రకం_పేరు Types>
+నిర్మాణం maxp_MAXP
 {
-  unsigned int get_num_glyphs () const { return numGlyphs; }
+  గుర్తులేని పూర్ణాంకం get_అంకె_glyphs () స్థిరరాశి { తిరిగి అంకె_Glyphs; }
 
-  void set_num_glyphs (unsigned int count)
+  శూన్య సమితి_అంకె_glyphs (గుర్తులేని పూర్ణాంకం లెక్క)
   {
-    numGlyphs = count;
+    అంకె_Glyphs = లెక్క;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది)))
+      return_trace (అబద్ధం);
     hb_barrier ();
-    if (version.major == 1)
+    ఒకవేళ (సంస్కరణ.major == 1)
     {
-      const maxpV1Tail &v1 = StructAfter<maxpV1Tail> (*this);
+      స్థిరరాశి maxp_V1_తోక &v1 = StructAfter<maxp_V1_తోక> (*ఇది);
       return_trace (v1.sanitize (c));
     }
-    return_trace (likely (version.major == 0 && version.minor == 0x5000u));
+    return_trace (likely (సంస్కరణ.major == 0 && సంస్కరణ.minor == 0x5000u));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    maxp_MAXP *maxp_prime = c->serializer->embed (this);
-    if (unlikely (!maxp_prime)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    maxp_MAXP *maxp_ప్రధానసంఖ్య = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!maxp_ప్రధానసంఖ్య)) return_trace (అబద్ధం);
 
-    maxp_prime->numGlyphs = hb_min (c->plan->num_output_glyphs (),
-				    (1u << (8 * Types::size)) - 1);
-    if (maxp_prime->version.major == 1)
+    maxp_ప్రధానసంఖ్య->అంకె_Glyphs = hb_min (c->plan->అంకె_output_glyphs (),
+				    (1u << (8 * Types::కొలత)) - 1);
+    ఒకవేళ (maxp_ప్రధానసంఖ్య->సంస్కరణ.major == 1)
     {
       hb_barrier ();
-      const maxpV1Tail *src_v1 = &StructAfter<maxpV1Tail> (*this);
-      maxpV1Tail *dest_v1 = c->serializer->embed<maxpV1Tail> (src_v1);
-      if (unlikely (!dest_v1)) return_trace (false);
+      స్థిరరాశి maxp_V1_తోక *src_v1 = &StructAfter<maxp_V1_తోక> (*ఇది);
+      maxp_V1_తోక *dest_v1 = c->serializer->embed<maxp_V1_తోక> (src_v1);
+      ఒకవేళ (unlikely (!dest_v1)) return_trace (అబద్ధం);
 
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      ఒకవేళ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
 	drop_hint_fields (dest_v1);
 
-      if (c->plan->normalized_coords)
-        instancing_update_fields (c->plan->head_maxp_info, dest_v1);
+      ఒకవేళ (c->plan->normalized_coords)
+        instancing_update_fields (c->plan->తల_maxp_info, dest_v1);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void instancing_update_fields (head_maxp_info_t& maxp_info, maxpV1Tail* dest_v1) const
+  శూన్య instancing_update_fields (తల_maxp_info_t& maxp_info, maxp_V1_తోక* dest_v1) స్థిరరాశి
   {
     dest_v1->maxPoints = maxp_info.maxPoints;
     dest_v1->maxContours = maxp_info.maxContours;
-    dest_v1->maxCompositePoints = maxp_info.maxCompositePoints;
-    dest_v1->maxCompositeContours = maxp_info.maxCompositeContours;
+    dest_v1->max_సంయుక్త_Points = maxp_info.max_సంయుక్త_Points;
+    dest_v1->max_సంయుక్త_Contours = maxp_info.max_సంయుక్త_Contours;
     dest_v1->maxComponentElements = maxp_info.maxComponentElements;
-    dest_v1->maxComponentDepth = maxp_info.maxComponentDepth;
+    dest_v1->max_Component_లోతు = maxp_info.max_Component_లోతు;
   }
 
-  static void drop_hint_fields (maxpV1Tail* dest_v1)
+  స్థిర శూన్య drop_hint_fields (maxp_V1_తోక* dest_v1)
   {
     dest_v1->maxZones = 1;
     dest_v1->maxTwilightPoints = 0;
     dest_v1->maxStorage = 0;
     dest_v1->maxFunctionDefs = 0;
     dest_v1->maxInstructionDefs = 0;
-    dest_v1->maxStackElements = 0;
-    dest_v1->maxSizeOfInstructions = 0;
+    dest_v1->max_దొంతర_Elements = 0;
+    dest_v1->max_కొలత_యొక్క_Instructions = 0;
   }
 
-  protected:
-  FixedVersion<>version;/* Version of the maxp table (0.5 or 1.0),
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;/* Version of the maxp table (0.5 or 1.0),
 			 * 0x00005000u or 0x00010000u. */
-  typename Types::HBUINT
-		numGlyphs;
+  రకం_పేరు Types::HBUINT
+		అంకె_Glyphs;
 			/* The number of glyphs in the font. */
 /*maxpV1Tail	v1Tail[HB_VAR_ARRAY]; */
-  public:
-  DEFINE_SIZE_STATIC (4 + Types::HBUINT::static_size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4 + Types::HBUINT::static_కొలత);
 };
 
-struct maxp : maxp_MAXP<Layout::SmallTypes>
+నిర్మాణం maxp : maxp_MAXP<Layout::SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_maxp;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_maxp;
 };
 
-struct MAXP : maxp_MAXP<Layout::MediumTypes>
+నిర్మాణం MAXP : maxp_MAXP<Layout::MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MAXP;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_MAXP;
 };
 
-struct maxp_accelerator_t
+నిర్మాణం maxp_accelerator_t
 {
   maxp_accelerator_t ()
   {
-    blob = hb_blob_get_empty ();
-    numGlyphs = 0;
+    blob = hb_blob_get_ఖాళీలు ();
+    అంకె_Glyphs = 0;
   }
 
   maxp_accelerator_t (hb_face_t *face) : maxp_accelerator_t ()
   {
-#ifndef HB_NO_BEYOND_64K
-    if (init_table<MAXP> (face))
-      return;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (init_పట్టిక<MAXP> (face))
+      తిరిగి;
+#అయితే_ముగింపు
 
-    init_table<maxp> (face);
+    init_పట్టిక<maxp> (face);
   }
 
   ~maxp_accelerator_t () { hb_blob_destroy (blob); }
 
-  unsigned int get_num_glyphs () const { return numGlyphs; }
-  hb_blob_t *get_blob () const { return blob; }
+  గుర్తులేని పూర్ణాంకం get_అంకె_glyphs () స్థిరరాశి { తిరిగి అంకె_Glyphs; }
+  hb_blob_t *get_blob () స్థిరరాశి { తిరిగి blob; }
 
-  private:
-  template <typename Table>
-  bool init_table (hb_face_t *face)
+  అంతరంగ:
+  మూస <రకం_పేరు పట్టిక_3>
+  తార్కిక init_పట్టిక (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    c.set_num_glyphs (0);
-    hb_blob_ptr_t<Table> table = c.reference_table<Table> (face);
-    bool ret = table.get_length ();
-    if (ret)
+    c.సమితి_అంకె_glyphs (0);
+    hb_blob_ptr_t<పట్టిక_3> పట్టిక = c.reference_పట్టిక<పట్టిక_3> (face);
+    తార్కిక ret = పట్టిక.get_నిడివి ();
+    ఒకవేళ (ret)
     {
-      blob = hb_blob_reference (table.get_blob ());
-      numGlyphs = table->get_num_glyphs ();
+      blob = hb_blob_reference (పట్టిక.get_blob ());
+      అంకె_Glyphs = పట్టిక->get_అంకె_glyphs ();
     }
-    table.destroy ();
-    return ret;
+    పట్టిక.destroy ();
+    తిరిగి ret;
   }
 
   hb_blob_t *blob;
-  unsigned int numGlyphs;
+  గుర్తులేని పూర్ణాంకం అంకె_Glyphs;
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_MAXP_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_MAXP_TABLE_HH */

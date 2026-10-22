@@ -26,55 +26,55 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
-#define OT_LAYOUT_COMMON_RANGERECORD_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_COMMON_RANGERECORD_HH
+#నిర్వచించు OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+మూస <రకం_పేరు Types, రకం_పేరు విలువ = HBUINT16>
+నిర్మాణం Range_రికార్డు
 {
-  typename Types::HBGlyphID     first;          /* First GlyphID in the range */
-  typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  రకం_పేరు Types::HBGlyphID     మొదటి;          /* First GlyphID in the range */
+  రకం_పేరు Types::HBGlyphID     చివరి;           /* Last GlyphID in the range */
+  విలువ                         value;          /*విలువ*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_కొలత_STATIC (2 * Types::కొలత + విలువ::static_కొలత);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  పూర్ణాంకం cmp (hb_codepoint_t g) స్థిరరాశి
+  { తిరిగి g < మొదటి ? -1 : g <= చివరి ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_అంతర్గత స్థిర పూర్ణాంకం cmp_range (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb) {
+    స్థిరరాశి Range_రికార్డు *a = (స్థిరరాశి Range_రికార్డు *) pa;
+    స్థిరరాశి Range_రికార్డు *b = (స్థిరరాశి Range_రికార్డు *) pb;
+    ఒకవేళ (a->మొదటి < b->మొదటి) తిరిగి -1;
+    ఒకవేళ (a->మొదటి > b->మొదటి) తిరిగి +1;
+    ఒకవేళ (a->చివరి < b->చివరి) తిరిగి -1;
+    ఒకవేళ (a->చివరి > b->చివరి) తిరిగి +1;
+    ఒకవేళ (a->value < b->value) తిరిగి -1;
+    ఒకవేళ (a->value > b->value) తిరిగి +1;
+    తిరిగి 0;
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    ఒకవేళ (unlikely (చివరి < మొదటి)) తిరిగి 0;
+    తిరిగి (చివరి - మొదటి + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t &glyphs) స్థిరరాశి
+  { తిరిగి glyphs.intersects (మొదటి, చివరి); }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి glyphs->కూడు_range (మొదటి, చివరి); }
 };
 
 }
@@ -85,13 +85,13 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+బాహ్య HB_అంతర్గత స్థిరరాశి గుర్తులేని అక్షరం hb_Null_OT_Range_రికార్డు[9];
+మూస <రకం_పేరు Spec, రకం_పేరు విలువ>
+నిర్మాణం Null<OT::Layout::Common::Range_రికార్డు<Spec, విలువ>> {
+  స్థిర OT::Layout::Common::Range_రికార్డు<Spec, విలువ> స్థిరరాశి & get_null () {
+    తిరిగి *reinterpret_cast<స్థిరరాశి OT::Layout::Common::Range_రికార్డు<Spec, విలువ> *> (hb_Null_OT_Range_రికార్డు);
   }
 };
 
 
-#endif  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
+#అయితే_ముగింపు  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH

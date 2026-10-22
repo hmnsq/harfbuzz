@@ -22,78 +22,78 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_SUBSET_INSTANCER_SOLVER_HH
-#define HB_SUBSET_INSTANCER_SOLVER_HH
+#నిర్వచితం_కాకపోతే HB_SUBSET_INSTANCER_SOLVER_HH
+#నిర్వచించు HB_SUBSET_INSTANCER_SOLVER_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 /* pre-normalized distances */
-struct TripleDistances
+నిర్మాణం TripleDistances
 {
   TripleDistances (): negative (1.f), positive (1.f) {}
-  TripleDistances (float neg_, float pos_): negative (neg_), positive (pos_) {}
-  TripleDistances (float min, float default_, float max)
+  TripleDistances (దశాంశం neg_, దశాంశం pos_): negative (neg_), positive (pos_) {}
+  TripleDistances (దశాంశం min, దశాంశం default_, దశాంశం max)
   {
     negative = default_ - min;
     positive = max - default_;
   }
 
-  float negative;
-  float positive;
+  దశాంశం negative;
+  దశాంశం positive;
 };
 
-struct Triple
+నిర్మాణం Triple
 {
-  Triple () = default;
+  Triple () = అప్రమేయ;
 
-  Triple (float minimum_, float middle_, float maximum_) :
-    minimum (minimum_), middle (middle_), maximum (maximum_) {}
+  Triple (దశాంశం minimum_, దశాంశం మధ్య_2, దశాంశం గరిష్ఠ_2) :
+    minimum (minimum_), మధ్య (మధ్య_2), గరిష్ఠ (గరిష్ఠ_2) {}
 
-  bool operator == (const Triple &o) const
+  తార్కిక క్రియాకారకం == (స్థిరరాశి Triple &o) స్థిరరాశి
   {
-    return minimum == o.minimum &&
-	   middle  == o.middle  &&
-	   maximum == o.maximum;
+    తిరిగి minimum == o.minimum &&
+	   మధ్య  == o.మధ్య  &&
+	   గరిష్ఠ == o.గరిష్ఠ;
   }
 
-  bool operator != (const Triple o) const
-  { return !(*this == o); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి Triple o) స్థిరరాశి
+  { తిరిగి !(*ఇది == o); }
 
-  bool is_point () const
-  { return minimum == middle && middle == maximum; }
+  తార్కిక is_బిందువు () స్థిరరాశి
+  { తిరిగి minimum == మధ్య && మధ్య == గరిష్ఠ; }
 
-  bool contains (float point) const
-  { return minimum <= point && point <= maximum; }
+  తార్కిక కలిగియుంది (దశాంశం బిందువు) స్థిరరాశి
+  { తిరిగి minimum <= బిందువు && బిందువు <= గరిష్ఠ; }
 
   /* from hb_array_t hash ()*/
-  uint32_t hash () const
+  uint32_t hash () స్థిరరాశి
   {
     uint32_t current = /*cbf29ce4*/0x84222325;
     current = current ^ hb_hash (minimum);
     current = current * 16777619;
 
-    current = current ^ hb_hash (middle);
+    current = current ^ hb_hash (మధ్య);
     current = current * 16777619;
 
-    current = current ^ hb_hash (maximum);
+    current = current ^ hb_hash (గరిష్ఠ);
     current = current * 16777619;
-    return current;
+    తిరిగి current;
   }
 
-  float minimum = 0;
-  float middle = 0;
-  float maximum = 0;
+  దశాంశం minimum = 0;
+  దశాంశం మధ్య = 0;
+  దశాంశం గరిష్ఠ = 0;
 };
 
-using rebase_tent_result_item_t = hb_pair_t<float, Triple>;
-using rebase_tent_result_t = hb_vector_t<rebase_tent_result_item_t>;
+ఉపయోగించి rebase_tent_ఫలితం_అంశం_t = hb_pair_t<దశాంశం, Triple>;
+ఉపయోగించి rebase_tent_ఫలితం_t = hb_సదిశ_t<rebase_tent_ఫలితం_అంశం_t>;
 
 /* renormalize a normalized value v to the range of an axis,
  * considering the prenormalized distances as well as the new axis limits.
  * Ported from fonttools */
-HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
-                                    const TripleDistances &triple_distances,
-                                    bool extrapolate = true);
+HB_అంతర్గత దశాంశం renormalize_విలువ (దశాంశం v, స్థిరరాశి Triple &triple,
+                                    స్థిరరాశి TripleDistances &triple_distances,
+                                    తార్కిక extrapolate = నిజం);
 /* Given a tuple (lower,peak,upper) "tent" and new axis limits
  * (axisMin,axisDefault,axisMax), solves how to represent the tent
  * under the new axis configuration.  All values are in normalized
@@ -105,10 +105,10 @@ HB_INTERNAL float renormalizeValue (float v, const Triple &triple,
  * If tent value is Triple{}, that is a special deltaset that should
  * be always-enabled (called "gain").
  */
-HB_INTERNAL void rebase_tent (Triple tent,
-			      Triple axisLimit,
+HB_అంతర్గత శూన్య rebase_tent (Triple tent,
+			      Triple axis_హద్దు_2,
 			      TripleDistances axis_triple_distances,
-			      rebase_tent_result_t &out,
-			      rebase_tent_result_t &scratch);
+			      rebase_tent_ఫలితం_t &బహిర్గతం,
+			      rebase_tent_ఫలితం_t &scratch);
 
-#endif /* HB_SUBSET_INSTANCER_SOLVER_HH */
+#అయితే_ముగింపు /* HB_SUBSET_INSTANCER_SOLVER_HH */

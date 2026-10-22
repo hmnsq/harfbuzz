@@ -23,317 +23,317 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF2_INTERP_CS_HH
-#define HB_CFF2_INTERP_CS_HH
+#నిర్వచితం_కాకపోతే HB_CFF2_INTERP_CS_HH
+#నిర్వచించు HB_CFF2_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
-struct blend_arg_t : number_t
+నిర్మాణం blend_arg_t : సంఖ్య_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
-  void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
-  void set_real (double v) { reset_blends (); number_t::set_real (v); }
+  శూన్య సమితి_int (పూర్ణాంకం v) { reset_blends (); సంఖ్య_t::సమితి_int (v); }
+  శూన్య సమితి_fixed (int32_t v) { reset_blends (); సంఖ్య_t::సమితి_fixed (v); }
+  శూన్య సమితి_real (ద్విగుణ v) { reset_blends (); సంఖ్య_t::సమితి_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
-		   hb_array_t<const blend_arg_t> blends_)
+  శూన్య సమితి_blends (గుర్తులేని పూర్ణాంకం అంకె_విలువలు, గుర్తులేని పూర్ణాంకం విలువ_సూచీ,
+		   hb_array_t<స్థిరరాశి blend_arg_t> blends_)
   {
-    numValues = numValues_;
-    valueIndex = valueIndex_;
-    unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
-      return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    అంకె_విలువలు_2 = అంకె_విలువలు;
+    విలువ_సూచీ_2 = విలువ_సూచీ;
+    గుర్తులేని అంకె_Blends = blends_.నిడివి;
+    ఒకవేళ (unlikely (!deltas.resize_exact (అంకె_Blends)))
+      తిరిగి;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_Blends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
-  bool blending () const { return deltas.length > 0; }
-  void reset_blends ()
+  తార్కిక blending () స్థిరరాశి { తిరిగి deltas.నిడివి > 0; }
+  శూన్య reset_blends ()
   {
-    numValues = valueIndex = 0;
+    అంకె_విలువలు_2 = విలువ_సూచీ_2 = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
-  hb_vector_t<number_t> deltas;
+  గుర్తులేని పూర్ణాంకం అంకె_విలువలు_2;
+  గుర్తులేని పూర్ణాంకం విలువ_సూచీ_2;
+  hb_సదిశ_t<సంఖ్య_t> deltas;
 };
 
-typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
+రకనిర్వచనం biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
 
-template <typename ELEM>
-struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
+మూస <రకం_పేరు ELEM>
+నిర్మాణం cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
-  template <typename ACC>
-  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
-      region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
+  మూస <రకం_పేరు ACC>
+  cff2_cs_interp_env_t (స్థిరరాశి hb_ubytes_t &str, ACC &acc, గుర్తులేని పూర్ణాంకం fd,
+			స్థిరరాశి పూర్ణాంకం *coords_=శూన్యసూచిక, గుర్తులేని పూర్ణాంకం అంకె_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.వ్యక్తిగత_Dicts[fd].localSubrs),
+      region_లెక్క_2 (0), cached_scalars_సదిశ (&acc.cached_scalars_సదిశ)
   {
     coords = coords_;
-    num_coords = num_coords_;
+    అంకె_coords = అంకె_coords_2;
     varStore = acc.varStore;
-    do_blend = num_coords && varStore->size;
-    orig_ivs = acc.privateDicts[fd].ivs;
-    set_ivs (orig_ivs);
+    do_blend = అంకె_coords && varStore->కొలత;
+    orig_ivs = acc.వ్యక్తిగత_Dicts[fd].ivs;
+    సమితి_ivs (orig_ivs);
   }
 
   ~cff2_cs_interp_env_t ()
   {
-    release_scalars_vector (scalars);
+    release_scalars_సదిశ (scalars);
   }
 
-  hb_vector_t<float> *acquire_scalars_vector () const
+  hb_సదిశ_t<దశాంశం> *acquire_scalars_సదిశ () స్థిరరాశి
   {
-    hb_vector_t<float> *scalars = cached_scalars_vector->get_acquire ();
+    hb_సదిశ_t<దశాంశం> *scalars = cached_scalars_సదిశ->get_acquire ();
 
-    if (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
+    ఒకవేళ (!scalars || !cached_scalars_సదిశ->cmpexch (scalars, శూన్యసూచిక))
     {
-      scalars = (hb_vector_t<float> *) hb_calloc (1, sizeof (hb_vector_t<float>));
-      if (unlikely (!scalars))
-	return nullptr;
+      scalars = (hb_సదిశ_t<దశాంశం> *) hb_calloc (1, పరిమాణం (hb_సదిశ_t<దశాంశం>));
+      ఒకవేళ (unlikely (!scalars))
+	తిరిగి శూన్యసూచిక;
       scalars->init ();
     }
 
-    return scalars;
+    తిరిగి scalars;
   }
 
-  void release_scalars_vector (hb_vector_t<float> *scalars) const
+  శూన్య release_scalars_సదిశ (hb_సదిశ_t<దశాంశం> *scalars) స్థిరరాశి
   {
-    if (!scalars)
-      return;
+    ఒకవేళ (!scalars)
+      తిరిగి;
 
     scalars->clear ();
 
-    if (!cached_scalars_vector->cmpexch (nullptr, scalars))
+    ఒకవేళ (!cached_scalars_సదిశ->cmpexch (శూన్యసూచిక, scalars))
     {
       scalars->fini ();
       hb_free (scalars);
     }
-    scalars = nullptr;
+    scalars = శూన్యసూచిక;
   }
 
-  op_code_t fetch_op ()
+  op_సంకేతం_t fetch_op ()
   {
-    if (this->str_ref.avail ())
-      return SUPER::fetch_op ();
+    ఒకవేళ (ఇది->str_ref.avail ())
+      తిరిగి SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
-      return OpCode_endchar;
-    else
-      return OpCode_return;
+    ఒకవేళ (ఇది->call_దొంతర.is_empty ())
+      తిరిగి Op_సంకేతం_endchar;
+    లేకపోతే
+      తిరిగి Op_సంకేతం_return;
   }
 
-  const ELEM& eval_arg (unsigned int i)
+  స్థిరరాశి ELEM& eval_arg (గుర్తులేని పూర్ణాంకం i)
   {
-    return SUPER::argStack[i];
+    తిరిగి SUPER::arg_దొంతర[i];
   }
 
-  const ELEM& pop_arg ()
+  స్థిరరాశి ELEM& తీయి_arg ()
   {
-    return SUPER::argStack.pop ();
+    తిరిగి SUPER::arg_దొంతర.తీయి ();
   }
 
-  void process_blend ()
+  శూన్య process_blend ()
   {
-    if (!seen_blend)
+    ఒకవేళ (!చూసిన_blend)
     {
-      scalars = acquire_scalars_vector ();
-      if (unlikely (!scalars))
-	SUPER::set_error ();
-      else
+      scalars = acquire_scalars_సదిశ ();
+      ఒకవేళ (unlikely (!scalars))
+	SUPER::సమితి_error ();
+      లేకపోతే
       {
-	region_count = varStore->varStore.get_region_index_count (get_ivs ());
-	if (do_blend)
+	region_లెక్క_2 = varStore->varStore.get_region_సూచీ_లెక్క (get_ivs ());
+	ఒకవేళ (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
-	    SUPER::set_error ();
-	  else
-	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
-						   &(*scalars)[0], region_count);
+	  ఒకవేళ (unlikely (!scalars->resize_exact (region_లెక్క_2)))
+	    SUPER::సమితి_error ();
+	  లేకపోతే
+	    varStore->varStore.get_region_scalars (get_ivs (), coords, అంకె_coords,
+						   &(*scalars)[0], region_లెక్క_2);
 	}
       }
-      seen_blend = true;
+      చూసిన_blend = నిజం;
     }
   }
 
-  void process_vsindex ()
+  శూన్య process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
-    if (unlikely (seen_vsindex () || seen_blend))
+    గుర్తులేని పూర్ణాంకం  సూచీ_2 = SUPER::arg_దొంతర.తీయి_uint ();
+    ఒకవేళ (unlikely (చూసిన_vsindex () || చూసిన_blend))
     {
-     SUPER::set_error ();
+     SUPER::సమితి_error ();
     }
-    else
+    లేకపోతే
     {
-      set_ivs (index);
+      సమితి_ivs (సూచీ_2);
     }
-    seen_vsindex_ = true;
+    చూసిన_vsindex_2 = నిజం;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  గుర్తులేని పూర్ణాంకం get_region_లెక్క () స్థిరరాశి { తిరిగి region_లెక్క_2; }
+  శూన్య	 సమితి_region_లెక్క (గుర్తులేని పూర్ణాంకం region_లెక్క_3) { region_లెక్క_2 = region_లెక్క_3; }
+  గుర్తులేని పూర్ణాంకం get_ivs () స్థిరరాశి { తిరిగి ivs; }
+  శూన్య	 సమితి_ivs (గుర్తులేని పూర్ణాంకం ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
-  unsigned int get_orig_ivs () const { return orig_ivs; }
-  bool	 seen_vsindex () const { return seen_vsindex_; }
+  గుర్తులేని పూర్ణాంకం get_orig_ivs () స్థిరరాశి { తిరిగి orig_ivs; }
+  తార్కిక	 చూసిన_vsindex () స్థిరరాశి { తిరిగి చూసిన_vsindex_2; }
 
-  double blend_deltas (hb_array_t<const ELEM> deltas) const
+  ద్విగుణ blend_deltas (hb_array_t<స్థిరరాశి ELEM> deltas) స్థిరరాశి
   {
-    double v = 0;
-    if (do_blend)
+    ద్విగుణ v = 0;
+    ఒకవేళ (do_blend)
     {
-      if (likely (scalars && scalars->length == deltas.length))
+      ఒకవేళ (likely (scalars && scalars->నిడివి == deltas.నిడివి))
       {
-        unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
-	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
+        గుర్తులేని లెక్క = scalars->నిడివి;
+	కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+	  v += (ద్విగుణ) scalars->arrayZ[i] * deltas.arrayZ[i].గమ్యం_real ();
       }
     }
-    return v;
+    తిరిగి v;
   }
 
-  bool have_coords () const { return num_coords; }
+  తార్కిక have_coords () స్థిరరాశి { తిరిగి అంకె_coords; }
 
-  protected:
-  const int     *coords;
-  unsigned int  num_coords;
-  const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
-  unsigned int  ivs;
-  unsigned int  orig_ivs;
-  hb_vector_t<float>  *scalars = nullptr;
-  hb_atomic_t<hb_vector_t<float> *> *cached_scalars_vector = nullptr;
-  bool	  do_blend;
-  bool	  seen_vsindex_ = false;
-  bool	  seen_blend = false;
+  రక్షిత:
+  స్థిరరాశి పూర్ణాంకం     *coords;
+  గుర్తులేని పూర్ణాంకం  అంకె_coords;
+  స్థిరరాశి	 CFF2_అంశం_Variation_Store *varStore;
+  గుర్తులేని పూర్ణాంకం  region_లెక్క_2;
+  గుర్తులేని పూర్ణాంకం  ivs;
+  గుర్తులేని పూర్ణాంకం  orig_ivs;
+  hb_సదిశ_t<దశాంశం>  *scalars = శూన్యసూచిక;
+  hb_atomic_t<hb_సదిశ_t<దశాంశం> *> *cached_scalars_సదిశ = శూన్యసూచిక;
+  తార్కిక	  do_blend;
+  తార్కిక	  చూసిన_vsindex_2 = అబద్ధం;
+  తార్కిక	  చూసిన_blend = అబద్ధం;
 
-  typedef cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
+  రకనిర్వచనం cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
 };
-template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
-struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
+మూస <రకం_పేరు OPSET, రకం_పేరు PARAM, రకం_పేరు ELEM, రకం_పేరు మార్గం_3=మార్గం_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
+నిర్మాణం cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, మార్గం_3>
 {
-  static void process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_callsubr:
-      case OpCode_callgsubr:
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_callsubr:
+      స్థితి Op_సంకేతం_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#ఒకవేళ 0
+	ఒకవేళ (unlikely (env.arg_దొంతర.peek ().blending ()))
 	{
-	  env.set_error ();
-	  break;
+	  env.సమితి_error ();
+	  ఆపు;
 	}
-#endif
+#అయితే_ముగింపు
 	SUPER::process_op (op, env, param);
-	break;
+	ఆపు;
 
-      case OpCode_blendcs:
+      స్థితి Op_సంకేతం_blendcs:
 	OPSET::process_blend (env, param);
-	break;
+	ఆపు;
 
-      case OpCode_vsindexcs:
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+      స్థితి Op_సంకేతం_vsindexcs:
+#ఒకవేళ 0
+	ఒకవేళ (unlikely (env.arg_దొంతర.peek ().blending ()))
 	{
-	  env.set_error ();
-	  break;
+	  env.సమితి_error ();
+	  ఆపు;
 	}
-#endif
+#అయితే_ముగింపు
 	OPSET::process_vsindex (env, param);
-	break;
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  template <typename T = ELEM,
+  మూస <రకం_పేరు T = ELEM,
 	    hb_enable_if (hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  స్థిర శూన్య process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
-				 unsigned n, unsigned i)
+				 స్థిరరాశి hb_array_t<స్థిరరాశి ELEM> blends,
+				 గుర్తులేని n, గుర్తులేని i)
   {
-    if (env.have_coords ())
-      arg.set_int (round (arg.to_real () + env.blend_deltas (blends)));
-    else if (unlikely (arg.blending ()))
+    ఒకవేళ (env.have_coords ())
+      arg.సమితి_int (round (arg.గమ్యం_real () + env.blend_deltas (blends)));
+    లేకపోతే ఒకవేళ (unlikely (arg.blending ()))
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
-      hb_vector_t<number_t> inner = std::move (arg.deltas);
-      arg.set_blends (n, i, blends);
-      if (likely (inner.length == arg.deltas.length))
-	for (unsigned j = 0; j < inner.length; j++)
-	  arg.deltas.arrayZ[j].set_real (arg.deltas.arrayZ[j].to_real () +
-					 inner.arrayZ[j].to_real ());
-      else
-	env.set_error ();
+      hb_సదిశ_t<సంఖ్య_t> inner = std::move (arg.deltas);
+      arg.సమితి_blends (n, i, blends);
+      ఒకవేళ (likely (inner.నిడివి == arg.deltas.నిడివి))
+	కొరకు (గుర్తులేని j = 0; j < inner.నిడివి; j++)
+	  arg.deltas.arrayZ[j].సమితి_real (arg.deltas.arrayZ[j].గమ్యం_real () +
+					 inner.arrayZ[j].గమ్యం_real ());
+      లేకపోతే
+	env.సమితి_error ();
     }
-    else
-      arg.set_blends (n, i, blends);
+    లేకపోతే
+      arg.సమితి_blends (n, i, blends);
   }
-  template <typename T = ELEM,
+  మూస <రకం_పేరు T = ELEM,
 	    hb_enable_if (!hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  స్థిర శూన్య process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
-				 unsigned n, unsigned i)
+				 స్థిరరాశి hb_array_t<స్థిరరాశి ELEM> blends,
+				 గుర్తులేని n, గుర్తులేని i)
   {
-    arg.set_real (arg.to_real () + env.blend_deltas (blends));
+    arg.సమితి_real (arg.గమ్యం_real () + env.blend_deltas (blends));
   }
 
-  static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  స్థిర శూన్య process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    unsigned int n, k;
+    గుర్తులేని పూర్ణాంకం n, k;
 
     env.process_blend ();
-    k = env.get_region_count ();
-    n = env.argStack.pop_uint ();
+    k = env.get_region_లెక్క ();
+    n = env.arg_దొంతర.తీయి_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    గుర్తులేని పూర్ణాంకం లెక్క = env.arg_దొంతర.get_లెక్క ();
+    గుర్తులేని పూర్ణాంకం మొత్తం;
+    ఒకవేళ (unlikely (hb_unsigned_mul_overflows (k + 1, n, &మొత్తం) || మొత్తం > లెక్క))
     {
-      env.set_error ();
-      return;
+      env.సమితి_error ();
+      తిరిగి;
     }
-    if (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
+    ఒకవేళ (unlikely (!env.spend_budget (HB_BUDGET_1, మొత్తం - n)))
     {
-      env.set_error ();
-      return;
+      env.సమితి_error ();
+      తిరిగి;
     }
-    unsigned int start = count - total;
-    for (unsigned int i = 0; i < n; i++)
+    గుర్తులేని పూర్ణాంకం ప్రారంభం = లెక్క - మొత్తం;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < n; i++)
     {
-      const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
-      process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);
+      స్థిరరాశి hb_array_t<స్థిరరాశి ELEM> blends = env.arg_దొంతర.sub_array (ప్రారంభం + n + (i * k), k);
+      process_arg_blend (env, env.arg_దొంతర.arrayZ[ప్రారంభం + i], blends, n, i);
     }
 
     /* pop off blend values leaving default values now adorned with blend values */
-    env.argStack.pop (k * n);
+    env.arg_దొంతర.తీయి (k * n);
   }
 
-  static void process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  స్థిర శూన్య process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     env.process_vsindex ();
-    env.clear_args ();
+    env.clear_వాదనలు ();
   }
 
-  private:
-  typedef cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
+  అంతరంగ:
+  రకనిర్వచనం cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, మార్గం_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename ELEM>
-using cff2_cs_interpreter_t = cs_interpreter_t<cff2_cs_interp_env_t<ELEM>, OPSET, PARAM>;
+మూస <రకం_పేరు OPSET, రకం_పేరు PARAM, రకం_పేరు ELEM>
+ఉపయోగించి cff2_cs_interpreter_t = cs_interpreter_t<cff2_cs_interp_env_t<ELEM>, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF2_INTERP_CS_HH */
+#అయితే_ముగింపు /* HB_CFF2_INTERP_CS_HH */

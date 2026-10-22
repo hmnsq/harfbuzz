@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  */
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-hvar-table.hh"
+#అన్తర్భావ "hb-ot-var-common.hh"
+#అన్తర్భావ "hb-ot-var-hvar-table.hh"
 // HVAR table data from SourceSerif4Variable-Roman_subset.otf
-const char hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
+స్థిరరాశి అక్షరం hvar_దత్తాంశం[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
 
-static void
+స్థిర శూన్య
 test_scalar_cache_precision ()
 {
-  const float scalars[] = {
+  స్థిరరాశి దశాంశం scalars[] = {
     0.f,
     1.f,
     1.f / 3.f,
@@ -38,87 +38,87 @@ test_scalar_cache_precision ()
      * fixed-point precision. */
     1.f / (16384.f * 16384.f * 16384.f),
   };
-  const unsigned counts[] = {4, 129};
+  స్థిరరాశి గుర్తులేని counts[] = {4, 129};
   OT::hb_scalar_cache_t scratch_cache;
-  for (unsigned count : counts)
+  కొరకు (గుర్తులేని లెక్క : counts)
   {
-    auto *cache = OT::hb_scalar_cache_t::create (count, &scratch_cache);
-    hb_always_assert (cache->length == count);
-    for (unsigned i = 0; i < count; i++)
+    స్వయంచాలక *cache = OT::hb_scalar_cache_t::create (లెక్క, &scratch_cache);
+    hb_always_assert (cache->నిడివి == లెక్క);
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      float value;
-      float scalar = scalars[i % ARRAY_LENGTH (scalars)];
+      దశాంశం value;
+      దశాంశం scalar = scalars[i % ARRAY_నిడివి (scalars)];
       hb_always_assert (!cache->get (i, &value));
-      cache->set (i, scalar);
+      cache->సమితి (i, scalar);
       hb_always_assert (cache->get (i, &value));
       hb_always_assert (value == scalar);
     }
     cache->clear ();
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      float value;
+      దశాంశం value;
       hb_always_assert (!cache->get (i, &value));
     }
     OT::hb_scalar_cache_t::destroy (cache, &scratch_cache);
   }
 }
 
-static void
-test_item_variations ()
+స్థిర శూన్య
+test_అంశం_variations ()
 {
-  const OT::HVAR* hvar_table = reinterpret_cast<const OT::HVAR*> (hvar_data);
+  స్థిరరాశి OT::HVAR* hvar_పట్టిక = reinterpret_cast<స్థిరరాశి OT::HVAR*> (hvar_దత్తాంశం);
 
-  hb_tag_t axis_tag = HB_TAG ('w', 'g', 'h', 't');
-  hb_map_t axis_idx_tag_map;
-  axis_idx_tag_map.set (0, axis_tag);
+  hb_ట్యాగ్_t axis_ట్యాగ్_2 = HB_ట్యాగ్ ('w', 'g', 'h', 't');
+  hb_map_t axis_idx_ట్యాగ్_map;
+  axis_idx_ట్యాగ్_map.సమితి (0, axis_ట్యాగ్_2);
 
-  axis_tag = HB_TAG ('o', 'p', 's', 'z');
-  axis_idx_tag_map.set (1, axis_tag);
+  axis_ట్యాగ్_2 = HB_ట్యాగ్ ('o', 'p', 's', 'z');
+  axis_idx_ట్యాగ్_map.సమితి (1, axis_ట్యాగ్_2);
 
-  OT::item_variations_t item_vars;
-  const OT::ItemVariationStore& src_var_store = hvar_table+(hvar_table->varStore);
-  bool result = item_vars.create_from_item_varstore (src_var_store, axis_idx_tag_map);
+  OT::అంశం_variations_t అంశం_vars;
+  స్థిరరాశి OT::అంశం_Variation_Store& src_var_store = hvar_పట్టిక+(hvar_పట్టిక->varStore);
+  తార్కిక ఫలితం = అంశం_vars.create_from_అంశం_varstore (src_var_store, axis_idx_ట్యాగ్_map);
       
-  hb_always_assert (result);
+  hb_always_assert (ఫలితం);
 
   /* partial instancing wght=300:800 */
-  hb_hashmap_t<hb_tag_t, Triple> normalized_axes_location;
-  normalized_axes_location.set (axis_tag, Triple (-0.512817, 0.0, 0.7000120));
+  hb_hashmap_t<hb_ట్యాగ్_t, Triple> normalized_axes_location;
+  normalized_axes_location.సమితి (axis_ట్యాగ్_2, Triple (-0.512817, 0.0, 0.7000120));
 
-  hb_hashmap_t<hb_tag_t, TripleDistances> axes_triple_distances;
-  axes_triple_distances.set (axis_tag, TripleDistances (200.0, 500.0));
+  hb_hashmap_t<hb_ట్యాగ్_t, TripleDistances> axes_triple_distances;
+  axes_triple_distances.సమితి (axis_ట్యాగ్_2, TripleDistances (200.0, 500.0));
 
-  result = item_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
-  hb_always_assert (result);
-  result = item_vars.as_item_varstore (false);
-  hb_always_assert (result);
-  hb_always_assert (item_vars.get_region_list().length == 8);
+  ఫలితం = అంశం_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
+  hb_always_assert (ఫలితం);
+  ఫలితం = అంశం_vars.as_అంశం_varstore (అబద్ధం);
+  hb_always_assert (ఫలితం);
+  hb_always_assert (అంశం_vars.get_region_list().నిడివి == 8);
 }
 
-static void
+స్థిర శూన్య
 test_implicit_advance_mapping ()
 {
-  char data[sizeof (hvar_data)];
-  hb_memcpy (data, hvar_data, sizeof (data));
-  auto *hvar = reinterpret_cast<OT::HVAR *> (data);
-  const auto &store = hvar + hvar->varStore;
-  const int locations[] = {-16384, 0, 16384};
-  bool exercised_outer_one = false;
+  అక్షరం దత్తాంశం[పరిమాణం (hvar_దత్తాంశం)];
+  hb_memcpy (దత్తాంశం, hvar_దత్తాంశం, పరిమాణం (దత్తాంశం));
+  స్వయంచాలక *hvar = reinterpret_cast<OT::HVAR *> (దత్తాంశం);
+  స్థిరరాశి స్వయంచాలక &store = hvar + hvar->varStore;
+  స్థిరరాశి పూర్ణాంకం locations[] = {-16384, 0, 16384};
+  తార్కిక exercised_outer_one = అబద్ధం;
 
-  for (int weight : locations)
-    for (int size : locations)
+  కొరకు (పూర్ణాంకం బరువు : locations)
+    కొరకు (పూర్ణాంకం కొలత : locations)
     {
-      int coords[] = {weight, size};
-      unsigned mapped = (hvar + hvar->advMap).map (0x10000u);
+      పూర్ణాంకం coords[] = {బరువు, కొలత};
+      గుర్తులేని mapped = (hvar + hvar->advMap).map (0x10000u);
       hb_always_assert (hvar->get_advance_delta_unscaled (0x10000u, coords, 2) ==
                         store.get_delta (mapped, coords, 2));
     }
 
   hvar->advMap = 0;
-  for (int weight : locations)
-    for (int size : locations)
+  కొరకు (పూర్ణాంకం బరువు : locations)
+    కొరకు (పూర్ణాంకం కొలత : locations)
     {
-      int coords[] = {weight, size};
+      పూర్ణాంకం coords[] = {బరువు, కొలత};
       exercised_outer_one |= store.get_delta (0x10000u, coords, 2) != 0;
       hb_always_assert (hvar->get_advance_delta_unscaled (0, coords, 2) ==
                         store.get_delta (0, coords, 2));
@@ -129,66 +129,66 @@ test_implicit_advance_mapping ()
   hb_always_assert (exercised_outer_one);
 }
 
-static void
-test_item_variations_overflow ()
+స్థిర శూన్య
+test_అంశం_variations_అధికప్రవాహం ()
 {
-  hb_vector_t<hb_vector_t<int>> row_storage;
-  hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
-  OT::item_variations_t item_vars;
-  unsigned old_varidx = 0;
-  const unsigned total_count = 0xFFFFu * 2u;
+  hb_సదిశ_t<hb_సదిశ_t<పూర్ణాంకం>> అడ్డువరుస_storage;
+  hb_hashmap_t<గుర్తులేని, స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>*> front_mapping;
+  OT::అంశం_variations_t అంశం_vars;
+  గుర్తులేని old_varidx = 0;
+  స్థిరరాశి గుర్తులేని మొత్తం_లెక్క = 0xFFFFu * 2u;
 
-  const unsigned counts[] = {
+  స్థిరరాశి గుర్తులేని counts[] = {
     128u,                 /* 0..127: 1-byte deltas */
     32768u - 128u,        /* 128..32767: 2-byte deltas */
     0xFFFFu * 2u - 32768u /* 32768..131069: 4-byte deltas */
   };
-  const int starts[] = {
+  స్థిరరాశి పూర్ణాంకం starts[] = {
     0,
     128,
     32768
   };
 
-  hb_always_assert (row_storage.alloc (total_count));
+  hb_always_assert (అడ్డువరుస_storage.alloc (మొత్తం_లెక్క));
 
-  for (unsigned bucket = 0; bucket < 3; bucket++)
+  కొరకు (గుర్తులేని పాత్ర = 0; పాత్ర < 3; పాత్ర++)
   {
-    hb_vector_t<const hb_vector_t<int>*> rows;
-    hb_always_assert (rows.alloc (counts[bucket]));
+    hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>*> అడ్డువరుసలు;
+    hb_always_assert (అడ్డువరుసలు.alloc (counts[పాత్ర]));
 
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    కొరకు (గుర్తులేని i = 0; i < counts[పాత్ర]; i++)
     {
-      hb_vector_t<int> row;
-      hb_always_assert (row.resize (1));
-      row[0] = starts[bucket] + i;
-      row_storage.push (std::move (row));
+      hb_సదిశ_t<పూర్ణాంకం> అడ్డువరుస;
+      hb_always_assert (అడ్డువరుస.resize (1));
+      అడ్డువరుస[0] = starts[పాత్ర] + i;
+      అడ్డువరుస_storage.push (std::move (అడ్డువరుస));
     }
 
-    hb_always_assert (!row_storage.in_error ());
+    hb_always_assert (!అడ్డువరుస_storage.లోపల_error ());
 
-    unsigned base = row_storage.length - counts[bucket];
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    గుర్తులేని పునాది = అడ్డువరుస_storage.నిడివి - counts[పాత్ర];
+    కొరకు (గుర్తులేని i = 0; i < counts[పాత్ర]; i++)
     {
-      const hb_vector_t<int> *row = &row_storage.arrayZ[base + i];
-      rows.push (row);
-      front_mapping.set (old_varidx++, row);
+      స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం> *అడ్డువరుస = &అడ్డువరుస_storage.arrayZ[పునాది + i];
+      అడ్డువరుసలు.push (అడ్డువరుస);
+      front_mapping.సమితి (old_varidx++, అడ్డువరుస);
     }
 
-    hb_always_assert (!rows.in_error ());
-    hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
+    hb_always_assert (!అడ్డువరుసలు.లోపల_error ());
+    hb_always_assert (అంశం_vars.కూడు_vardata_encoding_for_testing (std::move (అడ్డువరుసలు), 1));
   }
 
-  hb_always_assert (!front_mapping.in_error ());
-  hb_always_assert (item_vars.compile_varidx_map_for_testing (front_mapping));
+  hb_always_assert (!front_mapping.లోపల_error ());
+  hb_always_assert (అంశం_vars.compile_varidx_map_for_testing (front_mapping));
 
-  const auto& encodings = item_vars.get_vardata_encodings ();
-  hb_always_assert (encodings.length == 4);
-  hb_always_assert (encodings[0].items.length == 128u);
-  hb_always_assert (encodings[1].items.length == 32768u - 128u);
-  hb_always_assert (encodings[2].items.length == 0xFFFFu);
-  hb_always_assert (encodings[3].items.length == 32767u);
+  స్థిరరాశి స్వయంచాలక& encodings = అంశం_vars.get_vardata_encodings ();
+  hb_always_assert (encodings.నిడివి == 4);
+  hb_always_assert (encodings[0].వస్తువులు.నిడివి == 128u);
+  hb_always_assert (encodings[1].వస్తువులు.నిడివి == 32768u - 128u);
+  hb_always_assert (encodings[2].వస్తువులు.నిడివి == 0xFFFFu);
+  hb_always_assert (encodings[3].వస్తువులు.నిడివి == 32767u);
 
-  const hb_map_t& varidx_map = item_vars.get_varidx_map ();
+  స్థిరరాశి hb_map_t& varidx_map = అంశం_vars.get_varidx_map ();
   hb_always_assert (varidx_map.get (0) == 0);
   hb_always_assert (varidx_map.get (127) == 127);
   hb_always_assert (varidx_map.get (128) == 0x00010000u);
@@ -199,149 +199,149 @@ test_item_variations_overflow ()
   hb_always_assert (varidx_map.get (131069) == 0x00037FFEu);
 }
 
-static void
+స్థిర శూన్య
 test_signed_delta_widths ()
 {
-  const int deltas[] = {32767, 32768, 65535, 65536,
+  స్థిరరాశి పూర్ణాంకం deltas[] = {32767, 32768, 65535, 65536,
                        -32768, -32769, -65536, -65537};
-  hb_tag_t axis = HB_TAG ('T', 'E', 'S', 'T');
-  hb_vector_t<hb_tag_t> axes;
+  hb_ట్యాగ్_t axis = HB_ట్యాగ్ ('T', 'E', 'S', 'T');
+  hb_సదిశ_t<hb_ట్యాగ్_t> axes;
   axes.push (axis);
   hb_map_t axis_map;
-  axis_map.set (0, axis);
-  hb_hashmap_t<hb_tag_t, Triple> region;
-  region.set (axis, Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  axis_map.సమితి (0, axis);
+  hb_hashmap_t<hb_ట్యాగ్_t, Triple> region;
+  region.సమితి (axis, Triple (0, 1, 1));
+  hb_సదిశ_t<స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> *> regions;
   regions.push (&region);
 
-  for (int delta : deltas)
+  కొరకు (పూర్ణాంకం delta : deltas)
   {
-    hb_vector_t<int> row;
-    row.push (delta);
-    hb_vector_t<const hb_vector_t<int> *> rows;
-    rows.push (&row);
-    hb_vector_t<OT::delta_row_encoding_t> encodings;
-    encodings.push (OT::delta_row_encoding_t (std::move (rows), 1));
+    hb_సదిశ_t<పూర్ణాంకం> అడ్డువరుస;
+    అడ్డువరుస.push (delta);
+    hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం> *> అడ్డువరుసలు;
+    అడ్డువరుసలు.push (&అడ్డువరుస);
+    hb_సదిశ_t<OT::delta_అడ్డువరుస_encoding_t> encodings;
+    encodings.push (OT::delta_అడ్డువరుస_encoding_t (std::move (అడ్డువరుసలు), 1));
 
-    char buf[128];
-    hb_serialize_context_t s (buf, sizeof (buf));
-    auto *out = s.start_serialize<OT::ItemVariationStore> ();
-    hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
-    s.end_serialize ();
-    hb_bytes_t bytes = s.copy_bytes ();
-    const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-    const auto &data = store.get_sub_table (0);
-    hb_always_assert (data.get_item_delta (0, 0) == delta);
+    అక్షరం buf[128];
+    hb_serialize_context_t s (buf, పరిమాణం (buf));
+    స్వయంచాలక *బహిర్గతం = s.ప్రారంభం_serialize<OT::అంశం_Variation_Store> ();
+    hb_always_assert (బహిర్గతం->serialize (&s, నిజం, axes, regions, encodings));
+    s.చివర_serialize ();
+    hb_బైట్లు_t బైట్లు = s.copy_బైట్లు ();
+    స్థిరరాశి స్వయంచాలక &store = *reinterpret_cast<స్థిరరాశి OT::అంశం_Variation_Store *> (బైట్లు.arrayZ);
+    స్థిరరాశి స్వయంచాలక &దత్తాంశం = store.get_sub_పట్టిక (0);
+    hb_always_assert (దత్తాంశం.get_అంశం_delta (0, 0) == delta);
 
     hb_inc_bimap_t inner_map, region_map;
-    inner_map.add (0);
-    region_map.add (0);
-    char subset_buf[32];
-    hb_serialize_context_t subset_s (subset_buf, sizeof (subset_buf));
-    auto *subset = subset_s.start_serialize<OT::VarData> ();
-    hb_always_assert (subset->serialize (&subset_s, &data, inner_map, region_map));
-    subset_s.end_serialize ();
-    hb_bytes_t subset_bytes = subset_s.copy_bytes ();
-    const auto &subset_data = *reinterpret_cast<const OT::VarData *> (subset_bytes.arrayZ);
-    hb_always_assert (subset_data.get_item_delta (0, 0) == delta);
+    inner_map.కూడు (0);
+    region_map.కూడు (0);
+    అక్షరం subset_buf[32];
+    hb_serialize_context_t subset_s (subset_buf, పరిమాణం (subset_buf));
+    స్వయంచాలక *subset = subset_s.ప్రారంభం_serialize<OT::Var_దత్తాంశం> ();
+    hb_always_assert (subset->serialize (&subset_s, &దత్తాంశం, inner_map, region_map));
+    subset_s.చివర_serialize ();
+    hb_బైట్లు_t subset_బైట్లు = subset_s.copy_బైట్లు ();
+    స్థిరరాశి స్వయంచాలక &subset_దత్తాంశం = *reinterpret_cast<స్థిరరాశి OT::Var_దత్తాంశం *> (subset_బైట్లు.arrayZ);
+    hb_always_assert (subset_దత్తాంశం.get_అంశం_delta (0, 0) == delta);
 
-    OT::item_variations_t item_vars;
-    hb_always_assert (item_vars.create_from_item_varstore (store, axis_map));
-    hb_hashmap_t<hb_tag_t, Triple> locations;
-    hb_hashmap_t<hb_tag_t, TripleDistances> distances;
-    hb_always_assert (item_vars.instantiate_tuple_vars (locations, distances));
-    hb_always_assert (item_vars.as_item_varstore ());
-    hb_always_assert (item_vars.has_long_word () ==
+    OT::అంశం_variations_t అంశం_vars;
+    hb_always_assert (అంశం_vars.create_from_అంశం_varstore (store, axis_map));
+    hb_hashmap_t<hb_ట్యాగ్_t, Triple> locations;
+    hb_hashmap_t<hb_ట్యాగ్_t, TripleDistances> distances;
+    hb_always_assert (అంశం_vars.instantiate_tuple_vars (locations, distances));
+    hb_always_assert (అంశం_vars.as_అంశం_varstore ());
+    hb_always_assert (అంశం_vars.has_long_మాట () ==
                       (delta < -32768 || delta > 32767));
-    subset_bytes.fini ();
-    bytes.fini ();
+    subset_బైట్లు.fini ();
+    బైట్లు.fini ();
   }
 }
 
-static void
+స్థిర శూన్య
 test_accumulated_delta_widths ()
 {
-  const int deltas[] = {20000, -20000, 1073741824};
-  for (int delta : deltas)
+  స్థిరరాశి పూర్ణాంకం deltas[] = {20000, -20000, 1073741824};
+  కొరకు (పూర్ణాంకం delta : deltas)
   {
-    OT::item_variations_t item_vars;
-    unsigned outer = item_vars.add_vardata (1);
-    item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
-    item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
-    hb_always_assert (item_vars.build_region_list ());
-    if (delta == 1073741824)
-      hb_always_assert (!item_vars.as_item_varstore ());
-    else
+    OT::అంశం_variations_t అంశం_vars;
+    గుర్తులేని outer = అంశం_vars.కూడు_vardata (1);
+    అంశం_vars.కూడు_tuple (outer, hb_hashmap_t<hb_ట్యాగ్_t, Triple> (), 0, delta, 1);
+    అంశం_vars.కూడు_tuple (outer, hb_hashmap_t<hb_ట్యాగ్_t, Triple> (), 0, delta, 1);
+    hb_always_assert (అంశం_vars.build_region_list ());
+    ఒకవేళ (delta == 1073741824)
+      hb_always_assert (!అంశం_vars.as_అంశం_varstore ());
+    లేకపోతే
     {
-      hb_always_assert (item_vars.as_item_varstore ());
-      hb_always_assert (item_vars.has_long_word ());
-      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].items[0])[0] == 2 * delta);
+      hb_always_assert (అంశం_vars.as_అంశం_varstore ());
+      hb_always_assert (అంశం_vars.has_long_మాట ());
+      hb_always_assert ((*అంశం_vars.get_vardata_encodings ()[0].వస్తువులు[0])[0] == 2 * delta);
     }
   }
 }
 
-static void
+స్థిర శూన్య
 test_condition_delta_precision ()
 {
-  hb_vector_t<hb_tag_t> axes;
-  axes.push (HB_TAG ('T','E','S','T'));
-  hb_hashmap_t<hb_tag_t, Triple> neutral, region;
-  region.set (axes[0], Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  hb_సదిశ_t<hb_ట్యాగ్_t> axes;
+  axes.push (HB_ట్యాగ్ ('T','E','S','T'));
+  hb_hashmap_t<hb_ట్యాగ్_t, Triple> neutral, region;
+  region.సమితి (axes[0], Triple (0, 1, 1));
+  hb_సదిశ_t<స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> *> regions;
   regions.push (&neutral);
   regions.push (&region);
-  hb_vector_t<int> row;
-  row.push (16777217);
-  row.push (-16777216);
-  hb_vector_t<const hb_vector_t<int> *> rows;
-  rows.push (&row);
-  hb_vector_t<OT::delta_row_encoding_t> encodings;
-  encodings.push (OT::delta_row_encoding_t (std::move (rows), 2));
-  char buf[128];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  auto *out = s.start_serialize<OT::ItemVariationStore> ();
-  hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
-  s.end_serialize ();
-  hb_bytes_t bytes = s.copy_bytes ();
-  const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-  int coords[] = {16384};
-  OT::ItemVarStoreInstancer instancer (&store, nullptr, hb_array (coords));
+  hb_సదిశ_t<పూర్ణాంకం> అడ్డువరుస;
+  అడ్డువరుస.push (16777217);
+  అడ్డువరుస.push (-16777216);
+  hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం> *> అడ్డువరుసలు;
+  అడ్డువరుసలు.push (&అడ్డువరుస);
+  hb_సదిశ_t<OT::delta_అడ్డువరుస_encoding_t> encodings;
+  encodings.push (OT::delta_అడ్డువరుస_encoding_t (std::move (అడ్డువరుసలు), 2));
+  అక్షరం buf[128];
+  hb_serialize_context_t s (buf, పరిమాణం (buf));
+  స్వయంచాలక *బహిర్గతం = s.ప్రారంభం_serialize<OT::అంశం_Variation_Store> ();
+  hb_always_assert (బహిర్గతం->serialize (&s, నిజం, axes, regions, encodings));
+  s.చివర_serialize ();
+  hb_బైట్లు_t బైట్లు = s.copy_బైట్లు ();
+  స్థిరరాశి స్వయంచాలక &store = *reinterpret_cast<స్థిరరాశి OT::అంశం_Variation_Store *> (బైట్లు.arrayZ);
+  పూర్ణాంకం coords[] = {16384};
+  OT::అంశం_Var_Store_Instancer instancer (&store, శూన్యసూచిక, hb_array (coords));
   // Positioning keeps float arithmetic, but conditions must retain the unit
   // left after cancellation of two deltas exceeding float's integer range.
   hb_always_assert (instancer[0] == 0.f);
   hb_always_assert (instancer.get_condition_delta (0) == 1.);
-  const char condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
-  const auto &condition = *reinterpret_cast<const OT::Condition *> (condition_data);
+  స్థిరరాశి అక్షరం condition_దత్తాంశం[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
+  స్థిరరాశి స్వయంచాలక &condition = *reinterpret_cast<స్థిరరాశి OT::Condition *> (condition_దత్తాంశం);
   hb_always_assert (condition.evaluate (coords, 1, &instancer));
-  bytes.fini ();
+  బైట్లు.fini ();
 }
 
-static void
+స్థిర శూన్య
 test_failed_encoding ()
 {
-  hb_vector_t<int> row;
-  row.push (1);
-  hb_vector_t<const hb_vector_t<int> *> rows;
-  rows.push (&row);
-  OT::item_variations_t item_vars;
-  hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
-  auto &encoding = const_cast<OT::delta_row_encoding_t &> (item_vars.get_vardata_encodings ()[0]);
+  hb_సదిశ_t<పూర్ణాంకం> అడ్డువరుస;
+  అడ్డువరుస.push (1);
+  hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం> *> అడ్డువరుసలు;
+  అడ్డువరుసలు.push (&అడ్డువరుస);
+  OT::అంశం_variations_t అంశం_vars;
+  hb_always_assert (అంశం_vars.కూడు_vardata_encoding_for_testing (std::move (అడ్డువరుసలు), 1));
+  స్వయంచాలక &encoding = const_cast<OT::delta_అడ్డువరుస_encoding_t &> (అంశం_vars.get_vardata_encodings ()[0]);
   /* Simulate a failed allocation of the encoding's column metadata. */
   encoding.chars.clear ();
-  encoding.chars.set_error ();
-  hb_always_assert (encoding.in_error ());
-  hb_hashmap_t<unsigned, const hb_vector_t<int> *> front_mapping;
-  front_mapping.set (0, &row);
-  hb_always_assert (!item_vars.compile_varidx_map_for_testing (front_mapping));
+  encoding.chars.సమితి_error ();
+  hb_always_assert (encoding.లోపల_error ());
+  hb_hashmap_t<గుర్తులేని, స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం> *> front_mapping;
+  front_mapping.సమితి (0, &అడ్డువరుస);
+  hb_always_assert (!అంశం_vars.compile_varidx_map_for_testing (front_mapping));
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
   test_scalar_cache_precision ();
-  test_item_variations ();
+  test_అంశం_variations ();
   test_implicit_advance_mapping ();
-  test_item_variations_overflow ();
+  test_అంశం_variations_అధికప్రవాహం ();
   test_signed_delta_widths ();
   test_failed_encoding ();
   test_accumulated_delta_widths ();

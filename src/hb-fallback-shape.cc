@@ -24,24 +24,24 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-shaper-impl.hh"
+#అన్తర్భావ "hb-shaper-impl.hh"
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_FALLBACK_SHAPE
 
 /*
  * shaper face data
  */
 
-struct hb_fallback_face_data_t {};
+నిర్మాణం hb_fallback_face_దత్తాంశం_t {};
 
-hb_fallback_face_data_t *
-_hb_fallback_shaper_face_data_create (hb_face_t *face HB_UNUSED)
+hb_fallback_face_దత్తాంశం_t *
+hb_fallback_shaper_face_దత్తాంశం_create (hb_face_t *face HB_వాడని)
 {
-  return (hb_fallback_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  తిరిగి (hb_fallback_face_దత్తాంశం_t *) HB_SHAPER_దత్తాంశం_SUCCEEDED;
 }
 
-void
-_hb_fallback_shaper_face_data_destroy (hb_fallback_face_data_t *data HB_UNUSED)
+శూన్య
+hb_fallback_shaper_face_దత్తాంశం_destroy (hb_fallback_face_దత్తాంశం_t *దత్తాంశం HB_వాడని)
 {
 }
 
@@ -50,16 +50,16 @@ _hb_fallback_shaper_face_data_destroy (hb_fallback_face_data_t *data HB_UNUSED)
  * shaper font data
  */
 
-struct hb_fallback_font_data_t {};
+నిర్మాణం hb_fallback_font_దత్తాంశం_t {};
 
-hb_fallback_font_data_t *
-_hb_fallback_shaper_font_data_create (hb_font_t *font HB_UNUSED)
+hb_fallback_font_దత్తాంశం_t *
+hb_fallback_shaper_font_దత్తాంశం_create (hb_font_t *font HB_వాడని)
 {
-  return (hb_fallback_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  తిరిగి (hb_fallback_font_దత్తాంశం_t *) HB_SHAPER_దత్తాంశం_SUCCEEDED;
 }
 
-void
-_hb_fallback_shaper_font_data_destroy (hb_fallback_font_data_t *data HB_UNUSED)
+శూన్య
+hb_fallback_shaper_font_దత్తాంశం_destroy (hb_fallback_font_దత్తాంశం_t *దత్తాంశం HB_వాడని)
 {
 }
 
@@ -69,47 +69,47 @@ _hb_fallback_shaper_font_data_destroy (hb_fallback_font_data_t *data HB_UNUSED)
  */
 
 hb_bool_t
-_hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
+_hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_వాడని,
 		    hb_font_t          *font,
-		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features HB_UNUSED,
-		    unsigned int        num_features HB_UNUSED)
+		    hb_బఫరు_t        *బఫరు,
+		    స్థిరరాశి hb_feature_t *features HB_వాడని,
+		    గుర్తులేని పూర్ణాంకం        అంకె_features HB_వాడని)
 {
   hb_codepoint_t space;
-  bool has_space = (bool) font->get_nominal_glyph (' ', &space);
+  తార్కిక has_space = (తార్కిక) font->get_nominal_glyph (' ', &space);
 
-  buffer->clear_positions ();
+  బఫరు->clear_positions ();
 
-  hb_direction_t direction = buffer->props.direction;
-  hb_unicode_funcs_t *unicode = buffer->unicode;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
-  for (unsigned int i = 0; i < count; i++)
+  hb_direction_t direction = బఫరు->props.direction;
+  hb_unicode_funcs_t *unicode = బఫరు->unicode;
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  hb_glyph_position_t *pos = బఫరు->pos;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    if (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
+    ఒకవేళ (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
       info[i].codepoint = space;
       pos[i].x_advance = 0;
       pos[i].y_advance = 0;
-      continue;
+      కొనసాగు;
     }
-    (void) font->get_nominal_glyph (info[i].codepoint, &info[i].codepoint);
+    (శూన్య) font->get_nominal_glyph (info[i].codepoint, &info[i].codepoint);
     font->get_glyph_advance_for_direction (info[i].codepoint,
 					   direction,
 					   &pos[i].x_advance,
 					   &pos[i].y_advance);
-    font->subtract_glyph_origin_for_direction (info[i].codepoint,
+    font->వ్యవకలనం_glyph_origin_for_direction (info[i].codepoint,
 					       direction,
-					       &pos[i].x_offset,
-					       &pos[i].y_offset);
+					       &pos[i].x_స్థానభ్రంశం_2,
+					       &pos[i].y_స్థానభ్రంశం_2);
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
-    hb_buffer_reverse (buffer);
+  ఒకవేళ (HB_DIRECTION_IS_BACKWARD (direction))
+    hb_బఫరు_తిరగేయి (బఫరు);
 
-  buffer->clear_glyph_flags ();
+  బఫరు->clear_glyph_flags ();
 
-  return true;
+  తిరిగి నిజం;
 }
 
-#endif
+#అయితే_ముగింపు

@@ -24,40 +24,40 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_IMAGE_HH
-#define HB_RASTER_IMAGE_HH
+#నిర్వచితం_కాకపోతే HB_RASTER_IMAGE_HH
+#నిర్వచించు HB_RASTER_IMAGE_HH
 
-#include "hb.hh"
-#include "hb-raster.hh"
-#include "hb-raster.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-raster.hh"
+#అన్తర్భావ "hb-raster.h"
+#అన్తర్భావ "hb-object.hh"
+#అన్తర్భావ "hb-vector.hh"
 
 
 /* hb_raster_image_t — pixel artifact */
-struct hb_raster_image_t
+నిర్మాణం hb_raster_image_t
 {
-  hb_object_header_t  header;
+  hb_object_శీర్షిక_t  శీర్షిక;
 
-  hb_vector_t<uint8_t> buffer;
+  hb_సదిశ_t<uint8_t> బఫరు;
   hb_raster_extents_t  extents     = {};
   hb_raster_format_t   format      = HB_RASTER_FORMAT_A8;
 
-  HB_INTERNAL static unsigned bytes_per_pixel (hb_raster_format_t format);
-  HB_INTERNAL bool configure (hb_raster_format_t format, hb_raster_extents_t extents);
-  HB_INTERNAL bool deserialize_from_png (hb_blob_t *png);
-  HB_INTERNAL hb_blob_t *serialize_to_png_or_fail () const;
-  HB_INTERNAL void clear ();
-  HB_INTERNAL const uint8_t *get_buffer () const;
-  HB_INTERNAL void composite_from (const hb_raster_image_t *src,
-				   hb_paint_composite_mode_t mode);
+  HB_అంతర్గత స్థిర గుర్తులేని బైట్లు_చొప్పున_pixel (hb_raster_format_t format);
+  HB_అంతర్గత తార్కిక configure (hb_raster_format_t format, hb_raster_extents_t extents);
+  HB_అంతర్గత తార్కిక deserialize_from_png (hb_blob_t *png);
+  HB_అంతర్గత hb_blob_t *serialize_గమ్యం_png_or_fail () స్థిరరాశి;
+  HB_అంతర్గత శూన్య clear ();
+  HB_అంతర్గత స్థిరరాశి uint8_t *get_బఫరు () స్థిరరాశి;
+  HB_అంతర్గత శూన్య సంయుక్త_from (స్థిరరాశి hb_raster_image_t *src,
+				   hb_paint_సంయుక్త_బహుళకం_t బహుళకం);
 };
 
 /* Composite src image onto dst. */
-HB_INTERNAL void
-hb_raster_image_composite (hb_raster_image_t *dst,
-			   const hb_raster_image_t *src,
-			   hb_paint_composite_mode_t mode);
+HB_అంతర్గత శూన్య
+hb_raster_image_సంయుక్త (hb_raster_image_t *dst,
+			   స్థిరరాశి hb_raster_image_t *src,
+			   hb_paint_సంయుక్త_బహుళకం_t బహుళకం);
 
 
-#endif /* HB_RASTER_IMAGE_HH */
+#అయితే_ముగింపు /* HB_RASTER_IMAGE_HH */

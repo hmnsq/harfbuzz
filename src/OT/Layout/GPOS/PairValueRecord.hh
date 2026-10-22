@@ -1,93 +1,93 @@
-#ifndef OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
-#define OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
+#నిర్వచించు OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 
-#include "ValueFormat.hh"
+#అన్తర్భావ "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
 
-struct pair_value_record_context_t
+నిర్మాణం pair_విలువ_రికార్డు_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
-  unsigned            len1; /* valueFormats[0].get_len() */
-  const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  స్థిరరాశి విలువ_పునాది     *పునాది;
+  స్థిరరాశి విలువ_Format   *విలువ_Formats;
+  స్థిరరాశి విలువ_Format   *newFormats;
+  గుర్తులేని            len1; /* valueFormats[0].get_len() */
+  స్థిరరాశి hb_map_t      *glyph_map;
+  స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  శూన్య copy_విలువలు (hb_serialize_context_t *s, స్థిరరాశి విలువ *values) స్థిరరాశి
   {
-    valueFormats[0].copy_values (s, newFormats[0], base, values,
+    విలువ_Formats[0].copy_విలువలు (s, newFormats[0], పునాది, values,
                                 layout_variation_idx_delta_map);
-    valueFormats[1].copy_values (s, newFormats[1], base, values + len1,
+    విలువ_Formats[1].copy_విలువలు (s, newFormats[1], పునాది, values + len1,
                                 layout_variation_idx_delta_map);
   }
 };
 
-template <typename Types>
-struct PairValueRecord
+మూస <రకం_పేరు Types>
+నిర్మాణం Pair_విలువ_రికార్డు
 {
-  template <typename Types2>
-  friend struct PairSet;
+  మూస <రకం_పేరు Types2>
+  మిత్ర నిర్మాణం Pair_సమితి;
 
-  protected:
-  typename Types::HBGlyphID
-	        secondGlyph;            /* GlyphID of second glyph in the
+  రక్షిత:
+  రకం_పేరు Types::HBGlyphID
+	        రెండవ_Glyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
-  ValueRecord   values;                 /* Positioning data for the first glyph
+  విలువ_రికార్డు   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
-  public:
-  DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (Types::HBGlyphID::static_కొలత, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  పూర్ణాంకం cmp (hb_codepoint_t k) స్థిరరాశి
+  { తిరిగి రెండవ_Glyph.cmp (k); }
 
-  bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+  తార్కిక subset (hb_subset_context_t *c,
+               pair_విలువ_రికార్డు_context_t *సంవృతం) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *s = c->serializer;
-    auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *s = c->serializer;
+    స్వయంచాలక *బహిర్గతం = s->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!s->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    out->secondGlyph = (*closure->glyph_map)[secondGlyph];
+    బహిర్గతం->రెండవ_Glyph = (*సంవృతం->glyph_map)[రెండవ_Glyph];
 
-    closure->copy_values (s, values);
+    సంవృతం->copy_విలువలు (s, values);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  స్థిరరాశి విలువ_Format *విలువ_Formats,
+                                  స్థిరరాశి విలువ_పునాది *పునాది) స్థిరరాశి
   {
-    unsigned record1_len = valueFormats[0].get_len ();
-    unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    గుర్తులేని record1_len = విలువ_Formats[0].get_len ();
+    గుర్తులేని record2_len = విలువ_Formats[1].get_len ();
+    స్థిరరాశి hb_array_t<స్థిరరాశి విలువ> విలువలు_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
-      valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
+    ఒకవేళ (విలువ_Formats[0].has_device ())
+      విలువ_Formats[0].collect_variation_indices (c, పునాది, విలువలు_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
-      valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
+    ఒకవేళ (విలువ_Formats[1].has_device ())
+      విలువ_Formats[1].collect_variation_indices (c, పునాది, విలువలు_array.sub_array (record1_len, record2_len));
   }
 
-  bool intersects (const hb_set_t& glyphset) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t& glyphset) స్థిరరాశి
   {
-    return glyphset.has(secondGlyph);
+    తిరిగి glyphset.has(రెండవ_Glyph);
   }
 
-  const Value* get_values_1 () const
+  స్థిరరాశి విలువ* get_విలువలు_1 () స్థిరరాశి
   {
-    return &values[0];
+    తిరిగి &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  స్థిరరాశి విలువ* get_విలువలు_2 (విలువ_Format format1) స్థిరరాశి
   {
-    return &values[format1.get_len ()];
+    తిరిగి &values[format1.get_len ()];
   }
 };
 
@@ -96,4 +96,4 @@ struct PairValueRecord
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
+#అయితే_ముగింపు  // OT_LAYOUT_GPOS_PAIRVALUERECORD_HH

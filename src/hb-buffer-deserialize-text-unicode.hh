@@ -1,5 +1,5 @@
 
-#line 1 "hb-buffer-deserialize-text-unicode.rl"
+#పంక్తి 1 "hb-buffer-deserialize-text-unicode.rl"
 /*
  * Copyright © 2013  Google, Inc.
  *
@@ -26,29 +26,29 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
-#define HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
+#నిర్వచితం_కాకపోతే HB_బఫరు_DESERIALIZE_పాఠ్యం_UNICODE_HH
+#నిర్వచించు HB_బఫరు_DESERIALIZE_పాఠ్యం_UNICODE_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 
-#line 33 "hb-buffer-deserialize-text-unicode.hh"
-static const unsigned char _deserialize_text_unicode_trans_keys[] = {
+#పంక్తి 33 "hb-buffer-deserialize-text-unicode.hh"
+స్థిర స్థిరరాశి గుర్తులేని అక్షరం deserialize_పాఠ్యం_unicode_trans_కీలకాలు[] = {
 	0u, 0u, 43u, 102u, 48u, 102u, 48u, 124u, 48u, 57u, 62u, 124u, 48u, 124u, 60u, 117u, 
 	85u, 117u, 85u, 117u, 0
 };
 
-static const char _deserialize_text_unicode_key_spans[] = {
+స్థిర స్థిరరాశి అక్షరం deserialize_పాఠ్యం_unicode_కీలకం_spans[] = {
 	0, 60, 55, 77, 10, 63, 77, 58, 
 	33, 33
 };
 
-static const short _deserialize_text_unicode_index_offsets[] = {
+స్థిర స్థిరరాశి పొట్టి deserialize_పాఠ్యం_unicode_సూచీ_offsets[] = {
 	0, 0, 61, 117, 195, 206, 270, 348, 
 	407, 441
 };
 
-static const char _deserialize_text_unicode_indicies[] = {
+స్థిర స్థిరరాశి అక్షరం deserialize_పాఠ్యం_unicode_indicies[] = {
 	0, 1, 1, 1, 1, 2, 2, 
 	2, 2, 2, 2, 2, 2, 2, 2, 
 	1, 1, 1, 1, 1, 1, 1, 2, 
@@ -111,146 +111,146 @@ static const char _deserialize_text_unicode_indicies[] = {
 	1, 1, 12, 1, 0
 };
 
-static const char _deserialize_text_unicode_trans_targs[] = {
+స్థిర స్థిరరాశి అక్షరం deserialize_పాఠ్యం_unicode_trans_targs[] = {
 	2, 0, 3, 3, 4, 9, 5, 6, 
 	9, 6, 8, 1, 1
 };
 
-static const char _deserialize_text_unicode_trans_actions[] = {
+స్థిర స్థిరరాశి అక్షరం deserialize_పాఠ్యం_unicode_trans_actions[] = {
 	0, 0, 1, 0, 2, 2, 1, 1, 
 	3, 0, 0, 4, 6
 };
 
-static const char _deserialize_text_unicode_eof_actions[] = {
+స్థిర స్థిరరాశి అక్షరం deserialize_పాఠ్యం_unicode_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 5
 };
 
-static const int deserialize_text_unicode_start = 7;
-static const int deserialize_text_unicode_first_final = 7;
-static const int deserialize_text_unicode_error = 0;
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_పాఠ్యం_unicode_ప్రారంభం = 7;
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_పాఠ్యం_unicode_మొదటి_final = 7;
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_పాఠ్యం_unicode_error = 0;
 
-static const int deserialize_text_unicode_en_main = 7;
-
-
-#line 80 "hb-buffer-deserialize-text-unicode.rl"
+స్థిర స్థిరరాశి పూర్ణాంకం deserialize_పాఠ్యం_unicode_en_main = 7;
 
 
-static hb_bool_t
-_hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
-				     const char *buf,
-				     unsigned int buf_len,
-				     const char **end_ptr,
+#పంక్తి 80 "hb-buffer-deserialize-text-unicode.rl"
+
+
+స్థిర hb_bool_t
+hb_బఫరు_deserialize_పాఠ్యం_unicode (hb_బఫరు_t *బఫరు,
+				     స్థిరరాశి అక్షరం *buf,
+				     గుర్తులేని పూర్ణాంకం buf_len,
+				     స్థిరరాశి అక్షరం **end_ptr,
 				     hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  స్థిరరాశి అక్షరం *p = buf, *pe = buf + buf_len, *eof = pe;
 
-  const char *tok = nullptr;
-  int cs;
+  స్థిరరాశి అక్షరం *tok = శూన్యసూచిక;
+  పూర్ణాంకం cs;
   hb_glyph_info_t info = {0};
-  const hb_glyph_position_t pos = {0};
+  స్థిరరాశి hb_glyph_position_t pos = {0};
   
-#line 147 "hb-buffer-deserialize-text-unicode.hh"
+#పంక్తి 147 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	cs = deserialize_text_unicode_start;
+	cs = deserialize_పాఠ్యం_unicode_ప్రారంభం;
 	}
 
-#line 150 "hb-buffer-deserialize-text-unicode.hh"
+#పంక్తి 150 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	పూర్ణాంకం _slen;
+	పూర్ణాంకం _trans;
+	స్థిరరాశి గుర్తులేని అక్షరం *కీలకాలు_2;
+	స్థిరరాశి అక్షరం *_inds;
+	ఒకవేళ ( p == pe )
+		వెళ్ళు _test_eof;
+	ఒకవేళ ( cs == 0 )
+		వెళ్ళు బహిర్గతం_2;
 _resume:
-	_keys = _deserialize_text_unicode_trans_keys + (cs<<1);
-	_inds = _deserialize_text_unicode_indicies + _deserialize_text_unicode_index_offsets[cs];
+	కీలకాలు_2 = deserialize_పాఠ్యం_unicode_trans_కీలకాలు + (cs<<1);
+	_inds = deserialize_పాఠ్యం_unicode_indicies + deserialize_పాఠ్యం_unicode_సూచీ_offsets[cs];
 
-	_slen = _deserialize_text_unicode_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_పాఠ్యం_unicode_కీలకం_spans[cs];
+	_trans = _inds[ _slen > 0 && కీలకాలు_2[0] <=(*p) &&
+		(*p) <= కీలకాలు_2[1] ?
+		(*p) - కీలకాలు_2[0] : _slen ];
 
-	cs = _deserialize_text_unicode_trans_targs[_trans];
+	cs = deserialize_పాఠ్యం_unicode_trans_targs[_trans];
 
-	if ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
-		goto _again;
+	ఒకవేళ ( deserialize_పాఠ్యం_unicode_trans_actions[_trans] == 0 )
+		వెళ్ళు _again;
 
-	switch ( _deserialize_text_unicode_trans_actions[_trans] ) {
-	case 4:
-#line 38 "hb-buffer-deserialize-text-unicode.rl"
+	ఎంపిక ( deserialize_పాఠ్యం_unicode_trans_actions[_trans] ) {
+	స్థితి 4:
+#పంక్తి 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, పరిమాణం (info));
 }
-	break;
-	case 1:
-#line 51 "hb-buffer-deserialize-text-unicode.rl"
+	ఆపు;
+	స్థితి 1:
+#పంక్తి 51 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	tok = p;
 }
-	break;
-	case 2:
-#line 55 "hb-buffer-deserialize-text-unicode.rl"
-	{if (!parse_hex (tok, p, &info.codepoint )) return false; }
-	break;
-	case 3:
-#line 57 "hb-buffer-deserialize-text-unicode.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
-#line 42 "hb-buffer-deserialize-text-unicode.rl"
+	ఆపు;
+	స్థితి 2:
+#పంక్తి 55 "hb-buffer-deserialize-text-unicode.rl"
+	{ఒకవేళ (!parse_hex (tok, p, &info.codepoint )) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 3:
+#పంక్తి 57 "hb-buffer-deserialize-text-unicode.rl"
+	{ ఒకవేళ (!parse_uint (tok, p, &info.cluster )) తిరిగి అబద్ధం; }
+	ఆపు;
+	స్థితి 6:
+#పంక్తి 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
-	  buffer->pos[buffer->len - 1] = pos;
+	బఫరు->కూడు_info (info);
+	ఒకవేళ (unlikely (!బఫరు->successful))
+	  తిరిగి అబద్ధం;
+	ఒకవేళ (బఫరు->have_positions)
+	  బఫరు->pos[బఫరు->len - 1] = pos;
 	*end_ptr = p;
 }
-#line 38 "hb-buffer-deserialize-text-unicode.rl"
+#పంక్తి 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, పరిమాణం (info));
 }
-	break;
-#line 203 "hb-buffer-deserialize-text-unicode.hh"
+	ఆపు;
+#పంక్తి 203 "hb-buffer-deserialize-text-unicode.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	ఒకవేళ ( cs == 0 )
+		వెళ్ళు బహిర్గతం_2;
+	ఒకవేళ ( ++p != pe )
+		వెళ్ళు _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ఒకవేళ ( p == eof )
 	{
-	switch ( _deserialize_text_unicode_eof_actions[cs] ) {
-	case 5:
-#line 42 "hb-buffer-deserialize-text-unicode.rl"
+	ఎంపిక ( deserialize_పాఠ్యం_unicode_eof_actions[cs] ) {
+	స్థితి 5:
+#పంక్తి 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
-	  buffer->pos[buffer->len - 1] = pos;
+	బఫరు->కూడు_info (info);
+	ఒకవేళ (unlikely (!బఫరు->successful))
+	  తిరిగి అబద్ధం;
+	ఒకవేళ (బఫరు->have_positions)
+	  బఫరు->pos[బఫరు->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
-#line 224 "hb-buffer-deserialize-text-unicode.hh"
+	ఆపు;
+#పంక్తి 224 "hb-buffer-deserialize-text-unicode.hh"
 	}
 	}
 
-	_out: {}
+	బహిర్గతం_2: {}
 	}
 
-#line 98 "hb-buffer-deserialize-text-unicode.rl"
+#పంక్తి 98 "hb-buffer-deserialize-text-unicode.rl"
 
 
   *end_ptr = p;
 
-  return p == pe;
+  తిరిగి p == pe;
 }
 
-#endif /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */
+#అయితే_ముగింపు /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */

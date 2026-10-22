@@ -29,16 +29,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ATOMIC_HH
-#define HB_ATOMIC_HH
+#నిర్వచితం_కాకపోతే HB_ATOMIC_HH
+#నిర్వచించు HB_ATOMIC_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-meta.hh"
 
 
-#ifndef HB_NO_MT
-#include <atomic>
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_MT
+#అన్తర్భావ <atomic>
+#అయితే_ముగింపు
 
 
 /* This should never be disabled, even under HB_NO_MT.
@@ -46,148 +46,148 @@
  *
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
-#ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
-static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
-#elif !defined(_MSC_VER)
-#include <atomic>
-#define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
-static inline void _hb_compiler_memory_r_barrier () {}
-#endif
-#endif
+#నిర్వచితం_కాకపోతే hb_compiler_జ్ఞాపకం_r_barrier
+#ఒకవేళ defined(__ATOMIC_ACQUIRE) // gcc-like
+స్థిర అంతఃవరుస శూన్య hb_compiler_జ్ఞాపకం_r_barrier () { asm అస్థిర("": : :"memory"); }
+#లేదావేళ !defined(_MSC_VER)
+#అన్తర్భావ <atomic>
+#నిర్వచించు hb_compiler_జ్ఞాపకం_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
+#లేకపోతే
+స్థిర అంతఃవరుస శూన్య hb_compiler_జ్ఞాపకం_r_barrier () {}
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 
-#ifndef HB_NO_MT
+#నిర్వచితం_కాకపోతే HB_NO_MT
 
-template <typename T>
-struct hb_atomic_t
+మూస <రకం_పేరు T>
+నిర్మాణం hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = అప్రమేయ;
   constexpr hb_atomic_t (T v) : v (v) {}
-  constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
-  hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
+  constexpr hb_atomic_t (స్థిరరాశి hb_atomic_t& o) : v (o.get_relaxed ()) {}
+  hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.సమితి_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
-  hb_atomic_t &operator= (T v_)
+  hb_atomic_t &క్రియాకారకం= (స్థిరరాశి hb_atomic_t& o) { సమితి_relaxed (o.get_relaxed ()); తిరిగి *ఇది; }
+  hb_atomic_t &క్రియాకారకం= (hb_atomic_t&& o){ సమితి_relaxed (o.get_relaxed ()); o.సమితి_relaxed ({}); తిరిగి *ఇది; }
+  hb_atomic_t &క్రియాకారకం= (T v_)
   {
-    set_relaxed (v_);
-    return *this;
+    సమితి_relaxed (v_);
+    తిరిగి *ఇది;
   }
-  operator T () const { return get_relaxed (); }
+  క్రియాకారకం T () స్థిరరాశి { తిరిగి get_relaxed (); }
 
-  void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
-  void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  శూన్య సమితి_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
+  శూన్య సమితి_release (T v_) { v.store (v_, std::memory_order_release); }
+  T get_relaxed () స్థిరరాశి { తిరిగి v.load (std::memory_order_relaxed); }
+  T get_acquire () స్థిరరాశి { తిరిగి v.load (std::memory_order_acquire); }
+  T inc () { తిరిగి v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { తిరిగి v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  పూర్ణాంకం క్రియాకారకం++ (పూర్ణాంకం) { తిరిగి inc (); }
+  పూర్ణాంకం క్రియాకారకం-- (పూర్ణాంకం) { తిరిగి dec (); }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  మిత్ర శూన్య swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T v = a.get_acquire ();
-    a.set_relaxed (b.get_acquire ());
-    b.set_relaxed (v);
+    a.సమితి_relaxed (b.get_acquire ());
+    b.సమితి_relaxed (v);
   }
 
   std::atomic<T> v {0};
 };
 
-template <typename T>
-struct hb_atomic_t<T *>
+మూస <రకం_పేరు T>
+నిర్మాణం hb_atomic_t<T *>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = అప్రమేయ;
   constexpr hb_atomic_t (T *v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (స్థిరరాశి hb_atomic_t &other) = తొలగించు;
 
-  void init (T *v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  శూన్య init (T *v_ = శూన్యసూచిక) { సమితి_relaxed (v_); }
+  శూన్య సమితి_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
+  T *get_relaxed () స్థిరరాశి { తిరిగి v.load (std::memory_order_relaxed); }
+  T *get_acquire () స్థిరరాశి { తిరిగి v.load (std::memory_order_acquire); }
+  తార్కిక cmpexch (T *old, T *new_) { తిరిగి v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &క్రియాకారకం= (స్థిరరాశి hb_atomic_t& o) { సమితి_relaxed (o.get_relaxed ()); తిరిగి *ఇది; }
+  hb_atomic_t &క్రియాకారకం= (hb_atomic_t&& o){ సమితి_relaxed (o.get_relaxed ()); o.సమితి_relaxed ({}); తిరిగి *ఇది; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
-  template <typename C>
-  operator C * () const
+  క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి get_acquire () != శూన్యసూచిక; }
+  T *క్రియాకారకం->() స్థిరరాశి { తిరిగి get_acquire (); }
+  మూస <రకం_పేరు C>
+  క్రియాకారకం C * () స్థిరరాశి
   {
-    return get_acquire ();
+    తిరిగి get_acquire ();
   }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  మిత్ర శూన్య swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T *p = a.get_acquire ();
-    a.set_relaxed (b.get_acquire ());
-    b.set_relaxed (p);
+    a.సమితి_relaxed (b.get_acquire ());
+    b.సమితి_relaxed (p);
   }
 
-  std::atomic<T *> v {nullptr};
+  std::atomic<T *> v {శూన్యసూచిక};
 };
 
-#else /* defined(HB_NO_MT) */
+#లేకపోతే /* defined(HB_NO_MT) */
 
-template <typename T>
-struct hb_atomic_t
+మూస <రకం_పేరు T>
+నిర్మాణం hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = అప్రమేయ;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& క్రియాకారకం = (T v_) { సమితి_relaxed (v_); తిరిగి *ఇది; }
+  క్రియాకారకం T () స్థిరరాశి { తిరిగి get_relaxed (); }
 
-  void set_relaxed (T v_) { v = v_; }
-  void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  శూన్య సమితి_relaxed (T v_) { v = v_; }
+  శూన్య సమితి_release (T v_) { v = v_; }
+  T get_relaxed () స్థిరరాశి { తిరిగి v; }
+  T get_acquire () స్థిరరాశి { తిరిగి v; }
+  T inc () { తిరిగి v++; }
+  T dec () { తిరిగి v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  పూర్ణాంకం క్రియాకారకం ++ (పూర్ణాంకం) { తిరిగి inc (); }
+  పూర్ణాంకం క్రియాకారకం -- (పూర్ణాంకం) { తిరిగి dec (); }
 
   T v = 0;
 };
 
-template <typename T>
-struct hb_atomic_t<T*>
+మూస <రకం_పేరు T>
+నిర్మాణం hb_atomic_t<T*>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = అప్రమేయ;
   constexpr hb_atomic_t (T* v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (స్థిరరాశి hb_atomic_t &other) = తొలగించు;
 
-  void init (T* v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
-  bool cmpexch (T *old, T *new_)
+  శూన్య init (T* v_ = శూన్యసూచిక) { సమితి_relaxed (v_); }
+  శూన్య సమితి_relaxed (T* v_) { v = v_; }
+  T *get_relaxed () స్థిరరాశి { తిరిగి v; }
+  T *get_acquire () స్థిరరాశి { తిరిగి v; }
+  తార్కిక cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    ఒకవేళ (v != old) తిరిగి అబద్ధం;
     v = new_;
-    return true;
+    తిరిగి నిజం;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి get_acquire () != శూన్యసూచిక; }
+  T * క్రియాకారకం -> () స్థిరరాశి                    { తిరిగి get_acquire (); }
+  మూస <రకం_పేరు C> క్రియాకారకం C * () స్థిరరాశి { తిరిగి get_acquire (); }
 
-  T *v = nullptr;
+  T *v = శూన్యసూచిక;
 };
 
-#endif
+#అయితే_ముగింపు
 
 
-static inline bool hb_barrier ()
+స్థిర అంతఃవరుస తార్కిక hb_barrier ()
 {
-  _hb_compiler_memory_r_barrier ();
-  return true;
+  hb_compiler_జ్ఞాపకం_r_barrier ();
+  తిరిగి నిజం;
 }
 
 
-#endif /* HB_ATOMIC_HH */
+#అయితే_ముగింపు /* HB_ATOMIC_HH */

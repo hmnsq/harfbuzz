@@ -24,350 +24,350 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_DIRECTWRITE
+#నిర్వచితమైతే HAVE_DIRECTWRITE
 
-#include "hb-directwrite.h"
+#అన్తర్భావ "hb-directwrite.h"
 
-#include <d2d1.h>
+#అన్తర్భావ <d2d1.h>
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-draw.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
-#define MAX_GLYPHS 256u
+#నిర్వచించు MAX_GLYPHS 256u
 
-static hb_position_t
+స్థిర hb_position_t
 hb_directwrite_scale_x (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_x ((int16_t) value);
-  return font->em_scalef_x ((float) value);
+  ఒకవేళ (value >= INT16_MIN && value <= INT16_MAX)
+    తిరిగి font->em_scale_x ((int16_t) value);
+  తిరిగి font->em_scalef_x ((దశాంశం) value);
 }
 
-static hb_position_t
+స్థిర hb_position_t
 hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_y ((int16_t) value);
-  return font->em_scalef_y ((float) value);
+  ఒకవేళ (value >= INT16_MIN && value <= INT16_MAX)
+    తిరిగి font->em_scale_y ((int16_t) value);
+  తిరిగి font->em_scalef_y ((దశాంశం) value);
 }
 
-static unsigned int
+స్థిర గుర్తులేని పూర్ణాంకం
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
-				   void *font_data HB_UNUSED,
-				   unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
-				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride,
-				   void *user_data HB_UNUSED)
+				   శూన్య *font_దత్తాంశం HB_వాడని,
+				   గుర్తులేని పూర్ణాంకం లెక్క,
+				   స్థిరరాశి hb_codepoint_t *మొదటి_unicode,
+				   గుర్తులేని పూర్ణాంకం unicode_stride,
+				   hb_codepoint_t *మొదటి_glyph,
+				   గుర్తులేని పూర్ణాంకం glyph_stride,
+				   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
-  for (unsigned i = 0; i < count;)
+  కొరకు (గుర్తులేని i = 0; i < లెక్క;)
   {
     UINT32 unicodes[MAX_GLYPHS];
     UINT16 gids[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    గుర్తులేని n = hb_min (MAX_GLYPHS, లెక్క - i);
 
-    for (unsigned j = 0; j < n; j++)
+    కొరకు (గుర్తులేని j = 0; j < n; j++)
     {
-      unicodes[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      unicodes[j] = *మొదటి_unicode;
+      మొదటి_unicode = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_unicode, unicode_stride);
     }
 
-    if (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
-      return i;
+    ఒకవేళ (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
+      తిరిగి i;
 
-    for (unsigned j = 0; j < n; j++)
+    కొరకు (గుర్తులేని j = 0; j < n; j++)
     {
-      if (!gids[j])
-        return i + j;
-      *first_glyph = gids[j];
-      first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+      ఒకవేళ (!gids[j])
+        తిరిగి i + j;
+      *మొదటి_glyph = gids[j];
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
 
     i += n;
   }
 
-  return count;
+  తిరిగి లెక్క;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_directwrite_get_font_h_extents (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   శూన్య *font_దత్తాంశం HB_వాడని,
 				   hb_font_extents_t *metrics,
-				   void *user_data HB_UNUSED)
+				   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
   DWRITE_FONT_METRICS dw_metrics;
   dw_face->GetMetrics (&dw_metrics);
 
   metrics->ascender = hb_directwrite_scale_y (font, dw_metrics.ascent);
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
-  metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
+  metrics->పంక్తి_gap = hb_directwrite_scale_y (font, dw_metrics.పంక్తి_Gap);
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static void
+స్థిర శూన్య
 hb_directwrite_get_glyph_h_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
-				     unsigned glyph_stride,
-				     hb_position_t *first_advance,
-				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     శూన్య* font_దత్తాంశం HB_వాడని,
+				     గుర్తులేని లెక్క,
+				     స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				     గుర్తులేని glyph_stride,
+				     hb_position_t *మొదటి_advance,
+				     గుర్తులేని advance_stride,
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
-  IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  IDWriteFontFace1 *dw_face1 = శూన్యసూచిక;
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (శూన్య**)&dw_face1);
+  ప్రతిజ్ఞా (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  గుర్తులేని పూర్ణాంకం అంకె_glyphs = font->face->get_అంకె_glyphs ();
 
-  for (unsigned i = 0; i < count;)
+  కొరకు (గుర్తులేని i = 0; i < లెక్క;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    గుర్తులేని n = hb_min (MAX_GLYPHS, లెక్క - i);
 
-    for (unsigned j = 0; j < n; j++)
+    కొరకు (గుర్తులేని j = 0; j < n; j++)
     {
-      gids[j] = *first_glyph;
+      gids[j] = *మొదటి_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, false);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, అబద్ధం);
+    కొరకు (గుర్తులేని j = 0; j < n; j++)
     {
       // https://github.com/harfbuzz/harfbuzz/issues/5319
-      auto advance = gids[j] < num_glyphs ? advances[j] : 0;
-      *first_advance = hb_directwrite_scale_x (font, advance);
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      స్వయంచాలక advance = gids[j] < అంకె_glyphs ? advances[j] : 0;
+      *మొదటి_advance = hb_directwrite_scale_x (font, advance);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం<hb_position_t> (మొదటి_advance, advance_stride);
     }
 
     i += n;
   }
 }
 
-#ifndef HB_NO_VERTICAL
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
 
-static void
+స్థిర శూన్య
 hb_directwrite_get_glyph_v_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
-				     unsigned glyph_stride,
-				     hb_position_t *first_advance,
-				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     శూన్య* font_దత్తాంశం HB_వాడని,
+				     గుర్తులేని లెక్క,
+				     స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				     గుర్తులేని glyph_stride,
+				     hb_position_t *మొదటి_advance,
+				     గుర్తులేని advance_stride,
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
-  IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  IDWriteFontFace1 *dw_face1 = శూన్యసూచిక;
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (శూన్య**)&dw_face1);
+  ప్రతిజ్ఞా (dw_face1);
 
-  for (unsigned i = 0; i < count;)
+  కొరకు (గుర్తులేని i = 0; i < లెక్క;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    గుర్తులేని n = hb_min (MAX_GLYPHS, లెక్క - i);
 
-    for (unsigned j = 0; j < n; j++)
+    కొరకు (గుర్తులేని j = 0; j < n; j++)
     {
-      gids[j] = *first_glyph;
+      gids[j] = *మొదటి_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, true);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, నిజం);
+    కొరకు (గుర్తులేని j = 0; j < n; j++)
     {
-      *first_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం<hb_position_t> (మొదటి_advance, advance_stride);
     }
 
     i += n;
   }
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_directwrite_get_glyph_v_origin (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   శూన్య *font_దత్తాంశం HB_వాడని,
 				   hb_codepoint_t glyph,
 				   hb_position_t *x,
 				   hb_position_t *y,
-				   void *user_data HB_UNUSED)
+				   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  ఒకవేళ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    తిరిగి అబద్ధం;
 
-  *x = hb_directwrite_scale_x (font, metrics.advanceWidth / 2);
+  *x = hb_directwrite_scale_x (font, metrics.advance_వెడల్పు / 2);
   *y = hb_directwrite_scale_y (font, metrics.verticalOriginY); // Untested
 
-  return true;
+  తిరిగి నిజం;
 }
-#endif
+#అయితే_ముగింపు
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_directwrite_get_glyph_extents (hb_font_t *font,
-				  void *font_data HB_UNUSED,
+				  శూన్య *font_దత్తాంశం HB_వాడని,
 				  hb_codepoint_t glyph,
 				  hb_glyph_extents_t *extents,
-				  void *user_data HB_UNUSED)
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  ఒకవేళ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    తిరిగి అబద్ధం;
 
-  int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
-  int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
-  int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advanceHeight + metrics.bottomSideBearing;
+  int64_t కుడి = (int64_t) metrics.advance_వెడల్పు - metrics.కుడి_Side_Bearing;
+  int64_t శిఖరం_2 = (int64_t) metrics.verticalOriginY - metrics.శిఖరం_Side_Bearing;
+  int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advance_ఎత్తు + metrics.bottomSideBearing;
 
-  extents->x_bearing = hb_directwrite_scale_x (font, metrics.leftSideBearing);
-  extents->y_bearing = hb_directwrite_scale_y (font, top);
-  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, right), extents->x_bearing);
-  extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
+  extents->x_bearing = hb_directwrite_scale_x (font, metrics.ఎడమ_Side_Bearing);
+  extents->y_bearing = hb_directwrite_scale_y (font, శిఖరం_2);
+  extents->వెడల్పు = hb_saturate_sub (hb_directwrite_scale_x (font, కుడి), extents->x_bearing);
+  extents->ఎత్తు = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
-  return true;
+  తిరిగి నిజం;
 }
 
 
-#ifndef HB_NO_DRAW
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
 
-class GeometrySink : public IDWriteGeometrySink
+తరగతి GeometrySink : బహిరంగ IDWriteGeometrySink
 {
   hb_font_t *font;
   hb_draw_session_t drawing;
 
-public:
+బహిరంగ:
   GeometrySink(hb_font_t *font,
 	       hb_draw_funcs_t *draw_funcs,
-	       void *draw_data)
-    : font (font), drawing ({draw_funcs, draw_data}) {}
+	       శూన్య *draw_దత్తాంశం)
+    : font (font), drawing ({draw_funcs, draw_దత్తాంశం}) {}
 
-  HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
-  void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
-  void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
+  HRESULT STDMETHODCALLTYPE Close() override { తిరిగి S_OK; }
+  శూన్య STDMETHODCALLTYPE సమితి_Fill_బహుళకం(D2_D1_FILL_బహుళకం) override {}
+  శూన్య STDMETHODCALLTYPE సమితి_Segment_Flags(D2_D1_మార్గం_SEGMENT) override {}
 
-  IFACEMETHOD(QueryInterface)(REFIID, void **) override { return E_NOINTERFACE; }
-  IFACEMETHOD_(ULONG, AddRef)() override { return 1; }
-  IFACEMETHOD_(ULONG, Release)() override { return 1; }
+  IFACEMETHOD(QueryInterface)(REFIID, శూన్య **) override { తిరిగి E_NOINTERFACE; }
+  IFACEMETHOD_(ULONG, కూడు_Ref)() override { తిరిగి 1; }
+  IFACEMETHOD_(ULONG, Release)() override { తిరిగి 1; }
 
-  void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
+  శూన్య STDMETHODCALLTYPE BeginFigure(D2_D1_బిందువు_2_F ప్రారంభం_బిందువు, D2D1_FIGURE_BEGIN) override
   {
-    drawing.move_to (font->em_scalef_x (startPoint.x), -(float) font->em_scalef_y (startPoint.y));
+    drawing.move_గమ్యం (font->em_scalef_x (ప్రారంభం_బిందువు.x), -(దశాంశం) font->em_scalef_y (ప్రారంభం_బిందువు.y));
   }
 
-  void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziersCount) override
+  శూన్య STDMETHODCALLTYPE కూడు_Beziers(స్థిరరాశి D2D1_BEZIER_SEGMENT *beziers, UINT beziers_లెక్క) override
   {
-    for (unsigned i = 0; i < beziersCount; ++i)
-      drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(float) font->em_scalef_y (beziers[i].point1.y),
-			font->em_scalef_x (beziers[i].point2.x), -(float) font->em_scalef_y (beziers[i].point2.y),
-			font->em_scalef_x (beziers[i].point3.x), -(float) font->em_scalef_y (beziers[i].point3.y));
+    కొరకు (గుర్తులేని i = 0; i < beziers_లెక్క; ++i)
+      drawing.cubic_గమ్యం (font->em_scalef_x (beziers[i].point1.x), -(దశాంశం) font->em_scalef_y (beziers[i].point1.y),
+			font->em_scalef_x (beziers[i].point2.x), -(దశాంశం) font->em_scalef_y (beziers[i].point2.y),
+			font->em_scalef_x (beziers[i].point3.x), -(దశాంశం) font->em_scalef_y (beziers[i].point3.y));
   }
 
-  void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F *points, UINT pointsCount) override
+  శూన్య STDMETHODCALLTYPE కూడు_పంక్తులు(స్థిరరాశి D2_D1_బిందువు_2_F *points, UINT points_లెక్క) override
   {
-    for (unsigned i = 0; i < pointsCount; ++i)
-      drawing.line_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
+    కొరకు (గుర్తులేని i = 0; i < points_లెక్క; ++i)
+      drawing.పంక్తి_గమ్యం (font->em_scalef_x (points[i].x), -(దశాంశం) font->em_scalef_y (points[i].y));
   }
 
-  void STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
+  శూన్య STDMETHODCALLTYPE చివర_Figure(D2_D1_FIGURE_చివర) override
   {
-    drawing.close_path ();
+    drawing.close_మార్గం ();
   }
 };
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   శూన్య *font_దత్తాంశం HB_వాడని,
 				   hb_codepoint_t glyph,
-				   hb_draw_funcs_t *draw_funcs, void *draw_data,
-				   void *user_data)
+				   hb_draw_funcs_t *draw_funcs, శూన్య *draw_దత్తాంశం,
+				   శూన్య *user_దత్తాంశం)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
 
-  GeometrySink sink (font, draw_funcs, draw_data);
+  GeometrySink sink (font, draw_funcs, draw_దత్తాంశం);
   UINT16 gid = static_cast<UINT16>(glyph);
-  unsigned upem = font->face->get_upem();
+  గుర్తులేని upem = font->face->get_upem();
 
-  return S_OK == dw_face->GetGlyphRunOutline (upem,
-					      &gid, nullptr, nullptr,
+  తిరిగి S_OK == dw_face->Get_Glyph_నిరంతరం_Outline (upem,
+					      &gid, శూన్యసూచిక, శూన్యసూచిక,
 					      1,
-					      false, false,
+					      అబద్ధం, అబద్ధం,
 					      &sink);
 }
 
-#endif
+#అయితే_ముగింపు
 
-static inline void free_static_directwrite_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_directwrite_funcs ();
 
-static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  స్థిర hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_directwrite_get_nominal_glyphs, nullptr, nullptr);
+    hb_font_funcs_సమితి_nominal_glyphs_func (funcs, hb_directwrite_get_nominal_glyphs, శూన్యసూచిక, శూన్యసూచిక);
     //hb_font_funcs_set_variation_glyph_func (funcs, hb_directwrite_get_variation_glyph, nullptr, nullptr);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_directwrite_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_directwrite_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_సమితి_font_h_extents_func (funcs, hb_directwrite_get_font_h_extents, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_h_advances_func (funcs, hb_directwrite_get_glyph_h_advances, శూన్యసూచిక, శూన్యసూచిక);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_glyph_v_advances_func (funcs, hb_directwrite_get_glyph_v_advances, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origin_func (funcs, hb_directwrite_get_glyph_v_origin, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+    hb_font_funcs_సమితి_glyph_v_advances_func (funcs, hb_directwrite_get_glyph_v_advances, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_v_origin_func (funcs, hb_directwrite_get_glyph_v_origin, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_directwrite_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
+    hb_font_funcs_సమితి_draw_glyph_or_fail_func (funcs, hb_directwrite_draw_glyph_or_fail, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_directwrite_get_glyph_extents, nullptr, nullptr);
+    hb_font_funcs_సమితి_glyph_extents_func (funcs, hb_directwrite_get_glyph_extents, శూన్యసూచిక, శూన్యసూచిక);
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_GLYPH_పేర్లు
     //hb_font_funcs_set_glyph_name_func (funcs, hb_directwrite_get_glyph_name, nullptr, nullptr);
     //hb_font_funcs_set_glyph_from_name_func (funcs, hb_directwrite_get_glyph_from_name, nullptr, nullptr);
-#endif
+#అయితే_ముగింపు
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_directwrite_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_directwrite_funcs;
 
-static inline
-void free_static_directwrite_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_directwrite_funcs ()
 {
   static_directwrite_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+స్థిర hb_font_funcs_t *
 _hb_directwrite_get_font_funcs ()
 {
-  return static_directwrite_funcs.get_unconst ();
+  తిరిగి static_directwrite_funcs.get_unconst ();
 }
 
 /**
@@ -388,24 +388,24 @@ _hb_directwrite_get_font_funcs ()
  *
  * Since: 11.0.0
  **/
-void
-hb_directwrite_font_set_funcs (hb_font_t *font)
+శూన్య
+hb_directwrite_font_సమితి_funcs (hb_font_t *font)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  if (unlikely (!dw_face))
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (స్థిరరాశి శూన్య *) font->దత్తాంశం.directwrite;
+  ఒకవేళ (unlikely (!dw_face))
   {
-    hb_font_set_funcs (font,
-		       hb_font_funcs_get_empty (),
-		       nullptr, nullptr);
-    return;
+    hb_font_సమితి_funcs (font,
+		       hb_font_funcs_get_ఖాళీలు (),
+		       శూన్యసూచిక, శూన్యసూచిక);
+    తిరిగి;
   }
 
-  dw_face->AddRef ();
-  hb_font_set_funcs (font,
+  dw_face->కూడు_Ref ();
+  hb_font_సమితి_funcs (font,
 		     _hb_directwrite_get_font_funcs (),
-		     nullptr, nullptr);
+		     శూన్యసూచిక, శూన్యసూచిక);
 }
 
-#undef MAX_GLYPHS
+#నిర్వచనం_రద్దు MAX_GLYPHS
 
-#endif
+#అయితే_ముగింపు

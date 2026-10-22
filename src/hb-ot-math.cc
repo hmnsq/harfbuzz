@@ -24,11 +24,11 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_MATH
+#నిర్వచితం_కాకపోతే HB_NO_MATH
 
-#include "hb-ot-math-table.hh"
+#అన్తర్భావ "hb-ot-math-table.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 1.3.3
  **/
 hb_bool_t
-hb_ot_math_has_data (hb_face_t *face)
+hb_ot_math_has_దత్తాంశం (hb_face_t *face)
 {
-  return face->table.MATH->has_data ();
+  తిరిగి face->పట్టిక.MATH->has_దత్తాంశం ();
 }
 
 /**
@@ -92,16 +92,16 @@ hb_ot_math_get_constant (hb_font_t *font,
    * apparently Microsoft implementation swaps displayOperatorMinHeight and
    * delimitedSubFormulaMinHeight, so we do the same if we detect Cambria Math
    * with the swapped values. */
-  if ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT ||
-       constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT) &&
-      font->face->table.MATH->is_bad_cambria (font))
+  ఒకవేళ ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ఎత్తు ||
+       constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_ఎత్తు) &&
+      font->face->పట్టిక.MATH->is_bad_cambria (font))
   {
-    if (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT)
-      constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT;
-    else
-      constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT;
+    ఒకవేళ (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ఎత్తు)
+      constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_ఎత్తు;
+    లేకపోతే
+      constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_ఎత్తు;
   }
-  return font->face->table.MATH->get_constant(constant, font);
+  తిరిగి font->face->పట్టిక.MATH->get_constant(constant, font);
 }
 
 /**
@@ -120,7 +120,7 @@ hb_position_t
 hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
 					 hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_italics_correction (glyph, font);
+  తిరిగి font->face->పట్టిక.MATH->get_glyph_info().get_italics_correction (glyph, font);
 }
 
 /**
@@ -143,10 +143,10 @@ hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
  * Since: 1.3.3
  **/
 hb_position_t
-hb_ot_math_get_glyph_top_accent_attachment (hb_font_t *font,
+hb_ot_math_get_glyph_శిఖరం_accent_attachment (hb_font_t *font,
 					    hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_top_accent_attachment (glyph, font);
+  తిరిగి font->face->పట్టిక.MATH->get_glyph_info().get_శిఖరం_accent_attachment (glyph, font);
 }
 
 /**
@@ -164,7 +164,7 @@ hb_bool_t
 hb_ot_math_is_glyph_extended_shape (hb_face_t *face,
 				    hb_codepoint_t glyph)
 {
-  return face->table.MATH->get_glyph_info().is_extended_shape (glyph);
+  తిరిగి face->పట్టిక.MATH->get_glyph_info().is_extended_shape (glyph);
 }
 
 /**
@@ -190,11 +190,11 @@ hb_position_t
 hb_ot_math_get_glyph_kerning (hb_font_t *font,
 			      hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      hb_position_t correction_height)
+			      hb_position_t correction_ఎత్తు)
 {
-  return font->face->table.MATH->get_glyph_info().get_kerning (glyph,
+  తిరిగి font->face->పట్టిక.MATH->get_glyph_info().get_kerning (glyph,
 							       kern,
-							       correction_height,
+							       correction_ఎత్తు,
 							       font);
 }
 
@@ -227,18 +227,18 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
  *
  * Since: 3.4.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
-			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
-			       hb_ot_math_kern_entry_t *kern_entries /* OUT */)
+			       గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం *entries_లెక్క, /* IN/OUT */
+			       hb_ot_math_kern_నమోదు_t *kern_entries /*బహిర్గతం*/)
 {
-  return font->face->table.MATH->get_glyph_info().get_kernings (glyph,
+  తిరిగి font->face->పట్టిక.MATH->get_glyph_info().get_kernings (glyph,
 								kern,
-								start_offset,
-								entries_count,
+								ప్రారంభం_స్థానభ్రంశం,
+								entries_లెక్క,
 								kern_entries,
 								font);
 }
@@ -266,17 +266,17 @@ hb_ot_math_get_glyph_kernings (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
-			       hb_ot_math_glyph_variant_t *variants /* OUT */)
+			       గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం *variants_లెక్క, /* IN/OUT */
+			       hb_ot_math_glyph_variant_t *variants /*బహిర్గతం*/)
 {
-  return font->face->table.MATH->get_variants().get_glyph_variants (glyph, direction, font,
-								    start_offset,
-								    variants_count,
+  తిరిగి font->face->పట్టిక.MATH->get_variants().get_glyph_variants (glyph, direction, font,
+								    ప్రారంభం_స్థానభ్రంశం,
+								    variants_లెక్క,
 								    variants);
 }
 
@@ -302,7 +302,7 @@ hb_position_t
 hb_ot_math_get_min_connector_overlap (hb_font_t *font,
 				      hb_direction_t direction)
 {
-  return font->face->table.MATH->get_variants().get_min_connector_overlap (direction, font);
+  తిరిగి font->face->పట్టిక.MATH->get_variants().get_min_connector_overlap (direction, font);
 }
 
 /**
@@ -330,23 +330,23 @@ hb_ot_math_get_min_connector_overlap (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
-			       hb_ot_math_glyph_part_t *parts, /* OUT */
-			       hb_position_t *italics_correction /* OUT */)
+			       గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం *parts_లెక్క, /* IN/OUT */
+			       hb_ot_math_glyph_part_t *parts, /*బహిర్గతం*/
+			       hb_position_t *italics_correction /*బహిర్గతం*/)
 {
-  return font->face->table.MATH->get_variants().get_glyph_parts (glyph,
+  తిరిగి font->face->పట్టిక.MATH->get_variants().get_glyph_parts (glyph,
 								 direction,
 								 font,
-								 start_offset,
-								 parts_count,
+								 ప్రారంభం_స్థానభ్రంశం,
+								 parts_లెక్క,
 								 parts,
 								 italics_correction);
 }
 
 
-#endif
+#అయితే_ముగింపు

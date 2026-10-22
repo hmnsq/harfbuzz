@@ -25,1099 +25,1099 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_VAR_GVAR_TABLE_HH
-#define HB_OT_VAR_GVAR_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_VAR_GVAR_పట్టిక_HH
+#నిర్వచించు HB_OT_VAR_GVAR_పట్టిక_HH
 
-#include "hb-decycler.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-var-common.hh"
+#అన్తర్భావ "hb-decycler.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-dual.hh"
+#అన్తర్భావ "hb-ot-var-common.hh"
 
 /*
  * gvar -- Glyph Variation Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gvar
  */
-#define HB_OT_TAG_gvar HB_TAG('g','v','a','r')
-#define HB_OT_TAG_GVAR HB_TAG('G','V','A','R')
+#నిర్వచించు HB_OT_ట్యాగ్_gvar HB_ట్యాగ్('g','v','a','r')
+#నిర్వచించు HB_OT_ట్యాగ్_GVAR HB_ట్యాగ్('G','V','A','R')
 
-struct hb_glyf_scratch_t
+నిర్మాణం hb_glyf_scratch_t
 {
   // glyf
-  contour_point_vector_t all_points;
-  contour_point_vector_t comp_points;
+  contour_బిందువు_సదిశ_t all_points;
+  contour_బిందువు_సదిశ_t comp_points;
   hb_decycler_t decycler;
 
   // gvar
-  contour_point_vector_t orig_points;
-  hb_vector_t<int> x_deltas;
-  hb_vector_t<int> y_deltas;
-  contour_point_vector_t deltas;
-  hb_vector_t<unsigned int> shared_indices;
-  hb_vector_t<unsigned int> private_indices;
+  contour_బిందువు_సదిశ_t orig_points;
+  hb_సదిశ_t<పూర్ణాంకం> x_deltas;
+  hb_సదిశ_t<పూర్ణాంకం> y_deltas;
+  contour_బిందువు_సదిశ_t deltas;
+  hb_సదిశ_t<గుర్తులేని పూర్ణాంకం> shared_indices;
+  hb_సదిశ_t<గుర్తులేని పూర్ణాంకం> వ్యక్తిగత_indices;
 };
 
-namespace OT {
+నామాకాశ OT {
 
-template <typename OffsetType>
-struct glyph_variations_t
+మూస <రకం_పేరు స్థానభ్రంశం_Type>
+నిర్మాణం glyph_variations_t
 {
   // TODO: Move tuple_variations_t to outside of TupleVariationData
-  using tuple_variations_t = typename TupleVariationData<OffsetType>::tuple_variations_t;
-  using GlyphVariationData = TupleVariationData<OffsetType>;
+  ఉపయోగించి tuple_variations_t = రకం_పేరు Tuple_Variation_దత్తాంశం<స్థానభ్రంశం_Type>::tuple_variations_t;
+  ఉపయోగించి Glyph_Variation_దత్తాంశం = Tuple_Variation_దత్తాంశం<స్థానభ్రంశం_Type>;
 
-  hb_vector_t<tuple_variations_t> glyph_variations;
+  hb_సదిశ_t<tuple_variations_t> glyph_variations;
 
-  hb_vector_t<F2DOT14> compiled_shared_tuples;
-  private:
-  unsigned shared_tuples_count = 0;
+  hb_సదిశ_t<F2DOT14> compiled_shared_tuples;
+  అంతరంగ:
+  గుర్తులేని shared_tuples_లెక్క = 0;
 
   /* shared coords-> index map after instantiation */
-  hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> shared_tuples_idx_map;
+  hb_hashmap_t<స్థిరరాశి hb_సదిశ_t<F2DOT14>*, గుర్తులేని> shared_tuples_idx_map;
 
   hb_alloc_pool_t pool;
 
-  public:
-  unsigned compiled_shared_tuples_count () const
-  { return shared_tuples_count; }
+  బహిరంగ:
+  గుర్తులేని compiled_shared_tuples_లెక్క () స్థిరరాశి
+  { తిరిగి shared_tuples_లెక్క; }
 
-  unsigned compiled_byte_size () const
+  గుర్తులేని compiled_byte_కొలత () స్థిరరాశి
   {
-    unsigned byte_size = 0;
-    for (const auto& _ : glyph_variations)
-      byte_size += _.get_compiled_byte_size ();
+    గుర్తులేని byte_కొలత = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : glyph_variations)
+      byte_కొలత += _.get_compiled_byte_కొలత ();
 
-    return byte_size;
+    తిరిగి byte_కొలత;
   }
 
-  bool create_from_glyphs_var_data (unsigned axis_count,
-                                    const hb_array_t<const F2DOT14> shared_tuples,
-                                    const hb_subset_plan_t *plan,
-                                    const hb_hashmap_t<hb_codepoint_t, hb_bytes_t>& new_gid_var_data_map)
+  తార్కిక create_from_glyphs_var_దత్తాంశం (గుర్తులేని axis_లెక్క,
+                                    స్థిరరాశి hb_array_t<స్థిరరాశి F2DOT14> shared_tuples,
+                                    స్థిరరాశి hb_subset_plan_t *plan,
+                                    స్థిరరాశి hb_hashmap_t<hb_codepoint_t, hb_బైట్లు_t>& new_gid_var_దత్తాంశం_map)
   {
-    if (unlikely (!glyph_variations.alloc_exact (plan->new_to_old_gid_list.length)))
-      return false;
+    ఒకవేళ (unlikely (!glyph_variations.alloc_exact (plan->new_గమ్యం_old_gid_list.నిడివి)))
+      తిరిగి అబద్ధం;
 
-    auto it = hb_iter (plan->new_to_old_gid_list);
-    for (auto &_ : it)
+    స్వయంచాలక it = hb_iter (plan->new_గమ్యం_old_gid_list);
+    కొరకు (స్వయంచాలక &_ : it)
     {
-      hb_codepoint_t new_gid = _.first;
-      contour_point_vector_t *all_contour_points;
-      if (!new_gid_var_data_map.has (new_gid) ||
+      hb_codepoint_t new_gid = _.మొదటి;
+      contour_బిందువు_సదిశ_t *all_contour_points;
+      ఒకవేళ (!new_gid_var_దత్తాంశం_map.has (new_gid) ||
           !plan->new_gid_contour_points_map.has (new_gid, &all_contour_points))
-        return false;
-      hb_bytes_t var_data = new_gid_var_data_map.get (new_gid);
+        తిరిగి అబద్ధం;
+      hb_బైట్లు_t var_దత్తాంశం = new_gid_var_దత్తాంశం_map.get (new_gid);
 
-      const GlyphVariationData* p = reinterpret_cast<const GlyphVariationData*> (var_data.arrayZ);
-      typename GlyphVariationData::tuple_iterator_t iterator;
+      స్థిరరాశి Glyph_Variation_దత్తాంశం* p = reinterpret_cast<స్థిరరాశి Glyph_Variation_దత్తాంశం*> (var_దత్తాంశం.arrayZ);
+      రకం_పేరు Glyph_Variation_దత్తాంశం::tuple_iterator_t iterator;
       tuple_variations_t tuple_vars;
 
-      hb_vector_t<unsigned> shared_indices;
+      hb_సదిశ_t<గుర్తులేని> shared_indices;
 
       /* in case variation data is empty, push an empty struct into the vector,
        * keep the vector in sync with the new_to_old_gid_list */
-      if (!var_data || ! p->has_data () || !all_contour_points->length ||
-          !GlyphVariationData::get_tuple_iterator (var_data, axis_count,
-                                                   var_data.arrayZ,
+      ఒకవేళ (!var_దత్తాంశం || ! p->has_దత్తాంశం () || !all_contour_points->నిడివి ||
+          !Glyph_Variation_దత్తాంశం::get_tuple_iterator (var_దత్తాంశం, axis_లెక్క,
+                                                   var_దత్తాంశం.arrayZ,
                                                    shared_indices, &iterator))
       {
         glyph_variations.push (std::move (tuple_vars));
-        continue;
+        కొనసాగు;
       }
 
-      bool is_composite_glyph = false;
-      is_composite_glyph = plan->composite_new_gids.has (new_gid);
+      తార్కిక is_సంయుక్త_glyph = అబద్ధం;
+      is_సంయుక్త_glyph = plan->సంయుక్త_new_gids.has (new_gid);
 
-      if (!p->decompile_tuple_variations (all_contour_points->length, true /* is_gvar */,
-                                          iterator, &(plan->axes_old_index_tag_map),
+      ఒకవేళ (!p->decompile_tuple_variations (all_contour_points->నిడివి, నిజం /* is_gvar */,
+                                          iterator, &(plan->axes_old_సూచీ_ట్యాగ్_map),
                                           shared_indices, shared_tuples,
-                                          tuple_vars, /* OUT */
+                                          tuple_vars, /*బహిర్గతం*/
 					  &pool,
-                                          is_composite_glyph))
-        return false;
+                                          is_సంయుక్త_glyph))
+        తిరిగి అబద్ధం;
       glyph_variations.push (std::move (tuple_vars));
     }
-    return !glyph_variations.in_error () && glyph_variations.length == plan->new_to_old_gid_list.length;
+    తిరిగి !glyph_variations.లోపల_error () && glyph_variations.నిడివి == plan->new_గమ్యం_old_gid_list.నిడివి;
   }
 
-  bool instantiate (const hb_subset_plan_t *plan)
+  తార్కిక instantiate (స్థిరరాశి hb_subset_plan_t *plan)
   {
-    unsigned count = plan->new_to_old_gid_list.length;
-    bool iup_optimize = false;
+    గుర్తులేని లెక్క = plan->new_గమ్యం_old_gid_list.నిడివి;
+    తార్కిక iup_optimize = అబద్ధం;
     optimize_scratch_t scratch;
     iup_optimize = plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS;
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      hb_codepoint_t new_gid = plan->new_to_old_gid_list[i].first;
-      contour_point_vector_t *all_points;
-      if (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
-        return false;
+      hb_codepoint_t new_gid = plan->new_గమ్యం_old_gid_list[i].మొదటి;
+      contour_బిందువు_సదిశ_t *all_points;
+      ఒకవేళ (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
+        తిరిగి అబద్ధం;
       /* IUP adds rebased constant deltas to the contour coordinates. Keep
        * the plan's original points intact across serialization retries. */
-      contour_point_vector_t points;
-      if (iup_optimize)
+      contour_బిందువు_సదిశ_t points;
+      ఒకవేళ (iup_optimize)
       {
         points = *all_points;
-        if (unlikely (points.in_error ())) return false;
+        ఒకవేళ (unlikely (points.లోపల_error ())) తిరిగి అబద్ధం;
         all_points = &points;
       }
       /* avar2 partial instancing: cull unreachable tuples. */
-      if (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
+      ఒకవేళ (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
 	glyph_variations[i].cull_unreachable (plan->avar2_reachable_ranges);
-      if (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
-        return false;
+      ఒకవేళ (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
+        తిరిగి అబద్ధం;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool compile_bytes (const hb_map_t& axes_index_map,
-                      const hb_map_t& axes_old_index_tag_map)
+  తార్కిక compile_బైట్లు (స్థిరరాశి hb_map_t& axes_సూచీ_map,
+                      స్థిరరాశి hb_map_t& axes_old_సూచీ_ట్యాగ్_map)
   {
-    if (!compile_shared_tuples (axes_index_map, axes_old_index_tag_map))
-      return false;
-    for (tuple_variations_t& vars: glyph_variations)
-      if (!vars.compile_bytes (axes_index_map, axes_old_index_tag_map,
-                               true, /* use shared points*/
-                               true,
+    ఒకవేళ (!compile_shared_tuples (axes_సూచీ_map, axes_old_సూచీ_ట్యాగ్_map))
+      తిరిగి అబద్ధం;
+    కొరకు (tuple_variations_t& vars: glyph_variations)
+      ఒకవేళ (!vars.compile_బైట్లు (axes_సూచీ_map, axes_old_సూచీ_ట్యాగ్_map,
+                               నిజం, /* use shared points*/
+                               నిజం,
                                &shared_tuples_idx_map,
 			       &pool))
-        return false;
+        తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool compile_shared_tuples (const hb_map_t& axes_index_map,
-                              const hb_map_t& axes_old_index_tag_map)
+  తార్కిక compile_shared_tuples (స్థిరరాశి hb_map_t& axes_సూచీ_map,
+                              స్థిరరాశి hb_map_t& axes_old_సూచీ_ట్యాగ్_map)
   {
     /* key is pointer to compiled_peak_coords inside each tuple, hashing
      * function will always deref pointers first */
-    hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> coords_count_map;
+    hb_hashmap_t<స్థిరరాశి hb_సదిశ_t<F2DOT14>*, గుర్తులేని> coords_లెక్క_map;
 
     /* count the num of shared coords */
-    for (tuple_variations_t& vars: glyph_variations)
+    కొరకు (tuple_variations_t& vars: glyph_variations)
     {
-      for (tuple_delta_t& var : vars.tuple_vars)
+      కొరకు (tuple_delta_t& var : vars.tuple_vars)
       {
-        if (!var.compile_coords (axes_index_map, axes_old_index_tag_map, &pool))
-          return false;
-        unsigned *count;
-	unsigned hash = hb_hash (&var.compiled_peak_coords);
-        if (coords_count_map.has_with_hash (&(var.compiled_peak_coords), hash, &count))
-	  (*count)++;
-        else
-          coords_count_map.set_with_hash (&(var.compiled_peak_coords), hash, 1);
+        ఒకవేళ (!var.compile_coords (axes_సూచీ_map, axes_old_సూచీ_ట్యాగ్_map, &pool))
+          తిరిగి అబద్ధం;
+        గుర్తులేని *లెక్క;
+	గుర్తులేని hash = hb_hash (&var.compiled_peak_coords);
+        ఒకవేళ (coords_లెక్క_map.has_with_hash (&(var.compiled_peak_coords), hash, &లెక్క))
+	  (*లెక్క)++;
+        లేకపోతే
+          coords_లెక్క_map.సమితి_with_hash (&(var.compiled_peak_coords), hash, 1);
       }
     }
 
-    if (!coords_count_map || coords_count_map.in_error ())
-      return false;
+    ఒకవేళ (!coords_లెక్క_map || coords_లెక్క_map.లోపల_error ())
+      తిరిగి అబద్ధం;
 
     /* add only those coords that are used more than once into the vector and sort */
-    hb_vector_t<hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>> shared_coords {
-      + hb_iter (coords_count_map)
-      | hb_filter ([] (const hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>& p) { return p.second > 1; })
+    hb_సదిశ_t<hb_pair_t<స్థిరరాశి hb_సదిశ_t<F2DOT14>*, గుర్తులేని>> shared_coords {
+      + hb_iter (coords_లెక్క_map)
+      | hb_filter ([] (స్థిరరాశి hb_pair_t<స్థిరరాశి hb_సదిశ_t<F2DOT14>*, గుర్తులేని>& p) { తిరిగి p.second > 1; })
     };
-    if (unlikely (shared_coords.in_error ())) return false;
+    ఒకవేళ (unlikely (shared_coords.లోపల_error ())) తిరిగి అబద్ధం;
 
     /* no shared tuples: no coords are used more than once */
-    if (!shared_coords) return true;
+    ఒకవేళ (!shared_coords) తిరిగి నిజం;
     /* sorting based on the coords frequency first (high to low), then compare
      * the coords bytes */
     shared_coords.qsort (_cmp_coords);
 
     /* build shared_coords->idx map and shared tuples byte array */
 
-    shared_tuples_count = hb_min (0xFFFu + 1, shared_coords.length);
-    unsigned len = shared_tuples_count * (shared_coords[0].first->length);
-    if (unlikely (!compiled_shared_tuples.alloc (len)))
-      return false;
+    shared_tuples_లెక్క = hb_min (0xFFFu + 1, shared_coords.నిడివి);
+    గుర్తులేని len = shared_tuples_లెక్క * (shared_coords[0].మొదటి->నిడివి);
+    ఒకవేళ (unlikely (!compiled_shared_tuples.alloc (len)))
+      తిరిగి అబద్ధం;
 
-    for (unsigned i = 0; i < shared_tuples_count; i++)
+    కొరకు (గుర్తులేని i = 0; i < shared_tuples_లెక్క; i++)
     {
-      shared_tuples_idx_map.set (shared_coords[i].first, i);
+      shared_tuples_idx_map.సమితి (shared_coords[i].మొదటి, i);
       /* add a concat() in hb_vector_t? */
-      for (auto c : shared_coords[i].first->iter ())
+      కొరకు (స్వయంచాలక c : shared_coords[i].మొదటి->iter ())
         compiled_shared_tuples.push (c);
     }
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  static int _cmp_coords (const void *pa, const void *pb)
+  స్థిర పూర్ణాంకం _cmp_coords (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
   {
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *a = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pa;
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *b = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pb;
+    స్థిరరాశి hb_pair_t<hb_సదిశ_t<F2DOT14> *, గుర్తులేని> *a = (స్థిరరాశి hb_pair_t<hb_సదిశ_t<F2DOT14> *, గుర్తులేని> *) pa;
+    స్థిరరాశి hb_pair_t<hb_సదిశ_t<F2DOT14> *, గుర్తులేని> *b = (స్థిరరాశి hb_pair_t<hb_సదిశ_t<F2DOT14> *, గుర్తులేని> *) pb;
 
-    if (a->second != b->second)
-      return b->second - a->second; // high to low
+    ఒకవేళ (a->second != b->second)
+      తిరిగి b->second - a->second; // high to low
 
-    return b->first->as_array().cmp (a->first->as_array ());
+    తిరిగి b->మొదటి->as_array().cmp (a->మొదటి->as_array ());
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_glyph_var_data (hb_serialize_context_t *c,
+  తార్కిక serialize_glyph_var_దత్తాంశం (hb_serialize_context_t *c,
                                  Iterator it,
-                                 bool long_offset,
-                                 unsigned num_glyphs,
-                                 char* glyph_var_data_offsets /* OUT: glyph var data offsets array */) const
+                                 తార్కిక long_స్థానభ్రంశం,
+                                 గుర్తులేని అంకె_glyphs,
+                                 అక్షరం* glyph_var_దత్తాంశం_offsets /* OUT: glyph var data offsets array */) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    if (long_offset)
+    ఒకవేళ (long_స్థానభ్రంశం)
     {
-      ((HBUINT32 *) glyph_var_data_offsets)[0] = 0;
-      glyph_var_data_offsets += 4;
+      ((HBUINT32 *) glyph_var_దత్తాంశం_offsets)[0] = 0;
+      glyph_var_దత్తాంశం_offsets += 4;
     }
-    else
+    లేకపోతే
     {
-      ((HBUINT16 *) glyph_var_data_offsets)[0] = 0;
-      glyph_var_data_offsets += 2;
+      ((HBUINT16 *) glyph_var_దత్తాంశం_offsets)[0] = 0;
+      glyph_var_దత్తాంశం_offsets += 2;
     }
-    unsigned glyph_offset = 0;
-    hb_codepoint_t last_gid = 0;
-    unsigned idx = 0;
+    గుర్తులేని glyph_స్థానభ్రంశం = 0;
+    hb_codepoint_t చివరి_gid = 0;
+    గుర్తులేని idx = 0;
 
-    GlyphVariationData* cur_glyph = c->start_embed<GlyphVariationData> ();
-    if (!cur_glyph) return_trace (false);
-    for (auto &_ : it)
+    Glyph_Variation_దత్తాంశం* cur_glyph = c->ప్రారంభం_embed<Glyph_Variation_దత్తాంశం> ();
+    ఒకవేళ (!cur_glyph) return_trace (అబద్ధం);
+    కొరకు (స్వయంచాలక &_ : it)
     {
-      hb_codepoint_t gid = _.first;
-      if (long_offset)
-        for (; last_gid < gid; last_gid++)
-          ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-      else
-        for (; last_gid < gid; last_gid++)
-          ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
+      hb_codepoint_t gid = _.మొదటి;
+      ఒకవేళ (long_స్థానభ్రంశం)
+        కొరకు (; చివరి_gid < gid; చివరి_gid++)
+          ((HBUINT32 *) glyph_var_దత్తాంశం_offsets)[చివరి_gid] = glyph_స్థానభ్రంశం;
+      లేకపోతే
+        కొరకు (; చివరి_gid < gid; చివరి_gid++)
+          ((HBUINT16 *) glyph_var_దత్తాంశం_offsets)[చివరి_gid] = glyph_స్థానభ్రంశం / 2;
 
-      if (idx >= glyph_variations.length) return_trace (false);
-      if (!cur_glyph->serialize (c, true, glyph_variations[idx])) return_trace (false);
-      GlyphVariationData* next_glyph = c->start_embed<GlyphVariationData> ();
-      glyph_offset += (char *) next_glyph - (char *) cur_glyph;
+      ఒకవేళ (idx >= glyph_variations.నిడివి) return_trace (అబద్ధం);
+      ఒకవేళ (!cur_glyph->serialize (c, నిజం, glyph_variations[idx])) return_trace (అబద్ధం);
+      Glyph_Variation_దత్తాంశం* తదుపరి_glyph = c->ప్రారంభం_embed<Glyph_Variation_దత్తాంశం> ();
+      glyph_స్థానభ్రంశం += (అక్షరం *) తదుపరి_glyph - (అక్షరం *) cur_glyph;
 
-      if (long_offset)
-        ((HBUINT32 *) glyph_var_data_offsets)[gid] = glyph_offset;
-      else
-        ((HBUINT16 *) glyph_var_data_offsets)[gid] = glyph_offset / 2;
+      ఒకవేళ (long_స్థానభ్రంశం)
+        ((HBUINT32 *) glyph_var_దత్తాంశం_offsets)[gid] = glyph_స్థానభ్రంశం;
+      లేకపోతే
+        ((HBUINT16 *) glyph_var_దత్తాంశం_offsets)[gid] = glyph_స్థానభ్రంశం / 2;
 
-      last_gid++;
+      చివరి_gid++;
       idx++;
-      cur_glyph = next_glyph;
+      cur_glyph = తదుపరి_glyph;
     }
 
-    if (long_offset)
-      for (; last_gid < num_glyphs; last_gid++)
-        ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-    else
-      for (; last_gid < num_glyphs; last_gid++)
-        ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
-    return_trace (true);
+    ఒకవేళ (long_స్థానభ్రంశం)
+      కొరకు (; చివరి_gid < అంకె_glyphs; చివరి_gid++)
+        ((HBUINT32 *) glyph_var_దత్తాంశం_offsets)[చివరి_gid] = glyph_స్థానభ్రంశం;
+    లేకపోతే
+      కొరకు (; చివరి_gid < అంకె_glyphs; చివరి_gid++)
+        ((HBUINT16 *) glyph_var_దత్తాంశం_offsets)[చివరి_gid] = glyph_స్థానభ్రంశం / 2;
+    return_trace (నిజం);
   }
 };
 
-template <typename T, typename Types>
-struct gvar_GVAR
+మూస <రకం_పేరు T, రకం_పేరు Types>
+నిర్మాణం gvar_GVAR
 {
-  using GlyphCountType = typename Types::HBUINT;
+  ఉపయోగించి Glyph_లెక్క_Type = రకం_పేరు Types::HBUINT;
 
-  using GlyphVariationData = TupleVariationData<GlyphCountType>;
-  static constexpr unsigned glyph_count_max ()
-  { return (1u << (8 * GlyphCountType::static_size)) - 1; }
+  ఉపయోగించి Glyph_Variation_దత్తాంశం = Tuple_Variation_దత్తాంశం<Glyph_లెక్క_Type>;
+  స్థిర constexpr గుర్తులేని glyph_లెక్క_max ()
+  { తిరిగి (1u << (8 * Glyph_లెక్క_Type::static_కొలత)) - 1; }
 
-  bool has_data () const { return version.to_int () != 0; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int () != 0; }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  తార్కిక sanitize_shallow (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  (version.major == 1) &&
-		  sharedTuples.sanitize (c, this, axisCount * sharedTupleCount) &&
-		  (is_long_offset () ?
-		     c->check_array (get_long_offset_array (), c->get_num_glyphs () + 1) :
-		     c->check_array (get_short_offset_array (), c->get_num_glyphs () + 1)));
+		  (సంస్కరణ.major == 1) &&
+		  sharedTuples.sanitize (c, ఇది, axis_లెక్క_2 * shared_Tuple_లెక్క) &&
+		  (is_long_స్థానభ్రంశం () ?
+		     c->check_array (get_long_స్థానభ్రంశం_array (), c->get_అంకె_glyphs () + 1) :
+		     c->check_array (get_short_స్థానభ్రంశం_array (), c->get_అంకె_glyphs () + 1)));
   }
 
   /* GlyphVariationData not sanitized here; must be checked while accessing each glyph variation data */
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return sanitize_shallow (c); }
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
+  { తిరిగి sanitize_shallow (c); }
 
-  bool decompile_glyph_variations (hb_subset_context_t *c,
-                                   glyph_variations_t<GlyphCountType>& glyph_vars /* OUT */) const
+  తార్కిక decompile_glyph_variations (hb_subset_context_t *c,
+                                   glyph_variations_t<Glyph_లెక్క_Type>& glyph_vars /*బహిర్గతం*/) స్థిరరాశి
   {
-    hb_hashmap_t<hb_codepoint_t, hb_bytes_t> new_gid_var_data_map;
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_hashmap_t<hb_codepoint_t, hb_బైట్లు_t> new_gid_var_దత్తాంశం_map;
+    స్వయంచాలక it = hb_iter (c->plan->new_గమ్యం_old_gid_list);
+    ఒకవేళ (it->మొదటి == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      new_gid_var_data_map.set (0, hb_bytes_t ());
+      new_gid_var_దత్తాంశం_map.సమితి (0, hb_బైట్లు_t ());
       it++;
     }
 
-    for (auto &_ : it)
+    కొరకు (స్వయంచాలక &_ : it)
     {
-      hb_codepoint_t new_gid = _.first;
+      hb_codepoint_t new_gid = _.మొదటి;
       hb_codepoint_t old_gid = _.second;
-      hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyphCountX, old_gid);
-      new_gid_var_data_map.set (new_gid, var_data_bytes);
+      hb_బైట్లు_t var_దత్తాంశం_బైట్లు = get_glyph_var_దత్తాంశం_బైట్లు (c->ఆధారం_blob, glyph_లెక్క_X, old_gid);
+      new_gid_var_దత్తాంశం_map.సమితి (new_gid, var_దత్తాంశం_బైట్లు);
     }
 
-    if (new_gid_var_data_map.in_error ()) return false;
+    ఒకవేళ (new_gid_var_దత్తాంశం_map.లోపల_error ()) తిరిగి అబద్ధం;
 
-    hb_array_t<const F2DOT14> shared_tuples = (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-    return glyph_vars.create_from_glyphs_var_data (axisCount, shared_tuples, c->plan, new_gid_var_data_map);
+    hb_array_t<స్థిరరాశి F2DOT14> shared_tuples = (ఇది+sharedTuples).as_array ((గుర్తులేని) shared_Tuple_లెక్క * (గుర్తులేని) axis_లెక్క_2);
+    తిరిగి glyph_vars.create_from_glyphs_var_దత్తాంశం (axis_లెక్క_2, shared_tuples, c->plan, new_gid_var_దత్తాంశం_map);
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-                  const glyph_variations_t<GlyphCountType>& glyph_vars,
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  స్థిరరాశి glyph_variations_t<Glyph_లెక్క_Type>& glyph_vars,
                   Iterator it,
-                  unsigned axis_count,
-                  unsigned num_glyphs,
-                  bool force_long_offsets) const
+                  గుర్తులేని axis_లెక్క,
+                  గుర్తులేని అంకె_glyphs,
+                  తార్కిక force_long_offsets) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    gvar_GVAR *out = c->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    gvar_GVAR *బహిర్గతం = c->allocate_min<gvar_GVAR> ();
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->version.major = 1;
-    out->version.minor = 0;
-    out->axisCount = axis_count;
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    బహిర్గతం->సంస్కరణ.major = 1;
+    బహిర్గతం->సంస్కరణ.minor = 0;
+    బహిర్గతం->axis_లెక్క_2 = axis_లెక్క;
+    బహిర్గతం->glyph_లెక్క_X = hb_min (glyph_లెక్క_max (), అంకె_glyphs);
 
-    unsigned glyph_var_data_size = glyph_vars.compiled_byte_size ();
+    గుర్తులేని glyph_var_దత్తాంశం_కొలత = glyph_vars.compiled_byte_కొలత ();
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = glyph_var_data_size > 0x1FFFEu || force_long_offsets;
-    out->flags = long_offset ? 1 : 0;
+    తార్కిక long_స్థానభ్రంశం = glyph_var_దత్తాంశం_కొలత > 0x1FFFEu || force_long_offsets;
+    బహిర్గతం->flags = long_స్థానభ్రంశం ? 1 : 0;
 
-    unsigned glyph_var_data_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *glyph_var_data_offsets = c->allocate_size<HBUINT8> (glyph_var_data_offsets_size, false);
-    if (!glyph_var_data_offsets) return_trace (false);
+    గుర్తులేని glyph_var_దత్తాంశం_offsets_కొలత = (long_స్థానభ్రంశం ? 4 : 2) * (అంకె_glyphs + 1);
+    HBUINT8 *glyph_var_దత్తాంశం_offsets = c->allocate_కొలత<HBUINT8> (glyph_var_దత్తాంశం_offsets_కొలత, అబద్ధం);
+    ఒకవేళ (!glyph_var_దత్తాంశం_offsets) return_trace (అబద్ధం);
 
     /* shared tuples */
-    unsigned shared_tuple_count = glyph_vars.compiled_shared_tuples_count ();
-    out->sharedTupleCount = shared_tuple_count;
+    గుర్తులేని shared_tuple_లెక్క = glyph_vars.compiled_shared_tuples_లెక్క ();
+    బహిర్గతం->shared_Tuple_లెక్క = shared_tuple_లెక్క;
 
-    if (!shared_tuple_count)
-      out->sharedTuples = (char *) glyph_var_data_offsets + glyph_var_data_offsets_size - (char *) out;
-    else
+    ఒకవేళ (!shared_tuple_లెక్క)
+      బహిర్గతం->sharedTuples = (అక్షరం *) glyph_var_దత్తాంశం_offsets + glyph_var_దత్తాంశం_offsets_కొలత - (అక్షరం *) బహిర్గతం;
+    లేకపోతే
     {
-      hb_array_t<const F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
-      if (!shared_tuples.arrayZ) return_trace (false);
-      out->sharedTuples = (const char *) shared_tuples.arrayZ - (char *) out;
+      hb_array_t<స్థిరరాశి F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
+      ఒకవేళ (!shared_tuples.arrayZ) return_trace (అబద్ధం);
+      బహిర్గతం->sharedTuples = (స్థిరరాశి అక్షరం *) shared_tuples.arrayZ - (అక్షరం *) బహిర్గతం;
     }
 
-    char *glyph_var_data = c->start_embed<char> ();
-    if (!glyph_var_data) return_trace (false);
-    out->dataZ = glyph_var_data - (char *) out;
+    అక్షరం *glyph_var_దత్తాంశం = c->ప్రారంభం_embed<అక్షరం> ();
+    ఒకవేళ (!glyph_var_దత్తాంశం) return_trace (అబద్ధం);
+    బహిర్గతం->దత్తాంశం_Z = glyph_var_దత్తాంశం - (అక్షరం *) బహిర్గతం;
 
-    return_trace (glyph_vars.serialize_glyph_var_data (c, it, long_offset, num_glyphs,
-                                                       (char *) glyph_var_data_offsets));
+    return_trace (glyph_vars.serialize_glyph_var_దత్తాంశం (c, it, long_స్థానభ్రంశం, అంకె_glyphs,
+                                                       (అక్షరం *) glyph_var_దత్తాంశం_offsets));
   }
 
-  bool instantiate (hb_subset_context_t *c) const
+  తార్కిక instantiate (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    glyph_variations_t<GlyphCountType> glyph_vars;
-    if (!decompile_glyph_variations (c, glyph_vars))
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    glyph_variations_t<Glyph_లెక్క_Type> glyph_vars;
+    ఒకవేళ (!decompile_glyph_variations (c, glyph_vars))
+      return_trace (అబద్ధం);
 
-    if (!glyph_vars.instantiate (c->plan)) return_trace (false);
-    if (!glyph_vars.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map))
-      return_trace (false);
+    ఒకవేళ (!glyph_vars.instantiate (c->plan)) return_trace (అబద్ధం);
+    ఒకవేళ (!glyph_vars.compile_బైట్లు (c->plan->axes_సూచీ_map, c->plan->axes_old_సూచీ_ట్యాగ్_map))
+      return_trace (అబద్ధం);
 
-    unsigned axis_count = c->plan->axes_index_map.get_population ();
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
+    గుర్తులేని axis_లెక్క = c->plan->axes_సూచీ_map.get_population ();
+    గుర్తులేని అంకె_glyphs = c->plan->అంకె_output_glyphs ();
+    స్వయంచాలక it = hb_iter (c->plan->new_గమ్యం_old_gid_list);
 
-    bool force_long_offsets = false;
-#ifdef HB_EXPERIMENTAL_API
+    తార్కిక force_long_offsets = అబద్ధం;
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
     force_long_offsets = c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS;
-#endif
-    return_trace (serialize (c->serializer, glyph_vars, it, axis_count, num_glyphs, force_long_offsets));
+#అయితే_ముగింపు
+    return_trace (serialize (c->serializer, glyph_vars, it, axis_లెక్క, అంకె_glyphs, force_long_offsets));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (c->plan->all_axes_pinned)
+      return_trace (అబద్ధం);
 
-    if (c->plan->normalized_coords)
+    ఒకవేళ (c->plan->normalized_coords)
       return_trace (instantiate (c));
 
-    unsigned glyph_count = version.to_int () ? c->plan->source->get_num_glyphs () : 0;
+    గుర్తులేని glyph_లెక్క = సంస్కరణ.గమ్యం_int () ? c->plan->ఆధారం->get_అంకె_glyphs () : 0;
 
-    gvar_GVAR *out = c->serializer->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    gvar_GVAR *బహిర్గతం = c->serializer->allocate_min<gvar_GVAR> ();
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->version.major = 1;
-    out->version.minor = 0;
-    out->axisCount = axisCount;
-    out->sharedTupleCount = sharedTupleCount;
+    బహిర్గతం->సంస్కరణ.major = 1;
+    బహిర్గతం->సంస్కరణ.minor = 0;
+    బహిర్గతం->axis_లెక్క_2 = axis_లెక్క_2;
+    బహిర్గతం->shared_Tuple_లెక్క = shared_Tuple_లెక్క;
 
-    unsigned int num_glyphs = c->plan->num_output_glyphs ();
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    గుర్తులేని పూర్ణాంకం అంకె_glyphs = c->plan->అంకె_output_glyphs ();
+    బహిర్గతం->glyph_లెక్క_X = hb_min (glyph_లెక్క_max (), అంకె_glyphs);
 
     /* avar2 partial instancing: cull tuple variations whose region falls
      * outside the reachable old-space final-coord ranges. Rewritten glyph
      * data is cached per new gid; untouched glyphs are copied verbatim. */
-    hb_vector_t<hb_vector_t<char>> culled_vars;
-    hb_set_t culled_gids;
-    if (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
+    hb_సదిశ_t<hb_సదిశ_t<అక్షరం>> culled_vars;
+    hb_సమితి_t culled_gids;
+    ఒకవేళ (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
     {
-      hb_array_t<const F2DOT14> shared_tuples_array =
-	  (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-      if (unlikely (!culled_vars.resize (num_glyphs))) return_trace (false);
-      auto cull_it = hb_iter (c->plan->new_to_old_gid_list);
-      if (cull_it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+      hb_array_t<స్థిరరాశి F2DOT14> shared_tuples_array =
+	  (ఇది+sharedTuples).as_array ((గుర్తులేని) shared_Tuple_లెక్క * (గుర్తులేని) axis_లెక్క_2);
+      ఒకవేళ (unlikely (!culled_vars.resize (అంకె_glyphs))) return_trace (అబద్ధం);
+      స్వయంచాలక cull_it = hb_iter (c->plan->new_గమ్యం_old_gid_list);
+      ఒకవేళ (cull_it->మొదటి == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
 	cull_it++;
-      for (auto &_ : cull_it)
+      కొరకు (స్వయంచాలక &_ : cull_it)
       {
-	hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyph_count, _.second);
-	if (var_data_bytes.length < GlyphVariationData::min_size) continue;
-	bool changed = false;
-	if (unlikely (!var_data_bytes.as<GlyphVariationData> ()
-		      ->cull_tuple_variations (var_data_bytes, axisCount,
+	hb_బైట్లు_t var_దత్తాంశం_బైట్లు = get_glyph_var_దత్తాంశం_బైట్లు (c->ఆధారం_blob, glyph_లెక్క, _.second);
+	ఒకవేళ (var_దత్తాంశం_బైట్లు.నిడివి < Glyph_Variation_దత్తాంశం::min_కొలత) కొనసాగు;
+	తార్కిక మారింది = అబద్ధం;
+	ఒకవేళ (unlikely (!var_దత్తాంశం_బైట్లు.as<Glyph_Variation_దత్తాంశం> ()
+		      ->cull_tuple_variations (var_దత్తాంశం_బైట్లు, axis_లెక్క_2,
 					       shared_tuples_array,
-					       &c->plan->axes_old_index_tag_map,
+					       &c->plan->axes_old_సూచీ_ట్యాగ్_map,
 					       c->plan->avar2_reachable_ranges,
-					       culled_vars[_.first], &changed)))
-	  return_trace (false);
-	if (changed) culled_gids.add (_.first);
+					       culled_vars[_.మొదటి], &మారింది)))
+	  return_trace (అబద్ధం);
+	ఒకవేళ (మారింది) culled_gids.కూడు (_.మొదటి);
       }
-      if (unlikely (culled_gids.in_error ())) return_trace (false);
+      ఒకవేళ (unlikely (culled_gids.లోపల_error ())) return_trace (అబద్ధం);
     }
 
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    స్వయంచాలక it = hb_iter (c->plan->new_గమ్యం_old_gid_list);
+    ఒకవేళ (it->మొదటి == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    unsigned subset_data_size = 0;
-    unsigned padding_size = 0;
-    for (auto &_ : it)
+    గుర్తులేని subset_దత్తాంశం_కొలత = 0;
+    గుర్తులేని padding_కొలత = 0;
+    కొరకు (స్వయంచాలక &_ : it)
     {
       hb_codepoint_t old_gid = _.second;
-      unsigned glyph_data_size = culled_gids.has (_.first)
-				 ? culled_vars[_.first].length
-				 : get_glyph_var_data_bytes (c->source_blob, glyph_count, old_gid).length;
-      if (glyph_data_size % 2)
+      గుర్తులేని glyph_దత్తాంశం_కొలత = culled_gids.has (_.మొదటి)
+				 ? culled_vars[_.మొదటి].నిడివి
+				 : get_glyph_var_దత్తాంశం_బైట్లు (c->ఆధారం_blob, glyph_లెక్క, old_gid).నిడివి;
+      ఒకవేళ (glyph_దత్తాంశం_కొలత % 2)
       {
-        glyph_data_size++;
-        padding_size++;
+        glyph_దత్తాంశం_కొలత++;
+        padding_కొలత++;
       }
 
-      if (unlikely (hb_unsigned_add_overflows (subset_data_size, glyph_data_size, &subset_data_size)))
-	return_trace (false);
+      ఒకవేళ (unlikely (hb_unsigned_కూడు_overflows (subset_దత్తాంశం_కొలత, glyph_దత్తాంశం_కొలత, &subset_దత్తాంశం_కొలత)))
+	return_trace (అబద్ధం);
     }
 
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = subset_data_size > 0x1FFFEu;
-#ifdef HB_EXPERIMENTAL_API
-    long_offset = long_offset || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
-#endif
-    out->flags = long_offset ? 1 : 0;
+    తార్కిక long_స్థానభ్రంశం = subset_దత్తాంశం_కొలత > 0x1FFFEu;
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+    long_స్థానభ్రంశం = long_స్థానభ్రంశం || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
+#అయితే_ముగింపు
+    బహిర్గతం->flags = long_స్థానభ్రంశం ? 1 : 0;
 
-    unsigned subset_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *subset_offsets = c->serializer->allocate_size<HBUINT8> (subset_offsets_size, false);
-    if (!subset_offsets) return_trace (false);
+    గుర్తులేని subset_offsets_కొలత = (long_స్థానభ్రంశం ? 4 : 2) * (అంకె_glyphs + 1);
+    HBUINT8 *subset_offsets = c->serializer->allocate_కొలత<HBUINT8> (subset_offsets_కొలత, అబద్ధం);
+    ఒకవేళ (!subset_offsets) return_trace (అబద్ధం);
 
     /* shared tuples */
-    if (!sharedTupleCount || !sharedTuples)
-      out->sharedTuples = (char *) subset_offsets + subset_offsets_size - (char *) out;
-    else
+    ఒకవేళ (!shared_Tuple_లెక్క || !sharedTuples)
+      బహిర్గతం->sharedTuples = (అక్షరం *) subset_offsets + subset_offsets_కొలత - (అక్షరం *) బహిర్గతం;
+    లేకపోతే
     {
-      unsigned int shared_tuple_size = F2DOT14::static_size * axisCount * sharedTupleCount;
-      F2DOT14 *tuples = c->serializer->allocate_size<F2DOT14> (shared_tuple_size);
-      if (!tuples) return_trace (false);
-      out->sharedTuples = (char *) tuples - (char *) out;
-      hb_memcpy (tuples, this+sharedTuples, shared_tuple_size);
+      గుర్తులేని పూర్ణాంకం shared_tuple_కొలత = F2DOT14::static_కొలత * axis_లెక్క_2 * shared_Tuple_లెక్క;
+      F2DOT14 *tuples = c->serializer->allocate_కొలత<F2DOT14> (shared_tuple_కొలత);
+      ఒకవేళ (!tuples) return_trace (అబద్ధం);
+      బహిర్గతం->sharedTuples = (అక్షరం *) tuples - (అక్షరం *) బహిర్గతం;
+      hb_memcpy (tuples, ఇది+sharedTuples, shared_tuple_కొలత);
     }
 
     /* This ordering relative to the shared tuples array, which puts the glyphVariationData
        last in the table, is required when HB_SUBSET_FLAGS_IFTB_REQUIREMENTS is set */
-    if (long_offset)
-      subset_data_size -= padding_size;
-    char *subset_data = c->serializer->allocate_size<char> (subset_data_size, false);
-    if (!subset_data) return_trace (false);
-    out->dataZ = subset_data - (char *) out;
+    ఒకవేళ (long_స్థానభ్రంశం)
+      subset_దత్తాంశం_కొలత -= padding_కొలత;
+    అక్షరం *subset_దత్తాంశం = c->serializer->allocate_కొలత<అక్షరం> (subset_దత్తాంశం_కొలత, అబద్ధం);
+    ఒకవేళ (!subset_దత్తాంశం) return_trace (అబద్ధం);
+    బహిర్గతం->దత్తాంశం_Z = subset_దత్తాంశం - (అక్షరం *) బహిర్గతం;
 
 
-    if (long_offset)
+    ఒకవేళ (long_స్థానభ్రంశం)
     {
       ((HBUINT32 *) subset_offsets)[0] = 0;
       subset_offsets += 4;
     }
-    else
+    లేకపోతే
     {
       ((HBUINT16 *) subset_offsets)[0] = 0;
       subset_offsets += 2;
     }
-    unsigned int glyph_offset = 0;
+    గుర్తులేని పూర్ణాంకం glyph_స్థానభ్రంశం = 0;
 
-    hb_codepoint_t last = 0;
-    it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_codepoint_t చివరి = 0;
+    it = hb_iter (c->plan->new_గమ్యం_old_gid_list);
+    ఒకవేళ (it->మొదటి == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    for (auto &_ : it)
+    కొరకు (స్వయంచాలక &_ : it)
     {
-      hb_codepoint_t gid = _.first;
+      hb_codepoint_t gid = _.మొదటి;
       hb_codepoint_t old_gid = _.second;
 
-      if (long_offset)
-	for (; last < gid; last++)
-	  ((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-      else
-	for (; last < gid; last++)
-	  ((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
+      ఒకవేళ (long_స్థానభ్రంశం)
+	కొరకు (; చివరి < gid; చివరి++)
+	  ((HBUINT32 *) subset_offsets)[చివరి] = glyph_స్థానభ్రంశం;
+      లేకపోతే
+	కొరకు (; చివరి < gid; చివరి++)
+	  ((HBUINT16 *) subset_offsets)[చివరి] = glyph_స్థానభ్రంశం / 2;
 
-      hb_bytes_t var_data_bytes = culled_gids.has (gid)
-				  ? hb_bytes_t (culled_vars[gid].arrayZ,
-						culled_vars[gid].length)
-				  : get_glyph_var_data_bytes (c->source_blob,
-							      glyph_count,
+      hb_బైట్లు_t var_దత్తాంశం_బైట్లు = culled_gids.has (gid)
+				  ? hb_బైట్లు_t (culled_vars[gid].arrayZ,
+						culled_vars[gid].నిడివి)
+				  : get_glyph_var_దత్తాంశం_బైట్లు (c->ఆధారం_blob,
+							      glyph_లెక్క,
 							      old_gid);
 
-      hb_memcpy (subset_data, var_data_bytes.arrayZ, var_data_bytes.length);
-      unsigned glyph_data_size = var_data_bytes.length;
-      subset_data += glyph_data_size;
-      glyph_offset += glyph_data_size;
+      hb_memcpy (subset_దత్తాంశం, var_దత్తాంశం_బైట్లు.arrayZ, var_దత్తాంశం_బైట్లు.నిడివి);
+      గుర్తులేని glyph_దత్తాంశం_కొలత = var_దత్తాంశం_బైట్లు.నిడివి;
+      subset_దత్తాంశం += glyph_దత్తాంశం_కొలత;
+      glyph_స్థానభ్రంశం += glyph_దత్తాంశం_కొలత;
 
-      if (!long_offset && (glyph_data_size % 2))
+      ఒకవేళ (!long_స్థానభ్రంశం && (glyph_దత్తాంశం_కొలత % 2))
       {
-        *subset_data = 0;
-        subset_data++;
-        glyph_offset++;
+        *subset_దత్తాంశం = 0;
+        subset_దత్తాంశం++;
+        glyph_స్థానభ్రంశం++;
       }
 
-      if (long_offset)
-	((HBUINT32 *) subset_offsets)[gid] = glyph_offset;
-      else
-	((HBUINT16 *) subset_offsets)[gid] = glyph_offset / 2;
+      ఒకవేళ (long_స్థానభ్రంశం)
+	((HBUINT32 *) subset_offsets)[gid] = glyph_స్థానభ్రంశం;
+      లేకపోతే
+	((HBUINT16 *) subset_offsets)[gid] = glyph_స్థానభ్రంశం / 2;
 
-      last++; // Skip over gid
+      చివరి++; // Skip over gid
     }
 
-    if (long_offset)
-      for (; last < num_glyphs; last++)
-	((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-    else
-      for (; last < num_glyphs; last++)
-	((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
+    ఒకవేళ (long_స్థానభ్రంశం)
+      కొరకు (; చివరి < అంకె_glyphs; చివరి++)
+	((HBUINT32 *) subset_offsets)[చివరి] = glyph_స్థానభ్రంశం;
+    లేకపోతే
+      కొరకు (; చివరి < అంకె_glyphs; చివరి++)
+	((HBUINT16 *) subset_offsets)[చివరి] = glyph_స్థానభ్రంశం / 2;
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  protected:
-  const hb_bytes_t get_glyph_var_data_bytes (hb_blob_t *blob,
-					     unsigned glyph_count,
-					     hb_codepoint_t glyph) const
+  రక్షిత:
+  స్థిరరాశి hb_బైట్లు_t get_glyph_var_దత్తాంశం_బైట్లు (hb_blob_t *blob,
+					     గుర్తులేని glyph_లెక్క,
+					     hb_codepoint_t glyph) స్థిరరాశి
   {
-    unsigned start_offset = get_offset (glyph_count, glyph);
-    unsigned end_offset = get_offset (glyph_count, glyph+1);
-    if (unlikely (end_offset < start_offset)) return hb_bytes_t ();
-    unsigned length = end_offset - start_offset;
-    hb_bytes_t var_data = blob->as_bytes ().sub_array (((unsigned) dataZ) + start_offset, length);
-    return likely (var_data.length >= GlyphVariationData::min_size) ? var_data : hb_bytes_t ();
+    గుర్తులేని ప్రారంభం_స్థానభ్రంశం = get_స్థానభ్రంశం (glyph_లెక్క, glyph);
+    గుర్తులేని చివర_స్థానభ్రంశం = get_స్థానభ్రంశం (glyph_లెక్క, glyph+1);
+    ఒకవేళ (unlikely (చివర_స్థానభ్రంశం < ప్రారంభం_స్థానభ్రంశం)) తిరిగి hb_బైట్లు_t ();
+    గుర్తులేని నిడివి = చివర_స్థానభ్రంశం - ప్రారంభం_స్థానభ్రంశం;
+    hb_బైట్లు_t var_దత్తాంశం = blob->as_బైట్లు ().sub_array (((గుర్తులేని) దత్తాంశం_Z) + ప్రారంభం_స్థానభ్రంశం, నిడివి);
+    తిరిగి likely (var_దత్తాంశం.నిడివి >= Glyph_Variation_దత్తాంశం::min_కొలత) ? var_దత్తాంశం : hb_బైట్లు_t ();
   }
 
-  bool is_long_offset () const { return flags & 1; }
+  తార్కిక is_long_స్థానభ్రంశం () స్థిరరాశి { తిరిగి flags & 1; }
 
-  unsigned get_offset (unsigned glyph_count, unsigned i) const
+  గుర్తులేని get_స్థానభ్రంశం (గుర్తులేని glyph_లెక్క, గుర్తులేని i) స్థిరరాశి
   {
-    if (unlikely (i > glyph_count)) return 0;
+    ఒకవేళ (unlikely (i > glyph_లెక్క)) తిరిగి 0;
     hb_barrier ();
-    return is_long_offset () ? get_long_offset_array ()[i] : get_short_offset_array ()[i] * 2;
+    తిరిగి is_long_స్థానభ్రంశం () ? get_long_స్థానభ్రంశం_array ()[i] : get_short_స్థానభ్రంశం_array ()[i] * 2;
   }
 
-  const HBUINT32 * get_long_offset_array () const { return (const HBUINT32 *) &offsetZ; }
-  const HBUINT16 *get_short_offset_array () const { return (const HBUINT16 *) &offsetZ; }
+  స్థిరరాశి HBUINT32 * get_long_స్థానభ్రంశం_array () స్థిరరాశి { తిరిగి (స్థిరరాశి HBUINT32 *) &స్థానభ్రంశం_Z; }
+  స్థిరరాశి HBUINT16 *get_short_స్థానభ్రంశం_array () స్థిరరాశి { తిరిగి (స్థిరరాశి HBUINT16 *) &స్థానభ్రంశం_Z; }
 
-  public:
-  struct accelerator_t
+  బహిరంగ:
+  నిర్మాణం accelerator_t
   {
 
-    hb_scalar_cache_t *create_cache () const
+    hb_scalar_cache_t *create_cache () స్థిరరాశి
     {
-      return hb_scalar_cache_t::create (hb_min ((unsigned) table->sharedTupleCount,
-						+TupleVariationHeader::max_shared_tuple_count));
+      తిరిగి hb_scalar_cache_t::create (hb_min ((గుర్తులేని) పట్టిక->shared_Tuple_లెక్క,
+						+Tuple_Variation_శీర్షిక::max_shared_tuple_లెక్క));
     }
 
-    static void destroy_cache (hb_scalar_cache_t *cache)
+    స్థిర శూన్య destroy_cache (hb_scalar_cache_t *cache)
     {
       hb_scalar_cache_t::destroy (cache);
     }
 
-    bool has_data () const { return table->has_data (); }
+    తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పట్టిక->has_దత్తాంశం (); }
 
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<gvar_GVAR> (face, T::tableTag);
+      పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<gvar_GVAR> (face, T::పట్టిక_ట్యాగ్);
       /* If sanitize failed, set glyphCount to 0. */
-      glyphCount = table->version.to_int () ? face->get_num_glyphs () : 0;
+      glyph_లెక్క_2 = పట్టిక->సంస్కరణ.గమ్యం_int () ? face->get_అంకె_glyphs () : 0;
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { పట్టిక.destroy (); }
 
-    private:
+    అంతరంగ:
 
-    static float infer_delta (const hb_array_t<contour_point_t> points,
-			      const hb_array_t<contour_point_t> deltas,
-			      unsigned int target, unsigned int prev, unsigned int next,
-			      float contour_point_t::*m)
+    స్థిర దశాంశం infer_delta (స్థిరరాశి hb_array_t<contour_బిందువు_t> points,
+			      స్థిరరాశి hb_array_t<contour_బిందువు_t> deltas,
+			      గుర్తులేని పూర్ణాంకం target, గుర్తులేని పూర్ణాంకం prev, గుర్తులేని పూర్ణాంకం next,
+			      దశాంశం contour_బిందువు_t::*m)
     {
-      float target_val = points.arrayZ[target].*m;
-      float prev_val = points.arrayZ[prev].*m;
-      float next_val = points.arrayZ[next].*m;
-      float prev_delta =  deltas.arrayZ[prev].*m;
-      float next_delta =  deltas.arrayZ[next].*m;
+      దశాంశం లక్ష్యం_val = points.arrayZ[target].*m;
+      దశాంశం prev_val = points.arrayZ[prev].*m;
+      దశాంశం తదుపరి_val = points.arrayZ[next].*m;
+      దశాంశం prev_delta =  deltas.arrayZ[prev].*m;
+      దశాంశం తదుపరి_delta =  deltas.arrayZ[next].*m;
 
-      if (prev_val == next_val)
-	return (prev_delta == next_delta) ? prev_delta : 0.f;
-      else if (target_val <= hb_min (prev_val, next_val))
-	return (prev_val < next_val) ? prev_delta : next_delta;
-      else if (target_val >= hb_max (prev_val, next_val))
-	return (prev_val > next_val) ? prev_delta : next_delta;
+      ఒకవేళ (prev_val == తదుపరి_val)
+	తిరిగి (prev_delta == తదుపరి_delta) ? prev_delta : 0.f;
+      లేకపోతే ఒకవేళ (లక్ష్యం_val <= hb_min (prev_val, తదుపరి_val))
+	తిరిగి (prev_val < తదుపరి_val) ? prev_delta : తదుపరి_delta;
+      లేకపోతే ఒకవేళ (లక్ష్యం_val >= hb_max (prev_val, తదుపరి_val))
+	తిరిగి (prev_val > తదుపరి_val) ? prev_delta : తదుపరి_delta;
 
       /* linear interpolation */
-      float r = (target_val - prev_val) / (next_val - prev_val);
-      return prev_delta + r * (next_delta - prev_delta);
+      దశాంశం r = (లక్ష్యం_val - prev_val) / (తదుపరి_val - prev_val);
+      తిరిగి prev_delta + r * (తదుపరి_delta - prev_delta);
     }
 
-    static unsigned int next_index (unsigned int i, unsigned int start, unsigned int end)
-    { return (i >= end) ? start : (i + 1); }
+    స్థిర గుర్తులేని పూర్ణాంకం తదుపరి_సూచీ (గుర్తులేని పూర్ణాంకం i, గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర)
+    { తిరిగి (i >= చివర) ? ప్రారంభం : (i + 1); }
 
-#ifndef HB_OPTIMIZE_SIZE
-    template <bool is_x>
-#endif
-    static bool decompile_deltas_add_to_points (const HBUINT8 *&p /* IN/OUT */,
-						hb_array_t<contour_point_t> points,
-						float scalar,
-						const HBUINT8 *end,
-						unsigned start
-#ifdef HB_OPTIMIZE_SIZE
-						, bool is_x
-#endif
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
+    మూస <తార్కిక is_x>
+#అయితే_ముగింపు
+    స్థిర తార్కిక decompile_deltas_కూడు_గమ్యం_points (స్థిరరాశి HBUINT8 *&p /* IN/OUT */,
+						hb_array_t<contour_బిందువు_t> points,
+						దశాంశం scalar,
+						స్థిరరాశి HBUINT8 *చివర,
+						గుర్తులేని ప్రారంభం
+#నిర్వచితమైతే HB_OPTIMIZE_కొలత
+						, తార్కిక is_x
+#అయితే_ముగింపు
 						)
     {
-      unsigned i = 0;
-      unsigned count = points.length;
-      while (i < count)
+      గుర్తులేని i = 0;
+      గుర్తులేని లెక్క = points.నిడివి;
+      అయితే (i < లెక్క)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned control = *p++;
-	unsigned run_count = (control & TupleValues::VALUE_RUN_COUNT_MASK) + 1;
-	unsigned stop = i + run_count;
-	if (unlikely (stop > count)) return false;
+	ఒకవేళ (unlikely (p + 1 > చివర)) తిరిగి అబద్ధం;
+	గుర్తులేని control = *p++;
+	గుర్తులేని నిరంతరం_లెక్క = (control & Tuple_విలువలు::విలువ_నిరంతరం_లెక్క_ముసుగు) + 1;
+	గుర్తులేని stop = i + నిరంతరం_లెక్క;
+	ఒకవేళ (unlikely (stop > లెక్క)) తిరిగి అబద్ధం;
 
-	unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+	గుర్తులేని skip = i < ప్రారంభం ? hb_min (ప్రారంభం - i, నిరంతరం_లెక్క) : 0;
 	i += skip;
 
-	switch (control & TupleValues::VALUES_SIZE_MASK)
+	ఎంపిక (control & Tuple_విలువలు::విలువలు_కొలత_ముసుగు)
 	{
-	  case TupleValues::VALUES_ARE_ZEROS:
+	  స్థితి Tuple_విలువలు::విలువలు_ARE_ZEROS:
 	    i = stop;
-	    break;
-	  case TupleValues::VALUES_ARE_WORDS:
+	    ఆపు;
+	  స్థితి Tuple_విలువలు::విలువలు_ARE_పదాలు:
 	  {
-	    if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
-	    p += skip * HBINT16::static_size;
-	    const auto *pp = (const HBINT16 *) p;
-	    for (; i < stop; i++)
+	    ఒకవేళ (unlikely (p + నిరంతరం_లెక్క * HBINT16::static_కొలత > చివర)) తిరిగి అబద్ధం;
+	    p += skip * HBINT16::static_కొలత;
+	    స్థిరరాశి స్వయంచాలక *pp = (స్థిరరాశి HBINT16 *) p;
+	    కొరకు (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      దశాంశం v = *pp++ * scalar;
+	      ఒకవేళ (is_x) points.arrayZ[i].x += v;
+	      లేకపోతే points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (స్థిరరాశి HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_LONGS:
+	  ఆపు;
+	  స్థితి Tuple_విలువలు::విలువలు_ARE_LONGS:
 	  {
-	    if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
-	    p += skip * HBINT32::static_size;
-	    const auto *pp = (const HBINT32 *) p;
-	    for (; i < stop; i++)
+	    ఒకవేళ (unlikely (p + నిరంతరం_లెక్క * HBINT32::static_కొలత > చివర)) తిరిగి అబద్ధం;
+	    p += skip * HBINT32::static_కొలత;
+	    స్థిరరాశి స్వయంచాలక *pp = (స్థిరరాశి HBINT32 *) p;
+	    కొరకు (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      దశాంశం v = *pp++ * scalar;
+	      ఒకవేళ (is_x) points.arrayZ[i].x += v;
+	      లేకపోతే points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (స్థిరరాశి HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_BYTES:
+	  ఆపు;
+	  స్థితి Tuple_విలువలు::విలువలు_ARE_బైట్లు:
 	  {
-	    if (unlikely (p + run_count > end)) return false;
-	    p += skip * HBINT8::static_size;
-	    const auto *pp = (const HBINT8 *) p;
-	    for (; i < stop; i++)
+	    ఒకవేళ (unlikely (p + నిరంతరం_లెక్క > చివర)) తిరిగి అబద్ధం;
+	    p += skip * HBINT8::static_కొలత;
+	    స్థిరరాశి స్వయంచాలక *pp = (స్థిరరాశి HBINT8 *) p;
+	    కొరకు (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      దశాంశం v = *pp++ * scalar;
+	      ఒకవేళ (is_x) points.arrayZ[i].x += v;
+	      లేకపోతే points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (స్థిరరాశి HBUINT8 *) pp;
 	  }
-	  break;
+	  ఆపు;
 	}
       }
-      return true;
+      తిరిగి నిజం;
     }
-    public:
-    bool apply_deltas_to_points (hb_codepoint_t glyph,
-				 hb_array_t<const int> coords,
-				 const hb_array_t<contour_point_t> points,
+    బహిరంగ:
+    తార్కిక apply_deltas_గమ్యం_points (hb_codepoint_t glyph,
+				 hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+				 స్థిరరాశి hb_array_t<contour_బిందువు_t> points,
 				 hb_glyf_scratch_t &scratch,
-				 hb_scalar_cache_t *gvar_cache = nullptr,
-				 bool phantom_only = false,
-				 int64_t *budget = nullptr) const
+				 hb_scalar_cache_t *gvar_cache = శూన్యసూచిక,
+				 తార్కిక phantom_only = అబద్ధం,
+				 int64_t *budget = శూన్యసూచిక) స్థిరరాశి
     {
-      if (unlikely (glyph >= glyphCount)) return true;
+      ఒకవేళ (unlikely (glyph >= glyph_లెక్క_2)) తిరిగి నిజం;
       hb_scalar_cache_t *scalar_cache = gvar_cache ?
 					gvar_cache :
 					(hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-      hb_bytes_t var_data_bytes = table->get_glyph_var_data_bytes (table.get_blob (), glyphCount, glyph);
-      if (!var_data_bytes.as<GlyphVariationData> ()->has_data ()) return true;
+      hb_బైట్లు_t var_దత్తాంశం_బైట్లు = పట్టిక->get_glyph_var_దత్తాంశం_బైట్లు (పట్టిక.get_blob (), glyph_లెక్క_2, glyph);
+      ఒకవేళ (!var_దత్తాంశం_బైట్లు.as<Glyph_Variation_దత్తాంశం> ()->has_దత్తాంశం ()) తిరిగి నిజం;
 
-      auto &shared_indices = scratch.shared_indices;
+      స్వయంచాలక &shared_indices = scratch.shared_indices;
       shared_indices.clear ();
 
-      typename GlyphVariationData::tuple_iterator_t iterator;
-      if (!GlyphVariationData::get_tuple_iterator (var_data_bytes, table->axisCount,
-						   var_data_bytes.arrayZ,
+      రకం_పేరు Glyph_Variation_దత్తాంశం::tuple_iterator_t iterator;
+      ఒకవేళ (!Glyph_Variation_దత్తాంశం::get_tuple_iterator (var_దత్తాంశం_బైట్లు, పట్టిక->axis_లెక్క_2,
+						   var_దత్తాంశం_బైట్లు.arrayZ,
 						   shared_indices, &iterator))
-	return true; /* so isn't applied at all */
+	తిరిగి నిజం; /* so isn't applied at all */
 
-      bool any_private_points = false;
-      bool private_points_checked = false;
+      తార్కిక any_వ్యక్తిగత_points = అబద్ధం;
+      తార్కిక వ్యక్తిగత_points_checked = అబద్ధం;
 
       /* Save original points for inferred delta calculation */
-      auto &orig_points_vec = scratch.orig_points;
+      స్వయంచాలక &orig_points_vec = scratch.orig_points;
       orig_points_vec.clear (); // Populated lazily
-      auto orig_points = orig_points_vec.as_array ();
+      స్వయంచాలక orig_points = orig_points_vec.as_array ();
 
       /* flag is used to indicate referenced point */
-      auto &deltas_vec = scratch.deltas;
+      స్వయంచాలక &deltas_vec = scratch.deltas;
       deltas_vec.clear (); // Populated lazily
-      auto deltas = deltas_vec.as_array ();
+      స్వయంచాలక deltas = deltas_vec.as_array ();
 
-      unsigned num_coords = table->axisCount;
-      hb_array_t<const F2DOT14> shared_tuples = (table+table->sharedTuples).as_array (table->sharedTupleCount * num_coords);
+      గుర్తులేని అంకె_coords = పట్టిక->axis_లెక్క_2;
+      hb_array_t<స్థిరరాశి F2DOT14> shared_tuples = (పట్టిక+పట్టిక->sharedTuples).as_array (పట్టిక->shared_Tuple_లెక్క * అంకె_coords);
 
-      auto &private_indices = scratch.private_indices;
-      auto &x_deltas = scratch.x_deltas;
-      auto &y_deltas = scratch.y_deltas;
+      స్వయంచాలక &వ్యక్తిగత_indices = scratch.వ్యక్తిగత_indices;
+      స్వయంచాలక &x_deltas = scratch.x_deltas;
+      స్వయంచాలక &y_deltas = scratch.y_deltas;
 
-      unsigned count = points.length;
-      bool flush = false;
+      గుర్తులేని లెక్క = points.నిడివి;
+      తార్కిక flush = అబద్ధం;
 
-      do
+      చేయి
       {
-	float scalar = iterator.current_tuple->calculate_scalar (coords, num_coords, shared_tuples,
+	దశాంశం scalar = iterator.current_tuple->calculate_scalar (coords, అంకె_coords, shared_tuples,
 								 scalar_cache);
 
-	if (scalar == 0.f) continue;
+	ఒకవేళ (scalar == 0.f) కొనసాగు;
 
-	if (budget &&
+	ఒకవేళ (budget &&
 	    unlikely (!hb_budget_spend (*budget, HB_BUDGET_1,
-					 phantom_only && count >= 4 ? 4 : count)))
-	  return false;
+					 phantom_only && లెక్క >= 4 ? 4 : లెక్క)))
+	  తిరిగి అబద్ధం;
 
-	if (!private_points_checked)
+	ఒకవేళ (!వ్యక్తిగత_points_checked)
 	{
-	  auto scan = iterator;
-	  do
+	  స్వయంచాలక పరిశీలన = iterator;
+	  చేయి
 	  {
-	    if (scan.current_tuple->has_private_points ())
+	    ఒకవేళ (పరిశీలన.current_tuple->has_వ్యక్తిగత_points ())
 	    {
-	      any_private_points = true;
-	      break;
+	      any_వ్యక్తిగత_points = నిజం;
+	      ఆపు;
 	    }
-	  } while (scan.move_to_next ());
-	  private_points_checked = true;
+	  } అయితే (పరిశీలన.move_గమ్యం_తదుపరి ());
+	  వ్యక్తిగత_points_checked = నిజం;
 	}
-	const HBUINT8 *p = iterator.get_serialized_data ();
-	unsigned int length = iterator.current_tuple->get_data_size ();
-	if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-	  return false;
+	స్థిరరాశి HBUINT8 *p = iterator.get_serialized_దత్తాంశం ();
+	గుర్తులేని పూర్ణాంకం నిడివి = iterator.current_tuple->get_దత్తాంశం_కొలత ();
+	ఒకవేళ (unlikely (!iterator.var_దత్తాంశం_బైట్లు.check_range (p, నిడివి)))
+	  తిరిగి అబద్ధం;
 
-	if (!deltas)
+	ఒకవేళ (!deltas)
 	{
-	  if (unlikely (!deltas_vec.resize_dirty  (count))) return false;
+	  ఒకవేళ (unlikely (!deltas_vec.resize_dirty  (లెక్క))) తిరిగి అబద్ధం;
 	  deltas = deltas_vec.as_array ();
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? లెక్క - 4 : 0), 0,
+		     (phantom_only ? 4 : లెక్క) * పరిమాణం (deltas[0]));
 	}
 
-	const HBUINT8 *end = p + length;
+	స్థిరరాశి HBUINT8 *చివర = p + నిడివి;
 
-	bool has_private_points = iterator.current_tuple->has_private_points ();
-	if (has_private_points &&
-	    !GlyphVariationData::decompile_points (p, private_indices, end))
-	  return false;
-	const hb_array_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+	తార్కిక has_వ్యక్తిగత_points = iterator.current_tuple->has_వ్యక్తిగత_points ();
+	ఒకవేళ (has_వ్యక్తిగత_points &&
+	    !Glyph_Variation_దత్తాంశం::decompile_points (p, వ్యక్తిగత_indices, చివర))
+	  తిరిగి అబద్ధం;
+	స్థిరరాశి hb_array_t<గుర్తులేని పూర్ణాంకం> &indices = has_వ్యక్తిగత_points ? వ్యక్తిగత_indices : shared_indices;
 
-	bool apply_to_all = (indices.length == 0);
-	unsigned num_deltas = apply_to_all ? points.length : indices.length;
-	unsigned start_deltas = (apply_to_all && phantom_only && num_deltas >= 4 ? num_deltas - 4 : 0);
+	తార్కిక apply_గమ్యం_all = (indices.నిడివి == 0);
+	గుర్తులేని అంకె_deltas = apply_గమ్యం_all ? points.నిడివి : indices.నిడివి;
+	గుర్తులేని ప్రారంభం_deltas = (apply_గమ్యం_all && phantom_only && అంకె_deltas >= 4 ? అంకె_deltas - 4 : 0);
 
-	if (apply_to_all && !any_private_points)
+	ఒకవేళ (apply_గమ్యం_all && !any_వ్యక్తిగత_points)
 	{
-#ifdef HB_OPTIMIZE_SIZE
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, true))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, false))) return false;
-#else
-	  if (unlikely (!decompile_deltas_add_to_points<true> (p, points, scalar, end, start_deltas))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points<false> (p, points, scalar, end, start_deltas))) return false;
-#endif
-	  continue;
+#నిర్వచితమైతే HB_OPTIMIZE_కొలత
+	  ఒకవేళ (unlikely (!decompile_deltas_కూడు_గమ్యం_points (p, points, scalar, చివర, ప్రారంభం_deltas, నిజం))) తిరిగి అబద్ధం;
+	  ఒకవేళ (unlikely (!decompile_deltas_కూడు_గమ్యం_points (p, points, scalar, చివర, ప్రారంభం_deltas, అబద్ధం))) తిరిగి అబద్ధం;
+#లేకపోతే
+	  ఒకవేళ (unlikely (!decompile_deltas_కూడు_గమ్యం_points<నిజం> (p, points, scalar, చివర, ప్రారంభం_deltas))) తిరిగి అబద్ధం;
+	  ఒకవేళ (unlikely (!decompile_deltas_కూడు_గమ్యం_points<అబద్ధం> (p, points, scalar, చివర, ప్రారంభం_deltas))) తిరిగి అబద్ధం;
+#అయితే_ముగింపు
+	  కొనసాగు;
 	}
 
-	if (unlikely (!x_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, x_deltas, end, false, start_deltas))) return false;
-	if (unlikely (!y_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, y_deltas, end, false, start_deltas))) return false;
+	ఒకవేళ (unlikely (!x_deltas.resize_dirty  (అంకె_deltas))) తిరిగి అబద్ధం;
+	ఒకవేళ (unlikely (!Glyph_Variation_దత్తాంశం::decompile_deltas (p, x_deltas, చివర, అబద్ధం, ప్రారంభం_deltas))) తిరిగి అబద్ధం;
+	ఒకవేళ (unlikely (!y_deltas.resize_dirty  (అంకె_deltas))) తిరిగి అబద్ధం;
+	ఒకవేళ (unlikely (!Glyph_Variation_దత్తాంశం::decompile_deltas (p, y_deltas, చివర, అబద్ధం, ప్రారంభం_deltas))) తిరిగి అబద్ధం;
 
-	if (!apply_to_all)
+	ఒకవేళ (!apply_గమ్యం_all)
 	{
-	  if (!orig_points && !phantom_only)
+	  ఒకవేళ (!orig_points && !phantom_only)
 	  {
 	    orig_points_vec.extend (points);
-	    if (unlikely (orig_points_vec.in_error ())) return false;
+	    ఒకవేళ (unlikely (orig_points_vec.లోపల_error ())) తిరిగి అబద్ధం;
 	    orig_points = orig_points_vec.as_array ();
 	  }
 
-	  if (flush)
+	  ఒకవేళ (flush)
 	  {
-	    for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    కొరకు (గుర్తులేని పూర్ణాంకం i = phantom_only ? లెక్క - 4 : 0; i < లెక్క; i++)
 	      points.arrayZ[i].translate (deltas.arrayZ[i]);
 	  }
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? లెక్క - 4 : 0), 0,
+		     (phantom_only ? 4 : లెక్క) * పరిమాణం (deltas[0]));
 	}
 
-	if (HB_OPTIMIZE_SIZE_VAL)
+	ఒకవేళ (HB_OPTIMIZE_కొలత_VAL)
 	{
-	  for (unsigned int i = 0; i < num_deltas; i++)
+	  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_deltas; i++)
 	  {
-	    unsigned int pt_index;
-	    if (apply_to_all)
-	      pt_index = i;
-	    else
+	    గుర్తులేని పూర్ణాంకం pt_సూచీ;
+	    ఒకవేళ (apply_గమ్యం_all)
+	      pt_సూచీ = i;
+	    లేకపోతే
 	    {
-	      pt_index = indices[i];
-	      if (unlikely (pt_index >= deltas.length)) continue;
+	      pt_సూచీ = indices[i];
+	      ఒకవేళ (unlikely (pt_సూచీ >= deltas.నిడివి)) కొనసాగు;
 	    }
-	    if (phantom_only && pt_index < count - 4) continue;
-	    auto &delta = deltas.arrayZ[pt_index];
+	    ఒకవేళ (phantom_only && pt_సూచీ < లెక్క - 4) కొనసాగు;
+	    స్వయంచాలక &delta = deltas.arrayZ[pt_సూచీ];
 	    delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-	    delta.add_delta (x_deltas.arrayZ[i] * scalar,
+	    delta.కూడు_delta (x_deltas.arrayZ[i] * scalar,
 			     y_deltas.arrayZ[i] * scalar);
 	  }
 	}
-	else
+	లేకపోతే
 	{
 	  /* Ouch. Four cases... for optimization. */
-	  if (scalar != 1.0f)
+	  ఒకవేళ (scalar != 1.0f)
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    ఒకవేళ (apply_గమ్యం_all)
+	      కొరకు (గుర్తులేని పూర్ణాంకం i = phantom_only ? లెక్క - 4 : 0; i < లెక్క; i++)
 	      {
-		auto &delta = deltas.arrayZ[i];
-		delta.add_delta (x_deltas.arrayZ[i] * scalar,
+		స్వయంచాలక &delta = deltas.arrayZ[i];
+		delta.కూడు_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    లేకపోతే
+	      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
-		auto &delta = deltas.arrayZ[pt_index];
+		గుర్తులేని పూర్ణాంకం pt_సూచీ = indices[i];
+		ఒకవేళ (unlikely (pt_సూచీ >= deltas.నిడివి)) కొనసాగు;
+		ఒకవేళ (phantom_only && pt_సూచీ < లెక్క - 4) కొనసాగు;
+		స్వయంచాలక &delta = deltas.arrayZ[pt_సూచీ];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-		delta.add_delta (x_deltas.arrayZ[i] * scalar,
+		delta.కూడు_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
 	  }
-	  else
+	  లేకపోతే
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    ఒకవేళ (apply_గమ్యం_all)
+	      కొరకు (గుర్తులేని పూర్ణాంకం i = phantom_only ? లెక్క - 4 : 0; i < లెక్క; i++)
 	      {
-		auto &delta = deltas.arrayZ[i];
-		delta.add_delta (x_deltas.arrayZ[i],
+		స్వయంచాలక &delta = deltas.arrayZ[i];
+		delta.కూడు_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    లేకపోతే
+	      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
-		auto &delta = deltas.arrayZ[pt_index];
+		గుర్తులేని పూర్ణాంకం pt_సూచీ = indices[i];
+		ఒకవేళ (unlikely (pt_సూచీ >= deltas.నిడివి)) కొనసాగు;
+		ఒకవేళ (phantom_only && pt_సూచీ < లెక్క - 4) కొనసాగు;
+		స్వయంచాలక &delta = deltas.arrayZ[pt_సూచీ];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-		delta.add_delta (x_deltas.arrayZ[i],
+		delta.కూడు_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
 	  }
 	}
 
 	/* infer deltas for unreferenced points */
-	if (!apply_to_all && !phantom_only)
+	ఒకవేళ (!apply_గమ్యం_all && !phantom_only)
 	{
-	  unsigned start_point = 0;
-	  unsigned end_point = 0;
-	  while (true)
+	  గుర్తులేని ప్రారంభం_బిందువు_2 = 0;
+	  గుర్తులేని చివర_బిందువు = 0;
+	  అయితే (నిజం)
 	  {
-	    while (end_point < count && !points.arrayZ[end_point].is_end_point)
-	      end_point++;
-	    if (unlikely (end_point == count)) break;
+	    అయితే (చివర_బిందువు < లెక్క && !points.arrayZ[చివర_బిందువు].is_చివర_బిందువు)
+	      చివర_బిందువు++;
+	    ఒకవేళ (unlikely (చివర_బిందువు == లెక్క)) ఆపు;
 
 	    /* Check the number of unreferenced points in a contour. If no unref points or no ref points, nothing to do. */
-	    unsigned unref_count = 0;
-	    for (unsigned i = start_point; i < end_point + 1; i++)
-	      unref_count += deltas.arrayZ[i].flag;
-	    unref_count = (end_point - start_point + 1) - unref_count;
+	    గుర్తులేని unref_లెక్క = 0;
+	    కొరకు (గుర్తులేని i = ప్రారంభం_బిందువు_2; i < చివర_బిందువు + 1; i++)
+	      unref_లెక్క += deltas.arrayZ[i].flag;
+	    unref_లెక్క = (చివర_బిందువు - ప్రారంభం_బిందువు_2 + 1) - unref_లెక్క;
 
-	    unsigned j = start_point;
-	    if (unref_count == 0 || unref_count > end_point - start_point)
-	      goto no_more_gaps;
+	    గుర్తులేని j = ప్రారంభం_బిందువు_2;
+	    ఒకవేళ (unref_లెక్క == 0 || unref_లెక్క > చివర_బిందువు - ప్రారంభం_బిందువు_2)
+	      వెళ్ళు no_మరిన్ని_gaps;
 
-	    for (;;)
+	    కొరకు (;;)
 	    {
 	      /* Locate the next gap of unreferenced points between two referenced points prev and next.
 	       * Note that a gap may wrap around at left (start_point) and/or at right (end_point).
 	       */
-	      unsigned int prev, next, i;
-	      for (;;)
+	      గుర్తులేని పూర్ణాంకం prev, next, i;
+	      కొరకు (;;)
 	      {
 		i = j;
-		j = next_index (i, start_point, end_point);
-		if (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) break;
+		j = తదుపరి_సూచీ (i, ప్రారంభం_బిందువు_2, చివర_బిందువు);
+		ఒకవేళ (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) ఆపు;
 	      }
 	      prev = j = i;
-	      for (;;)
+	      కొరకు (;;)
 	      {
 		i = j;
-		j = next_index (i, start_point, end_point);
-		if (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) break;
+		j = తదుపరి_సూచీ (i, ప్రారంభం_బిందువు_2, చివర_బిందువు);
+		ఒకవేళ (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) ఆపు;
 	      }
 	      next = j;
 	      /* Infer deltas for all unref points in the gap between prev and next */
 	      i = prev;
-	      for (;;)
+	      కొరకు (;;)
 	      {
-		i = next_index (i, start_point, end_point);
-		if (i == next) break;
-		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::x);
-		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::y);
-		if (--unref_count == 0) goto no_more_gaps;
+		i = తదుపరి_సూచీ (i, ప్రారంభం_బిందువు_2, చివర_బిందువు);
+		ఒకవేళ (i == next) ఆపు;
+		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_బిందువు_t::x);
+		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_బిందువు_t::y);
+		ఒకవేళ (--unref_లెక్క == 0) వెళ్ళు no_మరిన్ని_gaps;
 	      }
 	    }
-	  no_more_gaps:
-	    start_point = end_point = end_point + 1;
+	  no_మరిన్ని_gaps:
+	    ప్రారంభం_బిందువు_2 = చివర_బిందువు = చివర_బిందువు + 1;
 	  }
 	}
 
-	flush = true;
+	flush = నిజం;
 
-      } while (iterator.move_to_next ());
+      } అయితే (iterator.move_గమ్యం_తదుపరి ());
 
-      if (flush)
+      ఒకవేళ (flush)
       {
-	for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	కొరకు (గుర్తులేని పూర్ణాంకం i = phantom_only ? లెక్క - 4 : 0; i < లెక్క; i++)
 	  points.arrayZ[i].translate (deltas.arrayZ[i]);
       }
 
-      return true;
+      తిరిగి నిజం;
     }
 
-    unsigned int get_axis_count () const { return table->axisCount; }
+    గుర్తులేని పూర్ణాంకం get_axis_లెక్క () స్థిరరాశి { తిరిగి పట్టిక->axis_లెక్క_2; }
 
-    private:
-    hb_blob_ptr_t<gvar_GVAR> table;
-    unsigned glyphCount;
+    అంతరంగ:
+    hb_blob_ptr_t<gvar_GVAR> పట్టిక;
+    గుర్తులేని glyph_లెక్క_2;
   };
 
-  protected:
-  FixedVersion<>version;	/* Version number of the glyph variations table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version number of the glyph variations table
 				 * Set to 0x00010000u. */
-  HBUINT16	axisCount;	/* The number of variation axes for this font. This must be
+  HBUINT16	axis_లెక్క_2;	/* The number of variation axes for this font. This must be
 				 * the same number as axisCount in the 'fvar' table. */
-  HBUINT16	sharedTupleCount;
+  HBUINT16	shared_Tuple_లెక్క;
 				/* The number of shared tuple records. Shared tuple records
 				 * can be referenced within glyph variation data tables for
 				 * multiple glyphs, as opposed to other tuple records stored
 				 * directly within a glyph variation data table. */
-  NNOffset32To<UnsizedArrayOf<F2DOT14>>
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<F2DOT14>>
 		sharedTuples;	/* Offset from the start of this table to the shared tuple records.
 				 * Array of tuple records shared across all glyph variation data tables. */
-  GlyphCountType
-		glyphCountX;	/* The number of glyphs in this font. This must match the number of
+  Glyph_లెక్క_Type
+		glyph_లెక్క_X;	/* The number of glyphs in this font. This must match the number of
 				 * glyphs stored elsewhere in the font. */
   HBUINT16	flags;		/* Bit-field that gives the format of the offset array that follows.
 				 * If bit 0 is clear, the offsets are uint16; if bit 0 is set, the
 				 * offsets are uint32. */
-  Offset32To<GlyphVariationData>
-		dataZ;		/* Offset from the start of this table to the array of
+  Offset32_గమ్యం<Glyph_Variation_దత్తాంశం>
+		దత్తాంశం_Z;		/* Offset from the start of this table to the array of
 				 * GlyphVariationData tables. */
-  UnsizedArrayOf<HBUINT8>
-		offsetZ;	/* Offsets from the start of the GlyphVariationData array
+  Unsized_Array_యొక్క<HBUINT8>
+		స్థానభ్రంశం_Z;	/* Offsets from the start of the GlyphVariationData array
 				 * to each GlyphVariationData table. */
-  public:
-  DEFINE_SIZE_ARRAY (18 + GlyphCountType::static_size, offsetZ);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (18 + Glyph_లెక్క_Type::static_కొలత, స్థానభ్రంశం_Z);
 };
 
-struct gvar : gvar_GVAR<gvar, SmallTypes>
+నిర్మాణం gvar : gvar_GVAR<gvar, SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gvar;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_gvar;
 };
 
-struct GVAR : gvar_GVAR<GVAR, MediumTypes>
+నిర్మాణం GVAR : gvar_GVAR<GVAR, MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GVAR;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_GVAR;
 };
 
-struct gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
+నిర్మాణం gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
 						  GVAR::accelerator_t>
 {
   gvar_accelerator_t (hb_face_t *face) :
     hb_dual_accelerator_t<gvar::accelerator_t, GVAR::accelerator_t> (face) {}
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () స్థిరరాశి
   {
-    if (has_data ()) return HB_DUAL_GET (*this, create_cache ());
-    return nullptr;
+    ఒకవేళ (has_దత్తాంశం ()) తిరిగి HB_DUAL_GET (*ఇది, create_cache ());
+    తిరిగి శూన్యసూచిక;
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  స్థిర శూన్య destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  bool apply_deltas_to_points (hb_codepoint_t glyph,
-			       hb_array_t<const int> coords,
-			       const hb_array_t<contour_point_t> points,
+  తార్కిక apply_deltas_గమ్యం_points (hb_codepoint_t glyph,
+			       hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+			       స్థిరరాశి hb_array_t<contour_బిందువు_t> points,
 			       hb_glyf_scratch_t &scratch,
-			       hb_scalar_cache_t *gvar_cache = nullptr,
-			       bool phantom_only = false,
-			       int64_t *budget = nullptr) const
+			       hb_scalar_cache_t *gvar_cache = శూన్యసూచిక,
+			       తార్కిక phantom_only = అబద్ధం,
+			       int64_t *budget = శూన్యసూచిక) స్థిరరాశి
   {
-    return HB_DUAL_GET (*this, apply_deltas_to_points (glyph, coords, points,
+    తిరిగి HB_DUAL_GET (*ఇది, apply_deltas_గమ్యం_points (glyph, coords, points,
 						       scratch, gvar_cache,
 						       phantom_only, budget));
   }
 
-  unsigned int get_axis_count () const
+  గుర్తులేని పూర్ణాంకం get_axis_లెక్క () స్థిరరాశి
   {
-    if (has_data ()) return HB_DUAL_GET (*this, get_axis_count ());
-    return 0;
+    ఒకవేళ (has_దత్తాంశం ()) తిరిగి HB_DUAL_GET (*ఇది, get_axis_లెక్క ());
+    తిరిగి 0;
   }
 };
 
 } /* namespace OT */
 
-#endif /* HB_OT_VAR_GVAR_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_VAR_GVAR_TABLE_HH */

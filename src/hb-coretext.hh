@@ -27,103 +27,103 @@
  */
 
 
-#ifndef HB_CORETEXT_HH
-#define HB_CORETEXT_HH
+#నిర్వచితం_కాకపోతే HB_CORETEXT_HH
+#నిర్వచించు HB_CORETEXT_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-coretext.h"
+#అన్తర్భావ "hb-coretext.h"
 
-#include "hb-aat-layout.hh"
+#అన్తర్భావ "hb-aat-layout.hh"
 
 
-HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
+HB_అంతర్గత CGFontRef
+create_cg_font (CFArrayRef ct_font_desc_array, గుర్తులేని పూర్ణాంకం సూచీ_2);
 
-HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+HB_అంతర్గత CGFontRef
+create_cg_font (hb_blob_t *blob, గుర్తులేని పూర్ణాంకం సూచీ_2);
 
-HB_INTERNAL CGFontRef
+HB_అంతర్గత CGFontRef
 create_cg_font (hb_face_t *face);
 
-HB_INTERNAL CTFontRef
-create_ct_font (CGFontRef cg_font, CGFloat font_size);
+HB_అంతర్గత CTFontRef
+create_ct_font (CGFontRef cg_font, CGFloat font_కొలత);
 
 
-template <typename T>
-struct hb_cf_releaser_t
+మూస <రకం_పేరు T>
+నిర్మాణం hb_cf_releaser_t
 {
-  static void release (T obj)
+  స్థిర శూన్య release (T obj)
   {
-    if (obj)
+    ఒకవేళ (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGFontRef>
+మూస <>
+నిర్మాణం hb_cf_releaser_t<CGFontRef>
 {
-  static void release (CGFontRef obj)
+  స్థిర శూన్య release (CGFontRef obj)
   {
-    if (obj)
+    ఒకవేళ (obj)
       CGFontRelease (obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGDataProviderRef>
+మూస <>
+నిర్మాణం hb_cf_releaser_t<CGDataProviderRef>
 {
-  static void release (CGDataProviderRef obj)
+  స్థిర శూన్య release (CGDataProviderRef obj)
   {
-    if (obj)
+    ఒకవేళ (obj)
       CGDataProviderRelease (obj);
   }
 };
 
-template <>
-struct hb_cf_releaser_t<CGPathRef>
+మూస <>
+నిర్మాణం hb_cf_releaser_t<CGPathRef>
 {
-  static void release (CGPathRef obj)
+  స్థిర శూన్య release (CGPathRef obj)
   {
-    if (obj)
+    ఒకవేళ (obj)
       CGPathRelease (obj);
   }
 };
 
-template <typename T, typename Releaser = hb_cf_releaser_t<T>>
-struct hb_cf_ptr_t
+మూస <రకం_పేరు T, రకం_పేరు Releaser = hb_cf_releaser_t<T>>
+నిర్మాణం hb_cf_ptr_t
 {
-  using element_type = T;
+  ఉపయోగించి element_type = T;
 
-  constexpr hb_cf_ptr_t () noexcept : p (nullptr) {}
-  constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (nullptr) {}
-  explicit hb_cf_ptr_t (T p) noexcept : p (p) {}
+  constexpr hb_cf_ptr_t () noexcept : p (శూన్యసూచిక) {}
+  constexpr hb_cf_ptr_t (std::nullptr_t) noexcept : p (శూన్యసూచిక) {}
+  స్పష్టమైన hb_cf_ptr_t (T p) noexcept : p (p) {}
 
-  hb_cf_ptr_t (const hb_cf_ptr_t &) = delete;
-  hb_cf_ptr_t &operator = (const hb_cf_ptr_t &) = delete;
+  hb_cf_ptr_t (స్థిరరాశి hb_cf_ptr_t &) = తొలగించు;
+  hb_cf_ptr_t &క్రియాకారకం = (స్థిరరాశి hb_cf_ptr_t &) = తొలగించు;
 
   hb_cf_ptr_t (hb_cf_ptr_t &&o) noexcept : p (o.release ()) {}
-  hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
+  hb_cf_ptr_t &క్రియాకారకం = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
+  hb_cf_ptr_t &క్రియాకారకం = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    తిరిగి *ఇది;
   }
 
   ~hb_cf_ptr_t ()
   {
     Releaser::release (p);
-    p = nullptr;
+    p = శూన్యసూచిక;
   }
 
-  void reset (T new_p = nullptr)
+  శూన్య reset (T new_p = శూన్యసూచిక)
   {
-    if (p != new_p)
+    ఒకవేళ (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -134,29 +134,29 @@ struct hb_cf_ptr_t
   T release () noexcept
   {
     T old_p = p;
-    p = nullptr;
-    return old_p;
+    p = శూన్యసూచిక;
+    తిరిగి old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () స్థిరరాశి noexcept { తిరిగి p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  క్రియాకారకం T () స్థిరరాశి noexcept { తిరిగి p; }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి noexcept { తిరిగి p != శూన్యసూచిక; }
+  తార్కిక క్రియాకారకం ! () స్థిరరాశి noexcept { తిరిగి !p; }
 
-  void swap (hb_cf_ptr_t &o) noexcept
+  శూన్య swap (hb_cf_ptr_t &o) noexcept
   {
     T tmp = p;
     p = o.p;
     o.p = tmp;
   }
-  friend void swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
+  మిత్ర శూన్య swap (hb_cf_ptr_t &a, hb_cf_ptr_t &b) noexcept
   {
     a.swap (b);
   }
 
-  private:
+  అంతరంగ:
   T p;
 };
 
-#endif /* HB_CORETEXT_HH */
+#అయితే_ముగింపు /* HB_CORETEXT_HH */

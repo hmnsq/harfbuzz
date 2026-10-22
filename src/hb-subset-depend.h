@@ -24,14 +24,14 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_SUBSET_DEPEND_H
-#define HB_SUBSET_DEPEND_H
+#నిర్వచితం_కాకపోతే HB_SUBSET_DEPEND_H
+#నిర్వచించు HB_SUBSET_DEPEND_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-subset.h> instead."
-#endif
+#ఒకవేళ !defined(HB_SUBSET_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb-subset.h> instead."
+#అయితే_ముగింపు
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -62,15 +62,15 @@ HB_BEGIN_DECLS
  *
  * Since: 14.3.0
  */
-typedef enum { /*< flags >*/
-  HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
-} hb_subset_depend_edge_flags_t;
-#define HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
+రకనిర్వచనం గణన { /*< flags >*/
+  HB_SUBSET_DEPEND_అంచు_FLAG_NONE                   = 0x00u,
+  HB_SUBSET_DEPEND_అంచు_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
+  HB_SUBSET_DEPEND_అంచు_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
+} hb_subset_depend_అంచు_flags_t;
+#నిర్వచించు HB_SUBSET_DEPEND_అంచు_FLAGS_T_DEFINED
 /* HB_MARK_AS_FLAG_T is applied in hb-depend-data.hh (internal header only) */
 
-#ifndef HB_NO_SUBSET_DEPEND
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_DEPEND
 
 /**
  * hb_subset_depend_t:
@@ -81,7 +81,7 @@ typedef enum { /*< flags >*/
  *
  * Since: 14.3.0
  */
-typedef struct hb_subset_depend_t hb_subset_depend_t;
+రకనిర్వచనం నిర్మాణం hb_subset_depend_t hb_subset_depend_t;
 
 /**
  * hb_subset_depend_entry_t:
@@ -99,35 +99,35 @@ typedef struct hb_subset_depend_t hb_subset_depend_t;
  *
  * Since: 14.3.0
  */
-typedef struct {
-  hb_tag_t table_tag;
+రకనిర్వచనం నిర్మాణం {
+  hb_ట్యాగ్_t పట్టిక_ట్యాగ్_2;
   hb_codepoint_t dependent;
-  hb_tag_t layout_tag;
-  hb_codepoint_t ligature_set_index;
-  hb_codepoint_t context_set_index;
-  hb_subset_depend_edge_flags_t flags;
-} hb_subset_depend_entry_t;
+  hb_ట్యాగ్_t layout_ట్యాగ్;
+  hb_codepoint_t ligature_సమితి_సూచీ;
+  hb_codepoint_t context_సమితి_సూచీ;
+  hb_subset_depend_అంచు_flags_t flags;
+} hb_subset_depend_నమోదు_t;
 
 HB_EXTERN hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count, /* IN/OUT */
-                                hb_subset_depend_entry_t *entries /* OUT */);
+                                గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+                                గుర్తులేని పూర్ణాంకం *నమోదు_లెక్క, /* IN/OUT */
+                                hb_subset_depend_నమోదు_t *entries /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
-hb_subset_depend_lookup_set (hb_subset_depend_t *depend,
-                              hb_codepoint_t index,
-                              hb_set_t *out /* OUT */);
+hb_subset_depend_lookup_సమితి (hb_subset_depend_t *depend,
+                              hb_codepoint_t సూచీ_2,
+                              hb_సమితి_t *బహిర్గతం /*బహిర్గతం*/);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_subset_depend_destroy (hb_subset_depend_t *depend);
 
-#endif
+#అయితే_ముగింపు
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_SUBSET_DEPEND_H */
+#అయితే_ముగింపు /* HB_SUBSET_DEPEND_H */

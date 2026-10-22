@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_PAINT
+#నిర్వచితం_కాకపోతే HB_NO_PAINT
 
-#include "hb-paint-extents.hh"
+#అన్తర్భావ "hb-paint-extents.hh"
 
-#include "hb-draw.hh"
+#అన్తర్భావ "hb-draw.hh"
 
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
 /*
@@ -39,323 +39,323 @@
  * https://learn.microsoft.com/en-us/typography/opentype/spec/colr#glyph-metrics-and-boundedness
  */
 
-static void
-hb_paint_extents_push_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-				 void *paint_data,
-				 float xx, float yx,
-				 float xy, float yy,
-				 float dx, float dy,
-				 void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_నెట్టు_transform (hb_paint_funcs_t *funcs HB_వాడని,
+				 శూన్య *paint_దత్తాంశం,
+				 దశాంశం xx, దశాంశం yx,
+				 దశాంశం xy, దశాంశం yy,
+				 దశాంశం dx, దశాంశం dy,
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  c->push_transform (hb_transform_t<> {xx, yx, xy, yy, dx, dy});
+  c->నెట్టు_transform (hb_transform_t<> {xx, yx, xy, yy, dx, dy});
 }
 
-static void
-hb_paint_extents_pop_transform (hb_paint_funcs_t *funcs HB_UNUSED,
-			        void *paint_data,
-				void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_తీయి_transform (hb_paint_funcs_t *funcs HB_వాడని,
+			        శూన్య *paint_దత్తాంశం,
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  c->pop_transform ();
+  c->తీయి_transform ();
 }
 
 /* Like the hb_draw_extents_get_funcs() sink, but tied to the paint
  * session's live work budget. */
-struct hb_paint_extents_sink_t
+నిర్మాణం hb_paint_extents_sink_t
 {
   hb_extents_t<> extents;
-  int64_t *budget_remaining;
+  int64_t *budget_మిగిలిన;
 
-  bool consume_segment ()
+  తార్కిక consume_segment ()
   {
-    return hb_budget_spend (*budget_remaining, HB_BUDGET_1);
+    తిరిగి hb_budget_spend (*budget_మిగిలిన, HB_BUDGET_1);
   }
 };
 
-static void
-hb_paint_extents_count_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				hb_draw_state_t *st HB_UNUSED,
-				float to_x, float to_y,
-				void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_లెక్క_move_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *దత్తాంశం,
+				hb_draw_state_t *st HB_వాడని,
+				దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) దత్తాంశం;
+  ఒకవేళ (unlikely (!sink->consume_segment ())) తిరిగి;
+  sink->extents.కూడు_బిందువు (గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_paint_extents_count_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				hb_draw_state_t *st HB_UNUSED,
-				float to_x, float to_y,
-				void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_లెక్క_పంక్తి_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *దత్తాంశం,
+				hb_draw_state_t *st HB_వాడని,
+				దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) దత్తాంశం;
+  ఒకవేళ (unlikely (!sink->consume_segment ())) తిరిగి;
+  sink->extents.కూడు_బిందువు (గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_paint_extents_count_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				     hb_draw_state_t *st HB_UNUSED,
-				     float control_x, float control_y,
-				     float to_x, float to_y,
-				     void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_లెక్క_quadratic_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *దత్తాంశం,
+				     hb_draw_state_t *st HB_వాడని,
+				     దశాంశం control_x, దశాంశం control_y,
+				     దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (control_x, control_y);
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) దత్తాంశం;
+  ఒకవేళ (unlikely (!sink->consume_segment ())) తిరిగి;
+  sink->extents.కూడు_బిందువు (control_x, control_y);
+  sink->extents.కూడు_బిందువు (గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_paint_extents_count_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED, void *data,
-				 hb_draw_state_t *st HB_UNUSED,
-				 float control1_x, float control1_y,
-				 float control2_x, float control2_y,
-				 float to_x, float to_y,
-				 void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_లెక్క_cubic_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *దత్తాంశం,
+				 hb_draw_state_t *st HB_వాడని,
+				 దశాంశం control1_x, దశాంశం control1_y,
+				 దశాంశం control2_x, దశాంశం control2_y,
+				 దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) data;
-  if (unlikely (!sink->consume_segment ())) return;
-  sink->extents.add_point (control1_x, control1_y);
-  sink->extents.add_point (control2_x, control2_y);
-  sink->extents.add_point (to_x, to_y);
+  hb_paint_extents_sink_t *sink = (hb_paint_extents_sink_t *) దత్తాంశం;
+  ఒకవేళ (unlikely (!sink->consume_segment ())) తిరిగి;
+  sink->extents.కూడు_బిందువు (control1_x, control1_y);
+  sink->extents.కూడు_బిందువు (control2_x, control2_y);
+  sink->extents.కూడు_బిందువు (గమ్యం_x, గమ్యం_y);
 }
 
-static int64_t *
-hb_paint_extents_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+స్థిర int64_t *
+hb_paint_extents_get_budget_మిగిలిన (hb_draw_funcs_t *, శూన్య *draw_దత్తాంశం, శూన్య *)
 {
-  return ((hb_paint_extents_sink_t *) draw_data)->budget_remaining;
+  తిరిగి ((hb_paint_extents_sink_t *) draw_దత్తాంశం)->budget_మిగిలిన;
 }
 
-static inline void free_static_paint_extents_draw_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_paint_extents_draw_funcs ();
 
-static struct hb_paint_extents_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_paint_extents_draw_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_paint_extents_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_paint_extents_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  స్థిర hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_paint_extents_count_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_paint_extents_count_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_paint_extents_count_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_paint_extents_count_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_paint_extents_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_సమితి_move_గమ్యం_func (funcs, hb_paint_extents_లెక్క_move_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_పంక్తి_గమ్యం_func (funcs, hb_paint_extents_లెక్క_పంక్తి_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_quadratic_గమ్యం_func (funcs, hb_paint_extents_లెక్క_quadratic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_cubic_గమ్యం_func (funcs, hb_paint_extents_లెక్క_cubic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_get_budget_మిగిలిన_func (funcs, hb_paint_extents_get_budget_మిగిలిన, శూన్యసూచిక, శూన్యసూచిక);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_paint_extents_draw_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_paint_extents_draw_funcs;
 
-static inline
-void free_static_paint_extents_draw_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_paint_extents_draw_funcs ()
 {
   static_paint_extents_draw_funcs.free_instance ();
 }
 
-static void
-hb_paint_extents_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-				  void *paint_data,
+స్థిర శూన్య
+hb_paint_extents_నెట్టు_clip_glyph (hb_paint_funcs_t *funcs HB_వాడని,
+				  శూన్య *paint_దత్తాంశం,
 				  hb_codepoint_t glyph,
 				  hb_font_t *font,
-				  void *user_data HB_UNUSED)
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  hb_paint_extents_sink_t sink {{}, &c->budget_remaining};
+  hb_paint_extents_sink_t sink {{}, &c->budget_మిగిలిన};
   /* Skip the outline extraction when the session work budget is
    * spent; an empty clip clips everything out. */
-  if (likely (c->budget_remaining >= 0))
+  ఒకవేళ (likely (c->budget_మిగిలిన >= 0))
     hb_font_draw_glyph (font, glyph, static_paint_extents_draw_funcs.get_unconst (), &sink);
-  c->push_clip (sink.extents);
+  c->నెట్టు_clip (sink.extents);
 }
 
-static void
-hb_paint_extents_push_clip_rectangle (hb_paint_funcs_t *funcs HB_UNUSED,
-				      void *paint_data,
-				      float xmin, float ymin, float xmax, float ymax,
-				      void *user_data)
+స్థిర శూన్య
+hb_paint_extents_నెట్టు_clip_rectangle (hb_paint_funcs_t *funcs HB_వాడని,
+				      శూన్య *paint_దత్తాంశం,
+				      దశాంశం xmin, దశాంశం ymin, దశాంశం xmax, దశాంశం ymax,
+				      శూన్య *user_దత్తాంశం)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
   hb_extents_t<> extents = {xmin, ymin, xmax, ymax};
-  c->push_clip (extents);
+  c->నెట్టు_clip (extents);
 }
 
-static void
-hb_paint_extents_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-			   void *paint_data,
-			   void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_తీయి_clip (hb_paint_funcs_t *funcs HB_వాడని,
+			   శూన్య *paint_దత్తాంశం,
+			   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  c->pop_clip ();
+  c->తీయి_clip ();
 }
 
-static void
-hb_paint_extents_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void *paint_data,
-			     void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_నెట్టు_సమూహం (hb_paint_funcs_t *funcs HB_వాడని,
+			     శూన్య *paint_దత్తాంశం,
+			     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  c->push_group ();
+  c->నెట్టు_సమూహం ();
 }
 
-static void
-hb_paint_extents_pop_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void *paint_data,
-			    hb_paint_composite_mode_t mode,
-			    void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_తీయి_సమూహం (hb_paint_funcs_t *funcs HB_వాడని,
+			    శూన్య *paint_దత్తాంశం,
+			    hb_paint_సంయుక్త_బహుళకం_t బహుళకం,
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  c->pop_group (mode);
+  c->తీయి_సమూహం (బహుళకం);
 }
 
-static hb_bool_t
-hb_paint_extents_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
-			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
-			      hb_tag_t format HB_UNUSED,
-			      float slant HB_UNUSED,
+స్థిర hb_bool_t
+hb_paint_extents_paint_image (hb_paint_funcs_t *funcs HB_వాడని,
+			      శూన్య *paint_దత్తాంశం,
+			      hb_blob_t *blob HB_వాడని,
+			      గుర్తులేని పూర్ణాంకం వెడల్పు HB_వాడని,
+			      గుర్తులేని పూర్ణాంకం ఎత్తు HB_వాడని,
+			      hb_ట్యాగ్_t format HB_వాడని,
+			      దశాంశం slant HB_వాడని,
 			      hb_glyph_extents_t *glyph_extents,
-			      void *user_data HB_UNUSED)
+			      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
-  if (!glyph_extents)
-    return false; // Happens with SVG images.
+  ఒకవేళ (!glyph_extents)
+    తిరిగి అబద్ధం; // Happens with SVG images.
 
-  hb_extents_t<> extents = {(float) glyph_extents->x_bearing,
-			    (float) glyph_extents->y_bearing + glyph_extents->height,
-			    (float) glyph_extents->x_bearing + glyph_extents->width,
-			    (float) glyph_extents->y_bearing};
-  c->push_clip (extents);
+  hb_extents_t<> extents = {(దశాంశం) glyph_extents->x_bearing,
+			    (దశాంశం) glyph_extents->y_bearing + glyph_extents->ఎత్తు,
+			    (దశాంశం) glyph_extents->x_bearing + glyph_extents->వెడల్పు,
+			    (దశాంశం) glyph_extents->y_bearing};
+  c->నెట్టు_clip (extents);
   c->paint ();
-  c->pop_clip ();
+  c->తీయి_clip ();
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static void
-hb_paint_extents_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
-			      hb_bool_t use_foreground HB_UNUSED,
-			      hb_color_t color HB_UNUSED,
-			      void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_paint_color (hb_paint_funcs_t *funcs HB_వాడని,
+			      శూన్య *paint_దత్తాంశం,
+			      hb_bool_t use_foreground HB_వాడని,
+			      hb_color_t color HB_వాడని,
+			      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
-
-  c->paint ();
-}
-
-static void
-hb_paint_extents_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED,
-				        float x2 HB_UNUSED, float y2 HB_UNUSED,
-				        void *user_data HB_UNUSED)
-{
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
   c->paint ();
 }
 
-static void
-hb_paint_extents_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED, float r0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED, float r1 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_paint_రేఖీయ_gradient (hb_paint_funcs_t *funcs HB_వాడని,
+				        శూన్య *paint_దత్తాంశం,
+				        hb_color_పంక్తి_t *color_పంక్తి HB_వాడని,
+				        దశాంశం x0 HB_వాడని, దశాంశం y0 HB_వాడని,
+				        దశాంశం x1 HB_వాడని, దశాంశం y1 HB_వాడని,
+				        దశాంశం x2 HB_వాడని, దశాంశం y2 HB_వాడని,
+				        శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
   c->paint ();
 }
 
-static void
-hb_paint_extents_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				       void *paint_data,
-				       hb_color_line_t *color_line HB_UNUSED,
-				       float cx HB_UNUSED, float cy HB_UNUSED,
-				       float start_angle HB_UNUSED,
-				       float end_angle HB_UNUSED,
-				       void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_paint_extents_paint_radial_gradient (hb_paint_funcs_t *funcs HB_వాడని,
+				        శూన్య *paint_దత్తాంశం,
+				        hb_color_పంక్తి_t *color_పంక్తి HB_వాడని,
+				        దశాంశం x0 HB_వాడని, దశాంశం y0 HB_వాడని, దశాంశం r0 HB_వాడని,
+				        దశాంశం x1 HB_వాడని, దశాంశం y1 HB_వాడని, దశాంశం r1 HB_వాడని,
+				        శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
 
   c->paint ();
 }
 
-static hb_bool_t
-hb_paint_extents_set_budget (hb_paint_funcs_t *, void *paint_data,
-			     int64_t budget, void *)
+స్థిర శూన్య
+hb_paint_extents_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_వాడని,
+				       శూన్య *paint_దత్తాంశం,
+				       hb_color_పంక్తి_t *color_పంక్తి HB_వాడని,
+				       దశాంశం cx HB_వాడని, దశాంశం cy HB_వాడని,
+				       దశాంశం ప్రారంభం_angle HB_వాడని,
+				       దశాంశం చివర_angle HB_వాడని,
+				       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  auto *context = (hb_paint_extents_context_t *) paint_data;
+  hb_paint_extents_context_t *c = (hb_paint_extents_context_t *) paint_దత్తాంశం;
+
+  c->paint ();
+}
+
+స్థిర hb_bool_t
+hb_paint_extents_సమితి_budget (hb_paint_funcs_t *, శూన్య *paint_దత్తాంశం,
+			     int64_t budget, శూన్య *)
+{
+  స్వయంచాలక *context = (hb_paint_extents_context_t *) paint_దత్తాంశం;
   context->budget = budget;
-  context->budget_initialized = true;
+  context->budget_initialized = నిజం;
   context->recharge_budget ();
-  return true;
+  తిరిగి నిజం;
 }
 
-static int64_t
-hb_paint_extents_get_budget (hb_paint_funcs_t *, void *paint_data, void *)
+స్థిర int64_t
+hb_paint_extents_get_budget (hb_paint_funcs_t *, శూన్య *paint_దత్తాంశం, శూన్య *)
 {
-  return ((hb_paint_extents_context_t *) paint_data)->budget;
+  తిరిగి ((hb_paint_extents_context_t *) paint_దత్తాంశం)->budget;
 }
 
-static int64_t *
-hb_paint_extents_get_budget_remaining (hb_paint_funcs_t *, void *paint_data, void *)
+స్థిర int64_t *
+hb_paint_extents_get_budget_మిగిలిన (hb_paint_funcs_t *, శూన్య *paint_దత్తాంశం, శూన్య *)
 {
-  return &((hb_paint_extents_context_t *) paint_data)->budget_remaining;
+  తిరిగి &((hb_paint_extents_context_t *) paint_దత్తాంశం)->budget_మిగిలిన;
 }
 
-static inline void free_static_paint_extents_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_paint_extents_funcs ();
 
-static struct hb_paint_extents_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_extents_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_paint_extents_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_extents_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  స్థిర hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func (funcs, hb_paint_extents_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, hb_paint_extents_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, hb_paint_extents_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, hb_paint_extents_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, hb_paint_extents_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, hb_paint_extents_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, hb_paint_extents_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, hb_paint_extents_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, hb_paint_extents_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, hb_paint_extents_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, hb_paint_extents_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, hb_paint_extents_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_paint_extents_set_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_paint_extents_get_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_paint_extents_get_budget_remaining, nullptr, nullptr);
+    hb_paint_funcs_సమితి_నెట్టు_transform_func (funcs, hb_paint_extents_నెట్టు_transform, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_transform_func (funcs, hb_paint_extents_తీయి_transform, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_glyph_func (funcs, hb_paint_extents_నెట్టు_clip_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_rectangle_func (funcs, hb_paint_extents_నెట్టు_clip_rectangle, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_clip_func (funcs, hb_paint_extents_తీయి_clip, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_సమూహం_func (funcs, hb_paint_extents_నెట్టు_సమూహం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_సమూహం_func (funcs, hb_paint_extents_తీయి_సమూహం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_color_func (funcs, hb_paint_extents_paint_color, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_image_func (funcs, hb_paint_extents_paint_image, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_రేఖీయ_gradient_func (funcs, hb_paint_extents_paint_రేఖీయ_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_radial_gradient_func (funcs, hb_paint_extents_paint_radial_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_sweep_gradient_func (funcs, hb_paint_extents_paint_sweep_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_సమితి_budget_func (funcs, hb_paint_extents_సమితి_budget, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_get_budget_func (funcs, hb_paint_extents_get_budget, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_get_budget_మిగిలిన_func (funcs, hb_paint_extents_get_budget_మిగిలిన, శూన్యసూచిక, శూన్యసూచిక);
 
     hb_paint_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_paint_extents_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_paint_extents_funcs;
 
-static inline
-void free_static_paint_extents_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_paint_extents_funcs ()
 {
   static_paint_extents_funcs.free_instance ();
 }
@@ -363,8 +363,8 @@ void free_static_paint_extents_funcs ()
 hb_paint_funcs_t *
 hb_paint_extents_get_funcs ()
 {
-  return static_paint_extents_funcs.get_unconst ();
+  తిరిగి static_paint_extents_funcs.get_unconst ();
 }
 
 
-#endif
+#అయితే_ముగింపు

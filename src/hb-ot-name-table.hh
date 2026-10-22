@@ -24,9 +24,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_NAME_TABLE_HH
-#define HB_OT_NAME_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_NAME_పట్టిక_HH
+#నిర్వచించు HB_OT_NAME_పట్టిక_HH
 
-#include "OT/name/name.hh"
+#అన్తర్భావ "OT/name/name.hh"
 
-#endif /* HB_OT_NAME_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_NAME_TABLE_HH */

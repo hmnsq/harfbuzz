@@ -22,8 +22,8 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_H
-#define HB_WASM_API_H
+#నిర్వచితం_కాకపోతే HB_WASM_API_H
+#నిర్వచించు HB_WASM_API_H
 
 /*
 #include "hb.h"
@@ -32,70 +32,70 @@ HB_BEGIN_DECLS
 HB_END_DECLS
 */
 
-#include <stdint.h>
+#అన్తర్భావ <stdint.h>
 
 
-#ifndef HB_WASM_BEGIN_DECLS
+#నిర్వచితం_కాకపోతే HB_WASM_BEGIN_DECLS
 # ifdef __cplusplus
-#  define HB_WASM_BEGIN_DECLS	extern "C" {
-#  define HB_WASM_END_DECLS	}
-# else /* !__cplusplus */
+#  define HB_WASM_BEGIN_DECLS	బాహ్య "C" {
+#  define HB_WASM_చివర_DECLS	}
+# లేకపోతే /* !__cplusplus */
 #  define HB_WASM_BEGIN_DECLS
-#  define HB_WASM_END_DECLS
+#  define HB_WASM_చివర_DECLS
 # endif /* !__cplusplus */
-#endif
+#అయితే_ముగింపు
 
 
 HB_WASM_BEGIN_DECLS
 
-#ifndef HB_WASM_API
-#define HB_WASM_API(ret_t, name) ret_t name
-#endif
-#ifndef HB_WASM_API_COMPOUND /* compound return type */
-#define HB_WASM_API_COMPOUND(ret_t, name) HB_WASM_API(ret_t, name)
-#endif
-#ifndef HB_WASM_INTERFACE
-#define HB_WASM_INTERFACE(ret_t, name) ret_t name
-#endif
-#ifndef HB_WASM_EXEC_ENV
-#define HB_WASM_EXEC_ENV
-#endif
-#ifndef HB_WASM_EXEC_ENV_COMPOUND
-#define HB_WASM_EXEC_ENV_COMPOUND HB_WASM_EXEC_ENV
-#endif
+#నిర్వచితం_కాకపోతే HB_WASM_API
+#నిర్వచించు HB_WASM_API(ret_t, name) ret_t name
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_WASM_API_COMPOUND /* compound return type */
+#నిర్వచించు HB_WASM_API_COMPOUND(ret_t, name) HB_WASM_API(ret_t, name)
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_WASM_INTERFACE
+#నిర్వచించు HB_WASM_INTERFACE(ret_t, name) ret_t name
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_WASM_EXEC_ENV
+#నిర్వచించు HB_WASM_EXEC_ENV
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_WASM_EXEC_ENV_COMPOUND
+#నిర్వచించు HB_WASM_EXEC_ENV_COMPOUND HB_WASM_EXEC_ENV
+#అయితే_ముగింపు
 
 
-#ifndef bool_t
-#define bool_t uint32_t
-#endif
-#ifndef ptr_t
-#define ptr_t(type_t) type_t *
-#endif
-#ifndef ptr_d
-#define ptr_d(type_t, name) type_t *name
-#endif
+#నిర్వచితం_కాకపోతే bool_t
+#నిర్వచించు bool_t uint32_t
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే ptr_t
+#నిర్వచించు ptr_t(type_t) type_t *
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే ptr_d
+#నిర్వచించు ptr_d(type_t, name) type_t *name
+#అయితే_ముగింపు
 
-typedef uint32_t codepoint_t;
-typedef int32_t position_t;
-typedef uint32_t mask_t;
-typedef uint32_t tag_t;
-#define TAG(c1,c2,c3,c4) ((tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
+రకనిర్వచనం uint32_t codepoint_t;
+రకనిర్వచనం int32_t position_t;
+రకనిర్వచనం uint32_t ముసుగు_t;
+రకనిర్వచనం uint32_t ట్యాగ్_t;
+#నిర్వచించు ట్యాగ్_3(c1,c2,c3,c4) ((ట్యాగ్_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
 
-typedef enum {
+రకనిర్వచనం గణన {
   DIRECTION_INVALID = 0,
   DIRECTION_LTR = 4,
   DIRECTION_RTL,
   DIRECTION_TTB,
   DIRECTION_BTT
 } direction_t;
-#define DIRECTION_IS_VALID(dir)		((((unsigned int) (dir)) & ~3U) == 4)
-#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
-#define DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
-#define DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
-#define DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
-#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned int) (dir)) ^ 1))
+#నిర్వచించు DIRECTION_IS_VALID(dir)		((((గుర్తులేని పూర్ణాంకం) (dir)) & ~3U) == 4)
+#నిర్వచించు DIRECTION_IS_HORIZONTAL(dir)	((((గుర్తులేని పూర్ణాంకం) (dir)) & ~1U) == 4)
+#నిర్వచించు DIRECTION_IS_VERTICAL(dir)	((((గుర్తులేని పూర్ణాంకం) (dir)) & ~1U) == 6)
+#నిర్వచించు DIRECTION_IS_FORWARD(dir)	((((గుర్తులేని పూర్ణాంకం) (dir)) & ~2U) == 4)
+#నిర్వచించు DIRECTION_IS_BACKWARD(dir)	((((గుర్తులేని పూర్ణాంకం) (dir)) & ~2U) == 5)
+#నిర్వచించు DIRECTION_తిరగేయి(dir)		((direction_t) (((గుర్తులేని పూర్ణాంకం) (dir)) ^ 1))
 
-typedef tag_t script_t; /* ISO 15924 representation of Unicode scripts. */
+రకనిర్వచనం ట్యాగ్_t script_t; /* ISO 15924 representation of Unicode scripts. */
 
 
 /* common */
@@ -106,92 +106,92 @@ HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 
 /* blob */
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
-  uint32_t length;
-  ptr_t(char) data;
+  uint32_t నిడివి;
+  ptr_t(అక్షరం) దత్తాంశం;
 } blob_t;
-#define BLOB_INIT {0, 0}
+#నిర్వచించు BLOB_INIT {0, 0}
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob));
 
-/* buffer */
+/*బఫరు*/
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
   uint32_t codepoint;
-  uint32_t mask;
+  uint32_t ముసుగు;
   uint32_t cluster;
   uint32_t var1;
   uint32_t var2;
 } glyph_info_t;
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
   position_t x_advance;
   position_t y_advance;
-  position_t x_offset;
-  position_t y_offset;
+  position_t x_స్థానభ్రంశం_2;
+  position_t y_స్థానభ్రంశం_2;
   uint32_t var;
 } glyph_position_t;
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
-  uint32_t length;
+  uint32_t నిడివి;
   ptr_t(glyph_info_t) info;
   ptr_t(glyph_position_t) pos;
-} buffer_contents_t;
-#define BUFFER_CONTENTS_INIT {0, 0, 0}
+} బఫరు_contents_t;
+#నిర్వచించు బఫరు_CONTENTS_INIT {0, 0, 0}
 
-HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
-					       ptr_d(buffer_contents_t, contents),
-					       uint32_t size);
+HB_WASM_API (bool_t, బఫరు_contents_realloc) (HB_WASM_EXEC_ENV
+					       ptr_d(బఫరు_contents_t, contents),
+					       uint32_t కొలత);
 
-HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
-					  ptr_d(buffer_contents_t, contents));
+HB_WASM_API (శూన్య, బఫరు_contents_free) (HB_WASM_EXEC_ENV
+					  ptr_d(బఫరు_contents_t, contents));
 
-typedef struct buffer_t buffer_t;
+రకనిర్వచనం నిర్మాణం బఫరు_t బఫరు_t;
 
-HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
-					    ptr_d(buffer_t, buffer),
-					    ptr_d(buffer_contents_t, contents));
+HB_WASM_API (bool_t, బఫరు_copy_contents) (HB_WASM_EXEC_ENV
+					    ptr_d(బఫరు_t, బఫరు),
+					    ptr_d(బఫరు_contents_t, contents));
 
-HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer),
-					   ptr_d(const buffer_contents_t, contents));
+HB_WASM_API (bool_t, బఫరు_సమితి_contents) (HB_WASM_EXEC_ENV
+					   ptr_d(బఫరు_t, బఫరు),
+					   ptr_d(స్థిరరాశి బఫరు_contents_t, contents));
 
-HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
-						 ptr_d(buffer_t, buffer));
+HB_WASM_API (direction_t, బఫరు_get_direction) (HB_WASM_EXEC_ENV
+						 ptr_d(బఫరు_t, బఫరు));
 
-HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer));
+HB_WASM_API (script_t, బఫరు_get_script) (HB_WASM_EXEC_ENV
+					   ptr_d(బఫరు_t, బఫరు));
 
-HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
-				    ptr_d(buffer_t, buffer));
+HB_WASM_API (శూన్య, బఫరు_తిరగేయి) (HB_WASM_EXEC_ENV
+				    ptr_d(బఫరు_t, బఫరు));
 
-HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
-					     ptr_d(buffer_t, buffer));
+HB_WASM_API (శూన్య, బఫరు_తిరగేయి_clusters) (HB_WASM_EXEC_ENV
+					     ptr_d(బఫరు_t, బఫరు));
 
 /* face */
 
-typedef struct face_t face_t;
+రకనిర్వచనం నిర్మాణం face_t face_t;
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int);
+					  గుర్తులేని పూర్ణాంకం);
 
-HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, face_copy_పట్టిక) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
-				       tag_t table_tag,
+				       ట్యాగ్_t పట్టిక_ట్యాగ్_2,
 				       ptr_d(blob_t, blob));
 
-HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
+HB_WASM_API (గుర్తులేని, face_get_upem) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face));
 
 /* font */
 
-typedef struct font_t font_t;
+రకనిర్వచనం నిర్మాణం font_t font_t;
 
 HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 					  ptr_d(face_t, face));
@@ -199,7 +199,7 @@ HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
 					    ptr_d(font_t, font));
 
-HB_WASM_API (void, font_get_scale) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, font_get_scale) (HB_WASM_EXEC_ENV
 				    ptr_d(font_t, font),
 				    ptr_d(int32_t, x_scale),
 				    ptr_d(int32_t, y_scale));
@@ -217,12 +217,12 @@ HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
 						    ptr_d(font_t, font),
 						    codepoint_t glyph);
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
   position_t x_bearing;
   position_t y_bearing;
-  position_t width;
-  position_t height;
+  position_t వెడల్పు;
+  position_t ఎత్తు;
 } glyph_extents_t;
 
 HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
@@ -230,53 +230,53 @@ HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 					      codepoint_t glyph,
 					      ptr_d(glyph_extents_t, extents));
 
-HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, font_glyph_గమ్యం_string) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  codepoint_t glyph,
-					  ptr_d(char, s), uint32_t size);
+					  ptr_d(అక్షరం, s), uint32_t కొలత);
 
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
-  unsigned int length;
-  ptr_t(int) coords;
+  గుర్తులేని పూర్ణాంకం నిడివి;
+  ptr_t(పూర్ణాంకం) coords;
 } coords_t;
 
 HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords));
 
-HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, font_సమితి_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords));
 
 /* outline */
 
-enum glyph_outline_point_type_t
+గణన glyph_outline_బిందువు_type_t
 {
-  MOVE_TO,
-  LINE_TO,
-  QUADRATIC_TO,
-  CUBIC_TO,
+  MOVE_గమ్యం,
+  పంక్తి_గమ్యం_2,
+  QUADRATIC_గమ్యం,
+  CUBIC_గమ్యం,
 };
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
-  float x;
-  float y;
+  దశాంశం x;
+  దశాంశం y;
   uint32_t type;
-} glyph_outline_point_t;
+} glyph_outline_బిందువు_t;
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
   uint32_t n_points;
-  ptr_t(glyph_outline_point_t) points;
+  ptr_t(glyph_outline_బిందువు_t) points;
   uint32_t n_contours;
   ptr_t(uint32_t) contours;
 } glyph_outline_t;
-#define GLYPH_OUTLINE_INIT {0, 0, 0, 0}
+#నిర్వచించు GLYPH_OUTLINE_INIT {0, 0, 0, 0}
 
-HB_WASM_API (void, glyph_outline_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, glyph_outline_free) (HB_WASM_EXEC_ENV
 					ptr_d(glyph_outline_t, outline));
 
 HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
@@ -287,51 +287,51 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 
 /* shape */
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
-  tag_t    tag;
-  uint32_t value;
-  uint32_t start;
-  uint32_t end;
+  ట్యాగ్_t    ట్యాగ్_2;
+  uint32_t విలువ_2;
+  uint32_t ప్రారంభం;
+  uint32_t చివర;
 } feature_t;
-#define FEATURE_GLOBAL_START	0
-#define FEATURE_GLOBAL_END	((uint32_t) -1)
+#నిర్వచించు FEATURE_GLOBAL_ప్రారంభం	0
+#నిర్వచించు FEATURE_GLOBAL_చివర	((uint32_t) -1)
 
-typedef struct
+రకనిర్వచనం నిర్మాణం
 {
-  uint32_t length;
+  uint32_t నిడివి;
   ptr_t(feature_t) features;
 } features_t;
-#define FEATURES_INIT {0, 0}
+#నిర్వచించు FEATURES_INIT {0, 0}
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
-					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       ptr_d(స్థిరరాశి feature_t, features),
+					       uint32_t అంకె_features,
 					       ptr_d(features_t, output));
 
-HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, features_free) (HB_WASM_EXEC_ENV
 				     ptr_d(features_t, features));
 
 HB_WASM_API (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				  ptr_d(font_t, font),
-				  ptr_d(buffer_t, buffer),
-				  ptr_d(const feature_t, features),
-				  uint32_t num_features,
-				  const char *shaper);
+				  ptr_d(బఫరు_t, బఫరు),
+				  ptr_d(స్థిరరాశి feature_t, features),
+				  uint32_t అంకె_features,
+				  స్థిరరాశి అక్షరం *shaper);
 
 /* Implement these in your shaper. */
 
-HB_WASM_INTERFACE (ptr_t(void), shape_plan_create) (ptr_d(face_t, face));
+HB_WASM_INTERFACE (ptr_t(శూన్య), shape_plan_create) (ptr_d(face_t, face));
 
-HB_WASM_INTERFACE (bool_t, shape) (ptr_d(void, shape_plan),
+HB_WASM_INTERFACE (bool_t, shape) (ptr_d(శూన్య, shape_plan),
 				   ptr_d(font_t, font),
-				   ptr_d(buffer_t, buffer),
-				   ptr_d(const feature_t, features),
-				   uint32_t num_features);
+				   ptr_d(బఫరు_t, బఫరు),
+				   ptr_d(స్థిరరాశి feature_t, features),
+				   uint32_t అంకె_features);
 
-HB_WASM_INTERFACE (void, shape_plan_destroy) (ptr_d(void, shape_plan));
+HB_WASM_INTERFACE (శూన్య, shape_plan_destroy) (ptr_d(శూన్య, shape_plan));
 
 
-HB_WASM_END_DECLS
+HB_WASM_చివర_DECLS
 
-#endif /* HB_WASM_API_H */
+#అయితే_ముగింపు /* HB_WASM_API_H */

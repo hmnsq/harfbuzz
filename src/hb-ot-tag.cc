@@ -26,101 +26,101 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_TAG
+#నిర్వచితం_కాకపోతే HB_NO_OT_ట్యాగ్
 
 
 /* hb_script_t */
 
-static hb_tag_t
-hb_ot_old_tag_from_script (hb_script_t script)
+స్థిర hb_ట్యాగ్_t
+hb_ot_old_ట్యాగ్_from_script (hb_script_t script)
 {
   /* This seems to be accurate as of end of 2012. */
 
-  switch ((hb_tag_t) script)
+  ఎంపిక ((hb_ట్యాగ్_t) script)
   {
-    case HB_SCRIPT_INVALID:		return HB_OT_TAG_DEFAULT_SCRIPT;
-    case HB_SCRIPT_MATH:		return HB_OT_TAG_MATH_SCRIPT;
+    స్థితి HB_SCRIPT_INVALID:		తిరిగి HB_OT_ట్యాగ్_DEFAULT_SCRIPT;
+    స్థితి HB_SCRIPT_MATH:		తిరిగి HB_OT_ట్యాగ్_MATH_SCRIPT;
 
     /* Hiragana, Katakana, and their collective ISO 15924 script all map to 'kana'. */
-    case HB_SCRIPT_HIRAGANA:		return HB_TAG('k','a','n','a');
-    case HB_TAG('H','r','k','t'):
-					return HB_TAG('k','a','n','a');
+    స్థితి HB_SCRIPT_HIRAGANA:		తిరిగి HB_ట్యాగ్('k','a','n','a');
+    స్థితి HB_ట్యాగ్('H','r','k','t'):
+					తిరిగి HB_ట్యాగ్('k','a','n','a');
 
     /* Spaces at the end are preserved, unlike ISO 15924 */
-    case HB_SCRIPT_LAO:			return HB_TAG('l','a','o',' ');
-    case HB_SCRIPT_YI:			return HB_TAG('y','i',' ',' ');
+    స్థితి HB_SCRIPT_LAO:			తిరిగి HB_ట్యాగ్('l','a','o',' ');
+    స్థితి HB_SCRIPT_YI:			తిరిగి HB_ట్యాగ్('y','i',' ',' ');
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_NKO:			return HB_TAG('n','k','o',' ');
+    స్థితి HB_SCRIPT_NKO:			తిరిగి HB_ట్యాగ్('n','k','o',' ');
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_VAI:			return HB_TAG('v','a','i',' ');
+    స్థితి HB_SCRIPT_VAI:			తిరిగి HB_ట్యాగ్('v','a','i',' ');
   }
 
   /* Else, just change first char to lowercase and return */
-  return ((hb_tag_t) script) | 0x20000000u;
+  తిరిగి ((hb_ట్యాగ్_t) script) | 0x20000000u;
 }
 
-static hb_script_t
-hb_ot_old_tag_to_script (hb_tag_t tag)
+స్థిర hb_script_t
+hb_ot_old_ట్యాగ్_గమ్యం_script (hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  if (unlikely (tag == HB_OT_TAG_DEFAULT_SCRIPT))
-    return HB_SCRIPT_INVALID;
-  if (unlikely (tag == HB_OT_TAG_MATH_SCRIPT))
-    return HB_SCRIPT_MATH;
+  ఒకవేళ (unlikely (ట్యాగ్_2 == HB_OT_ట్యాగ్_DEFAULT_SCRIPT))
+    తిరిగి HB_SCRIPT_INVALID;
+  ఒకవేళ (unlikely (ట్యాగ్_2 == HB_OT_ట్యాగ్_MATH_SCRIPT))
+    తిరిగి HB_SCRIPT_MATH;
 
   /* This side of the conversion is fully algorithmic. */
 
   /* Any spaces at the end of the tag are replaced by repeating the last
    * letter.  Eg 'nko ' -> 'Nkoo' */
-  if (unlikely ((tag & 0x0000FF00u) == 0x00002000u))
-    tag |= (tag >> 8) & 0x0000FF00u; /* Copy second letter to third */
-  if (unlikely ((tag & 0x000000FFu) == 0x00000020u))
-    tag |= (tag >> 8) & 0x000000FFu; /* Copy third letter to fourth */
+  ఒకవేళ (unlikely ((ట్యాగ్_2 & 0x0000FF00u) == 0x00002000u))
+    ట్యాగ్_2 |= (ట్యాగ్_2 >> 8) & 0x0000FF00u; /* Copy second letter to third */
+  ఒకవేళ (unlikely ((ట్యాగ్_2 & 0x000000FFu) == 0x00000020u))
+    ట్యాగ్_2 |= (ట్యాగ్_2 >> 8) & 0x000000FFu; /* Copy third letter to fourth */
 
   /* Change first char to uppercase and return */
-  return (hb_script_t) (tag & ~0x20000000u);
+  తిరిగి (hb_script_t) (ట్యాగ్_2 & ~0x20000000u);
 }
 
-static hb_tag_t
-hb_ot_new_tag_from_script (hb_script_t script)
+స్థిర hb_ట్యాగ్_t
+hb_ot_new_ట్యాగ్_from_script (hb_script_t script)
 {
-  switch ((hb_tag_t) script) {
-    case HB_SCRIPT_BENGALI:		return HB_TAG('b','n','g','2');
-    case HB_SCRIPT_DEVANAGARI:		return HB_TAG('d','e','v','2');
-    case HB_SCRIPT_GUJARATI:		return HB_TAG('g','j','r','2');
-    case HB_SCRIPT_GURMUKHI:		return HB_TAG('g','u','r','2');
-    case HB_SCRIPT_KANNADA:		return HB_TAG('k','n','d','2');
-    case HB_SCRIPT_MALAYALAM:		return HB_TAG('m','l','m','2');
-    case HB_SCRIPT_ORIYA:		return HB_TAG('o','r','y','2');
-    case HB_SCRIPT_TAMIL:		return HB_TAG('t','m','l','2');
-    case HB_SCRIPT_TELUGU:		return HB_TAG('t','e','l','2');
-    case HB_SCRIPT_MYANMAR:		return HB_TAG('m','y','m','2');
+  ఎంపిక ((hb_ట్యాగ్_t) script) {
+    స్థితి HB_SCRIPT_BENGALI:		తిరిగి HB_ట్యాగ్('b','n','g','2');
+    స్థితి HB_SCRIPT_DEVANAGARI:		తిరిగి HB_ట్యాగ్('d','e','v','2');
+    స్థితి HB_SCRIPT_GUJARATI:		తిరిగి HB_ట్యాగ్('g','j','r','2');
+    స్థితి HB_SCRIPT_GURMUKHI:		తిరిగి HB_ట్యాగ్('g','u','r','2');
+    స్థితి HB_SCRIPT_KANNADA:		తిరిగి HB_ట్యాగ్('k','n','d','2');
+    స్థితి HB_SCRIPT_MALAYALAM:		తిరిగి HB_ట్యాగ్('m','l','m','2');
+    స్థితి HB_SCRIPT_ORIYA:		తిరిగి HB_ట్యాగ్('o','r','y','2');
+    స్థితి HB_SCRIPT_TAMIL:		తిరిగి HB_ట్యాగ్('t','m','l','2');
+    స్థితి HB_SCRIPT_TELUGU:		తిరిగి HB_ట్యాగ్('t','e','l','2');
+    స్థితి HB_SCRIPT_MYANMAR:		తిరిగి HB_ట్యాగ్('m','y','m','2');
   }
 
-  return HB_OT_TAG_DEFAULT_SCRIPT;
+  తిరిగి HB_OT_ట్యాగ్_DEFAULT_SCRIPT;
 }
 
-static hb_script_t
-hb_ot_new_tag_to_script (hb_tag_t tag)
+స్థిర hb_script_t
+hb_ot_new_ట్యాగ్_గమ్యం_script (hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  switch (tag) {
-    case HB_TAG('b','n','g','2'):	return HB_SCRIPT_BENGALI;
-    case HB_TAG('d','e','v','2'):	return HB_SCRIPT_DEVANAGARI;
-    case HB_TAG('g','j','r','2'):	return HB_SCRIPT_GUJARATI;
-    case HB_TAG('g','u','r','2'):	return HB_SCRIPT_GURMUKHI;
-    case HB_TAG('k','n','d','2'):	return HB_SCRIPT_KANNADA;
-    case HB_TAG('m','l','m','2'):	return HB_SCRIPT_MALAYALAM;
-    case HB_TAG('o','r','y','2'):	return HB_SCRIPT_ORIYA;
-    case HB_TAG('t','m','l','2'):	return HB_SCRIPT_TAMIL;
-    case HB_TAG('t','e','l','2'):	return HB_SCRIPT_TELUGU;
-    case HB_TAG('m','y','m','2'):	return HB_SCRIPT_MYANMAR;
+  ఎంపిక (ట్యాగ్_2) {
+    స్థితి HB_ట్యాగ్('b','n','g','2'):	తిరిగి HB_SCRIPT_BENGALI;
+    స్థితి HB_ట్యాగ్('d','e','v','2'):	తిరిగి HB_SCRIPT_DEVANAGARI;
+    స్థితి HB_ట్యాగ్('g','j','r','2'):	తిరిగి HB_SCRIPT_GUJARATI;
+    స్థితి HB_ట్యాగ్('g','u','r','2'):	తిరిగి HB_SCRIPT_GURMUKHI;
+    స్థితి HB_ట్యాగ్('k','n','d','2'):	తిరిగి HB_SCRIPT_KANNADA;
+    స్థితి HB_ట్యాగ్('m','l','m','2'):	తిరిగి HB_SCRIPT_MALAYALAM;
+    స్థితి HB_ట్యాగ్('o','r','y','2'):	తిరిగి HB_SCRIPT_ORIYA;
+    స్థితి HB_ట్యాగ్('t','m','l','2'):	తిరిగి HB_SCRIPT_TAMIL;
+    స్థితి HB_ట్యాగ్('t','e','l','2'):	తిరిగి HB_SCRIPT_TELUGU;
+    స్థితి HB_ట్యాగ్('m','y','m','2'):	తిరిగి HB_SCRIPT_MYANMAR;
   }
 
-  return HB_SCRIPT_UNKNOWN;
+  తిరిగి HB_SCRIPT_UNKNOWN;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /**
  * hb_ot_tags_from_script:
  * @script: an #hb_script_t to convert.
@@ -132,18 +132,18 @@ hb_ot_new_tag_to_script (hb_tag_t tag)
  * Since: 0.6.0
  * Deprecated: 2.0.0: use hb_ot_tags_from_script_and_language() instead
  **/
-void
-hb_ot_tags_from_script (hb_script_t  script,
-			hb_tag_t    *script_tag_1,
-			hb_tag_t    *script_tag_2)
+శూన్య
+hb_ot_ట్యాగులు_from_script (hb_script_t  script,
+			hb_ట్యాగ్_t    *script_ట్యాగ్_1,
+			hb_ట్యాగ్_t    *script_ట్యాగ్_2)
 {
-  unsigned int count = 2;
-  hb_tag_t tags[2];
-  hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &count, tags, nullptr, nullptr);
-  *script_tag_1 = count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *script_tag_2 = count > 1 ? tags[1] : HB_OT_TAG_DEFAULT_SCRIPT;
+  గుర్తులేని పూర్ణాంకం లెక్క = 2;
+  hb_ట్యాగ్_t ట్యాగులు[2];
+  hb_ot_ట్యాగులు_from_script_and_language (script, HB_LANGUAGE_INVALID, &లెక్క, ట్యాగులు, శూన్యసూచిక, శూన్యసూచిక);
+  *script_ట్యాగ్_1 = లెక్క > 0 ? ట్యాగులు[0] : HB_OT_ట్యాగ్_DEFAULT_SCRIPT;
+  *script_ట్యాగ్_2 = లెక్క > 1 ? ట్యాగులు[1] : HB_OT_ట్యాగ్_DEFAULT_SCRIPT;
 }
-#endif
+#అయితే_ముగింపు
 
 /*
  * Complete list at:
@@ -153,31 +153,31 @@ hb_ot_tags_from_script (hb_script_t  script,
  * So we just do that, and handle the exceptional cases in a switch.
  */
 
-static void
-hb_ot_all_tags_from_script (hb_script_t   script,
-			    unsigned int *count /* IN/OUT */,
-			    hb_tag_t     *tags /* OUT */)
+స్థిర శూన్య
+hb_ot_all_ట్యాగులు_from_script (hb_script_t   script,
+			    గుర్తులేని పూర్ణాంకం *లెక్క /* IN/OUT */,
+			    hb_ట్యాగ్_t     *ట్యాగులు /*బహిర్గతం*/)
 {
-  unsigned int i = 0;
+  గుర్తులేని పూర్ణాంకం i = 0;
 
-  hb_tag_t new_tag = hb_ot_new_tag_from_script (script);
-  if (unlikely (new_tag != HB_OT_TAG_DEFAULT_SCRIPT))
+  hb_ట్యాగ్_t new_ట్యాగ్ = hb_ot_new_ట్యాగ్_from_script (script);
+  ఒకవేళ (unlikely (new_ట్యాగ్ != HB_OT_ట్యాగ్_DEFAULT_SCRIPT))
   {
     /* HB_SCRIPT_MYANMAR maps to 'mym2', but there is no 'mym3'. */
-    if (new_tag != HB_TAG('m','y','m','2'))
-      tags[i++] = new_tag | '3';
-    if (*count > i)
-      tags[i++] = new_tag;
+    ఒకవేళ (new_ట్యాగ్ != HB_ట్యాగ్('m','y','m','2'))
+      ట్యాగులు[i++] = new_ట్యాగ్ | '3';
+    ఒకవేళ (*లెక్క > i)
+      ట్యాగులు[i++] = new_ట్యాగ్;
   }
 
-  if (*count > i)
+  ఒకవేళ (*లెక్క > i)
   {
-    hb_tag_t old_tag = hb_ot_old_tag_from_script (script);
-    if (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
-      tags[i++] = old_tag;
+    hb_ట్యాగ్_t old_ట్యాగ్ = hb_ot_old_ట్యాగ్_from_script (script);
+    ఒకవేళ (old_ట్యాగ్ != HB_OT_ట్యాగ్_DEFAULT_SCRIPT)
+      ట్యాగులు[i++] = old_ట్యాగ్;
   }
 
-  *count = i;
+  *లెక్క = i;
 }
 
 /**
@@ -190,103 +190,103 @@ hb_ot_all_tags_from_script (hb_script_t   script,
  *
  **/
 hb_script_t
-hb_ot_tag_to_script (hb_tag_t tag)
+hb_ot_ట్యాగ్_గమ్యం_script (hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  unsigned char digit = tag & 0x000000FFu;
-  if (unlikely (digit == '2' || digit == '3'))
-    return hb_ot_new_tag_to_script (tag & 0xFFFFFF32);
+  గుర్తులేని అక్షరం digit = ట్యాగ్_2 & 0x000000FFu;
+  ఒకవేళ (unlikely (digit == '2' || digit == '3'))
+    తిరిగి hb_ot_new_ట్యాగ్_గమ్యం_script (ట్యాగ్_2 & 0xFFFFFF32);
 
-  return hb_ot_old_tag_to_script (tag);
+  తిరిగి hb_ot_old_ట్యాగ్_గమ్యం_script (ట్యాగ్_2);
 }
 
 
 /* hb_language_t */
 
-static inline bool
-subtag_matches (const char *lang_str,
-		const char *limit,
-		const char *subtag,
-		unsigned    subtag_len)
+స్థిర అంతఃవరుస తార్కిక
+subtag_matches (స్థిరరాశి అక్షరం *lang_str,
+		స్థిరరాశి అక్షరం *హద్దు,
+		స్థిరరాశి అక్షరం *subtag,
+		గుర్తులేని    subtag_len)
 {
-  if (likely ((unsigned) (limit - lang_str) < subtag_len))
-    return false;
+  ఒకవేళ (likely ((గుర్తులేని) (హద్దు - lang_str) < subtag_len))
+    తిరిగి అబద్ధం;
 
-  do {
-    const char *s = strstr (lang_str, subtag);
-    if (!s || s >= limit)
-      return false;
-    if (!ISALNUM (s[subtag_len]))
-      return true;
+  చేయి {
+    స్థిరరాశి అక్షరం *s = అక్షరశ్రేణి_శోధన (lang_str, subtag);
+    ఒకవేళ (!s || s >= హద్దు)
+      తిరిగి అబద్ధం;
+    ఒకవేళ (!ISALNUM (s[subtag_len]))
+      తిరిగి నిజం;
     lang_str = s + subtag_len;
-  } while (true);
+  } అయితే (నిజం);
 }
 
-static bool
-lang_matches (const char *lang_str,
-	      const char *limit,
-	      const char *spec,
-	      unsigned    spec_len)
+స్థిర తార్కిక
+lang_matches (స్థిరరాశి అక్షరం *lang_str,
+	      స్థిరరాశి అక్షరం *హద్దు,
+	      స్థిరరాశి అక్షరం *spec,
+	      గుర్తులేని    spec_len)
 {
   /* Same as hb_language_matches(); duplicated. */
 
-  if (likely ((unsigned) (limit - lang_str) < spec_len))
-    return false;
+  ఒకవేళ (likely ((గుర్తులేని) (హద్దు - lang_str) < spec_len))
+    తిరిగి అబద్ధం;
 
-  return strncmp (lang_str, spec, spec_len) == 0 &&
+  తిరిగి అక్షరశ్రేణి_పోలిక (lang_str, spec, spec_len) == 0 &&
 	 (lang_str[spec_len] == '\0' || lang_str[spec_len] == '-');
 }
 
-static bool
-bfind_tag (const hb_tag_t *array,
-	   unsigned        len,
-	   hb_tag_t        key)
+స్థిర తార్కిక
+bfind_ట్యాగ్ (స్థిరరాశి hb_ట్యాగ్_t *array,
+	   గుర్తులేని        len,
+	   hb_ట్యాగ్_t        key)
 {
-  unsigned min = 0;
-  unsigned max = len;
+  గుర్తులేని min = 0;
+  గుర్తులేని max = len;
 
-  while (min < max)
+  అయితే (min < max)
   {
-    unsigned mid = min + (max - min) / 2;
-    hb_tag_t val = array[mid];
-    if (key < val)
+    గుర్తులేని mid = min + (max - min) / 2;
+    hb_ట్యాగ్_t val = array[mid];
+    ఒకవేళ (key < val)
       max = mid;
-    else if (key > val)
+    లేకపోతే ఒకవేళ (key > val)
       min = mid + 1;
-    else
-      return true;
+    లేకపోతే
+      తిరిగి నిజం;
   }
 
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-struct LangTag
+నిర్మాణం Lang_ట్యాగ్
 {
-  hb_tag_t language;
-  hb_tag_t tag;
+  hb_ట్యాగ్_t language;
+  hb_ట్యాగ్_t ట్యాగ్_2;
 
-  int cmp (hb_tag_t a) const
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t a) స్థిరరాశి
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    తిరిగి a < ఇది->language ? -1 : a > ఇది->language ? +1 : 0;
   }
-  int cmp (const LangTag *that) const
-  { return cmp (that->language); }
+  పూర్ణాంకం cmp (స్థిరరాశి Lang_ట్యాగ్ *that) స్థిరరాశి
+  { తిరిగి cmp (that->language); }
 };
 
-struct LangTagRange
+నిర్మాణం Lang_ట్యాగ్_Range
 {
-  hb_tag_t language;
-  uint16_t offset;
-  uint8_t count;
+  hb_ట్యాగ్_t language;
+  uint16_t స్థానభ్రంశం;
+  uint8_t లెక్క;
 
-  int cmp (hb_tag_t a) const
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t a) స్థిరరాశి
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    తిరిగి a < ఇది->language ? -1 : a > ఇది->language ? +1 : 0;
   }
-  int cmp (const LangTagRange *that) const
-  { return cmp (that->language); }
+  పూర్ణాంకం cmp (స్థిరరాశి Lang_ట్యాగ్_Range *that) స్థిరరాశి
+  { తిరిగి cmp (that->language); }
 };
 
-#include "hb-ot-tag-table.hh"
+#అన్తర్భావ "hb-ot-tag-table.hh"
 
 /* The corresponding languages IDs for the following IDs are unclear,
  * overlap, or are architecturally weird. Needs more research. */
@@ -298,7 +298,7 @@ struct LangTagRange
 /*{"??",	{HB_TAG('Y','I','C',' ')}},*/	/* Yi Classic */
 /*{"zh?",	{HB_TAG('Z','H','P',' ')}},*/	/* Chinese Phonetic */
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /**
  * hb_ot_tag_from_language:
  * @language: an #hb_language_t to convert.
@@ -308,182 +308,182 @@ struct LangTagRange
  * Since: 0.6.0
  * Deprecated: 2.0.0: use hb_ot_tags_from_script_and_language() instead
  **/
-hb_tag_t
-hb_ot_tag_from_language (hb_language_t language)
+hb_ట్యాగ్_t
+hb_ot_ట్యాగ్_from_language (hb_language_t language)
 {
-  unsigned int count = 1;
-  hb_tag_t tags[1];
-  hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &count, tags);
-  return count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  గుర్తులేని పూర్ణాంకం లెక్క = 1;
+  hb_ట్యాగ్_t ట్యాగులు[1];
+  hb_ot_ట్యాగులు_from_script_and_language (HB_SCRIPT_UNKNOWN, language, శూన్యసూచిక, శూన్యసూచిక, &లెక్క, ట్యాగులు);
+  తిరిగి లెక్క > 0 ? ట్యాగులు[0] : HB_OT_ట్యాగ్_DEFAULT_LANGUAGE;
 }
-#endif
+#అయితే_ముగింపు
 
-static void
-hb_ot_tags_from_language (const char   *lang_str,
-			  const char   *limit,
-			  unsigned int *count,
-			  hb_tag_t     *tags)
+స్థిర శూన్య
+hb_ot_ట్యాగులు_from_language (స్థిరరాశి అక్షరం   *lang_str,
+			  స్థిరరాశి అక్షరం   *హద్దు,
+			  గుర్తులేని పూర్ణాంకం *లెక్క,
+			  hb_ట్యాగ్_t     *ట్యాగులు)
 {
 
-#ifndef HB_NO_LANGUAGE_LONG
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
   /* Check for matches of multiple subtags. */
-  if (hb_ot_tags_from_complex_language (lang_str, limit, count, tags))
-    return;
-#endif
+  ఒకవేళ (hb_ot_ట్యాగులు_from_complex_language (lang_str, హద్దు, లెక్క, ట్యాగులు))
+    తిరిగి;
+#అయితే_ముగింపు
 
   /* Find a language matching in the first component. */
-#ifndef HB_NO_LANGUAGE_LONG
-  const char *s; s = strchr (lang_str, '-');
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
+  స్థిరరాశి అక్షరం *s; s = strchr (lang_str, '-');
+#అయితే_ముగింపు
   {
-#ifndef HB_NO_LANGUAGE_LONG
-    if (s && limit - lang_str >= 6)
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
+    ఒకవేళ (s && హద్దు - lang_str >= 6)
     {
-      const char *extlang_end = strchr (s + 1, '-');
+      స్థిరరాశి అక్షరం *extlang_చివర = strchr (s + 1, '-');
       /* If there is an extended language tag, use it. */
-      if (3 == (extlang_end ? extlang_end - s - 1 : strlen (s + 1)) &&
+      ఒకవేళ (3 == (extlang_చివర ? extlang_చివర - s - 1 : అక్షరశ్రేణి_పొడవు (s + 1)) &&
 	  ISALPHA (s[1]))
 	lang_str = s + 1;
     }
-#endif
-    const char *dash = strchr (lang_str, '-');
-    unsigned first_len = dash ? dash - lang_str : limit - lang_str;
-    hb_tag_t lang_tag = hb_tag_from_string (lang_str, first_len);
+#అయితే_ముగింపు
+    స్థిరరాశి అక్షరం *dash = strchr (lang_str, '-');
+    గుర్తులేని మొదటి_len = dash ? dash - lang_str : హద్దు - lang_str;
+    hb_ట్యాగ్_t lang_ట్యాగ్ = hb_ట్యాగ్_from_string (lang_str, మొదటి_len);
 
-    if (first_len == 2)
+    ఒకవేళ (మొదటి_len == 2)
     {
-      static hb_atomic_t<unsigned> last_tag_idx_2 {0}; /* Poor man's cache. */
-      unsigned tag_idx = last_tag_idx_2;
+      స్థిర hb_atomic_t<గుర్తులేని> చివరి_ట్యాగ్_idx_2 {0}; /* Poor man's cache. */
+      గుర్తులేని ట్యాగ్_idx = చివరి_ట్యాగ్_idx_2;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages2) &&
-		  ot_languages2[tag_idx].language == lang_tag) ||
-	  hb_sorted_array (ot_languages2).bfind (lang_tag, &tag_idx))
+      ఒకవేళ (likely (ట్యాగ్_idx < ARRAY_నిడివి (ot_languages2) &&
+		  ot_languages2[ట్యాగ్_idx].language == lang_ట్యాగ్) ||
+	  hb_sorted_array (ot_languages2).bfind (lang_ట్యాగ్, &ట్యాగ్_idx))
       {
-	last_tag_idx_2 = tag_idx;
-	unsigned int i;
-	while (tag_idx != 0 &&
-	       ot_languages2[tag_idx].language == ot_languages2[tag_idx - 1].language)
-	  tag_idx--;
-	for (i = 0;
-	     i < *count &&
-	     tag_idx + i < ARRAY_LENGTH (ot_languages2) &&
-	     ot_languages2[tag_idx + i].tag != HB_TAG_NONE &&
-	     ot_languages2[tag_idx + i].language == ot_languages2[tag_idx].language;
+	చివరి_ట్యాగ్_idx_2 = ట్యాగ్_idx;
+	గుర్తులేని పూర్ణాంకం i;
+	అయితే (ట్యాగ్_idx != 0 &&
+	       ot_languages2[ట్యాగ్_idx].language == ot_languages2[ట్యాగ్_idx - 1].language)
+	  ట్యాగ్_idx--;
+	కొరకు (i = 0;
+	     i < *లెక్క &&
+	     ట్యాగ్_idx + i < ARRAY_నిడివి (ot_languages2) &&
+	     ot_languages2[ట్యాగ్_idx + i].ట్యాగ్_2 != HB_ట్యాగ్_NONE &&
+	     ot_languages2[ట్యాగ్_idx + i].language == ot_languages2[ట్యాగ్_idx].language;
 	     i++)
-	  tags[i] = ot_languages2[tag_idx + i].tag;
-	*count = i;
-	return;
+	  ట్యాగులు[i] = ot_languages2[ట్యాగ్_idx + i].ట్యాగ్_2;
+	*లెక్క = i;
+	తిరిగి;
       }
     }
-#ifndef HB_NO_LANGUAGE_LONG
-    else if (first_len == 3)
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
+    లేకపోతే ఒకవేళ (మొదటి_len == 3)
     {
-      static hb_atomic_t<unsigned> last_tag_idx_3 {0}; /* Poor man's cache. */
-      unsigned tag_idx = last_tag_idx_3;
+      స్థిర hb_atomic_t<గుర్తులేని> చివరి_ట్యాగ్_idx_3 {0}; /* Poor man's cache. */
+      గుర్తులేని ట్యాగ్_idx = చివరి_ట్యాగ్_idx_3;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages3) &&
-		  ot_languages3[tag_idx].language == lang_tag) ||
-	  hb_sorted_array (ot_languages3).bfind (lang_tag, &tag_idx))
+      ఒకవేళ (likely (ట్యాగ్_idx < ARRAY_నిడివి (ot_languages3) &&
+		  ot_languages3[ట్యాగ్_idx].language == lang_ట్యాగ్) ||
+	  hb_sorted_array (ot_languages3).bfind (lang_ట్యాగ్, &ట్యాగ్_idx))
       {
-	last_tag_idx_3 = tag_idx;
-	if (*count)
+	చివరి_ట్యాగ్_idx_3 = ట్యాగ్_idx;
+	ఒకవేళ (*లెక్క)
 	{
-	  tags[0] = ot_languages3[tag_idx].tag;
-	  *count = 1;
+	  ట్యాగులు[0] = ot_languages3[ట్యాగ్_idx].ట్యాగ్_2;
+	  *లెక్క = 1;
 	}
-	else
-	  *count = 0;
-	return;
+	లేకపోతే
+	  *లెక్క = 0;
+	తిరిగి;
       }
 
-      static hb_atomic_t<unsigned> last_tag_idx_3_multi {0}; /* Poor man's cache. */
-      unsigned multi_tag_idx = last_tag_idx_3_multi;
+      స్థిర hb_atomic_t<గుర్తులేని> చివరి_ట్యాగ్_idx_3_multi {0}; /* Poor man's cache. */
+      గుర్తులేని multi_ట్యాగ్_idx = చివరి_ట్యాగ్_idx_3_multi;
 
-      if (likely (multi_tag_idx < ARRAY_LENGTH (ot_languages3_multi) &&
-		  ot_languages3_multi[multi_tag_idx].language == lang_tag) ||
-	  hb_sorted_array (ot_languages3_multi).bfind (lang_tag, &multi_tag_idx))
+      ఒకవేళ (likely (multi_ట్యాగ్_idx < ARRAY_నిడివి (ot_languages3_multi) &&
+		  ot_languages3_multi[multi_ట్యాగ్_idx].language == lang_ట్యాగ్) ||
+	  hb_sorted_array (ot_languages3_multi).bfind (lang_ట్యాగ్, &multi_ట్యాగ్_idx))
       {
-	last_tag_idx_3_multi = multi_tag_idx;
-	const LangTagRange &range = ot_languages3_multi[multi_tag_idx];
-	unsigned int i;
-	for (i = 0; i < *count && i < range.count; i++)
-	  tags[i] = ot_languages3_multi_values[range.offset + i];
-	*count = i;
-	return;
+	చివరి_ట్యాగ్_idx_3_multi = multi_ట్యాగ్_idx;
+	స్థిరరాశి Lang_ట్యాగ్_Range &range = ot_languages3_multi[multi_ట్యాగ్_idx];
+	గుర్తులేని పూర్ణాంకం i;
+	కొరకు (i = 0; i < *లెక్క && i < range.లెక్క; i++)
+	  ట్యాగులు[i] = ot_languages3_multi_విలువలు[range.స్థానభ్రంశం + i];
+	*లెక్క = i;
+	తిరిగి;
       }
 
-      if (bfind_tag (ot_languages3_blocked, ARRAY_LENGTH (ot_languages3_blocked), lang_tag))
+      ఒకవేళ (bfind_ట్యాగ్ (ot_languages3_blocked, ARRAY_నిడివి (ot_languages3_blocked), lang_ట్యాగ్))
       {
-	*count = 0;
-	return;
+	*లెక్క = 0;
+	తిరిగి;
       }
 
       /* Assume it's ISO-639-3 and upper-case and use it. */
-      tags[0] = lang_tag & ~0x20202000u;
-      *count = 1;
-      return;
+      ట్యాగులు[0] = lang_ట్యాగ్ & ~0x20202000u;
+      *లెక్క = 1;
+      తిరిగి;
     }
-#endif
+#అయితే_ముగింపు
   }
 
-#ifndef HB_NO_LANGUAGE_LONG
-  if (!s)
-    s = lang_str + strlen (lang_str);
-  if (s - lang_str == 3) {
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
+  ఒకవేళ (!s)
+    s = lang_str + అక్షరశ్రేణి_పొడవు (lang_str);
+  ఒకవేళ (s - lang_str == 3) {
     /* Assume it's ISO-639-3 and upper-case and use it. */
-    tags[0] = hb_tag_from_string (lang_str, s - lang_str) & ~0x20202000u;
-    *count = 1;
-    return;
+    ట్యాగులు[0] = hb_ట్యాగ్_from_string (lang_str, s - lang_str) & ~0x20202000u;
+    *లెక్క = 1;
+    తిరిగి;
   }
-#endif
+#అయితే_ముగింపు
 
-  *count = 0;
+  *లెక్క = 0;
 }
 
-static bool
-parse_private_use_subtag (const char     *private_use_subtag,
-			  unsigned int   *count,
-			  hb_tag_t       *tags,
-			  const char     *prefix,
-			  unsigned char (*normalize) (unsigned char))
+స్థిర తార్కిక
+parse_వ్యక్తిగత_use_subtag (స్థిరరాశి అక్షరం     *వ్యక్తిగత_use_subtag,
+			  గుర్తులేని పూర్ణాంకం   *లెక్క,
+			  hb_ట్యాగ్_t       *ట్యాగులు,
+			  స్థిరరాశి అక్షరం     *ఉపసర్గ,
+			  గుర్తులేని అక్షరం (*normalize) (గుర్తులేని అక్షరం))
 {
-#ifdef HB_NO_LANGUAGE_PRIVATE_SUBTAG
-  return false;
-#endif
+#నిర్వచితమైతే HB_NO_LANGUAGE_వ్యక్తిగత_SUBTAG
+  తిరిగి అబద్ధం;
+#అయితే_ముగింపు
 
-  if (!(private_use_subtag && count && tags && *count)) return false;
+  ఒకవేళ (!(వ్యక్తిగత_use_subtag && లెక్క && ట్యాగులు && *లెక్క)) తిరిగి అబద్ధం;
 
-  const char *s = strstr (private_use_subtag, prefix);
-  if (!s) return false;
+  స్థిరరాశి అక్షరం *s = అక్షరశ్రేణి_శోధన (వ్యక్తిగత_use_subtag, ఉపసర్గ);
+  ఒకవేళ (!s) తిరిగి అబద్ధం;
 
-  char tag[4];
-  int i;
-  s += strlen (prefix);
-  if (s[0] == '-') {
+  అక్షరం ట్యాగ్_2[4];
+  పూర్ణాంకం i;
+  s += అక్షరశ్రేణి_పొడవు (ఉపసర్గ);
+  ఒకవేళ (s[0] == '-') {
     s += 1;
-    char c;
-    for (i = 0; i < 8 && ISHEX (s[i]); i++)
+    అక్షరం c;
+    కొరకు (i = 0; i < 8 && ISHEX (s[i]); i++)
     {
       c = FROMHEX (s[i]);
-      if (i % 2 == 0)
-	tag[i / 2] = c << 4;
-      else
-	tag[i / 2] += c;
+      ఒకవేళ (i % 2 == 0)
+	ట్యాగ్_2[i / 2] = c << 4;
+      లేకపోతే
+	ట్యాగ్_2[i / 2] += c;
     }
-    if (i != 8) return false;
-  } else {
-    for (i = 0; i < 4 && ISALNUM (s[i]); i++)
-      tag[i] = normalize (s[i]);
-    if (!i) return false;
+    ఒకవేళ (i != 8) తిరిగి అబద్ధం;
+  } లేకపోతే {
+    కొరకు (i = 0; i < 4 && ISALNUM (s[i]); i++)
+      ట్యాగ్_2[i] = normalize (s[i]);
+    ఒకవేళ (!i) తిరిగి అబద్ధం;
 
-    for (; i < 4; i++)
-      tag[i] = ' ';
+    కొరకు (; i < 4; i++)
+      ట్యాగ్_2[i] = ' ';
   }
-  tags[0] = HB_TAG (tag[0], tag[1], tag[2], tag[3]);
-  if ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
-    tags[0] ^= ~0xDFDFDFDF;
-  *count = 1;
-  return true;
+  ట్యాగులు[0] = HB_ట్యాగ్ (ట్యాగ్_2[0], ట్యాగ్_2[1], ట్యాగ్_2[2], ట్యాగ్_2[3]);
+  ఒకవేళ ((ట్యాగులు[0] & 0xDFDFDFDF) == HB_OT_ట్యాగ్_DEFAULT_SCRIPT)
+    ట్యాగులు[0] ^= ~0xDFDFDFDF;
+  *లెక్క = 1;
+  తిరిగి నిజం;
 }
 
 /**
@@ -503,62 +503,62 @@ parse_private_use_subtag (const char     *private_use_subtag,
  *
  * Since: 2.0.0
  **/
-void
-hb_ot_tags_from_script_and_language (hb_script_t   script,
+శూన్య
+hb_ot_ట్యాగులు_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
-				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
-				     hb_tag_t     *language_tags /* OUT */)
+				     గుర్తులేని పూర్ణాంకం *script_లెక్క /* IN/OUT */,
+				     hb_ట్యాగ్_t     *script_ట్యాగులు /*బహిర్గతం*/,
+				     గుర్తులేని పూర్ణాంకం *language_లెక్క /* IN/OUT */,
+				     hb_ట్యాగ్_t     *language_ట్యాగులు /*బహిర్గతం*/)
 {
-  bool needs_script = true;
+  తార్కిక needs_script = నిజం;
 
-  if (language == HB_LANGUAGE_INVALID)
+  ఒకవేళ (language == HB_LANGUAGE_INVALID)
   {
-    if (language_count && language_tags && *language_count)
-      *language_count = 0;
+    ఒకవేళ (language_లెక్క && language_ట్యాగులు && *language_లెక్క)
+      *language_లెక్క = 0;
   }
-  else
+  లేకపోతే
   {
-    const char *lang_str, *s, *limit, *private_use_subtag;
-    bool needs_language;
+    స్థిరరాశి అక్షరం *lang_str, *s, *హద్దు, *వ్యక్తిగత_use_subtag;
+    తార్కిక needs_language;
 
-    lang_str = hb_language_to_string (language);
-    limit = nullptr;
-    private_use_subtag = nullptr;
-    if (lang_str[0] == 'x' && lang_str[1] == '-')
+    lang_str = hb_language_గమ్యం_string (language);
+    హద్దు = శూన్యసూచిక;
+    వ్యక్తిగత_use_subtag = శూన్యసూచిక;
+    ఒకవేళ (lang_str[0] == 'x' && lang_str[1] == '-')
     {
-      private_use_subtag = lang_str;
-    } else {
-      for (s = lang_str + 1; *s; s++)
+      వ్యక్తిగత_use_subtag = lang_str;
+    } లేకపోతే {
+      కొరకు (s = lang_str + 1; *s; s++)
       {
-	if (s[-1] == '-' && s[1] == '-')
+	ఒకవేళ (s[-1] == '-' && s[1] == '-')
 	{
-	  if (s[0] == 'x')
+	  ఒకవేళ (s[0] == 'x')
 	  {
-	    private_use_subtag = s;
-	    if (!limit)
-	      limit = s - 1;
-	    break;
-	  } else if (!limit)
+	    వ్యక్తిగత_use_subtag = s;
+	    ఒకవేళ (!హద్దు)
+	      హద్దు = s - 1;
+	    ఆపు;
+	  } లేకపోతే ఒకవేళ (!హద్దు)
 	  {
-	    limit = s - 1;
+	    హద్దు = s - 1;
 	  }
 	}
       }
-      if (!limit)
-	limit = s;
+      ఒకవేళ (!హద్దు)
+	హద్దు = s;
     }
 
-    needs_script = !parse_private_use_subtag (private_use_subtag, script_count, script_tags, "-hbsc", TOLOWER);
-    needs_language = !parse_private_use_subtag (private_use_subtag, language_count, language_tags, "-hbot", TOUPPER);
+    needs_script = !parse_వ్యక్తిగత_use_subtag (వ్యక్తిగత_use_subtag, script_లెక్క, script_ట్యాగులు, "-hbsc", TOLOWER);
+    needs_language = !parse_వ్యక్తిగత_use_subtag (వ్యక్తిగత_use_subtag, language_లెక్క, language_ట్యాగులు, "-hbot", TOUPPER);
 
-    if (needs_language && language_count && language_tags && *language_count)
-      hb_ot_tags_from_language (lang_str, limit, language_count, language_tags);
+    ఒకవేళ (needs_language && language_లెక్క && language_ట్యాగులు && *language_లెక్క)
+      hb_ot_ట్యాగులు_from_language (lang_str, హద్దు, language_లెక్క, language_ట్యాగులు);
   }
 
-  if (needs_script && script_count && script_tags && *script_count)
-    hb_ot_all_tags_from_script (script, script_count, script_tags);
+  ఒకవేళ (needs_script && script_లెక్క && script_ట్యాగులు && *script_లెక్క)
+    hb_ot_all_ట్యాగులు_from_script (script, script_లెక్క, script_ట్యాగులు);
 }
 
 /**
@@ -573,43 +573,43 @@ hb_ot_tags_from_script_and_language (hb_script_t   script,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_ot_tag_to_language (hb_tag_t tag)
+hb_ot_ట్యాగ్_గమ్యం_language (hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  unsigned int i;
+  గుర్తులేని పూర్ణాంకం i;
 
-  if (tag == HB_OT_TAG_DEFAULT_LANGUAGE)
-    return nullptr;
+  ఒకవేళ (ట్యాగ్_2 == HB_OT_ట్యాగ్_DEFAULT_LANGUAGE)
+    తిరిగి శూన్యసూచిక;
 
-#ifndef HB_NO_LANGUAGE_LONG
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
   {
-    hb_language_t disambiguated_tag = hb_ot_ambiguous_tag_to_language (tag);
-    if (disambiguated_tag != HB_LANGUAGE_INVALID)
-      return disambiguated_tag;
+    hb_language_t disambiguated_ట్యాగ్ = hb_ot_ambiguous_ట్యాగ్_గమ్యం_language (ట్యాగ్_2);
+    ఒకవేళ (disambiguated_ట్యాగ్ != HB_LANGUAGE_INVALID)
+      తిరిగి disambiguated_ట్యాగ్;
   }
-#endif
+#అయితే_ముగింపు
 
-  char buf[4];
-  for (i = 0; i < ARRAY_LENGTH (ot_languages2); i++)
-    if (ot_languages2[i].tag == tag)
+  అక్షరం buf[4];
+  కొరకు (i = 0; i < ARRAY_నిడివి (ot_languages2); i++)
+    ఒకవేళ (ot_languages2[i].ట్యాగ్_2 == ట్యాగ్_2)
     {
-      hb_tag_to_string (ot_languages2[i].language, buf);
-      return hb_language_from_string (buf, 2);
+      hb_ట్యాగ్_గమ్యం_string (ot_languages2[i].language, buf);
+      తిరిగి hb_language_from_string (buf, 2);
     }
-#ifndef HB_NO_LANGUAGE_LONG
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3); i++)
-    if (ot_languages3[i].tag == tag)
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
+  కొరకు (i = 0; i < ARRAY_నిడివి (ot_languages3); i++)
+    ఒకవేళ (ot_languages3[i].ట్యాగ్_2 == ట్యాగ్_2)
     {
-      hb_tag_to_string (ot_languages3[i].language, buf);
-      return hb_language_from_string (buf, 3);
+      hb_ట్యాగ్_గమ్యం_string (ot_languages3[i].language, buf);
+      తిరిగి hb_language_from_string (buf, 3);
     }
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3_multi); i++)
-    for (unsigned int j = 0; j < ot_languages3_multi[i].count; j++)
-      if (ot_languages3_multi_values[ot_languages3_multi[i].offset + j] == tag)
+  కొరకు (i = 0; i < ARRAY_నిడివి (ot_languages3_multi); i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం j = 0; j < ot_languages3_multi[i].లెక్క; j++)
+      ఒకవేళ (ot_languages3_multi_విలువలు[ot_languages3_multi[i].స్థానభ్రంశం + j] == ట్యాగ్_2)
       {
-	hb_tag_to_string (ot_languages3_multi[i].language, buf);
-	return hb_language_from_string (buf, 3);
+	hb_ట్యాగ్_గమ్యం_string (ot_languages3_multi[i].language, buf);
+	తిరిగి hb_language_from_string (buf, 3);
       }
-#endif
+#అయితే_ముగింపు
 
   /* Return a custom language in the form of "x-hbot-AABBCCDD".
    * If it's three letters long, also guess it's ISO 639-3 and lower-case and
@@ -618,21 +618,21 @@ hb_ot_tag_to_language (hb_tag_t tag)
    * the same tag as the original tag).
    */
   {
-    char buf[20];
-    char *str = buf;
-    if (ISALPHA (tag >> 24)
-	&& ISALPHA ((tag >> 16) & 0xFF)
-	&& ISALPHA ((tag >> 8) & 0xFF)
-	&& (tag & 0xFF) == ' ')
+    అక్షరం buf[20];
+    అక్షరం *str = buf;
+    ఒకవేళ (ISALPHA (ట్యాగ్_2 >> 24)
+	&& ISALPHA ((ట్యాగ్_2 >> 16) & 0xFF)
+	&& ISALPHA ((ట్యాగ్_2 >> 8) & 0xFF)
+	&& (ట్యాగ్_2 & 0xFF) == ' ')
     {
-      buf[0] = TOLOWER (tag >> 24);
-      buf[1] = TOLOWER ((tag >> 16) & 0xFF);
-      buf[2] = TOLOWER ((tag >> 8) & 0xFF);
+      buf[0] = TOLOWER (ట్యాగ్_2 >> 24);
+      buf[1] = TOLOWER ((ట్యాగ్_2 >> 16) & 0xFF);
+      buf[2] = TOLOWER ((ట్యాగ్_2 >> 8) & 0xFF);
       buf[3] = '-';
       str += 4;
     }
-    snprintf (str, 16, "x-hbot-%08" PRIx32, tag);
-    return hb_language_from_string (&*buf, -1);
+    snprintf (str, 16, "x-hbot-%08" PRIx32, ట్యాగ్_2);
+    తిరిగి hb_language_from_string (&*buf, -1);
   }
 }
 
@@ -649,40 +649,40 @@ hb_ot_tag_to_language (hb_tag_t tag)
  *
  * Since: 2.0.0
  **/
-void
-hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
-				   hb_tag_t       language_tag,
-				   hb_script_t   *script /* OUT */,
-				   hb_language_t *language /* OUT */)
+శూన్య
+hb_ot_ట్యాగులు_గమ్యం_script_and_language (hb_ట్యాగ్_t       script_ట్యాగ్,
+				   hb_ట్యాగ్_t       language_ట్యాగ్,
+				   hb_script_t   *script /*బహిర్గతం*/,
+				   hb_language_t *language /*బహిర్గతం*/)
 {
-  hb_script_t script_out = hb_ot_tag_to_script (script_tag);
-  if (script)
-    *script = script_out;
-  if (language)
+  hb_script_t script_బహిర్గతం = hb_ot_ట్యాగ్_గమ్యం_script (script_ట్యాగ్);
+  ఒకవేళ (script)
+    *script = script_బహిర్గతం;
+  ఒకవేళ (language)
   {
-    unsigned int script_count = 1;
-    hb_tag_t primary_script_tag[1];
-    hb_ot_tags_from_script_and_language (script_out,
+    గుర్తులేని పూర్ణాంకం script_లెక్క = 1;
+    hb_ట్యాగ్_t primary_script_ట్యాగ్[1];
+    hb_ot_ట్యాగులు_from_script_and_language (script_బహిర్గతం,
 					 HB_LANGUAGE_INVALID,
-					 &script_count,
-					 primary_script_tag,
-					 nullptr, nullptr);
-    *language = hb_ot_tag_to_language (language_tag);
-    const char *lang_str = *language ? hb_language_to_string (*language) : nullptr;
-    if (lang_str && (script_count == 0 || primary_script_tag[0] != script_tag))
+					 &script_లెక్క,
+					 primary_script_ట్యాగ్,
+					 శూన్యసూచిక, శూన్యసూచిక);
+    *language = hb_ot_ట్యాగ్_గమ్యం_language (language_ట్యాగ్);
+    స్థిరరాశి అక్షరం *lang_str = *language ? hb_language_గమ్యం_string (*language) : శూన్యసూచిక;
+    ఒకవేళ (lang_str && (script_లెక్క == 0 || primary_script_ట్యాగ్[0] != script_ట్యాగ్))
     {
-      unsigned char *buf;
-      size_t len = strlen (lang_str);
-      buf = (unsigned char *) hb_malloc (len + 16);
-      if (unlikely (!buf))
+      గుర్తులేని అక్షరం *buf;
+      size_t len = అక్షరశ్రేణి_పొడవు (lang_str);
+      buf = (గుర్తులేని అక్షరం *) hb_malloc (len + 16);
+      ఒకవేళ (unlikely (!buf))
       {
-	*language = nullptr;
+	*language = శూన్యసూచిక;
       }
-      else
+      లేకపోతే
       {
-	int shift;
+	పూర్ణాంకం జరుపు;
 	hb_memcpy (buf, lang_str, len);
-	if (lang_str[0] != 'x' || lang_str[1] != '-') {
+	ఒకవేళ (lang_str[0] != 'x' || lang_str[1] != '-') {
 	  buf[len++] = '-';
 	  buf[len++] = 'x';
 	}
@@ -692,68 +692,68 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 	buf[len++] = 's';
 	buf[len++] = 'c';
 	buf[len++] = '-';
-	for (shift = 28; shift >= 0; shift -= 4)
-	  buf[len++] = TOHEX (script_tag >> shift);
-	*language = hb_language_from_string ((char *) buf, len);
+	కొరకు (జరుపు = 28; జరుపు >= 0; జరుపు -= 4)
+	  buf[len++] = TOHEX (script_ట్యాగ్ >> జరుపు);
+	*language = hb_language_from_string ((అక్షరం *) buf, len);
 	hb_free (buf);
       }
     }
   }
 }
 
-#ifdef MAIN
-static inline void
+#నిర్వచితమైతే MAIN
+స్థిర అంతఃవరుస శూన్య
 test_langs_sorted ()
 {
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages2); i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < ARRAY_నిడివి (ot_languages2); i++)
   {
-    int c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
-    if (c > 0)
+    పూర్ణాంకం c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
+    ఒకవేళ (c > 0)
     {
       fprintf (stderr, "ot_languages2 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages2[i-1].language, c, ot_languages2[i].language);
       abort();
     }
   }
-#ifndef HB_NO_LANGUAGE_LONG
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3); i++)
+#నిర్వచితం_కాకపోతే HB_NO_LANGUAGE_LONG
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < ARRAY_నిడివి (ot_languages3); i++)
   {
-    int c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
-    if (c > 0)
+    పూర్ణాంకం c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
+    ఒకవేళ (c > 0)
     {
       fprintf (stderr, "ot_languages3 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3[i-1].language, c, ot_languages3[i].language);
       abort();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_multi); i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < ARRAY_నిడివి (ot_languages3_multi); i++)
   {
-    int c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
-    if (c > 0)
+    పూర్ణాంకం c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
+    ఒకవేళ (c > 0)
     {
       fprintf (stderr, "ot_languages3_multi not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3_multi[i-1].language, c, ot_languages3_multi[i].language);
       abort();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_blocked); i++)
-    if (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < ARRAY_నిడివి (ot_languages3_blocked); i++)
+    ఒకవేళ (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
     {
       fprintf (stderr, "ot_languages3_blocked not sorted at index %u: %08x < %08x\n",
 	       i, ot_languages3_blocked[i], ot_languages3_blocked[i - 1]);
       abort();
     }
-#endif
+#అయితే_ముగింపు
 }
 
-int
-main ()
+పూర్ణాంకం
+ప్రధాన ()
 {
   test_langs_sorted ();
-  return 0;
+  తిరిగి 0;
 }
 
-#endif
+#అయితే_ముగింపు
 
 
-#endif
+#అయితే_ముగింపు

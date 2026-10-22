@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_HHEA_TABLE_HH
-#define HB_OT_HHEA_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_HHEA_పట్టిక_HH
+#నిర్వచించు HB_OT_HHEA_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-dual.hh"
 
 /*
  * hhea -- Horizontal Header
@@ -36,38 +36,38 @@
  * vhea -- Vertical Header
  * https://docs.microsoft.com/en-us/typography/opentype/spec/vhea
  */
-#define HB_OT_TAG_hhea HB_TAG('h','h','e','a')
-#define HB_OT_TAG_HHEA HB_TAG('H','H','E','A')
-#define HB_OT_TAG_vhea HB_TAG('v','h','e','a')
-#define HB_OT_TAG_VHEA HB_TAG('V','H','E','A')
+#నిర్వచించు HB_OT_ట్యాగ్_hhea HB_ట్యాగ్('h','h','e','a')
+#నిర్వచించు HB_OT_ట్యాగ్_HHEA HB_ట్యాగ్('H','H','E','A')
+#నిర్వచించు HB_OT_ట్యాగ్_vhea HB_ట్యాగ్('v','h','e','a')
+#నిర్వచించు HB_OT_ట్యాగ్_VHEA HB_ట్యాగ్('V','H','E','A')
 
 
-namespace OT {
+నామాకాశ OT {
 
 
-template <typename T, typename Types>
-struct _hea
+మూస <రకం_పేరు T, రకం_పేరు Types>
+నిర్మాణం _hea
 {
-  using LongMetricCount = typename Types::HBLUINT;
+  ఉపయోగించి Long_Metric_లెక్క = రకం_పేరు Types::HBLUINT;
 
-  static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  స్థిర constexpr గుర్తులేని long_metric_లెక్క_max ()
+  { తిరిగి Long_Metric_లెక్క::static_కొలత == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
-  bool has_data () const { return version.major; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.major; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  likely (version.major == 1));
+		  likely (సంస్కరణ.major == 1));
   }
 
-  public:
-  FixedVersion<>version;	/* 0x00010000u for version 1.0. */
+  బహిరంగ:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* 0x00010000u for version 1.0. */
   FWORD		ascender;	/* Typographic ascent. */
   FWORD		descender;	/* Typographic descent. */
-  FWORD		lineGap;	/* Typographic line gap. */
+  FWORD		పంక్తి_Gap;	/* Typographic line gap. */
   UFWORD	advanceMax;	/* Maximum advance width/height value in
 				 * metrics table. */
   FWORD		minLeadingBearing;
@@ -79,11 +79,11 @@ struct _hea
 				 * (xMax - xMin)) for horizontal. */
   FWORD		maxExtent;	/* horizontal: Max(lsb + (xMax - xMin)),
 				 * vertical: minLeadingBearing+(yMax-yMin). */
-  HBINT16	caretSlopeRise;	/* Used to calculate the slope of the
+  HBINT16	caret_వాలు_Rise;	/* Used to calculate the slope of the
 				 * cursor (rise/run); 1 for vertical caret,
 				 * 0 for horizontal.*/
-  HBINT16	caretSlopeRun;	/* 0 for vertical caret, 1 for horizontal. */
-  HBINT16	caretOffset;	/* The amount by which a slanted
+  HBINT16	caret_వాలు_నిరంతరం;	/* 0 for vertical caret, 1 for horizontal. */
+  HBINT16	caret_స్థానభ్రంశం;	/* The amount by which a slanted
 				 * highlight on a glyph needs
 				 * to be shifted to produce the
 				 * best appearance. Set to 0 for
@@ -92,42 +92,42 @@ struct _hea
   HBINT16	reserved2;	/* Set to 0. */
   HBINT16	reserved3;	/* Set to 0. */
   HBINT16	reserved4;	/* Set to 0. */
-  HBINT16	metricDataFormat;/* 0 for current format. */
-  LongMetricCount
-		numberOfLongMetrics;
+  HBINT16	metric_దత్తాంశం_Format;/* 0 for current format. */
+  Long_Metric_లెక్క
+		సంఖ్య_యొక్క_Long_Metrics;
 				/* Number of LongMetric entries in metric
 				 * table. */
-  public:
-  DEFINE_SIZE_STATIC (34 + Types::HBLUINT::static_size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (34 + Types::HBLUINT::static_కొలత);
 };
 
-struct hhea : _hea<hhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
+నిర్మాణం hhea : _hea<hhea, Layout::SmallTypes> {
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_hhea;
 };
-struct HHEA : _hea<HHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
+నిర్మాణం HHEA : _hea<HHEA, Layout::MediumTypes> {
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_HHEA;
 };
-struct vhea : _hea<vhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
+నిర్మాణం vhea : _hea<vhea, Layout::SmallTypes> {
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_vhea;
 };
-struct VHEA : _hea<VHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
+నిర్మాణం VHEA : _hea<VHEA, Layout::MediumTypes> {
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_VHEA;
 };
 
-struct hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
+నిర్మాణం hhea_accelerator_t : hb_dual_పట్టిక_t<hhea, HHEA>
 {
   hhea_accelerator_t (hb_face_t *face) :
-    hb_dual_table_t<hhea, HHEA> (face) {}
+    hb_dual_పట్టిక_t<hhea, HHEA> (face) {}
 };
 
-struct vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
+నిర్మాణం vhea_accelerator_t : hb_dual_పట్టిక_t<vhea, VHEA>
 {
   vhea_accelerator_t (hb_face_t *face) :
-    hb_dual_table_t<vhea, VHEA> (face) {}
+    hb_dual_పట్టిక_t<vhea, VHEA> (face) {}
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HHEA_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_HHEA_TABLE_HH */

@@ -23,21 +23,21 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-geometry.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-geometry.hh"
 
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc HB_వాడని, అక్షరం **argv HB_వాడని)
 {
   {
     hb_extents_t<> extents (-0x1p31f, 0.f, 427.f, 1.f);
-    hb_glyph_extents_t glyph_extents = extents.to_glyph_extents ();
+    hb_glyph_extents_t glyph_extents = extents.గమ్యం_glyph_extents ();
 
     hb_always_assert (glyph_extents.x_bearing == hb_int_min (hb_position_t));
     hb_always_assert (glyph_extents.y_bearing == 1);
-    hb_always_assert (glyph_extents.width == hb_int_max (hb_position_t));
-    hb_always_assert (glyph_extents.height == -1);
+    hb_always_assert (glyph_extents.వెడల్పు == hb_int_max (hb_position_t));
+    hb_always_assert (glyph_extents.ఎత్తు == -1);
   }
 
   {
@@ -47,13 +47,13 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
       1,
       -3
     };
-    hb_extents_t<double> extents (glyph_extents);
+    hb_extents_t<ద్విగుణ> extents (glyph_extents);
 
-    hb_always_assert (extents.xmin == (double) hb_int_max (hb_position_t));
-    hb_always_assert (extents.xmax == (double) hb_int_max (hb_position_t) + 1);
+    hb_always_assert (extents.xmin == (ద్విగుణ) hb_int_max (hb_position_t));
+    hb_always_assert (extents.xmax == (ద్విగుణ) hb_int_max (hb_position_t) + 1);
     hb_always_assert (extents.ymin == 4);
     hb_always_assert (extents.ymax == 7);
   }
 
-  return 0;
+  తిరిగి 0;
 }

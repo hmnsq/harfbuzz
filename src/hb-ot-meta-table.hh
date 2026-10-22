@@ -22,110 +22,110 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_META_TABLE_HH
-#define HB_OT_META_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_META_పట్టిక_HH
+#నిర్వచించు HB_OT_META_పట్టిక_HH
 
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 /*
  * meta -- Metadata Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/meta
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6meta.html
  */
-#define HB_OT_TAG_meta HB_TAG ('m','e','t','a')
+#నిర్వచించు HB_OT_ట్యాగ్_meta HB_ట్యాగ్ ('m','e','t','a')
 
 
-namespace OT {
+నామాకాశ OT {
 
 
-struct DataMap
+నిర్మాణం దత్తాంశం_Map
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t a) స్థిరరాశి { తిరిగి ట్యాగ్_2.cmp (a); }
 
-  hb_tag_t get_tag () const { return tag; }
+  hb_ట్యాగ్_t get_ట్యాగ్ () స్థిరరాశి { తిరిగి ట్యాగ్_2; }
 
-  hb_blob_t *reference_entry (hb_blob_t *meta_blob) const
-  { return hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
+  hb_blob_t *reference_నమోదు (hb_blob_t *meta_blob) స్థిరరాశి
+  { తిరిగి hb_blob_create_sub_blob (meta_blob, దత్తాంశం_Z, దత్తాంశం_నిడివి_2); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  dataZ.sanitize (c, base, dataLength)));
+			  దత్తాంశం_Z.sanitize (c, పునాది, దత్తాంశం_నిడివి_2)));
   }
 
-  protected:
-  Tag		tag;		/* A tag indicating the type of metadata. */
-  NNOffset32To<UnsizedArrayOf<HBUINT8>>
-		dataZ;		/* Offset in bytes from the beginning of the
+  రక్షిత:
+  ట్యాగ్		ట్యాగ్_2;		/* A tag indicating the type of metadata. */
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<HBUINT8>>
+		దత్తాంశం_Z;		/* Offset in bytes from the beginning of the
 				 * metadata table to the data for this tag. */
-  HBUINT32	dataLength;	/* Length of the data. The data is not required to
+  HBUINT32	దత్తాంశం_నిడివి_2;	/* Length of the data. The data is not required to
 				 * be padded to any byte boundary. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (12);
 };
 
-struct meta
+నిర్మాణం meta
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_meta;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_meta;
 
-  struct accelerator_t
+  నిర్మాణం accelerator_t
   {
     accelerator_t (hb_face_t *face)
-    { table = hb_sanitize_context_t ().reference_table<meta> (face); }
-    ~accelerator_t () { table.destroy (); }
+    { పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<meta> (face); }
+    ~accelerator_t () { పట్టిక.destroy (); }
 
-    hb_blob_t *reference_entry (hb_tag_t tag) const
-    { return table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
+    hb_blob_t *reference_నమోదు (hb_ట్యాగ్_t ట్యాగ్_2) స్థిరరాశి
+    { తిరిగి పట్టిక->దత్తాంశం_Maps.lsearch (ట్యాగ్_2).reference_నమోదు (పట్టిక.get_blob ()); }
 
-    unsigned int get_entries (unsigned int      start_offset,
-			      unsigned int     *count,
-			      hb_ot_meta_tag_t *entries) const
+    గుర్తులేని పూర్ణాంకం get_entries (గుర్తులేని పూర్ణాంకం      ప్రారంభం_స్థానభ్రంశం,
+			      గుర్తులేని పూర్ణాంకం     *లెక్క,
+			      hb_ot_meta_ట్యాగ్_t *entries) స్థిరరాశి
     {
-      if (count && entries)
+      ఒకవేళ (లెక్క && entries)
       {
-	+ table->dataMaps.as_array ().sub_array (start_offset, count)
-	| hb_map (&DataMap::get_tag)
-	| hb_map ([](hb_tag_t tag) { return (hb_ot_meta_tag_t) tag; })
-	| hb_sink (hb_array (entries, *count))
+	+ పట్టిక->దత్తాంశం_Maps.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, లెక్క)
+	| hb_map (&దత్తాంశం_Map::get_ట్యాగ్)
+	| hb_map ([](hb_ట్యాగ్_t ట్యాగ్_2) { తిరిగి (hb_ot_meta_ట్యాగ్_t) ట్యాగ్_2; })
+	| hb_sink (hb_array (entries, *లెక్క))
 	;
       }
-      return table->dataMaps.len;
+      తిరిగి పట్టిక->దత్తాంశం_Maps.len;
     }
 
-    private:
-    hb_blob_ptr_t<meta> table;
+    అంతరంగ:
+    hb_blob_ptr_t<meta> పట్టిక;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  version == 1 &&
-			  dataMaps.sanitize (c, this)));
+			  సంస్కరణ == 1 &&
+			  దత్తాంశం_Maps.sanitize (c, ఇది)));
   }
 
-  protected:
-  HBUINT32	version;	/* Version number of the metadata table — set to 1. */
+  రక్షిత:
+  HBUINT32	సంస్కరణ;	/* Version number of the metadata table — set to 1. */
   HBUINT32	flags;		/* Flags — currently unused; set to 0. */
-  HBUINT32	dataOffset;
+  HBUINT32	దత్తాంశం_స్థానభ్రంశం;
 				/* Per Apple specification:
 				 * Offset from the beginning of the table to the data.
 				 * Per OT specification:
 				 * Reserved. Not used; should be set to 0. */
-  Array32Of<DataMap>
-		dataMaps;/* Array of data map records. */
-  public:
-  DEFINE_SIZE_ARRAY (16, dataMaps);
+  Array32_యొక్క<దత్తాంశం_Map>
+		దత్తాంశం_Maps;/* Array of data map records. */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (16, దత్తాంశం_Maps);
 };
 
-struct meta_accelerator_t : meta::accelerator_t {
+నిర్మాణం meta_accelerator_t : meta::accelerator_t {
   meta_accelerator_t (hb_face_t *face) : meta::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_META_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_META_TABLE_HH */

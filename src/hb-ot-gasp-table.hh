@@ -22,63 +22,63 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_GASP_TABLE_HH
-#define HB_OT_GASP_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_GASP_పట్టిక_HH
+#నిర్వచించు HB_OT_GASP_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-hhea-table.hh"
+#అన్తర్భావ "hb-ot-os2-table.hh"
+#అన్తర్భావ "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gasp
  */
-#define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
+#నిర్వచించు HB_OT_ట్యాగ్_gasp HB_ట్యాగ్('g','a','s','p')
 
 
-namespace OT {
+నామాకాశ OT {
 
-struct GaspRange
+నిర్మాణం GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  public:
+  బహిరంగ:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct gasp
+నిర్మాణం gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  స్థిరరాశి GaspRange &get_gasp_range (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
-  HBUINT16	version;	/* Version number (set to 1) */
-  Array16Of<GaspRange>
+  రక్షిత:
+  HBUINT16	సంస్కరణ;	/* Version number (set to 1) */
+  Array16_యొక్క<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
-  DEFINE_SIZE_ARRAY (4, gaspRanges);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, gaspRanges);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_GASP_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_GASP_TABLE_HH */

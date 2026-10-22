@@ -24,31 +24,31 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_FALLBACK_HH
-#define HB_OT_SHAPE_FALLBACK_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPE_FALLBACK_HH
+#నిర్వచించు HB_OT_SHAPE_FALLBACK_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-ot-shape.hh"
+#అన్తర్భావ "hb-ot-shape.hh"
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య _hb_ot_shape_fallback_mark_position (స్థిరరాశి hb_ot_shape_plan_t *plan,
 						      hb_font_t *font,
-						      hb_buffer_t  *buffer,
-						      bool adjust_offsets_when_zeroing);
+						      hb_బఫరు_t  *బఫరు,
+						      తార్కిక adjust_offsets_when_zeroing);
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య _hb_ot_shape_fallback_mark_position_recategorize_marks (స్థిరరాశి hb_ot_shape_plan_t *plan,
 									 hb_font_t *font,
-									 hb_buffer_t  *buffer);
+									 hb_బఫరు_t  *బఫరు);
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య _hb_ot_shape_fallback_kern (స్థిరరాశి hb_ot_shape_plan_t *plan,
 					     hb_font_t *font,
-					     hb_buffer_t  *buffer);
+					     hb_బఫరు_t  *బఫరు);
 
-HB_INTERNAL void _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan,
+HB_అంతర్గత శూన్య _hb_ot_shape_fallback_spaces (స్థిరరాశి hb_ot_shape_plan_t *plan,
 					       hb_font_t *font,
-					       hb_buffer_t  *buffer);
+					       hb_బఫరు_t  *బఫరు);
 
 
-#endif /* HB_OT_SHAPE_FALLBACK_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPE_FALLBACK_HH */

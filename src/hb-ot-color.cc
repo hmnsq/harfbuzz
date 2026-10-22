@@ -25,19 +25,19 @@
  * Google Author(s): Sascha Brawer, Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_COLOR
+#నిర్వచితం_కాకపోతే HB_NO_COLOR
 
-#include "hb-ot.h"
+#అన్తర్భావ "hb-ot.h"
 
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/CPAL/CPAL.hh"
-#include "OT/Color/sbix/sbix.hh"
-#ifndef HB_NO_SVG
-#include "OT/Color/svg/svg.hh"
-#endif
+#అన్తర్భావ "OT/Color/CBDT/CBDT.hh"
+#అన్తర్భావ "OT/Color/COLR/COLR.hh"
+#అన్తర్భావ "OT/Color/CPAL/CPAL.hh"
+#అన్తర్భావ "OT/Color/sbix/sbix.hh"
+#నిర్వచితం_కాకపోతే HB_NO_SVG
+#అన్తర్భావ "OT/Color/svg/svg.hh"
+#అయితే_ముగింపు
 
 
 /**
@@ -70,7 +70,7 @@
 hb_bool_t
 hb_ot_color_has_palettes (hb_face_t *face)
 {
-  return face->table.CPAL->has_data ();
+  తిరిగి face->పట్టిక.CPAL->has_దత్తాంశం ();
 }
 
 /**
@@ -83,10 +83,10 @@ hb_ot_color_has_palettes (hb_face_t *face)
  *
  * Since: 2.1.0
  */
-unsigned int
-hb_ot_color_palette_get_count (hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_ot_color_palette_get_లెక్క (hb_face_t *face)
 {
-  return face->table.CPAL->get_palette_count ();
+  తిరిగి face->పట్టిక.CPAL->get_palette_లెక్క ();
 }
 
 /**
@@ -107,9 +107,9 @@ hb_ot_color_palette_get_count (hb_face_t *face)
  */
 hb_ot_name_id_t
 hb_ot_color_palette_get_name_id (hb_face_t *face,
-				 unsigned int palette_index)
+				 గుర్తులేని పూర్ణాంకం palette_సూచీ)
 {
-  return face->table.CPAL->get_palette_name_id (palette_index);
+  తిరిగి face->పట్టిక.CPAL->get_palette_name_id (palette_సూచీ);
 }
 
 /**
@@ -129,9 +129,9 @@ hb_ot_color_palette_get_name_id (hb_face_t *face,
  */
 hb_ot_name_id_t
 hb_ot_color_palette_color_get_name_id (hb_face_t *face,
-				       unsigned int color_index)
+				       గుర్తులేని పూర్ణాంకం color_సూచీ)
 {
-  return face->table.CPAL->get_color_name_id (color_index);
+  తిరిగి face->పట్టిక.CPAL->get_color_name_id (color_సూచీ);
 }
 
 /**
@@ -147,9 +147,9 @@ hb_ot_color_palette_color_get_name_id (hb_face_t *face,
  */
 hb_ot_color_palette_flags_t
 hb_ot_color_palette_get_flags (hb_face_t *face,
-			       unsigned int palette_index)
+			       గుర్తులేని పూర్ణాంకం palette_సూచీ)
 {
-  return face->table.CPAL->get_palette_flags (palette_index);
+  తిరిగి face->పట్టిక.CPAL->get_palette_flags (palette_సూచీ);
 }
 
 /**
@@ -177,14 +177,14 @@ hb_ot_color_palette_get_flags (hb_face_t *face,
  *
  * Since: 2.1.0
  */
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_color_palette_get_colors (hb_face_t     *face,
-				unsigned int   palette_index,
-				unsigned int   start_offset,
-				unsigned int  *colors_count  /* IN/OUT.  May be NULL. */,
+				గుర్తులేని పూర్ణాంకం   palette_సూచీ,
+				గుర్తులేని పూర్ణాంకం   ప్రారంభం_స్థానభ్రంశం,
+				గుర్తులేని పూర్ణాంకం  *colors_లెక్క  /* IN/OUT.  May be NULL. */,
 				hb_color_t    *colors        /* OUT.     May be NULL. */)
 {
-  return face->table.CPAL->get_palette_colors (palette_index, start_offset, colors_count, colors);
+  తిరిగి face->పట్టిక.CPAL->get_palette_colors (palette_సూచీ, ప్రారంభం_స్థానభ్రంశం, colors_లెక్క, colors);
 }
 
 
@@ -206,7 +206,7 @@ hb_ot_color_palette_get_colors (hb_face_t     *face,
 hb_bool_t
 hb_ot_color_has_layers (hb_face_t *face)
 {
-  return face->table.COLR->colr->has_v0_data ();
+  తిరిగి face->పట్టిక.COLR->colr->has_v0_దత్తాంశం ();
 }
 
 /**
@@ -223,7 +223,7 @@ hb_ot_color_has_layers (hb_face_t *face)
 hb_bool_t
 hb_ot_color_has_paint (hb_face_t *face)
 {
-  return face->table.COLR->colr->has_v1_data ();
+  తిరిగి face->పట్టిక.COLR->colr->has_v1_దత్తాంశం ();
 }
 
 /**
@@ -242,7 +242,7 @@ hb_bool_t
 hb_ot_color_glyph_has_paint (hb_face_t      *face,
                              hb_codepoint_t  glyph)
 {
-  return face->table.COLR->colr->has_paint_for_glyph (glyph);
+  తిరిగి face->పట్టిక.COLR->colr->has_paint_for_glyph (glyph);
 }
 
 /**
@@ -261,14 +261,14 @@ hb_ot_color_glyph_has_paint (hb_face_t      *face,
  *
  * Since: 2.1.0
  */
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_color_glyph_get_layers (hb_face_t           *face,
 			      hb_codepoint_t       glyph,
-			      unsigned int         start_offset,
-			      unsigned int        *layer_count, /* IN/OUT.  May be NULL. */
+			      గుర్తులేని పూర్ణాంకం         ప్రారంభం_స్థానభ్రంశం,
+			      గుర్తులేని పూర్ణాంకం        *layer_లెక్క, /* IN/OUT.  May be NULL. */
 			      hb_ot_color_layer_t *layers /* OUT.     May be NULL. */)
 {
-  return face->table.COLR->colr->get_glyph_layers (glyph, start_offset, layer_count, layers);
+  తిరిగి face->పట్టిక.COLR->colr->get_glyph_layers (glyph, ప్రారంభం_స్థానభ్రంశం, layer_లెక్క, layers);
 }
 
 
@@ -276,7 +276,7 @@ hb_ot_color_glyph_get_layers (hb_face_t           *face,
  * SVG
  */
 
-#ifndef HB_NO_SVG
+#నిర్వచితం_కాకపోతే HB_NO_SVG
 /**
  * hb_ot_color_has_svg:
  * @face: #hb_face_t to work upon.
@@ -290,7 +290,7 @@ hb_ot_color_glyph_get_layers (hb_face_t           *face,
 hb_bool_t
 hb_ot_color_has_svg (hb_face_t *face)
 {
-  return face->table.SVG->has_data ();
+  తిరిగి face->పట్టిక.SVG->has_దత్తాంశం ();
 }
 
 /**
@@ -303,10 +303,10 @@ hb_ot_color_has_svg (hb_face_t *face)
  *
  * Since: 12.1.0
  */
-unsigned int
-hb_ot_color_get_svg_document_count (hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_ot_color_get_svg_document_లెక్క (hb_face_t *face)
 {
-  return face->table.SVG->get_document_count ();
+  తిరిగి face->పట్టిక.SVG->get_document_లెక్క ();
 }
 
 /**
@@ -322,15 +322,15 @@ hb_ot_color_get_svg_document_count (hb_face_t *face)
  * Since: 12.1.0
  */
 hb_bool_t
-hb_ot_color_glyph_get_svg_document_index (hb_face_t      *face,
+hb_ot_color_glyph_get_svg_document_సూచీ (hb_face_t      *face,
                                           hb_codepoint_t  glyph,
-                                          unsigned int   *svg_document_index)
+                                          గుర్తులేని పూర్ణాంకం   *svg_document_సూచీ)
 {
-  unsigned doc_index = 0;
-  hb_bool_t ret = face->table.SVG->get_glyph_document_index (glyph, &doc_index);
-  if (ret && svg_document_index)
-    *svg_document_index = doc_index;
-  return ret;
+  గుర్తులేని doc_సూచీ = 0;
+  hb_bool_t ret = face->పట్టిక.SVG->get_glyph_document_సూచీ (glyph, &doc_సూచీ);
+  ఒకవేళ (ret && svg_document_సూచీ)
+    *svg_document_సూచీ = doc_సూచీ;
+  తిరిగి ret;
 }
 
 /**
@@ -348,13 +348,13 @@ hb_ot_color_glyph_get_svg_document_index (hb_face_t      *face,
  */
 hb_bool_t
 hb_ot_color_get_svg_document_glyph_range (hb_face_t      *face,
-                                          unsigned int    svg_document_index,
-                                          hb_codepoint_t *start_glyph_id,
-                                          hb_codepoint_t *end_glyph_id)
+                                          గుర్తులేని పూర్ణాంకం    svg_document_సూచీ,
+                                          hb_codepoint_t *ప్రారంభం_glyph_id,
+                                          hb_codepoint_t *చివర_glyph_id)
 {
-  return face->table.SVG->get_document_glyph_range (svg_document_index,
-                                                    start_glyph_id,
-                                                    end_glyph_id);
+  తిరిగి face->పట్టిక.SVG->get_document_glyph_range (svg_document_సూచీ,
+                                                    ప్రారంభం_glyph_id,
+                                                    చివర_glyph_id);
 }
 
 /**
@@ -373,9 +373,9 @@ hb_ot_color_get_svg_document_glyph_range (hb_face_t      *face,
 hb_blob_t *
 hb_ot_color_glyph_reference_svg (hb_face_t *face, hb_codepoint_t glyph)
 {
-  return face->table.SVG->reference_blob_for_glyph (glyph);
+  తిరిగి face->పట్టిక.SVG->reference_blob_for_glyph (glyph);
 }
-#endif
+#అయితే_ముగింపు
 
 
 /*
@@ -395,7 +395,7 @@ hb_ot_color_glyph_reference_svg (hb_face_t *face, hb_codepoint_t glyph)
 hb_bool_t
 hb_ot_color_has_png (hb_face_t *face)
 {
-  return face->table.CBDT->has_data () || face->table.sbix->has_data ();
+  తిరిగి face->పట్టిక.CBDT->has_దత్తాంశం () || face->పట్టిక.sbix->has_దత్తాంశం ();
 }
 
 /**
@@ -416,16 +416,16 @@ hb_ot_color_has_png (hb_face_t *face)
 hb_blob_t *
 hb_ot_color_glyph_reference_png (hb_font_t *font, hb_codepoint_t  glyph)
 {
-  hb_blob_t *blob = hb_blob_get_empty ();
+  hb_blob_t *blob = hb_blob_get_ఖాళీలు ();
 
-  if (font->face->table.sbix->has_data ())
-    blob = font->face->table.sbix->reference_png (font, glyph, nullptr, nullptr, nullptr);
+  ఒకవేళ (font->face->పట్టిక.sbix->has_దత్తాంశం ())
+    blob = font->face->పట్టిక.sbix->reference_png (font, glyph, శూన్యసూచిక, శూన్యసూచిక, శూన్యసూచిక);
 
-  if (!blob->length && font->face->table.CBDT->has_data ())
-    blob = font->face->table.CBDT->reference_png (font, glyph);
+  ఒకవేళ (!blob->నిడివి && font->face->పట్టిక.CBDT->has_దత్తాంశం ())
+    blob = font->face->పట్టిక.CBDT->reference_png (font, glyph);
 
-  return blob;
+  తిరిగి blob;
 }
 
 
-#endif
+#అయితే_ముగింపు

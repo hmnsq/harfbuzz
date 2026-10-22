@@ -22,10 +22,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ALLOC_POOL_HH
-#define HB_ALLOC_POOL_HH
+#నిర్వచితం_కాకపోతే HB_ALLOC_POOL_HH
+#నిర్వచించు HB_ALLOC_POOL_HH
 
-#include "hb-vector.hh"
+#అన్తర్భావ "hb-vector.hh"
 
 /* Memory pool for persistent small- to medium-sized allocations.
  *
@@ -38,68 +38,68 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-struct hb_alloc_pool_t
+నిర్మాణం hb_alloc_pool_t
 {
-  unsigned ChunkSize = 65536 - 2 * sizeof (void *);
+  గుర్తులేని Chunk_కొలత = 65536 - 2 * పరిమాణం (శూన్య *);
 
-  void *alloc (size_t size, unsigned alignment = 2 * sizeof (void *))
+  శూన్య *alloc (size_t కొలత, గుర్తులేని alignment = 2 * పరిమాణం (శూన్య *))
   {
-    if (unlikely (chunks.in_error ())) return nullptr;
+    ఒకవేళ (unlikely (chunks.లోపల_error ())) తిరిగి శూన్యసూచిక;
 
-    assert (alignment > 0);
-    assert (alignment <= 2 * sizeof (void *));
-    assert ((alignment & (alignment - 1)) == 0); /* power of two */
+    ప్రతిజ్ఞా (alignment > 0);
+    ప్రతిజ్ఞా (alignment <= 2 * పరిమాణం (శూన్య *));
+    ప్రతిజ్ఞా ((alignment & (alignment - 1)) == 0); /* power of two */
 
-    if (size > (ChunkSize) / 4)
+    ఒకవేళ (కొలత > (Chunk_కొలత) / 4)
     {
       /* Big chunk, allocate separately.  */
-      hb_vector_t<char> chunk;
-      if (unlikely (!chunk.resize (size))) return nullptr;
-      void *ret = chunk.arrayZ;
+      hb_సదిశ_t<అక్షరం> chunk;
+      ఒకవేళ (unlikely (!chunk.resize (కొలత))) తిరిగి శూన్యసూచిక;
+      శూన్య *ret = chunk.arrayZ;
       chunks.push (std::move (chunk));
-      if (chunks.in_error ()) return nullptr;
-      if (chunks.length > 1)
+      ఒకవేళ (chunks.లోపల_error ()) తిరిగి శూన్యసూచిక;
+      ఒకవేళ (chunks.నిడివి > 1)
       {
         // Bring back the previous last chunk to the end, so that
 	// we can continue to allocate from it.
-	hb_swap (chunks.arrayZ[chunks.length - 1], chunks.arrayZ[chunks.length - 2]);
+	hb_మార్పిడి (chunks.arrayZ[chunks.నిడివి - 1], chunks.arrayZ[chunks.నిడివి - 2]);
       }
-      return ret;
+      తిరిగి ret;
     }
 
-    unsigned pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
+    గుర్తులేని pad = (గుర్తులేని) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
 
     // Small chunk, allocate from the last chunk.
-    if (current_chunk.length < pad + size)
+    ఒకవేళ (current_chunk.నిడివి < pad + కొలత)
     {
       chunks.push ();
-      if (unlikely (chunks.in_error ())) return nullptr;
-      hb_vector_t<char> &chunk = chunks.arrayZ[chunks.length - 1];
-      if (unlikely (!chunk.resize (ChunkSize))) return nullptr;
+      ఒకవేళ (unlikely (chunks.లోపల_error ())) తిరిగి శూన్యసూచిక;
+      hb_సదిశ_t<అక్షరం> &chunk = chunks.arrayZ[chunks.నిడివి - 1];
+      ఒకవేళ (unlikely (!chunk.resize (Chunk_కొలత))) తిరిగి శూన్యసూచిక;
       current_chunk = chunk;
-      pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
+      pad = (గుర్తులేని) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
     }
 
     current_chunk += pad;
 
-    assert (current_chunk.length >= size);
-    void *ret = current_chunk.arrayZ;
-    current_chunk += size;
-    return ret;
+    ప్రతిజ్ఞా (current_chunk.నిడివి >= కొలత);
+    శూన్య *ret = current_chunk.arrayZ;
+    current_chunk += కొలత;
+    తిరిగి ret;
   }
 
-  void discard (void *p_, size_t size)
+  శూన్య discard (శూన్య *p_, size_t కొలత)
   {
     // Reclaim memory if we can.
-    char *p = (char *) p_;
-    if (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
-      current_chunk -= size;
+    అక్షరం *p = (అక్షరం *) p_;
+    ఒకవేళ (current_chunk.arrayZ == p + కొలత && current_chunk.backwards_నిడివి >= కొలత)
+      current_chunk -= కొలత;
   }
 
-  private:
-  hb_vector_t<hb_vector_t<char>> chunks;
-  hb_array_t<char> current_chunk;
+  అంతరంగ:
+  hb_సదిశ_t<hb_సదిశ_t<అక్షరం>> chunks;
+  hb_array_t<అక్షరం> current_chunk;
 };
 
 
-#endif /* HB_ALLOC_POOL_HH */
+#అయితే_ముగింపు /* HB_ALLOC_POOL_HH */

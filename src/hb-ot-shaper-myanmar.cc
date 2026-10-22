@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-myanmar-machine.hh"
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-layout.hh"
+#అన్తర్భావ "hb-ot-shaper-myanmar-machine.hh"
+#అన్తర్భావ "hb-ot-shaper-indic.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
 
 
 /*
@@ -38,7 +38,7 @@
  */
 
 
-static const hb_tag_t
+స్థిర స్థిరరాశి hb_ట్యాగ్_t
 myanmar_basic_features[] =
 {
   /*
@@ -46,40 +46,40 @@ myanmar_basic_features[] =
    * These features are applied in order, one at a time, after reordering,
    * constrained to the syllable.
    */
-  HB_TAG('r','p','h','f'),
-  HB_TAG('p','r','e','f'),
-  HB_TAG('b','l','w','f'),
-  HB_TAG('p','s','t','f'),
+  HB_ట్యాగ్('r','p','h','f'),
+  HB_ట్యాగ్('p','r','e','f'),
+  HB_ట్యాగ్('b','l','w','f'),
+  HB_ట్యాగ్('p','s','t','f'),
 };
-static const hb_tag_t
+స్థిర స్థిరరాశి hb_ట్యాగ్_t
 myanmar_other_features[] =
 {
   /*
    * Other features.
    * These features are applied all at once, after clearing syllables.
    */
-  HB_TAG('p','r','e','s'),
-  HB_TAG('a','b','v','s'),
-  HB_TAG('b','l','w','s'),
-  HB_TAG('p','s','t','s'),
+  HB_ట్యాగ్('p','r','e','s'),
+  HB_ట్యాగ్('a','b','v','s'),
+  HB_ట్యాగ్('b','l','w','s'),
+  HB_ట్యాగ్('p','s','t','s'),
 };
 
-static inline void
-set_myanmar_properties (hb_glyph_info_t &info)
+స్థిర అంతఃవరుస శూన్య
+సమితి_myanmar_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  గుర్తులేని పూర్ణాంకం type = hb_indic_get_categories (u);
 
   info.myanmar_category() = (myanmar_category_t) (type & 0xFFu);
 }
 
 
-static inline bool
-is_one_of_myanmar (const hb_glyph_info_t &info, unsigned int flags)
+స్థిర అంతఃవరుస తార్కిక
+is_one_యొక్క_myanmar (స్థిరరాశి hb_glyph_info_t &info, గుర్తులేని పూర్ణాంకం flags)
 {
   /* If it ligated, all bets are off. */
-  if (_hb_glyph_info_ligated (&info)) return false;
-  return !!(FLAG_UNSAFE (info.myanmar_category()) & flags);
+  ఒకవేళ (_hb_glyph_info_ligated (&info)) తిరిగి అబద్ధం;
+  తిరిగి !!(FLAG_UNSAFE (info.myanmar_category()) & flags);
 }
 
 /* Note:
@@ -89,302 +89,302 @@ is_one_of_myanmar (const hb_glyph_info_t &info, unsigned int flags)
  * consonant syllable logic from the vowel syllable function and get it all right!
  *
  * Keep in sync with consonant_categories in the generator. */
-#define CONSONANT_FLAGS_MYANMAR (FLAG (M_Cat(C)) | FLAG (M_Cat(CS)) | FLAG (M_Cat(Ra)) | /* FLAG (M_Cat(CM)) | */ FLAG (M_Cat(IV)) | FLAG (M_Cat(GB)) | FLAG (M_Cat(DOTTEDCIRCLE)))
+#నిర్వచించు CONSONANT_FLAGS_MYANMAR (FLAG (M_Cat(C)) | FLAG (M_Cat(CS)) | FLAG (M_Cat(Ra)) | /* FLAG (M_Cat(CM)) | */ FLAG (M_Cat(IV)) | FLAG (M_Cat(GB)) | FLAG (M_Cat(DOTTEDCIRCLE)))
 
-static inline bool
-is_consonant_myanmar (const hb_glyph_info_t &info)
+స్థిర అంతఃవరుస తార్కిక
+is_consonant_myanmar (స్థిరరాశి hb_glyph_info_t &info)
 {
-  return is_one_of_myanmar (info, CONSONANT_FLAGS_MYANMAR);
+  తిరిగి is_one_యొక్క_myanmar (info, CONSONANT_FLAGS_MYANMAR);
 }
 
 
-static bool
-setup_syllables_myanmar (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+అమరిక_syllables_myanmar (స్థిరరాశి hb_ot_shape_plan_t *plan,
 			 hb_font_t *font,
-			 hb_buffer_t *buffer);
-static bool
-reorder_myanmar (const hb_ot_shape_plan_t *plan,
+			 hb_బఫరు_t *బఫరు);
+స్థిర తార్కిక
+reorder_myanmar (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
-		 hb_buffer_t *buffer);
+		 hb_బఫరు_t *బఫరు);
 
-static void
+స్థిర శూన్య
 collect_features_myanmar (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
   /* Do this before any lookups have been applied. */
-  map->add_gsub_pause (setup_syllables_myanmar);
+  map->కూడు_gsub_pause (అమరిక_syllables_myanmar);
 
-  map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
+  map->enable_feature (HB_ట్యాగ్('l','o','c','l'), F_చొప్పున_SYLLABLE);
   /* The Indic specs do not require ccmp, but we apply it here since if
    * there is a use of it, it's typically at the beginning. */
-  map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
+  map->enable_feature (HB_ట్యాగ్('c','c','m','p'), F_చొప్పున_SYLLABLE);
 
 
-  map->add_gsub_pause (reorder_myanmar);
+  map->కూడు_gsub_pause (reorder_myanmar);
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (myanmar_basic_features); i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARRAY_నిడివి (myanmar_basic_features); i++)
   {
-    map->enable_feature (myanmar_basic_features[i], F_MANUAL_ZWJ | F_PER_SYLLABLE);
-    map->add_gsub_pause (nullptr);
+    map->enable_feature (myanmar_basic_features[i], F_MANUAL_ZWJ | F_చొప్పున_SYLLABLE);
+    map->కూడు_gsub_pause (శూన్యసూచిక);
   }
-  map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
+  map->కూడు_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (myanmar_other_features); i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARRAY_నిడివి (myanmar_other_features); i++)
     map->enable_feature (myanmar_other_features[i], F_MANUAL_ZWJ);
 }
 
-static void
-setup_masks_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		     hb_buffer_t              *buffer,
-		     hb_font_t                *font HB_UNUSED)
+స్థిర శూన్య
+అమరిక_masks_myanmar (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+		     hb_బఫరు_t              *బఫరు,
+		     hb_font_t                *font HB_వాడని)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, myanmar_category);
-  HB_BUFFER_ALLOCATE_VAR (buffer, myanmar_position);
+  HB_బఫరు_ALLOCATE_VAR (బఫరు, myanmar_category);
+  HB_బఫరు_ALLOCATE_VAR (బఫరు, myanmar_position);
 
   /* No masks, we just save information about characters. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    set_myanmar_properties (info[i]);
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    సమితి_myanmar_properties (info[i]);
 }
 
-static bool
-setup_syllables_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
-			 hb_font_t *font HB_UNUSED,
-			 hb_buffer_t *buffer)
+స్థిర తార్కిక
+అమరిక_syllables_myanmar (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+			 hb_font_t *font HB_వాడని,
+			 hb_బఫరు_t *బఫరు)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_myanmar (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  return false;
+  HB_బఫరు_ALLOCATE_VAR (బఫరు, syllable);
+  కనుగొను_syllables_myanmar (బఫరు);
+  foreach_syllable (బఫరు, ప్రారంభం, చివర)
+    బఫరు->unsafe_గమ్యం_break (ప్రారంభం, చివర);
+  తిరిగి అబద్ధం;
 }
 
-static int
-compare_myanmar_order (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
+స్థిర పూర్ణాంకం
+compare_myanmar_క్రమం (స్థిరరాశి hb_glyph_info_t *pa, స్థిరరాశి hb_glyph_info_t *pb)
 {
-  int a = pa->myanmar_position();
-  int b = pb->myanmar_position();
+  పూర్ణాంకం a = pa->myanmar_position();
+  పూర్ణాంకం b = pb->myanmar_position();
 
-  return (int) a - (int) b;
+  తిరిగి (పూర్ణాంకం) a - (పూర్ణాంకం) b;
 }
 
 
 /* Rules from:
  * https://docs.microsoft.com/en-us/typography/script-development/myanmar */
 
-static void
-initial_reordering_consonant_syllable (hb_buffer_t *buffer,
-				       unsigned int start, unsigned int end)
+స్థిర శూన్య
+initial_reordering_consonant_syllable (hb_బఫరు_t *బఫరు,
+				       గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర)
 {
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = బఫరు->info;
 
-  unsigned int base = end;
-  bool has_reph = false;
+  గుర్తులేని పూర్ణాంకం పునాది = చివర;
+  తార్కిక has_reph = అబద్ధం;
 
   {
-    unsigned int limit = start;
-    if (start + 3 <= end &&
-	info[start  ].myanmar_category() == M_Cat(Ra) &&
-	info[start+1].myanmar_category() == M_Cat(As) &&
-	info[start+2].myanmar_category() == M_Cat(H))
+    గుర్తులేని పూర్ణాంకం హద్దు = ప్రారంభం;
+    ఒకవేళ (ప్రారంభం + 3 <= చివర &&
+	info[ప్రారంభం  ].myanmar_category() == M_Cat(Ra) &&
+	info[ప్రారంభం+1].myanmar_category() == M_Cat(As) &&
+	info[ప్రారంభం+2].myanmar_category() == M_Cat(H))
     {
-      limit += 3;
-      base = start;
-      has_reph = true;
+      హద్దు += 3;
+      పునాది = ప్రారంభం;
+      has_reph = నిజం;
     }
 
     {
-      if (!has_reph)
-	base = limit;
+      ఒకవేళ (!has_reph)
+	పునాది = హద్దు;
 
-      for (unsigned int i = limit; i < end; i++)
-	if (is_consonant_myanmar (info[i]))
+      కొరకు (గుర్తులేని పూర్ణాంకం i = హద్దు; i < చివర; i++)
+	ఒకవేళ (is_consonant_myanmar (info[i]))
 	{
-	  base = i;
-	  break;
+	  పునాది = i;
+	  ఆపు;
 	}
     }
   }
 
   /* Reorder! */
   {
-    unsigned int i = start;
-    for (; i < start + (has_reph ? 3 : 0); i++)
+    గుర్తులేని పూర్ణాంకం i = ప్రారంభం;
+    కొరకు (; i < ప్రారంభం + (has_reph ? 3 : 0); i++)
       info[i].myanmar_position() = POS_AFTER_MAIN;
-    for (; i < base; i++)
+    కొరకు (; i < పునాది; i++)
       info[i].myanmar_position() = POS_PRE_C;
-    if (i < end)
+    ఒకవేళ (i < చివర)
     {
-      info[i].myanmar_position() = POS_BASE_C;
+      info[i].myanmar_position() = POS_పునాది_C;
       i++;
     }
     myanmar_position_t pos = POS_AFTER_MAIN;
     /* The following loop may be ugly, but it implements all of
      * Myanmar reordering! */
-    for (; i < end; i++)
+    కొరకు (; i < చివర; i++)
     {
-      if (info[i].myanmar_category() == M_Cat(MR)) /* Pre-base reordering */
+      ఒకవేళ (info[i].myanmar_category() == M_Cat(MR)) /* Pre-base reordering */
       {
 	info[i].myanmar_position() = POS_PRE_C;
-	continue;
+	కొనసాగు;
       }
-      if (info[i].myanmar_category() == M_Cat(VPre)) /* Left matra */
+      ఒకవేళ (info[i].myanmar_category() == M_Cat(VPre)) /* Left matra */
       {
 	info[i].myanmar_position() = POS_PRE_M;
-	continue;
+	కొనసాగు;
       }
-      if (info[i].myanmar_category() == M_Cat(VS))
+      ఒకవేళ (info[i].myanmar_category() == M_Cat(VS))
       {
 	info[i].myanmar_position() = info[i - 1].myanmar_position();
-	continue;
+	కొనసాగు;
       }
 
-      if (pos == POS_AFTER_MAIN && info[i].myanmar_category() == M_Cat(VBlw))
+      ఒకవేళ (pos == POS_AFTER_MAIN && info[i].myanmar_category() == M_Cat(VBlw))
       {
-	pos = POS_BELOW_C;
+	pos = POS_క్రింద_C;
 	info[i].myanmar_position() = pos;
-	continue;
+	కొనసాగు;
       }
 
-      if (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(A))
+      ఒకవేళ (pos == POS_క్రింద_C && info[i].myanmar_category() == M_Cat(A))
       {
 	info[i].myanmar_position() = POS_BEFORE_SUB;
-	continue;
+	కొనసాగు;
       }
-      if (pos == POS_BELOW_C && info[i].myanmar_category() == M_Cat(VBlw))
+      ఒకవేళ (pos == POS_క్రింద_C && info[i].myanmar_category() == M_Cat(VBlw))
       {
 	info[i].myanmar_position() = pos;
-	continue;
+	కొనసాగు;
       }
-      if (pos == POS_BELOW_C && info[i].myanmar_category() != M_Cat(A))
+      ఒకవేళ (pos == POS_క్రింద_C && info[i].myanmar_category() != M_Cat(A))
       {
 	pos = POS_AFTER_SUB;
 	info[i].myanmar_position() = pos;
-	continue;
+	కొనసాగు;
       }
       info[i].myanmar_position() = pos;
     }
   }
 
   /* Sit tight, rock 'n roll! */
-  buffer->sort (start, end, compare_myanmar_order);
+  బఫరు->sort (ప్రారంభం, చివర, compare_myanmar_క్రమం);
 
   /* Flip left-matra sequence. */
-  unsigned first_left_matra = end;
-  unsigned last_left_matra = end;
-  for (unsigned int i = start; i < end; i++)
+  గుర్తులేని మొదటి_ఎడమ_matra = చివర;
+  గుర్తులేని చివరి_ఎడమ_matra = చివర;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    if (info[i].myanmar_position() == POS_PRE_M)
+    ఒకవేళ (info[i].myanmar_position() == POS_PRE_M)
     {
-      if (first_left_matra == end)
-	first_left_matra = i;
-      last_left_matra = i;
+      ఒకవేళ (మొదటి_ఎడమ_matra == చివర)
+	మొదటి_ఎడమ_matra = i;
+      చివరి_ఎడమ_matra = i;
     }
   }
   /* https://github.com/harfbuzz/harfbuzz/issues/3863 */
-  if (first_left_matra < last_left_matra)
+  ఒకవేళ (మొదటి_ఎడమ_matra < చివరి_ఎడమ_matra)
   {
     /* No need to merge clusters, done already? */
-    buffer->reverse_range (first_left_matra, last_left_matra + 1);
+    బఫరు->తిరగేయి_range (మొదటి_ఎడమ_matra, చివరి_ఎడమ_matra + 1);
     /* Reverse back VS, etc. */
-    unsigned i = first_left_matra;
-    for (unsigned j = i; j <= last_left_matra; j++)
-      if (info[j].myanmar_category() == M_Cat(VPre))
+    గుర్తులేని i = మొదటి_ఎడమ_matra;
+    కొరకు (గుర్తులేని j = i; j <= చివరి_ఎడమ_matra; j++)
+      ఒకవేళ (info[j].myanmar_category() == M_Cat(VPre))
       {
-	buffer->reverse_range (i, j + 1);
+	బఫరు->తిరగేయి_range (i, j + 1);
 	i = j + 1;
       }
   }
 }
 
-static void
-reorder_syllable_myanmar (const hb_ot_shape_plan_t *plan HB_UNUSED,
-			  hb_face_t *face HB_UNUSED,
-			  hb_buffer_t *buffer,
-			  unsigned int start, unsigned int end)
+స్థిర శూన్య
+reorder_syllable_myanmar (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+			  hb_face_t *face HB_వాడని,
+			  hb_బఫరు_t *బఫరు,
+			  గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర)
 {
-  myanmar_syllable_type_t syllable_type = (myanmar_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type) {
+  myanmar_syllable_type_t syllable_type = (myanmar_syllable_type_t) (బఫరు->info[ప్రారంభం].syllable() & 0x0F);
+  ఎంపిక (syllable_type) {
 
-    case myanmar_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case myanmar_consonant_syllable:
-      initial_reordering_consonant_syllable  (buffer, start, end);
-      break;
+    స్థితి myanmar_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    స్థితి myanmar_consonant_syllable:
+      initial_reordering_consonant_syllable  (బఫరు, ప్రారంభం, చివర);
+      ఆపు;
 
-    case myanmar_non_myanmar_cluster:
-      break;
+    స్థితి myanmar_non_myanmar_cluster:
+      ఆపు;
   }
 }
 
-static bool
-reorder_myanmar (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+reorder_myanmar (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		 hb_font_t *font,
-		 hb_buffer_t *buffer)
+		 hb_బఫరు_t *బఫరు)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering myanmar"))
+  తార్కిక ret = అబద్ధం;
+  ఒకవేళ (బఫరు->సందేశం (font, "start reordering myanmar"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    ఒకవేళ (hb_syllabic_చొప్పించు_dotted_circles (font, బఫరు,
 					   myanmar_broken_cluster,
 					   M_Cat(DOTTEDCIRCLE)))
-      ret = true;
+      ret = నిజం;
 
-    foreach_syllable (buffer, start, end)
-      reorder_syllable_myanmar (plan, font->face, buffer, start, end);
-    (void) buffer->message (font, "end reordering myanmar");
+    foreach_syllable (బఫరు, ప్రారంభం, చివర)
+      reorder_syllable_myanmar (plan, font->face, బఫరు, ప్రారంభం, చివర);
+    (శూన్య) బఫరు->సందేశం (font, "end reordering myanmar");
   }
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, myanmar_category);
-  HB_BUFFER_DEALLOCATE_VAR (buffer, myanmar_position);
+  HB_బఫరు_DEALLOCATE_VAR (బఫరు, myanmar_category);
+  HB_బఫరు_DEALLOCATE_VAR (బఫరు, myanmar_position);
 
-  return ret;
+  తిరిగి ret;
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_myanmar =
+స్థిరరాశి hb_ot_shaper_t _hb_ot_shaper_myanmar =
 {
   collect_features_myanmar,
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  setup_masks_myanmar,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
-  false, /* fallback_position */
+  శూన్యసూచిక, /* override_features */
+  శూన్యసూచిక, /* data_create */
+  శూన్యసూచిక, /* data_destroy */
+  శూన్యసూచిక, /* preprocess_text */
+  శూన్యసూచిక, /* postprocess_glyphs */
+  శూన్యసూచిక, /* decompose */
+  శూన్యసూచిక, /* compose */
+  అమరిక_masks_myanmar,
+  శూన్యసూచిక, /* reorder_marks */
+  HB_ట్యాగ్_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
+  HB_OT_SHAPE_ZERO_వెడల్పు_MARKS_BY_GDEF_EARLY,
+  అబద్ధం, /* fallback_position */
 };
 
 
-#ifndef HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
 /* Ugly Zawgyi encoding.
  * Disable all auto processing.
  * https://github.com/harfbuzz/harfbuzz/issues/1162 */
-const hb_ot_shaper_t _hb_ot_shaper_myanmar_zawgyi =
+స్థిరరాశి hb_ot_shaper_t _hb_ot_shaper_myanmar_zawgyi =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  nullptr, /* setup_masks */
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  శూన్యసూచిక, /* collect_features */
+  శూన్యసూచిక, /* override_features */
+  శూన్యసూచిక, /* data_create */
+  శూన్యసూచిక, /* data_destroy */
+  శూన్యసూచిక, /* preprocess_text */
+  శూన్యసూచిక, /* postprocess_glyphs */
+  శూన్యసూచిక, /* decompose */
+  శూన్యసూచిక, /* compose */
+  శూన్యసూచిక, /* setup_masks */
+  శూన్యసూచిక, /* reorder_marks */
+  HB_ట్యాగ్_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_NONE,
+  HB_OT_SHAPE_ZERO_వెడల్పు_MARKS_NONE,
+  అబద్ధం, /* fallback_position */
 };
-#endif
+#అయితే_ముగింపు
 
 
-#endif
+#అయితే_ముగింపు

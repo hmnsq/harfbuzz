@@ -26,8 +26,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
 /**
@@ -56,23 +56,23 @@
  *
  * Since: 0.9.2
  **/
-hb_tag_t
-hb_tag_from_string (const char *str, int len)
+hb_ట్యాగ్_t
+hb_ట్యాగ్_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len)
 {
-  char tag[4];
-  unsigned int i;
+  అక్షరం ట్యాగ్_2[4];
+  గుర్తులేని పూర్ణాంకం i;
 
-  if (!str || !len || !*str)
-    return HB_TAG_NONE;
+  ఒకవేళ (!str || !len || !*str)
+    తిరిగి HB_ట్యాగ్_NONE;
 
-  if (len < 0 || len > 4)
+  ఒకవేళ (len < 0 || len > 4)
     len = 4;
-  for (i = 0; i < (unsigned) len && str[i]; i++)
-    tag[i] = str[i];
-  for (; i < 4; i++)
-    tag[i] = ' ';
+  కొరకు (i = 0; i < (గుర్తులేని) len && str[i]; i++)
+    ట్యాగ్_2[i] = str[i];
+  కొరకు (; i < 4; i++)
+    ట్యాగ్_2[i] = ' ';
 
-  return HB_TAG (tag[0], tag[1], tag[2], tag[3]);
+  తిరిగి HB_ట్యాగ్ (ట్యాగ్_2[0], ట్యాగ్_2[1], ట్యాగ్_2[2], ట్యాగ్_2[3]);
 }
 
 /**
@@ -85,19 +85,19 @@ hb_tag_from_string (const char *str, int len)
  *
  * Since: 0.9.5
  **/
-void
-hb_tag_to_string (hb_tag_t tag, char *buf)
+శూన్య
+hb_ట్యాగ్_గమ్యం_string (hb_ట్యాగ్_t ట్యాగ్_2, అక్షరం *buf)
 {
-  buf[0] = (char) (uint8_t) (tag >> 24);
-  buf[1] = (char) (uint8_t) (tag >> 16);
-  buf[2] = (char) (uint8_t) (tag >>  8);
-  buf[3] = (char) (uint8_t) (tag >>  0);
+  buf[0] = (అక్షరం) (uint8_t) (ట్యాగ్_2 >> 24);
+  buf[1] = (అక్షరం) (uint8_t) (ట్యాగ్_2 >> 16);
+  buf[2] = (అక్షరం) (uint8_t) (ట్యాగ్_2 >>  8);
+  buf[3] = (అక్షరం) (uint8_t) (ట్యాగ్_2 >>  0);
 }
 
 
 /* hb_direction_t */
 
-static const char direction_strings[][4] = {
+స్థిర స్థిరరాశి అక్షరం direction_అక్షరశ్రేణులు[][4] = {
   "ltr",
   "rtl",
   "ttb",
@@ -121,20 +121,20 @@ static const char direction_strings[][4] = {
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_direction_from_string (const char *str, int len)
+hb_direction_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len)
 {
-  if (unlikely (!str || !len || !*str))
-    return HB_DIRECTION_INVALID;
+  ఒకవేళ (unlikely (!str || !len || !*str))
+    తిరిగి HB_DIRECTION_INVALID;
 
   /* Lets match loosely: just match the first letter, such that
    * all of "ltr", "left-to-right", etc work!
    */
-  char c = TOLOWER (str[0]);
-  for (unsigned int i = 0; i < ARRAY_LENGTH (direction_strings); i++)
-    if (c == direction_strings[i][0])
-      return (hb_direction_t) (HB_DIRECTION_LTR + i);
+  అక్షరం c = TOLOWER (str[0]);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARRAY_నిడివి (direction_అక్షరశ్రేణులు); i++)
+    ఒకవేళ (c == direction_అక్షరశ్రేణులు[i][0])
+      తిరిగి (hb_direction_t) (HB_DIRECTION_LTR + i);
 
-  return HB_DIRECTION_INVALID;
+  తిరిగి HB_DIRECTION_INVALID;
 }
 
 /**
@@ -147,24 +147,24 @@ hb_direction_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_direction_to_string (hb_direction_t direction)
+స్థిరరాశి అక్షరం *
+hb_direction_గమ్యం_string (hb_direction_t direction)
 {
-  if (likely ((unsigned int) (direction - HB_DIRECTION_LTR)
-	      < ARRAY_LENGTH (direction_strings)))
-    return direction_strings[direction - HB_DIRECTION_LTR];
+  ఒకవేళ (likely ((గుర్తులేని పూర్ణాంకం) (direction - HB_DIRECTION_LTR)
+	      < ARRAY_నిడివి (direction_అక్షరశ్రేణులు)))
+    తిరిగి direction_అక్షరశ్రేణులు[direction - HB_DIRECTION_LTR];
 
-  return "invalid";
+  తిరిగి "invalid";
 }
 
 
 /* hb_language_t */
 
-struct hb_language_impl_t {
-  const char s[1];
+నిర్మాణం hb_language_impl_t {
+  స్థిరరాశి అక్షరం s[1];
 };
 
-static const char canon_map[256] = {
+స్థిర స్థిరరాశి అక్షరం canon_map[256] = {
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,  '-',  0,   0,
@@ -175,118 +175,118 @@ static const char canon_map[256] = {
   'p', 'q', 'r', 's', 't', 'u', 'v', 'w',  'x', 'y', 'z',  0,   0,   0,   0,   0
 };
 
-static bool
+స్థిర తార్కిక
 lang_equal (hb_language_t  v1,
-	    const void    *v2)
+	    స్థిరరాశి శూన్య    *v2)
 {
-  const unsigned char *p1 = (const unsigned char *) v1;
-  const unsigned char *p2 = (const unsigned char *) v2;
+  స్థిరరాశి గుర్తులేని అక్షరం *p1 = (స్థిరరాశి గుర్తులేని అక్షరం *) v1;
+  స్థిరరాశి గుర్తులేని అక్షరం *p2 = (స్థిరరాశి గుర్తులేని అక్షరం *) v2;
 
-  while (*p1 && *p1 == canon_map[*p2]) {
+  అయితే (*p1 && *p1 == canon_map[*p2]) {
     p1++;
     p2++;
   }
 
-  return *p1 == canon_map[*p2];
+  తిరిగి *p1 == canon_map[*p2];
 }
 
-#if 0
-static unsigned int
-lang_hash (const void *key)
+#ఒకవేళ 0
+స్థిర గుర్తులేని పూర్ణాంకం
+lang_hash (స్థిరరాశి శూన్య *key)
 {
-  const unsigned char *p = key;
-  unsigned int h = 0;
-  while (canon_map[*p])
+  స్థిరరాశి గుర్తులేని అక్షరం *p = key;
+  గుర్తులేని పూర్ణాంకం h = 0;
+  అయితే (canon_map[*p])
     {
       h = (h << 5) - h + canon_map[*p];
       p++;
     }
 
-  return h;
+  తిరిగి h;
 }
-#endif
+#అయితే_ముగింపు
 
 
-struct hb_language_item_t {
+నిర్మాణం hb_language_అంశం_t {
 
-  struct hb_language_item_t *next;
+  నిర్మాణం hb_language_అంశం_t *next;
   hb_language_t lang;
 
-  bool operator == (const char *s) const
-  { return lang_equal (lang, s); }
+  తార్కిక క్రియాకారకం == (స్థిరరాశి అక్షరం *s) స్థిరరాశి
+  { తిరిగి lang_equal (lang, s); }
 
-  hb_language_item_t & operator = (const char *s)
+  hb_language_అంశం_t & క్రియాకారకం = (స్థిరరాశి అక్షరం *s)
   {
     /* We can't call strdup(), because we allow custom allocators. */
-    size_t len = strlen(s) + 1;
+    size_t len = అక్షరశ్రేణి_పొడవు(s) + 1;
     lang = (hb_language_t) hb_malloc(len);
-    if (likely (lang))
+    ఒకవేళ (likely (lang))
     {
-      hb_memcpy((unsigned char *) lang, s, len);
-      for (unsigned char *p = (unsigned char *) lang; *p; p++)
+      hb_memcpy((గుర్తులేని అక్షరం *) lang, s, len);
+      కొరకు (గుర్తులేని అక్షరం *p = (గుర్తులేని అక్షరం *) lang; *p; p++)
 	*p = canon_map[*p];
     }
 
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  void fini () { hb_free ((void *) lang); }
+  శూన్య fini () { hb_free ((శూన్య *) lang); }
 };
 
 
 /* Thread-safe lockfree language list */
 
-static hb_atomic_t<hb_language_item_t *> langs;
+స్థిర hb_atomic_t<hb_language_అంశం_t *> langs;
 
-static inline void
+స్థిర అంతఃవరుస శూన్య
 free_langs ()
 {
 retry:
-  hb_language_item_t *first_lang = langs;
-  if (unlikely (!langs.cmpexch (first_lang, nullptr)))
-    goto retry;
+  hb_language_అంశం_t *మొదటి_lang = langs;
+  ఒకవేళ (unlikely (!langs.cmpexch (మొదటి_lang, శూన్యసూచిక)))
+    వెళ్ళు retry;
 
-  while (first_lang) {
-    hb_language_item_t *next = first_lang->next;
-    first_lang->fini ();
-    hb_free (first_lang);
-    first_lang = next;
+  అయితే (మొదటి_lang) {
+    hb_language_అంశం_t *next = మొదటి_lang->next;
+    మొదటి_lang->fini ();
+    hb_free (మొదటి_lang);
+    మొదటి_lang = next;
   }
 }
 
-static hb_language_item_t *
-lang_find_or_insert (const char *key)
+స్థిర hb_language_అంశం_t *
+lang_కనుగొను_or_చొప్పించు (స్థిరరాశి అక్షరం *key)
 {
 retry:
-  hb_language_item_t *first_lang = langs;
+  hb_language_అంశం_t *మొదటి_lang = langs;
 
-  for (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
-    if (*lang == key)
-      return lang;
+  కొరకు (hb_language_అంశం_t *lang = మొదటి_lang; lang; lang = lang->next)
+    ఒకవేళ (*lang == key)
+      తిరిగి lang;
 
   /* Not found; allocate one. */
-  hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, sizeof (hb_language_item_t));
-  if (unlikely (!lang))
-    return nullptr;
-  lang->next = first_lang;
+  hb_language_అంశం_t *lang = (hb_language_అంశం_t *) hb_calloc (1, పరిమాణం (hb_language_అంశం_t));
+  ఒకవేళ (unlikely (!lang))
+    తిరిగి శూన్యసూచిక;
+  lang->next = మొదటి_lang;
   *lang = key;
-  if (unlikely (!lang->lang))
+  ఒకవేళ (unlikely (!lang->lang))
   {
     hb_free (lang);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  if (unlikely (!langs.cmpexch (first_lang, lang)))
+  ఒకవేళ (unlikely (!langs.cmpexch (మొదటి_lang, lang)))
   {
     lang->fini ();
     hb_free (lang);
-    goto retry;
+    వెళ్ళు retry;
   }
 
-  if (!first_lang)
+  ఒకవేళ (!మొదటి_lang)
     hb_atexit (free_langs); /* First person registers atexit() callback. */
 
-  return lang;
+  తిరిగి lang;
 }
 
 
@@ -305,25 +305,25 @@ retry:
  * Since: 0.9.2
  **/
 hb_language_t
-hb_language_from_string (const char *str, int len)
+hb_language_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len)
 {
-  if (!str || !len || !*str)
-    return HB_LANGUAGE_INVALID;
+  ఒకవేళ (!str || !len || !*str)
+    తిరిగి HB_LANGUAGE_INVALID;
 
-  hb_language_item_t *item = nullptr;
-  if (len >= 0)
+  hb_language_అంశం_t *అంశం = శూన్యసూచిక;
+  ఒకవేళ (len >= 0)
   {
     /* NUL-terminate it. */
-    char strbuf[64];
-    len = hb_min (len, (int) sizeof (strbuf) - 1);
+    అక్షరం strbuf[64];
+    len = hb_min (len, (పూర్ణాంకం) పరిమాణం (strbuf) - 1);
     hb_memcpy (strbuf, str, len);
     strbuf[len] = '\0';
-    item = lang_find_or_insert (strbuf);
+    అంశం = lang_కనుగొను_or_చొప్పించు (strbuf);
   }
-  else
-    item = lang_find_or_insert (str);
+  లేకపోతే
+    అంశం = lang_కనుగొను_or_చొప్పించు (str);
 
-  return likely (item) ? item->lang : HB_LANGUAGE_INVALID;
+  తిరిగి likely (అంశం) ? అంశం->lang : HB_LANGUAGE_INVALID;
 }
 
 /**
@@ -338,12 +338,12 @@ hb_language_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_language_to_string (hb_language_t language)
+స్థిరరాశి అక్షరం *
+hb_language_గమ్యం_string (hb_language_t language)
 {
-  if (unlikely (!language)) return nullptr;
+  ఒకవేళ (unlikely (!language)) తిరిగి శూన్యసూచిక;
 
-  return language->s;
+  తిరిగి language->s;
 }
 
 /**
@@ -366,16 +366,16 @@ hb_language_to_string (hb_language_t language)
 hb_language_t
 hb_language_get_default ()
 {
-  static hb_atomic_t<hb_language_t> default_language;
+  స్థిర hb_atomic_t<hb_language_t> default_language;
 
   hb_language_t language = default_language;
-  if (unlikely (language == HB_LANGUAGE_INVALID))
+  ఒకవేళ (unlikely (language == HB_LANGUAGE_INVALID))
   {
-    language = hb_language_from_string (hb_setlocale (LC_CTYPE, nullptr), -1);
-    (void) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
+    language = hb_language_from_string (hb_setlocale (LC_CTYPE, శూన్యసూచిక), -1);
+    (శూన్య) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
   }
 
-  return language;
+  తిరిగి language;
 }
 
 /**
@@ -395,18 +395,18 @@ hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific)
 {
-  if (language == specific) return true;
-  if (!language || !specific) return false;
+  ఒకవేళ (language == specific) తిరిగి నిజం;
+  ఒకవేళ (!language || !specific) తిరిగి అబద్ధం;
 
-  const char *l = language->s;
-  const char *s = specific->s;
-  unsigned ll = strlen (l);
-  unsigned sl = strlen (s);
+  స్థిరరాశి అక్షరం *l = language->s;
+  స్థిరరాశి అక్షరం *s = specific->s;
+  గుర్తులేని ll = అక్షరశ్రేణి_పొడవు (l);
+  గుర్తులేని sl = అక్షరశ్రేణి_పొడవు (s);
 
-  if (ll > sl)
-    return false;
+  ఒకవేళ (ll > sl)
+    తిరిగి అబద్ధం;
 
-  return strncmp (l, s, ll) == 0 &&
+  తిరిగి అక్షరశ్రేణి_పోలిక (l, s, ll) == 0 &&
 	 (s[ll] == '\0' || s[ll] == '-');
 }
 
@@ -425,36 +425,36 @@ hb_language_matches (hb_language_t language,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_iso15924_tag (hb_tag_t tag)
+hb_script_from_iso15924_ట్యాగ్ (hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return HB_SCRIPT_INVALID;
+  ఒకవేళ (unlikely (ట్యాగ్_2 == HB_ట్యాగ్_NONE))
+    తిరిగి HB_SCRIPT_INVALID;
 
   /* Be lenient, adjust case (one capital letter followed by three small letters) */
-  tag = (tag & 0xDFDFDFDFu) | 0x00202020u;
+  ట్యాగ్_2 = (ట్యాగ్_2 & 0xDFDFDFDFu) | 0x00202020u;
 
-  switch (tag)
+  ఎంపిక (ట్యాగ్_2)
   {
     /* Script variants from https://unicode.org/iso15924/ */
-    case HB_TAG('A','r','a','n'): return HB_SCRIPT_ARABIC;
-    case HB_TAG('C','y','r','s'): return HB_SCRIPT_CYRILLIC;
-    case HB_TAG('G','e','o','k'): return HB_SCRIPT_GEORGIAN;
-    case HB_TAG('H','a','n','s'): return HB_SCRIPT_HAN;
-    case HB_TAG('H','a','n','t'): return HB_SCRIPT_HAN;
-    case HB_TAG('J','a','m','o'): return HB_SCRIPT_HANGUL;
-    case HB_TAG('L','a','t','f'): return HB_SCRIPT_LATIN;
-    case HB_TAG('L','a','t','g'): return HB_SCRIPT_LATIN;
-    case HB_TAG('S','y','r','e'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','j'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','n'): return HB_SCRIPT_SYRIAC;
+    స్థితి HB_ట్యాగ్('A','r','a','n'): తిరిగి HB_SCRIPT_ARABIC;
+    స్థితి HB_ట్యాగ్('C','y','r','s'): తిరిగి HB_SCRIPT_CYRILLIC;
+    స్థితి HB_ట్యాగ్('G','e','o','k'): తిరిగి HB_SCRIPT_GEORGIAN;
+    స్థితి HB_ట్యాగ్('H','a','n','s'): తిరిగి HB_SCRIPT_HAN;
+    స్థితి HB_ట్యాగ్('H','a','n','t'): తిరిగి HB_SCRIPT_HAN;
+    స్థితి HB_ట్యాగ్('J','a','m','o'): తిరిగి HB_SCRIPT_HANGUL;
+    స్థితి HB_ట్యాగ్('L','a','t','f'): తిరిగి HB_SCRIPT_LATIN;
+    స్థితి HB_ట్యాగ్('L','a','t','g'): తిరిగి HB_SCRIPT_LATIN;
+    స్థితి HB_ట్యాగ్('S','y','r','e'): తిరిగి HB_SCRIPT_SYRIAC;
+    స్థితి HB_ట్యాగ్('S','y','r','j'): తిరిగి HB_SCRIPT_SYRIAC;
+    స్థితి HB_ట్యాగ్('S','y','r','n'): తిరిగి HB_SCRIPT_SYRIAC;
   }
 
   /* If it looks right, just use the tag as a script */
-  if (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
-    return (hb_script_t) tag;
+  ఒకవేళ (((uint32_t) ట్యాగ్_2 & 0xE0E0E0E0u) == 0x40606060u)
+    తిరిగి (hb_script_t) ట్యాగ్_2;
 
   /* Otherwise, return unknown */
-  return HB_SCRIPT_UNKNOWN;
+  తిరిగి HB_SCRIPT_UNKNOWN;
 }
 
 /**
@@ -473,9 +473,9 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_string (const char *str, int len)
+hb_script_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len)
 {
-  return hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
+  తిరిగి hb_script_from_iso15924_ట్యాగ్ (hb_ట్యాగ్_from_string (str, len));
 }
 
 /**
@@ -489,10 +489,10 @@ hb_script_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-hb_tag_t
-hb_script_to_iso15924_tag (hb_script_t script)
+hb_ట్యాగ్_t
+hb_script_గమ్యం_iso15924_ట్యాగ్ (hb_script_t script)
 {
-  return (hb_tag_t) script;
+  తిరిగి (hb_ట్యాగ్_t) script;
 }
 
 /**
@@ -517,93 +517,93 @@ hb_direction_t
 hb_script_get_horizontal_direction (hb_script_t script)
 {
   /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-  switch ((hb_tag_t) script)
+  ఎంపిక ((hb_ట్యాగ్_t) script)
   {
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_HEBREW:
+    స్థితి HB_SCRIPT_ARABIC:
+    స్థితి HB_SCRIPT_HEBREW:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
-    case HB_SCRIPT_THAANA:
+    స్థితి HB_SCRIPT_SYRIAC:
+    స్థితి HB_SCRIPT_THAANA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_CYPRIOT:
+    స్థితి HB_SCRIPT_CYPRIOT:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_KHAROSHTHI:
+    స్థితి HB_SCRIPT_KHAROSHTHI:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_PHOENICIAN:
-    case HB_SCRIPT_NKO:
+    స్థితి HB_SCRIPT_PHOENICIAN:
+    స్థితి HB_SCRIPT_NKO:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_LYDIAN:
+    స్థితి HB_SCRIPT_LYDIAN:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_AVESTAN:
-    case HB_SCRIPT_IMPERIAL_ARAMAIC:
-    case HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
-    case HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
-    case HB_SCRIPT_OLD_SOUTH_ARABIAN:
-    case HB_SCRIPT_OLD_TURKIC:
-    case HB_SCRIPT_SAMARITAN:
+    స్థితి HB_SCRIPT_AVESTAN:
+    స్థితి HB_SCRIPT_IMPERIAL_ARAMAIC:
+    స్థితి HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
+    స్థితి HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
+    స్థితి HB_SCRIPT_OLD_SOUTH_ARABIAN:
+    స్థితి HB_SCRIPT_OLD_TURKIC:
+    స్థితి HB_SCRIPT_SAMARITAN:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_MANDAIC:
+    స్థితి HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_MEROITIC_CURSIVE:
-    case HB_SCRIPT_MEROITIC_HIEROGLYPHS:
+    స్థితి HB_SCRIPT_MEROITIC_CURSIVE:
+    స్థితి HB_SCRIPT_MEROITIC_HIEROGLYPHS:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MENDE_KIKAKUI:
-    case HB_SCRIPT_NABATAEAN:
-    case HB_SCRIPT_OLD_NORTH_ARABIAN:
-    case HB_SCRIPT_PALMYRENE:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
+    స్థితి HB_SCRIPT_MANICHAEAN:
+    స్థితి HB_SCRIPT_MENDE_KIKAKUI:
+    స్థితి HB_SCRIPT_NABATAEAN:
+    స్థితి HB_SCRIPT_OLD_NORTH_ARABIAN:
+    స్థితి HB_SCRIPT_PALMYRENE:
+    స్థితి HB_SCRIPT_PSALTER_PAHLAVI:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_HATRAN:
+    స్థితి HB_SCRIPT_HATRAN:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
+    స్థితి HB_SCRIPT_ADLAM:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    స్థితి HB_SCRIPT_HANIFI_ROHINGYA:
+    స్థితి HB_SCRIPT_OLD_SOGDIAN:
+    స్థితి HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
+    స్థితి HB_SCRIPT_ELYMAIC:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_YEZIDI:
+    స్థితి HB_SCRIPT_CHORASMIAN:
+    స్థితి HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_OLD_UYGHUR:
+    స్థితి HB_SCRIPT_OLD_UYGHUR:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
+    స్థితి HB_SCRIPT_GARAY:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_SIDETIC:
+    స్థితి HB_SCRIPT_SIDETIC:
 
-      return HB_DIRECTION_RTL;
+      తిరిగి HB_DIRECTION_RTL;
 
 
     /* https://github.com/harfbuzz/harfbuzz/issues/1000 */
-    case HB_SCRIPT_OLD_HUNGARIAN:
-    case HB_SCRIPT_OLD_ITALIC:
-    case HB_SCRIPT_RUNIC:
-    case HB_SCRIPT_TIFINAGH:
+    స్థితి HB_SCRIPT_OLD_HUNGARIAN:
+    స్థితి HB_SCRIPT_OLD_ITALIC:
+    స్థితి HB_SCRIPT_RUNIC:
+    స్థితి HB_SCRIPT_TIFINAGH:
 
-      return HB_DIRECTION_INVALID;
+      తిరిగి HB_DIRECTION_INVALID;
   }
 
-  return HB_DIRECTION_LTR;
+  తిరిగి HB_DIRECTION_LTR;
 }
 
 
@@ -632,14 +632,14 @@ hb_script_get_horizontal_direction (hb_script_t script)
  *
  * Since: 0.9.2
  **/
-void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro)
+శూన్య
+hb_సంస్కరణ (గుర్తులేని పూర్ణాంకం *major,
+	    గుర్తులేని పూర్ణాంకం *minor,
+	    గుర్తులేని పూర్ణాంకం *micro)
 {
-  *major = HB_VERSION_MAJOR;
-  *minor = HB_VERSION_MINOR;
-  *micro = HB_VERSION_MICRO;
+  *major = HB_సంస్కరణ_MAJOR;
+  *minor = HB_సంస్కరణ_MINOR;
+  *micro = HB_సంస్కరణ_MICRO;
 }
 
 /**
@@ -651,10 +651,10 @@ hb_version (unsigned int *major,
  *
  * Since: 0.9.2
  **/
-const char *
-hb_version_string ()
+స్థిరరాశి అక్షరం *
+hb_సంస్కరణ_string ()
 {
-  return HB_VERSION_STRING;
+  తిరిగి HB_సంస్కరణ_STRING;
 }
 
 /**
@@ -672,183 +672,183 @@ hb_version_string ()
  * Since: 0.9.30
  **/
 hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro)
+hb_సంస్కరణ_atleast (గుర్తులేని పూర్ణాంకం major,
+		    గుర్తులేని పూర్ణాంకం minor,
+		    గుర్తులేని పూర్ణాంకం micro)
 {
-  return HB_VERSION_ATLEAST (major, minor, micro);
+  తిరిగి HB_సంస్కరణ_ATLEAST (major, minor, micro);
 }
 
 
 
 /* hb_feature_t and hb_variation_t */
 
-static bool
-parse_space (const char **pp, const char *end)
+స్థిర తార్కిక
+parse_space (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర)
 {
-  while (*pp < end && ISSPACE (**pp))
+  అయితే (*pp < చివర && ISSPACE (**pp))
     (*pp)++;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_char (const char **pp, const char *end, char c)
+స్థిర తార్కిక
+parse_char (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, అక్షరం c)
 {
-  parse_space (pp, end);
+  parse_space (pp, చివర);
 
-  if (*pp == end || **pp != c)
-    return false;
+  ఒకవేళ (*pp == చివర || **pp != c)
+    తిరిగి అబద్ధం;
 
   (*pp)++;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_uint (const char **pp, const char *end, unsigned int *pv)
+స్థిర తార్కిక
+parse_uint (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, గుర్తులేని పూర్ణాంకం *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  పూర్ణాంకం v;
+  ఒకవేళ (unlikely (!hb_parse_int (pp, చివర, &v))) తిరిగి అబద్ధం;
 
   *pv = v;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_uint32 (const char **pp, const char *end, uint32_t *pv)
+స్థిర తార్కిక
+parse_uint32 (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, uint32_t *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  పూర్ణాంకం v;
+  ఒకవేళ (unlikely (!hb_parse_int (pp, చివర, &v))) తిరిగి అబద్ధం;
 
   *pv = v;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_bool (const char **pp, const char *end, uint32_t *pv)
+స్థిర తార్కిక
+parse_bool (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, uint32_t *pv)
 {
-  parse_space (pp, end);
+  parse_space (pp, చివర);
 
-  const char *p = *pp;
-  while (*pp < end && ISALPHA(**pp))
+  స్థిరరాశి అక్షరం *p = *pp;
+  అయితే (*pp < చివర && ISALPHA(**pp))
     (*pp)++;
 
   /* CSS allows on/off as aliases 1/0. */
-  if (*pp - p == 2
+  ఒకవేళ (*pp - p == 2
       && TOLOWER (p[0]) == 'o'
       && TOLOWER (p[1]) == 'n')
     *pv = 1;
-  else if (*pp - p == 3
+  లేకపోతే ఒకవేళ (*pp - p == 3
 	   && TOLOWER (p[0]) == 'o'
 	   && TOLOWER (p[1]) == 'f'
 	   && TOLOWER (p[2]) == 'f')
     *pv = 0;
-  else
-    return false;
+  లేకపోతే
+    తిరిగి అబద్ధం;
 
-  return true;
+  తిరిగి నిజం;
 }
 
 /* hb_feature_t */
 
-static bool
-parse_feature_value_prefix (const char **pp, const char *end, hb_feature_t *feature)
+స్థిర తార్కిక
+parse_feature_విలువ_ఉపసర్గ (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_feature_t *feature)
 {
-  if (parse_char (pp, end, '-'))
+  ఒకవేళ (parse_char (pp, చివర, '-'))
     feature->value = 0;
-  else {
-    parse_char (pp, end, '+');
+  లేకపోతే {
+    parse_char (pp, చివర, '+');
     feature->value = 1;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_tag (const char **pp, const char *end, hb_tag_t *tag)
+స్థిర తార్కిక
+parse_ట్యాగ్ (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_ట్యాగ్_t *ట్యాగ్_2)
 {
-  parse_space (pp, end);
+  parse_space (pp, చివర);
 
-  char quote = 0;
+  అక్షరం quote = 0;
 
-  if (*pp < end && (**pp == '\'' || **pp == '"'))
+  ఒకవేళ (*pp < చివర && (**pp == '\'' || **pp == '"'))
   {
     quote = **pp;
     (*pp)++;
   }
 
-  const char *p = *pp;
-  while (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
+  స్థిరరాశి అక్షరం *p = *pp;
+  అయితే (*pp < చివర && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
     (*pp)++;
 
-  if (p == *pp || *pp - p > 4)
-    return false;
+  ఒకవేళ (p == *pp || *pp - p > 4)
+    తిరిగి అబద్ధం;
 
-  *tag = hb_tag_from_string (p, *pp - p);
+  *ట్యాగ్_2 = hb_ట్యాగ్_from_string (p, *pp - p);
 
-  if (quote)
+  ఒకవేళ (quote)
   {
     /* CSS expects exactly four bytes.  And we only allow quotations for
      * CSS compatibility.  So, enforce the length. */
-     if (*pp - p != 4)
-       return false;
-    if (*pp == end || **pp != quote)
-      return false;
+     ఒకవేళ (*pp - p != 4)
+       తిరిగి అబద్ధం;
+    ఒకవేళ (*pp == చివర || **pp != quote)
+      తిరిగి అబద్ధం;
     (*pp)++;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
+స్థిర తార్కిక
+parse_feature_indices (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_feature_t *feature)
 {
-  parse_space (pp, end);
+  parse_space (pp, చివర);
 
-  bool has_start;
+  తార్కిక has_ప్రారంభం;
 
-  feature->start = HB_FEATURE_GLOBAL_START;
-  feature->end = HB_FEATURE_GLOBAL_END;
+  feature->ప్రారంభం = HB_FEATURE_GLOBAL_ప్రారంభం;
+  feature->చివర = HB_FEATURE_GLOBAL_చివర;
 
-  if (!parse_char (pp, end, '['))
-    return true;
+  ఒకవేళ (!parse_char (pp, చివర, '['))
+    తిరిగి నిజం;
 
-  has_start = parse_uint (pp, end, &feature->start);
+  has_ప్రారంభం = parse_uint (pp, చివర, &feature->ప్రారంభం);
 
-  if (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
-    parse_uint (pp, end, &feature->end);
-  } else {
-    if (has_start)
-      feature->end = feature->start + 1;
+  ఒకవేళ (parse_char (pp, చివర, ':') || parse_char (pp, చివర, ';')) {
+    parse_uint (pp, చివర, &feature->చివర);
+  } లేకపోతే {
+    ఒకవేళ (has_ప్రారంభం)
+      feature->చివర = feature->ప్రారంభం + 1;
   }
 
-  return parse_char (pp, end, ']');
+  తిరిగి parse_char (pp, చివర, ']');
 }
 
-static bool
-parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *feature)
+స్థిర తార్కిక
+parse_feature_విలువ_postfix (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_feature_t *feature)
 {
-  bool had_equal = parse_char (pp, end, '=');
-  bool had_value = parse_uint32 (pp, end, &feature->value) ||
-		   parse_bool (pp, end, &feature->value);
+  తార్కిక had_equal = parse_char (pp, చివర, '=');
+  తార్కిక had_విలువ = parse_uint32 (pp, చివర, &feature->value) ||
+		   parse_bool (pp, చివర, &feature->value);
   /* CSS doesn't use equal-sign between tag and value.
    * If there was an equal-sign, then there *must* be a value.
    * A value without an equal-sign is ok, but not required. */
-  return !had_equal || had_value;
+  తిరిగి !had_equal || had_విలువ;
 }
 
-static bool
-parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
+స్థిర తార్కిక
+parse_one_feature (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_feature_t *feature)
 {
-  return parse_feature_value_prefix (pp, end, feature) &&
-	 parse_tag (pp, end, &feature->tag) &&
-	 parse_feature_indices (pp, end, feature) &&
-	 parse_feature_value_postfix (pp, end, feature) &&
-	 parse_space (pp, end) &&
-	 *pp == end;
+  తిరిగి parse_feature_విలువ_ఉపసర్గ (pp, చివర, feature) &&
+	 parse_ట్యాగ్ (pp, చివర, &feature->ట్యాగ్_2) &&
+	 parse_feature_indices (pp, చివర, feature) &&
+	 parse_feature_విలువ_postfix (pp, చివర, feature) &&
+	 parse_space (pp, చివర) &&
+	 *pp == చివర;
 }
 
 /**
@@ -901,24 +901,24 @@ parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
  * Since: 0.9.5
  **/
 hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len,
 			hb_feature_t *feature)
 {
   hb_feature_t feat;
 
-  if (len < 0)
-    len = strlen (str);
+  ఒకవేళ (len < 0)
+    len = అక్షరశ్రేణి_పొడవు (str);
 
-  if (likely (parse_one_feature (&str, str + len, &feat)))
+  ఒకవేళ (likely (parse_one_feature (&str, str + len, &feat)))
   {
-    if (feature)
+    ఒకవేళ (feature)
       *feature = feat;
-    return true;
+    తిరిగి నిజం;
   }
 
-  if (feature)
-    hb_memset (feature, 0, sizeof (*feature));
-  return false;
+  ఒకవేళ (feature)
+    hb_memset (feature, 0, పరిమాణం (*feature));
+  తిరిగి అబద్ధం;
 }
 
 /**
@@ -936,63 +936,63 @@ hb_feature_from_string (const char *str, int len,
  *
  * Since: 0.9.5
  **/
-void
-hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size)
+శూన్య
+hb_feature_గమ్యం_string (hb_feature_t *feature,
+		      అక్షరం *buf, గుర్తులేని పూర్ణాంకం కొలత)
 {
-  if (unlikely (!size)) return;
+  ఒకవేళ (unlikely (!కొలత)) తిరిగి;
 
-  char s[128];
-  unsigned int len = 0;
-  if (feature->value == 0)
+  అక్షరం s[128];
+  గుర్తులేని పూర్ణాంకం len = 0;
+  ఒకవేళ (feature->value == 0)
     s[len++] = '-';
-  hb_tag_to_string (feature->tag, s + len);
+  hb_ట్యాగ్_గమ్యం_string (feature->ట్యాగ్_2, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  అయితే (len && s[len - 1] == ' ')
     len--;
-  if (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
+  ఒకవేళ (feature->ప్రారంభం != HB_FEATURE_GLOBAL_ప్రారంభం || feature->చివర != HB_FEATURE_GLOBAL_చివర)
   {
     s[len++] = '[';
-    if (feature->start)
-      len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->start));
-    if (feature->end != feature->start + 1) {
+    ఒకవేళ (feature->ప్రారంభం)
+      len += hb_max (0, snprintf (s + len, ARRAY_నిడివి (s) - len, "%u", feature->ప్రారంభం));
+    ఒకవేళ (feature->చివర != feature->ప్రారంభం + 1) {
       s[len++] = ':';
-      if (feature->end != HB_FEATURE_GLOBAL_END)
-	len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->end));
+      ఒకవేళ (feature->చివర != HB_FEATURE_GLOBAL_చివర)
+	len += hb_max (0, snprintf (s + len, ARRAY_నిడివి (s) - len, "%u", feature->చివర));
     }
     s[len++] = ']';
   }
-  if (feature->value > 1)
+  ఒకవేళ (feature->value > 1)
   {
     s[len++] = '=';
-    len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%" PRIu32, feature->value));
+    len += hb_max (0, snprintf (s + len, ARRAY_నిడివి (s) - len, "%" PRIu32, feature->value));
   }
-  assert (len < ARRAY_LENGTH (s));
-  len = hb_min (len, size - 1);
+  ప్రతిజ్ఞా (len < ARRAY_నిడివి (s));
+  len = hb_min (len, కొలత - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
 }
 
 /* hb_variation_t */
 
-static bool
-parse_variation_value (const char **pp, const char *end, hb_variation_t *variation)
+స్థిర తార్కిక
+parse_variation_విలువ (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_variation_t *variation)
 {
-  parse_char (pp, end, '='); /* Optional. */
-  double v;
-  if (unlikely (!hb_parse_double (pp, end, &v))) return false;
+  parse_char (pp, చివర, '='); /* Optional. */
+  ద్విగుణ v;
+  ఒకవేళ (unlikely (!hb_parse_double (pp, చివర, &v))) తిరిగి అబద్ధం;
 
   variation->value = v;
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-parse_one_variation (const char **pp, const char *end, hb_variation_t *variation)
+స్థిర తార్కిక
+parse_one_variation (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, hb_variation_t *variation)
 {
-  return parse_tag (pp, end, &variation->tag) &&
-	 parse_variation_value (pp, end, variation) &&
-	 parse_space (pp, end) &&
-	 *pp == end;
+  తిరిగి parse_ట్యాగ్ (pp, చివర, &variation->ట్యాగ్_2) &&
+	 parse_variation_విలువ (pp, చివర, variation) &&
+	 parse_space (pp, చివర) &&
+	 *pp == చివర;
 }
 
 /**
@@ -1016,66 +1016,66 @@ parse_one_variation (const char **pp, const char *end, hb_variation_t *variation
  * Since: 1.4.2
  */
 hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len,
 			  hb_variation_t *variation)
 {
   hb_variation_t var;
 
-  if (len < 0)
-    len = strlen (str);
+  ఒకవేళ (len < 0)
+    len = అక్షరశ్రేణి_పొడవు (str);
 
-  if (likely (parse_one_variation (&str, str + len, &var)))
+  ఒకవేళ (likely (parse_one_variation (&str, str + len, &var)))
   {
-    if (variation)
+    ఒకవేళ (variation)
       *variation = var;
-    return true;
+    తిరిగి నిజం;
   }
 
-  if (variation)
-    hb_memset (variation, 0, sizeof (*variation));
-  return false;
+  ఒకవేళ (variation)
+    hb_memset (variation, 0, పరిమాణం (*variation));
+  తిరిగి అబద్ధం;
 }
 
-#ifndef HB_NO_SETLOCALE
+#నిర్వచితం_కాకపోతే HB_NO_SETLOCALE
 
-static inline void free_static_C_locale ();
+స్థిర అంతఃవరుస శూన్య free_static_C_locale ();
 
-static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_locale_t>,
+స్థిర నిర్మాణం hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_సూచిక<hb_locale_t>,
 							   hb_C_locale_lazy_loader_t>
 {
-  static hb_locale_t create ()
+  స్థిర hb_locale_t create ()
   {
-    hb_locale_t l = newlocale (LC_ALL_MASK, "C", NULL);
-    if (!l)
-      return l;
+    hb_locale_t l = newlocale (LC_ALL_MASK, "C", ఖాళీ);
+    ఒకవేళ (!l)
+      తిరిగి l;
 
     hb_atexit (free_static_C_locale);
 
-    return l;
+    తిరిగి l;
   }
-  static void destroy (hb_locale_t l)
+  స్థిర శూన్య destroy (hb_locale_t l)
   {
     freelocale (l);
   }
-  static hb_locale_t get_null ()
+  స్థిర hb_locale_t get_null ()
   {
-    return (hb_locale_t) 0;
+    తిరిగి (hb_locale_t) 0;
   }
 } static_C_locale;
 
-static inline
-void free_static_C_locale ()
+స్థిర అంతఃవరుస
+శూన్య free_static_C_locale ()
 {
   static_C_locale.free_instance ();
 }
 
-static hb_locale_t
+స్థిర hb_locale_t
 get_C_locale ()
 {
-  return static_C_locale.get_unconst ();
+  తిరిగి static_C_locale.get_unconst ();
 }
 
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_variation_to_string:
@@ -1091,27 +1091,27 @@ get_C_locale ()
  *
  * Since: 1.4.2
  */
-void
-hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size)
+శూన్య
+hb_variation_గమ్యం_string (hb_variation_t *variation,
+			అక్షరం *buf, గుర్తులేని పూర్ణాంకం కొలత)
 {
-  if (unlikely (!size)) return;
+  ఒకవేళ (unlikely (!కొలత)) తిరిగి;
 
-  char s[128];
-  unsigned int len = 0;
-  hb_tag_to_string (variation->tag, s + len);
+  అక్షరం s[128];
+  గుర్తులేని పూర్ణాంకం len = 0;
+  hb_ట్యాగ్_గమ్యం_string (variation->ట్యాగ్_2, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  అయితే (len && s[len - 1] == ' ')
     len--;
   s[len++] = '=';
 
-  hb_locale_t oldlocale HB_UNUSED;
+  hb_locale_t oldlocale HB_వాడని;
   oldlocale = hb_uselocale (get_C_locale ());
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) variation->value));
-  (void) hb_uselocale (oldlocale);
+  len += hb_max (0, snprintf (s + len, ARRAY_నిడివి (s) - len, "%g", (ద్విగుణ) variation->value));
+  (శూన్య) hb_uselocale (oldlocale);
 
-  assert (len < ARRAY_LENGTH (s));
-  len = hb_min (len, size - 1);
+  ప్రతిజ్ఞా (len < ARRAY_నిడివి (s));
+  len = hb_min (len, కొలత - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
 }
@@ -1129,7 +1129,7 @@ hb_variation_to_string (hb_variation_t *variation,
 uint8_t
 (hb_color_get_alpha) (hb_color_t color)
 {
-  return hb_color_get_alpha (color);
+  తిరిగి hb_color_get_alpha (color);
 }
 
 /**
@@ -1145,7 +1145,7 @@ uint8_t
 uint8_t
 (hb_color_get_red) (hb_color_t color)
 {
-  return hb_color_get_red (color);
+  తిరిగి hb_color_get_red (color);
 }
 
 /**
@@ -1161,7 +1161,7 @@ uint8_t
 uint8_t
 (hb_color_get_green) (hb_color_t color)
 {
-  return hb_color_get_green (color);
+  తిరిగి hb_color_get_green (color);
 }
 
 /**
@@ -1177,7 +1177,7 @@ uint8_t
 uint8_t
 (hb_color_get_blue) (hb_color_t color)
 {
-  return hb_color_get_blue (color);
+  తిరిగి hb_color_get_blue (color);
 }
 
 /**
@@ -1191,7 +1191,7 @@ uint8_t
  *
  * Since: 11.0.0
  **/
-void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
+శూన్య* hb_malloc(size_t కొలత) { తిరిగి hb_malloc_impl (కొలత); }
 
 /**
  * hb_calloc:
@@ -1205,7 +1205,7 @@ void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
  *
  * Since: 11.0.0
  **/
-void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size); }
+శూన్య* hb_calloc(size_t nmemb, size_t కొలత) { తిరిగి hb_calloc_impl (nmemb, కొలత); }
 
 /**
  * hb_realloc:
@@ -1219,7 +1219,7 @@ void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size)
  *
  * Since: 11.0.0
  **/
-void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
+శూన్య* hb_realloc(శూన్య *ptr, size_t కొలత) { తిరిగి hb_realloc_impl (ptr, కొలత); }
 
 /**
  * hb_free:
@@ -1230,14 +1230,14 @@ void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
  *
  * Since: 11.0.0
  **/
-void  hb_free(void *ptr) { hb_free_impl (ptr); }
+శూన్య  hb_free(శూన్య *ptr) { hb_free_impl (ptr); }
 
 
 /* If there is no visibility control, then hb-static.cc will NOT
  * define anything.  Instead, we get it to define one set in here
  * only, so only libharfbuzz.so defines them, not other libs. */
-#ifdef HB_NO_VISIBILITY
-#undef HB_NO_VISIBILITY
-#include "hb-static.cc"
-#define HB_NO_VISIBILITY 1
-#endif
+#నిర్వచితమైతే HB_NO_VISIBILITY
+#నిర్వచనం_రద్దు HB_NO_VISIBILITY
+#అన్తర్భావ "hb-static.cc"
+#నిర్వచించు HB_NO_VISIBILITY 1
+#అయితే_ముగింపు

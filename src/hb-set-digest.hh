@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SET_DIGEST_HH
-#define HB_SET_DIGEST_HH
+#నిర్వచితం_కాకపోతే HB_సమితి_DIGEST_HH
+#నిర్వచించు HB_సమితి_DIGEST_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 /*
  * The set-digests implement "filters" that support "approximate
@@ -63,113 +63,113 @@
  * check is done using four bitwise operations only.
  */
 
-static constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
+స్థిర constexpr గుర్తులేని hb_సమితి_digest_shifts[] = {4, 0, 6};
 
-struct hb_set_digest_t
+నిర్మాణం hb_సమితి_digest_t
 {
   // No science in these. Intuition and testing only.
-  using mask_t = uint64_t;
+  ఉపయోగించి ముసుగు_t = uint64_t;
 
-  static constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
-  static constexpr unsigned mask_bytes = sizeof (mask_t);
-  static constexpr unsigned mask_bits = sizeof (mask_t) * 8;
-  static constexpr hb_codepoint_t mb1 = mask_bits - 1;
-  static constexpr mask_t one = 1;
-  static constexpr mask_t all = (mask_t) -1;
+  స్థిర constexpr గుర్తులేని n = ARRAY_నిడివి_CONST (hb_సమితి_digest_shifts);
+  స్థిర constexpr గుర్తులేని ముసుగు_బైట్లు = పరిమాణం (ముసుగు_t);
+  స్థిర constexpr గుర్తులేని ముసుగు_బిట్లు = పరిమాణం (ముసుగు_t) * 8;
+  స్థిర constexpr hb_codepoint_t mb1 = ముసుగు_బిట్లు - 1;
+  స్థిర constexpr ముసుగు_t one = 1;
+  స్థిర constexpr ముసుగు_t all = (ముసుగు_t) -1;
 
-  void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  శూన్య init ()
+  { కొరకు (గుర్తులేని i = 0; i < n; i++) masks[i] = 0; }
 
-  void clear () { init (); }
+  శూన్య clear () { init (); }
 
-  static hb_set_digest_t full ()
+  స్థిర hb_సమితి_digest_t నిండిన ()
   {
-    hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    hb_సమితి_digest_t d;
+    కొరకు (గుర్తులేని i = 0; i < n; i++) d.masks[i] = all;
+    తిరిగి d;
   }
 
-  void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  శూన్య union_ (స్థిరరాశి hb_సమితి_digest_t &o)
+  { కొరకు (గుర్తులేని i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  తార్కిక కూడు_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    bool ret;
+    తార్కిక ret;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
-	ret = true;
-    if (!ret) return false;
+    ret = అబద్ధం;
+    కొరకు (గుర్తులేని i = 0; i < n; i++)
+      ఒకవేళ (masks[i] != all)
+	ret = నిజం;
+    ఒకవేళ (!ret) తిరిగి అబద్ధం;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
+    ret = అబద్ధం;
+    కొరకు (గుర్తులేని i = 0; i < n; i++)
     {
-      mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      ముసుగు_t జరుపు = hb_సమితి_digest_shifts[i];
+      ఒకవేళ ((b >> జరుపు) - (a >> జరుపు) >= mb1)
 	masks[i] = all;
-      else
+      లేకపోతే
       {
-	mask_t ma = one << ((a >> shift) & mb1);
-	mask_t mb = one << ((b >> shift) & mb1);
+	ముసుగు_t ma = one << ((a >> జరుపు) & mb1);
+	ముసుగు_t mb = one << ((b >> జరుపు) & mb1);
 	masks[i] |= mb + (mb - ma) - (mb < ma);
-	ret = true;
+	ret = నిజం;
       }
     }
-    return ret;
+    తిరిగి ret;
   }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      add (*array);
-      array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
+      కూడు (*array);
+      array = &Struct_At_స్థానభ్రంశం_Unaligned<T> ((స్థిరరాశి శూన్య *) array, stride);
     }
   }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_array (స్థిరరాశి hb_array_t<స్థిరరాశి T>& arr) { కూడు_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  తార్కిక కూడు_sorted_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
   {
-    add_array (array, count, stride);
-    return true;
+    కూడు_array (array, లెక్క, stride);
+    తిరిగి నిజం;
   }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  తార్కిక కూడు_sorted_array (స్థిరరాశి hb_sorted_array_t<స్థిరరాశి T>& arr) { తిరిగి కూడు_sorted_array (&arr, arr.len ()); }
 
-  bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  తార్కిక క్రియాకారకం [] (hb_codepoint_t g) స్థిరరాశి
+  { తిరిగి may_have (g); }
 
 
-  void add (hb_codepoint_t g)
+  శూన్య కూడు (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
-      masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
+    కొరకు (గుర్తులేని i = 0; i < n; i++)
+      masks[i] |= one << ((g >> hb_సమితి_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
-  bool may_have (hb_codepoint_t g) const
+  తార్కిక may_have (hb_codepoint_t g) స్థిరరాశి
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    కొరకు (గుర్తులేని i = 0; i < n; i++)
+      ఒకవేళ (!(masks[i] & (one << ((g >> hb_సమితి_digest_shifts[i]) & mb1))))
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  bool may_intersect (const hb_set_digest_t &o) const
+  తార్కిక may_intersect (స్థిరరాశి hb_సమితి_digest_t &o) స్థిరరాశి
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    కొరకు (గుర్తులేని i = 0; i < n; i++)
+      ఒకవేళ (!(masks[i] & o.masks[i]))
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  private:
+  అంతరంగ:
 
-  mask_t masks[n] = {};
+  ముసుగు_t masks[n] = {};
 };
 
 
-#endif /* HB_SET_DIGEST_HH */
+#అయితే_ముగింపు /* HB_SET_DIGEST_HH */

@@ -1,328 +1,328 @@
-#ifndef OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
-#define OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
+#నిర్వచించు OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
 
-#include "Common.hh"
+#అన్తర్భావ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-template <typename Types>
-struct ReverseChainSingleSubstFormat1_2
+మూస <రకం_పేరు Types>
+నిర్మాణం తిరగేయి_Chain_Single_Subst_Format1_2
 {
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  రకం_పేరు Types::మూస LOffset_గమ్యం<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of table */
-  Array16Of<typename Types::template OffsetTo<Coverage>>
+  Array16_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Coverage>>
                 backtrack;              /* Array of coverage tables
                                          * in backtracking sequence, in glyph
                                          * sequence order */
   /* Format 2 widens the backtrack and lookahead coverage offsets but
    * keeps their counts 16-bit. */
-  Array16Of<typename Types::template OffsetTo<Coverage>>
+  Array16_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Coverage>>
                 lookaheadX;             /* Array of coverage tables
                                          * in lookahead sequence, in glyph
                                          * sequence order */
-  typename Types::template ArrayOf<typename Types::HBGlyphID>
+  రకం_పేరు Types::మూస Array_యొక్క<రకం_పేరు Types::HBGlyphID>
                 substituteX;            /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_MIN (6 + Types::LOffset::static_size + Types::HBUINT::static_size);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (6 + Types::LOffset::static_కొలత + Types::HBUINT::static_కొలత);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!(coverage.sanitize (c, this) && backtrack.sanitize (c, this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!(coverage.sanitize (c, ఇది) && backtrack.sanitize (c, ఇది)))
+      return_trace (అబద్ధం);
     hb_barrier ();
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    if (!lookahead.sanitize (c, this))
-      return_trace (false);
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    ఒకవేళ (!lookahead.sanitize (c, ఇది))
+      return_trace (అబద్ధం);
     hb_barrier ();
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    స్థిరరాశి స్వయంచాలక &substitute = StructAfter<decltype (substituteX)> (lookahead);
     return_trace (substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    ఒకవేళ (!(ఇది+coverage).intersects (glyphs))
+      తిరిగి అబద్ధం;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
 
-    unsigned int count;
+    గుర్తులేని పూర్ణాంకం లెక్క;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+backtrack[i]).intersects (glyphs))
-        return false;
+    లెక్క = backtrack.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!(ఇది+backtrack[i]).intersects (glyphs))
+        తిరిగి అబద్ధం;
 
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+lookahead[i]).intersects (glyphs))
-        return false;
+    లెక్క = lookahead.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!(ఇది+lookahead[i]).intersects (glyphs))
+        తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  తార్కిక may_have_non_1to1 () స్థిరరాశి
+  { తిరిగి అబద్ధం; }
 
-  void depend (hb_depend_context_t *c) const {
+  శూన్య depend (hb_depend_context_t *c) స్థిరరాశి {
     // Filter by intersects and parent_active_glyphs like closure does
-    if (!intersects (c->glyphs)) return;
+    ఒకవేళ (!intersects (c->glyphs)) తిరిగి;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    స్థిరరాశి స్వయంచాలక &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
     /* Build context set from backtrack and lookahead coverages.
      * ReverseChainSingleSubst has contextual requirements - the substitution
      * only fires when backtrack and lookahead glyphs are present. */
-    hb_set_t context_glyphs;
+    hb_సమితి_t context_glyphs;
 
     /* Add glyphs from backtrack coverages */
-    unsigned int count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = backtrack.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      hb_set_t back_glyphs;
-      (this+backtrack[i]).intersect_set (*c->glyphs, back_glyphs);
-      if (back_glyphs.get_population () == 1)
-        context_glyphs.add (back_glyphs.get_min ());
-      else if (back_glyphs.get_population () > 1)
+      hb_సమితి_t వెనుక_glyphs;
+      (ఇది+backtrack[i]).intersect_సమితి (*c->glyphs, వెనుక_glyphs);
+      ఒకవేళ (వెనుక_glyphs.get_population () == 1)
+        context_glyphs.కూడు (వెనుక_glyphs.get_min ());
+      లేకపోతే ఒకవేళ (వెనుక_glyphs.get_population () > 1)
       {
-        hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (back_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
-        context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+        hb_codepoint_t సమితి_idx = c->depend_దత్తాంశం->కనుగొను_or_create_context_సమితి (వెనుక_glyphs);
+        ఒకవేళ (unlikely (సమితి_idx == HB_CODEPOINT_INVALID))
+          తిరిగి;
+        context_glyphs.కూడు (HB_DEPEND_CONTEXT_సమితి_FLAG | సమితి_idx);
       }
     }
 
     /* Add glyphs from lookahead coverages */
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    లెక్క = lookahead.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      hb_set_t look_glyphs;
-      (this+lookahead[i]).intersect_set (*c->glyphs, look_glyphs);
-      if (look_glyphs.get_population () == 1)
-        context_glyphs.add (look_glyphs.get_min ());
-      else if (look_glyphs.get_population () > 1)
+      hb_సమితి_t look_glyphs;
+      (ఇది+lookahead[i]).intersect_సమితి (*c->glyphs, look_glyphs);
+      ఒకవేళ (look_glyphs.get_population () == 1)
+        context_glyphs.కూడు (look_glyphs.get_min ());
+      లేకపోతే ఒకవేళ (look_glyphs.get_population () > 1)
       {
-        hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (look_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
-        context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+        hb_codepoint_t సమితి_idx = c->depend_దత్తాంశం->కనుగొను_or_create_context_సమితి (look_glyphs);
+        ఒకవేళ (unlikely (సమితి_idx == HB_CODEPOINT_INVALID))
+          తిరిగి;
+        context_glyphs.కూడు (HB_DEPEND_CONTEXT_సమితి_FLAG | సమితి_idx);
       }
     }
 
     /* Allocate context set and save/restore around edge creation */
-    if (unlikely (context_glyphs.in_error ()))
+    ఒకవేళ (unlikely (context_glyphs.లోపల_error ()))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_దత్తాంశం->fail ();
+      తిరిగి;
     }
-    hb_codepoint_t context_set_idx = context_glyphs.is_empty ()
+    hb_codepoint_t context_సమితి_idx = context_glyphs.is_empty ()
       ? HB_CODEPOINT_INVALID
-      : c->depend_data->find_or_create_context_set (context_glyphs);
-    if (unlikely (!context_glyphs.is_empty () &&
-                  context_set_idx == HB_CODEPOINT_INVALID))
-      return;
+      : c->depend_దత్తాంశం->కనుగొను_or_create_context_సమితి (context_glyphs);
+    ఒకవేళ (unlikely (!context_glyphs.is_empty () &&
+                  context_సమితి_idx == HB_CODEPOINT_INVALID))
+      తిరిగి;
 
-    hb_codepoint_t saved_context = c->depend_data->current_context_set_index;
-    c->depend_data->current_context_set_index = context_set_idx;
+    hb_codepoint_t saved_context = c->depend_దత్తాంశం->current_context_సమితి_సూచీ;
+    c->depend_దత్తాంశం->current_context_సమితి_సూచీ = context_సమితి_idx;
 
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    + hb_zip (ఇది+coverage, substitute)
+    | hb_filter (c->మాతృ_చురుకైన_glyphs (), hb_మొదటి)
+    | hb_apply ([&] (స్థిరరాశి hb_codepoint_pair_t &_) { c->depend_దత్తాంశం->కూడు_gsub_lookup (_.మొదటి, c->lookup_సూచీ, _.second); })
     ;
 
-    c->depend_data->current_context_set_index = saved_context;
+    c->depend_దత్తాంశం->current_context_సమితి_సూచీ = saved_context;
   }
 
-  void closure (hb_closure_context_t *c) const
+  శూన్య సంవృతం (hb_సంవృతం_context_t *c) స్థిరరాశి
   {
-    if (!intersects (c->glyphs)) return;
+    ఒకవేళ (!intersects (c->glyphs)) తిరిగి;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    స్థిరరాశి స్వయంచాలక &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_map (hb_second)
+    + hb_zip (ఇది+coverage, substitute)
+    | hb_filter (c->మాతృ_చురుకైన_glyphs (), hb_మొదటి)
+    | hb_map (hb_రెండవ)
     | hb_sink (c->output)
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  శూన్య సంవృతం_lookups (hb_సంవృతం_lookups_context_t *c) స్థిరరాశి {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  శూన్య collect_glyphs (hb_collect_glyphs_context_t *c) స్థిరరాశి
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    ఒకవేళ (unlikely (!(ఇది+coverage).collect_coverage (c->ఆదానం))) తిరిగి;
 
-    unsigned int count;
+    గుర్తులేని పూర్ణాంకం లెక్క;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+backtrack[i]).collect_coverage (c->before))) return;
+    లెక్క = backtrack.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (unlikely (!(ఇది+backtrack[i]).collect_coverage (c->before))) తిరిగి;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+lookahead[i]).collect_coverage (c->after))) return;
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    లెక్క = lookahead.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (unlikely (!(ఇది+lookahead[i]).collect_coverage (c->after))) తిరిగి;
 
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
-    count = substitute.len;
-    c->output->add_array (substitute.arrayZ, substitute.len);
+    స్థిరరాశి స్వయంచాలక &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    లెక్క = substitute.len;
+    c->output->కూడు_array (substitute.arrayZ, substitute.len);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  స్థిరరాశి Coverage &get_coverage () స్థిరరాశి { తిరిగి ఇది+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  తార్కిక would_apply (hb_would_apply_context_t *c) స్థిరరాశి
+  { తిరిగి c->len == 1 && (ఇది+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  తార్కిక apply (hb_ot_apply_context_t *c) స్థిరరాశి
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur ().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ఇది);
+    గుర్తులేని పూర్ణాంకం సూచీ_2 = (ఇది+coverage).get_coverage (c->బఫరు->cur ().codepoint);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED) return_trace (అబద్ధం);
 
-    if (unlikely (c->nesting_level_left != HB_MAX_NESTING_LEVEL))
-      return_trace (false); /* No chaining to this type */
+    ఒకవేళ (unlikely (c->nesting_level_ఎడమ != HB_MAX_NESTING_LEVEL))
+      return_trace (అబద్ధం); /* No chaining to this type */
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    స్థిరరాశి స్వయంచాలక &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    ఒకవేళ (unlikely (సూచీ_2 >= substitute.len)) return_trace (అబద్ధం);
 
-    unsigned int start_index = 0, end_index = 0;
-    if (match_backtrack (c,
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_సూచీ = 0, చివర_సూచీ = 0;
+    ఒకవేళ (సరిపోలిక_backtrack (c,
                          backtrack.len, backtrack.arrayZ,
-                         match_coverage, this,
-                         &start_index) &&
-        match_lookahead (c,
+                         సరిపోలిక_coverage, ఇది,
+                         &ప్రారంభం_సూచీ) &&
+        సరిపోలిక_lookahead (c,
                          lookahead.len, lookahead.arrayZ,
-                         match_coverage, this,
-                         c->buffer->idx + 1, &end_index))
+                         సరిపోలిక_coverage, ఇది,
+                         c->బఫరు->idx + 1, &చివర_సూచీ))
     {
-      c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
+      c->బఫరు->unsafe_గమ్యం_break_from_outbuffer (ప్రారంభం_సూచీ, చివర_సూచీ);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->message (c->font,
+	c->బఫరు->సందేశం (c->font,
 			    "replacing glyph at %u (reverse chaining substitution)",
-			    c->buffer->idx);
+			    c->బఫరు->idx);
       }
 
-      c->replace_glyph_inplace (substitute[index]);
+      c->replace_glyph_inplace (substitute[సూచీ_2]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ఒకవేళ (HB_బఫరు_సందేశం_మరిన్ని && c->బఫరు->messaging ())
       {
-	c->buffer->message (c->font,
+	c->బఫరు->సందేశం (c->font,
 			    "replaced glyph at %u (reverse chaining substitution)",
-			    c->buffer->idx);
+			    c->బఫరు->idx);
       }
 
       /* Note: We DON'T decrease buffer->idx.  The main loop does it
        * for us.  This is useful for preventing surprises if someone
        * calls us through a Context lookup. */
-      return_trace (true);
+      return_trace (నిజం);
     }
-    else
+    లేకపోతే
     {
-      c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
-      return_trace (false);
+      c->బఫరు->unsafe_గమ్యం_concat_from_outbuffer (ప్రారంభం_సూచీ, చివర_సూచీ);
+      return_trace (అబద్ధం);
     }
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_coverage_offset_array (hb_subset_context_t *c, Iterator it) const
+  తార్కిక serialize_coverage_స్థానభ్రంశం_array (hb_subset_context_t *c, Iterator it) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed<Array16_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Coverage>>> ();
+    ఒకవేళ (unlikely (!బహిర్గతం->serialize (c->serializer, 0u))) return_trace (అబద్ధం);
 
-    for (auto& offset : it) {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
-        return_trace (false);
+    కొరకు (స్వయంచాలక& స్థానభ్రంశం : it) {
+      స్వయంచాలక *o = బహిర్గతం->serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!o) || !o->serialize_subset (c, స్థానభ్రంశం, ఇది))
+        return_trace (అబద్ధం);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template<typename Iterator, typename BacktrackIterator, typename LookaheadIterator,
-           hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_pair_t)),
+  మూస<రకం_పేరు Iterator, రకం_పేరు BacktrackIterator, రకం_పేరు LookaheadIterator,
+           hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_pair_t)),
            hb_requires (hb_is_iterator (BacktrackIterator)),
            hb_requires (hb_is_iterator (LookaheadIterator))>
-  bool serialize (hb_subset_context_t *c,
+  తార్కిక serialize (hb_subset_context_t *c,
                   Iterator coverage_subst_iter,
                   BacktrackIterator backtrack_iter,
-                  LookaheadIterator lookahead_iter) const
+                  LookaheadIterator lookahead_iter) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->coverage))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!c->serializer->embed (ఇది->format))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->serializer->embed (ఇది->coverage))) return_trace (అబద్ధం);
 
-    if (!serialize_coverage_offset_array (c, backtrack_iter)) return_trace (false);
-    if (!serialize_lookahead_coverage_offset_array (c, lookahead_iter)) return_trace (false);
+    ఒకవేళ (!serialize_coverage_స్థానభ్రంశం_array (c, backtrack_iter)) return_trace (అబద్ధం);
+    ఒకవేళ (!serialize_lookahead_coverage_స్థానభ్రంశం_array (c, lookahead_iter)) return_trace (అబద్ధం);
 
-    auto *substitute_out = c->serializer->start_embed<typename Types::template ArrayOf<typename Types::HBGlyphID>> ();
-    auto substitutes =
+    స్వయంచాలక *substitute_బహిర్గతం = c->serializer->ప్రారంభం_embed<రకం_పేరు Types::మూస Array_యొక్క<రకం_పేరు Types::HBGlyphID>> ();
+    స్వయంచాలక substitutes =
     + coverage_subst_iter
-    | hb_map (hb_second)
+    | hb_map (hb_రెండవ)
     ;
 
-    auto glyphs =
+    స్వయంచాలక glyphs =
     + coverage_subst_iter
-    | hb_map_retains_sorting (hb_first)
+    | hb_map_retains_క్రమీకరణ (hb_మొదటి)
     ;
-    if (unlikely (! c->serializer->check_success (substitute_out->serialize (c->serializer, substitutes))))
-        return_trace (false);
+    ఒకవేళ (unlikely (! c->serializer->check_success (substitute_బహిర్గతం->serialize (c->serializer, substitutes))))
+        return_trace (అబద్ధం);
 
-    if (unlikely (!out->coverage.serialize_serialize (c->serializer, glyphs)))
-      return_trace (false);
-    return_trace (true);
+    ఒకవేళ (unlikely (!బహిర్గతం->coverage.serialize_serialize (c->serializer, glyphs)))
+      return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyphset = *c->plan->glyphset_gsub ();
+    స్థిరరాశి hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    స్థిరరాశి స్వయంచాలక &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    స్థిరరాశి స్వయంచాలక &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    auto it =
-    + hb_zip (this+coverage, substitute)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    స్వయంచాలక it =
+    + hb_zip (ఇది+coverage, substitute)
+    | hb_filter (glyphset, hb_మొదటి)
+    | hb_filter (glyphset, hb_రెండవ)
+    | hb_map_retains_క్రమీకరణ ([&] (hb_pair_t<hb_codepoint_t, స్థిరరాశి రకం_పేరు Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { తిరిగి hb_pair (glyph_map[p.మొదటి], glyph_map[p.second]); })
     ;
 
-    return_trace (bool (it) && serialize (c, it, backtrack.iter (), lookahead.iter ()));
+    return_trace (తార్కిక (it) && serialize (c, it, backtrack.iter (), lookahead.iter ()));
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_lookahead_coverage_offset_array (hb_subset_context_t *c, Iterator it) const
+  తార్కిక serialize_lookahead_coverage_స్థానభ్రంశం_array (hb_subset_context_t *c, Iterator it) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed<Array16_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Coverage>>> ();
+    ఒకవేళ (unlikely (!బహిర్గతం->serialize (c->serializer, 0u))) return_trace (అబద్ధం);
 
-    for (auto& offset : it) {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
-        return_trace (false);
+    కొరకు (స్వయంచాలక& స్థానభ్రంశం : it) {
+      స్వయంచాలక *o = బహిర్గతం->serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!o) || !o->serialize_subset (c, స్థానభ్రంశం, ఇది))
+        return_trace (అబద్ధం);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 };
 
@@ -330,4 +330,4 @@ struct ReverseChainSingleSubstFormat1_2
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH */
+#అయితే_ముగింపు  /* HB_OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH */

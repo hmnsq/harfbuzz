@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
 
-#include "hb-ot-var.h"
+#అన్తర్భావ "hb-ot-var.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
+#అన్తర్భావ "hb-ot-var-avar-table.hh"
+#అన్తర్భావ "hb-ot-var-fvar-table.hh"
+#అన్తర్భావ "hb-ot-var-mvar-table.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 1.4.2
  **/
 hb_bool_t
-hb_ot_var_has_data (hb_face_t *face)
+hb_ot_var_has_దత్తాంశం (hb_face_t *face)
 {
-  return face->table.fvar->has_data ();
+  తిరిగి face->పట్టిక.fvar->has_దత్తాంశం ();
 }
 
 /**
@@ -76,13 +76,13 @@ hb_ot_var_has_data (hb_face_t *face)
  *
  * Since: 1.4.2
  **/
-unsigned int
-hb_ot_var_get_axis_count (hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_ot_var_get_axis_లెక్క (hb_face_t *face)
 {
-  return face->table.fvar->get_axis_count ();
+  తిరిగి face->పట్టిక.fvar->get_axis_లెక్క ();
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /**
  * hb_ot_var_get_axes:
  * @face: #hb_face_t to work upon
@@ -97,13 +97,13 @@ hb_ot_var_get_axis_count (hb_face_t *face)
  * Since: 1.4.2
  * Deprecated: 2.2.0: use hb_ot_var_get_axis_infos() instead
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_var_get_axes (hb_face_t        *face,
-		    unsigned int      start_offset,
-		    unsigned int     *axes_count /* IN/OUT */,
-		    hb_ot_var_axis_t *axes_array /* OUT */)
+		    గుర్తులేని పూర్ణాంకం      ప్రారంభం_స్థానభ్రంశం,
+		    గుర్తులేని పూర్ణాంకం     *axes_లెక్క /* IN/OUT */,
+		    hb_ot_var_axis_t *axes_array /*బహిర్గతం*/)
 {
-  return face->table.fvar->get_axes_deprecated (start_offset, axes_count, axes_array);
+  తిరిగి face->పట్టిక.fvar->get_axes_deprecated (ప్రారంభం_స్థానభ్రంశం, axes_లెక్క, axes_array);
 }
 
 /**
@@ -120,14 +120,14 @@ hb_ot_var_get_axes (hb_face_t        *face,
  * Deprecated: 2.2.0: use hb_ot_var_find_axis_info() instead
  **/
 hb_bool_t
-hb_ot_var_find_axis (hb_face_t        *face,
-		     hb_tag_t          axis_tag,
-		     unsigned int     *axis_index,
+hb_ot_var_కనుగొను_axis (hb_face_t        *face,
+		     hb_ట్యాగ్_t          axis_ట్యాగ్_2,
+		     గుర్తులేని పూర్ణాంకం     *axis_సూచీ,
 		     hb_ot_var_axis_t *axis_info)
 {
-  return face->table.fvar->find_axis_deprecated (axis_tag, axis_index, axis_info);
+  తిరిగి face->పట్టిక.fvar->కనుగొను_axis_deprecated (axis_ట్యాగ్_2, axis_సూచీ, axis_info);
 }
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_ot_var_get_axis_infos:
@@ -144,13 +144,13 @@ hb_ot_var_find_axis (hb_face_t        *face,
  *
  * Since: 2.2.0
  **/
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_var_get_axis_infos (hb_face_t             *face,
-			  unsigned int           start_offset,
-			  unsigned int          *axes_count /* IN/OUT */,
-			  hb_ot_var_axis_info_t *axes_array /* OUT */)
+			  గుర్తులేని పూర్ణాంకం           ప్రారంభం_స్థానభ్రంశం,
+			  గుర్తులేని పూర్ణాంకం          *axes_లెక్క /* IN/OUT */,
+			  hb_ot_var_axis_info_t *axes_array /*బహిర్గతం*/)
 {
-  return face->table.fvar->get_axis_infos (start_offset, axes_count, axes_array);
+  తిరిగి face->పట్టిక.fvar->get_axis_infos (ప్రారంభం_స్థానభ్రంశం, axes_లెక్క, axes_array);
 }
 
 /**
@@ -167,11 +167,11 @@ hb_ot_var_get_axis_infos (hb_face_t             *face,
  * Since: 2.2.0
  **/
 HB_EXTERN hb_bool_t
-hb_ot_var_find_axis_info (hb_face_t             *face,
-			  hb_tag_t               axis_tag,
+hb_ot_var_కనుగొను_axis_info (hb_face_t             *face,
+			  hb_ట్యాగ్_t               axis_ట్యాగ్_2,
 			  hb_ot_var_axis_info_t *axis_info)
 {
-  return face->table.fvar->find_axis_info (axis_tag, axis_info);
+  తిరిగి face->పట్టిక.fvar->కనుగొను_axis_info (axis_ట్యాగ్_2, axis_info);
 }
 
 
@@ -189,10 +189,10 @@ hb_ot_var_find_axis_info (hb_face_t             *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
-hb_ot_var_get_named_instance_count (hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_ot_var_get_named_instance_లెక్క (hb_face_t *face)
 {
-  return face->table.fvar->get_instance_count ();
+  తిరిగి face->పట్టిక.fvar->get_instance_లెక్క ();
 }
 
 /**
@@ -209,9 +209,9 @@ hb_ot_var_get_named_instance_count (hb_face_t *face)
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
-						unsigned int instance_index)
+						గుర్తులేని పూర్ణాంకం instance_సూచీ)
 {
-  return face->table.fvar->get_instance_subfamily_name_id (instance_index);
+  తిరిగి face->పట్టిక.fvar->get_instance_subfamily_name_id (instance_సూచీ);
 }
 
 /**
@@ -228,9 +228,9 @@ hb_ot_var_named_instance_get_subfamily_name_id (hb_face_t   *face,
  **/
 hb_ot_name_id_t
 hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
-						unsigned int instance_index)
+						గుర్తులేని పూర్ణాంకం instance_సూచీ)
 {
-  return face->table.fvar->get_instance_postscript_name_id (instance_index);
+  తిరిగి face->పట్టిక.fvar->get_instance_postscript_name_id (instance_సూచీ);
 }
 
 /**
@@ -248,13 +248,13 @@ hb_ot_var_named_instance_get_postscript_name_id (hb_face_t  *face,
  *
  * Since: 2.2.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
-					    unsigned int  instance_index,
-					    unsigned int *coords_length, /* IN/OUT */
-					    float        *coords         /* OUT */)
+					    గుర్తులేని పూర్ణాంకం  instance_సూచీ,
+					    గుర్తులేని పూర్ణాంకం *coords_నిడివి, /* IN/OUT */
+					    దశాంశం        *coords         /*బహిర్గతం*/)
 {
-  return face->table.fvar->get_instance_coords (instance_index, coords_length, coords);
+  తిరిగి face->పట్టిక.fvar->get_instance_coords (instance_సూచీ, coords_నిడివి, coords);
 }
 
 
@@ -270,29 +270,29 @@ hb_ot_var_named_instance_get_design_coords (hb_face_t    *face,
  *
  * Since: 1.4.2
  **/
-void
+శూన్య
 hb_ot_var_normalize_variations (hb_face_t            *face,
-				const hb_variation_t *variations, /* IN */
-				unsigned int          variations_length,
-				int                  *coords, /* OUT */
-				unsigned int          coords_length)
+				స్థిరరాశి hb_variation_t *variations, /*లోపల*/
+				గుర్తులేని పూర్ణాంకం          variations_నిడివి,
+				పూర్ణాంకం                  *coords, /*బహిర్గతం*/
+				గుర్తులేని పూర్ణాంకం          coords_నిడివి)
 {
-  for (unsigned int i = 0; i < coords_length; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < coords_నిడివి; i++)
     coords[i] = 0;
 
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < variations_length; i++)
+  స్థిరరాశి OT::fvar &fvar = *face->పట్టిక.fvar;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < variations_నిడివి; i++)
   {
     hb_ot_var_axis_info_t info;
-    if (hb_ot_var_find_axis_info (face, variations[i].tag, &info) &&
-	info.axis_index < coords_length)
-      coords[info.axis_index] = roundf (fvar.normalize_axis_value (info.axis_index, variations[i].value) * 65536.0f);
+    ఒకవేళ (hb_ot_var_కనుగొను_axis_info (face, variations[i].ట్యాగ్_2, &info) &&
+	info.axis_సూచీ < coords_నిడివి)
+      coords[info.axis_సూచీ] = roundf (fvar.normalize_axis_విలువ (info.axis_సూచీ, variations[i].value) * 65536.0f);
   }
 
-  face->table.avar->map_coords_16_16 (coords, coords_length);
+  face->పట్టిక.avar->map_coords_16_16 (coords, coords_నిడివి);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  కొరకు (గుర్తులేని i = 0; i < coords_నిడివి; i++)
     coords[i] = (coords[i] + 2) >> 2;
 }
 
@@ -319,22 +319,22 @@ hb_ot_var_normalize_variations (hb_face_t            *face,
  *
  * Since: 1.4.2
  **/
-void
+శూన్య
 hb_ot_var_normalize_coords (hb_face_t    *face,
-			    unsigned int coords_length,
-			    const float *design_coords, /* IN */
-			    int *normalized_coords /* OUT */)
+			    గుర్తులేని పూర్ణాంకం coords_నిడివి,
+			    స్థిరరాశి దశాంశం *design_coords, /*లోపల*/
+			    పూర్ణాంకం *normalized_coords /*బహిర్గతం*/)
 {
-  const OT::fvar &fvar = *face->table.fvar;
-  for (unsigned int i = 0; i < coords_length; i++)
-    normalized_coords[i] = roundf (fvar.normalize_axis_value (i, design_coords[i]) * 65536.0f);
+  స్థిరరాశి OT::fvar &fvar = *face->పట్టిక.fvar;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < coords_నిడివి; i++)
+    normalized_coords[i] = roundf (fvar.normalize_axis_విలువ (i, design_coords[i]) * 65536.0f);
 
-  face->table.avar->map_coords_16_16 (normalized_coords, coords_length);
+  face->పట్టిక.avar->map_coords_16_16 (normalized_coords, coords_నిడివి);
 
   // Round to 2.14
-  for (unsigned i = 0; i < coords_length; i++)
+  కొరకు (గుర్తులేని i = 0; i < coords_నిడివి; i++)
     normalized_coords[i] = (normalized_coords[i] + 2) >> 2;
 }
 
 
-#endif
+#అయితే_ముగింపు

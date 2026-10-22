@@ -24,506 +24,506 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_MARKBASEPOS_GRAPH_HH
-#define GRAPH_MARKBASEPOS_GRAPH_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_MARKBASEPOS_లేఖాచిత్రం_HH
+#నిర్వచించు లేఖాచిత్రం_MARKBASEPOS_లేఖాచిత్రం_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "../OT/Layout/GPOS/MarkBasePos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#అన్తర్భావ "split-helpers.hh"
+#అన్తర్భావ "coverage-graph.hh"
+#అన్తర్భావ "../OT/Layout/GPOS/MarkBasePos.hh"
+#అన్తర్భావ "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
+నిర్మాణం Anchor_మాతృక : బహిరంగ OT::Layout::GPOS_impl::Anchor_మాతృక<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex, unsigned class_count) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం, గుర్తులేని class_లెక్క) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < AnchorMatrix::min_size)) return Err(SANITIZE_FAILURE);
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత();
+    ఒకవేళ (unlikely (శీర్షం_len < Anchor_మాతృక::min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < AnchorMatrix::min_size +
-                  OT::Offset16::static_size * class_count * this->rows))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ఒకవేళ (unlikely (శీర్షం_len < Anchor_మాతృక::min_కొలత +
+                  OT::Offset16::static_కొలత * class_లెక్క * ఇది->అడ్డువరుసలు))
+      తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned old_class_count,
-                               unsigned new_class_count)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> shrink (gsubgpos_లేఖాచిత్రం_context_t& c,
+                               గుర్తులేని this_సూచీ,
+                               గుర్తులేని old_class_లెక్క,
+                               గుర్తులేని new_class_లెక్క)
   {
-    if (unlikely (new_class_count >= old_class_count)) return Err(INVALID_ARGUMENT);
-    auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
-    unsigned base_count = rows;
-    v.set_buffer (o.head,
-      o.head +
-      AnchorMatrix::min_size +
-      OT::Offset16::static_size * base_count * new_class_count);
+    ఒకవేళ (unlikely (new_class_లెక్క >= old_class_లెక్క)) తిరిగి Err(INVALID_వాదం);
+    స్వయంచాలక& v = c.లేఖాచిత్రం.vertices_[this_సూచీ];
+    స్థిరరాశి స్వయంచాలక& o = v.obj ();
+    గుర్తులేని పునాది_లెక్క = అడ్డువరుసలు;
+    v.సమితి_బఫరు (o.తల_2,
+      o.తల_2 +
+      Anchor_మాతృక::min_కొలత +
+      OT::Offset16::static_కొలత * పునాది_లెక్క * new_class_లెక్క);
 
     // Reposition links into the new indexing scheme.
-    for (auto& link : v.real_links_writer ())
+    కొరకు (స్వయంచాలక& link : v.real_links_writer ())
     {
-      unsigned index = (link.position - 2) / 2;
-      unsigned base = index / old_class_count;
-      unsigned klass = index % old_class_count;
-      if (unlikely (klass >= new_class_count))
+      గుర్తులేని సూచీ_2 = (link.position - 2) / 2;
+      గుర్తులేని పునాది = సూచీ_2 / old_class_లెక్క;
+      గుర్తులేని klass = సూచీ_2 % old_class_లెక్క;
+      ఒకవేళ (unlikely (klass >= new_class_లెక్క))
         // should have already been removed
-        return Err(INVALID_ARGUMENT);
+        తిరిగి Err(INVALID_వాదం);
 
-      unsigned new_index = base * new_class_count + klass;
+      గుర్తులేని new_సూచీ = పునాది * new_class_లెక్క + klass;
 
-      link.position = (char*) &(this->matrixZ[new_index]) - (char*) this;
+      link.position = (అక్షరం*) &(ఇది->మాతృక_Z[new_సూచీ]) - (అక్షరం*) ఇది;
     }
 
-    return Ok();
+    తిరిగి Ok();
   }
 
-  graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
-                                  unsigned this_index,
-                                  unsigned start,
-                                  unsigned end,
-                                  unsigned class_count)
+  లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> clone (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                  గుర్తులేని this_సూచీ,
+                                  గుర్తులేని ప్రారంభం,
+                                  గుర్తులేని చివర,
+                                  గుర్తులేని class_లెక్క)
   {
-    unsigned base_count = rows;
-    unsigned new_class_count = end - start;
-    unsigned size = AnchorMatrix::min_size +
-                    OT::Offset16::static_size * new_class_count * rows;
-    TRY_ASSIGN (unsigned prime_id, c.create_node (size));
-    AnchorMatrix* prime = (AnchorMatrix*) c.graph.object (prime_id).head;
-    prime->rows = base_count;
+    గుర్తులేని పునాది_లెక్క = అడ్డువరుసలు;
+    గుర్తులేని new_class_లెక్క = చివర - ప్రారంభం;
+    గుర్తులేని కొలత = Anchor_మాతృక::min_కొలత +
+                    OT::Offset16::static_కొలత * new_class_లెక్క * అడ్డువరుసలు;
+    TRY_కేటాయించు (గుర్తులేని ప్రధానసంఖ్య_id, c.create_కణుపు (కొలత));
+    Anchor_మాతృక* ప్రధానసంఖ్య = (Anchor_మాతృక*) c.లేఖాచిత్రం.object (ప్రధానసంఖ్య_id).తల_2;
+    ప్రధానసంఖ్య->అడ్డువరుసలు = పునాది_లెక్క;
 
-    auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
+    స్వయంచాలక& v = c.లేఖాచిత్రం.vertices_[this_సూచీ];
+    స్థిరరాశి స్వయంచాలక& o = v.obj ();
 
-    int num_links = o.real_links.length;
-    for (int i = 0; i < num_links; i++)
+    పూర్ణాంకం అంకె_links = o.real_links.నిడివి;
+    కొరకు (పూర్ణాంకం i = 0; i < అంకె_links; i++)
     {
-      const auto& link = o.real_links[i];
-      unsigned old_index = (link.position - 2) / OT::Offset16::static_size;
-      unsigned klass = old_index % class_count;
-      if (klass < start || klass >= end) continue;
+      స్థిరరాశి స్వయంచాలక& link = o.real_links[i];
+      గుర్తులేని old_సూచీ = (link.position - 2) / OT::Offset16::static_కొలత;
+      గుర్తులేని klass = old_సూచీ % class_లెక్క;
+      ఒకవేళ (klass < ప్రారంభం || klass >= చివర) కొనసాగు;
 
-      unsigned base = old_index / class_count;
-      unsigned new_klass = klass - start;
-      unsigned new_index = base * new_class_count + new_klass;
+      గుర్తులేని పునాది = old_సూచీ / class_లెక్క;
+      గుర్తులేని new_klass = klass - ప్రారంభం;
+      గుర్తులేని new_సూచీ = పునాది * new_class_లెక్క + new_klass;
 
 
-      unsigned child_idx = link.objidx;
-      TRY (c.graph.add_link (&(prime->matrixZ[new_index]),
-                             prime_id,
-                             child_idx));
+      గుర్తులేని బిడ్డ_idx = link.objidx;
+      TRY (c.లేఖాచిత్రం.కూడు_link (&(ప్రధానసంఖ్య->మాతృక_Z[new_సూచీ]),
+                             ప్రధానసంఖ్య_id,
+                             బిడ్డ_idx));
 
-      auto& child = c.graph.vertices_[child_idx];
-      child.remove_parent (this_index);
+      స్వయంచాలక& బిడ్డ = c.లేఖాచిత్రం.vertices_[బిడ్డ_idx];
+      బిడ్డ.remove_మాతృ (this_సూచీ);
 
       v.remove_real_link_unordered (i);
-      num_links--;
+      అంకె_links--;
       i--;
     }
 
     // Restore correct ordering after the above removes, which mess up link ordering.
-    v.sort_real_links ();
+    v.క్రమీకరించు_real_links ();
 
-    return Ok(prime_id);
+    తిరిగి Ok(ప్రధానసంఖ్య_id);
   }
 };
 
-struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
+నిర్మాణం MarkArray : బహిరంగ OT::Layout::GPOS_impl::MarkArray<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size();
-    unsigned min_size = MarkArray::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత();
+    గుర్తులేని min_కొలత = MarkArray::min_కొలత;
+    ఒకవేళ (unlikely (శీర్షం_len < min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    ఒకవేళ (unlikely (శీర్షం_len < get_కొలత ())) తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               const hb_hashmap_t<unsigned, unsigned>& mark_array_links,
-                               unsigned this_index,
-                               unsigned new_class_count)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> shrink (gsubgpos_లేఖాచిత్రం_context_t& c,
+                               స్థిరరాశి hb_hashmap_t<గుర్తులేని, గుర్తులేని>& mark_array_links,
+                               గుర్తులేని this_సూచీ,
+                               గుర్తులేని new_class_లెక్క)
   {
-    auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
-    for (const auto& link : o.real_links)
-      c.graph.vertices_[link.objidx].remove_parent (this_index);
+    స్వయంచాలక& v = c.లేఖాచిత్రం.vertices_[this_సూచీ];
+    స్థిరరాశి స్వయంచాలక& o = v.obj ();
+    కొరకు (స్థిరరాశి స్వయంచాలక& link : o.real_links)
+      c.లేఖాచిత్రం.vertices_[link.objidx].remove_మాతృ (this_సూచీ);
     v.clear_real_links ();
 
-    unsigned new_index = 0;
-    for (const auto& record : this->iter ())
+    గుర్తులేని new_సూచీ = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& రికార్డు : ఇది->iter ())
     {
-      unsigned klass = record.klass;
-      if (klass >= new_class_count) continue;
+      గుర్తులేని klass = రికార్డు.klass;
+      ఒకవేళ (klass >= new_class_లెక్క) కొనసాగు;
 
-      (*this)[new_index].klass = klass;
-      unsigned position = (char*) &record.markAnchor - (char*) this;
-      unsigned* objidx;
-      if (!mark_array_links.has (position, &objidx))
+      (*ఇది)[new_సూచీ].klass = klass;
+      గుర్తులేని position = (అక్షరం*) &రికార్డు.markAnchor - (అక్షరం*) ఇది;
+      గుర్తులేని* objidx;
+      ఒకవేళ (!mark_array_links.has (position, &objidx))
       {
-        new_index++;
-        continue;
+        new_సూచీ++;
+        కొనసాగు;
       }
 
-      TRY (c.graph.add_link (&(*this)[new_index].markAnchor, this_index, *objidx));
-      new_index++;
+      TRY (c.లేఖాచిత్రం.కూడు_link (&(*ఇది)[new_సూచీ].markAnchor, this_సూచీ, *objidx));
+      new_సూచీ++;
     }
 
-    this->len = new_index;
-    v.set_buffer (o.head, o.head + MarkArray::min_size +
-                  OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * new_index);
+    ఇది->len = new_సూచీ;
+    v.సమితి_బఫరు (o.తల_2, o.తల_2 + MarkArray::min_కొలత +
+                  OT::Layout::GPOS_impl::Mark_రికార్డు<SmallTypes>::static_కొలత * new_సూచీ);
 
-    return Ok();
+    తిరిగి Ok();
   }
 
-  graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
-                                  unsigned this_index,
-                                  const hb_hashmap_t<unsigned, unsigned>& pos_to_index,
-                                  hb_set_t& marks,
-                                  unsigned start_class)
+  లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> clone (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                  గుర్తులేని this_సూచీ,
+                                  స్థిరరాశి hb_hashmap_t<గుర్తులేని, గుర్తులేని>& pos_గమ్యం_సూచీ,
+                                  hb_సమితి_t& marks,
+                                  గుర్తులేని ప్రారంభం_class)
   {
-    unsigned size = MarkArray::min_size +
-                    OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size *
+    గుర్తులేని కొలత = MarkArray::min_కొలత +
+                    OT::Layout::GPOS_impl::Mark_రికార్డు<SmallTypes>::static_కొలత *
                     marks.get_population ();
-    TRY_ASSIGN (unsigned prime_id, c.create_node (size));
-    MarkArray* prime = (MarkArray*) c.graph.object (prime_id).head;
-    prime->len = marks.get_population ();
+    TRY_కేటాయించు (గుర్తులేని ప్రధానసంఖ్య_id, c.create_కణుపు (కొలత));
+    MarkArray* ప్రధానసంఖ్య = (MarkArray*) c.లేఖాచిత్రం.object (ప్రధానసంఖ్య_id).తల_2;
+    ప్రధానసంఖ్య->len = marks.get_population ();
 
 
-    unsigned i = 0;
-    for (hb_codepoint_t mark : marks)
+    గుర్తులేని i = 0;
+    కొరకు (hb_codepoint_t mark : marks)
     {
-      (*prime)[i].klass = (*this)[mark].klass - start_class;
-      unsigned offset_pos = (char*) &((*this)[mark].markAnchor) - (char*) this;
-      unsigned* anchor_index;
-      if (pos_to_index.has (offset_pos, &anchor_index))
-        TRY (c.graph.move_child (this_index,
-                                 &((*this)[mark].markAnchor),
-                                 prime_id,
-                                 &((*prime)[i].markAnchor)));
+      (*ప్రధానసంఖ్య)[i].klass = (*ఇది)[mark].klass - ప్రారంభం_class;
+      గుర్తులేని స్థానభ్రంశం_pos = (అక్షరం*) &((*ఇది)[mark].markAnchor) - (అక్షరం*) ఇది;
+      గుర్తులేని* anchor_సూచీ;
+      ఒకవేళ (pos_గమ్యం_సూచీ.has (స్థానభ్రంశం_pos, &anchor_సూచీ))
+        TRY (c.లేఖాచిత్రం.move_బిడ్డ (this_సూచీ,
+                                 &((*ఇది)[mark].markAnchor),
+                                 ప్రధానసంఖ్య_id,
+                                 &((*ప్రధానసంఖ్య)[i].markAnchor)));
 
       i++;
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    c.graph.vertices_[this_index].sort_real_links ();
+    c.లేఖాచిత్రం.vertices_[this_సూచీ].క్రమీకరించు_real_links ();
 
-    return Ok(prime_id);
+    తిరిగి Ok(ప్రధానసంఖ్య_id);
   }
 };
 
-struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
+నిర్మాణం Mark_పునాది_Pos_Format1 : బహిరంగ OT::Layout::GPOS_impl::Mark_పునాది_Pos_Format1_2<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < MarkBasePosFormat1::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (శీర్షం_len < Mark_పునాది_Pos_Format1::static_కొలత))
+      తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  లేఖాచిత్రం_ఫలితం_t<hb_సదిశ_t<గుర్తులేని>> విభజించు_subtables (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                         గుర్తులేని this_సూచీ)
   {
-    hb_set_t visited;
+    hb_సమితి_t సందర్శించిన;
 
-    TRY_ASSIGN (const unsigned base_coverage_id, c.graph.index_for_offset (this_index, &baseCoverage));
+    TRY_కేటాయించు (స్థిరరాశి గుర్తులేని పునాది_coverage_id, c.లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (this_సూచీ, &పునాది_Coverage));
 
-    const unsigned base_size =
-        OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::min_size +
-        MarkArray::min_size +
-        AnchorMatrix::min_size +
-        c.graph.vertices_[base_coverage_id].table_size ();
+    స్థిరరాశి గుర్తులేని పునాది_కొలత =
+        OT::Layout::GPOS_impl::Mark_పునాది_Pos_Format1_2<SmallTypes>::min_కొలత +
+        MarkArray::min_కొలత +
+        Anchor_మాతృక::min_కొలత +
+        c.లేఖాచిత్రం.vertices_[పునాది_coverage_id].పట్టిక_కొలత ();
 
-    TRY_ASSIGN (hb_vector_t<class_info_t> class_to_info, get_class_info (c, this_index));
+    TRY_కేటాయించు (hb_సదిశ_t<class_info_t> class_గమ్యం_info, get_class_info (c, this_సూచీ));
 
-    unsigned class_count = classCount;
-    TRY_ASSIGN (auto base_array, c.graph.as_table<AnchorMatrix> (this_index,
-                                                          &baseArray,
-                                                          class_count));
-    unsigned base_count = base_array.table->rows;
+    గుర్తులేని class_లెక్క = class_లెక్క_2;
+    TRY_కేటాయించు (స్వయంచాలక పునాది_array, c.లేఖాచిత్రం.as_పట్టిక<Anchor_మాతృక> (this_సూచీ,
+                                                          &పునాది_Array,
+                                                          class_లెక్క));
+    గుర్తులేని పునాది_లెక్క = పునాది_array.పట్టిక->అడ్డువరుసలు;
 
-    unsigned partial_coverage_size = 4;
-    unsigned accumulated = base_size;
-    hb_vector_t<unsigned> split_points;
+    గుర్తులేని partial_coverage_కొలత = 4;
+    గుర్తులేని accumulated = పునాది_కొలత;
+    hb_సదిశ_t<గుర్తులేని> విభజించు_points;
 
-    for (unsigned klass = 0; klass < class_count; klass++)
+    కొరకు (గుర్తులేని klass = 0; klass < class_లెక్క; klass++)
     {
-      class_info_t& info = class_to_info[klass];
-      partial_coverage_size += OT::HBUINT16::static_size * info.marks.get_population ();
-      unsigned accumulated_delta =
-          OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * info.marks.get_population () +
-          OT::Offset16::static_size * base_count;
+      class_info_t& info = class_గమ్యం_info[klass];
+      partial_coverage_కొలత += OT::HBUINT16::static_కొలత * info.marks.get_population ();
+      గుర్తులేని accumulated_delta =
+          OT::Layout::GPOS_impl::Mark_రికార్డు<SmallTypes>::static_కొలత * info.marks.get_population () +
+          OT::Offset16::static_కొలత * పునాది_లెక్క;
 
-      for (unsigned objidx : info.child_indices)
-        accumulated_delta += c.graph.find_subgraph_size (objidx, visited).value_or (0);
+      కొరకు (గుర్తులేని objidx : info.బిడ్డ_indices)
+        accumulated_delta += c.లేఖాచిత్రం.కనుగొను_subgraph_కొలత (objidx, సందర్శించిన).విలువ_or (0);
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated + partial_coverage_size;
+      గుర్తులేని మొత్తం = accumulated + partial_coverage_కొలత;
 
-      if (total >= (1 << 16))
+      ఒకవేళ (మొత్తం >= (1 << 16))
       {
-        split_points.push (klass);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
-        accumulated = base_size + accumulated_delta;
-        partial_coverage_size = 4 + OT::HBUINT16::static_size * info.marks.get_population ();
-        visited.clear (); // node sharing isn't allowed between splits.
+        విభజించు_points.push (klass);
+        TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (విభజించు_points, కేటాయింపు_FAILURE));
+        accumulated = పునాది_కొలత + accumulated_delta;
+        partial_coverage_కొలత = 4 + OT::HBUINT16::static_కొలత * info.marks.get_population ();
+        సందర్శించిన.clear (); // node sharing isn't allowed between splits.
       }
     }
 
 
-    TRY_ASSIGN (const unsigned mark_array_id, c.graph.index_for_offset (this_index, &markArray));
-    TRY_ASSIGN (auto mark_array_links, c.graph.vertices_[mark_array_id].position_to_index_map ());
+    TRY_కేటాయించు (స్థిరరాశి గుర్తులేని mark_array_id, c.లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (this_సూచీ, &markArray));
+    TRY_కేటాయించు (స్వయంచాలక mark_array_links, c.లేఖాచిత్రం.vertices_[mark_array_id].position_గమ్యం_సూచీ_map ());
 
-    split_context_t split_context {
+    విభజించు_context_t విభజించు_context {
       c,
-      this,
-      this_index,
-      std::move (class_to_info),
+      ఇది,
+      this_సూచీ,
+      std::move (class_గమ్యం_info),
       std::move (mark_array_links),
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    తిరిగి actuate_subtable_విభజించు<విభజించు_context_t> (విభజించు_context, విభజించు_points);
   }
 
- private:
+ అంతరంగ:
 
-  struct class_info_t {
-    hb_set_t marks;
-    hb_vector_t<unsigned> child_indices;
+  నిర్మాణం class_info_t {
+    hb_సమితి_t marks;
+    hb_సదిశ_t<గుర్తులేని> బిడ్డ_indices;
   };
 
-  struct split_context_t {
-    gsubgpos_graph_context_t& c;
-    MarkBasePosFormat1* thiz;
-    unsigned this_index;
-    hb_vector_t<class_info_t> class_to_info;
-    hb_hashmap_t<unsigned, unsigned> mark_array_links;
+  నిర్మాణం విభజించు_context_t {
+    gsubgpos_లేఖాచిత్రం_context_t& c;
+    Mark_పునాది_Pos_Format1* thiz;
+    గుర్తులేని this_సూచీ;
+    hb_సదిశ_t<class_info_t> class_గమ్యం_info;
+    hb_hashmap_t<గుర్తులేని, గుర్తులేని> mark_array_links;
 
-    hb_set_t marks_for (unsigned start, unsigned end)
+    hb_సమితి_t marks_for (గుర్తులేని ప్రారంభం, గుర్తులేని చివర)
     {
-      hb_set_t marks;
-      for (unsigned klass = start; klass < end; klass++)
+      hb_సమితి_t marks;
+      కొరకు (గుర్తులేని klass = ప్రారంభం; klass < చివర; klass++)
       {
-        + class_to_info[klass].marks.iter ()
+        + class_గమ్యం_info[klass].marks.iter ()
         | hb_sink (marks)
         ;
       }
-      return marks;
+      తిరిగి marks;
     }
 
-    unsigned original_count ()
+    గుర్తులేని original_లెక్క_2 ()
     {
-      return thiz->classCount;
+      తిరిగి thiz->class_లెక్క_2;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> clone_range (గుర్తులేని ప్రారంభం, గుర్తులేని చివర)
     {
-      return thiz->clone_range (*this, this->this_index, start, end);
+      తిరిగి thiz->clone_range (*ఇది, ఇది->this_సూచీ, ప్రారంభం, చివర);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    లేఖాచిత్రం_ఫలితం_t<శూన్య> shrink (గుర్తులేని లెక్క)
     {
-      return thiz->shrink (*this, this->this_index, count);
+      తిరిగి thiz->shrink (*ఇది, ఇది->this_సూచీ, లెక్క);
     }
   };
 
-  graph_result_t<hb_vector_t<class_info_t>> get_class_info (gsubgpos_graph_context_t& c,
-                                                            unsigned this_index)
+  లేఖాచిత్రం_ఫలితం_t<hb_సదిశ_t<class_info_t>> get_class_info (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                            గుర్తులేని this_సూచీ)
   {
-    hb_vector_t<class_info_t> class_to_info;
+    hb_సదిశ_t<class_info_t> class_గమ్యం_info;
 
-    unsigned class_count = classCount;
-    if (!class_count) return class_to_info;
+    గుర్తులేని class_లెక్క = class_లెక్క_2;
+    ఒకవేళ (!class_లెక్క) తిరిగి class_గమ్యం_info;
 
-    if (unlikely (!class_to_info.resize (class_count)))
-      return Err(ALLOCATION_FAILURE);
+    ఒకవేళ (unlikely (!class_గమ్యం_info.resize (class_లెక్క)))
+      తిరిగి Err(కేటాయింపు_FAILURE);
 
-    TRY_ASSIGN (auto mark_array, c.graph.as_table<MarkArray> (this_index, &markArray));
+    TRY_కేటాయించు (స్వయంచాలక mark_array, c.లేఖాచిత్రం.as_పట్టిక<MarkArray> (this_సూచీ, &markArray));
 
-    unsigned mark_count = mark_array.table->len;
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    గుర్తులేని mark_లెక్క = mark_array.పట్టిక->len;
+    కొరకు (గుర్తులేని mark = 0; mark < mark_లెక్క; mark++)
     {
-      unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
-      class_to_info[klass].marks.add (mark);
+      గుర్తులేని klass = (*mark_array.పట్టిక)[mark].get_class ();
+      ఒకవేళ (klass >= class_లెక్క) కొనసాగు;
+      class_గమ్యం_info[klass].marks.కూడు (mark);
     }
 
-    for (const auto& link : mark_array.vertex->obj ().real_links)
+    కొరకు (స్థిరరాశి స్వయంచాలక& link : mark_array.శీర్షం->obj ().real_links)
     {
-      unsigned mark = (link.position - 2) /
-                     OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size;
-      unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
-      class_to_info[klass].child_indices.push (link.objidx);
+      గుర్తులేని mark = (link.position - 2) /
+                     OT::Layout::GPOS_impl::Mark_రికార్డు<SmallTypes>::static_కొలత;
+      గుర్తులేని klass = (*mark_array.పట్టిక)[mark].get_class ();
+      ఒకవేళ (klass >= class_లెక్క) కొనసాగు;
+      class_గమ్యం_info[klass].బిడ్డ_indices.push (link.objidx);
     }
 
-    TRY_ASSIGN (unsigned base_array_id,
-         c.graph.index_for_offset (this_index, &baseArray));
+    TRY_కేటాయించు (గుర్తులేని పునాది_array_id,
+         c.లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (this_సూచీ, &పునాది_Array));
 
-    auto& base_array_v = c.graph.vertices_[base_array_id];
+    స్వయంచాలక& పునాది_array_v = c.లేఖాచిత్రం.vertices_[పునాది_array_id];
 
-    for (const auto& link : base_array_v.obj ().real_links)
+    కొరకు (స్థిరరాశి స్వయంచాలక& link : పునాది_array_v.obj ().real_links)
     {
-      unsigned index = (link.position - 2) / OT::Offset16::static_size;
-      unsigned klass = index % class_count;
-      class_to_info[klass].child_indices.push (link.objidx);
+      గుర్తులేని సూచీ_2 = (link.position - 2) / OT::Offset16::static_కొలత;
+      గుర్తులేని klass = సూచీ_2 % class_లెక్క;
+      class_గమ్యం_info[klass].బిడ్డ_indices.push (link.objidx);
     }
 
-    return class_to_info;
+    తిరిగి class_గమ్యం_info;
   }
 
-  graph_result_t<void> shrink (split_context_t& sc,
-                               unsigned this_index,
-                               unsigned count)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> shrink (విభజించు_context_t& sc,
+                               గుర్తులేని this_సూచీ,
+                               గుర్తులేని లెక్క)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక,
                "  Shrinking MarkBasePosFormat1 (%u) to [0, %u).",
-               this_index,
-               count);
+               this_సూచీ,
+               లెక్క);
 
-    unsigned old_count = classCount;
-    if (count >= old_count)
-      return Ok();
+    గుర్తులేని old_లెక్క = class_లెక్క_2;
+    ఒకవేళ (లెక్క >= old_లెక్క)
+      తిరిగి Ok();
 
-    classCount = count;
+    class_లెక్క_2 = లెక్క;
 
-    TRY_ASSIGN (auto mark_coverage, sc.c.graph.as_mutable_table<Coverage> (this_index,
+    TRY_కేటాయించు (స్వయంచాలక mark_coverage, sc.c.లేఖాచిత్రం.as_mutable_పట్టిక<Coverage> (this_సూచీ,
                                                                     &markCoverage));
 
-    hb_set_t marks = sc.marks_for (0, count);
-    auto new_coverage =
-        + hb_enumerate (mark_coverage.table->iter ())
-        | hb_filter (marks, hb_first)
-        | hb_map_retains_sorting (hb_second)
+    hb_సమితి_t marks = sc.marks_for (0, లెక్క);
+    స్వయంచాలక new_coverage =
+        + hb_enumerate (mark_coverage.పట్టిక->iter ())
+        | hb_filter (marks, hb_మొదటి)
+        | hb_map_retains_క్రమీకరణ (hb_రెండవ)
         ;
     TRY (Coverage::make_coverage (sc.c, + new_coverage,
-                                  mark_coverage.index,
+                                  mark_coverage.సూచీ_2,
                                   4 + 2 * marks.get_population ()));
 
 
-    TRY_ASSIGN (auto base_array, sc.c.graph.as_mutable_table<AnchorMatrix> (this_index,
-                                                                     &baseArray,
-                                                                     old_count));
+    TRY_కేటాయించు (స్వయంచాలక పునాది_array, sc.c.లేఖాచిత్రం.as_mutable_పట్టిక<Anchor_మాతృక> (this_సూచీ,
+                                                                     &పునాది_Array,
+                                                                     old_లెక్క));
 
-    TRY (base_array.table->shrink (sc.c,
-                                   base_array.index,
-                                   old_count,
-                                   count));
+    TRY (పునాది_array.పట్టిక->shrink (sc.c,
+                                   పునాది_array.సూచీ_2,
+                                   old_లెక్క,
+                                   లెక్క));
 
-    TRY_ASSIGN (auto mark_array, sc.c.graph.as_mutable_table<MarkArray> (this_index,
+    TRY_కేటాయించు (స్వయంచాలక mark_array, sc.c.లేఖాచిత్రం.as_mutable_పట్టిక<MarkArray> (this_సూచీ,
                                                                   &markArray));
 
-    TRY (mark_array.table->shrink (sc.c,
+    TRY (mark_array.పట్టిక->shrink (sc.c,
                                    sc.mark_array_links,
-                                   mark_array.index,
-                                   count));
+                                   mark_array.సూచీ_2,
+                                   లెక్క));
 
-    return Ok();
+    తిరిగి Ok();
   }
 
   // Create a new MarkBasePos that has all of the data for classes from [start, end).
-  graph_result_t<unsigned> clone_range (split_context_t& sc,
-                                        unsigned this_index,
-                                        unsigned start, unsigned end) const
+  లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> clone_range (విభజించు_context_t& sc,
+                                        గుర్తులేని this_సూచీ,
+                                        గుర్తులేని ప్రారంభం, గుర్తులేని చివర) స్థిరరాశి
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning MarkBasePosFormat1 (%u) range [%u, %u).", this_index, start, end);
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక,
+               "  Cloning MarkBasePosFormat1 (%u) range [%u, %u).", this_సూచీ, ప్రారంభం, చివర);
 
-    graph_t& graph = sc.c.graph;
-    unsigned prime_size = OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::static_size;
+    లేఖాచిత్రం_t& లేఖాచిత్రం = sc.c.లేఖాచిత్రం;
+    గుర్తులేని ప్రధానసంఖ్య_కొలత = OT::Layout::GPOS_impl::Mark_పునాది_Pos_Format1_2<SmallTypes>::static_కొలత;
 
-    TRY_ASSIGN (unsigned prime_id, sc.c.create_node (prime_size));
+    TRY_కేటాయించు (గుర్తులేని ప్రధానసంఖ్య_id, sc.c.create_కణుపు (ప్రధానసంఖ్య_కొలత));
 
-    MarkBasePosFormat1* prime = (MarkBasePosFormat1*) graph.object (prime_id).head;
-    prime->format = this->format;
-    unsigned new_class_count = end - start;
-    prime->classCount = new_class_count;
+    Mark_పునాది_Pos_Format1* ప్రధానసంఖ్య = (Mark_పునాది_Pos_Format1*) లేఖాచిత్రం.object (ప్రధానసంఖ్య_id).తల_2;
+    ప్రధానసంఖ్య->format = ఇది->format;
+    గుర్తులేని new_class_లెక్క = చివర - ప్రారంభం;
+    ప్రధానసంఖ్య->class_లెక్క_2 = new_class_లెక్క;
 
-    TRY_ASSIGN (unsigned base_coverage_id,
-         graph.index_for_offset (sc.this_index, &baseCoverage));
+    TRY_కేటాయించు (గుర్తులేని పునాది_coverage_id,
+         లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (sc.this_సూచీ, &పునాది_Coverage));
 
-    TRY (graph.add_link (&(prime->baseCoverage), prime_id, base_coverage_id));
+    TRY (లేఖాచిత్రం.కూడు_link (&(ప్రధానసంఖ్య->పునాది_Coverage), ప్రధానసంఖ్య_id, పునాది_coverage_id));
 
-    TRY_ASSIGN (auto mark_coverage, sc.c.graph.as_table<Coverage> (this_index,
+    TRY_కేటాయించు (స్వయంచాలక mark_coverage, sc.c.లేఖాచిత్రం.as_పట్టిక<Coverage> (this_సూచీ,
                                                             &markCoverage));
 
-    hb_set_t marks = sc.marks_for (start, end);
-    auto new_coverage =
-        + hb_enumerate (mark_coverage.table->iter ())
-        | hb_filter (marks, hb_first)
-        | hb_map_retains_sorting (hb_second)
+    hb_సమితి_t marks = sc.marks_for (ప్రారంభం, చివర);
+    స్వయంచాలక new_coverage =
+        + hb_enumerate (mark_coverage.పట్టిక->iter ())
+        | hb_filter (marks, hb_మొదటి)
+        | hb_map_retains_క్రమీకరణ (hb_రెండవ)
         ;
-    TRY (Coverage::add_coverage (sc.c,
-                                 prime_id,
+    TRY (Coverage::కూడు_coverage (sc.c,
+                                 ప్రధానసంఖ్య_id,
                                  2,
                                  + new_coverage,
                                  marks.get_population () * 2 + 4));
 
-    TRY_ASSIGN (auto mark_array,
-         graph.as_mutable_table <MarkArray> (sc.this_index, &markArray));
+    TRY_కేటాయించు (స్వయంచాలక mark_array,
+         లేఖాచిత్రం.as_mutable_పట్టిక <MarkArray> (sc.this_సూచీ, &markArray));
 
-    TRY_ASSIGN (unsigned new_mark_array,
-         mark_array.table->clone (sc.c,
-                                  mark_array.index,
+    TRY_కేటాయించు (గుర్తులేని new_mark_array,
+         mark_array.పట్టిక->clone (sc.c,
+                                  mark_array.సూచీ_2,
                                   sc.mark_array_links,
                                   marks,
-                                  start));
-    TRY (graph.add_link (&(prime->markArray), prime_id, new_mark_array));
+                                  ప్రారంభం));
+    TRY (లేఖాచిత్రం.కూడు_link (&(ప్రధానసంఖ్య->markArray), ప్రధానసంఖ్య_id, new_mark_array));
 
-    unsigned class_count = classCount;
-    TRY_ASSIGN (auto base_array,
-         graph.as_mutable_table<AnchorMatrix> (sc.this_index, &baseArray, class_count));
+    గుర్తులేని class_లెక్క = class_లెక్క_2;
+    TRY_కేటాయించు (స్వయంచాలక పునాది_array,
+         లేఖాచిత్రం.as_mutable_పట్టిక<Anchor_మాతృక> (sc.this_సూచీ, &పునాది_Array, class_లెక్క));
 
-    TRY_ASSIGN (unsigned new_base_array,
-         base_array.table->clone (sc.c,
-                                  base_array.index,
-                                  start, end, this->classCount));
-    TRY (graph.add_link (&(prime->baseArray), prime_id, new_base_array));
+    TRY_కేటాయించు (గుర్తులేని new_పునాది_array,
+         పునాది_array.పట్టిక->clone (sc.c,
+                                  పునాది_array.సూచీ_2,
+                                  ప్రారంభం, చివర, ఇది->class_లెక్క_2));
+    TRY (లేఖాచిత్రం.కూడు_link (&(ప్రధానసంఖ్య->పునాది_Array), ప్రధానసంఖ్య_id, new_పునాది_array));
 
-    return Ok(prime_id);
+    తిరిగి Ok(ప్రధానసంఖ్య_id);
   }
 };
 
 
-struct MarkBasePos : public OT::Layout::GPOS_impl::MarkBasePos
+నిర్మాణం Mark_పునాది_Pos : బహిరంగ OT::Layout::GPOS_impl::Mark_పునాది_Pos
 {
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  లేఖాచిత్రం_ఫలితం_t<hb_సదిశ_t<గుర్తులేని>> విభజించు_subtables (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                         గుర్తులేని this_సూచీ)
   {
-    switch (u.format.v) {
-    case 1:
+    ఎంపిక (u.format.v) {
+    స్థితి 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
-#ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+      తిరిగి ((Mark_పునాది_Pos_Format1*)(&u.format1))->విభజించు_subtables (c, this_సూచీ);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 2: HB_FALLTHROUGH;
       // 24-bit MarkBasePos already has widened offsets; leave it unsplit.
-#endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+#అయితే_ముగింపు
+    అప్రమేయ:
+      తిరిగి Ok(hb_సదిశ_t<గుర్తులేని> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (శీర్షం_len < u.format.v.get_కొలత ())) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    ఎంపిక (u.format.v) {
+    స్థితి 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
-#endif
-    default:
+      తిరిగి ((Mark_పునాది_Pos_Format1*)(&u.format1))->sanitize (శీర్షం);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 2: HB_FALLTHROUGH;
+#అయితే_ముగింపు
+    అప్రమేయ:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      తిరిగి Err(SANITIZE_FAILURE);
     }
   }
 };
@@ -531,4 +531,4 @@ struct MarkBasePos : public OT::Layout::GPOS_impl::MarkBasePos
 
 }
 
-#endif  // GRAPH_MARKBASEPOS_GRAPH_HH
+#అయితే_ముగింపు  // GRAPH_MARKBASEPOS_GRAPH_HH

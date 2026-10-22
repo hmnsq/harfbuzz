@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
-from os import path
+దిగుమతి sys
+తః os దిగుమతి మార్గం
 
-print(path.relpath(sys.argv[1], sys.argv[2]))
+ముద్రించు(మార్గం.relpath(sys.argv[1], sys.argv[2]))

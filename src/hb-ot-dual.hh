@@ -26,120 +26,120 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef HB_OT_DUAL_HH
-#define HB_OT_DUAL_HH
+#నిర్వచితం_కాకపోతే HB_OT_DUAL_HH
+#నిర్వచించు HB_OT_DUAL_HH
 
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 
-namespace OT {
-namespace Layout {
+నామాకాశ OT {
+నామాకాశ Layout {
 
-struct SmallTypes {
-  static constexpr unsigned size = 2;
-  using large_int = uint32_t;
-  using HBUINT = HBUINT16;
-  using HBLUINT = HBUINT16;
-  using HBGlyphID = HBGlyphID16;
-  using Offset = Offset16;
-  using LOffset = Offset16;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using OffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using LOffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type>
-  using ArrayOf = OT::Array16Of<Type>;
-  template <typename Type>
-  using SortedArrayOf = OT::SortedArray16Of<Type>;
+నిర్మాణం SmallTypes {
+  స్థిర constexpr గుర్తులేని కొలత = 2;
+  ఉపయోగించి large_int = uint32_t;
+  ఉపయోగించి HBUINT = HBUINT16;
+  ఉపయోగించి HBLUINT = HBUINT16;
+  ఉపయోగించి HBGlyphID = HBGlyphID16;
+  ఉపయోగించి స్థానభ్రంశం_2 = Offset16;
+  ఉపయోగించి LOffset = Offset16;
+  మూస <రకం_పేరు Type, రకం_పేరు పునాది_Type=శూన్య, తార్కిక has_null=నిజం>
+  ఉపయోగించి స్థానభ్రంశం_గమ్యం = OT::Offset16_గమ్యం<Type, పునాది_Type, has_null>;
+  మూస <రకం_పేరు Type, రకం_పేరు పునాది_Type=శూన్య, తార్కిక has_null=నిజం>
+  ఉపయోగించి LOffset_గమ్యం = OT::Offset16_గమ్యం<Type, పునాది_Type, has_null>;
+  మూస <రకం_పేరు Type>
+  ఉపయోగించి Array_యొక్క = OT::Array16_యొక్క<Type>;
+  మూస <రకం_పేరు Type>
+  ఉపయోగించి Sorted_Array_యొక్క = OT::Sorted_Array16_యొక్క<Type>;
 };
 
-struct MediumTypes {
-  static constexpr unsigned size = 3;
-  using large_int = uint64_t;
-  using HBUINT = HBUINT24;
-  using HBLUINT = HBUINT32;
-  using HBGlyphID = HBGlyphID24;
-  using Offset = Offset24;
+నిర్మాణం MediumTypes {
+  స్థిర constexpr గుర్తులేని కొలత = 3;
+  ఉపయోగించి large_int = uint64_t;
+  ఉపయోగించి HBUINT = HBUINT24;
+  ఉపయోగించి HBLUINT = HBUINT32;
+  ఉపయోగించి HBGlyphID = HBGlyphID24;
+  ఉపయోగించి స్థానభ్రంశం_2 = Offset24;
   /* Long offsets for large tables. */
-  using LOffset = Offset32;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using OffsetTo = OT::Offset24To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using LOffsetTo = OT::Offset32To<Type, BaseType, has_null>;
-  template <typename Type>
-  using ArrayOf = OT::Array24Of<Type>;
-  template <typename Type>
-  using SortedArrayOf = OT::SortedArray24Of<Type>;
+  ఉపయోగించి LOffset = Offset32;
+  మూస <రకం_పేరు Type, రకం_పేరు పునాది_Type=శూన్య, తార్కిక has_null=నిజం>
+  ఉపయోగించి స్థానభ్రంశం_గమ్యం = OT::Offset24_గమ్యం<Type, పునాది_Type, has_null>;
+  మూస <రకం_పేరు Type, రకం_పేరు పునాది_Type=శూన్య, తార్కిక has_null=నిజం>
+  ఉపయోగించి LOffset_గమ్యం = OT::Offset32_గమ్యం<Type, పునాది_Type, has_null>;
+  మూస <రకం_పేరు Type>
+  ఉపయోగించి Array_యొక్క = OT::Array24_యొక్క<Type>;
+  మూస <రకం_పేరు Type>
+  ఉపయోగించి Sorted_Array_యొక్క = OT::Sorted_Array24_యొక్క<Type>;
 };
 
 }
 }
 
 
-template <typename Lower, typename Upper>
-struct hb_dual_accelerator_t
+మూస <రకం_పేరు క్రింది_2, రకం_పేరు పై_2>
+నిర్మాణం hb_dual_accelerator_t
 {
   hb_dual_accelerator_t (hb_face_t *face) :
-#ifndef HB_NO_BEYOND_64K
-    upper (face),
-#endif
-    lower (
-#ifndef HB_NO_BEYOND_64K
-	   upper.has_data () ? hb_face_get_empty () :
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    పై (face),
+#అయితే_ముగింపు
+    క్రింది (
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+	   పై.has_దత్తాంశం () ? hb_face_get_ఖాళీలు () :
+#అయితే_ముగింపు
 	   face)
   {}
 
-  bool has_data () const
+  తార్కిక has_దత్తాంశం () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
-#endif
-    return lower.has_data ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (పై.has_దత్తాంశం ()) తిరిగి నిజం;
+#అయితే_ముగింపు
+    తిరిగి క్రింది.has_దత్తాంశం ();
   }
 
-  bool has_upper_data () const
+  తార్కిక has_పై_దత్తాంశం () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    తిరిగి పై.has_దత్తాంశం ();
+#లేకపోతే
+    తిరిగి అబద్ధం;
+#అయితే_ముగింపు
   }
 
-#ifndef HB_NO_BEYOND_64K
-  Upper upper;
-#endif
-  Lower lower;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  పై_2 పై;
+#అయితే_ముగింపు
+  క్రింది_2 క్రింది;
 };
 
-template <typename Table>
-struct hb_table_accelerator_t
+మూస <రకం_పేరు పట్టిక_3>
+నిర్మాణం hb_పట్టిక_accelerator_t
 {
-  hb_table_accelerator_t (hb_face_t *face) :
-    table (hb_sanitize_context_t ().reference_table<Table> (face))
+  hb_పట్టిక_accelerator_t (hb_face_t *face) :
+    పట్టిక (hb_sanitize_context_t ().reference_పట్టిక<పట్టిక_3> (face))
   {}
-  ~hb_table_accelerator_t () { table.destroy (); }
+  ~hb_పట్టిక_accelerator_t () { పట్టిక.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పట్టిక->has_దత్తాంశం (); }
 
-  hb_blob_ptr_t<Table> table;
+  hb_blob_ptr_t<పట్టిక_3> పట్టిక;
 };
 
-template <typename Lower, typename Upper>
-struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
-					       hb_table_accelerator_t<Upper>>
+మూస <రకం_పేరు క్రింది_2, రకం_పేరు పై_2>
+నిర్మాణం hb_dual_పట్టిక_t : hb_dual_accelerator_t<hb_పట్టిక_accelerator_t<క్రింది_2>,
+					       hb_పట్టిక_accelerator_t<పై_2>>
 {
-  hb_dual_table_t (hb_face_t *face) :
-    hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
-			  hb_table_accelerator_t<Upper>> (face) {}
+  hb_dual_పట్టిక_t (hb_face_t *face) :
+    hb_dual_accelerator_t<hb_పట్టిక_accelerator_t<క్రింది_2>,
+			  hb_పట్టిక_accelerator_t<పై_2>> (face) {}
 };
 
-#ifndef HB_NO_BEYOND_64K
-#define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
-#define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+#నిర్వచించు HB_DUAL_GET(accel, సమాసం) ((accel).పై.has_దత్తాంశం () ? (accel).పై.సమాసం : (accel).క్రింది.సమాసం)
+#లేకపోతే
+#నిర్వచించు HB_DUAL_GET(accel, సమాసం) ((accel).క్రింది.సమాసం)
+#అయితే_ముగింపు
 
 
-#endif  /* HB_OT_DUAL_HH */
+#అయితే_ముగింపు  /* HB_OT_DUAL_HH */

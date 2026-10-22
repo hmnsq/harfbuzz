@@ -24,63 +24,63 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPE_PLAN_HH
-#define HB_SHAPE_PLAN_HH
+#నిర్వచితం_కాకపోతే HB_SHAPE_PLAN_HH
+#నిర్వచించు HB_SHAPE_PLAN_HH
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-ot-shape.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-shaper.hh"
+#అన్తర్భావ "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+నిర్మాణం hb_shape_plan_కీలకం_t
 {
   hb_segment_properties_t  props;
 
-  const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  స్థిరరాశి hb_feature_t      *user_features;
+  గుర్తులేని పూర్ణాంకం             అంకె_user_features;
 
-#ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
+  hb_ot_shape_plan_కీలకం_t   ot;
+#అయితే_ముగింపు
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  స్థిరరాశి అక్షరం              *shaper_name;
 
-  HB_INTERNAL bool init (bool                           copy,
+  HB_అంతర్గత తార్కిక init (తార్కిక                           copy,
 			 hb_face_t                     *face,
-			 const hb_segment_properties_t *props,
-			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 స్థిరరాశి hb_segment_properties_t *props,
+			 స్థిరరాశి hb_feature_t            *user_features,
+			 గుర్తులేని పూర్ణాంకం                   అంకె_user_features,
+			 స్థిరరాశి పూర్ణాంకం                     *coords,
+			 గుర్తులేని పూర్ణాంకం                   అంకె_coords,
+			 స్థిరరాశి అక్షరం * స్థిరరాశి            *shaper_list);
 
-  HB_INTERNAL void fini ()
+  HB_అంతర్గత శూన్య fini ()
   {
-    hb_free ((void *) user_features);
-    user_features = nullptr;
-#ifndef HB_NO_OT_SHAPE
+    hb_free ((శూన్య *) user_features);
+    user_features = శూన్యసూచిక;
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
     ot.fini ();
-#endif
+#అయితే_ముగింపు
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_అంతర్గత తార్కిక user_features_సరిపోలిక (స్థిరరాశి hb_shape_plan_కీలకం_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_అంతర్గత తార్కిక equal (స్థిరరాశి hb_shape_plan_కీలకం_t *other);
 };
 
-struct hb_shape_plan_t
+నిర్మాణం hb_shape_plan_t
 {
-  HB_INTERNAL ~hb_shape_plan_t ();
-  hb_object_header_t header;
+  HB_అంతర్గత ~hb_shape_plan_t ();
+  hb_object_శీర్షిక_t శీర్షిక;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
-#ifndef HB_NO_OT_SHAPE
+  hb_shape_plan_కీలకం_t key;
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
-#endif
-#ifdef HAVE_HARFRUST
-  hb_atomic_t<void *> harfrust_data;
-#endif
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_HARFRUST
+  hb_atomic_t<శూన్య *> harfrust_దత్తాంశం;
+#అయితే_ముగింపు
 };
 
 
-#endif /* HB_SHAPE_PLAN_HH */
+#అయితే_ముగింపు /* HB_SHAPE_PLAN_HH */

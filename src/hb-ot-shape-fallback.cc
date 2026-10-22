@@ -24,624 +24,624 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 
-#include "hb-ot-shape-fallback.hh"
-#include "hb-kern.hh"
+#అన్తర్భావ "hb-ot-shape-fallback.hh"
+#అన్తర్భావ "hb-kern.hh"
 
-static unsigned int
+స్థిర గుర్తులేని పూర్ణాంకం
 recategorize_combining_class (hb_codepoint_t u,
-			      unsigned int klass)
+			      గుర్తులేని పూర్ణాంకం klass)
 {
-  if (klass >= 200)
-    return klass;
+  ఒకవేళ (klass >= 200)
+    తిరిగి klass;
 
   /* Thai / Lao need some per-character work. */
-  if ((u & ~0xFF) == 0x0E00u)
+  ఒకవేళ ((u & ~0xFF) == 0x0E00u)
   {
-    if (unlikely (klass == 0))
+    ఒకవేళ (unlikely (klass == 0))
     {
-      switch (u)
+      ఎంపిక (u)
       {
-	case 0x0E31u:
-	case 0x0E34u:
-	case 0x0E35u:
-	case 0x0E36u:
-	case 0x0E37u:
-	case 0x0E47u:
-	case 0x0E4Cu:
-	case 0x0E4Du:
-	case 0x0E4Eu:
-	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
-	  break;
+	స్థితి 0x0E31u:
+	స్థితి 0x0E34u:
+	స్థితి 0x0E35u:
+	స్థితి 0x0E36u:
+	స్థితి 0x0E37u:
+	స్థితి 0x0E47u:
+	స్థితి 0x0E4Cu:
+	స్థితి 0x0E4Du:
+	స్థితి 0x0E4Eu:
+	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE_కుడి;
+	  ఆపు;
 
-	case 0x0EB1u:
-	case 0x0EB4u:
-	case 0x0EB5u:
-	case 0x0EB6u:
-	case 0x0EB7u:
-	case 0x0EBBu:
-	case 0x0ECCu:
-	case 0x0ECDu:
+	స్థితి 0x0EB1u:
+	స్థితి 0x0EB4u:
+	స్థితి 0x0EB5u:
+	స్థితి 0x0EB6u:
+	స్థితి 0x0EB7u:
+	స్థితి 0x0EBBu:
+	స్థితి 0x0ECCu:
+	స్థితి 0x0ECDu:
 	  klass = HB_UNICODE_COMBINING_CLASS_ABOVE;
-	  break;
+	  ఆపు;
 
-	case 0x0EBCu:
-	  klass = HB_UNICODE_COMBINING_CLASS_BELOW;
-	  break;
+	స్థితి 0x0EBCu:
+	  klass = HB_UNICODE_COMBINING_CLASS_క్రింద;
+	  ఆపు;
       }
-    } else {
+    } లేకపోతే {
       /* Thai virama is below-right */
-      if (u == 0x0E3Au)
-	klass = HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+      ఒకవేళ (u == 0x0E3Au)
+	klass = HB_UNICODE_COMBINING_CLASS_క్రింద_కుడి;
     }
   }
 
-  switch (klass)
+  ఎంపిక (klass)
   {
 
     /* Hebrew */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC10: /* sheva */
-    case HB_MODIFIED_COMBINING_CLASS_CCC11: /* hataf segol */
-    case HB_MODIFIED_COMBINING_CLASS_CCC12: /* hataf patah */
-    case HB_MODIFIED_COMBINING_CLASS_CCC13: /* hataf qamats */
-    case HB_MODIFIED_COMBINING_CLASS_CCC14: /* hiriq */
-    case HB_MODIFIED_COMBINING_CLASS_CCC15: /* tsere */
-    case HB_MODIFIED_COMBINING_CLASS_CCC16: /* segol */
-    case HB_MODIFIED_COMBINING_CLASS_CCC17: /* patah */
-    case HB_MODIFIED_COMBINING_CLASS_CCC18: /* qamats & qamats qatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC20: /* qubuts */
-    case HB_MODIFIED_COMBINING_CLASS_CCC22: /* meteg */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC10: /* sheva */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC11: /* hataf segol */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC12: /* hataf patah */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC13: /* hataf qamats */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC14: /* hiriq */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC15: /* tsere */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC16: /* segol */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC17: /* patah */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC18: /* qamats & qamats qatan */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC20: /* qubuts */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC22: /* meteg */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_క్రింద;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC23: /* rafe */
-      return HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC23: /* rafe */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC24: /* shin dot */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE_కుడి;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
-    case HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC25: /* sin dot */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC19: /* holam & holam haser for vav */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE_ఎడమ;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC26: /* point varika */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC21: /* dagesh */
-      break;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC21: /* dagesh */
+      ఆపు;
 
 
     /* Arabic and Syriac */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC27: /* fathatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC28: /* dammatan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC30: /* fatha */
-    case HB_MODIFIED_COMBINING_CLASS_CCC31: /* damma */
-    case HB_MODIFIED_COMBINING_CLASS_CCC33: /* shadda */
-    case HB_MODIFIED_COMBINING_CLASS_CCC34: /* sukun */
-    case HB_MODIFIED_COMBINING_CLASS_CCC35: /* superscript alef */
-    case HB_MODIFIED_COMBINING_CLASS_CCC36: /* superscript alaph */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC27: /* fathatan */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC28: /* dammatan */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC30: /* fatha */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC31: /* damma */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC33: /* shadda */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC34: /* sukun */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC35: /* superscript alef */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC36: /* superscript alaph */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC29: /* kasratan */
-    case HB_MODIFIED_COMBINING_CLASS_CCC32: /* kasra */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC29: /* kasratan */
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC32: /* kasra */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_క్రింద;
 
 
     /* Thai */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC103: /* sara u / sara uu */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_క్రింద_కుడి;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC107: /* mai */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE_కుడి;
 
 
     /* Lao */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC118: /* sign u / sign uu */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC118: /* sign u / sign uu */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_క్రింద;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC122: /* mai */
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC122: /* mai */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE;
 
 
     /* Tibetan */
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC129: /* sign aa */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC129: /* sign aa */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_క్రింద;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC130: /* sign i*/
-      return HB_UNICODE_COMBINING_CLASS_ABOVE;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC130: /* sign i*/
+      తిరిగి HB_UNICODE_COMBINING_CLASS_ABOVE;
 
-    case HB_MODIFIED_COMBINING_CLASS_CCC132: /* sign u */
-      return HB_UNICODE_COMBINING_CLASS_BELOW;
+    స్థితి HB_MODIFIED_COMBINING_CLASS_CCC132: /* sign u */
+      తిరిగి HB_UNICODE_COMBINING_CLASS_క్రింద;
 
   }
 
-  return klass;
+  తిరిగి klass;
 }
 
-void
-_hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan HB_UNUSED,
-							hb_font_t *font HB_UNUSED,
-							hb_buffer_t  *buffer)
+శూన్య
+_hb_ot_shape_fallback_mark_position_recategorize_marks (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+							hb_font_t *font HB_వాడని,
+							hb_బఫరు_t  *బఫరు)
 {
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
-#endif
+#నిర్వచితమైతే HB_NO_OT_SHAPE_FALLBACK
+  తిరిగి;
+#అయితే_ముగింపు
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
-      unsigned int combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    ఒకవేళ (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {
+      గుర్తులేని పూర్ణాంకం combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
       combining_class = recategorize_combining_class (info[i].codepoint, combining_class);
-      _hb_glyph_info_set_modified_combining_class (&info[i], combining_class);
+      hb_glyph_info_సమితి_modified_combining_class (&info[i], combining_class);
     }
 }
 
 
-static void
-zero_mark_advances (hb_buffer_t *buffer,
-		    unsigned int start,
-		    unsigned int end,
-		    bool adjust_offsets_when_zeroing)
+స్థిర శూన్య
+zero_mark_advances (hb_బఫరు_t *బఫరు,
+		    గుర్తులేని పూర్ణాంకం ప్రారంభం,
+		    గుర్తులేని పూర్ణాంకం చివర,
+		    తార్కిక adjust_offsets_when_zeroing)
 {
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = start; i < end; i++)
-    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
+    ఒకవేళ (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
     {
-      if (adjust_offsets_when_zeroing)
+      ఒకవేళ (adjust_offsets_when_zeroing)
       {
-	buffer->pos[i].x_offset = hb_saturate_sub (buffer->pos[i].x_offset,
-						     buffer->pos[i].x_advance);
-	buffer->pos[i].y_offset = hb_saturate_sub (buffer->pos[i].y_offset,
-						     buffer->pos[i].y_advance);
+	బఫరు->pos[i].x_స్థానభ్రంశం_2 = hb_saturate_sub (బఫరు->pos[i].x_స్థానభ్రంశం_2,
+						     బఫరు->pos[i].x_advance);
+	బఫరు->pos[i].y_స్థానభ్రంశం_2 = hb_saturate_sub (బఫరు->pos[i].y_స్థానభ్రంశం_2,
+						     బఫరు->pos[i].y_advance);
       }
-      buffer->pos[i].x_advance = 0;
-      buffer->pos[i].y_advance = 0;
+      బఫరు->pos[i].x_advance = 0;
+      బఫరు->pos[i].y_advance = 0;
     }
 }
 
-static inline void
-position_mark (const hb_ot_shape_plan_t *plan HB_UNUSED,
+స్థిర అంతఃవరుస శూన్య
+position_mark (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
 	       hb_font_t *font,
-	       hb_buffer_t  *buffer,
-	       hb_glyph_extents_t &base_extents,
-	       unsigned int i,
-	       unsigned int combining_class)
+	       hb_బఫరు_t  *బఫరు,
+	       hb_glyph_extents_t &పునాది_extents,
+	       గుర్తులేని పూర్ణాంకం i,
+	       గుర్తులేని పూర్ణాంకం combining_class)
 {
   hb_glyph_extents_t mark_extents;
-  if (!font->get_glyph_extents (buffer->info[i].codepoint, &mark_extents))
-    return;
+  ఒకవేళ (!font->get_glyph_extents (బఫరు->info[i].codepoint, &mark_extents))
+    తిరిగి;
 
   hb_position_t y_gap = font->y_scale / 16;
 
-  hb_glyph_position_t &pos = buffer->pos[i];
-  pos.x_offset = pos.y_offset = 0;
+  hb_glyph_position_t &pos = బఫరు->pos[i];
+  pos.x_స్థానభ్రంశం_2 = pos.y_స్థానభ్రంశం_2 = 0;
 
 
   /* We don't position LEFT and RIGHT marks. */
 
   /* X positioning */
-  switch (combining_class)
+  ఎంపిక (combining_class)
   {
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-      if (buffer->props.direction == HB_DIRECTION_LTR) {
-	pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
-						    mark_extents.width / 2 - mark_extents.x_bearing);
-	break;
-      } else if (buffer->props.direction == HB_DIRECTION_RTL) {
-	pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing -
-						    mark_extents.width / 2 - mark_extents.x_bearing);
-	break;
+    స్థితి HB_UNICODE_COMBINING_CLASS_DOUBLE_క్రింద:
+    స్థితి HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
+      ఒకవేళ (బఫరు->props.direction == HB_DIRECTION_LTR) {
+	pos.x_స్థానభ్రంశం_2 = hb_clamp_గమ్యం<hb_position_t> ((int64_t) పునాది_extents.x_bearing + పునాది_extents.వెడల్పు -
+						    mark_extents.వెడల్పు / 2 - mark_extents.x_bearing);
+	ఆపు;
+      } లేకపోతే ఒకవేళ (బఫరు->props.direction == HB_DIRECTION_RTL) {
+	pos.x_స్థానభ్రంశం_2 = hb_clamp_గమ్యం<hb_position_t> ((int64_t) పునాది_extents.x_bearing -
+						    mark_extents.వెడల్పు / 2 - mark_extents.x_bearing);
+	ఆపు;
       }
       HB_FALLTHROUGH;
 
-    default:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE:
+    అప్రమేయ:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_క్రింద:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
+    స్థితి HB_UNICODE_COMBINING_CLASS_క్రింద:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ABOVE:
       /* Center align. */
-      pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing +
-						((int64_t) base_extents.width - mark_extents.width) / 2 -
+      pos.x_స్థానభ్రంశం_2 = hb_clamp_గమ్యం<hb_position_t> ((int64_t) పునాది_extents.x_bearing +
+						((int64_t) పునాది_extents.వెడల్పు - mark_extents.వెడల్పు) / 2 -
 						mark_extents.x_bearing);
-      break;
+      ఆపు;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_క్రింద_ఎడమ:
+    స్థితి HB_UNICODE_COMBINING_CLASS_క్రింద_ఎడమ:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ABOVE_ఎడమ:
       /* Left align. */
-      pos.x_offset = hb_saturate_sub (base_extents.x_bearing, mark_extents.x_bearing);
-      break;
+      pos.x_స్థానభ్రంశం_2 = hb_saturate_sub (పునాది_extents.x_bearing, mark_extents.x_bearing);
+      ఆపు;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_కుడి:
+    స్థితి HB_UNICODE_COMBINING_CLASS_క్రింద_కుడి:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ABOVE_కుడి:
       /* Right align. */
-      pos.x_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.x_bearing + base_extents.width -
-						mark_extents.width - mark_extents.x_bearing);
-      break;
+      pos.x_స్థానభ్రంశం_2 = hb_clamp_గమ్యం<hb_position_t> ((int64_t) పునాది_extents.x_bearing + పునాది_extents.వెడల్పు -
+						mark_extents.వెడల్పు - mark_extents.x_bearing);
+      ఆపు;
   }
 
   /* Y positioning */
-  switch (combining_class)
+  ఎంపిక (combining_class)
   {
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_BELOW:
-    case HB_UNICODE_COMBINING_CLASS_BELOW_RIGHT:
+    స్థితి HB_UNICODE_COMBINING_CLASS_DOUBLE_క్రింద:
+    స్థితి HB_UNICODE_COMBINING_CLASS_క్రింద_ఎడమ:
+    స్థితి HB_UNICODE_COMBINING_CLASS_క్రింద:
+    స్థితి HB_UNICODE_COMBINING_CLASS_క్రింద_కుడి:
       /* Add gap, fall-through. */
-      base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
+      పునాది_extents.ఎత్తు = hb_saturate_sub (పునాది_extents.ఎత్తు, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_BELOW:
-      pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing +
-						base_extents.height - mark_extents.y_bearing);
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_క్రింద_ఎడమ:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_క్రింద:
+      pos.y_స్థానభ్రంశం_2 = hb_clamp_గమ్యం<hb_position_t> ((int64_t) పునాది_extents.y_bearing +
+						పునాది_extents.ఎత్తు - mark_extents.y_bearing);
       /* Never shift up "below" marks. */
-      if ((y_gap > 0) == (pos.y_offset > 0))
+      ఒకవేళ ((y_gap > 0) == (pos.y_స్థానభ్రంశం_2 > 0))
       {
-	base_extents.height = hb_saturate_sub (base_extents.height, pos.y_offset);
-	pos.y_offset = 0;
+	పునాది_extents.ఎత్తు = hb_saturate_sub (పునాది_extents.ఎత్తు, pos.y_స్థానభ్రంశం_2);
+	pos.y_స్థానభ్రంశం_2 = 0;
       }
-      base_extents.height = hb_saturate_add (base_extents.height, mark_extents.height);
-      break;
+      పునాది_extents.ఎత్తు = hb_saturate_కూడు (పునాది_extents.ఎత్తు, mark_extents.ఎత్తు);
+      ఆపు;
 
-    case HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_LEFT:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ABOVE_RIGHT:
+    స్థితి HB_UNICODE_COMBINING_CLASS_DOUBLE_ABOVE:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ABOVE_ఎడమ:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ABOVE:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ABOVE_కుడి:
       /* Add gap, fall-through. */
-      base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, y_gap);
-      base_extents.height = hb_saturate_sub (base_extents.height, y_gap);
+      పునాది_extents.y_bearing = hb_saturate_కూడు (పునాది_extents.y_bearing, y_gap);
+      పునాది_extents.ఎత్తు = hb_saturate_sub (పునాది_extents.ఎత్తు, y_gap);
       HB_FALLTHROUGH;
 
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
-    case HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_RIGHT:
-      pos.y_offset = hb_clamp_to<hb_position_t> ((int64_t) base_extents.y_bearing -
-						mark_extents.y_bearing - mark_extents.height);
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE:
+    స్థితి HB_UNICODE_COMBINING_CLASS_ATTACHED_ABOVE_కుడి:
+      pos.y_స్థానభ్రంశం_2 = hb_clamp_గమ్యం<hb_position_t> ((int64_t) పునాది_extents.y_bearing -
+						mark_extents.y_bearing - mark_extents.ఎత్తు);
       /* Don't shift down "above" marks too much. */
-      if ((y_gap > 0) != (pos.y_offset > 0))
+      ఒకవేళ ((y_gap > 0) != (pos.y_స్థానభ్రంశం_2 > 0))
       {
-	hb_position_t correction = -(pos.y_offset / 2);
-	base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing, correction);
-	base_extents.height = hb_saturate_sub (base_extents.height, correction);
-	pos.y_offset = hb_saturate_add (pos.y_offset, correction);
+	hb_position_t correction = -(pos.y_స్థానభ్రంశం_2 / 2);
+	పునాది_extents.y_bearing = hb_saturate_కూడు (పునాది_extents.y_bearing, correction);
+	పునాది_extents.ఎత్తు = hb_saturate_sub (పునాది_extents.ఎత్తు, correction);
+	pos.y_స్థానభ్రంశం_2 = hb_saturate_కూడు (pos.y_స్థానభ్రంశం_2, correction);
       }
-      base_extents.y_bearing = hb_saturate_sub (base_extents.y_bearing, mark_extents.height);
-      base_extents.height = hb_saturate_add (base_extents.height, mark_extents.height);
-      break;
+      పునాది_extents.y_bearing = hb_saturate_sub (పునాది_extents.y_bearing, mark_extents.ఎత్తు);
+      పునాది_extents.ఎత్తు = hb_saturate_కూడు (పునాది_extents.ఎత్తు, mark_extents.ఎత్తు);
+      ఆపు;
   }
 }
 
-static inline void
-position_around_base (const hb_ot_shape_plan_t *plan,
+స్థిర అంతఃవరుస శూన్య
+position_around_పునాది (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		      hb_font_t *font,
-		      hb_buffer_t  *buffer,
-		      unsigned int base,
-		      unsigned int end,
-		      bool adjust_offsets_when_zeroing)
+		      hb_బఫరు_t  *బఫరు,
+		      గుర్తులేని పూర్ణాంకం పునాది,
+		      గుర్తులేని పూర్ణాంకం చివర,
+		      తార్కిక adjust_offsets_when_zeroing)
 {
   hb_direction_t horiz_dir = HB_DIRECTION_INVALID;
 
-  buffer->unsafe_to_break (base, end);
+  బఫరు->unsafe_గమ్యం_break (పునాది, చివర);
 
-  hb_glyph_extents_t base_extents;
-  if (!font->get_glyph_extents (buffer->info[base].codepoint,
-				&base_extents))
+  hb_glyph_extents_t పునాది_extents;
+  ఒకవేళ (!font->get_glyph_extents (బఫరు->info[పునాది].codepoint,
+				&పునాది_extents))
   {
     /* If extents don't work, zero marks and go home. */
-    zero_mark_advances (buffer, base + 1, end, adjust_offsets_when_zeroing);
-    return;
+    zero_mark_advances (బఫరు, పునాది + 1, చివర, adjust_offsets_when_zeroing);
+    తిరిగి;
   }
-  base_extents.y_bearing = hb_saturate_add (base_extents.y_bearing,
-					    buffer->pos[base].y_offset);
+  పునాది_extents.y_bearing = hb_saturate_కూడు (పునాది_extents.y_bearing,
+					    బఫరు->pos[పునాది].y_స్థానభ్రంశం_2);
   /* Use horizontal advance for horizontal positioning.
    * Generally a better idea.  Also works for zero-ink glyphs.  See:
    * https://github.com/harfbuzz/harfbuzz/issues/1532 */
-  base_extents.x_bearing = 0;
-  base_extents.width = font->get_glyph_h_advance (buffer->info[base].codepoint);
+  పునాది_extents.x_bearing = 0;
+  పునాది_extents.వెడల్పు = font->get_glyph_h_advance (బఫరు->info[పునాది].codepoint);
 
-  unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[base]);
+  గుర్తులేని పూర్ణాంకం lig_id = _hb_glyph_info_get_lig_id (&బఫరు->info[పునాది]);
   /* Use integer for num_lig_components such that it doesn't convert to unsigned
    * when we divide or multiply by it. */
-  int num_lig_components = _hb_glyph_info_get_lig_num_comps (&buffer->info[base]);
+  పూర్ణాంకం అంకె_lig_components = hb_glyph_info_get_lig_అంకె_comps (&బఫరు->info[పునాది]);
 
-  hb_position_t x_offset = 0, y_offset = 0;
-  if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
-    x_offset = hb_saturate_neg (buffer->pos[base].x_advance);
-    y_offset = hb_saturate_neg (buffer->pos[base].y_advance);
+  hb_position_t x_స్థానభ్రంశం_2 = 0, y_స్థానభ్రంశం_2 = 0;
+  ఒకవేళ (HB_DIRECTION_IS_FORWARD (బఫరు->props.direction)) {
+    x_స్థానభ్రంశం_2 = hb_saturate_neg (బఫరు->pos[పునాది].x_advance);
+    y_స్థానభ్రంశం_2 = hb_saturate_neg (బఫరు->pos[పునాది].y_advance);
   }
 
-  hb_glyph_extents_t component_extents = base_extents;
-  int last_lig_component = -1;
-  unsigned int last_combining_class = 255;
-  hb_glyph_extents_t cluster_extents = base_extents; /* Initialization is just to shut gcc up. */
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = base + 1; i < end; i++)
-    if (_hb_glyph_info_get_modified_combining_class (&info[i]))
+  hb_glyph_extents_t component_extents = పునాది_extents;
+  పూర్ణాంకం చివరి_lig_component = -1;
+  గుర్తులేని పూర్ణాంకం చివరి_combining_class = 255;
+  hb_glyph_extents_t cluster_extents = పునాది_extents; /* Initialization is just to shut gcc up. */
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = పునాది + 1; i < చివర; i++)
+    ఒకవేళ (_hb_glyph_info_get_modified_combining_class (&info[i]))
     {
-      if (num_lig_components > 1) {
-	unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
-	int this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
+      ఒకవేళ (అంకె_lig_components > 1) {
+	గుర్తులేని పూర్ణాంకం this_lig_id = _hb_glyph_info_get_lig_id (&info[i]);
+	పూర్ణాంకం this_lig_component = _hb_glyph_info_get_lig_comp (&info[i]) - 1;
 	/* Conditions for attaching to the last component. */
-	if (!lig_id || lig_id != this_lig_id || this_lig_component >= num_lig_components)
-	  this_lig_component = num_lig_components - 1;
-	if (last_lig_component != this_lig_component)
+	ఒకవేళ (!lig_id || lig_id != this_lig_id || this_lig_component >= అంకె_lig_components)
+	  this_lig_component = అంకె_lig_components - 1;
+	ఒకవేళ (చివరి_lig_component != this_lig_component)
 	{
-	  last_lig_component = this_lig_component;
-	  last_combining_class = 255;
-	  component_extents = base_extents;
-	  if (unlikely (horiz_dir == HB_DIRECTION_INVALID)) {
-	    if (HB_DIRECTION_IS_HORIZONTAL (plan->props.direction))
+	  చివరి_lig_component = this_lig_component;
+	  చివరి_combining_class = 255;
+	  component_extents = పునాది_extents;
+	  ఒకవేళ (unlikely (horiz_dir == HB_DIRECTION_INVALID)) {
+	    ఒకవేళ (HB_DIRECTION_IS_HORIZONTAL (plan->props.direction))
 	      horiz_dir = plan->props.direction;
-	    else
+	    లేకపోతే
 	      horiz_dir = hb_script_get_horizontal_direction (plan->props.script);
 	  }
-	  if (horiz_dir == HB_DIRECTION_LTR)
-	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
+	  ఒకవేళ (horiz_dir == HB_DIRECTION_LTR)
+	    component_extents.x_bearing = hb_clamp_గమ్యం<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
-		(int64_t) this_lig_component * component_extents.width / num_lig_components);
-	  else
-	    component_extents.x_bearing = hb_clamp_to<hb_position_t> (
+		(int64_t) this_lig_component * component_extents.వెడల్పు / అంకె_lig_components);
+	  లేకపోతే
+	    component_extents.x_bearing = hb_clamp_గమ్యం<hb_position_t> (
 		(int64_t) component_extents.x_bearing +
-		(int64_t) (num_lig_components - 1 - this_lig_component) * component_extents.width / num_lig_components);
-	  component_extents.width /= num_lig_components;
+		(int64_t) (అంకె_lig_components - 1 - this_lig_component) * component_extents.వెడల్పు / అంకె_lig_components);
+	  component_extents.వెడల్పు /= అంకె_lig_components;
 	}
       }
 
-      unsigned int this_combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
-      if (last_combining_class != this_combining_class)
+      గుర్తులేని పూర్ణాంకం this_combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);
+      ఒకవేళ (చివరి_combining_class != this_combining_class)
       {
-	last_combining_class = this_combining_class;
+	చివరి_combining_class = this_combining_class;
 	cluster_extents = component_extents;
       }
 
-      position_mark (plan, font, buffer, cluster_extents, i, this_combining_class);
+      position_mark (plan, font, బఫరు, cluster_extents, i, this_combining_class);
 
-      buffer->pos[i].x_advance = 0;
-      buffer->pos[i].y_advance = 0;
-      buffer->pos[i].x_offset = hb_saturate_add (buffer->pos[i].x_offset, x_offset);
-      buffer->pos[i].y_offset = hb_saturate_add (buffer->pos[i].y_offset, y_offset);
+      బఫరు->pos[i].x_advance = 0;
+      బఫరు->pos[i].y_advance = 0;
+      బఫరు->pos[i].x_స్థానభ్రంశం_2 = hb_saturate_కూడు (బఫరు->pos[i].x_స్థానభ్రంశం_2, x_స్థానభ్రంశం_2);
+      బఫరు->pos[i].y_స్థానభ్రంశం_2 = hb_saturate_కూడు (బఫరు->pos[i].y_స్థానభ్రంశం_2, y_స్థానభ్రంశం_2);
 
-    } else {
-      if (HB_DIRECTION_IS_FORWARD (buffer->props.direction)) {
-	x_offset = hb_saturate_sub (x_offset, buffer->pos[i].x_advance);
-	y_offset = hb_saturate_sub (y_offset, buffer->pos[i].y_advance);
-      } else {
-	x_offset = hb_saturate_add (x_offset, buffer->pos[i].x_advance);
-	y_offset = hb_saturate_add (y_offset, buffer->pos[i].y_advance);
+    } లేకపోతే {
+      ఒకవేళ (HB_DIRECTION_IS_FORWARD (బఫరు->props.direction)) {
+	x_స్థానభ్రంశం_2 = hb_saturate_sub (x_స్థానభ్రంశం_2, బఫరు->pos[i].x_advance);
+	y_స్థానభ్రంశం_2 = hb_saturate_sub (y_స్థానభ్రంశం_2, బఫరు->pos[i].y_advance);
+      } లేకపోతే {
+	x_స్థానభ్రంశం_2 = hb_saturate_కూడు (x_స్థానభ్రంశం_2, బఫరు->pos[i].x_advance);
+	y_స్థానభ్రంశం_2 = hb_saturate_కూడు (y_స్థానభ్రంశం_2, బఫరు->pos[i].y_advance);
       }
     }
 }
 
-static inline void
-position_cluster_impl (const hb_ot_shape_plan_t *plan,
+స్థిర అంతఃవరుస శూన్య
+position_cluster_impl (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t  *buffer,
-		       unsigned int start,
-		       unsigned int end,
-		       bool adjust_offsets_when_zeroing)
+		       hb_బఫరు_t  *బఫరు,
+		       గుర్తులేని పూర్ణాంకం ప్రారంభం,
+		       గుర్తులేని పూర్ణాంకం చివర,
+		       తార్కిక adjust_offsets_when_zeroing)
 {
   /* Find the base glyph */
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = start; i < end; i++)
-    if (!_hb_glyph_info_is_unicode_mark (&info[i]))
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
+    ఒకవేళ (!_hb_glyph_info_is_unicode_mark (&info[i]))
     {
       /* Find mark glyphs */
-      unsigned int j;
-      for (j = i + 1; j < end; j++)
+      గుర్తులేని పూర్ణాంకం j;
+      కొరకు (j = i + 1; j < చివర; j++)
       {
-        if (_hb_glyph_info_is_hidden (&info[j]) ||
+        ఒకవేళ (_hb_glyph_info_is_hidden (&info[j]) ||
 	    _hb_glyph_info_is_default_ignorable (&info[j]))
-	  continue;
-	if (!_hb_glyph_info_is_unicode_mark (&info[j]))
-	  break;
+	  కొనసాగు;
+	ఒకవేళ (!_hb_glyph_info_is_unicode_mark (&info[j]))
+	  ఆపు;
       }
 
-      position_around_base (plan, font, buffer, i, j, adjust_offsets_when_zeroing);
+      position_around_పునాది (plan, font, బఫరు, i, j, adjust_offsets_when_zeroing);
 
       i = j - 1;
     }
 }
 
-static HB_ALWAYS_INLINE void
-position_cluster (const hb_ot_shape_plan_t *plan,
+స్థిర HB_ALWAYS_INLINE శూన్య
+position_cluster (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		  hb_font_t *font,
-		  hb_buffer_t  *buffer,
-		  unsigned int start,
-		  unsigned int end,
-		  bool adjust_offsets_when_zeroing)
+		  hb_బఫరు_t  *బఫరు,
+		  గుర్తులేని పూర్ణాంకం ప్రారంభం,
+		  గుర్తులేని పూర్ణాంకం చివర,
+		  తార్కిక adjust_offsets_when_zeroing)
 {
-  if (end - start < 2)
-    return;
+  ఒకవేళ (చివర - ప్రారంభం < 2)
+    తిరిగి;
 
-  position_cluster_impl (plan, font, buffer, start, end, adjust_offsets_when_zeroing);
+  position_cluster_impl (plan, font, బఫరు, ప్రారంభం, చివర, adjust_offsets_when_zeroing);
 }
 
-void
-_hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+శూన్య
+_hb_ot_shape_fallback_mark_position (స్థిరరాశి hb_ot_shape_plan_t *plan,
 				     hb_font_t *font,
-				     hb_buffer_t  *buffer,
-				     bool adjust_offsets_when_zeroing)
+				     hb_బఫరు_t  *బఫరు,
+				     తార్కిక adjust_offsets_when_zeroing)
 {
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
-#endif
+#నిర్వచితమైతే HB_NO_OT_SHAPE_FALLBACK
+  తిరిగి;
+#అయితే_ముగింపు
 
-  if (!buffer->message (font, "start fallback mark"))
-    return;
+  ఒకవేళ (!బఫరు->సందేశం (font, "start fallback mark"))
+    తిరిగి;
 
-  _hb_buffer_assert_gsubgpos_vars (buffer);
+  hb_బఫరు_assert_gsubgpos_vars (బఫరు);
 
-  unsigned int start = 0;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 1; i < count; i++)
-    if (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
+  గుర్తులేని పూర్ణాంకం ప్రారంభం = 0;
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < లెక్క; i++)
+    ఒకవేళ (likely (!_hb_glyph_info_is_unicode_mark (&info[i]) &&
 		!_hb_glyph_info_is_hidden (&info[i]) &&
 		!_hb_glyph_info_is_default_ignorable (&info[i]))) {
-      position_cluster (plan, font, buffer, start, i, adjust_offsets_when_zeroing);
-      start = i;
+      position_cluster (plan, font, బఫరు, ప్రారంభం, i, adjust_offsets_when_zeroing);
+      ప్రారంభం = i;
     }
-  position_cluster (plan, font, buffer, start, count, adjust_offsets_when_zeroing);
+  position_cluster (plan, font, బఫరు, ప్రారంభం, లెక్క, adjust_offsets_when_zeroing);
 
-  (void) buffer->message (font, "end fallback mark");
+  (శూన్య) బఫరు->సందేశం (font, "end fallback mark");
 }
 
 
-#ifndef HB_DISABLE_DEPRECATED
-struct hb_ot_shape_fallback_kern_driver_t
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
+నిర్మాణం hb_ot_shape_fallback_kern_driver_t
 {
   hb_ot_shape_fallback_kern_driver_t (hb_font_t   *font_,
-				      hb_buffer_t *buffer) :
-    font (font_), direction (buffer->props.direction) {}
+				      hb_బఫరు_t *బఫరు) :
+    font (font_), direction (బఫరు->props.direction) {}
 
-  hb_position_t get_kerning (hb_codepoint_t first, hb_codepoint_t second) const
+  hb_position_t get_kerning (hb_codepoint_t మొదటి, hb_codepoint_t second) స్థిరరాశి
   {
     hb_position_t kern = 0;
-    font->get_glyph_kerning_for_direction (first, second,
+    font->get_glyph_kerning_for_direction (మొదటి, second,
 					   direction,
 					   &kern, &kern);
-    return kern;
+    తిరిగి kern;
   }
 
   hb_font_t *font;
   hb_direction_t direction;
 };
-#endif
+#అయితే_ముగింపు
 
 /* Performs font-assisted kerning. */
-void
-_hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+శూన్య
+_hb_ot_shape_fallback_kern (స్థిరరాశి hb_ot_shape_plan_t *plan,
 			    hb_font_t *font,
-			    hb_buffer_t *buffer)
+			    hb_బఫరు_t *బఫరు)
 {
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-  return;
-#endif
+#నిర్వచితమైతే HB_NO_OT_SHAPE_FALLBACK
+  తిరిగి;
+#అయితే_ముగింపు
 
-#ifndef HB_DISABLE_DEPRECATED
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction) ?
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
+  ఒకవేళ (HB_DIRECTION_IS_HORIZONTAL (బఫరు->props.direction) ?
       !font->has_glyph_h_kerning_func () :
       !font->has_glyph_v_kerning_func ())
-    return;
+    తిరిగి;
 
-  if (!buffer->message (font, "start fallback kern"))
-    return;
+  ఒకవేళ (!బఫరు->సందేశం (font, "start fallback kern"))
+    తిరిగి;
 
-  bool reverse = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  తార్కిక reverse = HB_DIRECTION_IS_BACKWARD (బఫరు->props.direction);
 
-  if (reverse)
-    buffer->reverse ();
+  ఒకవేళ (reverse)
+    బఫరు->reverse ();
 
-  hb_ot_shape_fallback_kern_driver_t driver (font, buffer);
+  hb_ot_shape_fallback_kern_driver_t driver (font, బఫరు);
   OT::hb_kern_machine_t<hb_ot_shape_fallback_kern_driver_t> machine (driver);
-  machine.kern (font, buffer, plan->kern_mask, false);
+  machine.kern (font, బఫరు, plan->kern_ముసుగు, అబద్ధం);
 
-  if (reverse)
-    buffer->reverse ();
+  ఒకవేళ (reverse)
+    బఫరు->reverse ();
 
-  (void) buffer->message (font, "end fallback kern");
-#endif
+  (శూన్య) బఫరు->సందేశం (font, "end fallback kern");
+#అయితే_ముగింపు
 }
 
 
 /* Adjusts width of various spaces. */
-void
-_hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan HB_UNUSED,
+శూన్య
+_hb_ot_shape_fallback_spaces (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
 			      hb_font_t *font,
-			      hb_buffer_t  *buffer)
+			      hb_బఫరు_t  *బఫరు)
 {
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
-  bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
+  hb_glyph_info_t *info = బఫరు->info;
+  hb_glyph_position_t *pos = బఫరు->pos;
+  తార్కిక horizontal = HB_DIRECTION_IS_HORIZONTAL (బఫరు->props.direction);
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    ఒకవేళ (_hb_glyph_info_is_unicode_space (&info[i]) && !_hb_glyph_info_ligated (&info[i]))
     {
       /* If font had no ASCII space and we used the invisible glyph, give it a 1/4 EM default advance. */
-      if (buffer->invisible && info[i].codepoint == buffer->invisible)
+      ఒకవేళ (బఫరు->invisible && info[i].codepoint == బఫరు->invisible)
       {
-        if (horizontal)
+        ఒకవేళ (horizontal)
 	  pos[i].x_advance = +font->x_scale / 4;
-        else
+        లేకపోతే
 	  pos[i].y_advance = -(int64_t) font->y_scale / 4;
       }
 
       hb_unicode_funcs_t::space_t space_type = _hb_glyph_info_get_unicode_space_fallback_type (&info[i]);
       hb_codepoint_t glyph;
-      typedef hb_unicode_funcs_t t;
-      switch (space_type)
+      రకనిర్వచనం hb_unicode_funcs_t t;
+      ఎంపిక (space_type)
       {
-	case t::NOT_SPACE: /* Shouldn't happen. */
-	case t::SPACE:
-	  break;
+	స్థితి t::NOT_SPACE: /* Shouldn't happen. */
+	స్థితి t::SPACE:
+	  ఆపు;
 
-	case t::SPACE_EM:
-	case t::SPACE_EM_2:
-	case t::SPACE_EM_3:
-	case t::SPACE_EM_4:
-	case t::SPACE_EM_5:
-	case t::SPACE_EM_6:
-	case t::SPACE_EM_16:
-	  if (horizontal)
-	    pos[i].x_advance = ((int64_t) font->x_scale + ((int) space_type)/2) / (int) space_type;
-	  else
-	    pos[i].y_advance = -((int64_t) font->y_scale + ((int) space_type)/2) / (int) space_type;
-	  break;
+	స్థితి t::SPACE_EM:
+	స్థితి t::SPACE_EM_2:
+	స్థితి t::SPACE_EM_3:
+	స్థితి t::SPACE_EM_4:
+	స్థితి t::SPACE_EM_5:
+	స్థితి t::SPACE_EM_6:
+	స్థితి t::SPACE_EM_16:
+	  ఒకవేళ (horizontal)
+	    pos[i].x_advance = ((int64_t) font->x_scale + ((పూర్ణాంకం) space_type)/2) / (పూర్ణాంకం) space_type;
+	  లేకపోతే
+	    pos[i].y_advance = -((int64_t) font->y_scale + ((పూర్ణాంకం) space_type)/2) / (పూర్ణాంకం) space_type;
+	  ఆపు;
 
-	case t::SPACE_4_EM_18:
-	  if (horizontal)
+	స్థితి t::SPACE_4_EM_18:
+	  ఒకవేళ (horizontal)
 	    pos[i].x_advance = (int64_t) font->x_scale * 4 / 18;
-	  else
+	  లేకపోతే
 	    pos[i].y_advance = -(int64_t) font->y_scale * 4 / 18;
-	  break;
+	  ఆపు;
 
-	case t::SPACE_FIGURE:
-	  for (char u = '0'; u <= '9'; u++)
-	    if (font->get_nominal_glyph (u, &glyph))
+	స్థితి t::SPACE_FIGURE:
+	  కొరకు (అక్షరం u = '0'; u <= '9'; u++)
+	    ఒకవేళ (font->get_nominal_glyph (u, &glyph))
 	    {
-	      if (horizontal)
+	      ఒకవేళ (horizontal)
 		pos[i].x_advance = font->get_glyph_h_advance (glyph);
-	      else
+	      లేకపోతే
 		pos[i].y_advance = font->get_glyph_v_advance (glyph);
-	      break;
+	      ఆపు;
 	    }
-	  break;
+	  ఆపు;
 
-	case t::SPACE_PUNCTUATION:
-	  if (font->get_nominal_glyph ('.', &glyph) ||
+	స్థితి t::SPACE_PUNCTUATION:
+	  ఒకవేళ (font->get_nominal_glyph ('.', &glyph) ||
 	      font->get_nominal_glyph (',', &glyph))
 	  {
-	    if (horizontal)
+	    ఒకవేళ (horizontal)
 	      pos[i].x_advance = font->get_glyph_h_advance (glyph);
-	    else
+	    లేకపోతే
 	      pos[i].y_advance = font->get_glyph_v_advance (glyph);
 	  }
-	  break;
+	  ఆపు;
 
-	case t::SPACE_NARROW:
+	స్థితి t::SPACE_NARROW:
 	  /* Half-space?
 	   * Unicode doc https://unicode.org/charts/PDF/U2000.pdf says ~1/4 or 1/5 of EM.
 	   * However, in my testing, many fonts have their regular space being about that
 	   * size.  To me, a percentage of the space width makes more sense.  Half is as
 	   * good as any. */
-	  if (horizontal)
+	  ఒకవేళ (horizontal)
 	    pos[i].x_advance /= 2;
-	  else
+	  లేకపోతే
 	    pos[i].y_advance /= 2;
-	  break;
+	  ఆపు;
       }
     }
 }
 
 
-#endif
+#అయితే_ముగింపు

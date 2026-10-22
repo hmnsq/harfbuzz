@@ -26,372 +26,372 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_COVERAGE_HH
-#define OT_LAYOUT_COMMON_COVERAGE_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_COMMON_COVERAGE_HH
+#నిర్వచించు OT_LAYOUT_COMMON_COVERAGE_HH
 
-#include "../../../hb-ot-dual.hh"
-#include "CoverageFormat1.hh"
-#include "CoverageFormat2.hh"
+#అన్తర్భావ "../../../hb-ot-dual.hh"
+#అన్తర్భావ "CoverageFormat1.hh"
+#అన్తర్భావ "CoverageFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ Common {
 
-template<typename Iterator>
-static inline void Coverage_serialize (hb_serialize_context_t *c,
+మూస<రకం_పేరు Iterator>
+స్థిర అంతఃవరుస శూన్య Coverage_serialize (hb_serialize_context_t *c,
                                        Iterator it);
 
-struct Coverage
+నిర్మాణం Coverage
 {
 
-  protected:
-  union {
-  struct { HBUINT16 v; }        format;         /* Format identifier */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }        format;         /* Format identifier */
   CoverageFormat1_3<SmallTypes> format1;
   CoverageFormat2_4<SmallTypes> format2;
-#ifndef HB_NO_BEYOND_64K
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
   CoverageFormat1_3<MediumTypes>format3;
   CoverageFormat2_4<MediumTypes>format4;
-#endif
+#అయితే_ముగింపు
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (2, format.v);
 
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  bool sanitize (hb_sanitize_context_t *c) const
+#అయితే_ముగింపు
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!u.format.v.sanitize (c)) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-#endif
-    default:return_trace (true);
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    స్థితి 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k] != NOT_COVERED; }
+  గుర్తులేని క్రియాకారకం [] (hb_codepoint_t k) స్థిరరాశి { తిరిగి get (k); }
+  తార్కిక has (hb_codepoint_t k) స్థిరరాశి { తిరిగి (*ఇది)[k] != NOT_COVERED; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  తార్కిక క్రియాకారకం () (hb_codepoint_t k) స్థిరరాశి { తిరిగి has (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_coverage (k); }
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  గుర్తులేని పూర్ణాంకం get (hb_codepoint_t k) స్థిరరాశి { తిరిగి get_coverage (k); }
+  గుర్తులేని పూర్ణాంకం get_coverage (hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coverage (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_coverage (glyph_id);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_coverage (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_coverage (glyph_id);
-#endif
-    default:return NOT_COVERED;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_coverage (glyph_id);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.get_coverage (glyph_id);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_coverage (glyph_id);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.get_coverage (glyph_id);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి NOT_COVERED;
     }
   }
-  unsigned int get_coverage (hb_codepoint_t glyph_id,
-			     hb_ot_layout_mapping_cache_t *cache) const
+  గుర్తులేని పూర్ణాంకం get_coverage (hb_codepoint_t glyph_id,
+			     hb_ot_layout_mapping_cache_t *cache) స్థిరరాశి
   {
-    unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    గుర్తులేని coverage;
+    ఒకవేళ (cache && cache->get (glyph_id, &coverage)) తిరిగి coverage < cache->MAX_విలువ ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
-	cache->set (glyph_id, coverage);
+    ఒకవేళ (cache) {
+      ఒకవేళ (coverage == NOT_COVERED)
+	cache->సమితి (glyph_id, cache->MAX_విలువ);
+      లేకపోతే ఒకవేళ (likely (coverage < cache->MAX_విలువ))
+	cache->సమితి (glyph_id, coverage);
     }
-    return coverage;
+    తిరిగి coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
-				    hb_ot_layout_binary_cache_t *cache) const
+  గుర్తులేని పూర్ణాంకం get_coverage_ద్విమాన (hb_codepoint_t glyph_id,
+				    hb_ot_layout_ద్విమాన_cache_t *cache) స్థిరరాశి
   {
-    unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    గుర్తులేని coverage;
+    ఒకవేళ (cache && cache->get (glyph_id, &coverage)) తిరిగి coverage < cache->MAX_విలువ ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else
-	cache->set (glyph_id, 0);
+    ఒకవేళ (cache) {
+      ఒకవేళ (coverage == NOT_COVERED)
+	cache->సమితి (glyph_id, cache->MAX_విలువ);
+      లేకపోతే
+	cache->సమితి (glyph_id, 0);
     }
-    return coverage;
+    తిరిగి coverage;
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
-#endif
-    default:return NOT_COVERED;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_population ();
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.get_population ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_population ();
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.get_population ();
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి NOT_COVERED;
     }
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  మూస <రకం_పేరు Iterator,
+      hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    unsigned count = hb_len (+ glyphs);
-    unsigned num_ranges = 0;
-    hb_codepoint_t last = (hb_codepoint_t) -2;
+    గుర్తులేని లెక్క = hb_len (+ glyphs);
+    గుర్తులేని అంకె_ranges = 0;
+    hb_codepoint_t చివరి = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
-    bool unsorted = false;
-    for (auto g: + glyphs)
+    తార్కిక unsorted = అబద్ధం;
+    కొరకు (స్వయంచాలక g: + glyphs)
     {
-      if (last != (hb_codepoint_t) -2 && g < last)
-	unsorted = true;
-      if (last + 1 != g)
-	num_ranges++;
-      last = g;
-      if (g > max) max = g;
+      ఒకవేళ (చివరి != (hb_codepoint_t) -2 && g < చివరి)
+	unsorted = నిజం;
+      ఒకవేళ (చివరి + 1 != g)
+	అంకె_ranges++;
+      చివరి = g;
+      ఒకవేళ (g > max) max = g;
     }
-    u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
+    u.format.v = !unsorted && లెక్క <= అంకె_ranges * 3 ? 1 : 2;
 
-#ifndef HB_NO_BEYOND_64K
-    if (max > 0xFFFFu)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (max > 0xFFFFu)
       u.format.v += 2;
-    if (unlikely (max > 0xFFFFFFu))
-#else
-    if (unlikely (max > 0xFFFFu))
-#endif
+    ఒకవేళ (unlikely (max > 0xFFFFFFu))
+#లేకపోతే
+    ఒకవేళ (unlikely (max > 0xFFFFu))
+#అయితే_ముగింపు
     {
-      c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return_trace (false);
+      c->check_success (అబద్ధం, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం);
+      return_trace (అబద్ధం);
     }
 
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
-#endif
-    default:return_trace (false);
+    స్థితి 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
+    స్థితి 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_subset_plan_t *plan = c->plan;
-    auto it =
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_subset_plan_t *plan = c->plan;
+    స్వయంచాలక it =
     + iter ()
-    | hb_take (plan->source->get_num_glyphs ())
-    | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
-	return plan->map_gsub_glyph (g);
+    | hb_take (plan->ఆధారం->get_అంకె_glyphs ())
+    | hb_map_retains_క్రమీకరణ ([plan] (hb_codepoint_t g) {
+	తిరిగి plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { తిరిగి glyph != HB_MAP_విలువ_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times
     // by the serialize code below.
-    hb_sorted_vector_t<hb_codepoint_t> glyphs (it);
+    hb_sorted_సదిశ_t<hb_codepoint_t> glyphs (it);
     Coverage_serialize (c->serializer, glyphs.iter ());
-    return_trace (bool (glyphs));
+    return_trace (తార్కిక (glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
-#endif
-    default:return false;
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersects (glyphs);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersects (glyphs);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersects (glyphs);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersects (glyphs);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  తార్కిక intersects_coverage (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం సూచీ_2) స్థిరరాశి
   {
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects_coverage (glyphs, index);
-    case 2: hb_barrier (); return u.format2.intersects_coverage (glyphs, index);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_coverage (glyphs, index);
-    case 4: hb_barrier (); return u.format4.intersects_coverage (glyphs, index);
-#endif
-    default:return false;
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersects_coverage (glyphs, సూచీ_2);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersects_coverage (glyphs, సూచీ_2);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersects_coverage (glyphs, సూచీ_2);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersects_coverage (glyphs, సూచీ_2);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
-  unsigned cost () const
+  గుర్తులేని ఖర్చు () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
-#endif
-    default:return 0u;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.ఖర్చు ();
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.ఖర్చు ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.ఖర్చు ();
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.ఖర్చు ();
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
   {
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
-#endif
-    default:return false;
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.collect_coverage (glyphs);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.collect_coverage (glyphs);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.collect_coverage (glyphs);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.collect_coverage (glyphs);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  మూస <రకం_పేరు Iterable_బహిర్గతం,
+	    hb_requires (hb_is_sink_యొక్క (Iterable_బహిర్గతం, hb_codepoint_t))>
+  శూన్య intersect_సమితి (స్థిరరాశి hb_సమితి_t &glyphs, Iterable_బహిర్గతం&& intersect_glyphs) స్థిరరాశి
   {
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersect_set (glyphs, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersect_set (glyphs, intersect_glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersect_set (glyphs, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersect_set (glyphs, intersect_glyphs);
-#endif
-    default:return ;
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersect_సమితి (glyphs, intersect_glyphs);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersect_సమితి (glyphs, intersect_glyphs);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersect_సమితి (glyphs, intersect_glyphs);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersect_సమితి (glyphs, intersect_glyphs);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి ;
     }
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  నిర్మాణం iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const Coverage &c_ = Null (Coverage))
+    స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+    iter_t (స్థిరరాశి Coverage &c_ = Null (Coverage))
     {
-      hb_memset (this, 0, sizeof (*this));
+      hb_memset (ఇది, 0, పరిమాణం (*ఇది));
       format = c_.u.format.v;
-      switch (format)
+      ఎంపిక (format)
       {
-      case 1: hb_barrier (); u.format1.init (c_.u.format1); return;
-      case 2: hb_barrier (); u.format2.init (c_.u.format2); return;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.init (c_.u.format3); return;
-      case 4: hb_barrier (); u.format4.init (c_.u.format4); return;
-#endif
-      default:                               return;
+      స్థితి 1: hb_barrier (); u.format1.init (c_.u.format1); తిరిగి;
+      స్థితి 2: hb_barrier (); u.format2.init (c_.u.format2); తిరిగి;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      స్థితి 3: hb_barrier (); u.format3.init (c_.u.format3); తిరిగి;
+      స్థితి 4: hb_barrier (); u.format4.init (c_.u.format4); తిరిగి;
+#అయితే_ముగింపు
+      అప్రమేయ:                               తిరిగి;
       }
     }
-    bool __more__ () const
+    తార్కిక __more__ () స్థిరరాశి
     {
-      switch (format)
+      ఎంపిక (format)
       {
-      case 1: hb_barrier (); return u.format1.__more__ ();
-      case 2: hb_barrier (); return u.format2.__more__ ();
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.__more__ ();
-      case 4: hb_barrier (); return u.format4.__more__ ();
-#endif
-      default:return false;
+      స్థితి 1: hb_barrier (); తిరిగి u.format1.__more__ ();
+      స్థితి 2: hb_barrier (); తిరిగి u.format2.__more__ ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      స్థితి 3: hb_barrier (); తిరిగి u.format3.__more__ ();
+      స్థితి 4: hb_barrier (); తిరిగి u.format4.__more__ ();
+#అయితే_ముగింపు
+      అప్రమేయ:తిరిగి అబద్ధం;
       }
     }
-    void __next__ ()
+    శూన్య __next__ ()
     {
-      switch (format)
+      ఎంపిక (format)
       {
-      case 1: hb_barrier (); u.format1.__next__ (); break;
-      case 2: hb_barrier (); u.format2.__next__ (); break;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.__next__ (); break;
-      case 4: hb_barrier (); u.format4.__next__ (); break;
-#endif
-      default:                   break;
+      స్థితి 1: hb_barrier (); u.format1.__next__ (); ఆపు;
+      స్థితి 2: hb_barrier (); u.format2.__next__ (); ఆపు;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      స్థితి 3: hb_barrier (); u.format3.__next__ (); ఆపు;
+      స్థితి 4: hb_barrier (); u.format4.__next__ (); ఆపు;
+#అయితే_ముగింపు
+      అప్రమేయ:                   ఆపు;
       }
     }
-    typedef hb_codepoint_t __item_t__;
-    __item_t__ __item__ () const { return get_glyph (); }
+    రకనిర్వచనం hb_codepoint_t __item_t__;
+    __item_t__ __item__ () స్థిరరాశి { తిరిగి get_glyph (); }
 
-    hb_codepoint_t get_glyph () const
+    hb_codepoint_t get_glyph () స్థిరరాశి
     {
-      switch (format)
+      ఎంపిక (format)
       {
-      case 1: hb_barrier (); return u.format1.get_glyph ();
-      case 2: hb_barrier (); return u.format2.get_glyph ();
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.get_glyph ();
-      case 4: hb_barrier (); return u.format4.get_glyph ();
-#endif
-      default:return 0;
+      స్థితి 1: hb_barrier (); తిరిగి u.format1.get_glyph ();
+      స్థితి 2: hb_barrier (); తిరిగి u.format2.get_glyph ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      స్థితి 3: hb_barrier (); తిరిగి u.format3.get_glyph ();
+      స్థితి 4: hb_barrier (); తిరిగి u.format4.get_glyph ();
+#అయితే_ముగింపు
+      అప్రమేయ:తిరిగి 0;
       }
     }
-    bool operator != (const iter_t& o) const
+    తార్కిక క్రియాకారకం != (స్థిరరాశి iter_t& o) స్థిరరాశి
     {
-      if (unlikely (format != o.format)) return true;
-      switch (format)
+      ఒకవేళ (unlikely (format != o.format)) తిరిగి నిజం;
+      ఎంపిక (format)
       {
-      case 1: hb_barrier (); return u.format1 != o.u.format1;
-      case 2: hb_barrier (); return u.format2 != o.u.format2;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3 != o.u.format3;
-      case 4: hb_barrier (); return u.format4 != o.u.format4;
-#endif
-      default:return false;
+      స్థితి 1: hb_barrier (); తిరిగి u.format1 != o.u.format1;
+      స్థితి 2: hb_barrier (); తిరిగి u.format2 != o.u.format2;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      స్థితి 3: hb_barrier (); తిరిగి u.format3 != o.u.format3;
+      స్థితి 4: hb_barrier (); తిరిగి u.format4 != o.u.format4;
+#అయితే_ముగింపు
+      అప్రమేయ:తిరిగి అబద్ధం;
       }
     }
-    iter_t __end__ () const
+    iter_t __end__ () స్థిరరాశి
     {
       iter_t it;
       it.format = format;
-      switch (format)
+      ఎంపిక (format)
       {
-      case 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); break;
-      case 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); break;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); break;
-      case 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); break;
-#endif
-      default: break;
+      స్థితి 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); ఆపు;
+      స్థితి 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); ఆపు;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      స్థితి 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); ఆపు;
+      స్థితి 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); ఆపు;
+#అయితే_ముగింపు
+      అప్రమేయ: ఆపు;
       }
-      return it;
+      తిరిగి it;
     }
 
-    private:
-    unsigned int format;
-    union {
-#ifndef HB_NO_BEYOND_64K
+    అంతరంగ:
+    గుర్తులేని పూర్ణాంకం format;
+    సంఘం {
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
     CoverageFormat2_4<MediumTypes>::iter_t      format4; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<MediumTypes>::iter_t      format3;
-#endif
+#అయితే_ముగింపు
     CoverageFormat2_4<SmallTypes>::iter_t       format2; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<SmallTypes>::iter_t       format1;
     } u;
   };
-  iter_t iter () const { return iter_t (*this); }
+  iter_t iter () స్థిరరాశి { తిరిగి iter_t (*ఇది); }
 };
 
-template<typename Iterator>
-static inline void
+మూస<రకం_పేరు Iterator>
+స్థిర అంతఃవరుస శూన్య
 Coverage_serialize (hb_serialize_context_t *c,
                     Iterator it)
-{ c->start_embed<Coverage> ()->serialize (c, it); }
+{ c->ప్రారంభం_embed<Coverage> ()->serialize (c, it); }
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGE_HH
+#అయితే_ముగింపు  // #ifndef OT_LAYOUT_COMMON_COVERAGE_HH

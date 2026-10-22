@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_PAINT_H
-#define HB_PAINT_H
+#నిర్వచితం_కాకపోతే HB_PAINT_H
+#నిర్వచించు HB_PAINT_H
 
-#include "hb-common.h"
-#include "hb-draw.h"
+#అన్తర్భావ "hb-common.h"
+#అన్తర్భావ "hb-draw.h"
 
 HB_BEGIN_DECLS
 
@@ -61,7 +61,7 @@ HB_BEGIN_DECLS
  *
  * Since: 7.0.0
  **/
-typedef struct hb_paint_funcs_t hb_paint_funcs_t;
+రకనిర్వచనం నిర్మాణం hb_paint_funcs_t hb_paint_funcs_t;
 
 /**
  * hb_paint_set_budget_func_t:
@@ -77,10 +77,10 @@ typedef struct hb_paint_funcs_t hb_paint_funcs_t;
  *
  * Since: 14.5.0
  **/
-typedef hb_bool_t (*hb_paint_set_budget_func_t) (hb_paint_funcs_t *funcs,
-						  void *paint_data,
+రకనిర్వచనం hb_bool_t (*hb_paint_సమితి_budget_func_t) (hb_paint_funcs_t *funcs,
+						  శూన్య *paint_దత్తాంశం,
 						  int64_t budget,
-						  void *user_data);
+						  శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_get_budget_func_t:
@@ -94,9 +94,9 @@ typedef hb_bool_t (*hb_paint_set_budget_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t (*hb_paint_get_budget_func_t) (hb_paint_funcs_t *funcs,
-					       void *paint_data,
-					       void *user_data);
+రకనిర్వచనం int64_t (*hb_paint_get_budget_func_t) (hb_paint_funcs_t *funcs,
+					       శూన్య *paint_దత్తాంశం,
+					       శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_get_budget_remaining_func_t:
@@ -114,9 +114,9 @@ typedef int64_t (*hb_paint_get_budget_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t *(*hb_paint_get_budget_remaining_func_t) (hb_paint_funcs_t *funcs,
-							  void *paint_data,
-							  void *user_data);
+రకనిర్వచనం int64_t *(*hb_paint_get_budget_మిగిలిన_func_t) (hb_paint_funcs_t *funcs,
+							  శూన్య *paint_దత్తాంశం,
+							  శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_funcs_set_set_budget_func:
@@ -129,10 +129,10 @@ typedef int64_t *(*hb_paint_get_budget_remaining_func_t) (hb_paint_funcs_t *func
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
-hb_paint_funcs_set_set_budget_func (hb_paint_funcs_t         *funcs,
-				    hb_paint_set_budget_func_t  func,
-				    void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_సమితి_budget_func (hb_paint_funcs_t         *funcs,
+				    hb_paint_సమితి_budget_func_t  func,
+				    శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_paint_funcs_set_get_budget_func:
@@ -145,10 +145,10 @@ hb_paint_funcs_set_set_budget_func (hb_paint_funcs_t         *funcs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
-hb_paint_funcs_set_get_budget_func (hb_paint_funcs_t         *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_get_budget_func (hb_paint_funcs_t         *funcs,
 				    hb_paint_get_budget_func_t  func,
-				    void *user_data, hb_destroy_func_t destroy);
+				    శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 /**
  * hb_paint_funcs_set_get_budget_remaining_func:
@@ -161,50 +161,50 @@ hb_paint_funcs_set_get_budget_func (hb_paint_funcs_t         *funcs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
-hb_paint_funcs_set_get_budget_remaining_func (hb_paint_funcs_t                   *funcs,
-					      hb_paint_get_budget_remaining_func_t  func,
-					      void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_get_budget_మిగిలిన_func (hb_paint_funcs_t                   *funcs,
+					      hb_paint_get_budget_మిగిలిన_func_t  func,
+					      శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_create (void);
+hb_paint_funcs_create (శూన్య);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_paint_funcs_get_empty (void);
+hb_paint_funcs_get_ఖాళీలు (శూన్య);
 
 HB_EXTERN hb_paint_funcs_t *
 hb_paint_funcs_reference (hb_paint_funcs_t *funcs);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_paint_funcs_destroy (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
-hb_paint_funcs_set_user_data (hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t *key,
-			      void *              data,
+hb_paint_funcs_సమితి_user_దత్తాంశం (hb_paint_funcs_t *funcs,
+			      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+			      శూన్య *              దత్తాంశం,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_paint_funcs_get_user_data (const hb_paint_funcs_t *funcs,
-			      hb_user_data_key_t       *key);
+HB_EXTERN శూన్య *
+hb_paint_funcs_get_user_దత్తాంశం (స్థిరరాశి hb_paint_funcs_t *funcs,
+			      hb_user_దత్తాంశం_కీలకం_t       *కీలకం_2);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_paint_funcs_make_immutable (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
 hb_paint_funcs_is_immutable (hb_paint_funcs_t *funcs);
 
 HB_EXTERN hb_bool_t
-hb_paint_set_budget (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_సమితి_budget (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
 		     int64_t budget);
 
 HB_EXTERN int64_t
-hb_paint_get_budget (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_get_budget (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం);
 
 HB_EXTERN int64_t
-hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data);
+hb_paint_get_budget_మిగిలిన (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం);
 
 /**
  * hb_paint_push_transform_func_t:
@@ -227,12 +227,12 @@ hb_paint_get_budget_remaining (hb_paint_funcs_t *funcs, void *paint_data);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
-                                                void *paint_data,
-                                                float xx, float yx,
-                                                float xy, float yy,
-                                                float dx, float dy,
-                                                void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_నెట్టు_transform_func_t) (hb_paint_funcs_t *funcs,
+                                                శూన్య *paint_దత్తాంశం,
+                                                దశాంశం xx, దశాంశం yx,
+                                                దశాంశం xy, దశాంశం yy,
+                                                దశాంశం dx, దశాంశం dy,
+                                                శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_pop_transform_func_t:
@@ -246,9 +246,9 @@ typedef void (*hb_paint_push_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
-                                               void *paint_data,
-                                               void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_తీయి_transform_func_t) (hb_paint_funcs_t *funcs,
+                                               శూన్య *paint_దత్తాంశం,
+                                               శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_color_glyph_func_t:
@@ -264,11 +264,11 @@ typedef void (*hb_paint_pop_transform_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 8.2.0
  */
-typedef hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                                  void *paint_data,
+రకనిర్వచనం hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
+                                                  శూన్య *paint_దత్తాంశం,
                                                   hb_codepoint_t glyph,
                                                   hb_font_t *font,
-                                                  void *user_data);
+                                                  శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_fill_glyph_func_t:
@@ -287,13 +287,13 @@ typedef hb_bool_t (*hb_paint_color_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.3.0
  */
-typedef void (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                            void *paint_data,
+రకనిర్వచనం శూన్య (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
+                                            శూన్య *paint_దత్తాంశం,
                                             hb_codepoint_t glyph,
                                             hb_font_t *font,
                                             hb_bool_t is_foreground,
                                             hb_color_t color,
-                                            void *user_data);
+                                            శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_push_clip_glyph_func_t:
@@ -317,11 +317,11 @@ typedef void (*hb_paint_fill_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
+రకనిర్వచనం శూన్య (*hb_paint_నెట్టు_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
+                                                 శూన్య *paint_దత్తాంశం,
                                                  hb_codepoint_t glyph,
                                                  hb_font_t *font,
-                                                 void *user_data);
+                                                 శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_push_clip_rectangle_func_t:
@@ -345,11 +345,11 @@ typedef void (*hb_paint_push_clip_glyph_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
-                                                     void *paint_data,
-                                                     float xmin, float ymin,
-                                                     float xmax, float ymax,
-                                                     void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_నెట్టు_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
+                                                     శూన్య *paint_దత్తాంశం,
+                                                     దశాంశం xmin, దశాంశం ymin,
+                                                     దశాంశం xmax, దశాంశం ymax,
+                                                     శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_push_clip_path_start_func_t:
@@ -375,10 +375,10 @@ typedef void (*hb_paint_push_clip_rectangle_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.2.0
  */
-typedef hb_draw_funcs_t * (*hb_paint_push_clip_path_start_func_t) (hb_paint_funcs_t *funcs,
-                                                                   void             *paint_data,
-                                                                   void            **draw_data,
-                                                                   void             *user_data);
+రకనిర్వచనం hb_draw_funcs_t * (*hb_paint_నెట్టు_clip_మార్గం_ప్రారంభం_func_t) (hb_paint_funcs_t *funcs,
+                                                                   శూన్య             *paint_దత్తాంశం,
+                                                                   శూన్య            **draw_దత్తాంశం,
+                                                                   శూన్య             *user_దత్తాంశం);
 
 /**
  * hb_paint_push_clip_path_end_func_t:
@@ -394,9 +394,9 @@ typedef hb_draw_funcs_t * (*hb_paint_push_clip_path_start_func_t) (hb_paint_func
  *
  * Since: 14.2.0
  */
-typedef void (*hb_paint_push_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
-                                                    void             *paint_data,
-                                                    void             *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_నెట్టు_clip_మార్గం_చివర_func_t) (hb_paint_funcs_t *funcs,
+                                                    శూన్య             *paint_దత్తాంశం,
+                                                    శూన్య             *user_దత్తాంశం);
 
 /**
  * hb_paint_pop_clip_func_t:
@@ -411,9 +411,9 @@ typedef void (*hb_paint_push_clip_path_end_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
-                                          void *paint_data,
-                                          void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_తీయి_clip_func_t) (hb_paint_funcs_t *funcs,
+                                          శూన్య *paint_దత్తాంశం,
+                                          శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_color_func_t:
@@ -445,11 +445,11 @@ typedef void (*hb_paint_pop_clip_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
-                                       void *paint_data,
+రకనిర్వచనం శూన్య (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
+                                       శూన్య *paint_దత్తాంశం,
                                        hb_bool_t is_foreground,
                                        hb_color_t color,
-                                       void *user_data);
+                                       శూన్య *user_దత్తాంశం);
 
 /**
  * HB_PAINT_IMAGE_FORMAT_PNG:
@@ -458,7 +458,7 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-#define HB_PAINT_IMAGE_FORMAT_PNG HB_TAG('p','n','g',' ')
+#నిర్వచించు HB_PAINT_IMAGE_FORMAT_PNG HB_ట్యాగ్('p','n','g',' ')
 
 /**
  * HB_PAINT_IMAGE_FORMAT_SVG:
@@ -467,7 +467,7 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-#define HB_PAINT_IMAGE_FORMAT_SVG HB_TAG('s','v','g',' ')
+#నిర్వచించు HB_PAINT_IMAGE_FORMAT_SVG HB_ట్యాగ్('s','v','g',' ')
 
 /**
  * HB_PAINT_IMAGE_FORMAT_BGRA:
@@ -477,7 +477,7 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-#define HB_PAINT_IMAGE_FORMAT_BGRA HB_TAG('B','G','R','A')
+#నిర్వచించు HB_PAINT_IMAGE_FORMAT_BGRA HB_ట్యాగ్('B','G','R','A')
 
 /**
  * hb_paint_image_func_t:
@@ -505,15 +505,15 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
-					    void *paint_data,
+రకనిర్వచనం hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
+					    శూన్య *paint_దత్తాంశం,
 					    hb_blob_t *image,
-					    unsigned int width,
-					    unsigned int height,
-					    hb_tag_t format,
-					    float slant,
+					    గుర్తులేని పూర్ణాంకం వెడల్పు,
+					    గుర్తులేని పూర్ణాంకం ఎత్తు,
+					    hb_ట్యాగ్_t format,
+					    దశాంశం slant,
 					    hb_glyph_extents_t *extents,
-					    void *user_data);
+					    శూన్య *user_దత్తాంశం);
 
 /**
  * hb_color_stop_t:
@@ -536,8 +536,8 @@ typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef struct {
-  float offset;
+రకనిర్వచనం నిర్మాణం {
+  దశాంశం స్థానభ్రంశం;
   hb_bool_t is_foreground;
   hb_color_t color;
 } hb_color_stop_t;
@@ -562,13 +562,13 @@ typedef struct {
  *
  * Since: 7.0.0
  */
-typedef enum {
+రకనిర్వచనం గణన {
   HB_PAINT_EXTEND_PAD,
   HB_PAINT_EXTEND_REPEAT,
   HB_PAINT_EXTEND_REFLECT
 } hb_paint_extend_t;
 
-typedef struct hb_color_line_t hb_color_line_t;
+రకనిర్వచనం నిర్మాణం hb_color_పంక్తి_t hb_color_పంక్తి_t;
 
 /**
  * hb_color_line_get_color_stops_func_t:
@@ -586,12 +586,12 @@ typedef struct hb_color_line_t hb_color_line_t;
  *
  * Since: 7.0.0
  */
-typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
-							      unsigned int start,
-							      unsigned int *count,
+రకనిర్వచనం గుర్తులేని పూర్ణాంకం (*hb_color_పంక్తి_get_color_stops_func_t) (hb_color_పంక్తి_t *color_పంక్తి,
+							      శూన్య *color_పంక్తి_దత్తాంశం,
+							      గుర్తులేని పూర్ణాంకం ప్రారంభం,
+							      గుర్తులేని పూర్ణాంకం *లెక్క,
 							      hb_color_stop_t *color_stops,
-							      void *user_data);
+							      శూన్య *user_దత్తాంశం);
 
 /**
  * hb_color_line_get_extend_func_t:
@@ -605,9 +605,9 @@ typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *color_line,
-							      void *color_line_data,
-							      void *user_data);
+రకనిర్వచనం hb_paint_extend_t (*hb_color_పంక్తి_get_extend_func_t) (hb_color_పంక్తి_t *color_పంక్తి,
+							      శూన్య *color_పంక్తి_దత్తాంశం,
+							      శూన్య *user_దత్తాంశం);
 
 /**
  * hb_color_line_t:
@@ -616,33 +616,33 @@ typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-struct hb_color_line_t {
-  void *data;
+నిర్మాణం hb_color_పంక్తి_t {
+  శూన్య *దత్తాంశం;
 
-  hb_color_line_get_color_stops_func_t get_color_stops;
-  void *get_color_stops_user_data;
+  hb_color_పంక్తి_get_color_stops_func_t get_color_stops;
+  శూన్య *get_color_stops_user_దత్తాంశం;
 
-  hb_color_line_get_extend_func_t get_extend;
-  void *get_extend_user_data;
+  hb_color_పంక్తి_get_extend_func_t get_extend;
+  శూన్య *get_extend_user_దత్తాంశం;
 
-  void *reserved0;
-  void *reserved1;
-  void *reserved2;
-  void *reserved3;
-  void *reserved5;
-  void *reserved6;
-  void *reserved7;
-  void *reserved8;
+  శూన్య *reserved0;
+  శూన్య *reserved1;
+  శూన్య *reserved2;
+  శూన్య *reserved3;
+  శూన్య *reserved5;
+  శూన్య *reserved6;
+  శూన్య *reserved7;
+  శూన్య *reserved8;
 };
 
-HB_EXTERN unsigned int
-hb_color_line_get_color_stops (hb_color_line_t *color_line,
-                               unsigned int start,
-                               unsigned int *count,
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_color_పంక్తి_get_color_stops (hb_color_పంక్తి_t *color_పంక్తి,
+                               గుర్తులేని పూర్ణాంకం ప్రారంభం,
+                               గుర్తులేని పూర్ణాంకం *లెక్క,
                                hb_color_stop_t *color_stops);
 
 HB_EXTERN hb_paint_extend_t
-hb_color_line_get_extend (hb_color_line_t *color_line);
+hb_color_పంక్తి_get_extend (hb_color_పంక్తి_t *color_పంక్తి);
 
 /**
  * hb_paint_linear_gradient_func_t:
@@ -672,13 +672,13 @@ hb_color_line_get_extend (hb_color_line_t *color_line);
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0,
-                                                 float x1, float y1,
-                                                 float x2, float y2,
-                                                 void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_రేఖీయ_gradient_func_t) (hb_paint_funcs_t *funcs,
+                                                 శూన్య *paint_దత్తాంశం,
+                                                 hb_color_పంక్తి_t *color_పంక్తి,
+                                                 దశాంశం x0, దశాంశం y0,
+                                                 దశాంశం x1, దశాంశం y1,
+                                                 దశాంశం x2, దశాంశం y2,
+                                                 శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_radial_gradient_func_t:
@@ -708,12 +708,12 @@ typedef void (*hb_paint_linear_gradient_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0, float r0,
-                                                 float x1, float y1, float r1,
-                                                 void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
+                                                 శూన్య *paint_దత్తాంశం,
+                                                 hb_color_పంక్తి_t *color_పంక్తి,
+                                                 దశాంశం x0, దశాంశం y0, దశాంశం r0,
+                                                 దశాంశం x1, దశాంశం y1, దశాంశం r1,
+                                                 శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_sweep_gradient_func_t:
@@ -741,13 +741,13 @@ typedef void (*hb_paint_radial_gradient_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
-                                                 void *paint_data,
-                                                 hb_color_line_t *color_line,
-                                                 float x0, float y0,
-                                                 float start_angle,
-                                                 float end_angle,
-                                                 void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
+                                                 శూన్య *paint_దత్తాంశం,
+                                                 hb_color_పంక్తి_t *color_పంక్తి,
+                                                 దశాంశం x0, దశాంశం y0,
+                                                 దశాంశం ప్రారంభం_angle,
+                                                 దశాంశం చివర_angle,
+                                                 శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_composite_mode_t:
@@ -817,36 +817,36 @@ typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef enum {
-  HB_PAINT_COMPOSITE_MODE_CLEAR,
-  HB_PAINT_COMPOSITE_MODE_SRC,
-  HB_PAINT_COMPOSITE_MODE_DEST,
-  HB_PAINT_COMPOSITE_MODE_SRC_OVER,
-  HB_PAINT_COMPOSITE_MODE_DEST_OVER,
-  HB_PAINT_COMPOSITE_MODE_SRC_IN,
-  HB_PAINT_COMPOSITE_MODE_DEST_IN,
-  HB_PAINT_COMPOSITE_MODE_SRC_OUT,
-  HB_PAINT_COMPOSITE_MODE_DEST_OUT,
-  HB_PAINT_COMPOSITE_MODE_SRC_ATOP,
-  HB_PAINT_COMPOSITE_MODE_DEST_ATOP,
-  HB_PAINT_COMPOSITE_MODE_XOR,
-  HB_PAINT_COMPOSITE_MODE_PLUS,
-  HB_PAINT_COMPOSITE_MODE_SCREEN,
-  HB_PAINT_COMPOSITE_MODE_OVERLAY,
-  HB_PAINT_COMPOSITE_MODE_DARKEN,
-  HB_PAINT_COMPOSITE_MODE_LIGHTEN,
-  HB_PAINT_COMPOSITE_MODE_COLOR_DODGE,
-  HB_PAINT_COMPOSITE_MODE_COLOR_BURN,
-  HB_PAINT_COMPOSITE_MODE_HARD_LIGHT,
-  HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT,
-  HB_PAINT_COMPOSITE_MODE_DIFFERENCE,
-  HB_PAINT_COMPOSITE_MODE_EXCLUSION,
-  HB_PAINT_COMPOSITE_MODE_MULTIPLY,
-  HB_PAINT_COMPOSITE_MODE_HSL_HUE,
-  HB_PAINT_COMPOSITE_MODE_HSL_SATURATION,
-  HB_PAINT_COMPOSITE_MODE_HSL_COLOR,
-  HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY
-} hb_paint_composite_mode_t;
+రకనిర్వచనం గణన {
+  HB_PAINT_సంయుక్త_బహుళకం_CLEAR,
+  HB_PAINT_సంయుక్త_బహుళకం_SRC,
+  HB_PAINT_సంయుక్త_బహుళకం_DEST,
+  HB_PAINT_సంయుక్త_బహుళకం_SRC_OVER,
+  HB_PAINT_సంయుక్త_బహుళకం_DEST_OVER,
+  HB_PAINT_సంయుక్త_బహుళకం_SRC_లోపల,
+  HB_PAINT_సంయుక్త_బహుళకం_DEST_లోపల,
+  HB_PAINT_సంయుక్త_బహుళకం_SRC_బహిర్గతం,
+  HB_PAINT_సంయుక్త_బహుళకం_DEST_బహిర్గతం,
+  HB_PAINT_సంయుక్త_బహుళకం_SRC_ATOP,
+  HB_PAINT_సంయుక్త_బహుళకం_DEST_ATOP,
+  HB_PAINT_సంయుక్త_బహుళకం_XOR,
+  HB_PAINT_సంయుక్త_బహుళకం_PLUS,
+  HB_PAINT_సంయుక్త_బహుళకం_SCREEN,
+  HB_PAINT_సంయుక్త_బహుళకం_OVERLAY,
+  HB_PAINT_సంయుక్త_బహుళకం_DARKEN,
+  HB_PAINT_సంయుక్త_బహుళకం_LIGHTEN,
+  HB_PAINT_సంయుక్త_బహుళకం_COLOR_DODGE,
+  HB_PAINT_సంయుక్త_బహుళకం_COLOR_BURN,
+  HB_PAINT_సంయుక్త_బహుళకం_HARD_LIGHT,
+  HB_PAINT_సంయుక్త_బహుళకం_SOFT_LIGHT,
+  HB_PAINT_సంయుక్త_బహుళకం_DIFFERENCE,
+  HB_PAINT_సంయుక్త_బహుళకం_EXCLUSION,
+  HB_PAINT_సంయుక్త_బహుళకం_MULTIPLY,
+  HB_PAINT_సంయుక్త_బహుళకం_HSL_HUE,
+  HB_PAINT_సంయుక్త_బహుళకం_HSL_SATURATION,
+  HB_PAINT_సంయుక్త_బహుళకం_HSL_COLOR,
+  HB_PAINT_సంయుక్త_బహుళకం_HSL_LUMINOSITY
+} hb_paint_సంయుక్త_బహుళకం_t;
 
 /**
  * hb_paint_push_group_func_t:
@@ -863,9 +863,9 @@ typedef enum {
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
-                                            void *paint_data,
-                                            void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_నెట్టు_సమూహం_func_t) (hb_paint_funcs_t *funcs,
+                                            శూన్య *paint_దత్తాంశం,
+                                            శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_push_group_for_func_t:
@@ -884,10 +884,10 @@ typedef void (*hb_paint_push_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 14.2.0
  */
-typedef void (*hb_paint_push_group_for_func_t) (hb_paint_funcs_t *funcs,
-                                                void *paint_data,
-                                                hb_paint_composite_mode_t mode,
-                                                void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_నెట్టు_సమూహం_for_func_t) (hb_paint_funcs_t *funcs,
+                                                శూన్య *paint_దత్తాంశం,
+                                                hb_paint_సంయుక్త_బహుళకం_t బహుళకం,
+                                                శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_pop_group_func_t:
@@ -906,10 +906,10 @@ typedef void (*hb_paint_push_group_for_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
-                                           void *paint_data,
-                                           hb_paint_composite_mode_t mode,
-                                           void *user_data);
+రకనిర్వచనం శూన్య (*hb_paint_తీయి_సమూహం_func_t) (hb_paint_funcs_t *funcs,
+                                           శూన్య *paint_దత్తాంశం,
+                                           hb_paint_సంయుక్త_బహుళకం_t బహుళకం,
+                                           శూన్య *user_దత్తాంశం);
 
 /**
  * hb_paint_custom_palette_color_func_t:
@@ -934,11 +934,11 @@ typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
-                                                           void *paint_data,
-                                                           unsigned int color_index,
+రకనిర్వచనం hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
+                                                           శూన్య *paint_దత్తాంశం,
+                                                           గుర్తులేని పూర్ణాంకం color_సూచీ,
                                                            hb_color_t *color,
-                                                           void *user_data);
+                                                           శూన్య *user_దత్తాంశం);
 
 
 /**
@@ -952,10 +952,10 @@ typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *fun
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_transform_func_t  func,
-                                        void                           *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_transform_func (hb_paint_funcs_t               *funcs,
+                                        hb_paint_నెట్టు_transform_func_t  func,
+                                        శూన్య                           *user_దత్తాంశం,
                                         hb_destroy_func_t               destroy);
 
 /**
@@ -969,10 +969,10 @@ hb_paint_funcs_set_push_transform_func (hb_paint_funcs_t               *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
-                                       hb_paint_pop_transform_func_t  func,
-                                       void                          *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_తీయి_transform_func (hb_paint_funcs_t              *funcs,
+                                       hb_paint_తీయి_transform_func_t  func,
+                                       శూన్య                          *user_దత్తాంశం,
                                        hb_destroy_func_t              destroy);
 
 /**
@@ -986,10 +986,10 @@ hb_paint_funcs_set_pop_transform_func (hb_paint_funcs_t              *funcs,
  *
  * Since: 8.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_color_glyph_func (hb_paint_funcs_t                *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_color_glyph_func (hb_paint_funcs_t                *funcs,
 				     hb_paint_color_glyph_func_t     func,
-				     void                            *user_data,
+				     శూన్య                            *user_దత్తాంశం,
 				     hb_destroy_func_t                destroy);
 
 /**
@@ -1003,10 +1003,10 @@ hb_paint_funcs_set_color_glyph_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 14.3.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_fill_glyph_func (hb_paint_funcs_t           *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_fill_glyph_func (hb_paint_funcs_t           *funcs,
                                     hb_paint_fill_glyph_func_t  func,
-                                    void                       *user_data,
+                                    శూన్య                       *user_దత్తాంశం,
                                     hb_destroy_func_t           destroy);
 
 /**
@@ -1020,10 +1020,10 @@ hb_paint_funcs_set_fill_glyph_func (hb_paint_funcs_t           *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_push_clip_glyph_func_t  func,
-                                         void                            *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_clip_glyph_func (hb_paint_funcs_t                *funcs,
+                                         hb_paint_నెట్టు_clip_glyph_func_t  func,
+                                         శూన్య                            *user_దత్తాంశం,
                                          hb_destroy_func_t                destroy);
 
 /**
@@ -1037,10 +1037,10 @@ hb_paint_funcs_set_push_clip_glyph_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
-                                             hb_paint_push_clip_rectangle_func_t  func,
-                                             void                                *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_clip_rectangle_func (hb_paint_funcs_t                    *funcs,
+                                             hb_paint_నెట్టు_clip_rectangle_func_t  func,
+                                             శూన్య                                *user_దత్తాంశం,
                                              hb_destroy_func_t                    destroy);
 
 /**
@@ -1054,10 +1054,10 @@ hb_paint_funcs_set_push_clip_rectangle_func (hb_paint_funcs_t                   
  *
  * Since: 14.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_path_start_func (hb_paint_funcs_t                     *funcs,
-                                              hb_paint_push_clip_path_start_func_t  func,
-                                              void                                 *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_clip_మార్గం_ప్రారంభం_func (hb_paint_funcs_t                     *funcs,
+                                              hb_paint_నెట్టు_clip_మార్గం_ప్రారంభం_func_t  func,
+                                              శూన్య                                 *user_దత్తాంశం,
                                               hb_destroy_func_t                     destroy);
 
 /**
@@ -1071,10 +1071,10 @@ hb_paint_funcs_set_push_clip_path_start_func (hb_paint_funcs_t                  
  *
  * Since: 14.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_clip_path_end_func (hb_paint_funcs_t                   *funcs,
-                                            hb_paint_push_clip_path_end_func_t  func,
-                                            void                               *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_clip_మార్గం_చివర_func (hb_paint_funcs_t                   *funcs,
+                                            hb_paint_నెట్టు_clip_మార్గం_చివర_func_t  func,
+                                            శూన్య                               *user_దత్తాంశం,
                                             hb_destroy_func_t                   destroy);
 
 /**
@@ -1088,10 +1088,10 @@ hb_paint_funcs_set_push_clip_path_end_func (hb_paint_funcs_t                   *
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
-                                  hb_paint_pop_clip_func_t  func,
-                                  void                     *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_తీయి_clip_func (hb_paint_funcs_t         *funcs,
+                                  hb_paint_తీయి_clip_func_t  func,
+                                  శూన్య                     *user_దత్తాంశం,
                                   hb_destroy_func_t         destroy);
 
 /**
@@ -1105,10 +1105,10 @@ hb_paint_funcs_set_pop_clip_func (hb_paint_funcs_t         *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_color_func (hb_paint_funcs_t      *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_color_func (hb_paint_funcs_t      *funcs,
                                hb_paint_color_func_t  func,
-                               void                  *user_data,
+                               శూన్య                  *user_దత్తాంశం,
                                hb_destroy_func_t      destroy);
 
 /**
@@ -1122,10 +1122,10 @@ hb_paint_funcs_set_color_func (hb_paint_funcs_t      *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_image_func (hb_paint_funcs_t      *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_image_func (hb_paint_funcs_t      *funcs,
                                hb_paint_image_func_t  func,
-                               void                  *user_data,
+                               శూన్య                  *user_దత్తాంశం,
                                hb_destroy_func_t      destroy);
 
 /**
@@ -1139,10 +1139,10 @@ hb_paint_funcs_set_image_func (hb_paint_funcs_t      *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_linear_gradient_func (hb_paint_funcs_t                *funcs,
-                                         hb_paint_linear_gradient_func_t  func,
-                                         void                            *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_రేఖీయ_gradient_func (hb_paint_funcs_t                *funcs,
+                                         hb_paint_రేఖీయ_gradient_func_t  func,
+                                         శూన్య                            *user_దత్తాంశం,
                                          hb_destroy_func_t                destroy);
 
 /**
@@ -1156,10 +1156,10 @@ hb_paint_funcs_set_linear_gradient_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_radial_gradient_func (hb_paint_funcs_t                *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_radial_gradient_func (hb_paint_funcs_t                *funcs,
                                          hb_paint_radial_gradient_func_t  func,
-                                         void                            *user_data,
+                                         శూన్య                            *user_దత్తాంశం,
                                          hb_destroy_func_t                destroy);
 
 /**
@@ -1173,10 +1173,10 @@ hb_paint_funcs_set_radial_gradient_func (hb_paint_funcs_t                *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_sweep_gradient_func (hb_paint_funcs_t               *funcs,
                                         hb_paint_sweep_gradient_func_t  func,
-                                        void                           *user_data,
+                                        శూన్య                           *user_దత్తాంశం,
                                         hb_destroy_func_t               destroy);
 
 /**
@@ -1190,10 +1190,10 @@ hb_paint_funcs_set_sweep_gradient_func (hb_paint_funcs_t               *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
-                                    hb_paint_push_group_func_t  func,
-                                    void                       *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_సమూహం_func (hb_paint_funcs_t           *funcs,
+                                    hb_paint_నెట్టు_సమూహం_func_t  func,
+                                    శూన్య                       *user_దత్తాంశం,
                                     hb_destroy_func_t           destroy);
 
 /**
@@ -1207,10 +1207,10 @@ hb_paint_funcs_set_push_group_func (hb_paint_funcs_t           *funcs,
  *
  * Since: 14.2.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_push_group_for_func (hb_paint_funcs_t               *funcs,
-                                        hb_paint_push_group_for_func_t  func,
-                                        void                           *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_నెట్టు_సమూహం_for_func (hb_paint_funcs_t               *funcs,
+                                        hb_paint_నెట్టు_సమూహం_for_func_t  func,
+                                        శూన్య                           *user_దత్తాంశం,
                                         hb_destroy_func_t               destroy);
 
 /**
@@ -1224,10 +1224,10 @@ hb_paint_funcs_set_push_group_for_func (hb_paint_funcs_t               *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
-                                   hb_paint_pop_group_func_t  func,
-                                   void                       *user_data,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_తీయి_సమూహం_func (hb_paint_funcs_t          *funcs,
+                                   hb_paint_తీయి_సమూహం_func_t  func,
+                                   శూన్య                       *user_దత్తాంశం,
                                    hb_destroy_func_t           destroy);
 
 /**
@@ -1241,115 +1241,115 @@ hb_paint_funcs_set_pop_group_func (hb_paint_funcs_t          *funcs,
  *
  * Since: 7.0.0
  */
-HB_EXTERN void
-hb_paint_funcs_set_custom_palette_color_func (hb_paint_funcs_t                     *funcs,
+HB_EXTERN శూన్య
+hb_paint_funcs_సమితి_custom_palette_color_func (hb_paint_funcs_t                     *funcs,
                                               hb_paint_custom_palette_color_func_t  func,
-                                              void                                 *user_data,
+                                              శూన్య                                 *user_దత్తాంశం,
                                               hb_destroy_func_t                     destroy);
 /*
  * Manual API
  */
 
-HB_EXTERN void
-hb_paint_push_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                         float xx, float yx,
-                         float xy, float yy,
-                         float dx, float dy);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_transform (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                         దశాంశం xx, దశాంశం yx,
+                         దశాంశం xy, దశాంశం yy,
+                         దశాంశం dx, దశాంశం dy);
 
-HB_EXTERN void
-hb_paint_push_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                              const hb_font_t *font);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_font_transform (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                              స్థిరరాశి hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_push_inverse_font_transform (hb_paint_funcs_t *funcs, void *paint_data,
-                                      const hb_font_t *font);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_inverse_font_transform (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                                      స్థిరరాశి hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_pop_transform (hb_paint_funcs_t *funcs, void *paint_data);
+HB_EXTERN శూన్య
+hb_paint_తీయి_transform (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం);
 
 HB_EXTERN hb_bool_t
-hb_paint_color_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+hb_paint_color_glyph (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
                       hb_codepoint_t glyph,
                       hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_fill_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN శూన్య
+hb_paint_fill_glyph (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
                      hb_codepoint_t glyph,
                      hb_font_t *font,
                      hb_bool_t is_foreground,
                      hb_color_t color);
 
-HB_EXTERN void
-hb_paint_push_clip_glyph (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_clip_glyph (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
                           hb_codepoint_t glyph,
                           hb_font_t *font);
 
-HB_EXTERN void
-hb_paint_push_clip_rectangle (hb_paint_funcs_t *funcs, void *paint_data,
-                              float xmin, float ymin,
-                              float xmax, float ymax);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_clip_rectangle (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                              దశాంశం xmin, దశాంశం ymin,
+                              దశాంశం xmax, దశాంశం ymax);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_paint_push_clip_path_start (hb_paint_funcs_t  *funcs,
-                               void              *paint_data,
-                               void             **draw_data);
+hb_paint_నెట్టు_clip_మార్గం_ప్రారంభం (hb_paint_funcs_t  *funcs,
+                               శూన్య              *paint_దత్తాంశం,
+                               శూన్య             **draw_దత్తాంశం);
 
-HB_EXTERN void
-hb_paint_push_clip_path_end (hb_paint_funcs_t *funcs,
-                             void             *paint_data);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_clip_మార్గం_చివర (hb_paint_funcs_t *funcs,
+                             శూన్య             *paint_దత్తాంశం);
 
-HB_EXTERN void
-hb_paint_pop_clip (hb_paint_funcs_t *funcs, void *paint_data);
+HB_EXTERN శూన్య
+hb_paint_తీయి_clip (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం);
 
-HB_EXTERN void
-hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN శూన్య
+hb_paint_color (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
                 hb_bool_t is_foreground,
                 hb_color_t color);
 
-HB_EXTERN void
-hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
+HB_EXTERN శూన్య
+hb_paint_image (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
                 hb_blob_t *image,
-                unsigned int width,
-                unsigned int height,
-                hb_tag_t format,
-                float slant,
+                గుర్తులేని పూర్ణాంకం వెడల్పు,
+                గుర్తులేని పూర్ణాంకం ఎత్తు,
+                hb_ట్యాగ్_t format,
+                దశాంశం slant,
                 hb_glyph_extents_t *extents);
 
-HB_EXTERN void
-hb_paint_linear_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
-                          float x0, float y0,
-                          float x1, float y1,
-                          float x2, float y2);
+HB_EXTERN శూన్య
+hb_paint_రేఖీయ_gradient (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                          hb_color_పంక్తి_t *color_పంక్తి,
+                          దశాంశం x0, దశాంశం y0,
+                          దశాంశం x1, దశాంశం y1,
+                          దశాంశం x2, దశాంశం y2);
 
-HB_EXTERN void
-hb_paint_radial_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                          hb_color_line_t *color_line,
-                          float x0, float y0,
-                          float r0,
-                          float x1, float y1,
-                          float r1);
+HB_EXTERN శూన్య
+hb_paint_radial_gradient (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                          hb_color_పంక్తి_t *color_పంక్తి,
+                          దశాంశం x0, దశాంశం y0,
+                          దశాంశం r0,
+                          దశాంశం x1, దశాంశం y1,
+                          దశాంశం r1);
 
-HB_EXTERN void
-hb_paint_sweep_gradient (hb_paint_funcs_t *funcs, void *paint_data,
-                         hb_color_line_t *color_line,
-                         float x0, float y0,
-                         float start_angle, float end_angle);
+HB_EXTERN శూన్య
+hb_paint_sweep_gradient (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                         hb_color_పంక్తి_t *color_పంక్తి,
+                         దశాంశం x0, దశాంశం y0,
+                         దశాంశం ప్రారంభం_angle, దశాంశం చివర_angle);
 
-HB_EXTERN void
-hb_paint_push_group (hb_paint_funcs_t *funcs, void *paint_data);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_సమూహం (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం);
 
-HB_EXTERN void
-hb_paint_push_group_for (hb_paint_funcs_t *funcs, void *paint_data,
-                         hb_paint_composite_mode_t mode);
+HB_EXTERN శూన్య
+hb_paint_నెట్టు_సమూహం_for (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                         hb_paint_సంయుక్త_బహుళకం_t బహుళకం);
 
-HB_EXTERN void
-hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
-                    hb_paint_composite_mode_t mode);
+HB_EXTERN శూన్య
+hb_paint_తీయి_సమూహం (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                    hb_paint_సంయుక్త_బహుళకం_t బహుళకం);
 
 HB_EXTERN hb_bool_t
-hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
-                               unsigned int color_index,
+hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, శూన్య *paint_దత్తాంశం,
+                               గుర్తులేని పూర్ణాంకం color_సూచీ,
                                hb_color_t *color);
 
 
@@ -1362,18 +1362,18 @@ hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
  * instead of forking one per project.
  */
 
-HB_EXTERN void
-hb_paint_reduce_linear_anchors (float x0, float y0,
-                                float x1, float y1,
-                                float x2, float y2,
-                                float *xx0, float *yy0,
-                                float *xx1, float *yy1);
+HB_EXTERN శూన్య
+hb_paint_reduce_రేఖీయ_anchors (దశాంశం x0, దశాంశం y0,
+                                దశాంశం x1, దశాంశం y1,
+                                దశాంశం x2, దశాంశం y2,
+                                దశాంశం *xx0, దశాంశం *yy0,
+                                దశాంశం *xx1, దశాంశం *yy1);
 
-HB_EXTERN void
-hb_paint_normalize_color_line (hb_color_stop_t *stops,
-                               unsigned int     len,
-                               float           *min,
-                               float           *max);
+HB_EXTERN శూన్య
+hb_paint_normalize_color_పంక్తి (hb_color_stop_t *stops,
+                               గుర్తులేని పూర్ణాంకం     len,
+                               దశాంశం           *min,
+                               దశాంశం           *max);
 
 /**
  * hb_paint_sweep_gradient_tile_func_t:
@@ -1388,22 +1388,22 @@ hb_paint_normalize_color_line (hb_color_stop_t *stops,
  *
  * Since: 14.2.0
  **/
-typedef void (*hb_paint_sweep_gradient_tile_func_t) (float       a0,
+రకనిర్వచనం శూన్య (*hb_paint_sweep_gradient_tile_func_t) (దశాంశం       a0,
                                                      hb_color_t  c0,
-                                                     float       a1,
+                                                     దశాంశం       a1,
                                                      hb_color_t  c1,
-                                                     void       *user_data);
+                                                     శూన్య       *user_దత్తాంశం);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
-                               unsigned int                         n_stops,
+                               గుర్తులేని పూర్ణాంకం                         n_stops,
                                hb_paint_extend_t                    extend,
-                               float                                start_angle,
-                               float                                end_angle,
+                               దశాంశం                                ప్రారంభం_angle,
+                               దశాంశం                                చివర_angle,
                                hb_paint_sweep_gradient_tile_func_t  emit_patch,
-                               void                                *user_data);
+                               శూన్య                                *user_దత్తాంశం);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif  /* HB_PAINT_H */
+#అయితే_ముగింపు  /* HB_PAINT_H */

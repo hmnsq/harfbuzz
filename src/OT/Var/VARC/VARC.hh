@@ -1,18 +1,18 @@
-#ifndef OT_VAR_VARC_VARC_HH
-#define OT_VAR_VARC_VARC_HH
+#నిర్వచితం_కాకపోతే OT_VAR_VARC_VARC_HH
+#నిర్వచించు OT_VAR_VARC_VARC_HH
 
-#include "../../../hb-decycler.hh"
-#include "../../../hb-geometry.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-glyf-table.hh"
-#include "../../../hb-ot-cff2-table.hh"
-#include "../../../hb-ot-cff1-table.hh"
+#అన్తర్భావ "../../../hb-decycler.hh"
+#అన్తర్భావ "../../../hb-geometry.hh"
+#అన్తర్భావ "../../../hb-ot-layout-common.hh"
+#అన్తర్భావ "../../../hb-ot-glyf-table.hh"
+#అన్తర్భావ "../../../hb-ot-cff2-table.hh"
+#అన్తర్భావ "../../../hb-ot-cff1-table.hh"
 
-#include "coord-setter.hh"
+#అన్తర్భావ "coord-setter.hh"
 
-struct hb_depend_data_builder_t;
+నిర్మాణం hb_depend_దత్తాంశం_builder_t;
 
-namespace OT {
+నామాకాశ OT {
 
 //namespace Var {
 
@@ -21,38 +21,38 @@ namespace OT {
  * https://github.com/harfbuzz/boring-expansion-spec/blob/main/VARC.md
  */
 
-#ifndef HB_NO_VAR_COMPOSITES
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
 
-struct hb_varc_scratch_t
+నిర్మాణం hb_varc_scratch_t
 {
-  hb_vector_t<unsigned> axisIndices;
-  hb_vector_t<double> axisValues;
+  hb_సదిశ_t<గుర్తులేని> axisIndices;
+  hb_సదిశ_t<ద్విగుణ> axis_విలువలు_2;
   hb_glyf_scratch_t glyf_scratch;
 };
 
-struct hb_varc_context_t
+నిర్మాణం hb_varc_context_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
   hb_extents_t<> *extents;
-  mutable hb_decycler_t decycler;
-  mutable signed edges_left;
-  mutable signed depth_left;
+  మార్చదగిన hb_decycler_t decycler;
+  మార్చదగిన గుర్తుగల అంచులు_ఎడమ;
+  మార్చదగిన గుర్తుగల లోతు_ఎడమ;
   /* Renderer-owned live budget, shared by VARC record processing and
    * every leaf loaded from glyf/CFF/CFF2. */
   int64_t &budget;
   hb_varc_scratch_t &scratch;
 };
 
-struct VARC;
+నిర్మాణం VARC;
 
-struct VarComponent
+నిర్మాణం VarComponent
 {
-  enum class flags_t : uint32_t
+  గణన తరగతి flags_t : uint32_t
   {
     RESET_UNSPECIFIED_AXES	= 1u << 0,
     HAVE_AXES			= 1u << 1,
-    AXIS_VALUES_HAVE_VARIATION	= 1u << 2,
+    AXIS_విలువలు_HAVE_VARIATION	= 1u << 2,
     TRANSFORM_HAS_VARIATION	= 1u << 3,
     HAVE_TRANSLATE_X		= 1u << 4,
     HAVE_TRANSLATE_Y		= 1u << 5,
@@ -62,67 +62,67 @@ struct VarComponent
     HAVE_SCALE_Y		= 1u << 9,
     HAVE_TCENTER_X		= 1u << 10,
     HAVE_TCENTER_Y		= 1u << 11,
-    GID_IS_24BIT		= 1u << 12,
+    GID_IS_24_బిట్టు		= 1u << 12,
     HAVE_SKEW_X			= 1u << 13,
     HAVE_SKEW_Y			= 1u << 14,
-    RESERVED_MASK		= ~((1u << 15) - 1),
+    RESERVED_ముసుగు		= ~((1u << 15) - 1),
   };
 
-  struct record_t
+  నిర్మాణం రికార్డు_t
   {
     uint32_t flags;
     hb_codepoint_t gid;
-    unsigned gid_offset;
-    unsigned gid_size;
-    unsigned condition_index;
-    unsigned condition_offset;
-    unsigned condition_size;
-    unsigned axis_indices_index;
-    unsigned axis_indices_offset;
-    unsigned axis_indices_size;
-    uint32_t axis_values_var_idx;
-    unsigned axis_values_var_offset;
-    unsigned axis_values_var_size;
+    గుర్తులేని gid_స్థానభ్రంశం;
+    గుర్తులేని gid_కొలత;
+    గుర్తులేని condition_సూచీ;
+    గుర్తులేని condition_స్థానభ్రంశం;
+    గుర్తులేని condition_కొలత;
+    గుర్తులేని axis_indices_సూచీ;
+    గుర్తులేని axis_indices_స్థానభ్రంశం;
+    గుర్తులేని axis_indices_కొలత;
+    uint32_t axis_విలువలు_var_idx;
+    గుర్తులేని axis_విలువలు_var_స్థానభ్రంశం;
+    గుర్తులేని axis_విలువలు_var_కొలత;
     uint32_t transform_var_idx;
-    unsigned transform_var_offset;
-    unsigned transform_var_size;
+    గుర్తులేని transform_var_స్థానభ్రంశం;
+    గుర్తులేని transform_var_కొలత;
     hb_transform_decomposed_t<> transform;
-    unsigned size;
+    గుర్తులేని కొలత;
   };
 
-  HB_INTERNAL hb_ubytes_t
-  get_path_at (const hb_varc_context_t &c,
-	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+  HB_అంతర్గత hb_ubytes_t
+  get_మార్గం_at (స్థిరరాశి hb_varc_context_t &c,
+	       hb_codepoint_t మాతృ_gid,
+	       hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
 	       hb_transform_t<> transform,
-	       hb_ubytes_t record,
-	       hb_scalar_cache_t *cache = nullptr) const;
+	       hb_ubytes_t రికార్డు,
+	       hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి;
 
-  HB_INTERNAL static bool decompile_record (const VARC &varc,
-					    hb_ubytes_t record,
-					    hb_vector_t<unsigned> *axis_indices,
-					    hb_vector_t<double> *axis_values,
-					    record_t *decoded /* OUT */,
-					    int64_t *budget = nullptr);
+  HB_అంతర్గత స్థిర తార్కిక decompile_రికార్డు (స్థిరరాశి VARC &varc,
+					    hb_ubytes_t రికార్డు,
+					    hb_సదిశ_t<గుర్తులేని> *axis_indices,
+					    hb_సదిశ_t<ద్విగుణ> *axis_విలువలు,
+					    రికార్డు_t *decoded /*బహిర్గతం*/,
+					    int64_t *budget = శూన్యసూచిక);
 };
 
-struct VarCompositeGlyph
+నిర్మాణం Var_సంయుక్త_Glyph
 {
-  static void
-  get_path_at (const hb_varc_context_t &c,
+  స్థిర శూన్య
+  get_మార్గం_at (స్థిరరాశి hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
 	       hb_transform_t<> transform,
-	       hb_ubytes_t record,
+	       hb_ubytes_t రికార్డు,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    అయితే (రికార్డు)
     {
-      const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
-      record = comp.get_path_at (c,
+      స్థిరరాశి VarComponent &comp = * (స్థిరరాశి VarComponent *) (రికార్డు.arrayZ);
+      రికార్డు = comp.get_మార్గం_at (c,
 				 gid,
 				 coords, transform,
-				 record,
+				 రికార్డు,
 				 cache);
     }
   }
@@ -130,198 +130,198 @@ struct VarCompositeGlyph
 
 HB_MARK_AS_FLAG_T (VarComponent::flags_t);
 
-struct VARC
+నిర్మాణం VARC
 {
-  friend struct VarComponent;
+  మిత్ర నిర్మాణం VarComponent;
 
-  static constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_ట్యాగ్ ('V', 'A', 'R', 'C');
 
-  HB_INTERNAL bool
-  get_path_at (const hb_varc_context_t &c,
+  HB_అంతర్గత తార్కిక
+  get_మార్గం_at (స్థిరరాశి hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
-	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
-	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
-	       hb_scalar_cache_t *parent_cache = nullptr) const;
+	       hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+	       hb_transform_t<> transform = HB_TRANSFORM_తటస్థం,
+	       hb_codepoint_t మాతృ_gid = HB_CODEPOINT_INVALID,
+	       hb_scalar_cache_t *మాతృ_cache = శూన్యసూచిక) స్థిరరాశి;
 
-  HB_INTERNAL bool closure_glyphs (hb_set_t *glyphset) const;
-  HB_INTERNAL void depend (hb_depend_data_builder_t *depend_data) const;
-  HB_INTERNAL bool subset (hb_subset_context_t *c) const;
+  HB_అంతర్గత తార్కిక సంవృతం_glyphs (hb_సమితి_t *glyphset) స్థిరరాశి;
+  HB_అంతర్గత శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం) స్థిరరాశి;
+  HB_అంతర్గత తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి;
 
-  bool
-  get_path (hb_font_t *font,
+  తార్కిక
+  get_మార్గం (hb_font_t *font,
 	    hb_codepoint_t gid,
 	    hb_draw_session_t &draw_session,
-	    hb_varc_scratch_t &scratch) const
+	    hb_varc_scratch_t &scratch) స్థిరరాశి
   {
     int64_t &budget = draw_session.get_budget ();
     hb_varc_context_t c {font,
 			 &draw_session,
-			 nullptr,
+			 శూన్యసూచిక,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_లేఖాచిత్రం_అంచు_లెక్క,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+    తిరిగి get_మార్గం_at (c, gid,
+			hb_array (font->coords, font->అంకె_coords));
   }
 
-  bool
+  తార్కిక
   get_extents (hb_font_t *font,
 	       hb_codepoint_t gid,
 	       hb_extents_t<> *extents,
-	       hb_varc_scratch_t &scratch) const
+	       hb_varc_scratch_t &scratch) స్థిరరాశి
   {
     int64_t budget = HB_BUDGET_GLYPH;
     hb_varc_context_t c {font,
-			 nullptr,
+			 శూన్యసూచిక,
 			 extents,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_లేఖాచిత్రం_అంచు_లెక్క,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+    తిరిగి get_మార్గం_at (c, gid,
+			hb_array (font->coords, font->అంకె_coords));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (సంస్కరణ.sanitize (c) &&
 		  hb_barrier () &&
-		  version.major == 1 &&
-		  coverage.sanitize (c, this) &&
-		  varStore.sanitize (c, this) &&
-		  conditionList.sanitize (c, this) &&
-		  axisIndicesList.sanitize (c, this) &&
-		  glyphRecords.sanitize (c, this));
+		  సంస్కరణ.major == 1 &&
+		  coverage.sanitize (c, ఇది) &&
+		  varStore.sanitize (c, ఇది) &&
+		  conditionList.sanitize (c, ఇది) &&
+		  axisIndicesList.sanitize (c, ఇది) &&
+		  glyph_రికార్డులు.sanitize (c, ఇది));
   }
 
-  struct accelerator_t
+  నిర్మాణం accelerator_t
   {
-    friend struct VarComponent;
+    మిత్ర నిర్మాణం VarComponent;
 
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<VARC> (face);
+      పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<VARC> (face);
     }
     ~accelerator_t ()
     {
-      auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      స్వయంచాలక *scratch = cached_scratch.get_relaxed ();
+      ఒకవేళ (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
       }
 
-      table.destroy ();
+      పట్టిక.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పట్టిక->has_దత్తాంశం (); }
 
-    bool
-    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
+    తార్కిక
+    get_మార్గం (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) స్థిరరాశి
     {
-      if (!table->has_data ()) return false;
+      ఒకవేళ (!పట్టిక->has_దత్తాంశం ()) తిరిగి అబద్ధం;
 
-      auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = table->get_path (font, gid, draw_session, *scratch);
+      స్వయంచాలక *scratch = acquire_scratch ();
+      ఒకవేళ (unlikely (!scratch)) తిరిగి నిజం;
+      తార్కిక ret = పట్టిక->get_మార్గం (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      తిరిగి ret;
     }
 
-    bool closure_glyphs (hb_set_t *glyphset) const
+    తార్కిక సంవృతం_glyphs (hb_సమితి_t *glyphset) స్థిరరాశి
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      ఒకవేళ (పట్టిక->has_దత్తాంశం ())
+	తిరిగి పట్టిక->సంవృతం_glyphs (glyphset);
+      తిరిగి నిజం;
     }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    శూన్య depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం) స్థిరరాశి
     {
-      if (table->has_data ())
-	table->depend (depend_data);
+      ఒకవేళ (పట్టిక->has_దత్తాంశం ())
+	పట్టిక->depend (depend_దత్తాంశం);
     }
 
-    bool
+    తార్కిక
     get_extents (hb_font_t *font,
 		 hb_codepoint_t gid,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) స్థిరరాశి
     {
-#ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
+      ఒకవేళ (!పట్టిక->has_దత్తాంశం ()) తిరిగి అబద్ధం;
 
       hb_extents_t<> f_extents;
 
-      auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = table->get_extents (font, gid, &f_extents, *scratch);
+      స్వయంచాలక *scratch = acquire_scratch ();
+      ఒకవేళ (unlikely (!scratch)) తిరిగి నిజం;
+      తార్కిక ret = పట్టిక->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
-	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
+      ఒకవేళ (ret)
+	*extents = f_extents.గమ్యం_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
-#endif
+      తిరిగి ret;
+#లేకపోతే
+      తిరిగి అబద్ధం;
+#అయితే_ముగింపు
     }
 
-    private:
+    అంతరంగ:
 
-    hb_varc_scratch_t *acquire_scratch () const
+    hb_varc_scratch_t *acquire_scratch () స్థిరరాశి
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      ఒకవేళ (!scratch || unlikely (!cached_scratch.cmpexch (scratch, శూన్యసూచిక)))
       {
-	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_varc_scratch_t *) hb_calloc (1, పరిమాణం (hb_varc_scratch_t));
+	ఒకవేళ (unlikely (!scratch))
+	  తిరిగి శూన్యసూచిక;
       }
 
-      return scratch;
+      తిరిగి scratch;
     }
-    void release_scratch (hb_varc_scratch_t *scratch) const
+    శూన్య release_scratch (hb_varc_scratch_t *scratch) స్థిరరాశి
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      ఒకవేళ (!cached_scratch.cmpexch (శూన్యసూచిక, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    private:
-    hb_blob_ptr_t<VARC> table;
-    mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
+    అంతరంగ:
+    hb_blob_ptr_t<VARC> పట్టిక;
+    మార్చదగిన hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.major != 0; }
 
-  protected:
-  FixedVersion<> version; /* Version identifier */
-  Offset32To<Coverage> coverage;
-  Offset32To<MultiItemVariationStore> varStore;
-  Offset32To<ConditionList> conditionList;
-  Offset32To<TupleList> axisIndicesList;
-  Offset32To<CFF2Index/*Of<VarCompositeGlyph>*/> glyphRecords;
-  public:
-  DEFINE_SIZE_STATIC (24);
+  రక్షిత:
+  Fixed_సంస్కరణ<> సంస్కరణ; /* Version identifier */
+  Offset32_గమ్యం<Coverage> coverage;
+  Offset32_గమ్యం<Multi_అంశం_Variation_Store> varStore;
+  Offset32_గమ్యం<ConditionList> conditionList;
+  Offset32_గమ్యం<TupleList> axisIndicesList;
+  Offset32_గమ్యం<CFF2_సూచీ/*Of<VarCompositeGlyph>*/> glyph_రికార్డులు;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (24);
 };
 
-struct VARC_accelerator_t : VARC::accelerator_t {
+నిర్మాణం VARC_accelerator_t : VARC::accelerator_t {
   VARC_accelerator_t (hb_face_t *face) : VARC::accelerator_t (face) {}
 };
 
-#endif
+#అయితే_ముగింపు
 
 //}
 
 }
 
-#endif  /* OT_VAR_VARC_VARC_HH */
+#అయితే_ముగింపు  /* OT_VAR_VARC_VARC_HH */

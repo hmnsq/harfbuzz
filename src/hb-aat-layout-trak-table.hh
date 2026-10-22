@@ -25,251 +25,251 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_TRAK_TABLE_HH
-#define HB_AAT_LAYOUT_TRAK_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_AAT_LAYOUT_TRAK_పట్టిక_HH
+#నిర్వచించు HB_AAT_LAYOUT_TRAK_పట్టిక_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-stat-table.hh"
+#అన్తర్భావ "hb-aat-layout-common.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-stat-table.hh"
 
 /*
  * trak -- Tracking
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6trak.html
  */
-#define HB_AAT_TAG_trak HB_TAG('t','r','a','k')
+#నిర్వచించు HB_AAT_ట్యాగ్_trak HB_ట్యాగ్('t','r','a','k')
 
 
-namespace AAT {
+నామాకాశ AAT {
 
 
-struct TrackTableEntry
+నిర్మాణం Track_పట్టిక_నమోదు
 {
-  friend struct TrackData;
+  మిత్ర నిర్మాణం Track_దత్తాంశం;
 
-  float get_track_value () const { return track.to_float (); }
+  దశాంశం get_track_విలువ () స్థిరరాశి { తిరిగి track.గమ్యం_float (); }
 
-  float interpolate_at (unsigned int idx,
-			float ptem,
-			const void *base,
-			hb_array_t<const F16DOT16> size_table) const
+  దశాంశం interpolate_at (గుర్తులేని పూర్ణాంకం idx,
+			దశాంశం ptem,
+			స్థిరరాశి శూన్య *పునాది,
+			hb_array_t<స్థిరరాశి F16DOT16> కొలత_పట్టిక) స్థిరరాశి
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    స్థిరరాశి FWORD *values = (పునాది+విలువలు_Z).arrayZ;
 
-    float s0 = size_table[idx].to_float ();
-    float s1 = size_table[idx + 1].to_float ();
-    int v0 = values[idx];
-    int v1 = values[idx + 1];
+    దశాంశం s0 = కొలత_పట్టిక[idx].గమ్యం_float ();
+    దశాంశం s1 = కొలత_పట్టిక[idx + 1].గమ్యం_float ();
+    పూర్ణాంకం v0 = values[idx];
+    పూర్ణాంకం v1 = values[idx + 1];
 
     // Deal with font bugs.
-    if (unlikely (s1 < s0))
-    { hb_swap (s0, s1); hb_swap (v0, v1); }
-    if (unlikely (ptem < s0)) return v0;
-    if (unlikely (ptem > s1)) return v1;
-    if (unlikely (s0 == s1)) return (v0 + v1) * 0.5f;
+    ఒకవేళ (unlikely (s1 < s0))
+    { hb_మార్పిడి (s0, s1); hb_మార్పిడి (v0, v1); }
+    ఒకవేళ (unlikely (ptem < s0)) తిరిగి v0;
+    ఒకవేళ (unlikely (ptem > s1)) తిరిగి v1;
+    ఒకవేళ (unlikely (s0 == s1)) తిరిగి (v0 + v1) * 0.5f;
 
-    float t = (ptem - s0) / (s1 - s0);
-    return v0 + t * (v1 - v0);
+    దశాంశం t = (ptem - s0) / (s1 - s0);
+    తిరిగి v0 + t * (v1 - v0);
   }
 
-  float get_value (float ptem,
-		   const void *base,
-		   hb_array_t<const F16DOT16> size_table) const
+  దశాంశం get_విలువ (దశాంశం ptem,
+		   స్థిరరాశి శూన్య *పునాది,
+		   hb_array_t<స్థిరరాశి F16DOT16> కొలత_పట్టిక) స్థిరరాశి
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    స్థిరరాశి FWORD *values = (పునాది+విలువలు_Z).arrayZ;
 
-    unsigned int n_sizes = size_table.length;
+    గుర్తులేని పూర్ణాంకం n_sizes = కొలత_పట్టిక.నిడివి;
 
     /*
      * Choose size.
      */
-    if (!n_sizes) return 0.f;
-    if (n_sizes == 1) return values[0];
+    ఒకవేళ (!n_sizes) తిరిగి 0.f;
+    ఒకవేళ (n_sizes == 1) తిరిగి values[0];
 
     // At least two entries.
 
-    unsigned i;
-    for (i = 0; i < n_sizes; i++)
-      if (size_table[i].to_float () >= ptem)
-	break;
+    గుర్తులేని i;
+    కొరకు (i = 0; i < n_sizes; i++)
+      ఒకవేళ (కొలత_పట్టిక[i].గమ్యం_float () >= ptem)
+	ఆపు;
 
     // Boundary conditions.
-    if (i == 0)       return values[0];
-    if (i == n_sizes) return values[n_sizes - 1];
+    ఒకవేళ (i == 0)       తిరిగి values[0];
+    ఒకవేళ (i == n_sizes) తిరిగి values[n_sizes - 1];
 
     // Exact match.
-    if (size_table[i].to_float () == ptem) return values[i];
+    ఒకవేళ (కొలత_పట్టిక[i].గమ్యం_float () == ptem) తిరిగి values[i];
 
     // Interpolate.
-    return interpolate_at (i - 1, ptem, base, size_table);
+    తిరిగి interpolate_at (i - 1, ptem, పునాది, కొలత_పట్టిక);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int n_sizes) const
+  బహిరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి శూన్య *పునాది,
+		 గుర్తులేని పూర్ణాంకం n_sizes) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (valuesZ.sanitize (c, base, n_sizes))));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  (విలువలు_Z.sanitize (c, పునాది, n_sizes))));
   }
 
-  protected:
+  రక్షిత:
   F16DOT16	track;		/* Track value for this record. */
   OT::NameID	trackNameID;	/* The 'name' table index for this track.
 				 * (a short word or phrase like "loose"
 				 * or "very tight") */
-  NNOffset16To<UnsizedArrayOf<FWORD>>
-		valuesZ;	/* Offset from start of tracking table to
+  NNOffset16_గమ్యం<Unsized_Array_యొక్క<FWORD>>
+		విలువలు_Z;	/* Offset from start of tracking table to
 				 * per-size tracking values for this track. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct TrackData
+నిర్మాణం Track_దత్తాంశం
 {
-  float get_tracking (const void *base, float ptem, float track = 0.f) const
+  దశాంశం get_tracking (స్థిరరాశి శూన్య *పునాది, దశాంశం ptem, దశాంశం track = 0.f) స్థిరరాశి
   {
-    unsigned count = nTracks;
-    hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
+    గుర్తులేని లెక్క = nTracks;
+    hb_array_t<స్థిరరాశి F16DOT16> కొలత_పట్టిక = (పునాది+కొలత_పట్టిక_2).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    ఒకవేళ (!లెక్క) తిరిగి 0.f;
+    ఒకవేళ (లెక్క == 1) తిరిగి track_పట్టిక[0].get_విలువ (ptem, పునాది, కొలత_పట్టిక);
 
     // At least two entries.
 
-    unsigned i = 0;
-    unsigned j = count - 1;
+    గుర్తులేని i = 0;
+    గుర్తులేని j = లెక్క - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    అయితే (i + 1 < లెక్క && track_పట్టిక[i + 1].get_track_విలువ () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    అయితే (j > 0 && track_పట్టిక[j - 1].get_track_విలువ () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    ఒకవేళ (i == j) తిరిగి track_పట్టిక[i].get_విలువ (ptem, పునాది, కొలత_పట్టిక);
 
     // Interpolate.
 
-    float t0 = trackTable[i].get_track_value ();
-    float t1 = trackTable[j].get_track_value ();
+    దశాంశం t0 = track_పట్టిక[i].get_track_విలువ ();
+    దశాంశం t1 = track_పట్టిక[j].get_track_విలువ ();
 
-    float t = (track - t0) / (t1 - t0);
+    దశాంశం t = (track - t0) / (t1 - t0);
 
-    float a = trackTable[i].get_value (ptem, base, size_table);
-    float b = trackTable[j].get_value (ptem, base, size_table);
-    return a + t * (b - a);
+    దశాంశం a = track_పట్టిక[i].get_విలువ (ptem, పునాది, కొలత_పట్టిక);
+    దశాంశం b = track_పట్టిక[j].get_విలువ (ptem, పునాది, కొలత_పట్టిక);
+    తిరిగి a + t * (b - a);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  sizeTable.sanitize (c, base, nSizes) &&
-			  trackTable.sanitize (c, nTracks, base, nSizes)));
+			  కొలత_పట్టిక_2.sanitize (c, పునాది, nSizes) &&
+			  track_పట్టిక.sanitize (c, nTracks, పునాది, nSizes)));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	nTracks;	/* Number of separate tracks included in this table. */
   HBUINT16	nSizes;		/* Number of point sizes included in this table. */
-  NNOffset32To<UnsizedArrayOf<F16DOT16>>
-		sizeTable;	/* Offset from start of the tracking table to
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<F16DOT16>>
+		కొలత_పట్టిక_2;	/* Offset from start of the tracking table to
 				 * Array[nSizes] of size values.. */
-  UnsizedArrayOf<TrackTableEntry>
-		trackTable;	/* Array[nTracks] of TrackTableEntry records. */
+  Unsized_Array_యొక్క<Track_పట్టిక_నమోదు>
+		track_పట్టిక;	/* Array[nTracks] of TrackTableEntry records. */
 
-  public:
-  DEFINE_SIZE_ARRAY (8, trackTable);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (8, track_పట్టిక);
 };
 
-struct trak
+నిర్మాణం trak
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_AAT_ట్యాగ్_trak;
 
-  bool has_data () const { return version.to_int (); }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int (); }
 
-  hb_position_t get_h_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_h_tracking (hb_font_t *font, దశాంశం track = 0.f) స్థిరరాశి
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
+    దశాంశం ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_కొలత;
+    తిరిగి font->em_scalef_x ((ఇది+horiz_దత్తాంశం).get_tracking (ఇది, ptem, track));
   }
-  hb_position_t get_v_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_v_tracking (hb_font_t *font, దశాంశం track = 0.f) స్థిరరాశి
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
+    దశాంశం ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_కొలత;
+    తిరిగి font->em_scalef_y ((ఇది+vert_దత్తాంశం).get_tracking (ఇది, ptem, track));
   }
-  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, float track = 0.f) const
+  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, దశాంశం track = 0.f) స్థిరరాశి
   {
-#ifndef HB_NO_STYLE
-    if (!font->face->table.STAT->has_data ())
-      return 0;
-    return HB_DIRECTION_IS_HORIZONTAL (dir) ?
+#నిర్వచితం_కాకపోతే HB_NO_STYLE
+    ఒకవేళ (!font->face->పట్టిక.STAT->has_దత్తాంశం ())
+      తిరిగి 0;
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (dir) ?
       get_h_tracking (font, track) :
       get_v_tracking (font, track);
-#else
-    return 0;
-#endif
+#లేకపోతే
+    తిరిగి 0;
+#అయితే_ముగింపు
   }
 
-  bool apply (hb_aat_apply_context_t *c, float track = 0.f) const
+  తార్కిక apply (hb_aat_apply_context_t *c, దశాంశం track = 0.f) స్థిరరాశి
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ఇది);
 
-    float ptem = c->font->ptem;
-    if (unlikely (ptem <= 0.f))
+    దశాంశం ptem = c->font->ptem;
+    ఒకవేళ (unlikely (ptem <= 0.f))
     {
       /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
-      ptem = HB_CORETEXT_DEFAULT_FONT_SIZE;
+      ptem = HB_CORETEXT_DEFAULT_FONT_కొలత;
     }
 
-    hb_buffer_t *buffer = c->buffer;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    hb_బఫరు_t *బఫరు = c->బఫరు;
+    ఒకవేళ (HB_DIRECTION_IS_HORIZONTAL (బఫరు->props.direction))
     {
-      hb_position_t advance_to_add = get_h_tracking (c->font, track);
-      foreach_grapheme (buffer, start, end)
-	buffer->pos[start].x_advance = hb_saturate_add (buffer->pos[start].x_advance, advance_to_add);
+      hb_position_t advance_గమ్యం_కూడు = get_h_tracking (c->font, track);
+      foreach_grapheme (బఫరు, ప్రారంభం, చివర)
+	బఫరు->pos[ప్రారంభం].x_advance = hb_saturate_కూడు (బఫరు->pos[ప్రారంభం].x_advance, advance_గమ్యం_కూడు);
     }
-    else
+    లేకపోతే
     {
-      hb_position_t advance_to_add = get_v_tracking (c->font, track);
-      foreach_grapheme (buffer, start, end)
-	buffer->pos[start].y_advance = hb_saturate_add (buffer->pos[start].y_advance, advance_to_add);
+      hb_position_t advance_గమ్యం_కూడు = get_v_tracking (c->font, track);
+      foreach_grapheme (బఫరు, ప్రారంభం, చివర)
+	బఫరు->pos[ప్రారంభం].y_advance = hb_saturate_కూడు (బఫరు->pos[ప్రారంభం].y_advance, advance_గమ్యం_కూడు);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  సంస్కరణ.major == 1 &&
+			  horiz_దత్తాంశం.sanitize (c, ఇది, ఇది) &&
+			  vert_దత్తాంశం.sanitize (c, ఇది, ఇది)));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the tracking table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the tracking table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the tracking table (set to 0). */
-  Offset16To<TrackData>
-		horizData;	/* Offset from start of tracking table to TrackData
+  Offset16_గమ్యం<Track_దత్తాంశం>
+		horiz_దత్తాంశం;	/* Offset from start of tracking table to TrackData
 				 * for horizontal text (or 0 if none). */
-  Offset16To<TrackData>
-		vertData;	/* Offset from start of tracking table to TrackData
+  Offset16_గమ్యం<Track_దత్తాంశం>
+		vert_దత్తాంశం;	/* Offset from start of tracking table to TrackData
 				 * for vertical text (or 0 if none). */
   HBUINT16	reserved;	/* Reserved. Set to 0. */
 
-  public:
-  DEFINE_SIZE_STATIC (12);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (12);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_TRAK_TABLE_HH */
+#అయితే_ముగింపు /* HB_AAT_LAYOUT_TRAK_TABLE_HH */

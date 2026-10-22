@@ -25,493 +25,493 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_INVERTIBLE_HH
-#define HB_BIT_SET_INVERTIBLE_HH
+#నిర్వచితం_కాకపోతే HB_బిట్టు_సమితి_INVERTIBLE_HH
+#నిర్వచించు HB_బిట్టు_సమితి_INVERTIBLE_HH
 
-#include "hb.hh"
-#include "hb-bit-set.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-bit-set.hh"
 
 
-struct hb_bit_set_invertible_t
+నిర్మాణం hb_బిట్టు_సమితి_invertible_t
 {
-  hb_bit_set_t s;
-  bool inverted = false;
+  hb_బిట్టు_సమితి_t s;
+  తార్కిక inverted = అబద్ధం;
 
-  hb_bit_set_invertible_t () = default;
-  hb_bit_set_invertible_t (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*this, other); }
-  hb_bit_set_invertible_t& operator= (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
+  hb_బిట్టు_సమితి_invertible_t () = అప్రమేయ;
+  hb_బిట్టు_సమితి_invertible_t (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t& o) = అప్రమేయ;
+  hb_బిట్టు_సమితి_invertible_t (hb_బిట్టు_సమితి_invertible_t&& other)  noexcept : hb_బిట్టు_సమితి_invertible_t () { hb_మార్పిడి (*ఇది, other); }
+  hb_బిట్టు_సమితి_invertible_t& క్రియాకారకం= (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t& o) = అప్రమేయ;
+  hb_బిట్టు_సమితి_invertible_t& క్రియాకారకం= (hb_బిట్టు_సమితి_invertible_t&& other)  noexcept { hb_మార్పిడి (*ఇది, other); తిరిగి *ఇది; }
+  మిత్ర శూన్య swap (hb_బిట్టు_సమితి_invertible_t &a, hb_బిట్టు_సమితి_invertible_t &b) noexcept
   {
-    if (likely (!a.s.successful || !b.s.successful))
-      return;
-    hb_swap (a.inverted, b.inverted);
-    hb_swap (a.s, b.s);
+    ఒకవేళ (likely (!a.s.successful || !b.s.successful))
+      తిరిగి;
+    hb_మార్పిడి (a.inverted, b.inverted);
+    hb_మార్పిడి (a.s, b.s);
   }
 
-  void init () { s.init (); inverted = false; }
-  void fini () { s.fini (); }
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
-  explicit operator bool () const { return !is_empty (); }
+  శూన్య init () { s.init (); inverted = అబద్ధం; }
+  శూన్య fini () { s.fini (); }
+  శూన్య err () { s.err (); }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి s.లోపల_error (); }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి !is_empty (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset ()
+  శూన్య alloc (గుర్తులేని sz) { s.alloc (sz); }
+  శూన్య reset ()
   {
     s.reset ();
-    inverted = false;
+    inverted = అబద్ధం;
   }
-  void clear ()
+  శూన్య clear ()
   {
     s.clear ();
-    if (likely (s.successful))
-      inverted = false;
+    ఒకవేళ (likely (s.successful))
+      inverted = అబద్ధం;
   }
-  void invert ()
+  శూన్య invert ()
   {
-    if (likely (s.successful))
+    ఒకవేళ (likely (s.successful))
       inverted = !inverted;
   }
 
-  bool is_inverted () const
+  తార్కిక is_inverted () స్థిరరాశి
   {
-    return inverted;
+    తిరిగి inverted;
   }
 
-  bool is_empty () const
+  తార్కిక is_empty () స్థిరరాశి
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v == INVALID;
+    తిరిగి v == INVALID;
   }
-  uint32_t hash () const { return s.hash () ^ (uint32_t) inverted; }
+  uint32_t hash () స్థిరరాశి { తిరిగి s.hash () ^ (uint32_t) inverted; }
 
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () స్థిరరాశి
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v;
+    తిరిగి v;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () స్థిరరాశి
   {
     hb_codepoint_t v = INVALID;
-    previous (&v);
-    return v;
+    మునుపటి (&v);
+    తిరిగి v;
   }
-  unsigned int get_population () const
-  { return inverted ? INVALID - s.get_population () : s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  గుర్తులేని పూర్ణాంకం get_population () స్థిరరాశి
+  { తిరిగి inverted ? INVALID - s.get_population () : s.get_population (); }
+  తార్కిక get_singleton (hb_codepoint_t *codepoint) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return s.get_singleton (codepoint);
-    if (s.get_population () != INVALID - 1)
-      return false;
+    ఒకవేళ (likely (!inverted))
+      తిరిగి s.get_singleton (codepoint);
+    ఒకవేళ (s.get_population () != INVALID - 1)
+      తిరిగి అబద్ధం;
     *codepoint = get_min ();
-    return *codepoint != INVALID;
+    తిరిగి *codepoint != INVALID;
   }
 
 
-  void add (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
-  { unlikely (inverted) ? s.del_bits (g, bits) : s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
-  { return unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
+  శూన్య కూడు (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.కూడు (g); }
+  శూన్య కూడు_బిట్లు (hb_codepoint_t g, uint64_t బిట్లు)
+  { unlikely (inverted) ? s.del_బిట్లు (g, బిట్లు) : s.కూడు_బిట్లు (g, బిట్లు); }
+  తార్కిక కూడు_range (hb_codepoint_t a, hb_codepoint_t b)
+  { తిరిగి unlikely (inverted) ? ((శూన్య) s.del_range (a, b), నిజం) : s.కూడు_range (a, b); }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { inverted ? s.del_array (array, count, stride) : s.add_array (array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
+  { inverted ? s.del_array (array, లెక్క, stride) : s.కూడు_array (array, లెక్క, stride); }
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_array (స్థిరరాశి hb_array_t<స్థిరరాశి T>& arr) { కూడు_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  మూస <రకం_పేరు T>
+  తార్కిక కూడు_sorted_array (స్థిరరాశి T *array, గుర్తులేని పూర్ణాంకం లెక్క, గుర్తులేని పూర్ణాంకం stride=పరిమాణం(T))
+  { తిరిగి inverted ? s.del_sorted_array (array, లెక్క, stride) : s.కూడు_sorted_array (array, లెక్క, stride); }
+  మూస <రకం_పేరు T>
+  తార్కిక కూడు_sorted_array (స్థిరరాశి hb_sorted_array_t<స్థిరరాశి T>& arr) { తిరిగి కూడు_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
-  { unlikely (inverted) ? (void) s.add_range (a, b) : s.del_range (a, b); }
+  శూన్య del (hb_codepoint_t g) { unlikely (inverted) ? s.కూడు (g) : s.del (g); }
+  శూన్య del_range (hb_codepoint_t a, hb_codepoint_t b)
+  { unlikely (inverted) ? (శూన్య) s.కూడు_range (a, b) : s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g) ^ inverted; }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  తార్కిక get (hb_codepoint_t g) స్థిరరాశి { తిరిగి s.get (g) ^ inverted; }
+  తార్కిక may_have (hb_codepoint_t g) స్థిరరాశి { తిరిగి get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  తార్కిక క్రియాకారకం [] (hb_codepoint_t k) స్థిరరాశి { తిరిగి get (k); }
+  తార్కిక has (hb_codepoint_t k) స్థిరరాశి { తిరిగి (*ఇది)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  తార్కిక క్రియాకారకం () (hb_codepoint_t k) స్థిరరాశి { తిరిగి has (k); }
 
   /* Sink interface. */
-  hb_bit_set_invertible_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_invertible_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_బిట్టు_సమితి_invertible_t& క్రియాకారకం << (hb_codepoint_t v)
+  { కూడు (v); తిరిగి *ఇది; }
+  hb_బిట్టు_సమితి_invertible_t& క్రియాకారకం << (స్థిరరాశి hb_codepoint_pair_t& range)
+  { కూడు_range (range.మొదటి, range.second); తిరిగి *ఇది; }
 
-  bool may_intersect (const hb_bit_set_invertible_t &other) const
-  { return inverted || other.inverted || s.intersects (other.s); }
+  తార్కిక may_intersect (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other) స్థిరరాశి
+  { తిరిగి inverted || other.inverted || s.intersects (other.s); }
 
-  bool intersects (const hb_bit_set_invertible_t &other) const
+  తార్కిక intersects (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return unlikely (other.inverted) ? !s.is_subset (other.s)
+    ఒకవేళ (likely (!inverted))
+      తిరిగి unlikely (other.inverted) ? !s.is_subset (other.s)
 				       : s.intersects (other.s);
-    if (likely (!other.inverted))
-      return !other.s.is_subset (s);
+    ఒకవేళ (likely (!other.inverted))
+      తిరిగి !other.s.is_subset (s);
 
-    unsigned population = s.get_population ();
-    unsigned other_population = other.s.get_population ();
-    if ((uint64_t) population + other_population < INVALID)
-      return true;
+    గుర్తులేని population = s.get_population ();
+    గుర్తులేని other_population = other.s.get_population ();
+    ఒకవేళ ((uint64_t) population + other_population < INVALID)
+      తిరిగి నిజం;
 
-    return population >= other_population
+    తిరిగి population >= other_population
 	 ? !hb_all (iter (), other.s)
 	 : !hb_all (other.iter (), s);
   }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  తార్కిక intersects (hb_codepoint_t మొదటి, hb_codepoint_t చివరి) స్థిరరాశి
   {
-    hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    hb_codepoint_t c = మొదటి - 1;
+    తిరిగి next (&c) && c <= చివరి;
   }
 
-  void set (const hb_bit_set_invertible_t &other)
+  శూన్య సమితి (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other)
   {
-    s.set (other.s);
-    if (likely (s.successful))
+    s.సమితి (other.s);
+    ఒకవేళ (likely (s.successful))
       inverted = other.inverted;
   }
 
-  bool is_equal (const hb_bit_set_invertible_t &other) const
+  తార్కిక is_equal (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other) స్థిరరాశి
   {
-    if (likely (inverted == other.inverted))
-      return s.is_equal (other.s);
-    else
+    ఒకవేళ (likely (inverted == other.inverted))
+      తిరిగి s.is_equal (other.s);
+    లేకపోతే
     {
-      if (get_population () != other.get_population ())
-	return false;
+      ఒకవేళ (get_population () != other.get_population ())
+	తిరిగి అబద్ధం;
 
       /* TODO Add iter_ranges() and use here. */
-      auto it1 = iter ();
-      auto it2 = other.iter ();
-      return hb_all (+ hb_zip (it1, it2)
-		     | hb_map ([](hb_codepoint_pair_t _) { return _.first == _.second; }));
+      స్వయంచాలక it1 = iter ();
+      స్వయంచాలక it2 = other.iter ();
+      తిరిగి hb_all (+ hb_zip (it1, it2)
+		     | hb_map ([](hb_codepoint_pair_t _) { తిరిగి _.మొదటి == _.second; }));
     }
   }
 
-  bool is_subset (const hb_bit_set_invertible_t &larger_set) const
+  తార్కిక is_subset (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &larger_సమితి) స్థిరరాశి
   {
-    if (unlikely (inverted != larger_set.inverted))
+    ఒకవేళ (unlikely (inverted != larger_సమితి.inverted))
     {
-      if (inverted)
-	return hb_all (iter (), larger_set.s);
-      else
+      ఒకవేళ (inverted)
+	తిరిగి hb_all (iter (), larger_సమితి.s);
+      లేకపోతే
         // larger set is inverted so larger_set.s is the set of things that are not present
         // in larger_set, therefore if s has any of those it can't be a subset.
-	return !s.intersects (larger_set.s);
+	తిరిగి !s.intersects (larger_సమితి.s);
     }
-    else
-      return unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
+    లేకపోతే
+      తిరిగి unlikely (inverted) ? larger_సమితి.s.is_subset (s) : s.is_subset (larger_సమితి.s);
   }
 
-  protected:
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_invertible_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  రక్షిత:
+  మూస <రకం_పేరు Op>
+  శూన్య process (స్థిరరాశి Op& op,
+		స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other,
+		hb_సదిశ_t<గుర్తులేని> *workspace = శూన్యసూచిక)
   { s.process (op, other.s, workspace); }
-  public:
-  void union_ (const hb_bit_set_invertible_t &other)
+  బహిరంగ:
+  శూన్య union_ (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    ఒకవేళ (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      ఒకవేళ (unlikely (inverted))
 	process (hb_bitwise_and, other);
-      else
+      లేకపోతే
 	process (hb_bitwise_or, other); /* Main branch. */
     }
-    else
+    లేకపోతే
     {
-      if (unlikely (inverted))
+      ఒకవేళ (unlikely (inverted))
 	process (hb_bitwise_gt, other);
-      else
+      లేకపోతే
 	process (hb_bitwise_lt, other);
     }
-    if (likely (s.successful))
+    ఒకవేళ (likely (s.successful))
       inverted = inverted || other.inverted;
   }
-  void intersect (const hb_bit_set_invertible_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  శూన్య intersect (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other,
+		  hb_సదిశ_t<గుర్తులేని> *workspace = శూన్యసూచిక)
   {
-    if (likely (inverted == other.inverted))
+    ఒకవేళ (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      ఒకవేళ (unlikely (inverted))
 	process (hb_bitwise_or, other, workspace);
-      else
+      లేకపోతే
 	process (hb_bitwise_and, other, workspace); /* Main branch. */
     }
-    else
+    లేకపోతే
     {
-      if (unlikely (inverted))
+      ఒకవేళ (unlikely (inverted))
 	process (hb_bitwise_lt, other, workspace);
-      else
+      లేకపోతే
 	process (hb_bitwise_gt, other, workspace);
     }
-    if (likely (s.successful))
+    ఒకవేళ (likely (s.successful))
       inverted = inverted && other.inverted;
   }
-  void subtract (const hb_bit_set_invertible_t &other)
+  శూన్య వ్యవకలనం (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    ఒకవేళ (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      ఒకవేళ (unlikely (inverted))
 	process (hb_bitwise_lt, other);
-      else
+      లేకపోతే
 	process (hb_bitwise_gt, other); /* Main branch. */
     }
-    else
+    లేకపోతే
     {
-      if (unlikely (inverted))
+      ఒకవేళ (unlikely (inverted))
 	process (hb_bitwise_or, other);
-      else
+      లేకపోతే
 	process (hb_bitwise_and, other);
     }
-    if (likely (s.successful))
+    ఒకవేళ (likely (s.successful))
       inverted = inverted && !other.inverted;
   }
-  void symmetric_difference (const hb_bit_set_invertible_t &other)
+  శూన్య సౌష్ఠవ_difference (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &other)
   {
     process (hb_bitwise_xor, other);
-    if (likely (s.successful))
+    ఒకవేళ (likely (s.successful))
       inverted = inverted ^ other.inverted;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  తార్కిక next (hb_codepoint_t *codepoint) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return s.next (codepoint);
+    ఒకవేళ (likely (!inverted))
+      తిరిగి s.next (codepoint);
 
-    auto old = *codepoint;
-    if (unlikely (old + 1 == INVALID))
+    స్వయంచాలక old = *codepoint;
+    ఒకవేళ (unlikely (old + 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      తిరిగి అబద్ధం;
     }
 
-    auto v = old;
+    స్వయంచాలక v = old;
     s.next (&v);
-    if (old + 1 < v)
+    ఒకవేళ (old + 1 < v)
     {
       *codepoint = old + 1;
-      return true;
+      తిరిగి నిజం;
     }
 
     v = old;
-    s.next_range (&old, &v);
+    s.తదుపరి_range (&old, &v);
 
     *codepoint = v + 1;
-    return *codepoint != INVALID;
+    తిరిగి *codepoint != INVALID;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  తార్కిక తదుపరి_బిట్లు (hb_codepoint_t *codepoint, uint64_t *బిట్లు) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return s.next_bits (codepoint, bits);
+    ఒకవేళ (likely (!inverted))
+      తిరిగి s.తదుపరి_బిట్లు (codepoint, బిట్లు);
 
-    hb_codepoint_t base;
-    if (unlikely (*codepoint == INVALID))
-      base = 0;
-    else
+    hb_codepoint_t పునాది;
+    ఒకవేళ (unlikely (*codepoint == INVALID))
+      పునాది = 0;
+    లేకపోతే
     {
-      base = *codepoint & ~hb_bit_page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
-	goto done;
-      base += hb_bit_page_t::ELT_BITS;
+      పునాది = *codepoint & ~hb_బిట్టు_పుట_t::ELT_ముసుగు;
+      ఒకవేళ (unlikely (పునాది >= INVALID - hb_బిట్టు_పుట_t::ELT_బిట్లు + 1))
+	వెళ్ళు పూర్తి;
+      పునాది += hb_బిట్టు_పుట_t::ELT_బిట్లు;
     }
 
-    while (true)
+    అయితే (నిజం)
     {
-      hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
+      hb_codepoint_t cursor = పునాది ? పునాది - hb_బిట్టు_పుట_t::ELT_బిట్లు : INVALID;
       uint64_t excluded = 0;
-      if (!s.next_bits (&cursor, &excluded) || cursor != base)
+      ఒకవేళ (!s.తదుపరి_బిట్లు (&cursor, &excluded) || cursor != పునాది)
 	excluded = 0;
-      *bits = ~excluded;
-      bool last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
-      if (last)
-	*bits &= UINT64_MAX >> 1;
-      if (*bits)
+      *బిట్లు = ~excluded;
+      తార్కిక చివరి = unlikely (పునాది >= INVALID - hb_బిట్టు_పుట_t::ELT_బిట్లు + 1);
+      ఒకవేళ (చివరి)
+	*బిట్లు &= UINT64_MAX >> 1;
+      ఒకవేళ (*బిట్లు)
       {
-	*codepoint = base;
-	return true;
+	*codepoint = పునాది;
+	తిరిగి నిజం;
       }
-      if (unlikely (last))
-	break;
-      base += hb_bit_page_t::ELT_BITS;
+      ఒకవేళ (unlikely (చివరి))
+	ఆపు;
+      పునాది += hb_బిట్టు_పుట_t::ELT_బిట్లు;
     }
 
-  done:
+  పూర్తి:
     *codepoint = INVALID;
-    *bits = 0;
-    return false;
+    *బిట్లు = 0;
+    తిరిగి అబద్ధం;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  తార్కిక మునుపటి (hb_codepoint_t *codepoint) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return s.previous (codepoint);
+    ఒకవేళ (likely (!inverted))
+      తిరిగి s.మునుపటి (codepoint);
 
-    auto old = *codepoint;
-    if (unlikely (old - 1 == INVALID))
+    స్వయంచాలక old = *codepoint;
+    ఒకవేళ (unlikely (old - 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      తిరిగి అబద్ధం;
     }
 
-    auto v = old;
-    s.previous (&v);
+    స్వయంచాలక v = old;
+    s.మునుపటి (&v);
 
-    if (old - 1 > v || v == INVALID)
+    ఒకవేళ (old - 1 > v || v == INVALID)
     {
       *codepoint = old - 1;
-      return true;
+      తిరిగి నిజం;
     }
 
     v = old;
-    s.previous_range (&v, &old);
+    s.మునుపటి_range (&v, &old);
 
     *codepoint = v - 1;
-    return *codepoint != INVALID;
+    తిరిగి *codepoint != INVALID;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  తార్కిక తదుపరి_range (hb_codepoint_t *మొదటి, hb_codepoint_t *చివరి) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return s.next_range (first, last);
+    ఒకవేళ (likely (!inverted))
+      తిరిగి s.తదుపరి_range (మొదటి, చివరి);
 
-    if (!next (last))
+    ఒకవేళ (!next (చివరి))
     {
-      *last = *first = INVALID;
-      return false;
+      *చివరి = *మొదటి = INVALID;
+      తిరిగి అబద్ధం;
     }
 
-    *first = *last;
-    s.next (last);
-    --*last;
-    return true;
+    *మొదటి = *చివరి;
+    s.next (చివరి);
+    --*చివరి;
+    తిరిగి నిజం;
   }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  తార్కిక మునుపటి_range (hb_codepoint_t *మొదటి, hb_codepoint_t *చివరి) స్థిరరాశి
   {
-    if (likely (!inverted))
-      return s.previous_range (first, last);
+    ఒకవేళ (likely (!inverted))
+      తిరిగి s.మునుపటి_range (మొదటి, చివరి);
 
-    if (!previous (first))
+    ఒకవేళ (!మునుపటి (మొదటి))
     {
-      *last = *first = INVALID;
-      return false;
+      *చివరి = *మొదటి = INVALID;
+      తిరిగి అబద్ధం;
     }
 
-    *last = *first;
-    s.previous (first);
-    ++*first;
-    return true;
+    *చివరి = *మొదటి;
+    s.మునుపటి (మొదటి);
+    ++*మొదటి;
+    తిరిగి నిజం;
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
-			  hb_codepoint_t *out,
-			  unsigned int    size) const
+  గుర్తులేని పూర్ణాంకం తదుపరి_many (hb_codepoint_t  codepoint,
+			  hb_codepoint_t *బహిర్గతం,
+			  గుర్తులేని పూర్ణాంకం    కొలత) స్థిరరాశి
   {
-    return inverted ? s.next_many_inverted (codepoint, out, size)
-		    : s.next_many (codepoint, out, size);
+    తిరిగి inverted ? s.తదుపరి_many_inverted (codepoint, బహిర్గతం, కొలత)
+		    : s.తదుపరి_many (codepoint, బహిర్గతం, కొలత);
   }
 
-  static constexpr hb_codepoint_t INVALID = hb_bit_set_t::INVALID;
+  స్థిర constexpr hb_codepoint_t INVALID = hb_బిట్టు_సమితి_t::INVALID;
 
   /*
    * Iterator implementation.
    * Mutating the set invalidates its iterators.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  నిర్మాణం iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_invertible_t &s_ = Null (hb_bit_set_invertible_t),
-    bool init = true) : s (&s_), v (INVALID), remaining (0),
-				     have_len (!init), base (INVALID), bits (0)
+    స్థిర constexpr తార్కిక is_sorted_iterator = నిజం;
+    స్థిర constexpr తార్కిక has_fast_len = నిజం;
+    iter_t (స్థిరరాశి hb_బిట్టు_సమితి_invertible_t &s_ = Null (hb_బిట్టు_సమితి_invertible_t),
+    తార్కిక init = నిజం) : s (&s_), v (INVALID), మిగిలిన (0),
+				     have_len (!init), పునాది (INVALID), బిట్లు (0)
     {
-      if (init)
+      ఒకవేళ (init)
 	advance ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ ()
+    రకనిర్వచనం hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () స్థిరరాశి { తిరిగి v; }
+    తార్కిక __more__ () స్థిరరాశి { తిరిగి v != INVALID; }
+    శూన్య __next__ ()
     {
-      remaining--;
+      మిగిలిన--;
       advance ();
     }
-    void __prev__ ()
+    శూన్య __prev__ ()
     {
-      if (s->previous (&v))
+      ఒకవేళ (s->మునుపటి (&v))
       {
-	sync ();
-	remaining++;
+	సమకాలీకరణ ();
+	మిగిలిన++;
       }
-      else
+      లేకపోతే
       {
-	base = INVALID;
-	bits = 0;
+	పునాది = INVALID;
+	బిట్లు = 0;
       }
     }
-    unsigned __len__ () const
+    గుర్తులేని __len__ () స్థిరరాశి
     {
-      if (unlikely (!have_len))
+      ఒకవేళ (unlikely (!have_len))
       {
-	remaining += s->get_population ();
-	have_len = true;
+	మిగిలిన += s->get_population ();
+	have_len = నిజం;
       }
-      return remaining;
+      తిరిగి మిగిలిన;
     }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    iter_t చివర () స్థిరరాశి { తిరిగి iter_t (*s, అబద్ధం); }
+    తార్కిక క్రియాకారకం != (స్థిరరాశి iter_t& o) స్థిరరాశి
+    { తిరిగి v != o.v; }
 
-    protected:
-    const hb_bit_set_invertible_t *s;
+    రక్షిత:
+    స్థిరరాశి hb_బిట్టు_సమితి_invertible_t *s;
     hb_codepoint_t v;
-    mutable unsigned remaining;
-    mutable bool have_len;
-    hb_codepoint_t base;
-    uint64_t bits;
+    మార్చదగిన గుర్తులేని మిగిలిన;
+    మార్చదగిన తార్కిక have_len;
+    hb_codepoint_t పునాది;
+    uint64_t బిట్లు;
 
-    void advance ()
+    శూన్య advance ()
     {
-      if (likely (bits))
+      ఒకవేళ (likely (బిట్లు))
       {
-	v = base + hb_ctz (bits);
-	bits &= bits - 1;
+	v = పునాది + hb_ctz (బిట్లు);
+	బిట్లు &= బిట్లు - 1;
       }
-      else if (s->next_bits (&base, &bits))
+      లేకపోతే ఒకవేళ (s->తదుపరి_బిట్లు (&పునాది, &బిట్లు))
       {
-	v = base + hb_ctz (bits);
-	bits &= bits - 1;
+	v = పునాది + hb_ctz (బిట్లు);
+	బిట్లు &= బిట్లు - 1;
       }
-      else
+      లేకపోతే
 	v = INVALID;
     }
 
-    void sync ()
+    శూన్య సమకాలీకరణ ()
     {
-      base = v & ~hb_bit_page_t::ELT_MASK;
-      hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
-      s->next_bits (&cursor, &bits);
-      unsigned int bit = v & (hb_bit_page_t::ELT_BITS - 1);
-      bits = bit == hb_bit_page_t::ELT_BITS - 1 ? 0 : bits >> (bit + 1) << (bit + 1);
+      పునాది = v & ~hb_బిట్టు_పుట_t::ELT_ముసుగు;
+      hb_codepoint_t cursor = పునాది ? పునాది - hb_బిట్టు_పుట_t::ELT_బిట్లు : INVALID;
+      s->తదుపరి_బిట్లు (&cursor, &బిట్లు);
+      గుర్తులేని పూర్ణాంకం bit = v & (hb_బిట్టు_పుట_t::ELT_బిట్లు - 1);
+      బిట్లు = bit == hb_బిట్టు_పుట_t::ELT_బిట్లు - 1 ? 0 : బిట్లు >> (bit + 1) << (bit + 1);
     }
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () స్థిరరాశి { తిరిగి iter_t (*ఇది); }
+  క్రియాకారకం iter_t () స్థిరరాశి { తిరిగి iter (); }
 };
 
 
-#endif /* HB_BIT_SET_INVERTIBLE_HH */
+#అయితే_ముగింపు /* HB_BIT_SET_INVERTIBLE_HH */

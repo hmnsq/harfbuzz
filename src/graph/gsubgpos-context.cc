@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#అన్తర్భావ "gsubgpos-graph.hh"
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
-                                                                           graph_t& graph_)
+లేఖాచిత్రం_ఫలితం_t<gsubgpos_లేఖాచిత్రం_context_t> gsubgpos_లేఖాచిత్రం_context_t::create (hb_ట్యాగ్_t పట్టిక_ట్యాగ్_3,
+                                                                           లేఖాచిత్రం_t& లేఖాచిత్రం_2)
 {
-  gsubgpos_graph_context_t context (table_tag_, graph_);
+  gsubgpos_లేఖాచిత్రం_context_t context (పట్టిక_ట్యాగ్_3, లేఖాచిత్రం_2);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
-                && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+  ఒకవేళ (unlikely (పట్టిక_ట్యాగ్_3 != HB_OT_ట్యాగ్_GPOS
+                && పట్టిక_ట్యాగ్_3 != HB_OT_ట్యాగ్_GSUB))
+    తిరిగి Err(INVALID_వాదం);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
-  TRY(gstar->find_lookups (context.graph, context.lookups));
-  TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
+  TRY_కేటాయించు (స్థిరరాశి GSTAR* gstar, లేఖాచిత్రం::GSTAR::లేఖాచిత్రం_గమ్యం_gstar (context.లేఖాచిత్రం));
+  TRY(gstar->కనుగొను_lookups (context.లేఖాచిత్రం, context.lookups));
+  TRY_కేటాయించు (context.lookup_list_సూచీ, gstar->get_lookup_list_సూచీ (context.లేఖాచిత్రం));
 
-  return context;
+  తిరిగి context;
 }
 
-gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                                    graph_t& graph_)
-    : table_tag (table_tag_),
-      graph (graph_),
-      lookup_list_index (0),
+gsubgpos_లేఖాచిత్రం_context_t::gsubgpos_లేఖాచిత్రం_context_t (hb_ట్యాగ్_t పట్టిక_ట్యాగ్_3,
+                                                    లేఖాచిత్రం_t& లేఖాచిత్రం_2)
+    : పట్టిక_ట్యాగ్_2 (పట్టిక_ట్యాగ్_3),
+      లేఖాచిత్రం (లేఖాచిత్రం_2),
+      lookup_list_సూచీ (0),
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> gsubgpos_లేఖాచిత్రం_context_t::create_కణుపు (గుర్తులేని కొలత)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  అక్షరం* బఫరు = (అక్షరం*) hb_calloc (1, కొలత);
+  ఒకవేళ (unlikely (!బఫరు))
+    తిరిగి Err(కేటాయింపు_FAILURE);
 
-  auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  స్వయంచాలక res = కూడు_బఫరు (బఫరు);
+  ఒకవేళ (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
-    hb_free (buffer);
-    return Err(res.error ());
+    hb_free (బఫరు);
+    తిరిగి Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  తిరిగి లేఖాచిత్రం.new_కణుపు (బఫరు, బఫరు + కొలత);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+గుర్తులేని gsubgpos_లేఖాచిత్రం_context_t::అంకె_non_ext_subtables ()  {
+  గుర్తులేని లెక్క = 0;
+  కొరకు (స్వయంచాలక l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    ఒకవేళ (l->is_extension (పట్టిక_ట్యాగ్_2)) కొనసాగు;
+    లెక్క += l->సంఖ్య_యొక్క_subtables ();
   }
-  return count;
+  తిరిగి లెక్క;
 }
 
 }

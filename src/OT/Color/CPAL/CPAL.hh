@@ -25,368 +25,368 @@
  * Google Author(s): Sascha Brawer
  */
 
-#ifndef OT_COLOR_CPAL_CPAL_HH
-#define OT_COLOR_CPAL_CPAL_HH
+#నిర్వచితం_కాకపోతే OT_COLOR_CPAL_CPAL_HH
+#నిర్వచించు OT_COLOR_CPAL_CPAL_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-color.h"
-#include "../../../hb-ot-name.h"
+#అన్తర్భావ "../../../hb-open-type.hh"
+#అన్తర్భావ "../../../hb-ot-color.h"
+#అన్తర్భావ "../../../hb-ot-name.h"
 
 
 /*
  * CPAL -- Color Palette
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cpal
  */
-#define HB_OT_TAG_CPAL HB_TAG('C','P','A','L')
+#నిర్వచించు HB_OT_ట్యాగ్_CPAL HB_ట్యాగ్('C','P','A','L')
 
-namespace OT {
+నామాకాశ OT {
 
 
-struct CPALV1Tail
+నిర్మాణం CPALV1_తోక
 {
-  friend struct CPAL;
+  మిత్ర నిర్మాణం CPAL;
 
-  private:
-  hb_ot_color_palette_flags_t get_palette_flags (const void *base,
-						 unsigned int palette_index,
-						 unsigned int palette_count) const
+  అంతరంగ:
+  hb_ot_color_palette_flags_t get_palette_flags (స్థిరరాశి శూన్య *పునాది,
+						 గుర్తులేని పూర్ణాంకం palette_సూచీ,
+						 గుర్తులేని పూర్ణాంకం palette_లెక్క) స్థిరరాశి
   {
-    if (!paletteFlagsZ) return HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
-    return (hb_ot_color_palette_flags_t) (uint32_t)
-	   (base+paletteFlagsZ).as_array (palette_count)[palette_index];
+    ఒకవేళ (!paletteFlagsZ) తిరిగి HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
+    తిరిగి (hb_ot_color_palette_flags_t) (uint32_t)
+	   (పునాది+paletteFlagsZ).as_array (palette_లెక్క)[palette_సూచీ];
   }
 
-  hb_ot_name_id_t get_palette_name_id (const void *base,
-				       unsigned int palette_index,
-				       unsigned int palette_count) const
+  hb_ot_name_id_t get_palette_name_id (స్థిరరాశి శూన్య *పునాది,
+				       గుర్తులేని పూర్ణాంకం palette_సూచీ,
+				       గుర్తులేని పూర్ణాంకం palette_లెక్క) స్థిరరాశి
   {
-    if (!paletteLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+paletteLabelsZ).as_array (palette_count)[palette_index];
+    ఒకవేళ (!paletteLabelsZ) తిరిగి HB_OT_NAME_ID_INVALID;
+    తిరిగి (పునాది+paletteLabelsZ).as_array (palette_లెక్క)[palette_సూచీ];
   }
 
-  hb_ot_name_id_t get_color_name_id (const void *base,
-				     unsigned int color_index,
-				     unsigned int color_count) const
+  hb_ot_name_id_t get_color_name_id (స్థిరరాశి శూన్య *పునాది,
+				     గుర్తులేని పూర్ణాంకం color_సూచీ,
+				     గుర్తులేని పూర్ణాంకం color_లెక్క) స్థిరరాశి
   {
-    if (!colorLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+colorLabelsZ).as_array (color_count)[color_index];
+    ఒకవేళ (!colorLabelsZ) తిరిగి HB_OT_NAME_ID_INVALID;
+    తిరిగి (పునాది+colorLabelsZ).as_array (color_లెక్క)[color_సూచీ];
   }
 
-  public:
-  void collect_name_ids (const void *base,
-                         unsigned palette_count,
-                         unsigned color_count,
-                         const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  బహిరంగ:
+  శూన్య collect_name_ids (స్థిరరాశి శూన్య *పునాది,
+                         గుర్తులేని palette_లెక్క,
+                         గుర్తులేని color_లెక్క,
+                         స్థిరరాశి hb_map_t *color_సూచీ_map,
+                         hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (paletteLabelsZ)
+    ఒకవేళ (paletteLabelsZ)
     {
-      + (base+paletteLabelsZ).as_array (palette_count)
-      | hb_sink (nameids_to_retain)
+      + (పునాది+paletteLabelsZ).as_array (palette_లెక్క)
+      | hb_sink (nameids_గమ్యం_retain)
       ;
     }
 
-    if (colorLabelsZ)
+    ఒకవేళ (colorLabelsZ)
     {
-      const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-      for (unsigned i = 0; i < color_count; i++)
+      స్థిరరాశి hb_array_t<స్థిరరాశి NameID> colorLabels = (పునాది+colorLabelsZ).as_array (color_లెక్క);
+      కొరకు (గుర్తులేని i = 0; i < color_లెక్క; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        nameids_to_retain->add (colorLabels[i]);
+        ఒకవేళ (!color_సూచీ_map->has (i)) కొనసాగు;
+        nameids_గమ్యం_retain->కూడు (colorLabels[i]);
       }
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  unsigned palette_count,
-                  unsigned color_count,
-                  const void *base,
-                  const hb_map_t *color_index_map) const
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  గుర్తులేని palette_లెక్క,
+                  గుర్తులేని color_లెక్క,
+                  స్థిరరాశి శూన్య *పునాది,
+                  స్థిరరాశి hb_map_t *color_సూచీ_map) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->allocate_size<CPALV1Tail> (static_size);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->allocate_కొలత<CPALV1_తోక> (static_కొలత);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->paletteFlagsZ = 0;
-    if (paletteFlagsZ)
-      out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    బహిర్గతం->paletteFlagsZ = 0;
+    ఒకవేళ (paletteFlagsZ)
+      బహిర్గతం->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, పునాది, 0, hb_serialize_context_t::తల, palette_లెక్క);
 
-    out->paletteLabelsZ = 0;
-    if (paletteLabelsZ)
-      out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    బహిర్గతం->paletteLabelsZ = 0;
+    ఒకవేళ (paletteLabelsZ)
+      బహిర్గతం->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, పునాది, 0, hb_serialize_context_t::తల, palette_లెక్క);
 
-    const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-    if (colorLabelsZ)
+    స్థిరరాశి hb_array_t<స్థిరరాశి NameID> colorLabels = (పునాది+colorLabelsZ).as_array (color_లెక్క);
+    ఒకవేళ (colorLabelsZ)
     {
       c->push ();
-      for (unsigned i = 0; i < color_count; i++)
+      కొరకు (గుర్తులేని i = 0; i < color_లెక్క; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        if (!c->copy<NameID> (colorLabels[i]))
+        ఒకవేళ (!color_సూచీ_map->has (i)) కొనసాగు;
+        ఒకవేళ (!c->copy<NameID> (colorLabels[i]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->తీయి_discard ();
+          return_trace (అబద్ధం);
         }
       }
-      c->add_link (out->colorLabelsZ, c->pop_pack ());
+      c->కూడు_link (బహిర్గతం->colorLabelsZ, c->తీయి_pack ());
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int palette_count,
-		 unsigned int color_count) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి శూన్య *పునాది,
+		 గుర్తులేని పూర్ణాంకం palette_లెక్క,
+		 గుర్తులేని పూర్ణాంకం color_లెక్క) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  (!paletteFlagsZ  || (base+paletteFlagsZ).sanitize (c, palette_count)) &&
-		  (!paletteLabelsZ || (base+paletteLabelsZ).sanitize (c, palette_count)) &&
-		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_count)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  (!paletteFlagsZ  || (పునాది+paletteFlagsZ).sanitize (c, palette_లెక్క)) &&
+		  (!paletteLabelsZ || (పునాది+paletteLabelsZ).sanitize (c, palette_లెక్క)) &&
+		  (!colorLabelsZ   || (పునాది+colorLabelsZ).sanitize (c, color_లెక్క)));
   }
 
-  protected:
+  రక్షిత:
   // TODO(garretrieger): these offsets can hold nulls so we should not be using non-null offsets
   //                     here. Currently they are needed since UnsizedArrayOf doesn't define null_size
-  NNOffset32To<UnsizedArrayOf<HBUINT32>>
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<HBUINT32>>
 		paletteFlagsZ;		/* Offset from the beginning of CPAL table to
 					 * the Palette Type Array. Set to 0 if no array
 					 * is provided. */
-  NNOffset32To<UnsizedArrayOf<NameID>>
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<NameID>>
 		paletteLabelsZ;		/* Offset from the beginning of CPAL table to
 					 * the palette labels array. Set to 0 if no
 					 * array is provided. */
-  NNOffset32To<UnsizedArrayOf<NameID>>
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<NameID>>
 		colorLabelsZ;		/* Offset from the beginning of CPAL table to
 					 * the color labels array. Set to 0
 					 * if no array is provided. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (12);
 };
 
-typedef HBUINT32 BGRAColor;
+రకనిర్వచనం HBUINT32 BGRAColor;
 
-struct CPAL
+నిర్మాణం CPAL
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_CPAL;
 
-  bool has_data () const { return numPalettes; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి అంకె_Palettes; }
 
-  size_t get_size () const
-  { return min_size + numPalettes * sizeof (colorRecordIndicesZ[0]); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి min_కొలత + అంకె_Palettes * పరిమాణం (color_రికార్డు_Indices_Z[0]); }
 
-  unsigned int get_palette_count () const { return numPalettes; }
-  unsigned int   get_color_count () const { return numColors; }
+  గుర్తులేని పూర్ణాంకం get_palette_లెక్క () స్థిరరాశి { తిరిగి అంకె_Palettes; }
+  గుర్తులేని పూర్ణాంకం   get_color_లెక్క () స్థిరరాశి { తిరిగి అంకె_Colors; }
 
-  hb_ot_color_palette_flags_t get_palette_flags (unsigned int palette_index) const
-  { return v1 ().get_palette_flags (this, palette_index, numPalettes); }
+  hb_ot_color_palette_flags_t get_palette_flags (గుర్తులేని పూర్ణాంకం palette_సూచీ) స్థిరరాశి
+  { తిరిగి v1 ().get_palette_flags (ఇది, palette_సూచీ, అంకె_Palettes); }
 
-  hb_ot_name_id_t get_palette_name_id (unsigned int palette_index) const
-  { return v1 ().get_palette_name_id (this, palette_index, numPalettes); }
+  hb_ot_name_id_t get_palette_name_id (గుర్తులేని పూర్ణాంకం palette_సూచీ) స్థిరరాశి
+  { తిరిగి v1 ().get_palette_name_id (ఇది, palette_సూచీ, అంకె_Palettes); }
 
-  hb_ot_name_id_t get_color_name_id (unsigned int color_index) const
-  { return v1 ().get_color_name_id (this, color_index, numColors); }
+  hb_ot_name_id_t get_color_name_id (గుర్తులేని పూర్ణాంకం color_సూచీ) స్థిరరాశి
+  { తిరిగి v1 ().get_color_name_id (ఇది, color_సూచీ, అంకె_Colors); }
 
-  hb_array_t<const BGRAColor> get_palette_colors (unsigned int palette_index) const
+  hb_array_t<స్థిరరాశి BGRAColor> get_palette_colors (గుర్తులేని పూర్ణాంకం palette_సూచీ) స్థిరరాశి
   {
-    if (unlikely (palette_index >= numPalettes))
-      return hb_array_t<const BGRAColor> ();
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    return all_colors.sub_array (start_index, numColors);
+    ఒకవేళ (unlikely (palette_సూచీ >= అంకె_Palettes))
+      తిరిగి hb_array_t<స్థిరరాశి BGRAColor> ();
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_సూచీ = color_రికార్డు_Indices_Z[palette_సూచీ];
+    hb_array_t<స్థిరరాశి BGRAColor> all_colors ((ఇది+color_రికార్డులు_Z).arrayZ, అంకె_Color_రికార్డులు);
+    తిరిగి all_colors.sub_array (ప్రారంభం_సూచీ, అంకె_Colors);
   }
-  unsigned int get_palette_colors (unsigned int  palette_index,
-				   unsigned int  start_offset,
-				   unsigned int *color_count, /* IN/OUT.  May be NULL. */
-				   hb_color_t   *colors       /* OUT.     May be NULL. */) const
+  గుర్తులేని పూర్ణాంకం get_palette_colors (గుర్తులేని పూర్ణాంకం  palette_సూచీ,
+				   గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+				   గుర్తులేని పూర్ణాంకం *color_లెక్క, /* IN/OUT.  May be NULL. */
+				   hb_color_t   *colors       /* OUT.     May be NULL. */) స్థిరరాశి
   {
-    if (unlikely (palette_index >= numPalettes))
+    ఒకవేళ (unlikely (palette_సూచీ >= అంకె_Palettes))
     {
-      if (color_count) *color_count = 0;
-      return 0;
+      ఒకవేళ (color_లెక్క) *color_లెక్క = 0;
+      తిరిగి 0;
     }
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    hb_array_t<const BGRAColor> palette_colors = all_colors.sub_array (start_index,
-								       numColors);
-    if (color_count && colors)
+    గుర్తులేని పూర్ణాంకం ప్రారంభం_సూచీ = color_రికార్డు_Indices_Z[palette_సూచీ];
+    hb_array_t<స్థిరరాశి BGRAColor> all_colors ((ఇది+color_రికార్డులు_Z).arrayZ, అంకె_Color_రికార్డులు);
+    hb_array_t<స్థిరరాశి BGRAColor> palette_colors = all_colors.sub_array (ప్రారంభం_సూచీ,
+								       అంకె_Colors);
+    ఒకవేళ (color_లెక్క && colors)
     {
-      + palette_colors.sub_array (start_offset, color_count)
-      | hb_sink (hb_array (colors, *color_count))
+      + palette_colors.sub_array (ప్రారంభం_స్థానభ్రంశం, color_లెక్క)
+      | hb_sink (hb_array (colors, *color_లెక్క))
       ;
     }
-    return numColors;
+    తిరిగి అంకె_Colors;
   }
 
-  void collect_name_ids (const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  శూన్య collect_name_ids (స్థిరరాశి hb_map_t *color_సూచీ_map,
+                         hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (version == 1)
+    ఒకవేళ (సంస్కరణ == 1)
     {
       hb_barrier ();
-      v1 ().collect_name_ids (this, numPalettes, numColors, color_index_map, nameids_to_retain);
+      v1 ().collect_name_ids (ఇది, అంకె_Palettes, అంకె_Colors, color_సూచీ_map, nameids_గమ్యం_retain);
     }
   }
 
-  private:
-  const CPALV1Tail& v1 () const
+  అంతరంగ:
+  స్థిరరాశి CPALV1_తోక& v1 () స్థిరరాశి
   {
-    if (version == 0) return Null (CPALV1Tail);
+    ఒకవేళ (సంస్కరణ == 0) తిరిగి Null (CPALV1_తోక);
     hb_barrier ();
-    return StructAfter<CPALV1Tail> (*this);
+    తిరిగి StructAfter<CPALV1_తోక> (*ఇది);
   }
 
-  public:
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_array_t<const HBUINT16> &color_record_indices,
-                  const hb_array_t<const BGRAColor> &color_records,
-                  const hb_vector_t<unsigned>& first_color_index_for_layer,
-                  const hb_map_t& first_color_to_layer_index,
-                  const hb_set_t &retained_color_indices) const
+  బహిరంగ:
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  స్థిరరాశి hb_array_t<స్థిరరాశి HBUINT16> &color_రికార్డు_indices,
+                  స్థిరరాశి hb_array_t<స్థిరరాశి BGRAColor> &color_రికార్డులు,
+                  స్థిరరాశి hb_సదిశ_t<గుర్తులేని>& మొదటి_color_సూచీ_for_layer,
+                  స్థిరరాశి hb_map_t& మొదటి_color_గమ్యం_layer_సూచీ,
+                  స్థిరరాశి hb_సమితి_t &retained_color_indices) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
     // TODO(grieger): limit total final size.
 
-    for (const auto idx : color_record_indices)
+    కొరకు (స్థిరరాశి స్వయంచాలక idx : color_రికార్డు_indices)
     {
-      hb_codepoint_t layer_index = first_color_to_layer_index[idx];
+      hb_codepoint_t layer_సూచీ = మొదటి_color_గమ్యం_layer_సూచీ[idx];
 
       HBUINT16 new_idx;
-      new_idx = layer_index * retained_color_indices.get_population ();
-      if (!c->copy<HBUINT16> (new_idx)) return_trace (false);
+      new_idx = layer_సూచీ * retained_color_indices.get_population ();
+      ఒకవేళ (!c->copy<HBUINT16> (new_idx)) return_trace (అబద్ధం);
     }
 
     c->push ();
-    for (unsigned first_color_index : first_color_index_for_layer)
+    కొరకు (గుర్తులేని మొదటి_color_సూచీ : మొదటి_color_సూచీ_for_layer)
     {
-      for (hb_codepoint_t color_index : retained_color_indices)
+      కొరకు (hb_codepoint_t color_సూచీ : retained_color_indices)
       {
-        if (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
+        ఒకవేళ (!c->copy<BGRAColor> (color_రికార్డులు[మొదటి_color_సూచీ + color_సూచీ]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->తీయి_discard ();
+          return_trace (అబద్ధం);
         }
       }
     }
 
-    c->add_link (colorRecordsZ, c->pop_pack ());
-    return_trace (true);
+    c->కూడు_link (color_రికార్డులు_Z, c->తీయి_pack ());
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    if (!numPalettes) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (!అంకె_Palettes) return_trace (అబద్ధం);
 
-    const hb_map_t *color_index_map = &c->plan->colr_palettes;
-    if (color_index_map->is_empty ()) return_trace (false);
+    స్థిరరాశి hb_map_t *color_సూచీ_map = &c->plan->colr_palettes;
+    ఒకవేళ (color_సూచీ_map->is_empty ()) return_trace (అబద్ధం);
 
-    hb_set_t retained_color_indices;
-    for (const auto _ : color_index_map->keys ())
+    hb_సమితి_t retained_color_indices;
+    కొరకు (స్థిరరాశి స్వయంచాలక _ : color_సూచీ_map->కీలకాలు ())
     {
-      if (_ == 0xFFFF) continue;
-      retained_color_indices.add (_);
+      ఒకవేళ (_ == 0xFFFF) కొనసాగు;
+      retained_color_indices.కూడు (_);
     }
-    if (retained_color_indices.is_empty ()) return_trace (false);
+    ఒకవేళ (retained_color_indices.is_empty ()) return_trace (అబద్ధం);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
 
-    out->version = version;
-    out->numColors = retained_color_indices.get_population ();
-    out->numPalettes = numPalettes;
+    బహిర్గతం->సంస్కరణ = సంస్కరణ;
+    బహిర్గతం->అంకె_Colors = retained_color_indices.get_population ();
+    బహిర్గతం->అంకె_Palettes = అంకె_Palettes;
 
-    hb_vector_t<unsigned> first_color_index_for_layer;
-    hb_map_t first_color_to_layer_index;
+    hb_సదిశ_t<గుర్తులేని> మొదటి_color_సూచీ_for_layer;
+    hb_map_t మొదటి_color_గమ్యం_layer_సూచీ;
     /* Two palettes that retain exactly the same color records can share the
      * same block of color records. This commonly happens after subsetting
      * when the colors that distinguished the palettes are dropped. Map from
      * a layer's retained colors to its index to find equal layers without
      * scanning all of them. The keys point into layer_retained_colors,
      * which keeps them alive. */
-    hb_hashmap_t<hb_array_t<const BGRAColor>, unsigned> retained_colors_to_layer_index;
-    hb_vector_t<hb_vector_t<BGRAColor>> layer_retained_colors;
+    hb_hashmap_t<hb_array_t<స్థిరరాశి BGRAColor>, గుర్తులేని> retained_colors_గమ్యం_layer_సూచీ;
+    hb_సదిశ_t<hb_సదిశ_t<BGRAColor>> layer_retained_colors;
 
-    const hb_array_t<const BGRAColor> all_color_records = (this+colorRecordsZ).as_array (numColorRecords);
+    స్థిరరాశి hb_array_t<స్థిరరాశి BGRAColor> all_color_రికార్డులు = (ఇది+color_రికార్డులు_Z).as_array (అంకె_Color_రికార్డులు);
 
-    const hb_array_t<const HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (numPalettes);
-    for (const auto first_color_record_idx : colorRecordIndices)
+    స్థిరరాశి hb_array_t<స్థిరరాశి HBUINT16> color_రికార్డు_Indices = color_రికార్డు_Indices_Z.as_array (అంకె_Palettes);
+    కొరకు (స్థిరరాశి స్వయంచాలక మొదటి_color_రికార్డు_idx : color_రికార్డు_Indices)
     {
-      if (first_color_to_layer_index.has (first_color_record_idx)) continue;
+      ఒకవేళ (మొదటి_color_గమ్యం_layer_సూచీ.has (మొదటి_color_రికార్డు_idx)) కొనసాగు;
 
-      hb_vector_t<BGRAColor> retained_colors;
-      if (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (false);
-      for (hb_codepoint_t color_index : retained_color_indices)
-	retained_colors.push (all_color_records[first_color_record_idx + color_index]);
+      hb_సదిశ_t<BGRAColor> retained_colors;
+      ఒకవేళ (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (అబద్ధం);
+      కొరకు (hb_codepoint_t color_సూచీ : retained_color_indices)
+	retained_colors.push (all_color_రికార్డులు[మొదటి_color_రికార్డు_idx + color_సూచీ]);
 
-      unsigned layer_index = first_color_index_for_layer.length;
-      unsigned *candidate_layer_index = nullptr;
-      if (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
-	layer_index = *candidate_layer_index;
-      else
+      గుర్తులేని layer_సూచీ = మొదటి_color_సూచీ_for_layer.నిడివి;
+      గుర్తులేని *candidate_layer_సూచీ = శూన్యసూచిక;
+      ఒకవేళ (retained_colors_గమ్యం_layer_సూచీ.has (retained_colors.as_array (), &candidate_layer_సూచీ))
+	layer_సూచీ = *candidate_layer_సూచీ;
+      లేకపోతే
       {
-	first_color_index_for_layer.push (first_color_record_idx);
-	if (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (false);
+	మొదటి_color_సూచీ_for_layer.push (మొదటి_color_రికార్డు_idx);
+	ఒకవేళ (unlikely (!c->serializer->propagate_error (మొదటి_color_సూచీ_for_layer))) return_trace (అబద్ధం);
 
-	if (unlikely (!layer_retained_colors.push_or_fail (std::move (retained_colors)))) return_trace (false);
-	if (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
-	  return_trace (false);
+	ఒకవేళ (unlikely (!layer_retained_colors.నెట్టు_or_fail (std::move (retained_colors)))) return_trace (అబద్ధం);
+	ఒకవేళ (unlikely (!retained_colors_గమ్యం_layer_సూచీ.సమితి (layer_retained_colors.తోక ().as_array (), layer_సూచీ)))
+	  return_trace (అబద్ధం);
       }
-      first_color_to_layer_index.set (first_color_record_idx, layer_index);
-      if (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (false);
+      మొదటి_color_గమ్యం_layer_సూచీ.సమితి (మొదటి_color_రికార్డు_idx, layer_సూచీ);
+      ఒకవేళ (unlikely (!c->serializer->propagate_error (మొదటి_color_గమ్యం_layer_సూచీ))) return_trace (అబద్ధం);
     }
 
-    out->numColorRecords = first_color_index_for_layer.length
+    బహిర్గతం->అంకె_Color_రికార్డులు = మొదటి_color_సూచీ_for_layer.నిడివి
                            * retained_color_indices.get_population ();
 
-    if (!out->serialize (c->serializer,
-                         colorRecordIndices,
-                         all_color_records,
-                         first_color_index_for_layer,
-                         first_color_to_layer_index,
+    ఒకవేళ (!బహిర్గతం->serialize (c->serializer,
+                         color_రికార్డు_Indices,
+                         all_color_రికార్డులు,
+                         మొదటి_color_సూచీ_for_layer,
+                         మొదటి_color_గమ్యం_layer_సూచీ,
                          retained_color_indices))
-      return_trace (false);
+      return_trace (అబద్ధం);
 
-    if (version == 1)
+    ఒకవేళ (సంస్కరణ == 1)
     {
       hb_barrier ();
-      return_trace (v1 ().serialize (c->serializer, numPalettes, numColors, this, color_index_map));
+      return_trace (v1 ().serialize (c->serializer, అంకె_Palettes, అంకె_Colors, ఇది, color_సూచీ_map));
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  (this+colorRecordsZ).sanitize (c, numColorRecords) &&
-		  colorRecordIndicesZ.sanitize (c, numPalettes) &&
-		  (version == 0 || v1 ().sanitize (c, this, numPalettes, numColors)));
+		  (ఇది+color_రికార్డులు_Z).sanitize (c, అంకె_Color_రికార్డులు) &&
+		  color_రికార్డు_Indices_Z.sanitize (c, అంకె_Palettes) &&
+		  (సంస్కరణ == 0 || v1 ().sanitize (c, ఇది, అంకె_Palettes, అంకె_Colors)));
   }
 
-  protected:
-  HBUINT16	version;		/* Table version number */
+  రక్షిత:
+  HBUINT16	సంస్కరణ;		/* Table version number */
   /* Version 0 */
-  HBUINT16	numColors;		/* Number of colors in each palette. */
-  HBUINT16	numPalettes;		/* Number of palettes in the table. */
-  HBUINT16	numColorRecords;	/* Total number of color records, combined for
+  HBUINT16	అంకె_Colors;		/* Number of colors in each palette. */
+  HBUINT16	అంకె_Palettes;		/* Number of palettes in the table. */
+  HBUINT16	అంకె_Color_రికార్డులు;	/* Total number of color records, combined for
 					 * all palettes. */
-  NNOffset32To<UnsizedArrayOf<BGRAColor>>
-		colorRecordsZ;		/* Offset from the beginning of CPAL table to
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<BGRAColor>>
+		color_రికార్డులు_Z;		/* Offset from the beginning of CPAL table to
 					 * the first ColorRecord. */
-  UnsizedArrayOf<HBUINT16>
-		colorRecordIndicesZ;	/* Index of each palette’s first color record in
+  Unsized_Array_యొక్క<HBUINT16>
+		color_రికార్డు_Indices_Z;	/* Index of each palette’s first color record in
 					 * the combined color record array. */
 /*CPALV1Tail	v1;*/
-  public:
-  DEFINE_SIZE_ARRAY (12, colorRecordIndicesZ);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (12, color_రికార్డు_Indices_Z);
 };
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_CPAL_CPAL_HH */
+#అయితే_ముగింపు /* OT_COLOR_CPAL_CPAL_HH */

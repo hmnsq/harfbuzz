@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_META
+#నిర్వచితం_కాకపోతే HB_NO_META
 
-#include "hb-ot-meta-table.hh"
+#అన్తర్భావ "hb-ot-meta-table.hh"
 
 /**
  * SECTION:hb-ot-meta
@@ -50,13 +50,13 @@
  *
  * Since: 2.6.0
  **/
-unsigned int
-hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
-			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */)
+గుర్తులేని పూర్ణాంకం
+hb_ot_meta_get_నమోదు_ట్యాగులు (hb_face_t        *face,
+			   గుర్తులేని పూర్ణాంకం      ప్రారంభం_స్థానభ్రంశం,
+			   గుర్తులేని పూర్ణాంకం     *entries_లెక్క, /* IN/OUT.  May be NULL. */
+			   hb_ot_meta_ట్యాగ్_t *entries        /* OUT.     May be NULL. */)
 {
-  return face->table.meta->get_entries (start_offset, entries_count, entries);
+  తిరిగి face->పట్టిక.meta->get_entries (ప్రారంభం_స్థానభ్రంశం, entries_లెక్క, entries);
 }
 
 /**
@@ -71,9 +71,9 @@ hb_ot_meta_get_entry_tags (hb_face_t        *face,
  * Since: 2.6.0
  **/
 hb_blob_t *
-hb_ot_meta_reference_entry (hb_face_t *face, hb_ot_meta_tag_t meta_tag)
+hb_ot_meta_reference_నమోదు (hb_face_t *face, hb_ot_meta_ట్యాగ్_t meta_ట్యాగ్)
 {
-  return face->table.meta->reference_entry (meta_tag);
+  తిరిగి face->పట్టిక.meta->reference_నమోదు (meta_ట్యాగ్);
 }
 
-#endif
+#అయితే_ముగింపు

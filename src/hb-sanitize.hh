@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SANITIZE_HH
-#define HB_SANITIZE_HH
+#నిర్వచితం_కాకపోతే HB_SANITIZE_HH
+#నిర్వచించు HB_SANITIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-dispatch.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-blob.hh"
+#అన్తర్భావ "hb-dispatch.hh"
 
 
 /*
@@ -104,373 +104,373 @@
  */
 
 /* This limits sanitizing time on really broken fonts. */
-#ifndef HB_SANITIZE_MAX_EDITS
-#define HB_SANITIZE_MAX_EDITS 32
-#endif
-#ifndef HB_SANITIZE_MAX_OPS_FACTOR
-#define HB_SANITIZE_MAX_OPS_FACTOR 64
-#endif
-#ifndef HB_SANITIZE_MAX_OPS_MIN
-#define HB_SANITIZE_MAX_OPS_MIN 16384
-#endif
-#ifndef HB_SANITIZE_MAX_OPS_MAX
-#define HB_SANITIZE_MAX_OPS_MAX 0x3FFFFFFF
-#endif
-#ifndef HB_SANITIZE_MAX_SUBTABLES
-#define HB_SANITIZE_MAX_SUBTABLES 0x4000
-#endif
+#నిర్వచితం_కాకపోతే HB_SANITIZE_MAX_EDITS
+#నిర్వచించు HB_SANITIZE_MAX_EDITS 32
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_SANITIZE_MAX_OPS_గుణకం
+#నిర్వచించు HB_SANITIZE_MAX_OPS_గుణకం 64
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_SANITIZE_MAX_OPS_MIN
+#నిర్వచించు HB_SANITIZE_MAX_OPS_MIN 16384
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_SANITIZE_MAX_OPS_MAX
+#నిర్వచించు HB_SANITIZE_MAX_OPS_MAX 0x3FFFFFFF
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_SANITIZE_MAX_SUBTABLES
+#నిర్వచించు HB_SANITIZE_MAX_SUBTABLES 0x4000
+#అయితే_ముగింపు
 
-struct hb_sanitize_context_t :
-       hb_dispatch_context_t<hb_sanitize_context_t, bool, HB_DEBUG_SANITIZE>
+నిర్మాణం hb_sanitize_context_t :
+       hb_dispatch_context_t<hb_sanitize_context_t, తార్కిక, HB_DEBUG_SANITIZE>
 {
-  hb_sanitize_context_t (const char *start_ = nullptr, const char *end_ = nullptr) :
-	start (start_), end (end_),
-	length (0),
+  hb_sanitize_context_t (స్థిరరాశి అక్షరం *ప్రారంభం_2 = శూన్యసూచిక, స్థిరరాశి అక్షరం *చివర_4 = శూన్యసూచిక) :
+	ప్రారంభం (ప్రారంభం_2), చివర (చివర_4),
+	నిడివి (0),
 	max_ops (0), max_subtables (0),
-        recursion_depth (0),
-	writable (false),
-	blob (nullptr),
-	num_glyphs (65536),
-	num_glyphs_set (false),
-	lazy_some_gpos (false) {}
+        recursion_లోతు (0),
+	writable (అబద్ధం),
+	blob (శూన్యసూచిక),
+	అంకె_glyphs (65536),
+	అంకె_glyphs_సమితి (అబద్ధం),
+	lazy_some_gpos (అబద్ధం) {}
 
-  const char *get_name () { return "SANITIZE"; }
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format)
+  స్థిరరాశి అక్షరం *get_name () { తిరిగి "SANITIZE"; }
+  మూస <రకం_పేరు T, రకం_పేరు F>
+  తార్కిక may_dispatch (స్థిరరాశి T *obj HB_వాడని, స్థిరరాశి F *format)
   {
-    return format->sanitize (this) &&
+    తిరిగి format->sanitize (ఇది) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  స్థిర return_t default_return_విలువ () { తిరిగి నిజం; }
+  స్థిర return_t no_dispatch_return_విలువ () { తిరిగి అబద్ధం; }
+  తార్కిక stop_sublookup_iteration (స్థిరరాశి return_t r) స్థిరరాశి { తిరిగి !r; }
 
-  bool visit_subtables (unsigned count)
+  తార్కిక సందర్శించు_subtables (గుర్తులేని లెక్క)
   {
-    max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    max_subtables += లెక్క;
+    తిరిగి max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.sanitize (this, std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  అంతరంగ:
+  మూస <రకం_పేరు T, రకం_పేరు ...Ts> స్వయంచాలక
+  _dispatch (స్థిరరాశి T &obj, hb_ప్రాధాన్యత<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.sanitize (ఇది, std::forward<Ts> (ds)...) )
+  మూస <రకం_పేరు T, రకం_పేరు ...Ts> స్వయంచాలక
+  _dispatch (స్థిరరాశి T &obj, hb_ప్రాధాన్యత<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (ఇది, std::forward<Ts> (ds)...) )
+  బహిరంగ:
+  మూస <రకం_పేరు T, రకం_పేరు ...Ts> స్వయంచాలక
+  dispatch (స్థిరరాశి T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_sanitize_context_t (hb_blob_t *b) : hb_sanitize_context_t ()
   {
     init (b);
 
-    if (blob)
-      start_processing ();
+    ఒకవేళ (blob)
+      ప్రారంభం_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
-      end_processing ();
+    ఒకవేళ (blob)
+      చివర_processing ();
   }
 
-  void init (hb_blob_t *b)
+  శూన్య init (hb_blob_t *b)
   {
-    this->blob = hb_blob_reference (b);
-    this->writable = false;
+    ఇది->blob = hb_blob_reference (b);
+    ఇది->writable = అబద్ధం;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  శూన్య సమితి_అంకె_glyphs (గుర్తులేని పూర్ణాంకం అంకె_glyphs_2)
   {
-    num_glyphs = num_glyphs_;
-    num_glyphs_set = true;
+    అంకె_glyphs = అంకె_glyphs_2;
+    అంకె_glyphs_సమితి = నిజం;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  గుర్తులేని పూర్ణాంకం get_అంకె_glyphs () { తిరిగి అంకె_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  శూన్య సమితి_max_ops (పూర్ణాంకం max_ops_) { max_ops = max_ops_; }
 
-  template <typename T>
-  void set_object (const T *obj)
+  మూస <రకం_పేరు T>
+  శూన్య సమితి_object (స్థిరరాశి T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    ఒకవేళ (!obj) తిరిగి;
 
-    const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    స్థిరరాశి అక్షరం *obj_ప్రారంభం = (స్థిరరాశి అక్షరం *) obj;
+    ఒకవేళ (unlikely (obj_ప్రారంభం < ఇది->ప్రారంభం || ఇది->చివర <= obj_ప్రారంభం))
     {
-      this->start = this->end = nullptr;
-      this->length = 0;
+      ఇది->ప్రారంభం = ఇది->చివర = శూన్యసూచిక;
+      ఇది->నిడివి = 0;
     }
-    else
+    లేకపోతే
     {
-      this->start = obj_start;
-      this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
-      this->length = this->end - this->start;
+      ఇది->ప్రారంభం = obj_ప్రారంభం;
+      ఇది->చివర   = obj_ప్రారంభం + hb_min (size_t (ఇది->చివర - obj_ప్రారంభం), obj->get_కొలత ());
+      ఇది->నిడివి = ఇది->చివర - ఇది->ప్రారంభం;
     }
   }
 
-  void reset_object ()
+  శూన్య reset_object ()
   {
-    if (this->blob)
+    ఒకవేళ (ఇది->blob)
     {
-      this->start = this->blob->data;
-      this->end = this->start + this->blob->length;
+      ఇది->ప్రారంభం = ఇది->blob->దత్తాంశం;
+      ఇది->చివర = ఇది->ప్రారంభం + ఇది->blob->నిడివి;
     }
-    this->length = this->end - this->start;
-    assert (this->start <= this->end); /* Must not overflow. */
+    ఇది->నిడివి = ఇది->చివర - ఇది->ప్రారంభం;
+    ప్రతిజ్ఞా (ఇది->ప్రారంభం <= ఇది->చివర); /* Must not overflow. */
   }
 
-  void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
+  శూన్య ప్రారంభం_processing (స్థిరరాశి అక్షరం *ప్రారంభం_2 = శూన్యసూచిక, స్థిరరాశి అక్షరం *చివర_4 = శూన్యసూచిక)
   {
-    if (start_)
+    ఒకవేళ (ప్రారంభం_2)
     {
-      this->start = start_;
-      this->end = end_;
+      ఇది->ప్రారంభం = ప్రారంభం_2;
+      ఇది->చివర = చివర_4;
     }
     reset_object ();
-    unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
-      this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
-      this->max_ops = hb_clamp (m,
-				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
-				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
-    this->debug_depth = 0;
-    this->recursion_depth = 0;
+    గుర్తులేని m;
+    ఒకవేళ (unlikely (hb_unsigned_mul_overflows (ఇది->చివర - ఇది->ప్రారంభం, HB_SANITIZE_MAX_OPS_గుణకం, &m)))
+      ఇది->max_ops = HB_SANITIZE_MAX_OPS_MAX;
+    లేకపోతే
+      ఇది->max_ops = hb_clamp (m,
+				(గుర్తులేని) HB_SANITIZE_MAX_OPS_MIN,
+				(గుర్తులేని) HB_SANITIZE_MAX_OPS_MAX);
+    ఇది->debug_లోతు = 0;
+    ఇది->recursion_లోతు = 0;
 
-    DEBUG_MSG_LEVEL (SANITIZE, start, 0, +1,
+    DEBUG_సందేశం_LEVEL (SANITIZE, ప్రారంభం, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     ఇది->ప్రారంభం, ఇది->చివర,
+		     (గుర్తులేని దీర్ఘ) (ఇది->చివర - ఇది->ప్రారంభం));
   }
 
-  void end_processing ()
+  శూన్య చివర_processing ()
   {
-    DEBUG_MSG_LEVEL (SANITIZE, this->start, 0, -1,
+    DEBUG_సందేశం_LEVEL (SANITIZE, ఇది->ప్రారంభం, 0, -1,
 		     "end [%p..%p]",
-		     this->start, this->end);
+		     ఇది->ప్రారంభం, ఇది->చివర);
 
-    hb_blob_destroy (this->blob);
-    this->blob = nullptr;
-    this->start = this->end = nullptr;
-    this->length = 0;
+    hb_blob_destroy (ఇది->blob);
+    ఇది->blob = శూన్యసూచిక;
+    ఇది->ప్రారంభం = ఇది->చివర = శూన్యసూచిక;
+    ఇది->నిడివి = 0;
   }
 
-  bool check_ops(unsigned count)
+  తార్కిక check_ops(గుర్తులేని లెక్క)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    ఒకవేళ (unlikely (ఇది->max_ops < 0 || లెక్క >= (గుర్తులేని) ఇది->max_ops))
     {
-      this->max_ops = -1;
-      return false;
+      ఇది->max_ops = -1;
+      తిరిగి అబద్ధం;
     }
-    this->max_ops -= (int) count;
-    return true;
+    ఇది->max_ops -= (పూర్ణాంకం) లెక్క;
+    తిరిగి నిజం;
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  bool check_range (const void *base,
-		    unsigned int len) const
+#అయితే_ముగింపు
+  తార్కిక check_range (స్థిరరాశి శూన్య *పునాది,
+		    గుర్తులేని పూర్ణాంకం len) స్థిరరాశి
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
-	      ((this->max_ops -= len) > 0);
+    స్థిరరాశి అక్షరం *p = (స్థిరరాశి అక్షరం *) పునాది;
+    తార్కిక ok = (uintptr_t) (p - ఇది->ప్రారంభం) <= ఇది->నిడివి &&
+	      (గుర్తులేని పూర్ణాంకం) (ఇది->చివర - p) >= len &&
+	      ((ఇది->max_ops -= len) > 0);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_సందేశం_LEVEL (SANITIZE, p, ఇది->debug_లోతు+1, 0,
 		     "check_range [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     ఇది->ప్రారంభం, ఇది->చివర,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    తిరిగి likely (ok);
   }
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  bool check_range_fast (const void *base,
-			 unsigned int len) const
+#అయితే_ముగింపు
+  తార్కిక check_range_fast (స్థిరరాశి శూన్య *పునాది,
+			 గుర్తులేని పూర్ణాంకం len) స్థిరరాశి
   {
-    const char *p = (const char *) base;
-    bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+    స్థిరరాశి అక్షరం *p = (స్థిరరాశి అక్షరం *) పునాది;
+    తార్కిక ok = ((uintptr_t) (p - ఇది->ప్రారంభం) <= ఇది->నిడివి &&
+	       (గుర్తులేని పూర్ణాంకం) (ఇది->చివర - p) >= len);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_సందేశం_LEVEL (SANITIZE, p, ఇది->debug_లోతు+1, 0,
 		     "check_range_fast [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     ఇది->ప్రారంభం, ఇది->చివర,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    తిరిగి likely (ok);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  bool check_point (const void *base) const
+#అయితే_ముగింపు
+  తార్కిక check_బిందువు (స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length;
+    స్థిరరాశి అక్షరం *p = (స్థిరరాశి అక్షరం *) పునాది;
+    తార్కిక ok = (uintptr_t) (p - ఇది->ప్రారంభం) <= ఇది->నిడివి;
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_సందేశం_LEVEL (SANITIZE, p, ఇది->debug_లోతు+1, 0,
 		     "check_point [%p]"
 		     " in [%p..%p] -> %s",
 		     p,
-		     this->start, this->end,
+		     ఇది->ప్రారంభం, ఇది->చివర,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    తిరిగి likely (ok);
   }
 
-  template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  మూస <రకం_పేరు T>
+  తార్కిక check_range (స్థిరరాశి T *పునాది,
+		    గుర్తులేని పూర్ణాంకం a,
+		    గుర్తులేని పూర్ణాంకం b) స్థిరరాశి
   {
-    unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m);
+    గుర్తులేని m;
+    తిరిగి !hb_unsigned_mul_overflows (a, b, &m) &&
+	   ఇది->check_range (పునాది, m);
   }
 
-  template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+  మూస <రకం_పేరు T>
+  తార్కిక check_range (స్థిరరాశి T *పునాది,
+		    గుర్తులేని పూర్ణాంకం a,
+		    గుర్తులేని పూర్ణాంకం b,
+		    గుర్తులేని పూర్ణాంకం c) స్థిరరాశి
   {
-    unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m, c);
+    గుర్తులేని m;
+    తిరిగి !hb_unsigned_mul_overflows (a, b, &m) &&
+	   ఇది->check_range (పునాది, m, c);
   }
 
-  template <typename T>
+  మూస <రకం_పేరు T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  తార్కిక check_array_sized (స్థిరరాశి T *పునాది, గుర్తులేని పూర్ణాంకం len, గుర్తులేని len_కొలత) స్థిరరాశి
   {
-    if (len_size >= 4)
+    ఒకవేళ (len_కొలత >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      ఒకవేళ (unlikely (hb_unsigned_mul_overflows (len, hb_static_కొలత (T), &len)))
+	తిరిగి అబద్ధం;
     }
-    else
-      len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    లేకపోతే
+      len = len * hb_static_కొలత (T);
+    తిరిగి ఇది->check_range (పునాది, len);
   }
 
-  template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  మూస <రకం_పేరు T>
+  తార్కిక check_array (స్థిరరాశి T *పునాది, గుర్తులేని పూర్ణాంకం len) స్థిరరాశి
   {
-    return this->check_range (base, len, hb_static_size (T));
+    తిరిగి ఇది->check_range (పునాది, len, hb_static_కొలత (T));
   }
 
-  template <typename T>
-  bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  మూస <రకం_పేరు T>
+  తార్కిక check_array (స్థిరరాశి T *పునాది,
+		    గుర్తులేని పూర్ణాంకం a,
+		    గుర్తులేని పూర్ణాంకం b) స్థిరరాశి
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    తిరిగి ఇది->check_range (పునాది, hb_static_కొలత (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  తార్కిక check_ప్రారంభం_recursion (పూర్ణాంకం max_లోతు)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    ఒకవేళ (unlikely (recursion_లోతు >= max_లోతు)) తిరిగి అబద్ధం;
+    తిరిగి ++recursion_లోతు;
   }
 
-  bool end_recursion (bool result)
+  తార్కిక చివర_recursion (తార్కిక ఫలితం)
   {
-    recursion_depth--;
-    return result;
+    recursion_లోతు--;
+    తిరిగి ఫలితం;
   }
 
-  template <typename Type>
-#ifndef HB_OPTIMIZE_SIZE
+  మూస <రకం_పేరు Type>
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  bool check_struct (const Type *obj) const
+#అయితే_ముగింపు
+  తార్కిక check_struct (స్థిరరాశి Type *obj) స్థిరరాశి
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    ఒకవేళ (పరిమాణం (uintptr_t) == పరిమాణం (uint32_t))
+      తిరిగి likely (ఇది->check_range_fast (obj, obj->min_కొలత));
+    లేకపోతే
+      తిరిగి likely (ఇది->check_బిందువు ((స్థిరరాశి అక్షరం *) obj + obj->min_కొలత));
   }
 
-  template <typename Type>
+  మూస <రకం_పేరు Type>
   hb_blob_t *sanitize_blob (hb_blob_t *blob)
   {
-    bool sane;
+    తార్కిక sane;
 
     init (blob);
 
-    DEBUG_MSG_FUNC (SANITIZE, start, "start");
+    DEBUG_సందేశం_FUNC (SANITIZE, ప్రారంభం, "start");
 
-    start_processing ();
+    ప్రారంభం_processing ();
 
-    if (unlikely (!start))
+    ఒకవేళ (unlikely (!ప్రారంభం))
     {
-      end_processing ();
-      return blob;
+      చివర_processing ();
+      తిరిగి blob;
     }
 
-    Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
+    Type *t = reinterpret_cast<Type *> (const_cast<అక్షరం *> (ప్రారంభం));
 
-    sane = t->sanitize (this);
+    sane = t->sanitize (ఇది);
 
-    end_processing ();
+    చివర_processing ();
 
-    DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    DEBUG_సందేశం_FUNC (SANITIZE, ప్రారంభం, sane ? "PASSED" : "FAILED");
+    ఒకవేళ (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      తిరిగి blob;
     }
-    else
+    లేకపోతే
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      తిరిగి hb_blob_get_ఖాళీలు ();
     }
   }
 
-  template <typename Type>
-  hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
+  మూస <రకం_పేరు Type>
+  hb_blob_t *reference_పట్టిక (స్థిరరాశి hb_face_t *face, hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = Type::పట్టిక_ట్యాగ్)
   {
-    if (!num_glyphs_set)
-      set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    ఒకవేళ (!అంకె_glyphs_సమితి)
+      సమితి_అంకె_glyphs (hb_face_get_glyph_లెక్క (face));
+    తిరిగి sanitize_blob<Type> (hb_face_reference_పట్టిక (face, పట్టిక_ట్యాగ్));
   }
 
-  const char *start, *end;
-  unsigned length;
-  mutable int max_ops, max_subtables;
-  private:
-  int recursion_depth;
-  bool writable;
+  స్థిరరాశి అక్షరం *ప్రారంభం, *చివర;
+  గుర్తులేని నిడివి;
+  మార్చదగిన పూర్ణాంకం max_ops, max_subtables;
+  అంతరంగ:
+  పూర్ణాంకం recursion_లోతు;
+  తార్కిక writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
-  bool  num_glyphs_set;
-  public:
-  bool lazy_some_gpos;
+  గుర్తులేని పూర్ణాంకం అంకె_glyphs;
+  తార్కిక  అంకె_glyphs_సమితి;
+  బహిరంగ:
+  తార్కిక lazy_some_gpos;
 };
 
-struct hb_sanitize_with_object_t
+నిర్మాణం hb_sanitize_with_object_t
 {
-  template <typename T>
-  hb_sanitize_with_object_t (hb_sanitize_context_t *c, const T& obj) : c (c)
-  { c->set_object (obj); }
+  మూస <రకం_పేరు T>
+  hb_sanitize_with_object_t (hb_sanitize_context_t *c, స్థిరరాశి T& obj) : c (c)
+  { c->సమితి_object (obj); }
   ~hb_sanitize_with_object_t ()
   { c->reset_object (); }
 
-  private:
+  అంతరంగ:
   hb_sanitize_context_t *c;
 };
 
 
-#endif /* HB_SANITIZE_HH */
+#అయితే_ముగింపు /* HB_SANITIZE_HH */

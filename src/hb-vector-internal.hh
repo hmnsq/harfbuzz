@@ -24,243 +24,243 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_INTERNAL_HH
-#define HB_VECTOR_INTERNAL_HH
+#నిర్వచితం_కాకపోతే HB_సదిశ_అంతర్గత_HH
+#నిర్వచించు HB_సదిశ_అంతర్గత_HH
 
-#include "hb-vector.h"
+#అన్తర్భావ "hb-vector.h"
 
-struct hb_vector_blob_meta_t
+నిర్మాణం hb_సదిశ_blob_meta_t
 {
-  char *data;
-  int allocated;
-  bool transferred;
-  bool in_replace;
+  అక్షరం *దత్తాంశం;
+  పూర్ణాంకం allocated;
+  తార్కిక transferred;
+  తార్కిక లోపల_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+స్థిర hb_user_దత్తాంశం_కీలకం_t hb_సదిశ_blob_meta_user_దత్తాంశం_కీలకం;
 
-static inline void
-hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
-				char *data,
-				int allocated)
+స్థిర అంతఃవరుస శూన్య
+hb_సదిశ_blob_meta_సమితి_బఫరు (hb_సదిశ_blob_meta_t *meta,
+				అక్షరం *దత్తాంశం,
+				పూర్ణాంకం allocated)
 {
-  meta->data = data;
+  meta->దత్తాంశం = దత్తాంశం;
   meta->allocated = allocated;
-  meta->transferred = false;
+  meta->transferred = అబద్ధం;
 }
 
-static inline void
-hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
+స్థిర అంతఃవరుస శూన్య
+hb_సదిశ_blob_meta_release_బఫరు (hb_సదిశ_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
-    hb_free (meta->data);
-  meta->data = nullptr;
+  ఒకవేళ (!meta)
+    తిరిగి;
+  ఒకవేళ (!meta->transferred && meta->దత్తాంశం)
+    hb_free (meta->దత్తాంశం);
+  meta->దత్తాంశం = శూన్యసూచిక;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = నిజం;
 }
 
-static inline void
-hb_vector_blob_meta_destroy (void *data)
+స్థిర అంతఃవరుస శూన్య
+hb_సదిశ_blob_meta_destroy (శూన్య *దత్తాంశం)
 {
-  auto *meta = (hb_vector_blob_meta_t *) data;
-  hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  స్వయంచాలక *meta = (hb_సదిశ_blob_meta_t *) దత్తాంశం;
+  hb_సదిశ_blob_meta_release_బఫరు (meta);
+  ఒకవేళ (meta->లోపల_replace)
   {
-    meta->in_replace = false;
-    return;
+    meta->లోపల_replace = అబద్ధం;
+    తిరిగి;
   }
   hb_free (meta);
 }
 
-static inline hb_blob_t *
+స్థిర అంతఃవరుస hb_blob_t *
 hb_buf_blob_from (hb_blob_t **recycled_blob,
-		  hb_vector_buf_t *buf)
+		  hb_సదిశ_buf_t *buf)
 {
-  unsigned len = 0;
-  int allocated = 0;
-  char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  గుర్తులేని len = 0;
+  పూర్ణాంకం allocated = 0;
+  అక్షరం *దత్తాంశం = buf->steal (&len, &allocated);
+  ఒకవేళ (!దత్తాంశం)
+    తిరిగి శూన్యసూచిక;
 
-  hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  hb_blob_t *blob = శూన్యసూచిక;
+  ఒకవేళ (*recycled_blob)
     blob = *recycled_blob;
-  bool reused_blob = blob && blob != hb_blob_get_empty ();
-  bool new_meta = false;
-  auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
-             : nullptr;
-  if (!meta)
+  తార్కిక reused_blob = blob && blob != hb_blob_get_ఖాళీలు ();
+  తార్కిక new_meta = అబద్ధం;
+  స్వయంచాలక *meta = reused_blob
+             ? (hb_సదిశ_blob_meta_t *) hb_blob_get_user_దత్తాంశం (blob, &hb_సదిశ_blob_meta_user_దత్తాంశం_కీలకం)
+             : శూన్యసూచిక;
+  ఒకవేళ (!meta)
   {
-    meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    meta = (hb_సదిశ_blob_meta_t *) hb_malloc (పరిమాణం (hb_సదిశ_blob_meta_t));
+    ఒకవేళ (!meta)
     {
-      hb_free (data);
-      return nullptr;
+      hb_free (దత్తాంశం);
+      తిరిగి శూన్యసూచిక;
     }
-    meta->data = nullptr;
+    meta->దత్తాంశం = శూన్యసూచిక;
     meta->allocated = 0;
-    meta->transferred = true;
-    meta->in_replace = false;
-    new_meta = true;
+    meta->transferred = నిజం;
+    meta->లోపల_replace = అబద్ధం;
+    new_meta = నిజం;
   }
 
-  if (reused_blob)
+  ఒకవేళ (reused_blob)
   {
-    meta->in_replace = true;
-    blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
+    meta->లోపల_replace = నిజం;
+    blob->replace_బఫరు (దత్తాంశం, len, HB_జ్ఞాపకం_బహుళకం_WRITABLE, meta, hb_సదిశ_blob_meta_destroy);
+    hb_సదిశ_blob_meta_సమితి_బఫరు (meta, దత్తాంశం, allocated);
   }
-  else
+  లేకపోతే
   {
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
-    blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    hb_సదిశ_blob_meta_సమితి_బఫరు (meta, దత్తాంశం, allocated);
+    blob = hb_blob_create_or_fail (దత్తాంశం, len, HB_జ్ఞాపకం_బహుళకం_WRITABLE, meta, hb_సదిశ_blob_meta_destroy);
+    ఒకవేళ (unlikely (!blob))
+      తిరిగి శూన్యసూచిక;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  ఒకవేళ (unlikely (blob == hb_blob_get_ఖాళీలు ()))
   {
-    if (new_meta)
+    ఒకవేళ (new_meta)
       hb_free (meta);
-    hb_free (data);
-    return nullptr;
+    hb_free (దత్తాంశం);
+    తిరిగి శూన్యసూచిక;
   }
 
-  if (new_meta &&
-      !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+  ఒకవేళ (new_meta &&
+      !hb_blob_సమితి_user_దత్తాంశం (blob,
+                              &hb_సదిశ_blob_meta_user_దత్తాంశం_కీలకం,
                               meta,
-                              nullptr,
-                              true))
+                              శూన్యసూచిక,
+                              నిజం))
   {
-    if (!reused_blob)
+    ఒకవేళ (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  if (*recycled_blob)
-    *recycled_blob = nullptr;
+  ఒకవేళ (*recycled_blob)
+    *recycled_blob = శూన్యసూచిక;
 
-  return blob;
+  తిరిగి blob;
 }
 
-static inline void
+స్థిర అంతఃవరుస శూన్య
 hb_buf_recover_recycled (hb_blob_t *blob,
-			 hb_vector_buf_t *buf)
+			 hb_సదిశ_buf_t *buf)
 {
-  if (!blob)
-    return;
+  ఒకవేళ (!blob)
+    తిరిగి;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  స్వయంచాలక *meta = (hb_సదిశ_blob_meta_t *) hb_blob_get_user_దత్తాంశం (blob, &hb_సదిశ_blob_meta_user_దత్తాంశం_కీలకం);
+  ఒకవేళ (!meta || meta->transferred || !meta->దత్తాంశం)
+    తిరిగి;
 
-  buf->recycle_buffer (meta->data, 0, meta->allocated);
-  meta->data = nullptr;
+  buf->recycle_బఫరు (meta->దత్తాంశం, 0, meta->allocated);
+  meta->దత్తాంశం = శూన్యసూచిక;
   meta->allocated = 0;
-  meta->transferred = true;
+  meta->transferred = నిజం;
 }
 
-static inline void
-hb_vector_transform_point (const hb_transform_t<> &t,
-			   float x_scale_factor,
-			   float y_scale_factor,
-			   float x, float y,
-			   float *tx, float *ty)
+స్థిర అంతఃవరుస శూన్య
+hb_సదిశ_transform_బిందువు (స్థిరరాశి hb_transform_t<> &t,
+			   దశాంశం x_scale_గుణకం,
+			   దశాంశం y_scale_గుణకం,
+			   దశాంశం x, దశాంశం y,
+			   దశాంశం *tx, దశాంశం *ty)
 {
-  float xx = x, yy = y;
-  t.transform_point (xx, yy);
+  దశాంశం xx = x, yy = y;
+  t.transform_బిందువు (xx, yy);
   /* Setters force scale factors > 0; trust them here. */
-  *tx = xx / x_scale_factor;
-  *ty = yy / y_scale_factor;
+  *tx = xx / x_scale_గుణకం;
+  *ty = yy / y_scale_గుణకం;
 }
 
-static inline hb_bool_t
-hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
-				    float x_scale_factor,
-				    float y_scale_factor,
-				    const hb_glyph_extents_t *glyph_extents,
-				    hb_vector_extents_t *extents,
+స్థిర అంతఃవరుస hb_bool_t
+hb_సదిశ_సమితి_glyph_extents_common (స్థిరరాశి hb_transform_t<> &transform,
+				    దశాంశం x_scale_గుణకం,
+				    దశాంశం y_scale_గుణకం,
+				    స్థిరరాశి hb_glyph_extents_t *glyph_extents,
+				    hb_సదిశ_extents_t *extents,
 				    hb_bool_t *has_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = x0 + glyph_extents->width;
-  float y1 = y0 + glyph_extents->height;
+  దశాంశం x0 = (దశాంశం) glyph_extents->x_bearing;
+  దశాంశం y0 = (దశాంశం) glyph_extents->y_bearing;
+  దశాంశం x1 = x0 + glyph_extents->వెడల్పు;
+  దశాంశం y1 = y0 + glyph_extents->ఎత్తు;
 
-  float px[4] = {x0, x0, x1, x1};
-  float py[4] = {y0, y1, y0, y1};
+  దశాంశం px[4] = {x0, x0, x1, x1};
+  దశాంశం py[4] = {y0, y1, y0, y1};
 
-  float tx, ty;
-  hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[0], py[0], &tx, &ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  దశాంశం tx, ty;
+  hb_సదిశ_transform_బిందువు (transform, x_scale_గుణకం, y_scale_గుణకం, px[0], py[0], &tx, &ty);
+  దశాంశం tx_min = tx, tx_max = tx;
+  దశాంశం ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  కొరకు (గుర్తులేని i = 1; i < 4; i++)
   {
-    hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
+    hb_సదిశ_transform_బిందువు (transform, x_scale_గుణకం, y_scale_గుణకం, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
     tx_max = hb_max (tx_max, tx);
     ty_min = hb_min (ty_min, ty);
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  ఒకవేళ (tx_max <= tx_min || ty_max <= ty_min)
+    తిరిగి అబద్ధం;
 
-  if (*has_extents)
+  ఒకవేళ (*has_extents)
   {
-    float x0 = hb_min (extents->x, tx_min);
-    float y0 = hb_min (extents->y, ty_min);
-    float x1 = hb_max (extents->x + extents->width, tx_max);
-    float y1 = hb_max (extents->y + extents->height, ty_max);
+    దశాంశం x0 = hb_min (extents->x, tx_min);
+    దశాంశం y0 = hb_min (extents->y, ty_min);
+    దశాంశం x1 = hb_max (extents->x + extents->వెడల్పు, tx_max);
+    దశాంశం y1 = hb_max (extents->y + extents->ఎత్తు, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  లేకపోతే
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
-    *has_extents = true;
+    *has_extents = నిజం;
   }
-  return true;
+  తిరిగి నిజం;
 }
 
-static inline void
-hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
-					 unsigned precision,
-					 float x_scale_factor,
-					 float y_scale_factor,
-					 float xx, float yx,
-					 float xy, float yy,
-					 float tx, float ty)
+స్థిర అంతఃవరుస శూన్య
+hb_సదిశ_svg_append_instance_transform (hb_సదిశ_buf_t *బహిర్గతం,
+					 గుర్తులేని precision,
+					 దశాంశం x_scale_గుణకం,
+					 దశాంశం y_scale_గుణకం,
+					 దశాంశం xx, దశాంశం yx,
+					 దశాంశం xy, దశాంశం yy,
+					 దశాంశం tx, దశాంశం ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  ఒకవేళ (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
-    out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
-    out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
-    out->append_str (") scale(1,-1)");
+    బహిర్గతం->append_str ("translate(");
+    బహిర్గతం->append_అంకె (tx / x_scale_గుణకం, precision);
+    బహిర్గతం->append_c (',');
+    బహిర్గతం->append_అంకె (-ty / y_scale_గుణకం, precision);
+    బహిర్గతం->append_str (") scale(1,-1)");
   }
-  else
+  లేకపోతే
   {
-    unsigned sprec = out->scale_precision ();
-    out->append_str ("matrix(");
-    out->append_num (xx, sprec);
-    out->append_c (',');
-    out->append_num (yx, sprec);
-    out->append_c (',');
-    out->append_num (-xy, sprec);
-    out->append_c (',');
-    out->append_num (-yy, sprec);
-    out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
-    out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
-    out->append_c (')');
+    గుర్తులేని sprec = బహిర్గతం->scale_precision ();
+    బహిర్గతం->append_str ("matrix(");
+    బహిర్గతం->append_అంకె (xx, sprec);
+    బహిర్గతం->append_c (',');
+    బహిర్గతం->append_అంకె (yx, sprec);
+    బహిర్గతం->append_c (',');
+    బహిర్గతం->append_అంకె (-xy, sprec);
+    బహిర్గతం->append_c (',');
+    బహిర్గతం->append_అంకె (-yy, sprec);
+    బహిర్గతం->append_c (',');
+    బహిర్గతం->append_అంకె (tx / x_scale_గుణకం, precision);
+    బహిర్గతం->append_c (',');
+    బహిర్గతం->append_అంకె (-ty / y_scale_గుణకం, precision);
+    బహిర్గతం->append_c (')');
   }
 }
 
-#endif /* HB_VECTOR_INTERNAL_HH */
+#అయితే_ముగింపు /* HB_VECTOR_INTERNAL_HH */

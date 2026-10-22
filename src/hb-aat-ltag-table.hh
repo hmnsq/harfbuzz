@@ -22,74 +22,74 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LTAG_TABLE_HH
-#define HB_AAT_LTAG_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_AAT_LTAG_పట్టిక_HH
+#నిర్వచించు HB_AAT_LTAG_పట్టిక_HH
 
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6ltag.html
  */
-#define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
+#నిర్వచించు HB_AAT_ట్యాగ్_ltag HB_ట్యాగ్('l','t','a','g')
 
 
-namespace AAT {
+నామాకాశ AAT {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
 
-struct FTStringRange
+నిర్మాణం FTStringRange
 {
-  friend struct ltag;
+  మిత్ర నిర్మాణం ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  (base+tag).sanitize (c, length));
+		  (పునాది+ట్యాగ్_2).sanitize (c, నిడివి));
   }
 
-  protected:
-  NNOffset16To<UnsizedArrayOf<HBUINT8>>
-		tag;		/* Offset from the start of the table to
+  రక్షిత:
+  NNOffset16_గమ్యం<Unsized_Array_యొక్క<HBUINT8>>
+		ట్యాగ్_2;		/* Offset from the start of the table to
 				 * the beginning of the string */
-  HBUINT16	length;		/* String length (in bytes) */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  HBUINT16	నిడివి;		/* String length (in bytes) */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct ltag
+నిర్మాణం ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_AAT_ట్యాగ్_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
-				    range.length);
+    స్థిరరాశి FTStringRange &range = ట్యాగ్_Ranges[i];
+    తిరిగి hb_language_from_string ((స్థిరరాశి అక్షరం *) (ఇది+range.ట్యాగ్_2).arrayZ,
+				    range.నిడివి);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  సంస్కరణ >= 1 &&
+			  ట్యాగ్_Ranges.sanitize (c, ఇది)));
   }
 
-  protected:
-  HBUINT32	version;	/* Table version; currently 1 */
+  రక్షిత:
+  HBUINT32	సంస్కరణ;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
-  Array32Of<FTStringRange>
-		tagRanges;	/* Range for each tag's string */
-  public:
-  DEFINE_SIZE_ARRAY (12, tagRanges);
+  Array32_యొక్క<FTStringRange>
+		ట్యాగ్_Ranges;	/* Range for each tag's string */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (12, ట్యాగ్_Ranges);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LTAG_TABLE_HH */
+#అయితే_ముగింపు /* HB_AAT_LTAG_TABLE_HH */

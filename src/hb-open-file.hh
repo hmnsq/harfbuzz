@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OPEN_FILE_HH
-#define HB_OPEN_FILE_HH
+#నిర్వచితం_కాకపోతే HB_OPEN_FILE_HH
+#నిర్వచించు HB_OPEN_FILE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-head-table.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-head-table.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 
 /*
  *
@@ -46,169 +46,169 @@ namespace OT {
  * Organization of an OpenType Font
  */
 
-struct OpenTypeFontFile;
-struct OpenTypeOffsetTable;
-struct TTCHeader;
+నిర్మాణం OpenTypeFontFile;
+నిర్మాణం Open_Type_స్థానభ్రంశం_పట్టిక;
+నిర్మాణం TTCHeader;
 
 
-typedef struct TableRecord
+రకనిర్వచనం నిర్మాణం పట్టిక_రికార్డు
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  పూర్ణాంకం cmp (ట్యాగ్ t) స్థిరరాశి { తిరిగి -t.cmp (ట్యాగ్_2); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
   {
-    const TableRecord *a = (const TableRecord *) pa;
-    const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    స్థిరరాశి పట్టిక_రికార్డు *a = (స్థిరరాశి పట్టిక_రికార్డు *) pa;
+    స్థిరరాశి పట్టిక_రికార్డు *b = (స్థిరరాశి పట్టిక_రికార్డు *) pb;
+    తిరిగి b->cmp (a->ట్యాగ్_2);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  Tag		tag;		/* 4-byte identifier. */
-  CheckSum	checkSum;	/* CheckSum for this table. */
-  Offset32	offset;		/* Offset from beginning of TrueType font
+  ట్యాగ్		ట్యాగ్_2;		/* 4-byte identifier. */
+  Check_కూడిక	check_కూడిక;	/* CheckSum for this table. */
+  Offset32	స్థానభ్రంశం;		/* Offset from beginning of TrueType font
 				 * file. */
-  HBUINT32	length;		/* Length of this table. */
-  public:
-  DEFINE_SIZE_STATIC (16);
-} OpenTypeTable;
+  HBUINT32	నిడివి;		/* Length of this table. */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (16);
+} Open_Type_పట్టిక;
 
-typedef struct OpenTypeOffsetTable
+రకనిర్వచనం నిర్మాణం Open_Type_స్థానభ్రంశం_పట్టిక
 {
-  friend struct OpenTypeFontFile;
+  మిత్ర నిర్మాణం OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
-			       hb_tag_t     *table_tags /* OUT */) const
+  గుర్తులేని పూర్ణాంకం get_పట్టిక_లెక్క () స్థిరరాశి { తిరిగి tables.len; }
+  స్థిరరాశి పట్టిక_రికార్డు& get_పట్టిక (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి tables[i]; }
+  గుర్తులేని పూర్ణాంకం get_పట్టిక_ట్యాగులు (గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+			       గుర్తులేని పూర్ణాంకం *పట్టిక_లెక్క_2, /* IN/OUT */
+			       hb_ట్యాగ్_t     *పట్టిక_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (table_count && table_tags)
+    ఒకవేళ (పట్టిక_లెక్క_2 && పట్టిక_ట్యాగులు)
     {
-      + tables.as_array ().sub_array (start_offset, table_count)
-      | hb_map (&TableRecord::tag)
-      | hb_sink (hb_array (table_tags, *table_count))
+      + tables.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, పట్టిక_లెక్క_2)
+      | hb_map (&పట్టిక_రికార్డు::ట్యాగ్_2)
+      | hb_sink (hb_array (పట్టిక_ట్యాగులు, *పట్టిక_లెక్క_2))
       ;
     }
-    return tables.len;
+    తిరిగి tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  తార్కిక కనుగొను_పట్టిక_సూచీ (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని పూర్ణాంకం *పట్టిక_సూచీ) స్థిరరాశి
   {
-    Tag t;
-    t = tag;
+    ట్యాగ్ t;
+    t = ట్యాగ్_2;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    ఒకవేళ (tables.len < 16)
+      తిరిగి tables.lfind (t, పట్టిక_సూచీ, HB_NOT_దొరికింది_STORE, సూచీ::NOT_దొరికింది_సూచీ);
+    లేకపోతే
+      తిరిగి tables.bfind (t, పట్టిక_సూచీ, HB_NOT_దొరికింది_STORE, సూచీ::NOT_దొరికింది_సూచీ);
   }
-  const TableRecord& get_table_by_tag (hb_tag_t tag) const
+  స్థిరరాశి పట్టిక_రికార్డు& get_పట్టిక_by_ట్యాగ్ (hb_ట్యాగ్_t ట్యాగ్_2) స్థిరరాశి
   {
-    unsigned int table_index;
-    find_table_index (tag, &table_index);
-    return get_table (table_index);
+    గుర్తులేని పూర్ణాంకం పట్టిక_సూచీ;
+    కనుగొను_పట్టిక_సూచీ (ట్యాగ్_2, &పట్టిక_సూచీ);
+    తిరిగి get_పట్టిక (పట్టిక_సూచీ);
   }
 
-  public:
+  బహిరంగ:
 
-  template <typename Iterator,
-	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize (hb_serialize_context_t *c,
-		  hb_tag_t sfnt_tag,
+  మూస <రకం_పేరు Iterator,
+	    hb_requires ((hb_is_ఆధారం_యొక్క<Iterator, hb_pair_t<hb_ట్యాగ్_t, hb_blob_t *>>::value))>
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  hb_ట్యాగ్_t sfnt_ట్యాగ్,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
     /* Write sfntVersion (bytes 0..3). */
-    sfnt_version = sfnt_tag;
+    sfnt_సంస్కరణ = sfnt_ట్యాగ్;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
-    unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    గుర్తులేని అంకె_వస్తువులు = hb_len (it);
+    ఒకవేళ (unlikely (!tables.serialize (c, అంకె_వస్తువులు))) return_trace (అబద్ధం);
 
-    const char *dir_end = (const char *) c->head;
-    HBUINT32 *checksum_adjustment = nullptr;
+    స్థిరరాశి అక్షరం *dir_చివర = (స్థిరరాశి అక్షరం *) c->తల_2;
+    HBUINT32 *checksum_adjustment = శూన్యసూచిక;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
-    unsigned i = 0;
-    for (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
+    గుర్తులేని i = 0;
+    కొరకు (hb_pair_t<hb_ట్యాగ్_t, hb_blob_t*> నమోదు_2 : it)
     {
-      hb_blob_t *blob = entry.second;
-      unsigned len = blob->length;
+      hb_blob_t *blob = నమోదు_2.second;
+      గుర్తులేని len = blob->నిడివి;
 
       /* Allocate room for the table and copy it. */
-      char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      అక్షరం *ప్రారంభం = (అక్షరం *) c->allocate_కొలత<శూన్య> (len, అబద్ధం);
+      ఒకవేళ (unlikely (!ప్రారంభం)) తిరిగి అబద్ధం;
 
-      TableRecord &rec = tables.arrayZ[i];
-      rec.tag = entry.first;
-      rec.length = len;
-      rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
-				      (unsigned) ((char *) start - (char *) this),
-				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
-        return_trace (false);
+      పట్టిక_రికార్డు &rec = tables.arrayZ[i];
+      rec.ట్యాగ్_2 = నమోదు_2.మొదటి;
+      rec.నిడివి = len;
+      rec.స్థానభ్రంశం = 0;
+      ఒకవేళ (unlikely (!c->check_కేటాయించు (rec.స్థానభ్రంశం,
+				      (గుర్తులేని) ((అక్షరం *) ప్రారంభం - (అక్షరం *) ఇది),
+				      HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం)))
+        return_trace (అబద్ధం);
 
-      if (likely (len))
-	hb_memcpy (start, blob->data, len);
+      ఒకవేళ (likely (len))
+	hb_memcpy (ప్రారంభం, blob->దత్తాంశం, len);
 
       /* 4-byte alignment. */
       c->align (4);
-      const char *end = (const char *) c->head;
+      స్థిరరాశి అక్షరం *చివర = (స్థిరరాశి అక్షరం *) c->తల_2;
 
-      if (entry.first == HB_OT_TAG_head &&
-	  (unsigned) (end - start) >= head::static_size)
+      ఒకవేళ (నమోదు_2.మొదటి == HB_OT_ట్యాగ్_తల &&
+	  (గుర్తులేని) (చివర - ప్రారంభం) >= తల_2::static_కొలత)
       {
-	head *h = (head *) start;
-	checksum_adjustment = &h->checkSumAdjustment;
+	తల_2 *h = (తల_2 *) ప్రారంభం;
+	checksum_adjustment = &h->check_కూడిక_Adjustment;
 	*checksum_adjustment = 0;
       }
 
-      rec.checkSum.set_for_data (start, end - start);
+      rec.check_కూడిక.సమితి_for_దత్తాంశం (ప్రారంభం, చివర - ప్రారంభం);
       i++;
     }
 
     tables.qsort ();
 
-    if (checksum_adjustment)
+    ఒకవేళ (checksum_adjustment)
     {
-      CheckSum checksum;
+      Check_కూడిక checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
-      checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      checksum.సమితి_for_దత్తాంశం (ఇది, dir_చివర - (స్థిరరాశి అక్షరం *) ఇది);
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_వస్తువులు; i++)
       {
-	TableRecord &rec = tables.arrayZ[i];
-	checksum = checksum + rec.checkSum;
+	పట్టిక_రికార్డు &rec = tables.arrayZ[i];
+	checksum = checksum + rec.check_కూడిక;
       }
 
       *checksum_adjustment = 0xB1B0AFBAu - checksum;
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && tables.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && tables.sanitize (c));
   }
 
-  protected:
-  Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
-  BinSearchArrayOf<TableRecord>
+  రక్షిత:
+  ట్యాగ్		sfnt_సంస్కరణ;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
+  Bin_శోధన_Array_యొక్క<పట్టిక_రికార్డు>
 		tables;
-  public:
-  DEFINE_SIZE_ARRAY (12, tables);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (12, tables);
 } OpenTypeFontFace;
 
 
@@ -216,100 +216,100 @@ typedef struct OpenTypeOffsetTable
  * TrueType Collections
  */
 
-struct TTCHeaderVersion1
+నిర్మాణం TTCHeaderVersion1
 {
-  friend struct TTCHeader;
+  మిత్ర నిర్మాణం TTCHeader;
 
-  using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
+  ఉపయోగించి DirectoryList = Array32_యొక్క<Offset32_గమ్యం<Open_Type_స్థానభ్రంశం_పట్టిక>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  గుర్తులేని పూర్ణాంకం get_face_లెక్క () స్థిరరాశి { తిరిగి get_directory_list ().len; }
+  స్థిరరాశి OpenTypeFontFace& get_face (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి ఇది+get_directory_list ()[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-#ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    TRACE_SANITIZE (ఇది);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
-	return_trace (false);
-      unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
-	return_trace (false);
-      const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
-								   table.get_size () + extra_size);
-      return_trace (table2.sanitize (c, this));
+      ఒకవేళ (unlikely (!పట్టిక.sanitize_shallow (c)))
+	return_trace (అబద్ధం);
+      గుర్తులేని extra_కొలత = సంస్కరణ.major == 2 ? 12 : 0;
+      ఒకవేళ (unlikely (!c->check_range (&పట్టిక, పట్టిక.get_కొలత () + extra_కొలత)))
+	return_trace (అబద్ధం);
+      స్థిరరాశి DirectoryList &table2 = Struct_At_స్థానభ్రంశం<DirectoryList> (&పట్టిక,
+								   పట్టిక.get_కొలత () + extra_కొలత);
+      return_trace (table2.sanitize (c, ఇది));
     }
-#endif
-    return_trace (table.sanitize (c, this));
+#అయితే_ముగింపు
+    return_trace (పట్టిక.sanitize (c, ఇది));
   }
 
-  private:
-  const DirectoryList& get_directory_list () const
+  అంతరంగ:
+  స్థిరరాశి DirectoryList& get_directory_list () స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.minor >= 1)
     {
-      unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      గుర్తులేని extra_కొలత = సంస్కరణ.major == 2 ? 12 : 0;
+      తిరిగి Struct_At_స్థానభ్రంశం<DirectoryList> (&పట్టిక, పట్టిక.get_కొలత () + extra_కొలత);
     }
-#endif
-    return table;
+#అయితే_ముగింపు
+    తిరిగి పట్టిక;
   }
 
-  protected:
-  Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
-  FixedVersion<>version;	/* Version of the TTC Header. */
+  రక్షిత:
+  ట్యాగ్		ttc_ట్యాగ్;		/* TrueType Collection ID string: 'ttcf' */
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the TTC Header. */
   DirectoryList
-		table;		/* Array of offsets to the OffsetTable for each font
+		పట్టిక;		/* Array of offsets to the OffsetTable for each font
 				 * from the beginning of the file */
-  public:
-  DEFINE_SIZE_ARRAY (12, table);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (12, పట్టిక);
 };
 
-struct TTCHeader
+నిర్మాణం TTCHeader
 {
-  friend struct OpenTypeFontFile;
+  మిత్ర నిర్మాణం OpenTypeFontFile;
 
-  private:
+  అంతరంగ:
 
-  unsigned int get_face_count () const
+  గుర్తులేని పూర్ణాంకం get_face_లెక్క () స్థిరరాశి
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    ఎంపిక (u.శీర్షిక.సంస్కరణ.major) {
+    స్థితి 2: /* version 2 is compatible with version 1 */
+    స్థితి 1: hb_barrier (); తిరిగి u.version1.get_face_లెక్క ();
+    అప్రమేయ:తిరిగి 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  స్థిరరాశి OpenTypeFontFace& get_face (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    ఎంపిక (u.శీర్షిక.సంస్కరణ.major) {
+    స్థితి 2: /* version 2 is compatible with version 1 */
+    స్థితి 1: hb_barrier (); తిరిగి u.version1.get_face (i);
+    అప్రమేయ:తిరిగి Null (OpenTypeFontFace);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!u.శీర్షిక.సంస్కరణ.sanitize (c))) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-    default:return_trace (true);
+    ఎంపిక (u.శీర్షిక.సంస్కరణ.major) {
+    స్థితి 2: /* version 2 is compatible with version 1 */
+    స్థితి 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
-  protected:
-  union {
-  struct {
-  Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
-  FixedVersion<>version;	/* Version of the TTC Header (1.0 or 2.0),
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం {
+  ట్యాగ్		ttc_ట్యాగ్;		/* TrueType Collection ID string: 'ttcf' */
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the TTC Header (1.0 or 2.0),
 				 * 0x00010000u or 0x00020000u */
-  }			header;
+  }			శీర్షిక;
   TTCHeaderVersion1	version1;
   } u;
 };
@@ -320,252 +320,252 @@ struct TTCHeader
  * http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/MoreToolbox/MoreToolbox-99.html
  */
 
-struct ResourceRecord
+నిర్మాణం Resource_రికార్డు
 {
-  const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  స్థిరరాశి OpenTypeFontFace & get_face (స్థిరరాశి శూన్య *దత్తాంశం_పునాది) స్థిరరాశి
+  { తిరిగి * reinterpret_cast<స్థిరరాశి OpenTypeFontFace *> ((దత్తాంశం_పునాది+స్థానభ్రంశం).arrayZ); }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *data_base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి శూన్య *దత్తాంశం_పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  offset.sanitize (c, data_base) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  స్థానభ్రంశం.sanitize (c, దత్తాంశం_పునాది) &&
 		  hb_barrier () &&
-		  get_face (data_base).sanitize (c));
+		  get_face (దత్తాంశం_పునాది).sanitize (c));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	id;		/* Resource ID. */
-  HBINT16	nameOffset;	/* Offset from beginning of resource name list
+  HBINT16	name_స్థానభ్రంశం;	/* Offset from beginning of resource name list
 				 * to resource name, -1 means there is none. */
   HBUINT8	attrs;		/* Resource attributes */
-  NNOffset24To<Array32Of<HBUINT8>>
-		offset;		/* Offset from beginning of data block to
+  NNOffset24_గమ్యం<Array32_యొక్క<HBUINT8>>
+		స్థానభ్రంశం;		/* Offset from beginning of data block to
 				 * data for this resource */
   HBUINT32	reserved;	/* Reserved for handle to resource */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (12);
 };
 
-#define HB_TAG_sfnt HB_TAG ('s','f','n','t')
+#నిర్వచించు HB_ట్యాగ్_sfnt HB_ట్యాగ్ ('s','f','n','t')
 
-struct ResourceTypeRecord
+నిర్మాణం Resource_Type_రికార్డు
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  గుర్తులేని పూర్ణాంకం get_resource_లెక్క () స్థిరరాశి
+  { తిరిగి ట్యాగ్_2 == HB_ట్యాగ్_sfnt ? res_లెక్క_M1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  తార్కిక is_sfnt () స్థిరరాశి { తిరిగి ట్యాగ్_2 == HB_ట్యాగ్_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
-					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  స్థిరరాశి Resource_రికార్డు& get_resource_రికార్డు (గుర్తులేని పూర్ణాంకం i,
+					     స్థిరరాశి శూన్య *type_పునాది) స్థిరరాశి
+  { తిరిగి (type_పునాది+resourcesZ).as_array (get_resource_లెక్క ())[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *type_base,
-		 const void *data_base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి శూన్య *type_పునాది,
+		 స్థిరరాశి శూన్య *దత్తాంశం_పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  resourcesZ.sanitize (c, type_base,
-				       get_resource_count (),
-				       data_base));
+		  resourcesZ.sanitize (c, type_పునాది,
+				       get_resource_లెక్క (),
+				       దత్తాంశం_పునాది));
   }
 
-  protected:
-  Tag		tag;		/* Resource type. */
-  HBUINT16	resCountM1;	/* Number of resources minus 1. */
-  NNOffset16To<UnsizedArrayOf<ResourceRecord>>
+  రక్షిత:
+  ట్యాగ్		ట్యాగ్_2;		/* Resource type. */
+  HBUINT16	res_లెక్క_M1;	/* Number of resources minus 1. */
+  NNOffset16_గమ్యం<Unsized_Array_యొక్క<Resource_రికార్డు>>
 		resourcesZ;	/* Offset from beginning of resource type list
 				 * to reference item list for this type. */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct ResourceMap
+నిర్మాణం ResourceMap
 {
-  unsigned int get_face_count () const
+  గుర్తులేని పూర్ణాంకం get_face_లెక్క () స్థిరరాశి
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = get_type_లెక్క ();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      స్థిరరాశి Resource_Type_రికార్డు& type = get_type_రికార్డు (i);
+      ఒకవేళ (type.is_sfnt ())
+	తిరిగి type.get_resource_లెక్క ();
     }
-    return 0;
+    తిరిగి 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    const void *data_base) const
+  స్థిరరాశి OpenTypeFontFace& get_face (గుర్తులేని పూర్ణాంకం idx,
+				    స్థిరరాశి శూన్య *దత్తాంశం_పునాది) స్థిరరాశి
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = get_type_లెక్క ();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
+      స్థిరరాశి Resource_Type_రికార్డు& type = get_type_రికార్డు (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      ఒకవేళ (type.is_sfnt () && idx < type.get_resource_లెక్క ())
+	తిరిగి type.get_resource_రికార్డు (idx, &(ఇది+typeList)).get_face (దత్తాంశం_పునాది);
     }
-    return Null (OpenTypeFontFace);
+    తిరిగి Null (OpenTypeFontFace);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *దత్తాంశం_పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  typeList.sanitize (c, this,
-				     &(this+typeList),
-				     data_base));
+		  typeList.sanitize (c, ఇది,
+				     &(ఇది+typeList),
+				     దత్తాంశం_పునాది));
   }
 
-  private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  అంతరంగ:
+  గుర్తులేని పూర్ణాంకం get_type_లెక్క () స్థిరరాశి { తిరిగి (ఇది+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  స్థిరరాశి Resource_Type_రికార్డు& get_type_రికార్డు (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి (ఇది+typeList)[i]; }
 
-  protected:
+  రక్షిత:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
   HBUINT32	reserved1;	/* Reserved for handle to next resource map */
   HBUINT16	resreved2;	/* Reserved for file reference number */
   HBUINT16	attrs;		/* Resource fork attribute */
-  NNOffset16To<ArrayOfM1<ResourceTypeRecord>>
+  NNOffset16_గమ్యం<Array_యొక్క_M1<Resource_Type_రికార్డు>>
 		typeList;	/* Offset from beginning of map to
 				 * resource type list */
   Offset16	nameList;	/* Offset from beginning of map to
 				 * resource name list */
-  public:
-  DEFINE_SIZE_STATIC (28);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (28);
 };
 
-struct ResourceForkHeader
+నిర్మాణం Resource_Fork_శీర్షిక
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  గుర్తులేని పూర్ణాంకం get_face_లెక్క () స్థిరరాశి
+  { తిరిగి (ఇది+map).get_face_లెక్క (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  స్థిరరాశి OpenTypeFontFace& get_face (గుర్తులేని పూర్ణాంకం idx,
+				    గుర్తులేని పూర్ణాంకం *పునాది_స్థానభ్రంశం = శూన్యసూచిక) స్థిరరాశి
   {
-    const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
-      *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    స్థిరరాశి OpenTypeFontFace &face = (ఇది+map).get_face (idx, &(ఇది+దత్తాంశం));
+    ఒకవేళ (పునాది_స్థానభ్రంశం)
+      *పునాది_స్థానభ్రంశం = (స్థిరరాశి అక్షరం *) &face - (స్థిరరాశి అక్షరం *) ఇది;
+    తిరిగి face;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  data.sanitize (c, this, dataLen) &&
-		  map.sanitize (c, this, &(this+data)));
+		  దత్తాంశం.sanitize (c, ఇది, దత్తాంశం_Len) &&
+		  map.sanitize (c, ఇది, &(ఇది+దత్తాంశం)));
   }
 
-  protected:
-  NNOffset32To<UnsizedArrayOf<HBUINT8>>
-		data;		/* Offset from beginning of resource fork
+  రక్షిత:
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<HBUINT8>>
+		దత్తాంశం;		/* Offset from beginning of resource fork
 				 * to resource data */
-  NNOffset32To<ResourceMap >
+  NNOffset32_గమ్యం<ResourceMap >
 		map;		/* Offset from beginning of resource fork
 				 * to resource map */
-  HBUINT32	dataLen;	/* Length of resource data */
+  HBUINT32	దత్తాంశం_Len;	/* Length of resource data */
   HBUINT32	mapLen;		/* Length of resource map */
-  public:
-  DEFINE_SIZE_STATIC (16);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (16);
 };
 
 /*
  * OpenType Font File
  */
 
-struct OpenTypeFontFile
+నిర్మాణం OpenTypeFontFile
 {
-  enum {
-    CFFTag		= HB_TAG ('O','T','T','O'), /* OpenType with Postscript outlines */
-    TrueTypeTag		= HB_TAG ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
-    TTCTag		= HB_TAG ('t','t','c','f'), /* TrueType Collection */
-    DFontTag		= HB_TAG ( 0 , 0 , 1 , 0 ), /* DFont Mac Resource Fork */
-    TrueTag		= HB_TAG ('t','r','u','e'), /* Obsolete Apple TrueType */
-    Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
+  గణన {
+    CFFTag		= HB_ట్యాగ్ ('O','T','T','O'), /* OpenType with Postscript outlines */
+    True_Type_ట్యాగ్		= HB_ట్యాగ్ ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
+    TTCTag		= HB_ట్యాగ్ ('t','t','c','f'), /* TrueType Collection */
+    DFont_ట్యాగ్		= HB_ట్యాగ్ ( 0 , 0 , 1 , 0 ), /* DFont Mac Resource Fork */
+    True_ట్యాగ్		= HB_ట్యాగ్ ('t','r','u','e'), /* Obsolete Apple TrueType */
+    Typ1_ట్యాగ్		= HB_ట్యాగ్ ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_ట్యాగ్_t get_ట్యాగ్ () స్థిరరాశి { తిరిగి u.ట్యాగ్_2.v; }
 
-  unsigned int get_face_count () const
+  గుర్తులేని పూర్ణాంకం get_face_లెక్క () స్థిరరాశి
   {
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    ఎంపిక (u.ట్యాగ్_2.v) {
+    స్థితి CFFTag:	/* All the non-collection tags */
+    స్థితి True_ట్యాగ్:
+    స్థితి Typ1_ట్యాగ్:
+    స్థితి True_Type_ట్యాగ్:	తిరిగి 1;
+    స్థితి TTCTag:	hb_barrier (); తిరిగి u.ttc_శీర్షిక.get_face_లెక్క ();
+    స్థితి DFont_ట్యాగ్:	hb_barrier (); తిరిగి u.rf_శీర్షిక.get_face_లెక్క ();
+    అప్రమేయ:		తిరిగి 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  స్థిరరాశి OpenTypeFontFace& get_face (గుర్తులేని పూర్ణాంకం i, గుర్తులేని పూర్ణాంకం *పునాది_స్థానభ్రంశం = శూన్యసూచిక) స్థిరరాశి
   {
-    if (base_offset)
-      *base_offset = 0;
-    switch (u.tag.v) {
+    ఒకవేళ (పునాది_స్థానభ్రంశం)
+      *పునాది_స్థానభ్రంశం = 0;
+    ఎంపిక (u.ట్యాగ్_2.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
      * Apple dfont container is a container of SFNT's.  So each SFNT is a
      * non-TTC, but the index is more than zero. */
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    స్థితి CFFTag:	/* All the non-collection tags */
+    స్థితి True_ట్యాగ్:
+    స్థితి Typ1_ట్యాగ్:
+    స్థితి True_Type_ట్యాగ్:	hb_barrier (); తిరిగి u.fontFace;
+    స్థితి TTCTag:	hb_barrier (); తిరిగి u.ttc_శీర్షిక.get_face (i);
+    స్థితి DFont_ట్యాగ్:	hb_barrier (); తిరిగి u.rf_శీర్షిక.get_face (i, పునాది_స్థానభ్రంశం);
+    అప్రమేయ:		తిరిగి Null (OpenTypeFontFace);
     }
   }
 
-  template <typename Iterator,
-	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize_single (hb_serialize_context_t *c,
-			 hb_tag_t sfnt_tag,
-			 Iterator items)
+  మూస <రకం_పేరు Iterator,
+	    hb_requires ((hb_is_ఆధారం_యొక్క<Iterator, hb_pair_t<hb_ట్యాగ్_t, hb_blob_t *>>::value))>
+  తార్కిక serialize_single (hb_serialize_context_t *c,
+			 hb_ట్యాగ్_t sfnt_ట్యాగ్,
+			 Iterator వస్తువులు)
   {
-    TRACE_SERIALIZE (this);
-    assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    return_trace (u.fontFace.serialize (c, sfnt_tag, items));
+    TRACE_SERIALIZE (ఇది);
+    ప్రతిజ్ఞా (sfnt_ట్యాగ్ != TTCTag);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    return_trace (u.fontFace.serialize (c, sfnt_ట్యాగ్, వస్తువులు));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!u.ట్యాగ్_2.v.sanitize (c))) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
-    case TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
-    case DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
-    default:		return_trace (true);
+    ఎంపిక (u.ట్యాగ్_2.v) {
+    స్థితి CFFTag:	/* All the non-collection tags */
+    స్థితి True_ట్యాగ్:
+    స్థితి Typ1_ట్యాగ్:
+    స్థితి True_Type_ట్యాగ్:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
+    స్థితి TTCTag:	hb_barrier (); return_trace (u.ttc_శీర్షిక.sanitize (c));
+    స్థితి DFont_ట్యాగ్:	hb_barrier (); return_trace (u.rf_శీర్షిక.sanitize (c));
+    అప్రమేయ:		return_trace (నిజం);
     }
   }
 
-  protected:
-  union {
-  struct { Tag v; }	tag;		/* 4-byte identifier. */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { ట్యాగ్ v; }	ట్యాగ్_2;		/* 4-byte identifier. */
   OpenTypeFontFace	fontFace;
-  TTCHeader		ttcHeader;
-  ResourceForkHeader	rfHeader;
+  TTCHeader		ttc_శీర్షిక;
+  Resource_Fork_శీర్షిక	rf_శీర్షిక;
   } u;
-  public:
-  DEFINE_SIZE_UNION (4, tag.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (4, ట్యాగ్_2.v);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OPEN_FILE_HH */
+#అయితే_ముగింపు /* HB_OPEN_FILE_HH */

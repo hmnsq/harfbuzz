@@ -24,18 +24,18 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-vector-paint.hh"
-#include "hb-vector-draw.hh"
-#include "hb-paint.hh"
+#అన్తర్భావ "hb-vector-paint.hh"
+#అన్తర్భావ "hb-vector-draw.hh"
+#అన్తర్భావ "hb-paint.hh"
 
-#include <math.h>
-#include <stdio.h>
+#అన్తర్భావ <math.h>
+#అన్తర్భావ <stdio.h>
 
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif
+#నిర్వచితమైతే HAVE_ZLIB
+#అన్తర్భావ <zlib.h>
+#అయితే_ముగింపు
 
 /* PDF paint backend for COLRv0/v1 color font rendering.
  *
@@ -52,211 +52,211 @@
 
 /* ---- PDF object collector ---- */
 
-struct hb_pdf_obj_t
+నిర్మాణం hb_pdf_obj_t
 {
-  hb_vector_buf_t data;
+  hb_సదిశ_buf_t దత్తాంశం;
 };
 
 /* Collects extra PDF objects (shadings, functions, ExtGState)
  * during painting.  Referenced from the content stream by name
  * (e.g. /SH0, /GS0) and emitted at render time. */
-static bool
-hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
-			    const char *idat_data, unsigned idat_len,
-			    unsigned width, unsigned height,
-			    const uint8_t *trns, unsigned trns_len);
+స్థిర తార్కిక
+hb_pdf_build_సూచీకృత_smask (hb_సదిశ_buf_t *బహిర్గతం,
+			    స్థిరరాశి అక్షరం *idat_దత్తాంశం, గుర్తులేని idat_len,
+			    గుర్తులేని వెడల్పు, గుర్తులేని ఎత్తు,
+			    స్థిరరాశి uint8_t *trns, గుర్తులేని trns_len);
 
-struct hb_pdf_resources_t
+నిర్మాణం hb_pdf_resources_t
 {
-  hb_vector_t<hb_pdf_obj_t> objects;   /* extra objects, starting at id 5 */
-  hb_vector_buf_t extgstate_dict;    /* /GS0 5 0 R /GS1 6 0 R ... */
-  hb_vector_buf_t shading_dict;      /* /SH0 7 0 R ... */
-  hb_vector_buf_t xobject_dict;      /* /Im0 8 0 R ... */
-  unsigned extgstate_count = 0;
-  unsigned shading_count = 0;
-  unsigned xobject_count = 0;
+  hb_సదిశ_t<hb_pdf_obj_t> objects;   /* extra objects, starting at id 5 */
+  hb_సదిశ_buf_t extgstate_dict;    /* /GS0 5 0 R /GS1 6 0 R ... */
+  hb_సదిశ_buf_t shading_dict;      /* /SH0 7 0 R ... */
+  hb_సదిశ_buf_t xobject_dict;      /* /Im0 8 0 R ... */
+  గుర్తులేని extgstate_లెక్క = 0;
+  గుర్తులేని shading_లెక్క = 0;
+  గుర్తులేని xobject_లెక్క = 0;
 
-  unsigned add_object (hb_vector_buf_t &&obj_data)
+  గుర్తులేని కూడు_object (hb_సదిశ_buf_t &&obj_దత్తాంశం)
   {
-    unsigned id = 5 + objects.length; /* objects 1-4 are fixed */
+    గుర్తులేని id = 5 + objects.నిడివి; /* objects 1-4 are fixed */
     hb_pdf_obj_t obj;
-    obj.data = std::move (obj_data);
+    obj.దత్తాంశం = std::move (obj_దత్తాంశం);
     objects.push (std::move (obj));
-    return id;
+    తిరిగి id;
   }
 
   /* Add ExtGState for fill opacity, return resource name index. */
-  unsigned add_extgstate_alpha (float alpha)
+  గుర్తులేని కూడు_extgstate_alpha (దశాంశం alpha)
   {
-    unsigned idx = extgstate_count++;
-    hb_vector_buf_t obj;
+    గుర్తులేని idx = extgstate_లెక్క++;
+    hb_సదిశ_buf_t obj;
     obj.append_str ("<< /Type /ExtGState /ca ");
-    obj.append_num (alpha, 4);
+    obj.append_అంకె (alpha, 4);
     obj.append_str (" >>");
-    unsigned obj_id = add_object (std::move (obj));
+    గుర్తులేని obj_id = కూడు_object (std::move (obj));
 
     extgstate_dict.append_str ("/GS");
     extgstate_dict.append_unsigned (idx);
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (obj_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    తిరిగి idx;
   }
 
   /* Add ExtGState for blend mode, return resource name index. */
-  unsigned add_extgstate_blend (const char *bm)
+  గుర్తులేని కూడు_extgstate_blend (స్థిరరాశి అక్షరం *bm)
   {
-    unsigned idx = extgstate_count++;
-    hb_vector_buf_t obj;
+    గుర్తులేని idx = extgstate_లెక్క++;
+    hb_సదిశ_buf_t obj;
     obj.append_str ("<< /Type /ExtGState /BM /");
     obj.append_str (bm);
     obj.append_str (" >>");
-    unsigned obj_id = add_object (std::move (obj));
+    గుర్తులేని obj_id = కూడు_object (std::move (obj));
 
     extgstate_dict.append_str ("/GS");
     extgstate_dict.append_unsigned (idx);
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (obj_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    తిరిగి idx;
   }
 
   /* Add ExtGState with an SMask (soft mask) referencing a Form XObject
    * that paints a DeviceGray shading.  Returns the ExtGState resource index. */
-  unsigned add_extgstate_smask (unsigned alpha_shading_id,
-				float bbox_x, float bbox_y,
-				float bbox_w, float bbox_h,
-				unsigned precision)
+  గుర్తులేని కూడు_extgstate_smask (గుర్తులేని alpha_shading_id,
+				దశాంశం bbox_x, దశాంశం bbox_y,
+				దశాంశం bbox_w, దశాంశం bbox_h,
+				గుర్తులేని precision)
   {
     /* Form XObject: transparency group painting the alpha shading. */
-    hb_vector_buf_t form_stream;
-    form_stream.append_str ("/SHa sh\n");
+    hb_సదిశ_buf_t form_ప్రవాహం;
+    form_ప్రవాహం.append_str ("/SHa sh\n");
 
-    hb_vector_buf_t form;
+    hb_సదిశ_buf_t form;
     form.append_str ("<< /Type /XObject /Subtype /Form\n");
     form.append_str ("/BBox [");
-    form.append_num (bbox_x, precision);
+    form.append_అంకె (bbox_x, precision);
     form.append_c (' ');
-    form.append_num (bbox_y, precision);
+    form.append_అంకె (bbox_y, precision);
     form.append_c (' ');
-    form.append_num (bbox_x + bbox_w, precision);
+    form.append_అంకె (bbox_x + bbox_w, precision);
     form.append_c (' ');
-    form.append_num (bbox_y + bbox_h, precision);
+    form.append_అంకె (bbox_y + bbox_h, precision);
     form.append_str ("]\n/Group << /S /Transparency /CS /DeviceGray >>\n");
     form.append_str ("/Resources << /Shading << /SHa ");
     form.append_unsigned (alpha_shading_id);
     form.append_str (" 0 R >> >>\n");
     form.append_str ("/Length ");
-    form.append_unsigned (form_stream.length);
+    form.append_unsigned (form_ప్రవాహం.నిడివి);
     form.append_str (" >>\nstream\n");
-    form.append_len (form_stream.arrayZ, form_stream.length);
+    form.append_len (form_ప్రవాహం.arrayZ, form_ప్రవాహం.నిడివి);
     form.append_str ("endstream");
-    unsigned form_id = add_object (std::move (form));
+    గుర్తులేని form_id = కూడు_object (std::move (form));
 
     /* ExtGState with luminosity soft mask. */
-    unsigned idx = extgstate_count++;
-    hb_vector_buf_t gs;
+    గుర్తులేని idx = extgstate_లెక్క++;
+    hb_సదిశ_buf_t gs;
     gs.append_str ("<< /Type /ExtGState\n");
     gs.append_str ("/SMask << /Type /Mask /S /Luminosity /G ");
     gs.append_unsigned (form_id);
     gs.append_str (" 0 R >> >>");
-    unsigned gs_id = add_object (std::move (gs));
+    గుర్తులేని gs_id = కూడు_object (std::move (gs));
 
     extgstate_dict.append_str ("/GS");
     extgstate_dict.append_unsigned (idx);
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (gs_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    తిరిగి idx;
   }
 
   /* Add a shading, return resource name index. */
-  unsigned add_shading (hb_vector_buf_t &&shading_data)
+  గుర్తులేని కూడు_shading (hb_సదిశ_buf_t &&shading_దత్తాంశం)
   {
-    unsigned obj_id = add_object (std::move (shading_data));
-    return add_shading_by_id (obj_id);
+    గుర్తులేని obj_id = కూడు_object (std::move (shading_దత్తాంశం));
+    తిరిగి కూడు_shading_by_id (obj_id);
   }
 
   /* Register an already-allocated object as a shading resource. */
-  unsigned add_shading_by_id (unsigned obj_id)
+  గుర్తులేని కూడు_shading_by_id (గుర్తులేని obj_id)
   {
-    unsigned idx = shading_count++;
+    గుర్తులేని idx = shading_లెక్క++;
     shading_dict.append_str ("/SH");
     shading_dict.append_unsigned (idx);
     shading_dict.append_c (' ');
     shading_dict.append_unsigned (obj_id);
     shading_dict.append_str (" 0 R ");
-    return idx;
+    తిరిగి idx;
   }
 
   /* Add an XObject image, return resource name index.
    * idat_data/idat_len is the concatenated PNG IDAT payload (zlib data).
    * colors is 1 (gray), 3 (RGB), or 4 (RGBA); for indexed, pass colors=1.
    * plte/plte_len is the PLTE chunk data for indexed images (may be null). */
-  unsigned add_xobject_png_image (const char *idat_data, unsigned idat_len,
-				  unsigned width, unsigned height,
-				  unsigned colors, bool has_alpha,
-				  const uint8_t *plte = nullptr,
-				  unsigned plte_len = 0,
-				  const uint8_t *trns = nullptr,
-				  unsigned trns_len = 0)
+  గుర్తులేని కూడు_xobject_png_image (స్థిరరాశి అక్షరం *idat_దత్తాంశం, గుర్తులేని idat_len,
+				  గుర్తులేని వెడల్పు, గుర్తులేని ఎత్తు,
+				  గుర్తులేని colors, తార్కిక has_alpha,
+				  స్థిరరాశి uint8_t *plte = శూన్యసూచిక,
+				  గుర్తులేని plte_len = 0,
+				  స్థిరరాశి uint8_t *trns = శూన్యసూచిక,
+				  గుర్తులేని trns_len = 0)
   {
-    unsigned idx = xobject_count++;
-    hb_vector_buf_t obj;
+    గుర్తులేని idx = xobject_లెక్క++;
+    hb_సదిశ_buf_t obj;
     obj.append_str ("<< /Type /XObject /Subtype /Image\n");
     obj.append_str ("/Width ");
-    obj.append_unsigned (width);
+    obj.append_unsigned (వెడల్పు);
     obj.append_str (" /Height ");
-    obj.append_unsigned (height);
+    obj.append_unsigned (ఎత్తు);
     obj.append_str ("\n/BitsPerComponent 8\n");
 
-    if (plte && plte_len >= 3)
+    ఒకవేళ (plte && plte_len >= 3)
     {
       /* Indexed color: /ColorSpace [/Indexed /DeviceRGB N <hex palette>] */
-      unsigned n_entries = plte_len / 3;
+      గుర్తులేని n_entries = plte_len / 3;
       obj.append_str ("/ColorSpace [/Indexed /DeviceRGB ");
       obj.append_unsigned (n_entries - 1);
       obj.append_str (" <");
-      for (unsigned i = 0; i < n_entries * 3; i++)
+      కొరకు (గుర్తులేని i = 0; i < n_entries * 3; i++)
       {
 	obj.append_c ("0123456789ABCDEF"[plte[i] >> 4]);
 	obj.append_c ("0123456789ABCDEF"[plte[i] & 0xF]);
       }
       obj.append_str (">]\n");
     }
-    else
+    లేకపోతే
     {
       obj.append_str ("/ColorSpace ");
-      unsigned color_channels = has_alpha ? colors - 1 : colors;
+      గుర్తులేని color_channels = has_alpha ? colors - 1 : colors;
       obj.append_str (color_channels == 1 ? "/DeviceGray" : "/DeviceRGB");
       obj.append_c ('\n');
     }
 
     /* Build SMask for indexed images with tRNS transparency. */
-    unsigned smask_id = 0;
-    if (plte && trns && trns_len)
+    గుర్తులేని smask_id = 0;
+    ఒకవేళ (plte && trns && trns_len)
     {
-      hb_vector_buf_t smask_stream;
-      if (hb_pdf_build_indexed_smask (&smask_stream, idat_data, idat_len,
-				      width, height, trns, trns_len))
+      hb_సదిశ_buf_t smask_ప్రవాహం;
+      ఒకవేళ (hb_pdf_build_సూచీకృత_smask (&smask_ప్రవాహం, idat_దత్తాంశం, idat_len,
+				      వెడల్పు, ఎత్తు, trns, trns_len))
       {
-	hb_vector_buf_t smask_obj;
+	hb_సదిశ_buf_t smask_obj;
 	smask_obj.append_str ("<< /Type /XObject /Subtype /Image\n");
 	smask_obj.append_str ("/Width ");
-	smask_obj.append_unsigned (width);
+	smask_obj.append_unsigned (వెడల్పు);
 	smask_obj.append_str (" /Height ");
-	smask_obj.append_unsigned (height);
+	smask_obj.append_unsigned (ఎత్తు);
 	smask_obj.append_str ("\n/ColorSpace /DeviceGray /BitsPerComponent 8\n");
 	smask_obj.append_str ("/Length ");
-	smask_obj.append_unsigned (smask_stream.length);
+	smask_obj.append_unsigned (smask_ప్రవాహం.నిడివి);
 	smask_obj.append_str (" >>\nstream\n");
-	smask_obj.append_len (smask_stream.arrayZ, smask_stream.length);
+	smask_obj.append_len (smask_ప్రవాహం.arrayZ, smask_ప్రవాహం.నిడివి);
 	smask_obj.append_str ("\nendstream");
-	smask_id = add_object (std::move (smask_obj));
+	smask_id = కూడు_object (std::move (smask_obj));
       }
     }
 
-    if (smask_id)
+    ఒకవేళ (smask_id)
     {
       obj.append_str ("/SMask ");
       obj.append_unsigned (smask_id);
@@ -267,59 +267,59 @@ struct hb_pdf_resources_t
     obj.append_str ("/DecodeParms << /Predictor 15 /Colors ");
     obj.append_unsigned (colors);
     obj.append_str (" /BitsPerComponent 8 /Columns ");
-    obj.append_unsigned (width);
+    obj.append_unsigned (వెడల్పు);
     obj.append_str (" >>\n");
     obj.append_str ("/Length ");
     obj.append_unsigned (idat_len);
     obj.append_str (" >>\nstream\n");
-    obj.append_len (idat_data, idat_len);
+    obj.append_len (idat_దత్తాంశం, idat_len);
     obj.append_str ("\nendstream");
 
-    (void) has_alpha;
+    (శూన్య) has_alpha;
 
-    unsigned obj_id = add_object (std::move (obj));
+    గుర్తులేని obj_id = కూడు_object (std::move (obj));
 
     xobject_dict.append_str ("/Im");
     xobject_dict.append_unsigned (idx);
     xobject_dict.append_c (' ');
     xobject_dict.append_unsigned (obj_id);
     xobject_dict.append_str (" 0 R ");
-    return idx;
+    తిరిగి idx;
   }
 };
 
 /* Store resources pointer in the paint struct's defs buffer
  * (repurposed — defs is unused for PDF). */
-static hb_pdf_resources_t *
-hb_pdf_get_resources (hb_vector_paint_t *paint)
+స్థిర hb_pdf_resources_t *
+hb_pdf_get_resources (hb_సదిశ_paint_t *paint)
 {
-  if (!paint->defs.length)
+  ఒకవేళ (!paint->defs.నిడివి)
   {
     /* First call: allocate and store. */
-    auto *res = (hb_pdf_resources_t *) hb_calloc (1, sizeof (hb_pdf_resources_t));
-    if (unlikely (!res)) return nullptr;
-    new (res) hb_pdf_resources_t ();
-    if (unlikely (!paint->defs.resize (sizeof (void *))))
+    స్వయంచాలక *res = (hb_pdf_resources_t *) hb_calloc (1, పరిమాణం (hb_pdf_resources_t));
+    ఒకవేళ (unlikely (!res)) తిరిగి శూన్యసూచిక;
+    కొత్త (res) hb_pdf_resources_t ();
+    ఒకవేళ (unlikely (!paint->defs.resize (పరిమాణం (శూన్య *))))
     {
       res->~hb_pdf_resources_t ();
       hb_free (res);
-      return nullptr;
+      తిరిగి శూన్యసూచిక;
     }
-    memcpy (paint->defs.arrayZ, &res, sizeof (void *));
+    జ్ఞాపకం_నకలు (paint->defs.arrayZ, &res, పరిమాణం (శూన్య *));
   }
   hb_pdf_resources_t *res;
-  memcpy (&res, paint->defs.arrayZ, sizeof (void *));
-  return res;
+  జ్ఞాపకం_నకలు (&res, paint->defs.arrayZ, పరిమాణం (శూన్య *));
+  తిరిగి res;
 }
 
-void
-hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint)
+శూన్య
+hb_సదిశ_paint_pdf_free_resources (hb_సదిశ_paint_t *paint)
 {
-  if (paint->defs.length >= sizeof (void *))
+  ఒకవేళ (paint->defs.నిడివి >= పరిమాణం (శూన్య *))
   {
     hb_pdf_resources_t *res;
-    memcpy (&res, paint->defs.arrayZ, sizeof (void *));
-    if (res)
+    జ్ఞాపకం_నకలు (&res, paint->defs.arrayZ, పరిమాణం (శూన్య *));
+    ఒకవేళ (res)
     {
       res->~hb_pdf_resources_t ();
       hb_free (res);
@@ -333,233 +333,233 @@ hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint)
 
 
 /* Emit a glyph outline as PDF path operators into buf. */
-static void
-hb_pdf_emit_glyph_path (hb_vector_paint_t *paint,
+స్థిర శూన్య
+hb_pdf_emit_glyph_మార్గం (hb_సదిశ_paint_t *paint,
 			 hb_font_t *font,
 			 hb_codepoint_t glyph,
-			 hb_vector_buf_t *buf)
+			 hb_సదిశ_buf_t *buf)
 {
-  paint->path.clear ();
+  paint->మార్గం.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  ఒకవేళ (likely (paint->budget_మిగిలిన >= 0))
   {
-    hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
-				 paint->x_scale_factor, paint->y_scale_factor,
-				 &paint->budget_remaining};
+    hb_సదిశ_మార్గం_sink_t sink = {&paint->మార్గం, paint->get_precision (),
+				 paint->x_scale_గుణకం, paint->y_scale_గుణకం,
+				 &paint->budget_మిగిలిన};
     hb_font_draw_glyph (font, glyph,
-			hb_vector_pdf_path_draw_funcs_get (),
+			hb_సదిశ_pdf_మార్గం_draw_funcs_get (),
 			&sink);
   }
-  buf->append_len (paint->path.arrayZ, paint->path.length);
-  paint->path.clear ();
+  buf->append_len (paint->మార్గం.arrayZ, paint->మార్గం.నిడివి);
+  paint->మార్గం.clear ();
 }
 
 
 /* ---- paint callbacks ---- */
 
-static void
-hb_pdf_paint_push_transform (hb_paint_funcs_t *,
-			     void *paint_data,
-			     float xx, float yx,
-			     float xy, float yy,
-			     float dx, float dy,
-			     void *)
+స్థిర శూన్య
+hb_pdf_paint_నెట్టు_transform (hb_paint_funcs_t *,
+			     శూన్య *paint_దత్తాంశం,
+			     దశాంశం xx, దశాంశం yx,
+			     దశాంశం xy, దశాంశం yy,
+			     దశాంశం dx, దశాంశం dy,
+			     శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
 
-  auto &body = paint->current_body ();
-  unsigned sprec = body.scale_precision ();
+  స్వయంచాలక &body = paint->current_body ();
+  గుర్తులేని sprec = body.scale_precision ();
   body.append_str ("q\n");
-  body.append_num (xx, sprec);
+  body.append_అంకె (xx, sprec);
   body.append_c (' ');
-  body.append_num (yx, sprec);
+  body.append_అంకె (yx, sprec);
   body.append_c (' ');
-  body.append_num (xy, sprec);
+  body.append_అంకె (xy, sprec);
   body.append_c (' ');
-  body.append_num (yy, sprec);
+  body.append_అంకె (yy, sprec);
   body.append_c (' ');
-  body.append_num (paint->sx (dx));
+  body.append_అంకె (paint->sx (dx));
   body.append_c (' ');
-  body.append_num (paint->sy (dy));
+  body.append_అంకె (paint->sy (dy));
   body.append_str (" cm\n");
 }
 
-static void
-hb_pdf_paint_pop_transform (hb_paint_funcs_t *,
-			    void *paint_data,
-			    void *)
+స్థిర శూన్య
+hb_pdf_paint_తీయి_transform (hb_paint_funcs_t *,
+			    శూన్య *paint_దత్తాంశం,
+			    శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
   paint->current_body ().append_str ("Q\n");
 }
 
-static void
+స్థిర శూన్య
 hb_pdf_paint_fill_glyph (hb_paint_funcs_t *,
-			 void *paint_data,
+			 శూన్య *paint_దత్తాంశం,
 			 hb_codepoint_t glyph,
 			 hb_font_t *font,
 			 hb_bool_t,
 			 hb_color_t c,
-			 void *)
+			 శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
 
-  float r = hb_color_get_red (c) / 255.f;
-  float g = hb_color_get_green (c) / 255.f;
-  float b = hb_color_get_blue (c) / 255.f;
-  float a = hb_color_get_alpha (c) / 255.f;
+  దశాంశం r = hb_color_get_red (c) / 255.f;
+  దశాంశం g = hb_color_get_green (c) / 255.f;
+  దశాంశం b = hb_color_get_blue (c) / 255.f;
+  దశాంశం a = hb_color_get_alpha (c) / 255.f;
 
-  if (a < 1.f / 255.f)
-    return;
+  ఒకవేళ (a < 1.f / 255.f)
+    తిరిగి;
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
 
-  bool scoped = false;
+  తార్కిక scoped = అబద్ధం;
   /* Set alpha via ExtGState if needed, scoped so it does not leak
    * into later paints. */
-  if (a < 1.f - 1.f / 512.f)
+  ఒకవేళ (a < 1.f - 1.f / 512.f)
   {
-    auto *res = hb_pdf_get_resources (paint);
-    if (res)
+    స్వయంచాలక *res = hb_pdf_get_resources (paint);
+    ఒకవేళ (res)
     {
-      unsigned gs_idx = res->add_extgstate_alpha (a);
+      గుర్తులేని gs_idx = res->కూడు_extgstate_alpha (a);
       body.append_str ("q\n");
-      scoped = true;
+      scoped = నిజం;
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
     }
   }
 
-  body.append_num (r, 4);
+  body.append_అంకె (r, 4);
   body.append_c (' ');
-  body.append_num (g, 4);
+  body.append_అంకె (g, 4);
   body.append_c (' ');
-  body.append_num (b, 4);
+  body.append_అంకె (b, 4);
   body.append_str (" rg\n");
-  hb_pdf_emit_glyph_path (paint, font, glyph, &body);
+  hb_pdf_emit_glyph_మార్గం (paint, font, glyph, &body);
   body.append_str ("f\n");
-  if (scoped)
+  ఒకవేళ (scoped)
     body.append_str ("Q\n");
 }
 
-static void
-hb_pdf_paint_push_clip_glyph (hb_paint_funcs_t *,
-			      void *paint_data,
+స్థిర శూన్య
+hb_pdf_paint_నెట్టు_clip_glyph (hb_paint_funcs_t *,
+			      శూన్య *paint_దత్తాంశం,
 			      hb_codepoint_t glyph,
 			      hb_font_t *font,
-			      void *)
+			      శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
   body.append_str ("q\n");
-  hb_pdf_emit_glyph_path (paint, font, glyph, &body);
+  hb_pdf_emit_glyph_మార్గం (paint, font, glyph, &body);
   body.append_str ("W n\n");
 }
 
-static void
-hb_pdf_paint_push_clip_rectangle (hb_paint_funcs_t *,
-				  void *paint_data,
-				  float xmin, float ymin,
-				  float xmax, float ymax,
-				  void *)
+స్థిర శూన్య
+hb_pdf_paint_నెట్టు_clip_rectangle (hb_paint_funcs_t *,
+				  శూన్య *paint_దత్తాంశం,
+				  దశాంశం xmin, దశాంశం ymin,
+				  దశాంశం xmax, దశాంశం ymax,
+				  శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
   body.append_str ("q\n");
-  body.append_num (paint->sx (xmin));
+  body.append_అంకె (paint->sx (xmin));
   body.append_c (' ');
-  body.append_num (paint->sy (ymin));
+  body.append_అంకె (paint->sy (ymin));
   body.append_c (' ');
-  body.append_num (paint->sx (xmax - xmin));
+  body.append_అంకె (paint->sx (xmax - xmin));
   body.append_c (' ');
-  body.append_num (paint->sy (ymax - ymin));
+  body.append_అంకె (paint->sy (ymax - ymin));
   body.append_str (" re W n\n");
 }
 
-static hb_draw_funcs_t *
-hb_pdf_paint_push_clip_path_start (hb_paint_funcs_t *,
-				   void *paint_data,
-				   void **draw_data,
-				   void *)
+స్థిర hb_draw_funcs_t *
+hb_pdf_paint_నెట్టు_clip_మార్గం_ప్రారంభం (hb_paint_funcs_t *,
+				   శూన్య *paint_దత్తాంశం,
+				   శూన్య **draw_దత్తాంశం,
+				   శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
   {
-    *draw_data = nullptr;
-    return nullptr;
+    *draw_దత్తాంశం = శూన్యసూచిక;
+    తిరిగి శూన్యసూచిక;
   }
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
   body.append_str ("q\n");
   /* Stream path operators straight into the body; end() seals
    * the path with "W n" to turn it into the clip region.
    * Coordinates arrive in font-scale; the sink divides by
    * scale_factor so they land in output space. */
-  paint->clip_path_sink = {&body, paint->get_precision (),
-			   paint->x_scale_factor,
-			   paint->y_scale_factor,
-			   &paint->budget_remaining};
-  *draw_data = &paint->clip_path_sink;
-  return hb_vector_pdf_path_draw_funcs_get ();
+  paint->clip_మార్గం_sink = {&body, paint->get_precision (),
+			   paint->x_scale_గుణకం,
+			   paint->y_scale_గుణకం,
+			   &paint->budget_మిగిలిన};
+  *draw_దత్తాంశం = &paint->clip_మార్గం_sink;
+  తిరిగి hb_సదిశ_pdf_మార్గం_draw_funcs_get ();
 }
 
-static void
-hb_pdf_paint_push_clip_path_end (hb_paint_funcs_t *,
-				 void *paint_data,
-				 void *)
+స్థిర శూన్య
+hb_pdf_paint_నెట్టు_clip_మార్గం_చివర (hb_paint_funcs_t *,
+				 శూన్య *paint_దత్తాంశం,
+				 శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
   paint->current_body ().append_str ("W n\n");
 }
 
-static void
-hb_pdf_paint_pop_clip (hb_paint_funcs_t *,
-		       void *paint_data,
-		       void *)
+స్థిర శూన్య
+hb_pdf_paint_తీయి_clip (hb_paint_funcs_t *,
+		       శూన్య *paint_దత్తాంశం,
+		       శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
   paint->current_body ().append_str ("Q\n");
 }
 
 /* Paint a solid color, including alpha via ExtGState. */
-static void
-hb_pdf_paint_solid_color (hb_vector_paint_t *paint, hb_color_t c)
+స్థిర శూన్య
+hb_pdf_paint_solid_color (hb_సదిశ_paint_t *paint, hb_color_t c)
 {
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
 
-  float r = hb_color_get_red (c) / 255.f;
-  float g = hb_color_get_green (c) / 255.f;
-  float b = hb_color_get_blue (c) / 255.f;
-  float a = hb_color_get_alpha (c) / 255.f;
+  దశాంశం r = hb_color_get_red (c) / 255.f;
+  దశాంశం g = hb_color_get_green (c) / 255.f;
+  దశాంశం b = hb_color_get_blue (c) / 255.f;
+  దశాంశం a = hb_color_get_alpha (c) / 255.f;
 
-  if (a < 1.f / 255.f)
-    return;
+  ఒకవేళ (a < 1.f / 255.f)
+    తిరిగి;
 
   /* Set alpha via ExtGState if needed. */
-  if (a < 1.f - 1.f / 512.f)
+  ఒకవేళ (a < 1.f - 1.f / 512.f)
   {
-    auto *res = hb_pdf_get_resources (paint);
-    if (res)
+    స్వయంచాలక *res = hb_pdf_get_resources (paint);
+    ఒకవేళ (res)
     {
-      unsigned gs_idx = res->add_extgstate_alpha (a);
+      గుర్తులేని gs_idx = res->కూడు_extgstate_alpha (a);
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -567,124 +567,124 @@ hb_pdf_paint_solid_color (hb_vector_paint_t *paint, hb_color_t c)
   }
 
   /* Set fill color. */
-  body.append_num (r, 4);
+  body.append_అంకె (r, 4);
   body.append_c (' ');
-  body.append_num (g, 4);
+  body.append_అంకె (g, 4);
   body.append_c (' ');
-  body.append_num (b, 4);
+  body.append_అంకె (b, 4);
   body.append_str (" rg\n");
 
   /* Paint a huge rect (will be clipped). */
   body.append_str ("-32767 -32767 65534 65534 re f\n");
 }
 
-static void
+స్థిర శూన్య
 hb_pdf_paint_color (hb_paint_funcs_t *,
-		    void *paint_data,
+		    శూన్య *paint_దత్తాంశం,
 		    hb_bool_t,
 		    hb_color_t color,
-		    void *)
+		    శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
 
   hb_pdf_paint_solid_color (paint, color);
 }
 
 /* Build an uncompressed alpha mask from indexed PNG IDAT data + tRNS.
  * Decompresses IDAT, un-filters PNG rows, maps palette indices to alpha. */
-static bool
-hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
-			    const char *idat_data, unsigned idat_len,
-			    unsigned width, unsigned height,
-			    const uint8_t *trns, unsigned trns_len)
+స్థిర తార్కిక
+hb_pdf_build_సూచీకృత_smask (hb_సదిశ_buf_t *బహిర్గతం,
+			    స్థిరరాశి అక్షరం *idat_దత్తాంశం, గుర్తులేని idat_len,
+			    గుర్తులేని వెడల్పు, గుర్తులేని ఎత్తు,
+			    స్థిరరాశి uint8_t *trns, గుర్తులేని trns_len)
 {
-#ifndef HAVE_ZLIB
-  (void) out; (void) idat_data; (void) idat_len;
-  (void) width; (void) height; (void) trns; (void) trns_len;
-  return false;
-#else
+#నిర్వచితం_కాకపోతే HAVE_ZLIB
+  (శూన్య) బహిర్గతం; (శూన్య) idat_దత్తాంశం; (శూన్య) idat_len;
+  (శూన్య) వెడల్పు; (శూన్య) ఎత్తు; (శూన్య) trns; (శూన్య) trns_len;
+  తిరిగి అబద్ధం;
+#లేకపోతే
   /* Guard the size arithmetic below against 32-bit overflow.  width/height come
    * from the attacker-controlled PNG IHDR; without this, (width + 1) * height or
    * width * height can wrap and under-size buffers that are then indexed per
    * pixel (raw + y * (width + 1), out->arrayZ[y * width + x]). */
-  unsigned raw_len, mask_len;
-  if (!width || !height ||
-      width == 0xFFFFFFFFu ||
-      hb_unsigned_mul_overflows (width + 1, height, &raw_len) ||
-      hb_unsigned_mul_overflows (width, height, &mask_len))
-    return false;
+  గుర్తులేని raw_len, ముసుగు_len;
+  ఒకవేళ (!వెడల్పు || !ఎత్తు ||
+      వెడల్పు == 0xFFFFFFFFu ||
+      hb_unsigned_mul_overflows (వెడల్పు + 1, ఎత్తు, &raw_len) ||
+      hb_unsigned_mul_overflows (వెడల్పు, ఎత్తు, &ముసుగు_len))
+    తిరిగి అబద్ధం;
 
   /* Decompress IDAT (zlib). */
   /* raw_len = (width + 1) * height: 1 filter byte per row + width bytes. */
   uint8_t *raw = (uint8_t *) hb_malloc (raw_len);
-  if (!raw) return false;
+  ఒకవేళ (!raw) తిరిగి అబద్ధం;
   HB_SCOPE_GUARD (hb_free (raw));
 
-  z_stream stream = {};
-  stream.next_in = (Bytef *) idat_data;
-  stream.avail_in = idat_len;
-  stream.next_out = (Bytef *) raw;
-  stream.avail_out = raw_len;
+  z_ప్రవాహం ప్రవాహం = {};
+  ప్రవాహం.తదుపరి_లోపల = (Bytef *) idat_దత్తాంశం;
+  ప్రవాహం.avail_లోపల = idat_len;
+  ప్రవాహం.తదుపరి_బహిర్గతం = (Bytef *) raw;
+  ప్రవాహం.avail_బహిర్గతం = raw_len;
 
-  if (inflateInit (&stream) != Z_OK)
-    return false;
-  int status = inflate (&stream, Z_FINISH);
-  unsigned long total_out = stream.total_out;
-  inflateEnd (&stream);
-  if (status != Z_STREAM_END || total_out != raw_len)
-    return false;
+  ఒకవేళ (inflateInit (&ప్రవాహం) != Z_OK)
+    తిరిగి అబద్ధం;
+  పూర్ణాంకం స్థితి_2 = inflate (&ప్రవాహం, Z_ముగింపు);
+  గుర్తులేని దీర్ఘ మొత్తం_బహిర్గతం = ప్రవాహం.మొత్తం_బహిర్గతం;
+  inflate_చివర (&ప్రవాహం);
+  ఒకవేళ (స్థితి_2 != Z_ప్రవాహం_చివర || మొత్తం_బహిర్గతం != raw_len)
+    తిరిగి అబద్ధం;
 
   /* Un-filter and map to alpha. */
-  if (!out->resize (mask_len))
-    return false;
+  ఒకవేళ (!బహిర్గతం->resize (ముసుగు_len))
+    తిరిగి అబద్ధం;
 
-  uint8_t *unfiltered = (uint8_t *) hb_malloc (width);
-  if (!unfiltered)
-    return false;
+  uint8_t *unfiltered = (uint8_t *) hb_malloc (వెడల్పు);
+  ఒకవేళ (!unfiltered)
+    తిరిగి అబద్ధం;
   HB_SCOPE_GUARD (hb_free (unfiltered));
 
-  uint8_t *prev_unfiltered = (uint8_t *) hb_calloc (width, 1);
-  if (!prev_unfiltered)
-    return false;
+  uint8_t *prev_unfiltered = (uint8_t *) hb_calloc (వెడల్పు, 1);
+  ఒకవేళ (!prev_unfiltered)
+    తిరిగి అబద్ధం;
   HB_SCOPE_GUARD (hb_free (prev_unfiltered));
 
-  for (unsigned y = 0; y < height; y++)
+  కొరకు (గుర్తులేని y = 0; y < ఎత్తు; y++)
   {
-    uint8_t *row = raw + y * (width + 1);
-    uint8_t filter = row[0];
-    uint8_t *pixels = row + 1;
+    uint8_t *అడ్డువరుస = raw + y * (వెడల్పు + 1);
+    uint8_t filter = అడ్డువరుస[0];
+    uint8_t *pixels = అడ్డువరుస + 1;
 
-    for (unsigned x = 0; x < width; x++)
+    కొరకు (గుర్తులేని x = 0; x < వెడల్పు; x++)
     {
       uint8_t a = (x > 0) ? unfiltered[x - 1] : 0;
       uint8_t b = prev_unfiltered[x];
       uint8_t c = (x > 0) ? prev_unfiltered[x - 1] : 0;
       uint8_t val = pixels[x];
 
-      switch (filter)
+      ఎంపిక (filter)
       {
-      case 0: unfiltered[x] = val; break; /* None */
-      case 1: unfiltered[x] = val + a; break; /* Sub */
-      case 2: unfiltered[x] = val + b; break; /* Up */
-      case 3: unfiltered[x] = val + (uint8_t) (((unsigned) a + b) / 2); break; /* Average */
-      case 4: /* Paeth */
+      స్థితి 0: unfiltered[x] = val; ఆపు; /* None */
+      స్థితి 1: unfiltered[x] = val + a; ఆపు; /* Sub */
+      స్థితి 2: unfiltered[x] = val + b; ఆపు; /*పైకి*/
+      స్థితి 3: unfiltered[x] = val + (uint8_t) (((గుర్తులేని) a + b) / 2); ఆపు; /*సరాసరి*/
+      స్థితి 4: /* Paeth */
       {
-	int p = (int) a + (int) b - (int) c;
-	int pa = abs (p - (int) a);
-	int pb = abs (p - (int) b);
-	int pc = abs (p - (int) c);
+	పూర్ణాంకం p = (పూర్ణాంకం) a + (పూర్ణాంకం) b - (పూర్ణాంకం) c;
+	పూర్ణాంకం pa = నిరపేక్ష (p - (పూర్ణాంకం) a);
+	పూర్ణాంకం pb = నిరపేక్ష (p - (పూర్ణాంకం) b);
+	పూర్ణాంకం pc = నిరపేక్ష (p - (పూర్ణాంకం) c);
 	uint8_t pr = (pa <= pb && pa <= pc) ? a : (pb <= pc) ? b : c;
 	unfiltered[x] = val + pr;
-	break;
+	ఆపు;
       }
-      default: unfiltered[x] = val; break;
+      అప్రమేయ: unfiltered[x] = val; ఆపు;
       }
 
       /* Map palette index to alpha. */
       uint8_t idx = unfiltered[x];
-      out->arrayZ[y * width + x] = (idx < trns_len) ? trns[idx] : 0xFF;
+      బహిర్గతం->arrayZ[y * వెడల్పు + x] = (idx < trns_len) ? trns[idx] : 0xFF;
     }
 
     /* Swap buffers. */
@@ -693,310 +693,310 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
     unfiltered = tmp;
   }
 
-  return true;
-#endif
+  తిరిగి నిజం;
+#అయితే_ముగింపు
 }
 
 /* Read a big-endian uint32 from a byte pointer. */
-static inline uint32_t
-hb_pdf_png_u32 (const uint8_t *p)
+స్థిర అంతఃవరుస uint32_t
+hb_pdf_png_u32 (స్థిరరాశి uint8_t *p)
 {
-  return ((uint32_t) p[0] << 24) | ((uint32_t) p[1] << 16) |
+  తిరిగి ((uint32_t) p[0] << 24) | ((uint32_t) p[1] << 16) |
 	 ((uint32_t) p[2] << 8)  | (uint32_t) p[3];
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_pdf_paint_image (hb_paint_funcs_t *,
-		    void *paint_data,
+		    శూన్య *paint_దత్తాంశం,
 		    hb_blob_t *image,
-		    unsigned width,
-		    unsigned height,
-		    hb_tag_t format,
-		    float slant HB_UNUSED,
+		    గుర్తులేని వెడల్పు,
+		    గుర్తులేని ఎత్తు,
+		    hb_ట్యాగ్_t format,
+		    దశాంశం slant HB_వాడని,
 		    hb_glyph_extents_t *extents,
-		    void *)
+		    శూన్య *)
 {
-  if (format != HB_TAG ('p','n','g',' '))
-    return false;
-  if (!extents || !width || !height)
-    return false;
+  ఒకవేళ (format != HB_ట్యాగ్ ('p','n','g',' '))
+    తిరిగి అబద్ధం;
+  ఒకవేళ (!extents || !వెడల్పు || !ఎత్తు)
+    తిరిగి అబద్ధం;
 
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return false;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి అబద్ధం;
+  స్వయంచాలక *res = hb_pdf_get_resources (paint);
+  ఒకవేళ (unlikely (!res))
+    తిరిగి అబద్ధం;
 
-  unsigned len = 0;
-  const uint8_t *data = (const uint8_t *) hb_blob_get_data (image, &len);
-  if (!data || len < 8)
-    return false;
+  గుర్తులేని len = 0;
+  స్థిరరాశి uint8_t *దత్తాంశం = (స్థిరరాశి uint8_t *) hb_blob_get_దత్తాంశం (image, &len);
+  ఒకవేళ (!దత్తాంశం || len < 8)
+    తిరిగి అబద్ధం;
 
   /* Verify PNG signature. */
-  static const uint8_t png_sig[8] = {137, 80, 78, 71, 13, 10, 26, 10};
-  if (hb_memcmp (data, png_sig, 8) != 0)
-    return false;
+  స్థిర స్థిరరాశి uint8_t png_sig[8] = {137, 80, 78, 71, 13, 10, 26, 10};
+  ఒకవేళ (hb_memcmp (దత్తాంశం, png_sig, 8) != 0)
+    తిరిగి అబద్ధం;
 
   /* Parse PNG chunks: extract IHDR and concatenate IDAT payloads. */
-  unsigned png_w = 0, png_h = 0;
-  unsigned colors = 3; /* default RGB */
+  గుర్తులేని png_w = 0, png_h = 0;
+  గుర్తులేని colors = 3; /* default RGB */
   uint8_t color_type = 2;
-  bool has_alpha = false;
-  const uint8_t *plte_data = nullptr;
-  unsigned plte_len = 0;
-  const uint8_t *trns_data = nullptr;
-  unsigned trns_len = 0;
-  hb_vector_buf_t idat;
+  తార్కిక has_alpha = అబద్ధం;
+  స్థిరరాశి uint8_t *plte_దత్తాంశం = శూన్యసూచిక;
+  గుర్తులేని plte_len = 0;
+  స్థిరరాశి uint8_t *trns_దత్తాంశం = శూన్యసూచిక;
+  గుర్తులేని trns_len = 0;
+  hb_సదిశ_buf_t idat;
 
-  unsigned pos = 8;
+  గుర్తులేని pos = 8;
   /* Invariant: pos <= len (len >= 8 checked above).  All bounds checks below
    * are written to avoid 32-bit wrapping: a malicious chunk_len must not be
    * able to wrap pos + 12 + chunk_len past the end of the buffer. */
-  while (len - pos >= 12)
+  అయితే (len - pos >= 12)
   {
-    uint32_t chunk_len = hb_pdf_png_u32 (data + pos);
-    uint32_t chunk_type = hb_pdf_png_u32 (data + pos + 4);
-    if (chunk_len > len - pos - 12)
-      break;
-    const uint8_t *chunk_data = data + pos + 8;
+    uint32_t chunk_len = hb_pdf_png_u32 (దత్తాంశం + pos);
+    uint32_t chunk_type = hb_pdf_png_u32 (దత్తాంశం + pos + 4);
+    ఒకవేళ (chunk_len > len - pos - 12)
+      ఆపు;
+    స్థిరరాశి uint8_t *chunk_దత్తాంశం = దత్తాంశం + pos + 8;
 
-    if (chunk_type == 0x49484452u) /* IHDR */
+    ఒకవేళ (chunk_type == 0x49484452u) /* IHDR */
     {
-      if (chunk_len < 13) return false;
-      png_w = hb_pdf_png_u32 (chunk_data);
-      png_h = hb_pdf_png_u32 (chunk_data + 4);
-      uint8_t bit_depth = chunk_data[8];
-      color_type = chunk_data[9];
-      if (bit_depth != 8) return false; /* only 8-bit supported */
+      ఒకవేళ (chunk_len < 13) తిరిగి అబద్ధం;
+      png_w = hb_pdf_png_u32 (chunk_దత్తాంశం);
+      png_h = hb_pdf_png_u32 (chunk_దత్తాంశం + 4);
+      uint8_t బిట్టు_లోతు_2 = chunk_దత్తాంశం[8];
+      color_type = chunk_దత్తాంశం[9];
+      ఒకవేళ (బిట్టు_లోతు_2 != 8) తిరిగి అబద్ధం; /* only 8-bit supported */
 
-      switch (color_type)
+      ఎంపిక (color_type)
       {
-      case 0: colors = 1; has_alpha = false; break; /* Grayscale */
-      case 2: colors = 3; has_alpha = false; break; /* RGB */
-      case 3: colors = 1; has_alpha = false; break; /* Indexed */
-      case 4: colors = 2; has_alpha = true;  break; /* Gray+Alpha */
-      case 6: colors = 4; has_alpha = true;  break; /* RGBA */
-      default: return false;
+      స్థితి 0: colors = 1; has_alpha = అబద్ధం; ఆపు; /* Grayscale */
+      స్థితి 2: colors = 3; has_alpha = అబద్ధం; ఆపు; /* RGB */
+      స్థితి 3: colors = 1; has_alpha = అబద్ధం; ఆపు; /*సూచీకృత*/
+      స్థితి 4: colors = 2; has_alpha = నిజం;  ఆపు; /* Gray+Alpha */
+      స్థితి 6: colors = 4; has_alpha = నిజం;  ఆపు; /* RGBA */
+      అప్రమేయ: తిరిగి అబద్ధం;
       }
     }
-    else if (chunk_type == 0x504C5445u) /* PLTE */
+    లేకపోతే ఒకవేళ (chunk_type == 0x504C5445u) /* PLTE */
     {
-      plte_data = chunk_data;
+      plte_దత్తాంశం = chunk_దత్తాంశం;
       plte_len = chunk_len;
     }
-    else if (chunk_type == 0x74524E53u) /* tRNS */
+    లేకపోతే ఒకవేళ (chunk_type == 0x74524E53u) /* tRNS */
     {
-      trns_data = chunk_data;
+      trns_దత్తాంశం = chunk_దత్తాంశం;
       trns_len = chunk_len;
     }
-    else if (chunk_type == 0x49444154u) /* IDAT */
+    లేకపోతే ఒకవేళ (chunk_type == 0x49444154u) /* IDAT */
     {
-      idat.append_len ((const char *) chunk_data, chunk_len);
+      idat.append_len ((స్థిరరాశి అక్షరం *) chunk_దత్తాంశం, chunk_len);
     }
-    else if (chunk_type == 0x49454E44u) /* IEND */
-      break;
+    లేకపోతే ఒకవేళ (chunk_type == 0x49454E44u) /* IEND */
+      ఆపు;
 
     pos += 12 + chunk_len;
   }
 
-  if (!png_w || !png_h || !idat.length)
-    return false;
+  ఒకవేళ (!png_w || !png_h || !idat.నిడివి)
+    తిరిగి అబద్ధం;
 
-  unsigned im_idx = res->add_xobject_png_image (idat.arrayZ, idat.length,
+  గుర్తులేని im_idx = res->కూడు_xobject_png_image (idat.arrayZ, idat.నిడివి,
 						 png_w, png_h,
 						 colors, has_alpha,
-						 plte_data, plte_len,
-						 trns_data, trns_len);
+						 plte_దత్తాంశం, plte_len,
+						 trns_దత్తాంశం, trns_len);
 
   /* Emit: save state, set CTM to map image (0,0)-(1,1) to extents, paint. */
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
   body.append_str ("q\n");
 
   /* Image space: (0,0) at bottom-left, (1,1) at top-right.
    * We need to map to extents (x_bearing, y_bearing+height) .. (x_bearing+width, y_bearing).
    * Since font coords are Y-up like PDF, y_bearing is the top. */
-  float ix = (float) extents->x_bearing;
-  float iy = (float) extents->y_bearing + (float) extents->height;
-  float iw = (float) extents->width;
-  float ih = -(float) extents->height; /* negative because image Y goes up but height is negative in extents */
+  దశాంశం ix = (దశాంశం) extents->x_bearing;
+  దశాంశం iy = (దశాంశం) extents->y_bearing + (దశాంశం) extents->ఎత్తు;
+  దశాంశం iw = (దశాంశం) extents->వెడల్పు;
+  దశాంశం ih = -(దశాంశం) extents->ఎత్తు; /* negative because image Y goes up but height is negative in extents */
 
-  body.append_num (paint->sx (iw));
+  body.append_అంకె (paint->sx (iw));
   body.append_str (" 0 0 ");
-  body.append_num (paint->sy (ih));
+  body.append_అంకె (paint->sy (ih));
   body.append_c (' ');
-  body.append_num (paint->sx (ix));
+  body.append_అంకె (paint->sx (ix));
   body.append_c (' ');
-  body.append_num (paint->sy (iy));
+  body.append_అంకె (paint->sy (iy));
   body.append_str (" cm\n");
 
   body.append_str ("/Im");
   body.append_unsigned (im_idx);
   body.append_str (" Do\nQ\n");
 
-  return true;
+  తిరిగి నిజం;
 }
 
 /* ---- Gradient helpers ---- */
 
-static bool
-hb_pdf_gradient_needs_alpha (hb_array_t<const hb_color_stop_t> stops)
+స్థిర తార్కిక
+hb_pdf_gradient_needs_alpha (hb_array_t<స్థిరరాశి hb_color_stop_t> stops)
 {
-  for (const auto &s : stops)
-    if (hb_color_get_alpha (s.color) != 255)
-      return true;
-  return false;
+  కొరకు (స్థిరరాశి స్వయంచాలక &s : stops)
+    ఒకవేళ (hb_color_get_alpha (s.color) != 255)
+      తిరిగి నిజం;
+  తిరిగి అబద్ధం;
 }
 
 /* Build a PDF Type 2 (exponential interpolation) function for
  * a single alpha stop pair (DeviceGray, scalar output). */
-static void
-hb_pdf_build_alpha_interpolation_function (hb_vector_buf_t *obj,
-					   float a0, float a1)
+స్థిర శూన్య
+hb_pdf_build_alpha_interpolation_function (hb_సదిశ_buf_t *obj,
+					   దశాంశం a0, దశాంశం a1)
 {
   obj->append_str ("<< /FunctionType 2 /Domain [0 1] /N 1\n");
   obj->append_str ("/C0 [");
-  obj->append_num (a0, 4);
+  obj->append_అంకె (a0, 4);
   obj->append_str ("]\n/C1 [");
-  obj->append_num (a1, 4);
+  obj->append_అంకె (a1, 4);
   obj->append_str ("] >>");
 }
 
 /* Build a stitching function (Type 3) for the alpha channel of
  * pre-populated paint->color_stops_scratch (already sorted+normalized). */
-static unsigned
+స్థిర గుర్తులేని
 hb_pdf_build_alpha_gradient_function_from_stops (hb_pdf_resources_t *res,
-						 hb_vector_paint_t *paint)
+						 hb_సదిశ_paint_t *paint)
 {
-  unsigned count = paint->color_stops_scratch.length;
+  గుర్తులేని లెక్క = paint->color_stops_scratch.నిడివి;
 
-  if (count < 2)
+  ఒకవేళ (లెక్క < 2)
   {
-    float a = count ? hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f : 1.f;
-    hb_vector_buf_t obj;
+    దశాంశం a = లెక్క ? hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f : 1.f;
+    hb_సదిశ_buf_t obj;
     hb_pdf_build_alpha_interpolation_function (&obj, a, a);
-    return res->add_object (std::move (obj));
+    తిరిగి res->కూడు_object (std::move (obj));
   }
 
-  if (count == 2)
+  ఒకవేళ (లెక్క == 2)
   {
-    hb_vector_buf_t obj;
+    hb_సదిశ_buf_t obj;
     hb_pdf_build_alpha_interpolation_function (&obj,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[1].color) / 255.f);
-    return res->add_object (std::move (obj));
+    తిరిగి res->కూడు_object (std::move (obj));
   }
 
-  hb_vector_t<unsigned> sub_func_ids;
-  for (unsigned i = 0; i + 1 < count; i++)
+  hb_సదిశ_t<గుర్తులేని> sub_func_ids;
+  కొరకు (గుర్తులేని i = 0; i + 1 < లెక్క; i++)
   {
-    hb_vector_buf_t sub;
+    hb_సదిశ_buf_t sub;
     hb_pdf_build_alpha_interpolation_function (&sub,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[i].color) / 255.f,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[i + 1].color) / 255.f);
-    sub_func_ids.push (res->add_object (std::move (sub)));
+    sub_func_ids.push (res->కూడు_object (std::move (sub)));
   }
 
-  hb_vector_buf_t obj;
+  hb_సదిశ_buf_t obj;
   obj.append_str ("<< /FunctionType 3 /Domain [0 1]\n");
   obj.append_str ("/Functions [");
-  for (unsigned i = 0; i < sub_func_ids.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < sub_func_ids.నిడివి; i++)
   {
-    if (i) obj.append_c (' ');
+    ఒకవేళ (i) obj.append_c (' ');
     obj.append_unsigned (sub_func_ids.arrayZ[i]);
     obj.append_str (" 0 R");
   }
   obj.append_str ("]\n/Bounds [");
-  for (unsigned i = 1; i + 1 < count; i++)
+  కొరకు (గుర్తులేని i = 1; i + 1 < లెక్క; i++)
   {
-    if (i > 1) obj.append_c (' ');
-    obj.append_num (paint->color_stops_scratch.arrayZ[i].offset, 4);
+    ఒకవేళ (i > 1) obj.append_c (' ');
+    obj.append_అంకె (paint->color_stops_scratch.arrayZ[i].స్థానభ్రంశం, 4);
   }
   obj.append_str ("]\n/Encode [");
-  for (unsigned i = 0; i + 1 < count; i++)
+  కొరకు (గుర్తులేని i = 0; i + 1 < లెక్క; i++)
   {
-    if (i) obj.append_c (' ');
+    ఒకవేళ (i) obj.append_c (' ');
     obj.append_str ("0 1");
   }
   obj.append_str ("] >>");
-  return res->add_object (std::move (obj));
+  తిరిగి res->కూడు_object (std::move (obj));
 }
 
 /* Build a PDF Type 2 (exponential interpolation) function for
  * a single color stop pair. */
-static void
-hb_pdf_build_interpolation_function (hb_vector_buf_t *obj,
+స్థిర శూన్య
+hb_pdf_build_interpolation_function (hb_సదిశ_buf_t *obj,
 				     hb_color_t c0, hb_color_t c1)
 {
   obj->append_str ("<< /FunctionType 2 /Domain [0 1] /N 1\n");
   obj->append_str ("/C0 [");
-  obj->append_num (hb_color_get_red (c0) / 255.f, 4);
+  obj->append_అంకె (hb_color_get_red (c0) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_green (c0) / 255.f, 4);
+  obj->append_అంకె (hb_color_get_green (c0) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_blue (c0) / 255.f, 4);
+  obj->append_అంకె (hb_color_get_blue (c0) / 255.f, 4);
   obj->append_str ("]\n/C1 [");
-  obj->append_num (hb_color_get_red (c1) / 255.f, 4);
+  obj->append_అంకె (hb_color_get_red (c1) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_green (c1) / 255.f, 4);
+  obj->append_అంకె (hb_color_get_green (c1) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_blue (c1) / 255.f, 4);
+  obj->append_అంకె (hb_color_get_blue (c1) / 255.f, 4);
   obj->append_str ("] >>");
 }
 
 /* Build a stitching function (Type 3) from pre-populated
  * paint->color_stops_scratch (already sorted+normalized). */
-static unsigned
+స్థిర గుర్తులేని
 hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
-					   hb_vector_paint_t *paint)
+					   hb_సదిశ_paint_t *paint)
 {
-  unsigned count = paint->color_stops_scratch.length;
+  గుర్తులేని లెక్క = paint->color_stops_scratch.నిడివి;
 
-  if (count < 2)
+  ఒకవేళ (లెక్క < 2)
   {
     /* Single stop: constant function. */
-    hb_color_t c = count ? paint->color_stops_scratch.arrayZ[0].color
+    hb_color_t c = లెక్క ? paint->color_stops_scratch.arrayZ[0].color
 			 : HB_COLOR (0, 0, 0, 255);
-    hb_vector_buf_t obj;
+    hb_సదిశ_buf_t obj;
     hb_pdf_build_interpolation_function (&obj, c, c);
-    return res->add_object (std::move (obj));
+    తిరిగి res->కూడు_object (std::move (obj));
   }
 
   /* Sort by offset. */
   paint->color_stops_scratch.as_array ().qsort (
-    [] (const hb_color_stop_t &a, const hb_color_stop_t &b)
-    { return (a.offset > b.offset) - (a.offset < b.offset); });
+    [] (స్థిరరాశి hb_color_stop_t &a, స్థిరరాశి hb_color_stop_t &b)
+    { తిరిగి (a.స్థానభ్రంశం > b.స్థానభ్రంశం) - (a.స్థానభ్రంశం < b.స్థానభ్రంశం); });
 
-  if (count == 2)
+  ఒకవేళ (లెక్క == 2)
   {
     /* Two stops: single interpolation function. */
-    hb_vector_buf_t obj;
+    hb_సదిశ_buf_t obj;
     hb_pdf_build_interpolation_function (&obj,
 					  paint->color_stops_scratch.arrayZ[0].color,
 					  paint->color_stops_scratch.arrayZ[1].color);
-    return res->add_object (std::move (obj));
+    తిరిగి res->కూడు_object (std::move (obj));
   }
 
   /* Multiple stops: create sub-functions and stitch. */
-  hb_vector_t<unsigned> sub_func_ids;
-  for (unsigned i = 0; i + 1 < count; i++)
+  hb_సదిశ_t<గుర్తులేని> sub_func_ids;
+  కొరకు (గుర్తులేని i = 0; i + 1 < లెక్క; i++)
   {
-    hb_vector_buf_t sub;
+    hb_సదిశ_buf_t sub;
     hb_pdf_build_interpolation_function (&sub,
 					  paint->color_stops_scratch.arrayZ[i].color,
 					  paint->color_stops_scratch.arrayZ[i + 1].color);
-    sub_func_ids.push (res->add_object (std::move (sub)));
+    sub_func_ids.push (res->కూడు_object (std::move (sub)));
   }
 
   /* Stitching function (Type 3). */
-  hb_vector_buf_t obj;
+  hb_సదిశ_buf_t obj;
   obj.append_str ("<< /FunctionType 3 /Domain [0 1]\n");
 
   /* Functions array. */
   obj.append_str ("/Functions [");
-  for (unsigned i = 0; i < sub_func_ids.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < sub_func_ids.నిడివి; i++)
   {
-    if (i) obj.append_c (' ');
+    ఒకవేళ (i) obj.append_c (' ');
     obj.append_unsigned (sub_func_ids.arrayZ[i]);
     obj.append_str (" 0 R");
   }
@@ -1004,103 +1004,103 @@ hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 
   /* Bounds. */
   obj.append_str ("/Bounds [");
-  for (unsigned i = 1; i + 1 < count; i++)
+  కొరకు (గుర్తులేని i = 1; i + 1 < లెక్క; i++)
   {
-    if (i > 1) obj.append_c (' ');
-    obj.append_num (paint->color_stops_scratch.arrayZ[i].offset, 4);
+    ఒకవేళ (i > 1) obj.append_c (' ');
+    obj.append_అంకె (paint->color_stops_scratch.arrayZ[i].స్థానభ్రంశం, 4);
   }
   obj.append_str ("]\n");
 
   /* Encode array. */
   obj.append_str ("/Encode [");
-  for (unsigned i = 0; i + 1 < count; i++)
+  కొరకు (గుర్తులేని i = 0; i + 1 < లెక్క; i++)
   {
-    if (i) obj.append_c (' ');
+    ఒకవేళ (i) obj.append_c (' ');
     obj.append_str ("0 1");
   }
   obj.append_str ("] >>");
 
-  return res->add_object (std::move (obj));
+  తిరిగి res->కూడు_object (std::move (obj));
 }
 
-static void
-hb_pdf_paint_linear_gradient (hb_paint_funcs_t *,
-			      void *paint_data,
-			      hb_color_line_t *color_line,
-			      float x0, float y0,
-			      float x1, float y1,
-			      float x2 HB_UNUSED, float y2 HB_UNUSED,
-			      void *)
+స్థిర శూన్య
+hb_pdf_paint_రేఖీయ_gradient (hb_paint_funcs_t *,
+			      శూన్య *paint_దత్తాంశం,
+			      hb_color_పంక్తి_t *color_పంక్తి,
+			      దశాంశం x0, దశాంశం y0,
+			      దశాంశం x1, దశాంశం y1,
+			      దశాంశం x2 HB_వాడని, దశాంశం y2 HB_వాడని,
+			      శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
+  స్వయంచాలక *res = hb_pdf_get_resources (paint);
+  ఒకవేళ (unlikely (!res))
+    తిరిగి;
 
   /* Fetch, normalize stops to [0,1], and adjust coordinates. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  ఒకవేళ (!paint->fetch_color_stops (color_పంక్తి))
+    తిరిగి;
+  hb_సదిశ_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
+  దశాంశం mn, mx;
+  hb_paint_normalize_color_పంక్తి (stops.arrayZ, stops.నిడివి, &mn, &mx);
+  దశాంశం gx0 = x0 + mn * (x1 - x0);
+  దశాంశం gy0 = y0 + mn * (y1 - y0);
+  దశాంశం gx1 = x0 + mx * (x1 - x0);
+  దశాంశం gy1 = y0 + mx * (y1 - y0);
 
-  unsigned func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
+  గుర్తులేని func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const char *extend_str = (extend == HB_PAINT_EXTEND_PAD)
+  hb_paint_extend_t extend = hb_color_పంక్తి_get_extend (color_పంక్తి);
+  స్థిరరాశి అక్షరం *extend_str = (extend == HB_PAINT_EXTEND_PAD)
 			    ? "/Extend [true true]\n" : "";
 
   /* Build Type 2 (axial) shading — color only. */
-  hb_vector_buf_t sh;
+  hb_సదిశ_buf_t sh;
   sh.append_str ("<< /ShadingType 2 /ColorSpace /DeviceRGB\n");
   sh.append_str ("/Coords [");
-  sh.append_num (paint->sx (gx0));
+  sh.append_అంకె (paint->sx (gx0));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy0));
+  sh.append_అంకె (paint->sy (gy0));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gx1));
+  sh.append_అంకె (paint->sx (gx1));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy1));
+  sh.append_అంకె (paint->sy (gy1));
   sh.append_str ("]\n/Function ");
   sh.append_unsigned (func_id);
   sh.append_str (" 0 R\n");
   sh.append_str (extend_str);
   sh.append_str (">>");
 
-  unsigned sh_idx = res->add_shading (std::move (sh));
+  గుర్తులేని sh_idx = res->కూడు_shading (std::move (sh));
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
 
-  bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
-  if (needs_alpha)
+  తార్కిక needs_alpha = hb_pdf_gradient_needs_alpha (stops);
+  ఒకవేళ (needs_alpha)
   {
-    unsigned alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
+    గుర్తులేని alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
 
-    hb_vector_buf_t ash;
+    hb_సదిశ_buf_t ash;
     ash.append_str ("<< /ShadingType 2 /ColorSpace /DeviceGray\n");
     ash.append_str ("/Coords [");
-    ash.append_num (paint->sx (gx0));
+    ash.append_అంకె (paint->sx (gx0));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy0));
+    ash.append_అంకె (paint->sy (gy0));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gx1));
+    ash.append_అంకె (paint->sx (gx1));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy1));
+    ash.append_అంకె (paint->sy (gy1));
     ash.append_str ("]\n/Function ");
     ash.append_unsigned (alpha_func_id);
     ash.append_str (" 0 R\n");
     ash.append_str (extend_str);
     ash.append_str (">>");
-    unsigned alpha_sh_id = res->add_object (std::move (ash));
+    గుర్తులేని alpha_sh_id = res->కూడు_object (std::move (ash));
 
-    unsigned gs_idx = res->add_extgstate_smask (alpha_sh_id,
+    గుర్తులేని gs_idx = res->కూడు_extgstate_smask (alpha_sh_id,
 						paint->sx (gx0), paint->sy (gy0),
 						paint->sx (gx1 - gx0), paint->sy (gy1 - gy0),
 						paint->get_precision ());
@@ -1114,97 +1114,97 @@ hb_pdf_paint_linear_gradient (hb_paint_funcs_t *,
   body.append_str (" sh\n");
 }
 
-static void
+స్థిర శూన్య
 hb_pdf_paint_radial_gradient (hb_paint_funcs_t *,
-			      void *paint_data,
-			      hb_color_line_t *color_line,
-			      float x0, float y0, float r0,
-			      float x1, float y1, float r1,
-			      void *)
+			      శూన్య *paint_దత్తాంశం,
+			      hb_color_పంక్తి_t *color_పంక్తి,
+			      దశాంశం x0, దశాంశం y0, దశాంశం r0,
+			      దశాంశం x1, దశాంశం y1, దశాంశం r1,
+			      శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
+  స్వయంచాలక *res = hb_pdf_get_resources (paint);
+  ఒకవేళ (unlikely (!res))
+    తిరిగి;
 
   /* Fetch, normalize stops to [0,1], and adjust coordinates. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  ఒకవేళ (!paint->fetch_color_stops (color_పంక్తి))
+    తిరిగి;
+  hb_సదిశ_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gr0 = r0 + mn * (r1 - r0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
-  float gr1 = r0 + mx * (r1 - r0);
+  దశాంశం mn, mx;
+  hb_paint_normalize_color_పంక్తి (stops.arrayZ, stops.నిడివి, &mn, &mx);
+  దశాంశం gx0 = x0 + mn * (x1 - x0);
+  దశాంశం gy0 = y0 + mn * (y1 - y0);
+  దశాంశం gr0 = r0 + mn * (r1 - r0);
+  దశాంశం gx1 = x0 + mx * (x1 - x0);
+  దశాంశం gy1 = y0 + mx * (y1 - y0);
+  దశాంశం gr1 = r0 + mx * (r1 - r0);
 
-  unsigned func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
+  గుర్తులేని func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const char *extend_str = (extend == HB_PAINT_EXTEND_PAD)
+  hb_paint_extend_t extend = hb_color_పంక్తి_get_extend (color_పంక్తి);
+  స్థిరరాశి అక్షరం *extend_str = (extend == HB_PAINT_EXTEND_PAD)
 			    ? "/Extend [true true]\n" : "";
 
   /* Build Type 3 (radial) shading — color only. */
-  hb_vector_buf_t sh;
+  hb_సదిశ_buf_t sh;
   sh.append_str ("<< /ShadingType 3 /ColorSpace /DeviceRGB\n");
   sh.append_str ("/Coords [");
-  sh.append_num (paint->sx (gx0));
+  sh.append_అంకె (paint->sx (gx0));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy0));
+  sh.append_అంకె (paint->sy (gy0));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gr0));
+  sh.append_అంకె (paint->sx (gr0));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gx1));
+  sh.append_అంకె (paint->sx (gx1));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy1));
+  sh.append_అంకె (paint->sy (gy1));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gr1));
+  sh.append_అంకె (paint->sx (gr1));
   sh.append_str ("]\n/Function ");
   sh.append_unsigned (func_id);
   sh.append_str (" 0 R\n");
   sh.append_str (extend_str);
   sh.append_str (">>");
 
-  unsigned sh_idx = res->add_shading (std::move (sh));
+  గుర్తులేని sh_idx = res->కూడు_shading (std::move (sh));
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
 
-  bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
-  if (needs_alpha)
+  తార్కిక needs_alpha = hb_pdf_gradient_needs_alpha (stops);
+  ఒకవేళ (needs_alpha)
   {
-    unsigned alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
+    గుర్తులేని alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
 
-    hb_vector_buf_t ash;
+    hb_సదిశ_buf_t ash;
     ash.append_str ("<< /ShadingType 3 /ColorSpace /DeviceGray\n");
     ash.append_str ("/Coords [");
-    ash.append_num (paint->sx (gx0));
+    ash.append_అంకె (paint->sx (gx0));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy0));
+    ash.append_అంకె (paint->sy (gy0));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gr0));
+    ash.append_అంకె (paint->sx (gr0));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gx1));
+    ash.append_అంకె (paint->sx (gx1));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy1));
+    ash.append_అంకె (paint->sy (gy1));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gr1));
+    ash.append_అంకె (paint->sx (gr1));
     ash.append_str ("]\n/Function ");
     ash.append_unsigned (alpha_func_id);
     ash.append_str (" 0 R\n");
     ash.append_str (extend_str);
     ash.append_str (">>");
-    unsigned alpha_sh_id = res->add_object (std::move (ash));
+    గుర్తులేని alpha_sh_id = res->కూడు_object (std::move (ash));
 
     /* BBox: enclosing square of the outer circle. */
-    float cx = (gr1 >= gr0) ? gx1 : gx0;
-    float cy = (gr1 >= gr0) ? gy1 : gy0;
-    float rr = hb_max (gr0, gr1);
-    unsigned gs_idx = res->add_extgstate_smask (alpha_sh_id,
+    దశాంశం cx = (gr1 >= gr0) ? gx1 : gx0;
+    దశాంశం cy = (gr1 >= gr0) ? gy1 : gy0;
+    దశాంశం rr = hb_max (gr0, gr1);
+    గుర్తులేని gs_idx = res->కూడు_extgstate_smask (alpha_sh_id,
 						paint->sx (cx - rr), paint->sy (cy - rr),
 						paint->sx (2 * rr), paint->sy (2 * rr),
 						paint->get_precision ());
@@ -1220,47 +1220,47 @@ hb_pdf_paint_radial_gradient (hb_paint_funcs_t *,
 
 
 /* Encode a 16-bit big-endian unsigned value into buf. */
-static void
-hb_pdf_encode_u16 (hb_vector_buf_t *buf, uint16_t v)
+స్థిర శూన్య
+hb_pdf_encode_u16 (hb_సదిశ_buf_t *buf, uint16_t v)
 {
-  char bytes[2] = {(char) (v >> 8), (char) (v & 0xFF)};
-  buf->append_len (bytes, 2);
+  అక్షరం బైట్లు[2] = {(అక్షరం) (v >> 8), (అక్షరం) (v & 0xFF)};
+  buf->append_len (బైట్లు, 2);
 }
 
 /* Encode a coordinate as 16-bit value relative to Decode range. */
-static void
-hb_pdf_encode_coord (hb_vector_buf_t *buf,
-		     float val, float lo, float hi)
+స్థిర శూన్య
+hb_pdf_encode_coord (hb_సదిశ_buf_t *buf,
+		     దశాంశం val, దశాంశం lo, దశాంశం hi)
 {
-  float t = (val - lo) / (hi - lo);
+  దశాంశం t = (val - lo) / (hi - lo);
   t = hb_clamp (t, 0.f, 1.f);
   hb_pdf_encode_u16 (buf, (uint16_t) (t * 65535.f + 0.5f));
 }
 
 /* Encode RGB from hb_color_t as 3 bytes. */
-static void
-hb_pdf_encode_color_rgb (hb_vector_buf_t *buf, hb_color_t c)
+స్థిర శూన్య
+hb_pdf_encode_color_rgb (hb_సదిశ_buf_t *buf, hb_color_t c)
 {
-  char rgb[3] = {(char) hb_color_get_red (c),
-		 (char) hb_color_get_green (c),
-		 (char) hb_color_get_blue (c)};
+  అక్షరం rgb[3] = {(అక్షరం) hb_color_get_red (c),
+		 (అక్షరం) hb_color_get_green (c),
+		 (అక్షరం) hb_color_get_blue (c)};
   buf->append_len (rgb, 3);
 }
 
 /* Encode alpha from hb_color_t as 1 byte (gray). */
-static void
-hb_pdf_encode_color_alpha (hb_vector_buf_t *buf, hb_color_t c)
+స్థిర శూన్య
+hb_pdf_encode_color_alpha (hb_సదిశ_buf_t *buf, hb_color_t c)
 {
-  char a = (char) hb_color_get_alpha (c);
+  అక్షరం a = (అక్షరం) hb_color_get_alpha (c);
   buf->append_len (&a, 1);
 }
 
 /* Encode one Coons patch control point. */
-static void
-hb_pdf_encode_point (hb_vector_buf_t *buf,
-		     float x, float y,
-		     float xlo, float xhi,
-		     float ylo, float yhi)
+స్థిర శూన్య
+hb_pdf_encode_బిందువు (hb_సదిశ_buf_t *buf,
+		     దశాంశం x, దశాంశం y,
+		     దశాంశం xlo, దశాంశం xhi,
+		     దశాంశం ylo, దశాంశం yhi)
 {
   hb_pdf_encode_coord (buf, x, xlo, xhi);
   hb_pdf_encode_coord (buf, y, ylo, yhi);
@@ -1270,101 +1270,101 @@ hb_pdf_encode_point (hb_vector_buf_t *buf,
  * Splits large arcs into sub-patches of max 90°.
  * If alpha_mesh is non-null, emits a parallel DeviceGray
  * patch with the alpha channel. */
-static void
-hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
-			hb_vector_buf_t *alpha_mesh,
-			float cx, float cy,
-			float xlo, float xhi, float ylo, float yhi,
-			float a0, hb_color_t c0_in,
-			float a1, hb_color_t c1_in)
+స్థిర శూన్య
+hb_pdf_కూడు_sweep_patch (hb_సదిశ_buf_t *mesh,
+			hb_సదిశ_buf_t *alpha_mesh,
+			దశాంశం cx, దశాంశం cy,
+			దశాంశం xlo, దశాంశం xhi, దశాంశం ylo, దశాంశం yhi,
+			దశాంశం a0, hb_color_t c0_లోపల,
+			దశాంశం a1, hb_color_t c1_లోపల)
 {
-  const float R = 32767.f;
-  const float eps = 0.5f;
-  const float MAX_SECTOR = (float) M_PI / 2.f;
+  స్థిరరాశి దశాంశం R = 32767.f;
+  స్థిరరాశి దశాంశం eps = 0.5f;
+  స్థిరరాశి దశాంశం MAX_SECTOR = (దశాంశం) M_PI / 2.f;
 
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / MAX_SECTOR);
-  if (num_splits < 1) num_splits = 1;
+  పూర్ణాంకం అంకె_splits = (పూర్ణాంకం) ceilf (fabsf (a1 - a0) / MAX_SECTOR);
+  ఒకవేళ (అంకె_splits < 1) అంకె_splits = 1;
 
-  for (int s = 0; s < num_splits; s++)
+  కొరకు (పూర్ణాంకం s = 0; s < అంకె_splits; s++)
   {
-    float k0 = (float) s / num_splits;
-    float k1 = (float) (s + 1) / num_splits;
-    float sa0 = a0 + k0 * (a1 - a0);
-    float sa1 = a0 + k1 * (a1 - a0);
-    hb_color_t sc0 = hb_color_lerp (c0_in, c1_in, k0);
-    hb_color_t sc1 = hb_color_lerp (c0_in, c1_in, k1);
+    దశాంశం k0 = (దశాంశం) s / అంకె_splits;
+    దశాంశం k1 = (దశాంశం) (s + 1) / అంకె_splits;
+    దశాంశం sa0 = a0 + k0 * (a1 - a0);
+    దశాంశం sa1 = a0 + k1 * (a1 - a0);
+    hb_color_t sc0 = hb_color_lerp (c0_లోపల, c1_లోపల, k0);
+    hb_color_t sc1 = hb_color_lerp (c0_లోపల, c1_లోపల, k1);
 
-    float da = sa1 - sa0;
-    float kappa = (4.f / 3.f) * tanf (da / 4.f);
+    దశాంశం da = sa1 - sa0;
+    దశాంశం kappa = (4.f / 3.f) * tanf (da / 4.f);
 
-    float cos0 = cosf (sa0), sin0 = sinf (sa0);
-    float cos1 = cosf (sa1), sin1 = sinf (sa1);
+    దశాంశం cos0 = cosf (sa0), sin0 = sinf (sa0);
+    దశాంశం cos1 = cosf (sa1), sin1 = sinf (sa1);
 
-    float p0x = cx + eps * cos0, p0y = cy + eps * sin0;
-    float p3x = cx + R * cos0,   p3y = cy + R * sin0;
-    float p6x = cx + R * cos1,   p6y = cy + R * sin1;
-    float p9x = cx + eps * cos1, p9y = cy + eps * sin1;
+    దశాంశం p0x = cx + eps * cos0, p0y = cy + eps * sin0;
+    దశాంశం p3x = cx + R * cos0,   p3y = cy + R * sin0;
+    దశాంశం p6x = cx + R * cos1,   p6y = cy + R * sin1;
+    దశాంశం p9x = cx + eps * cos1, p9y = cy + eps * sin1;
 
     /* Edge 1: p0→p3, radial straight line. */
-    float e1_1x = p0x + (p3x - p0x) / 3.f;
-    float e1_1y = p0y + (p3y - p0y) / 3.f;
-    float e1_2x = p0x + 2.f * (p3x - p0x) / 3.f;
-    float e1_2y = p0y + 2.f * (p3y - p0y) / 3.f;
+    దశాంశం e1_1x = p0x + (p3x - p0x) / 3.f;
+    దశాంశం e1_1y = p0y + (p3y - p0y) / 3.f;
+    దశాంశం e1_2x = p0x + 2.f * (p3x - p0x) / 3.f;
+    దశాంశం e1_2y = p0y + 2.f * (p3y - p0y) / 3.f;
 
     /* Edge 2: p3→p6, outer arc. */
-    float e2_1x = p3x + kappa * R * (-sin0);
-    float e2_1y = p3y + kappa * R * ( cos0);
-    float e2_2x = p6x - kappa * R * (-sin1);
-    float e2_2y = p6y - kappa * R * ( cos1);
+    దశాంశం e2_1x = p3x + kappa * R * (-sin0);
+    దశాంశం e2_1y = p3y + kappa * R * ( cos0);
+    దశాంశం e2_2x = p6x - kappa * R * (-sin1);
+    దశాంశం e2_2y = p6y - kappa * R * ( cos1);
 
     /* Edge 3: p6→p9, radial straight line. */
-    float e3_1x = p6x + (p9x - p6x) / 3.f;
-    float e3_1y = p6y + (p9y - p6y) / 3.f;
-    float e3_2x = p6x + 2.f * (p9x - p6x) / 3.f;
-    float e3_2y = p6y + 2.f * (p9y - p6y) / 3.f;
+    దశాంశం e3_1x = p6x + (p9x - p6x) / 3.f;
+    దశాంశం e3_1y = p6y + (p9y - p6y) / 3.f;
+    దశాంశం e3_2x = p6x + 2.f * (p9x - p6x) / 3.f;
+    దశాంశం e3_2y = p6y + 2.f * (p9y - p6y) / 3.f;
 
     /* Edge 4: p9→p0, inner arc. */
-    float e4_1x = p9x + kappa * eps * (-sin1);
-    float e4_1y = p9y + kappa * eps * ( cos1);
-    float e4_2x = p0x - kappa * eps * (-sin0);
-    float e4_2y = p0y - kappa * eps * ( cos0);
+    దశాంశం e4_1x = p9x + kappa * eps * (-sin1);
+    దశాంశం e4_1y = p9y + kappa * eps * ( cos1);
+    దశాంశం e4_2x = p0x - kappa * eps * (-sin0);
+    దశాంశం e4_2y = p0y - kappa * eps * ( cos0);
 
     mesh->append_c ('\0'); /* flag = 0, new patch */
 
-    hb_pdf_encode_point (mesh, p0x, p0y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e1_1x, e1_1y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e1_2x, e1_2y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, p3x, p3y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e2_1x, e2_1y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e2_2x, e2_2y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, p6x, p6y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e3_1x, e3_1y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e3_2x, e3_2y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, p9x, p9y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e4_1x, e4_1y, xlo, xhi, ylo, yhi);
-    hb_pdf_encode_point (mesh, e4_2x, e4_2y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, p0x, p0y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e1_1x, e1_1y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e1_2x, e1_2y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, p3x, p3y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e2_1x, e2_1y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e2_2x, e2_2y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, p6x, p6y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e3_1x, e3_1y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e3_2x, e3_2y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, p9x, p9y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e4_1x, e4_1y, xlo, xhi, ylo, yhi);
+    hb_pdf_encode_బిందువు (mesh, e4_2x, e4_2y, xlo, xhi, ylo, yhi);
 
     hb_pdf_encode_color_rgb (mesh, sc0); /* inner start */
     hb_pdf_encode_color_rgb (mesh, sc0); /* outer start */
     hb_pdf_encode_color_rgb (mesh, sc1); /* outer end */
     hb_pdf_encode_color_rgb (mesh, sc1); /* inner end */
 
-    if (alpha_mesh)
+    ఒకవేళ (alpha_mesh)
     {
       alpha_mesh->append_c ('\0');
 
-      hb_pdf_encode_point (alpha_mesh, p0x, p0y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e1_1x, e1_1y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e1_2x, e1_2y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, p3x, p3y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e2_1x, e2_1y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e2_2x, e2_2y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, p6x, p6y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e3_1x, e3_1y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e3_2x, e3_2y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, p9x, p9y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e4_1x, e4_1y, xlo, xhi, ylo, yhi);
-      hb_pdf_encode_point (alpha_mesh, e4_2x, e4_2y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, p0x, p0y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e1_1x, e1_1y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e1_2x, e1_2y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, p3x, p3y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e2_1x, e2_1y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e2_2x, e2_2y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, p6x, p6y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e3_1x, e3_1y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e3_2x, e3_2y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, p9x, p9y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e4_1x, e4_1y, xlo, xhi, ylo, yhi);
+      hb_pdf_encode_బిందువు (alpha_mesh, e4_2x, e4_2y, xlo, xhi, ylo, yhi);
 
       hb_pdf_encode_color_alpha (alpha_mesh, sc0);
       hb_pdf_encode_color_alpha (alpha_mesh, sc0);
@@ -1375,115 +1375,115 @@ hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
 }
 
 /* Callback context + trampoline for hb_paint_sweep_gradient_tiles. */
-struct hb_pdf_sweep_ctx_t {
-  hb_vector_buf_t *mesh;
-  hb_vector_buf_t *alpha_mesh;
-  float cx, cy, xlo, xhi, ylo, yhi;
+నిర్మాణం hb_pdf_sweep_ctx_t {
+  hb_సదిశ_buf_t *mesh;
+  hb_సదిశ_buf_t *alpha_mesh;
+  దశాంశం cx, cy, xlo, xhi, ylo, yhi;
 };
 
-static void
-hb_pdf_sweep_emit_patch (float a0, hb_color_t c0,
-			 float a1, hb_color_t c1,
-			 void *user_data)
+స్థిర శూన్య
+hb_pdf_sweep_emit_patch (దశాంశం a0, hb_color_t c0,
+			 దశాంశం a1, hb_color_t c1,
+			 శూన్య *user_దత్తాంశం)
 {
-  auto *ctx = (hb_pdf_sweep_ctx_t *) user_data;
+  స్వయంచాలక *ctx = (hb_pdf_sweep_ctx_t *) user_దత్తాంశం;
   /* Sweep-gradient meshes are not outline-derived, so they are bounded by
    * the output document-size cap, not the outline work budget: stop once a
    * mesh buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->mesh->in_error () ||
-		(ctx->alpha_mesh && ctx->alpha_mesh->in_error ())))
-    return;
-  hb_pdf_add_sweep_patch (ctx->mesh, ctx->alpha_mesh,
+  ఒకవేళ (unlikely (ctx->mesh->లోపల_error () ||
+		(ctx->alpha_mesh && ctx->alpha_mesh->లోపల_error ())))
+    తిరిగి;
+  hb_pdf_కూడు_sweep_patch (ctx->mesh, ctx->alpha_mesh,
 			  ctx->cx, ctx->cy,
 			  ctx->xlo, ctx->xhi, ctx->ylo, ctx->yhi,
 			  a0, c0, a1, c1);
 }
 
-static void
+స్థిర శూన్య
 hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
-			     void *paint_data,
-			     hb_color_line_t *color_line,
-			     float cx, float cy,
-			     float start_angle,
-			     float end_angle,
-			     void *)
+			     శూన్య *paint_దత్తాంశం,
+			     hb_color_పంక్తి_t *color_పంక్తి,
+			     దశాంశం cx, దశాంశం cy,
+			     దశాంశం ప్రారంభం_angle,
+			     దశాంశం చివర_angle,
+			     శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
+  స్వయంచాలక *res = hb_pdf_get_resources (paint);
+  ఒకవేళ (unlikely (!res))
+    తిరిగి;
 
   /* Get and sort color stops. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  ఒకవేళ (!paint->fetch_color_stops (color_పంక్తి))
+    తిరిగి;
+  hb_సదిశ_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
   stops.as_array ().qsort (
-    [] (const hb_color_stop_t &a, const hb_color_stop_t &b)
-    { return (a.offset > b.offset) - (a.offset < b.offset); });
+    [] (స్థిరరాశి hb_color_stop_t &a, స్థిరరాశి hb_color_stop_t &b)
+    { తిరిగి (a.స్థానభ్రంశం > b.స్థానభ్రంశం) - (a.స్థానభ్రంశం < b.స్థానభ్రంశం); });
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_పంక్తి_get_extend (color_పంక్తి);
 
-  const float R = 32767.f;
-  float scx = paint->sx (cx), scy = paint->sy (cy);
-  float xlo = scx - R - 1, xhi = scx + R + 1;
-  float ylo = scy - R - 1, yhi = scy + R + 1;
+  స్థిరరాశి దశాంశం R = 32767.f;
+  దశాంశం scx = paint->sx (cx), scy = paint->sy (cy);
+  దశాంశం xlo = scx - R - 1, xhi = scx + R + 1;
+  దశాంశం ylo = scy - R - 1, yhi = scy + R + 1;
 
-  bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
+  తార్కిక needs_alpha = hb_pdf_gradient_needs_alpha (stops);
 
-  hb_vector_buf_t mesh;
-  hb_vector_buf_t alpha_mesh;
+  hb_సదిశ_buf_t mesh;
+  hb_సదిశ_buf_t alpha_mesh;
   mesh.alloc (256);
-  if (needs_alpha)
+  ఒకవేళ (needs_alpha)
     alpha_mesh.alloc (256);
 
-  hb_pdf_sweep_ctx_t ctx { &mesh, needs_alpha ? &alpha_mesh : nullptr,
+  hb_pdf_sweep_ctx_t ctx { &mesh, needs_alpha ? &alpha_mesh : శూన్యసూచిక,
 			    scx, scy, xlo, xhi, ylo, yhi };
-  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.length, extend,
-				 start_angle, end_angle,
+  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.నిడివి, extend,
+				 ప్రారంభం_angle, చివర_angle,
 				 hb_pdf_sweep_emit_patch, &ctx);
 
-  if (!mesh.length)
-    return;
+  ఒకవేళ (!mesh.నిడివి)
+    తిరిగి;
 
-  auto hb_pdf_build_mesh_shading = [&] (hb_vector_buf_t &m,
-					 const char *cs,
-					 const char *decode_suffix) -> unsigned
+  స్వయంచాలక hb_pdf_build_mesh_shading = [&] (hb_సదిశ_buf_t &m,
+					 స్థిరరాశి అక్షరం *cs,
+					 స్థిరరాశి అక్షరం *decode_suffix) -> గుర్తులేని
   {
-    hb_vector_buf_t sh;
+    hb_సదిశ_buf_t sh;
     sh.append_str ("<< /ShadingType 6 /ColorSpace /");
     sh.append_str (cs);
     sh.append_str ("\n/BitsPerCoordinate 16 /BitsPerComponent 8 /BitsPerFlag 8\n");
     sh.append_str ("/Decode [");
-    sh.append_num (xlo, 2);
+    sh.append_అంకె (xlo, 2);
     sh.append_c (' ');
-    sh.append_num (xhi, 2);
+    sh.append_అంకె (xhi, 2);
     sh.append_c (' ');
-    sh.append_num (ylo, 2);
+    sh.append_అంకె (ylo, 2);
     sh.append_c (' ');
-    sh.append_num (yhi, 2);
+    sh.append_అంకె (yhi, 2);
     sh.append_str (decode_suffix);
     sh.append_str ("]\n/Length ");
-    sh.append_unsigned (m.length);
+    sh.append_unsigned (m.నిడివి);
     sh.append_str (" >>\nstream\n");
-    sh.append_len (m.arrayZ, m.length);
+    sh.append_len (m.arrayZ, m.నిడివి);
     sh.append_str ("\nendstream");
-    return res->add_object (std::move (sh));
+    తిరిగి res->కూడు_object (std::move (sh));
   };
 
-  unsigned sh_obj_id = hb_pdf_build_mesh_shading (mesh, "DeviceRGB",
+  గుర్తులేని sh_obj_id = hb_pdf_build_mesh_shading (mesh, "DeviceRGB",
 						   " 0 1 0 1 0 1");
-  unsigned sh_idx = res->add_shading_by_id (sh_obj_id);
+  గుర్తులేని sh_idx = res->కూడు_shading_by_id (sh_obj_id);
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
 
-  if (needs_alpha && alpha_mesh.length)
+  ఒకవేళ (needs_alpha && alpha_mesh.నిడివి)
   {
-    unsigned alpha_sh_id = hb_pdf_build_mesh_shading (alpha_mesh, "DeviceGray",
+    గుర్తులేని alpha_sh_id = hb_pdf_build_mesh_shading (alpha_mesh, "DeviceGray",
 						       " 0 1");
-    unsigned gs_idx = res->add_extgstate_smask (alpha_sh_id,
+    గుర్తులేని gs_idx = res->కూడు_extgstate_smask (alpha_sh_id,
 						xlo, ylo,
 						xhi - xlo, yhi - ylo,
 						paint->get_precision ());
@@ -1497,77 +1497,77 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
   body.append_str (" sh\n");
 }
 
-static const char *
-hb_pdf_blend_mode_name (hb_paint_composite_mode_t mode)
+స్థిర స్థిరరాశి అక్షరం *
+hb_pdf_blend_బహుళకం_name (hb_paint_సంయుక్త_బహుళకం_t బహుళకం)
 {
-  switch (mode)
+  ఎంపిక (బహుళకం)
   {
-  case HB_PAINT_COMPOSITE_MODE_MULTIPLY:       return "Multiply";
-  case HB_PAINT_COMPOSITE_MODE_SCREEN:         return "Screen";
-  case HB_PAINT_COMPOSITE_MODE_OVERLAY:        return "Overlay";
-  case HB_PAINT_COMPOSITE_MODE_DARKEN:         return "Darken";
-  case HB_PAINT_COMPOSITE_MODE_LIGHTEN:        return "Lighten";
-  case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:    return "ColorDodge";
-  case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:     return "ColorBurn";
-  case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:     return "HardLight";
-  case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:     return "SoftLight";
-  case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:     return "Difference";
-  case HB_PAINT_COMPOSITE_MODE_EXCLUSION:      return "Exclusion";
-  case HB_PAINT_COMPOSITE_MODE_HSL_HUE:        return "Hue";
-  case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "Saturation";
-  case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:      return "Color";
-  case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "Luminosity";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_MULTIPLY:       తిరిగి "Multiply";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SCREEN:         తిరిగి "Screen";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_OVERLAY:        తిరిగి "Overlay";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DARKEN:         తిరిగి "Darken";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_LIGHTEN:        తిరిగి "Lighten";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_COLOR_DODGE:    తిరిగి "ColorDodge";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_COLOR_BURN:     తిరిగి "ColorBurn";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_HARD_LIGHT:     తిరిగి "HardLight";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SOFT_LIGHT:     తిరిగి "SoftLight";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DIFFERENCE:     తిరిగి "Difference";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_EXCLUSION:      తిరిగి "Exclusion";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_HSL_HUE:        తిరిగి "Hue";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_HSL_SATURATION: తిరిగి "Saturation";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_HSL_COLOR:      తిరిగి "Color";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_HSL_LUMINOSITY: తిరిగి "Luminosity";
   /* Porter-Duff modes have no PDF blend-mode equivalent; approximate
    * the two that have a plausible color-blend analog, and let the
    * rest fall through to Normal (SRC_OVER). */
-  case HB_PAINT_COMPOSITE_MODE_PLUS:           return "Screen";
-  case HB_PAINT_COMPOSITE_MODE_XOR:            return "Difference";
-  case HB_PAINT_COMPOSITE_MODE_CLEAR:
-  case HB_PAINT_COMPOSITE_MODE_SRC:
-  case HB_PAINT_COMPOSITE_MODE_DEST:
-  case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-  case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-  case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-  case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-  case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-  case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-  case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-  case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-  default:                                     return nullptr; /* Normal */
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_PLUS:           తిరిగి "Screen";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_XOR:            తిరిగి "Difference";
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_CLEAR:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC_OVER:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST_OVER:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC_లోపల:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST_లోపల:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC_బహిర్గతం:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST_బహిర్గతం:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC_ATOP:
+  స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST_ATOP:
+  అప్రమేయ:                                     తిరిగి శూన్యసూచిక; /*సాధారణ*/
   }
 }
 
-static void
-hb_pdf_paint_push_group (hb_paint_funcs_t *,
-			 void *paint_data,
-			 void *)
+స్థిర శూన్య
+hb_pdf_paint_నెట్టు_సమూహం (hb_paint_funcs_t *,
+			 శూన్య *paint_దత్తాంశం,
+			 శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
   paint->current_body ().append_str ("q\n");
 }
 
-static void
-hb_pdf_paint_push_group_for (hb_paint_funcs_t *,
-			     void *paint_data,
-			     hb_paint_composite_mode_t mode,
-			     void *)
+స్థిర శూన్య
+hb_pdf_paint_నెట్టు_సమూహం_for (hb_paint_funcs_t *,
+			     శూన్య *paint_దత్తాంశం,
+			     hb_paint_సంయుక్త_బహుళకం_t బహుళకం,
+			     శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
 
-  auto &body = paint->current_body ();
+  స్వయంచాలక &body = paint->current_body ();
   body.append_str ("q\n");
 
-  const char *bm = hb_pdf_blend_mode_name (mode);
-  if (bm)
+  స్థిరరాశి అక్షరం *bm = hb_pdf_blend_బహుళకం_name (బహుళకం);
+  ఒకవేళ (bm)
   {
-    auto *res = hb_pdf_get_resources (paint);
-    if (likely (res))
+    స్వయంచాలక *res = hb_pdf_get_resources (paint);
+    ఒకవేళ (likely (res))
     {
-      unsigned gs_idx = res->add_extgstate_blend (bm);
+      గుర్తులేని gs_idx = res->కూడు_extgstate_blend (bm);
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -1575,224 +1575,224 @@ hb_pdf_paint_push_group_for (hb_paint_funcs_t *,
   }
 }
 
-static void
-hb_pdf_paint_pop_group (hb_paint_funcs_t *,
-			void *paint_data,
-			hb_paint_composite_mode_t mode HB_UNUSED,
-			void *)
+స్థిర శూన్య
+hb_pdf_paint_తీయి_సమూహం (hb_paint_funcs_t *,
+			శూన్య *paint_దత్తాంశం,
+			hb_paint_సంయుక్త_బహుళకం_t బహుళకం HB_వాడని,
+			శూన్య *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  స్వయంచాలక *paint = (hb_సదిశ_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (unlikely (!paint->ensure_initialized ()))
+    తిరిగి;
   paint->current_body ().append_str ("Q\n");
 }
 
 
 /* ---- lazy loader for paint funcs ---- */
 
-static inline void free_static_pdf_paint_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_pdf_paint_funcs ();
 
-static struct hb_pdf_paint_funcs_lazy_loader_t
+స్థిర నిర్మాణం hb_pdf_paint_funcs_lazy_loader_t
   : hb_paint_funcs_lazy_loader_t<hb_pdf_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  స్థిర hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
-    hb_paint_funcs_set_push_transform_func (funcs, (hb_paint_push_transform_func_t) hb_pdf_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, (hb_paint_pop_transform_func_t) hb_pdf_paint_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_pdf_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, (hb_paint_push_clip_glyph_func_t) hb_pdf_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, (hb_paint_push_clip_rectangle_func_t) hb_pdf_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, (hb_paint_push_clip_path_start_func_t) hb_pdf_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, (hb_paint_push_clip_path_end_func_t) hb_pdf_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, (hb_paint_pop_clip_func_t) hb_pdf_paint_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, (hb_paint_color_func_t) hb_pdf_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, (hb_paint_image_func_t) hb_pdf_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, (hb_paint_linear_gradient_func_t) hb_pdf_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_pdf_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_pdf_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, (hb_paint_push_group_func_t) hb_pdf_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_for_func (funcs, (hb_paint_push_group_for_func_t) hb_pdf_paint_push_group_for, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, (hb_paint_pop_group_func_t) hb_pdf_paint_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_vector_paint_set_budget_callback, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_vector_paint_get_budget_callback, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
+    hb_paint_funcs_సమితి_నెట్టు_transform_func (funcs, (hb_paint_నెట్టు_transform_func_t) hb_pdf_paint_నెట్టు_transform, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_transform_func (funcs, (hb_paint_తీయి_transform_func_t) hb_pdf_paint_తీయి_transform, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_pdf_paint_fill_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_glyph_func (funcs, (hb_paint_నెట్టు_clip_glyph_func_t) hb_pdf_paint_నెట్టు_clip_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_rectangle_func (funcs, (hb_paint_నెట్టు_clip_rectangle_func_t) hb_pdf_paint_నెట్టు_clip_rectangle, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_మార్గం_ప్రారంభం_func (funcs, (hb_paint_నెట్టు_clip_మార్గం_ప్రారంభం_func_t) hb_pdf_paint_నెట్టు_clip_మార్గం_ప్రారంభం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_మార్గం_చివర_func (funcs, (hb_paint_నెట్టు_clip_మార్గం_చివర_func_t) hb_pdf_paint_నెట్టు_clip_మార్గం_చివర, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_clip_func (funcs, (hb_paint_తీయి_clip_func_t) hb_pdf_paint_తీయి_clip, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_color_func (funcs, (hb_paint_color_func_t) hb_pdf_paint_color, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_image_func (funcs, (hb_paint_image_func_t) hb_pdf_paint_image, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_రేఖీయ_gradient_func (funcs, (hb_paint_రేఖీయ_gradient_func_t) hb_pdf_paint_రేఖీయ_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_pdf_paint_radial_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_pdf_paint_sweep_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_సమూహం_func (funcs, (hb_paint_నెట్టు_సమూహం_func_t) hb_pdf_paint_నెట్టు_సమూహం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_సమూహం_for_func (funcs, (hb_paint_నెట్టు_సమూహం_for_func_t) hb_pdf_paint_నెట్టు_సమూహం_for, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_సమూహం_func (funcs, (hb_paint_తీయి_సమూహం_func_t) hb_pdf_paint_తీయి_సమూహం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_సమితి_budget_func (funcs, hb_సదిశ_paint_సమితి_budget_callback, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_get_budget_func (funcs, hb_సదిశ_paint_get_budget_callback, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_get_budget_మిగిలిన_func (funcs, hb_సదిశ_paint_get_budget_మిగిలిన_callback, శూన్యసూచిక, శూన్యసూచిక);
     hb_paint_funcs_make_immutable (funcs);
     hb_atexit (free_static_pdf_paint_funcs);
-    return funcs;
+    తిరిగి funcs;
   }
 } static_pdf_paint_funcs;
 
-static inline void
+స్థిర అంతఃవరుస శూన్య
 free_static_pdf_paint_funcs ()
 {
   static_pdf_paint_funcs.free_instance ();
 }
 
 hb_paint_funcs_t *
-hb_vector_paint_pdf_funcs_get ()
+hb_సదిశ_paint_pdf_funcs_get ()
 {
-  return static_pdf_paint_funcs.get_unconst ();
+  తిరిగి static_pdf_paint_funcs.get_unconst ();
 }
 
 
 /* ---- render ---- */
 
 hb_blob_t *
-hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
+hb_సదిశ_paint_render_pdf (hb_సదిశ_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
-  if (!paint->group_stack.length ||
-      !paint->group_stack.arrayZ[0].length)
-    return nullptr;
+  ఒకవేళ (!paint->has_extents)
+    తిరిగి శూన్యసూచిక;
+  ఒకవేళ (!paint->సమూహం_దొంతర.నిడివి ||
+      !paint->సమూహం_దొంతర.arrayZ[0].నిడివి)
+    తిరిగి శూన్యసూచిక;
 
-  hb_vector_buf_t &content = paint->group_stack.arrayZ[0];
+  hb_సదిశ_buf_t &content = paint->సమూహం_దొంతర.arrayZ[0];
   hb_pdf_resources_t *res = hb_pdf_get_resources (paint);
 
-  float ex = paint->extents.x;
-  float ey = paint->extents.y;
-  float ew = paint->extents.width;
-  float eh = paint->extents.height;
+  దశాంశం ex = paint->extents.x;
+  దశాంశం ey = paint->extents.y;
+  దశాంశం ew = paint->extents.వెడల్పు;
+  దశాంశం eh = paint->extents.ఎత్తు;
 
-  unsigned num_extra = res ? res->objects.length : 0;
-  unsigned total_objects = 4 + num_extra; /* 1-based: 1..total_objects */
+  గుర్తులేని అంకె_extra = res ? res->objects.నిడివి : 0;
+  గుర్తులేని మొత్తం_objects = 4 + అంకె_extra; /* 1-based: 1..total_objects */
 
   /* Build PDF. */
-  hb_vector_buf_t out;
-  hb_buf_recover_recycled (paint->recycled_blob, &out);
-  out.alloc (content.length + num_extra * 128 + 1024);
+  hb_సదిశ_buf_t బహిర్గతం;
+  hb_buf_recover_recycled (paint->recycled_blob, &బహిర్గతం);
+  బహిర్గతం.alloc (content.నిడివి + అంకె_extra * 128 + 1024);
 
-  hb_vector_t<unsigned> offsets;
-  if (unlikely (!offsets.resize (total_objects)))
-    return nullptr;
+  hb_సదిశ_t<గుర్తులేని> offsets;
+  ఒకవేళ (unlikely (!offsets.resize (మొత్తం_objects)))
+    తిరిగి శూన్యసూచిక;
 
-  out.append_str ("%PDF-1.4\n%\xC0\xC1\xC2\xC3\n");
+  బహిర్గతం.append_str ("%PDF-1.4\n%\xC0\xC1\xC2\xC3\n");
 
   /* Object 1: Catalog */
-  offsets.arrayZ[0] = out.length;
-  out.append_str ("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  offsets.arrayZ[0] = బహిర్గతం.నిడివి;
+  బహిర్గతం.append_str ("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
 
   /* Object 2: Pages */
-  offsets.arrayZ[1] = out.length;
-  out.append_str ("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  offsets.arrayZ[1] = బహిర్గతం.నిడివి;
+  బహిర్గతం.append_str ("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
 
   /* Object 3: Page */
-  offsets.arrayZ[2] = out.length;
-  out.append_str ("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [");
-  out.append_num (ex);
-  out.append_c (' ');
-  out.append_num (ey);
-  out.append_c (' ');
-  out.append_num (ex + ew);
-  out.append_c (' ');
-  out.append_num (ey + eh);
-  out.append_str ("]\n/Contents 4 0 R");
+  offsets.arrayZ[2] = బహిర్గతం.నిడివి;
+  బహిర్గతం.append_str ("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [");
+  బహిర్గతం.append_అంకె (ex);
+  బహిర్గతం.append_c (' ');
+  బహిర్గతం.append_అంకె (ey);
+  బహిర్గతం.append_c (' ');
+  బహిర్గతం.append_అంకె (ex + ew);
+  బహిర్గతం.append_c (' ');
+  బహిర్గతం.append_అంకె (ey + eh);
+  బహిర్గతం.append_str ("]\n/Contents 4 0 R");
 
   /* Resources. */
-  bool has_resources = res &&
-    (res->extgstate_dict.length || res->shading_dict.length || res->xobject_dict.length);
-  if (has_resources)
+  తార్కిక has_resources = res &&
+    (res->extgstate_dict.నిడివి || res->shading_dict.నిడివి || res->xobject_dict.నిడివి);
+  ఒకవేళ (has_resources)
   {
-    out.append_str ("\n/Resources <<");
-    if (res->extgstate_dict.length)
+    బహిర్గతం.append_str ("\n/Resources <<");
+    ఒకవేళ (res->extgstate_dict.నిడివి)
     {
-      out.append_str (" /ExtGState << ");
-      out.append_len (res->extgstate_dict.arrayZ, res->extgstate_dict.length);
-      out.append_str (">>");
+      బహిర్గతం.append_str (" /ExtGState << ");
+      బహిర్గతం.append_len (res->extgstate_dict.arrayZ, res->extgstate_dict.నిడివి);
+      బహిర్గతం.append_str (">>");
     }
-    if (res->shading_dict.length)
+    ఒకవేళ (res->shading_dict.నిడివి)
     {
-      out.append_str (" /Shading << ");
-      out.append_len (res->shading_dict.arrayZ, res->shading_dict.length);
-      out.append_str (">>");
+      బహిర్గతం.append_str (" /Shading << ");
+      బహిర్గతం.append_len (res->shading_dict.arrayZ, res->shading_dict.నిడివి);
+      బహిర్గతం.append_str (">>");
     }
-    if (res->xobject_dict.length)
+    ఒకవేళ (res->xobject_dict.నిడివి)
     {
-      out.append_str (" /XObject << ");
-      out.append_len (res->xobject_dict.arrayZ, res->xobject_dict.length);
-      out.append_str (">>");
+      బహిర్గతం.append_str (" /XObject << ");
+      బహిర్గతం.append_len (res->xobject_dict.arrayZ, res->xobject_dict.నిడివి);
+      బహిర్గతం.append_str (">>");
     }
-    out.append_str (" >>");
+    బహిర్గతం.append_str (" >>");
   }
 
-  out.append_str (" >>\nendobj\n");
+  బహిర్గతం.append_str (" >>\nendobj\n");
 
   /* Build content stream: optional background rect + glyph content. */
-  hb_vector_buf_t bg_prefix;
-  if (hb_color_get_alpha (paint->background))
+  hb_సదిశ_buf_t bg_ఉపసర్గ;
+  ఒకవేళ (hb_color_get_alpha (paint->background))
   {
-    float r = hb_color_get_red (paint->background) / 255.f;
-    float g = hb_color_get_green (paint->background) / 255.f;
-    float b = hb_color_get_blue (paint->background) / 255.f;
-    float a = hb_color_get_alpha (paint->background) / 255.f;
-    if (a < 1.f - 1.f / 512.f)
+    దశాంశం r = hb_color_get_red (paint->background) / 255.f;
+    దశాంశం g = hb_color_get_green (paint->background) / 255.f;
+    దశాంశం b = hb_color_get_blue (paint->background) / 255.f;
+    దశాంశం a = hb_color_get_alpha (paint->background) / 255.f;
+    ఒకవేళ (a < 1.f - 1.f / 512.f)
     {
-      if (res)
+      ఒకవేళ (res)
       {
-	unsigned gs_idx = res->add_extgstate_alpha (a);
-	bg_prefix.append_str ("/GS");
-	bg_prefix.append_unsigned (gs_idx);
-	bg_prefix.append_str (" gs\n");
+	గుర్తులేని gs_idx = res->కూడు_extgstate_alpha (a);
+	bg_ఉపసర్గ.append_str ("/GS");
+	bg_ఉపసర్గ.append_unsigned (gs_idx);
+	bg_ఉపసర్గ.append_str (" gs\n");
       }
     }
-    bg_prefix.append_num (r, 4);
-    bg_prefix.append_c (' ');
-    bg_prefix.append_num (g, 4);
-    bg_prefix.append_c (' ');
-    bg_prefix.append_num (b, 4);
-    bg_prefix.append_str (" rg\n");
-    bg_prefix.append_num (ex);
-    bg_prefix.append_c (' ');
-    bg_prefix.append_num (ey);
-    bg_prefix.append_c (' ');
-    bg_prefix.append_num (ew);
-    bg_prefix.append_c (' ');
-    bg_prefix.append_num (eh);
-    bg_prefix.append_str (" re f\n");
+    bg_ఉపసర్గ.append_అంకె (r, 4);
+    bg_ఉపసర్గ.append_c (' ');
+    bg_ఉపసర్గ.append_అంకె (g, 4);
+    bg_ఉపసర్గ.append_c (' ');
+    bg_ఉపసర్గ.append_అంకె (b, 4);
+    bg_ఉపసర్గ.append_str (" rg\n");
+    bg_ఉపసర్గ.append_అంకె (ex);
+    bg_ఉపసర్గ.append_c (' ');
+    bg_ఉపసర్గ.append_అంకె (ey);
+    bg_ఉపసర్గ.append_c (' ');
+    bg_ఉపసర్గ.append_అంకె (ew);
+    bg_ఉపసర్గ.append_c (' ');
+    bg_ఉపసర్గ.append_అంకె (eh);
+    bg_ఉపసర్గ.append_str (" re f\n");
   }
-  unsigned stream_len = bg_prefix.length + content.length;
+  గుర్తులేని ప్రవాహం_len = bg_ఉపసర్గ.నిడివి + content.నిడివి;
 
   /* Object 4: Content stream */
-  offsets.arrayZ[3] = out.length;
-  out.append_str ("4 0 obj\n<< /Length ");
-  out.append_unsigned (stream_len);
-  out.append_str (" >>\nstream\n");
-  out.append_len (bg_prefix.arrayZ, bg_prefix.length);
-  out.append_len (content.arrayZ, content.length);
-  out.append_str ("endstream\nendobj\n");
+  offsets.arrayZ[3] = బహిర్గతం.నిడివి;
+  బహిర్గతం.append_str ("4 0 obj\n<< /Length ");
+  బహిర్గతం.append_unsigned (ప్రవాహం_len);
+  బహిర్గతం.append_str (" >>\nstream\n");
+  బహిర్గతం.append_len (bg_ఉపసర్గ.arrayZ, bg_ఉపసర్గ.నిడివి);
+  బహిర్గతం.append_len (content.arrayZ, content.నిడివి);
+  బహిర్గతం.append_str ("endstream\nendobj\n");
 
   /* Extra objects (functions, shadings, ExtGState). */
-  for (unsigned i = 0; i < num_extra; i++)
+  కొరకు (గుర్తులేని i = 0; i < అంకె_extra; i++)
   {
-    offsets.arrayZ[4 + i] = out.length;
-    out.append_unsigned (5 + i);
-    out.append_str (" 0 obj\n");
-    auto &obj = res->objects.arrayZ[i];
-    out.append_len (obj.data.arrayZ, obj.data.length);
-    out.append_str ("\nendobj\n");
+    offsets.arrayZ[4 + i] = బహిర్గతం.నిడివి;
+    బహిర్గతం.append_unsigned (5 + i);
+    బహిర్గతం.append_str (" 0 obj\n");
+    స్వయంచాలక &obj = res->objects.arrayZ[i];
+    బహిర్గతం.append_len (obj.దత్తాంశం.arrayZ, obj.దత్తాంశం.నిడివి);
+    బహిర్గతం.append_str ("\nendobj\n");
   }
 
   /* Cross-reference table */
-  unsigned xref_offset = out.length;
-  out.append_str ("xref\n0 ");
-  out.append_unsigned (total_objects + 1);
-  out.append_str ("\n0000000000 65535 f \n");
-  for (unsigned i = 0; i < total_objects; i++)
+  గుర్తులేని xref_స్థానభ్రంశం = బహిర్గతం.నిడివి;
+  బహిర్గతం.append_str ("xref\n0 ");
+  బహిర్గతం.append_unsigned (మొత్తం_objects + 1);
+  బహిర్గతం.append_str ("\n0000000000 65535 f \n");
+  కొరకు (గుర్తులేని i = 0; i < మొత్తం_objects; i++)
   {
-    char tmp[21];
-    snprintf (tmp, sizeof (tmp), "%010u 00000 n \n", offsets.arrayZ[i]);
-    out.append_len (tmp, 20);
+    అక్షరం tmp[21];
+    snprintf (tmp, పరిమాణం (tmp), "%010u 00000 n \n", offsets.arrayZ[i]);
+    బహిర్గతం.append_len (tmp, 20);
   }
 
   /* Trailer */
-  out.append_str ("trailer\n<< /Size ");
-  out.append_unsigned (total_objects + 1);
-  out.append_str (" /Root 1 0 R >>\nstartxref\n");
-  out.append_unsigned (xref_offset);
-  out.append_str ("\n%%EOF\n");
+  బహిర్గతం.append_str ("trailer\n<< /Size ");
+  బహిర్గతం.append_unsigned (మొత్తం_objects + 1);
+  బహిర్గతం.append_str (" /Root 1 0 R >>\nstartxref\n");
+  బహిర్గతం.append_unsigned (xref_స్థానభ్రంశం);
+  బహిర్గతం.append_str ("\n%%EOF\n");
 
-  hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
+  hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &బహిర్గతం);
 
-  return blob;
+  తిరిగి blob;
 }

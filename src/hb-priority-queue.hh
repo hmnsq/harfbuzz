@@ -24,11 +24,11 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_PRIORITY_QUEUE_HH
-#define HB_PRIORITY_QUEUE_HH
+#నిర్వచితం_కాకపోతే HB_ప్రాధాన్యత_వరుస_HH
+#నిర్వచించు HB_ప్రాధాన్యత_వరుస_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -42,143 +42,143 @@
  * priority of its children. The heap is stored in an array, with the
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
-template <typename K>
-struct hb_priority_queue_t
+మూస <రకం_పేరు K>
+నిర్మాణం hb_ప్రాధాన్యత_వరుస_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ బహిరంగ:
+  రకనిర్వచనం hb_pair_t<K, గుర్తులేని> అంశం_t;
 
- private:
-  hb_vector_t<item_t> heap;
+ అంతరంగ:
+  hb_సదిశ_t<అంశం_t> కుప్ప;
 
- public:
+ బహిరంగ:
 
-  hb_priority_queue_t () = default;
-  hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
+  hb_ప్రాధాన్యత_వరుస_t () = అప్రమేయ;
+  hb_ప్రాధాన్యత_వరుస_t (hb_సదిశ_t<అంశం_t>&& other) : కుప్ప (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
-      bubble_down (i);
+    కొరకు (పూర్ణాంకం i = (కుప్ప.నిడివి / 2) - 1; i >= 0; i--)
+      bubble_కిందికి (i);
   }
 
-  void reset () { heap.clear (); }
+  శూన్య reset () { కుప్ప.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి కుప్ప.లోపల_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  తార్కిక alloc (గుర్తులేని కొలత)
+  { తిరిగి కుప్ప.alloc (కొలత); }
 
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  void insert (K priority, unsigned value)
+#అయితే_ముగింపు
+  శూన్య insert (K ప్రాధాన్యత, గుర్తులేని value)
   {
-    heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
-    bubble_up (heap.length - 1);
+    కుప్ప.push (అంశం_t (ప్రాధాన్యత, value));
+    ఒకవేళ (unlikely (కుప్ప.లోపల_error ())) తిరిగి;
+    bubble_పైకి (కుప్ప.నిడివి - 1);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
   HB_ALWAYS_INLINE
-#endif
-  item_t pop_minimum ()
+#అయితే_ముగింపు
+  అంశం_t తీయి_minimum ()
   {
-    assert (!is_empty ());
+    ప్రతిజ్ఞా (!is_empty ());
 
-    item_t result = heap.arrayZ[0];
+    అంశం_t ఫలితం = కుప్ప.arrayZ[0];
 
-    heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
-    heap.resize (heap.length - 1);
+    కుప్ప.arrayZ[0] = కుప్ప.arrayZ[కుప్ప.నిడివి - 1];
+    కుప్ప.resize (కుప్ప.నిడివి - 1);
 
-    if (!is_empty ())
-      bubble_down (0);
+    ఒకవేళ (!is_empty ())
+      bubble_కిందికి (0);
 
-    return result;
+    తిరిగి ఫలితం;
   }
 
-  const item_t& minimum ()
+  స్థిరరాశి అంశం_t& minimum ()
   {
-    return heap[0];
+    తిరిగి కుప్ప[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  తార్కిక is_empty () స్థిరరాశి { తిరిగి కుప్ప.నిడివి == 0; }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి !is_empty (); }
+  గుర్తులేని పూర్ణాంకం get_population () స్థిరరాశి { తిరిగి కుప్ప.నిడివి; }
 
   /* Sink interface. */
-  hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  hb_ప్రాధాన్యత_వరుస_t& క్రియాకారకం << (అంశం_t అంశం)
+  { insert (అంశం.మొదటి, అంశం.second); తిరిగి *ఇది; }
 
- private:
+ అంతరంగ:
 
-  static constexpr unsigned parent (unsigned index)
+  స్థిర constexpr గుర్తులేని మాతృ (గుర్తులేని సూచీ_2)
   {
-    return (index - 1) / 2;
+    తిరిగి (సూచీ_2 - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  స్థిర constexpr గుర్తులేని ఎడమ_బిడ్డ (గుర్తులేని సూచీ_2)
   {
-    return 2 * index + 1;
+    తిరిగి 2 * సూచీ_2 + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  స్థిర constexpr గుర్తులేని కుడి_బిడ్డ (గుర్తులేని సూచీ_2)
   {
-    return 2 * index + 2;
+    తిరిగి 2 * సూచీ_2 + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  శూన్య bubble_కిందికి (గుర్తులేని సూచీ_2)
   {
     repeat:
-    assert (index < heap.length);
+    ప్రతిజ్ఞా (సూచీ_2 < కుప్ప.నిడివి);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    గుర్తులేని ఎడమ = ఎడమ_బిడ్డ (సూచీ_2);
+    గుర్తులేని కుడి = కుడి_బిడ్డ (సూచీ_2);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    తార్కిక has_ఎడమ = ఎడమ < కుప్ప.నిడివి;
+    ఒకవేళ (!has_ఎడమ)
       // If there's no left, then there's also no right.
-      return;
+      తిరిగి;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    తార్కిక has_కుడి = కుడి < కుప్ప.నిడివి;
+    ఒకవేళ (కుప్ప.arrayZ[సూచీ_2].మొదటి <= కుప్ప.arrayZ[ఎడమ].మొదటి
+        && (!has_కుడి || కుప్ప.arrayZ[సూచీ_2].మొదటి <= కుప్ప.arrayZ[కుడి].మొదటి))
+      తిరిగి;
 
-    unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
-      child = left;
-    else
-      child = right;
+    గుర్తులేని బిడ్డ;
+    ఒకవేళ (!has_కుడి || కుప్ప.arrayZ[ఎడమ].మొదటి < కుప్ప.arrayZ[కుడి].మొదటి)
+      బిడ్డ = ఎడమ;
+    లేకపోతే
+      బిడ్డ = కుడి;
 
-    swap (index, child);
-    index = child;
-    goto repeat;
+    swap (సూచీ_2, బిడ్డ);
+    సూచీ_2 = బిడ్డ;
+    వెళ్ళు repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  శూన్య bubble_పైకి (గుర్తులేని సూచీ_2)
   {
     repeat:
-    assert (index < heap.length);
+    ప్రతిజ్ఞా (సూచీ_2 < కుప్ప.నిడివి);
 
-    if (index == 0) return;
+    ఒకవేళ (సూచీ_2 == 0) తిరిగి;
 
-    unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    గుర్తులేని మాతృ_సూచీ = మాతృ (సూచీ_2);
+    ఒకవేళ (కుప్ప.arrayZ[మాతృ_సూచీ].మొదటి <= కుప్ప.arrayZ[సూచీ_2].మొదటి)
+      తిరిగి;
 
-    swap (index, parent_index);
-    index = parent_index;
-    goto repeat;
+    swap (సూచీ_2, మాతృ_సూచీ);
+    సూచీ_2 = మాతృ_సూచీ;
+    వెళ్ళు repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  శూన్య swap (గుర్తులేని a, గుర్తులేని b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
-    hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
+    ప్రతిజ్ఞా (a < కుప్ప.నిడివి);
+    ప్రతిజ్ఞా (b < కుప్ప.నిడివి);
+    hb_మార్పిడి (కుప్ప.arrayZ[a], కుప్ప.arrayZ[b]);
   }
 };
 
-#endif /* HB_PRIORITY_QUEUE_HH */
+#అయితే_ముగింపు /* HB_PRIORITY_QUEUE_HH */

@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_wgsl =
+స్థిర స్థిరరాశి అక్షరం *hb_gpu_శీర్షం_wgsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

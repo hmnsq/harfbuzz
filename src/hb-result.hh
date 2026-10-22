@@ -24,486 +24,486 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_RESULT_HH
-#define HB_RESULT_HH
+#నిర్వచితం_కాకపోతే HB_ఫలితం_HH
+#నిర్వచించు HB_ఫలితం_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
-template <typename T>
-struct hb_result_ok_t
+మూస <రకం_పేరు T>
+నిర్మాణం hb_ఫలితం_ok_t
 {
   T value;
 };
 
-template <>
-struct hb_result_ok_t<void> {};
+మూస <>
+నిర్మాణం hb_ఫలితం_ok_t<శూన్య> {};
 
-template <typename E>
-struct hb_result_err_t
+మూస <రకం_పేరు E>
+నిర్మాణం hb_ఫలితం_err_t
 {
   E error;
 
-  template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
-  template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  మూస <రకం_పేరు OtherE>
+  constexpr తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_err_t<OtherE>& other) స్థిరరాశి { తిరిగి error == other.error; }
+  మూస <రకం_పేరు OtherE>
+  constexpr తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_err_t<OtherE>& other) స్థిరరాశి { తిరిగి error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+మూస <రకం_పేరు X> నిర్మాణం hb_is_ఫలితం_ట్యాగ్ : hb_false_type {};
+మూస <రకం_పేరు X> నిర్మాణం hb_is_ఫలితం_ట్యాగ్<hb_ఫలితం_ok_t<X>> : hb_true_type {};
+మూస <రకం_పేరు X> నిర్మాణం hb_is_ఫలితం_ట్యాగ్<hb_ఫలితం_err_t<X>> : hb_true_type {};
 
-template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+మూస <రకం_పేరు T>
+స్థిర అంతఃవరుస constexpr hb_ఫలితం_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  తిరిగి hb_ఫలితం_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+స్థిర అంతఃవరుస constexpr hb_ఫలితం_ok_t<శూన్య> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  తిరిగి hb_ఫలితం_ok_t<శూన్య>{};
 }
 
-template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+మూస <రకం_పేరు E>
+స్థిర అంతఃవరుస constexpr hb_ఫలితం_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  తిరిగి hb_ఫలితం_err_t<E&&>{std::forward<E> (e)};
 }
 
-template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+మూస <రకం_పేరు T, రకం_పేరు E>
+నిర్మాణం HB_NODISCARD_STRUCT hb_ఫలితం_t
 {
-  private:
-  union
+  అంతరంగ:
+  సంఘం
   {
     T val_;
     E err_;
   };
-  bool is_ok_;
+  తార్కిక is_ok_;
 
-  void destroy ()
+  శూన్య destroy ()
   {
-    if (is_ok_)
+    ఒకవేళ (is_ok_)
       val_.~T ();
-    else
+    లేకపోతే
       err_.~E ();
   }
 
-  void init(const hb_result_t& o) {
+  శూన్య init(స్థిరరాశి hb_ఫలితం_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (o.val_);
-    else
-      new (std::addressof (err_)) E (o.err_);
+    ఒకవేళ (is_ok_)
+      కొత్త (std::addressof (val_)) T (o.val_);
+    లేకపోతే
+      కొత్త (std::addressof (err_)) E (o.err_);
   }
 
-  void init(hb_result_t&& o) {
+  శూన్య init(hb_ఫలితం_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (std::move (o.val_));
-    else
-      new (std::addressof (err_)) E (std::move (o.err_));
+    ఒకవేళ (is_ok_)
+      కొత్త (std::addressof (val_)) T (std::move (o.val_));
+    లేకపోతే
+      కొత్త (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  public:
-  ~hb_result_t ()
+  బహిరంగ:
+  ~hb_ఫలితం_t ()
   {
     destroy ();
   }
 
-  hb_result_t () = delete;
+  hb_ఫలితం_t () = తొలగించు;
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (false)
+  hb_ఫలితం_t (స్థిరరాశి hb_ఫలితం_t& o) : is_ok_ (అబద్ధం)
   {
     init (o);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
+  hb_ఫలితం_t (hb_ఫలితం_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
                                      std::is_nothrow_move_constructible<E>::value)
-      : is_ok_ (false)
+      : is_ok_ (అబద్ధం)
   {
     init (std::move (o));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_ఫలితం_t& క్రియాకారకం = (స్థిరరాశి hb_ఫలితం_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ఒకవేళ (ఇది == &o) తిరిగి *ఇది;
+    ఒకవేళ (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    లేకపోతే ఒకవేళ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    లేకపోతే
     {
       destroy ();
       init (o);
     }
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
+  hb_ఫలితం_t& క్రియాకారకం = (hb_ఫలితం_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ఒకవేళ (ఇది == &o) తిరిగి *ఇది;
+    ఒకవేళ (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    లేకపోతే ఒకవేళ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    లేకపోతే
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    తిరిగి *ఇది;
   }
 
   // Construct from Ok(...) tag
-  template <typename U,
+  మూస <రకం_పేరు U,
             hb_enable_if ((std::is_constructible<T, U>::value))>
-  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (true)
+  hb_ఫలితం_t (hb_ఫలితం_ok_t<U>&& o) : is_ok_ (నిజం)
   {
-    new (std::addressof (val_)) T (std::move (o.value));
+    కొత్త (std::addressof (val_)) T (std::move (o.value));
   }
 
-  template <typename U,
-            hb_enable_if ((std::is_constructible<T, const U&>::value))>
-  hb_result_t (const hb_result_ok_t<U>& o) : is_ok_ (true)
+  మూస <రకం_పేరు U,
+            hb_enable_if ((std::is_constructible<T, స్థిరరాశి U&>::value))>
+  hb_ఫలితం_t (స్థిరరాశి hb_ఫలితం_ok_t<U>& o) : is_ok_ (నిజం)
   {
-    new (std::addressof (val_)) T (o.value);
+    కొత్త (std::addressof (val_)) T (o.value);
   }
 
   // Construct from Err(...) tag
-  template <typename F,
+  మూస <రకం_పేరు F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_ఫలితం_t (hb_ఫలితం_err_t<F>&& e) : is_ok_ (అబద్ధం)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    కొత్త (std::addressof (err_)) E (std::move (e.error));
   }
 
-  template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+  మూస <రకం_పేరు F,
+            hb_enable_if ((std::is_constructible<E, స్థిరరాశి F&>::value))>
+  hb_ఫలితం_t (స్థిరరాశి hb_ఫలితం_err_t<F>& e) : is_ok_ (అబద్ధం)
   {
-    new (std::addressof (err_)) E (e.error);
+    కొత్త (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E (when neither T or E are convertible into each other)
-  template <typename F = E,
+  మూస <రకం_పేరు F = E,
             hb_enable_if ((hb_is_same (F, E) &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (F e) : is_ok_ (false)
+  hb_ఫలితం_t (F e) : is_ok_ (అబద్ధం)
   {
-    new (std::addressof (err_)) E (std::move (e));
+    కొత్త (std::addressof (err_)) E (std::move (e));
   }
 
   // Construct directly from value T (when neither T or E are convertible into each other)
-  template <typename U = T,
+  మూస <రకం_పేరు U = T,
             hb_enable_if ((std::is_constructible<T, U>::value &&
                            !hb_is_same (hb_decay<U>, E) &&
-                           !hb_is_same (hb_decay<U>, hb_result_t) &&
-                           !_hb_is_result_tag<hb_decay<U>>::value &&
+                           !hb_is_same (hb_decay<U>, hb_ఫలితం_t) &&
+                           !hb_is_ఫలితం_ట్యాగ్<hb_decay<U>>::value &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (U&& v) : is_ok_ (true)
+  hb_ఫలితం_t (U&& v) : is_ok_ (నిజం)
   {
-    new (std::addressof (val_)) T (std::forward<U> (v));
+    కొత్త (std::addressof (val_)) T (std::forward<U> (v));
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  స్థిర hb_ఫలితం_t from (T&& fallible, E error_విలువ) {
+    ఒకవేళ (fallible.లోపల_error()) {
+      తిరిగి Err(error_విలువ);
     }
-    return Ok(fallible);
+    తిరిగి Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  తార్కిక is_ok () స్థిరరాశి { తిరిగి is_ok_; }
+  తార్కిక is_err () స్థిరరాశి { తిరిగి !is_ok_; }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { ప్రతిజ్ఞా (is_ok_); తిరిగి val_; }
+  స్థిరరాశి T& value () స్థిరరాశి & { ప్రతిజ్ఞా (is_ok_); తిరిగి val_; }
+  T value () && { ప్రతిజ్ఞా (is_ok_); తిరిగి std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& క్రియాకారకం * () & { తిరిగి value (); }
+  స్థిరరాశి T& క్రియాకారకం * () స్థిరరాశి & { తిరిగి value (); }
+  T క్రియాకారకం * () && { తిరిగి std::move (*ఇది).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* క్రియాకారకం -> () { తిరిగి std::addressof (value ()); }
+  స్థిరరాశి T* క్రియాకారకం -> () స్థిరరాశి { తిరిగి std::addressof (value ()); }
 
-  template <typename U>
-  T value_or (U&& default_value) const &
+  మూస <రకం_పేరు U>
+  T విలువ_or (U&& default_విలువ) స్థిరరాశి &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
+    ఒకవేళ (is_ok_) తిరిగి val_;
+    తిరిగి std::forward<U> (default_విలువ);
   }
 
-  template <typename U>
-  T value_or (U&& default_value) &&
+  మూస <రకం_పేరు U>
+  T విలువ_or (U&& default_విలువ) &&
   {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
+    ఒకవేళ (is_ok_) తిరిగి std::move (val_);
+    తిరిగి std::forward<U> (default_విలువ);
   }
 
-  T value_or_default () const &
+  T విలువ_or_default () స్థిరరాశి &
   {
-    if (is_ok_) return val_;
-    return T ();
+    ఒకవేళ (is_ok_) తిరిగి val_;
+    తిరిగి T ();
   }
 
-  T value_or_default () &&
+  T విలువ_or_default () &&
   {
-    if (is_ok_) return std::move (val_);
-    return T ();
+    ఒకవేళ (is_ok_) తిరిగి std::move (val_);
+    తిరిగి T ();
   }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  స్థిరరాశి E& error () స్థిరరాశి & { ప్రతిజ్ఞా (!is_ok_); తిరిగి err_; }
+  E& error () & { ప్రతిజ్ఞా (!is_ok_); తిరిగి err_; }
+  E error () && { ప్రతిజ్ఞా (!is_ok_); తిరిగి std::move (err_); }
 
-  bool operator == (const hb_result_t& o) const
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_t& o) స్థిరరాశి
   {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
+    ఒకవేళ (is_ok_ != o.is_ok_) తిరిగి అబద్ధం;
+    ఒకవేళ (is_ok_) తిరిగి val_ == o.val_;
+    తిరిగి err_ == o.err_;
   }
 
-  bool operator != (const hb_result_t& o) const
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_t& o) స్థిరరాశి
   {
-    return !(*this == o);
+    తిరిగి !(*ఇది == o);
   }
 
-  template <typename U>
-  bool operator == (const hb_result_ok_t<U>& o) const
+  మూస <రకం_పేరు U>
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_ok_t<U>& o) స్థిరరాశి
   {
-    return is_ok_ && val_ == o.value;
+    తిరిగి is_ok_ && val_ == o.value;
   }
 
-  template <typename U>
-  bool operator != (const hb_result_ok_t<U>& o) const
+  మూస <రకం_పేరు U>
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_ok_t<U>& o) స్థిరరాశి
   {
-    return !(*this == o);
+    తిరిగి !(*ఇది == o);
   }
 
-  template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  మూస <రకం_పేరు F>
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_err_t<F>& e) స్థిరరాశి
   {
-    return !is_ok_ && err_ == e.error;
+    తిరిగి !is_ok_ && err_ == e.error;
   }
 
-  template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  మూస <రకం_పేరు F>
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_err_t<F>& e) స్థిరరాశి
   {
-    return !(*this == e);
+    తిరిగి !(*ఇది == e);
   }
 
-  template <typename U>
-  bool operator == (const U&) const = delete;
+  మూస <రకం_పేరు U>
+  తార్కిక క్రియాకారకం == (స్థిరరాశి U&) స్థిరరాశి = తొలగించు;
 
-  template <typename U>
-  bool operator != (const U&) const = delete;
+  మూస <రకం_పేరు U>
+  తార్కిక క్రియాకారకం != (స్థిరరాశి U&) స్థిరరాశి = తొలగించు;
 };
 
 // Partial specialization for void
-template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+మూస <రకం_పేరు E>
+నిర్మాణం HB_NODISCARD_STRUCT hb_ఫలితం_t<శూన్య, E>
 {
-  private:
-  union
+  అంతరంగ:
+  సంఘం
   {
     E err_;
   };
-  bool is_ok_;
+  తార్కిక is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  మూస <రకం_పేరు, రకం_పేరు> మిత్ర నిర్మాణం hb_ఫలితం_t;
 
-  public:
-  ~hb_result_t ()
+  బహిరంగ:
+  ~hb_ఫలితం_t ()
   {
-    if (!is_ok_)
+    ఒకవేళ (!is_ok_)
       err_.~E ();
   }
 
-  hb_result_t () : is_ok_ (true) {}
-  hb_result_t (hb_result_ok_t<void>) : is_ok_ (true) {}
+  hb_ఫలితం_t () : is_ok_ (నిజం) {}
+  hb_ఫలితం_t (hb_ఫలితం_ok_t<శూన్య>) : is_ok_ (నిజం) {}
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
+  hb_ఫలితం_t (స్థిరరాశి hb_ఫలితం_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (o.err_);
+    ఒకవేళ (!is_ok_)
+      కొత్త (std::addressof (err_)) E (o.err_);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
+  hb_ఫలితం_t (hb_ఫలితం_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (std::move (o.err_));
+    ఒకవేళ (!is_ok_)
+      కొత్త (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_ఫలితం_t& క్రియాకారకం = (స్థిరరాశి hb_ఫలితం_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ఒకవేళ (ఇది == &o) తిరిగి *ఇది;
+    ఒకవేళ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    లేకపోతే ఒకవేళ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = నిజం;
     }
-    else if (is_ok_ && !o.is_ok_)
+    లేకపోతే ఒకవేళ (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (o.err_);
-      is_ok_ = false;
+      కొత్త (std::addressof (err_)) E (o.err_);
+      is_ok_ = అబద్ధం;
     }
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
+  hb_ఫలితం_t& క్రియాకారకం = (hb_ఫలితం_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ఒకవేళ (ఇది == &o) తిరిగి *ఇది;
+    ఒకవేళ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    లేకపోతే ఒకవేళ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = నిజం;
     }
-    else if (is_ok_ && !o.is_ok_)
+    లేకపోతే ఒకవేళ (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (std::move (o.err_));
-      is_ok_ = false;
+      కొత్త (std::addressof (err_)) E (std::move (o.err_));
+      is_ok_ = అబద్ధం;
     }
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  template <typename F,
+  మూస <రకం_పేరు F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_ఫలితం_t (hb_ఫలితం_err_t<F>&& e) : is_ok_ (అబద్ధం)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    కొత్త (std::addressof (err_)) E (std::move (e.error));
   }
 
-  template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+  మూస <రకం_పేరు F,
+            hb_enable_if ((std::is_constructible<E, స్థిరరాశి F&>::value))>
+  hb_ఫలితం_t (స్థిరరాశి hb_ఫలితం_err_t<F>& e) : is_ok_ (అబద్ధం)
   {
-    new (std::addressof (err_)) E (e.error);
+    కొత్త (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E
-  hb_result_t (E e) : is_ok_ (false)
+  hb_ఫలితం_t (E e) : is_ok_ (అబద్ధం)
   {
-    new (std::addressof (err_)) E (std::move(e));
+    కొత్త (std::addressof (err_)) E (std::move(e));
   }
 
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
-  template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  మూస<రకం_పేరు V>
+  స్థిర hb_ఫలితం_t<శూన్య, E> from (స్థిరరాశి V& fallible, E error_విలువ) {
+    ఒకవేళ (fallible.లోపల_error()) {
+      తిరిగి Err(error_విలువ);
     }
-    return Ok();
+    తిరిగి Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  తార్కిక is_ok () స్థిరరాశి { తిరిగి is_ok_; }
+  తార్కిక is_err () స్థిరరాశి { తిరిగి !is_ok_; }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  స్థిరరాశి E& error () స్థిరరాశి & { ప్రతిజ్ఞా (!is_ok_); తిరిగి err_; }
+  E& error () & { ప్రతిజ్ఞా (!is_ok_); తిరిగి err_; }
+  E error () && { ప్రతిజ్ఞా (!is_ok_); తిరిగి std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  శూన్య క్రియాకారకం * () & { తిరిగి; }
+  శూన్య క్రియాకారకం * () స్థిరరాశి & { తిరిగి; }
+  శూన్య క్రియాకారకం * () && { తిరిగి; }
 
-  bool operator == (const hb_result_t<void, E>& o) const
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_t<శూన్య, E>& o) స్థిరరాశి
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    తిరిగి is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
-  bool operator != (const hb_result_t<void, E>& o) const
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_t<శూన్య, E>& o) స్థిరరాశి
   {
-    return !(*this == o);
+    తిరిగి !(*ఇది == o);
   }
 
-  bool operator == (hb_result_ok_t<void>) const
+  తార్కిక క్రియాకారకం == (hb_ఫలితం_ok_t<శూన్య>) స్థిరరాశి
   {
-    return is_ok_;
+    తిరిగి is_ok_;
   }
 
-  bool operator != (hb_result_ok_t<void>) const
+  తార్కిక క్రియాకారకం != (hb_ఫలితం_ok_t<శూన్య>) స్థిరరాశి
   {
-    return !is_ok_;
+    తిరిగి !is_ok_;
   }
 
-  template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  మూస <రకం_పేరు F>
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_err_t<F>& e) స్థిరరాశి
   {
-    return !is_ok_ && err_ == e.error;
+    తిరిగి !is_ok_ && err_ == e.error;
   }
 
-  template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  మూస <రకం_పేరు F>
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_err_t<F>& e) స్థిరరాశి
   {
-    return !(*this == e);
+    తిరిగి !(*ఇది == e);
   }
 
-  template <typename U>
-  bool operator == (const U&) const = delete;
+  మూస <రకం_పేరు U>
+  తార్కిక క్రియాకారకం == (స్థిరరాశి U&) స్థిరరాశి = తొలగించు;
 
-  template <typename U>
-  bool operator != (const U&) const = delete;
+  మూస <రకం_పేరు U>
+  తార్కిక క్రియాకారకం != (స్థిరరాశి U&) స్థిరరాశి = తొలగించు;
 };
 
-template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+మూస <రకం_పేరు U, రకం_పేరు T, రకం_పేరు E>
+స్థిర అంతఃవరుస తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_ok_t<U>& o, స్థిరరాశి hb_ఫలితం_t<T, E>& r)
 {
-  return r == o;
+  తిరిగి r == o;
 }
-template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+మూస <రకం_పేరు U, రకం_పేరు T, రకం_పేరు E>
+స్థిర అంతఃవరుస తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_ok_t<U>& o, స్థిరరాశి hb_ఫలితం_t<T, E>& r)
 {
-  return r != o;
+  తిరిగి r != o;
 }
-template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+మూస <రకం_పేరు F, రకం_పేరు T, రకం_పేరు E>
+స్థిర అంతఃవరుస తార్కిక క్రియాకారకం == (స్థిరరాశి hb_ఫలితం_err_t<F>& e, స్థిరరాశి hb_ఫలితం_t<T, E>& r)
 {
-  return r == e;
+  తిరిగి r == e;
 }
-template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+మూస <రకం_పేరు F, రకం_పేరు T, రకం_పేరు E>
+స్థిర అంతఃవరుస తార్కిక క్రియాకారకం != (స్థిరరాశి hb_ఫలితం_err_t<F>& e, స్థిరరాశి hb_ఫలితం_t<T, E>& r)
 {
-  return r != e;
+  తిరిగి r != e;
 }
 
-#ifndef TRY
-#define TRY(expr)                                                             \
-  do {                                                                        \
-    auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
-#endif
+#నిర్వచితం_కాకపోతే TRY
+#నిర్వచించు TRY(సమాసం)                                                             \
+  చేయి {                                                                        \
+    స్వయంచాలక _res = (సమాసం);                                                       \
+    ఒకవేళ (unlikely (!_res.is_ok())) తిరిగి Err(std::move(_res).error());        \
+  } అయితే (0)
+#అయితే_ముగింపు
 
-#ifndef TRY_ASSIGN
-#define TRY_ASSIGN(var, ...)                                                  \
-  auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+#నిర్వచితం_కాకపోతే TRY_కేటాయించు
+#నిర్వచించు TRY_కేటాయించు(var, ...)                                                  \
+  స్వయంచాలక HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
+  ఒకవేళ (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) తిరిగి Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
-#endif
+#అయితే_ముగింపు
 
-#endif /* HB_RESULT_HH */
+#అయితే_ముగింపు /* HB_RESULT_HH */

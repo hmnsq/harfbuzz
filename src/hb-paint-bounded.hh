@@ -22,23 +22,23 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_BOUNDED_HH
-#define HB_PAINT_BOUNDED_HH
+#నిర్వచితం_కాకపోతే HB_PAINT_BOUNDED_HH
+#నిర్వచించు HB_PAINT_BOUNDED_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-paint.h"
 
-#include "hb-geometry.hh"
+#అన్తర్భావ "hb-geometry.hh"
 
 
-typedef struct  hb_paint_bounded_context_t hb_paint_bounded_context_t;
+రకనిర్వచనం నిర్మాణం  hb_paint_bounded_context_t hb_paint_bounded_context_t;
 
-struct hb_paint_bounded_context_t
+నిర్మాణం hb_paint_bounded_context_t
 {
-  void clear ()
+  శూన్య clear ()
   {
     clips = 0;
-    bounded = true;
+    bounded = నిజం;
     groups.clear ();
   }
 
@@ -47,71 +47,71 @@ struct hb_paint_bounded_context_t
     clear ();
   }
 
-  bool is_bounded ()
+  తార్కిక is_bounded ()
   {
-    return bounded;
+    తిరిగి bounded;
   }
 
-  void push_clip ()
+  శూన్య నెట్టు_clip ()
   {
     clips++;
   }
 
-  void pop_clip ()
+  శూన్య తీయి_clip ()
   {
-    if (clips == 0) return;
+    ఒకవేళ (clips == 0) తిరిగి;
     clips--;
   }
 
-  void push_group ()
+  శూన్య నెట్టు_సమూహం ()
   {
     groups.push (bounded);
-    bounded = true;
+    bounded = నిజం;
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  శూన్య తీయి_సమూహం (hb_paint_సంయుక్త_బహుళకం_t బహుళకం)
   {
-    const bool src_bounded = bounded;
-    bounded = groups.pop ();
-    bool &backdrop_bounded = bounded;
+    స్థిరరాశి తార్కిక src_bounded = bounded;
+    bounded = groups.తీయి ();
+    తార్కిక &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    ఎంపిక ((పూర్ణాంకం) బహుళకం)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounded = true;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_CLEAR:
+	backdrop_bounded = నిజం;
+	ఆపు;
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC:
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC_బహిర్గతం:
 	backdrop_bounded = src_bounded;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	ఆపు;
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST:
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST_బహిర్గతం:
+	ఆపు;
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_SRC_లోపల:
+      స్థితి HB_PAINT_సంయుక్త_బహుళకం_DEST_లోపల:
 	backdrop_bounded = backdrop_bounded && src_bounded;
-	break;
-      default:
+	ఆపు;
+      అప్రమేయ:
 	backdrop_bounded = backdrop_bounded || src_bounded;
-	break;
+	ఆపు;
      }
   }
 
-  void paint ()
+  శూన్య paint ()
   {
-    if (!clips)
-      bounded = false;
+    ఒకవేళ (!clips)
+      bounded = అబద్ధం;
   }
 
-  protected:
-  bool bounded; // true if current drawing bounded
-  unsigned clips; // number of active clips
-  hb_vector_t<bool> groups; // true if group bounded
+  రక్షిత:
+  తార్కిక bounded; // true if current drawing bounded
+  గుర్తులేని clips; // number of active clips
+  hb_సదిశ_t<తార్కిక> groups; // true if group bounded
 };
 
-HB_INTERNAL hb_paint_funcs_t *
+HB_అంతర్గత hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ();
 
 
-#endif /* HB_PAINT_BOUNDED_HH */
+#అయితే_ముగింపు /* HB_PAINT_BOUNDED_HH */

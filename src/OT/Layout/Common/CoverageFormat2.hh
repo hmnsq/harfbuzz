@@ -26,239 +26,239 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
-#define OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#నిర్వచించు OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 
-#include "RangeRecord.hh"
+#అన్తర్భావ "RangeRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ Common {
 
-template <typename Types>
-struct CoverageFormat2_4
+మూస <రకం_పేరు Types>
+నిర్మాణం CoverageFormat2_4
 {
-  friend struct Coverage;
-  using CoverageRangeRecord = RangeRecord<Types, typename Types::HBUINT>;
+  మిత్ర నిర్మాణం Coverage;
+  ఉపయోగించి Coverage_Range_రికార్డు = Range_రికార్డు<Types, రకం_పేరు Types::HBUINT>;
 
-  public:
+  బహిరంగ:
   HBUINT16      coverageFormat; /* Format identifier--format = 2 */
-  typename Types::template SortedArrayOf<CoverageRangeRecord>
-                rangeRecord;    /* Array of glyph ranges--ordered by
+  రకం_పేరు Types::మూస Sorted_Array_యొక్క<Coverage_Range_రికార్డు>
+                range_రికార్డు;    /* Array of glyph ranges--ordered by
                                  * Start GlyphID. rangeCount entries
                                  * long */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, rangeRecord);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + Types::HBUINT::static_కొలత, range_రికార్డు);
 
-  private:
+  అంతరంగ:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (rangeRecord.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (range_రికార్డు.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  గుర్తులేని పూర్ణాంకం get_coverage (hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    స్థిరరాశి Coverage_Range_రికార్డు &range = range_రికార్డు.bsearch (glyph_id);
+    తిరిగి likely (range.మొదటి <= range.చివరి)
+         ? (గుర్తులేని పూర్ణాంకం) range.value + (glyph_id - range.మొదటి)
          : NOT_COVERED;
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    రకం_పేరు Types::large_int ret = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక &r : range_రికార్డు)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    తిరిగి ret > UINT_MAX ? UINT_MAX : (గుర్తులేని) ret;
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  మూస <రకం_పేరు Iterator,
+      hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    unsigned num_ranges = 0;
-    hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    గుర్తులేని అంకె_ranges = 0;
+    hb_codepoint_t చివరి = (hb_codepoint_t) -2;
+    కొరకు (స్వయంచాలక g: glyphs)
     {
-      if (last + 1 != g)
-        num_ranges++;
-      last = g;
+      ఒకవేళ (చివరి + 1 != g)
+        అంకె_ranges++;
+      చివరి = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    ఒకవేళ (unlikely (!range_రికార్డు.serialize (c, అంకె_ranges))) return_trace (అబద్ధం);
+    ఒకవేళ (!అంకె_ranges) return_trace (నిజం);
 
-    unsigned count = 0;
-    unsigned range = (unsigned) -1;
-    last = (hb_codepoint_t) -2;
-    unsigned unsorted = false;
-    for (auto g: glyphs)
+    గుర్తులేని లెక్క = 0;
+    గుర్తులేని range = (గుర్తులేని) -1;
+    చివరి = (hb_codepoint_t) -2;
+    గుర్తులేని unsorted = అబద్ధం;
+    కొరకు (స్వయంచాలక g: glyphs)
     {
-      if (last + 1 != g)
+      ఒకవేళ (చివరి + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
-	  unsorted = true;
+	ఒకవేళ (unlikely (చివరి != (hb_codepoint_t) -2 && చివరి + 1 > g))
+	  unsorted = నిజం;
 
         range++;
-        rangeRecord.arrayZ[range].first = g;
-        rangeRecord.arrayZ[range].value = count;
+        range_రికార్డు.arrayZ[range].మొదటి = g;
+        range_రికార్డు.arrayZ[range].value = లెక్క;
       }
-      rangeRecord.arrayZ[range].last = g;
-      last = g;
-      count++;
+      range_రికార్డు.arrayZ[range].చివరి = g;
+      చివరి = g;
+      లెక్క++;
     }
 
-    if (unlikely (unsorted))
-      rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
+    ఒకవేళ (unlikely (unsorted))
+      range_రికార్డు.as_array ().qsort (Coverage_Range_రికార్డు::cmp_range);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    ఒకవేళ (range_రికార్డు.len > glyphs->get_population () * hb_బిట్టు_storage ((గుర్తులేని) range_రికార్డు.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      కొరకు (స్వయంచాలక g : *glyphs)
+        ఒకవేళ (get_coverage (g) != NOT_COVERED)
+	  తిరిగి నిజం;
+      తిరిగి అబద్ధం;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    తిరిగి hb_any (+ hb_iter (range_రికార్డు)
+                   | hb_map ([glyphs] (స్థిరరాశి Coverage_Range_రికార్డు &range) { తిరిగి range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  తార్కిక intersects_coverage (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం సూచీ_2) స్థిరరాశి
   {
-    auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    స్వయంచాలక *range = range_రికార్డు.as_array ().bsearch (సూచీ_2);
+    ఒకవేళ (range)
+      తిరిగి range->intersects (*glyphs);
+    తిరిగి అబద్ధం;
   }
 
-  static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
-  { set.add_bits (base, bits); }
+  స్థిర శూన్య కూడు_intersected_బిట్లు (hb_సమితి_t &సమితి, hb_codepoint_t పునాది, uint64_t బిట్లు)
+  { సమితి.కూడు_బిట్లు (పునాది, బిట్లు); }
 
-  template <typename IterableOut>
-  static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
+  మూస <రకం_పేరు Iterable_బహిర్గతం>
+  స్థిర శూన్య కూడు_intersected_బిట్లు (Iterable_బహిర్గతం&& బహిర్గతం, hb_codepoint_t పునాది, uint64_t బిట్లు)
   {
-    while (bits)
+    అయితే (బిట్లు)
     {
-      out << base + hb_ctz (bits);
-      bits &= bits - 1;
+      బహిర్గతం << పునాది + hb_ctz (బిట్లు);
+      బిట్లు &= బిట్లు - 1;
     }
   }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  మూస <రకం_పేరు Iterable_బహిర్గతం,
+	    hb_requires (hb_is_sink_యొక్క (Iterable_బహిర్గతం, hb_codepoint_t))>
+  శూన్య intersect_సమితి (స్థిరరాశి hb_సమితి_t &glyphs, Iterable_బహిర్గతం&& intersect_glyphs) స్థిరరాశి
   {
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
-    hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    hb_codepoint_t చివరి = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& range : range_రికార్డు)
     {
-      if (unlikely (range.first < last))
-        break;
-      last = range.last;
-      hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
-      cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
-      uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      ఒకవేళ (unlikely (range.మొదటి < చివరి))
+        ఆపు;
+      చివరి = range.చివరి;
+      hb_codepoint_t cursor = range.మొదటి & ~hb_బిట్టు_పుట_t::ELT_ముసుగు;
+      cursor = cursor ? cursor - 1 : HB_సమితి_విలువ_INVALID;
+      uint64_t బిట్లు;
+      అయితే (glyphs.తదుపరి_బిట్లు (&cursor, &బిట్లు) && cursor <= చివరి)
       {
-	if (range.first > cursor)
-	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
-	  bits &= (uint64_t (1) << (end + 1)) - 1;
-	add_intersected_bits (intersect_glyphs, cursor, bits);
+	ఒకవేళ (range.మొదటి > cursor)
+	  బిట్లు &= UINT64_MAX << (range.మొదటి - cursor);
+	గుర్తులేని పూర్ణాంకం చివర = చివరి - cursor;
+	ఒకవేళ (చివర < hb_బిట్టు_పుట_t::ELT_బిట్లు - 1)
+	  బిట్లు &= (uint64_t (1) << (చివర + 1)) - 1;
+	కూడు_intersected_బిట్లు (intersect_glyphs, cursor, బిట్లు);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  గుర్తులేని ఖర్చు () స్థిరరాశి { తిరిగి hb_బిట్టు_storage ((గుర్తులేని) range_రికార్డు.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    కొరకు (స్థిరరాశి స్వయంచాలక& range: range_రికార్డు)
+      ఒకవేళ (unlikely (!range.collect_coverage (glyphs)))
+        తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  public:
+  బహిరంగ:
   /* Older compilers need this to be public. */
-  struct iter_t
+  నిర్మాణం iter_t
   {
-    void init (const CoverageFormat2_4 &c_)
+    శూన్య init (స్థిరరాశి CoverageFormat2_4 &c_)
     {
       c = &c_;
       coverage = 0;
       i = 0;
-      j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      j = c->range_రికార్డు.len ? c->range_రికార్డు[0].మొదటి : 0;
+      ఒకవేళ (unlikely (c->range_రికార్డు[0].మొదటి > c->range_రికార్డు[0].చివరి))
       {
         /* Broken table. Skip. */
-        i = c->rangeRecord.len;
+        i = c->range_రికార్డు.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
-    void __next__ ()
+    తార్కిక __more__ () స్థిరరాశి { తిరిగి i < c->range_రికార్డు.len; }
+    శూన్య __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      ఒకవేళ (j >= c->range_రికార్డు[i].చివరి)
       {
         i++;
-        if (__more__ ())
+        ఒకవేళ (__more__ ())
         {
-          unsigned int old = coverage;
-          j = c->rangeRecord.arrayZ[i].first;
-          coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          గుర్తులేని పూర్ణాంకం old = coverage;
+          j = c->range_రికార్డు.arrayZ[i].మొదటి;
+          coverage = c->range_రికార్డు.arrayZ[i].value;
+          ఒకవేళ (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
              * consecutive and monotonically increasing,
              * ie. iota(). */
-           i = c->rangeRecord.len;
+           i = c->range_రికార్డు.len;
            j = 0;
-           return;
+           తిరిగి;
           }
         }
-        else
+        లేకపోతే
           j = 0;
-        return;
+        తిరిగి;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
-    iter_t __end__ () const
+    hb_codepoint_t get_glyph () స్థిరరాశి { తిరిగి j; }
+    తార్కిక క్రియాకారకం != (స్థిరరాశి iter_t& o) స్థిరరాశి
+    { తిరిగి i != o.i || j != o.j; }
+    iter_t __end__ () స్థిరరాశి
     {
       iter_t it;
       it.init (*c);
-      it.i = c->rangeRecord.len;
+      it.i = c->range_రికార్డు.len;
       it.j = 0;
-      return it;
+      తిరిగి it;
     }
 
-    private:
-    const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    అంతరంగ:
+    స్థిరరాశి నిర్మాణం CoverageFormat2_4 *c;
+    గుర్తులేని పూర్ణాంకం i, coverage;
     hb_codepoint_t j;
   };
-  private:
+  అంతరంగ:
 };
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
+#అయితే_ముగింపు  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH

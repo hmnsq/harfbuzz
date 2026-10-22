@@ -24,73 +24,73 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_STATIC_CC
-#define HB_STATIC_CC
-#ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
+#నిర్వచితం_కాకపోతే HB_STATIC_CC
+#నిర్వచించు HB_STATIC_CC
+#నిర్వచితమైతే HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#అన్తర్భావ "hb-aat-layout-common.hh"
+#అన్తర్భావ "hb-aat-layout-feat-table.hh"
+#అన్తర్భావ "hb-cff-interp-common.hh"
+#అన్తర్భావ "hb-ot-layout-common.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "OT/Color/COLR/COLR.hh"
+#అన్తర్భావ "hb-ot-glyf-table.hh"
+#అన్తర్భావ "hb-ot-head-table.hh"
+#అన్తర్భావ "hb-ot-hmtx-table.hh"
+#అన్తర్భావ "hb-ot-maxp-table.hh"
 
-#ifndef HB_NO_VISIBILITY
+#నిర్వచితం_కాకపోతే HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#అన్తర్భావ "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t స్థిరరాశి _hb_NullPool[(HB_NULL_POOL_కొలత + పరిమాణం (uint64_t) - 1) / పరిమాణం (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_కొలత + పరిమాణం (uint64_t) - 1) / పరిమాణం (uint64_t)] = {};
 
-DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
-DEFINE_NULL_NAMESPACE_BYTES (OT, RangeRecord) = {0x01};
-DEFINE_NULL_NAMESPACE_BYTES (OT, ClipRecord) = {0x01};
-DEFINE_NULL_NAMESPACE_BYTES (OT, CmapSubtableLongGroup) = {0x00,0x00,0x00,0x01, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00};
-DEFINE_NULL_NAMESPACE_BYTES (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_బైట్లు (OT, సూచీ) =  {0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_బైట్లు (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_బైట్లు (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
+DEFINE_NULL_NAMESPACE_బైట్లు (OT, Range_రికార్డు) = {0x01};
+DEFINE_NULL_NAMESPACE_బైట్లు (OT, Clip_రికార్డు) = {0x01};
+DEFINE_NULL_NAMESPACE_బైట్లు (OT, Cmap_Subtable_Long_సమూహం) = {0x00,0x00,0x00,0x01, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00};
+DEFINE_NULL_NAMESPACE_బైట్లు (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_బైట్లు (AAT, Lookup) = {0xFF,0xFF};
 
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+స్థిరరాశి hb_codepoint_t minus_1 = -1;
+స్థిర స్థిరరాశి గుర్తులేని అక్షరం static_endchar_str[] = {Op_సంకేతం_endchar};
+స్థిరరాశి గుర్తులేని అక్షరం *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+స్థిర అంతఃవరుస గుర్తులేని
+ఎక్కించు_అంకె_glyphs_from_maxp (స్థిరరాశి hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  తిరిగి face->పట్టిక.maxp->get_అంకె_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+గుర్తులేని పూర్ణాంకం
+hb_face_t::ఎక్కించు_అంకె_glyphs () స్థిరరాశి
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  అంకె_glyphs = ఎక్కించు_అంకె_glyphs_from_maxp (ఇది);
+  తిరిగి అంకె_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+గుర్తులేని పూర్ణాంకం
+hb_face_t::ఎక్కించు_upem () స్థిరరాశి
 {
-  unsigned int ret = table.head->get_upem ();
+  గుర్తులేని పూర్ణాంకం ret = పట్టిక.తల_2->get_upem ();
   upem = ret;
-  return ret;
+  తిరిగి ret;
 }
 
-#endif
+#అయితే_ముగింపు
 
-#endif /* HB_STATIC_CC pacify */
-#endif /* HB_STATIC_CC guard */
+#అయితే_ముగింపు /* HB_STATIC_CC pacify */
+#అయితే_ముగింపు /* HB_STATIC_CC guard */

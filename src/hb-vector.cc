@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#అన్తర్భావ "hb-machinery.hh"
+#అన్తర్భావ "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,62 +74,62 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+నిర్మాణం hb_సదిశ_decimal_బిందువు_t
 {
-  char value[8];
+  అక్షరం value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+స్థిర hb_సదిశ_decimal_బిందువు_t hb_సదిశ_decimal_బిందువు_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+స్థిర అంతఃవరుస శూన్య free_static_svg_decimal_బిందువు ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
-  : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
+స్థిర నిర్మాణం hb_సదిశ_decimal_బిందువు_lazy_loader_t
+  : hb_lazy_loader_t<hb_సదిశ_decimal_బిందువు_t, hb_సదిశ_decimal_బిందువు_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  స్థిర hb_సదిశ_decimal_బిందువు_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    స్వయంచాలక *p = (hb_సదిశ_decimal_బిందువు_t *) hb_calloc (1, పరిమాణం (hb_సదిశ_decimal_బిందువు_t));
+    ఒకవేళ (!p)
+      తిరిగి శూన్యసూచిక;
 
     p->value[0] = '.';
     p->value[1] = '\0';
 
-#ifndef HB_NO_SETLOCALE
-    lconv *lc = nullptr;
-#ifdef HAVE_LOCALECONV_L
+#నిర్వచితం_కాకపోతే HB_NO_SETLOCALE
+    lconv *lc = శూన్యసూచిక;
+#నిర్వచితమైతే HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    ఒకవేళ (current_locale)
       lc = localeconv_l (current_locale);
-#endif
-    if (!lc)
+#అయితే_ముగింపు
+    ఒకవేళ (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    ఒకవేళ (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, పరిమాణం (p->value) - 1);
+      p->value[పరిమాణం (p->value) - 1] = '\0';
     }
-#endif
+#అయితే_ముగింపు
 
-    hb_atexit (free_static_svg_decimal_point);
-    return p;
+    hb_atexit (free_static_svg_decimal_బిందువు);
+    తిరిగి p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  స్థిర శూన్య destroy (hb_సదిశ_decimal_బిందువు_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
-} static_svg_decimal_point;
+  స్థిర స్థిరరాశి hb_సదిశ_decimal_బిందువు_t *get_null ()
+  { తిరిగి &hb_సదిశ_decimal_బిందువు_default; }
+} static_svg_decimal_బిందువు;
 
-static inline void
-free_static_svg_decimal_point ()
+స్థిర అంతఃవరుస శూన్య
+free_static_svg_decimal_బిందువు ()
 {
-  static_svg_decimal_point.free_instance ();
+  static_svg_decimal_బిందువు.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+స్థిరరాశి అక్షరం *
+hb_సదిశ_decimal_బిందువు_get (శూన్య)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  తిరిగి static_svg_decimal_బిందువు.get_unconst ()->value;
 }

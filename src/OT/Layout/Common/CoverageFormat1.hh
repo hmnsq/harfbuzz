@@ -27,109 +27,109 @@
  */
 
 
-#ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
-#define OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
+#నిర్వచించు OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ Common {
 
-#define NOT_COVERED             ((unsigned int) -1)
+#నిర్వచించు NOT_COVERED             ((గుర్తులేని పూర్ణాంకం) -1)
 
-template <typename Types>
-struct CoverageFormat1_3
+మూస <రకం_పేరు Types>
+నిర్మాణం CoverageFormat1_3
 {
-  friend struct Coverage;
+  మిత్ర నిర్మాణం Coverage;
 
-  public:
+  బహిరంగ:
   HBUINT16      coverageFormat; /* Format identifier--format = 1 */
-  typename Types::template SortedArrayOf<typename Types::HBGlyphID>
+  రకం_పేరు Types::మూస Sorted_Array_యొక్క<రకం_పేరు Types::HBGlyphID>
                 glyphArray;     /* Array of GlyphIDs--in numerical order */
 
-  DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, glyphArray);
+  DEFINE_కొలత_ARRAY (2 + Types::HBUINT::static_కొలత, glyphArray);
 
-  private:
-  bool sanitize (hb_sanitize_context_t *c) const
+  అంతరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     return_trace (glyphArray.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  గుర్తులేని పూర్ణాంకం get_coverage (hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    unsigned int i;
-    glyphArray.bfind (glyph_id, &i, HB_NOT_FOUND_STORE, NOT_COVERED);
-    return i;
+    గుర్తులేని పూర్ణాంకం i;
+    glyphArray.bfind (glyph_id, &i, HB_NOT_దొరికింది_STORE, NOT_COVERED);
+    తిరిగి i;
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    return glyphArray.len;
+    తిరిగి glyphArray.len;
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  మూస <రకం_పేరు Iterator,
+      hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
     return_trace (glyphArray.serialize (c, glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    if (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
+    ఒకవేళ (glyphArray.len > glyphs->get_population () * hb_బిట్టు_storage ((గుర్తులేని) glyphArray.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      కొరకు (స్వయంచాలక g : *glyphs)
+        ఒకవేళ (get_coverage (g) != NOT_COVERED)
+	  తిరిగి నిజం;
+      తిరిగి అబద్ధం;
     }
 
-    for (const auto& g : glyphArray.as_array ())
-      if (glyphs->has (g))
-        return true;
-    return false;
+    కొరకు (స్థిరరాశి స్వయంచాలక& g : glyphArray.as_array ())
+      ఒకవేళ (glyphs->has (g))
+        తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
-  { return glyphs->has (glyphArray[index]); }
+  తార్కిక intersects_coverage (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం సూచీ_2) స్థిరరాశి
+  { తిరిగి glyphs->has (glyphArray[సూచీ_2]); }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  మూస <రకం_పేరు Iterable_బహిర్గతం,
+	    hb_requires (hb_is_sink_యొక్క (Iterable_బహిర్గతం, hb_codepoint_t))>
+  శూన్య intersect_సమితి (స్థిరరాశి hb_సమితి_t &glyphs, Iterable_బహిర్గతం&& intersect_glyphs) స్థిరరాశి
   {
-    unsigned count = glyphArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphs.has (glyphArray[i]))
+    గుర్తులేని లెక్క = glyphArray.len;
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+      ఒకవేళ (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
+  గుర్తులేని ఖర్చు () స్థిరరాశి { తిరిగి hb_బిట్టు_storage ((గుర్తులేని) glyphArray.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_sorted_array (glyphArray.as_array ()); }
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
+  { తిరిగి glyphs->కూడు_sorted_array (glyphArray.as_array ()); }
 
-  public:
+  బహిరంగ:
   /* Older compilers need this to be public. */
-  struct iter_t
+  నిర్మాణం iter_t
   {
-    void init (const struct CoverageFormat1_3 &c_) { c = &c_; i = 0; }
-    bool __more__ () const { return i < c->glyphArray.len; }
-    void __next__ () { i++; }
-    hb_codepoint_t get_glyph () const { return c->glyphArray[i]; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i; }
-    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; return it; }
+    శూన్య init (స్థిరరాశి నిర్మాణం CoverageFormat1_3 &c_) { c = &c_; i = 0; }
+    తార్కిక __more__ () స్థిరరాశి { తిరిగి i < c->glyphArray.len; }
+    శూన్య __next__ () { i++; }
+    hb_codepoint_t get_glyph () స్థిరరాశి { తిరిగి c->glyphArray[i]; }
+    తార్కిక క్రియాకారకం != (స్థిరరాశి iter_t& o) స్థిరరాశి
+    { తిరిగి i != o.i; }
+    iter_t __end__ () స్థిరరాశి { iter_t it; it.init (*c); it.i = c->glyphArray.len; తిరిగి it; }
 
-    private:
-    const struct CoverageFormat1_3 *c;
-    unsigned int i;
+    అంతరంగ:
+    స్థిరరాశి నిర్మాణం CoverageFormat1_3 *c;
+    గుర్తులేని పూర్ణాంకం i;
   };
-  private:
+  అంతరంగ:
 };
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
+#అయితే_ముగింపు  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH

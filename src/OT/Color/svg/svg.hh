@@ -22,612 +22,612 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef OT_COLOR_SVG_SVG_HH
-#define OT_COLOR_SVG_SVG_HH
+#నిర్వచితం_కాకపోతే OT_COLOR_SVG_SVG_HH
+#నిర్వచించు OT_COLOR_SVG_SVG_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-blob.hh"
-#include "../../../hb-limits.hh"
-#include "../../../hb-map.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-zlib.hh"
-#include <ctype.h>
-#include <string.h>
+#అన్తర్భావ "../../../hb-open-type.hh"
+#అన్తర్భావ "../../../hb-blob.hh"
+#అన్తర్భావ "../../../hb-limits.hh"
+#అన్తర్భావ "../../../hb-map.hh"
+#అన్తర్భావ "../../../hb-paint.hh"
+#అన్తర్భావ "../../../hb-zlib.hh"
+#అన్తర్భావ <ctype.h>
+#అన్తర్భావ <string.h>
 
 /*
  * SVG -- SVG (Scalable Vector Graphics)
  * https://docs.microsoft.com/en-us/typography/opentype/spec/svg
  */
 
-#define HB_OT_TAG_SVG HB_TAG('S','V','G',' ')
+#నిర్వచించు HB_OT_ట్యాగ్_SVG HB_ట్యాగ్('S','V','G',' ')
 
 
-namespace OT {
+నామాకాశ OT {
 
-static inline hb_blob_t *
+స్థిర అంతఃవరుస hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
-                                     unsigned *len)
+                                     స్థిరరాశి అక్షరం **svg,
+                                     గుర్తులేని *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
-  unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  గుర్తులేని దత్తాంశం_len = 0;
+  స్థిరరాశి అక్షరం *దత్తాంశం = hb_blob_get_దత్తాంశం (blob, &దత్తాంశం_len);
 
-  if (!data || !data_len)
-    goto fail;
+  ఒకవేళ (!దత్తాంశం || !దత్తాంశం_len)
+    వెళ్ళు fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  ఒకవేళ (hb_blob_is_gzip (దత్తాంశం, దత్తాంశం_len))
   {
-    uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
-        unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-      goto fail;
+    uint32_t expected_కొలత = 0;
+    ఒకవేళ (hb_gzip_get_uncompressed_కొలత (దత్తాంశం, దత్తాంశం_len, &expected_కొలత) &&
+        unlikely ((size_t) expected_కొలత > (size_t) HB_SVG_MAX_DOCUMENT_కొలత))
+      వెళ్ళు fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
-                                                       HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
-      goto fail;
+                                                       HB_SVG_MAX_DOCUMENT_కొలత);
+    ఒకవేళ (!uncompressed)
+      వెళ్ళు fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
-    data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
-      goto fail;
+    దత్తాంశం = hb_blob_get_దత్తాంశం (blob, &దత్తాంశం_len);
+    ఒకవేళ (!దత్తాంశం || !దత్తాంశం_len)
+      వెళ్ళు fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-    goto fail;
+  ఒకవేళ (unlikely ((size_t) దత్తాంశం_len > (size_t) HB_SVG_MAX_DOCUMENT_కొలత))
+    వెళ్ళు fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  ఒకవేళ (svg) *svg = దత్తాంశం;
+  ఒకవేళ (len) *len = దత్తాంశం_len;
+  తిరిగి blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  ఒకవేళ (svg) *svg = శూన్యసూచిక;
+  ఒకవేళ (len) *len = 0;
+  తిరిగి శూన్యసూచిక;
 }
 
-struct SVGDocumentIndexEntry
+నిర్మాణం SVGDocument_సూచీ_నమోదు
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  పూర్ణాంకం cmp (hb_codepoint_t g) స్థిరరాశి
+  { తిరిగి g < ప్రారంభం_Glyph_ID ? -1 : g > చివర_Glyph_ID ? 1 : 0; }
 
-  hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  hb_codepoint_t get_ప్రారంభం_glyph () స్థిరరాశి
+  { తిరిగి ప్రారంభం_Glyph_ID; }
 
-  hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  hb_codepoint_t get_చివర_glyph () స్థిరరాశి
+  { తిరిగి చివర_Glyph_ID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, గుర్తులేని పూర్ణాంకం సూచీ_స్థానభ్రంశం) స్థిరరాశి
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
-				    svgDocLength);
+    తిరిగి hb_blob_create_sub_blob (svg_blob,
+				    సూచీ_స్థానభ్రంశం + (గుర్తులేని పూర్ణాంకం) svgDoc,
+				    svg_Doc_నిడివి);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  svgDoc.sanitize (c, base, svgDocLength));
+		  svgDoc.sanitize (c, పునాది, svg_Doc_నిడివి));
   }
 
-  protected:
-  HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
+  రక్షిత:
+  HBUINT16	ప్రారంభం_Glyph_ID;	/* The first glyph ID in the range described by
 				 * this index entry. */
-  HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
+  HBUINT16	చివర_Glyph_ID;	/* The last glyph ID in the range described by
 				 * this index entry. Must be >= startGlyphID. */
-  NNOffset32To<UnsizedArrayOf<HBUINT8>>
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<HBUINT8>>
 		svgDoc;		/* Offset from the beginning of the SVG Document Index
 				 * to an SVG document. Must be non-zero. */
-  HBUINT32	svgDocLength;	/* Length of the SVG document.
+  HBUINT32	svg_Doc_నిడివి;	/* Length of the SVG document.
 				 * Must be non-zero. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (12);
 };
 
-struct SVG
+నిర్మాణం SVG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_SVG;
 
-  struct svg_id_span_t
+  నిర్మాణం svg_id_పరిధి_t
   {
-    const char *p;
-    unsigned len;
+    స్థిరరాశి అక్షరం *p;
+    గుర్తులేని len;
 
-    bool operator == (const svg_id_span_t &o) const
+    తార్కిక క్రియాకారకం == (స్థిరరాశి svg_id_పరిధి_t &o) స్థిరరాశి
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      తిరిగి len == o.len && !memcmp (p, o.p, len);
     }
 
-    uint32_t hash () const
+    uint32_t hash () స్థిరరాశి
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+      కొరకు (గుర్తులేని i = 0; i < len; i++)
+        h = h * 33u + (గుర్తులేని అక్షరం) p[i];
+      తిరిగి h;
     }
   };
 
-  struct svg_defs_entry_t
+  నిర్మాణం svg_defs_నమోదు_t
   {
-    svg_id_span_t id;
-    unsigned start;
-    unsigned end;
+    svg_id_పరిధి_t id;
+    గుర్తులేని ప్రారంభం;
+    గుర్తులేని చివర;
   };
 
-  struct svg_doc_cache_t
+  నిర్మాణం svg_doc_cache_t
   {
-    hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
-    unsigned len = 0;
-    hb_vector_t<svg_defs_entry_t> defs_entries;
-    hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
-    hb_codepoint_t end_glyph = HB_CODEPOINT_INVALID;
-    hb_vector_t<hb_pair_t<uint32_t, uint32_t>> glyph_spans;
-    hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
+    hb_blob_t *blob = శూన్యసూచిక;
+    స్థిరరాశి అక్షరం *svg = శూన్యసూచిక;
+    గుర్తులేని len = 0;
+    hb_సదిశ_t<svg_defs_నమోదు_t> defs_entries;
+    hb_codepoint_t ప్రారంభం_glyph = HB_CODEPOINT_INVALID;
+    hb_codepoint_t చివర_glyph = HB_CODEPOINT_INVALID;
+    hb_సదిశ_t<hb_pair_t<uint32_t, uint32_t>> glyph_spans;
+    hb_hashmap_t<svg_id_పరిధి_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి svgDocEntries; }
 
-  struct accelerator_t
+  నిర్మాణం accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
-    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
+    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) స్థిరరాశి
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
-							       table->svgDocEntries);
+      తిరిగి పట్టిక->get_glyph_నమోదు (glyph_id).reference_blob (పట్టిక.get_blob (),
+							       పట్టిక->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    గుర్తులేని get_document_లెక్క () స్థిరరాశి
+    { తిరిగి పట్టిక->get_document_లెక్క (); }
 
-    bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    తార్కిక get_glyph_document_సూచీ (hb_codepoint_t glyph_id, గుర్తులేని *సూచీ_2) స్థిరరాశి
+    { తిరిగి పట్టిక->get_glyph_document_సూచీ (glyph_id, సూచీ_2); }
 
-    bool get_document_glyph_range (unsigned index,
-                                   hb_codepoint_t *start_glyph,
-                                   hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+    తార్కిక get_document_glyph_range (గుర్తులేని సూచీ_2,
+                                   hb_codepoint_t *ప్రారంభం_glyph,
+                                   hb_codepoint_t *చివర_glyph) స్థిరరాశి
+    { తిరిగి పట్టిక->get_document_glyph_range (సూచీ_2, ప్రారంభం_glyph, చివర_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పట్టిక->has_దత్తాంశం (); }
 
-    const svg_doc_cache_t *
+    స్థిరరాశి svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
-                             unsigned len,
-                             unsigned doc_index,
-                             hb_codepoint_t start_glyph,
-                             hb_codepoint_t end_glyph) const;
+                             స్థిరరాశి అక్షరం *svg,
+                             గుర్తులేని len,
+                             గుర్తులేని doc_సూచీ,
+                             hb_codepoint_t ప్రారంభం_glyph,
+                             hb_codepoint_t చివర_glyph) స్థిరరాశి;
 
-    const char *
-    doc_cache_get_svg (const svg_doc_cache_t *doc,
-                       unsigned *len) const;
+    స్థిరరాశి అక్షరం *
+    doc_cache_get_svg (స్థిరరాశి svg_doc_cache_t *doc,
+                       గుర్తులేని *len) స్థిరరాశి;
 
-    const hb_vector_t<svg_defs_entry_t> *
-    doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const;
+    స్థిరరాశి hb_సదిశ_t<svg_defs_నమోదు_t> *
+    doc_cache_get_defs_entries (స్థిరరాశి svg_doc_cache_t *doc) స్థిరరాశి;
 
-    bool
-    doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+    తార్కిక
+    doc_cache_get_glyph_పరిధి (స్థిరరాశి svg_doc_cache_t *doc,
                               hb_codepoint_t glyph,
-                              unsigned *start,
-                              unsigned *end) const;
+                              గుర్తులేని *ప్రారంభం,
+                              గుర్తులేని *చివర) స్థిరరాశి;
 
-    bool
-    doc_cache_find_id_span (const svg_doc_cache_t *doc,
-                            svg_id_span_t id,
-                            unsigned *start,
-                            unsigned *end) const;
+    తార్కిక
+    doc_cache_కనుగొను_id_పరిధి (స్థిరరాశి svg_doc_cache_t *doc,
+                            svg_id_పరిధి_t id,
+                            గుర్తులేని *ప్రారంభం,
+                            గుర్తులేని *చివర) స్థిరరాశి;
 
-    bool
-    doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
-                            unsigned *start,
-                            unsigned *end) const;
+    తార్కిక
+    doc_cache_కనుగొను_id_cstr (స్థిరరాశి svg_doc_cache_t *doc,
+                            స్థిరరాశి అక్షరం *id,
+                            గుర్తులేని *ప్రారంభం,
+                            గుర్తులేని *చివర) స్థిరరాశి;
 
-    bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    తార్కిక paint_glyph (hb_font_t *font HB_వాడని, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, శూన్య *దత్తాంశం) స్థిరరాశి
     {
-      if (!has_data ())
-        return false;
+      ఒకవేళ (!has_దత్తాంశం ())
+        తిరిగి అబద్ధం;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      ఒకవేళ (blob == hb_blob_get_ఖాళీలు ())
+        తిరిగి అబద్ధం;
 
-      bool ret = funcs->image (data,
+      తార్కిక ret = funcs->image (దత్తాంశం,
 			       blob,
 			       0, 0,
 			       HB_PAINT_IMAGE_FORMAT_SVG,
 			       0.f,
-			       nullptr);
+			       శూన్యసూచిక);
 
       hb_blob_destroy (blob);
 
-      return ret;
+      తిరిగి ret;
     }
 
-    private:
+    అంతరంగ:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
-                    unsigned len,
-                    hb_codepoint_t start_glyph,
-                    hb_codepoint_t end_glyph) const;
+                    స్థిరరాశి అక్షరం *svg,
+                    గుర్తులేని len,
+                    hb_codepoint_t ప్రారంభం_glyph,
+                    hb_codepoint_t చివర_glyph) స్థిరరాశి;
 
-    static void destroy_doc_cache (svg_doc_cache_t *doc);
+    స్థిర శూన్య destroy_doc_cache (svg_doc_cache_t *doc);
 
-    hb_blob_ptr_t<SVG> table;
-    mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
-    public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    hb_blob_ptr_t<SVG> పట్టిక;
+    మార్చదగిన hb_సదిశ_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
+    బహిరంగ:
+    DEFINE_కొలత_STATIC (పరిమాణం (hb_blob_ptr_t<SVG>) +
+                        పరిమాణం (hb_సదిశ_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
-  const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  స్థిరరాశి SVGDocument_సూచీ_నమోదు &get_glyph_నమోదు (hb_codepoint_t glyph_id) స్థిరరాశి
+  { తిరిగి (ఇది+svgDocEntries).bsearch (glyph_id); }
 
-  unsigned get_document_count () const
+  గుర్తులేని get_document_లెక్క () స్థిరరాశి
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    ఒకవేళ (!has_దత్తాంశం ())
+      తిరిగి 0;
+    తిరిగి (ఇది + svgDocEntries).len;
   }
 
-  bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
+  తార్కిక get_glyph_document_సూచీ (hb_codepoint_t glyph_id, గుర్తులేని *సూచీ_2) స్థిరరాశి
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    ఒకవేళ (!has_దత్తాంశం ())
+      తిరిగి అబద్ధం;
+    తిరిగి (ఇది + svgDocEntries).bfind (glyph_id, సూచీ_2);
   }
 
-  bool get_document_glyph_range (unsigned index,
-                                 hb_codepoint_t *start_glyph,
-                                 hb_codepoint_t *end_glyph) const
+  తార్కిక get_document_glyph_range (గుర్తులేని సూచీ_2,
+                                 hb_codepoint_t *ప్రారంభం_glyph,
+                                 hb_codepoint_t *చివర_glyph) స్థిరరాశి
   {
-    if (!has_data ())
-      return false;
+    ఒకవేళ (!has_దత్తాంశం ())
+      తిరిగి అబద్ధం;
 
-    const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    స్థిరరాశి స్వయంచాలక &entries = ఇది + svgDocEntries;
+    ఒకవేళ (సూచీ_2 >= entries.len)
+      తిరిగి అబద్ధం;
 
-    const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    స్థిరరాశి స్వయంచాలక &నమోదు_2 = entries.arrayZ[సూచీ_2];
+    ఒకవేళ (ప్రారంభం_glyph) *ప్రారంభం_glyph = నమోదు_2.get_ప్రారంభం_glyph ();
+    ఒకవేళ (చివర_glyph) *చివర_glyph = నమోదు_2.get_చివర_glyph ();
+    తిరిగి నిజం;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (this+svgDocEntries).sanitize_shallow (c)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  (ఇది+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version (starting at 0). */
-  Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
+  రక్షిత:
+  HBUINT16	సంస్కరణ;	/* Table version (starting at 0). */
+  Offset32_గమ్యం<Sorted_Array16_యొక్క<SVGDocument_సూచీ_నమోదు>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
 				 * SVG Documents Index. Must be non-zero. */
 				/* Array of SVG Document Index Entries. */
   HBUINT32	reserved;	/* Set to 0. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
-namespace _hb_svg_cache_impl {
+నామాకాశ _hb_svg_cache_impl {
 
-struct glyph_entry_t
+నిర్మాణం glyph_నమోదు_t
 {
   hb_codepoint_t glyph;
-  uint32_t start;
-  uint32_t end;
+  uint32_t ప్రారంభం;
+  uint32_t చివర;
 };
 
-struct id_entry_t
+నిర్మాణం id_నమోదు_t
 {
-  SVG::svg_id_span_t id;
-  uint32_t start;
-  uint32_t end;
+  SVG::svg_id_పరిధి_t id;
+  uint32_t ప్రారంభం;
+  uint32_t చివర;
 };
 
-struct open_elem_t
+నిర్మాణం open_elem_t
 {
-  unsigned start;
-  SVG::svg_id_span_t id;
-  bool in_defs_content;
-  bool is_defs;
+  గుర్తులేని ప్రారంభం;
+  SVG::svg_id_పరిధి_t id;
+  తార్కిక లోపల_defs_content;
+  తార్కిక is_defs;
 };
 
-static const unsigned MAX_DEPTH = 128;
+స్థిర స్థిరరాశి గుర్తులేని MAX_లోతు = 128;
 
-static inline int
-find_substr (const char *s,
-             unsigned n,
-             unsigned from,
-             const char *needle,
-             unsigned needle_len)
+స్థిర అంతఃవరుస పూర్ణాంకం
+కనుగొను_substr (స్థిరరాశి అక్షరం *s,
+             గుర్తులేని n,
+             గుర్తులేని from,
+             స్థిరరాశి అక్షరం *needle,
+             గుర్తులేని needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  ఒకవేళ (!needle_len || from >= n || needle_len > n)
+    తిరిగి -1;
+  కొరకు (గుర్తులేని i = from; i + needle_len <= n; i++)
+    ఒకవేళ (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      తిరిగి (పూర్ణాంకం) i;
+  తిరిగి -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
-                       unsigned tag_start,
-                       unsigned tag_end,
-                       SVG::svg_id_span_t *id)
+స్థిర అంతఃవరుస తార్కిక
+parse_id_లోపల_ప్రారంభం_ట్యాగ్ (స్థిరరాశి అక్షరం *svg,
+                       గుర్తులేని ట్యాగ్_ప్రారంభం,
+                       గుర్తులేని ట్యాగ్_చివర,
+                       SVG::svg_id_పరిధి_t *id)
 {
-  unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  గుర్తులేని p = ట్యాగ్_ప్రారంభం;
+  అయితే (p + 4 <= ట్యాగ్_చివర)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    ఒకవేళ (!memcmp (svg + p, "id=\"", 4))
     {
-      unsigned b = p + 4;
-      unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      గుర్తులేని b = p + 4;
+      గుర్తులేని e = b;
+      అయితే (e < ట్యాగ్_చివర && svg[e] != '"') e++;
+      ఒకవేళ (e <= ట్యాగ్_చివర && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        తిరిగి నిజం;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    ఒకవేళ (!memcmp (svg + p, "id='", 4))
     {
-      unsigned b = p + 4;
-      unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      గుర్తులేని b = p + 4;
+      గుర్తులేని e = b;
+      అయితే (e < ట్యాగ్_చివర && svg[e] != '\'') e++;
+      ఒకవేళ (e <= ట్యాగ్_చివర && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        తిరిగి నిజం;
       }
     }
     p++;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static inline bool
-parse_glyph_id_span (const SVG::svg_id_span_t &id,
+స్థిర అంతఃవరుస తార్కిక
+parse_glyph_id_పరిధి (స్థిరరాశి SVG::svg_id_పరిధి_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  ఒకవేళ (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    తిరిగి అబద్ధం;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  కొరకు (గుర్తులేని i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    గుర్తులేని అక్షరం c = (గుర్తులేని అక్షరం) id.p[i];
+    ఒకవేళ (c < '0' || c > '9')
+      తిరిగి అబద్ధం;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    ఒకవేళ (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      తిరిగి అబద్ధం;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  తిరిగి నిజం;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
-                            unsigned len,
-                            hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
-                            hb_vector_t<glyph_entry_t> *glyph_spans,
-                            hb_vector_t<id_entry_t> *id_entries)
+స్థిర అంతఃవరుస తార్కిక
+parse_cache_entries_రేఖీయ (స్థిరరాశి అక్షరం *svg,
+                            గుర్తులేని len,
+                            hb_సదిశ_t<SVG::svg_defs_నమోదు_t> *defs_entries,
+                            hb_సదిశ_t<glyph_నమోదు_t> *glyph_spans,
+                            hb_సదిశ_t<id_నమోదు_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
-  unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  open_elem_t దొంతర[MAX_లోతు] = {};
+  గుర్తులేని లోతు = 0;
+  ఒకవేళ (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    తిరిగి అబద్ధం;
 
-  unsigned defs_depth = 0;
-  unsigned i = 0;
-  while (i < len)
+  గుర్తులేని defs_లోతు = 0;
+  గుర్తులేని i = 0;
+  అయితే (i < len)
   {
-    if (svg[i] != '<')
+    ఒకవేళ (svg[i] != '<')
     {
       i++;
-      continue;
+      కొనసాగు;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    ఒకవేళ (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
-      i = (unsigned) cend + 3;
-      continue;
+      పూర్ణాంకం cend = కనుగొను_substr (svg, len, i + 4, "-->", 3);
+      ఒకవేళ (cend < 0) తిరిగి అబద్ధం;
+      i = (గుర్తులేని) cend + 3;
+      కొనసాగు;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    ఒకవేళ (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
-      i = (unsigned) cend + 3;
-      continue;
+      పూర్ణాంకం cend = కనుగొను_substr (svg, len, i + 9, "]]>", 3);
+      ఒకవేళ (cend < 0) తిరిగి అబద్ధం;
+      i = (గుర్తులేని) cend + 3;
+      కొనసాగు;
     }
 
-    bool closing = (i + 1 < len && svg[i + 1] == '/');
-    bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
+    తార్కిక closing = (i + 1 < len && svg[i + 1] == '/');
+    తార్కిక special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
-    unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    గుర్తులేని gt = i + 1;
+    అక్షరం quote = 0;
+    అయితే (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      అక్షరం c = svg[gt];
+      ఒకవేళ (quote)
       {
-        if (c == quote) quote = 0;
+        ఒకవేళ (c == quote) quote = 0;
       }
-      else
+      లేకపోతే
       {
-        if (c == '"' || c == '\'')
+        ఒకవేళ (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        లేకపోతే ఒకవేళ (c == '>')
+          ఆపు;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    ఒకవేళ (gt >= len)
+      తిరిగి అబద్ధం;
 
-    if (special)
+    ఒకవేళ (special)
     {
       i = gt + 1;
-      continue;
+      కొనసాగు;
     }
 
-    unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
-    unsigned name_len = 0;
-    while (p + name_len < gt)
+    గుర్తులేని p = i + (closing ? 2 : 1);
+    అయితే (p < gt && ఖాళీనా ((గుర్తులేని అక్షరం) svg[p])) p++;
+    స్థిరరాశి అక్షరం *name = svg + p;
+    గుర్తులేని name_len = 0;
+    అయితే (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      గుర్తులేని అక్షరం c = (గుర్తులేని అక్షరం) name[name_len];
+      ఒకవేళ (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        ఆపు;
       name_len++;
     }
-    bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
+    తార్కిక is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    ఒకవేళ (closing)
     {
-      if (!depth)
+      ఒకవేళ (!లోతు)
       {
         i = gt + 1;
-        continue;
+        కొనసాగు;
       }
 
-      open_elem_t e = stack[--depth];
-      unsigned end = gt + 1;
+      open_elem_t e = దొంతర[--లోతు];
+      గుర్తులేని చివర = gt + 1;
 
-      if (e.id.len)
+      ఒకవేళ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        ఒకవేళ (unlikely (!id_entries->నెట్టు_or_fail (id_నమోదు_t {e.id, (uint32_t) e.ప్రారంభం, (uint32_t) చివర})))
+          తిరిగి అబద్ధం;
 
-        if (e.in_defs_content)
+        ఒకవేళ (e.లోపల_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
-          auto &slot = defs_entries->tail ();
-          slot.id = e.id;
-          slot.start = e.start;
-          slot.end = end;
+          ఒకవేళ (unlikely (!defs_entries->నెట్టు_or_fail ()))
+            తిరిగి అబద్ధం;
+          స్వయంచాలక &స్థానం = defs_entries->తోక ();
+          స్థానం.id = e.id;
+          స్థానం.ప్రారంభం = e.ప్రారంభం;
+          స్థానం.చివర = చివర;
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        ఒకవేళ (parse_glyph_id_పరిధి (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          ఒకవేళ (unlikely (!glyph_spans->నెట్టు_or_fail (glyph_నమోదు_t {gid, (uint32_t) e.ప్రారంభం, (uint32_t) చివర})))
+            తిరిగి అబద్ధం;
         }
       }
 
-      if (e.is_defs && defs_depth)
-        defs_depth--;
+      ఒకవేళ (e.is_defs && defs_లోతు)
+        defs_లోతు--;
 
-      i = end;
-      continue;
+      i = చివర;
+      కొనసాగు;
     }
 
-    SVG::svg_id_span_t id = {};
-    parse_id_in_start_tag (svg, i, gt, &id);
+    SVG::svg_id_పరిధి_t id = {};
+    parse_id_లోపల_ప్రారంభం_ట్యాగ్ (svg, i, gt, &id);
 
-    unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
-    bool self_closing = (r > i && svg[r - 1] == '/');
+    గుర్తులేని r = gt;
+    అయితే (r > i && ఖాళీనా ((గుర్తులేని అక్షరం) svg[r - 1])) r--;
+    తార్కిక self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
-    e.start = i;
+    e.ప్రారంభం = i;
     e.id = id;
-    e.in_defs_content = defs_depth > 0;
+    e.లోపల_defs_content = defs_లోతు > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    ఒకవేళ (self_closing)
     {
-      unsigned end = gt + 1;
-      if (e.id.len)
+      గుర్తులేని చివర = gt + 1;
+      ఒకవేళ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        ఒకవేళ (unlikely (!id_entries->నెట్టు_or_fail (id_నమోదు_t {e.id, (uint32_t) e.ప్రారంభం, (uint32_t) చివర})))
+          తిరిగి అబద్ధం;
 
-        if (e.in_defs_content)
+        ఒకవేళ (e.లోపల_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
-          auto &slot = defs_entries->tail ();
-          slot.id = e.id;
-          slot.start = e.start;
-          slot.end = end;
+          ఒకవేళ (unlikely (!defs_entries->నెట్టు_or_fail ()))
+            తిరిగి అబద్ధం;
+          స్వయంచాలక &స్థానం = defs_entries->తోక ();
+          స్థానం.id = e.id;
+          స్థానం.ప్రారంభం = e.ప్రారంభం;
+          స్థానం.చివర = చివర;
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        ఒకవేళ (parse_glyph_id_పరిధి (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          ఒకవేళ (unlikely (!glyph_spans->నెట్టు_or_fail (glyph_నమోదు_t {gid, (uint32_t) e.ప్రారంభం, (uint32_t) చివర})))
+            తిరిగి అబద్ధం;
         }
       }
     }
-    else
+    లేకపోతే
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
-      stack[depth++] = e;
-      if (is_defs)
-        defs_depth++;
+      ఒకవేళ (unlikely (లోతు >= MAX_లోతు))
+        తిరిగి అబద్ధం;
+      దొంతర[లోతు++] = e;
+      ఒకవేళ (is_defs)
+        defs_లోతు++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+అంతఃవరుస
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
-  table = hb_sanitize_context_t ().reference_table<SVG> (face);
+  పట్టిక = hb_sanitize_context_t ().reference_పట్టిక<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  గుర్తులేని doc_లెక్క = పట్టిక->get_document_లెక్క ();
+  ఒకవేళ (doc_లెక్క && unlikely (!doc_caches.resize (doc_లెక్క)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
-    doc_caches.arrayZ[i].set_relaxed (nullptr);
+  కొరకు (గుర్తులేని i = 0; i < doc_caches.నిడివి; i++)
+    doc_caches.arrayZ[i].సమితి_relaxed (శూన్యసూచిక);
 }
 
-inline
+అంతఃవరుస
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < doc_caches.నిడివి; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
-  table.destroy ();
+  పట్టిక.destroy ();
 }
 
-inline void
+అంతఃవరుస శూన్య
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  ఒకవేళ (!doc)
+    తిరిగి;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,54 +635,54 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+అంతఃవరుస SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
-                                    unsigned len,
-                                    hb_codepoint_t start_glyph,
-                                    hb_codepoint_t end_glyph) const
+                                    స్థిరరాశి అక్షరం *svg,
+                                    గుర్తులేని len,
+                                    hb_codepoint_t ప్రారంభం_glyph,
+                                    hb_codepoint_t చివర_glyph) స్థిరరాశి
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  స్థిర స్థిరరాశి uint32_t INVALID_పరిధి = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  స్వయంచాలక *doc = (svg_doc_cache_t *) hb_malloc (పరిమాణం (svg_doc_cache_t));
+  ఒకవేళ (!doc)
+    తిరిగి శూన్యసూచిక;
 
-  doc->blob = nullptr;
-  doc->svg = nullptr;
+  doc->blob = శూన్యసూచిక;
+  doc->svg = శూన్యసూచిక;
   doc->len = 0;
   doc->defs_entries.init ();
-  doc->start_glyph = HB_CODEPOINT_INVALID;
-  doc->end_glyph = HB_CODEPOINT_INVALID;
+  doc->ప్రారంభం_glyph = HB_CODEPOINT_INVALID;
+  doc->చివర_glyph = HB_CODEPOINT_INVALID;
   doc->glyph_spans.init ();
   doc->id_spans.init ();
 
   doc->blob = hb_blob_reference (image);
   doc->svg = svg;
   doc->len = len;
-  doc->start_glyph = start_glyph;
-  doc->end_glyph = end_glyph;
+  doc->ప్రారంభం_glyph = ప్రారంభం_glyph;
+  doc->చివర_glyph = చివర_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  ఒకవేళ (unlikely (ప్రారంభం_glyph == HB_CODEPOINT_INVALID || చివర_glyph < ప్రారంభం_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  గుర్తులేని glyph_లెక్క = చివర_glyph - ప్రారంభం_glyph + 1;
+  ఒకవేళ (!doc->glyph_spans.resize ((పూర్ణాంకం) glyph_లెక్క))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
-    doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
+  కొరకు (గుర్తులేని i = 0; i < glyph_లెక్క; i++)
+    doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_పరిధి, INVALID_పరిధి);
 
-  hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
+  hb_సదిశ_t<_hb_svg_cache_impl::glyph_నమోదు_t> glyph_spans;
   glyph_spans.init ();
-  hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
+  hb_సదిశ_t<_hb_svg_cache_impl::id_నమోదు_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  ఒకవేళ (!_hb_svg_cache_impl::parse_cache_entries_రేఖీయ (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,140 +690,140 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < glyph_spans.నిడివి; i++)
   {
-    const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
-      continue;
-    doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
+    స్థిరరాశి స్వయంచాలక &పరిధి = glyph_spans.arrayZ[i];
+    ఒకవేళ (unlikely (పరిధి.glyph < ప్రారంభం_glyph || పరిధి.glyph > చివర_glyph))
+      కొనసాగు;
+    doc->glyph_spans.arrayZ[పరిధి.glyph - ప్రారంభం_glyph] = hb_pair_t<uint32_t, uint32_t> (పరిధి.ప్రారంభం, పరిధి.చివర);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < id_entries.నిడివి; i++)
   {
-    const auto &e = id_entries.arrayZ[i];
-    hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
-      continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    స్థిరరాశి స్వయంచాలక &e = id_entries.arrayZ[i];
+    hb_pair_t<uint32_t, uint32_t> *బహిర్గతం = శూన్యసూచిక;
+    ఒకవేళ (doc->id_spans.has (e.id, &బహిర్గతం))
+      కొనసాగు;
+    ఒకవేళ (unlikely (!doc->id_spans.సమితి (e.id, hb_pair_t<uint32_t, uint32_t> (e.ప్రారంభం, e.చివర))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      తిరిగి శూన్యసూచిక;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  తిరిగి doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+అంతఃవరుస స్థిరరాశి SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
-                                              unsigned len,
-                                              unsigned doc_index,
-                                              hb_codepoint_t start_glyph,
-                                              hb_codepoint_t end_glyph) const
+                                              స్థిరరాశి అక్షరం *svg,
+                                              గుర్తులేని len,
+                                              గుర్తులేని doc_సూచీ,
+                                              hb_codepoint_t ప్రారంభం_glyph,
+                                              hb_codepoint_t చివర_glyph) స్థిరరాశి
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  ఒకవేళ (doc_సూచీ >= doc_caches.నిడివి)
+    తిరిగి శూన్యసూచిక;
 
-  auto &slot = doc_caches.arrayZ[doc_index];
-  auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  స్వయంచాలక &స్థానం = doc_caches.arrayZ[doc_సూచీ];
+  స్వయంచాలక *doc = స్థానం.get_acquire ();
+  ఒకవేళ (doc)
+    తిరిగి doc;
 
-  auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  స్వయంచాలక *fresh = make_doc_cache (image, svg, len, ప్రారంభం_glyph, చివర_glyph);
+  ఒకవేళ (!fresh)
+    తిరిగి శూన్యసూచిక;
 
-  auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  స్వయంచాలక *expected = (svg_doc_cache_t *) శూన్యసూచిక;
+  ఒకవేళ (స్థానం.cmpexch (expected, fresh))
+    తిరిగి fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  తిరిగి expected;
 }
 
-inline const char *
-SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
-                                       unsigned *len) const
+అంతఃవరుస స్థిరరాశి అక్షరం *
+SVG::accelerator_t::doc_cache_get_svg (స్థిరరాశి svg_doc_cache_t *doc,
+                                       గుర్తులేని *len) స్థిరరాశి
 {
-  if (!doc)
+  ఒకవేళ (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    ఒకవేళ (len) *len = 0;
+    తిరిగి శూన్యసూచిక;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  ఒకవేళ (len) *len = doc->len;
+  తిరిగి doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
-SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
+అంతఃవరుస స్థిరరాశి hb_సదిశ_t<SVG::svg_defs_నమోదు_t> *
+SVG::accelerator_t::doc_cache_get_defs_entries (స్థిరరాశి svg_doc_cache_t *doc) స్థిరరాశి
 {
-  return doc ? &doc->defs_entries : nullptr;
+  తిరిగి doc ? &doc->defs_entries : శూన్యసూచిక;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+అంతఃవరుస తార్కిక
+SVG::accelerator_t::doc_cache_get_glyph_పరిధి (స్థిరరాశి svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
-                                              unsigned *start,
-                                              unsigned *end) const
+                                              గుర్తులేని *ప్రారంభం,
+                                              గుర్తులేని *చివర) స్థిరరాశి
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
-      glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+  స్థిర స్థిరరాశి uint32_t INVALID_పరిధి = 0xFFFFFFFFu;
+  ఒకవేళ (!doc || doc->ప్రారంభం_glyph == HB_CODEPOINT_INVALID ||
+      glyph < doc->ప్రారంభం_glyph || glyph > doc->చివర_glyph)
+    తిరిగి అబద్ధం;
 
-  const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  స్థిరరాశి స్వయంచాలక &పరిధి = doc->glyph_spans.arrayZ[glyph - doc->ప్రారంభం_glyph];
+  ఒకవేళ (పరిధి.మొదటి == INVALID_పరిధి)
+    తిరిగి అబద్ధం;
+  ఒకవేళ (unlikely (పరిధి.మొదటి > పరిధి.second || పరిధి.second > doc->len))
+    తిరిగి అబద్ధం;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  ఒకవేళ (ప్రారంభం) *ప్రారంభం = పరిధి.మొదటి;
+  ఒకవేళ (చివర) *చివర = పరిధి.second;
+  తిరిగి నిజం;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
-                                            svg_id_span_t id,
-                                            unsigned *start,
-                                            unsigned *end) const
+అంతఃవరుస తార్కిక
+SVG::accelerator_t::doc_cache_కనుగొను_id_పరిధి (స్థిరరాశి svg_doc_cache_t *doc,
+                                            svg_id_పరిధి_t id,
+                                            గుర్తులేని *ప్రారంభం,
+                                            గుర్తులేని *చివర) స్థిరరాశి
 {
-  if (!doc || !id.p || !id.len)
-    return false;
-  hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  ఒకవేళ (!doc || !id.p || !id.len)
+    తిరిగి అబద్ధం;
+  hb_pair_t<uint32_t, uint32_t> *పరిధి = శూన్యసూచిక;
+  ఒకవేళ (!doc->id_spans.has (id, &పరిధి))
+    తిరిగి అబద్ధం;
+  ఒకవేళ (unlikely (పరిధి->మొదటి > పరిధి->second || పరిధి->second > doc->len))
+    తిరిగి అబద్ధం;
+  ఒకవేళ (ప్రారంభం) *ప్రారంభం = పరిధి->మొదటి;
+  ఒకవేళ (చివర) *చివర = పరిధి->second;
+  తిరిగి నిజం;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
-                                            unsigned *start,
-                                            unsigned *end) const
+అంతఃవరుస తార్కిక
+SVG::accelerator_t::doc_cache_కనుగొను_id_cstr (స్థిరరాశి svg_doc_cache_t *doc,
+                                            స్థిరరాశి అక్షరం *id,
+                                            గుర్తులేని *ప్రారంభం,
+                                            గుర్తులేని *చివర) స్థిరరాశి
 {
-  if (!id) return false;
-  svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  ఒకవేళ (!id) తిరిగి అబద్ధం;
+  svg_id_పరిధి_t key = {id, (గుర్తులేని) అక్షరశ్రేణి_పొడవు (id)};
+  తిరిగి doc_cache_కనుగొను_id_పరిధి (doc, key, ప్రారంభం, చివర);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+నిర్మాణం SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_SVG_SVG_HH */
+#అయితే_ముగింపు /* OT_COLOR_SVG_SVG_HH */

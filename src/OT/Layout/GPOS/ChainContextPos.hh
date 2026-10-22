@@ -1,14 +1,14 @@
-#ifndef OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
-#define OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
+#నిర్వచించు OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-struct ChainContextPos : ChainContext {};
+నిర్మాణం ChainContextPos : ChainContext {};
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH */

@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GOBJECT_H
-#define HB_GOBJECT_H
-#define HB_GOBJECT_H_IN
+#నిర్వచితం_కాకపోతే HB_GOBJECT_H
+#నిర్వచించు HB_GOBJECT_H
+#నిర్వచించు HB_GOBJECT_H_లోపల
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include "hb-gobject-enums.h"
-#include "hb-gobject-structs.h"
+#అన్తర్భావ "hb-gobject-enums.h"
+#అన్తర్భావ "hb-gobject-structs.h"
 
 HB_BEGIN_DECLS
-HB_END_DECLS
+HB_చివర_DECLS
 
-#undef HB_GOBJECT_H_IN
-#endif /* HB_GOBJECT_H */
+#నిర్వచనం_రద్దు HB_GOBJECT_H_లోపల
+#అయితే_ముగింపు /* HB_GOBJECT_H */

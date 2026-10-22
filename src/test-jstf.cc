@@ -22,24 +22,24 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot-layout-jstf-table.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-ot-layout-jstf-table.hh"
 
-static hb_face_t *
-create_face (const char *data, unsigned length)
+స్థిర hb_face_t *
+create_face (స్థిరరాశి అక్షరం *దత్తాంశం, గుర్తులేని నిడివి)
 {
   hb_face_t *face = hb_face_builder_create ();
-  hb_blob_t *blob = hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
-				    nullptr, nullptr);
-  hb_always_assert (hb_face_builder_add_table (face, HB_OT_TAG_JSTF, blob));
+  hb_blob_t *blob = hb_blob_create (దత్తాంశం, నిడివి, HB_జ్ఞాపకం_బహుళకం_READONLY,
+				    శూన్యసూచిక, శూన్యసూచిక);
+  hb_always_assert (hb_face_builder_కూడు_పట్టిక (face, HB_OT_ట్యాగ్_JSTF, blob));
   hb_blob_destroy (blob);
-  return face;
+  తిరిగి face;
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  static const char data[] = {
+  స్థిర స్థిరరాశి అక్షరం దత్తాంశం[] = {
     0, 1, 0, 1,				/* version 1.1 */
     0, 0,				/* JstfScriptRecord count */
     0, 1,				/* JstfScriptRecord2 count */
@@ -50,31 +50,31 @@ main (int argc, char **argv)
     0, 1, 1, 0, 1,			/* ExtenderGlyph2 */
   };
 
-  hb_face_t *face = create_face (data, sizeof (data));
+  hb_face_t *face = create_face (దత్తాంశం, పరిమాణం (దత్తాంశం));
   hb_blob_ptr_t<OT::JSTF> jstf =
-      hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
-#ifndef HB_NO_BEYOND_64K
-  hb_always_assert (jstf.get_length ());
-  hb_always_assert (jstf->get_script_count () == 1);
-  hb_always_assert (jstf->get_script_tag (0) == HB_TAG ('a','r','a','b'));
-  unsigned index;
-  hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
-  hb_always_assert (index == 0);
-  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
-#else
-  hb_always_assert (jstf.get_length ());
-  hb_always_assert (!jstf->get_script_count ());
-#endif
+      hb_sanitize_context_t ().reference_పట్టిక<OT::JSTF> (face);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  hb_always_assert (jstf.get_నిడివి ());
+  hb_always_assert (jstf->get_script_లెక్క () == 1);
+  hb_always_assert (jstf->get_script_ట్యాగ్ (0) == HB_ట్యాగ్ ('a','r','a','b'));
+  గుర్తులేని సూచీ_2;
+  hb_always_assert (jstf->కనుగొను_script_సూచీ (HB_ట్యాగ్ ('a','r','a','b'), &సూచీ_2));
+  hb_always_assert (సూచీ_2 == 0);
+  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_లెక్క ());
+#లేకపోతే
+  hb_always_assert (jstf.get_నిడివి ());
+  hb_always_assert (!jstf->get_script_లెక్క ());
+#అయితే_ముగింపు
   jstf.destroy ();
   hb_face_destroy (face);
 
-#ifndef HB_NO_BEYOND_64K
-  face = create_face (data, sizeof (data) - 1);
-  jstf = hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
-  hb_always_assert (!jstf.get_length ());
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  face = create_face (దత్తాంశం, పరిమాణం (దత్తాంశం) - 1);
+  jstf = hb_sanitize_context_t ().reference_పట్టిక<OT::JSTF> (face);
+  hb_always_assert (!jstf.get_నిడివి ());
   jstf.destroy ();
   hb_face_destroy (face);
-#endif
+#అయితే_ముగింపు
 
-  return 0;
+  తిరిగి 0;
 }

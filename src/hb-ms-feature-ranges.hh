@@ -25,208 +25,208 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MS_FEATURE_RANGES_HH
-#define HB_MS_FEATURE_RANGES_HH
+#నిర్వచితం_కాకపోతే HB_MS_FEATURE_RANGES_HH
+#నిర్వచించు HB_MS_FEATURE_RANGES_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 /* Variations of this code exist in hb-coretext-shape.cc as well
  * as hb-aat-map.cc... */
 
-typedef struct hb_ms_feature_t {
-  uint32_t tag_le;
+రకనిర్వచనం నిర్మాణం hb_ms_feature_t {
+  uint32_t ట్యాగ్_le;
   uint32_t value;
 } hb_ms_feature_t;
 
-typedef struct hb_ms_features_t {
+రకనిర్వచనం నిర్మాణం hb_ms_features_t {
   hb_ms_feature_t *features;
-  uint32_t         num_features;
+  uint32_t         అంకె_features;
 } hb_ms_features_t;
 
-struct hb_ms_active_feature_t {
+నిర్మాణం hb_ms_చురుకైన_feature_t {
   hb_ms_feature_t fea;
-  unsigned int order;
+  గుర్తులేని పూర్ణాంకం క్రమం;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-    const auto *a = (const hb_ms_active_feature_t *) pa;
-    const auto *b = (const hb_ms_active_feature_t *) pb;
-    return a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
-	   a->order < b->order ? -1 : a->order > b->order ? 1 :
+  HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb) {
+    స్థిరరాశి స్వయంచాలక *a = (స్థిరరాశి hb_ms_చురుకైన_feature_t *) pa;
+    స్థిరరాశి స్వయంచాలక *b = (స్థిరరాశి hb_ms_చురుకైన_feature_t *) pb;
+    తిరిగి a->fea.ట్యాగ్_le < b->fea.ట్యాగ్_le ? -1 : a->fea.ట్యాగ్_le > b->fea.ట్యాగ్_le ? 1 :
+	   a->క్రమం < b->క్రమం ? -1 : a->క్రమం > b->క్రమం ? 1 :
 	   a->fea.value < b->fea.value ? -1 : a->fea.value > b->fea.value ? 1 :
 	   0;
   }
-  bool operator== (const hb_ms_active_feature_t& f) const
-  { return cmp (this, &f) == 0; }
+  తార్కిక క్రియాకారకం== (స్థిరరాశి hb_ms_చురుకైన_feature_t& f) స్థిరరాశి
+  { తిరిగి cmp (ఇది, &f) == 0; }
 };
 
-struct hb_ms_feature_event_t {
-  unsigned int index;
-  bool start;
-  hb_ms_active_feature_t feature;
+నిర్మాణం hb_ms_feature_event_t {
+  గుర్తులేని పూర్ణాంకం సూచీ_2;
+  తార్కిక ప్రారంభం;
+  hb_ms_చురుకైన_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
   {
-    const auto *a = (const hb_ms_feature_event_t *) pa;
-    const auto *b = (const hb_ms_feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
-	   a->start < b->start ? -1 : a->start > b->start ? 1 :
-	   hb_ms_active_feature_t::cmp (&a->feature, &b->feature);
+    స్థిరరాశి స్వయంచాలక *a = (స్థిరరాశి hb_ms_feature_event_t *) pa;
+    స్థిరరాశి స్వయంచాలక *b = (స్థిరరాశి hb_ms_feature_event_t *) pb;
+    తిరిగి a->సూచీ_2 < b->సూచీ_2 ? -1 : a->సూచీ_2 > b->సూచీ_2 ? 1 :
+	   a->ప్రారంభం < b->ప్రారంభం ? -1 : a->ప్రారంభం > b->ప్రారంభం ? 1 :
+	   hb_ms_చురుకైన_feature_t::cmp (&a->feature, &b->feature);
   }
 };
 
-struct hb_ms_range_record_t {
+నిర్మాణం hb_ms_range_రికార్డు_t {
   hb_ms_features_t features;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  గుర్తులేని పూర్ణాంకం సూచీ_మొదటి; /* == start */
+  గుర్తులేని పూర్ణాంకం సూచీ_చివరి;  /* == end - 1 */
 };
 
-static inline bool
-hb_ms_setup_features (const hb_feature_t                *features,
-		      unsigned int                       num_features,
-		      hb_vector_t<hb_ms_feature_t>      &feature_records, /* OUT */
-		      hb_vector_t<hb_ms_range_record_t> &range_records /* OUT */)
+స్థిర అంతఃవరుస తార్కిక
+hb_ms_అమరిక_features (స్థిరరాశి hb_feature_t                *features,
+		      గుర్తులేని పూర్ణాంకం                       అంకె_features,
+		      hb_సదిశ_t<hb_ms_feature_t>      &feature_రికార్డులు, /*బహిర్గతం*/
+		      hb_సదిశ_t<hb_ms_range_రికార్డు_t> &range_రికార్డులు /*బహిర్గతం*/)
 {
-  feature_records.clear ();
-  range_records.clear ();
+  feature_రికార్డులు.clear ();
+  range_రికార్డులు.clear ();
 
   /* Sort features by start/end events. */
-  hb_vector_t<hb_ms_feature_event_t> feature_events;
-  for (unsigned int i = 0; i < num_features; i++)
+  hb_సదిశ_t<hb_ms_feature_event_t> feature_events;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_features; i++)
   {
-    hb_ms_active_feature_t feature;
-    feature.fea.tag_le = hb_uint32_swap (features[i].tag);
+    hb_ms_చురుకైన_feature_t feature;
+    feature.fea.ట్యాగ్_le = hb_uint32_మార్పిడి (features[i].ట్యాగ్_2);
     feature.fea.value = features[i].value;
-    feature.order = i;
+    feature.క్రమం = i;
 
     hb_ms_feature_event_t *event;
 
     event = feature_events.push ();
-    event->index = features[i].start;
-    event->start = true;
+    event->సూచీ_2 = features[i].ప్రారంభం;
+    event->ప్రారంభం = నిజం;
     event->feature = feature;
 
     event = feature_events.push ();
-    event->index = features[i].end;
-    event->start = false;
+    event->సూచీ_2 = features[i].చివర;
+    event->ప్రారంభం = అబద్ధం;
     event->feature = feature;
   }
   feature_events.qsort ();
   /* Add a strategic final event. */
   {
-    hb_ms_active_feature_t feature;
-    feature.fea.tag_le = 0;
+    hb_ms_చురుకైన_feature_t feature;
+    feature.fea.ట్యాగ్_le = 0;
     feature.fea.value = 0;
-    feature.order = num_features + 1;
+    feature.క్రమం = అంకె_features + 1;
 
-    auto *event = feature_events.push ();
-    event->index = 0; /* This value does magic. */
-    event->start = false;
+    స్వయంచాలక *event = feature_events.push ();
+    event->సూచీ_2 = 0; /* This value does magic. */
+    event->ప్రారంభం = అబద్ధం;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
-  hb_vector_t<hb_ms_active_feature_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  hb_సదిశ_t<hb_ms_చురుకైన_feature_t> చురుకైన_features;
+  గుర్తులేని పూర్ణాంకం చివరి_సూచీ = 0;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < feature_events.నిడివి; i++)
   {
-    auto *event = &feature_events[i];
+    స్వయంచాలక *event = &feature_events[i];
 
-    if (event->index != last_index)
+    ఒకవేళ (event->సూచీ_2 != చివరి_సూచీ)
     {
       /* Save a snapshot of active features and the range. */
-      auto *range = range_records.push ();
-      auto offset = feature_records.length;
+      స్వయంచాలక *range = range_రికార్డులు.push ();
+      స్వయంచాలక స్థానభ్రంశం = feature_రికార్డులు.నిడివి;
 
-      active_features.qsort ();
-      for (unsigned int j = 0; j < active_features.length; j++)
+      చురుకైన_features.qsort ();
+      కొరకు (గుర్తులేని పూర్ణాంకం j = 0; j < చురుకైన_features.నిడివి; j++)
       {
-        if (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
+        ఒకవేళ (!j || చురుకైన_features[j].fea.ట్యాగ్_le != feature_రికార్డులు[feature_రికార్డులు.నిడివి - 1].ట్యాగ్_le)
         {
-          feature_records.push (active_features[j].fea);
+          feature_రికార్డులు.push (చురుకైన_features[j].fea);
         }
-        else
+        లేకపోతే
         {
           /* Overrides value for existing feature. */
-          feature_records[feature_records.length - 1].value = active_features[j].fea.value;
+          feature_రికార్డులు[feature_రికార్డులు.నిడివి - 1].value = చురుకైన_features[j].fea.value;
         }
       }
 
       /* Will convert to pointer after all is ready, since feature_records.array
        * may move as we grow it. */
-      range->features.features = reinterpret_cast<hb_ms_feature_t *> (offset);
-      range->features.num_features = feature_records.length - offset;
-      range->index_first = last_index;
-      range->index_last  = event->index - 1;
+      range->features.features = reinterpret_cast<hb_ms_feature_t *> (స్థానభ్రంశం);
+      range->features.అంకె_features = feature_రికార్డులు.నిడివి - స్థానభ్రంశం;
+      range->సూచీ_మొదటి = చివరి_సూచీ;
+      range->సూచీ_చివరి  = event->సూచీ_2 - 1;
 
-      last_index = event->index;
+      చివరి_సూచీ = event->సూచీ_2;
     }
 
-    if (event->start)
+    ఒకవేళ (event->ప్రారంభం)
     {
-      active_features.push (event->feature);
+      చురుకైన_features.push (event->feature);
     }
-    else
+    లేకపోతే
     {
-      auto *feature = active_features.lsearch (event->feature);
-      if (feature)
-        active_features.remove_ordered (feature - active_features.arrayZ);
+      స్వయంచాలక *feature = చురుకైన_features.lsearch (event->feature);
+      ఒకవేళ (feature)
+        చురుకైన_features.remove_ordered (feature - చురుకైన_features.arrayZ);
     }
   }
 
-  if (!range_records.length) /* No active feature found. */
-    num_features = 0;
+  ఒకవేళ (!range_రికార్డులు.నిడివి) /* No active feature found. */
+    అంకె_features = 0;
 
   /* Fixup the pointers. */
-  for (unsigned int i = 0; i < range_records.length; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < range_రికార్డులు.నిడివి; i++)
   {
-    auto *range = &range_records[i];
-    range->features.features = (hb_ms_feature_t *) feature_records + reinterpret_cast<uintptr_t> (range->features.features);
+    స్వయంచాలక *range = &range_రికార్డులు[i];
+    range->features.features = (hb_ms_feature_t *) feature_రికార్డులు + reinterpret_cast<uintptr_t> (range->features.features);
   }
 
-  return !!num_features;
+  తిరిగి !!అంకె_features;
 }
 
-static inline void
-hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
-			   hb_vector_t<hb_ms_range_record_t> &range_records,
-			   unsigned int                       chars_offset,
-			   unsigned int                       chars_len,
+స్థిర అంతఃవరుస శూన్య
+hb_ms_make_feature_ranges (hb_సదిశ_t<hb_ms_feature_t>      &feature_రికార్డులు,
+			   hb_సదిశ_t<hb_ms_range_రికార్డు_t> &range_రికార్డులు,
+			   గుర్తులేని పూర్ణాంకం                       chars_స్థానభ్రంశం,
+			   గుర్తులేని పూర్ణాంకం                       chars_len,
 			   uint16_t                          *log_clusters,
-			   hb_vector_t<hb_ms_features_t*>    &range_features, /* OUT */
-			   hb_vector_t<uint32_t>             &range_counts /* OUT */)
+			   hb_సదిశ_t<hb_ms_features_t*>    &range_features, /*బహిర్గతం*/
+			   hb_సదిశ_t<uint32_t>             &range_counts /*బహిర్గతం*/)
 {
   range_features.clear ();
   range_counts.clear ();
 
-  auto *last_range = &range_records[0];
-  for (unsigned int i = chars_offset; i < chars_len; i++)
+  స్వయంచాలక *చివరి_range = &range_రికార్డులు[0];
+  కొరకు (గుర్తులేని పూర్ణాంకం i = chars_స్థానభ్రంశం; i < chars_len; i++)
   {
-    auto *range = last_range;
-    while (log_clusters[i] < range->index_first)
+    స్వయంచాలక *range = చివరి_range;
+    అయితే (log_clusters[i] < range->సూచీ_మొదటి)
       range--;
-    while (log_clusters[i] > range->index_last)
+    అయితే (log_clusters[i] > range->సూచీ_చివరి)
       range++;
-    if (!range_features.length ||
-        &range->features != range_features[range_features.length - 1])
+    ఒకవేళ (!range_features.నిడివి ||
+        &range->features != range_features[range_features.నిడివి - 1])
     {
-      auto **features = range_features.push ();
-      auto *c = range_counts.push ();
-      if (unlikely (!features || !c))
+      స్వయంచాలక **features = range_features.push ();
+      స్వయంచాలక *c = range_counts.push ();
+      ఒకవేళ (unlikely (!features || !c))
       {
         range_features.clear ();
         range_counts.clear ();
-        break;
+        ఆపు;
       }
       *features = &range->features;
       *c = 1;
     }
-    else
+    లేకపోతే
     {
-      range_counts[range_counts.length - 1]++;
+      range_counts[range_counts.నిడివి - 1]++;
     }
 
-    last_range = range;
+    చివరి_range = range;
   }
 }
 
-#endif /* HB_MS_FEATURE_RANGES_HH */
+#అయితే_ముగింపు /* HB_MS_FEATURE_RANGES_HH */

@@ -26,35 +26,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DISPATCH_HH
-#define HB_DISPATCH_HH
+#నిర్వచితం_కాకపోతే HB_DISPATCH_HH
+#నిర్వచించు HB_DISPATCH_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+మూస <రకం_పేరు Context, రకం_పేరు Return=hb_ఖాళీలు_t, గుర్తులేని పూర్ణాంకం Max_Debug_లోతు=0>
+నిర్మాణం hb_dispatch_context_t
 {
-  private:
+  అంతరంగ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
-  template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
-  unsigned debug_depth = 0;
+  స్థిరరాశి Context* thiz () స్థిరరాశి { తిరిగి static_cast<స్థిరరాశి Context *> (ఇది); }
+	Context* thiz ()       { తిరిగి static_cast<      Context *> (ఇది); }
+  బహిరంగ:
+  స్థిరరాశి అక్షరం *get_name () { తిరిగి "UNKNOWN"; }
+  స్థిర constexpr గుర్తులేని max_debug_లోతు = Max_Debug_లోతు;
+  రకనిర్వచనం Return return_t;
+  మూస <రకం_పేరు T, రకం_పేరు F>
+  తార్కిక may_dispatch (స్థిరరాశి T *obj HB_వాడని, స్థిరరాశి F *format HB_వాడని) { తిరిగి నిజం; }
+  మూస <రకం_పేరు T, రకం_పేరు ...Ts>
+  return_t dispatch (స్థిరరాశి T &obj, Ts&&... ds)
+  { తిరిగి obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  స్థిర return_t no_dispatch_return_విలువ () { తిరిగి Context::default_return_విలువ (); }
+  స్థిర తార్కిక stop_sublookup_iteration (స్థిరరాశి return_t r HB_వాడని) { తిరిగి అబద్ధం; }
+  గుర్తులేని debug_లోతు = 0;
 };
 
 
-#endif /* HB_DISPATCH_HH */
+#అయితే_ముగింపు /* HB_DISPATCH_HH */

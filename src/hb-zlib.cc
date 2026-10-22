@@ -1,92 +1,92 @@
-#ifndef HB_ZLIB_CC
-#define HB_ZLIB_CC
-#ifdef HB_ZLIB_CC /* Pacify -Wunused-macros. */
+#నిర్వచితం_కాకపోతే HB_ZLIB_CC
+#నిర్వచించు HB_ZLIB_CC
+#నిర్వచితమైతే HB_ZLIB_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-zlib.hh"
+#అన్తర్భావ "hb-zlib.hh"
 
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif
+#నిర్వచితమైతే HAVE_ZLIB
+#అన్తర్భావ <zlib.h>
+#అయితే_ముగింపు
 
 hb_blob_t *
 hb_blob_decompress_gzip (hb_blob_t *blob,
-                         unsigned   max_output_len)
+                         గుర్తులేని   max_output_len)
 {
-#ifndef HAVE_ZLIB
-  return nullptr;
-#else
-  unsigned compressed_len = 0;
-  const uint8_t *compressed = (const uint8_t *) hb_blob_get_data (blob, &compressed_len);
-  if (!compressed || !compressed_len)
-    return nullptr;
+#నిర్వచితం_కాకపోతే HAVE_ZLIB
+  తిరిగి శూన్యసూచిక;
+#లేకపోతే
+  గుర్తులేని compressed_len = 0;
+  స్థిరరాశి uint8_t *compressed = (స్థిరరాశి uint8_t *) hb_blob_get_దత్తాంశం (blob, &compressed_len);
+  ఒకవేళ (!compressed || !compressed_len)
+    తిరిగి శూన్యసూచిక;
 
-  z_stream stream = {};
-  stream.next_in = (Bytef *) compressed;
-  stream.avail_in = compressed_len;
+  z_ప్రవాహం ప్రవాహం = {};
+  ప్రవాహం.తదుపరి_లోపల = (Bytef *) compressed;
+  ప్రవాహం.avail_లోపల = compressed_len;
 
-  if (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
-    return nullptr;
-  HB_SCOPE_GUARD (inflateEnd (&stream));
+  ఒకవేళ (inflateInit2 (&ప్రవాహం, 16 + MAX_WBITS) != Z_OK)
+    తిరిగి శూన్యసూచిక;
+  HB_SCOPE_GUARD (inflate_చివర (&ప్రవాహం));
 
-  uint32_t expected_size = 0;
-  hb_gzip_get_uncompressed_size ((const char *) compressed,
+  uint32_t expected_కొలత = 0;
+  hb_gzip_get_uncompressed_కొలత ((స్థిరరాశి అక్షరం *) compressed,
                                  compressed_len,
-                                 &expected_size);
+                                 &expected_కొలత);
 
-  size_t allocated = hb_min ((size_t) hb_max (expected_size, 4096u),
+  size_t allocated = hb_min ((size_t) hb_max (expected_కొలత, 4096u),
                              (size_t) max_output_len);
-  char *output = (char *) hb_malloc (allocated);
-  if (!output)
-    return nullptr;
-  auto output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
+  అక్షరం *output = (అక్షరం *) hb_malloc (allocated);
+  ఒకవేళ (!output)
+    తిరిగి శూన్యసూచిక;
+  స్వయంచాలక output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
 
-  int status = Z_OK;
-  while (true)
+  పూర్ణాంకం స్థితి_2 = Z_OK;
+  అయితే (నిజం)
   {
-    size_t produced = (size_t) stream.total_out;
-    if (unlikely (produced >= (size_t) max_output_len))
-      return nullptr;
+    size_t produced = (size_t) ప్రవాహం.మొత్తం_బహిర్గతం;
+    ఒకవేళ (unlikely (produced >= (size_t) max_output_len))
+      తిరిగి శూన్యసూచిక;
 
-    if (produced == allocated)
+    ఒకవేళ (produced == allocated)
     {
       size_t new_allocated = hb_min (allocated * 2, (size_t) max_output_len);
-      if (unlikely (new_allocated <= allocated))
-        return nullptr;
+      ఒకవేళ (unlikely (new_allocated <= allocated))
+        తిరిగి శూన్యసూచిక;
 
-      char *new_output = (char *) hb_realloc (output, new_allocated);
-      if (unlikely (!new_output))
-        return nullptr;
+      అక్షరం *new_output = (అక్షరం *) hb_realloc (output, new_allocated);
+      ఒకవేళ (unlikely (!new_output))
+        తిరిగి శూన్యసూచిక;
 
       output = new_output;
       allocated = new_allocated;
     }
 
-    stream.next_out = (Bytef *) output + stream.total_out;
-    stream.avail_out = (uInt) (allocated - (size_t) stream.total_out);
+    ప్రవాహం.తదుపరి_బహిర్గతం = (Bytef *) output + ప్రవాహం.మొత్తం_బహిర్గతం;
+    ప్రవాహం.avail_బహిర్గతం = (uInt) (allocated - (size_t) ప్రవాహం.మొత్తం_బహిర్గతం);
 
-    status = inflate (&stream, Z_FINISH);
-    if (status == Z_STREAM_END)
-      break;
+    స్థితి_2 = inflate (&ప్రవాహం, Z_ముగింపు);
+    ఒకవేళ (స్థితి_2 == Z_ప్రవాహం_చివర)
+      ఆపు;
 
-    if ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
-      continue;
+    ఒకవేళ ((స్థితి_2 == Z_OK || స్థితి_2 == Z_BUF_ERROR) && ప్రవాహం.avail_బహిర్గతం == 0)
+      కొనసాగు;
 
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  if (unlikely ((size_t) stream.total_out > (size_t) max_output_len))
-    return nullptr;
+  ఒకవేళ (unlikely ((size_t) ప్రవాహం.మొత్తం_బహిర్గతం > (size_t) max_output_len))
+    తిరిగి శూన్యసూచిక;
 
   output_guard.release ();
-  return hb_blob_create_or_fail (output,
-                                 (unsigned) stream.total_out,
-                                 HB_MEMORY_MODE_WRITABLE,
+  తిరిగి hb_blob_create_or_fail (output,
+                                 (గుర్తులేని) ప్రవాహం.మొత్తం_బహిర్గతం,
+                                 HB_జ్ఞాపకం_బహుళకం_WRITABLE,
                                  output,
                                  hb_free);
-#endif
+#అయితే_ముగింపు
 }
 
-#endif /* HB_ZLIB_CC pacify */
-#endif /* HB_ZLIB_CC guard */
+#అయితే_ముగింపు /* HB_ZLIB_CC pacify */
+#అయితే_ముగింపు /* HB_ZLIB_CC guard */

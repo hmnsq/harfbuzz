@@ -24,79 +24,79 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-shaper.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
-static const hb_shaper_entry_t _hb_all_shapers[] = {
-#define HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+స్థిర స్థిరరాశి hb_shaper_నమోదు_t _hb_all_shapers[] = {
+#నిర్వచించు HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
 };
-#ifndef HB_NO_SHAPER
-static_assert (0 != ARRAY_LENGTH_CONST (_hb_all_shapers), "No shaper enabled.");
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_SHAPER
+static_assert (0 != ARRAY_నిడివి_CONST (_hb_all_shapers), "No shaper enabled.");
+#అయితే_ముగింపు
 
-static inline void free_static_shapers ();
+స్థిర అంతఃవరుస శూన్య free_static_shapers ();
 
-static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
+స్థిర నిర్మాణం hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_నమోదు_t,
 							  hb_shapers_lazy_loader_t>
 {
-  static hb_shaper_entry_t *create ()
+  స్థిర hb_shaper_నమోదు_t *create ()
   {
-    char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    అక్షరం *env = getenv ("HB_SHAPER_LIST");
+    ఒకవేళ (!env || !*env)
+      తిరిగి శూన్యసూచిక;
 
-    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    hb_shaper_నమోదు_t *shapers = (hb_shaper_నమోదు_t *) hb_calloc (1, పరిమాణం (_hb_all_shapers));
+    ఒకవేళ (unlikely (!shapers))
+      తిరిగి శూన్యసూచిక;
 
-    hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
+    hb_memcpy (shapers, _hb_all_shapers, పరిమాణం (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
-    char *end, *p = env;
-    for (;;)
+    గుర్తులేని పూర్ణాంకం i = 0;
+    అక్షరం *చివర, *p = env;
+    కొరకు (;;)
     {
-      end = strchr (p, ',');
-      if (!end)
-	end = p + strlen (p);
+      చివర = strchr (p, ',');
+      ఒకవేళ (!చివర)
+	చివర = p + అక్షరశ్రేణి_పొడవు (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
-	    0 == strncmp (shapers[j].name, p, end - p))
+      కొరకు (గుర్తులేని పూర్ణాంకం j = i; j < ARRAY_నిడివి_CONST (_hb_all_shapers); j++)
+	ఒకవేళ (చివర - p == (పూర్ణాంకం) అక్షరశ్రేణి_పొడవు (shapers[j].name) &&
+	    0 == అక్షరశ్రేణి_పోలిక (shapers[j].name, p, చివర - p))
 	{
 	  /* Reorder this shaper to position i */
-	 struct hb_shaper_entry_t t = shapers[j];
-	 memmove (&shapers[i + 1], &shapers[i], sizeof (shapers[i]) * (j - i));
+	 నిర్మాణం hb_shaper_నమోదు_t t = shapers[j];
+	 memmove (&shapers[i + 1], &shapers[i], పరిమాణం (shapers[i]) * (j - i));
 	 shapers[i] = t;
 	 i++;
 	}
 
-      if (!*end)
-	break;
-      else
-	p = end + 1;
+      ఒకవేళ (!*చివర)
+	ఆపు;
+      లేకపోతే
+	p = చివర + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    తిరిగి shapers;
   }
-  static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  స్థిర శూన్య destroy (hb_shaper_నమోదు_t *p) { hb_free (p); }
+  స్థిర స్థిరరాశి hb_shaper_నమోదు_t *get_null ()      { తిరిగి _hb_all_shapers; }
 } static_shapers;
 
-static inline
-void free_static_shapers ()
+స్థిర అంతఃవరుస
+శూన్య free_static_shapers ()
 {
   static_shapers.free_instance ();
 }
 
-const hb_shaper_entry_t *
+స్థిరరాశి hb_shaper_నమోదు_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  తిరిగి static_shapers.get_unconst ();
 }

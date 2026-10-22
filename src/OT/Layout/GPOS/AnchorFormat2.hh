@@ -1,53 +1,53 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
-#define OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
+#నిర్వచించు OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-struct AnchorFormat2
+నిర్మాణం AnchorFormat2
 {
 
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
-  HBUINT16      anchorPoint;            /* Index to glyph contour point */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  HBUINT16      anchor_బిందువు;            /* Index to glyph contour point */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  శూన్య get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   దశాంశం *x, దశాంశం *y) స్థిరరాశి
   {
     hb_font_t *font = c->font;
 
-#ifdef HB_NO_HINTING
+#నిర్వచితమైతే HB_NO_HINTING
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
-    return;
-#endif
+    తిరిగి;
+#అయితే_ముగింపు
 
-    unsigned int x_ppem = font->x_ppem;
-    unsigned int y_ppem = font->y_ppem;
+    గుర్తులేని పూర్ణాంకం x_ppem = font->x_ppem;
+    గుర్తులేని పూర్ణాంకం y_ppem = font->y_ppem;
     hb_position_t cx = 0, cy = 0;
-    bool ret;
+    తార్కిక ret;
 
     ret = (x_ppem || y_ppem) &&
-          font->get_glyph_contour_point_for_origin (glyph_id, anchorPoint, HB_DIRECTION_LTR, &cx, &cy);
+          font->get_glyph_contour_బిందువు_for_origin (glyph_id, anchor_బిందువు, HB_DIRECTION_LTR, &cx, &cy);
     *x = ret && x_ppem ? cx : font->em_fscale_x (xCoordinate);
     *y = ret && y_ppem ? cy : font->em_fscale_y (yCoordinate);
   }
 
-  AnchorFormat2* copy (hb_serialize_context_t *c) const
+  AnchorFormat2* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed<AnchorFormat2> (this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed<AnchorFormat2> (ఇది));
   }
 };
 
@@ -55,4 +55,4 @@ struct AnchorFormat2
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
+#అయితే_ముగింపు  // OT_LAYOUT_GPOS_ANCHORFORMAT2_HH

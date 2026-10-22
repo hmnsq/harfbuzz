@@ -1,40 +1,40 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
-#define OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
+#నిర్వచించు OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-struct AnchorFormat1
+నిర్మాణం AnchorFormat1
 {
-  protected:
+  రక్షిత:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-                   float *x, float *y) const
+  శూన్య get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_వాడని,
+                   దశాంశం *x, దశాంశం *y) స్థిరరాశి
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
   }
 
-  AnchorFormat1* copy (hb_serialize_context_t *c) const
+  AnchorFormat1* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    AnchorFormat1* out = c->embed<AnchorFormat1> (this);
-    if (!out) return_trace (out);
-    out->format = 1;
-    return_trace (out);
+    TRACE_SERIALIZE (ఇది);
+    AnchorFormat1* బహిర్గతం = c->embed<AnchorFormat1> (ఇది);
+    ఒకవేళ (!బహిర్గతం) return_trace (బహిర్గతం);
+    బహిర్గతం->format = 1;
+    return_trace (బహిర్గతం);
   }
 };
 
@@ -43,4 +43,4 @@ struct AnchorFormat1
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHORFORMAT1_HH
+#అయితే_ముగింపు  // OT_LAYOUT_GPOS_ANCHORFORMAT1_HH

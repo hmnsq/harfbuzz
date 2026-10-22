@@ -24,13 +24,13 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-raster-paint.hh"
-#include "hb-machinery.hh"
-#include "hb-paint.hh"
+#అన్తర్భావ "hb-raster-paint.hh"
+#అన్తర్భావ "hb-machinery.hh"
+#అన్తర్భావ "hb-paint.hh"
 
-#include <math.h>
+#అన్తర్భావ <math.h>
 
 
 /*
@@ -38,56 +38,56 @@
  */
 
 /* Convert unpremultiplied hb_color_t (BGRA order) to premultiplied BGRA32 pixel. */
-static inline uint32_t
-color_to_premul_pixel (hb_color_t color)
+స్థిర అంతఃవరుస uint32_t
+color_గమ్యం_premul_pixel (hb_color_t color)
 {
   uint8_t a = hb_color_get_alpha (color);
   uint8_t r = hb_raster_div255 (hb_color_get_red (color) * a);
   uint8_t g = hb_raster_div255 (hb_color_get_green (color) * a);
   uint8_t b = hb_raster_div255 (hb_color_get_blue (color) * a);
-  return (uint32_t) b | ((uint32_t) g << 8) | ((uint32_t) r << 16) | ((uint32_t) a << 24);
+  తిరిగి (uint32_t) b | ((uint32_t) g << 8) | ((uint32_t) r << 16) | ((uint32_t) a << 24);
 }
 
 /* Bilinear sample from a premultiplied BGRA32 image. */
-static inline uint32_t
-hb_raster_sample_bilinear_premul (const hb_packed_t<uint32_t> *src,
-				  unsigned width,
-				  unsigned height,
-				  float x,
-				  float y)
+స్థిర అంతఃవరుస uint32_t
+hb_raster_sample_bilinear_premul (స్థిరరాశి hb_packed_t<uint32_t> *src,
+				  గుర్తులేని వెడల్పు,
+				  గుర్తులేని ఎత్తు,
+				  దశాంశం x,
+				  దశాంశం y)
 {
-  int x0 = (int) floorf (x);
-  int y0 = (int) floorf (y);
-  int x1 = x0 + 1;
-  int y1 = y0 + 1;
-  if (x1 >= (int) width) x1 = (int) width - 1;
-  if (y1 >= (int) height) y1 = (int) height - 1;
+  పూర్ణాంకం x0 = (పూర్ణాంకం) floorf (x);
+  పూర్ణాంకం y0 = (పూర్ణాంకం) floorf (y);
+  పూర్ణాంకం x1 = x0 + 1;
+  పూర్ణాంకం y1 = y0 + 1;
+  ఒకవేళ (x1 >= (పూర్ణాంకం) వెడల్పు) x1 = (పూర్ణాంకం) వెడల్పు - 1;
+  ఒకవేళ (y1 >= (పూర్ణాంకం) ఎత్తు) y1 = (పూర్ణాంకం) ఎత్తు - 1;
 
-  float tx = x - x0;
-  float ty = y - y0;
-  float omtx = 1.f - tx;
-  float omty = 1.f - ty;
+  దశాంశం tx = x - x0;
+  దశాంశం ty = y - y0;
+  దశాంశం omtx = 1.f - tx;
+  దశాంశం omty = 1.f - ty;
 
-  uint32_t p00 = (uint32_t) src[(size_t) y0 * width + (size_t) x0];
-  uint32_t p10 = (uint32_t) src[(size_t) y0 * width + (size_t) x1];
-  uint32_t p01 = (uint32_t) src[(size_t) y1 * width + (size_t) x0];
-  uint32_t p11 = (uint32_t) src[(size_t) y1 * width + (size_t) x1];
+  uint32_t p00 = (uint32_t) src[(size_t) y0 * వెడల్పు + (size_t) x0];
+  uint32_t p10 = (uint32_t) src[(size_t) y0 * వెడల్పు + (size_t) x1];
+  uint32_t p01 = (uint32_t) src[(size_t) y1 * వెడల్పు + (size_t) x0];
+  uint32_t p11 = (uint32_t) src[(size_t) y1 * వెడల్పు + (size_t) x1];
 
-  float w00 = omtx * omty;
-  float w10 = tx * omty;
-  float w01 = omtx * ty;
-  float w11 = tx * ty;
+  దశాంశం w00 = omtx * omty;
+  దశాంశం w10 = tx * omty;
+  దశాంశం w01 = omtx * ty;
+  దశాంశం w11 = tx * ty;
 
-  float b = ((p00 >>  0) & 0xff) * w00 + ((p10 >>  0) & 0xff) * w10 +
+  దశాంశం b = ((p00 >>  0) & 0xff) * w00 + ((p10 >>  0) & 0xff) * w10 +
 	    ((p01 >>  0) & 0xff) * w01 + ((p11 >>  0) & 0xff) * w11;
-  float g = ((p00 >>  8) & 0xff) * w00 + ((p10 >>  8) & 0xff) * w10 +
+  దశాంశం g = ((p00 >>  8) & 0xff) * w00 + ((p10 >>  8) & 0xff) * w10 +
 	    ((p01 >>  8) & 0xff) * w01 + ((p11 >>  8) & 0xff) * w11;
-  float r = ((p00 >> 16) & 0xff) * w00 + ((p10 >> 16) & 0xff) * w10 +
+  దశాంశం r = ((p00 >> 16) & 0xff) * w00 + ((p10 >> 16) & 0xff) * w10 +
 	    ((p01 >> 16) & 0xff) * w01 + ((p11 >> 16) & 0xff) * w11;
-  float a = ((p00 >> 24) & 0xff) * w00 + ((p10 >> 24) & 0xff) * w10 +
+  దశాంశం a = ((p00 >> 24) & 0xff) * w00 + ((p10 >> 24) & 0xff) * w10 +
 	    ((p01 >> 24) & 0xff) * w01 + ((p11 >> 24) & 0xff) * w11;
 
-  return (uint32_t) (b + 0.5f)
+  తిరిగి (uint32_t) (b + 0.5f)
        | ((uint32_t) (g + 0.5f) << 8)
        | ((uint32_t) (r + 0.5f) << 16)
        | ((uint32_t) (a + 0.5f) << 24);
@@ -102,173 +102,173 @@ hb_raster_sample_bilinear_premul (const hb_packed_t<uint32_t> *src,
  * Called from every paint callback that needs state.
  * hb_font_paint_glyph() does NOT wrap with push/pop_transform,
  * so the first callback could be push_clip_glyph or paint_color. */
-static void
+స్థిర శూన్య
 ensure_initialized (hb_raster_paint_t *c)
 {
-  if (c->surface_stack.length) return;
+  ఒకవేళ (c->surface_దొంతర.నిడివి) తిరిగి;
 
   /* A failed stack push (OOM) leaves the vector in a sticky error
    * state, so initialization can never succeed; bail out cheaply
    * instead of re-paying the surface acquire-and-clear below on
    * every subsequent paint callback. */
-  if (unlikely (c->surface_stack.in_error () || c->clip_stack.in_error ()))
-    return;
+  ఒకవేళ (unlikely (c->surface_దొంతర.లోపల_error () || c->clip_దొంతర.లోపల_error ()))
+    తిరిగి;
 
   /* acquire_surface() clears a full surface; charge its area, so
    * repeated failed initialization attempts cannot re-pay it
    * indefinitely.  Successful initialization re-arms the session
    * budget below, making the charge a no-op for normal sessions. */
-  if (unlikely (!c->charge_work ((int64_t) c->fixed_extents.width *
-				 c->fixed_extents.height)))
-    return;
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) c->fixed_extents.వెడల్పు *
+				 c->fixed_extents.ఎత్తు)))
+    తిరిగి;
 
   /* Root surface */
-  hb_raster_image_t *root = c->acquire_surface ();
-  if (unlikely (!root)) return;
+  hb_raster_image_t *మూలం = c->acquire_surface ();
+  ఒకవేళ (unlikely (!మూలం)) తిరిగి;
 
-  if (hb_color_get_alpha (c->background))
+  ఒకవేళ (hb_color_get_alpha (c->background))
   {
-    uint32_t bg = color_to_premul_pixel (c->background);
+    uint32_t bg = color_గమ్యం_premul_pixel (c->background);
     hb_raster_extents_t ext;
-    hb_raster_image_get_extents (root, &ext);
-    const uint8_t *buf = hb_raster_image_get_buffer (root);
-    for (unsigned y = 0; y < ext.height; y++)
+    hb_raster_image_get_extents (మూలం, &ext);
+    స్థిరరాశి uint8_t *buf = hb_raster_image_get_బఫరు (మూలం);
+    కొరకు (గుర్తులేని y = 0; y < ext.ఎత్తు; y++)
     {
-      hb_packed_t<uint32_t> *row =
+      hb_packed_t<uint32_t> *అడ్డువరుస =
 	(hb_packed_t<uint32_t> *) (buf + (size_t) y * ext.stride);
-      for (unsigned x = 0; x < ext.width; x++)
-	row[x] = hb_packed_t<uint32_t> (bg);
+      కొరకు (గుర్తులేని x = 0; x < ext.వెడల్పు; x++)
+	అడ్డువరుస[x] = hb_packed_t<uint32_t> (bg);
     }
   }
 
-  if (unlikely (!c->surface_stack.push_or_fail (root)))
+  ఒకవేళ (unlikely (!c->surface_దొంతర.నెట్టు_or_fail (మూలం)))
   {
-    c->release_surface (root);
-    return;
+    c->release_surface (మూలం);
+    తిరిగి;
   }
 
   /* Resolve the surface-sized pixel budget now that the surface size is
    * known.  An unlimited policy disables the pixel budget, so leave it.
    * The outline budget is re-resolved to the same value it already holds
    * (nothing has been drawn yet). */
-  if (c->budget != HB_BUDGET_UNLIMITED)
+  ఒకవేళ (c->budget != HB_BUDGET_UNLIMITED)
     c->recharge_budget ();
 
   /* Initial clip: full coverage rectangle */
   hb_raster_clip_t clip;
-  clip.init_full (c->fixed_extents.width, c->fixed_extents.height);
-  if (unlikely (!c->clip_stack.push_or_fail (std::move (clip))))
+  clip.init_నిండిన (c->fixed_extents.వెడల్పు, c->fixed_extents.ఎత్తు);
+  ఒకవేళ (unlikely (!c->clip_దొంతర.నెట్టు_or_fail (std::move (clip))))
   {
-    c->release_surface (c->surface_stack.pop ());
-    return;
+    c->release_surface (c->surface_దొంతర.తీయి ());
+    తిరిగి;
   }
 }
 
-static void
-hb_raster_paint_push_transform (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				void *paint_data,
-				float xx, float yx,
-				float xy, float yy,
-				float dx, float dy,
-				void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_transform (hb_paint_funcs_t *pfuncs HB_వాడని,
+				శూన్య *paint_దత్తాంశం,
+				దశాంశం xx, దశాంశం yx,
+				దశాంశం xy, దశాంశం yy,
+				దశాంశం dx, దశాంశం dy,
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   hb_transform_t<> t = c->current_transform ();
   t.multiply ({xx, yx, xy, yy, dx, dy});
-  (void) c->transform_stack.push (t);
+  (శూన్య) c->transform_దొంతర.push (t);
 }
 
-static void
-hb_raster_paint_pop_transform (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			       void *paint_data,
-			       void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_తీయి_transform (hb_paint_funcs_t *pfuncs HB_వాడని,
+			       శూన్య *paint_దత్తాంశం,
+			       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
-  if (c->transform_stack.length)
-    c->transform_stack.pop ();
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (c->transform_దొంతర.నిడివి)
+    c->transform_దొంతర.తీయి ();
 }
 
-static hb_bool_t
-hb_raster_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			     void *paint_data HB_UNUSED,
-			     hb_codepoint_t glyph HB_UNUSED,
-			     hb_font_t *font HB_UNUSED,
-			     void *user_data HB_UNUSED)
+స్థిర hb_bool_t
+hb_raster_paint_color_glyph (hb_paint_funcs_t *pfuncs HB_వాడని,
+			     శూన్య *paint_దత్తాంశం HB_వాడని,
+			     hb_codepoint_t glyph HB_వాడని,
+			     hb_font_t *font HB_వాడని,
+			     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-typedef void (*hb_raster_paint_clip_mask_emit_t) (hb_raster_draw_t *rdr, void *user_data);
+రకనిర్వచనం శూన్య (*hb_raster_paint_clip_ముసుగు_emit_t) (hb_raster_draw_t *rdr, శూన్య *user_దత్తాంశం);
 
 /* Attach the surface box to @rdr and seed its outline budget before
  * outlines are drawn into it: curves outside the surface collapse to
  * their chord, and outline traversal and curve flattening charge the
  * seeded budget.  hb_raster_paint_readback_budget() pulls the remainder
  * back into the session afterwards. */
-static void
+స్థిర శూన్య
 hb_raster_paint_attach_clip_rdr (hb_raster_paint_t *c,
 				 hb_raster_draw_t *rdr,
-				 const hb_raster_image_t *surf)
+				 స్థిరరాశి hb_raster_image_t *surf)
 {
-  hb_raster_draw_set_clip_box (rdr,
-			       (float) surf->extents.x_origin,
-			       (float) surf->extents.y_origin,
-			       (float) surf->extents.x_origin + (float) surf->extents.width,
-			       (float) surf->extents.y_origin + (float) surf->extents.height);
-  hb_draw_set_budget (hb_raster_draw_get_funcs (rdr), rdr, c->budget_remaining);
+  hb_raster_draw_సమితి_clip_box (rdr,
+			       (దశాంశం) surf->extents.x_origin,
+			       (దశాంశం) surf->extents.y_origin,
+			       (దశాంశం) surf->extents.x_origin + (దశాంశం) surf->extents.వెడల్పు,
+			       (దశాంశం) surf->extents.y_origin + (దశాంశం) surf->extents.ఎత్తు);
+  hb_draw_సమితి_budget (hb_raster_draw_get_funcs (rdr), rdr, c->budget_మిగిలిన);
 }
 
 /* Pull the outline budget the rasterizer has consumed back into the
  * session, so it aggregates across every glyph in the paint walk. */
-static void
+స్థిర శూన్య
 hb_raster_paint_readback_budget (hb_raster_paint_t *c,
 				 hb_raster_draw_t *rdr)
 {
-  c->budget_remaining = hb_draw_get_budget_remaining (hb_raster_draw_get_funcs (rdr), rdr);
+  c->budget_మిగిలిన = hb_draw_get_budget_మిగిలిన (hb_raster_draw_get_funcs (rdr), rdr);
 }
 
-static void
-hb_raster_paint_push_empty_clip (hb_raster_paint_t *c, unsigned w, unsigned h)
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_ఖాళీలు_clip (hb_raster_paint_t *c, గుర్తులేని w, గుర్తులేని h)
 {
   hb_raster_clip_t new_clip = c->acquire_clip (w, h);
-  new_clip.init_full (w, h);
-  new_clip.is_rect = true;
+  new_clip.init_నిండిన (w, h);
+  new_clip.is_rect = నిజం;
   new_clip.rect_x0 = new_clip.rect_y0 = 0;
   new_clip.rect_x1 = new_clip.rect_y1 = 0;
   new_clip.min_x = new_clip.min_y = new_clip.max_x = new_clip.max_y = 0;
-  (void) c->clip_stack.push (std::move (new_clip));
+  (శూన్య) c->clip_దొంతర.push (std::move (new_clip));
 }
 
-static bool
-hb_raster_paint_intersect_mask (const hb_raster_image_t *surf,
-				const hb_raster_extents_t &mask_ext,
-				const hb_raster_clip_t &clip,
-				unsigned w, unsigned h,
-				int64_t *mask_x0, int64_t *mask_y0,
-				unsigned *ix0, unsigned *iy0,
-				unsigned *ix1, unsigned *iy1)
+స్థిర తార్కిక
+hb_raster_paint_intersect_ముసుగు (స్థిరరాశి hb_raster_image_t *surf,
+				స్థిరరాశి hb_raster_extents_t &ముసుగు_ext,
+				స్థిరరాశి hb_raster_clip_t &clip,
+				గుర్తులేని w, గుర్తులేని h,
+				int64_t *ముసుగు_x0, int64_t *ముసుగు_y0,
+				గుర్తులేని *ix0, గుర్తులేని *iy0,
+				గుర్తులేని *ix1, గుర్తులేని *iy1)
 {
   /* Convert mask extents from surface coordinates to clip-buffer coordinates. */
-  int64_t mx0 = (int64_t) mask_ext.x_origin - (int64_t) surf->extents.x_origin;
-  int64_t my0 = (int64_t) mask_ext.y_origin - (int64_t) surf->extents.y_origin;
+  int64_t mx0 = (int64_t) ముసుగు_ext.x_origin - (int64_t) surf->extents.x_origin;
+  int64_t my0 = (int64_t) ముసుగు_ext.y_origin - (int64_t) surf->extents.y_origin;
 
   int64_t x0 = hb_max ((int64_t) clip.min_x, hb_max (mx0, (int64_t) 0));
   int64_t y0 = hb_max ((int64_t) clip.min_y, hb_max (my0, (int64_t) 0));
-  int64_t x1 = hb_min ((int64_t) clip.max_x, hb_min (mx0 + mask_ext.width, (int64_t) w));
-  int64_t y1 = hb_min ((int64_t) clip.max_y, hb_min (my0 + mask_ext.height, (int64_t) h));
+  int64_t x1 = hb_min ((int64_t) clip.max_x, hb_min (mx0 + ముసుగు_ext.వెడల్పు, (int64_t) w));
+  int64_t y1 = hb_min ((int64_t) clip.max_y, hb_min (my0 + ముసుగు_ext.ఎత్తు, (int64_t) h));
 
-  if (x0 >= x1 || y0 >= y1) return false;
+  ఒకవేళ (x0 >= x1 || y0 >= y1) తిరిగి అబద్ధం;
 
-  *mask_x0 = mx0;
-  *mask_y0 = my0;
-  *ix0 = (unsigned) x0;
-  *iy0 = (unsigned) y0;
-  *ix1 = (unsigned) x1;
-  *iy1 = (unsigned) y1;
-  return true;
+  *ముసుగు_x0 = mx0;
+  *ముసుగు_y0 = my0;
+  *ix0 = (గుర్తులేని) x0;
+  *iy0 = (గుర్తులేని) y0;
+  *ix1 = (గుర్తులేని) x1;
+  *iy1 = (గుర్తులేని) y1;
+  తిరిగి నిజం;
 }
 
 /* Render whatever edges have been accumulated into @rdr and
@@ -276,234 +276,234 @@ hb_raster_paint_intersect_mask (const hb_raster_image_t *surf,
  * with the existing clip.  Used by the emitter-based clip
  * helpers (push_clip_glyph) and by push_clip_path_end once
  * the caller has drawn the path into @rdr. */
-static void
-hb_raster_paint_finalize_path_clip (hb_raster_paint_t *c,
+స్థిర శూన్య
+hb_raster_paint_finalize_మార్గం_clip (hb_raster_paint_t *c,
 				    hb_raster_draw_t *rdr,
 				    hb_raster_image_t *surf,
-				    unsigned w, unsigned h)
+				    గుర్తులేని w, గుర్తులేని h)
 {
-  if (unlikely (!c->precharge_work (hb_raster_draw_get_pixel_work (rdr, h, w))))
+  ఒకవేళ (unlikely (!c->precharge_work (hb_raster_draw_get_pixel_work (rdr, h, w))))
   {
     hb_raster_draw_clear (rdr);
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
-  hb_raster_image_t *mask_img = hb_raster_draw_render (rdr);
+  hb_raster_image_t *ముసుగు_img = hb_raster_draw_render (rdr);
 
-  if (unlikely (!mask_img))
+  ఒకవేళ (unlikely (!ముసుగు_img))
   {
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
   /* Charge the mask render (its own area; may exceed the surface) plus
    * the clip-buffer pass below. */
-  hb_raster_extents_t mask_render_ext;
-  hb_raster_image_get_extents (mask_img, &mask_render_ext);
-  if (unlikely (!c->charge_work ((int64_t) mask_render_ext.width * mask_render_ext.height +
+  hb_raster_extents_t ముసుగు_render_ext;
+  hb_raster_image_get_extents (ముసుగు_img, &ముసుగు_render_ext);
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) ముసుగు_render_ext.వెడల్పు * ముసుగు_render_ext.ఎత్తు +
 				 (int64_t) w * h)))
   {
-    hb_raster_draw_recycle_image (rdr, mask_img);
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_draw_recycle_image (rdr, ముసుగు_img);
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
   hb_raster_clip_t new_clip = c->acquire_clip (w, h);
 
   /* Allocate alpha buffer and intersect with previous clip */
-  size_t clip_size = (size_t) new_clip.stride * h;
-  if (unlikely (clip_size > HB_RASTER_MAX_BUFFER_SIZE ||
-                !new_clip.alpha.resize ((unsigned) clip_size)))
+  size_t clip_కొలత = (size_t) new_clip.stride * h;
+  ఒకవేళ (unlikely (clip_కొలత > HB_RASTER_MAX_బఫరు_కొలత ||
+                !new_clip.alpha.resize ((గుర్తులేని) clip_కొలత)))
   {
-    hb_raster_draw_recycle_image (rdr, mask_img);
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_draw_recycle_image (rdr, ముసుగు_img);
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
-  hb_memset (new_clip.alpha.arrayZ, 0, (unsigned) clip_size);
+  hb_memset (new_clip.alpha.arrayZ, 0, (గుర్తులేని) clip_కొలత);
 
-  const uint8_t *mask_buf = hb_raster_image_get_buffer (mask_img);
-  hb_raster_extents_t mask_ext;
-  hb_raster_image_get_extents (mask_img, &mask_ext);
-  const hb_raster_clip_t &old_clip = c->current_clip ();
-  if (unlikely (!old_clip.has_valid_alpha_mask ()))
+  స్థిరరాశి uint8_t *ముసుగు_buf = hb_raster_image_get_బఫరు (ముసుగు_img);
+  hb_raster_extents_t ముసుగు_ext;
+  hb_raster_image_get_extents (ముసుగు_img, &ముసుగు_ext);
+  స్థిరరాశి hb_raster_clip_t &old_clip = c->current_clip ();
+  ఒకవేళ (unlikely (!old_clip.has_valid_alpha_ముసుగు ()))
   {
-    hb_raster_draw_recycle_image (rdr, mask_img);
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_draw_recycle_image (rdr, ముసుగు_img);
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
-  int64_t mask_x0, mask_y0;
-  unsigned ix0, iy0, ix1, iy1;
-  if (!hb_raster_paint_intersect_mask (surf, mask_ext, old_clip, w, h,
-				       &mask_x0, &mask_y0,
+  int64_t ముసుగు_x0, ముసుగు_y0;
+  గుర్తులేని ix0, iy0, ix1, iy1;
+  ఒకవేళ (!hb_raster_paint_intersect_ముసుగు (surf, ముసుగు_ext, old_clip, w, h,
+				       &ముసుగు_x0, &ముసుగు_y0,
 				       &ix0, &iy0, &ix1, &iy1))
   {
-    hb_raster_draw_recycle_image (rdr, mask_img);
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_draw_recycle_image (rdr, ముసుగు_img);
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
   new_clip.min_x = w; new_clip.min_y = h;
   new_clip.max_x = 0; new_clip.max_y = 0;
 
-  if (old_clip.is_rect)
+  ఒకవేళ (old_clip.is_rect)
   {
-    for (unsigned y = iy0; y < iy1; y++)
+    కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
     {
-      const uint8_t *mask_row = mask_buf + (unsigned) ((int64_t) y - mask_y0) * mask_ext.stride;
-      uint8_t *out_row = new_clip.alpha.arrayZ + y * new_clip.stride;
-      unsigned row_min = ix1;
-      unsigned row_max = ix0;
-      unsigned mx = (unsigned) ((int64_t) ix0 - mask_x0);
-      for (unsigned x = ix0; x < ix1; x++)
+      స్థిరరాశి uint8_t *ముసుగు_అడ్డువరుస = ముసుగు_buf + (గుర్తులేని) ((int64_t) y - ముసుగు_y0) * ముసుగు_ext.stride;
+      uint8_t *బహిర్గతం_అడ్డువరుస = new_clip.alpha.arrayZ + y * new_clip.stride;
+      గుర్తులేని అడ్డువరుస_min = ix1;
+      గుర్తులేని అడ్డువరుస_max = ix0;
+      గుర్తులేని mx = (గుర్తులేని) ((int64_t) ix0 - ముసుగు_x0);
+      కొరకు (గుర్తులేని x = ix0; x < ix1; x++)
       {
-	uint8_t a = mask_row[mx++];
-	out_row[x] = a;
-	if (a && row_min == ix1)
+	uint8_t a = ముసుగు_అడ్డువరుస[mx++];
+	బహిర్గతం_అడ్డువరుస[x] = a;
+	ఒకవేళ (a && అడ్డువరుస_min == ix1)
 	{
-	  row_min = x;
-	  row_max = x + 1;
+	  అడ్డువరుస_min = x;
+	  అడ్డువరుస_max = x + 1;
 	}
-	else if (a)
-	  row_max = x + 1;
+	లేకపోతే ఒకవేళ (a)
+	  అడ్డువరుస_max = x + 1;
       }
-      if (row_min < row_max)
+      ఒకవేళ (అడ్డువరుస_min < అడ్డువరుస_max)
       {
-	new_clip.min_x = hb_min (new_clip.min_x, row_min);
+	new_clip.min_x = hb_min (new_clip.min_x, అడ్డువరుస_min);
 	new_clip.min_y = hb_min (new_clip.min_y, y);
-	new_clip.max_x = hb_max (new_clip.max_x, row_max);
+	new_clip.max_x = hb_max (new_clip.max_x, అడ్డువరుస_max);
 	new_clip.max_y = hb_max (new_clip.max_y, y + 1);
       }
     }
   }
-  else
+  లేకపోతే
   {
-    for (unsigned y = iy0; y < iy1; y++)
+    కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
     {
-      const uint8_t *old_row = old_clip.alpha.arrayZ + y * old_clip.stride;
-      const uint8_t *mask_row = mask_buf + (unsigned) ((int64_t) y - mask_y0) * mask_ext.stride;
-      uint8_t *out_row = new_clip.alpha.arrayZ + y * new_clip.stride;
-      unsigned row_min = ix1;
-      unsigned row_max = ix0;
-      for (unsigned x = ix0; x < ix1; x++)
+      స్థిరరాశి uint8_t *old_అడ్డువరుస = old_clip.alpha.arrayZ + y * old_clip.stride;
+      స్థిరరాశి uint8_t *ముసుగు_అడ్డువరుస = ముసుగు_buf + (గుర్తులేని) ((int64_t) y - ముసుగు_y0) * ముసుగు_ext.stride;
+      uint8_t *బహిర్గతం_అడ్డువరుస = new_clip.alpha.arrayZ + y * new_clip.stride;
+      గుర్తులేని అడ్డువరుస_min = ix1;
+      గుర్తులేని అడ్డువరుస_max = ix0;
+      కొరకు (గుర్తులేని x = ix0; x < ix1; x++)
       {
-	unsigned mx = (unsigned) ((int64_t) x - mask_x0);
-	uint8_t a = hb_raster_div255 (mask_row[mx] * old_row[x]);
-	out_row[x] = a;
-	if (a)
+	గుర్తులేని mx = (గుర్తులేని) ((int64_t) x - ముసుగు_x0);
+	uint8_t a = hb_raster_div255 (ముసుగు_అడ్డువరుస[mx] * old_అడ్డువరుస[x]);
+	బహిర్గతం_అడ్డువరుస[x] = a;
+	ఒకవేళ (a)
 	{
-	  row_min = hb_min (row_min, x);
-	  row_max = x + 1;
+	  అడ్డువరుస_min = hb_min (అడ్డువరుస_min, x);
+	  అడ్డువరుస_max = x + 1;
 	}
       }
-      if (row_min < row_max)
+      ఒకవేళ (అడ్డువరుస_min < అడ్డువరుస_max)
       {
-	new_clip.min_x = hb_min (new_clip.min_x, row_min);
+	new_clip.min_x = hb_min (new_clip.min_x, అడ్డువరుస_min);
 	new_clip.min_y = hb_min (new_clip.min_y, y);
-	new_clip.max_x = hb_max (new_clip.max_x, row_max);
+	new_clip.max_x = hb_max (new_clip.max_x, అడ్డువరుస_max);
 	new_clip.max_y = hb_max (new_clip.max_y, y + 1);
       }
     }
   }
 
-  hb_raster_draw_recycle_image (rdr, mask_img);
-  if (unlikely (!c->clip_stack.push_or_fail (std::move (new_clip))))
-    hb_raster_paint_push_empty_clip (c, w, h);
+  hb_raster_draw_recycle_image (rdr, ముసుగు_img);
+  ఒకవేళ (unlikely (!c->clip_దొంతర.నెట్టు_or_fail (std::move (new_clip))))
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
 }
 
-static void
-hb_raster_paint_push_clip_from_emitter (hb_raster_paint_t *c,
-					hb_raster_paint_clip_mask_emit_t emit,
-					void *emit_data)
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_clip_from_emitter (hb_raster_paint_t *c,
+					hb_raster_paint_clip_ముసుగు_emit_t emit,
+					శూన్య *emit_దత్తాంశం)
 {
   ensure_initialized (c);
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
-  unsigned w = surf->extents.width;
-  unsigned h = surf->extents.height;
+  గుర్తులేని w = surf->extents.వెడల్పు;
+  గుర్తులేని h = surf->extents.ఎత్తు;
 
   /* Out of budget: skip the glyph-outline extraction entirely, so
    * per-glyph outline limits cannot multiply with the caller's
    * paint-graph traversal limits. */
-  if (unlikely (c->budget_remaining < 0))
+  ఒకవేళ (unlikely (c->budget_మిగిలిన < 0))
   {
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
   hb_raster_draw_t *rdr = c->clip_rdr;
   hb_transform_t<> t = c->current_effective_transform ();
-  hb_raster_draw_set_transform (rdr, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+  hb_raster_draw_సమితి_transform (rdr, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   hb_raster_paint_attach_clip_rdr (c, rdr, surf);
-  emit (rdr, emit_data);
+  emit (rdr, emit_దత్తాంశం);
   hb_raster_paint_readback_budget (c, rdr);
 
-  hb_raster_paint_finalize_path_clip (c, rdr, surf, w, h);
+  hb_raster_paint_finalize_మార్గం_clip (c, rdr, surf, w, h);
 }
 
-struct hb_raster_paint_glyph_clip_data_t
+నిర్మాణం hb_raster_paint_glyph_clip_దత్తాంశం_t
 {
   hb_codepoint_t glyph;
   hb_font_t *font;
 };
 
-static void
-hb_raster_paint_emit_clip_glyph_mask (hb_raster_draw_t *rdr, void *user_data)
+స్థిర శూన్య
+hb_raster_paint_emit_clip_glyph_ముసుగు (hb_raster_draw_t *rdr, శూన్య *user_దత్తాంశం)
 {
-  hb_raster_paint_glyph_clip_data_t *data = (hb_raster_paint_glyph_clip_data_t *) user_data;
+  hb_raster_paint_glyph_clip_దత్తాంశం_t *దత్తాంశం = (hb_raster_paint_glyph_clip_దత్తాంశం_t *) user_దత్తాంశం;
   /* Let draw-render choose tight glyph extents; we map by mask origin below. */
-  hb_font_draw_glyph (data->font, data->glyph, hb_raster_draw_get_funcs (rdr), rdr);
+  hb_font_draw_glyph (దత్తాంశం->font, దత్తాంశం->glyph, hb_raster_draw_get_funcs (rdr), rdr);
 }
 
-static void
-hb_raster_paint_push_clip_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				 void *paint_data,
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_clip_glyph (hb_paint_funcs_t *pfuncs HB_వాడని,
+				 శూన్య *paint_దత్తాంశం,
 				 hb_codepoint_t glyph,
 				 hb_font_t *font,
-				 void *user_data HB_UNUSED)
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
-  hb_raster_paint_glyph_clip_data_t data = {glyph, font};
-  hb_raster_paint_push_clip_from_emitter (c, hb_raster_paint_emit_clip_glyph_mask, &data);
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
+  hb_raster_paint_glyph_clip_దత్తాంశం_t దత్తాంశం = {glyph, font};
+  hb_raster_paint_నెట్టు_clip_from_emitter (c, hb_raster_paint_emit_clip_glyph_ముసుగు, &దత్తాంశం);
 }
 
-static void
-hb_raster_paint_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				     void *paint_data,
-				     float xmin, float ymin,
-				     float xmax, float ymax,
-				     void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_clip_rectangle (hb_paint_funcs_t *pfuncs HB_వాడని,
+				     శూన్య *paint_దత్తాంశం,
+				     దశాంశం xmin, దశాంశం ymin,
+				     దశాంశం xmax, దశాంశం ymax,
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
-  if (!c->surface_stack.length) return;
+  ఒకవేళ (!c->surface_దొంతర.నిడివి) తిరిగి;
 
   hb_transform_t<> t = c->current_effective_transform ();
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
-  unsigned w = surf->extents.width;
-  unsigned h = surf->extents.height;
-  bool is_axis_aligned = (t.xy == 0.f && t.yx == 0.f);
+  గుర్తులేని w = surf->extents.వెడల్పు;
+  గుర్తులేని h = surf->extents.ఎత్తు;
+  తార్కిక is_axis_aligned = (t.xy == 0.f && t.yx == 0.f);
 
   /* Transform the four corners to pixel space */
-  float cx[4], cy[4];
+  దశాంశం cx[4], cy[4];
   cx[0] = xmin; cy[0] = ymin;
   cx[1] = xmax; cy[1] = ymin;
   cx[2] = xmax; cy[2] = ymax;
   cx[3] = xmin; cy[3] = ymax;
-  for (unsigned i = 0; i < 4; i++)
-    t.transform_point (cx[i], cy[i]);
+  కొరకు (గుర్తులేని i = 0; i < 4; i++)
+    t.transform_బిందువు (cx[i], cy[i]);
 
   /* Compute bounding box in pixel coords */
-  float fmin_x = cx[0], fmin_y = cy[0], fmax_x = cx[0], fmax_y = cy[0];
-  for (unsigned i = 1; i < 4; i++)
+  దశాంశం fmin_x = cx[0], fmin_y = cy[0], fmax_x = cx[0], fmax_y = cy[0];
+  కొరకు (గుర్తులేని i = 1; i < 4; i++)
   {
     fmin_x = hb_min (fmin_x, cx[i]); fmin_y = hb_min (fmin_y, cy[i]);
     fmax_x = hb_max (fmax_x, cx[i]); fmax_y = hb_max (fmax_y, cy[i]);
@@ -513,74 +513,74 @@ hb_raster_paint_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
      range or to non-finite values; a bare float->int conversion would then be
      undefined.  Saturate through hb_clamp_to<> (which also maps NaN to
      INT32_MIN); the subtraction is done in double to avoid overflow. */
-  int px0 = hb_clamp_to<int32_t> ((double) floorf (fmin_x) - surf->extents.x_origin);
-  int py0 = hb_clamp_to<int32_t> ((double) floorf (fmin_y) - surf->extents.y_origin);
-  int px1 = hb_clamp_to<int32_t> ((double) ceilf  (fmax_x) - surf->extents.x_origin);
-  int py1 = hb_clamp_to<int32_t> ((double) ceilf  (fmax_y) - surf->extents.y_origin);
+  పూర్ణాంకం px0 = hb_clamp_గమ్యం<int32_t> ((ద్విగుణ) floorf (fmin_x) - surf->extents.x_origin);
+  పూర్ణాంకం py0 = hb_clamp_గమ్యం<int32_t> ((ద్విగుణ) floorf (fmin_y) - surf->extents.y_origin);
+  పూర్ణాంకం px1 = hb_clamp_గమ్యం<int32_t> ((ద్విగుణ) ceilf  (fmax_x) - surf->extents.x_origin);
+  పూర్ణాంకం py1 = hb_clamp_గమ్యం<int32_t> ((ద్విగుణ) ceilf  (fmax_y) - surf->extents.y_origin);
 
   /* Clamp to surface bounds */
   px0 = hb_max (px0, 0);
   py0 = hb_max (py0, 0);
-  px1 = hb_min (px1, (int) w);
-  py1 = hb_min (py1, (int) h);
+  px1 = hb_min (px1, (పూర్ణాంకం) w);
+  py1 = hb_min (py1, (పూర్ణాంకం) h);
 
-  const hb_raster_clip_t &old_clip = c->current_clip ();
-  if (unlikely (!old_clip.has_valid_alpha_mask ()))
+  స్థిరరాశి hb_raster_clip_t &old_clip = c->current_clip ();
+  ఒకవేళ (unlikely (!old_clip.has_valid_alpha_ముసుగు ()))
   {
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
   /* All paths below except rect-on-rect run a full clip-buffer pass. */
-  if (!(is_axis_aligned && old_clip.is_rect) &&
+  ఒకవేళ (!(is_axis_aligned && old_clip.is_rect) &&
       unlikely (!c->charge_work ((int64_t) w * h)))
   {
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
   hb_raster_clip_t new_clip = c->acquire_clip (w, h);
 
-  if (is_axis_aligned && old_clip.is_rect)
+  ఒకవేళ (is_axis_aligned && old_clip.is_rect)
   {
     /* Fast path: axis-aligned rect-on-rect intersection */
-    new_clip.is_rect = true;
+    new_clip.is_rect = నిజం;
     new_clip.rect_x0 = hb_max (px0, old_clip.rect_x0);
     new_clip.rect_y0 = hb_max (py0, old_clip.rect_y0);
     new_clip.rect_x1 = hb_min (px1, old_clip.rect_x1);
     new_clip.rect_y1 = hb_min (py1, old_clip.rect_y1);
     new_clip.update_bounds_from_rect ();
   }
-  else if (is_axis_aligned)
+  లేకపోతే ఒకవేళ (is_axis_aligned)
   {
     /* Fast path: intersect an axis-aligned rect with an existing alpha clip. */
-    new_clip.is_rect = false;
-    size_t clip_size = (size_t) new_clip.stride * h;
-    if (unlikely (clip_size > HB_RASTER_MAX_BUFFER_SIZE ||
-                  !new_clip.alpha.resize ((unsigned) clip_size)))
+    new_clip.is_rect = అబద్ధం;
+    size_t clip_కొలత = (size_t) new_clip.stride * h;
+    ఒకవేళ (unlikely (clip_కొలత > HB_RASTER_MAX_బఫరు_కొలత ||
+                  !new_clip.alpha.resize ((గుర్తులేని) clip_కొలత)))
     {
-      hb_raster_paint_push_empty_clip (c, w, h);
-      return;
+      hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+      తిరిగి;
     }
-    hb_memset (new_clip.alpha.arrayZ, 0, (unsigned) clip_size);
+    hb_memset (new_clip.alpha.arrayZ, 0, (గుర్తులేని) clip_కొలత);
 
-    int iy0_i = hb_max (py0, (int) old_clip.min_y);
-    int iy1_i = hb_min (py1, (int) old_clip.max_y);
-    int ix0_i = hb_max (px0, (int) old_clip.min_x);
-    int ix1_i = hb_min (px1, (int) old_clip.max_x);
+    పూర్ణాంకం iy0_i = hb_max (py0, (పూర్ణాంకం) old_clip.min_y);
+    పూర్ణాంకం iy1_i = hb_min (py1, (పూర్ణాంకం) old_clip.max_y);
+    పూర్ణాంకం ix0_i = hb_max (px0, (పూర్ణాంకం) old_clip.min_x);
+    పూర్ణాంకం ix1_i = hb_min (px1, (పూర్ణాంకం) old_clip.max_x);
 
-    if (ix0_i < ix1_i && iy0_i < iy1_i)
+    ఒకవేళ (ix0_i < ix1_i && iy0_i < iy1_i)
     {
-      unsigned iy0 = (unsigned) iy0_i;
-      unsigned iy1 = (unsigned) iy1_i;
-      unsigned ix0 = (unsigned) ix0_i;
-      unsigned ix1 = (unsigned) ix1_i;
+      గుర్తులేని iy0 = (గుర్తులేని) iy0_i;
+      గుర్తులేని iy1 = (గుర్తులేని) iy1_i;
+      గుర్తులేని ix0 = (గుర్తులేని) ix0_i;
+      గుర్తులేని ix1 = (గుర్తులేని) ix1_i;
 
-      for (unsigned y = iy0; y < iy1; y++)
+      కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
       {
-        const uint8_t *old_row = old_clip.alpha.arrayZ + y * old_clip.stride;
-        uint8_t *new_row = new_clip.alpha.arrayZ + y * new_clip.stride;
-        hb_memcpy (new_row + ix0, old_row + ix0, ix1 - ix0);
+        స్థిరరాశి uint8_t *old_అడ్డువరుస = old_clip.alpha.arrayZ + y * old_clip.stride;
+        uint8_t *new_అడ్డువరుస = new_clip.alpha.arrayZ + y * new_clip.stride;
+        hb_memcpy (new_అడ్డువరుస + ix0, old_అడ్డువరుస + ix0, ix1 - ix0);
       }
       new_clip.min_x = ix0;
       new_clip.min_y = iy0;
@@ -588,24 +588,24 @@ hb_raster_paint_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
       new_clip.max_y = iy1;
     }
   }
-  else
+  లేకపోతే
   {
     /* General case: rasterize transformed quad as alpha mask */
-    new_clip.is_rect = false;
-    size_t clip_size = (size_t) new_clip.stride * h;
-    if (unlikely (clip_size > HB_RASTER_MAX_BUFFER_SIZE ||
-                  !new_clip.alpha.resize ((unsigned) clip_size)))
+    new_clip.is_rect = అబద్ధం;
+    size_t clip_కొలత = (size_t) new_clip.stride * h;
+    ఒకవేళ (unlikely (clip_కొలత > HB_RASTER_MAX_బఫరు_కొలత ||
+                  !new_clip.alpha.resize ((గుర్తులేని) clip_కొలత)))
     {
-      hb_raster_paint_push_empty_clip (c, w, h);
-      return;
+      hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+      తిరిగి;
     }
-    hb_memset (new_clip.alpha.arrayZ, 0, (unsigned) clip_size);
+    hb_memset (new_clip.alpha.arrayZ, 0, (గుర్తులేని) clip_కొలత);
 
     /* Convert quad corners to pixel-relative coords */
-    float qx[4], qy[4];
-    int ox = surf->extents.x_origin;
-    int oy = surf->extents.y_origin;
-    for (unsigned i = 0; i < 4; i++)
+    దశాంశం qx[4], qy[4];
+    పూర్ణాంకం ox = surf->extents.x_origin;
+    పూర్ణాంకం oy = surf->extents.y_origin;
+    కొరకు (గుర్తులేని i = 0; i < 4; i++)
     {
       qx[i] = cx[i] - ox;
       qy[i] = cy[i] - oy;
@@ -613,60 +613,60 @@ hb_raster_paint_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
 
     /* For each pixel in the bounding box, test if inside the quad
      * using cross-product edge tests (winding order). */
-    int iy0_i = hb_max (py0, (int) old_clip.min_y);
-    int iy1_i = hb_min (py1, (int) old_clip.max_y);
-    int ix0_i = hb_max (px0, (int) old_clip.min_x);
-    int ix1_i = hb_min (px1, (int) old_clip.max_x);
+    పూర్ణాంకం iy0_i = hb_max (py0, (పూర్ణాంకం) old_clip.min_y);
+    పూర్ణాంకం iy1_i = hb_min (py1, (పూర్ణాంకం) old_clip.max_y);
+    పూర్ణాంకం ix0_i = hb_max (px0, (పూర్ణాంకం) old_clip.min_x);
+    పూర్ణాంకం ix1_i = hb_min (px1, (పూర్ణాంకం) old_clip.max_x);
     new_clip.min_x = w; new_clip.min_y = h;
     new_clip.max_x = 0; new_clip.max_y = 0;
 
-    if (ix0_i < ix1_i && iy0_i < iy1_i)
+    ఒకవేళ (ix0_i < ix1_i && iy0_i < iy1_i)
     {
-      unsigned iy0 = (unsigned) iy0_i;
-      unsigned iy1 = (unsigned) iy1_i;
-      unsigned ix0 = (unsigned) ix0_i;
-      unsigned ix1 = (unsigned) ix1_i;
+      గుర్తులేని iy0 = (గుర్తులేని) iy0_i;
+      గుర్తులేని iy1 = (గుర్తులేని) iy1_i;
+      గుర్తులేని ix0 = (గుర్తులేని) ix0_i;
+      గుర్తులేని ix1 = (గుర్తులేని) ix1_i;
 
       /* Precompute edge normals for point-in-quad test.
        * Edge i goes from corner i to corner (i+1)%4.
        * Normal = (dy, -dx); inside test: dot(normal, p-corner) >= 0 */
-	      float enx[4], eny[4], ed[4];
-	      for (unsigned i = 0; i < 4; i++)
+	      దశాంశం enx[4], eny[4], ed[4];
+	      కొరకు (గుర్తులేని i = 0; i < 4; i++)
 	      {
-		unsigned j = (i + 1) & 3;
-		float edx = qx[j] - qx[i], edy = qy[j] - qy[i];
+		గుర్తులేని j = (i + 1) & 3;
+		దశాంశం edx = qx[j] - qx[i], edy = qy[j] - qy[i];
 		enx[i] = edy;       /* normal x */
 		eny[i] = -edx;      /* normal y */
 		ed[i] = enx[i] * qx[i] + eny[i] * qy[i]; /* distance threshold */
 	      }
-	      float area2 = 0.f;
-	      for (unsigned i = 0; i < 4; i++)
+	      దశాంశం area2 = 0.f;
+	      కొరకు (గుర్తులేని i = 0; i < 4; i++)
 	      {
-		unsigned j = (i + 1) & 3;
+		గుర్తులేని j = (i + 1) & 3;
 		area2 += qx[i] * qy[j] - qx[j] * qy[i];
 	      }
-	      bool ccw = area2 >= 0.f;
+	      తార్కిక ccw = area2 >= 0.f;
 
-      if (old_clip.is_rect)
+      ఒకవేళ (old_clip.is_rect)
       {
-	for (unsigned y = iy0; y < iy1; y++)
-	  for (unsigned x = ix0; x < ix1; x++)
+	కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
+	  కొరకు (గుర్తులేని x = ix0; x < ix1; x++)
 	  {
-	    float px_f = x + 0.5f, py_f = y + 0.5f;
+	    దశాంశం px_f = x + 0.5f, py_f = y + 0.5f;
 	    /* Test if pixel center is inside the quad */
-		    bool inside = true;
-		    for (unsigned i = 0; i < 4; i++)
+		    తార్కిక inside = నిజం;
+		    కొరకు (గుర్తులేని i = 0; i < 4; i++)
 		    {
-		      float d = enx[i] * px_f + eny[i] * py_f;
-		      if (ccw ? d < ed[i] : d > ed[i])
+		      దశాంశం d = enx[i] * px_f + eny[i] * py_f;
+		      ఒకవేళ (ccw ? d < ed[i] : d > ed[i])
 		      {
-			inside = false;
-			break;
+			inside = అబద్ధం;
+			ఆపు;
 		      }
 		    }
 	    uint8_t a = inside ? 255 : 0;
 	    new_clip.alpha[y * new_clip.stride + x] = a;
-	    if (a)
+	    ఒకవేళ (a)
 	    {
 	      new_clip.min_x = hb_min (new_clip.min_x, x);
 	      new_clip.min_y = hb_min (new_clip.min_y, y);
@@ -675,28 +675,28 @@ hb_raster_paint_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
 	    }
 	  }
       }
-      else
+      లేకపోతే
       {
-	for (unsigned y = iy0; y < iy1; y++)
+	కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
 	{
-	  const uint8_t *old_row = old_clip.alpha.arrayZ + y * old_clip.stride;
-	  for (unsigned x = ix0; x < ix1; x++)
+	  స్థిరరాశి uint8_t *old_అడ్డువరుస = old_clip.alpha.arrayZ + y * old_clip.stride;
+	  కొరకు (గుర్తులేని x = ix0; x < ix1; x++)
 	  {
-	    float px_f = x + 0.5f, py_f = y + 0.5f;
+	    దశాంశం px_f = x + 0.5f, py_f = y + 0.5f;
 	    /* Test if pixel center is inside the quad */
-		    bool inside = true;
-		    for (unsigned i = 0; i < 4; i++)
+		    తార్కిక inside = నిజం;
+		    కొరకు (గుర్తులేని i = 0; i < 4; i++)
 		    {
-		      float d = enx[i] * px_f + eny[i] * py_f;
-		      if (ccw ? d < ed[i] : d > ed[i])
+		      దశాంశం d = enx[i] * px_f + eny[i] * py_f;
+		      ఒకవేళ (ccw ? d < ed[i] : d > ed[i])
 		      {
-			inside = false;
-			break;
+			inside = అబద్ధం;
+			ఆపు;
 		      }
 		    }
-	    uint8_t a = inside ? old_row[x] : 0;
+	    uint8_t a = inside ? old_అడ్డువరుస[x] : 0;
 	    new_clip.alpha[y * new_clip.stride + x] = a;
-	    if (a)
+	    ఒకవేళ (a)
 	    {
 	      new_clip.min_x = hb_min (new_clip.min_x, x);
 	      new_clip.min_y = hb_min (new_clip.min_y, y);
@@ -709,17 +709,17 @@ hb_raster_paint_push_clip_rectangle (hb_paint_funcs_t *pfuncs HB_UNUSED,
     }
   }
 
-  if (unlikely (!c->clip_stack.push_or_fail (std::move (new_clip))))
-    hb_raster_paint_push_empty_clip (c, surf->extents.width, surf->extents.height);
+  ఒకవేళ (unlikely (!c->clip_దొంతర.నెట్టు_or_fail (std::move (new_clip))))
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, surf->extents.వెడల్పు, surf->extents.ఎత్తు);
 }
 
-static hb_draw_funcs_t *
-hb_raster_paint_push_clip_path_start (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				      void *paint_data,
-				      void **draw_data,
-				      void *user_data HB_UNUSED)
+స్థిర hb_draw_funcs_t *
+hb_raster_paint_నెట్టు_clip_మార్గం_ప్రారంభం (hb_paint_funcs_t *pfuncs HB_వాడని,
+				      శూన్య *paint_దత్తాంశం,
+				      శూన్య **draw_దత్తాంశం,
+				      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
@@ -727,419 +727,419 @@ hb_raster_paint_push_clip_path_start (hb_paint_funcs_t *pfuncs HB_UNUSED,
    * caller then drives hb_draw_*() into it, and _end renders
    * the accumulated edges into a mask and intersects with the
    * current clip. */
-  if (unlikely (!c->surface_stack.length || !c->clip_rdr))
+  ఒకవేళ (unlikely (!c->surface_దొంతర.నిడివి || !c->clip_rdr))
   {
-    *draw_data = nullptr;
-    return nullptr;
+    *draw_దత్తాంశం = శూన్యసూచిక;
+    తిరిగి శూన్యసూచిక;
   }
 
   hb_raster_draw_t *rdr = c->clip_rdr;
   hb_transform_t<> t = c->current_effective_transform ();
-  hb_raster_draw_set_transform (rdr, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+  hb_raster_draw_సమితి_transform (rdr, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   hb_raster_image_t *surf = c->current_surface ();
-  if (likely (surf))
+  ఒకవేళ (likely (surf))
     hb_raster_paint_attach_clip_rdr (c, rdr, surf);
 
-  *draw_data = rdr;
-  return hb_raster_draw_get_funcs (rdr);
+  *draw_దత్తాంశం = rdr;
+  తిరిగి hb_raster_draw_get_funcs (rdr);
 }
 
-static void
-hb_raster_paint_push_clip_path_end (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				    void *paint_data,
-				    void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_clip_మార్గం_చివర (hb_paint_funcs_t *pfuncs HB_వాడని,
+				    శూన్య *paint_దత్తాంశం,
+				    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf || !c->clip_rdr)) return;
+  ఒకవేళ (unlikely (!surf || !c->clip_rdr)) తిరిగి;
 
-  unsigned w = surf->extents.width;
-  unsigned h = surf->extents.height;
+  గుర్తులేని w = surf->extents.వెడల్పు;
+  గుర్తులేని h = surf->extents.ఎత్తు;
 
   hb_raster_paint_readback_budget (c, c->clip_rdr);
-  if (unlikely (c->budget_remaining < 0))
+  ఒకవేళ (unlikely (c->budget_మిగిలిన < 0))
   {
     hb_raster_draw_clear (c->clip_rdr);
-    hb_raster_paint_push_empty_clip (c, w, h);
-    return;
+    hb_raster_paint_నెట్టు_ఖాళీలు_clip (c, w, h);
+    తిరిగి;
   }
 
-  hb_raster_paint_finalize_path_clip (c, c->clip_rdr, surf, w, h);
+  hb_raster_paint_finalize_మార్గం_clip (c, c->clip_rdr, surf, w, h);
 }
 
-static void
-hb_raster_paint_pop_clip (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			  void *paint_data,
-			  void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_తీయి_clip (hb_paint_funcs_t *pfuncs HB_వాడని,
+			  శూన్య *paint_దత్తాంశం,
+			  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
-  if (!c->clip_stack.length) return;
-  c->release_clip (c->clip_stack.pop ());
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (!c->clip_దొంతర.నిడివి) తిరిగి;
+  c->release_clip (c->clip_దొంతర.తీయి ());
 }
 
-static void
-hb_raster_paint_push_group (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			    void *paint_data,
-			    void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_నెట్టు_సమూహం (hb_paint_funcs_t *pfuncs HB_వాడని,
+			    శూన్య *paint_దత్తాంశం,
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   /* acquire_surface() clears a full surface; charge its area. */
-  if (unlikely (!c->charge_work ((int64_t) c->fixed_extents.width * c->fixed_extents.height)))
-    return;
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) c->fixed_extents.వెడల్పు * c->fixed_extents.ఎత్తు)))
+    తిరిగి;
 
   hb_raster_image_t *new_surf = c->acquire_surface ();
-  if (unlikely (!new_surf)) return;
-  if (unlikely (!c->surface_stack.push_or_fail (new_surf)))
+  ఒకవేళ (unlikely (!new_surf)) తిరిగి;
+  ఒకవేళ (unlikely (!c->surface_దొంతర.నెట్టు_or_fail (new_surf)))
     c->release_surface (new_surf);
 }
 
-static void
-hb_raster_paint_pop_group (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			   void *paint_data,
-			   hb_paint_composite_mode_t mode,
-			   void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_తీయి_సమూహం (hb_paint_funcs_t *pfuncs HB_వాడని,
+			   శూన్య *paint_దత్తాంశం,
+			   hb_paint_సంయుక్త_బహుళకం_t బహుళకం,
+			   శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
-  if (c->surface_stack.length < 2) return;
+  ఒకవేళ (c->surface_దొంతర.నిడివి < 2) తిరిగి;
 
-  hb_raster_image_t *src = c->surface_stack.pop ();
+  hb_raster_image_t *src = c->surface_దొంతర.తీయి ();
   hb_raster_image_t *dst = c->current_surface ();
 
-  if (dst && src &&
-      likely (c->charge_work ((int64_t) dst->extents.width * dst->extents.height)))
-    hb_raster_image_composite (dst, src, mode);
+  ఒకవేళ (dst && src &&
+      likely (c->charge_work ((int64_t) dst->extents.వెడల్పు * dst->extents.ఎత్తు)))
+    hb_raster_image_సంయుక్త (dst, src, బహుళకం);
 
   c->release_surface (src);
 }
 
-static void
+స్థిర శూన్య
 hb_raster_paint_solid (hb_raster_paint_t *c,
 		       hb_raster_image_t *surf,
 		       hb_color_t color,
-		       hb_raster_image_t *mask_img)
+		       hb_raster_image_t *ముసుగు_img)
 {
-  uint32_t premul = color_to_premul_pixel (color);
+  uint32_t premul = color_గమ్యం_premul_pixel (color);
   uint8_t premul_a = (uint8_t) (premul >> 24);
-  const hb_raster_clip_t &clip = c->current_clip ();
+  స్థిరరాశి hb_raster_clip_t &clip = c->current_clip ();
 
-  unsigned stride = surf->extents.stride;
-  if (clip.min_x >= clip.max_x || clip.min_y >= clip.max_y) return;
-  if (premul_a == 0) return;
+  గుర్తులేని stride = surf->extents.stride;
+  ఒకవేళ (clip.min_x >= clip.max_x || clip.min_y >= clip.max_y) తిరిగి;
+  ఒకవేళ (premul_a == 0) తిరిగి;
 
-  unsigned ix0 = clip.min_x, iy0 = clip.min_y;
-  unsigned ix1 = clip.max_x, iy1 = clip.max_y;
-  const uint8_t *mask_buf = nullptr;
-  hb_raster_extents_t mask_ext;
-  int64_t mask_x0 = 0, mask_y0 = 0;
-  if (mask_img)
+  గుర్తులేని ix0 = clip.min_x, iy0 = clip.min_y;
+  గుర్తులేని ix1 = clip.max_x, iy1 = clip.max_y;
+  స్థిరరాశి uint8_t *ముసుగు_buf = శూన్యసూచిక;
+  hb_raster_extents_t ముసుగు_ext;
+  int64_t ముసుగు_x0 = 0, ముసుగు_y0 = 0;
+  ఒకవేళ (ముసుగు_img)
   {
-    mask_buf = hb_raster_image_get_buffer (mask_img);
-    hb_raster_image_get_extents (mask_img, &mask_ext);
-    if (!hb_raster_paint_intersect_mask (surf, mask_ext, clip,
-					 surf->extents.width, surf->extents.height,
-					 &mask_x0, &mask_y0,
+    ముసుగు_buf = hb_raster_image_get_బఫరు (ముసుగు_img);
+    hb_raster_image_get_extents (ముసుగు_img, &ముసుగు_ext);
+    ఒకవేళ (!hb_raster_paint_intersect_ముసుగు (surf, ముసుగు_ext, clip,
+					 surf->extents.వెడల్పు, surf->extents.ఎత్తు,
+					 &ముసుగు_x0, &ముసుగు_y0,
 					 &ix0, &iy0, &ix1, &iy1))
-      return;
+      తిరిగి;
   }
 
-  if (unlikely (!c->charge_work ((int64_t) (ix1 - ix0) * (iy1 - iy0))))
-    return;
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) (ix1 - ix0) * (iy1 - iy0))))
+    తిరిగి;
 
-  if (likely (!clip.is_rect))
+  ఒకవేళ (likely (!clip.is_rect))
   {
-    for (unsigned y = iy0; y < iy1; y++)
+    కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
     {
-      hb_packed_t<uint32_t> *__restrict row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + y * stride);
-      const uint8_t *__restrict clip_row = clip.alpha.arrayZ + y * clip.stride;
-      const uint8_t *__restrict mask_row = mask_buf ? mask_buf + (unsigned) ((int64_t) y - mask_y0) * mask_ext.stride
-						    : nullptr;
-      unsigned mx = (unsigned) ((int64_t) ix0 - mask_x0);
-      for (unsigned x = ix0; x < ix1; x++)
+      hb_packed_t<uint32_t> *__restrict అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + y * stride);
+      స్థిరరాశి uint8_t *__restrict clip_అడ్డువరుస = clip.alpha.arrayZ + y * clip.stride;
+      స్థిరరాశి uint8_t *__restrict ముసుగు_అడ్డువరుస = ముసుగు_buf ? ముసుగు_buf + (గుర్తులేని) ((int64_t) y - ముసుగు_y0) * ముసుగు_ext.stride
+						    : శూన్యసూచిక;
+      గుర్తులేని mx = (గుర్తులేని) ((int64_t) ix0 - ముసుగు_x0);
+      కొరకు (గుర్తులేని x = ix0; x < ix1; x++)
       {
-	uint8_t clip_alpha = clip_row[x];
-	if (mask_row)
-	  clip_alpha = hb_raster_div255 (mask_row[mx++] * clip_alpha);
-	if (clip_alpha == 0) continue;
-	if (clip_alpha == 255)
+	uint8_t clip_alpha = clip_అడ్డువరుస[x];
+	ఒకవేళ (ముసుగు_అడ్డువరుస)
+	  clip_alpha = hb_raster_div255 (ముసుగు_అడ్డువరుస[mx++] * clip_alpha);
+	ఒకవేళ (clip_alpha == 0) కొనసాగు;
+	ఒకవేళ (clip_alpha == 255)
 	{
-	  if (premul_a == 255)
-	    row[x] = hb_packed_t<uint32_t> (premul);
-	  else
-	    row[x] = hb_packed_t<uint32_t> (hb_raster_src_over (premul, (uint32_t) row[x]));
+	  ఒకవేళ (premul_a == 255)
+	    అడ్డువరుస[x] = hb_packed_t<uint32_t> (premul);
+	  లేకపోతే
+	    అడ్డువరుస[x] = hb_packed_t<uint32_t> (hb_raster_src_over (premul, (uint32_t) అడ్డువరుస[x]));
 	}
-	else
+	లేకపోతే
 	{
 	  uint32_t src = hb_raster_alpha_mul (premul, clip_alpha);
-	  row[x] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[x]));
+	  అడ్డువరుస[x] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[x]));
 	}
       }
     }
   }
-  else if (mask_buf)
+  లేకపోతే ఒకవేళ (ముసుగు_buf)
   {
-    for (unsigned y = iy0; y < iy1; y++)
+    కొరకు (గుర్తులేని y = iy0; y < iy1; y++)
     {
-      hb_packed_t<uint32_t> *__restrict row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + y * stride);
-      const uint8_t *__restrict mask_row = mask_buf + (unsigned) ((int64_t) y - mask_y0) * mask_ext.stride;
-      unsigned mx = (unsigned) ((int64_t) ix0 - mask_x0);
-      for (unsigned x = ix0; x < ix1; x++)
+      hb_packed_t<uint32_t> *__restrict అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + y * stride);
+      స్థిరరాశి uint8_t *__restrict ముసుగు_అడ్డువరుస = ముసుగు_buf + (గుర్తులేని) ((int64_t) y - ముసుగు_y0) * ముసుగు_ext.stride;
+      గుర్తులేని mx = (గుర్తులేని) ((int64_t) ix0 - ముసుగు_x0);
+      కొరకు (గుర్తులేని x = ix0; x < ix1; x++)
       {
-	uint8_t mask_alpha = mask_row[mx++];
-	if (mask_alpha == 0) continue;
-	uint32_t src = hb_raster_alpha_mul (premul, mask_alpha);
-	row[x] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[x]));
+	uint8_t ముసుగు_alpha = ముసుగు_అడ్డువరుస[mx++];
+	ఒకవేళ (ముసుగు_alpha == 0) కొనసాగు;
+	uint32_t src = hb_raster_alpha_mul (premul, ముసుగు_alpha);
+	అడ్డువరుస[x] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[x]));
       }
     }
   }
-  else
+  లేకపోతే
   {
-    for (unsigned y = clip.min_y; y < clip.max_y; y++)
+    కొరకు (గుర్తులేని y = clip.min_y; y < clip.max_y; y++)
     {
-      hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + y * stride);
-      for (unsigned x = clip.min_x; x < clip.max_x; x++)
-	row[x] = hb_packed_t<uint32_t> (hb_raster_src_over (premul, (uint32_t) row[x]));
+      hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + y * stride);
+      కొరకు (గుర్తులేని x = clip.min_x; x < clip.max_x; x++)
+	అడ్డువరుస[x] = hb_packed_t<uint32_t> (hb_raster_src_over (premul, (uint32_t) అడ్డువరుస[x]));
     }
   }
 }
 
-static void
-hb_raster_paint_color (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		       void *paint_data,
-		       hb_bool_t is_foreground HB_UNUSED,
+స్థిర శూన్య
+hb_raster_paint_color (hb_paint_funcs_t *pfuncs HB_వాడని,
+		       శూన్య *paint_దత్తాంశం,
+		       hb_bool_t is_foreground HB_వాడని,
 		       hb_color_t color,
-		       void *user_data HB_UNUSED)
+		       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
-  hb_raster_paint_solid (c, surf, color, nullptr);
+  hb_raster_paint_solid (c, surf, color, శూన్యసూచిక);
 }
 
-static void
-hb_raster_paint_fill_glyph (hb_paint_funcs_t *pfuncs HB_UNUSED,
-			    void *paint_data,
+స్థిర శూన్య
+hb_raster_paint_fill_glyph (hb_paint_funcs_t *pfuncs HB_వాడని,
+			    శూన్య *paint_దత్తాంశం,
 			    hb_codepoint_t glyph,
 			    hb_font_t *font,
-			    hb_bool_t is_foreground HB_UNUSED,
+			    hb_bool_t is_foreground HB_వాడని,
 			    hb_color_t color,
-			    void *user_data HB_UNUSED)
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
   /* Out of budget: skip the glyph-outline extraction entirely. */
-  if (unlikely (c->budget_remaining < 0)) return;
+  ఒకవేళ (unlikely (c->budget_మిగిలిన < 0)) తిరిగి;
 
   hb_raster_draw_t *rdr = c->clip_rdr;
   hb_transform_t<> t = c->current_effective_transform ();
-  hb_raster_draw_set_transform (rdr, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+  hb_raster_draw_సమితి_transform (rdr, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   hb_raster_paint_attach_clip_rdr (c, rdr, surf);
 
-  hb_raster_paint_glyph_clip_data_t data = {glyph, font};
-  hb_raster_paint_emit_clip_glyph_mask (rdr, &data);
+  hb_raster_paint_glyph_clip_దత్తాంశం_t దత్తాంశం = {glyph, font};
+  hb_raster_paint_emit_clip_glyph_ముసుగు (rdr, &దత్తాంశం);
   hb_raster_paint_readback_budget (c, rdr);
 
-  if (unlikely (!c->precharge_work (hb_raster_draw_get_pixel_work (rdr,
-							  surf->extents.height,
-							  surf->extents.width))))
+  ఒకవేళ (unlikely (!c->precharge_work (hb_raster_draw_get_pixel_work (rdr,
+							  surf->extents.ఎత్తు,
+							  surf->extents.వెడల్పు))))
   {
     hb_raster_draw_clear (rdr);
-    return;
+    తిరిగి;
   }
 
-  hb_raster_image_t *mask_img = hb_raster_draw_render (rdr);
-  if (unlikely (!mask_img)) return;
+  hb_raster_image_t *ముసుగు_img = hb_raster_draw_render (rdr);
+  ఒకవేళ (unlikely (!ముసుగు_img)) తిరిగి;
 
-  hb_raster_extents_t mask_ext;
-  hb_raster_image_get_extents (mask_img, &mask_ext);
-  if (likely (c->charge_work ((int64_t) mask_ext.width * mask_ext.height)))
-    hb_raster_paint_solid (c, surf, color, mask_img);
+  hb_raster_extents_t ముసుగు_ext;
+  hb_raster_image_get_extents (ముసుగు_img, &ముసుగు_ext);
+  ఒకవేళ (likely (c->charge_work ((int64_t) ముసుగు_ext.వెడల్పు * ముసుగు_ext.ఎత్తు)))
+    hb_raster_paint_solid (c, surf, color, ముసుగు_img);
 
-  hb_raster_draw_recycle_image (rdr, mask_img);
+  hb_raster_draw_recycle_image (rdr, ముసుగు_img);
 }
 
-static hb_bool_t
-hb_raster_paint_image (hb_paint_funcs_t *pfuncs HB_UNUSED,
-		       void *paint_data,
+స్థిర hb_bool_t
+hb_raster_paint_image (hb_paint_funcs_t *pfuncs HB_వాడని,
+		       శూన్య *paint_దత్తాంశం,
 		       hb_blob_t *blob,
-		       unsigned width,
-		       unsigned height,
-		       hb_tag_t format,
-		       float slant HB_UNUSED,
+		       గుర్తులేని వెడల్పు,
+		       గుర్తులేని ఎత్తు,
+		       hb_ట్యాగ్_t format,
+		       దశాంశం slant HB_వాడని,
 		       hb_glyph_extents_t *extents,
-		       void *user_data HB_UNUSED)
+		       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   /* Out of pixel budget: skip, including the image decode below.  Image
    * compositing is pixel work and does no outline traversal. */
-  if (unlikely (c->pixel_remaining < 0)) return false;
+  ఒకవేళ (unlikely (c->pixel_మిగిలిన < 0)) తిరిగి అబద్ధం;
 
-  unsigned src_width = width;
-  unsigned src_height = height;
-  const hb_packed_t<uint32_t> *src_data = nullptr;
+  గుర్తులేని src_వెడల్పు = వెడల్పు;
+  గుర్తులేని src_ఎత్తు = ఎత్తు;
+  స్థిరరాశి hb_packed_t<uint32_t> *src_దత్తాంశం = శూన్యసూచిక;
   hb_raster_image_t decoded_png;
 
-  if (format == HB_PAINT_IMAGE_FORMAT_BGRA)
+  ఒకవేళ (format == HB_PAINT_IMAGE_FORMAT_BGRA)
   {
-    if (src_width == 0 || src_height == 0)
-      return false;
-    if (src_width > (unsigned) INT_MAX || src_height > (unsigned) INT_MAX)
-      return false;
+    ఒకవేళ (src_వెడల్పు == 0 || src_ఎత్తు == 0)
+      తిరిగి అబద్ధం;
+    ఒకవేళ (src_వెడల్పు > (గుర్తులేని) గరిష్ఠ_పూర్ణాంకం || src_ఎత్తు > (గుర్తులేని) గరిష్ఠ_పూర్ణాంకం)
+      తిరిగి అబద్ధం;
 
-    unsigned data_len;
-    const uint8_t *data = (const uint8_t *) hb_blob_get_data (blob, &data_len);
-    size_t pixel_count = (size_t) src_width * (size_t) src_height;
-    if (src_width && pixel_count / src_width != src_height)
-      return false;
-    if (pixel_count > (size_t) -1 / 4u)
-      return false;
-    size_t required_size = pixel_count * 4u;
-    if (!data || (size_t) data_len < required_size)
-      return false;
+    గుర్తులేని దత్తాంశం_len;
+    స్థిరరాశి uint8_t *దత్తాంశం = (స్థిరరాశి uint8_t *) hb_blob_get_దత్తాంశం (blob, &దత్తాంశం_len);
+    size_t pixel_లెక్క = (size_t) src_వెడల్పు * (size_t) src_ఎత్తు;
+    ఒకవేళ (src_వెడల్పు && pixel_లెక్క / src_వెడల్పు != src_ఎత్తు)
+      తిరిగి అబద్ధం;
+    ఒకవేళ (pixel_లెక్క > (size_t) -1 / 4u)
+      తిరిగి అబద్ధం;
+    size_t required_కొలత = pixel_లెక్క * 4u;
+    ఒకవేళ (!దత్తాంశం || (size_t) దత్తాంశం_len < required_కొలత)
+      తిరిగి అబద్ధం;
 
-    src_data = (const hb_packed_t<uint32_t> *) data;
+    src_దత్తాంశం = (స్థిరరాశి hb_packed_t<uint32_t> *) దత్తాంశం;
   }
-  else if (format == HB_PAINT_IMAGE_FORMAT_PNG)
+  లేకపోతే ఒకవేళ (format == HB_PAINT_IMAGE_FORMAT_PNG)
   {
-#ifdef HAVE_PNG
-    if (!decoded_png.deserialize_from_png (blob))
-      return false;
-    src_width = decoded_png.extents.width;
-    src_height = decoded_png.extents.height;
-    src_data = (const hb_packed_t<uint32_t> *) decoded_png.buffer.arrayZ;
-#else
-    return false;
-#endif
+#నిర్వచితమైతే HAVE_PNG
+    ఒకవేళ (!decoded_png.deserialize_from_png (blob))
+      తిరిగి అబద్ధం;
+    src_వెడల్పు = decoded_png.extents.వెడల్పు;
+    src_ఎత్తు = decoded_png.extents.ఎత్తు;
+    src_దత్తాంశం = (స్థిరరాశి hb_packed_t<uint32_t> *) decoded_png.బఫరు.arrayZ;
+#లేకపోతే
+    తిరిగి అబద్ధం;
+#అయితే_ముగింపు
   }
-  else
-    return false;
+  లేకపోతే
+    తిరిగి అబద్ధం;
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return false;
-  if (!extents) return false;
+  ఒకవేళ (unlikely (!surf)) తిరిగి అబద్ధం;
+  ఒకవేళ (!extents) తిరిగి అబద్ధం;
 
-  const hb_raster_clip_t &clip = c->current_clip ();
+  స్థిరరాశి hb_raster_clip_t &clip = c->current_clip ();
   hb_transform_t<> t = c->current_effective_transform ();
 
   /* Compute inverse transform for sampling */
-  float det = t.xx * t.yy - t.xy * t.yx;
-  if (fabsf (det) < 1e-10f) return false;
-  float inv_det = 1.f / det;
-  float inv_xx =  t.yy * inv_det;
-  float inv_xy = -t.xy * inv_det;
-  float inv_yx = -t.yx * inv_det;
-  float inv_yy =  t.xx * inv_det;
-  float inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
-  float inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
+  దశాంశం det = t.xx * t.yy - t.xy * t.yx;
+  ఒకవేళ (fabsf (det) < 1e-10f) తిరిగి అబద్ధం;
+  దశాంశం inv_det = 1.f / det;
+  దశాంశం inv_xx =  t.yy * inv_det;
+  దశాంశం inv_xy = -t.xy * inv_det;
+  దశాంశం inv_yx = -t.yx * inv_det;
+  దశాంశం inv_yy =  t.xx * inv_det;
+  దశాంశం inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
+  దశాంశం inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
 
-  unsigned surf_stride = surf->extents.stride;
-  int ox = surf->extents.x_origin;
-  int oy = surf->extents.y_origin;
+  గుర్తులేని surf_stride = surf->extents.stride;
+  పూర్ణాంకం ox = surf->extents.x_origin;
+  పూర్ణాంకం oy = surf->extents.y_origin;
 
   /* Image source rectangle in glyph space */
-  float img_x = extents->x_bearing;
-  float img_y = extents->y_bearing;
-  float img_sx = (float) extents->width / src_width;
-  float img_sy = (float) extents->height / src_height;
-  if (fabsf (img_sx) < 1e-10f || fabsf (img_sy) < 1e-10f)
-    return false;
+  దశాంశం img_x = extents->x_bearing;
+  దశాంశం img_y = extents->y_bearing;
+  దశాంశం img_sx = (దశాంశం) extents->వెడల్పు / src_వెడల్పు;
+  దశాంశం img_sy = (దశాంశం) extents->ఎత్తు / src_ఎత్తు;
+  ఒకవేళ (fabsf (img_sx) < 1e-10f || fabsf (img_sy) < 1e-10f)
+    తిరిగి అబద్ధం;
 
   {
-    unsigned clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
-    unsigned clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
-    if (unlikely (!c->charge_work ((int64_t) clip_w * clip_h +
-				   (int64_t) src_width * src_height)))
-      return false;
+    గుర్తులేని clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
+    గుర్తులేని clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
+    ఒకవేళ (unlikely (!c->charge_work ((int64_t) clip_w * clip_h +
+				   (int64_t) src_వెడల్పు * src_ఎత్తు)))
+      తిరిగి అబద్ధం;
   }
 
-  if (clip.is_rect)
+  ఒకవేళ (clip.is_rect)
   {
-    for (unsigned py = clip.min_y; py < clip.max_y; py++)
+    కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
     {
-      hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * surf_stride);
-      float gx = inv_xx * (float) ((int) clip.min_x + ox) + inv_xy * (float) ((int) py + oy) + inv_x0;
-      float gy = inv_yx * (float) ((int) clip.min_x + ox) + inv_yy * (float) ((int) py + oy) + inv_y0;
-      for (unsigned px = clip.min_x; px < clip.max_x; px++)
+      hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * surf_stride);
+      దశాంశం gx = inv_xx * (దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + inv_xy * (దశాంశం) ((పూర్ణాంకం) py + oy) + inv_x0;
+      దశాంశం gy = inv_yx * (దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + inv_yy * (దశాంశం) ((పూర్ణాంకం) py + oy) + inv_y0;
+      కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
       {
 	/* Map glyph space to image texel; bilinear reconstruction. */
-	float ix = (gx - img_x) / img_sx;
-	float iy = (float) (src_height - 1) - (gy - img_y) / img_sy;
+	దశాంశం ix = (gx - img_x) / img_sx;
+	దశాంశం iy = (దశాంశం) (src_ఎత్తు - 1) - (gy - img_y) / img_sy;
 
-	if (unlikely (!std::isfinite (ix) || !std::isfinite (iy)) ||
+	ఒకవేళ (unlikely (!std::isfinite (ix) || !std::isfinite (iy)) ||
 	    ix < 0.f || iy < 0.f ||
-	    ix > (float) (src_width - 1) || iy > (float) (src_height - 1))
+	    ix > (దశాంశం) (src_వెడల్పు - 1) || iy > (దశాంశం) (src_ఎత్తు - 1))
 	{
 	  gx += inv_xx;
 	  gy += inv_yx;
-	  continue;
+	  కొనసాగు;
 	}
 
-	uint32_t src_px = hb_raster_sample_bilinear_premul (src_data, src_width, src_height,
+	uint32_t src_px = hb_raster_sample_bilinear_premul (src_దత్తాంశం, src_వెడల్పు, src_ఎత్తు,
 							     ix, iy);
-	row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src_px, (uint32_t) row[px]));
+	అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src_px, (uint32_t) అడ్డువరుస[px]));
 	gx += inv_xx;
 	gy += inv_yx;
       }
     }
   }
-  else
+  లేకపోతే
   {
-    for (unsigned py = clip.min_y; py < clip.max_y; py++)
+    కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
     {
-      hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * surf_stride);
-      const uint8_t *clip_row = clip.alpha.arrayZ + py * clip.stride;
-      float gx = inv_xx * (float) ((int) clip.min_x + ox) + inv_xy * (float) ((int) py + oy) + inv_x0;
-      float gy = inv_yx * (float) ((int) clip.min_x + ox) + inv_yy * (float) ((int) py + oy) + inv_y0;
-      for (unsigned px = clip.min_x; px < clip.max_x; px++)
+      hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * surf_stride);
+      స్థిరరాశి uint8_t *clip_అడ్డువరుస = clip.alpha.arrayZ + py * clip.stride;
+      దశాంశం gx = inv_xx * (దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + inv_xy * (దశాంశం) ((పూర్ణాంకం) py + oy) + inv_x0;
+      దశాంశం gy = inv_yx * (దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + inv_yy * (దశాంశం) ((పూర్ణాంకం) py + oy) + inv_y0;
+      కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
       {
-	uint8_t clip_alpha = clip_row[px];
-	if (clip_alpha == 0)
+	uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	ఒకవేళ (clip_alpha == 0)
 	{
 	  gx += inv_xx;
 	  gy += inv_yx;
-	  continue;
+	  కొనసాగు;
 	}
 
 	/* Map glyph space to image texel; bilinear reconstruction. */
-	float ix = (gx - img_x) / img_sx;
-	float iy = (float) (src_height - 1) - (gy - img_y) / img_sy;
+	దశాంశం ix = (gx - img_x) / img_sx;
+	దశాంశం iy = (దశాంశం) (src_ఎత్తు - 1) - (gy - img_y) / img_sy;
 
-	if (unlikely (!std::isfinite (ix) || !std::isfinite (iy)) ||
+	ఒకవేళ (unlikely (!std::isfinite (ix) || !std::isfinite (iy)) ||
 	    ix < 0.f || iy < 0.f ||
-	    ix > (float) (src_width - 1) || iy > (float) (src_height - 1))
+	    ix > (దశాంశం) (src_వెడల్పు - 1) || iy > (దశాంశం) (src_ఎత్తు - 1))
 	{
 	  gx += inv_xx;
 	  gy += inv_yx;
-	  continue;
+	  కొనసాగు;
 	}
 
-	uint32_t src_px = hb_raster_sample_bilinear_premul (src_data, src_width, src_height,
+	uint32_t src_px = hb_raster_sample_bilinear_premul (src_దత్తాంశం, src_వెడల్పు, src_ఎత్తు,
 							     ix, iy);
 	src_px = hb_raster_alpha_mul (src_px, clip_alpha);
-	row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src_px, (uint32_t) row[px]));
+	అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src_px, (uint32_t) అడ్డువరుస[px]));
 	gx += inv_xx;
 	gy += inv_yx;
       }
     }
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
 
@@ -1147,273 +1147,273 @@ hb_raster_paint_image (hb_paint_funcs_t *pfuncs HB_UNUSED,
  * Gradient helpers
  */
 
-#define GRADIENT_LUT_SIZE 256
-#define GRADIENT_LUT_MIN_PIXELS (64u * 64u)
+#నిర్వచించు GRADIENT_LUT_కొలత 256
+#నిర్వచించు GRADIENT_LUT_MIN_PIXELS (64u * 64u)
 
-static HB_ALWAYS_INLINE float
-reflect_gradient_t (float t)
+స్థిర HB_ALWAYS_INLINE దశాంశం
+reflect_gradient_t (దశాంశం t)
 {
   t = fmodf (fabsf (t), 2.f);
-  return t > 1.f ? 2.f - t : t;
+  తిరిగి t > 1.f ? 2.f - t : t;
 }
 
 /* Evaluate color at normalized position t, interpolating in premultiplied space. */
-static uint32_t
-evaluate_color_line (const hb_color_stop_t *stops, unsigned len, float t,
+స్థిర uint32_t
+evaluate_color_పంక్తి (స్థిరరాశి hb_color_stop_t *stops, గుర్తులేని len, దశాంశం t,
 		     hb_paint_extend_t extend)
 {
-  if (unlikely (!len))
-    return 0;
-  if (unlikely (len == 1))
-    return color_to_premul_pixel (stops[0].color);
-  if (unlikely (!std::isfinite (t)))
+  ఒకవేళ (unlikely (!len))
+    తిరిగి 0;
+  ఒకవేళ (unlikely (len == 1))
+    తిరిగి color_గమ్యం_premul_pixel (stops[0].color);
+  ఒకవేళ (unlikely (!std::isfinite (t)))
     t = 0.f;
 
   /* Apply extend mode */
-  if (extend == HB_PAINT_EXTEND_PAD)
+  ఒకవేళ (extend == HB_PAINT_EXTEND_PAD)
   {
     t = hb_clamp (t, 0.f, 1.f);
   }
-  else if (extend == HB_PAINT_EXTEND_REPEAT)
+  లేకపోతే ఒకవేళ (extend == HB_PAINT_EXTEND_REPEAT)
   {
     t = t - floorf (t);
   }
-  else /* REFLECT */
+  లేకపోతే /* REFLECT */
   {
     t = reflect_gradient_t (t);
   }
 
   /* Find bounding stops */
-  if (t <= stops[0].offset)
-    return color_to_premul_pixel (stops[0].color);
-  if (t >= stops[len - 1].offset)
-    return color_to_premul_pixel (stops[len - 1].color);
+  ఒకవేళ (t <= stops[0].స్థానభ్రంశం)
+    తిరిగి color_గమ్యం_premul_pixel (stops[0].color);
+  ఒకవేళ (t >= stops[len - 1].స్థానభ్రంశం)
+    తిరిగి color_గమ్యం_premul_pixel (stops[len - 1].color);
 
-  unsigned i;
-  for (i = 0; i < len - 1; i++)
-    if (t < stops[i + 1].offset)
-      break;
+  గుర్తులేని i;
+  కొరకు (i = 0; i < len - 1; i++)
+    ఒకవేళ (t < stops[i + 1].స్థానభ్రంశం)
+      ఆపు;
 
-  float range = stops[i + 1].offset - stops[i].offset;
-  float k = range > 0.f ? (t - stops[i].offset) / range : 0.f;
+  దశాంశం range = stops[i + 1].స్థానభ్రంశం - stops[i].స్థానభ్రంశం;
+  దశాంశం k = range > 0.f ? (t - stops[i].స్థానభ్రంశం) / range : 0.f;
 
   /* Interpolate in premultiplied [0,255] space */
   hb_color_t c0 = stops[i].color;
   hb_color_t c1 = stops[i + 1].color;
 
-  float a0 = hb_color_get_alpha (c0) / 255.f;
-  float r0 = hb_color_get_red   (c0) / 255.f * a0;
-  float g0 = hb_color_get_green (c0) / 255.f * a0;
-  float b0 = hb_color_get_blue  (c0) / 255.f * a0;
+  దశాంశం a0 = hb_color_get_alpha (c0) / 255.f;
+  దశాంశం r0 = hb_color_get_red   (c0) / 255.f * a0;
+  దశాంశం g0 = hb_color_get_green (c0) / 255.f * a0;
+  దశాంశం b0 = hb_color_get_blue  (c0) / 255.f * a0;
 
-  float a1 = hb_color_get_alpha (c1) / 255.f;
-  float r1 = hb_color_get_red   (c1) / 255.f * a1;
-  float g1 = hb_color_get_green (c1) / 255.f * a1;
-  float b1 = hb_color_get_blue  (c1) / 255.f * a1;
+  దశాంశం a1 = hb_color_get_alpha (c1) / 255.f;
+  దశాంశం r1 = hb_color_get_red   (c1) / 255.f * a1;
+  దశాంశం g1 = hb_color_get_green (c1) / 255.f * a1;
+  దశాంశం b1 = hb_color_get_blue  (c1) / 255.f * a1;
 
-  float a = a0 + k * (a1 - a0);
-  float r = r0 + k * (r1 - r0);
-  float g = g0 + k * (g1 - g0);
-  float b = b0 + k * (b1 - b0);
+  దశాంశం a = a0 + k * (a1 - a0);
+  దశాంశం r = r0 + k * (r1 - r0);
+  దశాంశం g = g0 + k * (g1 - g0);
+  దశాంశం b = b0 + k * (b1 - b0);
 
   uint8_t pa = (uint8_t) (a * 255.f + 0.5f);
   uint8_t pr = (uint8_t) (r * 255.f + 0.5f);
   uint8_t pg = (uint8_t) (g * 255.f + 0.5f);
   uint8_t pb = (uint8_t) (b * 255.f + 0.5f);
 
-  return (uint32_t) pb | ((uint32_t) pg << 8) | ((uint32_t) pr << 16) | ((uint32_t) pa << 24);
+  తిరిగి (uint32_t) pb | ((uint32_t) pg << 8) | ((uint32_t) pr << 16) | ((uint32_t) pa << 24);
 }
 
-static HB_ALWAYS_INLINE float
-normalize_gradient_t (float t, hb_paint_extend_t extend)
+స్థిర HB_ALWAYS_INLINE దశాంశం
+normalize_gradient_t (దశాంశం t, hb_paint_extend_t extend)
 {
-  if (unlikely (!std::isfinite (t)))
-    return 0.f;
+  ఒకవేళ (unlikely (!std::isfinite (t)))
+    తిరిగి 0.f;
 
-  if (extend == HB_PAINT_EXTEND_PAD)
-    return hb_clamp (t, 0.f, 1.f);
-  if (extend == HB_PAINT_EXTEND_REPEAT)
+  ఒకవేళ (extend == HB_PAINT_EXTEND_PAD)
+    తిరిగి hb_clamp (t, 0.f, 1.f);
+  ఒకవేళ (extend == HB_PAINT_EXTEND_REPEAT)
   {
     t = t - floorf (t);
-    return t < 0.f ? t + 1.f : t;
+    తిరిగి t < 0.f ? t + 1.f : t;
   }
 
   /* REFLECT */
-  return reflect_gradient_t (t);
+  తిరిగి reflect_gradient_t (t);
 }
 
-static void
-build_gradient_lut (const hb_color_stop_t *stops,
-		    unsigned len,
+స్థిర శూన్య
+build_gradient_lut (స్థిరరాశి hb_color_stop_t *stops,
+		    గుర్తులేని len,
 		    uint32_t *lut)
 {
-  for (unsigned i = 0; i < GRADIENT_LUT_SIZE; i++)
+  కొరకు (గుర్తులేని i = 0; i < GRADIENT_LUT_కొలత; i++)
   {
-    float t = (float) i / (GRADIENT_LUT_SIZE - 1);
-    lut[i] = evaluate_color_line (stops, len, t, HB_PAINT_EXTEND_PAD);
+    దశాంశం t = (దశాంశం) i / (GRADIENT_LUT_కొలత - 1);
+    lut[i] = evaluate_color_పంక్తి (stops, len, t, HB_PAINT_EXTEND_PAD);
   }
 }
 
-static HB_ALWAYS_INLINE uint32_t
-lookup_gradient_lut (const uint32_t *lut,
-		     float t,
+స్థిర HB_ALWAYS_INLINE uint32_t
+lookup_gradient_lut (స్థిరరాశి uint32_t *lut,
+		     దశాంశం t,
 		     hb_paint_extend_t extend)
 {
-  float u = normalize_gradient_t (t, extend);
-  if (unlikely (!std::isfinite (u)))
+  దశాంశం u = normalize_gradient_t (t, extend);
+  ఒకవేళ (unlikely (!std::isfinite (u)))
     u = 0.f;
-  else
+  లేకపోతే
     u = hb_clamp (u, 0.f, 1.f);
-  unsigned idx = (unsigned) (u * (GRADIENT_LUT_SIZE - 1) + 0.5f);
-  return lut[idx];
+  గుర్తులేని idx = (గుర్తులేని) (u * (GRADIENT_LUT_కొలత - 1) + 0.5f);
+  తిరిగి lut[idx];
 }
 
 /*
  * Gradient paint callbacks
  */
 
-static void
-hb_raster_paint_linear_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				 void *paint_data,
-				 hb_color_line_t *color_line,
-				 float x0, float y0,
-				 float x1, float y1,
-				 float x2, float y2,
-				 void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_రేఖీయ_gradient (hb_paint_funcs_t *pfuncs HB_వాడని,
+				 శూన్య *paint_దత్తాంశం,
+				 hb_color_పంక్తి_t *color_పంక్తి,
+				 దశాంశం x0, దశాంశం y0,
+				 దశాంశం x1, దశాంశం y1,
+				 దశాంశం x2, దశాంశం y2,
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  ఒకవేళ (unlikely (!c->fetch_color_stops (color_పంక్తి)))
+    తిరిగి;
   hb_color_stop_t *stops = c->scratch_color_stops.arrayZ;
-  unsigned len = c->scratch_color_stops.length;
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, len, &mn, &mx);
+  గుర్తులేని len = c->scratch_color_stops.నిడివి;
+  దశాంశం mn, mx;
+  hb_paint_normalize_color_పంక్తి (stops, len, &mn, &mx);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const hb_raster_clip_t &clip = c->current_clip ();
-  unsigned clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
-  unsigned clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
-  if (unlikely (!c->charge_work ((int64_t) clip_w * clip_h)))
-    return;
-  bool use_lut = (uint64_t) clip_w * clip_h >= GRADIENT_LUT_MIN_PIXELS;
-  uint32_t lut[GRADIENT_LUT_SIZE];
-  if (use_lut)
+  hb_paint_extend_t extend = hb_color_పంక్తి_get_extend (color_పంక్తి);
+  స్థిరరాశి hb_raster_clip_t &clip = c->current_clip ();
+  గుర్తులేని clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
+  గుర్తులేని clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) clip_w * clip_h)))
+    తిరిగి;
+  తార్కిక use_lut = (uint64_t) clip_w * clip_h >= GRADIENT_LUT_MIN_PIXELS;
+  uint32_t lut[GRADIENT_LUT_కొలత];
+  ఒకవేళ (use_lut)
     build_gradient_lut (stops, len, lut);
 
   /* Reduce 3-point anchor to 2-point gradient axis */
-  float lx0, ly0, lx1, ly1;
-  hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2,
+  దశాంశం lx0, ly0, lx1, ly1;
+  hb_paint_reduce_రేఖీయ_anchors (x0, y0, x1, y1, x2, y2,
 				  &lx0, &ly0, &lx1, &ly1);
 
   /* Apply normalization to endpoints */
-  float gx0 = lx0 + mn * (lx1 - lx0);
-  float gy0 = ly0 + mn * (ly1 - ly0);
-  float gx1 = lx0 + mx * (lx1 - lx0);
-  float gy1 = ly0 + mx * (ly1 - ly0);
+  దశాంశం gx0 = lx0 + mn * (lx1 - lx0);
+  దశాంశం gy0 = ly0 + mn * (ly1 - ly0);
+  దశాంశం gx1 = lx0 + mx * (lx1 - lx0);
+  దశాంశం gy1 = ly0 + mx * (ly1 - ly0);
 
   /* Inverse transform: pixel → glyph space */
   hb_transform_t<> t = c->current_effective_transform ();
-  float det = t.xx * t.yy - t.xy * t.yx;
-  if (fabsf (det) < 1e-10f) return;
+  దశాంశం det = t.xx * t.yy - t.xy * t.yx;
+  ఒకవేళ (fabsf (det) < 1e-10f) తిరిగి;
 
   {
-    float inv_det = 1.f / det;
-    float inv_xx =  t.yy * inv_det;
-    float inv_xy = -t.xy * inv_det;
-    float inv_yx = -t.yx * inv_det;
-    float inv_yy =  t.xx * inv_det;
-    float inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
-    float inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
+    దశాంశం inv_det = 1.f / det;
+    దశాంశం inv_xx =  t.yy * inv_det;
+    దశాంశం inv_xy = -t.xy * inv_det;
+    దశాంశం inv_yx = -t.yx * inv_det;
+    దశాంశం inv_yy =  t.xx * inv_det;
+    దశాంశం inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
+    దశాంశం inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
 
     /* Gradient direction vector and denominator for projection */
-    float dx = gx1 - gx0, dy = gy1 - gy0;
-    float denom = dx * dx + dy * dy;
-    if (denom < 1e-10f) return;
-    float inv_denom = 1.f / denom;
+    దశాంశం dx = gx1 - gx0, dy = gy1 - gy0;
+    దశాంశం denom = dx * dx + dy * dy;
+    ఒకవేళ (denom < 1e-10f) తిరిగి;
+    దశాంశం inv_denom = 1.f / denom;
 
-    unsigned stride = surf->extents.stride;
-    int ox = surf->extents.x_origin;
-    int oy = surf->extents.y_origin;
+    గుర్తులేని stride = surf->extents.stride;
+    పూర్ణాంకం ox = surf->extents.x_origin;
+    పూర్ణాంకం oy = surf->extents.y_origin;
 
-    if (clip.is_rect)
+    ఒకవేళ (clip.is_rect)
     {
-      for (unsigned py = clip.min_y; py < clip.max_y; py++)
+      కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
       {
-	hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * stride);
-	float gx = inv_xx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_xy * ((float) ((int) py + oy) + 0.5f) + inv_x0;
-	float gy = inv_yx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_yy * ((float) ((int) py + oy) + 0.5f) + inv_y0;
-	if (use_lut)
+	hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * stride);
+	దశాంశం gx = inv_xx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_xy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_x0;
+	దశాంశం gy = inv_yx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_yy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_y0;
+	ఒకవేళ (use_lut)
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    float proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
+	    దశాంశం proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
 	    uint32_t src = lookup_gradient_lut (lut, proj_t, extend);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
-	else
+	లేకపోతే
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    float proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
-	    uint32_t src = evaluate_color_line (stops, len, proj_t, extend);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    దశాంశం proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
+	    uint32_t src = evaluate_color_పంక్తి (stops, len, proj_t, extend);
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
       }
     }
-    else
+    లేకపోతే
     {
-      for (unsigned py = clip.min_y; py < clip.max_y; py++)
+      కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
       {
-	hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * stride);
-	const uint8_t *clip_row = clip.alpha.arrayZ + py * clip.stride;
-	float gx = inv_xx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_xy * ((float) ((int) py + oy) + 0.5f) + inv_x0;
-	float gy = inv_yx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_yy * ((float) ((int) py + oy) + 0.5f) + inv_y0;
-	if (use_lut)
+	hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * stride);
+	స్థిరరాశి uint8_t *clip_అడ్డువరుస = clip.alpha.arrayZ + py * clip.stride;
+	దశాంశం gx = inv_xx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_xy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_x0;
+	దశాంశం gy = inv_yx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_yy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_y0;
+	ఒకవేళ (use_lut)
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    uint8_t clip_alpha = clip_row[px];
-	    if (clip_alpha == 0)
+	    uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	    ఒకవేళ (clip_alpha == 0)
 	    {
 	      gx += inv_xx;
 	      gy += inv_yx;
-	      continue;
+	      కొనసాగు;
 	    }
-	    float proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
+	    దశాంశం proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
 	    uint32_t src = lookup_gradient_lut (lut, proj_t, extend);
 	    src = hb_raster_alpha_mul (src, clip_alpha);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
-	else
+	లేకపోతే
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    uint8_t clip_alpha = clip_row[px];
-	    if (clip_alpha == 0)
+	    uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	    ఒకవేళ (clip_alpha == 0)
 	    {
 	      gx += inv_xx;
 	      gy += inv_yx;
-	      continue;
+	      కొనసాగు;
 	    }
-	    float proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
-	    uint32_t src = evaluate_color_line (stops, len, proj_t, extend);
+	    దశాంశం proj_t = ((gx - gx0) * dx + (gy - gy0) * dy) * inv_denom;
+	    uint32_t src = evaluate_color_పంక్తి (stops, len, proj_t, extend);
 	    src = hb_raster_alpha_mul (src, clip_alpha);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
@@ -1424,60 +1424,60 @@ hb_raster_paint_linear_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
 
 }
 
-static void
-hb_raster_paint_radial_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				 void *paint_data,
-				 hb_color_line_t *color_line,
-				 float x0, float y0, float r0,
-				 float x1, float y1, float r1,
-				 void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_radial_gradient (hb_paint_funcs_t *pfuncs HB_వాడని,
+				 శూన్య *paint_దత్తాంశం,
+				 hb_color_పంక్తి_t *color_పంక్తి,
+				 దశాంశం x0, దశాంశం y0, దశాంశం r0,
+				 దశాంశం x1, దశాంశం y1, దశాంశం r1,
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  ఒకవేళ (unlikely (!c->fetch_color_stops (color_పంక్తి)))
+    తిరిగి;
   hb_color_stop_t *stops = c->scratch_color_stops.arrayZ;
-  unsigned len = c->scratch_color_stops.length;
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, len, &mn, &mx);
+  గుర్తులేని len = c->scratch_color_stops.నిడివి;
+  దశాంశం mn, mx;
+  hb_paint_normalize_color_పంక్తి (stops, len, &mn, &mx);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const hb_raster_clip_t &clip = c->current_clip ();
-  unsigned clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
-  unsigned clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
-  if (unlikely (!c->charge_work ((int64_t) clip_w * clip_h)))
-    return;
-  bool use_lut = (uint64_t) clip_w * clip_h >= GRADIENT_LUT_MIN_PIXELS;
-  uint32_t lut[GRADIENT_LUT_SIZE];
-  if (use_lut)
+  hb_paint_extend_t extend = hb_color_పంక్తి_get_extend (color_పంక్తి);
+  స్థిరరాశి hb_raster_clip_t &clip = c->current_clip ();
+  గుర్తులేని clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
+  గుర్తులేని clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) clip_w * clip_h)))
+    తిరిగి;
+  తార్కిక use_lut = (uint64_t) clip_w * clip_h >= GRADIENT_LUT_MIN_PIXELS;
+  uint32_t lut[GRADIENT_LUT_కొలత];
+  ఒకవేళ (use_lut)
     build_gradient_lut (stops, len, lut);
 
   /* Apply normalization to circle parameters */
-  float cx0 = x0 + mn * (x1 - x0);
-  float cy0 = y0 + mn * (y1 - y0);
-  float cr0 = r0 + mn * (r1 - r0);
-  float cx1 = x0 + mx * (x1 - x0);
-  float cy1 = y0 + mx * (y1 - y0);
-  float cr1 = r0 + mx * (r1 - r0);
+  దశాంశం cx0 = x0 + mn * (x1 - x0);
+  దశాంశం cy0 = y0 + mn * (y1 - y0);
+  దశాంశం cr0 = r0 + mn * (r1 - r0);
+  దశాంశం cx1 = x0 + mx * (x1 - x0);
+  దశాంశం cy1 = y0 + mx * (y1 - y0);
+  దశాంశం cr1 = r0 + mx * (r1 - r0);
 
   /* Inverse transform */
   hb_transform_t<> t = c->current_effective_transform ();
-  float det = t.xx * t.yy - t.xy * t.yx;
-  if (fabsf (det) < 1e-10f) return;
+  దశాంశం det = t.xx * t.yy - t.xy * t.yx;
+  ఒకవేళ (fabsf (det) < 1e-10f) తిరిగి;
 
   {
-    float inv_det = 1.f / det;
-    float inv_xx =  t.yy * inv_det;
-    float inv_xy = -t.xy * inv_det;
-    float inv_yx = -t.yx * inv_det;
-    float inv_yy =  t.xx * inv_det;
-    float inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
-    float inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
+    దశాంశం inv_det = 1.f / det;
+    దశాంశం inv_xx =  t.yy * inv_det;
+    దశాంశం inv_xy = -t.xy * inv_det;
+    దశాంశం inv_yx = -t.yx * inv_det;
+    దశాంశం inv_yy =  t.xx * inv_det;
+    దశాంశం inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
+    దశాంశం inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
 
     /* Precompute quadratic coefficients for radial gradient:
      * |p - c0 - t*(c1-c0)|^2 = (r0 + t*(r1-r0))^2
@@ -1488,209 +1488,209 @@ hb_raster_paint_radial_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
      *   B = -2*(px-c0.x)*cdx - 2*(py-c0.y)*cdy - 2*r0*dr
      *   C = (px-c0.x)^2 + (py-c0.y)^2 - r0^2
      */
-    float cdx = cx1 - cx0, cdy = cy1 - cy0;
-    float dr = cr1 - cr0;
-    float A = cdx * cdx + cdy * cdy - dr * dr;
+    దశాంశం cdx = cx1 - cx0, cdy = cy1 - cy0;
+    దశాంశం dr = cr1 - cr0;
+    దశాంశం A = cdx * cdx + cdy * cdy - dr * dr;
 
-    unsigned stride = surf->extents.stride;
-    int ox = surf->extents.x_origin;
-    int oy = surf->extents.y_origin;
+    గుర్తులేని stride = surf->extents.stride;
+    పూర్ణాంకం ox = surf->extents.x_origin;
+    పూర్ణాంకం oy = surf->extents.y_origin;
 
-    if (clip.is_rect)
+    ఒకవేళ (clip.is_rect)
     {
-      for (unsigned py = clip.min_y; py < clip.max_y; py++)
+      కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
       {
-	hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * stride);
-	float gx = inv_xx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_xy * ((float) ((int) py + oy) + 0.5f) + inv_x0;
-	float gy = inv_yx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_yy * ((float) ((int) py + oy) + 0.5f) + inv_y0;
-	if (use_lut)
+	hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * stride);
+	దశాంశం gx = inv_xx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_xy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_x0;
+	దశాంశం gy = inv_yx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_yy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_y0;
+	ఒకవేళ (use_lut)
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    float dpx = gx - cx0, dpy = gy - cy0;
-	    float B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
-	    float C = dpx * dpx + dpy * dpy - cr0 * cr0;
+	    దశాంశం dpx = gx - cx0, dpy = gy - cy0;
+	    దశాంశం B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
+	    దశాంశం C = dpx * dpx + dpy * dpy - cr0 * cr0;
 
-	    float grad_t;
-	    if (fabsf (A) > 1e-10f)
+	    దశాంశం grad_t;
+	    ఒకవేళ (fabsf (A) > 1e-10f)
 	    {
-	      float disc = B * B - 4.f * A * C;
-	      if (disc < 0.f)
+	      దశాంశం disc = B * B - 4.f * A * C;
+	      ఒకవేళ (disc < 0.f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
-	      float sq = sqrtf (disc);
+	      దశాంశం sq = sqrtf (disc);
 	      /* Pick the larger root (t closer to 1 = outer circle) */
-	      float t1 = (-B + sq) / (2.f * A);
-	      float t2 = (-B - sq) / (2.f * A);
+	      దశాంశం t1 = (-B + sq) / (2.f * A);
+	      దశాంశం t2 = (-B - sq) / (2.f * A);
 	      /* Choose the root that gives a positive radius */
-	      if (cr0 + t1 * dr >= 0.f)
+	      ఒకవేళ (cr0 + t1 * dr >= 0.f)
 		grad_t = t1;
-	      else
+	      లేకపోతే
 		grad_t = t2;
 	    }
-	    else
+	    లేకపోతే
 	    {
 	      /* Linear case: Bt + C = 0 */
-	      if (fabsf (B) < 1e-10f)
+	      ఒకవేళ (fabsf (B) < 1e-10f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
 	      grad_t = -C / B;
 	    }
 
 	    uint32_t src = lookup_gradient_lut (lut, grad_t, extend);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
-	else
+	లేకపోతే
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    float dpx = gx - cx0, dpy = gy - cy0;
-	    float B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
-	    float C = dpx * dpx + dpy * dpy - cr0 * cr0;
+	    దశాంశం dpx = gx - cx0, dpy = gy - cy0;
+	    దశాంశం B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
+	    దశాంశం C = dpx * dpx + dpy * dpy - cr0 * cr0;
 
-	    float grad_t;
-	    if (fabsf (A) > 1e-10f)
+	    దశాంశం grad_t;
+	    ఒకవేళ (fabsf (A) > 1e-10f)
 	    {
-	      float disc = B * B - 4.f * A * C;
-	      if (disc < 0.f)
+	      దశాంశం disc = B * B - 4.f * A * C;
+	      ఒకవేళ (disc < 0.f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
-	      float sq = sqrtf (disc);
-	      float t1 = (-B + sq) / (2.f * A);
-	      float t2 = (-B - sq) / (2.f * A);
+	      దశాంశం sq = sqrtf (disc);
+	      దశాంశం t1 = (-B + sq) / (2.f * A);
+	      దశాంశం t2 = (-B - sq) / (2.f * A);
 	      grad_t = (cr0 + t1 * dr >= 0.f) ? t1 : t2;
 	    }
-	    else
+	    లేకపోతే
 	    {
-	      if (fabsf (B) < 1e-10f)
+	      ఒకవేళ (fabsf (B) < 1e-10f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
 	      grad_t = -C / B;
 	    }
 
-	    uint32_t src = evaluate_color_line (stops, len, grad_t, extend);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    uint32_t src = evaluate_color_పంక్తి (stops, len, grad_t, extend);
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
       }
     }
-    else
+    లేకపోతే
     {
-      for (unsigned py = clip.min_y; py < clip.max_y; py++)
+      కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
       {
-	hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * stride);
-	const uint8_t *clip_row = clip.alpha.arrayZ + py * clip.stride;
-	float gx = inv_xx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_xy * ((float) ((int) py + oy) + 0.5f) + inv_x0;
-	float gy = inv_yx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_yy * ((float) ((int) py + oy) + 0.5f) + inv_y0;
-	if (use_lut)
+	hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * stride);
+	స్థిరరాశి uint8_t *clip_అడ్డువరుస = clip.alpha.arrayZ + py * clip.stride;
+	దశాంశం gx = inv_xx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_xy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_x0;
+	దశాంశం gy = inv_yx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_yy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_y0;
+	ఒకవేళ (use_lut)
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    uint8_t clip_alpha = clip_row[px];
-	    if (clip_alpha == 0)
+	    uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	    ఒకవేళ (clip_alpha == 0)
 	    {
 	      gx += inv_xx;
 	      gy += inv_yx;
-	      continue;
+	      కొనసాగు;
 	    }
-	    float dpx = gx - cx0, dpy = gy - cy0;
-	    float B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
-	    float C = dpx * dpx + dpy * dpy - cr0 * cr0;
+	    దశాంశం dpx = gx - cx0, dpy = gy - cy0;
+	    దశాంశం B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
+	    దశాంశం C = dpx * dpx + dpy * dpy - cr0 * cr0;
 
-	    float grad_t;
-	    if (fabsf (A) > 1e-10f)
+	    దశాంశం grad_t;
+	    ఒకవేళ (fabsf (A) > 1e-10f)
 	    {
-	      float disc = B * B - 4.f * A * C;
-	      if (disc < 0.f)
+	      దశాంశం disc = B * B - 4.f * A * C;
+	      ఒకవేళ (disc < 0.f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
-	      float sq = sqrtf (disc);
-	      float t1 = (-B + sq) / (2.f * A);
-	      float t2 = (-B - sq) / (2.f * A);
+	      దశాంశం sq = sqrtf (disc);
+	      దశాంశం t1 = (-B + sq) / (2.f * A);
+	      దశాంశం t2 = (-B - sq) / (2.f * A);
 	      grad_t = (cr0 + t1 * dr >= 0.f) ? t1 : t2;
 	    }
-	    else
+	    లేకపోతే
 	    {
-	      if (fabsf (B) < 1e-10f)
+	      ఒకవేళ (fabsf (B) < 1e-10f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
 	      grad_t = -C / B;
 	    }
 
 	    uint32_t src = lookup_gradient_lut (lut, grad_t, extend);
 	    src = hb_raster_alpha_mul (src, clip_alpha);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
-	else
+	లేకపోతే
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    uint8_t clip_alpha = clip_row[px];
-	    if (clip_alpha == 0)
+	    uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	    ఒకవేళ (clip_alpha == 0)
 	    {
 	      gx += inv_xx;
 	      gy += inv_yx;
-	      continue;
+	      కొనసాగు;
 	    }
-	    float dpx = gx - cx0, dpy = gy - cy0;
-	    float B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
-	    float C = dpx * dpx + dpy * dpy - cr0 * cr0;
+	    దశాంశం dpx = gx - cx0, dpy = gy - cy0;
+	    దశాంశం B = -2.f * (dpx * cdx + dpy * cdy + cr0 * dr);
+	    దశాంశం C = dpx * dpx + dpy * dpy - cr0 * cr0;
 
-	    float grad_t;
-	    if (fabsf (A) > 1e-10f)
+	    దశాంశం grad_t;
+	    ఒకవేళ (fabsf (A) > 1e-10f)
 	    {
-	      float disc = B * B - 4.f * A * C;
-	      if (disc < 0.f)
+	      దశాంశం disc = B * B - 4.f * A * C;
+	      ఒకవేళ (disc < 0.f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
-	      float sq = sqrtf (disc);
-	      float t1 = (-B + sq) / (2.f * A);
-	      float t2 = (-B - sq) / (2.f * A);
+	      దశాంశం sq = sqrtf (disc);
+	      దశాంశం t1 = (-B + sq) / (2.f * A);
+	      దశాంశం t2 = (-B - sq) / (2.f * A);
 	      grad_t = (cr0 + t1 * dr >= 0.f) ? t1 : t2;
 	    }
-	    else
+	    లేకపోతే
 	    {
-	      if (fabsf (B) < 1e-10f)
+	      ఒకవేళ (fabsf (B) < 1e-10f)
 	      {
 		gx += inv_xx;
 		gy += inv_yx;
-		continue;
+		కొనసాగు;
 	      }
 	      grad_t = -C / B;
 	    }
 
-	    uint32_t src = evaluate_color_line (stops, len, grad_t, extend);
+	    uint32_t src = evaluate_color_పంక్తి (stops, len, grad_t, extend);
 	    src = hb_raster_alpha_mul (src, clip_alpha);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
@@ -1701,146 +1701,146 @@ hb_raster_paint_radial_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
 
 }
 
-static void
-hb_raster_paint_sweep_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				void *paint_data,
-				hb_color_line_t *color_line,
-				float cx, float cy,
-				float start_angle,
-				float end_angle,
-				void *user_data HB_UNUSED)
+స్థిర శూన్య
+hb_raster_paint_sweep_gradient (hb_paint_funcs_t *pfuncs HB_వాడని,
+				శూన్య *paint_దత్తాంశం,
+				hb_color_పంక్తి_t *color_పంక్తి,
+				దశాంశం cx, దశాంశం cy,
+				దశాంశం ప్రారంభం_angle,
+				దశాంశం చివర_angle,
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
 
   ensure_initialized (c);
 
   hb_raster_image_t *surf = c->current_surface ();
-  if (unlikely (!surf)) return;
+  ఒకవేళ (unlikely (!surf)) తిరిగి;
 
-  if (unlikely (!c->fetch_color_stops (color_line)))
-    return;
+  ఒకవేళ (unlikely (!c->fetch_color_stops (color_పంక్తి)))
+    తిరిగి;
   hb_color_stop_t *stops = c->scratch_color_stops.arrayZ;
-  unsigned len = c->scratch_color_stops.length;
-  float mn, mx;
-  hb_paint_normalize_color_line (stops, len, &mn, &mx);
+  గుర్తులేని len = c->scratch_color_stops.నిడివి;
+  దశాంశం mn, mx;
+  hb_paint_normalize_color_పంక్తి (stops, len, &mn, &mx);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const hb_raster_clip_t &clip = c->current_clip ();
-  unsigned clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
-  unsigned clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
-  if (unlikely (!c->charge_work ((int64_t) clip_w * clip_h)))
-    return;
-  bool use_lut = (uint64_t) clip_w * clip_h >= GRADIENT_LUT_MIN_PIXELS;
-  uint32_t lut[GRADIENT_LUT_SIZE];
-  if (use_lut)
+  hb_paint_extend_t extend = hb_color_పంక్తి_get_extend (color_పంక్తి);
+  స్థిరరాశి hb_raster_clip_t &clip = c->current_clip ();
+  గుర్తులేని clip_w = clip.max_x > clip.min_x ? clip.max_x - clip.min_x : 0;
+  గుర్తులేని clip_h = clip.max_y > clip.min_y ? clip.max_y - clip.min_y : 0;
+  ఒకవేళ (unlikely (!c->charge_work ((int64_t) clip_w * clip_h)))
+    తిరిగి;
+  తార్కిక use_lut = (uint64_t) clip_w * clip_h >= GRADIENT_LUT_MIN_PIXELS;
+  uint32_t lut[GRADIENT_LUT_కొలత];
+  ఒకవేళ (use_lut)
     build_gradient_lut (stops, len, lut);
 
   /* Apply normalization to angle range */
-  float a0 = start_angle + mn * (end_angle - start_angle);
-  float a1 = start_angle + mx * (end_angle - start_angle);
-  float angle_range = a1 - a0;
+  దశాంశం a0 = ప్రారంభం_angle + mn * (చివర_angle - ప్రారంభం_angle);
+  దశాంశం a1 = ప్రారంభం_angle + mx * (చివర_angle - ప్రారంభం_angle);
+  దశాంశం angle_range = a1 - a0;
 
   /* Inverse transform */
   hb_transform_t<> t = c->current_effective_transform ();
-  float det = t.xx * t.yy - t.xy * t.yx;
-  if (fabsf (det) < 1e-10f || fabsf (angle_range) < 1e-10f) return;
+  దశాంశం det = t.xx * t.yy - t.xy * t.yx;
+  ఒకవేళ (fabsf (det) < 1e-10f || fabsf (angle_range) < 1e-10f) తిరిగి;
 
   {
-    float inv_det = 1.f / det;
-    float inv_xx =  t.yy * inv_det;
-    float inv_xy = -t.xy * inv_det;
-    float inv_yx = -t.yx * inv_det;
-    float inv_yy =  t.xx * inv_det;
-    float inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
-    float inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
+    దశాంశం inv_det = 1.f / det;
+    దశాంశం inv_xx =  t.yy * inv_det;
+    దశాంశం inv_xy = -t.xy * inv_det;
+    దశాంశం inv_yx = -t.yx * inv_det;
+    దశాంశం inv_yy =  t.xx * inv_det;
+    దశాంశం inv_x0 = (t.xy * t.y0 - t.yy * t.x0) * inv_det;
+    దశాంశం inv_y0 = (t.yx * t.x0 - t.xx * t.y0) * inv_det;
 
-    float inv_angle_range = 1.f / angle_range;
+    దశాంశం inv_angle_range = 1.f / angle_range;
 
-    unsigned stride = surf->extents.stride;
-    int ox = surf->extents.x_origin;
-    int oy = surf->extents.y_origin;
+    గుర్తులేని stride = surf->extents.stride;
+    పూర్ణాంకం ox = surf->extents.x_origin;
+    పూర్ణాంకం oy = surf->extents.y_origin;
 
-    if (clip.is_rect)
+    ఒకవేళ (clip.is_rect)
     {
-      for (unsigned py = clip.min_y; py < clip.max_y; py++)
+      కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
       {
-	hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * stride);
-	float gx = inv_xx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_xy * ((float) ((int) py + oy) + 0.5f) + inv_x0;
-	float gy = inv_yx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_yy * ((float) ((int) py + oy) + 0.5f) + inv_y0;
-	if (use_lut)
+	hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * stride);
+	దశాంశం gx = inv_xx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_xy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_x0;
+	దశాంశం gy = inv_yx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_yy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_y0;
+	ఒకవేళ (use_lut)
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    float angle = atan2f (gy - cy, gx - cx);
-	    if (angle < 0) angle += (float) HB_2_PI;
-	    float grad_t = (angle - a0) * inv_angle_range;
+	    దశాంశం angle = atan2f (gy - cy, gx - cx);
+	    ఒకవేళ (angle < 0) angle += (దశాంశం) HB_2_PI;
+	    దశాంశం grad_t = (angle - a0) * inv_angle_range;
 	    uint32_t src = lookup_gradient_lut (lut, grad_t, extend);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
-	else
+	లేకపోతే
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    float angle = atan2f (gy - cy, gx - cx);
-	    if (angle < 0) angle += (float) HB_2_PI;
-	    float grad_t = (angle - a0) * inv_angle_range;
-	    uint32_t src = evaluate_color_line (stops, len, grad_t, extend);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    దశాంశం angle = atan2f (gy - cy, gx - cx);
+	    ఒకవేళ (angle < 0) angle += (దశాంశం) HB_2_PI;
+	    దశాంశం grad_t = (angle - a0) * inv_angle_range;
+	    uint32_t src = evaluate_color_పంక్తి (stops, len, grad_t, extend);
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
       }
     }
-    else
+    లేకపోతే
     {
-      for (unsigned py = clip.min_y; py < clip.max_y; py++)
+      కొరకు (గుర్తులేని py = clip.min_y; py < clip.max_y; py++)
       {
-	hb_packed_t<uint32_t> *row = (hb_packed_t<uint32_t> *) (surf->buffer.arrayZ + py * stride);
-	const uint8_t *clip_row = clip.alpha.arrayZ + py * clip.stride;
-	float gx = inv_xx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_xy * ((float) ((int) py + oy) + 0.5f) + inv_x0;
-	float gy = inv_yx * ((float) ((int) clip.min_x + ox) + 0.5f) + inv_yy * ((float) ((int) py + oy) + 0.5f) + inv_y0;
-	if (use_lut)
+	hb_packed_t<uint32_t> *అడ్డువరుస = (hb_packed_t<uint32_t> *) (surf->బఫరు.arrayZ + py * stride);
+	స్థిరరాశి uint8_t *clip_అడ్డువరుస = clip.alpha.arrayZ + py * clip.stride;
+	దశాంశం gx = inv_xx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_xy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_x0;
+	దశాంశం gy = inv_yx * ((దశాంశం) ((పూర్ణాంకం) clip.min_x + ox) + 0.5f) + inv_yy * ((దశాంశం) ((పూర్ణాంకం) py + oy) + 0.5f) + inv_y0;
+	ఒకవేళ (use_lut)
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    uint8_t clip_alpha = clip_row[px];
-	    if (clip_alpha == 0)
+	    uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	    ఒకవేళ (clip_alpha == 0)
 	    {
 	      gx += inv_xx;
 	      gy += inv_yx;
-	      continue;
+	      కొనసాగు;
 	    }
-	    float angle = atan2f (gy - cy, gx - cx);
-	    if (angle < 0) angle += (float) HB_2_PI;
-	    float grad_t = (angle - a0) * inv_angle_range;
+	    దశాంశం angle = atan2f (gy - cy, gx - cx);
+	    ఒకవేళ (angle < 0) angle += (దశాంశం) HB_2_PI;
+	    దశాంశం grad_t = (angle - a0) * inv_angle_range;
 	    uint32_t src = lookup_gradient_lut (lut, grad_t, extend);
 	    src = hb_raster_alpha_mul (src, clip_alpha);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
 	}
-	else
+	లేకపోతే
 	{
-	  for (unsigned px = clip.min_x; px < clip.max_x; px++)
+	  కొరకు (గుర్తులేని px = clip.min_x; px < clip.max_x; px++)
 	  {
-	    uint8_t clip_alpha = clip_row[px];
-	    if (clip_alpha == 0)
+	    uint8_t clip_alpha = clip_అడ్డువరుస[px];
+	    ఒకవేళ (clip_alpha == 0)
 	    {
 	      gx += inv_xx;
 	      gy += inv_yx;
-	      continue;
+	      కొనసాగు;
 	    }
-	    float angle = atan2f (gy - cy, gx - cx);
-	    if (angle < 0) angle += (float) HB_2_PI;
-	    float grad_t = (angle - a0) * inv_angle_range;
-	    uint32_t src = evaluate_color_line (stops, len, grad_t, extend);
+	    దశాంశం angle = atan2f (gy - cy, gx - cx);
+	    ఒకవేళ (angle < 0) angle += (దశాంశం) HB_2_PI;
+	    దశాంశం grad_t = (angle - a0) * inv_angle_range;
+	    uint32_t src = evaluate_color_పంక్తి (stops, len, grad_t, extend);
 	    src = hb_raster_alpha_mul (src, clip_alpha);
-	    row[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) row[px]));
+	    అడ్డువరుస[px] = hb_packed_t<uint32_t> (hb_raster_src_over (src, (uint32_t) అడ్డువరుస[px]));
 	    gx += inv_xx;
 	    gy += inv_yx;
 	  }
@@ -1851,42 +1851,42 @@ hb_raster_paint_sweep_gradient (hb_paint_funcs_t *pfuncs HB_UNUSED,
 
 }
 
-static hb_bool_t
-hb_raster_paint_custom_palette_color (hb_paint_funcs_t *funcs HB_UNUSED,
-				      void *paint_data,
-				      unsigned int color_index,
+స్థిర hb_bool_t
+hb_raster_paint_custom_palette_color (hb_paint_funcs_t *funcs HB_వాడని,
+				      శూన్య *paint_దత్తాంశం,
+				      గుర్తులేని పూర్ణాంకం color_సూచీ,
 				      hb_color_t *color,
-				      void *user_data HB_UNUSED)
+				      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_data;
-  if (likely (c->custom_palette && hb_map_has (c->custom_palette, color_index)))
+  hb_raster_paint_t *c = (hb_raster_paint_t *) paint_దత్తాంశం;
+  ఒకవేళ (likely (c->custom_palette && hb_map_has (c->custom_palette, color_సూచీ)))
   {
-    *color = hb_map_get (c->custom_palette, color_index);
-    return true;
+    *color = hb_map_get (c->custom_palette, color_సూచీ);
+    తిరిగి నిజం;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
-hb_raster_paint_set_budget (hb_paint_funcs_t *, void *paint_data,
-			    int64_t budget, void *)
+స్థిర hb_bool_t
+hb_raster_paint_సమితి_budget (hb_paint_funcs_t *, శూన్య *paint_దత్తాంశం,
+			    int64_t budget, శూన్య *)
 {
-  auto *paint = (hb_raster_paint_t *) paint_data;
+  స్వయంచాలక *paint = (hb_raster_paint_t *) paint_దత్తాంశం;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  తిరిగి నిజం;
 }
 
-static int64_t
-hb_raster_paint_get_budget (hb_paint_funcs_t *, void *paint_data, void *)
+స్థిర int64_t
+hb_raster_paint_get_budget (hb_paint_funcs_t *, శూన్య *paint_దత్తాంశం, శూన్య *)
 {
-  return ((hb_raster_paint_t *) paint_data)->budget;
+  తిరిగి ((hb_raster_paint_t *) paint_దత్తాంశం)->budget;
 }
 
-static int64_t *
-hb_raster_paint_get_budget_remaining (hb_paint_funcs_t *, void *paint_data, void *)
+స్థిర int64_t *
+hb_raster_paint_get_budget_మిగిలిన (hb_paint_funcs_t *, శూన్య *paint_దత్తాంశం, శూన్య *)
 {
-  return &((hb_raster_paint_t *) paint_data)->budget_remaining;
+  తిరిగి &((hb_raster_paint_t *) paint_దత్తాంశం)->budget_మిగిలిన;
 }
 
 
@@ -1894,44 +1894,44 @@ hb_raster_paint_get_budget_remaining (hb_paint_funcs_t *, void *paint_data, void
  * Lazy-loader singleton for paint funcs
  */
 
-static inline void free_static_raster_paint_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_raster_paint_funcs ();
 
-static struct hb_raster_paint_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_raster_paint_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_raster_paint_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_raster_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  స్థిర hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_transform_func (funcs, hb_raster_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, hb_raster_paint_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_fill_glyph_func (funcs, hb_raster_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_color_glyph_func (funcs, hb_raster_paint_color_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, hb_raster_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, hb_raster_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, hb_raster_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, hb_raster_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, hb_raster_paint_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, hb_raster_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, hb_raster_paint_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, hb_raster_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, hb_raster_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, hb_raster_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, hb_raster_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, hb_raster_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_custom_palette_color_func (funcs, hb_raster_paint_custom_palette_color, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_raster_paint_set_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_raster_paint_get_budget, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_raster_paint_get_budget_remaining, nullptr, nullptr);
+    hb_paint_funcs_సమితి_నెట్టు_transform_func (funcs, hb_raster_paint_నెట్టు_transform, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_transform_func (funcs, hb_raster_paint_తీయి_transform, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_fill_glyph_func (funcs, hb_raster_paint_fill_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_color_glyph_func (funcs, hb_raster_paint_color_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_glyph_func (funcs, hb_raster_paint_నెట్టు_clip_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_rectangle_func (funcs, hb_raster_paint_నెట్టు_clip_rectangle, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_మార్గం_ప్రారంభం_func (funcs, hb_raster_paint_నెట్టు_clip_మార్గం_ప్రారంభం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_clip_మార్గం_చివర_func (funcs, hb_raster_paint_నెట్టు_clip_మార్గం_చివర, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_clip_func (funcs, hb_raster_paint_తీయి_clip, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_నెట్టు_సమూహం_func (funcs, hb_raster_paint_నెట్టు_సమూహం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_తీయి_సమూహం_func (funcs, hb_raster_paint_తీయి_సమూహం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_color_func (funcs, hb_raster_paint_color, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_image_func (funcs, hb_raster_paint_image, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_రేఖీయ_gradient_func (funcs, hb_raster_paint_రేఖీయ_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_radial_gradient_func (funcs, hb_raster_paint_radial_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_sweep_gradient_func (funcs, hb_raster_paint_sweep_gradient, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_custom_palette_color_func (funcs, hb_raster_paint_custom_palette_color, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_సమితి_budget_func (funcs, hb_raster_paint_సమితి_budget, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_get_budget_func (funcs, hb_raster_paint_get_budget, శూన్యసూచిక, శూన్యసూచిక);
+    hb_paint_funcs_సమితి_get_budget_మిగిలిన_func (funcs, hb_raster_paint_get_budget_మిగిలిన, శూన్యసూచిక, శూన్యసూచిక);
 
     hb_paint_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_raster_paint_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_raster_paint_funcs;
 
-static inline void
+స్థిర అంతఃవరుస శూన్య
 free_static_raster_paint_funcs ()
 {
   static_raster_paint_funcs.free_instance ();
@@ -1953,20 +1953,20 @@ free_static_raster_paint_funcs ()
  * Since: 13.0.0
  **/
 hb_raster_paint_t *
-hb_raster_paint_create_or_fail (void)
+hb_raster_paint_create_or_fail (శూన్య)
 {
   hb_raster_paint_t *paint = hb_object_create<hb_raster_paint_t> ();
-  if (unlikely (!paint))
-    return nullptr;
+  ఒకవేళ (unlikely (!paint))
+    తిరిగి శూన్యసూచిక;
 
   paint->clip_rdr = hb_raster_draw_create_or_fail ();
-  if (unlikely (!paint->clip_rdr))
+  ఒకవేళ (unlikely (!paint->clip_rdr))
   {
     hb_free (paint);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  return paint;
+  తిరిగి paint;
 }
 
 /**
@@ -1983,7 +1983,7 @@ hb_raster_paint_create_or_fail (void)
 hb_raster_paint_t *
 hb_raster_paint_reference (hb_raster_paint_t *paint)
 {
-  return hb_object_reference (paint);
+  తిరిగి hb_object_reference (paint);
 }
 
 /**
@@ -1995,17 +1995,17 @@ hb_raster_paint_reference (hb_raster_paint_t *paint)
  *
  * Since: 13.0.0
  **/
-void
+శూన్య
 hb_raster_paint_destroy (hb_raster_paint_t *paint)
 {
-  if (!hb_object_should_destroy (paint))
-    return;
+  ఒకవేళ (!hb_object_should_destroy (paint))
+    తిరిగి;
 
   hb_map_destroy (paint->custom_palette);
   hb_raster_draw_destroy (paint->clip_rdr);
-  for (auto *s : paint->surface_stack)
+  కొరకు (స్వయంచాలక *s : paint->surface_దొంతర)
     hb_raster_image_destroy (s);
-  for (auto *s : paint->surface_cache)
+  కొరకు (స్వయంచాలక *s : paint->surface_cache)
     hb_raster_image_destroy (s);
   hb_object_actually_destroy (paint);
   hb_free (paint);
@@ -2026,13 +2026,13 @@ hb_raster_paint_destroy (hb_raster_paint_t *paint)
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_paint_set_user_data (hb_raster_paint_t  *paint,
-			       hb_user_data_key_t *key,
-			       void               *data,
+hb_raster_paint_సమితి_user_దత్తాంశం (hb_raster_paint_t  *paint,
+			       hb_user_దత్తాంశం_కీలకం_t *key,
+			       శూన్య               *దత్తాంశం,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (paint, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (paint, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -2048,11 +2048,11 @@ hb_raster_paint_set_user_data (hb_raster_paint_t  *paint,
  *
  * Since: 13.0.0
  **/
-void *
-hb_raster_paint_get_user_data (const hb_raster_paint_t  *paint,
-			       hb_user_data_key_t *key)
+శూన్య *
+hb_raster_paint_get_user_దత్తాంశం (స్థిరరాశి hb_raster_paint_t  *paint,
+			       hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  return hb_object_get_user_data (paint, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (paint, key);
 }
 
 /**
@@ -2070,13 +2070,13 @@ hb_raster_paint_get_user_data (const hb_raster_paint_t  *paint,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_paint_set_transform (hb_raster_paint_t *paint,
-			       float xx, float yx,
-			       float xy, float yy,
-			       float dx, float dy)
+శూన్య
+hb_raster_paint_సమితి_transform (hb_raster_paint_t *paint,
+			       దశాంశం xx, దశాంశం yx,
+			       దశాంశం xy, దశాంశం yy,
+			       దశాంశం dx, దశాంశం dy)
 {
-  paint->base_transform = {xx, yx, xy, yy, dx, dy};
+  paint->పునాది_transform = {xx, yx, xy, yy, dx, dy};
 }
 
 /**
@@ -2093,18 +2093,18 @@ hb_raster_paint_set_transform (hb_raster_paint_t *paint,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_paint_get_transform (const hb_raster_paint_t *paint,
-			       float *xx, float *yx,
-			       float *xy, float *yy,
-			       float *dx, float *dy)
+శూన్య
+hb_raster_paint_get_transform (స్థిరరాశి hb_raster_paint_t *paint,
+			       దశాంశం *xx, దశాంశం *yx,
+			       దశాంశం *xy, దశాంశం *yy,
+			       దశాంశం *dx, దశాంశం *dy)
 {
-  if (xx) *xx = paint->base_transform.xx;
-  if (yx) *yx = paint->base_transform.yx;
-  if (xy) *xy = paint->base_transform.xy;
-  if (yy) *yy = paint->base_transform.yy;
-  if (dx) *dx = paint->base_transform.x0;
-  if (dy) *dy = paint->base_transform.y0;
+  ఒకవేళ (xx) *xx = paint->పునాది_transform.xx;
+  ఒకవేళ (yx) *yx = paint->పునాది_transform.yx;
+  ఒకవేళ (xy) *xy = paint->పునాది_transform.xy;
+  ఒకవేళ (yy) *yy = paint->పునాది_transform.yy;
+  ఒకవేళ (dx) *dx = paint->పునాది_transform.x0;
+  ఒకవేళ (dy) *dy = paint->పునాది_transform.y0;
 }
 
 /**
@@ -2118,13 +2118,13 @@ hb_raster_paint_get_transform (const hb_raster_paint_t *paint,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_paint_set_scale_factor (hb_raster_paint_t *paint,
-				  float x_scale_factor,
-				  float y_scale_factor)
+శూన్య
+hb_raster_paint_సమితి_scale_గుణకం (hb_raster_paint_t *paint,
+				  దశాంశం x_scale_గుణకం,
+				  దశాంశం y_scale_గుణకం)
 {
-  paint->x_scale_factor = x_scale_factor > 0.f ? x_scale_factor : 1.f;
-  paint->y_scale_factor = y_scale_factor > 0.f ? y_scale_factor : 1.f;
+  paint->x_scale_గుణకం = x_scale_గుణకం > 0.f ? x_scale_గుణకం : 1.f;
+  paint->y_scale_గుణకం = y_scale_గుణకం > 0.f ? y_scale_గుణకం : 1.f;
 }
 
 /**
@@ -2137,13 +2137,13 @@ hb_raster_paint_set_scale_factor (hb_raster_paint_t *paint,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_paint_get_scale_factor (const hb_raster_paint_t *paint,
-				  float *x_scale_factor,
-				  float *y_scale_factor)
+శూన్య
+hb_raster_paint_get_scale_గుణకం (స్థిరరాశి hb_raster_paint_t *paint,
+				  దశాంశం *x_scale_గుణకం,
+				  దశాంశం *y_scale_గుణకం)
 {
-  if (x_scale_factor) *x_scale_factor = paint->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = paint->y_scale_factor;
+  ఒకవేళ (x_scale_గుణకం) *x_scale_గుణకం = paint->x_scale_గుణకం;
+  ఒకవేళ (y_scale_గుణకం) *y_scale_గుణకం = paint->y_scale_గుణకం;
 }
 
 /**
@@ -2163,14 +2163,14 @@ hb_raster_paint_get_scale_factor (const hb_raster_paint_t *paint,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_paint_set_extents (hb_raster_paint_t         *paint,
-			     const hb_raster_extents_t *extents)
+శూన్య
+hb_raster_paint_సమితి_extents (hb_raster_paint_t         *paint,
+			     స్థిరరాశి hb_raster_extents_t *extents)
 {
   paint->fixed_extents = *extents;
-  paint->has_extents = true;
-  if (paint->fixed_extents.stride == 0)
-    paint->fixed_extents.stride = paint->fixed_extents.width * 4;
+  paint->has_extents = నిజం;
+  ఒకవేళ (paint->fixed_extents.stride == 0)
+    paint->fixed_extents.stride = paint->fixed_extents.వెడల్పు * 4;
 }
 
 /**
@@ -2185,15 +2185,15 @@ hb_raster_paint_set_extents (hb_raster_paint_t         *paint,
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_paint_get_extents (const hb_raster_paint_t   *paint,
+hb_raster_paint_get_extents (స్థిరరాశి hb_raster_paint_t   *paint,
 			     hb_raster_extents_t *extents)
 {
-  if (!paint->has_extents)
-    return false;
+  ఒకవేళ (!paint->has_extents)
+    తిరిగి అబద్ధం;
 
-  if (extents)
+  ఒకవేళ (extents)
     *extents = paint->fixed_extents;
-  return true;
+  తిరిగి నిజం;
 }
 
 /**
@@ -2215,62 +2215,62 @@ hb_raster_paint_get_extents (const hb_raster_paint_t   *paint,
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_paint_set_glyph_extents (hb_raster_paint_t        *paint,
-				   const hb_glyph_extents_t *glyph_extents)
+hb_raster_paint_సమితి_glyph_extents (hb_raster_paint_t        *paint,
+				   స్థిరరాశి hb_glyph_extents_t *glyph_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = (float) glyph_extents->x_bearing + glyph_extents->width;
-  float y1 = (float) glyph_extents->y_bearing + glyph_extents->height;
+  దశాంశం x0 = (దశాంశం) glyph_extents->x_bearing;
+  దశాంశం y0 = (దశాంశం) glyph_extents->y_bearing;
+  దశాంశం x1 = (దశాంశం) glyph_extents->x_bearing + glyph_extents->వెడల్పు;
+  దశాంశం y1 = (దశాంశం) glyph_extents->y_bearing + glyph_extents->ఎత్తు;
 
-  float xmin = hb_min (x0, x1);
-  float xmax = hb_max (x0, x1);
-  float ymin = hb_min (y0, y1);
-  float ymax = hb_max (y0, y1);
+  దశాంశం xmin = hb_min (x0, x1);
+  దశాంశం xmax = hb_max (x0, x1);
+  దశాంశం ymin = hb_min (y0, y1);
+  దశాంశం ymax = hb_max (y0, y1);
 
-  float px[4] = {xmin, xmin, xmax, xmax};
-  float py[4] = {ymin, ymax, ymin, ymax};
+  దశాంశం px[4] = {xmin, xmin, xmax, xmax};
+  దశాంశం py[4] = {ymin, ymax, ymin, ymax};
 
-  hb_transform_t<> t = paint->base_transform;
-  paint->apply_scale_factor (t);
+  hb_transform_t<> t = paint->పునాది_transform;
+  paint->apply_scale_గుణకం (t);
 
-  float tx, ty;
-  t.transform_point (px[0], py[0]);
+  దశాంశం tx, ty;
+  t.transform_బిందువు (px[0], py[0]);
   tx = px[0]; ty = py[0];
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  దశాంశం tx_min = tx, tx_max = tx;
+  దశాంశం ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  కొరకు (గుర్తులేని i = 1; i < 4; i++)
   {
-    t.transform_point (px[i], py[i]);
+    t.transform_బిందువు (px[i], py[i]);
     tx_min = hb_min (tx_min, px[i]);
     tx_max = hb_max (tx_max, px[i]);
     ty_min = hb_min (ty_min, py[i]);
     ty_max = hb_max (ty_max, py[i]);
   }
 
-  int32_t ex0 = hb_clamp_to<int32_t> (floorf (tx_min));
-  int32_t ey0 = hb_clamp_to<int32_t> (floorf (ty_min));
-  int32_t ex1 = hb_clamp_to<int32_t> (ceilf  (tx_max));
-  int32_t ey1 = hb_clamp_to<int32_t> (ceilf  (ty_max));
+  int32_t ex0 = hb_clamp_గమ్యం<int32_t> (floorf (tx_min));
+  int32_t ey0 = hb_clamp_గమ్యం<int32_t> (floorf (ty_min));
+  int32_t ex1 = hb_clamp_గమ్యం<int32_t> (ceilf  (tx_max));
+  int32_t ey1 = hb_clamp_గమ్యం<int32_t> (ceilf  (ty_max));
 
-  if (ex1 <= ex0 || ey1 <= ey0)
+  ఒకవేళ (ex1 <= ex0 || ey1 <= ey0)
   {
     paint->fixed_extents = {};
-    paint->has_extents = false;
-    return false;
+    paint->has_extents = అబద్ధం;
+    తిరిగి అబద్ధం;
   }
 
   paint->fixed_extents = {
     ex0, ey0,
-    (unsigned) hb_min ((int64_t) ex1 - ex0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
-    (unsigned) hb_min ((int64_t) ey1 - ey0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
+    (గుర్తులేని) hb_min ((int64_t) ex1 - ex0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
+    (గుర్తులేని) hb_min ((int64_t) ey1 - ey0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
     0
   };
-  paint->has_extents = true;
-  if (paint->fixed_extents.stride == 0)
-    paint->fixed_extents.stride = paint->fixed_extents.width * 4;
-  return true;
+  paint->has_extents = నిజం;
+  ఒకవేళ (paint->fixed_extents.stride == 0)
+    paint->fixed_extents.stride = paint->fixed_extents.వెడల్పు * 4;
+  తిరిగి నిజం;
 }
 
 /**
@@ -2283,8 +2283,8 @@ hb_raster_paint_set_glyph_extents (hb_raster_paint_t        *paint,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_paint_set_foreground (hb_raster_paint_t *paint,
+శూన్య
+hb_raster_paint_సమితి_foreground (hb_raster_paint_t *paint,
 				hb_color_t         foreground)
 {
   paint->foreground = foreground;
@@ -2302,9 +2302,9 @@ hb_raster_paint_set_foreground (hb_raster_paint_t *paint,
  * Since: 14.2.0
  **/
 hb_color_t
-hb_raster_paint_get_foreground (const hb_raster_paint_t *paint)
+hb_raster_paint_get_foreground (స్థిరరాశి hb_raster_paint_t *paint)
 {
-  return paint->foreground;
+  తిరిగి paint->foreground;
 }
 
 /**
@@ -2318,8 +2318,8 @@ hb_raster_paint_get_foreground (const hb_raster_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
-hb_raster_paint_set_background (hb_raster_paint_t *paint,
+శూన్య
+hb_raster_paint_సమితి_background (hb_raster_paint_t *paint,
 				hb_color_t         background)
 {
   paint->background = background;
@@ -2337,9 +2337,9 @@ hb_raster_paint_set_background (hb_raster_paint_t *paint,
  * Since: 14.2.0
  **/
 hb_color_t
-hb_raster_paint_get_background (const hb_raster_paint_t *paint)
+hb_raster_paint_get_background (స్థిరరాశి hb_raster_paint_t *paint)
 {
-  return paint->background;
+  తిరిగి paint->background;
 }
 
 /**
@@ -2352,9 +2352,9 @@ hb_raster_paint_get_background (const hb_raster_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
-hb_raster_paint_set_palette (hb_raster_paint_t *paint,
-			     unsigned           palette)
+శూన్య
+hb_raster_paint_సమితి_palette (hb_raster_paint_t *paint,
+			     గుర్తులేని           palette)
 {
   paint->palette = palette;
 }
@@ -2370,10 +2370,10 @@ hb_raster_paint_set_palette (hb_raster_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-unsigned
-hb_raster_paint_get_palette (const hb_raster_paint_t *paint)
+గుర్తులేని
+hb_raster_paint_get_palette (స్థిరరాశి hb_raster_paint_t *paint)
 {
-  return paint->palette;
+  తిరిగి paint->palette;
 }
 
 /**
@@ -2387,10 +2387,10 @@ hb_raster_paint_get_palette (const hb_raster_paint_t *paint)
  *
  * Since: 13.0.0
  **/
-void
+శూన్య
 hb_raster_paint_clear_custom_palette_colors (hb_raster_paint_t *paint)
 {
-  if (paint->custom_palette)
+  ఒకవేళ (paint->custom_palette)
     hb_map_clear (paint->custom_palette);
 }
 
@@ -2412,18 +2412,18 @@ hb_raster_paint_clear_custom_palette_colors (hb_raster_paint_t *paint)
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_paint_set_custom_palette_color (hb_raster_paint_t *paint,
-					  unsigned int       color_index,
+hb_raster_paint_సమితి_custom_palette_color (hb_raster_paint_t *paint,
+					  గుర్తులేని పూర్ణాంకం       color_సూచీ,
 					  hb_color_t         color)
 {
-  if (unlikely (!paint->custom_palette))
+  ఒకవేళ (unlikely (!paint->custom_palette))
   {
     paint->custom_palette = hb_map_create ();
-    if (unlikely (!paint->custom_palette))
-      return false;
+    ఒకవేళ (unlikely (!paint->custom_palette))
+      తిరిగి అబద్ధం;
   }
-  hb_map_set (paint->custom_palette, color_index, color);
-  return hb_map_allocation_successful (paint->custom_palette);
+  hb_map_సమితి (paint->custom_palette, color_సూచీ, color);
+  తిరిగి hb_map_కేటాయింపు_successful (paint->custom_palette);
 }
 
 /**
@@ -2440,42 +2440,42 @@ hb_raster_paint_set_custom_palette_color (hb_raster_paint_t *paint,
  * Since: 14.2.0
  **/
 hb_paint_funcs_t *
-hb_raster_paint_get_funcs (const hb_raster_paint_t *paint HB_UNUSED)
+hb_raster_paint_get_funcs (స్థిరరాశి hb_raster_paint_t *paint HB_వాడని)
 {
-  return static_raster_paint_funcs.get_unconst ();
+  తిరిగి static_raster_paint_funcs.get_unconst ();
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_raster_paint_glyph_impl (hb_raster_paint_t *paint,
 			    hb_font_t        *font,
 			    hb_codepoint_t    glyph,
 			    hb_bool_t         fallible)
 {
-  if (!paint->has_extents)
+  ఒకవేళ (!paint->has_extents)
   {
     hb_glyph_extents_t ge;
-    if (hb_font_get_glyph_extents (font, glyph, &ge))
-      hb_raster_paint_set_glyph_extents (paint, &ge);
+    ఒకవేళ (hb_font_get_glyph_extents (font, glyph, &ge))
+      hb_raster_paint_సమితి_glyph_extents (paint, &ge);
   }
 
   hb_paint_funcs_t *funcs = hb_raster_paint_get_funcs (paint);
-  hb_paint_push_transform (funcs, paint,
-			   paint->base_transform.xx, paint->base_transform.yx,
-			   paint->base_transform.xy, paint->base_transform.yy,
-			   paint->base_transform.x0, paint->base_transform.y0);
+  hb_paint_నెట్టు_transform (funcs, paint,
+			   paint->పునాది_transform.xx, paint->పునాది_transform.yx,
+			   paint->పునాది_transform.xy, paint->పునాది_transform.yy,
+			   paint->పునాది_transform.x0, paint->పునాది_transform.y0);
 
-  hb_bool_t ret = true;
-  if (fallible)
+  hb_bool_t ret = నిజం;
+  ఒకవేళ (fallible)
     ret = hb_font_paint_glyph_or_fail (font, glyph,
 				       funcs, paint,
 				       paint->palette, paint->foreground);
-  else
+  లేకపోతే
     hb_font_paint_glyph (font, glyph,
 			 funcs, paint,
 			 paint->palette, paint->foreground);
 
-  hb_paint_pop_transform (funcs, paint);
-  return ret;
+  hb_paint_తీయి_transform (funcs, paint);
+  తిరిగి ret;
 }
 
 /**
@@ -2501,7 +2501,7 @@ hb_raster_paint_glyph_or_fail (hb_raster_paint_t *paint,
 			       hb_font_t        *font,
 			       hb_codepoint_t    glyph)
 {
-  return hb_raster_paint_glyph_impl (paint, font, glyph, true);
+  తిరిగి hb_raster_paint_glyph_impl (paint, font, glyph, నిజం);
 }
 
 /**
@@ -2517,12 +2517,12 @@ hb_raster_paint_glyph_or_fail (hb_raster_paint_t *paint,
  *
  * Since: 14.2.0
  **/
-void
+శూన్య
 hb_raster_paint_glyph (hb_raster_paint_t *paint,
 		       hb_font_t        *font,
 		       hb_codepoint_t    glyph)
 {
-  hb_raster_paint_glyph_impl (paint, font, glyph, false);
+  hb_raster_paint_glyph_impl (paint, font, glyph, అబద్ధం);
 }
 
 /**
@@ -2554,27 +2554,27 @@ hb_raster_paint_render (hb_raster_paint_t *paint)
    * including the early-return failure cases below. */
   HB_SCOPE_GUARD (hb_raster_paint_clear (paint));
 
-  if (unlikely (!paint->has_extents))
-    return nullptr;
+  ఒకవేళ (unlikely (!paint->has_extents))
+    తిరిగి శూన్యసూచిక;
 
-  hb_raster_image_t *result;
-  if (paint->surface_stack.length)
+  hb_raster_image_t *ఫలితం;
+  ఒకవేళ (paint->surface_దొంతర.నిడివి)
   {
-    result = paint->surface_stack[0];
+    ఫలితం = paint->surface_దొంతర[0];
     /* Release any remaining group surfaces (shouldn't happen with
      * well-formed paint calls, but be safe). */
-    for (unsigned i = 1; i < paint->surface_stack.length; i++)
-      paint->release_surface (paint->surface_stack[i]);
-    paint->surface_stack.clear ();
+    కొరకు (గుర్తులేని i = 1; i < paint->surface_దొంతర.నిడివి; i++)
+      paint->release_surface (paint->surface_దొంతర[i]);
+    paint->surface_దొంతర.clear ();
   }
-  else
+  లేకపోతే
   {
-    result = paint->acquire_surface ();
-    if (unlikely (!result))
-      return nullptr;
+    ఫలితం = paint->acquire_surface ();
+    ఒకవేళ (unlikely (!ఫలితం))
+      తిరిగి శూన్యసూచిక;
   }
 
-  return result;
+  తిరిగి ఫలితం;
 }
 
 /**
@@ -2589,16 +2589,16 @@ hb_raster_paint_render (hb_raster_paint_t *paint)
  *
  * Since: 14.2.0
  **/
-void
+శూన్య
 hb_raster_paint_clear (hb_raster_paint_t *paint)
 {
   paint->fixed_extents = {};
-  paint->has_extents = false;
-  paint->transform_stack.clear ();
+  paint->has_extents = అబద్ధం;
+  paint->transform_దొంతర.clear ();
   paint->release_all_clips ();
-  for (auto *s : paint->surface_stack)
+  కొరకు (స్వయంచాలక *s : paint->surface_దొంతర)
     paint->release_surface (s);
-  paint->surface_stack.clear ();
+  paint->surface_దొంతర.clear ();
   paint->recharge_budget ();
   hb_raster_draw_reset (paint->clip_rdr);
 }
@@ -2612,12 +2612,12 @@ hb_raster_paint_clear (hb_raster_paint_t *paint)
  *
  * Since: 13.0.0
  **/
-void
+శూన్య
 hb_raster_paint_reset (hb_raster_paint_t *paint)
 {
-  paint->base_transform = {1, 0, 0, 1, 0, 0};
-  paint->x_scale_factor = 1.f;
-  paint->y_scale_factor = 1.f;
+  paint->పునాది_transform = {1, 0, 0, 1, 0, 0};
+  paint->x_scale_గుణకం = 1.f;
+  paint->y_scale_గుణకం = 1.f;
   paint->foreground = HB_COLOR (0, 0, 0, 255);
   paint->background = HB_COLOR (0, 0, 0, 0);
   paint->palette = 0;
@@ -2636,7 +2636,7 @@ hb_raster_paint_reset (hb_raster_paint_t *paint)
  *
  * Since: 13.0.0
  **/
-void
+శూన్య
 hb_raster_paint_recycle_image (hb_raster_paint_t  *paint,
 			       hb_raster_image_t  *image)
 {

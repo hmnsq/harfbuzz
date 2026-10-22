@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-layout.hh"
+#అన్తర్భావ "hb-ot-shaper-khmer-machine.hh"
+#అన్తర్భావ "hb-ot-shaper-indic.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
 
 
 /*
@@ -38,7 +38,7 @@
  */
 
 
-static const hb_ot_map_feature_t
+స్థిర స్థిరరాశి hb_ot_map_feature_t
 khmer_features[] =
 {
   /*
@@ -46,25 +46,25 @@ khmer_features[] =
    * These features are applied all at once, before reordering, constrained
    * to the syllable.
    */
-  {HB_TAG('p','r','e','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('b','l','w','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('a','b','v','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('p','s','t','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('c','f','a','r'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
+  {HB_ట్యాగ్('p','r','e','f'), F_MANUAL_JOINERS | F_చొప్పున_SYLLABLE},
+  {HB_ట్యాగ్('b','l','w','f'), F_MANUAL_JOINERS | F_చొప్పున_SYLLABLE},
+  {HB_ట్యాగ్('a','b','v','f'), F_MANUAL_JOINERS | F_చొప్పున_SYLLABLE},
+  {HB_ట్యాగ్('p','s','t','f'), F_MANUAL_JOINERS | F_చొప్పున_SYLLABLE},
+  {HB_ట్యాగ్('c','f','a','r'), F_MANUAL_JOINERS | F_చొప్పున_SYLLABLE},
   /*
    * Other features.
    * These features are applied all at once after clearing syllables.
    */
-  {HB_TAG('p','r','e','s'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('a','b','v','s'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('b','l','w','s'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('p','s','t','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ట్యాగ్('p','r','e','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ట్యాగ్('a','b','v','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ట్యాగ్('b','l','w','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_ట్యాగ్('p','s','t','s'), F_GLOBAL_MANUAL_JOINERS},
 };
 
 /*
  * Must be in the same order as the khmer_features array.
  */
-enum {
+గణన {
   KHMER_PREF,
   KHMER_BLWF,
   KHMER_ABVF,
@@ -76,36 +76,36 @@ enum {
   _KHMER_BLWS,
   _KHMER_PSTS,
 
-  KHMER_NUM_FEATURES,
+  KHMER_అంకె_FEATURES,
   KHMER_BASIC_FEATURES = _KHMER_PRES, /* Don't forget to update this! */
 };
 
-static inline void
-set_khmer_properties (hb_glyph_info_t &info)
+స్థిర అంతఃవరుస శూన్య
+సమితి_khmer_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  గుర్తులేని పూర్ణాంకం type = hb_indic_get_categories (u);
 
   info.khmer_category() = (khmer_category_t) (type & 0xFFu);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+అమరిక_syllables_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+		       hb_బఫరు_t *బఫరు);
+స్థిర తార్కిక
+reorder_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
-	       hb_buffer_t *buffer);
+	       hb_బఫరు_t *బఫరు);
 
-static void
+స్థిర శూన్య
 collect_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
   /* Do this before any lookups have been applied. */
-  map->add_gsub_pause (setup_syllables_khmer);
-  map->add_gsub_pause (reorder_khmer);
+  map->కూడు_gsub_pause (అమరిక_syllables_khmer);
+  map->కూడు_gsub_pause (reorder_khmer);
 
   /* Testing suggests that Uniscribe does NOT pause between basic
    * features.  Test with KhmerUI.ttf and the following three
@@ -117,21 +117,21 @@ collect_features_khmer (hb_ot_shape_planner_t *plan)
    *
    * https://github.com/harfbuzz/harfbuzz/issues/974
    */
-  map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
+  map->enable_feature (HB_ట్యాగ్('l','o','c','l'), F_చొప్పున_SYLLABLE);
+  map->enable_feature (HB_ట్యాగ్('c','c','m','p'), F_చొప్పున_SYLLABLE);
 
-  unsigned int i = 0;
-  for (; i < KHMER_BASIC_FEATURES; i++)
-    map->add_feature (khmer_features[i]);
+  గుర్తులేని పూర్ణాంకం i = 0;
+  కొరకు (; i < KHMER_BASIC_FEATURES; i++)
+    map->కూడు_feature (khmer_features[i]);
 
   /* https://github.com/harfbuzz/harfbuzz/issues/3531 */
-  map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
+  map->కూడు_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (; i < KHMER_NUM_FEATURES; i++)
-    map->add_feature (khmer_features[i]);
+  కొరకు (; i < KHMER_అంకె_FEATURES; i++)
+    map->కూడు_feature (khmer_features[i]);
 }
 
-static void
+స్థిర శూన్య
 override_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -139,90 +139,90 @@ override_features_khmer (hb_ot_shape_planner_t *plan)
   /* Khmer spec has 'clig' as part of required shaping features:
    * "Apply feature 'clig' to form ligatures that are desired for
    * typographical correctness.", hence in overrides... */
-  map->enable_feature (HB_TAG('c','l','i','g'));
+  map->enable_feature (HB_ట్యాగ్('c','l','i','g'));
 
-  map->disable_feature (HB_TAG('l','i','g','a'));
+  map->disable_feature (HB_ట్యాగ్('l','i','g','a'));
 }
 
 
-struct khmer_shape_plan_t
+నిర్మాణం khmer_shape_plan_t
 {
-  hb_mask_t mask_array[KHMER_NUM_FEATURES];
+  hb_ముసుగు_t ముసుగు_array[KHMER_అంకె_FEATURES];
 };
 
-static void *
-data_create_khmer (const hb_ot_shape_plan_t *plan)
+స్థిర శూన్య *
+దత్తాంశం_create_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan)
 {
-  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, sizeof (khmer_shape_plan_t));
-  if (unlikely (!khmer_plan))
-    return nullptr;
+  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, పరిమాణం (khmer_shape_plan_t));
+  ఒకవేళ (unlikely (!khmer_plan))
+    తిరిగి శూన్యసూచిక;
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
-    khmer_plan->mask_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
-				 0 : plan->map.get_1_mask (khmer_features[i].tag);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARRAY_నిడివి (khmer_plan->ముసుగు_array); i++)
+    khmer_plan->ముసుగు_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
+				 0 : plan->map.get_1_ముసుగు (khmer_features[i].ట్యాగ్_2);
 
-  return khmer_plan;
+  తిరిగి khmer_plan;
 }
 
-static void
-data_destroy_khmer (void *data)
+స్థిర శూన్య
+దత్తాంశం_destroy_khmer (శూన్య *దత్తాంశం)
 {
-  hb_free (data);
+  hb_free (దత్తాంశం);
 }
 
-static void
-setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		   hb_buffer_t              *buffer,
-		   hb_font_t                *font HB_UNUSED)
+స్థిర శూన్య
+అమరిక_masks_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+		   hb_బఫరు_t              *బఫరు,
+		   hb_font_t                *font HB_వాడని)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, khmer_category);
+  HB_బఫరు_ALLOCATE_VAR (బఫరు, khmer_category);
 
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    set_khmer_properties (info[i]);
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    సమితి_khmer_properties (info[i]);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		       hb_font_t *font HB_UNUSED,
-		       hb_buffer_t *buffer)
+స్థిర తార్కిక
+అమరిక_syllables_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+		       hb_font_t *font HB_వాడని,
+		       hb_బఫరు_t *బఫరు)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_khmer (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  return false;
+  HB_బఫరు_ALLOCATE_VAR (బఫరు, syllable);
+  కనుగొను_syllables_khmer (బఫరు);
+  foreach_syllable (బఫరు, ప్రారంభం, చివర)
+    బఫరు->unsafe_గమ్యం_break (ప్రారంభం, చివర);
+  తిరిగి అబద్ధం;
 }
 
 
 /* Rules from:
  * https://docs.microsoft.com/en-us/typography/script-development/devanagari */
 
-static void
-reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
-			    hb_face_t *face HB_UNUSED,
-			    hb_buffer_t *buffer,
-			    unsigned int start, unsigned int end)
+స్థిర శూన్య
+reorder_consonant_syllable (స్థిరరాశి hb_ot_shape_plan_t *plan,
+			    hb_face_t *face HB_వాడని,
+			    hb_బఫరు_t *బఫరు,
+			    గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర)
 {
-  const khmer_shape_plan_t *khmer_plan = (const khmer_shape_plan_t *) plan->data;
-  hb_glyph_info_t *info = buffer->info;
+  స్థిరరాశి khmer_shape_plan_t *khmer_plan = (స్థిరరాశి khmer_shape_plan_t *) plan->దత్తాంశం;
+  hb_glyph_info_t *info = బఫరు->info;
 
   /* Setup masks. */
   {
     /* Post-base */
-    hb_mask_t mask = khmer_plan->mask_array[KHMER_BLWF] |
-		     khmer_plan->mask_array[KHMER_ABVF] |
-		     khmer_plan->mask_array[KHMER_PSTF];
-    for (unsigned int i = start + 1; i < end; i++)
-      info[i].mask  |= mask;
+    hb_ముసుగు_t ముసుగు = khmer_plan->ముసుగు_array[KHMER_BLWF] |
+		     khmer_plan->ముసుగు_array[KHMER_ABVF] |
+		     khmer_plan->ముసుగు_array[KHMER_PSTF];
+    కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం + 1; i < చివర; i++)
+      info[i].ముసుగు  |= ముసుగు;
   }
 
-  unsigned int num_coengs = 0;
-  for (unsigned int i = start + 1; i < end; i++)
+  గుర్తులేని పూర్ణాంకం అంకె_coengs = 0;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం + 1; i < చివర; i++)
   {
     /* """
      * When a COENG + (Cons | IndV) combination are found (and subscript count
@@ -236,22 +236,22 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * the 'pref' OpenType feature applied to them.
      * """
      */
-    if (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
+    ఒకవేళ (info[i].khmer_category() == K_Cat(H) && అంకె_coengs <= 2 && i + 1 < చివర)
     {
-      num_coengs++;
+      అంకె_coengs++;
 
-      if (info[i + 1].khmer_category() == K_Cat(Ra))
+      ఒకవేళ (info[i + 1].khmer_category() == K_Cat(Ra))
       {
-	for (unsigned int j = 0; j < 2; j++)
-	  info[i + j].mask |= khmer_plan->mask_array[KHMER_PREF];
+	కొరకు (గుర్తులేని పూర్ణాంకం j = 0; j < 2; j++)
+	  info[i + j].ముసుగు |= khmer_plan->ముసుగు_array[KHMER_PREF];
 
 	/* Move the Coeng,Ro sequence to the start. */
-	buffer->merge_clusters (start, i + 2);
+	బఫరు->విలీనం_clusters (ప్రారంభం, i + 2);
 	hb_glyph_info_t t0 = info[i];
 	hb_glyph_info_t t1 = info[i + 1];
-	memmove (&info[start + 2], &info[start], (i - start) * sizeof (info[0]));
-	info[start] = t0;
-	info[start + 1] = t1;
+	memmove (&info[ప్రారంభం + 2], &info[ప్రారంభం], (i - ప్రారంభం) * పరిమాణం (info[0]));
+	info[ప్రారంభం] = t0;
+	info[ప్రారంభం + 1] = t1;
 
 	/* Mark the subsequent stuff with 'cfar'.  Used in Khmer.
 	 * Read the feature spec.
@@ -259,123 +259,123 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	 * U+1784,U+17D2,U+179A,U+17D2,U+1782
 	 * U+1784,U+17D2,U+1782,U+17D2,U+179A
 	 */
-	if (khmer_plan->mask_array[KHMER_CFAR])
-	  for (unsigned int j = i + 2; j < end; j++)
-	    info[j].mask |= khmer_plan->mask_array[KHMER_CFAR];
+	ఒకవేళ (khmer_plan->ముసుగు_array[KHMER_CFAR])
+	  కొరకు (గుర్తులేని పూర్ణాంకం j = i + 2; j < చివర; j++)
+	    info[j].ముసుగు |= khmer_plan->ముసుగు_array[KHMER_CFAR];
 
-	num_coengs = 2; /* Done. */
+	అంకె_coengs = 2; /* Done. */
       }
     }
 
     /* Reorder left matra piece. */
-    else if (info[i].khmer_category() == K_Cat(VPre))
+    లేకపోతే ఒకవేళ (info[i].khmer_category() == K_Cat(VPre))
     {
       /* Move to the start. */
-      buffer->merge_clusters (start, i + 1);
+      బఫరు->విలీనం_clusters (ప్రారంభం, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[start + 1], &info[start], (i - start) * sizeof (info[0]));
-      info[start] = t;
+      memmove (&info[ప్రారంభం + 1], &info[ప్రారంభం], (i - ప్రారంభం) * పరిమాణం (info[0]));
+      info[ప్రారంభం] = t;
     }
   }
 }
 
-static void
-reorder_syllable_khmer (const hb_ot_shape_plan_t *plan,
+స్థిర శూన్య
+reorder_syllable_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan,
 			hb_face_t *face,
-			hb_buffer_t *buffer,
-			unsigned int start, unsigned int end)
+			hb_బఫరు_t *బఫరు,
+			గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర)
 {
-  khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type)
+  khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (బఫరు->info[ప్రారంభం].syllable() & 0x0F);
+  ఎంపిక (syllable_type)
   {
-    case khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case khmer_consonant_syllable:
-     reorder_consonant_syllable (plan, face, buffer, start, end);
-     break;
+    స్థితి khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    స్థితి khmer_consonant_syllable:
+     reorder_consonant_syllable (plan, face, బఫరు, ప్రారంభం, చివర);
+     ఆపు;
 
-    case khmer_non_khmer_cluster:
-      break;
+    స్థితి khmer_non_khmer_cluster:
+      ఆపు;
   }
 }
 
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+reorder_khmer (స్థిరరాశి hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
-	       hb_buffer_t *buffer)
+	       hb_బఫరు_t *బఫరు)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering khmer"))
+  తార్కిక ret = అబద్ధం;
+  ఒకవేళ (బఫరు->సందేశం (font, "start reordering khmer"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    ఒకవేళ (hb_syllabic_చొప్పించు_dotted_circles (font, బఫరు,
 					   khmer_broken_cluster,
 					   K_Cat(DOTTEDCIRCLE),
-					   (unsigned) -1))
-      ret = true;
+					   (గుర్తులేని) -1))
+      ret = నిజం;
 
-    foreach_syllable (buffer, start, end)
-      reorder_syllable_khmer (plan, font->face, buffer, start, end);
-    (void) buffer->message (font, "end reordering khmer");
+    foreach_syllable (బఫరు, ప్రారంభం, చివర)
+      reorder_syllable_khmer (plan, font->face, బఫరు, ప్రారంభం, చివర);
+    (శూన్య) బఫరు->సందేశం (font, "end reordering khmer");
   }
-  HB_BUFFER_DEALLOCATE_VAR (buffer, khmer_category);
+  HB_బఫరు_DEALLOCATE_VAR (బఫరు, khmer_category);
 
-  return ret;
+  తిరిగి ret;
 }
 
 
-static bool
-decompose_khmer (const hb_ot_shape_normalize_context_t *c,
+స్థిర తార్కిక
+decompose_khmer (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 		 hb_codepoint_t  ab,
 		 hb_codepoint_t *a,
 		 hb_codepoint_t *b)
 {
-  switch (ab)
+  ఎంపిక (ab)
   {
     /*
      * Decompose split matras that don't have Unicode decompositions.
      */
 
     /* Khmer */
-    case 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; return true;
-    case 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; return true;
-    case 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; return true;
-    case 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; return true;
-    case 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; return true;
+    స్థితి 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; తిరిగి నిజం;
+    స్థితి 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; తిరిగి నిజం;
+    స్థితి 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; తిరిగి నిజం;
+    స్థితి 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; తిరిగి నిజం;
+    స్థితి 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; తిరిగి నిజం;
   }
 
-  return (bool) c->unicode->decompose (ab, a, b);
+  తిరిగి (తార్కిక) c->unicode->decompose (ab, a, b);
 }
 
-static bool
-compose_khmer (const hb_ot_shape_normalize_context_t *c,
+స్థిర తార్కిక
+compose_khmer (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 	       hb_codepoint_t  a,
 	       hb_codepoint_t  b,
 	       hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  ఒకవేళ (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    తిరిగి అబద్ధం;
 
-  return (bool) c->unicode->compose (a, b, ab);
+  తిరిగి (తార్కిక) c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_khmer =
+స్థిరరాశి hb_ot_shaper_t _hb_ot_shaper_khmer =
 {
   collect_features_khmer,
   override_features_khmer,
-  data_create_khmer,
-  data_destroy_khmer,
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
+  దత్తాంశం_create_khmer,
+  దత్తాంశం_destroy_khmer,
+  శూన్యసూచిక, /* preprocess_text */
+  శూన్యసూచిక, /* postprocess_glyphs */
   decompose_khmer,
   compose_khmer,
-  setup_masks_khmer,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  అమరిక_masks_khmer,
+  శూన్యసూచిక, /* reorder_marks */
+  HB_ట్యాగ్_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
+  HB_OT_SHAPE_ZERO_వెడల్పు_MARKS_NONE,
+  అబద్ధం, /* fallback_position */
 };
 
 
-#endif
+#అయితే_ముగింపు

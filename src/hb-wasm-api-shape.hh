@@ -22,95 +22,95 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_SHAPE_HH
-#define HB_WASM_API_SHAPE_HH
+#నిర్వచితం_కాకపోతే HB_WASM_API_SHAPE_HH
+#నిర్వచించు HB_WASM_API_SHAPE_HH
 
-#include "hb-wasm-api.hh"
+#అన్తర్భావ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+నామాకాశ hb {
+నామాకాశ wasm {
 
 
-static_assert (sizeof (feature_t) == sizeof (hb_feature_t), "");
+static_assert (పరిమాణం (feature_t) == పరిమాణం (hb_feature_t), "");
 
 HB_WASM_INTERFACE (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				        ptr_d(font_t, font),
-				        ptr_d(buffer_t, buffer),
-				        ptr_d(const feature_t, features),
-				        uint32_t num_features,
-					const char *shaper)
+				        ptr_d(బఫరు_t, బఫరు),
+				        ptr_d(స్థిరరాశి feature_t, features),
+				        uint32_t అంకె_features,
+					స్థిరరాశి అక్షరం *shaper)
 {
-  if (unlikely (0 == strcmp (shaper, "wasm")))
-    return false;
+  ఒకవేళ (unlikely (0 == strcmp (shaper, "wasm")))
+    తిరిగి అబద్ధం;
 
   HB_REF2OBJ (font);
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (బఫరు);
 
   /* Pre-conditions that make hb_shape_full() crash should be checked here. */
 
-  if (unlikely (!buffer->ensure_unicode ()))
-    return false;
+  ఒకవేళ (unlikely (!బఫరు->ensure_unicode ()))
+    తిరిగి అబద్ధం;
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (buffer->props.direction)))
-    return false;
+  ఒకవేళ (unlikely (!HB_DIRECTION_IS_VALID (బఫరు->props.direction)))
+    తిరిగి అబద్ధం;
 
-  HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features && num_features))
-    return false;
+  HB_ARRAY_PARAM (స్థిరరాశి feature_t, features, అంకె_features);
+  ఒకవేళ (unlikely (!features && అంకె_features))
+    తిరిగి అబద్ధం;
 
-  const char * shaper_list[] = {shaper, nullptr};
-  return hb_shape_full (font, buffer,
-			(hb_feature_t *) features, num_features,
+  స్థిరరాశి అక్షరం * shaper_list[] = {shaper, శూన్యసూచిక};
+  తిరిగి hb_shape_నిండిన (font, బఫరు,
+			(hb_feature_t *) features, అంకె_features,
 			shaper_list);
 }
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
-					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       ptr_d(స్థిరరాశి feature_t, features),
+					       uint32_t అంకె_features,
 					       ptr_d(features_t, output))
 {
   HB_PTR_PARAM (features_t, output);
-  if (unlikely (!output))
-    return false;
+  ఒకవేళ (unlikely (!output))
+    తిరిగి అబద్ధం;
 
-  unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (num_features, sizeof (feature_t), &bytes)))
-    return false;
+  గుర్తులేని బైట్లు;
+  ఒకవేళ (unlikely (hb_unsigned_mul_overflows (అంకె_features, పరిమాణం (feature_t), &బైట్లు)))
+    తిరిగి అబద్ధం;
 
-  if (!num_features)
+  ఒకవేళ (!అంకె_features)
   {
-    output->length = 0;
+    output->నిడివి = 0;
     output->features = nullref;
-    return true;
+    తిరిగి నిజం;
   }
 
-  HB_ARRAY_PARAM (const feature_t, features, num_features);
-  if (unlikely (!features))
-    return false;
+  HB_ARRAY_PARAM (స్థిరరాశి feature_t, features, అంకె_features);
+  ఒకవేళ (unlikely (!features))
+    తిరిగి అబద్ధం;
 
-  feature_t *dst = nullptr;
-  uint32_t dstref = module_malloc (bytes, (void **) &dst);
-  if (unlikely (!dstref))
-    return false;
+  feature_t *dst = శూన్యసూచిక;
+  uint32_t dstref = module_malloc (బైట్లు, (శూన్య **) &dst);
+  ఒకవేళ (unlikely (!dstref))
+    తిరిగి అబద్ధం;
 
-  hb_memcpy (dst, features, bytes);
-  output->length = num_features;
+  hb_memcpy (dst, features, బైట్లు);
+  output->నిడివి = అంకె_features;
   output->features = dstref;
-  return true;
+  తిరిగి నిజం;
 }
 
-HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, features_free) (HB_WASM_EXEC_ENV
 				    ptr_d(features_t, features))
 {
   HB_PTR_PARAM (features_t, features);
-  if (unlikely (!features))
-    return;
+  ఒకవేళ (unlikely (!features))
+    తిరిగి;
 
   module_free (features->features);
   features->features = nullref;
-  features->length = 0;
+  features->నిడివి = 0;
 }
 
 }}
 
-#endif /* HB_WASM_API_SHAPE_HH */
+#అయితే_ముగింపు /* HB_WASM_API_SHAPE_HH */

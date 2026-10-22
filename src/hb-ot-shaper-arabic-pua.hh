@@ -6,14 +6,14 @@
  *
  */
 
-#ifndef HB_OT_SHAPER_ARABIC_PUA_HH
-#define HB_OT_SHAPER_ARABIC_PUA_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPER_ARABIC_PUA_HH
+#నిర్వచించు HB_OT_SHAPER_ARABIC_PUA_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include <stdint.h>
+#అన్తర్భావ <stdint.h>
 
-static const uint8_t _hb_arabic_pua_u8[453]=
+స్థిర స్థిరరాశి uint8_t _hb_arabic_pua_u8[453]=
 {
     0,  0,  0,  0,  0,  0,  0,  0, 33,  0,  0,  0,  0,  0,  3,  0,
     4,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 80,  0,
@@ -45,7 +45,7 @@ static const uint8_t _hb_arabic_pua_u8[453]=
    78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93,
    94, 95, 96, 97, 98,
 };
-static const uint16_t _hb_arabic_pua_u16[713]=
+స్థిర స్థిరరాశి uint16_t _hb_arabic_pua_u16[713]=
 {
       0,    0,    0,    0,    0,    0,    0,    0,61728,61729,61730,    0,    0,61733,    0,    0,
   61736,61737,61738,61739,61790,61741,61742,61743,61872,61873,61874,61875,61876,61877,61878,61879,
@@ -94,21 +94,21 @@ static const uint16_t _hb_arabic_pua_u16[713]=
   62174,62175,62178,62179,62172,62173,    0,    0,    0,
 };
 
-static inline uint8_t _hb_arabic_pua_b4 (const uint8_t* a, unsigned i)
+స్థిర అంతఃవరుస uint8_t _hb_arabic_pua_b4 (స్థిరరాశి uint8_t* a, గుర్తులేని i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  తిరిగి (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint16_t _hb_arabic_pua_simp_map (unsigned u)
+స్థిర అంతఃవరుస uint16_t _hb_arabic_pua_simp_map (గుర్తులేని u)
 {
   /* packtab: [2^2,2^4,2^4,2^3] */
-  return u<65277u ? (uint16_t)(_hb_arabic_pua_u16[((_hb_arabic_pua_u8[31u+((_hb_arabic_pua_b4(_hb_arabic_pua_u8,((((13835058055282164225ULL>>((((((((u)>>3))>>4))>>4))<<1))&3))<<4)+((((((u)>>3))>>4))&15)))<<4)+((((u)>>3))&15)])<<3)+((u)&7)]) : 0;
+  తిరిగి u<65277u ? (uint16_t)(_hb_arabic_pua_u16[((_hb_arabic_pua_u8[31u+((_hb_arabic_pua_b4(_hb_arabic_pua_u8,((((13835058055282164225ULL>>((((((((u)>>3))>>4))>>4))<<1))&3))<<4)+((((((u)>>3))>>4))&15)))<<4)+((((u)>>3))&15)])<<3)+((u)&7)]) : 0;
 }
-static inline uint16_t _hb_arabic_pua_trad_map (unsigned u)
+స్థిర అంతఃవరుస uint16_t _hb_arabic_pua_trad_map (గుర్తులేని u)
 {
   /* packtab: [2^4,2^4,2^4,2^2] */
-  return u<65277u ? (uint16_t)(_hb_arabic_pua_u16[317u+((_hb_arabic_pua_u8[197u+((_hb_arabic_pua_b4(_hb_arabic_pua_u8+159u,((_hb_arabic_pua_b4(_hb_arabic_pua_u8+127u,((((((u)>>2))>>4))>>4)))<<4)+((((((u)>>2))>>4))&15)))<<4)+((((u)>>2))&15)])<<2)+((u)&3)]) : 0;
+  తిరిగి u<65277u ? (uint16_t)(_hb_arabic_pua_u16[317u+((_hb_arabic_pua_u8[197u+((_hb_arabic_pua_b4(_hb_arabic_pua_u8+159u,((_hb_arabic_pua_b4(_hb_arabic_pua_u8+127u,((((((u)>>2))>>4))>>4)))<<4)+((((((u)>>2))>>4))&15)))<<4)+((((u)>>2))&15)])<<2)+((u)&3)]) : 0;
 }
 
-#endif /* HB_OT_SHAPER_ARABIC_PUA_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPER_ARABIC_PUA_HH */
 
 /* == End of generated table == */

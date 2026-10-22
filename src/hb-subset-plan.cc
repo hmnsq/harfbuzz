@@ -24,114 +24,114 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#include "hb-subset-plan.hh"
-#include "hb-subset-accelerator.hh"
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
-#include "hb-subset.h"
-#include "hb-unicode.h"
+#అన్తర్భావ "hb-subset-plan.hh"
+#అన్తర్భావ "hb-subset-accelerator.hh"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ "hb-multimap.hh"
+#అన్తర్భావ "hb-set.hh"
+#అన్తర్భావ "hb-subset.h"
+#అన్తర్భావ "hb-unicode.h"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-closure.hh"
-#include "OT/Color/CPAL/CPAL.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-math-table.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-ot-glyf-table.hh"
+#అన్తర్భావ "hb-ot-layout-base-table.hh"
+#అన్తర్భావ "hb-ot-cff1-table.hh"
+#అన్తర్భావ "hb-ot-cff2-table.hh"
+#అన్తర్భావ "OT/Color/COLR/COLR.hh"
+#అన్తర్భావ "OT/Color/COLR/colrv1-closure.hh"
+#అన్తర్భావ "OT/Color/CPAL/CPAL.hh"
+#అన్తర్భావ "hb-ot-var-fvar-table.hh"
+#అన్తర్భావ "hb-ot-var-varc-table.hh"
+#అన్తర్భావ "hb-ot-stat-table.hh"
+#అన్తర్భావ "hb-ot-math-table.hh"
 
 hb_subset_accelerator_t::~hb_subset_accelerator_t ()
 {
-  if (cmap_cache && destroy_cmap_cache)
-    destroy_cmap_cache ((void*) cmap_cache);
+  ఒకవేళ (cmap_cache && destroy_cmap_cache)
+    destroy_cmap_cache ((శూన్య*) cmap_cache);
 
-#ifndef HB_NO_SUBSET_CFF
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
   cff1_accel.fini ();
   cff2_accel.fini ();
-#endif
-  hb_face_destroy (source);
+#అయితే_ముగింపు
+  hb_face_destroy (ఆధారం);
 }
 
 
-#ifndef HB_NO_SUBSET_CFF
-static inline bool
-_add_cff_seac_components (const OT::cff1::accelerator_subset_t &cff,
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
+స్థిర అంతఃవరుస తార్కిక
+కూడు_cff_seac_components (స్థిరరాశి OT::cff1::accelerator_subset_t &cff,
 			  hb_codepoint_t gid,
-			  hb_set_t *gids_to_retain)
+			  hb_సమితి_t *gids_గమ్యం_retain)
 {
-  hb_codepoint_t base_gid, accent_gid;
-  if (cff.get_seac_components (gid, &base_gid, &accent_gid))
+  hb_codepoint_t పునాది_gid, accent_gid;
+  ఒకవేళ (cff.get_seac_components (gid, &పునాది_gid, &accent_gid))
   {
-    gids_to_retain->add (base_gid);
-    gids_to_retain->add (accent_gid);
-    return true;
+    gids_గమ్యం_retain->కూడు (పునాది_gid);
+    gids_గమ్యం_retain->కూడు (accent_gid);
+    తిరిగి నిజం;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
-#endif
+#అయితే_ముగింపు
 
-static void
-_remap_palette_indexes (const hb_set_t *palette_indexes,
-			hb_map_t       *mapping /* OUT */)
+స్థిర శూన్య
+_remap_palette_indexes (స్థిరరాశి hb_సమితి_t *palette_indexes,
+			hb_map_t       *mapping /*బహిర్గతం*/)
 {
-  unsigned new_idx = 0;
-  for (unsigned palette_index : palette_indexes->iter ())
+  గుర్తులేని new_idx = 0;
+  కొరకు (గుర్తులేని palette_సూచీ : palette_indexes->iter ())
   {
-    if (palette_index == 0xFFFF)
+    ఒకవేళ (palette_సూచీ == 0xFFFF)
     {
-      mapping->set (palette_index, palette_index);
-      continue;
+      mapping->సమితి (palette_సూచీ, palette_సూచీ);
+      కొనసాగు;
     }
-    mapping->set (palette_index, new_idx);
+    mapping->సమితి (palette_సూచీ, new_idx);
     new_idx++;
   }
 }
 
-void
-remap_indexes (const hb_set_t *indexes,
-               hb_map_t       *mapping /* OUT */)
+శూన్య
+remap_indexes (స్థిరరాశి hb_సమితి_t *indexes,
+               hb_map_t       *mapping /*బహిర్గతం*/)
 {
-  for (auto _ : + hb_enumerate (indexes->iter ()))
-    mapping->set (_.second, _.first);
+  కొరకు (స్వయంచాలక _ : + hb_enumerate (indexes->iter ()))
+    mapping->సమితి (_.second, _.మొదటి);
 }
 
-static inline void
-_cmap_closure (hb_face_t	   *face,
-	       const hb_set_t	   *unicodes,
-	       hb_set_t		   *glyphset)
+స్థిర అంతఃవరుస శూన్య
+cmap_సంవృతం (hb_face_t	   *face,
+	       స్థిరరాశి hb_సమితి_t	   *unicodes,
+	       hb_సమితి_t		   *glyphset)
 {
   OT::cmap_accelerator_t cmap (face);
-  cmap.closure_glyphs (unicodes, glyphset);
+  cmap.సంవృతం_glyphs (unicodes, glyphset);
 }
 
-static void _colr_closure (hb_subset_plan_t* plan,
-                           hb_set_t *glyphs_colred)
+స్థిర శూన్య colr_సంవృతం (hb_subset_plan_t* plan,
+                           hb_సమితి_t *glyphs_colred)
 {
-  OT::COLR::accelerator_t colr (plan->source);
-  if (!colr.is_valid ()) return;
+  OT::COLR::accelerator_t colr (plan->ఆధారం);
+  ఒకవేళ (!colr.is_valid ()) తిరిగి;
 
-  hb_set_t palette_indices, layer_indices;
+  hb_సమితి_t palette_indices, layer_indices;
   // Collect all glyphs referenced by COLRv0
-  hb_set_t glyphset_colrv0;
-  for (hb_codepoint_t gid : *glyphs_colred)
-    colr.closure_glyphs (gid, &glyphset_colrv0);
+  hb_సమితి_t glyphset_colrv0;
+  కొరకు (hb_codepoint_t gid : *glyphs_colred)
+    colr.సంవృతం_glyphs (gid, &glyphset_colrv0);
 
   glyphs_colred->union_ (glyphset_colrv0);
 
   //closure for COLRv1
-  hb_set_t variation_indices, delta_set_indices;
-  colr.closure_forV1 (glyphs_colred, &layer_indices, &palette_indices, &variation_indices, &delta_set_indices);
+  hb_సమితి_t variation_indices, delta_సమితి_indices;
+  colr.సంవృతం_for_V1 (glyphs_colred, &layer_indices, &palette_indices, &variation_indices, &delta_సమితి_indices);
 
-  colr.closure_V0palette_indices (glyphs_colred, &palette_indices);
+  colr.సంవృతం_V0palette_indices (glyphs_colred, &palette_indices);
   remap_indexes (&layer_indices, &plan->colrv1_layers);
   _remap_palette_indexes (&palette_indices, &plan->colr_palettes);
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
   /* colr variation indices mapping during planning phase:
    * generate colrv1_variation_idx_delta_map. When delta set index map is not
    * included, it's a mapping from varIdx-> (new varIdx,delta). Otherwise, it's
@@ -140,235 +140,235 @@ static void _colr_closure (hb_subset_plan_t* plan,
    * Besides, we need to generate a delta set idx-> new var_idx map for updating
    * delta set index map if exists. This map will be updated again after
    * instancing. */
-  if (colr.has_var_store () && variation_indices)
+  ఒకవేళ (colr.has_var_store () && variation_indices)
   {
-    const OT::ItemVariationStore &var_store = colr.get_var_store ();
+    స్థిరరాశి OT::అంశం_Variation_Store &var_store = colr.get_var_store ();
     // generated inner_maps is used by ItemVariationStore serialize(), which is subset only
-    unsigned subtable_count = var_store.get_sub_table_count ();
-    generate_varstore_inner_maps (variation_indices, subtable_count, plan->colrv1_varstore_inner_maps);
+    గుర్తులేని subtable_లెక్క = var_store.get_sub_పట్టిక_లెక్క ();
+    generate_varstore_inner_maps (variation_indices, subtable_లెక్క, plan->colrv1_varstore_inner_maps);
 
-    if (!plan->all_axes_pinned)
+    ఒకవేళ (!plan->all_axes_pinned)
       remap_variation_indices (var_store,
                               variation_indices,
                               plan->normalized_coords,
-                              false, /* no need to calculate delta for COLR during planning */
+                              అబద్ధం, /* no need to calculate delta for COLR during planning */
                               plan->all_axes_pinned,
                               plan->colrv1_variation_idx_delta_map);
   }
 
   /* Sentinel-only maps still need their delta-set indices remapped, even
    * when there are no live variation rows or no variation store. */
-  if (!plan->all_axes_pinned && colr.has_delta_set_index_map ())
-    remap_colrv1_delta_set_index_indices (colr.get_delta_set_index_map (),
-                                         delta_set_indices,
+  ఒకవేళ (!plan->all_axes_pinned && colr.has_delta_సమితి_సూచీ_map ())
+    remap_colrv1_delta_సమితి_సూచీ_indices (colr.get_delta_సమితి_సూచీ_map (),
+                                         delta_సమితి_indices,
                                          plan->colrv1_variation_idx_delta_map,
                                          plan->colrv1_new_deltaset_idx_varidx_map);
-#endif
+#అయితే_ముగింపు
 }
 
-static inline void
-_math_closure (hb_subset_plan_t *plan,
-               hb_set_t         *glyphset)
+స్థిర అంతఃవరుస శూన్య
+math_సంవృతం (hb_subset_plan_t *plan,
+               hb_సమితి_t         *glyphset)
 {
-  hb_blob_ptr_t<OT::MATH> math = plan->source_table<OT::MATH> ();
-  if (math->has_data ())
-    math->closure_glyphs (glyphset);
+  hb_blob_ptr_t<OT::MATH> math = plan->ఆధారం_పట్టిక<OT::MATH> ();
+  ఒకవేళ (math->has_దత్తాంశం ())
+    math->సంవృతం_glyphs (glyphset);
   math.destroy ();
 }
 
-static inline void
-_remove_invalid_gids (hb_set_t *glyphs,
-		      unsigned int num_glyphs)
+స్థిర అంతఃవరుస శూన్య
+_remove_invalid_gids (hb_సమితి_t *glyphs,
+		      గుర్తులేని పూర్ణాంకం అంకె_glyphs)
 {
-  glyphs->del_range (num_glyphs, HB_SET_VALUE_INVALID);
+  glyphs->del_range (అంకె_glyphs, HB_సమితి_విలువ_INVALID);
 }
 
-template<bool GID_ALWAYS_EXISTS = false, typename I, typename F, typename G, hb_requires (hb_is_iterator (I))>
-static void
+మూస<తార్కిక GID_ALWAYS_EXISTS = అబద్ధం, రకం_పేరు I, రకం_పేరు F, రకం_పేరు G, hb_requires (hb_is_iterator (I))>
+స్థిర శూన్య
 _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
                             I unicode_iterator,
-                            F unicode_to_gid_for_iterator,
-                            G unicode_to_gid_general)
+                            F unicode_గమ్యం_gid_for_iterator,
+                            G unicode_గమ్యం_gid_general)
 {
-  for (hb_codepoint_t cp : unicode_iterator)
+  కొరకు (hb_codepoint_t cp : unicode_iterator)
   {
-    hb_codepoint_t gid = unicode_to_gid_for_iterator(cp);
-    if (!GID_ALWAYS_EXISTS && gid == HB_MAP_VALUE_INVALID)
+    hb_codepoint_t gid = unicode_గమ్యం_gid_for_iterator(cp);
+    ఒకవేళ (!GID_ALWAYS_EXISTS && gid == HB_MAP_విలువ_INVALID)
     {
-      DEBUG_MSG(SUBSET, nullptr, "Drop U+%04X; no gid", cp);
-      continue;
+      DEBUG_సందేశం(SUBSET, శూన్యసూచిక, "Drop U+%04X; no gid", cp);
+      కొనసాగు;
     }
 
-    plan->codepoint_to_glyph->set (cp, gid);
-    plan->unicode_to_new_gid_list.push (hb_pair (cp, gid));
+    plan->codepoint_గమ్యం_glyph->సమితి (cp, gid);
+    plan->unicode_గమ్యం_new_gid_list.push (hb_pair (cp, gid));
   }
 }
 
-template<bool GID_ALWAYS_EXISTS = false, typename I, typename F, hb_requires (hb_is_iterator (I))>
-static void
+మూస<తార్కిక GID_ALWAYS_EXISTS = అబద్ధం, రకం_పేరు I, రకం_పేరు F, hb_requires (hb_is_iterator (I))>
+స్థిర శూన్య
 _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
                             I unicode_iterator,
-                            F unicode_to_gid_for_iterator)
+                            F unicode_గమ్యం_gid_for_iterator)
 {
-  _fill_unicode_and_glyph_map(plan, unicode_iterator, unicode_to_gid_for_iterator, unicode_to_gid_for_iterator);
+  _fill_unicode_and_glyph_map(plan, unicode_iterator, unicode_గమ్యం_gid_for_iterator, unicode_గమ్యం_gid_for_iterator);
 }
 
 /*
  * Finds additional unicode codepoints which are reachable from the input unicode set.
  * Currently this adds in mirrored variants (needed for bidi) of any input unicodes.
  */
-static hb_set_t
-_unicode_closure (const hb_set_t* unicodes, bool bidi_closure) {
+స్థిర hb_సమితి_t
+unicode_సంవృతం (స్థిరరాశి hb_సమితి_t* unicodes, తార్కిక bidi_సంవృతం) {
   // TODO: we may want to also consider pulling in reachable unicode composition and decompositions.
   //       see: https://github.com/harfbuzz/harfbuzz/issues/2283
-  hb_set_t out = *unicodes;
-  if (!bidi_closure) return out;
+  hb_సమితి_t బహిర్గతం = *unicodes;
+  ఒకవేళ (!bidi_సంవృతం) తిరిగి బహిర్గతం;
 
-  if (out.is_inverted()) {
+  ఒకవేళ (బహిర్గతం.is_inverted()) {
     // don't closure inverted sets, they are asking to specifically exclude certain codepoints.
     // otherwise everything is already included.
-    return out;
+    తిరిగి బహిర్గతం;
   }
 
-  auto unicode_funcs = hb_unicode_funcs_get_default ();
-  for (hb_codepoint_t cp : *unicodes) {
+  స్వయంచాలక unicode_funcs = hb_unicode_funcs_get_default ();
+  కొరకు (hb_codepoint_t cp : *unicodes) {
    hb_codepoint_t mirror = hb_unicode_mirroring(unicode_funcs, cp);
-   if (unlikely (mirror != cp)) {
-     out.add(mirror);
+   ఒకవేళ (unlikely (mirror != cp)) {
+     బహిర్గతం.కూడు(mirror);
    }
   }
 
-  return out;
+  తిరిగి బహిర్గతం;
 }
 
-static void
-_populate_unicodes_to_retain (const hb_set_t *unicodes_in,
-                              const hb_set_t *glyphs,
+స్థిర శూన్య
+populate_unicodes_గమ్యం_retain (స్థిరరాశి hb_సమితి_t *unicodes_లోపల,
+                              స్థిరరాశి hb_సమితి_t *glyphs,
                               hb_subset_plan_t *plan)
 {
-  hb_set_t unicodes = _unicode_closure(unicodes_in,
-    !(plan->flags & HB_SUBSET_FLAGS_NO_BIDI_CLOSURE));
+  hb_సమితి_t unicodes = unicode_సంవృతం(unicodes_లోపల,
+    !(plan->flags & HB_SUBSET_FLAGS_NO_BIDI_సంవృతం));
 
-  OT::cmap_accelerator_t cmap (plan->source);
-  unsigned size_threshold = plan->source->get_num_glyphs ();
+  OT::cmap_accelerator_t cmap (plan->ఆధారం);
+  గుర్తులేని కొలత_పరిమితి = plan->ఆధారం->get_అంకె_glyphs ();
 
-  if (glyphs->is_empty () && unicodes.get_population () < size_threshold)
+  ఒకవేళ (glyphs->is_empty () && unicodes.get_population () < కొలత_పరిమితి)
   {
 
-    const hb_map_t* unicode_to_gid = nullptr;
-    if (plan->accelerator)
-      unicode_to_gid = &plan->accelerator->unicode_to_gid;
+    స్థిరరాశి hb_map_t* unicode_గమ్యం_gid_2 = శూన్యసూచిక;
+    ఒకవేళ (plan->accelerator)
+      unicode_గమ్యం_gid_2 = &plan->accelerator->unicode_గమ్యం_gid_2;
 
     // This is approach to collection is faster, but can only be used  if glyphs
     // are not being explicitly added to the subset and the input unicodes set is
     // not excessively large (eg. an inverted set).
-    plan->unicode_to_new_gid_list.alloc (unicodes.get_population ());
-    if (!unicode_to_gid) {
+    plan->unicode_గమ్యం_new_gid_list.alloc (unicodes.get_population ());
+    ఒకవేళ (!unicode_గమ్యం_gid_2) {
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
         hb_codepoint_t gid;
-        if (!cmap.get_nominal_glyph (cp, &gid)) {
-          return HB_MAP_VALUE_INVALID;
+        ఒకవేళ (!cmap.get_nominal_glyph (cp, &gid)) {
+          తిరిగి HB_MAP_విలువ_INVALID;
         }
-        return gid;
+        తిరిగి gid;
       });
-    } else {
+    } లేకపోతే {
       // Use in memory unicode to gid map it's faster then looking up from
       // the map. This code is mostly duplicated from above to avoid doing
       // conditionals on the presence of the unicode_to_gid map each
       // iteration.
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
-        return unicode_to_gid->get (cp);
+        తిరిగి unicode_గమ్యం_gid_2->get (cp);
       });
     }
   }
-  else
+  లేకపోతే
   {
     // This approach is slower, but can handle adding in glyphs to the subset and will match
     // them with cmap entries.
 
     hb_map_t unicode_glyphid_map_storage;
-    hb_set_t cmap_unicodes_storage;
-    const hb_map_t* unicode_glyphid_map = &unicode_glyphid_map_storage;
-    const hb_set_t* cmap_unicodes = &cmap_unicodes_storage;
+    hb_సమితి_t cmap_unicodes_storage;
+    స్థిరరాశి hb_map_t* unicode_glyphid_map = &unicode_glyphid_map_storage;
+    స్థిరరాశి hb_సమితి_t* cmap_unicodes = &cmap_unicodes_storage;
 
-    if (!plan->accelerator) {
+    ఒకవేళ (!plan->accelerator) {
       cmap.collect_mapping (&cmap_unicodes_storage, &unicode_glyphid_map_storage);
-      plan->unicode_to_new_gid_list.alloc (hb_min(unicodes.get_population ()
+      plan->unicode_గమ్యం_new_gid_list.alloc (hb_min(unicodes.get_population ()
                                                   + glyphs->get_population (),
                                                   cmap_unicodes->get_population ()));
-    } else {
-      unicode_glyphid_map = &plan->accelerator->unicode_to_gid;
+    } లేకపోతే {
+      unicode_glyphid_map = &plan->accelerator->unicode_గమ్యం_gid_2;
       cmap_unicodes = &plan->accelerator->unicodes;
     }
 
-    if (plan->accelerator &&
+    ఒకవేళ (plan->accelerator &&
 	unicodes.get_population () < cmap_unicodes->get_population () &&
 	glyphs->get_population () < cmap_unicodes->get_population ())
     {
-      plan->codepoint_to_glyph->alloc (unicodes.get_population () + glyphs->get_population ());
+      plan->codepoint_గమ్యం_glyph->alloc (unicodes.get_population () + glyphs->get_population ());
 
-      auto &gid_to_unicodes = plan->accelerator->gid_to_unicodes;
+      స్వయంచాలక &gid_గమ్యం_unicodes = plan->accelerator->gid_గమ్యం_unicodes;
 
-      for (hb_codepoint_t gid : *glyphs)
+      కొరకు (hb_codepoint_t gid : *glyphs)
       {
-        auto unicodes = gid_to_unicodes.get (gid);
-        _fill_unicode_and_glyph_map<true>(plan, unicodes, [&] (hb_codepoint_t cp) {
-          return gid;
+        స్వయంచాలక unicodes = gid_గమ్యం_unicodes.get (gid);
+        _fill_unicode_and_glyph_map<నిజం>(plan, unicodes, [&] (hb_codepoint_t cp) {
+          తిరిగి gid;
         },
         [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          తిరిగి unicode_glyphid_map->get(cp);
         });
       }
 
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
           /* Don't double-add entry. */
-	if (plan->codepoint_to_glyph->has (cp))
-          return HB_MAP_VALUE_INVALID;
+	ఒకవేళ (plan->codepoint_గమ్యం_glyph->has (cp))
+          తిరిగి HB_MAP_విలువ_INVALID;
 
-        return unicode_glyphid_map->get(cp);
+        తిరిగి unicode_glyphid_map->get(cp);
       },
       [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          తిరిగి unicode_glyphid_map->get(cp);
       });
 
-      plan->unicode_to_new_gid_list.qsort ();
+      plan->unicode_గమ్యం_new_gid_list.qsort ();
     }
-    else
+    లేకపోతే
     {
-      plan->codepoint_to_glyph->alloc (cmap_unicodes->get_population ());
-      hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-      for (; cmap_unicodes->next_range (&first, &last); )
+      plan->codepoint_గమ్యం_glyph->alloc (cmap_unicodes->get_population ());
+      hb_codepoint_t మొదటి = HB_సమితి_విలువ_INVALID, చివరి = HB_సమితి_విలువ_INVALID;
+      కొరకు (; cmap_unicodes->తదుపరి_range (&మొదటి, &చివరి); )
       {
-        _fill_unicode_and_glyph_map(plan, hb_range(first, last + 1), [&] (hb_codepoint_t cp) {
+        _fill_unicode_and_glyph_map(plan, hb_range(మొదటి, చివరి + 1), [&] (hb_codepoint_t cp) {
           hb_codepoint_t gid = (*unicode_glyphid_map)[cp];
-	  if (!unicodes.has (cp) && !glyphs->has (gid))
-	    return HB_MAP_VALUE_INVALID;
-          return gid;
+	  ఒకవేళ (!unicodes.has (cp) && !glyphs->has (gid))
+	    తిరిగి HB_MAP_విలువ_INVALID;
+          తిరిగి gid;
         },
         [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          తిరిగి unicode_glyphid_map->get(cp);
         });
       }
     }
 
     /* Add gids which where requested, but not mapped in cmap */
-    unsigned num_glyphs = plan->source->get_num_glyphs ();
-    hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-    for (; glyphs->next_range (&first, &last); )
+    గుర్తులేని అంకె_glyphs = plan->ఆధారం->get_అంకె_glyphs ();
+    hb_codepoint_t మొదటి = HB_సమితి_విలువ_INVALID, చివరి = HB_సమితి_విలువ_INVALID;
+    కొరకు (; glyphs->తదుపరి_range (&మొదటి, &చివరి); )
     {
-      if (first >= num_glyphs)
-	break;
-      if (last >= num_glyphs)
-        last = num_glyphs - 1;
-      plan->_glyphset_gsub.add_range (first, last);
+      ఒకవేళ (మొదటి >= అంకె_glyphs)
+	ఆపు;
+      ఒకవేళ (చివరి >= అంకె_glyphs)
+        చివరి = అంకె_glyphs - 1;
+      plan->_glyphset_gsub.కూడు_range (మొదటి, చివరి);
     }
   }
 
-  auto &arr = plan->unicode_to_new_gid_list;
-  if (arr.length)
+  స్వయంచాలక &arr = plan->unicode_గమ్యం_new_gid_list;
+  ఒకవేళ (arr.నిడివి)
   {
-    plan->unicodes.add_sorted_array (&arr.arrayZ->first, arr.length, sizeof (*arr.arrayZ));
-    plan->_glyphset_gsub.add_array (&arr.arrayZ->second, arr.length, sizeof (*arr.arrayZ));
+    plan->unicodes.కూడు_sorted_array (&arr.arrayZ->మొదటి, arr.నిడివి, పరిమాణం (*arr.arrayZ));
+    plan->_glyphset_gsub.కూడు_array (&arr.arrayZ->second, arr.నిడివి, పరిమాణం (*arr.arrayZ));
   }
 
   // Variation selectors don't have glyphs associated with them in the cmap so they will have been filtered out above
@@ -379,465 +379,465 @@ _populate_unicodes_to_retain (const hb_set_t *unicodes_in,
   plan->os2_info.min_cmap_codepoint = plan->unicodes.get_min();
   plan->os2_info.max_cmap_codepoint = plan->unicodes.get_max();
 
-  hb_set_t variation_selectors_to_retain;
-  cmap.collect_variation_selectors(&variation_selectors_to_retain);
-  + variation_selectors_to_retain.iter()
+  hb_సమితి_t variation_selectors_గమ్యం_retain;
+  cmap.collect_variation_selectors(&variation_selectors_గమ్యం_retain);
+  + variation_selectors_గమ్యం_retain.iter()
   | hb_filter(unicodes)
   | hb_sink(&plan->unicodes)
   ;
 }
 
-static unsigned
-_glyf_add_gid_and_children (const OT::glyf_accelerator_t &glyf,
+స్థిర గుర్తులేని
+glyf_కూడు_gid_and_children (స్థిరరాశి OT::glyf_accelerator_t &glyf,
 			    hb_codepoint_t gid,
-			    hb_set_t *gids_to_retain,
-			    int operation_count,
-			    unsigned depth = 0)
+			    hb_సమితి_t *gids_గమ్యం_retain,
+			    పూర్ణాంకం operation_లెక్క,
+			    గుర్తులేని లోతు = 0)
 {
   /* Check if is already visited */
-  if (gids_to_retain->has (gid)) return operation_count;
+  ఒకవేళ (gids_గమ్యం_retain->has (gid)) తిరిగి operation_లెక్క;
 
-  gids_to_retain->add (gid);
+  gids_గమ్యం_retain->కూడు (gid);
 
-  if (unlikely (depth++ > HB_MAX_NESTING_LEVEL)) return operation_count;
-  if (unlikely (--operation_count < 0)) return operation_count;
+  ఒకవేళ (unlikely (లోతు++ > HB_MAX_NESTING_LEVEL)) తిరిగి operation_లెక్క;
+  ఒకవేళ (unlikely (--operation_లెక్క < 0)) తిరిగి operation_లెక్క;
 
-  auto glyph = glyf.glyph_for_gid (gid);
+  స్వయంచాలక glyph = glyf.glyph_for_gid (gid);
 
-  for (auto &item : glyph.get_composite_iterator ())
-    operation_count =
-      _glyf_add_gid_and_children (glyf,
-				  item.get_gid (glyph.is_extended ()),
-				  gids_to_retain,
-				  operation_count,
-				  depth);
+  కొరకు (స్వయంచాలక &అంశం : glyph.get_సంయుక్త_iterator ())
+    operation_లెక్క =
+      glyf_కూడు_gid_and_children (glyf,
+				  అంశం.get_gid (glyph.is_extended ()),
+				  gids_గమ్యం_retain,
+				  operation_లెక్క,
+				  లోతు);
 
-  return operation_count;
+  తిరిగి operation_లెక్క;
 }
 
-static void
-_nameid_closure (hb_subset_plan_t* plan,
-		 hb_set_t* drop_tables)
+స్థిర శూన్య
+nameid_సంవృతం (hb_subset_plan_t* plan,
+		 hb_సమితి_t* drop_tables)
 {
-#ifndef HB_NO_STYLE
-  if (!drop_tables->has (HB_OT_TAG_STAT))
-    plan->source->table.STAT->collect_name_ids (&plan->user_axes_location, &plan->name_ids);
-#endif
-#ifndef HB_NO_VAR
-  if (!plan->all_axes_pinned)
-    plan->source->table.fvar->collect_name_ids (&plan->user_axes_location, &plan->axes_old_index_tag_map, &plan->name_ids);
-#endif
-#ifndef HB_NO_COLOR
-  if (!drop_tables->has (HB_OT_TAG_CPAL))
-    plan->source->table.CPAL->collect_name_ids (&plan->colr_palettes, &plan->name_ids);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_STYLE
+  ఒకవేళ (!drop_tables->has (HB_OT_ట్యాగ్_STAT))
+    plan->ఆధారం->పట్టిక.STAT->collect_name_ids (&plan->user_axes_location, &plan->name_ids);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (!plan->all_axes_pinned)
+    plan->ఆధారం->పట్టిక.fvar->collect_name_ids (&plan->user_axes_location, &plan->axes_old_సూచీ_ట్యాగ్_map, &plan->name_ids);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_COLOR
+  ఒకవేళ (!drop_tables->has (HB_OT_ట్యాగ్_CPAL))
+    plan->ఆధారం->పట్టిక.CPAL->collect_name_ids (&plan->colr_palettes, &plan->name_ids);
+#అయితే_ముగింపు
 
-#ifndef HB_NO_SUBSET_LAYOUT
-  layout_nameid_closure(plan, drop_tables);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_LAYOUT
+  layout_nameid_సంవృతం(plan, drop_tables);
+#అయితే_ముగింపు
 }
 
-static void
-_populate_gids_to_retain (hb_subset_plan_t* plan,
-		          hb_set_t* drop_tables)
+స్థిర శూన్య
+populate_gids_గమ్యం_retain (hb_subset_plan_t* plan,
+		          hb_సమితి_t* drop_tables)
 {
-  OT::glyf_accelerator_t glyf (plan->source);
-#ifndef HB_NO_SUBSET_CFF
+  OT::glyf_accelerator_t glyf (plan->ఆధారం);
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
   // Note: we cannot use inprogress_accelerator here, since it has not been
   // created yet. So in case of preprocessed-face (and otherwise), we do an
   // extra sanitize pass here, which is not ideal.
-  OT::cff1::accelerator_subset_t stack_cff (plan->accelerator ? nullptr : plan->source);
-  const OT::cff1::accelerator_subset_t *cff (plan->accelerator ? plan->accelerator->cff1_accel.get () : &stack_cff);
-#endif
+  OT::cff1::accelerator_subset_t దొంతర_cff (plan->accelerator ? శూన్యసూచిక : plan->ఆధారం);
+  స్థిరరాశి OT::cff1::accelerator_subset_t *cff (plan->accelerator ? plan->accelerator->cff1_accel.get () : &దొంతర_cff);
+#అయితే_ముగింపు
 
-  plan->_glyphset_gsub.add (0); // Not-def
+  plan->_glyphset_gsub.కూడు (0); // Not-def
 
-  _cmap_closure (plan->source, &plan->unicodes, &plan->_glyphset_gsub);
+  cmap_సంవృతం (plan->ఆధారం, &plan->unicodes, &plan->_glyphset_gsub);
   plan->_glyphset_cmaped = plan->_glyphset_gsub;
 
-  if (!drop_tables->has (HB_OT_TAG_MATH))
+  ఒకవేళ (!drop_tables->has (HB_OT_ట్యాగ్_MATH))
   {
-    _math_closure (plan, &plan->_glyphset_gsub);
-    _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_num_glyphs ());
+    math_సంవృతం (plan, &plan->_glyphset_gsub);
+    _remove_invalid_gids (&plan->_glyphset_gsub, plan->ఆధారం->get_అంకె_glyphs ());
   }
   plan->_glyphset_mathed = plan->_glyphset_gsub;
 
-#ifndef HB_NO_SUBSET_LAYOUT
-  layout_populate_gids_to_retain(plan, drop_tables);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_LAYOUT
+  layout_populate_gids_గమ్యం_retain(plan, drop_tables);
+#అయితే_ముగింపు
 
-  _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_num_glyphs ());
+  _remove_invalid_gids (&plan->_glyphset_gsub, plan->ఆధారం->get_అంకె_glyphs ());
 
-  hb_set_t cur_glyphset = plan->_glyphset_gsub;
-  if (!drop_tables->has (HB_OT_TAG_COLR))
+  hb_సమితి_t cur_glyphset = plan->_glyphset_gsub;
+  ఒకవేళ (!drop_tables->has (HB_OT_ట్యాగ్_COLR))
   {
-    _colr_closure (plan, &cur_glyphset);
-    _remove_invalid_gids (&cur_glyphset, plan->source->get_num_glyphs ());
+    colr_సంవృతం (plan, &cur_glyphset);
+    _remove_invalid_gids (&cur_glyphset, plan->ఆధారం->get_అంకె_glyphs ());
   }
 
   plan->_glyphset_colred = cur_glyphset;
 
-#ifndef HB_NO_VAR_COMPOSITES
-  if (!drop_tables->has (OT::VARC::tableTag))
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
+  ఒకవేళ (!drop_tables->has (OT::VARC::పట్టిక_ట్యాగ్))
   {
-    if (unlikely (!plan->source->table.VARC->closure_glyphs (&cur_glyphset)))
+    ఒకవేళ (unlikely (!plan->ఆధారం->పట్టిక.VARC->సంవృతం_glyphs (&cur_glyphset)))
     {
-      plan->check_success (false);
-      return;
+      plan->check_success (అబద్ధం);
+      తిరిగి;
     }
-    _remove_invalid_gids (&cur_glyphset, plan->source->get_num_glyphs ());
+    _remove_invalid_gids (&cur_glyphset, plan->ఆధారం->get_అంకె_glyphs ());
   }
-#endif
+#అయితే_ముగింపు
 
   plan->_glyphset_varced = cur_glyphset;
 
-  _nameid_closure (plan, drop_tables);
+  nameid_సంవృతం (plan, drop_tables);
   /* Populate a full set of glyphs to retain by adding all referenced
    * composite glyphs. */
-  if (glyf.has_data ())
-    for (hb_codepoint_t gid : cur_glyphset)
-      _glyf_add_gid_and_children (glyf, gid, &plan->_glyphset,
-				  cur_glyphset.get_population () * HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH);
-  else
+  ఒకవేళ (glyf.has_దత్తాంశం ())
+    కొరకు (hb_codepoint_t gid : cur_glyphset)
+      glyf_కూడు_gid_and_children (glyf, gid, &plan->_glyphset,
+				  cur_glyphset.get_population () * HB_MAX_సంయుక్త_OPERATIONS_చొప్పున_GLYPH);
+  లేకపోతే
     plan->_glyphset.union_ (cur_glyphset);
-#ifndef HB_NO_SUBSET_CFF
-  if (!plan->accelerator || plan->accelerator->has_seac)
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
+  ఒకవేళ (!plan->accelerator || plan->accelerator->has_seac)
   {
-    bool has_seac = false;
-    if (cff->is_valid ())
-      for (hb_codepoint_t gid : cur_glyphset)
-	if (_add_cff_seac_components (*cff, gid, &plan->_glyphset))
-	  has_seac = true;
+    తార్కిక has_seac = అబద్ధం;
+    ఒకవేళ (cff->is_valid ())
+      కొరకు (hb_codepoint_t gid : cur_glyphset)
+	ఒకవేళ (కూడు_cff_seac_components (*cff, gid, &plan->_glyphset))
+	  has_seac = నిజం;
     plan->has_seac = has_seac;
   }
-#endif
+#అయితే_ముగింపు
 
-  _remove_invalid_gids (&plan->_glyphset, plan->source->get_num_glyphs ());
+  _remove_invalid_gids (&plan->_glyphset, plan->ఆధారం->get_అంకె_glyphs ());
 
-#ifndef HB_NO_VAR
-#ifndef HB_NO_SUBSET_LAYOUT
-  if (!drop_tables->has (HB_OT_TAG_GDEF))
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_LAYOUT
+  ఒకవేళ (!drop_tables->has (HB_OT_ట్యాగ్_GDEF))
     collect_layout_variation_indices (plan);
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 }
 
-static bool
-_create_glyph_map_gsub (const hb_set_t* glyph_set_gsub,
-                        const hb_map_t* glyph_map,
-                        hb_map_t* out,
-                        hb_vector_t<hb_codepoint_t>* out_flat)
+స్థిర తార్కిక
+_create_glyph_map_gsub (స్థిరరాశి hb_సమితి_t* glyph_సమితి_gsub,
+                        స్థిరరాశి hb_map_t* glyph_map,
+                        hb_map_t* బహిర్గతం,
+                        hb_సదిశ_t<hb_codepoint_t>* బహిర్గతం_flat)
 {
-  if (unlikely (glyph_set_gsub->in_error ()))
-    return false;
+  ఒకవేళ (unlikely (glyph_సమితి_gsub->లోపల_error ()))
+    తిరిగి అబద్ధం;
 
-  hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
-  hb_set_previous (glyph_set_gsub, &max_gid);
-  unsigned flat_size = max_gid == HB_SET_VALUE_INVALID ? 0 : max_gid + 1;
-  if (unlikely (!out_flat->resize_dirty (flat_size)))
-    return false;
-  hb_memset (out_flat->arrayZ, 0xFF, flat_size * sizeof (hb_codepoint_t));
+  hb_codepoint_t max_gid = HB_సమితి_విలువ_INVALID;
+  hb_సమితి_మునుపటి (glyph_సమితి_gsub, &max_gid);
+  గుర్తులేని flat_కొలత = max_gid == HB_సమితి_విలువ_INVALID ? 0 : max_gid + 1;
+  ఒకవేళ (unlikely (!బహిర్గతం_flat->resize_dirty (flat_కొలత)))
+    తిరిగి అబద్ధం;
+  hb_memset (బహిర్గతం_flat->arrayZ, 0xFF, flat_కొలత * పరిమాణం (hb_codepoint_t));
 
-  out->alloc (glyph_set_gsub->get_population ());
-  for (auto gid : *glyph_set_gsub)
+  బహిర్గతం->alloc (glyph_సమితి_gsub->get_population ());
+  కొరకు (స్వయంచాలక gid : *glyph_సమితి_gsub)
   {
     hb_codepoint_t new_gid = glyph_map->get (gid);
-    out->set (gid, new_gid);
-    out_flat->arrayZ[gid] = new_gid;
+    బహిర్గతం->సమితి (gid, new_gid);
+    బహిర్గతం_flat->arrayZ[gid] = new_gid;
   }
-  return !out->in_error ();
+  తిరిగి !బహిర్గతం->లోపల_error ();
 }
 
-static bool
-_create_old_gid_to_new_gid_map (const hb_face_t *face,
-				bool		 retain_gids,
-				const hb_set_t	*all_gids_to_retain,
-                                const hb_map_t  *requested_glyph_map,
-				hb_map_t	*glyph_map, /* OUT */
-				hb_map_t	*reverse_glyph_map, /* OUT */
-				hb_sorted_vector_t<hb_codepoint_pair_t> *new_to_old_gid_list /* OUT */,
-				unsigned int	*num_glyphs /* OUT */)
+స్థిర తార్కిక
+create_old_gid_గమ్యం_new_gid_map (స్థిరరాశి hb_face_t *face,
+				తార్కిక		 retain_gids,
+				స్థిరరాశి hb_సమితి_t	*all_gids_గమ్యం_retain,
+                                స్థిరరాశి hb_map_t  *requested_glyph_map,
+				hb_map_t	*glyph_map, /*బహిర్గతం*/
+				hb_map_t	*తిరగేయి_glyph_map, /*బహిర్గతం*/
+				hb_sorted_సదిశ_t<hb_codepoint_pair_t> *new_గమ్యం_old_gid_list /*బహిర్గతం*/,
+				గుర్తులేని పూర్ణాంకం	*అంకె_glyphs /*బహిర్గతం*/)
 {
-  unsigned pop = all_gids_to_retain->get_population ();
-  reverse_glyph_map->alloc (pop);
-  glyph_map->alloc (pop);
-  new_to_old_gid_list->alloc (pop);
+  గుర్తులేని తీయి = all_gids_గమ్యం_retain->get_population ();
+  తిరగేయి_glyph_map->alloc (తీయి);
+  glyph_map->alloc (తీయి);
+  new_గమ్యం_old_gid_list->alloc (తీయి);
 
-  if (*requested_glyph_map)
+  ఒకవేళ (*requested_glyph_map)
   {
-    hb_set_t new_gids(requested_glyph_map->values());
-    if (new_gids.get_population() != requested_glyph_map->get_population())
+    hb_సమితి_t new_gids(requested_glyph_map->values());
+    ఒకవేళ (new_gids.get_population() != requested_glyph_map->get_population())
     {
-      DEBUG_MSG (SUBSET, nullptr, "The provided custom glyph mapping is not unique.");
-      return false;
+      DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "The provided custom glyph mapping is not unique.");
+      తిరిగి అబద్ధం;
     }
 
-    if (retain_gids)
+    ఒకవేళ (retain_gids)
     {
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_సందేశం (SUBSET, శూన్యసూచిక,
         "HB_SUBSET_FLAGS_RETAIN_GIDS cannot be set if "
         "a custom glyph mapping has been provided.");
-      return false;
+      తిరిగి అబద్ధం;
     }
 
     hb_codepoint_t max_glyph = 0;
-    hb_set_t remaining;
-    for (auto old_gid : all_gids_to_retain->iter ())
+    hb_సమితి_t మిగిలిన;
+    కొరకు (స్వయంచాలక old_gid : all_gids_గమ్యం_retain->iter ())
     {
-      if (old_gid == 0) {
-	new_to_old_gid_list->push (hb_pair<hb_codepoint_t, hb_codepoint_t> (0u, 0u));
-        continue;
+      ఒకవేళ (old_gid == 0) {
+	new_గమ్యం_old_gid_list->push (hb_pair<hb_codepoint_t, hb_codepoint_t> (0u, 0u));
+        కొనసాగు;
       }
 
       hb_codepoint_t* new_gid;
-      if (!requested_glyph_map->has (old_gid, &new_gid))
+      ఒకవేళ (!requested_glyph_map->has (old_gid, &new_gid))
       {
-        remaining.add(old_gid);
-        continue;
+        మిగిలిన.కూడు(old_gid);
+        కొనసాగు;
       }
 
-      if (*new_gid > max_glyph)
+      ఒకవేళ (*new_gid > max_glyph)
         max_glyph = *new_gid;
-      new_to_old_gid_list->push (hb_pair (*new_gid, old_gid));
+      new_గమ్యం_old_gid_list->push (hb_pair (*new_gid, old_gid));
     }
-    new_to_old_gid_list->qsort ();
+    new_గమ్యం_old_gid_list->qsort ();
 
     // Anything that wasn't mapped by the requested mapping should
     // be placed after the requested mapping.
-    for (auto old_gid : remaining)
-      new_to_old_gid_list->push (hb_pair (++max_glyph, old_gid));
+    కొరకు (స్వయంచాలక old_gid : మిగిలిన)
+      new_గమ్యం_old_gid_list->push (hb_pair (++max_glyph, old_gid));
 
-    *num_glyphs = max_glyph + 1;
+    *అంకె_glyphs = max_glyph + 1;
   }
-  else if (!retain_gids)
+  లేకపోతే ఒకవేళ (!retain_gids)
   {
-    + hb_enumerate (hb_iter (all_gids_to_retain), (hb_codepoint_t) 0)
-    | hb_sink (new_to_old_gid_list)
+    + hb_enumerate (hb_iter (all_gids_గమ్యం_retain), (hb_codepoint_t) 0)
+    | hb_sink (new_గమ్యం_old_gid_list)
     ;
-    *num_glyphs = new_to_old_gid_list->length;
+    *అంకె_glyphs = new_గమ్యం_old_gid_list->నిడివి;
   }
-  else
+  లేకపోతే
   {
-    + hb_iter (all_gids_to_retain)
+    + hb_iter (all_gids_గమ్యం_retain)
     | hb_map ([] (hb_codepoint_t _) {
-		return hb_codepoint_pair_t (_, _);
+		తిరిగి hb_codepoint_pair_t (_, _);
 	      })
-    | hb_sink (new_to_old_gid_list)
+    | hb_sink (new_గమ్యం_old_gid_list)
     ;
 
-    hb_codepoint_t max_glyph = HB_SET_VALUE_INVALID;
-    hb_set_previous (all_gids_to_retain, &max_glyph);
+    hb_codepoint_t max_glyph = HB_సమితి_విలువ_INVALID;
+    hb_సమితి_మునుపటి (all_gids_గమ్యం_retain, &max_glyph);
 
-    *num_glyphs = max_glyph + 1;
+    *అంకె_glyphs = max_glyph + 1;
   }
 
-  reverse_glyph_map->alloc (reverse_glyph_map->get_population () + new_to_old_gid_list->length);
-  + hb_iter (new_to_old_gid_list)
-  | hb_sink (reverse_glyph_map)
+  తిరగేయి_glyph_map->alloc (తిరగేయి_glyph_map->get_population () + new_గమ్యం_old_gid_list->నిడివి);
+  + hb_iter (new_గమ్యం_old_gid_list)
+  | hb_sink (తిరగేయి_glyph_map)
   ;
-  glyph_map->alloc (glyph_map->get_population () + new_to_old_gid_list->length);
-  + hb_iter (new_to_old_gid_list)
+  glyph_map->alloc (glyph_map->get_population () + new_గమ్యం_old_gid_list->నిడివి);
+  + hb_iter (new_గమ్యం_old_gid_list)
   | hb_map (&hb_codepoint_pair_t::reverse)
   | hb_sink (glyph_map)
   ;
 
-  return true;
+  తిరిగి నిజం;
 }
 
 hb_subset_plan_t::hb_subset_plan_t (hb_face_t *face,
-				    const hb_subset_input_t *input)
+				    స్థిరరాశి hb_subset_ఆదానం_t *ఆదానం)
 {
-  successful = true;
-  flags = input->flags;
+  successful = నిజం;
+  flags = ఆదానం->flags;
 
-  unicode_to_new_gid_list.init ();
+  unicode_గమ్యం_new_gid_list.init ();
 
-  name_ids = *input->sets.name_ids;
-  name_languages = *input->sets.name_languages;
-  layout_features = *input->sets.layout_features;
-  layout_scripts = *input->sets.layout_scripts;
-  glyphs_requested = *input->sets.glyphs;
-  drop_tables = *input->sets.drop_tables;
-  no_subset_tables = *input->sets.no_subset_tables;
-  source = hb_face_reference (face);
+  name_ids = *ఆదానం->sets.name_ids;
+  name_languages = *ఆదానం->sets.name_languages;
+  layout_features = *ఆదానం->sets.layout_features;
+  layout_scripts = *ఆదానం->sets.layout_scripts;
+  glyphs_requested = *ఆదానం->sets.glyphs;
+  drop_tables = *ఆదానం->sets.drop_tables;
+  no_subset_tables = *ఆదానం->sets.no_subset_tables;
+  ఆధారం = hb_face_reference (face);
   dest = hb_face_builder_create ();
 
-  codepoint_to_glyph = hb_map_create ();
+  codepoint_గమ్యం_glyph = hb_map_create ();
   glyph_map = hb_map_create ();
-  reverse_glyph_map = hb_map_create ();
+  తిరగేయి_glyph_map = hb_map_create ();
 
-  gsub_insert_catch_all_feature_variation_rec = false;
-  gpos_insert_catch_all_feature_variation_rec = false;
+  gsub_చొప్పించు_catch_all_feature_variation_rec = అబద్ధం;
+  gpos_చొప్పించు_catch_all_feature_variation_rec = అబద్ధం;
   gdef_varstore_inner_maps.init ();
 
-  user_axes_location = input->axes_location;
-  all_axes_pinned = false;
-  pinned_at_default = true;
-  has_gdef_varstore = false;
-  has_avar2 = false;
+  user_axes_location = ఆదానం->axes_location;
+  all_axes_pinned = అబద్ధం;
+  pinned_at_default = నిజం;
+  has_gdef_varstore = అబద్ధం;
+  has_avar2 = అబద్ధం;
 
-#ifdef HB_EXPERIMENTAL_API
-  for (auto _ : input->name_table_overrides)
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+  కొరకు (స్వయంచాలక _ : ఆదానం->name_పట్టిక_overrides)
   {
-    hb_bytes_t name_bytes = _.second;
-    unsigned len = name_bytes.length;
-    char *name_str = (char *) hb_malloc (len);
-    if (unlikely (!check_success (name_str)))
-      break;
+    hb_బైట్లు_t name_బైట్లు = _.second;
+    గుర్తులేని len = name_బైట్లు.నిడివి;
+    అక్షరం *name_str = (అక్షరం *) hb_malloc (len);
+    ఒకవేళ (unlikely (!check_success (name_str)))
+      ఆపు;
 
-    hb_memcpy (name_str, name_bytes.arrayZ, len);
-    name_table_overrides.set (_.first, hb_bytes_t (name_str, len));
+    hb_memcpy (name_str, name_బైట్లు.arrayZ, len);
+    name_పట్టిక_overrides.సమితి (_.మొదటి, hb_బైట్లు_t (name_str, len));
   }
-#endif
+#అయితే_ముగింపు
 
-  void* accel = hb_face_get_user_data(face, hb_subset_accelerator_t::user_data_key());
+  శూన్య* accel = hb_face_get_user_దత్తాంశం(face, hb_subset_accelerator_t::user_దత్తాంశం_కీలకం());
 
-  attach_accelerator_data = input->attach_accelerator_data;
-  force_long_loca = input->force_long_loca;
-#ifdef HB_EXPERIMENTAL_API
+  attach_accelerator_దత్తాంశం = ఆదానం->attach_accelerator_దత్తాంశం;
+  force_long_loca = ఆదానం->force_long_loca;
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
   force_long_loca = force_long_loca || (flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
-#endif
+#అయితే_ముగింపు
 
-  if (accel)
+  ఒకవేళ (accel)
     accelerator = (hb_subset_accelerator_t*) accel;
 
-  if (unlikely (in_error ()))
-    return;
+  ఒకవేళ (unlikely (లోపల_error ()))
+    తిరిగి;
 
-#ifndef HB_NO_VAR_COMPOSITES
-  if (!input->sets.drop_tables->has (OT::VARC::tableTag) &&
-      input->sets.no_subset_tables->has (OT::VARC::tableTag) &&
-      !(input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
-      face->table.VARC->has_data ())
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
+  ఒకవేళ (!ఆదానం->sets.drop_tables->has (OT::VARC::పట్టిక_ట్యాగ్) &&
+      ఆదానం->sets.no_subset_tables->has (OT::VARC::పట్టిక_ట్యాగ్) &&
+      !(ఆదానం->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
+      face->పట్టిక.VARC->has_దత్తాంశం ())
   {
-    check_success (false);
-    return;
+    check_success (అబద్ధం);
+    తిరిగి;
   }
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_VAR
-  if (!check_success (normalize_axes_location (face, this)))
-      return;
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  if (!user_axes_location.is_empty () &&
-      !input->sets.drop_tables->has (OT::VARC::tableTag) &&
-      input->sets.no_subset_tables->has (OT::VARC::tableTag) &&
-      face->table.VARC->has_data ())
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (!check_success (normalize_axes_location (face, ఇది)))
+      తిరిగి;
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
+  ఒకవేళ (!user_axes_location.is_empty () &&
+      !ఆదానం->sets.drop_tables->has (OT::VARC::పట్టిక_ట్యాగ్) &&
+      ఆదానం->sets.no_subset_tables->has (OT::VARC::పట్టిక_ట్యాగ్) &&
+      face->పట్టిక.VARC->has_దత్తాంశం ())
   {
-    check_success (false);
-    return;
+    check_success (అబద్ధం);
+    తిరిగి;
   }
-#endif
+#అయితే_ముగింపు
 
-  _populate_unicodes_to_retain (input->sets.unicodes, input->sets.glyphs, this);
+  populate_unicodes_గమ్యం_retain (ఆదానం->sets.unicodes, ఆదానం->sets.glyphs, ఇది);
 
-  _populate_gids_to_retain (this, input->sets.drop_tables);
-  if (unlikely (in_error ()))
-    return;
+  populate_gids_గమ్యం_retain (ఇది, ఆదానం->sets.drop_tables);
+  ఒకవేళ (unlikely (లోపల_error ()))
+    తిరిగి;
 
-  if (!check_success(_create_old_gid_to_new_gid_map(
+  ఒకవేళ (!check_success(create_old_gid_గమ్యం_new_gid_map(
           face,
-          input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS,
+          ఆదానం->flags & HB_SUBSET_FLAGS_RETAIN_GIDS,
           &_glyphset,
-          &input->glyph_map,
+          &ఆదానం->glyph_map,
           glyph_map,
-          reverse_glyph_map,
-	  &new_to_old_gid_list,
-          &_num_output_glyphs))) {
-    return;
+          తిరగేయి_glyph_map,
+	  &new_గమ్యం_old_gid_list,
+          &అంకె_output_glyphs_2))) {
+    తిరిగి;
   }
 
-#ifdef HB_EXPERIMENTAL_API  
-  if ((input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
-      (input->flags & HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS)) {
+#నిర్వచితమైతే HB_EXPERIMENTAL_API  
+  ఒకవేళ ((ఆదానం->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
+      (ఆదానం->flags & HB_SUBSET_FLAGS_RETAIN_అంకె_GLYPHS)) {
     // We've been requested to maintain the num glyphs count from the
     // input face.
-    _num_output_glyphs = source->get_num_glyphs ();
+    అంకె_output_glyphs_2 = ఆధారం->get_అంకె_glyphs ();
   }
-#endif
+#అయితే_ముగింపు
 
-  if (!check_success (_create_glyph_map_gsub (
+  ఒకవేళ (!check_success (_create_glyph_map_gsub (
       &_glyphset_gsub,
       glyph_map,
       &glyph_map_gsub,
       &glyph_map_gsub_flat)))
-    return;
+    తిరిగి;
 
   // Now that we have old to new gid map update the unicode to new gid list.
-  for (unsigned i = 0; i < unicode_to_new_gid_list.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < unicode_గమ్యం_new_gid_list.నిడివి; i++)
   {
     // Use raw array access for performance.
-    unicode_to_new_gid_list.arrayZ[i].second =
-        glyph_map->get(unicode_to_new_gid_list.arrayZ[i].second);
+    unicode_గమ్యం_new_gid_list.arrayZ[i].second =
+        glyph_map->get(unicode_గమ్యం_new_gid_list.arrayZ[i].second);
   }
 
-  bounds_width_vec.resize_dirty  (_num_output_glyphs);
-  for (auto &v : bounds_width_vec)
+  bounds_వెడల్పు_vec.resize_dirty  (అంకె_output_glyphs_2);
+  కొరకు (స్వయంచాలక &v : bounds_వెడల్పు_vec)
     v = 0xFFFFFFFF;
-  bounds_height_vec.resize_dirty  (_num_output_glyphs);
-  for (auto &v : bounds_height_vec)
+  bounds_ఎత్తు_vec.resize_dirty  (అంకె_output_glyphs_2);
+  కొరకు (స్వయంచాలక &v : bounds_ఎత్తు_vec)
     v = 0xFFFFFFFF;
 
-#ifndef HB_NO_SUBSET_LAYOUT    
-  if (!drop_tables.has (HB_OT_TAG_GDEF))
-    remap_used_mark_sets (this, used_mark_sets_map);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_LAYOUT    
+  ఒకవేళ (!drop_tables.has (HB_OT_ట్యాగ్_GDEF))
+    remap_వాడిన_mark_sets (ఇది, వాడిన_mark_sets_map);
+#అయితే_ముగింపు
 
-#ifndef HB_NO_VAR
-#ifndef HB_NO_BASE
-  if (!drop_tables.has (HB_OT_TAG_BASE))
-    collect_base_variation_indices (this);
-#endif
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_పునాది
+  ఒకవేళ (!drop_tables.has (HB_OT_ట్యాగ్_పునాది))
+    collect_పునాది_variation_indices (ఇది);
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
-  if (unlikely (in_error ()))
-    return;
+  ఒకవేళ (unlikely (లోపల_error ()))
+    తిరిగి;
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_FONT_CFF)
-  update_instance_metrics_map_from_cff2 (this);
-#endif
-#ifndef HB_NO_VAR
-  if (!check_success (get_instance_glyphs_contour_points (this)))
-      return;
-#endif
+#ఒకవేళ !defined(HB_NO_VAR) && !defined(HB_NO_OT_FONT_CFF)
+  update_instance_metrics_map_from_cff2 (ఇది);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+  ఒకవేళ (!check_success (get_instance_glyphs_contour_points (ఇది)))
+      తిరిగి;
+#అయితే_ముగింపు
 
-  if (attach_accelerator_data)
+  ఒకవేళ (attach_accelerator_దత్తాంశం)
   {
     inprogress_accelerator =
-      hb_subset_accelerator_t::create (source,
-				       *codepoint_to_glyph,
+      hb_subset_accelerator_t::create (ఆధారం,
+				       *codepoint_గమ్యం_glyph,
                                        unicodes,
 				       has_seac);
 
     check_success (inprogress_accelerator);
   }
 
-#define HB_SUBSET_PLAN_MEMBER(Type, Name) check_success (!Name.in_error ());
-#include "hb-subset-plan-member-list.hh"
-#undef HB_SUBSET_PLAN_MEMBER
+#నిర్వచించు HB_SUBSET_PLAN_MEMBER(Type, Name) check_success (!Name.లోపల_error ());
+#అన్తర్భావ "hb-subset-plan-member-list.hh"
+#నిర్వచనం_రద్దు HB_SUBSET_PLAN_MEMBER
 }
 
 hb_subset_plan_t::~hb_subset_plan_t()
 {
   hb_face_destroy (dest);
 
-  hb_map_destroy (codepoint_to_glyph);
+  hb_map_destroy (codepoint_గమ్యం_glyph);
   hb_map_destroy (glyph_map);
-  hb_map_destroy (reverse_glyph_map);
-#ifndef HB_NO_SUBSET_CFF
+  hb_map_destroy (తిరగేయి_glyph_map);
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
   cff1_accel.fini ();
   cff2_accel.fini ();
-#endif
-  hb_face_destroy (source);
+#అయితే_ముగింపు
+  hb_face_destroy (ఆధారం);
 
-#ifdef HB_EXPERIMENTAL_API
-  for (auto _ : name_table_overrides.iter_ref ())
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+  కొరకు (స్వయంచాలక _ : name_పట్టిక_overrides.iter_ref ())
     _.second.fini ();
-#endif
+#అయితే_ముగింపు
 
-  if (inprogress_accelerator)
-    hb_subset_accelerator_t::destroy ((void*) inprogress_accelerator);
+  ఒకవేళ (inprogress_accelerator)
+    hb_subset_accelerator_t::destroy ((శూన్య*) inprogress_accelerator);
 }
 
 
@@ -858,19 +858,19 @@ hb_subset_plan_t::~hb_subset_plan_t()
  **/
 hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t	 *face,
-                               const hb_subset_input_t *input)
+                               స్థిరరాశి hb_subset_ఆదానం_t *ఆదానం)
 {
   hb_subset_plan_t *plan;
-  if (unlikely (!(plan = hb_object_create<hb_subset_plan_t> (face, input))))
-    return nullptr;
+  ఒకవేళ (unlikely (!(plan = hb_object_create<hb_subset_plan_t> (face, ఆదానం))))
+    తిరిగి శూన్యసూచిక;
 
-  if (unlikely (plan->in_error ()))
+  ఒకవేళ (unlikely (plan->లోపల_error ()))
   {
     hb_subset_plan_destroy (plan);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  return plan;
+  తిరిగి plan;
 }
 
 /**
@@ -882,10 +882,10 @@ hb_subset_plan_create_or_fail (hb_face_t	 *face,
  *
  * Since: 4.0.0
  **/
-void
+శూన్య
 hb_subset_plan_destroy (hb_subset_plan_t *plan)
 {
-  if (!hb_object_destroy (plan)) return;
+  ఒకవేళ (!hb_object_destroy (plan)) తిరిగి;
 
   hb_free (plan);
 }
@@ -903,9 +903,9 @@ hb_subset_plan_destroy (hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_old_గమ్యం_new_glyph_mapping (స్థిరరాశి hb_subset_plan_t *plan)
 {
-  return plan->glyph_map;
+  తిరిగి plan->glyph_map;
 }
 
 /**
@@ -921,9 +921,9 @@ hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_new_గమ్యం_old_glyph_mapping (స్థిరరాశి hb_subset_plan_t *plan)
 {
-  return plan->reverse_glyph_map;
+  తిరిగి plan->తిరగేయి_glyph_map;
 }
 
 /**
@@ -939,9 +939,9 @@ hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_unicode_గమ్యం_old_glyph_mapping (స్థిరరాశి hb_subset_plan_t *plan)
 {
-  return plan->codepoint_to_glyph;
+  తిరిగి plan->codepoint_గమ్యం_glyph;
 }
 
 /**
@@ -957,7 +957,7 @@ hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan)
 hb_subset_plan_t *
 hb_subset_plan_reference (hb_subset_plan_t *plan)
 {
-  return hb_object_reference (plan);
+  తిరిగి hb_object_reference (plan);
 }
 
 /**
@@ -975,13 +975,13 @@ hb_subset_plan_reference (hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_bool_t
-hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_subset_plan_సమితి_user_దత్తాంశం (hb_subset_plan_t   *plan,
+                              hb_user_దత్తాంశం_కీలకం_t *key,
+                              శూన్య               *దత్తాంశం,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace)
 {
-  return hb_object_set_user_data (plan, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (plan, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -996,9 +996,9 @@ hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
  *
  * Since: 4.0.0
  **/
-void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key)
+శూన్య *
+hb_subset_plan_get_user_దత్తాంశం (స్థిరరాశి hb_subset_plan_t *plan,
+                              hb_user_దత్తాంశం_కీలకం_t     *key)
 {
-  return hb_object_get_user_data (plan, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (plan, key);
 }

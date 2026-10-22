@@ -24,9 +24,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_GOBJECT
+#నిర్వచితమైతే HAVE_GOBJECT
 
 
 /*
@@ -50,61 +50,61 @@
 
 
 /* g++ didn't like older gtype.h gcc-only code path. */
-#include <glib.h>
+#అన్తర్భావ <glib.h>
 
-#include "hb-gobject.h"
+#అన్తర్భావ "hb-gobject.h"
 
-#define HB_DEFINE_BOXED_TYPE(name,copy_func,free_func) \
+#నిర్వచించు HB_DEFINE_BOXED_TYPE(name,copy_func,free_func) \
 GType \
 hb_gobject_##name##_get_type () \
 { \
-   static gsize type_id = 0; \
-   if (g_once_init_enter (&type_id)) { \
-      GType id = g_boxed_type_register_static (g_intern_static_string ("hb_" #name "_t"), \
+   స్థిర gsize type_id = 0; \
+   ఒకవేళ (g_once_init_enter (&type_id)) { \
+      GType id = g_boxed_type_రిజిస్టరు_static (g_intern_static_string ("hb_" #name "_t"), \
 					       (GBoxedCopyFunc) copy_func, \
 					       (GBoxedFreeFunc) free_func); \
       g_once_init_leave (&type_id, id); \
    } \
-   return type_id; \
+   తిరిగి type_id; \
 }
 
-#define HB_DEFINE_OBJECT_TYPE(name) \
+#నిర్వచించు HB_DEFINE_OBJECT_TYPE(name) \
 	HB_DEFINE_BOXED_TYPE (name, hb_##name##_reference, hb_##name##_destroy)
 
-#define HB_DEFINE_VALUE_TYPE(name) \
-	static hb_##name##_t *_hb_##name##_reference (const hb_##name##_t *l) \
+#నిర్వచించు HB_DEFINE_విలువ_TYPE(name) \
+	స్థిర hb_##name##_t *_hb_##name##_reference (స్థిరరాశి hb_##name##_t *l) \
 	{ \
-	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, sizeof (hb_##name##_t)); \
-	  if (unlikely (!c)) return nullptr; \
+	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, పరిమాణం (hb_##name##_t)); \
+	  ఒకవేళ (unlikely (!c)) తిరిగి శూన్యసూచిక; \
 	  *c = *l; \
-	  return c; \
+	  తిరిగి c; \
 	} \
-	static void _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
+	స్థిర శూన్య _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
 	HB_DEFINE_BOXED_TYPE (name, _hb_##name##_reference, _hb_##name##_destroy)
 
-HB_DEFINE_OBJECT_TYPE (buffer)
+HB_DEFINE_OBJECT_TYPE (బఫరు)
 HB_DEFINE_OBJECT_TYPE (blob)
 HB_DEFINE_OBJECT_TYPE (draw_funcs)
 HB_DEFINE_OBJECT_TYPE (paint_funcs)
 HB_DEFINE_OBJECT_TYPE (face)
 HB_DEFINE_OBJECT_TYPE (font)
 HB_DEFINE_OBJECT_TYPE (font_funcs)
-HB_DEFINE_OBJECT_TYPE (set)
+HB_DEFINE_OBJECT_TYPE (సమితి)
 HB_DEFINE_OBJECT_TYPE (map)
 HB_DEFINE_OBJECT_TYPE (shape_plan)
 HB_DEFINE_OBJECT_TYPE (unicode_funcs)
-HB_DEFINE_VALUE_TYPE (feature)
-HB_DEFINE_VALUE_TYPE (glyph_info)
-HB_DEFINE_VALUE_TYPE (glyph_position)
-HB_DEFINE_VALUE_TYPE (segment_properties)
-HB_DEFINE_VALUE_TYPE (draw_state)
-HB_DEFINE_VALUE_TYPE (color_stop)
-HB_DEFINE_VALUE_TYPE (color_line)
-HB_DEFINE_VALUE_TYPE (user_data_key)
+HB_DEFINE_విలువ_TYPE (feature)
+HB_DEFINE_విలువ_TYPE (glyph_info)
+HB_DEFINE_విలువ_TYPE (glyph_position)
+HB_DEFINE_విలువ_TYPE (segment_properties)
+HB_DEFINE_విలువ_TYPE (draw_state)
+HB_DEFINE_విలువ_TYPE (color_stop)
+HB_DEFINE_విలువ_TYPE (color_పంక్తి)
+HB_DEFINE_విలువ_TYPE (user_దత్తాంశం_కీలకం)
 
-HB_DEFINE_VALUE_TYPE (ot_var_axis_info)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_variant)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_part)
+HB_DEFINE_విలువ_TYPE (ot_var_axis_info)
+HB_DEFINE_విలువ_TYPE (ot_math_glyph_variant)
+HB_DEFINE_విలువ_TYPE (ot_math_glyph_part)
 
 
-#endif
+#అయితే_ముగింపు

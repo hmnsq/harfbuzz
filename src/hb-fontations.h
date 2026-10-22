@@ -22,10 +22,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FONTATIONS_H
-#define HB_FONTATIONS_H
+#నిర్వచితం_కాకపోతే HB_FONTATIONS_H
+#నిర్వచించు HB_FONTATIONS_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 /**
  * SECTION: hb-fontations
@@ -48,9 +48,9 @@ HB_BEGIN_DECLS
  *
  * Since: 11.0.0
  **/
-HB_EXTERN void
-hb_fontations_font_set_funcs (hb_font_t *font);
+HB_EXTERN శూన్య
+hb_fontations_font_సమితి_funcs (hb_font_t *font);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_FONTATIONS_H */
+#అయితే_ముగింపు /* HB_FONTATIONS_H */

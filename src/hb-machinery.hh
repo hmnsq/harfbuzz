@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MACHINERY_HH
-#define HB_MACHINERY_HH
+#నిర్వచితం_కాకపోతే HB_MACHINERY_HH
+#నిర్వచించు HB_MACHINERY_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-blob.hh"
 
-#include "hb-dispatch.hh"
-#include "hb-sanitize.hh"
+#అన్తర్భావ "hb-dispatch.hh"
+#అన్తర్భావ "hb-sanitize.hh"
 
 
 /*
@@ -42,44 +42,44 @@
 
 /* StructAtOffset<T>(P,Ofs) returns the struct T& that is placed at memory
  * location pointed to by P plus Ofs bytes. */
-template<typename Type>
-static inline const Type& StructAtOffset(const void *P, unsigned int offset)
-{ return * reinterpret_cast<const Type*> ((const char *) P + offset); }
-template<typename Type>
-static inline Type& StructAtOffset(void *P, unsigned int offset)
-{ return * reinterpret_cast<Type*> ((char *) P + offset); }
-template<typename Type>
-static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+మూస<రకం_పేరు Type>
+స్థిర అంతఃవరుస స్థిరరాశి Type& Struct_At_స్థానభ్రంశం(స్థిరరాశి శూన్య *P, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం)
+{ తిరిగి * reinterpret_cast<స్థిరరాశి Type*> ((స్థిరరాశి అక్షరం *) P + స్థానభ్రంశం); }
+మూస<రకం_పేరు Type>
+స్థిర అంతఃవరుస Type& Struct_At_స్థానభ్రంశం(శూన్య *P, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం)
+{ తిరిగి * reinterpret_cast<Type*> ((అక్షరం *) P + స్థానభ్రంశం); }
+మూస<రకం_పేరు Type>
+స్థిర అంతఃవరుస స్థిరరాశి Type& Struct_At_స్థానభ్రంశం_Unaligned(స్థిరరాశి శూన్య *P, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం)
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#సూచన GCC diagnostic push
+#సూచన GCC diagnostic ignored "-Wcast-align"
+  తిరిగి * reinterpret_cast<స్థిరరాశి Type*> ((స్థిరరాశి అక్షరం *) P + స్థానభ్రంశం);
+#సూచన GCC diagnostic తీయి
 }
-template<typename Type>
-static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
+మూస<రకం_పేరు Type>
+స్థిర అంతఃవరుస Type& Struct_At_స్థానభ్రంశం_Unaligned(శూన్య *P, గుర్తులేని పూర్ణాంకం స్థానభ్రంశం)
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<Type*> ((char *) P + offset);
-#pragma GCC diagnostic pop
+#సూచన GCC diagnostic push
+#సూచన GCC diagnostic ignored "-Wcast-align"
+  తిరిగి * reinterpret_cast<Type*> ((అక్షరం *) P + స్థానభ్రంశం);
+#సూచన GCC diagnostic తీయి
 }
 
 /* StructAfter<T>(X) returns the struct T& that is placed after X.
  * Works with X of variable size also.  X must implement get_size().
  * Any extra arguments are forwarded to get_size, so for example
  * it can work with UnsizedArrayOf<> as well. */
-template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
-  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
+మూస <రకం_పేరు Type, రకం_పేరు TObject, రకం_పేరు ...Ts>
+స్థిర అంతఃవరుస స్వయంచాలక StructAfter(స్థిరరాశి TObject &X, Ts... వాదనలు) HB_AUTO_RETURN((
+  Struct_At_స్థానభ్రంశం<Type>(&X, X.get_కొలత(std::forward<Ts> (వాదనలు)...))
 ))
 /* The is_const shenanigans is to avoid ambiguous overload with gcc-8.
  * It disables this path when TObject is const.
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
-template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
-  sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
-  StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
+మూస <రకం_పేరు Type, రకం_పేరు TObject, రకం_పేరు ...Ts>
+స్థిర అంతఃవరుస స్వయంచాలక StructAfter(TObject &X, Ts... వాదనలు) HB_AUTO_RETURN((
+  పరిమాణం(పూర్ణాంకం[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
+  Struct_At_స్థానభ్రంశం<Type>(&X, X.get_కొలత(std::forward<Ts> (వాదనలు)...))
   : *reinterpret_cast<Type*> (0)
 ))
 
@@ -89,56 +89,56 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  */
 
 /* Size signifying variable-sized array */
-#ifndef HB_VAR_ARRAY
-#define HB_VAR_ARRAY 1
-#endif
+#నిర్వచితం_కాకపోతే HB_VAR_ARRAY
+#నిర్వచించు HB_VAR_ARRAY 1
+#అయితే_ముగింపు
 
 /* Check _assertion in a method environment */
-#define _DEFINE_INSTANCE_ASSERTION1(_line, _assertion) \
-  void _instance_assertion_on_line_##_line () const \
+#నిర్వచించు _DEFINE_INSTANCE_ASSERTION1(పంక్తి_2, _assertion) \
+  శూన్య instance_assertion_on_పంక్తి##_line () స్థిరరాశి \
   { static_assert ((_assertion), ""); }
-# define _DEFINE_INSTANCE_ASSERTION0(_line, _assertion) _DEFINE_INSTANCE_ASSERTION1 (_line, _assertion)
+# define _DEFINE_INSTANCE_ASSERTION0(పంక్తి_2, _assertion) _DEFINE_INSTANCE_ASSERTION1 (పంక్తి_2, _assertion)
 # define DEFINE_INSTANCE_ASSERTION(_assertion) _DEFINE_INSTANCE_ASSERTION0 (__LINE__, _assertion)
 
 /* Check that _code compiles in a method environment */
-#define _DEFINE_COMPILES_ASSERTION1(_line, _code) \
-  void _compiles_assertion_on_line_##_line () const \
-  { _code; }
-# define _DEFINE_COMPILES_ASSERTION0(_line, _code) _DEFINE_COMPILES_ASSERTION1 (_line, _code)
-# define DEFINE_COMPILES_ASSERTION(_code) _DEFINE_COMPILES_ASSERTION0 (__LINE__, _code)
+#నిర్వచించు _DEFINE_COMPILES_ASSERTION1(పంక్తి_2, సంకేతం_4) \
+  శూన్య compiles_assertion_on_పంక్తి##_line () స్థిరరాశి \
+  { సంకేతం_4; }
+# define _DEFINE_COMPILES_ASSERTION0(పంక్తి_2, సంకేతం_4) _DEFINE_COMPILES_ASSERTION1 (పంక్తి_2, సంకేతం_4)
+# define DEFINE_COMPILES_ASSERTION(సంకేతం_4) _DEFINE_COMPILES_ASSERTION0 (__LINE__, సంకేతం_4)
 
 
-#define DEFINE_SIZE_STATIC(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size)) \
-  size_t get_size () const { return (size); } \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size); \
-  static constexpr unsigned static_size = (size)
+#నిర్వచించు DEFINE_కొలత_STATIC(కొలత) \
+  DEFINE_INSTANCE_ASSERTION (పరిమాణం (*ఇది) == (కొలత)) \
+  size_t get_కొలత () స్థిరరాశి { తిరిగి (కొలత); } \
+  స్థిర constexpr గుర్తులేని null_కొలత = (కొలత); \
+  స్థిర constexpr గుర్తులేని min_కొలత = (కొలత); \
+  స్థిర constexpr గుర్తులేని static_కొలత = (కొలత)
 
-#define DEFINE_SIZE_UNION(size, _member) \
-  DEFINE_COMPILES_ASSERTION ((void) this->u._member.static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof(this->u._member) == (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+#నిర్వచించు DEFINE_కొలత_UNION(కొలత, _member) \
+  DEFINE_COMPILES_ASSERTION ((శూన్య) ఇది->u._member.static_కొలత) \
+  DEFINE_INSTANCE_ASSERTION (పరిమాణం(ఇది->u._member) == (కొలత)) \
+  స్థిర constexpr గుర్తులేని null_కొలత = (కొలత); \
+  స్థిర constexpr గుర్తులేని min_కొలత = (కొలత)
 
-#define DEFINE_SIZE_MIN(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+#నిర్వచించు DEFINE_కొలత_MIN(కొలత) \
+  DEFINE_INSTANCE_ASSERTION (పరిమాణం (*ఇది) >= (కొలత)) \
+  స్థిర constexpr గుర్తులేని null_కొలత = (కొలత); \
+  స్థిర constexpr గుర్తులేని min_కొలత = (కొలత)
 
-#define DEFINE_SIZE_UNBOUNDED(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned min_size = (size)
+#నిర్వచించు DEFINE_కొలత_UNBOUNDED(కొలత) \
+  DEFINE_INSTANCE_ASSERTION (పరిమాణం (*ఇది) >= (కొలత)) \
+  స్థిర constexpr గుర్తులేని min_కొలత = (కొలత)
 
-#define DEFINE_SIZE_ARRAY(size, array) \
-  DEFINE_COMPILES_ASSERTION ((void) (array)[0].static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size) + (HB_VAR_ARRAY+0) * sizeof ((array)[0])) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+#నిర్వచించు DEFINE_కొలత_ARRAY(కొలత, array) \
+  DEFINE_COMPILES_ASSERTION ((శూన్య) (array)[0].static_కొలత) \
+  DEFINE_INSTANCE_ASSERTION (పరిమాణం (*ఇది) == (కొలత) + (HB_VAR_ARRAY+0) * పరిమాణం ((array)[0])) \
+  స్థిర constexpr గుర్తులేని null_కొలత = (కొలత); \
+  స్థిర constexpr గుర్తులేని min_కొలత = (కొలత)
 
-#define DEFINE_SIZE_ARRAY_SIZED(size, array) \
-  size_t get_size () const { return (size - (array).min_size + (array).get_size ()); } \
-  DEFINE_SIZE_ARRAY(size, array)
+#నిర్వచించు DEFINE_కొలత_ARRAY_SIZED(కొలత, array) \
+  size_t get_కొలత () స్థిరరాశి { తిరిగి (కొలత - (array).min_కొలత + (array).get_కొలత ()); } \
+  DEFINE_కొలత_ARRAY(కొలత, array)
 
 
 /*
@@ -152,204 +152,204 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  * for every lazy-loader.  Multiple lazy-loaders can access the same data.
  */
 
-template <typename Data, unsigned int WheresData>
-struct hb_data_wrapper_t
+మూస <రకం_పేరు దత్తాంశం_3, గుర్తులేని పూర్ణాంకం Wheres_దత్తాంశం>
+నిర్మాణం hb_దత్తాంశం_wrapper_t
 {
-  static_assert (WheresData > 0, "");
+  static_assert (Wheres_దత్తాంశం > 0, "");
 
-  Data * get_data () const
-  { return *(((Data **) (void *) this) - WheresData); }
+  దత్తాంశం_3 * get_దత్తాంశం () స్థిరరాశి
+  { తిరిగి *(((దత్తాంశం_3 **) (శూన్య *) ఇది) - Wheres_దత్తాంశం); }
 
-  bool is_inert () const { return !get_data (); }
+  తార్కిక is_inert () స్థిరరాశి { తిరిగి !get_దత్తాంశం (); }
 
-  template <typename Stored, typename Subclass>
-  Stored * call_create () const { return Subclass::create (get_data ()); }
+  మూస <రకం_పేరు Stored, రకం_పేరు Subclass>
+  Stored * call_create () స్థిరరాశి { తిరిగి Subclass::create (get_దత్తాంశం ()); }
 };
-template <>
-struct hb_data_wrapper_t<void, 0>
+మూస <>
+నిర్మాణం hb_దత్తాంశం_wrapper_t<శూన్య, 0>
 {
-  bool is_inert () const { return false; }
+  తార్కిక is_inert () స్థిరరాశి { తిరిగి అబద్ధం; }
 
-  template <typename Stored, typename Funcs>
-  Stored * call_create () const { return Funcs::create (); }
+  మూస <రకం_పేరు Stored, రకం_పేరు Funcs>
+  Stored * call_create () స్థిరరాశి { తిరిగి Funcs::create (); }
 };
 
-template <typename T1, typename T2> struct hb_non_void_t { typedef T1 value; };
-template <typename T2> struct hb_non_void_t<void, T2> { typedef T2 value; };
+మూస <రకం_పేరు T1, రకం_పేరు T2> నిర్మాణం hb_non_void_t { రకనిర్వచనం T1 value; };
+మూస <రకం_పేరు T2> నిర్మాణం hb_non_void_t<శూన్య, T2> { రకనిర్వచనం T2 value; };
 
-template <typename Returned,
-	  typename Subclass = void,
-	  typename Data = void,
-	  unsigned int WheresData = 0,
-	  typename Stored = Returned>
-struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
+మూస <రకం_పేరు Returned,
+	  రకం_పేరు Subclass = శూన్య,
+	  రకం_పేరు దత్తాంశం_3 = శూన్య,
+	  గుర్తులేని పూర్ణాంకం Wheres_దత్తాంశం = 0,
+	  రకం_పేరు Stored = Returned>
+నిర్మాణం hb_lazy_loader_t : hb_దత్తాంశం_wrapper_t<దత్తాంశం_3, Wheres_దత్తాంశం>
 {
-  typedef typename hb_non_void_t<Subclass,
-				 hb_lazy_loader_t<Returned,Subclass,Data,WheresData,Stored>
+  రకనిర్వచనం రకం_పేరు hb_non_void_t<Subclass,
+				 hb_lazy_loader_t<Returned,Subclass,దత్తాంశం_3,Wheres_దత్తాంశం,Stored>
 				>::value Funcs;
 
-  hb_lazy_loader_t () = default;
-  hb_lazy_loader_t (const hb_lazy_loader_t &other) = delete;
+  hb_lazy_loader_t () = అప్రమేయ;
+  hb_lazy_loader_t (స్థిరరాశి hb_lazy_loader_t &other) = తొలగించు;
 
-  void init0 () {} /* Init, when memory is already set to 0. No-op for us. */
-  void init ()  { instance.set_relaxed (nullptr); }
-  void fini ()  { do_destroy (instance.get_acquire ()); init (); }
+  శూన్య init0 () {} /* Init, when memory is already set to 0. No-op for us. */
+  శూన్య init ()  { instance.సమితి_relaxed (శూన్యసూచిక); }
+  శూన్య fini ()  { do_destroy (instance.get_acquire ()); init (); }
 
-  void free_instance ()
+  శూన్య free_instance ()
   {
   retry:
     Stored *p = instance.get_acquire ();
-    if (unlikely (p && !cmpexch (p, nullptr)))
-      goto retry;
+    ఒకవేళ (unlikely (p && !cmpexch (p, శూన్యసూచిక)))
+      వెళ్ళు retry;
     do_destroy (p);
   }
 
-  static void do_destroy (Stored *p)
+  స్థిర శూన్య do_destroy (Stored *p)
   {
-    if (Funcs::tag_null ? !p || is_tagged_null (p) :
+    ఒకవేళ (Funcs::ట్యాగ్_null ? !p || is_tagged_null (p) :
 			  !p || p == const_cast<Stored *> (Funcs::get_null ()))
-      return;
+      తిరిగి;
     Funcs::destroy (p);
   }
 
-  const Returned * operator -> () const { return get (); }
-  template <typename U = Returned, hb_enable_if (!hb_is_same (U, void))>
-  const U & operator * () const  { return *get (); }
-  explicit operator bool () const
+  స్థిరరాశి Returned * క్రియాకారకం -> () స్థిరరాశి { తిరిగి get (); }
+  మూస <రకం_పేరు U = Returned, hb_enable_if (!hb_is_same (U, శూన్య))>
+  స్థిరరాశి U & క్రియాకారకం * () స్థిరరాశి  { తిరిగి *get (); }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి
   {
     Stored *p = get_stored ();
-    if (Funcs::tag_null)
+    ఒకవేళ (Funcs::ట్యాగ్_null)
     {
-      Stored *raw = this->instance.get_relaxed ();
-      return raw && !is_tagged_null (raw);
+      Stored *raw = ఇది->instance.get_relaxed ();
+      తిరిగి raw && !is_tagged_null (raw);
     }
-    return p != Funcs::get_null ();
+    తిరిగి p != Funcs::get_null ();
   }
-  template <typename C> operator const C * () const { return get (); }
+  మూస <రకం_పేరు C> క్రియాకారకం స్థిరరాశి C * () స్థిరరాశి { తిరిగి get (); }
 
-  Stored * get_stored () const
+  Stored * get_stored () స్థిరరాశి
   {
   retry:
-    Stored *p = this->instance.get_acquire ();
-    if (unlikely (!p))
+    Stored *p = ఇది->instance.get_acquire ();
+    ఒకవేళ (unlikely (!p))
     {
-      if (unlikely (this->is_inert ()))
-	return const_cast<Stored *> (Funcs::get_null ());
+      ఒకవేళ (unlikely (ఇది->is_inert ()))
+	తిరిగి const_cast<Stored *> (Funcs::get_null ());
 
-      p = this->template call_create<Stored, Funcs> ();
-      if (unlikely (!p))
+      p = ఇది->మూస call_create<Stored, Funcs> ();
+      ఒకవేళ (unlikely (!p))
 	p = tagged_null (const_cast<Stored *> (Funcs::get_null ()));
 
-      if (unlikely (!cmpexch (nullptr, p)))
+      ఒకవేళ (unlikely (!cmpexch (శూన్యసూచిక, p)))
       {
 	do_destroy (p);
-	goto retry;
+	వెళ్ళు retry;
       }
     }
-    return untagged (p);
+    తిరిగి untagged (p);
   }
-  Stored * get_stored_relaxed () const
+  Stored * get_stored_relaxed () స్థిరరాశి
   {
-    return untagged (this->instance.get_relaxed ());
+    తిరిగి untagged (ఇది->instance.get_relaxed ());
   }
 
-  bool cmpexch (Stored *current, Stored *value) const
+  తార్కిక cmpexch (Stored *current, Stored *value) స్థిరరాశి
   {
     /* This function can only be safely called directly if no
      * other thread is accessing. */
-    return this->instance.cmpexch (current, value);
+    తిరిగి ఇది->instance.cmpexch (current, value);
   }
 
-  const Returned * get () const { return Funcs::convert (get_stored ()); }
-  const Returned * get_relaxed () const { return Funcs::convert (get_stored_relaxed ()); }
-  Returned * get_unconst () const { return const_cast<Returned *> (Funcs::convert (get_stored ())); }
+  స్థిరరాశి Returned * get () స్థిరరాశి { తిరిగి Funcs::convert (get_stored ()); }
+  స్థిరరాశి Returned * get_relaxed () స్థిరరాశి { తిరిగి Funcs::convert (get_stored_relaxed ()); }
+  Returned * get_unconst () స్థిరరాశి { తిరిగి const_cast<Returned *> (Funcs::convert (get_stored ())); }
 
   /* To be possibly overloaded by subclasses. */
-  static Returned* convert (Stored *p) { return p; }
+  స్థిర Returned* convert (Stored *p) { తిరిగి p; }
 
   /* By default null/init/fini the object. */
-  static const Stored* get_null () { return &Null (Stored); }
+  స్థిర స్థిరరాశి Stored* get_null () { తిరిగి &Null (Stored); }
 
   /* When tag_null is set, a failed create () is cached as get_null () with
    * its low bit set, and destroy recognizes it by that bit rather than by
    * address.  Needed when get_null () is a per-library Null object: another
    * library sharing the object would not recognize its address. */
-  static constexpr bool tag_null = false;
-  static bool is_tagged_null (Stored *p)
-  { return Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
-  static Stored *tagged_null (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
-  static Stored *untagged (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
-  static Stored *create (Data *data)
+  స్థిర constexpr తార్కిక ట్యాగ్_null = అబద్ధం;
+  స్థిర తార్కిక is_tagged_null (Stored *p)
+  { తిరిగి Funcs::ట్యాగ్_null && ((uintptr_t) (శూన్య *) p & 1); }
+  స్థిర Stored *tagged_null (Stored *p)
+  { తిరిగి Funcs::ట్యాగ్_null ? (Stored *) (శూన్య *) ((uintptr_t) (శూన్య *) p | 1) : p; }
+  స్థిర Stored *untagged (Stored *p)
+  { తిరిగి Funcs::ట్యాగ్_null ? (Stored *) (శూన్య *) ((uintptr_t) (శూన్య *) p & ~(uintptr_t) 1) : p; }
+  స్థిర Stored *create (దత్తాంశం_3 *దత్తాంశం)
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored (data);
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, పరిమాణం (Stored));
+    ఒకవేళ (likely (p))
+      p = కొత్త (p) Stored (దత్తాంశం);
+    తిరిగి p;
   }
-  static Stored *create ()
+  స్థిర Stored *create ()
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored ();
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, పరిమాణం (Stored));
+    ఒకవేళ (likely (p))
+      p = కొత్త (p) Stored ();
+    తిరిగి p;
   }
-  static void destroy (Stored *p)
+  స్థిర శూన్య destroy (Stored *p)
   {
     p->~Stored ();
     hb_free (p);
   }
 
-  private:
+  అంతరంగ:
   /* Must only have one pointer. */
-  mutable hb_atomic_t<Stored *> instance;
+  మార్చదగిన hb_atomic_t<Stored *> instance;
 };
 
 /* Specializations. */
 
-template <typename T, unsigned int WheresFace>
-struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
+మూస <రకం_పేరు T, గుర్తులేని పూర్ణాంకం WheresFace>
+నిర్మాణం hb_face_lazy_loader_t : hb_lazy_loader_t<T,
 						hb_face_lazy_loader_t<T, WheresFace>,
 						hb_face_t, WheresFace>
 {
   /* get_null () is this library's Null object; see tag_null. */
-  static constexpr bool tag_null = true;
+  స్థిర constexpr తార్కిక ట్యాగ్_null = నిజం;
 
   // Hack; have them here for API parity with hb_table_lazy_loader_t
-  hb_blob_t *get_blob () { return this->get ()->get_blob (); }
+  hb_blob_t *get_blob () { తిరిగి ఇది->get ()->get_blob (); }
 };
 
-template <typename T, unsigned int WheresFace>
-struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
-						 hb_table_lazy_loader_t<T, WheresFace>,
+మూస <రకం_పేరు T, గుర్తులేని పూర్ణాంకం WheresFace>
+నిర్మాణం hb_పట్టిక_lazy_loader_t : hb_lazy_loader_t<T,
+						 hb_పట్టిక_lazy_loader_t<T, WheresFace>,
 						 hb_face_t, WheresFace,
 						 hb_blob_t>
 {
-  static hb_blob_t *create (hb_face_t *face)
+  స్థిర hb_blob_t *create (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    return c.reference_table<T> (face);
+    తిరిగి c.reference_పట్టిక<T> (face);
   }
-  static void destroy (hb_blob_t *p) { hb_blob_destroy (p); }
+  స్థిర శూన్య destroy (hb_blob_t *p) { hb_blob_destroy (p); }
 
-  static const hb_blob_t *get_null ()
-  { return hb_blob_get_empty (); }
+  స్థిర స్థిరరాశి hb_blob_t *get_null ()
+  { తిరిగి hb_blob_get_ఖాళీలు (); }
 
-  static const T* convert (const hb_blob_t *blob)
-  { return blob->as<T> (); }
+  స్థిర స్థిరరాశి T* convert (స్థిరరాశి hb_blob_t *blob)
+  { తిరిగి blob->as<T> (); }
 
-  hb_blob_t* get_blob () const { return this->get_stored (); }
+  hb_blob_t* get_blob () స్థిరరాశి { తిరిగి ఇది->get_stored (); }
 };
 
-#define HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
-  template <typename Subclass> \
-  struct hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
+#నిర్వచించు HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
+  మూస <రకం_పేరు Subclass> \
+  నిర్మాణం hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
   { \
-    static void destroy (hb_##Type##_funcs_t *p) \
+    స్థిర శూన్య destroy (hb_##Type##_funcs_t *p) \
     { hb_##Type##_funcs_destroy (p); } \
-    static const hb_##Type##_funcs_t *get_null () \
-    { return hb_##Type##_funcs_get_empty (); } \
+    స్థిర స్థిరరాశి hb_##Type##_funcs_t *get_null () \
+    { తిరిగి hb_##Type##_funcs_get_empty (); } \
   }
 
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (font);
@@ -357,7 +357,7 @@ HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (unicode);
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (draw);
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (paint);
 
-#undef HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T
+#నిర్వచనం_రద్దు HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T
 
 
-#endif /* HB_MACHINERY_HH */
+#అయితే_ముగింపు /* HB_MACHINERY_HH */

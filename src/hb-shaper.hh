@@ -24,111 +24,111 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_HH
-#define HB_SHAPER_HH
+#నిర్వచితం_కాకపోతే HB_SHAPER_HH
+#నిర్వచించు HB_SHAPER_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
-typedef hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
+రకనిర్వచనం hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
 				   hb_font_t          *font,
-				   hb_buffer_t        *buffer,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   hb_బఫరు_t        *బఫరు,
+				   స్థిరరాశి hb_feature_t *features,
+				   గుర్తులేని పూర్ణాంకం        అంకె_features);
 
-#define HB_SHAPER_IMPLEMENT(name) \
-	extern "C" HB_INTERNAL hb_shape_func_t _hb_##name##_shape;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#నిర్వచించు HB_SHAPER_IMPLEMENT(name) \
+	బాహ్య "C" HB_అంతర్గత hb_shape_func_t _hb_##name##_shape;
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
 
-struct hb_shaper_entry_t {
-  char name[16];
+నిర్మాణం hb_shaper_నమోదు_t {
+  అక్షరం name[16];
   hb_shape_func_t *func;
 };
 
-HB_INTERNAL const hb_shaper_entry_t *
+HB_అంతర్గత స్థిరరాశి hb_shaper_నమోదు_t *
 _hb_shapers_get ();
 
 
-template <typename Data, unsigned int WheresData, typename T>
-struct hb_shaper_lazy_loader_t;
+మూస <రకం_పేరు దత్తాంశం_3, గుర్తులేని పూర్ణాంకం Wheres_దత్తాంశం, రకం_పేరు T>
+నిర్మాణం hb_shaper_lazy_loader_t;
 
-#define HB_SHAPER_ORDER(Shaper) \
-  HB_PASTE (HB_SHAPER_ORDER_, Shaper)
-enum hb_shaper_order_t
+#నిర్వచించు HB_SHAPER_క్రమం(Shaper) \
+  HB_PASTE (HB_SHAPER_క్రమం_2, Shaper)
+గణన hb_shaper_క్రమం_t
 {
-  _HB_SHAPER_ORDER_ORDER_ZERO,
-#define HB_SHAPER_IMPLEMENT(Shaper) \
-      HB_SHAPER_ORDER (Shaper),
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
-  _HB_SHAPERS_COUNT_PLUS_ONE,
-  HB_SHAPERS_COUNT = _HB_SHAPERS_COUNT_PLUS_ONE - 1,
+  HB_SHAPER_క్రమం_క్రమం_ZERO,
+#నిర్వచించు HB_SHAPER_IMPLEMENT(Shaper) \
+      HB_SHAPER_క్రమం (Shaper),
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
+  HB_SHAPERS_లెక్క_PLUS_ONE,
+  HB_SHAPERS_లెక్క = HB_SHAPERS_లెక్క_PLUS_ONE - 1,
 };
 
-template <enum hb_shaper_order_t order, typename Object> struct hb_shaper_object_data_type_t;
+మూస <గణన hb_shaper_క్రమం_t క్రమం, రకం_పేరు Object> నిర్మాణం hb_shaper_object_దత్తాంశం_type_t;
 
-#define HB_SHAPER_DATA_SUCCEEDED ((void *) +1)
-#define HB_SHAPER_DATA_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
-#define HB_SHAPER_DATA_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
-#define HB_SHAPER_DATA_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
+#నిర్వచించు HB_SHAPER_దత్తాంశం_SUCCEEDED ((శూన్య *) +1)
+#నిర్వచించు HB_SHAPER_దత్తాంశం_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
+#నిర్వచించు HB_SHAPER_దత్తాంశం_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
+#నిర్వచించు HB_SHAPER_దత్తాంశం_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
 
-#define HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, object) \
+#నిర్వచించు HB_SHAPER_దత్తాంశం_INSTANTIATE_SHAPERS(shaper, object) \
 	\
-	struct HB_SHAPER_DATA_TYPE (shaper, object); /* Type forward declaration. */ \
-	extern "C" HB_INTERNAL HB_SHAPER_DATA_TYPE (shaper, object) * \
-	HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
-	extern "C" HB_INTERNAL void \
-	HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (HB_SHAPER_DATA_TYPE (shaper, object) *shaper##_##object); \
+	నిర్మాణం HB_SHAPER_దత్తాంశం_TYPE (shaper, object); /* Type forward declaration. */ \
+	బాహ్య "C" HB_అంతర్గత HB_SHAPER_దత్తాంశం_TYPE (shaper, object) * \
+	HB_SHAPER_దత్తాంశం_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
+	బాహ్య "C" HB_అంతర్గత శూన్య \
+	HB_SHAPER_దత్తాంశం_DESTROY_FUNC (shaper, object) (HB_SHAPER_దత్తాంశం_TYPE (shaper, object) *shaper##_##object); \
 	\
-	template <> \
-	struct hb_shaper_object_data_type_t<HB_SHAPER_ORDER (shaper), hb_##object##_t> \
+	మూస <> \
+	నిర్మాణం hb_shaper_object_దత్తాంశం_type_t<HB_SHAPER_క్రమం (shaper), hb_##object##_t> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) value; \
+	  రకనిర్వచనం HB_SHAPER_దత్తాంశం_TYPE(shaper, object) value; \
 	}; \
 	\
-	template <unsigned int WheresData> \
-	struct hb_shaper_lazy_loader_t<hb_##object##_t, WheresData, HB_SHAPER_DATA_TYPE(shaper, object)> \
-		: hb_lazy_loader_t<HB_SHAPER_DATA_TYPE(shaper, object), \
+	మూస <గుర్తులేని పూర్ణాంకం Wheres_దత్తాంశం> \
+	నిర్మాణం hb_shaper_lazy_loader_t<hb_##object##_t, Wheres_దత్తాంశం, HB_SHAPER_దత్తాంశం_TYPE(shaper, object)> \
+		: hb_lazy_loader_t<HB_SHAPER_దత్తాంశం_TYPE(shaper, object), \
 				   hb_shaper_lazy_loader_t<hb_##object##_t, \
-							   WheresData, \
-							   HB_SHAPER_DATA_TYPE(shaper, object)>, \
-				   hb_##object##_t, WheresData> \
+							   Wheres_దత్తాంశం, \
+							   HB_SHAPER_దత్తాంశం_TYPE(shaper, object)>, \
+				   hb_##object##_t, Wheres_దత్తాంశం> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) Type; \
-	  static Type* create (hb_##object##_t *data) \
-	  { return HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (data); } \
-	  static Type *get_null () { return nullptr; } \
-	  static void destroy (Type *p) { HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (p); } \
+	  రకనిర్వచనం HB_SHAPER_దత్తాంశం_TYPE(shaper, object) Type; \
+	  స్థిర Type* create (hb_##object##_t *దత్తాంశం) \
+	  { తిరిగి HB_SHAPER_దత్తాంశం_CREATE_FUNC (shaper, object) (దత్తాంశం); } \
+	  స్థిర Type *get_null () { తిరిగి శూన్యసూచిక; } \
+	  స్థిర శూన్య destroy (Type *p) { HB_SHAPER_దత్తాంశం_DESTROY_FUNC (shaper, object) (p); } \
 	}; \
 	\
-	static_assert (true, "") /* Require semicolon after. */
+	static_assert (నిజం, "") /* Require semicolon after. */
 
 
-template <typename Object>
-struct hb_shaper_object_dataset_t
+మూస <రకం_పేరు Object>
+నిర్మాణం hb_shaper_object_dataset_t
 {
-  void init0 (Object *parent_data)
+  శూన్య init0 (Object *మాతృ_దత్తాంశం)
   {
-    this->parent_data = parent_data;
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+    ఇది->మాతృ_దత్తాంశం = మాతృ_దత్తాంశం;
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
   }
-  void fini ()
+  శూన్య fini ()
   {
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
   }
 
-  Object *parent_data; /* MUST be JUST before the lazy loaders. */
-#define HB_SHAPER_IMPLEMENT(shaper) \
-	hb_shaper_lazy_loader_t<Object, HB_SHAPER_ORDER(shaper), \
-				typename hb_shaper_object_data_type_t<HB_SHAPER_ORDER(shaper), Object>::value \
+  Object *మాతృ_దత్తాంశం; /* MUST be JUST before the lazy loaders. */
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) \
+	hb_shaper_lazy_loader_t<Object, HB_SHAPER_క్రమం(shaper), \
+				రకం_పేరు hb_shaper_object_దత్తాంశం_type_t<HB_SHAPER_క్రమం(shaper), Object>::value \
 			       > shaper;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
 };
 
-#endif /* HB_SHAPER_HH */
+#అయితే_ముగింపు /* HB_SHAPER_HH */

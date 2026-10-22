@@ -1,113 +1,113 @@
-#ifndef OT_LAYOUT_GPOS_LIGATUREARRAY_HH
-#define OT_LAYOUT_GPOS_LIGATUREARRAY_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_LIGATUREARRAY_HH
+#నిర్వచించు OT_LAYOUT_GPOS_LIGATUREARRAY_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
-                                        const Coverage &coverage,
-                                        const void *base,
-                                        glyph_data_t offsets,
-                                        unsigned count,
-                                        unsigned class_count,
-                                        const hb_map_t &klass_mapping)
+HB_అంతర్గత అంతఃవరుస
+శూన్య collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
+                                        స్థిరరాశి Coverage &coverage,
+                                        స్థిరరాశి శూన్య *పునాది,
+                                        glyph_దత్తాంశం_t offsets,
+                                        గుర్తులేని లెక్క,
+                                        గుర్తులేని class_లెక్క,
+                                        స్థిరరాశి hb_map_t &klass_mapping)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  కొరకు (స్థిరరాశి స్వయంచాలక _ : hb_zip (coverage, hb_range (లెక్క)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    ఒకవేళ (!c->glyph_సమితి->has (_.మొదటి)) కొనసాగు;
     hb_barrier ();
-    unsigned offset = offsets[_.second];
-    if (!offset) continue;
+    గుర్తులేని స్థానభ్రంశం = offsets[_.second];
+    ఒకవేళ (!స్థానభ్రంశం) కొనసాగు;
 
-    const void *matrix = &StructAtOffset<const HBUINT16> (base, offset);
+    స్థిరరాశి శూన్య *మాతృక = &Struct_At_స్థానభ్రంశం<స్థిరరాశి HBUINT16> (పునాది, స్థానభ్రంశం);
     /* LigatureAttach always has a 16-bit component count; its anchor
      * offsets have the same width as the LigatureArray offsets. */
-    unsigned rows = *static_cast<const HBUINT16 *> (matrix);
-    glyph_data_t anchors = offsets;
-    anchors.data = (const char *) matrix + HBUINT16::static_size;
+    గుర్తులేని అడ్డువరుసలు = *static_cast<స్థిరరాశి HBUINT16 *> (మాతృక);
+    glyph_దత్తాంశం_t anchors = offsets;
+    anchors.దత్తాంశం = (స్థిరరాశి అక్షరం *) మాతృక + HBUINT16::static_కొలత;
 
-    hb_sorted_vector_t<unsigned> indexes;
-    collect_ligature_anchor_indexes (rows, class_count, klass_mapping, indexes);
-    collect_anchor_variation_indices (c, matrix, anchors, indexes.iter ());
+    hb_sorted_సదిశ_t<గుర్తులేని> indexes;
+    collect_ligature_anchor_indexes (అడ్డువరుసలు, class_లెక్క, klass_mapping, indexes);
+    collect_anchor_variation_indices (c, మాతృక, anchors, indexes.iter ());
   }
 }
 
 
 /* Array of LigatureAttach tables ordered by LigatureCoverage Index */
-template <typename Types>
-struct LigatureArray :
-  Types::template ArrayOf<typename Types::template OffsetTo<AnchorMatrix<Types, HBUINT16>>>
+మూస <రకం_పేరు Types>
+నిర్మాణం LigatureArray :
+  Types::మూస Array_యొక్క<రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Anchor_మాతృక<Types, HBUINT16>>>
 {
-  typedef AnchorMatrix<Types, HBUINT16> LigatureAttach;
-  typedef typename Types::template OffsetTo<LigatureAttach> LigatureAttachOffset;
-  typedef typename Types::template ArrayOf<LigatureAttachOffset> Super;
+  రకనిర్వచనం Anchor_మాతృక<Types, HBUINT16> LigatureAttach;
+  రకనిర్వచనం రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<LigatureAttach> Ligature_Attach_స్థానభ్రంశం;
+  రకనిర్వచనం రకం_పేరు Types::మూస Array_యొక్క<Ligature_Attach_స్థానభ్రంశం> Super;
 
-  const LigatureAttach& operator [] (int i_) const
+  స్థిరరాశి LigatureAttach& క్రియాకారకం [] (పూర్ణాంకం i_) స్థిరరాశి
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (LigatureAttach);
+    గుర్తులేని పూర్ణాంకం i = (గుర్తులేని పూర్ణాంకం) i_;
+    ఒకవేళ (unlikely (i >= ఇది->len)) తిరిగి Null (LigatureAttach);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    తిరిగి ఇది+ఇది->arrayZ[i];
   }
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు ...Ts>
+  తార్కిక sanitize (hb_sanitize_context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (Super::sanitize (c, this, std::forward<Ts> (ds)...));
+    TRACE_SANITIZE (ఇది);
+    return_trace (Super::sanitize (c, ఇది, std::forward<Ts> (ds)...));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const Coverage &coverage,
-                                  unsigned class_count,
-                                  const hb_map_t &klass_mapping) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  స్థిరరాశి Coverage &coverage,
+                                  గుర్తులేని class_లెక్క,
+                                  స్థిరరాశి hb_map_t &klass_mapping) స్థిరరాశి
   {
-    collect_ligature_variation_indices (c, coverage, this, this->arrayZ,
-                                        this->len, class_count, klass_mapping);
+    collect_ligature_variation_indices (c, coverage, ఇది, ఇది->arrayZ,
+                                        ఇది->len, class_లెక్క, klass_mapping);
   }
 
-  template <typename Iterator,
+  మూస <రకం_పేరు Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
+  తార్కిక subset (hb_subset_context_t *c,
                Iterator             coverage,
-               unsigned             class_count,
-               const hb_map_t      *klass_mapping,
-               hb_sorted_vector_t<hb_codepoint_t> &new_coverage /* OUT */) const
+               గుర్తులేని             class_లెక్క,
+               స్థిరరాశి hb_map_t      *klass_mapping,
+               hb_sorted_సదిశ_t<hb_codepoint_t> &new_coverage /*బహిర్గతం*/) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం)))  return_trace (అబద్ధం);
 
-    bool ret = false;
-    for (const auto _ : + hb_zip (coverage, *this)
-                        | hb_filter (glyph_map, hb_first))
+    తార్కిక ret = అబద్ధం;
+    కొరకు (స్థిరరాశి స్వయంచాలక _ : + hb_zip (coverage, *ఇది)
+                        | hb_filter (glyph_map, hb_మొదటి))
     {
-      const LigatureAttach& src = (this + _.second);
-      bool non_empty = + hb_range (src.rows * class_count)
-                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
-                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_count, index % class_count, class_count); })
+      స్థిరరాశి LigatureAttach& src = (ఇది + _.second);
+      తార్కిక non_ఖాళీలు = + hb_range (src.అడ్డువరుసలు * class_లెక్క)
+                       | hb_filter ([=] (గుర్తులేని సూచీ_2) { తిరిగి klass_mapping->has (సూచీ_2 % class_లెక్క); })
+                       | hb_map ([&] (స్థిరరాశి గుర్తులేని సూచీ_2) { తిరిగి !src.స్థానభ్రంశం_is_null (సూచీ_2 / class_లెక్క, సూచీ_2 % class_లెక్క, class_లెక్క); })
                        | hb_any;
 
-      if (!non_empty) continue;
+      ఒకవేళ (!non_ఖాళీలు) కొనసాగు;
 
-      auto *matrix = out->serialize_append (c->serializer);
-      if (unlikely (!matrix)) return_trace (false);
+      స్వయంచాలక *మాతృక = బహిర్గతం->serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!మాతృక)) return_trace (అబద్ధం);
 
-      auto indexes =
-          + hb_range (src.rows * class_count)
-          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
+      స్వయంచాలక indexes =
+          + hb_range (src.అడ్డువరుసలు * class_లెక్క)
+          | hb_filter ([=] (గుర్తులేని సూచీ_2) { తిరిగి klass_mapping->has (సూచీ_2 % class_లెక్క); })
           ;
-      ret |= matrix->serialize_subset (c,
+      ret |= మాతృక->serialize_subset (c,
 				       _.second,
-				       this,
-				       src.rows,
+				       ఇది,
+				       src.అడ్డువరుసలు,
 				       indexes);
 
-      hb_codepoint_t new_gid = glyph_map.get (_.first);
+      hb_codepoint_t new_gid = glyph_map.get (_.మొదటి);
       new_coverage.push (new_gid);
     }
     return_trace (ret);
@@ -119,4 +119,4 @@ struct LigatureArray :
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_LIGATUREARRAY_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_LIGATUREARRAY_HH */

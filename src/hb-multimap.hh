@@ -22,75 +22,75 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_MULTIMAP_HH
-#define HB_MULTIMAP_HH
+#నిర్వచితం_కాకపోతే HB_MULTIMAP_HH
+#నిర్వచించు HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+నిర్మాణం hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  శూన్య కూడు (hb_codepoint_t k, hb_codepoint_t v)
   {
-    hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    hb_సదిశ_t<hb_codepoint_t> *m;
+    ఒకవేళ (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      తిరిగి;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    ఒకవేళ (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
-      multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      multiples.సమితి (k, hb_సదిశ_t<hb_codepoint_t> {old, v});
+      తిరిగి;
     }
 
-    singulars.set (k, v);
+    singulars.సమితి (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<స్థిరరాశి hb_codepoint_t> get (hb_codepoint_t k) స్థిరరాశి
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    స్థిరరాశి hb_codepoint_t *v;
+    ఒకవేళ (singulars.has (k, &v))
+      తిరిగి hb_array (v, 1);
 
-    hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    hb_సదిశ_t<hb_codepoint_t> *m;
+    ఒకవేళ (multiples.has (k, &m))
+      తిరిగి m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    తిరిగి hb_array_t<స్థిరరాశి hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  తార్కిక లోపల_error () స్థిరరాశి
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    ఒకవేళ (singulars.లోపల_error () || multiples.లోపల_error ())
+      తిరిగి నిజం;
+    కొరకు (స్థిరరాశి స్వయంచాలక &m : multiples.విలువలు_ref ())
+      ఒకవేళ (m.లోపల_error ())
+        తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 
-  void alloc (unsigned size)
+  శూన్య alloc (గుర్తులేని కొలత)
   {
-    singulars.alloc (size);
+    singulars.alloc (కొలత);
   }
 
-  protected:
+  రక్షిత:
   hb_map_t singulars;
-  hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
+  hb_hashmap_t<hb_codepoint_t, hb_సదిశ_t<hb_codepoint_t>> multiples;
 };
 
 
 
-#endif /* HB_MULTIMAP_HH */
+#అయితే_ముగింపు /* HB_MULTIMAP_HH */

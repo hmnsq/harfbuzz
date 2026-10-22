@@ -28,14 +28,14 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_TABLE_LIST_HH
-#define HB_OT_FACE_TABLE_LIST_HH
-#endif /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
+#నిర్వచితం_కాకపోతే HB_OT_FACE_పట్టిక_LIST_HH
+#నిర్వచించు HB_OT_FACE_పట్టిక_LIST_HH
+#అయితే_ముగింపు /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_OT_ACCELERATOR
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type)
-#define _HB_OT_ACCELERATOR_UNDEF
-#endif
+#నిర్వచితం_కాకపోతే HB_OT_ACCELERATOR
+#నిర్వచించు HB_OT_ACCELERATOR(Namespace, Type) HB_OT_పట్టిక (Namespace, Type)
+#నిర్వచించు _HB_OT_ACCELERATOR_UNDEF
+#అయితే_ముగింపు
 
 
 /* This lists font tables that the hb_face_t will contain and lazily
@@ -46,103 +46,103 @@
 
 
 /* OpenType fundamentals. */
-HB_OT_TABLE (OT, head)
+HB_OT_పట్టిక (OT, తల_2)
 HB_OT_ACCELERATOR (OT, maxp)
-#if !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
+#ఒకవేళ !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
 HB_OT_ACCELERATOR (OT, cmap)
-#endif
+#అయితే_ముగింపు
 HB_OT_ACCELERATOR (OT, hhea)
 HB_OT_ACCELERATOR (OT, hmtx)
-HB_OT_TABLE (OT, OS2)
-#if !defined(HB_NO_OT_FONT_GLYPH_NAMES) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
+HB_OT_పట్టిక (OT, OS2)
+#ఒకవేళ !defined(HB_NO_OT_FONT_GLYPH_పేర్లు) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
 HB_OT_ACCELERATOR (OT, post)
-#endif
-#ifndef HB_NO_NAME
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_NAME
 HB_OT_ACCELERATOR (OT, name)
-#endif
-#ifndef HB_NO_STYLE
-HB_OT_TABLE (OT, STAT)
-#endif
-#ifndef HB_NO_META
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_STYLE
+HB_OT_పట్టిక (OT, STAT)
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_META
 HB_OT_ACCELERATOR (OT, meta)
-#endif
+#అయితే_ముగింపు
 
 /* Vertical layout. */
-#ifndef HB_NO_VERTICAL
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
 HB_OT_ACCELERATOR (OT, vhea)
 HB_OT_ACCELERATOR (OT, vmtx)
-HB_OT_TABLE (OT, VORG)
-#endif
+HB_OT_పట్టిక (OT, VORG)
+#అయితే_ముగింపు
 
 /* TrueType outlines. */
-HB_OT_TABLE (OT, loca)
+HB_OT_పట్టిక (OT, loca)
 HB_OT_ACCELERATOR (OT, glyf)
 
 /* CFF outlines. */
-#ifndef HB_NO_CFF
+#నిర్వచితం_కాకపోతే HB_NO_CFF
 HB_OT_ACCELERATOR (OT, cff1)
 HB_OT_ACCELERATOR (OT, cff2)
-#endif
+#అయితే_ముగింపు
 
 /* OpenType variations. */
-#ifndef HB_NO_VAR
-HB_OT_TABLE (OT, fvar)
-HB_OT_TABLE (OT, avar)
-HB_OT_TABLE (OT, cvar)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+HB_OT_పట్టిక (OT, fvar)
+HB_OT_పట్టిక (OT, avar)
+HB_OT_పట్టిక (OT, cvar)
 HB_OT_ACCELERATOR (OT, gvar)
-HB_OT_TABLE (OT, MVAR)
-#ifndef HB_NO_VAR_COMPOSITES
+HB_OT_పట్టిక (OT, MVAR)
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
 HB_OT_ACCELERATOR (OT, VARC)
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 /* Legacy kern. */
-#ifndef HB_NO_OT_KERN
+#నిర్వచితం_కాకపోతే HB_NO_OT_KERN
 HB_OT_ACCELERATOR (OT, kern)
-#endif
+#అయితే_ముగింపు
 
 /* OpenType shaping. */
-#ifndef HB_NO_OT_LAYOUT
+#నిర్వచితం_కాకపోతే HB_NO_OT_LAYOUT
 HB_OT_ACCELERATOR (OT, GDEF)
 HB_OT_ACCELERATOR (OT, GSUB)
 HB_OT_ACCELERATOR (OT, GPOS)
 //HB_OT_TABLE (OT, JSTF)
-#endif
+#అయితే_ముగింపు
 
 /* OpenType baseline. */
-#ifndef HB_NO_BASE
-HB_OT_TABLE (OT, BASE)
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_పునాది
+HB_OT_పట్టిక (OT, పునాది_4)
+#అయితే_ముగింపు
 
 /* AAT shaping. */
-#ifndef HB_NO_AAT
+#నిర్వచితం_కాకపోతే HB_NO_AAT
 HB_OT_ACCELERATOR (AAT, morx)
 HB_OT_ACCELERATOR (AAT, mort)
 HB_OT_ACCELERATOR (AAT, kerx)
-HB_OT_TABLE (AAT, ankr)
-HB_OT_TABLE (AAT, trak)
-HB_OT_TABLE (AAT, ltag)
-HB_OT_TABLE (AAT, feat)
+HB_OT_పట్టిక (AAT, ankr)
+HB_OT_పట్టిక (AAT, trak)
+HB_OT_పట్టిక (AAT, ltag)
+HB_OT_పట్టిక (AAT, feat)
 // HB_OT_TABLE (AAT, opbd)
-#endif
+#అయితే_ముగింపు
 
 /* OpenType color fonts. */
-#ifndef HB_NO_COLOR
+#నిర్వచితం_కాకపోతే HB_NO_COLOR
 HB_OT_ACCELERATOR (OT, COLR)
-HB_OT_TABLE (OT, CPAL)
+HB_OT_పట్టిక (OT, CPAL)
 HB_OT_ACCELERATOR (OT, CBDT)
 HB_OT_ACCELERATOR (OT, sbix)
-#ifndef HB_NO_SVG
+#నిర్వచితం_కాకపోతే HB_NO_SVG
 HB_OT_ACCELERATOR (OT, SVG)
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 /* OpenType math. */
-#ifndef HB_NO_MATH
-HB_OT_TABLE (OT, MATH)
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_MATH
+HB_OT_పట్టిక (OT, MATH)
+#అయితే_ముగింపు
 
 
-#ifdef _HB_OT_ACCELERATOR_UNDEF
-#undef HB_OT_ACCELERATOR
-#endif
+#నిర్వచితమైతే _HB_OT_ACCELERATOR_UNDEF
+#నిర్వచనం_రద్దు HB_OT_ACCELERATOR
+#అయితే_ముగింపు

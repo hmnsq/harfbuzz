@@ -26,23 +26,23 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-blob.hh"
-#include "hb-open-file.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-face.hh"
+#అన్తర్భావ "hb-blob.hh"
+#అన్తర్భావ "hb-open-file.hh"
+#అన్తర్భావ "hb-ot-face.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
-#ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
-#endif
-#ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
-#endif
+#నిర్వచితమైతే HAVE_FREETYPE
+#అన్తర్భావ "hb-ft.h"
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_CORETEXT
+#అన్తర్భావ "hb-coretext.h"
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_DIRECTWRITE
+#అన్తర్భావ "hb-directwrite.h"
+#అయితే_ముగింపు
 
 
 /**
@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_face_count (hb_blob_t *blob)
+గుర్తులేని పూర్ణాంకం
+hb_face_లెక్క (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  ఒకవేళ (unlikely (!blob))
+    తిరిగి 0;
 
   hb_sanitize_context_t c (blob);
 
-  auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  స్వయంచాలక *ot = blob->as<OT::OpenTypeFontFile> ();
+  ఒకవేళ (unlikely (!ot->sanitize (&c)))
+    తిరిగి 0;
 
-  return ot->get_face_count ();
+  తిరిగి ot->get_face_లెక్క ();
 }
 
 /*
@@ -97,9 +97,9 @@ hb_face_count (hb_blob_t *blob)
 
 DEFINE_NULL_INSTANCE (hb_face_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_శీర్షిక_STATIC,
 
-  0,    /* index */
+  0,    /*సూచీ*/
   1000, /* upem */
   0,    /* num_glyphs */
 
@@ -127,92 +127,92 @@ DEFINE_NULL_INSTANCE (hb_face_t) =
  * Since: 0.9.2
  **/
 hb_face_t *
-hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+hb_face_create_for_tables (hb_reference_పట్టిక_func_t  reference_పట్టిక_func,
+			   శూన్య                      *user_దత్తాంశం,
 			   hb_destroy_func_t          destroy)
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
-      destroy (user_data);
-    return hb_face_get_empty ();
+  ఒకవేళ (!reference_పట్టిక_func || !(face = hb_object_create<hb_face_t> ())) {
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి hb_face_get_ఖాళీలు ();
   }
 
-  face->reference_table_func = reference_table_func;
-  face->user_data = user_data;
+  face->reference_పట్టిక_func = reference_పట్టిక_func;
+  face->user_దత్తాంశం = user_దత్తాంశం;
   face->destroy = destroy;
 
-  face->num_glyphs = -1;
+  face->అంకె_glyphs = -1;
 
-  face->data.init0 (face);
-  face->table.init0 (face);
+  face->దత్తాంశం.init0 (face);
+  face->పట్టిక.init0 (face);
 
-  return face;
+  తిరిగి face;
 }
 
 
-typedef struct hb_face_for_data_closure_t {
+రకనిర్వచనం నిర్మాణం hb_face_for_దత్తాంశం_సంవృతం_t {
   hb_blob_t *blob;
-  uint16_t  index;
-} hb_face_for_data_closure_t;
+  uint16_t  సూచీ_2;
+} hb_face_for_దత్తాంశం_సంవృతం_t;
 
-static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+స్థిర hb_face_for_దత్తాంశం_సంవృతం_t *
+hb_face_for_దత్తాంశం_సంవృతం_create (hb_blob_t *blob, గుర్తులేని పూర్ణాంకం సూచీ_2)
 {
-  hb_face_for_data_closure_t *closure;
+  hb_face_for_దత్తాంశం_సంవృతం_t *సంవృతం;
 
-  closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  సంవృతం = (hb_face_for_దత్తాంశం_సంవృతం_t *) hb_calloc (1, పరిమాణం (hb_face_for_దత్తాంశం_సంవృతం_t));
+  ఒకవేళ (unlikely (!సంవృతం))
+    తిరిగి శూన్యసూచిక;
 
-  closure->blob = blob;
-  closure->index = (uint16_t) (index & 0xFFFFu);
+  సంవృతం->blob = blob;
+  సంవృతం->సూచీ_2 = (uint16_t) (సూచీ_2 & 0xFFFFu);
 
-  return closure;
+  తిరిగి సంవృతం;
 }
 
-static void
-_hb_face_for_data_closure_destroy (void *data)
+స్థిర శూన్య
+hb_face_for_దత్తాంశం_సంవృతం_destroy (శూన్య *దత్తాంశం)
 {
-  hb_face_for_data_closure_t *closure = (hb_face_for_data_closure_t *) data;
+  hb_face_for_దత్తాంశం_సంవృతం_t *సంవృతం = (hb_face_for_దత్తాంశం_సంవృతం_t *) దత్తాంశం;
 
-  hb_blob_destroy (closure->blob);
-  hb_free (closure);
+  hb_blob_destroy (సంవృతం->blob);
+  hb_free (సంవృతం);
 }
 
-static hb_blob_t *
-_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+స్థిర hb_blob_t *
+hb_face_for_దత్తాంశం_reference_పట్టిక (hb_face_t *face HB_వాడని, hb_ట్యాగ్_t ట్యాగ్_2, శూన్య *user_దత్తాంశం)
 {
-  hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
+  hb_face_for_దత్తాంశం_సంవృతం_t *దత్తాంశం = (hb_face_for_దత్తాంశం_సంవృతం_t *) user_దత్తాంశం;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  ఒకవేళ (ట్యాగ్_2 == HB_ట్యాగ్_NONE)
+    తిరిగి hb_blob_reference (దత్తాంశం->blob);
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
+  స్థిరరాశి OT::OpenTypeFontFile &ot_file = *దత్తాంశం->blob->as<OT::OpenTypeFontFile> ();
+  గుర్తులేని పూర్ణాంకం పునాది_స్థానభ్రంశం;
+  స్థిరరాశి OT::OpenTypeFontFace &ot_face = ot_file.get_face (దత్తాంశం->సూచీ_2, &పునాది_స్థానభ్రంశం);
 
-  const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
+  స్థిరరాశి OT::Open_Type_పట్టిక &పట్టిక = ot_face.get_పట్టిక_by_ట్యాగ్ (ట్యాగ్_2);
 
-  hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
+  hb_blob_t *blob = hb_blob_create_sub_blob (దత్తాంశం->blob, పునాది_స్థానభ్రంశం + పట్టిక.స్థానభ్రంశం, పట్టిక.నిడివి);
 
-  return blob;
+  తిరిగి blob;
 }
 
-static unsigned
-_hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
-				  hb_tag_t *table_tags,
-				  void *user_data)
+స్థిర గుర్తులేని
+hb_face_for_దత్తాంశం_get_పట్టిక_ట్యాగులు (స్థిరరాశి hb_face_t *face HB_వాడని,
+				  గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం *పట్టిక_లెక్క_2,
+				  hb_ట్యాగ్_t *పట్టిక_ట్యాగులు,
+				  శూన్య *user_దత్తాంశం)
 {
-  hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
+  hb_face_for_దత్తాంశం_సంవృతం_t *దత్తాంశం = (hb_face_for_దత్తాంశం_సంవృతం_t *) user_దత్తాంశం;
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
+  స్థిరరాశి OT::OpenTypeFontFile &ot_file = *దత్తాంశం->blob->as<OT::OpenTypeFontFile> ();
+  స్థిరరాశి OT::OpenTypeFontFace &ot_face = ot_file.get_face (దత్తాంశం->సూచీ_2);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  తిరిగి ot_face.get_పట్టిక_ట్యాగులు (ప్రారంభం_స్థానభ్రంశం, పట్టిక_లెక్క_2, పట్టిక_ట్యాగులు);
 }
 
 
@@ -242,34 +242,34 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
-    blob = hb_blob_get_empty ();
+  ఒకవేళ (unlikely (!blob))
+    blob = hb_blob_get_ఖాళీలు ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
-  hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
+  hb_face_for_దత్తాంశం_సంవృతం_t *సంవృతం = hb_face_for_దత్తాంశం_సంవృతం_create (blob, సూచీ_2);
 
-  if (unlikely (!closure))
+  ఒకవేళ (unlikely (!సంవృతం))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    తిరిగి hb_face_get_ఖాళీలు ();
   }
 
-  face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
-				    closure,
-				    _hb_face_for_data_closure_destroy);
-  hb_face_set_get_table_tags_func (face,
-				   _hb_face_for_data_get_table_tags,
-				   closure,
-				   nullptr);
+  face = hb_face_create_for_tables (hb_face_for_దత్తాంశం_reference_పట్టిక,
+				    సంవృతం,
+				    hb_face_for_దత్తాంశం_సంవృతం_destroy);
+  hb_face_సమితి_get_పట్టిక_ట్యాగులు_func (face,
+				   hb_face_for_దత్తాంశం_get_పట్టిక_ట్యాగులు,
+				   సంవృతం,
+				   శూన్యసూచిక);
 
-  face->index = index;
+  face->సూచీ_2 = సూచీ_2;
 
-  return face;
+  తిరిగి face;
 }
 
 /**
@@ -287,20 +287,20 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
-  unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  గుర్తులేని అంకె_faces = hb_face_లెక్క (blob);
+  ఒకవేళ (సూచీ_2 >= అంకె_faces)
+    తిరిగి శూన్యసూచిక;
 
-  hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  hb_face_t *face = hb_face_create (blob, సూచీ_2);
+  ఒకవేళ (hb_object_is_immutable (face))
+    తిరిగి శూన్యసూచిక;
 
-  return face;
+  తిరిగి face;
 }
 
-#ifndef HB_NO_OPEN
+#నిర్వచితం_కాకపోతే HB_NO_OPEN
 /**
  * hb_face_create_from_file_or_fail:
  * @file_name: A font filename
@@ -315,66 +315,66 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  * Since: 10.1.0
  **/
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+hb_face_create_from_file_or_fail (స్థిరరాశి అక్షరం   *file_name,
+				  గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  ఒకవేళ (unlikely (!blob))
+    తిరిగి శూన్యసూచిక;
 
-  hb_face_t *face = hb_face_create_or_fail (blob, index);
+  hb_face_t *face = hb_face_create_or_fail (blob, సూచీ_2);
   hb_blob_destroy (blob);
 
-  return face;
+  తిరిగి face;
 }
 
-static const struct supported_face_loaders_t {
-	char name[16];
-	hb_face_t * (*from_file) (const char *font_file, unsigned face_index);
-	hb_face_t * (*from_blob) (hb_blob_t *blob, unsigned face_index);
+స్థిర స్థిరరాశి నిర్మాణం supported_face_loaders_t {
+	అక్షరం name[16];
+	hb_face_t * (*from_file) (స్థిరరాశి అక్షరం *font_file, గుర్తులేని face_సూచీ);
+	hb_face_t * (*from_blob) (hb_blob_t *blob, గుర్తులేని face_సూచీ);
 } supported_face_loaders[] =
 {
   {"ot",
-#ifndef HB_NO_OPEN
+#నిర్వచితం_కాకపోతే HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
-   nullptr,
-#endif
+#లేకపోతే
+   శూన్యసూచిక,
+#అయితే_ముగింపు
    hb_face_create_or_fail
   },
-#ifdef HAVE_FREETYPE
+#నిర్వచితమైతే HAVE_FREETYPE
   {"ft",
    hb_ft_face_create_from_file_or_fail,
    hb_ft_face_create_from_blob_or_fail
   },
-#endif
-#ifdef HAVE_CORETEXT
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_CORETEXT
   {"coretext",
    hb_coretext_face_create_from_file_or_fail,
    hb_coretext_face_create_from_blob_or_fail
   },
-#endif
-#ifdef HAVE_DIRECTWRITE
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_DIRECTWRITE
   {"directwrite",
    hb_directwrite_face_create_from_file_or_fail,
    hb_directwrite_face_create_from_blob_or_fail
   },
-#endif
+#అయితే_ముగింపు
 };
 
-static const char *get_default_loader_name ()
+స్థిర స్థిరరాశి అక్షరం *get_default_loader_name ()
 {
-  static hb_atomic_t<const char *> static_loader_name;
-  const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  స్థిర hb_atomic_t<స్థిరరాశి అక్షరం *> static_loader_name;
+  స్థిరరాశి అక్షరం *loader_name = static_loader_name.get_acquire ();
+  ఒకవేళ (!loader_name)
   {
     loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    ఒకవేళ (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    ఒకవేళ (!static_loader_name.cmpexch (శూన్యసూచిక, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  తిరిగి loader_name;
 }
 
 /**
@@ -397,34 +397,34 @@ static const char *get_default_loader_name ()
  * Since: 11.0.0
  **/
 hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name)
+hb_face_create_from_file_or_fail_using (స్థిరరాశి అక్షరం   *file_name,
+					గుర్తులేని పూర్ణాంకం  సూచీ_2,
+					స్థిరరాశి అక్షరం   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  తార్కిక retry = అబద్ధం;
+  ఒకవేళ (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = నిజం;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  ఒకవేళ (loader_name && !*loader_name) loader_name = శూన్యసూచిక;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  కొరకు (గుర్తులేని i = 0; i < ARRAY_నిడివి (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    ఒకవేళ (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
+      తిరిగి supported_face_loaders[i].from_file (file_name, సూచీ_2);
   }
 
-  if (retry)
+  ఒకవేళ (retry)
   {
-    retry = false;
-    loader_name = nullptr;
-    goto retry;
+    retry = అబద్ధం;
+    loader_name = శూన్యసూచిక;
+    వెళ్ళు retry;
   }
 
-  return nullptr;
+  తిరిగి శూన్యసూచిక;
 }
 
 /**
@@ -448,65 +448,65 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name)
+			      గుర్తులేని పూర్ణాంకం  సూచీ_2,
+			      స్థిరరాశి అక్షరం   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  తార్కిక retry = అబద్ధం;
+  ఒకవేళ (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = నిజం;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  ఒకవేళ (loader_name && !*loader_name) loader_name = శూన్యసూచిక;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  కొరకు (గుర్తులేని i = 0; i < ARRAY_నిడివి (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    ఒకవేళ (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
+      తిరిగి supported_face_loaders[i].from_blob (blob, సూచీ_2);
   }
 
-  if (retry)
+  ఒకవేళ (retry)
   {
-    retry = false;
-    loader_name = nullptr;
-    goto retry;
+    retry = అబద్ధం;
+    loader_name = శూన్యసూచిక;
+    వెళ్ళు retry;
   }
 
-  return nullptr;
+  తిరిగి శూన్యసూచిక;
 }
 
-static inline void free_static_face_loader_list ();
+స్థిర అంతఃవరుస శూన్య free_static_face_loader_list ();
 
-static const char * const nil_face_loader_list[] = {nullptr};
+స్థిర స్థిరరాశి అక్షరం * స్థిరరాశి nil_face_loader_list[] = {శూన్యసూచిక};
 
-static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+స్థిర నిర్మాణం hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<స్థిరరాశి అక్షరం *,
 								  hb_face_loader_list_lazy_loader_t>
 {
-  static const char ** create ()
+  స్థిర స్థిరరాశి అక్షరం ** create ()
   {
-    const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    స్థిరరాశి అక్షరం **face_loader_list = (స్థిరరాశి అక్షరం **) hb_calloc (1 + ARRAY_నిడివి (supported_face_loaders), పరిమాణం (స్థిరరాశి అక్షరం *));
+    ఒకవేళ (unlikely (!face_loader_list))
+      తిరిగి శూన్యసూచిక;
 
-    unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    గుర్తులేని i;
+    కొరకు (i = 0; i < ARRAY_నిడివి (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
-    face_loader_list[i] = nullptr;
+    face_loader_list[i] = శూన్యసూచిక;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    తిరిగి face_loader_list;
   }
-  static void destroy (const char **l)
+  స్థిర శూన్య destroy (స్థిరరాశి అక్షరం **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  స్థిర స్థిరరాశి అక్షరం * స్థిరరాశి * get_null ()
+  { తిరిగి nil_face_loader_list; }
 } static_face_loader_list;
 
-static inline
-void free_static_face_loader_list ()
+స్థిర అంతఃవరుస
+శూన్య free_static_face_loader_list ()
 {
   static_face_loader_list.free_instance ();
 }
@@ -523,12 +523,12 @@ void free_static_face_loader_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+స్థిరరాశి అక్షరం **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  తిరిగి static_face_loader_list.get_unconst ();
 }
-#endif
+#అయితే_ముగింపు
 
 
 /**
@@ -541,9 +541,9 @@ hb_face_list_loaders ()
  * Since: 0.9.2
  **/
 hb_face_t *
-hb_face_get_empty ()
+hb_face_get_ఖాళీలు ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  తిరిగి const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  తిరిగి hb_object_reference (face);
 }
 
 /**
@@ -573,29 +573,29 @@ hb_face_reference (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  ఒకవేళ (!hb_object_destroy (face)) తిరిగి;
 
-#ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+#నిర్వచితం_కాకపోతే HB_NO_SHAPER
+  కొరకు (hb_face_t::plan_కణుపు_t *node = face->shape_plans; node; )
   {
-    hb_face_t::plan_node_t *next = node->next;
+    hb_face_t::plan_కణుపు_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
     hb_free (node);
     node = next;
   }
-#endif
+#అయితే_ముగింపు
 
-  face->data.fini ();
-  face->table.fini ();
+  face->దత్తాంశం.fini ();
+  face->పట్టిక.fini ();
 
-  if (face->get_table_tags_destroy)
-    face->get_table_tags_destroy (face->get_table_tags_user_data);
+  ఒకవేళ (face->get_పట్టిక_ట్యాగులు_destroy)
+    face->get_పట్టిక_ట్యాగులు_destroy (face->get_పట్టిక_ట్యాగులు_user_దత్తాంశం);
 
-  if (face->destroy)
-    face->destroy (face->user_data);
+  ఒకవేళ (face->destroy)
+    face->destroy (face->user_దత్తాంశం);
 
   hb_free (face);
 }
@@ -615,13 +615,13 @@ hb_face_destroy (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_face_సమితి_user_దత్తాంశం (hb_face_t          *face,
+		       hb_user_దత్తాంశం_కీలకం_t *key,
+		       శూన్య *              దత్తాంశం,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (face, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -636,11 +636,11 @@ hb_face_set_user_data (hb_face_t          *face,
  *
  * Since: 0.9.2
  **/
-void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key)
+శూన్య *
+hb_face_get_user_దత్తాంశం (స్థిరరాశి hb_face_t    *face,
+		       hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (face, key);
 }
 
 /**
@@ -651,11 +651,11 @@ hb_face_get_user_data (const hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ఒకవేళ (hb_object_is_immutable (face))
+    తిరిగి;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  తిరిగి hb_object_is_immutable (face);
 }
 
 
@@ -691,13 +691,13 @@ hb_face_is_immutable (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
-			 hb_tag_t tag)
+hb_face_reference_పట్టిక (స్థిరరాశి hb_face_t *face,
+			 hb_ట్యాగ్_t ట్యాగ్_2)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  ఒకవేళ (unlikely (ట్యాగ్_2 == HB_ట్యాగ్_NONE))
+    తిరిగి hb_blob_get_ఖాళీలు ();
 
-  return face->reference_table (tag);
+  తిరిగి face->reference_పట్టిక (ట్యాగ్_2);
 }
 
 /**
@@ -716,32 +716,32 @@ hb_face_reference_table (const hb_face_t *face,
 hb_blob_t *
 hb_face_reference_blob (hb_face_t *face)
 {
-  hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
+  hb_blob_t *blob = face->reference_పట్టిక (HB_ట్యాగ్_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  ఒకవేళ (blob == hb_blob_get_ఖాళీలు ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
-    unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    గుర్తులేని మొత్తం_లెక్క = hb_face_get_పట్టిక_ట్యాగులు (face, 0, శూన్యసూచిక, శూన్యసూచిక);
+    ఒకవేళ (మొత్తం_లెక్క)
     {
-      hb_tag_t tags[64];
-      unsigned count = ARRAY_LENGTH (tags);
+      hb_ట్యాగ్_t ట్యాగులు[64];
+      గుర్తులేని లెక్క = ARRAY_నిడివి (ట్యాగులు);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      కొరకు (గుర్తులేని స్థానభ్రంశం = 0; స్థానభ్రంశం < మొత్తం_లెక్క; స్థానభ్రంశం += లెక్క)
       {
-        hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
-	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        hb_face_get_పట్టిక_ట్యాగులు (face, స్థానభ్రంశం, &లెక్క, ట్యాగులు);
+	ఒకవేళ (unlikely (!లెక్క))
+	  ఆపు; // Allocation error
+        కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
         {
-	  if (unlikely (!tags[i]))
-	    continue;
-	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
-	  hb_face_builder_add_table (builder, tags[i], table);
-	  hb_blob_destroy (table);
+	  ఒకవేళ (unlikely (!ట్యాగులు[i]))
+	    కొనసాగు;
+	  hb_blob_t *పట్టిక = hb_face_reference_పట్టిక (face, ట్యాగులు[i]);
+	  hb_face_builder_కూడు_పట్టిక (builder, ట్యాగులు[i], పట్టిక);
+	  hb_blob_destroy (పట్టిక);
         }
       }
 
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  తిరిగి blob;
 }
 
 /**
@@ -766,14 +766,14 @@ hb_face_reference_blob (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
-hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+శూన్య
+hb_face_సమితి_సూచీ (hb_face_t    *face,
+		   గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ఒకవేళ (hb_object_is_immutable (face))
+    తిరిగి;
 
-  face->index = index;
+  face->సూచీ_2 = సూచీ_2;
 }
 
 /**
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_index (const hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_face_get_సూచీ (స్థిరరాశి hb_face_t *face)
 {
-  return face->index;
+  తిరిగి face->సూచీ_2;
 }
 
 /**
@@ -805,12 +805,12 @@ hb_face_get_index (const hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
-hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+శూన్య
+hb_face_సమితి_upem (hb_face_t    *face,
+		  గుర్తులేని పూర్ణాంకం  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ఒకవేళ (hb_object_is_immutable (face))
+    తిరిగి;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_upem (const hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_face_get_upem (స్థిరరాశి hb_face_t *face)
 {
-  return face->get_upem ();
+  తిరిగి face->get_upem ();
 }
 
 /**
@@ -845,14 +845,14 @@ hb_face_get_upem (const hb_face_t *face)
  *
  * Since: 0.9.7
  **/
-void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+శూన్య
+hb_face_సమితి_glyph_లెక్క (hb_face_t    *face,
+			 గుర్తులేని పూర్ణాంకం  glyph_లెక్క)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  ఒకవేళ (hb_object_is_immutable (face))
+    తిరిగి;
 
-  face->num_glyphs = glyph_count;
+  face->అంకె_glyphs = glyph_లెక్క;
 }
 
 /**
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_face_get_glyph_count (const hb_face_t *face)
+గుర్తులేని పూర్ణాంకం
+hb_face_get_glyph_లెక్క (స్థిరరాశి hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  తిరిగి face->get_అంకె_glyphs ();
 }
 
 /**
@@ -882,25 +882,25 @@ hb_face_get_glyph_count (const hb_face_t *face)
  *
  * Since: 10.0.0
  */
-HB_EXTERN void
-hb_face_set_get_table_tags_func (hb_face_t *face,
-				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+HB_EXTERN శూన్య
+hb_face_సమితి_get_పట్టిక_ట్యాగులు_func (hb_face_t *face,
+				 hb_get_పట్టిక_ట్యాగులు_func_t func,
+				 శూన్య                    *user_దత్తాంశం,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  ఒకవేళ (hb_object_is_immutable (face))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
 
-  if (face->get_table_tags_destroy)
-    face->get_table_tags_destroy (face->get_table_tags_user_data);
+  ఒకవేళ (face->get_పట్టిక_ట్యాగులు_destroy)
+    face->get_పట్టిక_ట్యాగులు_destroy (face->get_పట్టిక_ట్యాగులు_user_దత్తాంశం);
 
-  face->get_table_tags_func = func;
-  face->get_table_tags_user_data = user_data;
-  face->get_table_tags_destroy = destroy;
+  face->get_పట్టిక_ట్యాగులు_func = func;
+  face->get_పట్టిక_ట్యాగులు_user_దత్తాంశం = user_దత్తాంశం;
+  face->get_పట్టిక_ట్యాగులు_destroy = destroy;
 }
 
 /**
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
-			hb_tag_t     *table_tags /* OUT */)
+గుర్తులేని పూర్ణాంకం
+hb_face_get_పట్టిక_ట్యాగులు (స్థిరరాశి hb_face_t *face,
+			గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+			గుర్తులేని పూర్ణాంకం *పట్టిక_లెక్క_2, /* IN/OUT */
+			hb_ట్యాగ్_t     *పట్టిక_ట్యాగులు /*బహిర్గతం*/)
 {
-  if (!face->get_table_tags_func)
+  ఒకవేళ (!face->get_పట్టిక_ట్యాగులు_func)
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    ఒకవేళ (పట్టిక_లెక్క_2)
+      *పట్టిక_లెక్క_2 = 0;
+    తిరిగి 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  తిరిగి face->get_పట్టిక_ట్యాగులు_func (face, ప్రారంభం_స్థానభ్రంశం, పట్టిక_లెక్క_2, పట్టిక_ట్యాగులు, face->get_పట్టిక_ట్యాగులు_user_దత్తాంశం);
 }
 
 
@@ -940,7 +940,7 @@ hb_face_get_table_tags (const hb_face_t *face,
  */
 
 
-#ifndef HB_NO_FACE_COLLECT_UNICODES
+#నిర్వచితం_కాకపోతే HB_NO_FACE_COLLECT_UNICODES
 /**
  * hb_face_collect_unicodes:
  * @face: A face object
@@ -951,11 +951,11 @@ hb_face_get_table_tags (const hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+శూన్య
 hb_face_collect_unicodes (hb_face_t *face,
-			  hb_set_t  *out)
+			  hb_సమితి_t  *బహిర్గతం)
 {
-  face->table.cmap->collect_unicodes (out, face->get_num_glyphs ());
+  face->పట్టిక.cmap->collect_unicodes (బహిర్గతం, face->get_అంకె_glyphs ());
 }
 /**
  * hb_face_collect_nominal_glyph_mapping:
@@ -968,15 +968,15 @@ hb_face_collect_unicodes (hb_face_t *face,
  *
  * Since: 7.0.0
  */
-void
+శూన్య
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
-				       hb_set_t  *unicodes)
+				       hb_సమితి_t  *unicodes)
 {
-  hb_set_t stack_unicodes;
-  if (!unicodes)
-    unicodes = &stack_unicodes;
-  face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
+  hb_సమితి_t దొంతర_unicodes;
+  ఒకవేళ (!unicodes)
+    unicodes = &దొంతర_unicodes;
+  face->పట్టిక.cmap->collect_mapping (unicodes, mapping, face->get_అంకె_glyphs ());
 }
 /**
  * hb_face_collect_variation_selectors:
@@ -988,11 +988,11 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+శూన్య
 hb_face_collect_variation_selectors (hb_face_t *face,
-				     hb_set_t  *out)
+				     hb_సమితి_t  *బహిర్గతం)
 {
-  face->table.cmap->collect_variation_selectors (out);
+  face->పట్టిక.cmap->collect_variation_selectors (బహిర్గతం);
 }
 /**
  * hb_face_collect_variation_unicodes:
@@ -1005,11 +1005,11 @@ hb_face_collect_variation_selectors (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+శూన్య
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
-				    hb_set_t  *out)
+				    hb_సమితి_t  *బహిర్గతం)
 {
-  face->table.cmap->collect_variation_unicodes (variation_selector, out);
+  face->పట్టిక.cmap->collect_variation_unicodes (variation_selector, బహిర్గతం);
 }
-#endif
+#అయితే_ముగింపు

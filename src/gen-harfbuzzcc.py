@@ -2,23 +2,23 @@
 
 "This tool is intended to be used from meson"
 
-import os, sys, shutil, pathlib
+దిగుమతి os, sys, shutil, pathlib
 
-if len (sys.argv) < 3:
+ఒకవేళ పొడవు (sys.argv) < 3:
 	sys.exit (__doc__)
 
 OUTPUT = sys.argv[1]
-CURRENT_SOURCE_DIR = sys.argv[2]
+CURRENT_ఆధారం_DIR = sys.argv[2]
 
 # make sure input files are unique
-sources = sorted(set(sys.argv[3:]))
+sources = sorted(సమితి(sys.argv[3:]))
 
-with open (OUTPUT, "wb") as f:
-	f.write ("".join ('#include "{}"\n'.format (pathlib.Path( os.path.relpath (os.path.abspath (x), CURRENT_SOURCE_DIR) ).as_posix()) for x in sources if x.endswith (".cc")).encode ())
+తోడుగా open (OUTPUT, "wb") ఇవ f:
+	f.లిఖ ("".join ('#include "{}"\n'.format (pathlib.మార్గం_2( os.మార్గం.relpath (os.మార్గం.abspath (x), CURRENT_ఆధారం_DIR) ).as_posix()) కొరకు x లో sources ఒకవేళ x.endswith (".cc")).encode ())
 
 # copy it also to the source tree, but only if it has changed
-baseline_filename = os.path.join (CURRENT_SOURCE_DIR, os.path.basename (OUTPUT))
-with open(baseline_filename, "rb") as baseline:
-	with open(OUTPUT, "rb") as generated:
-		if baseline.read() != generated.read():
+baseline_filename = os.మార్గం.join (CURRENT_ఆధారం_DIR, os.మార్గం.basename (OUTPUT))
+తోడుగా open(baseline_filename, "rb") ఇవ baseline:
+	తోడుగా open(OUTPUT, "rb") ఇవ generated:
+		ఒకవేళ baseline.పఠ() != generated.పఠ():
 			shutil.copyfile (OUTPUT, baseline_filename)

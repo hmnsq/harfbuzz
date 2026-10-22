@@ -24,39 +24,39 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-ot-face.hh"
+#అన్తర్భావ "hb-ot-face.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-kern-table.hh"
-#include "hb-ot-meta-table.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-post-table.hh"
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/sbix/sbix.hh"
-#include "OT/Color/svg/svg.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-aat-layout-kerx-table.hh"
-#include "hb-aat-layout-morx-table.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-ot-glyf-table.hh"
+#అన్తర్భావ "hb-ot-cff1-table.hh"
+#అన్తర్భావ "hb-ot-cff2-table.hh"
+#అన్తర్భావ "hb-ot-hmtx-table.hh"
+#అన్తర్భావ "hb-ot-kern-table.hh"
+#అన్తర్భావ "hb-ot-meta-table.hh"
+#అన్తర్భావ "hb-ot-name-table.hh"
+#అన్తర్భావ "hb-ot-post-table.hh"
+#అన్తర్భావ "OT/Color/CBDT/CBDT.hh"
+#అన్తర్భావ "OT/Color/COLR/COLR.hh"
+#అన్తర్భావ "OT/Color/sbix/sbix.hh"
+#అన్తర్భావ "OT/Color/svg/svg.hh"
+#అన్తర్భావ "hb-ot-layout-gdef-table.hh"
+#అన్తర్భావ "hb-ot-layout-gsub-table.hh"
+#అన్తర్భావ "hb-ot-layout-gpos-table.hh"
+#అన్తర్భావ "hb-ot-var-varc-table.hh"
+#అన్తర్భావ "hb-aat-layout-kerx-table.hh"
+#అన్తర్భావ "hb-aat-layout-morx-table.hh"
 
 
-void hb_ot_face_t::init0 (hb_face_t *face)
+శూన్య hb_ot_face_t::init0 (hb_face_t *face)
 {
-  this->face = face;
-#define HB_OT_TABLE(Namespace, Type) Type.init0 ();
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+  ఇది->face = face;
+#నిర్వచించు HB_OT_పట్టిక(Namespace, Type) Type.init0 ();
+#అన్తర్భావ "hb-ot-face-table-list.hh"
+#నిర్వచనం_రద్దు HB_OT_పట్టిక
 }
-void hb_ot_face_t::fini ()
+శూన్య hb_ot_face_t::fini ()
 {
-#define HB_OT_TABLE(Namespace, Type) Type.fini ();
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+#నిర్వచించు HB_OT_పట్టిక(Namespace, Type) Type.fini ();
+#అన్తర్భావ "hb-ot-face-table-list.hh"
+#నిర్వచనం_రద్దు HB_OT_పట్టిక
 }

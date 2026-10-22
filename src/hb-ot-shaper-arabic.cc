@@ -24,28 +24,28 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-arabic.hh"
-#include "hb-ot-shape.hh"
+#అన్తర్భావ "hb-ot-shaper-arabic.hh"
+#అన్తర్భావ "hb-ot-shape.hh"
 
 
 /* buffer var allocations */
-#define arabic_shaping_action() ot_shaper_var_u8_auxiliary() /* arabic shaping action */
+#నిర్వచించు arabic_shaping_action() ot_shaper_var_u8_auxiliary() /* arabic shaping action */
 
 /* buffer **position** var allocations, used after GPOS */
-#define stch_advance() var.i32 /* advance used for stretching */
+#నిర్వచించు stch_advance() var.i32 /* advance used for stretching */
 
-#define HB_BUFFER_SCRATCH_FLAG_ARABIC_HAS_STCH HB_BUFFER_SCRATCH_FLAG_SHAPER0
+#నిర్వచించు HB_బఫరు_SCRATCH_FLAG_ARABIC_HAS_STCH HB_బఫరు_SCRATCH_FLAG_SHAPER0
 
 /* See:
  * https://github.com/harfbuzz/harfbuzz/commit/6e6f82b6f3dde0fc6c3c7d991d9ec6cfff57823d#commitcomment-14248516 */
-#define HB_ARABIC_GENERAL_CATEGORY_IS_WORD(gen_cat) \
+#నిర్వచించు HB_ARABIC_GENERAL_CATEGORY_IS_మాట(gen_cat) \
 	(FLAG_UNSAFE (gen_cat) & \
 	 (FLAG (HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_వ్యక్తిగత_USE) | \
 	  /*FLAG (HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER) |*/ \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER) | \
@@ -54,13 +54,13 @@
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK) | \
 	  FLAG (HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL) | \
-	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL)))
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_DECIMAL_సంఖ్య) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_LETTER_సంఖ్య) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_సంఖ్య) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_CURRENCY_చిహ్నం) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MODIFIER_చిహ్నం) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_MATH_చిహ్నం) | \
+	  FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_చిహ్నం)))
 
 
 /*
@@ -70,52 +70,52 @@
 /*
  * Bits used in the joining tables
  */
-enum hb_arabic_joining_type_t {
+గణన hb_arabic_joining_type_t {
   JOINING_TYPE_U		= 0,
   JOINING_TYPE_L		= 1,
   JOINING_TYPE_R		= 2,
   JOINING_TYPE_D		= 3,
   JOINING_TYPE_C		= JOINING_TYPE_D,
-  JOINING_GROUP_ALAPH		= 4,
-  JOINING_GROUP_DALATH_RISH	= 5,
-  NUM_STATE_MACHINE_COLS	= 6,
+  JOINING_సమూహం_ALAPH		= 4,
+  JOINING_సమూహం_DALATH_RISH	= 5,
+  అంకె_STATE_MACHINE_నిలువుల_సంఖ్య	= 6,
 
   JOINING_TYPE_T = 6,
   JOINING_TYPE_X = 7  /* means: use general-category to choose between U or T. */
 };
 
-#include "hb-ot-shaper-arabic-table.hh"
+#అన్తర్భావ "hb-ot-shaper-arabic-table.hh"
 
-static unsigned int get_joining_type (hb_codepoint_t u, hb_unicode_general_category_t gen_cat)
+స్థిర గుర్తులేని పూర్ణాంకం get_joining_type (hb_codepoint_t u, hb_unicode_general_category_t gen_cat)
 {
-  unsigned int j_type = joining_type(u);
-  if (likely (j_type != JOINING_TYPE_X))
-    return j_type;
+  గుర్తులేని పూర్ణాంకం j_type = joining_type(u);
+  ఒకవేళ (likely (j_type != JOINING_TYPE_X))
+    తిరిగి j_type;
 
-  return (FLAG_UNSAFE(gen_cat) &
+  తిరిగి (FLAG_UNSAFE(gen_cat) &
 	  (FLAG(HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) |
 	   FLAG(HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK) |
 	   FLAG(HB_UNICODE_GENERAL_CATEGORY_FORMAT))
 	 ) ?  JOINING_TYPE_T : JOINING_TYPE_U;
 }
 
-#define FEATURE_IS_SYRIAC(tag) hb_in_range<unsigned char> ((unsigned char) (tag), '2', '3')
+#నిర్వచించు FEATURE_IS_SYRIAC(ట్యాగ్_2) hb_లోపల_range<గుర్తులేని అక్షరం> ((గుర్తులేని అక్షరం) (ట్యాగ్_2), '2', '3')
 
-static const hb_tag_t arabic_features[] =
+స్థిర స్థిరరాశి hb_ట్యాగ్_t arabic_features[] =
 {
-  HB_TAG('i','s','o','l'),
-  HB_TAG('f','i','n','a'),
-  HB_TAG('f','i','n','2'),
-  HB_TAG('f','i','n','3'),
-  HB_TAG('m','e','d','i'),
-  HB_TAG('m','e','d','2'),
-  HB_TAG('i','n','i','t'),
-  HB_TAG_NONE
+  HB_ట్యాగ్('i','s','o','l'),
+  HB_ట్యాగ్('f','i','n','a'),
+  HB_ట్యాగ్('f','i','n','2'),
+  HB_ట్యాగ్('f','i','n','3'),
+  HB_ట్యాగ్('m','e','d','i'),
+  HB_ట్యాగ్('m','e','d','2'),
+  HB_ట్యాగ్('i','n','i','t'),
+  HB_ట్యాగ్_NONE
 };
 
 
 /* Same order as the feature array */
-enum arabic_action_t {
+గణన arabic_action_t {
   ISOL,
   FINA,
   FIN2,
@@ -126,18 +126,18 @@ enum arabic_action_t {
 
   NONE,
 
-  ARABIC_NUM_FEATURES = NONE,
+  ARABIC_అంకె_FEATURES = NONE,
 
   /* We abuse the same byte for other things... */
   STCH_FIXED,
   STCH_REPEATING,
 };
 
-static const struct arabic_state_table_entry {
+స్థిర స్థిరరాశి నిర్మాణం arabic_state_పట్టిక_నమోదు {
 	uint8_t prev_action;
 	uint8_t curr_action;
-	uint16_t next_state;
-} arabic_state_table[][NUM_STATE_MACHINE_COLS] =
+	uint16_t తదుపరి_state;
+} arabic_state_పట్టిక[][అంకె_STATE_MACHINE_నిలువుల_సంఖ్య] =
 {
   /*   jt_U,          jt_L,          jt_R,          jt_D,          jg_ALAPH,      jg_DALATH_RISH */
 
@@ -164,26 +164,26 @@ static const struct arabic_state_table_entry {
 };
 
 
-static bool
-arabic_fallback_shape (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+arabic_fallback_shape (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
+		       hb_బఫరు_t *బఫరు);
 
-static bool
-record_stch (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+రికార్డు_stch (స్థిరరాశి hb_ot_shape_plan_t *plan,
 	     hb_font_t *font,
-	     hb_buffer_t *buffer);
+	     hb_బఫరు_t *బఫరు);
 
-static bool
-deallocate_buffer_var (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+deallocate_బఫరు_var (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer)
+		       hb_బఫరు_t *బఫరు)
 {
-  HB_BUFFER_DEALLOCATE_VAR (buffer, arabic_shaping_action);
-  return false;
+  HB_బఫరు_DEALLOCATE_VAR (బఫరు, arabic_shaping_action);
+  తిరిగి అబద్ధం;
 }
 
-static void
+స్థిర శూన్య
 collect_features_arabic (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -208,38 +208,38 @@ collect_features_arabic (hb_ot_shape_planner_t *plan)
    */
 
 
-  map->enable_feature (HB_TAG('s','t','c','h'));
-  map->add_gsub_pause (record_stch);
+  map->enable_feature (HB_ట్యాగ్('s','t','c','h'));
+  map->కూడు_gsub_pause (రికార్డు_stch);
 
-  map->enable_feature (HB_TAG('c','c','m','p'), F_MANUAL_ZWJ);
-  map->enable_feature (HB_TAG('l','o','c','l'), F_MANUAL_ZWJ);
+  map->enable_feature (HB_ట్యాగ్('c','c','m','p'), F_MANUAL_ZWJ);
+  map->enable_feature (HB_ట్యాగ్('l','o','c','l'), F_MANUAL_ZWJ);
 
-  map->add_gsub_pause (nullptr);
+  map->కూడు_gsub_pause (శూన్యసూచిక);
 
-  for (unsigned int i = 0; i < ARABIC_NUM_FEATURES; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARABIC_అంకె_FEATURES; i++)
   {
-    bool has_fallback = plan->props.script == HB_SCRIPT_ARABIC && !FEATURE_IS_SYRIAC (arabic_features[i]);
-    map->add_feature (arabic_features[i], F_MANUAL_ZWJ | (has_fallback ? F_HAS_FALLBACK : F_NONE));
-    map->add_gsub_pause (nullptr);
+    తార్కిక has_fallback = plan->props.script == HB_SCRIPT_ARABIC && !FEATURE_IS_SYRIAC (arabic_features[i]);
+    map->కూడు_feature (arabic_features[i], F_MANUAL_ZWJ | (has_fallback ? F_HAS_FALLBACK : F_NONE));
+    map->కూడు_gsub_pause (శూన్యసూచిక);
   }
-   map->add_gsub_pause (deallocate_buffer_var);
+   map->కూడు_gsub_pause (deallocate_బఫరు_var);
 
   /* Normally, Unicode says a ZWNJ means "don't ligate".  In Arabic script
    * however, it says a ZWJ should also mean "don't ligate".  So we run
    * the main ligating features as MANUAL_ZWJ. */
 
-  map->enable_feature (HB_TAG('r','l','i','g'), F_MANUAL_ZWJ | F_HAS_FALLBACK);
+  map->enable_feature (HB_ట్యాగ్('r','l','i','g'), F_MANUAL_ZWJ | F_HAS_FALLBACK);
 
-  if (plan->props.script == HB_SCRIPT_ARABIC)
-    map->add_gsub_pause (arabic_fallback_shape);
+  ఒకవేళ (plan->props.script == HB_SCRIPT_ARABIC)
+    map->కూడు_gsub_pause (arabic_fallback_shape);
 
-   map->enable_feature (HB_TAG('c','a','l','t'), F_MANUAL_ZWJ);
+   map->enable_feature (HB_ట్యాగ్('c','a','l','t'), F_MANUAL_ZWJ);
    /* https://github.com/harfbuzz/harfbuzz/issues/1573 */
-   if (!map->has_feature (HB_TAG('r','c','l','t')))
-     map->add_gsub_pause (nullptr);
+   ఒకవేళ (!map->has_feature (HB_ట్యాగ్('r','c','l','t')))
+     map->కూడు_gsub_pause (శూన్యసూచిక);
 
-   map->enable_feature (HB_TAG('l','i','g','a'), F_MANUAL_ZWJ);
-   map->enable_feature (HB_TAG('c','l','i','g'), F_MANUAL_ZWJ);
+   map->enable_feature (HB_ట్యాగ్('l','i','g','a'), F_MANUAL_ZWJ);
+   map->enable_feature (HB_ట్యాగ్('c','l','i','g'), F_MANUAL_ZWJ);
 
   /* The spec includes 'cswh'.  Earlier versions of Windows
    * used to enable this by default, but testing suggests
@@ -250,198 +250,198 @@ collect_features_arabic (hb_ot_shape_planner_t *plan)
    * to fixup broken glyph sequences.  Oh well...
    * Test case: U+0643,U+0640,U+0631. */
   //map->enable_feature (HB_TAG('c','s','w','h'), F_MANUAL_ZWJ);
-  map->enable_feature (HB_TAG('m','s','e','t'), F_MANUAL_ZWJ);
+  map->enable_feature (HB_ట్యాగ్('m','s','e','t'), F_MANUAL_ZWJ);
 }
 
-#include "hb-ot-shaper-arabic-fallback.hh"
+#అన్తర్భావ "hb-ot-shaper-arabic-fallback.hh"
 
-struct arabic_shape_plan_t
+నిర్మాణం arabic_shape_plan_t
 {
   /* The "+ 1" in the next array is to accommodate for the "NONE" command,
    * which is not an OpenType feature, but this simplifies the code by not
    * having to do a "if (... < NONE) ..." and just rely on the fact that
    * mask_array[NONE] == 0. */
-  hb_mask_t mask_array[ARABIC_NUM_FEATURES + 1];
+  hb_ముసుగు_t ముసుగు_array[ARABIC_అంకె_FEATURES + 1];
 
-  mutable hb_atomic_t<arabic_fallback_plan_t *> fallback_plan;
+  మార్చదగిన hb_atomic_t<arabic_fallback_plan_t *> fallback_plan;
 
-  unsigned int do_fallback : 1;
-  unsigned int has_stch : 1;
+  గుర్తులేని పూర్ణాంకం do_fallback : 1;
+  గుర్తులేని పూర్ణాంకం has_stch : 1;
 };
 
-void *
-data_create_arabic (const hb_ot_shape_plan_t *plan)
+శూన్య *
+దత్తాంశం_create_arabic (స్థిరరాశి hb_ot_shape_plan_t *plan)
 {
-  arabic_shape_plan_t *arabic_plan = (arabic_shape_plan_t *) hb_calloc (1, sizeof (arabic_shape_plan_t));
-  if (unlikely (!arabic_plan))
-    return nullptr;
+  arabic_shape_plan_t *arabic_plan = (arabic_shape_plan_t *) hb_calloc (1, పరిమాణం (arabic_shape_plan_t));
+  ఒకవేళ (unlikely (!arabic_plan))
+    తిరిగి శూన్యసూచిక;
 
   arabic_plan->do_fallback = plan->props.script == HB_SCRIPT_ARABIC;
-  arabic_plan->has_stch = !!plan->map.get_1_mask (HB_TAG ('s','t','c','h'));
-  for (unsigned int i = 0; i < ARABIC_NUM_FEATURES; i++) {
-    arabic_plan->mask_array[i] = plan->map.get_1_mask (arabic_features[i]);
+  arabic_plan->has_stch = !!plan->map.get_1_ముసుగు (HB_ట్యాగ్ ('s','t','c','h'));
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARABIC_అంకె_FEATURES; i++) {
+    arabic_plan->ముసుగు_array[i] = plan->map.get_1_ముసుగు (arabic_features[i]);
     arabic_plan->do_fallback = arabic_plan->do_fallback &&
 			       (FEATURE_IS_SYRIAC (arabic_features[i]) ||
 				plan->map.needs_fallback (arabic_features[i]));
   }
 
-  return arabic_plan;
+  తిరిగి arabic_plan;
 }
 
-void
-data_destroy_arabic (void *data)
+శూన్య
+దత్తాంశం_destroy_arabic (శూన్య *దత్తాంశం)
 {
-  arabic_shape_plan_t *arabic_plan = (arabic_shape_plan_t *) data;
+  arabic_shape_plan_t *arabic_plan = (arabic_shape_plan_t *) దత్తాంశం;
 
   arabic_fallback_plan_destroy (arabic_plan->fallback_plan);
 
-  hb_free (data);
+  hb_free (దత్తాంశం);
 }
 
-static void
-arabic_joining (hb_buffer_t *buffer)
+స్థిర శూన్య
+arabic_joining (hb_బఫరు_t *బఫరు)
 {
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  unsigned int prev = UINT_MAX, state = 0;
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  గుర్తులేని పూర్ణాంకం prev = UINT_MAX, state = 0;
 
   /* Check pre-context */
-  for (unsigned int i = 0; i < buffer->context_len[0]; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < బఫరు->context_len[0]; i++)
   {
-    unsigned int this_type = get_joining_type (buffer->context[0][i], buffer->unicode->general_category (buffer->context[0][i]));
+    గుర్తులేని పూర్ణాంకం this_type = get_joining_type (బఫరు->context[0][i], బఫరు->unicode->general_category (బఫరు->context[0][i]));
 
-    if (unlikely (this_type == JOINING_TYPE_T))
-      continue;
+    ఒకవేళ (unlikely (this_type == JOINING_TYPE_T))
+      కొనసాగు;
 
-    const arabic_state_table_entry *entry = &arabic_state_table[state][this_type];
-    state = entry->next_state;
-    break;
+    స్థిరరాశి arabic_state_పట్టిక_నమోదు *నమోదు_2 = &arabic_state_పట్టిక[state][this_type];
+    state = నమోదు_2->తదుపరి_state;
+    ఆపు;
   }
 
-  for (unsigned int i = 0; i < count; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    unsigned int this_type = get_joining_type (info[i].codepoint, _hb_glyph_info_get_general_category (&info[i]));
+    గుర్తులేని పూర్ణాంకం this_type = get_joining_type (info[i].codepoint, _hb_glyph_info_get_general_category (&info[i]));
 
-    if (unlikely (this_type == JOINING_TYPE_T)) {
+    ఒకవేళ (unlikely (this_type == JOINING_TYPE_T)) {
       info[i].arabic_shaping_action() = NONE;
-      continue;
+      కొనసాగు;
     }
 
-    const arabic_state_table_entry *entry = &arabic_state_table[state][this_type];
+    స్థిరరాశి arabic_state_పట్టిక_నమోదు *నమోదు_2 = &arabic_state_పట్టిక[state][this_type];
 
-    if (entry->prev_action != NONE && prev != UINT_MAX)
+    ఒకవేళ (నమోదు_2->prev_action != NONE && prev != UINT_MAX)
     {
-      info[prev].arabic_shaping_action() = entry->prev_action;
-      buffer->safe_to_insert_tatweel (prev, i + 1);
+      info[prev].arabic_shaping_action() = నమోదు_2->prev_action;
+      బఫరు->సురక్షిత_గమ్యం_చొప్పించు_tatweel (prev, i + 1);
     }
-    else
+    లేకపోతే
     {
-      if (prev == UINT_MAX)
+      ఒకవేళ (prev == UINT_MAX)
       {
-        if (this_type >= JOINING_TYPE_R)
-	  buffer->unsafe_to_concat_from_outbuffer (0, i + 1);
+        ఒకవేళ (this_type >= JOINING_TYPE_R)
+	  బఫరు->unsafe_గమ్యం_concat_from_outbuffer (0, i + 1);
       }
-      else
+      లేకపోతే
       {
-	if (this_type >= JOINING_TYPE_R ||
+	ఒకవేళ (this_type >= JOINING_TYPE_R ||
 	    (2 <= state && state <= 5) /* States that have a possible prev_action. */)
-	  buffer->unsafe_to_concat (prev, i + 1);
+	  బఫరు->unsafe_గమ్యం_concat (prev, i + 1);
       }
     }
 
-    info[i].arabic_shaping_action() = entry->curr_action;
+    info[i].arabic_shaping_action() = నమోదు_2->curr_action;
 
     prev = i;
-    state = entry->next_state;
+    state = నమోదు_2->తదుపరి_state;
   }
 
-  for (unsigned int i = 0; i < buffer->context_len[1]; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < బఫరు->context_len[1]; i++)
   {
-    unsigned int this_type = get_joining_type (buffer->context[1][i], buffer->unicode->general_category (buffer->context[1][i]));
+    గుర్తులేని పూర్ణాంకం this_type = get_joining_type (బఫరు->context[1][i], బఫరు->unicode->general_category (బఫరు->context[1][i]));
 
-    if (unlikely (this_type == JOINING_TYPE_T))
-      continue;
+    ఒకవేళ (unlikely (this_type == JOINING_TYPE_T))
+      కొనసాగు;
 
-    const arabic_state_table_entry *entry = &arabic_state_table[state][this_type];
-    if (entry->prev_action != NONE && prev != UINT_MAX)
+    స్థిరరాశి arabic_state_పట్టిక_నమోదు *నమోదు_2 = &arabic_state_పట్టిక[state][this_type];
+    ఒకవేళ (నమోదు_2->prev_action != NONE && prev != UINT_MAX)
     {
-      info[prev].arabic_shaping_action() = entry->prev_action;
-      buffer->safe_to_insert_tatweel (prev, buffer->len);
+      info[prev].arabic_shaping_action() = నమోదు_2->prev_action;
+      బఫరు->సురక్షిత_గమ్యం_చొప్పించు_tatweel (prev, బఫరు->len);
     }
-    else if (2 <= state && state <= 5) /* States that have a possible prev_action. */
+    లేకపోతే ఒకవేళ (2 <= state && state <= 5) /* States that have a possible prev_action. */
     {
-      buffer->unsafe_to_concat (prev, buffer->len);
+      బఫరు->unsafe_గమ్యం_concat (prev, బఫరు->len);
     }
-    break;
+    ఆపు;
   }
 }
 
-static void
-mongolian_variation_selectors (hb_buffer_t *buffer)
+స్థిర శూన్య
+mongolian_variation_selectors (hb_బఫరు_t *బఫరు)
 {
   /* Copy arabic_shaping_action() from base to Mongolian variation selectors. */
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 1; i < count; i++)
-    if (unlikely (hb_in_ranges<hb_codepoint_t> (info[i].codepoint, 0x180Bu, 0x180Du, 0x180Fu, 0x180Fu)))
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < లెక్క; i++)
+    ఒకవేళ (unlikely (hb_లోపల_ranges<hb_codepoint_t> (info[i].codepoint, 0x180Bu, 0x180Du, 0x180Fu, 0x180Fu)))
       info[i].arabic_shaping_action() = info[i - 1].arabic_shaping_action();
 }
 
-void
-setup_masks_arabic_plan (const arabic_shape_plan_t *arabic_plan,
-			 hb_buffer_t               *buffer,
+శూన్య
+అమరిక_masks_arabic_plan (స్థిరరాశి arabic_shape_plan_t *arabic_plan,
+			 hb_బఫరు_t               *బఫరు,
 			 hb_script_t                script)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, arabic_shaping_action);
+  HB_బఫరు_ALLOCATE_VAR (బఫరు, arabic_shaping_action);
 
-  arabic_joining (buffer);
-  if (script == HB_SCRIPT_MONGOLIAN)
-    mongolian_variation_selectors (buffer);
+  arabic_joining (బఫరు);
+  ఒకవేళ (script == HB_SCRIPT_MONGOLIAN)
+    mongolian_variation_selectors (బఫరు);
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    info[i].mask |= arabic_plan->mask_array[info[i].arabic_shaping_action()];
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    info[i].ముసుగు |= arabic_plan->ముసుగు_array[info[i].arabic_shaping_action()];
 }
 
-static void
-setup_masks_arabic (const hb_ot_shape_plan_t *plan,
-		    hb_buffer_t              *buffer,
-		    hb_font_t                *font HB_UNUSED)
+స్థిర శూన్య
+అమరిక_masks_arabic (స్థిరరాశి hb_ot_shape_plan_t *plan,
+		    hb_బఫరు_t              *బఫరు,
+		    hb_font_t                *font HB_వాడని)
 {
-  const arabic_shape_plan_t *arabic_plan = (const arabic_shape_plan_t *) plan->data;
-  setup_masks_arabic_plan (arabic_plan, buffer, plan->props.script);
+  స్థిరరాశి arabic_shape_plan_t *arabic_plan = (స్థిరరాశి arabic_shape_plan_t *) plan->దత్తాంశం;
+  అమరిక_masks_arabic_plan (arabic_plan, బఫరు, plan->props.script);
 }
 
-static bool
-arabic_fallback_shape (const hb_ot_shape_plan_t *plan,
+స్థిర తార్కిక
+arabic_fallback_shape (స్థిరరాశి hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer)
+		       hb_బఫరు_t *బఫరు)
 {
-#ifdef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-  return false;
-#endif
+#నిర్వచితమైతే HB_NO_OT_SHAPER_ARABIC_FALLBACK
+  తిరిగి అబద్ధం;
+#అయితే_ముగింపు
 
-  const arabic_shape_plan_t *arabic_plan = (const arabic_shape_plan_t *) plan->data;
+  స్థిరరాశి arabic_shape_plan_t *arabic_plan = (స్థిరరాశి arabic_shape_plan_t *) plan->దత్తాంశం;
 
-  if (!arabic_plan->do_fallback)
-    return false;
+  ఒకవేళ (!arabic_plan->do_fallback)
+    తిరిగి అబద్ధం;
 
 retry:
   arabic_fallback_plan_t *fallback_plan = arabic_plan->fallback_plan;
-  if (unlikely (!fallback_plan))
+  ఒకవేళ (unlikely (!fallback_plan))
   {
     /* This sucks.  We need a font to build the fallback plan... */
     fallback_plan = arabic_fallback_plan_create (plan, font);
-    if (unlikely (!arabic_plan->fallback_plan.cmpexch (nullptr, fallback_plan)))
+    ఒకవేళ (unlikely (!arabic_plan->fallback_plan.cmpexch (శూన్యసూచిక, fallback_plan)))
     {
       arabic_fallback_plan_destroy (fallback_plan);
-      goto retry;
+      వెళ్ళు retry;
     }
   }
 
-  arabic_fallback_plan_shape (fallback_plan, font, buffer);
-  return true;
+  arabic_fallback_plan_shape (fallback_plan, font, బఫరు);
+  తిరిగి నిజం;
 }
 
 /*
@@ -452,44 +452,44 @@ retry:
  * marks can use it as well.
  */
 
-static bool
-record_stch (const hb_ot_shape_plan_t *plan,
-	     hb_font_t *font HB_UNUSED,
-	     hb_buffer_t *buffer)
+స్థిర తార్కిక
+రికార్డు_stch (స్థిరరాశి hb_ot_shape_plan_t *plan,
+	     hb_font_t *font HB_వాడని,
+	     hb_బఫరు_t *బఫరు)
 {
-  const arabic_shape_plan_t *arabic_plan = (const arabic_shape_plan_t *) plan->data;
-  if (!arabic_plan->has_stch)
-    return false;
+  స్థిరరాశి arabic_shape_plan_t *arabic_plan = (స్థిరరాశి arabic_shape_plan_t *) plan->దత్తాంశం;
+  ఒకవేళ (!arabic_plan->has_stch)
+    తిరిగి అబద్ధం;
 
   /* 'stch' feature was just applied.  Look for anything that multiplied,
    * and record it for stch treatment later.  Note that rtlm, frac, etc
    * are applied before stch, but we assume that they didn't result in
    * anything multiplying into 5 pieces, so it's safe-ish... */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (unlikely (_hb_glyph_info_multiplied (&info[i])))
+  గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+  hb_glyph_info_t *info = బఫరు->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    ఒకవేళ (unlikely (_hb_glyph_info_multiplied (&info[i])))
     {
-      unsigned int comp = _hb_glyph_info_get_lig_comp (&info[i]);
+      గుర్తులేని పూర్ణాంకం comp = _hb_glyph_info_get_lig_comp (&info[i]);
       info[i].arabic_shaping_action() = comp % 2 ? STCH_REPEATING : STCH_FIXED;
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_ARABIC_HAS_STCH;
+      బఫరు->scratch_flags |= HB_బఫరు_SCRATCH_FLAG_ARABIC_HAS_STCH;
     }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static void
-apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
-	    hb_buffer_t              *buffer,
+స్థిర శూన్య
+apply_stch (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+	    hb_బఫరు_t              *బఫరు,
 	    hb_font_t                *font)
 {
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_ARABIC_HAS_STCH)))
-    return;
+  ఒకవేళ (likely (!(బఫరు->scratch_flags & HB_బఫరు_SCRATCH_FLAG_ARABIC_HAS_STCH)))
+    తిరిగి;
 
-  bool rtl = buffer->props.direction == HB_DIRECTION_RTL;
+  తార్కిక rtl = బఫరు->props.direction == HB_DIRECTION_RTL;
 
-  if (!rtl)
-    buffer->reverse ();
+  ఒకవేళ (!rtl)
+    బఫరు->reverse ();
 
   /* We do a two pass implementation:
    * First pass calculates the exact number of extra glyphs we need,
@@ -500,195 +500,195 @@ apply_stch (const hb_ot_shape_plan_t *plan HB_UNUSED,
    * for re-use these during the second pass.
    */
 
-  int sign = font->x_scale < 0 ? -1 : +1;
-  unsigned int extra_glyphs_needed = 0; // Set during MEASURE, used during CUT
-  enum { MEASURE, CUT } /* step_t */;
+  పూర్ణాంకం sign = font->x_scale < 0 ? -1 : +1;
+  గుర్తులేని పూర్ణాంకం extra_glyphs_needed = 0; // Set during MEASURE, used during CUT
+  గణన { MEASURE, CUT } /* step_t */;
 
-  for (unsigned int step = MEASURE; step <= CUT; step = step + 1)
+  కొరకు (గుర్తులేని పూర్ణాంకం అడుగు = MEASURE; అడుగు <= CUT; అడుగు = అడుగు + 1)
   {
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    unsigned int new_len = count + extra_glyphs_needed; // write head during CUT
-    unsigned int j = new_len;
-    for (unsigned int i = count; i; i--)
+    గుర్తులేని పూర్ణాంకం లెక్క = బఫరు->len;
+    hb_glyph_info_t *info = బఫరు->info;
+    hb_glyph_position_t *pos = బఫరు->pos;
+    గుర్తులేని పూర్ణాంకం new_len = లెక్క + extra_glyphs_needed; // write head during CUT
+    గుర్తులేని పూర్ణాంకం j = new_len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = లెక్క; i; i--)
     {
-      if (!hb_in_range<uint8_t> (info[i - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING))
+      ఒకవేళ (!hb_లోపల_range<uint8_t> (info[i - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING))
       {
-	if (step == CUT)
+	ఒకవేళ (అడుగు == CUT)
 	{
 	  --j;
 	  info[j] = info[i - 1];
 	  pos[j] = pos[i - 1];
 	}
-	continue;
+	కొనసాగు;
       }
 
       /* Yay, justification! */
 
-      hb_position_t w_total = 0; // Total to be filled
+      hb_position_t w_మొత్తం = 0; // Total to be filled
       hb_position_t w_fixed = 0; // Sum of fixed tiles
       hb_position_t w_repeating = 0; // Sum of repeating tiles
-      int n_fixed = 0;
-      int n_repeating = 0;
+      పూర్ణాంకం n_fixed = 0;
+      పూర్ణాంకం n_repeating = 0;
 
-      unsigned int end = i;
-      while (i &&
-	     hb_in_range<uint8_t> (info[i - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING))
+      గుర్తులేని పూర్ణాంకం చివర = i;
+      అయితే (i &&
+	     hb_లోపల_range<uint8_t> (info[i - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING))
       {
 	i--;
-        if (step == MEASURE)
+        ఒకవేళ (అడుగు == MEASURE)
           pos[i].stch_advance() = font->get_glyph_h_advance (info[i].codepoint);
-        hb_position_t width = pos[i].stch_advance();
-	if (info[i].arabic_shaping_action() == STCH_FIXED)
+        hb_position_t వెడల్పు = pos[i].stch_advance();
+	ఒకవేళ (info[i].arabic_shaping_action() == STCH_FIXED)
 	{
-	  w_fixed = hb_saturate_add (w_fixed, width);
+	  w_fixed = hb_saturate_కూడు (w_fixed, వెడల్పు);
 	  n_fixed++;
 	}
-	else
+	లేకపోతే
 	{
-	  w_repeating = hb_saturate_add (w_repeating, width);
+	  w_repeating = hb_saturate_కూడు (w_repeating, వెడల్పు);
 	  n_repeating++;
 	}
       }
-      unsigned int start = i;
-      unsigned int context = i;
-      while (context &&
-	     !hb_in_range<uint8_t> (info[context - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING) &&
+      గుర్తులేని పూర్ణాంకం ప్రారంభం = i;
+      గుర్తులేని పూర్ణాంకం context = i;
+      అయితే (context &&
+	     !hb_లోపల_range<uint8_t> (info[context - 1].arabic_shaping_action(), STCH_FIXED, STCH_REPEATING) &&
 	     (_hb_glyph_info_is_default_ignorable (&info[context - 1]) ||
-	      HB_ARABIC_GENERAL_CATEGORY_IS_WORD (_hb_glyph_info_get_general_category (&info[context - 1]))))
+	      HB_ARABIC_GENERAL_CATEGORY_IS_మాట (_hb_glyph_info_get_general_category (&info[context - 1]))))
       {
 	context--;
-	w_total = hb_saturate_add (w_total, pos[context].x_advance);
+	w_మొత్తం = hb_saturate_కూడు (w_మొత్తం, pos[context].x_advance);
       }
       i++; // Don't touch i again.
 
-      DEBUG_MSG (ARABIC, nullptr, "%s stretch at (%u,%u,%u)",
-		 step == MEASURE ? "measuring" : "cutting", context, start, end);
-      DEBUG_MSG (ARABIC, nullptr, "rest of word:    count=%u width %" PRId32, start - context, w_total);
-      DEBUG_MSG (ARABIC, nullptr, "fixed tiles:     count=%d width=%" PRId32, n_fixed, w_fixed);
-      DEBUG_MSG (ARABIC, nullptr, "repeating tiles: count=%d width=%" PRId32, n_repeating, w_repeating);
+      DEBUG_సందేశం (ARABIC, శూన్యసూచిక, "%s stretch at (%u,%u,%u)",
+		 అడుగు == MEASURE ? "measuring" : "cutting", context, ప్రారంభం, చివర);
+      DEBUG_సందేశం (ARABIC, శూన్యసూచిక, "rest of word:    count=%u width %" PRId32, ప్రారంభం - context, w_మొత్తం);
+      DEBUG_సందేశం (ARABIC, శూన్యసూచిక, "fixed tiles:     count=%d width=%" PRId32, n_fixed, w_fixed);
+      DEBUG_సందేశం (ARABIC, శూన్యసూచిక, "repeating tiles: count=%d width=%" PRId32, n_repeating, w_repeating);
 
-      static constexpr unsigned STCH_MAX_GLYPHS = 256;
+      స్థిర constexpr గుర్తులేని STCH_MAX_GLYPHS = 256;
 
       /* Number of additional times to repeat each repeating tile. */
-      unsigned int n_copies = 0;
+      గుర్తులేని పూర్ణాంకం n_copies = 0;
 
-      int64_t w_remaining_signed = (int64_t) w_total - w_fixed;
+      int64_t w_మిగిలిన_signed = (int64_t) w_మొత్తం - w_fixed;
       int64_t w_repeating_signed = w_repeating;
-      if (sign < 0)
+      ఒకవేళ (sign < 0)
       {
-	w_remaining_signed = -w_remaining_signed;
+	w_మిగిలిన_signed = -w_మిగిలిన_signed;
 	w_repeating_signed = -w_repeating_signed;
       }
-      hb_position_t w_remaining = hb_saturate_sub (w_total, w_fixed);
-      if (w_remaining_signed > w_repeating_signed && w_repeating_signed > 0)
-	n_copies = w_remaining_signed / w_repeating_signed - 1;
+      hb_position_t w_మిగిలిన = hb_saturate_sub (w_మొత్తం, w_fixed);
+      ఒకవేళ (w_మిగిలిన_signed > w_repeating_signed && w_repeating_signed > 0)
+	n_copies = w_మిగిలిన_signed / w_repeating_signed - 1;
 
       /* See if we can improve the fit by adding an extra repeat and squeezing them together a bit. */
       hb_position_t extra_repeat_overlap = 0;
-      int64_t shortfall = w_remaining_signed - w_repeating_signed * (n_copies + 1);
-      if (shortfall > 0 && n_repeating > 0)
+      int64_t shortfall = w_మిగిలిన_signed - w_repeating_signed * (n_copies + 1);
+      ఒకవేళ (shortfall > 0 && n_repeating > 0)
       {
 	++n_copies;
-	int64_t excess = (n_copies + 1) * w_repeating_signed - w_remaining_signed;
-	if (excess > 0)
+	int64_t excess = (n_copies + 1) * w_repeating_signed - w_మిగిలిన_signed;
+	ఒకవేళ (excess > 0)
 	{
-	  extra_repeat_overlap = hb_clamp_to<hb_position_t> (excess / ((int64_t) n_copies * (int64_t) n_repeating));
-	  w_remaining = 0;
+	  extra_repeat_overlap = hb_clamp_గమ్యం<hb_position_t> (excess / ((int64_t) n_copies * (int64_t) n_repeating));
+	  w_మిగిలిన = 0;
 	}
       }
 
-      unsigned int max_copies = 0;
-      if (n_repeating > 0)
+      గుర్తులేని పూర్ణాంకం max_copies = 0;
+      ఒకవేళ (n_repeating > 0)
       {
-	unsigned int base_glyphs = n_fixed + n_repeating;
-	if (base_glyphs < STCH_MAX_GLYPHS)
-	  max_copies = (STCH_MAX_GLYPHS - base_glyphs) / n_repeating;
+	గుర్తులేని పూర్ణాంకం పునాది_glyphs = n_fixed + n_repeating;
+	ఒకవేళ (పునాది_glyphs < STCH_MAX_GLYPHS)
+	  max_copies = (STCH_MAX_GLYPHS - పునాది_glyphs) / n_repeating;
       }
       n_copies = hb_min (n_copies, max_copies);
 
-      if (step == MEASURE)
+      ఒకవేళ (అడుగు == MEASURE)
       {
-	unsigned int added_glyphs = 0;
-	if (unlikely (hb_unsigned_mul_overflows (n_copies, n_repeating, &added_glyphs) ||
-		      hb_unsigned_add_overflows (extra_glyphs_needed, added_glyphs, &extra_glyphs_needed)))
+	గుర్తులేని పూర్ణాంకం added_glyphs = 0;
+	ఒకవేళ (unlikely (hb_unsigned_mul_overflows (n_copies, n_repeating, &added_glyphs) ||
+		      hb_unsigned_కూడు_overflows (extra_glyphs_needed, added_glyphs, &extra_glyphs_needed)))
 	{
 	  extra_glyphs_needed = UINT_MAX;
-	  break;
+	  ఆపు;
 	}
-	DEBUG_MSG (ARABIC, nullptr, "will add extra %u copies of repeating tiles", n_copies);
+	DEBUG_సందేశం (ARABIC, శూన్యసూచిక, "will add extra %u copies of repeating tiles", n_copies);
       }
-      else
+      లేకపోతే
       {
-	buffer->unsafe_to_break (context, end);
-	hb_position_t x_offset = w_remaining / 2;
-	for (unsigned int k = end; k > start; k--)
+	బఫరు->unsafe_గమ్యం_break (context, చివర);
+	hb_position_t x_స్థానభ్రంశం_2 = w_మిగిలిన / 2;
+	కొరకు (గుర్తులేని పూర్ణాంకం k = చివర; k > ప్రారంభం; k--)
 	{
-          hb_position_t width = pos[k - 1].stch_advance();
+          hb_position_t వెడల్పు = pos[k - 1].stch_advance();
 
-	  unsigned int repeat = 1;
-	  if (info[k - 1].arabic_shaping_action() == STCH_REPEATING)
+	  గుర్తులేని పూర్ణాంకం repeat = 1;
+	  ఒకవేళ (info[k - 1].arabic_shaping_action() == STCH_REPEATING)
 	    repeat += n_copies;
 
-	  DEBUG_MSG (ARABIC, nullptr, "appending %u copies of glyph %" PRIu32 "; j=%u",
+	  DEBUG_సందేశం (ARABIC, శూన్యసూచిక, "appending %u copies of glyph %" PRIu32 "; j=%u",
 		     repeat, info[k - 1].codepoint, j);
 	  pos[k - 1].x_advance = 0;
-	  for (unsigned int n = 0; n < repeat; n++)
+	  కొరకు (గుర్తులేని పూర్ణాంకం n = 0; n < repeat; n++)
 	  {
-	    if (rtl)
+	    ఒకవేళ (rtl)
 	    {
-	      x_offset = hb_saturate_sub (x_offset, width);
-	      if (n > 0)
-		x_offset = hb_saturate_add (x_offset, extra_repeat_overlap);
+	      x_స్థానభ్రంశం_2 = hb_saturate_sub (x_స్థానభ్రంశం_2, వెడల్పు);
+	      ఒకవేళ (n > 0)
+		x_స్థానభ్రంశం_2 = hb_saturate_కూడు (x_స్థానభ్రంశం_2, extra_repeat_overlap);
 	    }
-	    pos[k - 1].x_offset = x_offset;
+	    pos[k - 1].x_స్థానభ్రంశం_2 = x_స్థానభ్రంశం_2;
 	    /* Append copy. */
 	    --j;
 	    info[j] = info[k - 1];
 	    pos[j] = pos[k - 1];
 
-	    if (!rtl)
+	    ఒకవేళ (!rtl)
 	    {
-	      x_offset = hb_saturate_add (x_offset, width);
-	      if (n > 0)
-		x_offset = hb_saturate_sub (x_offset, extra_repeat_overlap);
+	      x_స్థానభ్రంశం_2 = hb_saturate_కూడు (x_స్థానభ్రంశం_2, వెడల్పు);
+	      ఒకవేళ (n > 0)
+		x_స్థానభ్రంశం_2 = hb_saturate_sub (x_స్థానభ్రంశం_2, extra_repeat_overlap);
 	    }
 	  }
 	}
       }
     }
 
-    if (step == MEASURE)
+    ఒకవేళ (అడుగు == MEASURE)
     {
-      unsigned int total_glyphs = 0;
-      if (unlikely (hb_unsigned_add_overflows (count, extra_glyphs_needed, &total_glyphs) ||
-		    !buffer->ensure (total_glyphs)))
-	break;
+      గుర్తులేని పూర్ణాంకం మొత్తం_glyphs = 0;
+      ఒకవేళ (unlikely (hb_unsigned_కూడు_overflows (లెక్క, extra_glyphs_needed, &మొత్తం_glyphs) ||
+		    !బఫరు->ensure (మొత్తం_glyphs)))
+	ఆపు;
     }
-    else
+    లేకపోతే
     {
-      assert (j == 0);
-      buffer->len = new_len;
+      ప్రతిజ్ఞా (j == 0);
+      బఫరు->len = new_len;
     }
   }
 
-  if (!rtl)
-    buffer->reverse ();
+  ఒకవేళ (!rtl)
+    బఫరు->reverse ();
 }
 
 
-static void
-postprocess_glyphs_arabic (const hb_ot_shape_plan_t *plan,
-			   hb_buffer_t              *buffer,
+స్థిర శూన్య
+postprocess_glyphs_arabic (స్థిరరాశి hb_ot_shape_plan_t *plan,
+			   hb_బఫరు_t              *బఫరు,
 			   hb_font_t                *font)
 {
-  apply_stch (plan, buffer, font);
+  apply_stch (plan, బఫరు, font);
 }
 
 /* https://www.unicode.org/reports/tr53/ */
 
-static const hb_codepoint_t
+స్థిర స్థిరరాశి hb_codepoint_t
 modifier_combining_marks[] =
 {
   0x0654u, /* ARABIC HAMZA ABOVE */
@@ -707,57 +707,57 @@ modifier_combining_marks[] =
   0x08F3u, /* ARABIC SMALL HIGH WAW */
 };
 
-static inline bool
-info_is_mcm (const hb_glyph_info_t &info)
+స్థిర అంతఃవరుస తార్కిక
+info_is_mcm (స్థిరరాశి hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  for (unsigned int i = 0; i < ARRAY_LENGTH (modifier_combining_marks); i++)
-    if (u == modifier_combining_marks[i])
-      return true;
-  return false;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < ARRAY_నిడివి (modifier_combining_marks); i++)
+    ఒకవేళ (u == modifier_combining_marks[i])
+      తిరిగి నిజం;
+  తిరిగి అబద్ధం;
 }
 
-static void
-reorder_marks_arabic (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		      hb_buffer_t              *buffer,
-		      unsigned int              start,
-		      unsigned int              end)
+స్థిర శూన్య
+reorder_marks_arabic (స్థిరరాశి hb_ot_shape_plan_t *plan HB_వాడని,
+		      hb_బఫరు_t              *బఫరు,
+		      గుర్తులేని పూర్ణాంకం              ప్రారంభం,
+		      గుర్తులేని పూర్ణాంకం              చివర)
 {
-  hb_glyph_info_t *info = buffer->info;
+  hb_glyph_info_t *info = బఫరు->info;
 
-  DEBUG_MSG (ARABIC, buffer, "Reordering marks from %u to %u", start, end);
+  DEBUG_సందేశం (ARABIC, బఫరు, "Reordering marks from %u to %u", ప్రారంభం, చివర);
 
-  unsigned int i = start;
-  for (unsigned int cc = 220; cc <= 230; cc += 10)
+  గుర్తులేని పూర్ణాంకం i = ప్రారంభం;
+  కొరకు (గుర్తులేని పూర్ణాంకం cc = 220; cc <= 230; cc += 10)
   {
-    DEBUG_MSG (ARABIC, buffer, "Looking for %u's starting at %u", cc, i);
-    while (i < end && info_cc(info[i]) < cc)
+    DEBUG_సందేశం (ARABIC, బఫరు, "Looking for %u's starting at %u", cc, i);
+    అయితే (i < చివర && info_cc(info[i]) < cc)
       i++;
-    DEBUG_MSG (ARABIC, buffer, "Looking for %u's stopped at %u", cc, i);
+    DEBUG_సందేశం (ARABIC, బఫరు, "Looking for %u's stopped at %u", cc, i);
 
-    if (i == end)
-      break;
+    ఒకవేళ (i == చివర)
+      ఆపు;
 
-    if (info_cc(info[i]) > cc)
-      continue;
+    ఒకవేళ (info_cc(info[i]) > cc)
+      కొనసాగు;
 
-    unsigned int j = i;
-    while (j < end && info_cc(info[j]) == cc && info_is_mcm (info[j]))
+    గుర్తులేని పూర్ణాంకం j = i;
+    అయితే (j < చివర && info_cc(info[j]) == cc && info_is_mcm (info[j]))
       j++;
 
-    if (i == j)
-      continue;
+    ఒకవేళ (i == j)
+      కొనసాగు;
 
-    DEBUG_MSG (ARABIC, buffer, "Found %u's from %u to %u", cc, i, j);
+    DEBUG_సందేశం (ARABIC, బఫరు, "Found %u's from %u to %u", cc, i, j);
 
     /* Shift it! */
-    DEBUG_MSG (ARABIC, buffer, "Shifting %u's: %u %u", cc, i, j);
-    hb_glyph_info_t temp[HB_OT_SHAPE_MAX_COMBINING_MARKS];
-    assert (j - i <= ARRAY_LENGTH (temp));
-    buffer->merge_clusters (start, j);
-    memmove (temp, &info[i], (j - i) * sizeof (hb_glyph_info_t));
-    memmove (&info[start + j - i], &info[start], (i - start) * sizeof (hb_glyph_info_t));
-    memmove (&info[start], temp, (j - i) * sizeof (hb_glyph_info_t));
+    DEBUG_సందేశం (ARABIC, బఫరు, "Shifting %u's: %u %u", cc, i, j);
+    hb_glyph_info_t తాత్కాలిక[HB_OT_SHAPE_MAX_COMBINING_MARKS];
+    ప్రతిజ్ఞా (j - i <= ARRAY_నిడివి (తాత్కాలిక));
+    బఫరు->విలీనం_clusters (ప్రారంభం, j);
+    memmove (తాత్కాలిక, &info[i], (j - i) * పరిమాణం (hb_glyph_info_t));
+    memmove (&info[ప్రారంభం + j - i], &info[ప్రారంభం], (i - ప్రారంభం) * పరిమాణం (hb_glyph_info_t));
+    memmove (&info[ప్రారంభం], తాత్కాలిక, (j - i) * పరిమాణం (hb_glyph_info_t));
 
     /* Renumber CC such that the reordered sequence is still sorted.
      * 22 and 26 are chosen because they are smaller than all Arabic categories,
@@ -771,35 +771,35 @@ reorder_marks_arabic (const hb_ot_shape_plan_t *plan HB_UNUSED,
      * ALEF, HAMZAH, MADDAH, we should NOT try to compose ALEF+MADDAH, but with this
      * renumbering, we will.
      */
-    unsigned int new_start = start + j - i;
-    unsigned int new_cc = cc == 220 ? HB_MODIFIED_COMBINING_CLASS_CCC22 : HB_MODIFIED_COMBINING_CLASS_CCC26;
-    while (start < new_start)
+    గుర్తులేని పూర్ణాంకం new_ప్రారంభం = ప్రారంభం + j - i;
+    గుర్తులేని పూర్ణాంకం new_cc = cc == 220 ? HB_MODIFIED_COMBINING_CLASS_CCC22 : HB_MODIFIED_COMBINING_CLASS_CCC26;
+    అయితే (ప్రారంభం < new_ప్రారంభం)
     {
-      _hb_glyph_info_set_modified_combining_class (&info[start], new_cc);
-      start++;
+      hb_glyph_info_సమితి_modified_combining_class (&info[ప్రారంభం], new_cc);
+      ప్రారంభం++;
     }
 
     i = j;
   }
 }
 
-const hb_ot_shaper_t _hb_ot_shaper_arabic =
+స్థిరరాశి hb_ot_shaper_t _hb_ot_shaper_arabic =
 {
   collect_features_arabic,
-  nullptr, /* override_features */
-  data_create_arabic,
-  data_destroy_arabic,
-  nullptr, /* preprocess_text */
+  శూన్యసూచిక, /* override_features */
+  దత్తాంశం_create_arabic,
+  దత్తాంశం_destroy_arabic,
+  శూన్యసూచిక, /* preprocess_text */
   postprocess_glyphs_arabic,
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  setup_masks_arabic,
+  శూన్యసూచిక, /* decompose */
+  శూన్యసూచిక, /* compose */
+  అమరిక_masks_arabic,
   reorder_marks_arabic,
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE,
-  true, /* fallback_position */
+  HB_ట్యాగ్_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_DEFAULT,
+  HB_OT_SHAPE_ZERO_వెడల్పు_MARKS_BY_GDEF_LATE,
+  నిజం, /* fallback_position */
 };
 
 
-#endif
+#అయితే_ముగింపు

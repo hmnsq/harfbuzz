@@ -22,29 +22,29 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_BLOB_HH
-#define HB_WASM_API_BLOB_HH
+#నిర్వచితం_కాకపోతే HB_WASM_API_BLOB_HH
+#నిర్వచించు HB_WASM_API_BLOB_HH
 
-#include "hb-wasm-api.hh"
+#అన్తర్భావ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+నామాకాశ hb {
+నామాకాశ wasm {
 
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (శూన్య, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob))
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return;
+  ఒకవేళ (unlikely (!blob))
+    తిరిగి;
 
-  module_free (blob->data);
+  module_free (blob->దత్తాంశం);
 
-  blob->data = nullref;
-  blob->length = 0;
+  blob->దత్తాంశం = nullref;
+  blob->నిడివి = 0;
 }
 
 
 }}
 
-#endif /* HB_WASM_API_BLOB_HH */
+#అయితే_ముగింపు /* HB_WASM_API_BLOB_HH */

@@ -26,860 +26,860 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_BASE_TABLE_HH
-#define HB_OT_LAYOUT_BASE_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_LAYOUT_పునాది_పట్టిక_HH
+#నిర్వచించు HB_OT_LAYOUT_పునాది_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-layout-common.hh"
 
-namespace OT {
+నామాకాశ OT {
 
 /*
  * BASE -- Baseline
  * https://docs.microsoft.com/en-us/typography/opentype/spec/base
  */
 
-struct BaseCoordFormat1
+నిర్మాణం పునాది_Coord_Format1
 {
-  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) స్థిరరాశి
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (ఇది);
+    return_trace ((తార్కిక) c->serializer->embed (*ఇది));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 1 */
   FWORD		coordinate;	/* X or Y value, in design units */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-template <typename Types>
-struct BaseCoordFormat2_4
+మూస <రకం_పేరు Types>
+నిర్మాణం పునాది_Coord_Format2_4
 {
-  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) స్థిరరాశి
   {
     /* TODO */
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
     hb_codepoint_t *new_gid;
-    if (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
-      return_trace (false);
+    ఒకవేళ (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
+      return_trace (అబద్ధం);
 
-    return_trace (c->serializer->check_assign (out->referenceGlyph,
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->referenceGlyph,
                                                *new_gid,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+                                               HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 2 or 4 */
   FWORD		coordinate;	/* X or Y value, in design units */
-  typename Types::HBGlyphID
+  రకం_పేరు Types::HBGlyphID
 		referenceGlyph;	/* Glyph ID of control glyph */
-  HBUINT16	coordPoint;	/* Index of contour point on the
+  HBUINT16	coord_బిందువు;	/* Index of contour point on the
 				 * reference glyph */
-  public:
-  DEFINE_SIZE_STATIC (6 + Types::HBGlyphID::static_size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6 + Types::HBGlyphID::static_కొలత);
 };
 
-struct BaseCoordFormat3
+నిర్మాణం పునాది_Coord_Format3
 {
   hb_position_t get_coord (hb_font_t *font,
-			   const ItemVariationStore &var_store,
-			   hb_direction_t direction) const
+			   స్థిరరాశి అంశం_Variation_Store &var_store,
+			   hb_direction_t direction) స్థిరరాశి
   {
-    const Device &device = this+deviceTable;
+    స్థిరరాశి Device &device = ఇది+device_పట్టిక;
 
-    return HB_DIRECTION_IS_HORIZONTAL (direction)
-	 ? hb_saturate_add (font->em_scale_y (coordinate), device.get_y_delta (font, var_store))
-	 : hb_saturate_add (font->em_scale_x (coordinate), device.get_x_delta (font, var_store));
+    తిరిగి HB_DIRECTION_IS_HORIZONTAL (direction)
+	 ? hb_saturate_కూడు (font->em_scale_y (coordinate), device.get_y_delta (font, var_store))
+	 : hb_saturate_కూడు (font->em_scale_x (coordinate), device.get_x_delta (font, var_store));
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    unsigned varidx = (this+deviceTable).get_variation_index ();
-    varidx_set.add (varidx);
+    గుర్తులేని varidx = (ఇది+device_పట్టిక).get_variation_సూచీ ();
+    varidx_సమితి.కూడు (varidx);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    if (!c->plan->pinned_at_default)
+    ఒకవేళ (!c->plan->pinned_at_default)
     {
-      unsigned var_idx = (this+deviceTable).get_variation_index ();
-      if (var_idx != VarIdx::NO_VARIATION)
+      గుర్తులేని var_idx = (ఇది+device_పట్టిక).get_variation_సూచీ ();
+      ఒకవేళ (var_idx != VarIdx::NO_VARIATION)
       {
-        hb_pair_t<unsigned, int> *v;
-        if (!c->plan->base_variation_idx_map.has (var_idx, &v))
-          return_trace (false);
+        hb_pair_t<గుర్తులేని, పూర్ణాంకం> *v;
+        ఒకవేళ (!c->plan->పునాది_variation_idx_map.has (var_idx, &v))
+          return_trace (అబద్ధం);
         
-        if (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
-                                                    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-          return_trace (false);
+        ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (బహిర్గతం->coordinate, coordinate + hb_రెండవ (*v),
+                                                    HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+          return_trace (అబద్ధం);
       }
     }
     
-    out->deviceTable.serialize_copy (c->serializer, deviceTable,
-                                     this, 0,
-                                     hb_serialize_context_t::Head,
-                                     &c->plan->base_variation_idx_map);
-    return_trace (true);
+    బహిర్గతం->device_పట్టిక.serialize_copy (c->serializer, device_పట్టిక,
+                                     ఇది, 0,
+                                     hb_serialize_context_t::తల,
+                                     &c->plan->పునాది_variation_idx_map);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  deviceTable.sanitize (c, this)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  device_పట్టిక.sanitize (c, ఇది)));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 3 */
   FWORD		coordinate;	/* X or Y value, in design units */
-  Offset16To<Device>
-		deviceTable;	/* Offset to Device table for X or
+  Offset16_గమ్యం<Device>
+		device_పట్టిక;	/* Offset to Device table for X or
 				 * Y value, from beginning of
 				 * BaseCoord table (may be NULL). */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct BaseCoord
+నిర్మాణం పునాది_Coord
 {
-  bool has_data () const { return u.format.v; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి u.format.v; }
 
   hb_position_t get_coord (hb_font_t            *font,
-			   const ItemVariationStore &var_store,
-			   hb_direction_t        direction) const
+			   స్థిరరాశి అంశం_Variation_Store &var_store,
+			   hb_direction_t        direction) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coord (font, direction);
-    case 2: hb_barrier (); return u.format2.get_coord (font, direction);
-    case 3: hb_barrier (); return u.format3.get_coord (font, var_store, direction);
-#ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return u.format4.get_coord (font, direction);
-#endif
-    default:return 0;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_coord (font, direction);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.get_coord (font, direction);
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_coord (font, var_store, direction);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.get_coord (font, direction);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); return;
-    default:return;
+    ఎంపిక (u.format.v) {
+    స్థితి 3: hb_barrier (); u.format3.collect_variation_indices (varidx_సమితి); తిరిగి;
+    అప్రమేయ:తిరిగి;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ఒకవేళ (unlikely (!c->may_dispatch (ఇది, &u.format.v))) తిరిగి c->no_dispatch_return_విలువ ();
+    TRACE_DISPATCH (ఇది, u.format.v);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    స్థితి 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    స్థితి 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (c->default_return_విలువ ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.format.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!u.format.v.sanitize (c))) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-#endif
-    default:return_trace (false);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    స్థితి 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;
-  BaseCoordFormat1	format1;
-  BaseCoordFormat2_4<Layout::SmallTypes>
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }	format;
+  పునాది_Coord_Format1	format1;
+  పునాది_Coord_Format2_4<Layout::SmallTypes>
 			format2;
-  BaseCoordFormat3	format3;
-#ifndef HB_NO_BEYOND_64K
-  BaseCoordFormat2_4<Layout::MediumTypes>
+  పునాది_Coord_Format3	format3;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  పునాది_Coord_Format2_4<Layout::MediumTypes>
 			format4;
-#endif
+#అయితే_ముగింపు
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (2, format.v);
 };
 
-struct FeatMinMaxRecord
+నిర్మాణం Feat_Min_Max_రికార్డు
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t key) స్థిరరాశి { తిరిగి ట్యాగ్_2.cmp (key); }
 
-  bool has_data () const { return tag; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి ట్యాగ్_2; }
 
-  hb_tag_t get_feature_tag () const { return tag; }
+  hb_ట్యాగ్_t get_feature_ట్యాగ్ () స్థిరరాశి { తిరిగి ట్యాగ్_2; }
 
-  void get_min_max (const BaseCoord **min, const BaseCoord **max) const
+  శూన్య get_min_max (స్థిరరాశి పునాది_Coord **min, స్థిరరాశి పునాది_Coord **max) స్థిరరాశి
   {
-    if (likely (min)) *min = &(this+minCoord);
-    if (likely (max)) *max = &(this+maxCoord);
+    ఒకవేళ (likely (min)) *min = &(ఇది+minCoord);
+    ఒకవేళ (likely (max)) *max = &(ఇది+maxCoord);
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  const void *base,
-                                  hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  స్థిరరాశి శూన్య *పునాది,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (!plan->layout_features.has (tag))
-      return;
+    ఒకవేళ (!plan->layout_features.has (ట్యాగ్_2))
+      తిరిగి;
 
-    (base+minCoord).collect_variation_indices (varidx_set);
-    (base+maxCoord).collect_variation_indices (varidx_set);
+    (పునాది+minCoord).collect_variation_indices (varidx_సమితి);
+    (పునాది+maxCoord).collect_variation_indices (varidx_సమితి);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  తార్కిక subset (hb_subset_context_t *c,
+               స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    bool ret = out->minCoord.serialize_subset (c, minCoord, base);
-    ret |= out->maxCoord.serialize_subset (c, maxCoord, base);
+    తార్కిక ret = బహిర్గతం->minCoord.serialize_subset (c, minCoord, పునాది);
+    ret |= బహిర్గతం->maxCoord.serialize_subset (c, maxCoord, పునాది);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  minCoord.sanitize (c, base) &&
-			  maxCoord.sanitize (c, base)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  minCoord.sanitize (c, పునాది) &&
+			  maxCoord.sanitize (c, పునాది)));
   }
 
-  protected:
-  Tag		tag;		/* 4-byte feature identification tag--must
+  రక్షిత:
+  ట్యాగ్		ట్యాగ్_2;		/* 4-byte feature identification tag--must
 				 * match feature tag in FeatureList */
-  Offset16To<BaseCoord>
+  Offset16_గమ్యం<పునాది_Coord>
 		minCoord;	/* Offset to BaseCoord table that defines
 				 * the minimum extent value, from beginning
 				 * of MinMax table (may be NULL) */
-  Offset16To<BaseCoord>
+  Offset16_గమ్యం<పునాది_Coord>
 		maxCoord;	/* Offset to BaseCoord table that defines
 				 * the maximum extent value, from beginning
 				 * of MinMax table (may be NULL) */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct MinMax
+నిర్మాణం MinMax
 {
-  void get_min_max (hb_tag_t          feature_tag,
-		    const BaseCoord **min,
-		    const BaseCoord **max) const
+  శూన్య get_min_max (hb_ట్యాగ్_t          feature_ట్యాగ్,
+		    స్థిరరాశి పునాది_Coord **min,
+		    స్థిరరాశి పునాది_Coord **max) స్థిరరాశి
   {
-    const FeatMinMaxRecord &minMaxCoord = featMinMaxRecords.bsearch (feature_tag);
-    if (minMaxCoord.has_data ())
+    స్థిరరాశి Feat_Min_Max_రికార్డు &minMaxCoord = feat_Min_Max_రికార్డులు.bsearch (feature_ట్యాగ్);
+    ఒకవేళ (minMaxCoord.has_దత్తాంశం ())
       minMaxCoord.get_min_max (min, max);
-    else
+    లేకపోతే
     {
-      if (likely (min)) *min = &(this+minCoord);
-      if (likely (max)) *max = &(this+maxCoord);
+      ఒకవేళ (likely (min)) *min = &(ఇది+minCoord);
+      ఒకవేళ (likely (max)) *max = &(ఇది+maxCoord);
     }
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    (this+minCoord).collect_variation_indices (varidx_set);
-    (this+maxCoord).collect_variation_indices (varidx_set);
-    for (const FeatMinMaxRecord& record : featMinMaxRecords)
-      record.collect_variation_indices (plan, this, varidx_set);
+    (ఇది+minCoord).collect_variation_indices (varidx_సమితి);
+    (ఇది+maxCoord).collect_variation_indices (varidx_సమితి);
+    కొరకు (స్థిరరాశి Feat_Min_Max_రికార్డు& రికార్డు : feat_Min_Max_రికార్డులు)
+      రికార్డు.collect_variation_indices (plan, ఇది, varidx_సమితి);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    bool ret = out->minCoord.serialize_subset (c, minCoord, this);
-    ret |= out->maxCoord.serialize_subset (c, maxCoord, this);
+    తార్కిక ret = బహిర్గతం->minCoord.serialize_subset (c, minCoord, ఇది);
+    ret |= బహిర్గతం->maxCoord.serialize_subset (c, maxCoord, ఇది);
 
-    unsigned len = 0;
-    for (const FeatMinMaxRecord& _ : featMinMaxRecords)
+    గుర్తులేని len = 0;
+    కొరకు (స్థిరరాశి Feat_Min_Max_రికార్డు& _ : feat_Min_Max_రికార్డులు)
     {
-      hb_tag_t feature_tag = _.get_feature_tag ();
-      if (!c->plan->layout_features.has (feature_tag))
-        continue;
+      hb_ట్యాగ్_t feature_ట్యాగ్ = _.get_feature_ట్యాగ్ ();
+      ఒకవేళ (!c->plan->layout_features.has (feature_ట్యాగ్))
+        కొనసాగు;
 
-      auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      ఒకవేళ (!_.subset (c, ఇది)) c->serializer->revert (snap);
+      లేకపోతే len++;
     }
 
-    if (len > 0) ret = true;
-    if (!ret) return_trace (false);
-    return_trace (c->serializer->check_assign (out->featMinMaxRecords.len, len,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    ఒకవేళ (len > 0) ret = నిజం;
+    ఒకవేళ (!ret) return_trace (అబద్ధం);
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->feat_Min_Max_రికార్డులు.len, len,
+                                               HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  minCoord.sanitize (c, this) &&
-			  maxCoord.sanitize (c, this) &&
-			  featMinMaxRecords.sanitize (c, this)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  minCoord.sanitize (c, ఇది) &&
+			  maxCoord.sanitize (c, ఇది) &&
+			  feat_Min_Max_రికార్డులు.sanitize (c, ఇది)));
   }
 
-  protected:
-  Offset16To<BaseCoord>
+  రక్షిత:
+  Offset16_గమ్యం<పునాది_Coord>
 		minCoord;	/* Offset to BaseCoord table that defines
 				 * minimum extent value, from the beginning
 				 * of MinMax table (may be NULL) */
-  Offset16To<BaseCoord>
+  Offset16_గమ్యం<పునాది_Coord>
 		maxCoord;	/* Offset to BaseCoord table that defines
 				 * maximum extent value, from the beginning
 				 * of MinMax table (may be NULL) */
-  SortedArray16Of<FeatMinMaxRecord>
-		featMinMaxRecords;
+  Sorted_Array16_యొక్క<Feat_Min_Max_రికార్డు>
+		feat_Min_Max_రికార్డులు;
 				/* Array of FeatMinMaxRecords, in alphabetical
 				 * order by featureTableTag */
-  public:
-  DEFINE_SIZE_ARRAY (6, featMinMaxRecords);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, feat_Min_Max_రికార్డులు);
 };
 
-struct BaseValues
+నిర్మాణం పునాది_విలువలు
 {
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
+  స్థిరరాశి పునాది_Coord &get_పునాది_coord (పూర్ణాంకం baseline_ట్యాగ్_సూచీ) స్థిరరాశి
   {
-    if (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
-    return this+baseCoords[baseline_tag_index];
+    ఒకవేళ (baseline_ట్యాగ్_సూచీ == -1) baseline_ట్యాగ్_సూచీ = default_సూచీ_2;
+    తిరిగి ఇది+పునాది_Coords[baseline_ట్యాగ్_సూచీ];
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    for (const auto& _ : baseCoords)
-      (this+_).collect_variation_indices (varidx_set);
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : పునాది_Coords)
+      (ఇది+_).collect_variation_indices (varidx_సమితి);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
-    out->defaultIndex = defaultIndex;
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    బహిర్గతం->default_సూచీ_2 = default_సూచీ_2;
 
-    bool ret = false;
-    for (const auto& _ : baseCoords)
+    తార్కిక ret = అబద్ధం;
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : పునాది_Coords)
     {
-      auto *o = out->baseCoords.serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-       ret |= o->serialize_subset (c, _, this);
+      స్వయంచాలక *o = బహిర్గతం->పునాది_Coords.serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!o)) return_trace (అబద్ధం);
+       ret |= o->serialize_subset (c, _, ఇది);
     }
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseCoords.sanitize (c, this)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  పునాది_Coords.sanitize (c, ఇది)));
   }
 
-  protected:
-  Index		defaultIndex;	/* Index number of default baseline for this
+  రక్షిత:
+  సూచీ		default_సూచీ_2;	/* Index number of default baseline for this
 				 * script — equals index position of baseline tag
 				 * in baselineTags array of the BaseTagList */
-  Array16OfOffset16To<BaseCoord>
-		baseCoords;	/* Number of BaseCoord tables defined — should equal
+  Array16_యొక్క_Offset16_గమ్యం<పునాది_Coord>
+		పునాది_Coords;	/* Number of BaseCoord tables defined — should equal
 				 * baseTagCount in the BaseTagList
 				 *
 				 * Array of offsets to BaseCoord tables, from beginning of
 				 * BaseValues table — order matches baselineTags array in
 				 * the BaseTagList */
-  public:
-  DEFINE_SIZE_ARRAY (4, baseCoords);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, పునాది_Coords);
 };
 
-struct BaseLangSysRecord
+నిర్మాణం పునాది_Lang_Sys_రికార్డు
 {
-  int cmp (hb_tag_t key) const { return baseLangSysTag.cmp (key); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t key) స్థిరరాశి { తిరిగి పునాది_Lang_Sys_ట్యాగ్.cmp (key); }
 
-  bool has_data () const { return baseLangSysTag; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పునాది_Lang_Sys_ట్యాగ్; }
 
-  const MinMax &get_min_max (const void* base) const { return base+minMax; }
+  స్థిరరాశి MinMax &get_min_max (స్థిరరాశి శూన్య* పునాది) స్థిరరాశి { తిరిగి పునాది+minMax; }
 
-  void collect_variation_indices (const void* base,
-                                  const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
-  { (base+minMax).collect_variation_indices (plan, varidx_set); }
+  శూన్య collect_variation_indices (స్థిరరాశి శూన్య* పునాది,
+                                  స్థిరరాశి hb_subset_plan_t* plan,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
+  { (పునాది+minMax).collect_variation_indices (plan, varidx_సమితి); }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  తార్కిక subset (hb_subset_context_t *c,
+               స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    return_trace (out->minMax.serialize_subset (c, minMax, base));
+    return_trace (బహిర్గతం->minMax.serialize_subset (c, minMax, పునాది));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  minMax.sanitize (c, base)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  minMax.sanitize (c, పునాది)));
   }
 
-  protected:
-  Tag		baseLangSysTag;	/* 4-byte language system identification tag */
-  Offset16To<MinMax>
+  రక్షిత:
+  ట్యాగ్		పునాది_Lang_Sys_ట్యాగ్;	/* 4-byte language system identification tag */
+  Offset16_గమ్యం<MinMax>
 		minMax;		/* Offset to MinMax table, from beginning
 				 * of BaseScript table */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct BaseScript
+నిర్మాణం పునాది_Script
 {
-  const MinMax &get_min_max (hb_tag_t language_tag) const
+  స్థిరరాశి MinMax &get_min_max (hb_ట్యాగ్_t language_ట్యాగ్) స్థిరరాశి
   {
-    const BaseLangSysRecord& record = baseLangSysRecords.bsearch (language_tag);
-    return record.has_data () ? record.get_min_max (this) : this+defaultMinMax;
+    స్థిరరాశి పునాది_Lang_Sys_రికార్డు& రికార్డు = పునాది_Lang_Sys_రికార్డులు.bsearch (language_ట్యాగ్);
+    తిరిగి రికార్డు.has_దత్తాంశం () ? రికార్డు.get_min_max (ఇది) : ఇది+defaultMinMax;
   }
 
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
-  { return (this+baseValues).get_base_coord (baseline_tag_index); }
+  స్థిరరాశి పునాది_Coord &get_పునాది_coord (పూర్ణాంకం baseline_ట్యాగ్_సూచీ) స్థిరరాశి
+  { తిరిగి (ఇది+పునాది_విలువలు_2).get_పునాది_coord (baseline_ట్యాగ్_సూచీ); }
 
-  bool has_values () const { return baseValues; }
-  bool has_min_max () const { return defaultMinMax || baseLangSysRecords; }
+  తార్కిక has_విలువలు () స్థిరరాశి { తిరిగి పునాది_విలువలు_2; }
+  తార్కిక has_min_max () స్థిరరాశి { తిరిగి defaultMinMax || పునాది_Lang_Sys_రికార్డులు; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    (this+baseValues).collect_variation_indices (varidx_set);
-    (this+defaultMinMax).collect_variation_indices (plan, varidx_set);
+    (ఇది+పునాది_విలువలు_2).collect_variation_indices (varidx_సమితి);
+    (ఇది+defaultMinMax).collect_variation_indices (plan, varidx_సమితి);
     
-    for (const BaseLangSysRecord& _ : baseLangSysRecords)
-      _.collect_variation_indices (this, plan, varidx_set);
+    కొరకు (స్థిరరాశి పునాది_Lang_Sys_రికార్డు& _ : పునాది_Lang_Sys_రికార్డులు)
+      _.collect_variation_indices (ఇది, plan, varidx_సమితి);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    bool ret = out->baseValues.serialize_subset (c, baseValues, this);
-    ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, this);
+    తార్కిక ret = బహిర్గతం->పునాది_విలువలు_2.serialize_subset (c, పునాది_విలువలు_2, ఇది);
+    ret |= బహిర్గతం->defaultMinMax.serialize_subset (c, defaultMinMax, ఇది);
 
-    unsigned len = 0;
-    for (const auto& _ : baseLangSysRecords)
+    గుర్తులేని len = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : పునాది_Lang_Sys_రికార్డులు)
     {
-      auto snap = c->serializer->snapshot ();
-      if (_.subset (c, this)) {
-        ret = true;
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      ఒకవేళ (_.subset (c, ఇది)) {
+        ret = నిజం;
         len++;
       }
-      else c->serializer->revert (snap);
+      లేకపోతే c->serializer->revert (snap);
     }
 
-    if (!ret) return_trace (false);
-    return_trace (c->serializer->check_assign (out->baseLangSysRecords.len, len,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    ఒకవేళ (!ret) return_trace (అబద్ధం);
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->పునాది_Lang_Sys_రికార్డులు.len, len,
+                                               HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseValues.sanitize (c, this) &&
-			  defaultMinMax.sanitize (c, this) &&
-			  baseLangSysRecords.sanitize (c, this)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  పునాది_విలువలు_2.sanitize (c, ఇది) &&
+			  defaultMinMax.sanitize (c, ఇది) &&
+			  పునాది_Lang_Sys_రికార్డులు.sanitize (c, ఇది)));
   }
 
-  protected:
-  Offset16To<BaseValues>
-		baseValues;	/* Offset to BaseValues table, from beginning
+  రక్షిత:
+  Offset16_గమ్యం<పునాది_విలువలు>
+		పునాది_విలువలు_2;	/* Offset to BaseValues table, from beginning
 				 * of BaseScript table (may be NULL) */
-  Offset16To<MinMax>
+  Offset16_గమ్యం<MinMax>
 		defaultMinMax;	/* Offset to MinMax table, from beginning of
 				 * BaseScript table (may be NULL) */
-  SortedArray16Of<BaseLangSysRecord>
-		baseLangSysRecords;
+  Sorted_Array16_యొక్క<పునాది_Lang_Sys_రికార్డు>
+		పునాది_Lang_Sys_రికార్డులు;
 				/* Number of BaseLangSysRecords
 				 * defined — may be zero (0) */
 
-  public:
-  DEFINE_SIZE_ARRAY (6, baseLangSysRecords);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, పునాది_Lang_Sys_రికార్డులు);
 };
 
-struct BaseScriptList;
-struct BaseScriptRecord
+నిర్మాణం పునాది_Script_List;
+నిర్మాణం పునాది_Script_రికార్డు
 {
-  int cmp (hb_tag_t key) const { return baseScriptTag.cmp (key); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t key) స్థిరరాశి { తిరిగి పునాది_Script_ట్యాగ్.cmp (key); }
 
-  bool has_data () const { return baseScriptTag; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి పునాది_Script_ట్యాగ్; }
 
-  hb_tag_t get_script_tag () const { return baseScriptTag; }
+  hb_ట్యాగ్_t get_script_ట్యాగ్ () స్థిరరాశి { తిరిగి పునాది_Script_ట్యాగ్; }
 
-  const BaseScript &get_base_script (const BaseScriptList *list) const
-  { return list+baseScript; }
+  స్థిరరాశి పునాది_Script &get_పునాది_script (స్థిరరాశి పునాది_Script_List *list) స్థిరరాశి
+  { తిరిగి list+పునాది_Script_2; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  const void* list,
-                                  hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  స్థిరరాశి శూన్య* list,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (!plan->layout_scripts.has (baseScriptTag))
-      return;
+    ఒకవేళ (!plan->layout_scripts.has (పునాది_Script_ట్యాగ్))
+      తిరిగి;
 
-    (list+baseScript).collect_variation_indices (plan, varidx_set);
+    (list+పునాది_Script_2).collect_variation_indices (plan, varidx_సమితి);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  తార్కిక subset (hb_subset_context_t *c,
+               స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    return_trace (out->baseScript.serialize_subset (c, baseScript, base));
+    return_trace (బహిర్గతం->పునాది_Script_2.serialize_subset (c, పునాది_Script_2, పునాది));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseScript.sanitize (c, base)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  పునాది_Script_2.sanitize (c, పునాది)));
   }
 
-  protected:
-  Tag		baseScriptTag;	/* 4-byte script identification tag */
-  Offset16To<BaseScript>
-		baseScript;	/* Offset to BaseScript table, from beginning
+  రక్షిత:
+  ట్యాగ్		పునాది_Script_ట్యాగ్;	/* 4-byte script identification tag */
+  Offset16_గమ్యం<పునాది_Script>
+		పునాది_Script_2;	/* Offset to BaseScript table, from beginning
 				 * of BaseScriptList */
 
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct BaseScriptList
+నిర్మాణం పునాది_Script_List
 {
-  const BaseScript &get_base_script (hb_tag_t script) const
+  స్థిరరాశి పునాది_Script &get_పునాది_script (hb_ట్యాగ్_t script) స్థిరరాశి
   {
-    const BaseScriptRecord *record = &baseScriptRecords.bsearch (script);
-    if (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
-    return record->has_data () ? record->get_base_script (this) : Null (BaseScript);
+    స్థిరరాశి పునాది_Script_రికార్డు *రికార్డు = &పునాది_Script_రికార్డులు.bsearch (script);
+    ఒకవేళ (!రికార్డు->has_దత్తాంశం ()) రికార్డు = &పునాది_Script_రికార్డులు.bsearch (HB_ట్యాగ్ ('D','F','L','T'));
+    తిరిగి రికార్డు->has_దత్తాంశం () ? రికార్డు->get_పునాది_script (ఇది) : Null (పునాది_Script);
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    for (const BaseScriptRecord& _ : baseScriptRecords)
-      _.collect_variation_indices (plan, this, varidx_set);
+    కొరకు (స్థిరరాశి పునాది_Script_రికార్డు& _ : పునాది_Script_రికార్డులు)
+      _.collect_variation_indices (plan, ఇది, varidx_సమితి);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    unsigned len = 0;
-    for (const BaseScriptRecord& _ : baseScriptRecords)
+    గుర్తులేని len = 0;
+    కొరకు (స్థిరరాశి పునాది_Script_రికార్డు& _ : పునాది_Script_రికార్డులు)
     {
-      hb_tag_t script_tag = _.get_script_tag ();
-      if (!c->plan->layout_scripts.has (script_tag))
-        continue;
+      hb_ట్యాగ్_t script_ట్యాగ్ = _.get_script_ట్యాగ్ ();
+      ఒకవేళ (!c->plan->layout_scripts.has (script_ట్యాగ్))
+        కొనసాగు;
 
-      auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      ఒకవేళ (!_.subset (c, ఇది)) c->serializer->revert (snap);
+      లేకపోతే len++;
     }
 
-    if (!len) return_trace (false);
-    return_trace (c->serializer->check_assign (out->baseScriptRecords.len, len,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    ఒకవేళ (!len) return_trace (అబద్ధం);
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->పునాది_Script_రికార్డులు.len, len,
+                                               HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  baseScriptRecords.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  పునాది_Script_రికార్డులు.sanitize (c, ఇది));
   }
 
-  protected:
-  SortedArray16Of<BaseScriptRecord>
-			baseScriptRecords;
+  రక్షిత:
+  Sorted_Array16_యొక్క<పునాది_Script_రికార్డు>
+			పునాది_Script_రికార్డులు;
 
-  public:
-  DEFINE_SIZE_ARRAY (2, baseScriptRecords);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, పునాది_Script_రికార్డులు);
 };
 
-struct Axis
+నిర్మాణం Axis
 {
-  bool get_baseline (hb_tag_t          baseline_tag,
-		     hb_tag_t          script_tag,
-		     hb_tag_t          language_tag,
-		     const BaseCoord **coord) const
+  తార్కిక get_baseline (hb_ట్యాగ్_t          baseline_ట్యాగ్,
+		     hb_ట్యాగ్_t          script_ట్యాగ్,
+		     hb_ట్యాగ్_t          language_ట్యాగ్,
+		     స్థిరరాశి పునాది_Coord **coord) స్థిరరాశి
   {
-    const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_values ())
+    స్థిరరాశి పునాది_Script &పునాది_script = (ఇది+పునాది_Script_List_2).get_పునాది_script (script_ట్యాగ్);
+    ఒకవేళ (!పునాది_script.has_విలువలు ())
     {
-      *coord = nullptr;
-      return false;
+      *coord = శూన్యసూచిక;
+      తిరిగి అబద్ధం;
     }
 
-    if (likely (coord))
+    ఒకవేళ (likely (coord))
     {
-      unsigned int tag_index = 0;
-      if (!(this+baseTagList).bfind (baseline_tag, &tag_index))
+      గుర్తులేని పూర్ణాంకం ట్యాగ్_సూచీ = 0;
+      ఒకవేళ (!(ఇది+పునాది_ట్యాగ్_List).bfind (baseline_ట్యాగ్, &ట్యాగ్_సూచీ))
       {
-        *coord = nullptr;
-        return false;
+        *coord = శూన్యసూచిక;
+        తిరిగి అబద్ధం;
       }
-      *coord = &base_script.get_base_coord (tag_index);
+      *coord = &పునాది_script.get_పునాది_coord (ట్యాగ్_సూచీ);
     }
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool get_min_max (hb_tag_t          script_tag,
-		    hb_tag_t          language_tag,
-		    hb_tag_t          feature_tag,
-		    const BaseCoord **min_coord,
-		    const BaseCoord **max_coord) const
+  తార్కిక get_min_max (hb_ట్యాగ్_t          script_ట్యాగ్,
+		    hb_ట్యాగ్_t          language_ట్యాగ్,
+		    hb_ట్యాగ్_t          feature_ట్యాగ్,
+		    స్థిరరాశి పునాది_Coord **min_coord,
+		    స్థిరరాశి పునాది_Coord **max_coord) స్థిరరాశి
   {
-    const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_min_max ())
+    స్థిరరాశి పునాది_Script &పునాది_script = (ఇది+పునాది_Script_List_2).get_పునాది_script (script_ట్యాగ్);
+    ఒకవేళ (!పునాది_script.has_min_max ())
     {
-      *min_coord = *max_coord = nullptr;
-      return false;
+      *min_coord = *max_coord = శూన్యసూచిక;
+      తిరిగి అబద్ధం;
     }
 
-    base_script.get_min_max (language_tag).get_min_max (feature_tag, min_coord, max_coord);
+    పునాది_script.get_min_max (language_ట్యాగ్).get_min_max (feature_ట్యాగ్, min_coord, max_coord);
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
-  { (this+baseScriptList).collect_variation_indices (plan, varidx_set); }
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
+  { (ఇది+పునాది_Script_List_2).collect_variation_indices (plan, varidx_సమితి); }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    bool ret = out->baseTagList.serialize_copy (c->serializer, baseTagList, this);
-    ret |= out->baseScriptList.serialize_subset (c, baseScriptList, this);
+    తార్కిక ret = బహిర్గతం->పునాది_ట్యాగ్_List.serialize_copy (c->serializer, పునాది_ట్యాగ్_List, ఇది);
+    ret |= బహిర్గతం->పునాది_Script_List_2.serialize_subset (c, పునాది_Script_List_2, ఇది);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseTagList.sanitize (c, this) &&
-			  baseScriptList.sanitize (c, this)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
+			  పునాది_ట్యాగ్_List.sanitize (c, ఇది) &&
+			  పునాది_Script_List_2.sanitize (c, ఇది)));
   }
 
-  protected:
-  Offset16To<SortedArray16Of<Tag>>
-		baseTagList;	/* Offset to BaseTagList table, from beginning
+  రక్షిత:
+  Offset16_గమ్యం<Sorted_Array16_యొక్క<ట్యాగ్>>
+		పునాది_ట్యాగ్_List;	/* Offset to BaseTagList table, from beginning
 				 * of Axis table (may be NULL)
 				 * Array of 4-byte baseline identification tags — must
 				 * be in alphabetical order */
-  Offset16To<BaseScriptList>
-		baseScriptList;	/* Offset to BaseScriptList table, from beginning
+  Offset16_గమ్యం<పునాది_Script_List>
+		పునాది_Script_List_2;	/* Offset to BaseScriptList table, from beginning
 				 * of Axis table
 				 * Array of BaseScriptRecords, in alphabetical order
 				 * by baseScriptTag */
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct BASE
+నిర్మాణం పునాది_4
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_BASE;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_పునాది;
 
-  const Axis &get_axis (hb_direction_t direction) const
-  { return HB_DIRECTION_IS_VERTICAL (direction) ? this+vAxis : this+hAxis; }
+  స్థిరరాశి Axis &get_axis (hb_direction_t direction) స్థిరరాశి
+  { తిరిగి HB_DIRECTION_IS_VERTICAL (direction) ? ఇది+vAxis : ఇది+hAxis; }
 
-  bool has_var_store () const
-  { return version.to_int () >= 0x00010001u && varStore != 0; }
+  తార్కిక has_var_store () స్థిరరాశి
+  { తిరిగి సంస్కరణ.గమ్యం_int () >= 0x00010001u && varStore != 0; }
 
-  const ItemVariationStore &get_var_store () const
-  { return version.to_int () < 0x00010001u ? Null (ItemVariationStore) : this+varStore; }
+  స్థిరరాశి అంశం_Variation_Store &get_var_store () స్థిరరాశి
+  { తిరిగి సంస్కరణ.గమ్యం_int () < 0x00010001u ? Null (అంశం_Variation_Store) : ఇది+varStore; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  శూన్య collect_variation_indices (స్థిరరాశి hb_subset_plan_t* plan,
+                                  hb_సమితి_t& varidx_సమితి /*బహిర్గతం*/) స్థిరరాశి
   {
-    (this+hAxis).collect_variation_indices (plan, varidx_set);
-    (this+vAxis).collect_variation_indices (plan, varidx_set);
+    (ఇది+hAxis).collect_variation_indices (plan, varidx_సమితి);
+    (ఇది+vAxis).collect_variation_indices (plan, varidx_సమితి);
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        BASE *out /* OUT */) const
+  తార్కిక subset_varstore (hb_subset_context_t *c,
+                        పునాది_4 *బహిర్గతం /*బహిర్గతం*/) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    if (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
-        return_trace (false);
-    if (!c->plan->normalized_coords)
-      return_trace (out->varStore.serialize_subset (c, varStore, this, c->plan->base_varstore_inner_maps.as_array ()));
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (!c->serializer->allocate_కొలత<Offset32_గమ్యం<అంశం_Variation_Store>> (Offset32_గమ్యం<అంశం_Variation_Store>::static_కొలత))
+        return_trace (అబద్ధం);
+    ఒకవేళ (!c->plan->normalized_coords)
+      return_trace (బహిర్గతం->varStore.serialize_subset (c, varStore, ఇది, c->plan->పునాది_varstore_inner_maps.as_array ()));
 
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    ఒకవేళ (c->plan->all_axes_pinned)
+      return_trace (నిజం);
 
-    item_variations_t item_vars;
-    if (!item_vars.instantiate (this+varStore, c->plan, true, true,
-                                c->plan->base_varstore_inner_maps.as_array ()))
-      return_trace (false);
+    అంశం_variations_t అంశం_vars;
+    ఒకవేళ (!అంశం_vars.instantiate (ఇది+varStore, c->plan, నిజం, నిజం,
+                                c->plan->పునాది_varstore_inner_maps.as_array ()))
+      return_trace (అబద్ధం);
 
-    if (!out->varStore.serialize_serialize (c->serializer,
-                                            item_vars.has_long_word (),
-                                            c->plan->axis_tags,
-                                            item_vars.get_region_list (),
-                                            item_vars.get_vardata_encodings ()))
-      return_trace (false);
+    ఒకవేళ (!బహిర్గతం->varStore.serialize_serialize (c->serializer,
+                                            అంశం_vars.has_long_మాట (),
+                                            c->plan->axis_ట్యాగులు,
+                                            అంశం_vars.get_region_list (),
+                                            అంశం_vars.get_vardata_encodings ()))
+      return_trace (అబద్ధం);
 
-    const hb_map_t &varidx_map = item_vars.get_varidx_map ();
+    స్థిరరాశి hb_map_t &varidx_map = అంశం_vars.get_varidx_map ();
     /* base_variation_idx_map in the plan is old_varidx->(varidx, delta)
      * mapping, new varidx is generated for subsetting, we need to remap this
      * after instancing */
-    for (auto _ : c->plan->base_variation_idx_map.iter_ref ())
+    కొరకు (స్వయంచాలక _ : c->plan->పునాది_variation_idx_map.iter_ref ())
     {
-      uint32_t varidx = _.second.first;
+      uint32_t varidx = _.second.మొదటి;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
-        _.second.first = *new_varidx;
-      else
-        _.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+      ఒకవేళ (varidx_map.has (varidx, &new_varidx))
+        _.second.మొదటి = *new_varidx;
+      లేకపోతే
+        _.second.మొదటి = HB_OT_LAYOUT_NO_VARIATIONS_సూచీ;
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    out->version = version;
-    bool ret = false;
-    if (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
+    బహిర్గతం->సంస్కరణ = సంస్కరణ;
+    తార్కిక ret = అబద్ధం;
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010001u) ret |= subset_varstore (c, బహిర్గతం);
 
-    ret |= out->hAxis.serialize_subset (c, hAxis, this);
-    ret |= out->vAxis.serialize_subset (c, vAxis, this);
+    ret |= బహిర్గతం->hAxis.serialize_subset (c, hAxis, ఇది);
+    ret |= బహిర్గతం->vAxis.serialize_subset (c, vAxis, ఇది);
 
     return_trace (ret);
   }
 
-  bool get_baseline (hb_font_t      *font,
-		     hb_tag_t        baseline_tag,
+  తార్కిక get_baseline (hb_font_t      *font,
+		     hb_ట్యాగ్_t        baseline_ట్యాగ్,
 		     hb_direction_t  direction,
-		     hb_tag_t        script_tag,
-		     hb_tag_t        language_tag,
-		     hb_position_t  *base) const
+		     hb_ట్యాగ్_t        script_ట్యాగ్,
+		     hb_ట్యాగ్_t        language_ట్యాగ్,
+		     hb_position_t  *పునాది) స్థిరరాశి
   {
-    const BaseCoord *base_coord = nullptr;
-    if (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
-		  !base_coord || !base_coord->has_data ()))
-      return false;
+    స్థిరరాశి పునాది_Coord *పునాది_coord = శూన్యసూచిక;
+    ఒకవేళ (unlikely (!get_axis (direction).get_baseline (baseline_ట్యాగ్, script_ట్యాగ్, language_ట్యాగ్, &పునాది_coord) ||
+		  !పునాది_coord || !పునాది_coord->has_దత్తాంశం ()))
+      తిరిగి అబద్ధం;
 
-    if (likely (base))
-      *base = base_coord->get_coord (font, get_var_store (), direction);
+    ఒకవేళ (likely (పునాది))
+      *పునాది = పునాది_coord->get_coord (font, get_var_store (), direction);
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool get_min_max (hb_font_t      *font,
+  తార్కిక get_min_max (hb_font_t      *font,
 		    hb_direction_t  direction,
-		    hb_tag_t        script_tag,
-		    hb_tag_t        language_tag,
-		    hb_tag_t        feature_tag,
+		    hb_ట్యాగ్_t        script_ట్యాగ్,
+		    hb_ట్యాగ్_t        language_ట్యాగ్,
+		    hb_ట్యాగ్_t        feature_ట్యాగ్,
 		    hb_position_t  *min,
-		    hb_position_t  *max) const
+		    hb_position_t  *max) స్థిరరాశి
   {
-    const BaseCoord *min_coord, *max_coord;
-    if (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
+    స్థిరరాశి పునాది_Coord *min_coord, *max_coord;
+    ఒకవేళ (!get_axis (direction).get_min_max (script_ట్యాగ్, language_ట్యాగ్, feature_ట్యాగ్,
 					   &min_coord, &max_coord))
-      return false;
+      తిరిగి అబద్ధం;
 
-    const ItemVariationStore &var_store = get_var_store ();
-    if (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
-    if (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
-    return true;
+    స్థిరరాశి అంశం_Variation_Store &var_store = get_var_store ();
+    ఒకవేళ (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
+    ఒకవేళ (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
+    తిరిగి నిజం;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  likely (version.major == 1) &&
-			  hAxis.sanitize (c, this) &&
-			  vAxis.sanitize (c, this) &&
-			  (version.to_int () < 0x00010001u || varStore.sanitize (c, this))));
+			  likely (సంస్కరణ.major == 1) &&
+			  hAxis.sanitize (c, ఇది) &&
+			  vAxis.sanitize (c, ఇది) &&
+			  (సంస్కరణ.గమ్యం_int () < 0x00010001u || varStore.sanitize (c, ఇది))));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the BASE table */
-  Offset16To<Axis>hAxis;		/* Offset to horizontal Axis table, from beginning
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the BASE table */
+  Offset16_గమ్యం<Axis>hAxis;		/* Offset to horizontal Axis table, from beginning
 				 * of BASE table (may be NULL) */
-  Offset16To<Axis>vAxis;		/* Offset to vertical Axis table, from beginning
+  Offset16_గమ్యం<Axis>vAxis;		/* Offset to vertical Axis table, from beginning
 				 * of BASE table (may be NULL) */
-  Offset32To<ItemVariationStore>
+  Offset32_గమ్యం<అంశం_Variation_Store>
 		varStore;	/* Offset to the table of Item Variation
 				 * Store--from beginning of BASE
 				 * header (may be NULL).  Introduced
 				 * in version 0x00010001. */
-  public:
-  DEFINE_SIZE_MIN (8);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (8);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_BASE_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_LAYOUT_BASE_TABLE_HH */

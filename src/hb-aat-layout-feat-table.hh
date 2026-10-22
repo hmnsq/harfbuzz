@@ -22,36 +22,36 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_FEAT_TABLE_HH
-#define HB_AAT_LAYOUT_FEAT_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_AAT_LAYOUT_FEAT_పట్టిక_HH
+#నిర్వచించు HB_AAT_LAYOUT_FEAT_పట్టిక_HH
 
-#include "hb-aat-layout-common.hh"
+#అన్తర్భావ "hb-aat-layout-common.hh"
 
 /*
  * feat -- Feature Name
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6feat.html
  */
-#define HB_AAT_TAG_feat HB_TAG('f','e','a','t')
+#నిర్వచించు HB_AAT_ట్యాగ్_feat HB_ట్యాగ్('f','e','a','t')
 
 
-namespace AAT {
+నామాకాశ AAT {
 
 
-struct SettingName
+నిర్మాణం SettingName
 {
-  friend struct FeatureName;
+  మిత్ర నిర్మాణం FeatureName;
 
-  int cmp (hb_aat_layout_feature_selector_t key) const
-  { return (int) key - (int) setting; }
+  పూర్ణాంకం cmp (hb_aat_layout_feature_selector_t key) స్థిరరాశి
+  { తిరిగి (పూర్ణాంకం) key - (పూర్ణాంకం) setting; }
 
-  hb_aat_layout_feature_selector_t get_selector () const
-  { return (hb_aat_layout_feature_selector_t) (unsigned) setting; }
+  hb_aat_layout_feature_selector_t get_selector () స్థిరరాశి
+  { తిరిగి (hb_aat_layout_feature_selector_t) (గుర్తులేని) setting; }
 
-  hb_aat_layout_feature_selector_info_t get_info (hb_aat_layout_feature_selector_t default_selector) const
+  hb_aat_layout_feature_selector_info_t get_info (hb_aat_layout_feature_selector_t default_selector) స్థిరరాశి
   {
-    return {
-      nameIndex,
-      (hb_aat_layout_feature_selector_t) (unsigned int) setting,
+    తిరిగి {
+      name_సూచీ,
+      (hb_aat_layout_feature_selector_t) (గుర్తులేని పూర్ణాంకం) setting,
       default_selector == HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID
 	? (hb_aat_layout_feature_selector_t) (setting + 1)
 	: default_selector,
@@ -59,28 +59,28 @@ struct SettingName
     };
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	setting;	/* The setting. */
-  NameID	nameIndex;	/* The name table index for the setting's name. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  NameID	name_సూచీ;	/* The name table index for the setting's name. */
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
-DECLARE_NULL_NAMESPACE_BYTES (AAT, SettingName);
+DECLARE_NULL_NAMESPACE_బైట్లు (AAT, SettingName);
 
-struct feat;
+నిర్మాణం feat;
 
-struct FeatureName
+నిర్మాణం FeatureName
 {
-  int cmp (hb_aat_layout_feature_type_t key) const
-  { return (int) key - (int) feature; }
+  పూర్ణాంకం cmp (hb_aat_layout_feature_type_t key) స్థిరరాశి
+  { తిరిగి (పూర్ణాంకం) key - (పూర్ణాంకం) feature; }
 
-  enum {
+  గణన {
     Exclusive	= 0x8000,	/* If set, the feature settings are mutually exclusive. */
     NotDefault	= 0x4000,	/* If clear, then the setting with an index of 0 in
 				 * the setting name array for this feature should
@@ -88,137 +88,137 @@ struct FeatureName
 				 * (if one is required). If set, then bits 0-15 of this
 				 * featureFlags field contain the index of the setting
 				 * which is to be taken as the default. */
-    IndexMask	= 0x00FF	/* If bits 30 and 31 are set, then these sixteen bits
+    సూచీ_ముసుగు	= 0x00FF	/* If bits 30 and 31 are set, then these sixteen bits
 				 * indicate the index of the setting in the setting name
 				 * array for this feature which should be taken
 				 * as the default. */
   };
 
-  unsigned int get_selector_infos (unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  గుర్తులేని పూర్ణాంకం get_selector_infos (గుర్తులేని పూర్ణాంకం                           ప్రారంభం_స్థానభ్రంశం,
+				   గుర్తులేని పూర్ణాంకం                          *selectors_లెక్క, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *pdefault_index,  /* OUT.     May be NULL. */
-				   const void *base) const
+				   గుర్తులేని పూర్ణాంకం                          *pdefault_సూచీ,  /* OUT.     May be NULL. */
+				   స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    hb_array_t< const SettingName> settings_table = (base+settingTableZ).as_array (nSettings);
+    hb_array_t< స్థిరరాశి SettingName> settings_పట్టిక = (పునాది+setting_పట్టిక_Z).as_array (nSettings);
 
-    static_assert (Index::NOT_FOUND_INDEX == HB_AAT_LAYOUT_NO_SELECTOR_INDEX, "");
+    static_assert (సూచీ::NOT_దొరికింది_సూచీ == HB_AAT_LAYOUT_NO_SELECTOR_సూచీ, "");
 
     hb_aat_layout_feature_selector_t default_selector = HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID;
-    unsigned int default_index = Index::NOT_FOUND_INDEX;
-    if (featureFlags & Exclusive)
+    గుర్తులేని పూర్ణాంకం default_సూచీ = సూచీ::NOT_దొరికింది_సూచీ;
+    ఒకవేళ (featureFlags & Exclusive)
     {
-      default_index = (featureFlags & NotDefault) ? featureFlags & IndexMask : 0;
-      default_selector = settings_table[default_index].get_selector ();
+      default_సూచీ = (featureFlags & NotDefault) ? featureFlags & సూచీ_ముసుగు : 0;
+      default_selector = settings_పట్టిక[default_సూచీ].get_selector ();
     }
-    if (pdefault_index)
-      *pdefault_index = default_index;
+    ఒకవేళ (pdefault_సూచీ)
+      *pdefault_సూచీ = default_సూచీ;
 
-    if (selectors_count && selectors)
+    ఒకవేళ (selectors_లెక్క && selectors)
     {
-      + settings_table.sub_array (start_offset, selectors_count)
-      | hb_map ([=] (const SettingName& setting) { return setting.get_info (default_selector); })
-      | hb_sink (hb_array (selectors, *selectors_count))
+      + settings_పట్టిక.sub_array (ప్రారంభం_స్థానభ్రంశం, selectors_లెక్క)
+      | hb_map ([=] (స్థిరరాశి SettingName& setting) { తిరిగి setting.get_info (default_selector); })
+      | hb_sink (hb_array (selectors, *selectors_లెక్క))
       ;
     }
-    return settings_table.length;
+    తిరిగి settings_పట్టిక.నిడివి;
   }
 
-  hb_aat_layout_feature_type_t get_feature_type () const
-  { return (hb_aat_layout_feature_type_t) (unsigned int) feature; }
+  hb_aat_layout_feature_type_t get_feature_type () స్థిరరాశి
+  { తిరిగి (hb_aat_layout_feature_type_t) (గుర్తులేని పూర్ణాంకం) feature; }
 
-  hb_ot_name_id_t get_feature_name_id () const { return nameIndex; }
+  hb_ot_name_id_t get_feature_name_id () స్థిరరాశి { తిరిగి name_సూచీ; }
 
-  bool is_exclusive () const { return featureFlags & Exclusive; }
+  తార్కిక is_exclusive () స్థిరరాశి { తిరిగి featureFlags & Exclusive; }
 
   /* A FeatureName with no settings is meaningless */
-  bool has_data () const { return nSettings; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి nSettings; }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  (base+settingTableZ).sanitize (c, nSettings)));
+			  (పునాది+setting_పట్టిక_Z).sanitize (c, nSettings)));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	feature;	/* Feature type. */
   HBUINT16	nSettings;	/* The number of records in the setting name array. */
-  NNOffset32To<UnsizedArrayOf<SettingName>>
-		settingTableZ;	/* Offset in bytes from the beginning of this table to
+  NNOffset32_గమ్యం<Unsized_Array_యొక్క<SettingName>>
+		setting_పట్టిక_Z;	/* Offset in bytes from the beginning of this table to
 				 * this feature's setting name array. The actual type of
 				 * record this offset refers to will depend on the
 				 * exclusivity value, as described below. */
   HBUINT16	featureFlags;	/* Single-bit flags associated with the feature type. */
-  HBINT16	nameIndex;	/* The name table index for the feature's name.
+  HBINT16	name_సూచీ;	/* The name table index for the feature's name.
 				 * This index has values greater than 255 and
 				 * less than 32768. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (12);
 };
 
-struct feat
+నిర్మాణం feat
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_feat;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_AAT_ట్యాగ్_feat;
 
-  bool has_data () const { return version.to_int (); }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int (); }
 
-  unsigned int get_feature_types (unsigned int                  start_offset,
-				  unsigned int                 *count,
-				  hb_aat_layout_feature_type_t *features) const
+  గుర్తులేని పూర్ణాంకం get_feature_types (గుర్తులేని పూర్ణాంకం                  ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం                 *లెక్క,
+				  hb_aat_layout_feature_type_t *features) స్థిరరాశి
   {
-    if (count && features)
+    ఒకవేళ (లెక్క && features)
     {
-      + namesZ.as_array (featureNameCount).sub_array (start_offset, count)
+      + పేర్లు_Z.as_array (feature_Name_లెక్క).sub_array (ప్రారంభం_స్థానభ్రంశం, లెక్క)
       | hb_map (&FeatureName::get_feature_type)
-      | hb_sink (hb_array (features, *count))
+      | hb_sink (hb_array (features, *లెక్క))
       ;
     }
-    return featureNameCount;
+    తిరిగి feature_Name_లెక్క;
   }
 
-  bool exposes_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return get_feature (feature_type).has_data (); }
+  తార్కిక exposes_feature (hb_aat_layout_feature_type_t feature_type) స్థిరరాశి
+  { తిరిగి get_feature (feature_type).has_దత్తాంశం (); }
 
-  const FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return namesZ.bsearch (featureNameCount, feature_type); }
+  స్థిరరాశి FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) స్థిరరాశి
+  { తిరిగి పేర్లు_Z.bsearch (feature_Name_లెక్క, feature_type); }
 
-  hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) const
-  { return get_feature (feature).get_feature_name_id (); }
+  hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) స్థిరరాశి
+  { తిరిగి get_feature (feature).get_feature_name_id (); }
 
-  unsigned int get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
-				   unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  గుర్తులేని పూర్ణాంకం get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
+				   గుర్తులేని పూర్ణాంకం                           ప్రారంభం_స్థానభ్రంశం,
+				   గుర్తులేని పూర్ణాంకం                          *selectors_లెక్క, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *default_index    /* OUT.     May be NULL. */) const
+				   గుర్తులేని పూర్ణాంకం                          *default_సూచీ    /* OUT.     May be NULL. */) స్థిరరాశి
   {
-    return get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
-							  default_index, this);
+    తిరిగి get_feature (feature_type).get_selector_infos (ప్రారంభం_స్థానభ్రంశం, selectors_లెక్క, selectors,
+							  default_సూచీ, ఇది);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) &&
 			  hb_barrier () &&
-			  version.major == 1 &&
-			  namesZ.sanitize (c, featureNameCount, this)));
+			  సంస్కరణ.major == 1 &&
+			  పేర్లు_Z.sanitize (c, feature_Name_లెక్క, ఇది)));
   }
 
-  protected:
-  FixedVersion<>version;	/* Version number of the feature name table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version number of the feature name table
 				 * (0x00010000 for the current version). */
-  HBUINT16	featureNameCount;
+  HBUINT16	feature_Name_లెక్క;
 				/* The number of entries in the feature name array. */
   HBUINT16	reserved1;	/* Reserved (set to zero). */
   HBUINT32	reserved2;	/* Reserved (set to zero). */
-  SortedUnsizedArrayOf<FeatureName>
-		namesZ;		/* The feature name array. */
-  public:
-  DEFINE_SIZE_ARRAY (12, namesZ);
+  Sorted_Unsized_Array_యొక్క<FeatureName>
+		పేర్లు_Z;		/* The feature name array. */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (12, పేర్లు_Z);
 };
 
 } /* namespace AAT */
 
-#endif /* HB_AAT_LAYOUT_FEAT_TABLE_HH */
+#అయితే_ముగింపు /* HB_AAT_LAYOUT_FEAT_TABLE_HH */

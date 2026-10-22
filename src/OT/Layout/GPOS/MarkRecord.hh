@@ -1,48 +1,48 @@
-#ifndef OT_LAYOUT_GPOS_MARKRECORD_HH
-#define OT_LAYOUT_GPOS_MARKRECORD_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_MARKRECORD_HH
+#నిర్వచించు OT_LAYOUT_GPOS_MARKRECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-template <typename Types> struct MarkArray;
+మూస <రకం_పేరు Types> నిర్మాణం MarkArray;
 
-template <typename Types>
-struct MarkRecord
+మూస <రకం_పేరు Types>
+నిర్మాణం Mark_రికార్డు
 {
-  friend struct MarkArray<Types>;
+  మిత్ర నిర్మాణం MarkArray<Types>;
 
-  public:
+  బహిరంగ:
   HBUINT16      klass;                  /* Class defined for this mark */
-  typename Types::template OffsetTo<Anchor, MarkArray<Types>>
+  రకం_పేరు Types::మూస స్థానభ్రంశం_గమ్యం<Anchor, MarkArray<Types>>
                 markAnchor;             /* Offset to Anchor table--from
                                          * beginning of MarkArray table */
-  public:
-  DEFINE_SIZE_STATIC (2 + Types::size);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (2 + Types::కొలత);
 
-  unsigned get_class () const { return (unsigned) klass; }
-  bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
+  గుర్తులేని get_class () స్థిరరాశి { తిరిగి (గుర్తులేని) klass; }
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి MarkArray<Types> *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && markAnchor.sanitize (c, పునాది));
   }
 
-  bool subset (hb_subset_context_t    *c,
-	       const MarkArray<Types> *src_base,
-	       const hb_map_t         *klass_mapping) const
+  తార్కిక subset (hb_subset_context_t    *c,
+	       స్థిరరాశి MarkArray<Types> *src_పునాది,
+	       స్థిరరాశి hb_map_t         *klass_mapping) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->klass = klass_mapping->get (klass);
-    return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));
+    బహిర్గతం->klass = klass_mapping->get (klass);
+    return_trace (బహిర్గతం->markAnchor.serialize_subset (c, markAnchor, src_పునాది));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const MarkArray<Types> *src_base) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  స్థిరరాశి MarkArray<Types> *src_పునాది) స్థిరరాశి
   {
-    (src_base+markAnchor).collect_variation_indices (c);
+    (src_పునాది+markAnchor).collect_variation_indices (c);
   }
 };
 
@@ -51,4 +51,4 @@ struct MarkRecord
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKRECORD_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_MARKRECORD_HH */

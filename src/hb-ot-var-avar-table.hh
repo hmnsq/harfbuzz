@@ -24,12 +24,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_VAR_AVAR_TABLE_HH
-#define HB_OT_VAR_AVAR_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_VAR_AVAR_పట్టిక_HH
+#నిర్వచించు HB_OT_VAR_AVAR_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-fvar-table.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-var-common.hh"
+#అన్తర్భావ "hb-ot-var-fvar-table.hh"
 
 
 /*
@@ -37,134 +37,134 @@
  * https://docs.microsoft.com/en-us/typography/opentype/spec/avar
  */
 
-#define HB_OT_TAG_avar HB_TAG('a','v','a','r')
+#నిర్వచించు HB_OT_ట్యాగ్_avar HB_ట్యాగ్('a','v','a','r')
 
 
-namespace OT {
+నామాకాశ OT {
 
 
 /* "Spec": https://github.com/be-fonts/boring-expansion-spec/issues/14 */
-struct avarV2Tail
+నిర్మాణం avar_V2_తోక
 {
-  friend struct avar;
+  మిత్ర నిర్మాణం avar;
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (varIdxMap.sanitize (c, base) &&
-		  varStore.sanitize (c, base));
+    TRACE_SANITIZE (ఇది);
+    return_trace (varIdxMap.sanitize (c, పునాది) &&
+		  varStore.sanitize (c, పునాది));
   }
 
-  protected:
-  Offset32To<DeltaSetIndexMap>	varIdxMap;	/* Offset from the beginning of 'avar' table. */
-  Offset32To<ItemVariationStore>	varStore;	/* Offset from the beginning of 'avar' table. */
+  రక్షిత:
+  Offset32_గమ్యం<Delta_సమితి_సూచీ_Map>	varIdxMap;	/* Offset from the beginning of 'avar' table. */
+  Offset32_గమ్యం<అంశం_Variation_Store>	varStore;	/* Offset from the beginning of 'avar' table. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
 
-struct AxisValueMap
+నిర్మాణం Axis_విలువ_Map
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  void set_mapping (float from_coord, float to_coord)
+  శూన్య సమితి_mapping (దశాంశం from_coord, దశాంశం గమ్యం_coord)
   {
-    coords[0].set_float (from_coord);
-    coords[1].set_float (to_coord);
+    coords[0].సమితి_float (from_coord);
+    coords[1].సమితి_float (గమ్యం_coord);
   }
 
-  bool is_outside_axis_range (const Triple& axis_range) const
+  తార్కిక is_outside_axis_range (స్థిరరాశి Triple& axis_range) స్థిరరాశి
   {
-    double from_coord = (double) coords[0].to_float ();
-    return !axis_range.contains (from_coord);
+    ద్విగుణ from_coord = (ద్విగుణ) coords[0].గమ్యం_float ();
+    తిరిగి !axis_range.కలిగియుంది (from_coord);
   }
 
-  bool must_include () const
+  తార్కిక must_include () స్థిరరాశి
   {
-    float from_coord = coords[0].to_float ();
-    float to_coord = coords[1].to_float ();
-    return (from_coord == -1.f && to_coord == -1.f) ||
-           (from_coord == 0.f && to_coord == 0.f) ||
-           (from_coord == 1.f && to_coord == 1.f);
+    దశాంశం from_coord = coords[0].గమ్యం_float ();
+    దశాంశం గమ్యం_coord = coords[1].గమ్యం_float ();
+    తిరిగి (from_coord == -1.f && గమ్యం_coord == -1.f) ||
+           (from_coord == 0.f && గమ్యం_coord == 0.f) ||
+           (from_coord == 1.f && గమ్యం_coord == 1.f);
   }
 
-  void instantiate (const Triple& axis_range,
-                    const Triple& unmapped_range,
-                    const TripleDistances& triple_distances)
+  శూన్య instantiate (స్థిరరాశి Triple& axis_range,
+                    స్థిరరాశి Triple& unmapped_range,
+                    స్థిరరాశి TripleDistances& triple_distances)
   {
-    float from_coord = coords[0].to_float ();
-    float to_coord = coords[1].to_float ();
+    దశాంశం from_coord = coords[0].గమ్యం_float ();
+    దశాంశం గమ్యం_coord = coords[1].గమ్యం_float ();
 
-    from_coord = renormalizeValue ((double) from_coord, unmapped_range, triple_distances);
-    to_coord = renormalizeValue ((double) to_coord, axis_range, triple_distances);
+    from_coord = renormalize_విలువ ((ద్విగుణ) from_coord, unmapped_range, triple_distances);
+    గమ్యం_coord = renormalize_విలువ ((ద్విగుణ) గమ్యం_coord, axis_range, triple_distances);
 
     /* Malformed input can renormalize outside [-1,1], which would
      * overflow F2DOT14. */
     from_coord = hb_clamp (from_coord, -1.f, 1.f);
-    to_coord = hb_clamp (to_coord, -1.f, 1.f);
+    గమ్యం_coord = hb_clamp (గమ్యం_coord, -1.f, 1.f);
 
-    coords[0].set_float (from_coord);
-    coords[1].set_float (to_coord);
+    coords[0].సమితి_float (from_coord);
+    coords[1].సమితి_float (గమ్యం_coord);
   }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
   {
-    const AxisValueMap *a = (const AxisValueMap *) pa;
-    const AxisValueMap *b = (const AxisValueMap *) pb;
+    స్థిరరాశి Axis_విలువ_Map *a = (స్థిరరాశి Axis_విలువ_Map *) pa;
+    స్థిరరాశి Axis_విలువ_Map *b = (స్థిరరాశి Axis_విలువ_Map *) pb;
 
-    int a_from = a->coords[0].to_int ();
-    int b_from = b->coords[0].to_int ();
-    if (a_from != b_from)
-      return a_from - b_from;
+    పూర్ణాంకం a_from = a->coords[0].గమ్యం_int ();
+    పూర్ణాంకం b_from = b->coords[0].గమ్యం_int ();
+    ఒకవేళ (a_from != b_from)
+      తిరిగి a_from - b_from;
 
     /* this should never be reached. according to the spec, all of the axis
      * value map records for a given axis must have different fromCoord values
      * */
-    int a_to = a->coords[1].to_int ();
-    int b_to = b->coords[1].to_int ();
-    return a_to - b_to;
+    పూర్ణాంకం a_గమ్యం = a->coords[1].గమ్యం_int ();
+    పూర్ణాంకం b_గమ్యం = b->coords[1].గమ్యం_int ();
+    తిరిగి a_గమ్యం - b_గమ్యం;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  తార్కిక serialize (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed (ఇది));
   }
 
-  public:
+  బహిరంగ:
   F2DOT14	coords[2];
 //   F2DOT14	fromCoord;	/* A normalized coordinate value obtained using
 //				 * default normalization. */
 //   F2DOT14	toCoord;	/* The modified, normalized coordinate value. */
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct SegmentMaps : Array16Of<AxisValueMap>
+నిర్మాణం SegmentMaps : Array16_యొక్క<Axis_విలువ_Map>
 {
-  float map_float (float value, unsigned int from_offset = 0, unsigned int to_offset = 1) const
+  దశాంశం map_float (దశాంశం value, గుర్తులేని పూర్ణాంకం from_స్థానభ్రంశం = 0, గుర్తులేని పూర్ణాంకం గమ్యం_స్థానభ్రంశం = 1) స్థిరరాశి
   {
-#define fromCoord coords[from_offset].to_float ()
-#define toCoord coords[to_offset].to_float ()
+#నిర్వచించు fromCoord coords[from_స్థానభ్రంశం].గమ్యం_float ()
+#నిర్వచించు గమ్యం_Coord coords[గమ్యం_స్థానభ్రంశం].గమ్యం_float ()
 
-    const auto *map = arrayZ;
+    స్థిరరాశి స్వయంచాలక *map = arrayZ;
 
     /* The following special-cases are not part of OpenType, which requires
      * that at least -1, 0, and +1 must be mapped. But we include these as
      * part of a better error recovery scheme. */
-    if (len < 2)
+    ఒకవేళ (len < 2)
     {
-      if (!len)
-	return value;
-      else /* len == 1*/
-	return value - map[0].fromCoord + map[0].toCoord;
+      ఒకవేళ (!len)
+	తిరిగి value;
+      లేకపోతే /* len == 1*/
+	తిరిగి value - map[0].fromCoord + map[0].గమ్యం_Coord;
     }
 
     // At least two mappings now.
@@ -175,95 +175,95 @@ struct SegmentMaps : Array16Of<AxisValueMap>
      * which is more robust and more likely to be compatible with
      * the wild. */
 
-    unsigned start = 0;
-    unsigned end = len;
-    if (map[start].fromCoord == -1 && map[start].toCoord == -1 && map[start+1].fromCoord == -1)
-      start++;
-    if (map[end-1].fromCoord == +1 && map[end-1].toCoord == +1 && map[end-2].fromCoord == +1)
-      end--;
+    గుర్తులేని ప్రారంభం = 0;
+    గుర్తులేని చివర = len;
+    ఒకవేళ (map[ప్రారంభం].fromCoord == -1 && map[ప్రారంభం].గమ్యం_Coord == -1 && map[ప్రారంభం+1].fromCoord == -1)
+      ప్రారంభం++;
+    ఒకవేళ (map[చివర-1].fromCoord == +1 && map[చివర-1].గమ్యం_Coord == +1 && map[చివర-2].fromCoord == +1)
+      చివర--;
 
     /* Look for exact match first, and do lots of special-casing. */
-    unsigned i;
-    for (i = start; i < end; i++)
-      if (value == map[i].fromCoord)
-	break;
-    if (i < end)
+    గుర్తులేని i;
+    కొరకు (i = ప్రారంభం; i < చివర; i++)
+      ఒకవేళ (value == map[i].fromCoord)
+	ఆపు;
+    ఒకవేళ (i < చివర)
     {
       // There's at least one exact match. See if there are more.
-      unsigned j = i;
-      for (; j + 1 < end; j++)
-	if (value != map[j + 1].fromCoord)
-	  break;
+      గుర్తులేని j = i;
+      కొరకు (; j + 1 < చివర; j++)
+	ఒకవేళ (value != map[j + 1].fromCoord)
+	  ఆపు;
 
       // [i,j] inclusive are all exact matches:
 
       // If there's only one, return it. This is the only spec-compliant case.
-      if (i == j)
-	return map[i].toCoord;
+      ఒకవేళ (i == j)
+	తిరిగి map[i].గమ్యం_Coord;
       // If there's exactly three, return the middle one.
-      if (i + 2 == j)
-	return map[i + 1].toCoord;
+      ఒకవేళ (i + 2 == j)
+	తిరిగి map[i + 1].గమ్యం_Coord;
 
       // Ignore the middle ones. Return the one mapping closer to 0.
-      if (value < 0) return map[j].toCoord;
-      if (value > 0) return map[i].toCoord;
+      ఒకవేళ (value < 0) తిరిగి map[j].గమ్యం_Coord;
+      ఒకవేళ (value > 0) తిరిగి map[i].గమ్యం_Coord;
 
       // Mapping 0? CoreText seems confused. It seems to prefer 0 here...
       // So we'll just return the smallest one. lol
-      return fabsf (map[i].toCoord) < fabsf (map[j].toCoord) ? map[i].toCoord : map[j].toCoord;
+      తిరిగి fabsf (map[i].గమ్యం_Coord) < fabsf (map[j].గమ్యం_Coord) ? map[i].గమ్యం_Coord : map[j].గమ్యం_Coord;
 
       // Mapping 0? Return one not mapping to 0.
-      if (map[i].toCoord == 0)
-	return map[j].toCoord;
-      else
-	return map[i].toCoord;
+      ఒకవేళ (map[i].గమ్యం_Coord == 0)
+	తిరిగి map[j].గమ్యం_Coord;
+      లేకపోతే
+	తిరిగి map[i].గమ్యం_Coord;
     }
 
     /* There's at least two and we're not an exact match. Prepare to lerp. */
 
     // Find the segment we're in.
-    for (i = start; i < end; i++)
-      if (value < map[i].fromCoord)
-	break;
+    కొరకు (i = ప్రారంభం; i < చివర; i++)
+      ఒకవేళ (value < map[i].fromCoord)
+	ఆపు;
 
-    if (i == start)
+    ఒకవేళ (i == ప్రారంభం)
     {
       // Value before all segments; Shift.
-      return value - map[start].fromCoord + map[start].toCoord;
+      తిరిగి value - map[ప్రారంభం].fromCoord + map[ప్రారంభం].గమ్యం_Coord;
     }
-    if (i == end)
+    ఒకవేళ (i == చివర)
     {
       // Value after all segments; Shift.
-      return value - map[end - 1].fromCoord + map[end - 1].toCoord;
+      తిరిగి value - map[చివర - 1].fromCoord + map[చివర - 1].గమ్యం_Coord;
     }
 
     // Actually interpolate.
-    auto &before = map[i-1];
-    auto &after = map[i];
-    float denom = after.fromCoord - before.fromCoord; // Can't be zero by now.
-    return before.toCoord + ((after.toCoord - before.toCoord) * (value - before.fromCoord)) / denom;
+    స్వయంచాలక &before = map[i-1];
+    స్వయంచాలక &after = map[i];
+    దశాంశం denom = after.fromCoord - before.fromCoord; // Can't be zero by now.
+    తిరిగి before.గమ్యం_Coord + ((after.గమ్యం_Coord - before.గమ్యం_Coord) * (value - before.fromCoord)) / denom;
 
-#undef toCoord
-#undef fromCoord
+#నిర్వచనం_రద్దు గమ్యం_Coord
+#నిర్వచనం_రద్దు fromCoord
   }
 
-  float unmap_float (float value) const { return map_float (value, 1, 0); }
+  దశాంశం unmap_float (దశాంశం value) స్థిరరాశి { తిరిగి map_float (value, 1, 0); }
 
 
   // TODO Kill this.
-  Triple unmap_axis_range (const Triple& axis_range) const
+  Triple unmap_axis_range (స్థిరరాశి Triple& axis_range) స్థిరరాశి
   {
-    float unmapped_min = unmap_float (axis_range.minimum);
-    float unmapped_middle = unmap_float (axis_range.middle);
-    float unmapped_max = unmap_float (axis_range.maximum);
+    దశాంశం unmapped_min = unmap_float (axis_range.minimum);
+    దశాంశం unmapped_మధ్య = unmap_float (axis_range.మధ్య);
+    దశాంశం unmapped_max = unmap_float (axis_range.గరిష్ఠ);
 
-    return Triple{unmapped_min, unmapped_middle, unmapped_max};
+    తిరిగి Triple{unmapped_min, unmapped_మధ్య, unmapped_max};
   }
 
-  bool subset (hb_subset_context_t *c, hb_tag_t axis_tag,
-               hb_vector_t<AxisValueMap> *out_mappings = nullptr) const
+  తార్కిక subset (hb_subset_context_t *c, hb_ట్యాగ్_t axis_ట్యాగ్_2,
+               hb_సదిశ_t<Axis_విలువ_Map> *బహిర్గతం_mappings = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ఇది);
 
     /* This function cannot work on avar2 table (and currently doesn't).
      * We should instead keep the design coords in the shape plan and use
@@ -272,172 +272,172 @@ struct SegmentMaps : Array16Of<AxisValueMap>
     /* avar mapped normalized axis range. Under avar2, axes_location holds
      * only the self-contained pins for the other tables; avar itself uses
      * the intermediate-space ranges of all restricted axes. */
-    const auto &axes_location = c->plan->has_avar2
+    స్థిరరాశి స్వయంచాలక &axes_location = c->plan->has_avar2
 				? c->plan->old_intermediates
 				: c->plan->axes_location;
     Triple *axis_range;
-    if (!axes_location.has (axis_tag, &axis_range))
-      return c->serializer->embed (*this);
+    ఒకవేళ (!axes_location.has (axis_ట్యాగ్_2, &axis_range))
+      తిరిగి c->serializer->embed (*ఇది);
 
     TripleDistances *axis_triple_distances;
-    if (!c->plan->axes_triple_distances.has (axis_tag, &axis_triple_distances))
-      return_trace (false);
+    ఒకవేళ (!c->plan->axes_triple_distances.has (axis_ట్యాగ్_2, &axis_triple_distances))
+      return_trace (అబద్ధం);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
     Triple unmapped_range = unmap_axis_range (*axis_range);
 
     /* create a vector of retained mappings and sort */
-    hb_vector_t<AxisValueMap> value_mappings;
-    for (const auto& _ : as_array ())
+    hb_సదిశ_t<Axis_విలువ_Map> విలువ_mappings;
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : as_array ())
     {
-      if (_.is_outside_axis_range (unmapped_range))
-        continue;
-      AxisValueMap mapping;
+      ఒకవేళ (_.is_outside_axis_range (unmapped_range))
+        కొనసాగు;
+      Axis_విలువ_Map mapping;
       mapping = _;
       mapping.instantiate (*axis_range, unmapped_range, *axis_triple_distances);
       /* (-1, -1), (0, 0), (1, 1) mappings will be added later, so avoid
        * duplicates here */
-      if (mapping.must_include ())
-        continue;
-      value_mappings.push (mapping);
+      ఒకవేళ (mapping.must_include ())
+        కొనసాగు;
+      విలువ_mappings.push (mapping);
     }
 
-    AxisValueMap m;
-    m.set_mapping (-1.f, -1.f);
-    value_mappings.push (m);
+    Axis_విలువ_Map m;
+    m.సమితి_mapping (-1.f, -1.f);
+    విలువ_mappings.push (m);
 
-    m.set_mapping (0.f, 0.f);
-    value_mappings.push (m);
+    m.సమితి_mapping (0.f, 0.f);
+    విలువ_mappings.push (m);
 
-    m.set_mapping (1.f, 1.f);
-    value_mappings.push (m);
+    m.సమితి_mapping (1.f, 1.f);
+    విలువ_mappings.push (m);
 
-    value_mappings.qsort ();
+    విలువ_mappings.qsort ();
 
-    if (unlikely (value_mappings.in_error ()))
-      return_trace (false);
+    ఒకవేళ (unlikely (విలువ_mappings.లోపల_error ()))
+      return_trace (అబద్ధం);
 
-    for (const auto& _ : value_mappings)
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : విలువ_mappings)
     {
-      if (!_.serialize (c->serializer))
-        return_trace (false);
+      ఒకవేళ (!_.serialize (c->serializer))
+        return_trace (అబద్ధం);
     }
-    if (!c->serializer->check_assign (out->len, value_mappings.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->len, విలువ_mappings.నిడివి, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
     /* Hand the instantiated mappings to the caller; avar2 offset
      * compensation needs them to locate the new mapping's kinks. */
-    if (out_mappings)
-      *out_mappings = std::move (value_mappings);
-    return_trace (true);
+    ఒకవేళ (బహిర్గతం_mappings)
+      *బహిర్గతం_mappings = std::move (విలువ_mappings);
+    return_trace (నిజం);
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (2, *this);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, *ఇది);
 };
 
 /* One knot of the avar2 offset-compensation function
  * offset(z) = inv_renorm(z) - z, in new intermediate space. */
-struct avar2_offset_knot_t
+నిర్మాణం avar2_స్థానభ్రంశం_knot_t
 {
-  double z;
-  double offset;
+  ద్విగుణ z;
+  ద్విగుణ స్థానభ్రంశం;
 };
 
 /* Insert a knot keeping the vector sorted by z; first insertion wins on
  * duplicate z. */
-static inline void
-_avar2_add_knot (hb_vector_t<avar2_offset_knot_t> &knots, double z, double offset)
+స్థిర అంతఃవరుస శూన్య
+avar2_కూడు_knot (hb_సదిశ_t<avar2_స్థానభ్రంశం_knot_t> &knots, ద్విగుణ z, ద్విగుణ స్థానభ్రంశం)
 {
-  unsigned i = 0;
-  while (i < knots.length && knots.arrayZ[i].z < z) i++;
-  if (i < knots.length && knots.arrayZ[i].z == z) return;
-  knots.push (avar2_offset_knot_t {0.0, 0.0});
-  if (unlikely (knots.in_error ())) return;
-  for (unsigned j = knots.length - 1; j > i; j--)
+  గుర్తులేని i = 0;
+  అయితే (i < knots.నిడివి && knots.arrayZ[i].z < z) i++;
+  ఒకవేళ (i < knots.నిడివి && knots.arrayZ[i].z == z) తిరిగి;
+  knots.push (avar2_స్థానభ్రంశం_knot_t {0.0, 0.0});
+  ఒకవేళ (unlikely (knots.లోపల_error ())) తిరిగి;
+  కొరకు (గుర్తులేని j = knots.నిడివి - 1; j > i; j--)
     knots.arrayZ[j] = knots.arrayZ[j - 1];
-  knots.arrayZ[i] = avar2_offset_knot_t {z, offset};
+  knots.arrayZ[i] = avar2_స్థానభ్రంశం_knot_t {z, స్థానభ్రంశం};
 }
 
 /* Piecewise-linear evaluation over the sorted knots. Inputs are always
  * within [-1, +1] and anchor knots at -1/0/+1 always exist. */
-static inline double
-_avar2_eval_offset (const hb_vector_t<avar2_offset_knot_t> &knots, double z)
+స్థిర అంతఃవరుస ద్విగుణ
+avar2_eval_స్థానభ్రంశం (స్థిరరాశి hb_సదిశ_t<avar2_స్థానభ్రంశం_knot_t> &knots, ద్విగుణ z)
 {
-  unsigned len = knots.length;
-  for (unsigned i = 0; i < len; i++)
+  గుర్తులేని len = knots.నిడివి;
+  కొరకు (గుర్తులేని i = 0; i < len; i++)
   {
-    if (z == knots.arrayZ[i].z) return knots.arrayZ[i].offset;
-    if (z < knots.arrayZ[i].z)
+    ఒకవేళ (z == knots.arrayZ[i].z) తిరిగి knots.arrayZ[i].స్థానభ్రంశం;
+    ఒకవేళ (z < knots.arrayZ[i].z)
     {
-      if (!i) return knots.arrayZ[0].offset;
-      const auto &before = knots.arrayZ[i - 1];
-      const auto &after = knots.arrayZ[i];
-      double denom = after.z - before.z;
-      return before.offset + (after.offset - before.offset) * (z - before.z) / denom;
+      ఒకవేళ (!i) తిరిగి knots.arrayZ[0].స్థానభ్రంశం;
+      స్థిరరాశి స్వయంచాలక &before = knots.arrayZ[i - 1];
+      స్థిరరాశి స్వయంచాలక &after = knots.arrayZ[i];
+      ద్విగుణ denom = after.z - before.z;
+      తిరిగి before.స్థానభ్రంశం + (after.స్థానభ్రంశం - before.స్థానభ్రంశం) * (z - before.z) / denom;
     }
   }
-  return len ? knots.arrayZ[len - 1].offset : 0.0;
+  తిరిగి len ? knots.arrayZ[len - 1].స్థానభ్రంశం : 0.0;
 }
 
 /* Piecewise-linear evaluation over instantiated avar v1 mappings, as
  * produced by SegmentMaps::subset (sorted, with -1/0/+1 anchors).
  * Matches SegmentMaps::map_float for such well-formed mappings. */
-static inline double
-_avar2_map_new_mapping (const hb_vector_t<AxisValueMap> &mappings, double v,
-			unsigned from_offset = 0, unsigned to_offset = 1)
+స్థిర అంతఃవరుస ద్విగుణ
+_avar2_map_new_mapping (స్థిరరాశి hb_సదిశ_t<Axis_విలువ_Map> &mappings, ద్విగుణ v,
+			గుర్తులేని from_స్థానభ్రంశం = 0, గుర్తులేని గమ్యం_స్థానభ్రంశం = 1)
 {
-  unsigned len = mappings.length;
-  if (!len) return v;
+  గుర్తులేని len = mappings.నిడివి;
+  ఒకవేళ (!len) తిరిగి v;
 
-  for (unsigned i = 0; i < len; i++)
+  కొరకు (గుర్తులేని i = 0; i < len; i++)
   {
-    double from = (double) mappings.arrayZ[i].coords[from_offset].to_float ();
-    if (v == from)
-      return (double) mappings.arrayZ[i].coords[to_offset].to_float ();
-    if (v < from)
+    ద్విగుణ from = (ద్విగుణ) mappings.arrayZ[i].coords[from_స్థానభ్రంశం].గమ్యం_float ();
+    ఒకవేళ (v == from)
+      తిరిగి (ద్విగుణ) mappings.arrayZ[i].coords[గమ్యం_స్థానభ్రంశం].గమ్యం_float ();
+    ఒకవేళ (v < from)
     {
-      double to = (double) mappings.arrayZ[i].coords[to_offset].to_float ();
-      if (!i) return v - from + to;
-      double prev_from = (double) mappings.arrayZ[i - 1].coords[from_offset].to_float ();
-      double prev_to = (double) mappings.arrayZ[i - 1].coords[to_offset].to_float ();
-      double denom = from - prev_from;
-      if (denom == 0.0) return prev_to;
-      return prev_to + (to - prev_to) * (v - prev_from) / denom;
+      ద్విగుణ to = (ద్విగుణ) mappings.arrayZ[i].coords[గమ్యం_స్థానభ్రంశం].గమ్యం_float ();
+      ఒకవేళ (!i) తిరిగి v - from + to;
+      ద్విగుణ prev_from = (ద్విగుణ) mappings.arrayZ[i - 1].coords[from_స్థానభ్రంశం].గమ్యం_float ();
+      ద్విగుణ prev_గమ్యం = (ద్విగుణ) mappings.arrayZ[i - 1].coords[గమ్యం_స్థానభ్రంశం].గమ్యం_float ();
+      ద్విగుణ denom = from - prev_from;
+      ఒకవేళ (denom == 0.0) తిరిగి prev_గమ్యం;
+      తిరిగి prev_గమ్యం + (to - prev_గమ్యం) * (v - prev_from) / denom;
     }
   }
-  return v - (double) mappings.arrayZ[len - 1].coords[from_offset].to_float ()
-           + (double) mappings.arrayZ[len - 1].coords[to_offset].to_float ();
+  తిరిగి v - (ద్విగుణ) mappings.arrayZ[len - 1].coords[from_స్థానభ్రంశం].గమ్యం_float ()
+           + (ద్విగుణ) mappings.arrayZ[len - 1].coords[గమ్యం_స్థానభ్రంశం].గమ్యం_float ();
 }
 
 /* Inverse of _avar2_map_new_mapping: pull an output coordinate back to a
  * preimage input coordinate. For a non-strictly-monotone mapping this picks
  * one preimage, which is fine for its only use (augmenting the error
  * estimator's sample set). */
-static inline double
-_avar2_unmap_new_mapping (const hb_vector_t<AxisValueMap> &mappings, double v)
+స్థిర అంతఃవరుస ద్విగుణ
+_avar2_unmap_new_mapping (స్థిరరాశి hb_సదిశ_t<Axis_విలువ_Map> &mappings, ద్విగుణ v)
 {
-  return _avar2_map_new_mapping (mappings, v, 1, 0);
+  తిరిగి _avar2_map_new_mapping (mappings, v, 1, 0);
 }
 
 /* Plain (non-avar) fvar-style normalization of a user value against a
  * user-space (min, default, max) triple. */
-static inline double
-_avar2_normalize_value (double v, double min, double def, double max)
+స్థిర అంతఃవరుస ద్విగుణ
+avar2_normalize_విలువ (ద్విగుణ v, ద్విగుణ min, ద్విగుణ def, ద్విగుణ max)
 {
   v = hb_clamp (v, min, max);
-  if (v == def) return 0.0;
-  if (v < def) return def == min ? 0.0 : (v - def) / (def - min);
-  return def == max ? 0.0 : (v - def) / (max - def);
+  ఒకవేళ (v == def) తిరిగి 0.0;
+  ఒకవేళ (v < def) తిరిగి def == min ? 0.0 : (v - def) / (def - min);
+  తిరిగి def == max ? 0.0 : (v - def) / (max - def);
 }
 
 /* Inverse of the above: map a normalized value back to user space. */
-static inline double
-_avar2_denormalize_value (double v, double min, double def, double max)
+స్థిర అంతఃవరుస ద్విగుణ
+avar2_denormalize_విలువ (ద్విగుణ v, ద్విగుణ min, ద్విగుణ def, ద్విగుణ max)
 {
-  if (v == 0.0) return def;
-  return v < 0.0 ? def + v * (def - min) : def + v * (max - def);
+  ఒకవేళ (v == 0.0) తిరిగి def;
+  తిరిగి v < 0.0 ? def + v * (def - min) : def + v * (max - def);
 }
 
 /* Estimate the residual offset-compensation error for one restricted axis:
@@ -453,418 +453,418 @@ _avar2_denormalize_value (double v, double min, double def, double max)
  * knots), so the worst kink cannot fall between uniform samples. The
  * pointwise F2Dot14 rounding makes this an estimate rather than an exact
  * bound, but every piecewise-linear extremum is visited. */
-static inline unsigned
-_avar2_estimate_offset_error (const SegmentMaps &old_seg,
-                              const hb_vector_t<AxisValueMap> &new_mapping,
-                              double old_min, double old_def, double old_max,
-                              double new_min, double new_def, double new_max,
-                              const hb_vector_t<avar2_offset_knot_t> &knots)
+స్థిర అంతఃవరుస గుర్తులేని
+avar2_estimate_స్థానభ్రంశం_error (స్థిరరాశి SegmentMaps &old_seg,
+                              స్థిరరాశి hb_సదిశ_t<Axis_విలువ_Map> &new_mapping,
+                              ద్విగుణ old_min, ద్విగుణ old_def, ద్విగుణ old_max,
+                              ద్విగుణ new_min, ద్విగుణ new_def, ద్విగుణ new_max,
+                              స్థిరరాశి hb_సదిశ_t<avar2_స్థానభ్రంశం_knot_t> &knots)
 {
-  constexpr unsigned samples = 257;
-  hb_vector_t<double> us;
-  if (unlikely (!us.alloc (samples + old_seg.as_array ().length +
-                           new_mapping.length + knots.length)))
-    return UINT_MAX; /* estimator only; fail towards "worse" */
-  for (unsigned i = 0; i < samples; i++)
+  constexpr గుర్తులేని samples = 257;
+  hb_సదిశ_t<ద్విగుణ> us;
+  ఒకవేళ (unlikely (!us.alloc (samples + old_seg.as_array ().నిడివి +
+                           new_mapping.నిడివి + knots.నిడివి)))
+    తిరిగి UINT_MAX; /* estimator only; fail towards "worse" */
+  కొరకు (గుర్తులేని i = 0; i < samples; i++)
     us.push (new_min + (new_max - new_min) * i / (samples - 1));
-  for (const auto &_ : old_seg.as_array ())
-    us.push (_avar2_denormalize_value ((double) _.coords[0].to_float (),
+  కొరకు (స్థిరరాశి స్వయంచాలక &_ : old_seg.as_array ())
+    us.push (avar2_denormalize_విలువ ((ద్విగుణ) _.coords[0].గమ్యం_float (),
                                        old_min, old_def, old_max));
-  for (const auto &_ : new_mapping)
-    us.push (_avar2_denormalize_value ((double) _.coords[0].to_float (),
+  కొరకు (స్థిరరాశి స్వయంచాలక &_ : new_mapping)
+    us.push (avar2_denormalize_విలువ ((ద్విగుణ) _.coords[0].గమ్యం_float (),
                                        new_min, new_def, new_max));
-  for (const auto &knot : knots)
-    us.push (_avar2_denormalize_value (
+  కొరకు (స్థిరరాశి స్వయంచాలక &knot : knots)
+    us.push (avar2_denormalize_విలువ (
                _avar2_unmap_new_mapping (new_mapping, knot.z),
                new_min, new_def, new_max));
-  if (unlikely (us.in_error ())) return UINT_MAX;
+  ఒకవేళ (unlikely (us.లోపల_error ())) తిరిగి UINT_MAX;
 
-  unsigned max_err = 0;
-  for (double u : us)
+  గుర్తులేని max_err = 0;
+  కొరకు (ద్విగుణ u : us)
   {
-    if (u < new_min || u > new_max) continue;
-    double n_old = _avar2_normalize_value (u, old_min, old_def, old_max);
-    double old_final = (double) old_seg.map_float ((float) n_old);
-    double n_new = _avar2_normalize_value (u, new_min, new_def, new_max);
-    double z = _avar2_map_new_mapping (new_mapping, n_new);
-    double new_final = z + _avar2_eval_offset (knots, z);
-    int err = abs ((int) roundf ((float) (old_final * 16384.0)) -
-                   (int) roundf ((float) (new_final * 16384.0)));
-    if ((unsigned) err > max_err) max_err = err;
+    ఒకవేళ (u < new_min || u > new_max) కొనసాగు;
+    ద్విగుణ n_old = avar2_normalize_విలువ (u, old_min, old_def, old_max);
+    ద్విగుణ old_final = (ద్విగుణ) old_seg.map_float ((దశాంశం) n_old);
+    ద్విగుణ n_new = avar2_normalize_విలువ (u, new_min, new_def, new_max);
+    ద్విగుణ z = _avar2_map_new_mapping (new_mapping, n_new);
+    ద్విగుణ new_final = z + avar2_eval_స్థానభ్రంశం (knots, z);
+    పూర్ణాంకం err = నిరపేక్ష ((పూర్ణాంకం) roundf ((దశాంశం) (old_final * 16384.0)) -
+                   (పూర్ణాంకం) roundf ((దశాంశం) (new_final * 16384.0)));
+    ఒకవేళ ((గుర్తులేని) err > max_err) max_err = err;
   }
-  return max_err;
+  తిరిగి max_err;
 }
 
-struct avar
+నిర్మాణం avar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_avar;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_avar;
 
-  bool has_data () const { return version.to_int (); }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.గమ్యం_int (); }
 
-  const SegmentMaps* get_segment_maps () const
-  { return &firstAxisSegmentMaps; }
+  స్థిరరాశి SegmentMaps* get_segment_maps () స్థిరరాశి
+  { తిరిగి &మొదటి_Axis_Segment_Maps; }
 
-  unsigned get_axis_count () const
-  { return axisCount; }
+  గుర్తులేని get_axis_లెక్క () స్థిరరాశి
+  { తిరిగి axis_లెక్క_2; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!(సంస్కరణ.sanitize (c) &&
 	  hb_barrier () &&
-	  (version.major == 1
-#ifndef HB_NO_AVAR2
-	   || version.major == 2
-#endif
+	  (సంస్కరణ.major == 1
+#నిర్వచితం_కాకపోతే HB_NO_AVAR2
+	   || సంస్కరణ.major == 2
+#అయితే_ముగింపు
 	   ) &&
-	  c->check_struct (this)))
-      return_trace (false);
+	  c->check_struct (ఇది)))
+      return_trace (అబద్ధం);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    స్థిరరాశి SegmentMaps *map = &మొదటి_Axis_Segment_Maps;
+    గుర్తులేని పూర్ణాంకం లెక్క = axis_లెక్క_2;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (unlikely (!map->sanitize (c)))
-	return_trace (false);
+      ఒకవేళ (unlikely (!map->sanitize (c)))
+	return_trace (అబద్ధం);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-#ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return_trace (true);
+#నిర్వచితం_కాకపోతే HB_NO_AVAR2
+    ఒకవేళ (సంస్కరణ.major < 2)
+      return_trace (నిజం);
     hb_barrier ();
 
-    const auto &v2 = * (const avarV2Tail *) map;
-    if (unlikely (!v2.sanitize (c, this)))
-      return_trace (false);
-#endif
+    స్థిరరాశి స్వయంచాలక &v2 = * (స్థిరరాశి avar_V2_తోక *) map;
+    ఒకవేళ (unlikely (!v2.sanitize (c, ఇది)))
+      return_trace (అబద్ధం);
+#అయితే_ముగింపు
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void map_coords_16_16 (int *coords, unsigned int coords_length) const
+  శూన్య map_coords_16_16 (పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coords_నిడివి) స్థిరరాశి
   {
-    unsigned int count = hb_min (coords_length, axisCount);
+    గుర్తులేని పూర్ణాంకం లెక్క = hb_min (coords_నిడివి, axis_లెక్క_2);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned int i = 0; i < count; i++)
+    స్థిరరాశి SegmentMaps *map = &మొదటి_Axis_Segment_Maps;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       coords[i] = roundf (map->map_float (coords[i] / 65536.f) * 65536.f);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-#ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return;
+#నిర్వచితం_కాకపోతే HB_NO_AVAR2
+    ఒకవేళ (సంస్కరణ.major < 2)
+      తిరిగి;
     hb_barrier ();
 
-    for (; count < axisCount; count++)
+    కొరకు (; లెక్క < axis_లెక్క_2; లెక్క++)
       map = &StructAfter<SegmentMaps> (*map);
 
-    const auto &v2 = * (const avarV2Tail *) map;
+    స్థిరరాశి స్వయంచాలక &v2 = * (స్థిరరాశి avar_V2_తోక *) map;
 
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
-    auto *var_store_cache = var_store.create_cache ();
+    స్థిరరాశి స్వయంచాలక &varidx_map = ఇది+v2.varIdxMap;
+    స్థిరరాశి స్వయంచాలక &var_store = ఇది+v2.varStore;
+    స్వయంచాలక *var_store_cache = var_store.create_cache ();
 
-    hb_vector_t<int> coords_2_14;
-    coords_2_14.resize (coords_length);
-    for (unsigned i = 0; i < coords_length; i++)
+    hb_సదిశ_t<పూర్ణాంకం> coords_2_14;
+    coords_2_14.resize (coords_నిడివి);
+    కొరకు (గుర్తులేని i = 0; i < coords_నిడివి; i++)
       coords_2_14[i] = roundf (coords[i] / 4.f); // 16.16 -> 2.14
 
-    hb_vector_t<int> out;
-    out.alloc (coords_length);
-    for (unsigned i = 0; i < coords_length; i++)
+    hb_సదిశ_t<పూర్ణాంకం> బహిర్గతం;
+    బహిర్గతం.alloc (coords_నిడివి);
+    కొరకు (గుర్తులేని i = 0; i < coords_నిడివి; i++)
     {
-      int v = coords[i];
+      పూర్ణాంకం v = coords[i];
       uint32_t varidx = varidx_map.map (i);
-      float delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
+      దశాంశం delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.నిడివి, var_store_cache);
       /* Apply the delta unclamped and clamp only the result to [-1, +1],
        * matching fontTools. Since inputs and results are in [-1, +1],
        * deltas beyond ±2 are equivalent to ±2; clamp to that range only
        * to keep the float->int conversion safe. */
-      float d = hb_clamp (delta * 4, -(float) (1<<17), +(float) (1<<17)); // 2.14 -> 16.16
-      v += (int) roundf (d);
+      దశాంశం d = hb_clamp (delta * 4, -(దశాంశం) (1<<17), +(దశాంశం) (1<<17)); // 2.14 -> 16.16
+      v += (పూర్ణాంకం) roundf (d);
       v = hb_clamp (v, -(1<<16), +(1<<16));
-      out.push (v);
+      బహిర్గతం.push (v);
     }
-    for (unsigned i = 0; i < coords_length; i++)
-      coords[i] = out[i];
+    కొరకు (గుర్తులేని i = 0; i < coords_నిడివి; i++)
+      coords[i] = బహిర్గతం[i];
 
-    OT::ItemVariationStore::destroy_cache (var_store_cache);
-#endif
+    OT::అంశం_Variation_Store::destroy_cache (var_store_cache);
+#అయితే_ముగింపు
   }
 
   /* An avar version 2 font is never downgraded to v1: even with a NULL
    * varStore offset (legal; maps like plain v1) the avar2 subsetting path
    * applies, with "no variation" semantics for rows that don't resolve —
    * offset compensation then creates delta rows on demand. */
-  bool has_v2_data () const { return version.major > 1; }
+  తార్కిక has_v2_దత్తాంశం () స్థిరరాశి { తిరిగి సంస్కరణ.major > 1; }
 
   /* Resolve the avar2 VarStore and VarIdxMap, for the subset planner.
    * Either pointer may be to the Null object (nullable offsets). */
-  bool get_v2_store_and_map (const ItemVariationStore **store,
-                             const DeltaSetIndexMap **varidx_map) const
+  తార్కిక get_v2_store_and_map (స్థిరరాశి అంశం_Variation_Store **store,
+                             స్థిరరాశి Delta_సమితి_సూచీ_Map **varidx_map) స్థిరరాశి
   {
-#ifndef HB_NO_AVAR2
-    if (version.major < 2) return false;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned i = 0; i < axisCount; i++)
+#నిర్వచితం_కాకపోతే HB_NO_AVAR2
+    ఒకవేళ (సంస్కరణ.major < 2) తిరిగి అబద్ధం;
+    స్థిరరాశి SegmentMaps *map = &మొదటి_Axis_Segment_Maps;
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
       map = &StructAfter<SegmentMaps> (*map);
-    const auto &v2 = * (const avarV2Tail *) map;
-    *store = &(this+v2.varStore);
-    *varidx_map = &(this+v2.varIdxMap);
-    return true;
-#else
-    return false;
-#endif
+    స్థిరరాశి స్వయంచాలక &v2 = * (స్థిరరాశి avar_V2_తోక *) map;
+    *store = &(ఇది+v2.varStore);
+    *varidx_map = &(ఇది+v2.varIdxMap);
+    తిరిగి నిజం;
+#లేకపోతే
+    తిరిగి అబద్ధం;
+#అయితే_ముగింపు
   }
 
   // axis normalization is done in 2.14 here
   // TODO: deprecate this API once fonttools is updated to use 16.16 normalization
-  bool map_coords_2_14 (float *coords, unsigned int coords_length,
-			bool v1_only = false) const
+  తార్కిక map_coords_2_14 (దశాంశం *coords, గుర్తులేని పూర్ణాంకం coords_నిడివి,
+			తార్కిక v1_only = అబద్ధం) స్థిరరాశి
   {
-    hb_vector_t<int> coords_2_14;
-    if (!v1_only && !coords_2_14.resize (coords_length)) return false;
-    unsigned int count = hb_min (coords_length, axisCount);
+    hb_సదిశ_t<పూర్ణాంకం> coords_2_14;
+    ఒకవేళ (!v1_only && !coords_2_14.resize (coords_నిడివి)) తిరిగి అబద్ధం;
+    గుర్తులేని పూర్ణాంకం లెక్క = hb_min (coords_నిడివి, axis_లెక్క_2);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned int i = 0; i < count; i++)
+    స్థిరరాశి SegmentMaps *map = &మొదటి_Axis_Segment_Maps;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      int v = roundf (map->map_float (coords[i]) * 16384.f);
-      if (!v1_only)
+      పూర్ణాంకం v = roundf (map->map_float (coords[i]) * 16384.f);
+      ఒకవేళ (!v1_only)
 	coords_2_14[i] = v;
       coords[i] = v / 16384.f;
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    if (v1_only)
-      return true;
+    ఒకవేళ (v1_only)
+      తిరిగి నిజం;
 
-#ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return true;
+#నిర్వచితం_కాకపోతే HB_NO_AVAR2
+    ఒకవేళ (సంస్కరణ.major < 2)
+      తిరిగి నిజం;
     hb_barrier ();
 
-    for (; count < axisCount; count++)
+    కొరకు (; లెక్క < axis_లెక్క_2; లెక్క++)
       map = &StructAfter<SegmentMaps> (*map);
 
-    const auto &v2 = * (const avarV2Tail *) map;
+    స్థిరరాశి స్వయంచాలక &v2 = * (స్థిరరాశి avar_V2_తోక *) map;
 
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
-    auto *var_store_cache = var_store.create_cache ();
+    స్థిరరాశి స్వయంచాలక &varidx_map = ఇది+v2.varIdxMap;
+    స్థిరరాశి స్వయంచాలక &var_store = ఇది+v2.varStore;
+    స్వయంచాలక *var_store_cache = var_store.create_cache ();
 
-    for (unsigned i = 0; i < coords_length; i++)
+    కొరకు (గుర్తులేని i = 0; i < coords_నిడివి; i++)
     {
-      int v = coords_2_14[i];
+      పూర్ణాంకం v = coords_2_14[i];
       uint32_t varidx = varidx_map.map (i);
-      float delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
+      దశాంశం delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.నిడివి, var_store_cache);
       /* As above: apply the delta unclamped (±2 covers every useful case)
        * and clamp the result to [-1, +1], matching fontTools. */
-      v += (int) hb_clamp (roundf (delta), -(float) (1<<15), +(float) (1<<15));
+      v += (పూర్ణాంకం) hb_clamp (roundf (delta), -(దశాంశం) (1<<15), +(దశాంశం) (1<<15));
       v = hb_clamp (v, -(1<<14), +(1<<14));
       coords[i] = v / 16384.f;
     }
 
-    OT::ItemVariationStore::destroy_cache (var_store_cache);
-    return true;
-#else
-    return version.major < 2;
-#endif
+    OT::అంశం_Variation_Store::destroy_cache (var_store_cache);
+    తిరిగి నిజం;
+#లేకపోతే
+    తిరిగి సంస్కరణ.major < 2;
+#అయితే_ముగింపు
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned/dropped
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    గుర్తులేని retained_axis_లెక్క = c->plan->axes_సూచీ_map.get_population ();
+    ఒకవేళ (!retained_axis_లెక్క) //all axes are pinned/dropped
+      return_trace (అబద్ధం);
 
-    avar *out = c->serializer->allocate_min<avar> ();
-    if (unlikely (!out)) return_trace (false);
+    avar *బహిర్గతం = c->serializer->allocate_min<avar> ();
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->version.major = c->plan->has_avar2 ? 2 : 1;
-    out->version.minor = 0;
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    బహిర్గతం->సంస్కరణ.major = c->plan->has_avar2 ? 2 : 1;
+    బహిర్గతం->సంస్కరణ.minor = 0;
+    ఒకవేళ (!c->serializer->check_కేటాయించు (బహిర్గతం->axis_లెక్క_2, retained_axis_లెక్క, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
     /* For avar2, keep the instantiated v1 mappings around; offset
      * compensation needs them to locate the new mappings' kinks. */
-    hb_vector_t<hb_vector_t<AxisValueMap>> new_mappings;
-    if (c->plan->has_avar2 && !new_mappings.resize (axisCount))
-      return_trace (false);
+    hb_సదిశ_t<hb_సదిశ_t<Axis_విలువ_Map>> new_mappings;
+    ఒకవేళ (c->plan->has_avar2 && !new_mappings.resize (axis_లెక్క_2))
+      return_trace (అబద్ధం);
 
-    const hb_map_t& axes_index_map = c->plan->axes_index_map;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    unsigned count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    స్థిరరాశి hb_map_t& axes_సూచీ_map = c->plan->axes_సూచీ_map;
+    స్థిరరాశి SegmentMaps *map = &మొదటి_Axis_Segment_Maps;
+    గుర్తులేని లెక్క = axis_లెక్క_2;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (axes_index_map.has (i))
+      ఒకవేళ (axes_సూచీ_map.has (i))
       {
-        hb_tag_t *axis_tag;
-        if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag))
-          return_trace (false);
+        hb_ట్యాగ్_t *axis_ట్యాగ్_2;
+        ఒకవేళ (!c->plan->axes_old_సూచీ_ట్యాగ్_map.has (i, &axis_ట్యాగ్_2))
+          return_trace (అబద్ధం);
 
         Triple *axis_location;
-        if (c->plan->has_avar2 &&
-            c->plan->user_axes_location.has (*axis_tag, &axis_location) &&
-            axis_location->is_point ())
+        ఒకవేళ (c->plan->has_avar2 &&
+            c->plan->user_axes_location.has (*axis_ట్యాగ్_2, &axis_location) &&
+            axis_location->is_బిందువు ())
         {
           /* Pinned axis in avar2 mode: serialize identity segment map
            * {-1->-1, 0->0, 1->1}. The axis is kept in fvar as hidden,
            * so avar needs a segment map entry for it. */
-          auto *identity_map = c->serializer->start_embed<SegmentMaps> ();
-          if (unlikely (!c->serializer->extend_min (identity_map)))
-            return_trace (false);
-          AxisValueMap m;
-          m.set_mapping (-1.f, -1.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
-          m.set_mapping (0.f, 0.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
-          m.set_mapping (1.f, 1.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
-          if (!c->serializer->check_assign (identity_map->len, 3u,
-                                            HB_SERIALIZE_ERROR_INT_OVERFLOW))
-            return_trace (false);
+          స్వయంచాలక *తటస్థం_map = c->serializer->ప్రారంభం_embed<SegmentMaps> ();
+          ఒకవేళ (unlikely (!c->serializer->extend_min (తటస్థం_map)))
+            return_trace (అబద్ధం);
+          Axis_విలువ_Map m;
+          m.సమితి_mapping (-1.f, -1.f);
+          ఒకవేళ (!m.serialize (c->serializer)) return_trace (అబద్ధం);
+          m.సమితి_mapping (0.f, 0.f);
+          ఒకవేళ (!m.serialize (c->serializer)) return_trace (అబద్ధం);
+          m.సమితి_mapping (1.f, 1.f);
+          ఒకవేళ (!m.serialize (c->serializer)) return_trace (అబద్ధం);
+          ఒకవేళ (!c->serializer->check_కేటాయించు (తటస్థం_map->len, 3u,
+                                            HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+            return_trace (అబద్ధం);
         }
-        else
+        లేకపోతే
         {
           /* Restricted or free axis: use standard SegmentMaps::subset() */
-          if (!map->subset (c, *axis_tag,
-                            c->plan->has_avar2 ? &new_mappings[i] : nullptr))
-            return_trace (false);
+          ఒకవేళ (!map->subset (c, *axis_ట్యాగ్_2,
+                            c->plan->has_avar2 ? &new_mappings[i] : శూన్యసూచిక))
+            return_trace (అబద్ధం);
         }
       }
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    if (c->plan->has_avar2)
+    ఒకవేళ (c->plan->has_avar2)
       return_trace (_subset_avar2 (c, new_mappings));
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  private:
-  struct avar2_index_map_plan_t
+  అంతరంగ:
+  నిర్మాణం avar2_సూచీ_map_plan_t
   {
-    bool init (const hb_vector_t<uint32_t> &varidx_mapping,
-	       const hb_map_t &axes_index_map,
-	       unsigned axis_count)
+    తార్కిక init (స్థిరరాశి hb_సదిశ_t<uint32_t> &varidx_mapping,
+	       స్థిరరాశి hb_map_t &axes_సూచీ_map,
+	       గుర్తులేని axis_లెక్క)
     {
-      if (!output_map.alloc (axes_index_map.get_population ()))
-	return false;
+      ఒకవేళ (!output_map.alloc (axes_సూచీ_map.get_population ()))
+	తిరిగి అబద్ధం;
 
-      bool has_no_variation = false;
-      unsigned max_outer = 0, max_inner = 0;
-      for (unsigned i = 0; i < axis_count; i++)
+      తార్కిక has_no_variation = అబద్ధం;
+      గుర్తులేని max_outer = 0, max_inner = 0;
+      కొరకు (గుర్తులేని i = 0; i < axis_లెక్క; i++)
       {
-	if (!axes_index_map.has (i)) continue;
+	ఒకవేళ (!axes_సూచీ_map.has (i)) కొనసాగు;
 	uint32_t varidx = varidx_mapping[i];
 	output_map.push (varidx);
-	if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+	ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
 	{
-	  has_no_variation = true;
-	  continue;
+	  has_no_variation = నిజం;
+	  కొనసాగు;
 	}
 	max_outer = hb_max (max_outer, varidx >> 16);
 	max_inner = hb_max (max_inner, varidx & 0xFFFF);
       }
-      if (output_map.in_error () ||
-	  output_map.length != axes_index_map.get_population ())
-	return false;
+      ఒకవేళ (output_map.లోపల_error () ||
+	  output_map.నిడివి != axes_సూచీ_map.get_population ())
+	తిరిగి అబద్ధం;
 
-      if (has_no_variation)
+      ఒకవేళ (has_no_variation)
       {
-	width = 4;
-	inner_bit_count = 16;
+	వెడల్పు = 4;
+	inner_బిట్టు_లెక్క = 16;
       }
-      else
+      లేకపోతే
       {
-	inner_bit_count = hb_max (1u, hb_bit_storage (max_inner));
-	unsigned outer_bit_count = hb_max (1u, hb_bit_storage (max_outer));
-	width = hb_clamp ((inner_bit_count + outer_bit_count + 7) / 8, 1u, 4u);
-	if (inner_bit_count + outer_bit_count > width * 8)
-	  inner_bit_count = width * 8 - outer_bit_count;
+	inner_బిట్టు_లెక్క = hb_max (1u, hb_బిట్టు_storage (max_inner));
+	గుర్తులేని outer_బిట్టు_లెక్క = hb_max (1u, hb_బిట్టు_storage (max_outer));
+	వెడల్పు = hb_clamp ((inner_బిట్టు_లెక్క + outer_బిట్టు_లెక్క + 7) / 8, 1u, 4u);
+	ఒకవేళ (inner_బిట్టు_లెక్క + outer_బిట్టు_లెక్క > వెడల్పు * 8)
+	  inner_బిట్టు_లెక్క = వెడల్పు * 8 - outer_బిట్టు_లెక్క;
       }
-      return true;
+      తిరిగి నిజం;
     }
 
-    unsigned get_inner_bit_count () const { return inner_bit_count; }
-    unsigned get_width () const { return width; }
-    hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+    గుర్తులేని get_inner_బిట్టు_లెక్క () స్థిరరాశి { తిరిగి inner_బిట్టు_లెక్క; }
+    గుర్తులేని get_వెడల్పు () స్థిరరాశి { తిరిగి వెడల్పు; }
+    hb_array_t<స్థిరరాశి uint32_t> get_output_map () స్థిరరాశి { తిరిగి output_map.as_array (); }
 
-    unsigned inner_bit_count = 1;
-    unsigned width = 1;
-    hb_vector_t<uint32_t> output_map;
+    గుర్తులేని inner_బిట్టు_లెక్క = 1;
+    గుర్తులేని వెడల్పు = 1;
+    hb_సదిశ_t<uint32_t> output_map;
   };
 
-  bool _subset_avar2 (hb_subset_context_t *c,
-                      const hb_vector_t<hb_vector_t<AxisValueMap>> &new_mappings) const
+  తార్కిక _subset_avar2 (hb_subset_context_t *c,
+                      స్థిరరాశి hb_సదిశ_t<hb_సదిశ_t<Axis_విలువ_Map>> &new_mappings) స్థిరరాశి
   {
-#if defined (HB_NO_VAR) || defined (HB_NO_AVAR2)
+#ఒకవేళ defined (HB_NO_VAR) || defined (HB_NO_AVAR2)
     /* Not reachable: the plan never sets has_avar2 in these configurations. */
-    return false;
-#else
+    తిరిగి అబద్ధం;
+#లేకపోతే
 
     /* 1. Locate original avar2 data, keeping per-axis old segment maps */
-    hb_vector_t<const SegmentMaps *> old_seg_maps;
-    if (!old_seg_maps.alloc (axisCount)) return false;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_సదిశ_t<స్థిరరాశి SegmentMaps *> old_seg_maps;
+    ఒకవేళ (!old_seg_maps.alloc (axis_లెక్క_2)) తిరిగి అబద్ధం;
+    స్థిరరాశి SegmentMaps *map = &మొదటి_Axis_Segment_Maps;
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
       old_seg_maps.push (map);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    const auto &v2 = * (const avarV2Tail *) map;
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    స్థిరరాశి స్వయంచాలక &v2 = * (స్థిరరాశి avar_V2_తోక *) map;
+    స్థిరరాశి స్వయంచాలక &varidx_map = ఇది+v2.varIdxMap;
+    స్థిరరాశి స్వయంచాలక &var_store = ఇది+v2.varStore;
 
-    auto fvar_axes = c->plan->source->table.fvar->get_axes ();
+    స్వయంచాలక fvar_axes = c->plan->ఆధారం->పట్టిక.fvar->get_axes ();
 
     /* 2. Compute default deltas by evaluating VarStore at old defaults */
-    hb_vector_t<int> default_coords;
-    if (!default_coords.resize (axisCount)) return false;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_సదిశ_t<పూర్ణాంకం> default_coords;
+    ఒకవేళ (!default_coords.resize (axis_లెక్క_2)) తిరిగి అబద్ధం;
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
-      hb_tag_t *axis_tag;
-      if (c->plan->axes_old_index_tag_map.has (i, &axis_tag) &&
-          c->plan->old_intermediates.has (*axis_tag))
+      hb_ట్యాగ్_t *axis_ట్యాగ్_2;
+      ఒకవేళ (c->plan->axes_old_సూచీ_ట్యాగ్_map.has (i, &axis_ట్యాగ్_2) &&
+          c->plan->old_intermediates.has (*axis_ట్యాగ్_2))
       {
-        float d_i = (float) c->plan->old_intermediates.get (*axis_tag).middle;
+        దశాంశం d_i = (దశాంశం) c->plan->old_intermediates.get (*axis_ట్యాగ్_2).మధ్య;
         default_coords[i] = roundf (d_i * 16384.f);
       }
-      else
+      లేకపోతే
         default_coords[i] = 0;
     }
 
-    auto *store_cache = var_store.create_cache ();
-    hb_vector_t<float> default_deltas;
-    if (!default_deltas.resize (axisCount)) {
-      ItemVariationStore::destroy_cache (store_cache);
-      return false;
+    స్వయంచాలక *store_cache = var_store.create_cache ();
+    hb_సదిశ_t<దశాంశం> default_deltas;
+    ఒకవేళ (!default_deltas.resize (axis_లెక్క_2)) {
+      అంశం_Variation_Store::destroy_cache (store_cache);
+      తిరిగి అబద్ధం;
     }
-    for (unsigned i = 0; i < axisCount; i++)
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
       uint32_t varidx = varidx_map.map (i);
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+      ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
         default_deltas[i] = 0.f;
-      else
+      లేకపోతే
         default_deltas[i] = var_store.get_delta (varidx, default_coords.arrayZ,
-                                                  default_coords.length, store_cache);
+                                                  default_coords.నిడివి, store_cache);
     }
-    ItemVariationStore::destroy_cache (store_cache);
+    అంశం_Variation_Store::destroy_cache (store_cache);
 
     /* 3. Rebase IVS regions */
-    item_variations_t item_vars;
-    if (!item_vars.create_from_item_varstore (var_store, c->plan->axes_old_index_tag_map))
-      return false;
-    if (!item_vars.instantiate_tuple_vars (c->plan->old_intermediates,
+    అంశం_variations_t అంశం_vars;
+    ఒకవేళ (!అంశం_vars.create_from_అంశం_varstore (var_store, c->plan->axes_old_సూచీ_ట్యాగ్_map))
+      తిరిగి అబద్ధం;
+    ఒకవేళ (!అంశం_vars.instantiate_tuple_vars (c->plan->old_intermediates,
                                            c->plan->axes_triple_distances,
-                                           false))
-      return false;
+                                           అబద్ధం))
+      తిరిగి అబద్ధం;
 
     /* 4. Self-contained pinned axes (whose final coordinate is constant over
      * the retained box) were detected at plan time
@@ -879,14 +879,14 @@ struct avar
      * NO_VARIATIONS_INDEX so the offset loop creates fresh rows instead of
      * writing into nonexistent ones. This also covers a NULL VarStore
      * (never downgraded: rows are created on demand). */
-    hb_vector_t<uint32_t> new_varidx_mapping;
-    if (!new_varidx_mapping.resize (axisCount)) return false;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_సదిశ_t<uint32_t> new_varidx_mapping;
+    ఒకవేళ (!new_varidx_mapping.resize (axis_లెక్క_2)) తిరిగి అబద్ధం;
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
       uint32_t varidx = varidx_map.map (i);
-      if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
-	  !var_store.has_delta_set (varidx))
-	varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+      ఒకవేళ (varidx != HB_OT_LAYOUT_NO_VARIATIONS_సూచీ &&
+	  !var_store.has_delta_సమితి (varidx))
+	varidx = HB_OT_LAYOUT_NO_VARIATIONS_సూచీ;
       new_varidx_mapping[i] = varidx;
     }
 
@@ -898,102 +898,102 @@ struct avar
      * the row (identical contents, preserving the rebased deltas), then
      * repoint its varIdx. Sharers keep the clean row; the varstore
      * optimization pass re-merges identical rows afterwards. */
-    hb_hashmap_t<uint32_t, unsigned> varidx_ref_count;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_hashmap_t<uint32_t, గుర్తులేని> varidx_ref_లెక్క;
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue; /* self-contained: dropped */
+      ఒకవేళ (!c->plan->axes_సూచీ_map.has (i)) కొనసాగు; /* self-contained: dropped */
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX) continue;
-      unsigned *count;
-      if (varidx_ref_count.has (varidx, &count))
-        (*count)++;
-      else if (!varidx_ref_count.set (varidx, 1))
-        return false;
+      ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ) కొనసాగు;
+      గుర్తులేని *లెక్క;
+      ఒకవేళ (varidx_ref_లెక్క.has (varidx, &లెక్క))
+        (*లెక్క)++;
+      లేకపోతే ఒకవేళ (!varidx_ref_లెక్క.సమితి (varidx, 1))
+        తిరిగి అబద్ధం;
     }
-    for (unsigned i = 0; i < axisCount; i++)
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
-      hb_tag_t *axis_tag_ptr;
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
-        return false;
+      hb_ట్యాగ్_t *axis_ట్యాగ్_ptr;
+      ఒకవేళ (!c->plan->axes_old_సూచీ_ట్యాగ్_map.has (i, &axis_ట్యాగ్_ptr))
+        తిరిగి అబద్ధం;
       /* Only axes that will receive offset compensation (restricted or
        * pinned) can contaminate a shared row. */
-      if (!c->plan->axes_index_map.has (i) ||
-          !c->plan->user_axes_location.has (*axis_tag_ptr))
-        continue;
+      ఒకవేళ (!c->plan->axes_సూచీ_map.has (i) ||
+          !c->plan->user_axes_location.has (*axis_ట్యాగ్_ptr))
+        కొనసాగు;
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        continue; /* gets a fresh, private VarData in the offset loop below */
-      unsigned *count;
-      if (!varidx_ref_count.has (varidx, &count) || *count <= 1)
-        continue; /* sole owner: safe to write offsets in place */
-      unsigned outer = varidx >> 16;
-      unsigned new_inner = item_vars.duplicate_row (outer, varidx & 0xFFFF);
-      if (unlikely (new_inner == (unsigned) -1)) return false;
+      ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
+        కొనసాగు; /* gets a fresh, private VarData in the offset loop below */
+      గుర్తులేని *లెక్క;
+      ఒకవేళ (!varidx_ref_లెక్క.has (varidx, &లెక్క) || *లెక్క <= 1)
+        కొనసాగు; /* sole owner: safe to write offsets in place */
+      గుర్తులేని outer = varidx >> 16;
+      గుర్తులేని new_inner = అంశం_vars.duplicate_అడ్డువరుస (outer, varidx & 0xFFFF);
+      ఒకవేళ (unlikely (new_inner == (గుర్తులేని) -1)) తిరిగి అబద్ధం;
       new_varidx_mapping[i] = (outer << 16) | new_inner;
-      (*count)--;
+      (*లెక్క)--;
     }
 
     /* 6. Add offset compensation tuples.
      * Track processed (outer,inner) pairs to avoid adding duplicate biases
      * when multiple axes share the same varIdx. */
-    hb_set_t processed_varidxes;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_సమితి_t processed_varidxes;
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
-      hb_tag_t *axis_tag_ptr;
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
-        return false;
-      hb_tag_t axis_tag = *axis_tag_ptr;
+      hb_ట్యాగ్_t *axis_ట్యాగ్_ptr;
+      ఒకవేళ (!c->plan->axes_old_సూచీ_ట్యాగ్_map.has (i, &axis_ట్యాగ్_ptr))
+        తిరిగి అబద్ధం;
+      hb_ట్యాగ్_t axis_ట్యాగ్_2 = *axis_ట్యాగ్_ptr;
 
       /* Self-contained pinned axes are removed from fvar/avar; their
        * contribution is baked into the variation tables instead. */
-      if (!c->plan->axes_index_map.has (i))
-        continue;
+      ఒకవేళ (!c->plan->axes_సూచీ_map.has (i))
+        కొనసాగు;
 
       Triple *new_user;
-      if (c->plan->user_axes_location.has (axis_tag, &new_user))
+      ఒకవేళ (c->plan->user_axes_location.has (axis_ట్యాగ్_2, &new_user))
       {
         /* This axis is being restricted or pinned */
         Triple *old_int;
-        if (!c->plan->old_intermediates.has (axis_tag, &old_int))
-          return false;
+        ఒకవేళ (!c->plan->old_intermediates.has (axis_ట్యాగ్_2, &old_int))
+          తిరిగి అబద్ధం;
 
-        float a_i = (float) old_int->minimum;
-        float d_i = (float) old_int->middle;
-        float b_i = (float) old_int->maximum;
+        దశాంశం a_i = (దశాంశం) old_int->minimum;
+        దశాంశం d_i = (దశాంశం) old_int->మధ్య;
+        దశాంశం b_i = (దశాంశం) old_int->గరిష్ఠ;
 
-        int d_int = roundf (d_i * 16384.f);
+        పూర్ణాంకం d_int = roundf (d_i * 16384.f);
 
-        bool is_pinned = new_user->is_point ();
+        తార్కిక is_pinned = new_user->is_బిందువు ();
 
         uint32_t varidx = new_varidx_mapping[i];
-        unsigned outer, inner, item_count;
+        గుర్తులేని outer, inner, అంశం_లెక్క_2;
 
-        if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
         {
           /* No existing avar2 mapping. Create new VarData. */
-          outer = item_vars.add_vardata (1);
+          outer = అంశం_vars.కూడు_vardata (1);
           inner = 0;
-          item_count = 1;
+          అంశం_లెక్క_2 = 1;
           new_varidx_mapping[i] = (outer << 16) | inner;
           default_deltas[i] = 0.f; /* no prior default delta */
         }
-        else
+        లేకపోతే
         {
           outer = varidx >> 16;
           inner = varidx & 0xFFFF;
-          item_count = item_vars.get_item_count (outer);
+          అంశం_లెక్క_2 = అంశం_vars.get_అంశం_లెక్క (outer);
         }
 
         /* Empty-region bias: d_int + round(defaultDelta) */
-        int bias = d_int + (int) roundf (default_deltas[i]);
-        if (bias != 0)
+        పూర్ణాంకం bias = d_int + (పూర్ణాంకం) roundf (default_deltas[i]);
+        ఒకవేళ (bias != 0)
         {
-          hb_hashmap_t<hb_tag_t, Triple> empty_region;
-          item_vars.add_tuple (outer, std::move (empty_region),
-                               inner, bias, item_count);
+          hb_hashmap_t<hb_ట్యాగ్_t, Triple> ఖాళీలు_region;
+          అంశం_vars.కూడు_tuple (outer, std::move (ఖాళీలు_region),
+                               inner, bias, అంశం_లెక్క_2);
         }
 
-        if (!is_pinned)
+        ఒకవేళ (!is_pinned)
         {
           /* Offset compensation encodes, as avar2 deltas on this axis, the
            * piecewise-linear function offset(z) = inv_renorm(z) - z, where
@@ -1004,19 +1004,19 @@ struct avar
            *   z =  0  ->  d_i       (new default)
            *   z = +1  ->  b_i - 1   (new maximum)
            */
-          hb_vector_t<avar2_offset_knot_t> knots;
-          _avar2_add_knot (knots, -1.0, (double) a_i + 1.0);
-          _avar2_add_knot (knots, 0.0, (double) d_i);
-          _avar2_add_knot (knots, 1.0, (double) b_i - 1.0);
+          hb_సదిశ_t<avar2_స్థానభ్రంశం_knot_t> knots;
+          avar2_కూడు_knot (knots, -1.0, (ద్విగుణ) a_i + 1.0);
+          avar2_కూడు_knot (knots, 0.0, (ద్విగుణ) d_i);
+          avar2_కూడు_knot (knots, 1.0, (ద్విగుణ) b_i - 1.0);
 
-          const hb_vector_t<AxisValueMap> &new_mapping = new_mappings[i];
+          స్థిరరాశి hb_సదిశ_t<Axis_విలువ_Map> &new_mapping = new_mappings[i];
 
-          float min_f = 0.f, def_f = 0.f, max_f = 0.f;
-          if (likely (i < fvar_axes.length))
+          దశాంశం min_f = 0.f, def_f = 0.f, max_f = 0.f;
+          ఒకవేళ (likely (i < fvar_axes.నిడివి))
             fvar_axes[i].get_coordinates (min_f, def_f, max_f);
-          double old_min = (double) min_f;
-          double old_def = (double) def_f;
-          double old_max = (double) max_f;
+          ద్విగుణ old_min = (ద్విగుణ) min_f;
+          ద్విగుణ old_def = (ద్విగుణ) def_f;
+          ద్విగుణ old_max = (ద్విగుణ) max_f;
 
           /* If the axis default MOVED, inv_renorm also kinks where the OLD
            * default lands in the new space (the old intermediate coordinate
@@ -1024,14 +1024,14 @@ struct avar
            *   z = z_old  ->  -z_old
            * Omitting that knot (as a plain two-tent encoding would) makes
            * interior coordinates wrong. */
-          double z_old = _avar2_normalize_value ((double) old_def,
-                                                 (double) new_user->minimum,
-                                                 (double) new_user->middle,
-                                                 (double) new_user->maximum);
+          ద్విగుణ z_old = avar2_normalize_విలువ ((ద్విగుణ) old_def,
+                                                 (ద్విగుణ) new_user->minimum,
+                                                 (ద్విగుణ) new_user->మధ్య,
+                                                 (ద్విగుణ) new_user->గరిష్ఠ);
           z_old = _avar2_map_new_mapping (new_mapping, z_old);
-          z_old = (double) roundf ((float) (z_old * 16384.0)) / 16384.0;
-          if (-1.0 < z_old && z_old < 1.0)
-            _avar2_add_knot (knots, z_old, -z_old);
+          z_old = (ద్విగుణ) roundf ((దశాంశం) (z_old * 16384.0)) / 16384.0;
+          ఒకవేళ (-1.0 < z_old && z_old < 1.0)
+            avar2_కూడు_knot (knots, z_old, -z_old);
 
           /* Interior avar v1 breakpoints inside the retained range each put
            * a kink in offset(z). Sampling only {-1, 0, +1, z_old} would
@@ -1040,27 +1040,27 @@ struct avar
            * mapping kinks at each one's output coordinate; add that z with
            * its old intermediate value so offset(z) is reproduced at every
            * kink. */
-          hb_vector_t<avar2_offset_knot_t> with_breakpoints (knots);
-          for (const auto &m : new_mapping)
+          hb_సదిశ_t<avar2_స్థానభ్రంశం_knot_t> with_breakpoints (knots);
+          కొరకు (స్థిరరాశి స్వయంచాలక &m : new_mapping)
           {
-            double from = (double) m.coords[0].to_float ();
-            if (from == -1.0 || from == 0.0 || from == 1.0)
-              continue; /* anchors already seeded */
-            double z = (double) m.coords[1].to_float ();
-            if (!(-1.0 < z && z < 1.0))
-              continue;
-            double user = _avar2_denormalize_value (from,
-                                                    (double) new_user->minimum,
-                                                    (double) new_user->middle,
-                                                    (double) new_user->maximum);
-            double n_old = _avar2_normalize_value (user, old_min, old_def, old_max);
-            double x_old = (double) old_seg_maps[i]->map_float ((float) n_old);
-            x_old = (double) roundf ((float) (x_old * 16384.0)) / 16384.0;
-            _avar2_add_knot (with_breakpoints, z, x_old - z);
+            ద్విగుణ from = (ద్విగుణ) m.coords[0].గమ్యం_float ();
+            ఒకవేళ (from == -1.0 || from == 0.0 || from == 1.0)
+              కొనసాగు; /* anchors already seeded */
+            ద్విగుణ z = (ద్విగుణ) m.coords[1].గమ్యం_float ();
+            ఒకవేళ (!(-1.0 < z && z < 1.0))
+              కొనసాగు;
+            ద్విగుణ user = avar2_denormalize_విలువ (from,
+                                                    (ద్విగుణ) new_user->minimum,
+                                                    (ద్విగుణ) new_user->మధ్య,
+                                                    (ద్విగుణ) new_user->గరిష్ఠ);
+            ద్విగుణ n_old = avar2_normalize_విలువ (user, old_min, old_def, old_max);
+            ద్విగుణ x_old = (ద్విగుణ) old_seg_maps[i]->map_float ((దశాంశం) n_old);
+            x_old = (ద్విగుణ) roundf ((దశాంశం) (x_old * 16384.0)) / 16384.0;
+            avar2_కూడు_knot (with_breakpoints, z, x_old - z);
           }
 
-          if (unlikely (knots.in_error () || with_breakpoints.in_error ()))
-            return false;
+          ఒకవేళ (unlikely (knots.లోపల_error () || with_breakpoints.లోపల_error ()))
+            తిరిగి అబద్ధం;
 
           /* Extra tents cost F2Dot14 rounding, so for a steep segment they
            * can add more quantization noise than the structural error they
@@ -1069,31 +1069,31 @@ struct avar
            * strict (never-worse) improvement over the {-1, 0, +1, z_old}
            * anchors. Warn when even the better choice is not bit-exact (a
            * steep retained segment that cannot be reproduced in F2Dot14). */
-          unsigned err = _avar2_estimate_offset_error (*old_seg_maps[i], new_mapping,
+          గుర్తులేని err = avar2_estimate_స్థానభ్రంశం_error (*old_seg_maps[i], new_mapping,
                                                        old_min, old_def, old_max,
-                                                       (double) new_user->minimum,
-                                                       (double) new_user->middle,
-                                                       (double) new_user->maximum,
+                                                       (ద్విగుణ) new_user->minimum,
+                                                       (ద్విగుణ) new_user->మధ్య,
+                                                       (ద్విగుణ) new_user->గరిష్ఠ,
                                                        knots);
-          if (with_breakpoints.length != knots.length)
+          ఒకవేళ (with_breakpoints.నిడివి != knots.నిడివి)
           {
-            unsigned err_with = _avar2_estimate_offset_error (*old_seg_maps[i], new_mapping,
+            గుర్తులేని err_with = avar2_estimate_స్థానభ్రంశం_error (*old_seg_maps[i], new_mapping,
                                                               old_min, old_def, old_max,
-                                                              (double) new_user->minimum,
-                                                              (double) new_user->middle,
-                                                              (double) new_user->maximum,
+                                                              (ద్విగుణ) new_user->minimum,
+                                                              (ద్విగుణ) new_user->మధ్య,
+                                                              (ద్విగుణ) new_user->గరిష్ఠ,
                                                               with_breakpoints);
-            if (err_with <= err)
+            ఒకవేళ (err_with <= err)
             {
               knots = std::move (with_breakpoints);
               err = err_with;
             }
           }
-          if (err > 8)
-            DEBUG_MSG (SUBSET, nullptr,
+          ఒకవేళ (err > 8)
+            DEBUG_సందేశం (SUBSET, శూన్యసూచిక,
                        "avar2 offset compensation is approximate for axis %c%c%c%c: "
                        "max residual %u F2Dot14 units",
-                       HB_UNTAG (axis_tag), err);
+                       HB_UNTAG (axis_ట్యాగ్_2), err);
 
           /* Synthesize tents. Adjacent tents evaluate to zero at each
            * other's peaks, so each knot's delta is offset(z) - offset(0);
@@ -1101,114 +1101,114 @@ struct avar
            * bias above. This reduces to the classic pair of tents
            * (-1,-1,0) / (0,+1,+1) when the default is unchanged and there
            * are no interior knots. */
-          for (unsigned k = 0; k < knots.length; k++)
+          కొరకు (గుర్తులేని k = 0; k < knots.నిడివి; k++)
           {
-            double z = knots.arrayZ[k].z;
-            if (z == 0.0) continue;
-            int delta = (int) roundf ((float) ((knots.arrayZ[k].offset - (double) d_i) * 16384.0));
-            if (!delta) continue;
-            double lower, upper;
-            if (z > 0.0)
+            ద్విగుణ z = knots.arrayZ[k].z;
+            ఒకవేళ (z == 0.0) కొనసాగు;
+            పూర్ణాంకం delta = (పూర్ణాంకం) roundf ((దశాంశం) ((knots.arrayZ[k].స్థానభ్రంశం - (ద్విగుణ) d_i) * 16384.0));
+            ఒకవేళ (!delta) కొనసాగు;
+            ద్విగుణ క్రింది, పై;
+            ఒకవేళ (z > 0.0)
             {
-              lower = knots.arrayZ[k - 1].z;
-              upper = k + 1 < knots.length ? knots.arrayZ[k + 1].z : z;
+              క్రింది = knots.arrayZ[k - 1].z;
+              పై = k + 1 < knots.నిడివి ? knots.arrayZ[k + 1].z : z;
             }
-            else
+            లేకపోతే
             {
-              upper = knots.arrayZ[k + 1].z;
-              lower = k > 0 ? knots.arrayZ[k - 1].z : z;
+              పై = knots.arrayZ[k + 1].z;
+              క్రింది = k > 0 ? knots.arrayZ[k - 1].z : z;
             }
-            hb_hashmap_t<hb_tag_t, Triple> region;
-            if (unlikely (!region.set (axis_tag, Triple (lower, z, upper))))
-              return false;
-            item_vars.add_tuple (outer, std::move (region),
-                                 inner, delta, item_count);
+            hb_hashmap_t<hb_ట్యాగ్_t, Triple> region;
+            ఒకవేళ (unlikely (!region.సమితి (axis_ట్యాగ్_2, Triple (క్రింది, z, పై))))
+              తిరిగి అబద్ధం;
+            అంశం_vars.కూడు_tuple (outer, std::move (region),
+                                 inner, delta, అంశం_లెక్క_2);
           }
         }
       }
-      else
+      లేకపోతే
       {
         /* Free or private axis — not being restricted.
          * If it has a non-zero default delta, add it back as a bias.
          * Skip if this (outer,inner) was already processed (shared varIdx). */
         uint32_t varidx = new_varidx_mapping[i];
-        if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          continue;
+        ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
+          కొనసాగు;
 
-        if (processed_varidxes.has (varidx))
-          continue;
-        processed_varidxes.add (varidx);
+        ఒకవేళ (processed_varidxes.has (varidx))
+          కొనసాగు;
+        processed_varidxes.కూడు (varidx);
 
-        unsigned outer = varidx >> 16;
-        unsigned inner = varidx & 0xFFFF;
-        int dd = (int) roundf (default_deltas[i]);
-        if (dd != 0)
+        గుర్తులేని outer = varidx >> 16;
+        గుర్తులేని inner = varidx & 0xFFFF;
+        పూర్ణాంకం dd = (పూర్ణాంకం) roundf (default_deltas[i]);
+        ఒకవేళ (dd != 0)
         {
-          unsigned item_count = item_vars.get_item_count (outer);
-          hb_hashmap_t<hb_tag_t, Triple> empty_region;
-          item_vars.add_tuple (outer, std::move (empty_region),
-                               inner, dd, item_count);
+          గుర్తులేని అంశం_లెక్క_2 = అంశం_vars.get_అంశం_లెక్క (outer);
+          hb_hashmap_t<hb_ట్యాగ్_t, Triple> ఖాళీలు_region;
+          అంశం_vars.కూడు_tuple (outer, std::move (ఖాళీలు_region),
+                               inner, dd, అంశం_లెక్క_2);
         }
       }
     }
 
     /* 7. Finalize: build region list + convert to varstore */
-    if (!item_vars.build_region_list ()) return false;
-    if (!item_vars.as_item_varstore (true /* optimize */,
-                                     false /* use_no_variation_idx */))
-      return false;
+    ఒకవేళ (!అంశం_vars.build_region_list ()) తిరిగి అబద్ధం;
+    ఒకవేళ (!అంశం_vars.as_అంశం_varstore (నిజం /* optimize */,
+                                     అబద్ధం /* use_no_variation_idx */))
+      తిరిగి అబద్ధం;
 
     /* 8. Apply varidx_map optimization remapping */
-    const auto &opt_varidx_map = item_vars.get_varidx_map ();
-    for (unsigned i = 0; i < axisCount; i++)
+    స్థిరరాశి స్వయంచాలక &opt_varidx_map = అంశం_vars.get_varidx_map ();
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        continue;
+      ఒకవేళ (varidx == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
+        కొనసాగు;
       uint32_t *new_idx;
-      if (opt_varidx_map.has (varidx, &new_idx))
+      ఒకవేళ (opt_varidx_map.has (varidx, &new_idx))
         new_varidx_mapping[i] = *new_idx;
     }
 
     /* 9. Serialize avarV2Tail. Entries cover the retained axes only;
      * self-contained pinned axes are removed from fvar. */
-    avar2_index_map_plan_t index_map_plan;
-    if (!index_map_plan.init (new_varidx_mapping,
-			      c->plan->axes_index_map,
-			      axisCount))
-      return false;
+    avar2_సూచీ_map_plan_t సూచీ_map_plan;
+    ఒకవేళ (!సూచీ_map_plan.init (new_varidx_mapping,
+			      c->plan->axes_సూచీ_map,
+			      axis_లెక్క_2))
+      తిరిగి అబద్ధం;
 
-    auto *tail = c->serializer->allocate_size<avarV2Tail> (avarV2Tail::static_size);
-    if (unlikely (!tail)) return false;
-    if (!tail->varIdxMap.serialize_serialize (c->serializer, index_map_plan))
-      return false;
-    if (!tail->varStore.serialize_serialize (c->serializer,
-					     item_vars.has_long_word (),
-					     c->plan->axis_tags,
-					     item_vars.get_region_list (),
-					     item_vars.get_vardata_encodings ()))
-      return false;
+    స్వయంచాలక *తోక = c->serializer->allocate_కొలత<avar_V2_తోక> (avar_V2_తోక::static_కొలత);
+    ఒకవేళ (unlikely (!తోక)) తిరిగి అబద్ధం;
+    ఒకవేళ (!తోక->varIdxMap.serialize_serialize (c->serializer, సూచీ_map_plan))
+      తిరిగి అబద్ధం;
+    ఒకవేళ (!తోక->varStore.serialize_serialize (c->serializer,
+					     అంశం_vars.has_long_మాట (),
+					     c->plan->axis_ట్యాగులు,
+					     అంశం_vars.get_region_list (),
+					     అంశం_vars.get_vardata_encodings ()))
+      తిరిగి అబద్ధం;
 
-    return true;
-#endif
+    తిరిగి నిజం;
+#అయితే_ముగింపు
   }
 
-  public:
+  బహిరంగ:
 
-  protected:
-  FixedVersion<>version;	/* Version of the avar table
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version of the avar table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 0. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font. This
+  HBUINT16	axis_లెక్క_2;	/* The number of variation axes in the font. This
 				 * must be the same number as axisCount in the
 				 * 'fvar' table. */
-  SegmentMaps	firstAxisSegmentMaps;
+  SegmentMaps	మొదటి_Axis_Segment_Maps;
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (8);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_VAR_AVAR_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_VAR_AVAR_TABLE_HH */

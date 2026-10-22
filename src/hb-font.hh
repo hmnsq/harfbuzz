@@ -26,24 +26,24 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FONT_HH
-#define HB_FONT_HH
+#నిర్వచితం_కాకపోతే HB_FONT_HH
+#నిర్వచించు HB_FONT_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-atomic.hh"
-#include "hb-draw.hh"
-#include "hb-paint-extents.hh"
-#include "hb-shaper.hh"
-#include "hb-outline.hh"
+#అన్తర్భావ "hb-face.hh"
+#అన్తర్భావ "hb-atomic.hh"
+#అన్తర్భావ "hb-draw.hh"
+#అన్తర్భావ "hb-paint-extents.hh"
+#అన్తర్భావ "hb-shaper.hh"
+#అన్తర్భావ "hb-outline.hh"
 
 
 /*
  * hb_font_funcs_t
  */
 
-#define HB_FONT_FUNCS_IMPLEMENT_CALLBACKS \
+#నిర్వచించు HB_FONT_FUNCS_IMPLEMENT_CALLBACKS \
   HB_FONT_FUNC_IMPLEMENT (get_,font_h_extents) \
   HB_FONT_FUNC_IMPLEMENT (get_,font_v_extents) \
   HB_FONT_FUNC_IMPLEMENT (get_,nominal_glyph) \
@@ -60,40 +60,40 @@
   HB_FONT_FUNC_IMPLEMENT (get_,glyph_h_kerning) \
   HB_IF_NOT_DEPRECATED (HB_FONT_FUNC_IMPLEMENT (get_,glyph_v_kerning)) \
   HB_FONT_FUNC_IMPLEMENT (get_,glyph_extents) \
-  HB_FONT_FUNC_IMPLEMENT (get_,glyph_contour_point) \
+  HB_FONT_FUNC_IMPLEMENT (get_,glyph_contour_బిందువు) \
   HB_FONT_FUNC_IMPLEMENT (get_,glyph_name) \
   HB_FONT_FUNC_IMPLEMENT (get_,glyph_from_name) \
   HB_FONT_FUNC_IMPLEMENT (,draw_glyph_or_fail) \
   HB_FONT_FUNC_IMPLEMENT (,paint_glyph_or_fail) \
   /* ^--- Add new callbacks here */
 
-struct hb_font_funcs_t
+నిర్మాణం hb_font_funcs_t
 {
-  hb_object_header_t header;
+  hb_object_శీర్షిక_t శీర్షిక;
 
-  struct {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) void *name;
+  నిర్మాణం {
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) శూన్య *name;
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
-  } *user_data;
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
+  } *user_దత్తాంశం;
 
-  struct {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_destroy_func_t name;
+  నిర్మాణం {
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) hb_destroy_func_t name;
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
   } *destroy;
 
   /* Don't access these directly.  Call font->get_*() instead. */
-  union get_t {
-    struct get_funcs_t {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_func_t name;
+  సంఘం get_t {
+    నిర్మాణం get_funcs_t {
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_func_t name;
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
     } f;
-    void (*array[0
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) +1
+    శూన్య (*array[0
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) +1
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
 		]) ();
   } get;
 };
@@ -104,758 +104,758 @@ DECLARE_NULL_INSTANCE (hb_font_funcs_t);
  * hb_font_t
  */
 
-#define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, font);
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_దత్తాంశం_INSTANTIATE_SHAPERS(shaper, font);
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
 
-struct hb_font_t
+నిర్మాణం hb_font_t
 {
-  hb_object_header_t header;
-  hb_atomic_t<unsigned> serial;
-  hb_atomic_t<unsigned> serial_coords;
+  hb_object_శీర్షిక_t శీర్షిక;
+  hb_atomic_t<గుర్తులేని> serial;
+  hb_atomic_t<గుర్తులేని> serial_coords;
 
-  hb_font_t *parent;
+  hb_font_t *మాతృ;
   hb_face_t *face;
 
   int32_t x_scale;
   int32_t y_scale;
 
-  bool is_synthetic;
+  తార్కిక is_synthetic;
 
-  float x_embolden;
-  float y_embolden;
-  bool embolden_in_place;
+  దశాంశం x_embolden;
+  దశాంశం y_embolden;
+  తార్కిక embolden_లోపల_ఉంచు;
   int32_t x_strength; /* x_embolden, in scaled units. */
   int32_t y_strength; /* y_embolden, in scaled units. */
 
-  float slant;
-  float slant_xy;
+  దశాంశం slant;
+  దశాంశం slant_xy;
 
-  float x_multf;
-  float y_multf;
+  దశాంశం x_multf;
+  దశాంశం y_multf;
   int64_t x_mult;
   int64_t y_mult;
 
-  unsigned int x_ppem;
-  unsigned int y_ppem;
+  గుర్తులేని పూర్ణాంకం x_ppem;
+  గుర్తులేని పూర్ణాంకం y_ppem;
 
-  float ptem;
+  దశాంశం ptem;
 
   /* Font variation coordinates. */
-  unsigned int instance_index;
-  bool has_nonzero_coords;
-  unsigned int num_coords;
-  int *coords;
-  float *design_coords;
+  గుర్తులేని పూర్ణాంకం instance_సూచీ;
+  తార్కిక has_nonzero_coords;
+  గుర్తులేని పూర్ణాంకం అంకె_coords;
+  పూర్ణాంకం *coords;
+  దశాంశం *design_coords;
 
   hb_font_funcs_t   *klass;
-  void              *user_data;
+  శూన్య              *user_దత్తాంశం;
   hb_destroy_func_t  destroy;
 
-  hb_shaper_object_dataset_t<hb_font_t> data; /* Various shaper data. */
+  hb_shaper_object_dataset_t<hb_font_t> దత్తాంశం; /* Various shaper data. */
 
 
   /* Convert from font-space to user-space */
   int64_t dir_mult (hb_direction_t direction)
-  { return HB_DIRECTION_IS_VERTICAL(direction) ? y_mult : x_mult; }
-  hb_position_t em_scale_x (int32_t v) { return em_mult (v, x_mult); }
-  hb_position_t em_scale_y (int32_t v) { return em_mult (v, y_mult); }
-  hb_position_t em_scalef_x (float v) { return em_multf (v, x_multf); }
-  hb_position_t em_scalef_y (float v) { return em_multf (v, y_multf); }
-  float em_fscale_x (int32_t v) { return em_fmult (v, x_multf); }
-  float em_fscale_y (int32_t v) { return em_fmult (v, y_multf); }
-  float em_fscalef_x (float v) { return em_fmultf (v, x_multf); }
-  float em_fscalef_y (float v) { return em_fmultf (v, y_multf); }
+  { తిరిగి HB_DIRECTION_IS_VERTICAL(direction) ? y_mult : x_mult; }
+  hb_position_t em_scale_x (int32_t v) { తిరిగి em_mult (v, x_mult); }
+  hb_position_t em_scale_y (int32_t v) { తిరిగి em_mult (v, y_mult); }
+  hb_position_t em_scalef_x (దశాంశం v) { తిరిగి em_multf (v, x_multf); }
+  hb_position_t em_scalef_y (దశాంశం v) { తిరిగి em_multf (v, y_multf); }
+  దశాంశం em_fscale_x (int32_t v) { తిరిగి em_fmult (v, x_multf); }
+  దశాంశం em_fscale_y (int32_t v) { తిరిగి em_fmult (v, y_multf); }
+  దశాంశం em_fscalef_x (దశాంశం v) { తిరిగి em_fmultf (v, x_multf); }
+  దశాంశం em_fscalef_y (దశాంశం v) { తిరిగి em_fmultf (v, y_multf); }
   hb_position_t em_scale_dir (int16_t v, hb_direction_t direction)
-  { return em_mult (v, dir_mult (direction)); }
+  { తిరిగి em_mult (v, dir_mult (direction)); }
 
   /* Convert from parent-font user-space to our user-space */
-  hb_position_t parent_scale_x_distance (hb_position_t v)
+  hb_position_t మాతృ_scale_x_దూరం (hb_position_t v)
   {
-    if (unlikely (parent && parent->x_scale && parent->x_scale != x_scale))
-      return (hb_position_t) (v * (int64_t) this->x_scale / this->parent->x_scale);
-    return v;
+    ఒకవేళ (unlikely (మాతృ && మాతృ->x_scale && మాతృ->x_scale != x_scale))
+      తిరిగి (hb_position_t) (v * (int64_t) ఇది->x_scale / ఇది->మాతృ->x_scale);
+    తిరిగి v;
   }
-  hb_position_t parent_scale_y_distance (hb_position_t v)
+  hb_position_t మాతృ_scale_y_దూరం (hb_position_t v)
   {
-    if (unlikely (parent && parent->y_scale && parent->y_scale != y_scale))
-      return (hb_position_t) (v * (int64_t) this->y_scale / this->parent->y_scale);
-    return v;
+    ఒకవేళ (unlikely (మాతృ && మాతృ->y_scale && మాతృ->y_scale != y_scale))
+      తిరిగి (hb_position_t) (v * (int64_t) ఇది->y_scale / ఇది->మాతృ->y_scale);
+    తిరిగి v;
   }
-  hb_position_t parent_scale_x_position (hb_position_t v)
-  { return parent_scale_x_distance (v); }
-  hb_position_t parent_scale_y_position (hb_position_t v)
-  { return parent_scale_y_distance (v); }
+  hb_position_t మాతృ_scale_x_position (hb_position_t v)
+  { తిరిగి మాతృ_scale_x_దూరం (v); }
+  hb_position_t మాతృ_scale_y_position (hb_position_t v)
+  { తిరిగి మాతృ_scale_y_దూరం (v); }
 
-  void parent_scale_distance (hb_position_t *x, hb_position_t *y)
+  శూన్య మాతృ_scale_దూరం (hb_position_t *x, hb_position_t *y)
   {
-    *x = parent_scale_x_distance (*x);
-    *y = parent_scale_y_distance (*y);
+    *x = మాతృ_scale_x_దూరం (*x);
+    *y = మాతృ_scale_y_దూరం (*y);
   }
-  void parent_scale_position (hb_position_t *x, hb_position_t *y)
+  శూన్య మాతృ_scale_position (hb_position_t *x, hb_position_t *y)
   {
-    *x = parent_scale_x_position (*x);
-    *y = parent_scale_y_position (*y);
+    *x = మాతృ_scale_x_position (*x);
+    *y = మాతృ_scale_y_position (*y);
   }
 
-  void scale_glyph_extents (hb_glyph_extents_t *extents)
+  శూన్య scale_glyph_extents (hb_glyph_extents_t *extents)
   {
-    float x1 = em_fscale_x (extents->x_bearing);
-    float y1 = em_fscale_y (extents->y_bearing);
-    float x2 = x1 + em_fscale_x (extents->width);
-    float y2 = y1 + em_fscale_y (extents->height);
+    దశాంశం x1 = em_fscale_x (extents->x_bearing);
+    దశాంశం y1 = em_fscale_y (extents->y_bearing);
+    దశాంశం x2 = x1 + em_fscale_x (extents->వెడల్పు);
+    దశాంశం y2 = y1 + em_fscale_y (extents->ఎత్తు);
 
     extents->x_bearing = floorf (x1);
     extents->y_bearing = floorf (y1);
-    extents->width = ceilf (x2) - extents->x_bearing;
-    extents->height = ceilf (y2) - extents->y_bearing;
+    extents->వెడల్పు = ceilf (x2) - extents->x_bearing;
+    extents->ఎత్తు = ceilf (y2) - extents->y_bearing;
   }
 
-  void synthetic_glyph_extents (hb_glyph_extents_t *extents)
+  శూన్య synthetic_glyph_extents (hb_glyph_extents_t *extents)
   {
     /* Slant. */
-    if (slant_xy)
+    ఒకవేళ (slant_xy)
     {
       /* x_bearing/width and y_bearing/height are each clamped to the full
        * hb_position_t range independently by the extent producers, so their
        * sums and differences can overflow int32.  Accumulate in int64. */
       int64_t y1 = extents->y_bearing;
-      int64_t y2 = (int64_t) extents->y_bearing + extents->height;
+      int64_t y2 = (int64_t) extents->y_bearing + extents->ఎత్తు;
 
       int64_t x1 = (int64_t) extents->x_bearing + (int64_t) floorf (hb_min (y1 * slant_xy, y2 * slant_xy));
-      int64_t x2 = (int64_t) extents->x_bearing + extents->width + (int64_t) ceilf (hb_max (y1 * slant_xy, y2 * slant_xy));
+      int64_t x2 = (int64_t) extents->x_bearing + extents->వెడల్పు + (int64_t) ceilf (hb_max (y1 * slant_xy, y2 * slant_xy));
 
-      extents->x_bearing = hb_clamp_to<hb_position_t> (x1);
-      extents->width = hb_clamp_to<hb_position_t> (x2 - x1);
+      extents->x_bearing = hb_clamp_గమ్యం<hb_position_t> (x1);
+      extents->వెడల్పు = hb_clamp_గమ్యం<hb_position_t> (x2 - x1);
     }
 
     /* Embolden. */
-    if (x_strength || y_strength)
+    ఒకవేళ (x_strength || y_strength)
     {
       /* Y */
-      int y_shift = y_strength;
-      if (y_scale < 0) y_shift = -y_shift;
-      extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) extents->y_bearing + y_shift);
-      extents->height = hb_clamp_to<hb_position_t> ((int64_t) extents->height - y_shift);
+      పూర్ణాంకం y_జరుపు = y_strength;
+      ఒకవేళ (y_scale < 0) y_జరుపు = -y_జరుపు;
+      extents->y_bearing = hb_clamp_గమ్యం<hb_position_t> ((int64_t) extents->y_bearing + y_జరుపు);
+      extents->ఎత్తు = hb_clamp_గమ్యం<hb_position_t> ((int64_t) extents->ఎత్తు - y_జరుపు);
 
       /* X */
-      int x_shift = x_strength;
-      if (x_scale < 0) x_shift = -x_shift;
-      if (embolden_in_place)
-	extents->x_bearing = hb_clamp_to<hb_position_t> ((int64_t) extents->x_bearing - x_shift / 2);
-      extents->width = hb_clamp_to<hb_position_t> ((int64_t) extents->width + x_shift);
+      పూర్ణాంకం x_జరుపు = x_strength;
+      ఒకవేళ (x_scale < 0) x_జరుపు = -x_జరుపు;
+      ఒకవేళ (embolden_లోపల_ఉంచు)
+	extents->x_bearing = hb_clamp_గమ్యం<hb_position_t> ((int64_t) extents->x_bearing - x_జరుపు / 2);
+      extents->వెడల్పు = hb_clamp_గమ్యం<hb_position_t> ((int64_t) extents->వెడల్పు + x_జరుపు);
     }
   }
 
 
   /* Public getters */
 
-  HB_INTERNAL bool has_func (unsigned int i);
-  HB_INTERNAL bool has_func_set (unsigned int i);
+  HB_అంతర్గత తార్కిక has_func (గుర్తులేని పూర్ణాంకం i);
+  HB_అంతర్గత తార్కిక has_func_సమితి (గుర్తులేని పూర్ణాంకం i);
 
   /* has_* ... */
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) \
-  bool \
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) \
+  తార్కిక \
   has_##name##_func () \
   { \
-    hb_font_funcs_t *funcs = this->klass; \
-    unsigned int i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / sizeof (funcs->get.array[0]); \
-    return has_func (i); \
+    hb_font_funcs_t *funcs = ఇది->klass; \
+    గుర్తులేని పూర్ణాంకం i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / పరిమాణం (funcs->get.array[0]); \
+    తిరిగి has_func (i); \
   } \
-  bool \
+  తార్కిక \
   has_##name##_func_set () \
   { \
-    hb_font_funcs_t *funcs = this->klass; \
-    unsigned int i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / sizeof (funcs->get.array[0]); \
-    return has_func_set (i); \
+    hb_font_funcs_t *funcs = ఇది->klass; \
+    గుర్తులేని పూర్ణాంకం i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / పరిమాణం (funcs->get.array[0]); \
+    తిరిగి has_func_సమితి (i); \
   }
   HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
 
   hb_bool_t get_font_h_extents (hb_font_extents_t *extents,
-				bool synthetic = true)
+				తార్కిక synthetic = నిజం)
   {
-    hb_memset (extents, 0, sizeof (*extents));
-    bool ret = klass->get.f.font_h_extents (this, user_data,
+    hb_memset (extents, 0, పరిమాణం (*extents));
+    తార్కిక ret = klass->get.f.font_h_extents (ఇది, user_దత్తాంశం,
 					    extents,
-					    !klass->user_data ? nullptr : klass->user_data->font_h_extents);
+					    !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->font_h_extents);
 
-    if (synthetic && ret)
+    ఒకవేళ (synthetic && ret)
     {
       /* Embolden */
-      int y_shift = y_scale < 0 ? -y_strength : y_strength;
-      extents->ascender += y_shift;
+      పూర్ణాంకం y_జరుపు = y_scale < 0 ? -y_strength : y_strength;
+      extents->ascender += y_జరుపు;
     }
 
-    return ret;
+    తిరిగి ret;
   }
   hb_bool_t get_font_v_extents (hb_font_extents_t *extents,
-				bool synthetic = true)
+				తార్కిక synthetic = నిజం)
   {
-    hb_memset (extents, 0, sizeof (*extents));
-    bool ret = klass->get.f.font_v_extents (this, user_data,
+    hb_memset (extents, 0, పరిమాణం (*extents));
+    తార్కిక ret = klass->get.f.font_v_extents (ఇది, user_దత్తాంశం,
 					    extents,
-					    !klass->user_data ? nullptr : klass->user_data->font_v_extents);
+					    !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->font_v_extents);
 
-    if (synthetic && ret)
+    ఒకవేళ (synthetic && ret)
     {
       /* Embolden */
-      int x_shift = x_scale < 0 ? -x_strength : x_strength;
-      if (embolden_in_place)
+      పూర్ణాంకం x_జరుపు = x_scale < 0 ? -x_strength : x_strength;
+      ఒకవేళ (embolden_లోపల_ఉంచు)
       {
-	extents->ascender += x_shift / 2;
-	extents->descender -= x_shift - x_shift / 2;
+	extents->ascender += x_జరుపు / 2;
+	extents->descender -= x_జరుపు - x_జరుపు / 2;
       }
-      else
-	extents->ascender += x_shift;
+      లేకపోతే
+	extents->ascender += x_జరుపు;
     }
 
-    return ret;
+    తిరిగి ret;
   }
 
-  bool has_glyph (hb_codepoint_t unicode)
+  తార్కిక has_glyph (hb_codepoint_t unicode)
   {
     hb_codepoint_t glyph;
-    return get_nominal_glyph (unicode, &glyph);
+    తిరిగి get_nominal_glyph (unicode, &glyph);
   }
 
   hb_bool_t get_nominal_glyph (hb_codepoint_t unicode,
 			       hb_codepoint_t *glyph,
-			       hb_codepoint_t not_found = 0)
+			       hb_codepoint_t not_దొరికింది = 0)
   {
-    *glyph = not_found;
-    return klass->get.f.nominal_glyph (this, user_data,
+    *glyph = not_దొరికింది;
+    తిరిగి klass->get.f.nominal_glyph (ఇది, user_దత్తాంశం,
 				       unicode, glyph,
-				       !klass->user_data ? nullptr : klass->user_data->nominal_glyph);
+				       !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->nominal_glyph);
   }
-  unsigned int get_nominal_glyphs (unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
-				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride)
+  గుర్తులేని పూర్ణాంకం get_nominal_glyphs (గుర్తులేని పూర్ణాంకం లెక్క,
+				   స్థిరరాశి hb_codepoint_t *మొదటి_unicode,
+				   గుర్తులేని పూర్ణాంకం unicode_stride,
+				   hb_codepoint_t *మొదటి_glyph,
+				   గుర్తులేని పూర్ణాంకం glyph_stride)
   {
-    return klass->get.f.nominal_glyphs (this, user_data,
-					count,
-					first_unicode, unicode_stride,
-					first_glyph, glyph_stride,
-					!klass->user_data ? nullptr : klass->user_data->nominal_glyphs);
+    తిరిగి klass->get.f.nominal_glyphs (ఇది, user_దత్తాంశం,
+					లెక్క,
+					మొదటి_unicode, unicode_stride,
+					మొదటి_glyph, glyph_stride,
+					!klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->nominal_glyphs);
   }
 
   hb_bool_t get_variation_glyph (hb_codepoint_t unicode, hb_codepoint_t variation_selector,
 				 hb_codepoint_t *glyph,
-				 hb_codepoint_t not_found = 0)
+				 hb_codepoint_t not_దొరికింది = 0)
   {
-    *glyph = not_found;
-    return klass->get.f.variation_glyph (this, user_data,
+    *glyph = not_దొరికింది;
+    తిరిగి klass->get.f.variation_glyph (ఇది, user_దత్తాంశం,
 					 unicode, variation_selector, glyph,
-					 !klass->user_data ? nullptr : klass->user_data->variation_glyph);
+					 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->variation_glyph);
   }
 
   hb_position_t get_glyph_h_advance (hb_codepoint_t glyph,
-				     bool synthetic = true)
+				     తార్కిక synthetic = నిజం)
   {
-    hb_position_t advance = klass->get.f.glyph_h_advance (this, user_data,
+    hb_position_t advance = klass->get.f.glyph_h_advance (ఇది, user_దత్తాంశం,
 							  glyph,
-							  !klass->user_data ? nullptr : klass->user_data->glyph_h_advance);
+							  !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_h_advance);
 
-    if (synthetic && x_strength && !embolden_in_place)
+    ఒకవేళ (synthetic && x_strength && !embolden_లోపల_ఉంచు)
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
       advance += advance ? strength : 0;
     }
 
-    return advance;
+    తిరిగి advance;
   }
 
   hb_position_t get_glyph_v_advance (hb_codepoint_t glyph,
-				     bool synthetic = true)
+				     తార్కిక synthetic = నిజం)
   {
-    hb_position_t advance = klass->get.f.glyph_v_advance (this, user_data,
+    hb_position_t advance = klass->get.f.glyph_v_advance (ఇది, user_దత్తాంశం,
 							  glyph,
-							  !klass->user_data ? nullptr : klass->user_data->glyph_v_advance);
+							  !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_v_advance);
 
-    if (synthetic && y_strength && !embolden_in_place)
+    ఒకవేళ (synthetic && y_strength && !embolden_లోపల_ఉంచు)
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
       advance += advance ? strength : 0;
     }
 
-    return advance;
+    తిరిగి advance;
   }
 
-  void get_glyph_h_advances (unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int glyph_stride,
-			     hb_position_t *first_advance,
-			     unsigned int advance_stride,
-			     bool synthetic = true)
+  శూన్య get_glyph_h_advances (గుర్తులేని పూర్ణాంకం లెక్క,
+			     స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			     గుర్తులేని పూర్ణాంకం glyph_stride,
+			     hb_position_t *మొదటి_advance,
+			     గుర్తులేని పూర్ణాంకం advance_stride,
+			     తార్కిక synthetic = నిజం)
   {
-    klass->get.f.glyph_h_advances (this, user_data,
-				   count,
-				   first_glyph, glyph_stride,
-				   first_advance, advance_stride,
-				   !klass->user_data ? nullptr : klass->user_data->glyph_h_advances);
+    klass->get.f.glyph_h_advances (ఇది, user_దత్తాంశం,
+				   లెక్క,
+				   మొదటి_glyph, glyph_stride,
+				   మొదటి_advance, advance_stride,
+				   !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_h_advances);
 
-    if (synthetic && x_strength && !embolden_in_place)
+    ఒకవేళ (synthetic && x_strength && !embolden_లోపల_ఉంచు)
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
-      for (unsigned int i = 0; i < count; i++)
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
       {
-	*first_advance += *first_advance ? strength : 0;
-	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+	*మొదటి_advance += *మొదటి_advance ? strength : 0;
+	మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
       }
     }
   }
 
-  void get_glyph_v_advances (unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int glyph_stride,
-			     hb_position_t *first_advance,
-			     unsigned int advance_stride,
-			     bool synthetic = true)
+  శూన్య get_glyph_v_advances (గుర్తులేని పూర్ణాంకం లెక్క,
+			     స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			     గుర్తులేని పూర్ణాంకం glyph_stride,
+			     hb_position_t *మొదటి_advance,
+			     గుర్తులేని పూర్ణాంకం advance_stride,
+			     తార్కిక synthetic = నిజం)
   {
-    klass->get.f.glyph_v_advances (this, user_data,
-				   count,
-				   first_glyph, glyph_stride,
-				   first_advance, advance_stride,
-				   !klass->user_data ? nullptr : klass->user_data->glyph_v_advances);
+    klass->get.f.glyph_v_advances (ఇది, user_దత్తాంశం,
+				   లెక్క,
+				   మొదటి_glyph, glyph_stride,
+				   మొదటి_advance, advance_stride,
+				   !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_v_advances);
 
-    if (synthetic && y_strength && !embolden_in_place)
+    ఒకవేళ (synthetic && y_strength && !embolden_లోపల_ఉంచు)
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
-      for (unsigned int i = 0; i < count; i++)
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
       {
-	*first_advance += *first_advance ? strength : 0;
-	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+	*మొదటి_advance += *మొదటి_advance ? strength : 0;
+	మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
       }
     }
   }
 
   hb_bool_t get_glyph_h_origin (hb_codepoint_t glyph,
 				hb_position_t *x, hb_position_t *y,
-				bool synthetic = true)
+				తార్కిక synthetic = నిజం)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_h_origin (this, user_data,
+    తార్కిక ret = klass->get.f.glyph_h_origin (ఇది, user_దత్తాంశం,
 					    glyph, x, y,
-					    !klass->user_data ? nullptr : klass->user_data->glyph_h_origin);
+					    !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_h_origin);
 
-    if (synthetic && ret)
+    ఒకవేళ (synthetic && ret)
     {
       /* Slant is ignored as it does not affect glyph origin */
 
       /* Embolden */
-      if (!embolden_in_place)
+      ఒకవేళ (!embolden_లోపల_ఉంచు)
       {
         *x += x_scale < 0 ? -x_strength : x_strength;
 	*y += y_scale < 0 ? -y_strength : y_strength;
       }
     }
 
-    return ret;
+    తిరిగి ret;
   }
 
   hb_bool_t get_glyph_v_origin (hb_codepoint_t glyph,
 				hb_position_t *x, hb_position_t *y,
-				bool synthetic = true)
+				తార్కిక synthetic = నిజం)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_v_origin (this, user_data,
+    తార్కిక ret = klass->get.f.glyph_v_origin (ఇది, user_దత్తాంశం,
 					    glyph, x, y,
-					    !klass->user_data ? nullptr : klass->user_data->glyph_v_origin);
+					    !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_v_origin);
 
-    if (synthetic && ret)
+    ఒకవేళ (synthetic && ret)
     {
       /* Slant is ignored as it does not affect glyph origin */
 
       /* Embolden */
-      if (!embolden_in_place)
+      ఒకవేళ (!embolden_లోపల_ఉంచు)
       {
         *x += x_scale < 0 ? -x_strength : x_strength;
 	*y += y_scale < 0 ? -y_strength : y_strength;
       }
     }
 
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_bool_t get_glyph_h_origins (unsigned int count,
-				 const hb_codepoint_t *first_glyph,
-				 unsigned int glyph_stride,
-				 hb_position_t *first_x,
-				 unsigned int x_stride,
-				 hb_position_t *first_y,
-				 unsigned int y_stride,
-				 bool synthetic = true)
+  hb_bool_t get_glyph_h_origins (గుర్తులేని పూర్ణాంకం లెక్క,
+				 స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				 గుర్తులేని పూర్ణాంకం glyph_stride,
+				 hb_position_t *మొదటి_x,
+				 గుర్తులేని పూర్ణాంకం x_stride,
+				 hb_position_t *మొదటి_y,
+				 గుర్తులేని పూర్ణాంకం y_stride,
+				 తార్కిక synthetic = నిజం)
 
   {
-    bool ret = klass->get.f.glyph_h_origins (this, user_data,
-					     count,
-					     first_glyph, glyph_stride,
-					     first_x, x_stride, first_y, y_stride,
-					     !klass->user_data ? nullptr : klass->user_data->glyph_h_origins);
+    తార్కిక ret = klass->get.f.glyph_h_origins (ఇది, user_దత్తాంశం,
+					     లెక్క,
+					     మొదటి_glyph, glyph_stride,
+					     మొదటి_x, x_stride, మొదటి_y, y_stride,
+					     !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_h_origins);
 
-    if (synthetic && ret)
+    ఒకవేళ (synthetic && ret)
     {
-      hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
-      hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      hb_position_t x_జరుపు = x_scale < 0 ? -x_strength : x_strength;
+      hb_position_t y_జరుపు = y_scale < 0 ? -y_strength : y_strength;
+      కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
 	/* Embolden */
-	if (!embolden_in_place)
+	ఒకవేళ (!embolden_లోపల_ఉంచు)
 	{
-	  *first_x += x_shift;
-	  *first_y += y_shift;
+	  *మొదటి_x += x_జరుపు;
+	  *మొదటి_y += y_జరుపు;
 	}
-	first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
-	first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+	మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
+	మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
       }
     }
 
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_bool_t get_glyph_v_origins (unsigned int count,
-				 const hb_codepoint_t *first_glyph,
-				 unsigned int glyph_stride,
-				 hb_position_t *first_x,
-				 unsigned int x_stride,
-				 hb_position_t *first_y,
-				 unsigned int y_stride,
-				 bool synthetic = true)
+  hb_bool_t get_glyph_v_origins (గుర్తులేని పూర్ణాంకం లెక్క,
+				 స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				 గుర్తులేని పూర్ణాంకం glyph_stride,
+				 hb_position_t *మొదటి_x,
+				 గుర్తులేని పూర్ణాంకం x_stride,
+				 hb_position_t *మొదటి_y,
+				 గుర్తులేని పూర్ణాంకం y_stride,
+				 తార్కిక synthetic = నిజం)
 
   {
-    bool ret = klass->get.f.glyph_v_origins (this, user_data,
-					     count,
-					     first_glyph, glyph_stride,
-					     first_x, x_stride, first_y, y_stride,
-					     !klass->user_data ? nullptr : klass->user_data->glyph_v_origins);
+    తార్కిక ret = klass->get.f.glyph_v_origins (ఇది, user_దత్తాంశం,
+					     లెక్క,
+					     మొదటి_glyph, glyph_stride,
+					     మొదటి_x, x_stride, మొదటి_y, y_stride,
+					     !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_v_origins);
 
-    if (synthetic && is_synthetic && ret)
+    ఒకవేళ (synthetic && is_synthetic && ret)
     {
-      hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
-      hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      hb_position_t x_జరుపు = x_scale < 0 ? -x_strength : x_strength;
+      hb_position_t y_జరుపు = y_scale < 0 ? -y_strength : y_strength;
+      కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
 	/* Embolden */
-	if (!embolden_in_place)
+	ఒకవేళ (!embolden_లోపల_ఉంచు)
 	{
-	  *first_x += x_shift;
-	  *first_y += y_shift;
+	  *మొదటి_x += x_జరుపు;
+	  *మొదటి_y += y_జరుపు;
 	}
-	first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
-	first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+	మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
+	మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
       }
     }
 
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_position_t get_glyph_h_kerning (hb_codepoint_t left_glyph,
-				     hb_codepoint_t right_glyph)
+  hb_position_t get_glyph_h_kerning (hb_codepoint_t ఎడమ_glyph,
+				     hb_codepoint_t కుడి_glyph)
   {
-#ifdef HB_DISABLE_DEPRECATED
-    return 0;
-#else
-    return klass->get.f.glyph_h_kerning (this, user_data,
-					 left_glyph, right_glyph,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_h_kerning);
-#endif
+#నిర్వచితమైతే HB_DISABLE_DEPRECATED
+    తిరిగి 0;
+#లేకపోతే
+    తిరిగి klass->get.f.glyph_h_kerning (ఇది, user_దత్తాంశం,
+					 ఎడమ_glyph, కుడి_glyph,
+					 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_h_kerning);
+#అయితే_ముగింపు
   }
 
-  hb_position_t get_glyph_v_kerning (hb_codepoint_t top_glyph,
+  hb_position_t get_glyph_v_kerning (hb_codepoint_t శిఖరం_glyph,
 				     hb_codepoint_t bottom_glyph)
   {
-#ifdef HB_DISABLE_DEPRECATED
-    return 0;
-#else
-    return klass->get.f.glyph_v_kerning (this, user_data,
-					 top_glyph, bottom_glyph,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_v_kerning);
-#endif
+#నిర్వచితమైతే HB_DISABLE_DEPRECATED
+    తిరిగి 0;
+#లేకపోతే
+    తిరిగి klass->get.f.glyph_v_kerning (ఇది, user_దత్తాంశం,
+					 శిఖరం_glyph, bottom_glyph,
+					 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_v_kerning);
+#అయితే_ముగింపు
   }
 
   hb_bool_t get_glyph_extents (hb_codepoint_t glyph,
 			       hb_glyph_extents_t *extents,
-			       bool synthetic = true)
+			       తార్కిక synthetic = నిజం)
   {
-    hb_memset (extents, 0, sizeof (*extents));
+    hb_memset (extents, 0, పరిమాణం (*extents));
 
     /* This is rather messy, but necessary. */
 
-    if (!synthetic)
+    ఒకవేళ (!synthetic)
     {
-      return klass->get.f.glyph_extents (this, user_data,
+      తిరిగి klass->get.f.glyph_extents (ఇది, user_దత్తాంశం,
 					 glyph,
 					 extents,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_extents);
+					 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_extents);
     }
-    if (!is_synthetic &&
-	klass->get.f.glyph_extents (this, user_data,
+    ఒకవేళ (!is_synthetic &&
+	klass->get.f.glyph_extents (ఇది, user_దత్తాంశం,
 				    glyph,
 				    extents,
-				    !klass->user_data ? nullptr : klass->user_data->glyph_extents))
-      return true;
+				    !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_extents))
+      తిరిగి నిజం;
 
     /* Try getting extents from paint(), then draw(), *then* get_extents()
      * and apply synthetic settings in the last case. */
 
-#ifndef HB_NO_PAINT
+#నిర్వచితం_కాకపోతే HB_NO_PAINT
     hb_paint_extents_context_t paint_extents;
-    if (paint_glyph_or_fail (glyph,
+    ఒకవేళ (paint_glyph_or_fail (glyph,
 			     hb_paint_extents_get_funcs (), &paint_extents,
 			     0, 0))
     {
-      *extents = paint_extents.get_extents ().to_glyph_extents ();
-      return true;
+      *extents = paint_extents.get_extents ().గమ్యం_glyph_extents ();
+      తిరిగి నిజం;
     }
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_NO_DRAW
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
     hb_extents_t<> draw_extents;
-    if (draw_glyph_or_fail (glyph,
+    ఒకవేళ (draw_glyph_or_fail (glyph,
 			    hb_draw_extents_get_funcs (), &draw_extents))
     {
-      *extents = draw_extents.to_glyph_extents ();
-      return true;
+      *extents = draw_extents.గమ్యం_glyph_extents ();
+      తిరిగి నిజం;
     }
-#endif
+#అయితే_ముగింపు
 
-    bool ret = klass->get.f.glyph_extents (this, user_data,
+    తార్కిక ret = klass->get.f.glyph_extents (ఇది, user_దత్తాంశం,
 					   glyph,
 					   extents,
-					   !klass->user_data ? nullptr : klass->user_data->glyph_extents);
-    if (ret)
+					   !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_extents);
+    ఒకవేళ (ret)
       synthetic_glyph_extents (extents);
 
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_bool_t get_glyph_contour_point (hb_codepoint_t glyph, unsigned int point_index,
+  hb_bool_t get_glyph_contour_బిందువు (hb_codepoint_t glyph, గుర్తులేని పూర్ణాంకం బిందువు_సూచీ,
 				     hb_position_t *x, hb_position_t *y,
-				     bool synthetic = true)
+				     తార్కిక synthetic = నిజం)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_contour_point (this, user_data,
-						 glyph, point_index,
+    తార్కిక ret = klass->get.f.glyph_contour_బిందువు (ఇది, user_దత్తాంశం,
+						 glyph, బిందువు_సూచీ,
 						 x, y,
-						 !klass->user_data ? nullptr : klass->user_data->glyph_contour_point);
+						 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_contour_బిందువు);
 
-    if (synthetic && ret)
+    ఒకవేళ (synthetic && ret)
     {
       /* Slant */
-      if (slant_xy)
+      ఒకవేళ (slant_xy)
         *x += roundf (*y * slant_xy);
 
       /* Embolden */
-      if (!embolden_in_place)
+      ఒకవేళ (!embolden_లోపల_ఉంచు)
       {
-	int x_shift = x_scale < 0 ? -x_strength : x_strength;
-	*x += x_shift;
+	పూర్ణాంకం x_జరుపు = x_scale < 0 ? -x_strength : x_strength;
+	*x += x_జరుపు;
       }
     }
 
-    return ret;
+    తిరిగి ret;
   }
 
   hb_bool_t get_glyph_name (hb_codepoint_t glyph,
-			    char *name, unsigned int size)
+			    అక్షరం *name, గుర్తులేని పూర్ణాంకం కొలత)
   {
-    if (size) *name = '\0';
-    return klass->get.f.glyph_name (this, user_data,
+    ఒకవేళ (కొలత) *name = '\0';
+    తిరిగి klass->get.f.glyph_name (ఇది, user_దత్తాంశం,
 				    glyph,
-				    name, size,
-				    !klass->user_data ? nullptr : klass->user_data->glyph_name);
+				    name, కొలత,
+				    !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_name);
   }
 
-  hb_bool_t get_glyph_from_name (const char *name, int len, /* -1 means nul-terminated */
+  hb_bool_t get_glyph_from_name (స్థిరరాశి అక్షరం *name, పూర్ణాంకం len, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph)
   {
     *glyph = 0;
-    if (len == -1) len = strlen (name);
-    return klass->get.f.glyph_from_name (this, user_data,
+    ఒకవేళ (len == -1) len = అక్షరశ్రేణి_పొడవు (name);
+    తిరిగి klass->get.f.glyph_from_name (ఇది, user_దత్తాంశం,
 					 name, len,
 					 glyph,
-					 !klass->user_data ? nullptr : klass->user_data->glyph_from_name);
+					 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->glyph_from_name);
   }
 
-  bool draw_glyph_or_fail (hb_codepoint_t glyph,
-			   hb_draw_funcs_t *draw_funcs, void *draw_data,
-			   bool synthetic = true)
+  తార్కిక draw_glyph_or_fail (hb_codepoint_t glyph,
+			   hb_draw_funcs_t *draw_funcs, శూన్య *draw_దత్తాంశం,
+			   తార్కిక synthetic = నిజం)
   {
-#ifndef HB_NO_DRAW
-#ifndef HB_NO_OUTLINE
-    bool embolden = x_strength || y_strength;
-    bool slanted = slant_xy;
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
+#నిర్వచితం_కాకపోతే HB_NO_OUTLINE
+    తార్కిక embolden = x_strength || y_strength;
+    తార్కిక slanted = slant_xy;
     synthetic = synthetic && (embolden || slanted);
-#else
-    synthetic = false;
-#endif
+#లేకపోతే
+    synthetic = అబద్ధం;
+#అయితే_ముగింపు
 
-    if (!synthetic)
+    ఒకవేళ (!synthetic)
     {
-      return klass->get.f.draw_glyph_or_fail (this, user_data,
+      తిరిగి klass->get.f.draw_glyph_or_fail (ఇది, user_దత్తాంశం,
 					      glyph,
-					      draw_funcs, draw_data,
-					      !klass->user_data ? nullptr : klass->user_data->draw_glyph_or_fail);
+					      draw_funcs, draw_దత్తాంశం,
+					      !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->draw_glyph_or_fail);
     }
 
-#ifndef HB_NO_OUTLINE
+#నిర్వచితం_కాకపోతే HB_NO_OUTLINE
 
     hb_outline_t outline;
-    outline.budget_remaining = draw_funcs->get_budget_remaining_ptr (draw_data);
-    if (!klass->get.f.draw_glyph_or_fail (this, user_data,
+    outline.budget_మిగిలిన = draw_funcs->get_budget_మిగిలిన_ptr (draw_దత్తాంశం);
+    ఒకవేళ (!klass->get.f.draw_glyph_or_fail (ఇది, user_దత్తాంశం,
 					  glyph,
 					  hb_outline_recording_pen_get_funcs (), &outline,
-					  !klass->user_data ? nullptr : klass->user_data->draw_glyph_or_fail))
-      return false;
+					  !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->draw_glyph_or_fail))
+      తిరిగి అబద్ధం;
 
     // Slant before embolden; produces nicer results.
 
-    if (slanted)
+    ఒకవేళ (slanted)
     {
       hb_position_t xo = 0, yo = 0;
-      get_glyph_h_origin (glyph, &xo, &yo, false);
+      get_glyph_h_origin (glyph, &xo, &yo, అబద్ధం);
       outline.translate (-xo, -yo);
       outline.slant (slant_xy);
       outline.translate (xo, yo);
     }
 
-    if (embolden)
+    ఒకవేళ (embolden)
     {
-      float x_shift = embolden_in_place ? 0 : (float) x_strength / 2;
-      float y_shift = (float) y_strength / 2;
-      if (x_scale < 0) x_shift = -x_shift;
-      if (y_scale < 0) y_shift = -y_shift;
-      outline.embolden (x_strength, y_strength, x_shift, y_shift);
+      దశాంశం x_జరుపు = embolden_లోపల_ఉంచు ? 0 : (దశాంశం) x_strength / 2;
+      దశాంశం y_జరుపు = (దశాంశం) y_strength / 2;
+      ఒకవేళ (x_scale < 0) x_జరుపు = -x_జరుపు;
+      ఒకవేళ (y_scale < 0) y_జరుపు = -y_జరుపు;
+      outline.embolden (x_strength, y_strength, x_జరుపు, y_జరుపు);
     }
 
-    outline.replay (draw_funcs, draw_data);
+    outline.replay (draw_funcs, draw_దత్తాంశం);
 
-    return true;
-#endif
-#endif
-    return false;
+    తిరిగి నిజం;
+#అయితే_ముగింపు
+#అయితే_ముగింపు
+    తిరిగి అబద్ధం;
   }
 
-  bool paint_glyph_or_fail (hb_codepoint_t glyph,
-			    hb_paint_funcs_t *paint_funcs, void *paint_data,
-			    unsigned int palette,
+  తార్కిక paint_glyph_or_fail (hb_codepoint_t glyph,
+			    hb_paint_funcs_t *paint_funcs, శూన్య *paint_దత్తాంశం,
+			    గుర్తులేని పూర్ణాంకం palette,
 			    hb_color_t foreground,
-			    bool synthetic = true)
+			    తార్కిక synthetic = నిజం)
   {
-#ifndef HB_NO_PAINT
+#నిర్వచితం_కాకపోతే HB_NO_PAINT
     /* Slant */
-    if (synthetic && slant_xy)
-      hb_paint_push_transform (paint_funcs, paint_data,
+    ఒకవేళ (synthetic && slant_xy)
+      hb_paint_నెట్టు_transform (paint_funcs, paint_దత్తాంశం,
 			       1.f, 0.f,
 			       slant_xy, 1.f,
 			       0.f, 0.f);
 
-    bool ret = klass->get.f.paint_glyph_or_fail (this, user_data,
+    తార్కిక ret = klass->get.f.paint_glyph_or_fail (ఇది, user_దత్తాంశం,
 						 glyph,
-						 paint_funcs, paint_data,
+						 paint_funcs, paint_దత్తాంశం,
 						 palette, foreground,
-						 !klass->user_data ? nullptr : klass->user_data->paint_glyph_or_fail);
+						 !klass->user_దత్తాంశం ? శూన్యసూచిక : klass->user_దత్తాంశం->paint_glyph_or_fail);
 
-    if (synthetic && slant_xy)
-      hb_paint_pop_transform (paint_funcs, paint_data);
+    ఒకవేళ (synthetic && slant_xy)
+      hb_paint_తీయి_transform (paint_funcs, paint_దత్తాంశం);
 
-    return ret;
-#endif
-    return false;
+    తిరిగి ret;
+#అయితే_ముగింపు
+    తిరిగి అబద్ధం;
   }
 
   /* A bit higher-level, and with fallback */
 
-  HB_INTERNAL
-  void paint_glyph (hb_codepoint_t glyph,
-		    hb_paint_funcs_t *paint_funcs, void *paint_data,
-		    unsigned int palette,
+  HB_అంతర్గత
+  శూన్య paint_glyph (hb_codepoint_t glyph,
+		    hb_paint_funcs_t *paint_funcs, శూన్య *paint_దత్తాంశం,
+		    గుర్తులేని పూర్ణాంకం palette,
 		    hb_color_t foreground);
 
-  void get_h_extents_with_fallback (hb_font_extents_t *extents)
+  శూన్య get_h_extents_with_fallback (hb_font_extents_t *extents)
   {
-    if (!get_font_h_extents (extents))
+    ఒకవేళ (!get_font_h_extents (extents))
     {
       extents->ascender = y_scale * .8;
       extents->descender = extents->ascender - y_scale;
-      extents->line_gap = 0;
+      extents->పంక్తి_gap = 0;
     }
   }
-  void get_v_extents_with_fallback (hb_font_extents_t *extents)
+  శూన్య get_v_extents_with_fallback (hb_font_extents_t *extents)
   {
-    if (!get_font_v_extents (extents))
+    ఒకవేళ (!get_font_v_extents (extents))
     {
       extents->ascender = x_scale / 2;
       extents->descender = extents->ascender - x_scale;
-      extents->line_gap = 0;
+      extents->పంక్తి_gap = 0;
     }
   }
 
-  void get_extents_for_direction (hb_direction_t direction,
+  శూన్య get_extents_for_direction (hb_direction_t direction,
 				  hb_font_extents_t *extents)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       get_h_extents_with_fallback (extents);
-    else
+    లేకపోతే
       get_v_extents_with_fallback (extents);
   }
 
-  void get_glyph_advance_for_direction (hb_codepoint_t glyph,
+  శూన్య get_glyph_advance_for_direction (hb_codepoint_t glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y)
   {
     *x = *y = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       *x = get_glyph_h_advance (glyph);
-    else
+    లేకపోతే
       *y = get_glyph_v_advance (glyph);
   }
-  void get_glyph_advances_for_direction (hb_direction_t direction,
-					 unsigned int count,
-					 const hb_codepoint_t *first_glyph,
-					 unsigned glyph_stride,
-					 hb_position_t *first_advance,
-					 unsigned advance_stride)
+  శూన్య get_glyph_advances_for_direction (hb_direction_t direction,
+					 గుర్తులేని పూర్ణాంకం లెక్క,
+					 స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+					 గుర్తులేని glyph_stride,
+					 hb_position_t *మొదటి_advance,
+					 గుర్తులేని advance_stride)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
-      get_glyph_h_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
-    else
-      get_glyph_v_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+    ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+      get_glyph_h_advances (లెక్క, మొదటి_glyph, glyph_stride, మొదటి_advance, advance_stride);
+    లేకపోతే
+      get_glyph_v_advances (లెక్క, మొదటి_glyph, glyph_stride, మొదటి_advance, advance_stride);
   }
 
-  void apply_offset (hb_position_t *x, hb_position_t *y,
+  శూన్య apply_స్థానభ్రంశం (hb_position_t *x, hb_position_t *y,
 		     hb_position_t dx, hb_position_t dy,
-		     signed mult)
+		     గుర్తుగల mult)
   {
-    assert (mult == -1 || mult == +1);
+    ప్రతిజ్ఞా (mult == -1 || mult == +1);
 
     *x += dx * mult;
     *y += dy * mult;
   }
-  void add_offset (hb_position_t *x, hb_position_t *y,
+  శూన్య కూడు_స్థానభ్రంశం (hb_position_t *x, hb_position_t *y,
 		   hb_position_t dx, hb_position_t dy)
   {
     *x += dx;
     *y += dy;
   }
-  void subtract_offset (hb_position_t *x, hb_position_t *y,
+  శూన్య వ్యవకలనం_స్థానభ్రంశం (hb_position_t *x, hb_position_t *y,
 			hb_position_t dx, hb_position_t dy)
   {
     *x -= dx;
     *y -= dy;
   }
 
-  void guess_v_origin_minus_h_origin (hb_codepoint_t glyph,
+  శూన్య guess_v_origin_minus_h_origin (hb_codepoint_t glyph,
 				      hb_position_t *x, hb_position_t *y)
   {
     *x = get_glyph_h_advance (glyph) / 2;
@@ -865,212 +865,212 @@ struct hb_font_t
     *y = extents.ascender;
   }
 
-  void apply_glyph_h_origins_with_fallback (hb_buffer_t *buf, int mult)
+  శూన్య apply_glyph_h_origins_with_fallback (hb_బఫరు_t *buf, పూర్ణాంకం mult)
   {
-    bool has_ascender = false;
+    తార్కిక has_ascender = అబద్ధం;
     hb_position_t ascender = 0;
 
-    struct { hb_position_t x, y; } origins[32];
+    నిర్మాణం { hb_position_t x, y; } origins[32];
 
-    unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    గుర్తులేని పూర్ణాంకం స్థానభ్రంశం = 0;
+    గుర్తులేని పూర్ణాంకం లెక్క = buf->len;
+    అయితే (స్థానభ్రంశం < లెక్క)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
-      if (!get_glyph_h_origins (n,
-				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				&origins[0].x, sizeof (origins[0]),
-				&origins[0].y, sizeof (origins[0])))
+      గుర్తులేని n = hb_min (లెక్క - స్థానభ్రంశం, ARRAY_నిడివి (origins));
+      ఒకవేళ (!get_glyph_h_origins (n,
+				&buf->info[స్థానభ్రంశం].codepoint, పరిమాణం (hb_glyph_info_t),
+				&origins[0].x, పరిమాణం (origins[0]),
+				&origins[0].y, పరిమాణం (origins[0])))
       {
-        if (get_glyph_v_origins (n,
-				  &buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				  &origins[0].x, sizeof (origins[0]),
-				  &origins[0].y, sizeof (origins[0])))
+        ఒకవేళ (get_glyph_v_origins (n,
+				  &buf->info[స్థానభ్రంశం].codepoint, పరిమాణం (hb_glyph_info_t),
+				  &origins[0].x, పరిమాణం (origins[0]),
+				  &origins[0].y, పరిమాణం (origins[0])))
 	{
-	  if (!has_ascender)
+	  ఒకవేళ (!has_ascender)
 	  {
 	    hb_font_extents_t extents;
 	    get_h_extents_with_fallback (&extents);
 	    ascender = extents.ascender;
-	    has_ascender = true;
+	    has_ascender = నిజం;
 	  }
 
 	  /* We got the v_origins, adjust them to h_origins. */
-	  for (unsigned j = 0; j < n; j++)
+	  కొరకు (గుర్తులేని j = 0; j < n; j++)
 	  {
-	    hb_codepoint_t glyph = buf->info[offset + j].codepoint;
+	    hb_codepoint_t glyph = buf->info[స్థానభ్రంశం + j].codepoint;
 	    origins[j].x -= get_glyph_h_advance (glyph) / 2;
 	    origins[j].y -= ascender;
 	  }
 	}
-	else
+	లేకపోతే
 	{
 	  mult = 0; /* Indicates all origins[].x and origins[].y values are 0, therefore we can skip adjusting offsets below */
 	}
       }
 
-      assert (mult == -1 || mult == +1 || mult == 0);
-      if (mult == +1)
-        for (unsigned j = 0; j < n; j++)
+      ప్రతిజ్ఞా (mult == -1 || mult == +1 || mult == 0);
+      ఒకవేళ (mult == +1)
+        కొరకు (గుర్తులేని j = 0; j < n; j++)
 	{
-	  hb_glyph_position_t *pos = &buf->pos[offset + j];
-	  add_offset (&pos->x_offset, &pos->y_offset,
+	  hb_glyph_position_t *pos = &buf->pos[స్థానభ్రంశం + j];
+	  కూడు_స్థానభ్రంశం (&pos->x_స్థానభ్రంశం_2, &pos->y_స్థానభ్రంశం_2,
 		      origins[j].x, origins[j].y);
 	}
-      else if (mult == -1)
-	for (unsigned j = 0; j < n; j++)
+      లేకపోతే ఒకవేళ (mult == -1)
+	కొరకు (గుర్తులేని j = 0; j < n; j++)
 	{
-	  hb_glyph_position_t *pos = &buf->pos[offset + j];
-	  subtract_offset (&pos->x_offset, &pos->y_offset,
+	  hb_glyph_position_t *pos = &buf->pos[స్థానభ్రంశం + j];
+	  వ్యవకలనం_స్థానభ్రంశం (&pos->x_స్థానభ్రంశం_2, &pos->y_స్థానభ్రంశం_2,
 			   origins[j].x, origins[j].y);
 	}
       /* else if (mult == 0) --> Do nothing */
 
-      offset += n;
+      స్థానభ్రంశం += n;
     }
   }
-  void apply_glyph_v_origins_with_fallback (hb_buffer_t *buf, int mult)
+  శూన్య apply_glyph_v_origins_with_fallback (hb_బఫరు_t *buf, పూర్ణాంకం mult)
   {
-    bool has_ascender = false;
+    తార్కిక has_ascender = అబద్ధం;
     hb_position_t ascender = 0;
 
-    struct { hb_position_t x, y; } origins[32];
+    నిర్మాణం { hb_position_t x, y; } origins[32];
 
-    unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    గుర్తులేని పూర్ణాంకం స్థానభ్రంశం = 0;
+    గుర్తులేని పూర్ణాంకం లెక్క = buf->len;
+    అయితే (స్థానభ్రంశం < లెక్క)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
-      if (!get_glyph_v_origins (n,
-				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				&origins[0].x, sizeof (origins[0]),
-				&origins[0].y, sizeof (origins[0])))
+      గుర్తులేని n = hb_min (లెక్క - స్థానభ్రంశం, ARRAY_నిడివి (origins));
+      ఒకవేళ (!get_glyph_v_origins (n,
+				&buf->info[స్థానభ్రంశం].codepoint, పరిమాణం (hb_glyph_info_t),
+				&origins[0].x, పరిమాణం (origins[0]),
+				&origins[0].y, పరిమాణం (origins[0])))
       {
-	if (get_glyph_h_origins (n,
-				 &buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				 &origins[0].x, sizeof (origins[0]),
-				 &origins[0].y, sizeof (origins[0])))
+	ఒకవేళ (get_glyph_h_origins (n,
+				 &buf->info[స్థానభ్రంశం].codepoint, పరిమాణం (hb_glyph_info_t),
+				 &origins[0].x, పరిమాణం (origins[0]),
+				 &origins[0].y, పరిమాణం (origins[0])))
 	{
-	  if (!has_ascender)
+	  ఒకవేళ (!has_ascender)
 	  {
 	    hb_font_extents_t extents;
 	    get_h_extents_with_fallback (&extents);
 	    ascender = extents.ascender;
-	    has_ascender = true;
+	    has_ascender = నిజం;
 	  }
 
 	  /* We got the h_origins, adjust them to v_origins. */
-	  for (unsigned j = 0; j < n; j++)
+	  కొరకు (గుర్తులేని j = 0; j < n; j++)
 	  {
-	    hb_codepoint_t glyph = buf->info[offset + j].codepoint;
+	    hb_codepoint_t glyph = buf->info[స్థానభ్రంశం + j].codepoint;
 	    origins[j].x += get_glyph_h_advance (glyph) / 2;
 	    origins[j].y += ascender;
 	  }
 	}
-	else
+	లేకపోతే
 	{
 	  mult = 0; /* Indicates all origins[].x and origins[].y values are 0, therefore we can skip adjusting offsets below */
 	}
       }
 
-      assert (mult == -1 || mult == +1 || mult == 0);
-      if (mult == +1)
-        for (unsigned j = 0; j < n; j++)
+      ప్రతిజ్ఞా (mult == -1 || mult == +1 || mult == 0);
+      ఒకవేళ (mult == +1)
+        కొరకు (గుర్తులేని j = 0; j < n; j++)
 	{
-	  hb_glyph_position_t *pos = &buf->pos[offset + j];
-	  add_offset (&pos->x_offset, &pos->y_offset,
+	  hb_glyph_position_t *pos = &buf->pos[స్థానభ్రంశం + j];
+	  కూడు_స్థానభ్రంశం (&pos->x_స్థానభ్రంశం_2, &pos->y_స్థానభ్రంశం_2,
 		      origins[j].x, origins[j].y);
 	}
-      else if (mult == -1)
-	for (unsigned j = 0; j < n; j++)
+      లేకపోతే ఒకవేళ (mult == -1)
+	కొరకు (గుర్తులేని j = 0; j < n; j++)
 	{
-	  hb_glyph_position_t *pos = &buf->pos[offset + j];
-	  subtract_offset (&pos->x_offset, &pos->y_offset,
+	  hb_glyph_position_t *pos = &buf->pos[స్థానభ్రంశం + j];
+	  వ్యవకలనం_స్థానభ్రంశం (&pos->x_స్థానభ్రంశం_2, &pos->y_స్థానభ్రంశం_2,
 			   origins[j].x, origins[j].y);
 	}
       /* else if (mult == 0) --> Do nothing */
 
-      offset += n;
+      స్థానభ్రంశం += n;
     }
   }
 
-  void get_glyph_h_origin_with_fallback (hb_codepoint_t glyph,
+  శూన్య get_glyph_h_origin_with_fallback (hb_codepoint_t glyph,
 					 hb_position_t *x, hb_position_t *y)
   {
-    if (!get_glyph_h_origin (glyph, x, y) &&
+    ఒకవేళ (!get_glyph_h_origin (glyph, x, y) &&
 	 get_glyph_v_origin (glyph, x, y))
     {
       hb_position_t dx, dy;
       guess_v_origin_minus_h_origin (glyph, &dx, &dy);
-      subtract_offset (x, y, dx, dy);
+      వ్యవకలనం_స్థానభ్రంశం (x, y, dx, dy);
     }
   }
-  void get_glyph_v_origin_with_fallback (hb_codepoint_t glyph,
+  శూన్య get_glyph_v_origin_with_fallback (hb_codepoint_t glyph,
 					 hb_position_t *x, hb_position_t *y)
   {
-    if (!get_glyph_v_origin (glyph, x, y) &&
+    ఒకవేళ (!get_glyph_v_origin (glyph, x, y) &&
 	 get_glyph_h_origin (glyph, x, y))
     {
       hb_position_t dx, dy;
       guess_v_origin_minus_h_origin (glyph, &dx, &dy);
-      add_offset (x, y, dx, dy);
+      కూడు_స్థానభ్రంశం (x, y, dx, dy);
     }
   }
 
-  void get_glyph_origin_for_direction (hb_codepoint_t glyph,
+  శూన్య get_glyph_origin_for_direction (hb_codepoint_t glyph,
 				       hb_direction_t direction,
 				       hb_position_t *x, hb_position_t *y)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       get_glyph_h_origin_with_fallback (glyph, x, y);
-    else
+    లేకపోతే
       get_glyph_v_origin_with_fallback (glyph, x, y);
   }
 
-  void add_glyph_h_origins (hb_buffer_t *buf)
+  శూన్య కూడు_glyph_h_origins (hb_బఫరు_t *buf)
   {
     apply_glyph_h_origins_with_fallback (buf, +1);
   }
-  void add_glyph_v_origins (hb_buffer_t *buf)
+  శూన్య కూడు_glyph_v_origins (hb_బఫరు_t *buf)
   {
     apply_glyph_v_origins_with_fallback (buf, +1);
   }
-  void add_glyph_origin_for_direction (hb_codepoint_t glyph,
+  శూన్య కూడు_glyph_origin_for_direction (hb_codepoint_t glyph,
 				       hb_direction_t direction,
 				       hb_position_t *x, hb_position_t *y)
   {
     hb_position_t origin_x, origin_y;
     get_glyph_origin_for_direction (glyph, direction, &origin_x, &origin_y);
-    add_offset (x, y, origin_x, origin_y);
+    కూడు_స్థానభ్రంశం (x, y, origin_x, origin_y);
   }
 
-  void subtract_glyph_h_origins (hb_buffer_t *buf)
+  శూన్య వ్యవకలనం_glyph_h_origins (hb_బఫరు_t *buf)
   {
     apply_glyph_h_origins_with_fallback (buf, -1);
   }
-  void subtract_glyph_v_origins (hb_buffer_t *buf)
+  శూన్య వ్యవకలనం_glyph_v_origins (hb_బఫరు_t *buf)
   {
     apply_glyph_v_origins_with_fallback (buf, -1);
   }
-  void subtract_glyph_origin_for_direction (hb_codepoint_t glyph,
+  శూన్య వ్యవకలనం_glyph_origin_for_direction (hb_codepoint_t glyph,
 					    hb_direction_t direction,
 					    hb_position_t *x, hb_position_t *y)
   {
     hb_position_t origin_x, origin_y;
     get_glyph_origin_for_direction (glyph, direction, &origin_x, &origin_y);
-    subtract_offset (x, y, origin_x, origin_y);
+    వ్యవకలనం_స్థానభ్రంశం (x, y, origin_x, origin_y);
   }
 
-  void get_glyph_kerning_for_direction (hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
+  శూన్య get_glyph_kerning_for_direction (hb_codepoint_t మొదటి_glyph, hb_codepoint_t రెండవ_glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction))) {
+    ఒకవేళ (likely (HB_DIRECTION_IS_HORIZONTAL (direction))) {
       *y = 0;
-      *x = get_glyph_h_kerning (first_glyph, second_glyph);
-    } else {
+      *x = get_glyph_h_kerning (మొదటి_glyph, రెండవ_glyph);
+    } లేకపోతే {
       *x = 0;
-      *y = get_glyph_v_kerning (first_glyph, second_glyph);
+      *y = get_glyph_v_kerning (మొదటి_glyph, రెండవ_glyph);
     }
   }
 
@@ -1080,69 +1080,69 @@ struct hb_font_t
   {
     hb_bool_t ret = get_glyph_extents (glyph, extents);
 
-    if (ret)
-      subtract_glyph_origin_for_direction (glyph, direction, &extents->x_bearing, &extents->y_bearing);
+    ఒకవేళ (ret)
+      వ్యవకలనం_glyph_origin_for_direction (glyph, direction, &extents->x_bearing, &extents->y_bearing);
 
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_bool_t get_glyph_contour_point_for_origin (hb_codepoint_t glyph, unsigned int point_index,
+  hb_bool_t get_glyph_contour_బిందువు_for_origin (hb_codepoint_t glyph, గుర్తులేని పూర్ణాంకం బిందువు_సూచీ,
 						hb_direction_t direction,
 						hb_position_t *x, hb_position_t *y)
   {
-    hb_bool_t ret = get_glyph_contour_point (glyph, point_index, x, y);
+    hb_bool_t ret = get_glyph_contour_బిందువు (glyph, బిందువు_సూచీ, x, y);
 
-    if (ret)
-      subtract_glyph_origin_for_direction (glyph, direction, x, y);
+    ఒకవేళ (ret)
+      వ్యవకలనం_glyph_origin_for_direction (glyph, direction, x, y);
 
-    return ret;
+    తిరిగి ret;
   }
 
   /* Generates gidDDD if glyph has no name. */
-  void
-  glyph_to_string (hb_codepoint_t glyph,
-		   char *s, unsigned int size)
+  శూన్య
+  glyph_గమ్యం_string (hb_codepoint_t glyph,
+		   అక్షరం *s, గుర్తులేని పూర్ణాంకం కొలత)
   {
-    if (get_glyph_name (glyph, s, size)) return;
+    ఒకవేళ (get_glyph_name (glyph, s, కొలత)) తిరిగి;
 
-    if (size && snprintf (s, size, "gid%" PRIu32, glyph) < 0)
+    ఒకవేళ (కొలత && snprintf (s, కొలత, "gid%" PRIu32, glyph) < 0)
       *s = '\0';
   }
 
   /* Parses gidDDD and uniUUUU strings automatically. */
   hb_bool_t
-  glyph_from_string (const char *s, int len, /* -1 means nul-terminated */
+  glyph_from_string (స్థిరరాశి అక్షరం *s, పూర్ణాంకం len, /* -1 means nul-terminated */
 		     hb_codepoint_t *glyph)
   {
-    if (get_glyph_from_name (s, len, glyph)) return true;
+    ఒకవేళ (get_glyph_from_name (s, len, glyph)) తిరిగి నిజం;
 
-    if (len == -1) len = strlen (s);
+    ఒకవేళ (len == -1) len = అక్షరశ్రేణి_పొడవు (s);
 
     /* Straight glyph index. */
-    if (hb_codepoint_parse (s, len, 10, glyph))
-      return true;
+    ఒకవేళ (hb_codepoint_parse (s, len, 10, glyph))
+      తిరిగి నిజం;
 
-    if (len > 3)
+    ఒకవేళ (len > 3)
     {
       /* gidDDD syntax for glyph indices. */
-      if (0 == strncmp (s, "gid", 3) &&
+      ఒకవేళ (0 == అక్షరశ్రేణి_పోలిక (s, "gid", 3) &&
 	  hb_codepoint_parse (s + 3, len - 3, 10, glyph))
-	return true;
+	తిరిగి నిజం;
 
       /* uniUUUU and other Unicode character indices. */
       hb_codepoint_t unichar;
-      if (0 == strncmp (s, "uni", 3) &&
+      ఒకవేళ (0 == అక్షరశ్రేణి_పోలిక (s, "uni", 3) &&
 	  hb_codepoint_parse (s + 3, len - 3, 16, &unichar) &&
 	  get_nominal_glyph (unichar, glyph))
-	return true;
+	తిరిగి నిజం;
     }
 
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  void changed ()
+  శూన్య మారింది ()
   {
-    float upem = face->get_upem ();
+    దశాంశం upem = face->get_upem ();
 
     x_multf = x_scale / upem;
     y_multf = y_scale / upem;
@@ -1151,26 +1151,26 @@ struct hb_font_t
 
     is_synthetic =  x_embolden || y_embolden || slant;
 
-    x_strength = roundf (abs (x_scale) * x_embolden);
-    y_strength = roundf (abs (y_scale) * y_embolden);
+    x_strength = roundf (నిరపేక్ష (x_scale) * x_embolden);
+    y_strength = roundf (నిరపేక్ష (y_scale) * y_embolden);
 
     slant_xy = y_scale ? slant * x_scale / y_scale : 0.f;
 
-    data.fini ();
+    దత్తాంశం.fini ();
 
     serial++;
   }
 
   hb_position_t em_mult (int32_t v, int64_t mult)
-  { return (hb_position_t) ((v * mult + 32768) >> 16); }
-  hb_position_t em_multf (float v, float mult)
-  { return (hb_position_t) roundf (em_fmultf (v, mult)); }
-  float em_fmultf (float v, float mult)
-  { return v * mult; }
-  float em_fmult (int32_t v, float mult)
-  { return (float) v * mult; }
+  { తిరిగి (hb_position_t) ((v * mult + 32768) >> 16); }
+  hb_position_t em_multf (దశాంశం v, దశాంశం mult)
+  { తిరిగి (hb_position_t) roundf (em_fmultf (v, mult)); }
+  దశాంశం em_fmultf (దశాంశం v, దశాంశం mult)
+  { తిరిగి v * mult; }
+  దశాంశం em_fmult (int32_t v, దశాంశం mult)
+  { తిరిగి (దశాంశం) v * mult; }
 };
 DECLARE_NULL_INSTANCE (hb_font_t);
 
 
-#endif /* HB_FONT_HH */
+#అయితే_ముగింపు /* HB_FONT_HH */

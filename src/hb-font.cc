@@ -26,33 +26,33 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-font.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-draw.hh"
+#అన్తర్భావ "hb-paint.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
-#include "hb-ot.h"
+#అన్తర్భావ "hb-ot.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
+#అన్తర్భావ "hb-ot-var-avar-table.hh"
+#అన్తర్భావ "hb-ot-var-fvar-table.hh"
 
-#ifndef HB_NO_OT_FONT
-#include "hb-ot.h"
-#endif
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
-#ifdef HAVE_FONTATIONS
-#include "hb-fontations.h"
-#endif
-#ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
-#endif
-#ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT
+#అన్తర్భావ "hb-ot.h"
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_FREETYPE
+#అన్తర్భావ "hb-ft.h"
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_FONTATIONS
+#అన్తర్భావ "hb-fontations.h"
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_CORETEXT
+#అన్తర్భావ "hb-coretext.h"
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_DIRECTWRITE
+#అన్తర్భావ "hb-directwrite.h"
+#అయితే_ముగింపు
 
 
 /**
@@ -87,753 +87,753 @@
  * hb_font_funcs_t
  */
 
-static hb_bool_t
-hb_font_get_font_h_extents_nil (hb_font_t         *font HB_UNUSED,
-				void              *font_data HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_font_h_extents_nil (hb_font_t         *font HB_వాడని,
+				శూన్య              *font_దత్తాంశం HB_వాడని,
 				hb_font_extents_t *extents,
-				void              *user_data HB_UNUSED)
+				శూన్య              *user_దత్తాంశం HB_వాడని)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, పరిమాణం (*extents));
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_font_h_extents_default (hb_font_t         *font,
-				    void              *font_data HB_UNUSED,
+				    శూన్య              *font_దత్తాంశం HB_వాడని,
 				    hb_font_extents_t *extents,
-				    void              *user_data HB_UNUSED)
+				    శూన్య              *user_దత్తాంశం HB_వాడని)
 {
-  hb_bool_t ret = font->parent->get_font_h_extents (extents, false);
-  if (ret) {
-    extents->ascender = font->parent_scale_y_distance (extents->ascender);
-    extents->descender = font->parent_scale_y_distance (extents->descender);
-    extents->line_gap = font->parent_scale_y_distance (extents->line_gap);
+  hb_bool_t ret = font->మాతృ->get_font_h_extents (extents, అబద్ధం);
+  ఒకవేళ (ret) {
+    extents->ascender = font->మాతృ_scale_y_దూరం (extents->ascender);
+    extents->descender = font->మాతృ_scale_y_దూరం (extents->descender);
+    extents->పంక్తి_gap = font->మాతృ_scale_y_దూరం (extents->పంక్తి_gap);
   }
-  return ret;
+  తిరిగి ret;
 }
 
-static hb_bool_t
-hb_font_get_font_v_extents_nil (hb_font_t         *font HB_UNUSED,
-				void              *font_data HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_font_v_extents_nil (hb_font_t         *font HB_వాడని,
+				శూన్య              *font_దత్తాంశం HB_వాడని,
 				hb_font_extents_t *extents,
-				void              *user_data HB_UNUSED)
+				శూన్య              *user_దత్తాంశం HB_వాడని)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, పరిమాణం (*extents));
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_font_v_extents_default (hb_font_t         *font,
-				    void              *font_data HB_UNUSED,
+				    శూన్య              *font_దత్తాంశం HB_వాడని,
 				    hb_font_extents_t *extents,
-				    void              *user_data HB_UNUSED)
+				    శూన్య              *user_దత్తాంశం HB_వాడని)
 {
-  hb_bool_t ret = font->parent->get_font_v_extents (extents, false);
-  if (ret) {
-    extents->ascender = font->parent_scale_x_distance (extents->ascender);
-    extents->descender = font->parent_scale_x_distance (extents->descender);
-    extents->line_gap = font->parent_scale_x_distance (extents->line_gap);
+  hb_bool_t ret = font->మాతృ->get_font_v_extents (extents, అబద్ధం);
+  ఒకవేళ (ret) {
+    extents->ascender = font->మాతృ_scale_x_దూరం (extents->ascender);
+    extents->descender = font->మాతృ_scale_x_దూరం (extents->descender);
+    extents->పంక్తి_gap = font->మాతృ_scale_x_దూరం (extents->పంక్తి_gap);
   }
-  return ret;
+  తిరిగి ret;
 }
 
-static hb_bool_t
-hb_font_get_nominal_glyph_nil (hb_font_t      *font HB_UNUSED,
-			       void           *font_data HB_UNUSED,
-			       hb_codepoint_t  unicode HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_nominal_glyph_nil (hb_font_t      *font HB_వాడని,
+			       శూన్య           *font_దత్తాంశం HB_వాడని,
+			       hb_codepoint_t  unicode HB_వాడని,
 			       hb_codepoint_t *glyph,
-			       void           *user_data HB_UNUSED)
+			       శూన్య           *user_దత్తాంశం HB_వాడని)
 {
   *glyph = 0;
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_nominal_glyph_default (hb_font_t      *font,
-				   void           *font_data HB_UNUSED,
+				   శూన్య           *font_దత్తాంశం HB_వాడని,
 				   hb_codepoint_t  unicode,
 				   hb_codepoint_t *glyph,
-				   void           *user_data HB_UNUSED)
+				   శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_nominal_glyphs_func_set ())
+  ఒకవేళ (font->has_nominal_glyphs_func_సమితి ())
   {
-    return font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
+    తిరిగి font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
   }
-  return font->parent->get_nominal_glyph (unicode, glyph);
+  తిరిగి font->మాతృ->get_nominal_glyph (unicode, glyph);
 }
 
-#define hb_font_get_nominal_glyphs_nil hb_font_get_nominal_glyphs_default
+#నిర్వచించు hb_font_get_nominal_glyphs_nil hb_font_get_nominal_glyphs_default
 
-static unsigned int
+స్థిర గుర్తులేని పూర్ణాంకం
 hb_font_get_nominal_glyphs_default (hb_font_t            *font,
-				    void                 *font_data HB_UNUSED,
-				    unsigned int          count,
-				    const hb_codepoint_t *first_unicode,
-				    unsigned int          unicode_stride,
-				    hb_codepoint_t       *first_glyph,
-				    unsigned int          glyph_stride,
-				    void                 *user_data HB_UNUSED)
+				    శూన్య                 *font_దత్తాంశం HB_వాడని,
+				    గుర్తులేని పూర్ణాంకం          లెక్క,
+				    స్థిరరాశి hb_codepoint_t *మొదటి_unicode,
+				    గుర్తులేని పూర్ణాంకం          unicode_stride,
+				    hb_codepoint_t       *మొదటి_glyph,
+				    గుర్తులేని పూర్ణాంకం          glyph_stride,
+				    శూన్య                 *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_nominal_glyph_func_set ())
+  ఒకవేళ (font->has_nominal_glyph_func_సమితి ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (!font->get_nominal_glyph (*first_unicode, first_glyph))
-	return i;
+      ఒకవేళ (!font->get_nominal_glyph (*మొదటి_unicode, మొదటి_glyph))
+	తిరిగి i;
 
-      first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
+      మొదటి_unicode = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_unicode, unicode_stride);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
-    return count;
+    తిరిగి లెక్క;
   }
 
-  return font->parent->get_nominal_glyphs (count,
-					   first_unicode, unicode_stride,
-					   first_glyph, glyph_stride);
+  తిరిగి font->మాతృ->get_nominal_glyphs (లెక్క,
+					   మొదటి_unicode, unicode_stride,
+					   మొదటి_glyph, glyph_stride);
 }
 
-static hb_bool_t
-hb_font_get_variation_glyph_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  unicode HB_UNUSED,
-				 hb_codepoint_t  variation_selector HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_variation_glyph_nil (hb_font_t      *font HB_వాడని,
+				 శూన్య           *font_దత్తాంశం HB_వాడని,
+				 hb_codepoint_t  unicode HB_వాడని,
+				 hb_codepoint_t  variation_selector HB_వాడని,
 				 hb_codepoint_t *glyph,
-				 void           *user_data HB_UNUSED)
+				 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
   *glyph = 0;
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_variation_glyph_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
 				     hb_codepoint_t  unicode,
 				     hb_codepoint_t  variation_selector,
 				     hb_codepoint_t *glyph,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return font->parent->get_variation_glyph (unicode, variation_selector, glyph);
+  తిరిగి font->మాతృ->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 
-static hb_position_t
+స్థిర hb_position_t
 hb_font_get_glyph_h_advance_nil (hb_font_t      *font,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 శూన్య           *font_దత్తాంశం HB_వాడని,
+				 hb_codepoint_t  glyph HB_వాడని,
+				 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return font->x_scale;
+  తిరిగి font->x_scale;
 }
 
-static hb_position_t
+స్థిర hb_position_t
 hb_font_get_glyph_h_advance_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
 				     hb_codepoint_t  glyph,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_h_advances_func_set ())
+  ఒకవేళ (font->has_glyph_h_advances_func_సమితి ())
   {
     hb_position_t ret;
-    font->get_glyph_h_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    font->get_glyph_h_advances (1, &glyph, 0, &ret, 0, అబద్ధం);
+    తిరిగి ret;
   }
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, false));
+  తిరిగి font->మాతృ_scale_x_దూరం (font->మాతృ->get_glyph_h_advance (glyph, అబద్ధం));
 }
 
-static hb_position_t
+స్థిర hb_position_t
 hb_font_get_glyph_v_advance_nil (hb_font_t      *font,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 శూన్య           *font_దత్తాంశం HB_వాడని,
+				 hb_codepoint_t  glyph HB_వాడని,
+				 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return -font->y_scale;
+  తిరిగి -font->y_scale;
 }
 
-static hb_position_t
+స్థిర hb_position_t
 hb_font_get_glyph_v_advance_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
 				     hb_codepoint_t  glyph,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_v_advances_func_set ())
+  ఒకవేళ (font->has_glyph_v_advances_func_సమితి ())
   {
     hb_position_t ret;
-    font->get_glyph_v_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    font->get_glyph_v_advances (1, &glyph, 0, &ret, 0, అబద్ధం);
+    తిరిగి ret;
   }
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, false));
+  తిరిగి font->మాతృ_scale_y_దూరం (font->మాతృ->get_glyph_v_advance (glyph, అబద్ధం));
 }
 
-#define hb_font_get_glyph_h_advances_nil hb_font_get_glyph_h_advances_default
+#నిర్వచించు hb_font_get_glyph_h_advances_nil hb_font_get_glyph_h_advances_default
 
-static void
+స్థిర శూన్య
 hb_font_get_glyph_h_advances_default (hb_font_t*            font,
-				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
-				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
-				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
-				      void                 *user_data HB_UNUSED)
+				      శూన్య*                 font_దత్తాంశం HB_వాడని,
+				      గుర్తులేని పూర్ణాంకం          లెక్క,
+				      స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				      గుర్తులేని పూర్ణాంకం          glyph_stride,
+				      hb_position_t        *మొదటి_advance,
+				      గుర్తులేని పూర్ణాంకం          advance_stride,
+				      శూన్య                 *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_h_advance_func_set ())
+  ఒకవేళ (font->has_glyph_h_advance_func_సమితి ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      *first_advance = font->get_glyph_h_advance (*first_glyph, false);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->get_glyph_h_advance (*మొదటి_glyph, అబద్ధం);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
-    return;
+    తిరిగి;
   }
 
-  font->parent->get_glyph_h_advances (count,
-				      first_glyph, glyph_stride,
-				      first_advance, advance_stride,
-				      false);
-  for (unsigned int i = 0; i < count; i++)
+  font->మాతృ->get_glyph_h_advances (లెక్క,
+				      మొదటి_glyph, glyph_stride,
+				      మొదటి_advance, advance_stride,
+				      అబద్ధం);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    *first_advance = font->parent_scale_x_distance (*first_advance);
-    first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+    *మొదటి_advance = font->మాతృ_scale_x_దూరం (*మొదటి_advance);
+    మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
   }
 }
 
-#define hb_font_get_glyph_v_advances_nil hb_font_get_glyph_v_advances_default
-static void
+#నిర్వచించు hb_font_get_glyph_v_advances_nil hb_font_get_glyph_v_advances_default
+స్థిర శూన్య
 hb_font_get_glyph_v_advances_default (hb_font_t*            font,
-				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
-				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
-				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
-				      void                 *user_data HB_UNUSED)
+				      శూన్య*                 font_దత్తాంశం HB_వాడని,
+				      గుర్తులేని పూర్ణాంకం          లెక్క,
+				      స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				      గుర్తులేని పూర్ణాంకం          glyph_stride,
+				      hb_position_t        *మొదటి_advance,
+				      గుర్తులేని పూర్ణాంకం          advance_stride,
+				      శూన్య                 *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_v_advance_func_set ())
+  ఒకవేళ (font->has_glyph_v_advance_func_సమితి ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      *first_advance = font->get_glyph_v_advance (*first_glyph, false);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = font->get_glyph_v_advance (*మొదటి_glyph, అబద్ధం);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
     }
-    return;
+    తిరిగి;
   }
 
-  font->parent->get_glyph_v_advances (count,
-				      first_glyph, glyph_stride,
-				      first_advance, advance_stride,
-				      false);
-  for (unsigned int i = 0; i < count; i++)
+  font->మాతృ->get_glyph_v_advances (లెక్క,
+				      మొదటి_glyph, glyph_stride,
+				      మొదటి_advance, advance_stride,
+				      అబద్ధం);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    *first_advance = font->parent_scale_y_distance (*first_advance);
-    first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
+    *మొదటి_advance = font->మాతృ_scale_y_దూరం (*మొదటి_advance);
+    మొదటి_advance = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_advance, advance_stride);
   }
 }
 
-static hb_bool_t
-hb_font_get_glyph_h_origin_nil (hb_font_t      *font HB_UNUSED,
-				void           *font_data HB_UNUSED,
-				hb_codepoint_t  glyph HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_glyph_h_origin_nil (hb_font_t      *font HB_వాడని,
+				శూన్య           *font_దత్తాంశం HB_వాడని,
+				hb_codepoint_t  glyph HB_వాడని,
 				hb_position_t  *x,
 				hb_position_t  *y,
-				void           *user_data HB_UNUSED)
+				శూన్య           *user_దత్తాంశం HB_వాడని)
 {
   *x = *y = 0;
-  return true;
+  తిరిగి నిజం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_glyph_h_origin_default (hb_font_t      *font,
-				    void           *font_data HB_UNUSED,
+				    శూన్య           *font_దత్తాంశం HB_వాడని,
 				    hb_codepoint_t  glyph,
 				    hb_position_t  *x,
 				    hb_position_t  *y,
-				    void           *user_data HB_UNUSED)
+				    శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_h_origins_func_set ())
+  ఒకవేళ (font->has_glyph_h_origins_func_సమితి ())
   {
-    return font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, false);
+    తిరిగి font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, అబద్ధం);
   }
-  hb_bool_t ret = font->parent->get_glyph_h_origin (glyph, x, y);
-  if (ret)
-    font->parent_scale_position (x, y);
-  return ret;
+  hb_bool_t ret = font->మాతృ->get_glyph_h_origin (glyph, x, y);
+  ఒకవేళ (ret)
+    font->మాతృ_scale_position (x, y);
+  తిరిగి ret;
 }
 
-static hb_bool_t
-hb_font_get_glyph_v_origin_nil (hb_font_t      *font HB_UNUSED,
-				void           *font_data HB_UNUSED,
-				hb_codepoint_t  glyph HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_glyph_v_origin_nil (hb_font_t      *font HB_వాడని,
+				శూన్య           *font_దత్తాంశం HB_వాడని,
+				hb_codepoint_t  glyph HB_వాడని,
 				hb_position_t  *x,
 				hb_position_t  *y,
-				void           *user_data HB_UNUSED)
+				శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_glyph_v_origin_default (hb_font_t      *font,
-				    void           *font_data HB_UNUSED,
+				    శూన్య           *font_దత్తాంశం HB_వాడని,
 				    hb_codepoint_t  glyph,
 				    hb_position_t  *x,
 				    hb_position_t  *y,
-				    void           *user_data HB_UNUSED)
+				    శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_v_origins_func_set ())
+  ఒకవేళ (font->has_glyph_v_origins_func_సమితి ())
   {
-    return font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, false);
+    తిరిగి font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, అబద్ధం);
   }
-  hb_bool_t ret = font->parent->get_glyph_v_origin (glyph, x, y);
-  if (ret)
-    font->parent_scale_position (x, y);
-  return ret;
+  hb_bool_t ret = font->మాతృ->get_glyph_v_origin (glyph, x, y);
+  ఒకవేళ (ret)
+    font->మాతృ_scale_position (x, y);
+  తిరిగి ret;
 }
 
-#define hb_font_get_glyph_h_origins_nil hb_font_get_glyph_h_origins_default
+#నిర్వచించు hb_font_get_glyph_h_origins_nil hb_font_get_glyph_h_origins_default
 
-static hb_bool_t
-hb_font_get_glyph_h_origins_default (hb_font_t *font HB_UNUSED,
-				     void *font_data HB_UNUSED,
-				     unsigned int count,
-				     const hb_codepoint_t *first_glyph HB_UNUSED,
-				     unsigned glyph_stride HB_UNUSED,
-				     hb_position_t *first_x,
-				     unsigned x_stride,
-				     hb_position_t *first_y,
-				     unsigned y_stride,
-				     void *user_data HB_UNUSED)
+స్థిర hb_bool_t
+hb_font_get_glyph_h_origins_default (hb_font_t *font HB_వాడని,
+				     శూన్య *font_దత్తాంశం HB_వాడని,
+				     గుర్తులేని పూర్ణాంకం లెక్క,
+				     స్థిరరాశి hb_codepoint_t *మొదటి_glyph HB_వాడని,
+				     గుర్తులేని glyph_stride HB_వాడని,
+				     hb_position_t *మొదటి_x,
+				     గుర్తులేని x_stride,
+				     hb_position_t *మొదటి_y,
+				     గుర్తులేని y_stride,
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_h_origin_func_set ())
+  ఒకవేళ (font->has_glyph_h_origin_func_సమితి ())
   {
-    hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    hb_bool_t ret = నిజం;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      ret &= font->get_glyph_h_origin (*first_glyph, first_x, first_y, false);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      ret &= font->get_glyph_h_origin (*మొదటి_glyph, మొదటి_x, మొదటి_y, అబద్ధం);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
+      మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
     }
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_bool_t ret = font->parent->get_glyph_h_origins (count,
-						     first_glyph, glyph_stride,
-						     first_x, x_stride,
-						     first_y, y_stride);
-  if (ret)
+  hb_bool_t ret = font->మాతృ->get_glyph_h_origins (లెక్క,
+						     మొదటి_glyph, glyph_stride,
+						     మొదటి_x, x_stride,
+						     మొదటి_y, y_stride);
+  ఒకవేళ (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      font->parent_scale_position (first_x, first_y);
-      first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      font->మాతృ_scale_position (మొదటి_x, మొదటి_y);
+      మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
+      మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
     }
   }
-  return ret;
+  తిరిగి ret;
 }
 
-#define hb_font_get_glyph_v_origins_nil hb_font_get_glyph_v_origins_default
+#నిర్వచించు hb_font_get_glyph_v_origins_nil hb_font_get_glyph_v_origins_default
 
-static hb_bool_t
-hb_font_get_glyph_v_origins_default (hb_font_t *font HB_UNUSED,
-				     void *font_data HB_UNUSED,
-				     unsigned int count,
-				     const hb_codepoint_t *first_glyph HB_UNUSED,
-				     unsigned glyph_stride HB_UNUSED,
-				     hb_position_t *first_x,
-				     unsigned x_stride,
-				     hb_position_t *first_y,
-				     unsigned y_stride,
-				     void *user_data HB_UNUSED)
+స్థిర hb_bool_t
+hb_font_get_glyph_v_origins_default (hb_font_t *font HB_వాడని,
+				     శూన్య *font_దత్తాంశం HB_వాడని,
+				     గుర్తులేని పూర్ణాంకం లెక్క,
+				     స్థిరరాశి hb_codepoint_t *మొదటి_glyph HB_వాడని,
+				     గుర్తులేని glyph_stride HB_వాడని,
+				     hb_position_t *మొదటి_x,
+				     గుర్తులేని x_stride,
+				     hb_position_t *మొదటి_y,
+				     గుర్తులేని y_stride,
+				     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  if (font->has_glyph_v_origin_func_set ())
+  ఒకవేళ (font->has_glyph_v_origin_func_సమితి ())
   {
-    hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    hb_bool_t ret = నిజం;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      ret &= font->get_glyph_v_origin (*first_glyph, first_x, first_y, false);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
-      first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      ret &= font->get_glyph_v_origin (*మొదటి_glyph, మొదటి_x, మొదటి_y, అబద్ధం);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం_Unaligned<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
+      మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
+      మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
     }
-    return ret;
+    తిరిగి ret;
   }
 
-  hb_bool_t ret = font->parent->get_glyph_v_origins (count,
-						     first_glyph, glyph_stride,
-						     first_x, x_stride,
-						     first_y, y_stride);
-  if (ret)
+  hb_bool_t ret = font->మాతృ->get_glyph_v_origins (లెక్క,
+						     మొదటి_glyph, glyph_stride,
+						     మొదటి_x, x_stride,
+						     మొదటి_y, y_stride);
+  ఒకవేళ (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      font->parent_scale_position (first_x, first_y);
-      first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
-      first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
+      font->మాతృ_scale_position (మొదటి_x, మొదటి_y);
+      మొదటి_x = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_x, x_stride);
+      మొదటి_y = &Struct_At_స్థానభ్రంశం_Unaligned<hb_position_t> (మొదటి_y, y_stride);
     }
   }
-  return ret;
+  తిరిగి ret;
 }
 
-static hb_position_t
-hb_font_get_glyph_h_kerning_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  left_glyph HB_UNUSED,
-				 hb_codepoint_t  right_glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+స్థిర hb_position_t
+hb_font_get_glyph_h_kerning_nil (hb_font_t      *font HB_వాడని,
+				 శూన్య           *font_దత్తాంశం HB_వాడని,
+				 hb_codepoint_t  ఎడమ_glyph HB_వాడని,
+				 hb_codepoint_t  కుడి_glyph HB_వాడని,
+				 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return 0;
+  తిరిగి 0;
 }
 
-static hb_position_t
+స్థిర hb_position_t
 hb_font_get_glyph_h_kerning_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     hb_codepoint_t  left_glyph,
-				     hb_codepoint_t  right_glyph,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
+				     hb_codepoint_t  ఎడమ_glyph,
+				     hb_codepoint_t  కుడి_glyph,
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (left_glyph, right_glyph));
+  తిరిగి font->మాతృ_scale_x_దూరం (font->మాతృ->get_glyph_h_kerning (ఎడమ_glyph, కుడి_glyph));
 }
 
-#ifndef HB_DISABLE_DEPRECATED
-static hb_position_t
-hb_font_get_glyph_v_kerning_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  top_glyph HB_UNUSED,
-				 hb_codepoint_t  bottom_glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
+స్థిర hb_position_t
+hb_font_get_glyph_v_kerning_nil (hb_font_t      *font HB_వాడని,
+				 శూన్య           *font_దత్తాంశం HB_వాడని,
+				 hb_codepoint_t  శిఖరం_glyph HB_వాడని,
+				 hb_codepoint_t  bottom_glyph HB_వాడని,
+				 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return 0;
+  తిరిగి 0;
 }
 
-static hb_position_t
+స్థిర hb_position_t
 hb_font_get_glyph_v_kerning_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     hb_codepoint_t  top_glyph,
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
+				     hb_codepoint_t  శిఖరం_glyph,
 				     hb_codepoint_t  bottom_glyph,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (top_glyph, bottom_glyph));
+  తిరిగి font->మాతృ_scale_y_దూరం (font->మాతృ->get_glyph_v_kerning (శిఖరం_glyph, bottom_glyph));
 }
-#endif
+#అయితే_ముగింపు
 
-static hb_bool_t
-hb_font_get_glyph_extents_nil (hb_font_t          *font HB_UNUSED,
-			       void               *font_data HB_UNUSED,
-			       hb_codepoint_t      glyph HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_glyph_extents_nil (hb_font_t          *font HB_వాడని,
+			       శూన్య               *font_దత్తాంశం HB_వాడని,
+			       hb_codepoint_t      glyph HB_వాడని,
 			       hb_glyph_extents_t *extents,
-			       void               *user_data HB_UNUSED)
+			       శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, పరిమాణం (*extents));
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_glyph_extents_default (hb_font_t          *font,
-				   void               *font_data HB_UNUSED,
+				   శూన్య               *font_దత్తాంశం HB_వాడని,
 				   hb_codepoint_t      glyph,
 				   hb_glyph_extents_t *extents,
-				   void               *user_data HB_UNUSED)
+				   శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  hb_bool_t ret = font->parent->get_glyph_extents (glyph, extents, false);
-  if (ret) {
-    font->parent_scale_position (&extents->x_bearing, &extents->y_bearing);
-    font->parent_scale_distance (&extents->width, &extents->height);
+  hb_bool_t ret = font->మాతృ->get_glyph_extents (glyph, extents, అబద్ధం);
+  ఒకవేళ (ret) {
+    font->మాతృ_scale_position (&extents->x_bearing, &extents->y_bearing);
+    font->మాతృ_scale_దూరం (&extents->వెడల్పు, &extents->ఎత్తు);
   }
-  return ret;
+  తిరిగి ret;
 }
 
-static hb_bool_t
-hb_font_get_glyph_contour_point_nil (hb_font_t      *font HB_UNUSED,
-				     void           *font_data HB_UNUSED,
-				     hb_codepoint_t  glyph HB_UNUSED,
-				     unsigned int    point_index HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_glyph_contour_బిందువు_nil (hb_font_t      *font HB_వాడని,
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
+				     hb_codepoint_t  glyph HB_వాడని,
+				     గుర్తులేని పూర్ణాంకం    బిందువు_సూచీ HB_వాడని,
 				     hb_position_t  *x,
 				     hb_position_t  *y,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
   *x = *y = 0;
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
-hb_font_get_glyph_contour_point_default (hb_font_t      *font,
-					 void           *font_data HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_get_glyph_contour_బిందువు_default (hb_font_t      *font,
+					 శూన్య           *font_దత్తాంశం HB_వాడని,
 					 hb_codepoint_t  glyph,
-					 unsigned int    point_index,
+					 గుర్తులేని పూర్ణాంకం    బిందువు_సూచీ,
 					 hb_position_t  *x,
 					 hb_position_t  *y,
-					 void           *user_data HB_UNUSED)
+					 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  hb_bool_t ret = font->parent->get_glyph_contour_point (glyph, point_index, x, y, false);
-  if (ret)
-    font->parent_scale_position (x, y);
-  return ret;
+  hb_bool_t ret = font->మాతృ->get_glyph_contour_బిందువు (glyph, బిందువు_సూచీ, x, y, అబద్ధం);
+  ఒకవేళ (ret)
+    font->మాతృ_scale_position (x, y);
+  తిరిగి ret;
 }
 
-static hb_bool_t
-hb_font_get_glyph_name_nil (hb_font_t      *font HB_UNUSED,
-			    void           *font_data HB_UNUSED,
-			    hb_codepoint_t  glyph HB_UNUSED,
-			    char           *name,
-			    unsigned int    size,
-			    void           *user_data HB_UNUSED)
+స్థిర hb_bool_t
+hb_font_get_glyph_name_nil (hb_font_t      *font HB_వాడని,
+			    శూన్య           *font_దత్తాంశం HB_వాడని,
+			    hb_codepoint_t  glyph HB_వాడని,
+			    అక్షరం           *name,
+			    గుర్తులేని పూర్ణాంకం    కొలత,
+			    శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  if (size) *name = '\0';
-  return false;
+  ఒకవేళ (కొలత) *name = '\0';
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_glyph_name_default (hb_font_t      *font,
-				void           *font_data HB_UNUSED,
+				శూన్య           *font_దత్తాంశం HB_వాడని,
 				hb_codepoint_t  glyph,
-				char           *name,
-				unsigned int    size,
-				void           *user_data HB_UNUSED)
+				అక్షరం           *name,
+				గుర్తులేని పూర్ణాంకం    కొలత,
+				శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return font->parent->get_glyph_name (glyph, name, size);
+  తిరిగి font->మాతృ->get_glyph_name (glyph, name, కొలత);
 }
 
-static hb_bool_t
-hb_font_get_glyph_from_name_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 const char     *name HB_UNUSED,
-				 int             len HB_UNUSED, /* -1 means nul-terminated */
+స్థిర hb_bool_t
+hb_font_get_glyph_from_name_nil (hb_font_t      *font HB_వాడని,
+				 శూన్య           *font_దత్తాంశం HB_వాడని,
+				 స్థిరరాశి అక్షరం     *name HB_వాడని,
+				 పూర్ణాంకం             len HB_వాడని, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph,
-				 void           *user_data HB_UNUSED)
+				 శూన్య           *user_దత్తాంశం HB_వాడని)
 {
   *glyph = 0;
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_glyph_from_name_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     const char     *name,
-				     int             len, /* -1 means nul-terminated */
+				     శూన్య           *font_దత్తాంశం HB_వాడని,
+				     స్థిరరాశి అక్షరం     *name,
+				     పూర్ణాంకం             len, /* -1 means nul-terminated */
 				     hb_codepoint_t *glyph,
-				     void           *user_data HB_UNUSED)
+				     శూన్య           *user_దత్తాంశం HB_వాడని)
 {
-  return font->parent->get_glyph_from_name (name, len, glyph);
+  తిరిగి font->మాతృ->get_glyph_from_name (name, len, glyph);
 }
 
-static hb_bool_t
-hb_font_draw_glyph_or_fail_nil (hb_font_t       *font HB_UNUSED,
-				void            *font_data HB_UNUSED,
+స్థిర hb_bool_t
+hb_font_draw_glyph_or_fail_nil (hb_font_t       *font HB_వాడని,
+				శూన్య            *font_దత్తాంశం HB_వాడని,
 				hb_codepoint_t   glyph,
 				hb_draw_funcs_t *draw_funcs,
-				void            *draw_data,
-				void            *user_data HB_UNUSED)
+				శూన్య            *draw_దత్తాంశం,
+				శూన్య            *user_దత్తాంశం HB_వాడని)
 {
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static hb_bool_t
-hb_font_paint_glyph_or_fail_nil (hb_font_t *font HB_UNUSED,
-				 void *font_data HB_UNUSED,
-				 hb_codepoint_t glyph HB_UNUSED,
-				 hb_paint_funcs_t *paint_funcs HB_UNUSED,
-				 void *paint_data HB_UNUSED,
-				 unsigned int palette HB_UNUSED,
-				 hb_color_t foreground HB_UNUSED,
-				 void *user_data HB_UNUSED)
+స్థిర hb_bool_t
+hb_font_paint_glyph_or_fail_nil (hb_font_t *font HB_వాడని,
+				 శూన్య *font_దత్తాంశం HB_వాడని,
+				 hb_codepoint_t glyph HB_వాడని,
+				 hb_paint_funcs_t *paint_funcs HB_వాడని,
+				 శూన్య *paint_దత్తాంశం HB_వాడని,
+				 గుర్తులేని పూర్ణాంకం palette HB_వాడని,
+				 hb_color_t foreground HB_వాడని,
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-typedef struct hb_font_draw_glyph_default_adaptor_t {
+రకనిర్వచనం నిర్మాణం hb_font_draw_glyph_default_adaptor_t {
   hb_draw_funcs_t *draw_funcs;
-  void		  *draw_data;
-  float		   x_scale;
-  float		   y_scale;
+  శూన్య		  *draw_దత్తాంశం;
+  దశాంశం		   x_scale;
+  దశాంశం		   y_scale;
 } hb_font_draw_glyph_default_adaptor_t;
 
-static void
-hb_draw_move_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *draw_data,
+స్థిర శూన్య
+hb_draw_move_గమ్యం_default (hb_draw_funcs_t *dfuncs HB_వాడని,
+			 శూన్య *draw_దత్తాంశం,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  దశాంశం x_scale = adaptor->x_scale;
+  దశాంశం y_scale = adaptor->y_scale;
 
-  adaptor->draw_funcs->emit_move_to (adaptor->draw_data, *st,
-				     x_scale * to_x, y_scale * to_y);
+  adaptor->draw_funcs->emit_move_గమ్యం (adaptor->draw_దత్తాంశం, *st,
+				     x_scale * గమ్యం_x, y_scale * గమ్యం_y);
 }
 
-static void
-hb_draw_line_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+స్థిర శూన్య
+hb_draw_పంక్తి_గమ్యం_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  దశాంశం x_scale = adaptor->x_scale;
+  దశాంశం y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
 
-  adaptor->draw_funcs->emit_line_to (adaptor->draw_data, *st,
-				     x_scale * to_x, y_scale * to_y);
+  adaptor->draw_funcs->emit_పంక్తి_గమ్యం (adaptor->draw_దత్తాంశం, *st,
+				     x_scale * గమ్యం_x, y_scale * గమ్యం_y);
 }
 
-static void
-hb_draw_quadratic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+స్థిర శూన్య
+hb_draw_quadratic_గమ్యం_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
 			      hb_draw_state_t *st,
-			      float control_x, float control_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      దశాంశం control_x, దశాంశం control_y,
+			      దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  దశాంశం x_scale = adaptor->x_scale;
+  దశాంశం y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
 
-  adaptor->draw_funcs->emit_quadratic_to (adaptor->draw_data, *st,
+  adaptor->draw_funcs->emit_quadratic_గమ్యం (adaptor->draw_దత్తాంశం, *st,
 					  x_scale * control_x, y_scale * control_y,
-					  x_scale * to_x, y_scale * to_y);
+					  x_scale * గమ్యం_x, y_scale * గమ్యం_y);
 }
 
-static void
-hb_draw_cubic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+స్థిర శూన్య
+hb_draw_cubic_గమ్యం_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
 			  hb_draw_state_t *st,
-			  float control1_x, float control1_y,
-			  float control2_x, float control2_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  దశాంశం control1_x, దశాంశం control1_y,
+			  దశాంశం control2_x, దశాంశం control2_y,
+			  దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  దశాంశం x_scale = adaptor->x_scale;
+  దశాంశం y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
 
-  adaptor->draw_funcs->emit_cubic_to (adaptor->draw_data, *st,
+  adaptor->draw_funcs->emit_cubic_గమ్యం (adaptor->draw_దత్తాంశం, *st,
 				      x_scale * control1_x, y_scale * control1_y,
 				      x_scale * control2_x, y_scale * control2_y,
-				      x_scale * to_x, y_scale * to_y);
+				      x_scale * గమ్యం_x, y_scale * గమ్యం_y);
 }
 
-static void
-hb_draw_close_path_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+స్థిర శూన్య
+hb_draw_close_మార్గం_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
 			    hb_draw_state_t *st,
-			    void *user_data HB_UNUSED)
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
 
-  adaptor->draw_funcs->emit_close_path (adaptor->draw_data, *st);
+  adaptor->draw_funcs->emit_close_మార్గం (adaptor->draw_దత్తాంశం, *st);
 }
 
-static hb_bool_t
-hb_draw_set_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+స్థిర hb_bool_t
+hb_draw_సమితి_budget_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
 			    int64_t budget,
-			    void *user_data HB_UNUSED)
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->set_budget (adaptor->draw_data, budget);
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  తిరిగి adaptor->draw_funcs->సమితి_budget (adaptor->draw_దత్తాంశం, budget);
 }
 
-static int64_t
-hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
-			    void *user_data HB_UNUSED)
+స్థిర int64_t
+hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget (adaptor->draw_data);
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  తిరిగి adaptor->draw_funcs->get_budget (adaptor->draw_దత్తాంశం);
 }
 
-static int64_t *
-hb_draw_get_budget_remaining_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
-				      void *user_data HB_UNUSED)
+స్థిర int64_t *
+hb_draw_get_budget_మిగిలిన_default (hb_draw_funcs_t *dfuncs HB_వాడని, శూన్య *draw_దత్తాంశం,
+				      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_data);
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_దత్తాంశం;
+  తిరిగి adaptor->draw_funcs->get_budget_మిగిలిన_ptr (adaptor->draw_దత్తాంశం);
 }
 
-static const hb_draw_funcs_t _hb_draw_funcs_default = {
-  HB_OBJECT_HEADER_STATIC,
+స్థిర స్థిరరాశి hb_draw_funcs_t _hb_draw_funcs_default = {
+  HB_OBJECT_శీర్షిక_STATIC,
 
   {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_default,
+#నిర్వచించు HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_default,
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_DRAW_FUNC_IMPLEMENT
   }
 };
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_draw_glyph_or_fail_default (hb_font_t       *font,
-				    void            *font_data HB_UNUSED,
+				    శూన్య            *font_దత్తాంశం HB_వాడని,
 				    hb_codepoint_t   glyph,
 				    hb_draw_funcs_t *draw_funcs,
-				    void            *draw_data,
-				    void            *user_data HB_UNUSED)
+				    శూన్య            *draw_దత్తాంశం,
+				    శూన్య            *user_దత్తాంశం HB_వాడని)
 {
   hb_font_draw_glyph_default_adaptor_t adaptor = {
     draw_funcs,
-    draw_data,
-    font->parent->x_scale ? (float) font->x_scale / (float) font->parent->x_scale : 0.f,
-    font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0.f
+    draw_దత్తాంశం,
+    font->మాతృ->x_scale ? (దశాంశం) font->x_scale / (దశాంశం) font->మాతృ->x_scale : 0.f,
+    font->మాతృ->y_scale ? (దశాంశం) font->y_scale / (దశాంశం) font->మాతృ->y_scale : 0.f
   };
 
-  return font->parent->draw_glyph_or_fail (glyph,
+  తిరిగి font->మాతృ->draw_glyph_or_fail (glyph,
 					   const_cast<hb_draw_funcs_t *> (&_hb_draw_funcs_default),
 					   &adaptor,
-					   false);
+					   అబద్ధం);
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_paint_glyph_or_fail_default (hb_font_t *font,
-				     void *font_data,
+				     శూన్య *font_దత్తాంశం,
 				     hb_codepoint_t glyph,
 				     hb_paint_funcs_t *paint_funcs,
-				     void *paint_data,
-				     unsigned int palette,
+				     శూన్య *paint_దత్తాంశం,
+				     గుర్తులేని పూర్ణాంకం palette,
 				     hb_color_t foreground,
-				     void *user_data)
+				     శూన్య *user_దత్తాంశం)
 {
-  paint_funcs->push_transform (paint_data,
-    font->parent->x_scale ? (float) font->x_scale / (float) font->parent->x_scale : 0, 0,
-    0, font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0,
+  paint_funcs->నెట్టు_transform (paint_దత్తాంశం,
+    font->మాతృ->x_scale ? (దశాంశం) font->x_scale / (దశాంశం) font->మాతృ->x_scale : 0, 0,
+    0, font->మాతృ->y_scale ? (దశాంశం) font->y_scale / (దశాంశం) font->మాతృ->y_scale : 0,
     0, 0);
 
-  bool ret = font->parent->paint_glyph_or_fail (glyph, paint_funcs, paint_data, palette, foreground);
+  తార్కిక ret = font->మాతృ->paint_glyph_or_fail (glyph, paint_funcs, paint_దత్తాంశం, palette, foreground);
 
-  paint_funcs->pop_transform (paint_data);
+  paint_funcs->తీయి_transform (paint_దత్తాంశం);
 
-  return ret;
+  తిరిగి ret;
 }
 
 DEFINE_NULL_INSTANCE (hb_font_funcs_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_శీర్షిక_STATIC,
 
-  nullptr,
-  nullptr,
+  శూన్యసూచిక,
+  శూన్యసూచిక,
   {
     {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_nil,
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_nil,
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
     }
   }
 };
 
-static const hb_font_funcs_t _hb_font_funcs_default = {
-  HB_OBJECT_HEADER_STATIC,
+స్థిర స్థిరరాశి hb_font_funcs_t _hb_font_funcs_default = {
+  HB_OBJECT_శీర్షిక_STATIC,
 
-  nullptr,
-  nullptr,
+  శూన్యసూచిక,
+  శూన్యసూచిక,
   {
     {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_default,
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_default,
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
     }
   }
 };
@@ -853,12 +853,12 @@ hb_font_funcs_create ()
 {
   hb_font_funcs_t *ffuncs;
 
-  if (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
-    return hb_font_funcs_get_empty ();
+  ఒకవేళ (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
+    తిరిగి hb_font_funcs_get_ఖాళీలు ();
 
   ffuncs->get = _hb_font_funcs_default.get;
 
-  return ffuncs;
+  తిరిగి ffuncs;
 }
 
 /**
@@ -871,9 +871,9 @@ hb_font_funcs_create ()
  * Since: 0.9.2
  **/
 hb_font_funcs_t *
-hb_font_funcs_get_empty ()
+hb_font_funcs_get_ఖాళీలు ()
 {
-  return const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
+  తిరిగి const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
 }
 
 /**
@@ -889,7 +889,7 @@ hb_font_funcs_get_empty ()
 hb_font_funcs_t *
 hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_reference (ffuncs);
+  తిరిగి hb_object_reference (ffuncs);
 }
 
 /**
@@ -902,21 +902,21 @@ hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
 {
-  if (!hb_object_destroy (ffuncs)) return;
+  ఒకవేళ (!hb_object_destroy (ffuncs)) తిరిగి;
 
-  if (ffuncs->destroy)
+  ఒకవేళ (ffuncs->destroy)
   {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) if (ffuncs->destroy->name) \
-    ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name);
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) ఒకవేళ (ffuncs->destroy->name) \
+    ffuncs->destroy->name (!ffuncs->user_దత్తాంశం ? శూన్యసూచిక : ffuncs->user_దత్తాంశం->name);
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
   }
 
   hb_free (ffuncs->destroy);
-  hb_free (ffuncs->user_data);
+  hb_free (ffuncs->user_దత్తాంశం);
 
   hb_free (ffuncs);
 }
@@ -936,13 +936,13 @@ hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_font_funcs_సమితి_user_దత్తాంశం (hb_font_funcs_t    *ffuncs,
+			     hb_user_దత్తాంశం_కీలకం_t *key,
+			     శూన్య *              దత్తాంశం,
 			     hb_destroy_func_t   destroy /* May be NULL. */,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (ffuncs, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (ffuncs, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -957,11 +957,11 @@ hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
  *
  * Since: 0.9.2
  **/
-void *
-hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
-			     hb_user_data_key_t    *key)
+శూన్య *
+hb_font_funcs_get_user_దత్తాంశం (స్థిరరాశి hb_font_funcs_t *ffuncs,
+			     hb_user_దత్తాంశం_కీలకం_t    *key)
 {
-  return hb_object_get_user_data (ffuncs, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (ffuncs, key);
 }
 
 
@@ -973,11 +973,11 @@ hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 {
-  if (hb_object_is_immutable (ffuncs))
-    return;
+  ఒకవేళ (hb_object_is_immutable (ffuncs))
+    తిరిగి;
 
   hb_object_make_immutable (ffuncs);
 }
@@ -995,102 +995,102 @@ hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 hb_bool_t
 hb_font_funcs_is_immutable (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_is_immutable (ffuncs);
+  తిరిగి hb_object_is_immutable (ffuncs);
 }
 
 
-static bool
-_hb_font_funcs_set_preamble (hb_font_funcs_t    *ffuncs,
-			     bool                func_is_null,
-			     void              **user_data,
+స్థిర తార్కిక
+hb_font_funcs_సమితి_preamble (hb_font_funcs_t    *ffuncs,
+			     తార్కిక                func_is_null,
+			     శూన్య              **user_దత్తాంశం,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ఒకవేళ (hb_object_is_immutable (ffuncs))
   {
-    if (*destroy)
-      (*destroy) (*user_data);
-    return false;
+    ఒకవేళ (*destroy)
+      (*destroy) (*user_దత్తాంశం);
+    తిరిగి అబద్ధం;
   }
 
-  if (func_is_null)
+  ఒకవేళ (func_is_null)
   {
-    if (*destroy)
-      (*destroy) (*user_data);
-    *destroy = nullptr;
-    *user_data = nullptr;
+    ఒకవేళ (*destroy)
+      (*destroy) (*user_దత్తాంశం);
+    *destroy = శూన్యసూచిక;
+    *user_దత్తాంశం = శూన్యసూచిక;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static bool
-_hb_font_funcs_set_middle (hb_font_funcs_t   *ffuncs,
-			   void              *user_data,
+స్థిర తార్కిక
+hb_font_funcs_సమితి_మధ్య (hb_font_funcs_t   *ffuncs,
+			   శూన్య              *user_దత్తాంశం,
 			   hb_destroy_func_t  destroy)
 {
-  auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+  స్వయంచాలక destroy_guard = hb_make_scope_guard ([&]() {
+    ఒకవేళ (destroy) destroy (user_దత్తాంశం);
   });
 
-  if (user_data && !ffuncs->user_data)
+  ఒకవేళ (user_దత్తాంశం && !ffuncs->user_దత్తాంశం)
   {
-    ffuncs->user_data = (decltype (ffuncs->user_data)) hb_calloc (1, sizeof (*ffuncs->user_data));
-    if (unlikely (!ffuncs->user_data))
-      return false;
+    ffuncs->user_దత్తాంశం = (decltype (ffuncs->user_దత్తాంశం)) hb_calloc (1, పరిమాణం (*ffuncs->user_దత్తాంశం));
+    ఒకవేళ (unlikely (!ffuncs->user_దత్తాంశం))
+      తిరిగి అబద్ధం;
   }
-  if (destroy && !ffuncs->destroy)
+  ఒకవేళ (destroy && !ffuncs->destroy)
   {
-    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, sizeof (*ffuncs->destroy));
-    if (unlikely (!ffuncs->destroy))
-      return false;
+    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, పరిమాణం (*ffuncs->destroy));
+    ఒకవేళ (unlikely (!ffuncs->destroy))
+      తిరిగి అబద్ధం;
   }
 
   destroy_guard.release ();
-  return true;
+  తిరిగి నిజం;
 }
 
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) \
+#నిర్వచించు HB_FONT_FUNC_IMPLEMENT(get_,name) \
 									 \
-void                                                                     \
-hb_font_funcs_set_##name##_func (hb_font_funcs_t             *ffuncs,    \
+శూన్య                                                                     \
+hb_font_funcs_సమితి##name##_func (hb_font_funcs_t             *ffuncs,    \
 				 hb_font_##get_##name##_func_t func,     \
-				 void                        *user_data, \
+				 శూన్య                        *user_దత్తాంశం, \
 				 hb_destroy_func_t            destroy)   \
 {                                                                        \
-  if (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  ఒకవేళ (!hb_font_funcs_సమితి_preamble (ffuncs, !func, &user_దత్తాంశం, &destroy))\
+      తిరిగి;                                                            \
 									 \
-  if (ffuncs->destroy && ffuncs->destroy->name)                          \
-    ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name); \
+  ఒకవేళ (ffuncs->destroy && ffuncs->destroy->name)                          \
+    ffuncs->destroy->name (!ffuncs->user_దత్తాంశం ? శూన్యసూచిక : ffuncs->user_దత్తాంశం->name); \
                                                                          \
-  if (!_hb_font_funcs_set_middle (ffuncs, user_data, destroy))           \
-      return;                                                            \
+  ఒకవేళ (!hb_font_funcs_సమితి_మధ్య (ffuncs, user_దత్తాంశం, destroy))           \
+      తిరిగి;                                                            \
 									 \
-  if (func)                                                              \
+  ఒకవేళ (func)                                                              \
     ffuncs->get.f.name = func;                                           \
-  else                                                                   \
+  లేకపోతే                                                                   \
     ffuncs->get.f.name = hb_font_##get_##name##_default;                   \
 									 \
-  if (ffuncs->user_data)                                                 \
-    ffuncs->user_data->name = user_data;                                 \
-  if (ffuncs->destroy)                                                   \
+  ఒకవేళ (ffuncs->user_దత్తాంశం)                                                 \
+    ffuncs->user_దత్తాంశం->name = user_దత్తాంశం;                                 \
+  ఒకవేళ (ffuncs->destroy)                                                   \
     ffuncs->destroy->name = destroy;                                     \
 }
 
 HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_FONT_FUNC_IMPLEMENT
 
-bool
-hb_font_t::has_func_set (unsigned int i)
+తార్కిక
+hb_font_t::has_func_సమితి (గుర్తులేని పూర్ణాంకం i)
 {
-  return this->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
+  తిరిగి ఇది->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
 }
 
-bool
-hb_font_t::has_func (unsigned int i)
+తార్కిక
+hb_font_t::has_func (గుర్తులేని పూర్ణాంకం i)
 {
-  return has_func_set (i) ||
-	 (parent && parent != &_hb_Null_hb_font_t && parent->has_func (i));
+  తిరిగి has_func_సమితి (i) ||
+	 (మాతృ && మాతృ != &_hb_Null_hb_font_t && మాతృ->has_func (i));
 }
 
 /* Public getters */
@@ -1111,7 +1111,7 @@ hb_bool_t
 hb_font_get_h_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_h_extents (extents);
+  తిరిగి font->get_font_h_extents (extents);
 }
 
 /**
@@ -1130,7 +1130,7 @@ hb_bool_t
 hb_font_get_v_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_v_extents (extents);
+  తిరిగి font->get_font_v_extents (extents);
 }
 
 /**
@@ -1156,9 +1156,9 @@ hb_font_get_glyph (hb_font_t      *font,
 		   hb_codepoint_t  variation_selector,
 		   hb_codepoint_t *glyph)
 {
-  if (unlikely (variation_selector))
-    return font->get_variation_glyph (unicode, variation_selector, glyph);
-  return font->get_nominal_glyph (unicode, glyph);
+  ఒకవేళ (unlikely (variation_selector))
+    తిరిగి font->get_variation_glyph (unicode, variation_selector, glyph);
+  తిరిగి font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1183,7 +1183,7 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
 			   hb_codepoint_t  unicode,
 			   hb_codepoint_t *glyph)
 {
-  return font->get_nominal_glyph (unicode, glyph);
+  తిరిగి font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1203,17 +1203,17 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
  *
  * Since: 2.6.3
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_font_get_nominal_glyphs (hb_font_t *font,
-			    unsigned int count,
-			    const hb_codepoint_t *first_unicode,
-			    unsigned int unicode_stride,
-			    hb_codepoint_t *first_glyph,
-			    unsigned int glyph_stride)
+			    గుర్తులేని పూర్ణాంకం లెక్క,
+			    స్థిరరాశి hb_codepoint_t *మొదటి_unicode,
+			    గుర్తులేని పూర్ణాంకం unicode_stride,
+			    hb_codepoint_t *మొదటి_glyph,
+			    గుర్తులేని పూర్ణాంకం glyph_stride)
 {
-  return font->get_nominal_glyphs (count,
-				   first_unicode, unicode_stride,
-				   first_glyph, glyph_stride);
+  తిరిగి font->get_nominal_glyphs (లెక్క,
+				   మొదటి_unicode, unicode_stride,
+				   మొదటి_glyph, glyph_stride);
 }
 
 /**
@@ -1237,7 +1237,7 @@ hb_font_get_variation_glyph (hb_font_t      *font,
 			     hb_codepoint_t  variation_selector,
 			     hb_codepoint_t *glyph)
 {
-  return font->get_variation_glyph (unicode, variation_selector, glyph);
+  తిరిగి font->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 /**
@@ -1256,7 +1256,7 @@ hb_position_t
 hb_font_get_glyph_h_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_h_advance (glyph);
+  తిరిగి font->get_glyph_h_advance (glyph);
 }
 
 /**
@@ -1275,7 +1275,7 @@ hb_position_t
 hb_font_get_glyph_v_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_v_advance (glyph);
+  తిరిగి font->get_glyph_v_advance (glyph);
 }
 
 /**
@@ -1292,15 +1292,15 @@ hb_font_get_glyph_v_advance (hb_font_t      *font,
  *
  * Since: 1.8.6
  **/
-void
+శూన్య
 hb_font_get_glyph_h_advances (hb_font_t*            font,
-			      unsigned int          count,
-			      const hb_codepoint_t *first_glyph,
-			      unsigned              glyph_stride,
-			      hb_position_t        *first_advance,
-			      unsigned              advance_stride)
+			      గుర్తులేని పూర్ణాంకం          లెక్క,
+			      స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			      గుర్తులేని              glyph_stride,
+			      hb_position_t        *మొదటి_advance,
+			      గుర్తులేని              advance_stride)
 {
-  font->get_glyph_h_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+  font->get_glyph_h_advances (లెక్క, మొదటి_glyph, glyph_stride, మొదటి_advance, advance_stride);
 }
 /**
  * hb_font_get_glyph_v_advances:
@@ -1316,15 +1316,15 @@ hb_font_get_glyph_h_advances (hb_font_t*            font,
  *
  * Since: 1.8.6
  **/
-void
+శూన్య
 hb_font_get_glyph_v_advances (hb_font_t*            font,
-			      unsigned int          count,
-			      const hb_codepoint_t *first_glyph,
-			      unsigned              glyph_stride,
-			      hb_position_t        *first_advance,
-			      unsigned              advance_stride)
+			      గుర్తులేని పూర్ణాంకం          లెక్క,
+			      స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			      గుర్తులేని              glyph_stride,
+			      hb_position_t        *మొదటి_advance,
+			      గుర్తులేని              advance_stride)
 {
-  font->get_glyph_v_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+  font->get_glyph_v_advances (లెక్క, మొదటి_glyph, glyph_stride, మొదటి_advance, advance_stride);
 }
 
 /**
@@ -1347,7 +1347,7 @@ hb_font_get_glyph_h_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_h_origin (glyph, x, y);
+  తిరిగి font->get_glyph_h_origin (glyph, x, y);
 }
 
 /**
@@ -1370,7 +1370,7 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_v_origin (glyph, x, y);
+  తిరిగి font->get_glyph_v_origin (glyph, x, y);
 }
 
 /**
@@ -1393,19 +1393,19 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_h_origins (hb_font_t      *font,
-			     unsigned int    count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
-			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
-			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     గుర్తులేని పూర్ణాంకం    లెక్క,
+			     స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			     గుర్తులేని పూర్ణాంకం    glyph_stride,
+			     hb_position_t  *మొదటి_x,
+			     గుర్తులేని పూర్ణాంకం    x_stride,
+			     hb_position_t  *మొదటి_y,
+			     గుర్తులేని పూర్ణాంకం    y_stride)
 
 {
-  return font->get_glyph_h_origins (count,
-				    first_glyph, glyph_stride,
-				    first_x, x_stride,
-				    first_y, y_stride);
+  తిరిగి font->get_glyph_h_origins (లెక్క,
+				    మొదటి_glyph, glyph_stride,
+				    మొదటి_x, x_stride,
+				    మొదటి_y, y_stride);
 }
 
 /**
@@ -1428,19 +1428,19 @@ hb_font_get_glyph_h_origins (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_v_origins (hb_font_t      *font,
-			     unsigned int    count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
-			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
-			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     గుర్తులేని పూర్ణాంకం    లెక్క,
+			     స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+			     గుర్తులేని పూర్ణాంకం    glyph_stride,
+			     hb_position_t  *మొదటి_x,
+			     గుర్తులేని పూర్ణాంకం    x_stride,
+			     hb_position_t  *మొదటి_y,
+			     గుర్తులేని పూర్ణాంకం    y_stride)
 
 {
-  return font->get_glyph_v_origins (count,
-				    first_glyph, glyph_stride,
-				    first_x, x_stride,
-				    first_y, y_stride);
+  తిరిగి font->get_glyph_v_origins (లెక్క,
+				    మొదటి_glyph, glyph_stride,
+				    మొదటి_x, x_stride,
+				    మొదటి_y, y_stride);
 }
 
 
@@ -1462,13 +1462,13 @@ hb_font_get_glyph_v_origins (hb_font_t      *font,
  **/
 hb_position_t
 hb_font_get_glyph_h_kerning (hb_font_t      *font,
-			     hb_codepoint_t  left_glyph,
-			     hb_codepoint_t  right_glyph)
+			     hb_codepoint_t  ఎడమ_glyph,
+			     hb_codepoint_t  కుడి_glyph)
 {
-  return font->get_glyph_h_kerning (left_glyph, right_glyph);
+  తిరిగి font->get_glyph_h_kerning (ఎడమ_glyph, కుడి_glyph);
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /**
  * hb_font_get_glyph_v_kerning:
  * @font: #hb_font_t to work upon
@@ -1488,12 +1488,12 @@ hb_font_get_glyph_h_kerning (hb_font_t      *font,
  **/
 hb_position_t
 hb_font_get_glyph_v_kerning (hb_font_t      *font,
-			     hb_codepoint_t  top_glyph,
+			     hb_codepoint_t  శిఖరం_glyph,
 			     hb_codepoint_t  bottom_glyph)
 {
-  return font->get_glyph_v_kerning (top_glyph, bottom_glyph);
+  తిరిగి font->get_glyph_v_kerning (శిఖరం_glyph, bottom_glyph);
 }
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_font_get_glyph_extents:
@@ -1513,7 +1513,7 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 			   hb_codepoint_t      glyph,
 			   hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents (glyph, extents);
+  తిరిగి font->get_glyph_extents (glyph, extents);
 }
 
 /**
@@ -1532,13 +1532,13 @@ hb_font_get_glyph_extents (hb_font_t          *font,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_font_get_glyph_contour_point (hb_font_t      *font,
+hb_font_get_glyph_contour_బిందువు (hb_font_t      *font,
 				 hb_codepoint_t  glyph,
-				 unsigned int    point_index,
+				 గుర్తులేని పూర్ణాంకం    బిందువు_సూచీ,
 				 hb_position_t  *x,
 				 hb_position_t  *y)
 {
-  return font->get_glyph_contour_point (glyph, point_index, x, y);
+  తిరిగి font->get_glyph_contour_బిందువు (glyph, బిందువు_సూచీ, x, y);
 }
 
 /**
@@ -1560,10 +1560,10 @@ hb_font_get_glyph_contour_point (hb_font_t      *font,
 hb_bool_t
 hb_font_get_glyph_name (hb_font_t      *font,
 			hb_codepoint_t  glyph,
-			char           *name,
-			unsigned int    size)
+			అక్షరం           *name,
+			గుర్తులేని పూర్ణాంకం    కొలత)
 {
-  return font->get_glyph_name (glyph, name, size);
+  తిరిగి font->get_glyph_name (glyph, name, కొలత);
 }
 
 /**
@@ -1583,14 +1583,14 @@ hb_font_get_glyph_name (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_from_name (hb_font_t      *font,
-			     const char     *name,
-			     int             len, /* -1 means nul-terminated */
+			     స్థిరరాశి అక్షరం     *name,
+			     పూర్ణాంకం             len, /* -1 means nul-terminated */
 			     hb_codepoint_t *glyph)
 {
-  return font->get_glyph_from_name (name, len, glyph);
+  తిరిగి font->get_glyph_from_name (name, len, glyph);
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /**
  * hb_font_get_glyph_shape:
  * @font: #hb_font_t to work upon
@@ -1605,14 +1605,14 @@ hb_font_get_glyph_from_name (hb_font_t      *font,
  * Since: 4.0.0
  * Deprecated: 7.0.0: Use hb_font_draw_glyph() instead
  */
-void
+శూన్య
 hb_font_get_glyph_shape (hb_font_t *font,
 		         hb_codepoint_t glyph,
-		         hb_draw_funcs_t *dfuncs, void *draw_data)
+		         hb_draw_funcs_t *dfuncs, శూన్య *draw_దత్తాంశం)
 {
-  hb_font_draw_glyph (font, glyph, dfuncs, draw_data);
+  hb_font_draw_glyph (font, glyph, dfuncs, draw_దత్తాంశం);
 }
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_font_draw_glyph_or_fail:
@@ -1636,9 +1636,9 @@ hb_font_get_glyph_shape (hb_font_t *font,
 hb_bool_t
 hb_font_draw_glyph_or_fail (hb_font_t *font,
 			    hb_codepoint_t glyph,
-			    hb_draw_funcs_t *dfuncs, void *draw_data)
+			    hb_draw_funcs_t *dfuncs, శూన్య *draw_దత్తాంశం)
 {
-  return font->draw_glyph_or_fail (glyph, dfuncs, draw_data);
+  తిరిగి font->draw_glyph_or_fail (glyph, dfuncs, draw_దత్తాంశం);
 }
 
 /**
@@ -1674,28 +1674,28 @@ hb_font_draw_glyph_or_fail (hb_font_t *font,
 hb_bool_t
 hb_font_paint_glyph_or_fail (hb_font_t *font,
 			     hb_codepoint_t glyph,
-			     hb_paint_funcs_t *pfuncs, void *paint_data,
-			     unsigned int palette_index,
+			     hb_paint_funcs_t *pfuncs, శూన్య *paint_దత్తాంశం,
+			     గుర్తులేని పూర్ణాంకం palette_సూచీ,
 			     hb_color_t foreground)
 {
-  return font->paint_glyph_or_fail (glyph, pfuncs, paint_data, palette_index, foreground);
+  తిరిగి font->paint_glyph_or_fail (glyph, pfuncs, paint_దత్తాంశం, palette_సూచీ, foreground);
 }
 
 /* A bit higher-level, and with fallback */
 
-void
+శూన్య
 hb_font_t::paint_glyph (hb_codepoint_t glyph,
-			hb_paint_funcs_t *paint_funcs, void *paint_data,
-			unsigned int palette,
+			hb_paint_funcs_t *paint_funcs, శూన్య *paint_దత్తాంశం,
+			గుర్తులేని పూర్ణాంకం palette,
 			hb_color_t foreground)
 {
-  if (paint_glyph_or_fail (glyph,
-			   paint_funcs, paint_data,
+  ఒకవేళ (paint_glyph_or_fail (glyph,
+			   paint_funcs, paint_దత్తాంశం,
 			   palette, foreground))
-    return;
+    తిరిగి;
 
   /* Fallback for outline glyph. */
-  paint_funcs->fill_glyph (paint_data, glyph, this, true, foreground);
+  paint_funcs->fill_glyph (paint_దత్తాంశం, glyph, ఇది, నిజం, foreground);
 }
 
 
@@ -1716,12 +1716,12 @@ hb_font_t::paint_glyph (hb_codepoint_t glyph,
  *
  * Since: 7.0.0
  **/
-void
+శూన్య
 hb_font_draw_glyph (hb_font_t *font,
 		    hb_codepoint_t glyph,
-		    hb_draw_funcs_t *dfuncs, void *draw_data)
+		    hb_draw_funcs_t *dfuncs, శూన్య *draw_దత్తాంశం)
 {
-  (void) hb_font_draw_glyph_or_fail (font, glyph, dfuncs, draw_data);
+  (శూన్య) hb_font_draw_glyph_or_fail (font, glyph, dfuncs, draw_దత్తాంశం);
 }
 
 /**
@@ -1748,14 +1748,14 @@ hb_font_draw_glyph (hb_font_t *font,
  *
  * Since: 7.0.0
  */
-void
+శూన్య
 hb_font_paint_glyph (hb_font_t *font,
                      hb_codepoint_t glyph,
-                     hb_paint_funcs_t *pfuncs, void *paint_data,
-                     unsigned int palette_index,
+                     hb_paint_funcs_t *pfuncs, శూన్య *paint_దత్తాంశం,
+                     గుర్తులేని పూర్ణాంకం palette_సూచీ,
                      hb_color_t foreground)
 {
-  font->paint_glyph (glyph, pfuncs, paint_data, palette_index, foreground);
+  font->paint_glyph (glyph, pfuncs, paint_దత్తాంశం, palette_సూచీ, foreground);
 }
 
 /**
@@ -1772,7 +1772,7 @@ hb_font_paint_glyph (hb_font_t *font,
  *
  * Since: 1.1.3
  **/
-void
+శూన్య
 hb_font_get_extents_for_direction (hb_font_t         *font,
 				   hb_direction_t     direction,
 				   hb_font_extents_t *extents)
@@ -1795,7 +1795,7 @@ hb_font_get_extents_for_direction (hb_font_t         *font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
 					 hb_codepoint_t  glyph,
 					 hb_direction_t  direction,
@@ -1822,16 +1822,16 @@ hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
  *
  * Since: 1.8.6
  **/
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
 					  hb_direction_t        direction,
-					  unsigned int          count,
-					  const hb_codepoint_t *first_glyph,
-					  unsigned              glyph_stride,
-					  hb_position_t        *first_advance,
-					  unsigned              advance_stride)
+					  గుర్తులేని పూర్ణాంకం          లెక్క,
+					  స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+					  గుర్తులేని              glyph_stride,
+					  hb_position_t        *మొదటి_advance,
+					  గుర్తులేని              advance_stride)
 {
-  font->get_glyph_advances_for_direction (direction, count, first_glyph, glyph_stride, first_advance, advance_stride);
+  font->get_glyph_advances_for_direction (direction, లెక్క, మొదటి_glyph, glyph_stride, మొదటి_advance, advance_stride);
 }
 
 /**
@@ -1850,14 +1850,14 @@ hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
 					hb_codepoint_t  glyph,
 					hb_direction_t  direction,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->get_glyph_origin_for_direction (glyph, direction, x, y);
+  తిరిగి font->get_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1878,14 +1878,14 @@ hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
+శూన్య
+hb_font_కూడు_glyph_origin_for_direction (hb_font_t      *font,
 					hb_codepoint_t  glyph,
 					hb_direction_t  direction,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->add_glyph_origin_for_direction (glyph, direction, x, y);
+  తిరిగి font->కూడు_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1906,14 +1906,14 @@ hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
+శూన్య
+hb_font_వ్యవకలనం_glyph_origin_for_direction (hb_font_t      *font,
 					     hb_codepoint_t  glyph,
 					     hb_direction_t  direction,
 					     hb_position_t  *x,
 					     hb_position_t  *y)
 {
-  return font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
+  తిరిగి font->వ్యవకలనం_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1932,15 +1932,15 @@ hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_get_glyph_kerning_for_direction (hb_font_t      *font,
-					 hb_codepoint_t  first_glyph,
-					 hb_codepoint_t  second_glyph,
+					 hb_codepoint_t  మొదటి_glyph,
+					 hb_codepoint_t  రెండవ_glyph,
 					 hb_direction_t  direction,
 					 hb_position_t  *x,
 					 hb_position_t  *y)
 {
-  return font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
+  తిరిగి font->get_glyph_kerning_for_direction (మొదటి_glyph, రెండవ_glyph, direction, x, y);
 }
 
 /**
@@ -1967,7 +1967,7 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 				      hb_direction_t      direction,
 				      hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents_for_origin (glyph, direction, extents);
+  తిరిగి font->get_glyph_extents_for_origin (glyph, direction, extents);
 }
 
 /**
@@ -1991,14 +1991,14 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
+hb_font_get_glyph_contour_బిందువు_for_origin (hb_font_t      *font,
 					    hb_codepoint_t  glyph,
-					    unsigned int    point_index,
+					    గుర్తులేని పూర్ణాంకం    బిందువు_సూచీ,
 					    hb_direction_t  direction,
 					    hb_position_t  *x,
 					    hb_position_t  *y)
 {
-  return font->get_glyph_contour_point_for_origin (glyph, point_index, direction, x, y);
+  తిరిగి font->get_glyph_contour_బిందువు_for_origin (glyph, బిందువు_సూచీ, direction, x, y);
 }
 
 /**
@@ -2019,13 +2019,13 @@ hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_font_glyph_to_string (hb_font_t      *font,
+శూన్య
+hb_font_glyph_గమ్యం_string (hb_font_t      *font,
 			 hb_codepoint_t  glyph,
-			 char           *s,
-			 unsigned int    size)
+			 అక్షరం           *s,
+			 గుర్తులేని పూర్ణాంకం    కొలత)
 {
-  font->glyph_to_string (glyph, s, size);
+  font->glyph_గమ్యం_string (glyph, s, కొలత);
 }
 
 /**
@@ -2046,11 +2046,11 @@ hb_font_glyph_to_string (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_glyph_from_string (hb_font_t      *font,
-			   const char     *s,
-			   int             len,
+			   స్థిరరాశి అక్షరం     *s,
+			   పూర్ణాంకం             len,
 			   hb_codepoint_t *glyph)
 {
-  return font->glyph_from_string (s, len, glyph);
+  తిరిగి font->glyph_from_string (s, len, glyph);
 }
 
 
@@ -2060,20 +2060,20 @@ hb_font_glyph_from_string (hb_font_t      *font,
 
 DEFINE_NULL_INSTANCE (hb_font_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_శీర్షిక_STATIC,
 
   0, /* serial */
   0, /* serial_coords */
 
-  nullptr, /* parent */
+  శూన్యసూచిక, /*మాతృ*/
   const_cast<hb_face_t *> (&_hb_Null_hb_face_t),
 
   1000, /* x_scale */
   1000, /* y_scale */
-  false, /* is_synthetic */
+  అబద్ధం, /* is_synthetic */
   0.f, /* x_embolden */
   0.f, /* y_embolden */
-  true, /* embolden_in_place */
+  నిజం, /* embolden_in_place */
   0, /* x_strength */
   0, /* y_strength */
   0.f, /* slant */
@@ -2088,10 +2088,10 @@ DEFINE_NULL_INSTANCE (hb_font_t) =
   0, /* ptem */
 
   HB_FONT_NO_VAR_NAMED_INSTANCE, /* instance_index */
-  false, /* has_nonzero_coords */
+  అబద్ధం, /* has_nonzero_coords */
   0, /* num_coords */
-  nullptr, /* coords */
-  nullptr, /* design_coords */
+  శూన్యసూచిక, /* coords */
+  శూన్యసూచిక, /* design_coords */
 
   const_cast<hb_font_funcs_t *> (&_hb_Null_hb_font_funcs_t),
 
@@ -2099,29 +2099,29 @@ DEFINE_NULL_INSTANCE (hb_font_t) =
 };
 
 
-static hb_font_t *
+స్థిర hb_font_t *
 _hb_font_create (hb_face_t *face)
 {
   hb_font_t *font;
 
-  if (unlikely (!face))
-    face = hb_face_get_empty ();
+  ఒకవేళ (unlikely (!face))
+    face = hb_face_get_ఖాళీలు ();
 
-  if (!(font = hb_object_create<hb_font_t> ()))
-    return hb_font_get_empty ();
+  ఒకవేళ (!(font = hb_object_create<hb_font_t> ()))
+    తిరిగి hb_font_get_ఖాళీలు ();
 
   hb_face_make_immutable (face);
-  font->parent = hb_font_get_empty ();
+  font->మాతృ = hb_font_get_ఖాళీలు ();
   font->face = hb_face_reference (face);
-  font->klass = hb_font_funcs_get_empty ();
-  font->data.init0 (font);
+  font->klass = hb_font_funcs_get_ఖాళీలు ();
+  font->దత్తాంశం.init0 (font);
   font->x_scale = font->y_scale = face->get_upem ();
-  font->embolden_in_place = true;
+  font->embolden_లోపల_ఉంచు = నిజం;
   font->x_multf = font->y_multf = 1.f;
   font->x_mult = font->y_mult = 1 << 16;
-  font->instance_index = HB_FONT_NO_VAR_NAMED_INSTANCE;
+  font->instance_సూచీ = HB_FONT_NO_VAR_NAMED_INSTANCE;
 
-  return font;
+  తిరిగి font;
 }
 
 /**
@@ -2146,37 +2146,37 @@ hb_font_create (hb_face_t *face)
 {
   hb_font_t *font = _hb_font_create (face);
 
-  hb_font_set_funcs_using (font, nullptr);
+  hb_font_సమితి_funcs_using (font, శూన్యసూచిక);
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
   // Initialize variations.
-  if (likely (face))
+  ఒకవేళ (likely (face))
   {
-    if (face->index >> 16)
-      hb_font_set_var_named_instance (font, (face->index >> 16) - 1);
-    else
-      hb_font_set_variations (font, nullptr, 0);
+    ఒకవేళ (face->సూచీ_2 >> 16)
+      hb_font_సమితి_var_named_instance (font, (face->సూచీ_2 >> 16) - 1);
+    లేకపోతే
+      hb_font_సమితి_variations (font, శూన్యసూచిక, 0);
   }
-#endif
+#అయితే_ముగింపు
 
-  return font;
+  తిరిగి font;
 }
 
-static void
+స్థిర శూన్య
 _hb_font_adopt_var_coords (hb_font_t *font,
-			   int *coords, /* 2.14 normalized */
-			   float *design_coords,
-			   unsigned int coords_length)
+			   పూర్ణాంకం *coords, /* 2.14 normalized */
+			   దశాంశం *design_coords,
+			   గుర్తులేని పూర్ణాంకం coords_నిడివి)
 {
   hb_free (font->coords);
   hb_free (font->design_coords);
 
   font->coords = coords;
   font->design_coords = design_coords;
-  font->num_coords = coords_length;
-  font->has_nonzero_coords = hb_any (hb_array (coords, coords_length));
+  font->అంకె_coords = coords_నిడివి;
+  font->has_nonzero_coords = hb_any (hb_array (coords, coords_నిడివి));
 
-  font->changed ();
+  font->మారింది ();
   font->serial_coords = font->serial;
 }
 
@@ -2192,50 +2192,50 @@ _hb_font_adopt_var_coords (hb_font_t *font,
  * Since: 0.9.2
  **/
 hb_font_t *
-hb_font_create_sub_font (hb_font_t *parent)
+hb_font_create_sub_font (hb_font_t *మాతృ)
 {
-  if (unlikely (!parent))
-    parent = hb_font_get_empty ();
+  ఒకవేళ (unlikely (!మాతృ))
+    మాతృ = hb_font_get_ఖాళీలు ();
 
-  hb_font_t *font = _hb_font_create (parent->face);
+  hb_font_t *font = _hb_font_create (మాతృ->face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  ఒకవేళ (unlikely (hb_object_is_immutable (font)))
+    తిరిగి font;
 
-  font->parent = hb_font_reference (parent);
+  font->మాతృ = hb_font_reference (మాతృ);
 
-  font->x_scale = parent->x_scale;
-  font->y_scale = parent->y_scale;
-  font->x_embolden = parent->x_embolden;
-  font->y_embolden = parent->y_embolden;
-  font->embolden_in_place = parent->embolden_in_place;
-  font->slant = parent->slant;
-  font->x_ppem = parent->x_ppem;
-  font->y_ppem = parent->y_ppem;
-  font->ptem = parent->ptem;
+  font->x_scale = మాతృ->x_scale;
+  font->y_scale = మాతృ->y_scale;
+  font->x_embolden = మాతృ->x_embolden;
+  font->y_embolden = మాతృ->y_embolden;
+  font->embolden_లోపల_ఉంచు = మాతృ->embolden_లోపల_ఉంచు;
+  font->slant = మాతృ->slant;
+  font->x_ppem = మాతృ->x_ppem;
+  font->y_ppem = మాతృ->y_ppem;
+  font->ptem = మాతృ->ptem;
 
-  unsigned int num_coords = parent->num_coords;
-  if (num_coords)
+  గుర్తులేని పూర్ణాంకం అంకె_coords = మాతృ->అంకె_coords;
+  ఒకవేళ (అంకె_coords)
   {
-    int *coords = (int *) hb_calloc (num_coords, sizeof (parent->coords[0]));
-    float *design_coords = (float *) hb_calloc (num_coords, sizeof (parent->design_coords[0]));
-    if (likely (coords && design_coords))
+    పూర్ణాంకం *coords = (పూర్ణాంకం *) hb_calloc (అంకె_coords, పరిమాణం (మాతృ->coords[0]));
+    దశాంశం *design_coords = (దశాంశం *) hb_calloc (అంకె_coords, పరిమాణం (మాతృ->design_coords[0]));
+    ఒకవేళ (likely (coords && design_coords))
     {
-      hb_memcpy (coords, parent->coords, num_coords * sizeof (parent->coords[0]));
-      hb_memcpy (design_coords, parent->design_coords, num_coords * sizeof (parent->design_coords[0]));
-      _hb_font_adopt_var_coords (font, coords, design_coords, num_coords);
+      hb_memcpy (coords, మాతృ->coords, అంకె_coords * పరిమాణం (మాతృ->coords[0]));
+      hb_memcpy (design_coords, మాతృ->design_coords, అంకె_coords * పరిమాణం (మాతృ->design_coords[0]));
+      _hb_font_adopt_var_coords (font, coords, design_coords, అంకె_coords);
     }
-    else
+    లేకపోతే
     {
       hb_free (coords);
       hb_free (design_coords);
     }
   }
 
-  font->changed ();
+  font->మారింది ();
   font->serial_coords = font->serial;
 
-  return font;
+  తిరిగి font;
 }
 
 /**
@@ -2248,9 +2248,9 @@ hb_font_create_sub_font (hb_font_t *parent)
  * Since: 0.9.2
  **/
 hb_font_t *
-hb_font_get_empty ()
+hb_font_get_ఖాళీలు ()
 {
-  return const_cast<hb_font_t *> (&Null (hb_font_t));
+  తిరిగి const_cast<hb_font_t *> (&Null (hb_font_t));
 }
 
 /**
@@ -2266,7 +2266,7 @@ hb_font_get_empty ()
 hb_font_t *
 hb_font_reference (hb_font_t *font)
 {
-  return hb_object_reference (font);
+  తిరిగి hb_object_reference (font);
 }
 
 /**
@@ -2279,17 +2279,17 @@ hb_font_reference (hb_font_t *font)
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_destroy (hb_font_t *font)
 {
-  if (!hb_object_destroy (font)) return;
+  ఒకవేళ (!hb_object_destroy (font)) తిరిగి;
 
-  font->data.fini ();
+  font->దత్తాంశం.fini ();
 
-  if (font->destroy)
-    font->destroy (font->user_data);
+  ఒకవేళ (font->destroy)
+    font->destroy (font->user_దత్తాంశం);
 
-  hb_font_destroy (font->parent);
+  hb_font_destroy (font->మాతృ);
   hb_face_destroy (font->face);
   hb_font_funcs_destroy (font->klass);
 
@@ -2314,16 +2314,16 @@ hb_font_destroy (hb_font_t *font)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_font_set_user_data (hb_font_t          *font,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_font_సమితి_user_దత్తాంశం (hb_font_t          *font,
+		       hb_user_దత్తాంశం_కీలకం_t *key,
+		       శూన్య *              దత్తాంశం,
 		       hb_destroy_func_t   destroy /* May be NULL. */,
 		       hb_bool_t           replace)
 {
-  if (!hb_object_is_immutable (font))
-    font->changed ();
+  ఒకవేళ (!hb_object_is_immutable (font))
+    font->మారింది ();
 
-  return hb_object_set_user_data (font, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (font, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -2338,11 +2338,11 @@ hb_font_set_user_data (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void *
-hb_font_get_user_data (const hb_font_t    *font,
-		       hb_user_data_key_t *key)
+శూన్య *
+hb_font_get_user_దత్తాంశం (స్థిరరాశి hb_font_t    *font,
+		       hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  return hb_object_get_user_data (font, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (font, key);
 }
 
 /**
@@ -2353,14 +2353,14 @@ hb_font_get_user_data (const hb_font_t    *font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_make_immutable (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->parent)
-    hb_font_make_immutable (font->parent);
+  ఒకవేళ (font->మాతృ)
+    hb_font_make_immutable (font->మాతృ);
 
   hb_object_make_immutable (font);
 }
@@ -2378,7 +2378,7 @@ hb_font_make_immutable (hb_font_t *font)
 hb_bool_t
 hb_font_is_immutable (hb_font_t *font)
 {
-  return hb_object_is_immutable (font);
+  తిరిగి hb_object_is_immutable (font);
 }
 
 /**
@@ -2393,10 +2393,10 @@ hb_font_is_immutable (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_font_get_serial (hb_font_t *font)
 {
-  return font->serial.get_acquire ();
+  తిరిగి font->serial.get_acquire ();
 }
 
 /**
@@ -2409,13 +2409,13 @@ hb_font_get_serial (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-void
-hb_font_changed (hb_font_t *font)
+శూన్య
+hb_font_మారింది (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2427,30 +2427,30 @@ hb_font_changed (hb_font_t *font)
  *
  * Since: 1.0.5
  **/
-void
-hb_font_set_parent (hb_font_t *font,
-		    hb_font_t *parent)
+శూన్య
+hb_font_సమితి_మాతృ (hb_font_t *font,
+		    hb_font_t *మాతృ)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (parent == font->parent)
-    return;
+  ఒకవేళ (మాతృ == font->మాతృ)
+    తిరిగి;
 
-  if (!parent)
-    parent = hb_font_get_empty ();
+  ఒకవేళ (!మాతృ)
+    మాతృ = hb_font_get_ఖాళీలు ();
 
-  for (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
-    if (p == font)
-      return; /* Would create a cycle - reject */
+  కొరకు (hb_font_t *p = మాతృ; p && p != hb_font_get_ఖాళీలు(); p = p->మాతృ)
+    ఒకవేళ (p == font)
+      తిరిగి; /* Would create a cycle - reject */
 
-  hb_font_t *old = font->parent;
+  hb_font_t *old = font->మాతృ;
 
-  font->parent = hb_font_reference (parent);
+  font->మాతృ = hb_font_reference (మాతృ);
 
   hb_font_destroy (old);
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2464,12 +2464,12 @@ hb_font_set_parent (hb_font_t *font,
  * Since: 0.9.2
  **/
 hb_font_t *
-hb_font_get_parent (hb_font_t *font)
+hb_font_get_మాతృ (hb_font_t *font)
 {
-  return font->parent;
+  తిరిగి font->మాతృ;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /**
  * hb_font_set_face:
  * @font: #hb_font_t to work upon
@@ -2485,35 +2485,35 @@ hb_font_get_parent (hb_font_t *font)
  * Since: 1.4.3
  * XDeprecated: REPLACEME: Use hb_font_create() instead.
  **/
-void
-hb_font_set_face (hb_font_t *font,
+శూన్య
+hb_font_సమితి_face (hb_font_t *font,
 		  hb_face_t *face)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (face == font->face)
-    return;
+  ఒకవేళ (face == font->face)
+    తిరిగి;
 
-  if (unlikely (!face))
-    face = hb_face_get_empty ();
+  ఒకవేళ (unlikely (!face))
+    face = hb_face_get_ఖాళీలు ();
 
   hb_face_t *old = font->face;
 
   hb_face_make_immutable (face);
   font->face = hb_face_reference (face);
-  font->changed ();
+  font->మారింది ();
 
   /* Release the old font funcs while the old face is still alive. */
-  hb_font_set_funcs (font, nullptr, nullptr, nullptr);
-  hb_font_set_funcs_using (font, nullptr);
+  hb_font_సమితి_funcs (font, శూన్యసూచిక, శూన్యసూచిక, శూన్యసూచిక);
+  hb_font_సమితి_funcs_using (font, శూన్యసూచిక);
 
   hb_face_destroy (old);
 
-  font->changed ();
+  font->మారింది ();
   font->serial_coords = font->serial;
 }
-#endif
+#అయితే_ముగింపు
 
 /**
  * hb_font_get_face:
@@ -2528,7 +2528,7 @@ hb_font_set_face (hb_font_t *font,
 hb_face_t *
 hb_font_get_face (hb_font_t *font)
 {
-  return font->face;
+  తిరిగి font->face;
 }
 
 
@@ -2544,32 +2544,32 @@ hb_font_get_face (hb_font_t *font)
  *
  * Since: 0.9.2
  **/
-void
-hb_font_set_funcs (hb_font_t         *font,
+శూన్య
+hb_font_సమితి_funcs (hb_font_t         *font,
 		   hb_font_funcs_t   *klass,
-		   void              *font_data,
+		   శూన్య              *font_దత్తాంశం,
 		   hb_destroy_func_t  destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (font))
+  ఒకవేళ (hb_object_is_immutable (font))
   {
-    if (destroy)
-      destroy (font_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (font_దత్తాంశం);
+    తిరిగి;
   }
 
-  if (font->destroy)
-    font->destroy (font->user_data);
+  ఒకవేళ (font->destroy)
+    font->destroy (font->user_దత్తాంశం);
 
-  if (!klass)
-    klass = hb_font_funcs_get_empty ();
+  ఒకవేళ (!klass)
+    klass = hb_font_funcs_get_ఖాళీలు ();
 
   hb_font_funcs_reference (klass);
   hb_font_funcs_destroy (font->klass);
   font->klass = klass;
-  font->user_data = font_data;
+  font->user_దత్తాంశం = font_దత్తాంశం;
   font->destroy = destroy;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2583,63 +2583,63 @@ hb_font_set_funcs (hb_font_t         *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_font_set_funcs_data (hb_font_t         *font,
-		        void              *font_data,
+శూన్య
+hb_font_సమితి_funcs_దత్తాంశం (hb_font_t         *font,
+		        శూన్య              *font_దత్తాంశం,
 		        hb_destroy_func_t  destroy /* May be NULL. */)
 {
   /* Destroy user_data? */
-  if (hb_object_is_immutable (font))
+  ఒకవేళ (hb_object_is_immutable (font))
   {
-    if (destroy)
-      destroy (font_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (font_దత్తాంశం);
+    తిరిగి;
   }
 
-  if (font->destroy)
-    font->destroy (font->user_data);
+  ఒకవేళ (font->destroy)
+    font->destroy (font->user_దత్తాంశం);
 
-  font->user_data = font_data;
+  font->user_దత్తాంశం = font_దత్తాంశం;
   font->destroy = destroy;
 
-  font->changed ();
+  font->మారింది ();
 }
 
-static const struct supported_font_funcs_t {
-	char name[16];
-	void (*func) (hb_font_t *);
+స్థిర స్థిరరాశి నిర్మాణం supported_font_funcs_t {
+	అక్షరం name[16];
+	శూన్య (*func) (hb_font_t *);
 } supported_font_funcs[] =
 {
-#ifndef HB_NO_OT_FONT
-  {"ot",	hb_ot_font_set_funcs},
-#endif
-#ifdef HAVE_FREETYPE
-  {"ft",	hb_ft_font_set_funcs},
-#endif
-#ifdef HAVE_FONTATIONS
-  {"fontations",hb_fontations_font_set_funcs},
-#endif
-#ifdef HAVE_CORETEXT
-  {"coretext",	hb_coretext_font_set_funcs},
-#endif
-#ifdef HAVE_DIRECTWRITE
-  {"directwrite",hb_directwrite_font_set_funcs},
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT
+  {"ot",	hb_ot_font_సమితి_funcs},
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_FREETYPE
+  {"ft",	hb_ft_font_సమితి_funcs},
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_FONTATIONS
+  {"fontations",hb_fontations_font_సమితి_funcs},
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_CORETEXT
+  {"coretext",	hb_coretext_font_సమితి_funcs},
+#అయితే_ముగింపు
+#నిర్వచితమైతే HAVE_DIRECTWRITE
+  {"directwrite",hb_directwrite_font_సమితి_funcs},
+#అయితే_ముగింపు
 };
 
-static const char *get_default_funcs_name ()
+స్థిర స్థిరరాశి అక్షరం *get_default_funcs_name ()
 {
-  static hb_atomic_t<const char *> static_funcs_name;
-  const char *name = static_funcs_name.get_acquire ();
-  if (!name)
+  స్థిర hb_atomic_t<స్థిరరాశి అక్షరం *> static_funcs_name;
+  స్థిరరాశి అక్షరం *name = static_funcs_name.get_acquire ();
+  ఒకవేళ (!name)
   {
     name = getenv ("HB_FONT_FUNCS");
-    if (!name)
+    ఒకవేళ (!name)
       name = "";
-    if (!static_funcs_name.cmpexch (nullptr, name))
+    ఒకవేళ (!static_funcs_name.cmpexch (శూన్యసూచిక, name))
       name = static_funcs_name.get_acquire ();
   }
-  return name;
+  తిరిగి name;
 }
 
 /**
@@ -2659,70 +2659,70 @@ static const char *get_default_funcs_name ()
  * Since: 11.0.0
  **/
 hb_bool_t
-hb_font_set_funcs_using (hb_font_t  *font,
-			 const char *name)
+hb_font_సమితి_funcs_using (hb_font_t  *font,
+			 స్థిరరాశి అక్షరం *name)
 {
-  if (unlikely (hb_object_is_immutable (font)))
-    return false;
+  ఒకవేళ (unlikely (hb_object_is_immutable (font)))
+    తిరిగి అబద్ధం;
 
-  bool retry = false;
+  తార్కిక retry = అబద్ధం;
 
-  if (!name || !*name)
+  ఒకవేళ (!name || !*name)
   {
     name = get_default_funcs_name ();
-    retry = true;
+    retry = నిజం;
   }
-  if (name && !*name) name = nullptr;
+  ఒకవేళ (name && !*name) name = శూన్యసూచిక;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
-    if (!name || strcmp (supported_font_funcs[i].name, name) == 0)
+  కొరకు (గుర్తులేని i = 0; i < ARRAY_నిడివి (supported_font_funcs); i++)
+    ఒకవేళ (!name || strcmp (supported_font_funcs[i].name, name) == 0)
     {
       supported_font_funcs[i].func (font);
-      if (name || font->klass != hb_font_funcs_get_empty ())
-	return true;
+      ఒకవేళ (name || font->klass != hb_font_funcs_get_ఖాళీలు ())
+	తిరిగి నిజం;
     }
 
-  if (retry)
+  ఒకవేళ (retry)
   {
-    retry = false;
-    name = nullptr;
-    goto retry;
+    retry = అబద్ధం;
+    name = శూన్యసూచిక;
+    వెళ్ళు retry;
   }
 
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static inline void free_static_font_funcs_list ();
+స్థిర అంతఃవరుస శూన్య free_static_font_funcs_list ();
 
-static const char * const nil_font_funcs_list[] = {nullptr};
+స్థిర స్థిరరాశి అక్షరం * స్థిరరాశి nil_font_funcs_list[] = {శూన్యసూచిక};
 
-static struct hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+స్థిర నిర్మాణం hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<స్థిరరాశి అక్షరం *,
 								  hb_font_funcs_list_lazy_loader_t>
 {
-  static const char ** create ()
+  స్థిర స్థిరరాశి అక్షరం ** create ()
   {
-    const char **font_funcs_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_font_funcs), sizeof (const char *));
-    if (unlikely (!font_funcs_list))
-      return nullptr;
+    స్థిరరాశి అక్షరం **font_funcs_list = (స్థిరరాశి అక్షరం **) hb_calloc (1 + ARRAY_నిడివి (supported_font_funcs), పరిమాణం (స్థిరరాశి అక్షరం *));
+    ఒకవేళ (unlikely (!font_funcs_list))
+      తిరిగి శూన్యసూచిక;
 
-    unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
+    గుర్తులేని i;
+    కొరకు (i = 0; i < ARRAY_నిడివి (supported_font_funcs); i++)
       font_funcs_list[i] = supported_font_funcs[i].name;
-    font_funcs_list[i] = nullptr;
+    font_funcs_list[i] = శూన్యసూచిక;
 
     hb_atexit (free_static_font_funcs_list);
 
-    return font_funcs_list;
+    తిరిగి font_funcs_list;
   }
-  static void destroy (const char **l)
+  స్థిర శూన్య destroy (స్థిరరాశి అక్షరం **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_font_funcs_list; }
+  స్థిర స్థిరరాశి అక్షరం * స్థిరరాశి * get_null ()
+  { తిరిగి nil_font_funcs_list; }
 } static_font_funcs_list;
 
-static inline
-void free_static_font_funcs_list ()
+స్థిర అంతఃవరుస
+శూన్య free_static_font_funcs_list ()
 {
   static_font_funcs_list.free_instance ();
 }
@@ -2739,10 +2739,10 @@ void free_static_font_funcs_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+స్థిరరాశి అక్షరం **
 hb_font_list_funcs ()
 {
-  return static_font_funcs_list.get_unconst ();
+  తిరిగి static_font_funcs_list.get_unconst ();
 }
 
 /**
@@ -2780,21 +2780,21 @@ hb_font_list_funcs ()
  *
  * Since: 0.9.2
  **/
-void
-hb_font_set_scale (hb_font_t *font,
-		   int        x_scale,
-		   int        y_scale)
+శూన్య
+hb_font_సమితి_scale (hb_font_t *font,
+		   పూర్ణాంకం        x_scale,
+		   పూర్ణాంకం        y_scale)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->x_scale == x_scale && font->y_scale == y_scale)
-    return;
+  ఒకవేళ (font->x_scale == x_scale && font->y_scale == y_scale)
+    తిరిగి;
 
   font->x_scale = x_scale;
   font->y_scale = y_scale;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2807,13 +2807,13 @@ hb_font_set_scale (hb_font_t *font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_get_scale (hb_font_t *font,
-		   int       *x_scale,
-		   int       *y_scale)
+		   పూర్ణాంకం       *x_scale,
+		   పూర్ణాంకం       *y_scale)
 {
-  if (x_scale) *x_scale = font->x_scale;
-  if (y_scale) *y_scale = font->y_scale;
+  ఒకవేళ (x_scale) *x_scale = font->x_scale;
+  ఒకవేళ (y_scale) *y_scale = font->y_scale;
 }
 
 /**
@@ -2830,21 +2830,21 @@ hb_font_get_scale (hb_font_t *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_font_set_ppem (hb_font_t    *font,
-		  unsigned int  x_ppem,
-		  unsigned int  y_ppem)
+శూన్య
+hb_font_సమితి_ppem (hb_font_t    *font,
+		  గుర్తులేని పూర్ణాంకం  x_ppem,
+		  గుర్తులేని పూర్ణాంకం  y_ppem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
-    return;
+  ఒకవేళ (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
+    తిరిగి;
 
   font->x_ppem = x_ppem;
   font->y_ppem = y_ppem;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2857,13 +2857,13 @@ hb_font_set_ppem (hb_font_t    *font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_font_get_ppem (hb_font_t    *font,
-		  unsigned int *x_ppem,
-		  unsigned int *y_ppem)
+		  గుర్తులేని పూర్ణాంకం *x_ppem,
+		  గుర్తులేని పూర్ణాంకం *y_ppem)
 {
-  if (x_ppem) *x_ppem = font->x_ppem;
-  if (y_ppem) *y_ppem = font->y_ppem;
+  ఒకవేళ (x_ppem) *x_ppem = font->x_ppem;
+  ఒకవేళ (y_ppem) *y_ppem = font->y_ppem;
 }
 
 /**
@@ -2878,19 +2878,19 @@ hb_font_get_ppem (hb_font_t    *font,
  *
  * Since: 1.6.0
  **/
-void
-hb_font_set_ptem (hb_font_t *font,
-		  float      ptem)
+శూన్య
+hb_font_సమితి_ptem (hb_font_t *font,
+		  దశాంశం      ptem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->ptem == ptem)
-    return;
+  ఒకవేళ (font->ptem == ptem)
+    తిరిగి;
 
   font->ptem = ptem;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2904,10 +2904,10 @@ hb_font_set_ptem (hb_font_t *font,
  *
  * Since: 1.6.0
  **/
-float
+దశాంశం
 hb_font_get_ptem (hb_font_t *font)
 {
-  return font->ptem;
+  తిరిగి font->ptem;
 }
 
 /**
@@ -2924,7 +2924,7 @@ hb_font_get_ptem (hb_font_t *font)
 hb_bool_t
 hb_font_is_synthetic (hb_font_t *font)
 {
-  return font->is_synthetic;
+  తిరిగి font->is_synthetic;
 }
 
 /**
@@ -2953,25 +2953,25 @@ hb_font_is_synthetic (hb_font_t *font)
  *
  * Since: 7.0.0
  **/
-void
-hb_font_set_synthetic_bold (hb_font_t *font,
-			    float x_embolden,
-			    float y_embolden,
+శూన్య
+hb_font_సమితి_synthetic_bold (hb_font_t *font,
+			    దశాంశం x_embolden,
+			    దశాంశం y_embolden,
 			    hb_bool_t in_place)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->x_embolden == x_embolden &&
+  ఒకవేళ (font->x_embolden == x_embolden &&
       font->y_embolden == y_embolden &&
-      font->embolden_in_place == (bool) in_place)
-    return;
+      font->embolden_లోపల_ఉంచు == (తార్కిక) in_place)
+    తిరిగి;
 
   font->x_embolden = x_embolden;
   font->y_embolden = y_embolden;
-  font->embolden_in_place = in_place;
+  font->embolden_లోపల_ఉంచు = in_place;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -2985,15 +2985,15 @@ hb_font_set_synthetic_bold (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-void
+శూన్య
 hb_font_get_synthetic_bold (hb_font_t *font,
-			    float *x_embolden,
-			    float *y_embolden,
+			    దశాంశం *x_embolden,
+			    దశాంశం *y_embolden,
 			    hb_bool_t *in_place)
 {
-  if (x_embolden) *x_embolden = font->x_embolden;
-  if (y_embolden) *y_embolden = font->y_embolden;
-  if (in_place) *in_place = font->embolden_in_place;
+  ఒకవేళ (x_embolden) *x_embolden = font->x_embolden;
+  ఒకవేళ (y_embolden) *y_embolden = font->y_embolden;
+  ఒకవేళ (in_place) *in_place = font->embolden_లోపల_ఉంచు;
 }
 
 /**
@@ -3016,18 +3016,18 @@ hb_font_get_synthetic_bold (hb_font_t *font,
  *
  * Since: 3.3.0
  **/
-HB_EXTERN void
-hb_font_set_synthetic_slant (hb_font_t *font, float slant)
+HB_EXTERN శూన్య
+hb_font_సమితి_synthetic_slant (hb_font_t *font, దశాంశం slant)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->slant == slant)
-    return;
+  ఒకవేళ (font->slant == slant)
+    తిరిగి;
 
   font->slant = slant;
 
-  font->changed ();
+  font->మారింది ();
 }
 
 /**
@@ -3040,13 +3040,13 @@ hb_font_set_synthetic_slant (hb_font_t *font, float slant)
  *
  * Since: 3.3.0
  **/
-HB_EXTERN float
+HB_EXTERN దశాంశం
 hb_font_get_synthetic_slant (hb_font_t *font)
 {
-  return font->slant;
+  తిరిగి font->slant;
 }
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
 /*
  * Variations
  */
@@ -3065,52 +3065,52 @@ hb_font_get_synthetic_slant (hb_font_t *font)
  *
  * Since: 1.4.2
  */
-void
-hb_font_set_variations (hb_font_t            *font,
-			const hb_variation_t *variations,
-			unsigned int          variations_length)
+శూన్య
+hb_font_సమితి_variations (hb_font_t            *font,
+			స్థిరరాశి hb_variation_t *variations,
+			గుర్తులేని పూర్ణాంకం          variations_నిడివి)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  స్థిరరాశి OT::fvar &fvar = *font->face->పట్టిక.fvar;
+  స్వయంచాలక axes = fvar.get_axes ();
+  స్థిరరాశి గుర్తులేని coords_నిడివి = axes.నిడివి;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  పూర్ణాంకం *normalized = coords_నిడివి ? (పూర్ణాంకం *) hb_calloc (coords_నిడివి, పరిమాణం (పూర్ణాంకం)) : శూన్యసూచిక;
+  దశాంశం *design_coords = coords_నిడివి ? (దశాంశం *) hb_calloc (coords_నిడివి, పరిమాణం (దశాంశం)) : శూన్యసూచిక;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  ఒకవేళ (unlikely (coords_నిడివి && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    తిరిగి;
   }
 
   /* Initialize design coords. */
-  for (unsigned int i = 0; i < coords_length; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < coords_నిడివి; i++)
     design_coords[i] = axes[i].get_default ();
-  if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+  ఒకవేళ (font->instance_సూచీ != HB_FONT_NO_VAR_NAMED_INSTANCE)
   {
-    unsigned count = coords_length;
+    గుర్తులేని లెక్క = coords_నిడివి;
     /* This may fail if index is out-of-range;
      * That's why we initialize design_coords from fvar above
      * unconditionally. */
-    hb_ot_var_named_instance_get_design_coords (font->face, font->instance_index,
-						&count, design_coords);
+    hb_ot_var_named_instance_get_design_coords (font->face, font->instance_సూచీ,
+						&లెక్క, design_coords);
   }
 
-  for (unsigned int i = 0; i < variations_length; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < variations_నిడివి; i++)
   {
-    const auto tag = variations[i].tag;
-    const auto v = variations[i].value;
-    for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-      if (axes[axis_index].axisTag == tag)
-	design_coords[axis_index] = v;
+    స్థిరరాశి స్వయంచాలక ట్యాగ్_2 = variations[i].ట్యాగ్_2;
+    స్థిరరాశి స్వయంచాలక v = variations[i].value;
+    కొరకు (గుర్తులేని axis_సూచీ = 0; axis_సూచీ < coords_నిడివి; axis_సూచీ++)
+      ఒకవేళ (axes[axis_సూచీ].axis_ట్యాగ్ == ట్యాగ్_2)
+	design_coords[axis_సూచీ] = v;
   }
 
-  hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
-  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_length);
+  hb_ot_var_normalize_coords (font->face, coords_నిడివి, design_coords, normalized);
+  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_నిడివి);
 }
 
 /**
@@ -3127,58 +3127,58 @@ hb_font_set_variations (hb_font_t            *font,
  *
  * Since: 7.1.0
  */
-void
-hb_font_set_variation (hb_font_t *font,
-		       hb_tag_t tag,
-		       float    value)
+శూన్య
+hb_font_సమితి_variation (hb_font_t *font,
+		       hb_ట్యాగ్_t ట్యాగ్_2,
+		       దశాంశం    value)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
   // TODO Share some of this code with set_variations()
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  స్థిరరాశి OT::fvar &fvar = *font->face->పట్టిక.fvar;
+  స్వయంచాలక axes = fvar.get_axes ();
+  స్థిరరాశి గుర్తులేని coords_నిడివి = axes.నిడివి;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  పూర్ణాంకం *normalized = coords_నిడివి ? (పూర్ణాంకం *) hb_calloc (coords_నిడివి, పరిమాణం (పూర్ణాంకం)) : శూన్యసూచిక;
+  దశాంశం *design_coords = coords_నిడివి ? (దశాంశం *) hb_calloc (coords_నిడివి, పరిమాణం (దశాంశం)) : శూన్యసూచిక;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  ఒకవేళ (unlikely (coords_నిడివి && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    తిరిగి;
   }
 
   /* Initialize design coords.
    * The font's coords may belong to another face after hb_font_set_face(). */
-  if (font->design_coords && font->num_coords == coords_length)
+  ఒకవేళ (font->design_coords && font->అంకె_coords == coords_నిడివి)
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < coords_నిడివి; i++)
       design_coords[i] = font->design_coords[i];
   }
-  else
+  లేకపోతే
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < coords_నిడివి; i++)
       design_coords[i] = axes[i].get_default ();
-    if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+    ఒకవేళ (font->instance_సూచీ != HB_FONT_NO_VAR_NAMED_INSTANCE)
     {
-      unsigned count = coords_length;
+      గుర్తులేని లెక్క = coords_నిడివి;
       /* This may fail if index is out-of-range;
        * That's why we initialize design_coords from fvar above
        * unconditionally. */
-      hb_ot_var_named_instance_get_design_coords (font->face, font->instance_index,
-						  &count, design_coords);
+      hb_ot_var_named_instance_get_design_coords (font->face, font->instance_సూచీ,
+						  &లెక్క, design_coords);
     }
   }
 
-  for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-    if (axes[axis_index].axisTag == tag)
-      design_coords[axis_index] = value;
+  కొరకు (గుర్తులేని axis_సూచీ = 0; axis_సూచీ < coords_నిడివి; axis_సూచీ++)
+    ఒకవేళ (axes[axis_సూచీ].axis_ట్యాగ్ == ట్యాగ్_2)
+      design_coords[axis_సూచీ] = value;
 
-  hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
-  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_length);
+  hb_ot_var_normalize_coords (font->face, coords_నిడివి, design_coords, normalized);
+  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_నిడివి);
 }
 
 /**
@@ -3196,37 +3196,37 @@ hb_font_set_variation (hb_font_t *font,
  *
  * Since: 1.4.2
  */
-void
-hb_font_set_var_coords_design (hb_font_t    *font,
-			       const float  *coords,
-			       unsigned int  input_coords_length)
+శూన్య
+hb_font_సమితి_var_coords_design (hb_font_t    *font,
+			       స్థిరరాశి దశాంశం  *coords,
+			       గుర్తులేని పూర్ణాంకం  ఆదానం_coords_నిడివి)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  స్థిరరాశి OT::fvar &fvar = *font->face->పట్టిక.fvar;
+  స్వయంచాలక axes = fvar.get_axes ();
+  స్థిరరాశి గుర్తులేని coords_నిడివి = axes.నిడివి;
 
-  input_coords_length = hb_min (input_coords_length, coords_length);
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  ఆదానం_coords_నిడివి = hb_min (ఆదానం_coords_నిడివి, coords_నిడివి);
+  పూర్ణాంకం *normalized = coords_నిడివి ? (పూర్ణాంకం *) hb_calloc (coords_నిడివి, పరిమాణం (పూర్ణాంకం)) : శూన్యసూచిక;
+  దశాంశం *design_coords = coords_నిడివి ? (దశాంశం *) hb_calloc (coords_నిడివి, పరిమాణం (దశాంశం)) : శూన్యసూచిక;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  ఒకవేళ (unlikely (coords_నిడివి && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    తిరిగి;
   }
 
-  if (input_coords_length)
-    hb_memcpy (design_coords, coords, input_coords_length * sizeof (font->design_coords[0]));
+  ఒకవేళ (ఆదానం_coords_నిడివి)
+    hb_memcpy (design_coords, coords, ఆదానం_coords_నిడివి * పరిమాణం (font->design_coords[0]));
   // Fill in the rest with default values
-  for (unsigned int i = input_coords_length; i < coords_length; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ఆదానం_coords_నిడివి; i < coords_నిడివి; i++)
     design_coords[i] = axes[i].get_default ();
 
-  hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
-  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_length);
+  hb_ot_var_normalize_coords (font->face, coords_నిడివి, design_coords, normalized);
+  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_నిడివి);
 }
 
 /**
@@ -3238,18 +3238,18 @@ hb_font_set_var_coords_design (hb_font_t    *font,
  *
  * Since: 2.6.0
  */
-void
-hb_font_set_var_named_instance (hb_font_t *font,
-				unsigned int instance_index)
+శూన్య
+hb_font_సమితి_var_named_instance (hb_font_t *font,
+				గుర్తులేని పూర్ణాంకం instance_సూచీ)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  if (font->instance_index == instance_index)
-    return;
+  ఒకవేళ (font->instance_సూచీ == instance_సూచీ)
+    తిరిగి;
 
-  font->instance_index = instance_index;
-  hb_font_set_variations (font, nullptr, 0);
+  font->instance_సూచీ = instance_సూచీ;
+  hb_font_సమితి_variations (font, శూన్యసూచిక, 0);
 }
 
 /**
@@ -3262,10 +3262,10 @@ hb_font_set_var_named_instance (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_font_get_var_named_instance (hb_font_t *font)
 {
-  return font->instance_index;
+  తిరిగి font->instance_సూచీ;
 }
 
 /**
@@ -3285,36 +3285,36 @@ hb_font_get_var_named_instance (hb_font_t *font)
  *
  * Since: 1.4.2
  */
-void
-hb_font_set_var_coords_normalized (hb_font_t    *font,
-				   const int    *coords, /* 2.14 normalized */
-				   unsigned int  input_coords_length)
+శూన్య
+hb_font_సమితి_var_coords_normalized (hb_font_t    *font,
+				   స్థిరరాశి పూర్ణాంకం    *coords, /* 2.14 normalized */
+				   గుర్తులేని పూర్ణాంకం  ఆదానం_coords_నిడివి)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ఒకవేళ (hb_object_is_immutable (font))
+    తిరిగి;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  unsigned coords_length = axes.length;
+  స్థిరరాశి OT::fvar &fvar = *font->face->పట్టిక.fvar;
+  స్వయంచాలక axes = fvar.get_axes ();
+  గుర్తులేని coords_నిడివి = axes.నిడివి;
 
-  input_coords_length = hb_min (input_coords_length, coords_length);
-  int *copy = coords_length ? (int *) hb_calloc (coords_length, sizeof (coords[0])) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (design_coords[0])) : nullptr;
+  ఆదానం_coords_నిడివి = hb_min (ఆదానం_coords_నిడివి, coords_నిడివి);
+  పూర్ణాంకం *copy = coords_నిడివి ? (పూర్ణాంకం *) hb_calloc (coords_నిడివి, పరిమాణం (coords[0])) : శూన్యసూచిక;
+  దశాంశం *design_coords = coords_నిడివి ? (దశాంశం *) hb_calloc (coords_నిడివి, పరిమాణం (design_coords[0])) : శూన్యసూచిక;
 
-  if (unlikely (coords_length && !(copy && design_coords)))
+  ఒకవేళ (unlikely (coords_నిడివి && !(copy && design_coords)))
   {
     hb_free (copy);
     hb_free (design_coords);
-    return;
+    తిరిగి;
   }
 
-  if (input_coords_length)
-    hb_memcpy (copy, coords, input_coords_length * sizeof (coords[0]));
+  ఒకవేళ (ఆదానం_coords_నిడివి)
+    hb_memcpy (copy, coords, ఆదానం_coords_నిడివి * పరిమాణం (coords[0]));
 
-  for (unsigned int i = 0; i < coords_length; ++i)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < coords_నిడివి; ++i)
     design_coords[i] = NAN;
 
-  _hb_font_adopt_var_coords (font, copy, design_coords, coords_length);
+  _hb_font_adopt_var_coords (font, copy, design_coords, coords_నిడివి);
 }
 
 /**
@@ -3335,14 +3335,14 @@ hb_font_set_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 1.4.2
  */
-const int *
+స్థిరరాశి పూర్ణాంకం *
 hb_font_get_var_coords_normalized (hb_font_t    *font,
-				   unsigned int *length)
+				   గుర్తులేని పూర్ణాంకం *నిడివి)
 {
-  if (length)
-    *length = font->num_coords;
+  ఒకవేళ (నిడివి)
+    *నిడివి = font->అంకె_coords;
 
-  return font->coords;
+  తిరిగి font->coords;
 }
 
 /**
@@ -3367,99 +3367,99 @@ hb_font_get_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 3.3.0
  */
-const float *
+స్థిరరాశి దశాంశం *
 hb_font_get_var_coords_design (hb_font_t *font,
-			       unsigned int *length)
+			       గుర్తులేని పూర్ణాంకం *నిడివి)
 {
-  if (length)
-    *length = font->num_coords;
+  ఒకవేళ (నిడివి)
+    *నిడివి = font->అంకె_coords;
 
-  return font->design_coords;
+  తిరిగి font->design_coords;
 }
-#endif
+#అయితే_ముగింపు
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 /*
  * Deprecated get_glyph_func():
  */
 
-struct hb_trampoline_closure_t
+నిర్మాణం hb_trampoline_సంవృతం_t
 {
-  void *user_data;
+  శూన్య *user_దత్తాంశం;
   hb_destroy_func_t destroy;
-  unsigned int ref_count;
+  గుర్తులేని పూర్ణాంకం ref_లెక్క_2;
 };
 
-template <typename FuncType>
-struct hb_trampoline_t
+మూస <రకం_పేరు FuncType>
+నిర్మాణం hb_trampoline_t
 {
-  hb_trampoline_closure_t closure; /* Must be first. */
+  hb_trampoline_సంవృతం_t సంవృతం; /* Must be first. */
   FuncType func;
 };
 
-template <typename FuncType>
-static hb_trampoline_t<FuncType> *
+మూస <రకం_పేరు FuncType>
+స్థిర hb_trampoline_t<FuncType> *
 trampoline_create (FuncType           func,
-		   void              *user_data,
+		   శూన్య              *user_దత్తాంశం,
 		   hb_destroy_func_t  destroy)
 {
-  typedef hb_trampoline_t<FuncType> trampoline_t;
+  రకనిర్వచనం hb_trampoline_t<FuncType> trampoline_t;
 
-  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, sizeof (trampoline_t));
+  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, పరిమాణం (trampoline_t));
 
-  if (unlikely (!trampoline))
-    return nullptr;
+  ఒకవేళ (unlikely (!trampoline))
+    తిరిగి శూన్యసూచిక;
 
-  trampoline->closure.user_data = user_data;
-  trampoline->closure.destroy = destroy;
-  trampoline->closure.ref_count = 1;
+  trampoline->సంవృతం.user_దత్తాంశం = user_దత్తాంశం;
+  trampoline->సంవృతం.destroy = destroy;
+  trampoline->సంవృతం.ref_లెక్క_2 = 1;
   trampoline->func = func;
 
-  return trampoline;
+  తిరిగి trampoline;
 }
 
-static void
-trampoline_reference (hb_trampoline_closure_t *closure)
+స్థిర శూన్య
+trampoline_reference (hb_trampoline_సంవృతం_t *సంవృతం)
 {
-  closure->ref_count++;
+  సంవృతం->ref_లెక్క_2++;
 }
 
-static void
-trampoline_destroy (void *user_data)
+స్థిర శూన్య
+trampoline_destroy (శూన్య *user_దత్తాంశం)
 {
-  hb_trampoline_closure_t *closure = (hb_trampoline_closure_t *) user_data;
+  hb_trampoline_సంవృతం_t *సంవృతం = (hb_trampoline_సంవృతం_t *) user_దత్తాంశం;
 
-  if (--closure->ref_count)
-    return;
+  ఒకవేళ (--సంవృతం->ref_లెక్క_2)
+    తిరిగి;
 
-  if (closure->destroy)
-    closure->destroy (closure->user_data);
-  hb_free (closure);
+  ఒకవేళ (సంవృతం->destroy)
+    సంవృతం->destroy (సంవృతం->user_దత్తాంశం);
+  hb_free (సంవృతం);
 }
 
-typedef hb_trampoline_t<hb_font_get_glyph_func_t> hb_font_get_glyph_trampoline_t;
+రకనిర్వచనం hb_trampoline_t<hb_font_get_glyph_func_t> hb_font_get_glyph_trampoline_t;
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_nominal_glyph_trampoline (hb_font_t      *font,
-				      void           *font_data,
+				      శూన్య           *font_దత్తాంశం,
 				      hb_codepoint_t  unicode,
 				      hb_codepoint_t *glyph,
-				      void           *user_data)
+				      శూన్య           *user_దత్తాంశం)
 {
-  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, 0, glyph, trampoline->closure.user_data);
+  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_దత్తాంశం;
+  తిరిగి trampoline->func (font, font_దత్తాంశం, unicode, 0, glyph, trampoline->సంవృతం.user_దత్తాంశం);
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
-					void           *font_data,
+					శూన్య           *font_దత్తాంశం,
 					hb_codepoint_t  unicode,
 					hb_codepoint_t  variation_selector,
 					hb_codepoint_t *glyph,
-					void           *user_data)
+					శూన్య           *user_దత్తాంశం)
 {
-  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, variation_selector, glyph, trampoline->closure.user_data);
+  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_దత్తాంశం;
+  తిరిగి trampoline->func (font, font_దత్తాంశం, unicode, variation_selector, glyph, trampoline->సంవృతం.user_దత్తాంశం);
 }
 
 /**
@@ -3475,174 +3475,174 @@ hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
  * Since: 0.9.2
  * Deprecated: 1.2.3
  **/
-void
-hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
+శూన్య
+hb_font_funcs_సమితి_glyph_func (hb_font_funcs_t          *ffuncs,
 			      hb_font_get_glyph_func_t  func,
-			      void                     *user_data,
+			      శూన్య                     *user_దత్తాంశం,
 			      hb_destroy_func_t         destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ఒకవేళ (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
 
   hb_font_get_glyph_trampoline_t *trampoline;
 
-  trampoline = trampoline_create (func, user_data, destroy);
-  if (unlikely (!trampoline))
+  trampoline = trampoline_create (func, user_దత్తాంశం, destroy);
+  ఒకవేళ (unlikely (!trampoline))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
 
   /* Since we pass it to two destroying functions. */
-  trampoline_reference (&trampoline->closure);
+  trampoline_reference (&trampoline->సంవృతం);
 
-  hb_font_funcs_set_nominal_glyph_func (ffuncs,
+  hb_font_funcs_సమితి_nominal_glyph_func (ffuncs,
 					hb_font_get_nominal_glyph_trampoline,
 					trampoline,
 					trampoline_destroy);
 
-  hb_font_funcs_set_variation_glyph_func (ffuncs,
+  hb_font_funcs_సమితి_variation_glyph_func (ffuncs,
 					  hb_font_get_variation_glyph_trampoline,
 					  trampoline,
 					  trampoline_destroy);
 }
-#endif
+#అయితే_ముగింపు
 
 
-#ifndef HB_DISABLE_DEPRECATED
+#నిర్వచితం_కాకపోతే HB_DISABLE_DEPRECATED
 
-struct hb_draw_glyph_closure_t
+నిర్మాణం hb_draw_glyph_సంవృతం_t
 {
   hb_font_draw_glyph_func_t func;
-  void *user_data;
+  శూన్య *user_దత్తాంశం;
   hb_destroy_func_t destroy;
 };
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_draw_glyph_trampoline (hb_font_t       *font,
-			       void            *font_data,
+			       శూన్య            *font_దత్తాంశం,
 			       hb_codepoint_t   glyph,
 			       hb_draw_funcs_t *draw_funcs,
-			       void            *draw_data,
-			       void            *user_data)
+			       శూన్య            *draw_దత్తాంశం,
+			       శూన్య            *user_దత్తాంశం)
 {
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
-  closure->func (font, font_data, glyph, draw_funcs, draw_data, closure->user_data);
-  return true;
+  hb_draw_glyph_సంవృతం_t *సంవృతం = (hb_draw_glyph_సంవృతం_t *) user_దత్తాంశం;
+  సంవృతం->func (font, font_దత్తాంశం, glyph, draw_funcs, draw_దత్తాంశం, సంవృతం->user_దత్తాంశం);
+  తిరిగి నిజం;
 }
-static void
-hb_font_draw_glyph_closure_destroy (void *user_data)
+స్థిర శూన్య
+hb_font_draw_glyph_సంవృతం_destroy (శూన్య *user_దత్తాంశం)
 {
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
+  hb_draw_glyph_సంవృతం_t *సంవృతం = (hb_draw_glyph_సంవృతం_t *) user_దత్తాంశం;
 
-  if (closure->destroy)
-    closure->destroy (closure->user_data);
-  hb_free (closure);
+  ఒకవేళ (సంవృతం->destroy)
+    సంవృతం->destroy (సంవృతం->user_దత్తాంశం);
+  hb_free (సంవృతం);
 }
-static void
-_hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
+స్థిర శూన్య
+hb_font_funcs_సమితి_draw_glyph_func_2 (hb_font_funcs_t           *ffuncs,
 				    hb_font_draw_glyph_func_t  func,
-				    void                      *user_data,
+				    శూన్య                      *user_దత్తాంశం,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ఒకవేళ (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, sizeof (hb_draw_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_draw_glyph_సంవృతం_t *సంవృతం = (hb_draw_glyph_సంవృతం_t *) hb_calloc (1, పరిమాణం (hb_draw_glyph_సంవృతం_t));
+  ఒకవేళ (unlikely (!సంవృతం))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
-  closure->func = func;
-  closure->user_data = user_data;
-  closure->destroy = destroy;
+  సంవృతం->func = func;
+  సంవృతం->user_దత్తాంశం = user_దత్తాంశం;
+  సంవృతం->destroy = destroy;
 
-  hb_font_funcs_set_draw_glyph_or_fail_func (ffuncs,
+  hb_font_funcs_సమితి_draw_glyph_or_fail_func (ffuncs,
 					     hb_font_draw_glyph_trampoline,
-					     closure,
-					     hb_font_draw_glyph_closure_destroy);
+					     సంవృతం,
+					     hb_font_draw_glyph_సంవృతం_destroy);
 }
-void
-hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
+శూన్య
+hb_font_funcs_సమితి_draw_glyph_func (hb_font_funcs_t           *ffuncs,
                                    hb_font_draw_glyph_func_t  func,
-                                   void                      *user_data,
+                                   శూన్య                      *user_దత్తాంశం,
                                    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
+  hb_font_funcs_సమితి_draw_glyph_func_2 (ffuncs, func, user_దత్తాంశం, destroy);
 }
-void
-hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t               *ffuncs,
+శూన్య
+hb_font_funcs_సమితి_glyph_shape_func (hb_font_funcs_t               *ffuncs,
                                    hb_font_get_glyph_shape_func_t  func,
-                                   void                           *user_data,
+                                   శూన్య                           *user_దత్తాంశం,
                                    hb_destroy_func_t               destroy /* May be NULL. */)
 {
-  _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
+  hb_font_funcs_సమితి_draw_glyph_func_2 (ffuncs, func, user_దత్తాంశం, destroy);
 }
 
-struct hb_paint_glyph_closure_t
+నిర్మాణం hb_paint_glyph_సంవృతం_t
 {
   hb_font_paint_glyph_func_t func;
-  void *user_data;
+  శూన్య *user_దత్తాంశం;
   hb_destroy_func_t destroy;
 };
-static hb_bool_t
+స్థిర hb_bool_t
 hb_font_paint_glyph_trampoline (hb_font_t        *font,
-				void *font_data,
+				శూన్య *font_దత్తాంశం,
 				hb_codepoint_t glyph,
 				hb_paint_funcs_t *paint_funcs,
-				void *paint_data,
-				unsigned int palette,
+				శూన్య *paint_దత్తాంశం,
+				గుర్తులేని పూర్ణాంకం palette,
 				hb_color_t foreground,
-				void *user_data)
+				శూన్య *user_దత్తాంశం)
 {
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
-  closure->func (font, font_data, glyph, paint_funcs, paint_data, palette, foreground, closure->user_data);
-  return true;
+  hb_paint_glyph_సంవృతం_t *సంవృతం = (hb_paint_glyph_సంవృతం_t *) user_దత్తాంశం;
+  సంవృతం->func (font, font_దత్తాంశం, glyph, paint_funcs, paint_దత్తాంశం, palette, foreground, సంవృతం->user_దత్తాంశం);
+  తిరిగి నిజం;
 }
-static void
-hb_font_paint_glyph_closure_destroy (void *user_data)
+స్థిర శూన్య
+hb_font_paint_glyph_సంవృతం_destroy (శూన్య *user_దత్తాంశం)
 {
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
+  hb_paint_glyph_సంవృతం_t *సంవృతం = (hb_paint_glyph_సంవృతం_t *) user_దత్తాంశం;
 
-  if (closure->destroy)
-    closure->destroy (closure->user_data);
-  hb_free (closure);
+  ఒకవేళ (సంవృతం->destroy)
+    సంవృతం->destroy (సంవృతం->user_దత్తాంశం);
+  hb_free (సంవృతం);
 }
-void
-hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t           *ffuncs,
+శూన్య
+hb_font_funcs_సమితి_paint_glyph_func (hb_font_funcs_t           *ffuncs,
 				    hb_font_paint_glyph_func_t  func,
-				    void                      *user_data,
+				    శూన్య                      *user_దత్తాంశం,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ఒకవేళ (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, sizeof (hb_paint_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_paint_glyph_సంవృతం_t *సంవృతం = (hb_paint_glyph_సంవృతం_t *) hb_calloc (1, పరిమాణం (hb_paint_glyph_సంవృతం_t));
+  ఒకవేళ (unlikely (!సంవృతం))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
-  closure->func = func;
-  closure->user_data = user_data;
-  closure->destroy = destroy;
+  సంవృతం->func = func;
+  సంవృతం->user_దత్తాంశం = user_దత్తాంశం;
+  సంవృతం->destroy = destroy;
 
-  hb_font_funcs_set_paint_glyph_or_fail_func (ffuncs,
+  hb_font_funcs_సమితి_paint_glyph_or_fail_func (ffuncs,
 					      hb_font_paint_glyph_trampoline,
-					      closure,
-					      hb_font_paint_glyph_closure_destroy);
+					      సంవృతం,
+					      hb_font_paint_glyph_సంవృతం_destroy);
 }
-#endif
+#అయితే_ముగింపు

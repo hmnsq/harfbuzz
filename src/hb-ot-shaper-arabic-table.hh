@@ -13,14 +13,14 @@
  * UnicodeData.txt does not have a header.
  */
 
-#ifndef HB_OT_SHAPER_ARABIC_TABLE_HH
-#define HB_OT_SHAPER_ARABIC_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPER_ARABIC_పట్టిక_HH
+#నిర్వచించు HB_OT_SHAPER_ARABIC_పట్టిక_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include <stdint.h>
+#అన్తర్భావ <stdint.h>
 
-static const uint8_t _hb_arabic_joining_u8[749]=
+స్థిర స్థిరరాశి uint8_t _hb_arabic_joining_u8[749]=
 {
     0, 16,  2,  0,  0,  0,  3,  0,  4,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -71,24 +71,24 @@ static const uint8_t _hb_arabic_joining_u8[749]=
     0, 32, 19,119,119, 51, 51,119,119,119,103,119,119,
 };
 
-static inline uint8_t _hb_arabic_joining_b4 (const uint8_t* a, unsigned i)
+స్థిర అంతఃవరుస uint8_t _hb_arabic_joining_b4 (స్థిరరాశి uint8_t* a, గుర్తులేని i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  తిరిగి (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_arabic_joining_joining_type (unsigned u)
+స్థిర అంతఃవరుస uint8_t _hb_arabic_joining_joining_type (గుర్తులేని u)
 {
   /* packtab: [2^4,2^3,2^3,2^3] */
-  return u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
+  తిరిగి u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
 }
 
-static unsigned int
+స్థిర గుర్తులేని పూర్ణాంకం
 joining_type (hb_codepoint_t u)
 {
-  return _hb_arabic_joining_joining_type (u);
+  తిరిగి _hb_arabic_joining_joining_type (u);
 }
 
 
-static const uint16_t shaping_table[][4] =
+స్థిర స్థిరరాశి uint16_t shaping_పట్టిక[][4] =
 {
   {0x0000u, 0x0000u, 0x0000u, 0xFE80u}, /* U+0621 ARABIC LETTER HAMZA ISOLATED FORM */
   {0x0000u, 0x0000u, 0xFE82u, 0xFE81u}, /* U+0622 ARABIC LETTER ALEF WITH MADDA ABOVE */
@@ -271,17 +271,17 @@ static const uint16_t shaping_table[][4] =
   {0x0000u, 0x0000u, 0xFBB1u, 0xFBB0u}, /* U+06D3 ARABIC LETTER YEH BARREE WITH HAMZA ABOVE */
 };
 
-#define SHAPING_TABLE_FIRST	0x0621u
-#define SHAPING_TABLE_LAST	0x06D3u
+#నిర్వచించు SHAPING_పట్టిక_మొదటి	0x0621u
+#నిర్వచించు SHAPING_పట్టిక_చివరి	0x06D3u
 
 
-static const struct ligature_set_t {
- uint16_t first;
- struct ligature_pairs_t {
+స్థిర స్థిరరాశి నిర్మాణం ligature_సమితి_t {
+ uint16_t మొదటి;
+ నిర్మాణం ligature_జతలు_t {
    uint16_t components[1];
    uint16_t ligature;
  } ligatures[15];
-} ligature_table[] =
+} ligature_పట్టిక[] =
 {
   { 0xFE91u, {
     { {0xFEE2u}, 0xFC08u }, /* ARABIC LIGATURE BEH WITH MEEM ISOLATED FORM */
@@ -380,13 +380,13 @@ static const struct ligature_set_t {
 };
 
 
-static const struct ligature_mark_set_t {
- uint16_t first;
- struct ligature_pairs_t {
+స్థిర స్థిరరాశి నిర్మాణం ligature_mark_సమితి_t {
+ uint16_t మొదటి;
+ నిర్మాణం ligature_జతలు_t {
    uint16_t components[1];
    uint16_t ligature;
  } ligatures[5];
-} ligature_mark_table[] =
+} ligature_mark_పట్టిక[] =
 {
   { 0x0651u, {
     { {0x064Cu}, 0xFC5Eu }, /* ARABIC LIGATURE SHADDA WITH DAMMATAN ISOLATED FORM */
@@ -398,13 +398,13 @@ static const struct ligature_mark_set_t {
 };
 
 
-static const struct ligature_3_set_t {
- uint16_t first;
- struct ligature_triplets_t {
+స్థిర స్థిరరాశి నిర్మాణం ligature_3_సమితి_t {
+ uint16_t మొదటి;
+ నిర్మాణం ligature_triplets_t {
    uint16_t components[2];
    uint16_t ligature;
  } ligatures[3];
-} ligature_3_table[] =
+} ligature_3_పట్టిక[] =
 {
   { 0xFEDFu, {
     { {0xFEE4u, 0xFEA4u}, 0xFD88u}, /* ARABIC LIGATURE LAM WITH MEEM WITH HAH INITIAL FORM */
@@ -414,6 +414,6 @@ static const struct ligature_3_set_t {
 };
 
 
-#endif /* HB_OT_SHAPER_ARABIC_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPER_ARABIC_TABLE_HH */
 
 /* == End of generated table == */

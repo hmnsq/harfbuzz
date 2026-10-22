@@ -26,16 +26,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-shaper.hh"
+#అన్తర్భావ "hb-shape-plan.hh"
+#అన్తర్భావ "hb-buffer.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
-#ifndef HB_NO_SHAPER
+#నిర్వచితం_కాకపోతే HB_NO_SHAPER
 
 /**
  * SECTION:hb-shape
@@ -50,37 +50,37 @@
  **/
 
 
-static inline void free_static_shaper_list ();
+స్థిర అంతఃవరుస శూన్య free_static_shaper_list ();
 
-static const char * const nil_shaper_list[] = {nullptr};
+స్థిర స్థిరరాశి అక్షరం * స్థిరరాశి nil_shaper_list[] = {శూన్యసూచిక};
 
-static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+స్థిర నిర్మాణం hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<స్థిరరాశి అక్షరం *,
 							      hb_shaper_list_lazy_loader_t>
 {
-  static const char ** create ()
+  స్థిర స్థిరరాశి అక్షరం ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    స్థిరరాశి అక్షరం **shaper_list = (స్థిరరాశి అక్షరం **) hb_calloc (1 + HB_SHAPERS_లెక్క, పరిమాణం (స్థిరరాశి అక్షరం *));
+    ఒకవేళ (unlikely (!shaper_list))
+      తిరిగి శూన్యసూచిక;
 
-    const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    స్థిరరాశి hb_shaper_నమోదు_t *shapers = _hb_shapers_get ();
+    గుర్తులేని పూర్ణాంకం i;
+    కొరకు (i = 0; i < HB_SHAPERS_లెక్క; i++)
       shaper_list[i] = shapers[i].name;
-    shaper_list[i] = nullptr;
+    shaper_list[i] = శూన్యసూచిక;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    తిరిగి shaper_list;
   }
-  static void destroy (const char **l)
+  స్థిర శూన్య destroy (స్థిరరాశి అక్షరం **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_shaper_list; }
+  స్థిర స్థిరరాశి అక్షరం * స్థిరరాశి * get_null ()
+  { తిరిగి nil_shaper_list; }
 } static_shaper_list;
 
-static inline
-void free_static_shaper_list ()
+స్థిర అంతఃవరుస
+శూన్య free_static_shaper_list ()
 {
   static_shaper_list.free_instance ();
 }
@@ -98,10 +98,10 @@ void free_static_shaper_list ()
  *
  * Since: 0.9.2
  **/
-const char **
+స్థిరరాశి అక్షరం **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  తిరిగి static_shaper_list.get_unconst ();
 }
 
 
@@ -124,49 +124,49 @@ hb_shape_list_shapers ()
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_shape_full (hb_font_t          *font,
-	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list)
+hb_shape_నిండిన (hb_font_t          *font,
+	       hb_బఫరు_t        *బఫరు,
+	       స్థిరరాశి hb_feature_t *features,
+	       గుర్తులేని పూర్ణాంకం        అంకె_features,
+	       స్థిరరాశి అక్షరం * స్థిరరాశి *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  ఒకవేళ (unlikely (!బఫరు->len))
+    తిరిగి నిజం;
 
-  buffer->enter ();
+  బఫరు->enter ();
 
-  hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  hb_బఫరు_t *పాఠ్యం_బఫరు = శూన్యసూచిక;
+  ఒకవేళ (బఫరు->flags & HB_బఫరు_FLAG_VERIFY)
   {
-    text_buffer = hb_buffer_create ();
-    hb_buffer_append (text_buffer, buffer, 0, -1);
+    పాఠ్యం_బఫరు = hb_బఫరు_create ();
+    hb_బఫరు_append (పాఠ్యం_బఫరు, బఫరు, 0, -1);
   }
 
-  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &buffer->props,
-							      features, num_features,
-							      font->coords, font->has_nonzero_coords ? font->num_coords : 0,
+  hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &బఫరు->props,
+							      features, అంకె_features,
+							      font->coords, font->has_nonzero_coords ? font->అంకె_coords : 0,
 							      shaper_list);
 
-  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, num_features);
+  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, బఫరు, features, అంకె_features);
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  ఒకవేళ (పాఠ్యం_బఫరు)
   {
-    if (res && buffer->successful
-	    && text_buffer->successful
-	    && !buffer->verify (text_buffer,
+    ఒకవేళ (res && బఫరు->successful
+	    && పాఠ్యం_బఫరు->successful
+	    && !బఫరు->verify (పాఠ్యం_బఫరు,
 				font,
 				features,
-				num_features,
+				అంకె_features,
 				shaper_list))
-      res = false;
-    hb_buffer_destroy (text_buffer);
+      res = అబద్ధం;
+    hb_బఫరు_destroy (పాఠ్యం_బఫరు);
   }
 
-  buffer->leave ();
+  బఫరు->leave ();
 
-  return res;
+  తిరిగి res;
 }
 
 /**
@@ -185,43 +185,43 @@ hb_shape_full (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
+శూన్య
 hb_shape (hb_font_t           *font,
-	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  hb_బఫరు_t         *బఫరు,
+	  స్థిరరాశి hb_feature_t  *features,
+	  గుర్తులేని పూర్ణాంకం         అంకె_features)
 {
-  hb_shape_full (font, buffer, features, num_features, nullptr);
+  hb_shape_నిండిన (font, బఫరు, features, అంకె_features, శూన్యసూచిక);
 }
 
 
-#ifdef HB_EXPERIMENTAL_API
-#ifndef HB_NO_VAR
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
+#నిర్వచితం_కాకపోతే HB_NO_VAR
 
-static float
-buffer_advance (hb_buffer_t *buffer)
+స్థిర దశాంశం
+బఫరు_advance (hb_బఫరు_t *బఫరు)
 {
-  float a = 0;
-  auto *pos = buffer->pos;
-  unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  దశాంశం a = 0;
+  స్వయంచాలక *pos = బఫరు->pos;
+  గుర్తులేని లెక్క = బఫరు->len;
+  ఒకవేళ (HB_DIRECTION_IS_HORIZONTAL (బఫరు->props.direction))
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  లేకపోతే
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
       a += pos[i].y_advance;
-  return a;
+  తిరిగి a;
 }
 
-static void
-reset_buffer (hb_buffer_t *buffer,
-	      hb_array_t<const hb_glyph_info_t> text)
+స్థిర శూన్య
+reset_బఫరు (hb_బఫరు_t *బఫరు,
+	      hb_array_t<స్థిరరాశి hb_glyph_info_t> పాఠ్యం)
 {
-  assert (buffer->ensure (text.length));
-  buffer->have_positions = false;
-  buffer->len = text.length;
-  hb_memcpy (buffer->info, text.arrayZ, text.length * sizeof (buffer->info[0]));
-  hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
+  ప్రతిజ్ఞా (బఫరు->ensure (పాఠ్యం.నిడివి));
+  బఫరు->have_positions = అబద్ధం;
+  బఫరు->len = పాఠ్యం.నిడివి;
+  hb_memcpy (బఫరు->info, పాఠ్యం.arrayZ, పాఠ్యం.నిడివి * పరిమాణం (బఫరు->info[0]));
+  hb_బఫరు_సమితి_content_type (బఫరు, HB_బఫరు_CONTENT_TYPE_UNICODE);
 }
 
 /**
@@ -257,25 +257,25 @@ reset_buffer (hb_buffer_t *buffer,
  **/
 hb_bool_t
 hb_shape_justify (hb_font_t          *font,
-		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
-		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */)
+		  hb_బఫరు_t        *బఫరు,
+		  స్థిరరాశి hb_feature_t *features,
+		  గుర్తులేని పూర్ణాంకం        అంకె_features,
+		  స్థిరరాశి అక్షరం * స్థిరరాశి *shaper_list,
+		  దశాంశం               min_లక్ష్యం_advance,
+		  దశాంశం               max_లక్ష్యం_advance,
+		  దశాంశం              *advance, /* IN/OUT */
+		  hb_ట్యాగ్_t           *var_ట్యాగ్, /*బహిర్గతం*/
+		  దశాంశం              *var_విలువ /*బహిర్గతం*/)
 {
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  ఒకవేళ (min_లక్ష్యం_advance <= *advance && *advance <= max_లక్ష్యం_advance)
   {
-    *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
-			  features, num_features,
+    *var_ట్యాగ్ = HB_ట్యాగ్_NONE;
+    *var_విలువ = 0.0f;
+    తిరిగి hb_shape_నిండిన (font, బఫరు,
+			  features, అంకె_features,
 			  shaper_list);
   }
 
@@ -283,162 +283,162 @@ hb_shape_justify (hb_font_t          *font,
 
   /* Choose variation tag to use for justification. */
 
-  hb_tag_t tag = HB_TAG_NONE;
+  hb_ట్యాగ్_t ట్యాగ్_2 = HB_ట్యాగ్_NONE;
   hb_ot_var_axis_info_t axis_info;
 
-  hb_tag_t tags[] =
+  hb_ట్యాగ్_t ట్యాగులు[] =
   {
-    HB_TAG ('j','s','t','f'),
-    HB_TAG ('w','d','t','h'),
+    HB_ట్యాగ్ ('j','s','t','f'),
+    HB_ట్యాగ్ ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  కొరకు (గుర్తులేని i = 0; i < ARRAY_నిడివి (ట్యాగులు); i++)
+    ఒకవేళ (hb_ot_var_కనుగొను_axis_info (face, ట్యాగులు[i], &axis_info))
     {
-      tag = *var_tag = tags[i];
-      break;
+      ట్యాగ్_2 = *var_ట్యాగ్ = ట్యాగులు[i];
+      ఆపు;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  ఒకవేళ (!ట్యాగ్_2)
   {
-    *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
-		       features, num_features,
+    *var_ట్యాగ్ = HB_ట్యాగ్_NONE;
+    *var_విలువ = 0.0f;
+    ఒకవేళ (hb_shape_నిండిన (font, బఫరు,
+		       features, అంకె_features,
 		       shaper_list))
     {
-      *advance = buffer_advance (buffer);
-      return true;
+      *advance = బఫరు_advance (బఫరు);
+      తిరిగి నిజం;
     }
-    else
-      return false;
+    లేకపోతే
+      తిరిగి అబద్ధం;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
-  unsigned text_len = buffer->len;
-  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
-  HB_SCOPE_GUARD (hb_free (text_info));
-  hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
-  auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
+  గుర్తులేని పాఠ్యం_len = బఫరు->len;
+  స్వయంచాలక *పాఠ్యం_info = (hb_glyph_info_t *) hb_malloc2 (పాఠ్యం_len, పరిమాణం (బఫరు->info[0]));
+  ఒకవేళ (unlikely (పాఠ్యం_len && !పాఠ్యం_info))
+    తిరిగి అబద్ధం;
+  HB_SCOPE_GUARD (hb_free (పాఠ్యం_info));
+  hb_memcpy (పాఠ్యం_info, బఫరు->info, పాఠ్యం_len * పరిమాణం (బఫరు->info[0]));
+  స్వయంచాలక పాఠ్యం = hb_array<స్థిరరాశి hb_glyph_info_t> (పాఠ్యం_info, పాఠ్యం_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  ఒకవేళ (!*advance)
   {
-    hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_సమితి_variation (font, ట్యాగ్_2, axis_info.default_విలువ);
+    ఒకవేళ (!hb_shape_నిండిన (font, బఫరు,
+			features, అంకె_features,
 			shaper_list))
-      return false;
-    *advance = buffer_advance (buffer);
+      తిరిగి అబద్ధం;
+    *advance = బఫరు_advance (బఫరు);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  ఒకవేళ (min_లక్ష్యం_advance <= *advance && *advance <= max_లక్ష్యం_advance)
   {
-    *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return true;
+    *var_ట్యాగ్ = HB_ట్యాగ్_NONE;
+    *var_విలువ = 0.0f;
+    తిరిగి నిజం;
   }
 
   /* Prepare for running the solver. */
-  double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  ద్విగుణ a, b, ya, yb;
+  ఒకవేళ (*advance < min_లక్ష్యం_advance)
   {
     /* Need to expand. */
-    ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    ya = (ద్విగుణ) *advance;
+    a = (ద్విగుణ) axis_info.default_విలువ;
+    b = (ద్విగుణ) axis_info.max_విలువ;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) b);
-    reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_సమితి_variation (font, ట్యాగ్_2, (దశాంశం) b);
+    reset_బఫరు (బఫరు, పాఠ్యం);
+    ఒకవేళ (!hb_shape_నిండిన (font, బఫరు,
+			features, అంకె_features,
 			shaper_list))
-      return false;
-    yb = (double) buffer_advance (buffer);
+      తిరిగి అబద్ధం;
+    yb = (ద్విగుణ) బఫరు_advance (బఫరు);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    ఒకవేళ (yb <= (ద్విగుణ) max_లక్ష్యం_advance)
     {
-      *var_value = (float) b;
-      *advance = (float) yb;
-      return true;
+      *var_విలువ = (దశాంశం) b;
+      *advance = (దశాంశం) yb;
+      తిరిగి నిజం;
     }
   }
-  else
+  లేకపోతే
   {
     /* Need to shrink. */
-    yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    yb = (ద్విగుణ) *advance;
+    a = (ద్విగుణ) axis_info.min_విలువ;
+    b = (ద్విగుణ) axis_info.default_విలువ;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) a);
-    reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_సమితి_variation (font, ట్యాగ్_2, (దశాంశం) a);
+    reset_బఫరు (బఫరు, పాఠ్యం);
+    ఒకవేళ (!hb_shape_నిండిన (font, బఫరు,
+			features, అంకె_features,
 			shaper_list))
-      return false;
-    ya = (double) buffer_advance (buffer);
+      తిరిగి అబద్ధం;
+    ya = (ద్విగుణ) బఫరు_advance (బఫరు);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    ఒకవేళ (ya >= (ద్విగుణ) min_లక్ష్యం_advance)
     {
-      *var_value = (float) a;
-      *advance = (float) ya;
-      return true;
+      *var_విలువ = (దశాంశం) a;
+      *advance = (దశాంశం) ya;
+      తిరిగి నిజం;
     }
   }
 
   /* Run the solver to find a var axis value that hits
    * the desired width. */
 
-  double epsilon = (b - a) / (1<<14);
-  bool failed = false;
+  ద్విగుణ epsilon = (b - a) / (1<<14);
+  తార్కిక failed = అబద్ధం;
 
-  auto f = [&] (double x)
+  స్వయంచాలక f = [&] (ద్విగుణ x)
   {
-    hb_font_set_variation (font, tag, (float) x);
-    reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
-				  features, num_features,
+    hb_font_సమితి_variation (font, ట్యాగ్_2, (దశాంశం) x);
+    reset_బఫరు (బఫరు, పాఠ్యం);
+    ఒకవేళ (unlikely (!hb_shape_నిండిన (font, బఫరు,
+				  features, అంకె_features,
 				  shaper_list)))
     {
-      failed = true;
-      return (double) min_target_advance;
+      failed = నిజం;
+      తిరిగి (ద్విగుణ) min_లక్ష్యం_advance;
     }
 
-    double w = (double) buffer_advance (buffer);
-    DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
-	       HB_UNTAG (tag), x, w,
-	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+    ద్విగుణ w = (ద్విగుణ) బఫరు_advance (బఫరు);
+    DEBUG_సందేశం (JUSTIFY, శూన్యసూచిక, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
+	       HB_UNTAG (ట్యాగ్_2), x, w,
+	       (ద్విగుణ) min_లక్ష్యం_advance, (ద్విగుణ) max_లక్ష్యం_advance);
+    తిరిగి w;
   };
 
-  double y = 0;
-  double itp = solve_itp (f,
+  ద్విగుణ y = 0;
+  ద్విగుణ itp = solve_itp (f,
 			  a, b,
 			  epsilon,
-			  (double) min_target_advance, (double) max_target_advance,
+			  (ద్విగుణ) min_లక్ష్యం_advance, (ద్విగుణ) max_లక్ష్యం_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  ఒకవేళ (failed)
+    తిరిగి అబద్ధం;
 
-  *var_value = (float) itp;
-  *advance = (float) y;
+  *var_విలువ = (దశాంశం) itp;
+  *advance = (దశాంశం) y;
 
-  return true;
+  తిరిగి నిజం;
 }
-#endif
-#endif
+#అయితే_ముగింపు
+#అయితే_ముగింపు
 
 
-#endif
+#అయితే_ముగింపు

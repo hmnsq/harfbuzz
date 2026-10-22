@@ -24,138 +24,138 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-context.hh"
-#include "classdef-graph.hh"
-#include "hb-iter.hh"
-#include "hb-serialize.hh"
+#అన్తర్భావ "gsubgpos-context.hh"
+#అన్తర్భావ "classdef-graph.hh"
+#అన్తర్భావ "hb-iter.hh"
+#అన్తర్భావ "hb-serialize.hh"
 
-typedef hb_codepoint_pair_t gid_and_class_t;
-typedef hb_vector_t<gid_and_class_t> gid_and_class_list_t;
+రకనిర్వచనం hb_codepoint_pair_t gid_and_class_t;
+రకనిర్వచనం hb_సదిశ_t<gid_and_class_t> gid_and_class_list_t;
 
-template<typename It>
-static unsigned actual_class_def_size(It glyph_and_class) {
-  char buffer[100];
-  hb_serialize_context_t serializer(buffer, 100);
+మూస<రకం_పేరు It>
+స్థిర గుర్తులేని actual_class_def_కొలత(It glyph_and_class) {
+  అక్షరం బఫరు[100];
+  hb_serialize_context_t serializer(బఫరు, 100);
   OT::ClassDef_serialize (&serializer, glyph_and_class);
-  serializer.end_serialize ();
-  hb_always_assert(!serializer.in_error());
+  serializer.చివర_serialize ();
+  hb_always_assert(!serializer.లోపల_error());
 
   hb_blob_t* blob = serializer.copy_blob();
-  unsigned size = hb_blob_get_length(blob);
+  గుర్తులేని కొలత = hb_blob_get_నిడివి(blob);
   hb_blob_destroy(blob);
-  return size;
+  తిరిగి కొలత;
 }
 
-static unsigned actual_class_def_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
-  auto filtered_it =
+స్థిర గుర్తులేని actual_class_def_కొలత(gid_and_class_list_t consecutive_map, hb_సదిశ_t<గుర్తులేని> classes) {
+  స్వయంచాలక filtered_it =
     + consecutive_map.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+    | hb_filter([&] (గుర్తులేని c) {
+      కొరకు (గుర్తులేని klass : classes) {
+        ఒకవేళ (c == klass) {
+          తిరిగి నిజం;
         }
       }
-      return false;
-    }, hb_second);
-  return actual_class_def_size(+ filtered_it);
+      తిరిగి అబద్ధం;
+    }, hb_రెండవ);
+  తిరిగి actual_class_def_కొలత(+ filtered_it);
 }
 
-template<typename It>
-static unsigned actual_coverage_size(It glyphs) {
-  char buffer[100];
-  hb_serialize_context_t serializer(buffer, 100);
+మూస<రకం_పేరు It>
+స్థిర గుర్తులేని actual_coverage_కొలత(It glyphs) {
+  అక్షరం బఫరు[100];
+  hb_serialize_context_t serializer(బఫరు, 100);
   OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
-  serializer.end_serialize ();
-  hb_always_assert(!serializer.in_error());
+  serializer.చివర_serialize ();
+  hb_always_assert(!serializer.లోపల_error());
 
   hb_blob_t* blob = serializer.copy_blob();
-  unsigned size = hb_blob_get_length(blob);
+  గుర్తులేని కొలత = hb_blob_get_నిడివి(blob);
   hb_blob_destroy(blob);
-  return size;
+  తిరిగి కొలత;
 }
 
-static unsigned actual_coverage_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
-  auto filtered_it =
+స్థిర గుర్తులేని actual_coverage_కొలత(gid_and_class_list_t consecutive_map, hb_సదిశ_t<గుర్తులేని> classes) {
+  స్వయంచాలక filtered_it =
     + consecutive_map.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+    | hb_filter([&] (గుర్తులేని c) {
+      కొరకు (గుర్తులేని klass : classes) {
+        ఒకవేళ (c == klass) {
+          తిరిగి నిజం;
         }
       }
-      return false;
-    }, hb_second);
-  return actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
+      తిరిగి అబద్ధం;
+    }, hb_రెండవ);
+  తిరిగి actual_coverage_కొలత(+ filtered_it | hb_map_retains_క్రమీకరణ(hb_మొదటి));
 }
 
-static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
-                                const gid_and_class_list_t& map,
-                                hb_vector_t<unsigned> klasses)
+స్థిర తార్కిక check_coverage_కొలత(లేఖాచిత్రం::class_def_కొలత_estimator_t& estimator,
+                                స్థిరరాశి gid_and_class_list_t& map,
+                                hb_సదిశ_t<గుర్తులేని> klasses)
 {
-  unsigned result = estimator.coverage_size();
-  unsigned expected = actual_coverage_size(map, klasses);
-  if (result != expected) {
-    printf ("FAIL: estimated coverage expected size %u but was %u\n", expected, result);
-    return false;
+  గుర్తులేని ఫలితం = estimator.coverage_కొలత();
+  గుర్తులేని expected = actual_coverage_కొలత(map, klasses);
+  ఒకవేళ (ఫలితం != expected) {
+    రాయి ("FAIL: estimated coverage expected size %u but was %u\n", expected, ఫలితం);
+    తిరిగి అబద్ధం;
   }
-  return true;
+  తిరిగి నిజం;
 }
 
-static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t& estimator,
-					       const gid_and_class_list_t& map,
-					       unsigned klass, hb_vector_t<unsigned> klasses)
+స్థిర HB_వాడని తార్కిక check_కూడు_class_def_కొలత(లేఖాచిత్రం::class_def_కొలత_estimator_t& estimator,
+					       స్థిరరాశి gid_and_class_list_t& map,
+					       గుర్తులేని klass, hb_సదిశ_t<గుర్తులేని> klasses)
 {
-  unsigned result = estimator.add_class_def_size(klass);
-  unsigned expected = actual_class_def_size(map, klasses);
-  if (result != expected) {
-    printf ("FAIL: estimated class def expected size %u but was %u\n", expected, result);
-    return false;
+  గుర్తులేని ఫలితం = estimator.కూడు_class_def_కొలత(klass);
+  గుర్తులేని expected = actual_class_def_కొలత(map, klasses);
+  ఒకవేళ (ఫలితం != expected) {
+    రాయి ("FAIL: estimated class def expected size %u but was %u\n", expected, ఫలితం);
+    తిరిగి అబద్ధం;
   }
 
-  return check_coverage_size(estimator, map, klasses);
+  తిరిగి check_coverage_కొలత(estimator, map, klasses);
 }
 
-static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list, unsigned klass)
+స్థిర HB_వాడని తార్కిక check_కూడు_class_def_కొలత (స్థిరరాశి gid_and_class_list_t& list, గుర్తులేని klass)
 {
-  graph::class_def_size_estimator_t estimator = *graph::class_def_size_estimator_t::create (list.iter ());
+  లేఖాచిత్రం::class_def_కొలత_estimator_t estimator = *లేఖాచిత్రం::class_def_కొలత_estimator_t::create (list.iter ());
 
-  unsigned result = estimator.add_class_def_size (klass);
-  auto filtered_it =
+  గుర్తులేని ఫలితం = estimator.కూడు_class_def_కొలత (klass);
+  స్వయంచాలక filtered_it =
     + list.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      return c == klass;
-    }, hb_second);
+    | hb_filter([&] (గుర్తులేని c) {
+      తిరిగి c == klass;
+    }, hb_రెండవ);
 
-  unsigned expected = actual_class_def_size(filtered_it);
-  if (result != expected)
+  గుర్తులేని expected = actual_class_def_కొలత(filtered_it);
+  ఒకవేళ (ఫలితం != expected)
   {
-    printf ("FAIL: class def expected size %u but was %u\n", expected, result);
-    return false;
+    రాయి ("FAIL: class def expected size %u but was %u\n", expected, ఫలితం);
+    తిరిగి అబద్ధం;
   }
 
-  auto cov_it = + filtered_it | hb_map_retains_sorting(hb_first);
-  result = estimator.coverage_size ();
-  expected = actual_coverage_size(cov_it);
-  if (result != expected)
+  స్వయంచాలక cov_it = + filtered_it | hb_map_retains_క్రమీకరణ(hb_మొదటి);
+  ఫలితం = estimator.coverage_కొలత ();
+  expected = actual_coverage_కొలత(cov_it);
+  ఒకవేళ (ఫలితం != expected)
   {
-    printf ("FAIL: coverage expected size %u but was %u\n", expected, result);
-    return false;
+    రాయి ("FAIL: coverage expected size %u but was %u\n", expected, ఫలితం);
+    తిరిగి అబద్ధం;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static void test_class_and_coverage_size_estimates ()
+స్థిర శూన్య test_class_and_coverage_కొలత_estimates ()
 {
-  gid_and_class_list_t empty = {
+  gid_and_class_list_t ఖాళీలు_2 = {
   };
-  hb_always_assert (check_add_class_def_size (empty, 0));
-  hb_always_assert (check_add_class_def_size (empty, 1));
+  hb_always_assert (check_కూడు_class_def_కొలత (ఖాళీలు_2, 0));
+  hb_always_assert (check_కూడు_class_def_కొలత (ఖాళీలు_2, 1));
 
   gid_and_class_list_t class_zero = {
     {5, 0},
   };
-  hb_always_assert (check_add_class_def_size (class_zero, 0));
+  hb_always_assert (check_కూడు_class_def_కొలత (class_zero, 0));
 
   gid_and_class_list_t consecutive = {
     {4, 0},
@@ -169,9 +169,9 @@ static void test_class_and_coverage_size_estimates ()
     {10, 2},
     {11, 2},
   };
-  hb_always_assert (check_add_class_def_size (consecutive, 0));
-  hb_always_assert (check_add_class_def_size (consecutive, 1));
-  hb_always_assert (check_add_class_def_size (consecutive, 2));
+  hb_always_assert (check_కూడు_class_def_కొలత (consecutive, 0));
+  hb_always_assert (check_కూడు_class_def_కొలత (consecutive, 1));
+  hb_always_assert (check_కూడు_class_def_కొలత (consecutive, 2));
 
   gid_and_class_list_t non_consecutive = {
     {4, 0},
@@ -185,11 +185,11 @@ static void test_class_and_coverage_size_estimates ()
     {11, 2},
     {13, 2},
   };
-  hb_always_assert (check_add_class_def_size (non_consecutive, 0));
-  hb_always_assert (check_add_class_def_size (non_consecutive, 1));
-  hb_always_assert (check_add_class_def_size (non_consecutive, 2));
+  hb_always_assert (check_కూడు_class_def_కొలత (non_consecutive, 0));
+  hb_always_assert (check_కూడు_class_def_కొలత (non_consecutive, 1));
+  hb_always_assert (check_కూడు_class_def_కొలత (non_consecutive, 2));
 
-  gid_and_class_list_t multiple_ranges = {
+  gid_and_class_list_t గుణిజం_ranges = {
     {4, 0},
     {5, 0},
 
@@ -202,51 +202,51 @@ static void test_class_and_coverage_size_estimates ()
     {12, 1},
     {13, 1},
   };
-  hb_always_assert (check_add_class_def_size (multiple_ranges, 0));
-  hb_always_assert (check_add_class_def_size (multiple_ranges, 1));
+  hb_always_assert (check_కూడు_class_def_కొలత (గుణిజం_ranges, 0));
+  hb_always_assert (check_కూడు_class_def_కొలత (గుణిజం_ranges, 1));
 
-#ifndef HB_NO_BEYOND_64K
-  gid_and_class_list_t high_consecutive = {
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  gid_and_class_list_t ఎగువ_consecutive = {
     {0x10000, 1},
     {0x10001, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_consecutive, 1));
+  hb_always_assert (check_కూడు_class_def_కొలత (ఎగువ_consecutive, 1));
 
-  gid_and_class_list_t high_non_consecutive = {
+  gid_and_class_list_t ఎగువ_non_consecutive = {
     {0x10000, 1},
     {0x10002, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_non_consecutive, 1));
+  hb_always_assert (check_కూడు_class_def_కొలత (ఎగువ_non_consecutive, 1));
 
-  gid_and_class_list_t high_class = {
+  gid_and_class_list_t ఎగువ_class = {
     {5, 0x10000},
   };
-  hb_always_assert (check_add_class_def_size (high_class, 0x10000));
-#endif
+  hb_always_assert (check_కూడు_class_def_కొలత (ఎగువ_class, 0x10000));
+#అయితే_ముగింపు
 }
 
-#ifndef HB_NO_BEYOND_64K
-static void test_class_def_format_3_values ()
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+స్థిర శూన్య test_class_def_format_3_విలువలు ()
 {
-  alignas (OT::ClassDef) static const unsigned char data[] = {
+  alignas (OT::ClassDef) స్థిర స్థిరరాశి గుర్తులేని అక్షరం దత్తాంశం[] = {
     0x00, 0x03,             // format
     0x00, 0x00, 0x05,       // startGlyphID
     0x00, 0x00, 0x02,       // glyphCount
     0x00, 0x00, 0x01,       // classValue[0]
     0x01, 0x00, 0x00,       // classValue[1]
   };
-  const OT::ClassDef &class_def = *reinterpret_cast<const OT::ClassDef *> (data);
+  స్థిరరాశి OT::ClassDef &class_def = *reinterpret_cast<స్థిరరాశి OT::ClassDef *> (దత్తాంశం);
 
   hb_always_assert (class_def.get_class (5) == 1);
   hb_always_assert (class_def.get_class (6) == 0x10000u);
 
-  hb_set_t glyphs;
-  glyphs.add (6);
+  hb_సమితి_t glyphs;
+  glyphs.కూడు (6);
   hb_always_assert (class_def.intersects_class (&glyphs, 0x10000u));
 }
-#endif
+#అయితే_ముగింపు
 
-static void test_running_class_and_coverage_size_estimates () {
+స్థిర శూన్య test_running_class_and_coverage_కొలత_estimates () {
   // #### With consecutive gids: switches formats ###
   gid_and_class_list_t consecutive_map = {
     // range 1-4 (f1: 8 bytes), (f2: 6 bytes)
@@ -268,15 +268,15 @@ static void test_running_class_and_coverage_size_estimates () {
     {12, 3},
   };
 
-  graph::class_def_size_estimator_t estimator1 = *graph::class_def_size_estimator_t::create (consecutive_map.iter());
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {1, 2})); // check that adding the same class again works
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 3, {1, 2, 3}));
+  లేఖాచిత్రం::class_def_కొలత_estimator_t estimator1 = *లేఖాచిత్రం::class_def_కొలత_estimator_t::create (consecutive_map.iter());
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator1, consecutive_map, 1, {1}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator1, consecutive_map, 2, {1, 2}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator1, consecutive_map, 2, {1, 2})); // check that adding the same class again works
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator1, consecutive_map, 3, {1, 2, 3}));
 
   estimator1.reset();
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 3, {2, 3}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator1, consecutive_map, 2, {2}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator1, consecutive_map, 3, {2, 3}));
 
   // #### With non-consecutive gids: always uses format 2 ###
   gid_and_class_list_t non_consecutive_map = {
@@ -300,40 +300,40 @@ static void test_running_class_and_coverage_size_estimates () {
     {15, 3},
   };
 
-  graph::class_def_size_estimator_t estimator2 = *graph::class_def_size_estimator_t::create (non_consecutive_map.iter());
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 3, {1, 2, 3}));
+  లేఖాచిత్రం::class_def_కొలత_estimator_t estimator2 = *లేఖాచిత్రం::class_def_కొలత_estimator_t::create (non_consecutive_map.iter());
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator2, non_consecutive_map, 1, {1}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator2, non_consecutive_map, 2, {1, 2}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator2, non_consecutive_map, 3, {1, 2, 3}));
 
   estimator2.reset();
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 3, {2, 3}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator2, non_consecutive_map, 2, {2}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator2, non_consecutive_map, 3, {2, 3}));
 }
 
-static void test_running_class_size_estimates_with_locally_consecutive_glyphs () {
+స్థిర శూన్య test_running_class_కొలత_estimates_with_locally_consecutive_glyphs () {
   gid_and_class_list_t map = {
     {1, 1},
     {6, 2},
     {7, 3},
   };
 
-  graph::class_def_size_estimator_t estimator = *graph::class_def_size_estimator_t::create (map.iter());
-  hb_always_assert(check_add_class_def_size(estimator, map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 3, {1, 2, 3}));
+  లేఖాచిత్రం::class_def_కొలత_estimator_t estimator = *లేఖాచిత్రం::class_def_కొలత_estimator_t::create (map.iter());
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator, map, 1, {1}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator, map, 2, {1, 2}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator, map, 3, {1, 2, 3}));
 
   estimator.reset();
-  hb_always_assert(check_add_class_def_size(estimator, map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 3, {2, 3}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator, map, 2, {2}));
+  hb_always_assert(check_కూడు_class_def_కొలత(estimator, map, 3, {2, 3}));
 }
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  test_class_and_coverage_size_estimates ();
-  test_running_class_and_coverage_size_estimates ();
-  test_running_class_size_estimates_with_locally_consecutive_glyphs ();
-#ifndef HB_NO_BEYOND_64K
-  test_class_def_format_3_values ();
-#endif
+  test_class_and_coverage_కొలత_estimates ();
+  test_running_class_and_coverage_కొలత_estimates ();
+  test_running_class_కొలత_estimates_with_locally_consecutive_glyphs ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+  test_class_def_format_3_విలువలు ();
+#అయితే_ముగింపు
 }

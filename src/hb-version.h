@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#ఒకవేళ !defined(HB_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_VERSION_H
-#define HB_VERSION_H
+#నిర్వచితం_కాకపోతే HB_సంస్కరణ_H
+#నిర్వచించు HB_సంస్కరణ_H
 
-#include "hb-common.h"
+#అన్తర్భావ "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -41,26 +41,26 @@ HB_BEGIN_DECLS
  *
  * The major component of the library version available at compile-time.
  */
-#define HB_VERSION_MAJOR 14
+#నిర్వచించు HB_సంస్కరణ_MAJOR 14
 /**
  * HB_VERSION_MINOR:
  *
  * The minor component of the library version available at compile-time.
  */
-#define HB_VERSION_MINOR 6
+#నిర్వచించు HB_సంస్కరణ_MINOR 6
 /**
  * HB_VERSION_MICRO:
  *
  * The micro component of the library version available at compile-time.
  */
-#define HB_VERSION_MICRO 0
+#నిర్వచించు HB_సంస్కరణ_MICRO 0
 
 /**
  * HB_VERSION_STRING:
  *
  * A string literal containing the library version available at compile-time.
  */
-#define HB_VERSION_STRING "14.6.0"
+#నిర్వచించు HB_సంస్కరణ_STRING "14.6.0"
 
 /**
  * HB_VERSION_ATLEAST:
@@ -71,25 +71,25 @@ HB_BEGIN_DECLS
  * Tests the library version at compile-time against a minimum value,
  * as three integer components.
  */
-#define HB_VERSION_ATLEAST(major,minor,micro) \
+#నిర్వచించు HB_సంస్కరణ_ATLEAST(major,minor,micro) \
 	((major)*10000+(minor)*100+(micro) <= \
-	 HB_VERSION_MAJOR*10000+HB_VERSION_MINOR*100+HB_VERSION_MICRO)
+	 HB_సంస్కరణ_MAJOR*10000+HB_సంస్కరణ_MINOR*100+HB_సంస్కరణ_MICRO)
 
 
-HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+HB_EXTERN శూన్య
+hb_సంస్కరణ (గుర్తులేని పూర్ణాంకం *major,
+	    గుర్తులేని పూర్ణాంకం *minor,
+	    గుర్తులేని పూర్ణాంకం *micro);
 
-HB_EXTERN const char *
-hb_version_string (void);
+HB_EXTERN స్థిరరాశి అక్షరం *
+hb_సంస్కరణ_string (శూన్య);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_సంస్కరణ_atleast (గుర్తులేని పూర్ణాంకం major,
+		    గుర్తులేని పూర్ణాంకం minor,
+		    గుర్తులేని పూర్ణాంకం micro);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_VERSION_H */
+#అయితే_ముగింపు /* HB_VERSION_H */

@@ -23,138 +23,138 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF1_INTERP_CS_HH
-#define HB_CFF1_INTERP_CS_HH
+#నిర్వచితం_కాకపోతే HB_CFF1_INTERP_CS_HH
+#నిర్వచించు HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
-using namespace OT;
+ఉపయోగించి నామాకాశ OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+రకనిర్వచనం biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+నిర్మాణం cff1_cs_interp_env_t : cs_interp_env_t<సంఖ్య_t, CFF1Subrs>
 {
-  template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
+  మూస <రకం_పేరు ACC>
+  cff1_cs_interp_env_t (స్థిరరాశి hb_ubytes_t &str, ACC &acc, గుర్తులేని పూర్ణాంకం fd,
+			స్థిరరాశి పూర్ణాంకం *coords_=శూన్యసూచిక, గుర్తులేని పూర్ణాంకం అంకె_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.వ్యక్తిగత_Dicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
-    arg_start = 0;
-    in_seac = false;
+    processed_వెడల్పు = అబద్ధం;
+    has_వెడల్పు = అబద్ధం;
+    arg_ప్రారంభం = 0;
+    లోపల_seac = అబద్ధం;
   }
 
-  void set_width (bool has_width_)
+  శూన్య సమితి_వెడల్పు (తార్కిక has_వెడల్పు_2)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    ఒకవేళ (likely (!processed_వెడల్పు && (SUPER::arg_దొంతర.get_లెక్క () > 0)))
     {
-      if (has_width_)
+      ఒకవేళ (has_వెడల్పు_2)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
-	arg_start = 1;
+	వెడల్పు = SUPER::arg_దొంతర[0];
+	has_వెడల్పు = నిజం;
+	arg_ప్రారంభం = 1;
       }
     }
-    processed_width = true;
+    processed_వెడల్పు = నిజం;
   }
 
-  void clear_args ()
+  శూన్య clear_వాదనలు ()
   {
-    arg_start = 0;
-    SUPER::clear_args ();
+    arg_ప్రారంభం = 0;
+    SUPER::clear_వాదనలు ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  శూన్య సమితి_లోపల_seac (తార్కిక లోపల_seac_2) { లోపల_seac = లోపల_seac_2; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  తార్కిక	  processed_వెడల్పు;
+  తార్కిక	  has_వెడల్పు;
+  గుర్తులేని పూర్ణాంకం  arg_ప్రారంభం;
+  సంఖ్య_t	వెడల్పు;
+  తార్కిక	  లోపల_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  అంతరంగ:
+  రకనిర్వచనం cs_interp_env_t<సంఖ్య_t, CFF1Subrs> SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+మూస <రకం_పేరు OPSET, రకం_పేరు PARAM, రకం_పేరు మార్గం_3=మార్గం_procs_null_t<cff1_cs_interp_env_t, PARAM>>
+నిర్మాణం cff1_cs_opset_t : cs_opset_t<సంఖ్య_t, OPSET, cff1_cs_interp_env_t, PARAM, మార్గం_3>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
-	SUPER::flush_args_and_op (op, env, param);
-	break;
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_dotsection:
+	SUPER::flush_వాదనలు_and_op (op, env, param);
+	ఆపు;
 
-      case OpCode_endchar:
-	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+      స్థితి Op_సంకేతం_endchar:
+	OPSET::check_వెడల్పు (op, env, param);
+	ఒకవేళ (env.arg_దొంతర.get_లెక్క () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
-	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	OPSET::flush_వాదనలు_and_op (op, env, param);
+	env.సమితి_endchar (నిజం);
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  స్థిర శూన్య check_వెడల్పు (op_సంకేతం_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    ఒకవేళ (!env.processed_వెడల్పు)
     {
-      bool  has_width = false;
-      switch (op)
+      తార్కిక  has_వెడల్పు = అబద్ధం;
+      ఎంపిక (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	స్థితి Op_సంకేతం_endchar:
+	స్థితి Op_సంకేతం_hstem:
+	స్థితి Op_సంకేతం_hstemhm:
+	స్థితి Op_సంకేతం_vstem:
+	స్థితి Op_సంకేతం_vstemhm:
+	స్థితి Op_సంకేతం_hintmask:
+	స్థితి Op_సంకేతం_cntrmask:
+	  has_వెడల్పు = ((env.arg_దొంతర.get_లెక్క () & 1) != 0);
+	  ఆపు;
+	స్థితి Op_సంకేతం_hmoveto:
+	స్థితి Op_సంకేతం_vmoveto:
+	  has_వెడల్పు = (env.arg_దొంతర.get_లెక్క () > 1);
+	  ఆపు;
+	స్థితి Op_సంకేతం_rmoveto:
+	  has_వెడల్పు = (env.arg_దొంతర.get_లెక్క () > 2);
+	  ఆపు;
+	అప్రమేయ:
+	  తిరిగి;
       }
-      env.set_width (has_width);
+      env.సమితి_వెడల్పు (has_వెడల్పు);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  స్థిర శూన్య process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  స్థిర శూన్య flush_వాదనలు (cff1_cs_interp_env_t &env, PARAM& param)
   {
-    SUPER::flush_args (env, param);
-    env.clear_args ();  /* pop off width */
+    SUPER::flush_వాదనలు (env, param);
+    env.clear_వాదనలు ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  అంతరంగ:
+  రకనిర్వచనం cs_opset_t<సంఖ్య_t, OPSET, cff1_cs_interp_env_t, PARAM, మార్గం_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM>
-using cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
+మూస <రకం_పేరు OPSET, రకం_పేరు PARAM>
+ఉపయోగించి cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF1_INTERP_CS_HH */
+#అయితే_ముగింపు /* HB_CFF1_INTERP_CS_HH */

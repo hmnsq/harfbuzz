@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_విభజించు_HELPERS_HH
+#నిర్వచించు లేఖాచిత్రం_విభజించు_HELPERS_HH
 
-#include "graph-result.hh"
+#అన్తర్భావ "graph-result.hh"
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+మూస<రకం_పేరు Context>
+HB_అంతర్గత
+లేఖాచిత్రం_ఫలితం_t<hb_సదిశ_t<గుర్తులేని>> actuate_subtable_విభజించు (Context& విభజించు_context,
+                                                              స్థిరరాశి hb_సదిశ_t<గుర్తులేని>& విభజించు_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_సదిశ_t<గుర్తులేని> new_objects;
+  ఒకవేళ (!విభజించు_points)
+    తిరిగి Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < విభజించు_points.నిడివి; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    గుర్తులేని ప్రారంభం = విభజించు_points[i];
+    గుర్తులేని చివర = (i < విభజించు_points.నిడివి - 1)
+                   ? విభజించు_points[i + 1]
+                   : విభజించు_context.original_లెక్క_2 ();
+    TRY_కేటాయించు (గుర్తులేని id, విభజించు_context.clone_range (ప్రారంభం, చివర));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (new_objects, కేటాయింపు_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (విభజించు_context.shrink (విభజించు_points[0]));
 
-  return Ok(new_objects);
+  తిరిగి Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#అయితే_ముగింపు  // GRAPH_SPLIT_HELPERS_HH

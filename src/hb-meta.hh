@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_META_HH
-#define HB_META_HH
+#నిర్వచితం_కాకపోతే HB_META_HH
+#నిర్వచించు HB_META_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include <memory>
-#include <type_traits>
-#include <utility>
+#అన్తర్భావ <memory>
+#అన్తర్భావ <type_traits>
+#అన్తర్భావ <utility>
 
 
 /*
@@ -39,200 +39,200 @@
  */
 
 /* Void!  For when we need a expression-type of void. */
-struct hb_empty_t {};
+నిర్మాణం hb_ఖాళీలు_t {};
 
 /* https://en.cppreference.com/w/cpp/types/void_t */
-template<typename... Ts> struct _hb_void_t { typedef void type; };
-template<typename... Ts> using hb_void_t = typename _hb_void_t<Ts...>::type;
+మూస<రకం_పేరు... Ts> నిర్మాణం _hb_void_t { రకనిర్వచనం శూన్య type; };
+మూస<రకం_పేరు... Ts> ఉపయోగించి hb_void_t = రకం_పేరు _hb_void_t<Ts...>::type;
 
-template<typename Head, typename... Ts> struct _hb_head_t { typedef Head type; };
-template<typename... Ts> using hb_head_t = typename _hb_head_t<Ts...>::type;
+మూస<రకం_పేరు తల, రకం_పేరు... Ts> నిర్మాణం hb_తల_t { రకనిర్వచనం తల type; };
+మూస<రకం_పేరు... Ts> ఉపయోగించి hb_తల_t_2 = రకం_పేరు hb_తల_t<Ts...>::type;
 
-template <typename T, T v> struct hb_integral_constant { static constexpr T value = v; };
-template <bool b> using hb_bool_constant = hb_integral_constant<bool, b>;
-using hb_true_type = hb_bool_constant<true>;
-using hb_false_type = hb_bool_constant<false>;
+మూస <రకం_పేరు T, T v> నిర్మాణం hb_integral_constant { స్థిర constexpr T value = v; };
+మూస <తార్కిక b> ఉపయోగించి hb_bool_constant = hb_integral_constant<తార్కిక, b>;
+ఉపయోగించి hb_true_type = hb_bool_constant<నిజం>;
+ఉపయోగించి hb_false_type = hb_bool_constant<అబద్ధం>;
 
 /* Static-assert as expression. */
-template <bool cond> struct static_assert_expr;
-template <> struct static_assert_expr<true> : hb_false_type {};
-#define static_assert_expr(C) static_assert_expr<C>::value
+మూస <తార్కిక cond> నిర్మాణం static_assert_సమాసం;
+మూస <> నిర్మాణం static_assert_సమాసం<నిజం> : hb_false_type {};
+#నిర్వచించు static_assert_సమాసం(C) static_assert_సమాసం<C>::value
 
 /* Basic type SFINAE. */
 
-template <bool B, typename T = void> struct hb_enable_if {};
-template <typename T>                struct hb_enable_if<true, T> { typedef T type; };
-#define hb_enable_if(Cond) typename hb_enable_if<(Cond)>::type* = nullptr
+మూస <తార్కిక B, రకం_పేరు T = శూన్య> నిర్మాణం hb_enable_if {};
+మూస <రకం_పేరు T>                నిర్మాణం hb_enable_if<నిజం, T> { రకనిర్వచనం T type; };
+#నిర్వచించు hb_enable_if(Cond) రకం_పేరు hb_enable_if<(Cond)>::type* = శూన్యసూచిక
 /* Concepts/Requires alias: */
-#define hb_requires(Cond) hb_enable_if((Cond))
+#నిర్వచించు hb_requires(Cond) hb_enable_if((Cond))
 
-template <typename T, typename T2> struct hb_is_same : hb_false_type {};
-template <typename T>              struct hb_is_same<T, T> : hb_true_type {};
-#define hb_is_same(T, T2) hb_is_same<T, T2>::value
+మూస <రకం_పేరు T, రకం_పేరు T2> నిర్మాణం hb_is_same : hb_false_type {};
+మూస <రకం_పేరు T>              నిర్మాణం hb_is_same<T, T> : hb_true_type {};
+#నిర్వచించు hb_is_same(T, T2) hb_is_same<T, T2>::value
 
 /* Function overloading SFINAE and priority. */
 
-#define HB_RETURN(Ret, E) -> hb_head_t<Ret, decltype ((E))> { return (E); }
-#define HB_AUTO_RETURN(E) -> decltype ((E)) { return (E); }
-#define HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
+#నిర్వచించు HB_RETURN(Ret, E) -> hb_తల_t_2<Ret, decltype ((E))> { తిరిగి (E); }
+#నిర్వచించు HB_AUTO_RETURN(E) -> decltype ((E)) { తిరిగి (E); }
+#నిర్వచించు HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
 
-template <unsigned Pri> struct hb_priority : hb_priority<Pri - 1> {};
-template <>             struct hb_priority<0> {};
-#define hb_prioritize hb_priority<16> ()
+మూస <గుర్తులేని Pri> నిర్మాణం hb_ప్రాధాన్యత : hb_ప్రాధాన్యత<Pri - 1> {};
+మూస <>             నిర్మాణం hb_ప్రాధాన్యత<0> {};
+#నిర్వచించు hb_prioritize hb_ప్రాధాన్యత<16> ()
 
-#define HB_FUNCOBJ(x) static_const x HB_UNUSED
-
-
-template <typename T> struct hb_type_identity_t { typedef T type; };
-template <typename T> using hb_type_identity = typename hb_type_identity_t<T>::type;
-
-template <typename T> static inline T hb_declval ();
-#define hb_declval(T) (hb_declval<T> ())
-
-template <typename T> struct hb_match_const		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_const<const T>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_const = typename hb_match_const<T>::type;
-
-template <typename T> struct hb_match_reference		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_reference<T &>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> struct hb_match_reference<T &&>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_reference = typename hb_match_reference<T>::type;
-template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<1>) -> hb_type_identity<T&>;
-template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
-template <typename T> using hb_add_lvalue_reference = decltype (_hb_try_add_lvalue_reference<T> (hb_prioritize));
-template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<1>) -> hb_type_identity<T&&>;
-template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
-template <typename T> using hb_add_rvalue_reference = decltype (_hb_try_add_rvalue_reference<T> (hb_prioritize));
-
-template <typename T> struct hb_match_pointer		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_pointer<T *>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_pointer = typename hb_match_pointer<T>::type;
-template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<hb_remove_reference<T>*>;
-template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<T>;
-template <typename T> using hb_add_pointer = decltype (_hb_try_add_pointer<T> (hb_prioritize));
+#నిర్వచించు HB_FUNCOBJ(x) static_const x HB_వాడని
 
 
-template <typename T> using hb_decay = typename std::decay<T>::type;
+మూస <రకం_పేరు T> నిర్మాణం hb_type_తటస్థం_t { రకనిర్వచనం T type; };
+మూస <రకం_పేరు T> ఉపయోగించి hb_type_తటస్థం = రకం_పేరు hb_type_తటస్థం_t<T>::type;
 
-#define hb_is_convertible(From,To) std::is_convertible<From, To>::value
+మూస <రకం_పేరు T> స్థిర అంతఃవరుస T hb_declval ();
+#నిర్వచించు hb_declval(T) (hb_declval<T> ())
 
-template <typename From, typename To>
-using hb_is_cr_convertible = hb_bool_constant<
-  hb_is_same (hb_decay<From>, hb_decay<To>) &&
-  (!std::is_const<From>::value || std::is_const<To>::value) &&
-  (!std::is_reference<To>::value || std::is_const<To>::value || std::is_reference<To>::value)
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_const		: hb_type_తటస్థం_t<T>, hb_false_type	{};
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_const<స్థిరరాశి T>	: hb_type_తటస్థం_t<T>, hb_true_type	{};
+మూస <రకం_పేరు T> ఉపయోగించి hb_remove_const = రకం_పేరు hb_సరిపోలిక_const<T>::type;
+
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_reference		: hb_type_తటస్థం_t<T>, hb_false_type	{};
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_reference<T &>	: hb_type_తటస్థం_t<T>, hb_true_type	{};
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_reference<T &&>	: hb_type_తటస్థం_t<T>, hb_true_type	{};
+మూస <రకం_పేరు T> ఉపయోగించి hb_remove_reference = రకం_పేరు hb_సరిపోలిక_reference<T>::type;
+మూస <రకం_పేరు T> స్వయంచాలక hb_try_కూడు_lvalue_reference (hb_ప్రాధాన్యత<1>) -> hb_type_తటస్థం<T&>;
+మూస <రకం_పేరు T> స్వయంచాలక hb_try_కూడు_lvalue_reference (hb_ప్రాధాన్యత<0>) -> hb_type_తటస్థం<T>;
+మూస <రకం_పేరు T> ఉపయోగించి hb_కూడు_lvalue_reference = decltype (hb_try_కూడు_lvalue_reference<T> (hb_prioritize));
+మూస <రకం_పేరు T> స్వయంచాలక hb_try_కూడు_rvalue_reference (hb_ప్రాధాన్యత<1>) -> hb_type_తటస్థం<T&&>;
+మూస <రకం_పేరు T> స్వయంచాలక hb_try_కూడు_rvalue_reference (hb_ప్రాధాన్యత<0>) -> hb_type_తటస్థం<T>;
+మూస <రకం_పేరు T> ఉపయోగించి hb_కూడు_rvalue_reference = decltype (hb_try_కూడు_rvalue_reference<T> (hb_prioritize));
+
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_సూచిక		: hb_type_తటస్థం_t<T>, hb_false_type	{};
+మూస <రకం_పేరు T> నిర్మాణం hb_సరిపోలిక_సూచిక<T *>	: hb_type_తటస్థం_t<T>, hb_true_type	{};
+మూస <రకం_పేరు T> ఉపయోగించి hb_remove_సూచిక = రకం_పేరు hb_సరిపోలిక_సూచిక<T>::type;
+మూస <రకం_పేరు T> స్వయంచాలక hb_try_కూడు_సూచిక (hb_ప్రాధాన్యత<1>) -> hb_type_తటస్థం<hb_remove_reference<T>*>;
+మూస <రకం_పేరు T> స్వయంచాలక hb_try_కూడు_సూచిక (hb_ప్రాధాన్యత<1>) -> hb_type_తటస్థం<T>;
+మూస <రకం_పేరు T> ఉపయోగించి hb_కూడు_సూచిక = decltype (hb_try_కూడు_సూచిక<T> (hb_prioritize));
+
+
+మూస <రకం_పేరు T> ఉపయోగించి hb_decay = రకం_పేరు std::decay<T>::type;
+
+#నిర్వచించు hb_is_convertible(From,గమ్యం) std::is_convertible<From, గమ్యం>::value
+
+మూస <రకం_పేరు From, రకం_పేరు గమ్యం>
+ఉపయోగించి hb_is_cr_convertible = hb_bool_constant<
+  hb_is_same (hb_decay<From>, hb_decay<గమ్యం>) &&
+  (!std::is_const<From>::value || std::is_const<గమ్యం>::value) &&
+  (!std::is_reference<గమ్యం>::value || std::is_const<గమ్యం>::value || std::is_reference<గమ్యం>::value)
 >;
-#define hb_is_cr_convertible(From,To) hb_is_cr_convertible<From, To>::value
+#నిర్వచించు hb_is_cr_convertible(From,గమ్యం) hb_is_cr_convertible<From, గమ్యం>::value
 
 
-struct
+నిర్మాణం
 {
-  template <typename T> constexpr auto
-  operator () (T&& v) const HB_AUTO_RETURN (std::forward<T> (v))
+  మూస <రకం_పేరు T> constexpr స్వయంచాలక
+  క్రియాకారకం () (T&& v) స్థిరరాశి HB_AUTO_RETURN (std::forward<T> (v))
 
-  template <typename T> constexpr auto
-  operator () (T *v) const HB_AUTO_RETURN (*v)
+  మూస <రకం_పేరు T> constexpr స్వయంచాలక
+  క్రియాకారకం () (T *v) స్థిరరాశి HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (const hb::shared_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  మూస <రకం_పేరు T> constexpr స్వయంచాలక
+  క్రియాకారకం () (స్థిరరాశి hb::shared_ptr<T>& v) స్థిరరాశి HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (hb::shared_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  మూస <రకం_పేరు T> constexpr స్వయంచాలక
+  క్రియాకారకం () (hb::shared_ptr<T>& v) స్థిరరాశి HB_AUTO_RETURN (*v)
   
-  template <typename T> constexpr auto
-  operator () (const hb::unique_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  మూస <రకం_పేరు T> constexpr స్వయంచాలక
+  క్రియాకారకం () (స్థిరరాశి hb::unique_ptr<T>& v) స్థిరరాశి HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (hb::unique_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  మూస <రకం_పేరు T> constexpr స్వయంచాలక
+  క్రియాకారకం () (hb::unique_ptr<T>& v) స్థిరరాశి HB_AUTO_RETURN (*v)
 }
 HB_FUNCOBJ (hb_deref);
 
-template <typename T>
-struct hb_reference_wrapper
+మూస <రకం_పేరు T>
+నిర్మాణం hb_reference_wrapper
 {
   hb_reference_wrapper (T v) : v (v) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return v; }
-  T& get () { return v; }
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_reference_wrapper& o) స్థిరరాశి { తిరిగి v == o.v; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_reference_wrapper& o) స్థిరరాశి { తిరిగి v != o.v; }
+  క్రియాకారకం T& () { తిరిగి v; }
+  T& get () { తిరిగి v; }
   T v;
 };
-template <typename T>
-struct hb_reference_wrapper<T&>
+మూస <రకం_పేరు T>
+నిర్మాణం hb_reference_wrapper<T&>
 {
   hb_reference_wrapper (T& v) : v (std::addressof (v)) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return *v; }
-  T& get () { return *v; }
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_reference_wrapper& o) స్థిరరాశి { తిరిగి v == o.v; }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_reference_wrapper& o) స్థిరరాశి { తిరిగి v != o.v; }
+  క్రియాకారకం T& () { తిరిగి *v; }
+  T& get () { తిరిగి *v; }
   T* v;
 };
 
 
 /* Type traits */
 
-template <typename T> struct hb_int_min;
-template <> struct hb_int_min<char>			: hb_integral_constant<char,			CHAR_MIN>	{};
-template <> struct hb_int_min<signed char>		: hb_integral_constant<signed char,		SCHAR_MIN>	{};
-template <> struct hb_int_min<unsigned char>		: hb_integral_constant<unsigned char,		0>		{};
-template <> struct hb_int_min<signed short>		: hb_integral_constant<signed short,		SHRT_MIN>	{};
-template <> struct hb_int_min<unsigned short>		: hb_integral_constant<unsigned short,		0>		{};
-template <> struct hb_int_min<signed int>		: hb_integral_constant<signed int,		INT_MIN>	{};
-template <> struct hb_int_min<unsigned int>		: hb_integral_constant<unsigned int,		0>		{};
-template <> struct hb_int_min<signed long>		: hb_integral_constant<signed long,		LONG_MIN>	{};
-template <> struct hb_int_min<unsigned long>		: hb_integral_constant<unsigned long,		0>		{};
-template <> struct hb_int_min<signed long long>		: hb_integral_constant<signed long long,	LLONG_MIN>	{};
-template <> struct hb_int_min<unsigned long long>	: hb_integral_constant<unsigned long long,	0>		{};
-template <typename T> struct hb_int_min<T *>		: hb_integral_constant<T *,			nullptr>	{};
-#define hb_int_min(T) hb_int_min<T>::value
-template <typename T> struct hb_int_max;
-template <> struct hb_int_max<char>			: hb_integral_constant<char,			CHAR_MAX>	{};
-template <> struct hb_int_max<signed char>		: hb_integral_constant<signed char,		SCHAR_MAX>	{};
-template <> struct hb_int_max<unsigned char>		: hb_integral_constant<unsigned char,		UCHAR_MAX>	{};
-template <> struct hb_int_max<signed short>		: hb_integral_constant<signed short,		SHRT_MAX>	{};
-template <> struct hb_int_max<unsigned short>		: hb_integral_constant<unsigned short,		USHRT_MAX>	{};
-template <> struct hb_int_max<signed int>		: hb_integral_constant<signed int,		INT_MAX>	{};
-template <> struct hb_int_max<unsigned int>		: hb_integral_constant<unsigned int,		UINT_MAX>	{};
-template <> struct hb_int_max<signed long>		: hb_integral_constant<signed long,		LONG_MAX>	{};
-template <> struct hb_int_max<unsigned long>		: hb_integral_constant<unsigned long,		ULONG_MAX>	{};
-template <> struct hb_int_max<signed long long>		: hb_integral_constant<signed long long,	LLONG_MAX>	{};
-template <> struct hb_int_max<unsigned long long>	: hb_integral_constant<unsigned long long,	ULLONG_MAX>	{};
-#define hb_int_max(T) hb_int_max<T>::value
+మూస <రకం_పేరు T> నిర్మాణం hb_int_min;
+మూస <> నిర్మాణం hb_int_min<అక్షరం>			: hb_integral_constant<అక్షరం,			CHAR_MIN>	{};
+మూస <> నిర్మాణం hb_int_min<గుర్తుగల అక్షరం>		: hb_integral_constant<గుర్తుగల అక్షరం,		SCHAR_MIN>	{};
+మూస <> నిర్మాణం hb_int_min<గుర్తులేని అక్షరం>		: hb_integral_constant<గుర్తులేని అక్షరం,		0>		{};
+మూస <> నిర్మాణం hb_int_min<గుర్తుగల పొట్టి>		: hb_integral_constant<గుర్తుగల పొట్టి,		SHRT_MIN>	{};
+మూస <> నిర్మాణం hb_int_min<గుర్తులేని పొట్టి>		: hb_integral_constant<గుర్తులేని పొట్టి,		0>		{};
+మూస <> నిర్మాణం hb_int_min<గుర్తుగల పూర్ణాంకం>		: hb_integral_constant<గుర్తుగల పూర్ణాంకం,		INT_MIN>	{};
+మూస <> నిర్మాణం hb_int_min<గుర్తులేని పూర్ణాంకం>		: hb_integral_constant<గుర్తులేని పూర్ణాంకం,		0>		{};
+మూస <> నిర్మాణం hb_int_min<గుర్తుగల దీర్ఘ>		: hb_integral_constant<గుర్తుగల దీర్ఘ,		LONG_MIN>	{};
+మూస <> నిర్మాణం hb_int_min<గుర్తులేని దీర్ఘ>		: hb_integral_constant<గుర్తులేని దీర్ఘ,		0>		{};
+మూస <> నిర్మాణం hb_int_min<గుర్తుగల దీర్ఘ దీర్ఘ>		: hb_integral_constant<గుర్తుగల దీర్ఘ దీర్ఘ,	LLONG_MIN>	{};
+మూస <> నిర్మాణం hb_int_min<గుర్తులేని దీర్ఘ దీర్ఘ>	: hb_integral_constant<గుర్తులేని దీర్ఘ దీర్ఘ,	0>		{};
+మూస <రకం_పేరు T> నిర్మాణం hb_int_min<T *>		: hb_integral_constant<T *,			శూన్యసూచిక>	{};
+#నిర్వచించు hb_int_min(T) hb_int_min<T>::value
+మూస <రకం_పేరు T> నిర్మాణం hb_int_max;
+మూస <> నిర్మాణం hb_int_max<అక్షరం>			: hb_integral_constant<అక్షరం,			CHAR_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తుగల అక్షరం>		: hb_integral_constant<గుర్తుగల అక్షరం,		SCHAR_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తులేని అక్షరం>		: hb_integral_constant<గుర్తులేని అక్షరం,		UCHAR_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తుగల పొట్టి>		: hb_integral_constant<గుర్తుగల పొట్టి,		SHRT_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తులేని పొట్టి>		: hb_integral_constant<గుర్తులేని పొట్టి,		USHRT_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తుగల పూర్ణాంకం>		: hb_integral_constant<గుర్తుగల పూర్ణాంకం,		గరిష్ఠ_పూర్ణాంకం>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తులేని పూర్ణాంకం>		: hb_integral_constant<గుర్తులేని పూర్ణాంకం,		UINT_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తుగల దీర్ఘ>		: hb_integral_constant<గుర్తుగల దీర్ఘ,		LONG_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తులేని దీర్ఘ>		: hb_integral_constant<గుర్తులేని దీర్ఘ,		ULONG_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తుగల దీర్ఘ దీర్ఘ>		: hb_integral_constant<గుర్తుగల దీర్ఘ దీర్ఘ,	LLONG_MAX>	{};
+మూస <> నిర్మాణం hb_int_max<గుర్తులేని దీర్ఘ దీర్ఘ>	: hb_integral_constant<గుర్తులేని దీర్ఘ దీర్ఘ,	ULLONG_MAX>	{};
+#నిర్వచించు hb_int_max(T) hb_int_max<T>::value
 
-#if defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
-#define hb_is_trivially_copyable(T) __has_trivial_copy(T)
-#define hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
-#define hb_is_trivially_constructible(T) __has_trivial_constructor(T)
-#define hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
-#define hb_is_trivially_destructible(T) __has_trivial_destructor(T)
-#else
-#define hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
-#define hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
-#define hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
-#define hb_is_trivially_copy_constructible(T) std::is_trivially_copy_constructible<T>::value
-#define hb_is_trivially_destructible(T) std::is_trivially_destructible<T>::value
-#endif
+#ఒకవేళ defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
+#నిర్వచించు hb_is_trivially_copyable(T) __has_trivial_copy(T)
+#నిర్వచించు hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
+#నిర్వచించు hb_is_trivially_constructible(T) __has_trivial_constructor(T)
+#నిర్వచించు hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
+#నిర్వచించు hb_is_trivially_destructible(T) __has_trivial_destructor(T)
+#లేకపోతే
+#నిర్వచించు hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
+#నిర్వచించు hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
+#నిర్వచించు hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
+#నిర్వచించు hb_is_trivially_copy_constructible(T) std::is_trivially_copy_constructible<T>::value
+#నిర్వచించు hb_is_trivially_destructible(T) std::is_trivially_destructible<T>::value
+#అయితే_ముగింపు
 
 /* Class traits. */
 
-#define HB_DELETE_COPY_ASSIGN(TypeName) \
-  TypeName(const TypeName&) = delete; \
-  void operator=(const TypeName&) = delete
-#define HB_DELETE_CREATE_COPY_ASSIGN(TypeName) \
-  TypeName() = delete; \
-  TypeName(const TypeName&) = delete; \
-  void operator=(const TypeName&) = delete
+#నిర్వచించు HB_DELETE_COPY_కేటాయించు(TypeName) \
+  TypeName(స్థిరరాశి TypeName&) = తొలగించు; \
+  శూన్య క్రియాకారకం=(స్థిరరాశి TypeName&) = తొలగించు
+#నిర్వచించు HB_DELETE_CREATE_COPY_కేటాయించు(TypeName) \
+  TypeName() = తొలగించు; \
+  TypeName(స్థిరరాశి TypeName&) = తొలగించు; \
+  శూన్య క్రియాకారకం=(స్థిరరాశి TypeName&) = తొలగించు
 
 /* hb_unwrap_type (T)
  * If T has no T::type, returns T. Otherwise calls itself on T::type recursively.
  */
 
-template <typename T, typename>
-struct _hb_unwrap_type : hb_type_identity_t<T> {};
-template <typename T>
-struct _hb_unwrap_type<T, hb_void_t<typename T::type>> : _hb_unwrap_type<typename T::type, void> {};
-template <typename T>
-using hb_unwrap_type = _hb_unwrap_type<T, void>;
-#define hb_unwrap_type(T) typename hb_unwrap_type<T>::type
+మూస <రకం_పేరు T, రకం_పేరు>
+నిర్మాణం _hb_unwrap_type : hb_type_తటస్థం_t<T> {};
+మూస <రకం_పేరు T>
+నిర్మాణం _hb_unwrap_type<T, hb_void_t<రకం_పేరు T::type>> : _hb_unwrap_type<రకం_పేరు T::type, శూన్య> {};
+మూస <రకం_పేరు T>
+ఉపయోగించి hb_unwrap_type = _hb_unwrap_type<T, శూన్య>;
+#నిర్వచించు hb_unwrap_type(T) రకం_పేరు hb_unwrap_type<T>::type
 
-#endif /* HB_META_HH */
+#అయితే_ముగింపు /* HB_META_HH */

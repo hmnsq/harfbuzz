@@ -24,13 +24,13 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_DEPEND_HH
-#define HB_DEPEND_HH
+#నిర్వచితం_కాకపోతే HB_DEPEND_HH
+#నిర్వచించు HB_DEPEND_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-subset-depend.h"
-#include "hb-depend-data.hh"
+#అన్తర్భావ "hb-subset-depend.h"
+#అన్తర్భావ "hb-depend-data.hh"
 
 
 /**
@@ -42,23 +42,23 @@
  * graph once via hb_depend_data_builder_t::compile(). The graph remains
  * immutable for the lifetime of the object.
  */
-struct hb_subset_depend_t
+నిర్మాణం hb_subset_depend_t
 {
-  HB_INTERNAL hb_subset_depend_t (hb_face_t *face);
+  HB_అంతర్గత hb_subset_depend_t (hb_face_t *face);
 
-  hb_object_header_t header;
+  hb_object_శీర్షిక_t శీర్షిక;
 
-  bool successful;
+  తార్కిక successful;
 
-  bool in_error () const { return !successful; }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి !successful; }
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  స్థిరరాశి hb_సమితి_t *get_సమితి_from_సూచీ (hb_codepoint_t సూచీ_2)
   {
-    return data.get_set_from_index (index);
+    తిరిగి దత్తాంశం.get_సమితి_from_సూచీ (సూచీ_2);
   }
 
-  hb_depend_data_t data;
+  hb_depend_దత్తాంశం_t దత్తాంశం;
 };
 
 
-#endif /* HB_DEPEND_HH */
+#అయితే_ముగింపు /* HB_DEPEND_HH */

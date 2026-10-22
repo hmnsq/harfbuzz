@@ -1,88 +1,88 @@
-#ifndef OT_GLYF_SUBSETGLYPH_HH
-#define OT_GLYF_SUBSETGLYPH_HH
+#నిర్వచితం_కాకపోతే OT_GLYF_SUBSETGLYPH_HH
+#నిర్వచించు OT_GLYF_SUBSETGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#అన్తర్భావ "../../hb-open-type.hh"
 
 
-namespace OT {
+నామాకాశ OT {
 
-struct glyf_accelerator_t;
+నిర్మాణం glyf_accelerator_t;
 
-namespace glyf_impl {
+నామాకాశ glyf_impl {
 
 
-struct SubsetGlyph
+నిర్మాణం SubsetGlyph
 {
   hb_codepoint_t old_gid;
-  Glyph source_glyph;
-  hb_bytes_t dest_start;  /* region of source_glyph to copy first */
-  hb_bytes_t dest_end;    /* region of source_glyph to copy second */
-  bool allocated;
+  Glyph ఆధారం_glyph;
+  hb_బైట్లు_t dest_ప్రారంభం;  /* region of source_glyph to copy first */
+  hb_బైట్లు_t dest_చివర;    /* region of source_glyph to copy second */
+  తార్కిక allocated;
 
-  bool serialize (hb_serialize_context_t *c,
-		  bool use_short_loca,
-		  const hb_subset_plan_t *plan) const
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  తార్కిక use_short_loca,
+		  స్థిరరాశి hb_subset_plan_t *plan) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
 
-    hb_bytes_t dest_glyph = dest_start.copy (c);
-    hb_bytes_t end_copy = dest_end.copy (c);
-    if (!end_copy.arrayZ || !dest_glyph.arrayZ) {
-      return false;
+    hb_బైట్లు_t dest_glyph = dest_ప్రారంభం.copy (c);
+    hb_బైట్లు_t చివర_copy = dest_చివర.copy (c);
+    ఒకవేళ (!చివర_copy.arrayZ || !dest_glyph.arrayZ) {
+      తిరిగి అబద్ధం;
     }
 
-    dest_glyph = hb_bytes_t (&dest_glyph, dest_glyph.length + end_copy.length);
-    unsigned int pad_length = use_short_loca ? padding () : 0;
-    DEBUG_MSG (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
+    dest_glyph = hb_బైట్లు_t (&dest_glyph, dest_glyph.నిడివి + చివర_copy.నిడివి);
+    గుర్తులేని పూర్ణాంకం pad_నిడివి = use_short_loca ? padding () : 0;
+    DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "serialize %u byte glyph, width %u pad %u", dest_glyph.నిడివి, dest_glyph.నిడివి + pad_నిడివి, pad_నిడివి);
 
     HBUINT8 pad;
     pad = 0;
-    while (pad_length > 0)
+    అయితే (pad_నిడివి > 0)
     {
-      (void) c->embed (pad);
-      pad_length--;
+      (శూన్య) c->embed (pad);
+      pad_నిడివి--;
     }
 
-    if (unlikely (!dest_glyph.length)) return_trace (true);
+    ఒకవేళ (unlikely (!dest_glyph.నిడివి)) return_trace (నిజం);
 
-    bool extended = source_glyph.is_extended ();
+    తార్కిక extended = ఆధారం_glyph.is_extended ();
 
     /* update components gids. */
-    for (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
+    కొరకు (స్వయంచాలక &_ : Glyph (dest_glyph, old_gid, extended).get_సంయుక్త_iterator ())
     {
       hb_codepoint_t new_gid;
-      if (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
-	const_cast<CompositeGlyphRecord &> (_).set_gid (new_gid, extended);
+      ఒకవేళ (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
+	const_cast<సంయుక్త_Glyph_రికార్డు &> (_).సమితి_gid (new_gid, extended);
     }
 
-#ifndef HB_NO_BEYOND_64K
-    if (extended)
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (extended)
     {
-      auto it = Glyph (dest_glyph, old_gid, extended).get_composite_iterator ();
-      if (it)
+      స్వయంచాలక it = Glyph (dest_glyph, old_gid, extended).get_సంయుక్త_iterator ();
+      ఒకవేళ (it)
       {
 	/* lower GID24 to GID16 in components if possible. */
-	char *p = it ? (char *) &*it : nullptr;
-	char *q = p;
-	const char *end = dest_glyph.arrayZ + dest_glyph.length;
-	while (it)
+	అక్షరం *p = it ? (అక్షరం *) &*it : శూన్యసూచిక;
+	అక్షరం *q = p;
+	స్థిరరాశి అక్షరం *చివర = dest_glyph.arrayZ + dest_glyph.నిడివి;
+	అయితే (it)
 	{
-	  auto &rec = const_cast<CompositeGlyphRecord &> (*it);
+	  స్వయంచాలక &rec = const_cast<సంయుక్త_Glyph_రికార్డు &> (*it);
 	  ++it;
 
-	  q += rec.get_size (extended);
+	  q += rec.get_కొలత (extended);
 
-	  rec.lower_gid_24_to_16 ();
+	  rec.క్రింది_gid_24_గమ్యం_16 ();
 
-	  unsigned size = rec.get_size (extended);
+	  గుర్తులేని కొలత = rec.get_కొలత (extended);
 
-	  memmove (p, &rec, size);
+	  memmove (p, &rec, కొలత);
 
-	  p += size;
+	  p += కొలత;
 	}
-	memmove (p, q, end - q);
-	p += end - q;
+	memmove (p, q, చివర - q);
+	p += చివర - q;
 
 	/* We want to shorten the glyph, but we can't do that without
 	 * updating the length in the loca table, which is already
@@ -93,49 +93,49 @@ struct SubsetGlyph
 	 * Should move the lowering to _populate_subset_glyphs() to
 	 * fix this issue. */
 
-	hb_memset (p, 0x7A /* TrueType instruction ROFF; harmless */, end - p);
-	p += end - p;
-	dest_glyph = hb_bytes_t (dest_glyph.arrayZ, p - (char *) dest_glyph.arrayZ);
+	hb_memset (p, 0x7A /* TrueType instruction ROFF; harmless */, చివర - p);
+	p += చివర - p;
+	dest_glyph = hb_బైట్లు_t (dest_glyph.arrayZ, p - (అక్షరం *) dest_glyph.arrayZ);
 
 	// TODO: Padding; & trim serialized bytes.
 	// TODO: Update length in loca. Ugh.
       }
     }
-#endif
+#అయితే_ముగింపు
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    ఒకవేళ (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       Glyph (dest_glyph, old_gid, extended).drop_hints ();
 
-    if (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
-      Glyph (dest_glyph, old_gid, extended).set_overlaps_flag ();
+    ఒకవేళ (plan->flags & HB_SUBSET_FLAGS_సమితి_OVERLAPS_FLAG)
+      Glyph (dest_glyph, old_gid, extended).సమితి_overlaps_flag ();
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  తార్కిక compile_బైట్లు_with_deltas (స్థిరరాశి hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf)
+                                  స్థిరరాశి glyf_accelerator_t &glyf)
   {
-    allocated = source_glyph.compile_bytes_with_deltas (plan, font, glyf, dest_start, dest_end);
-    return allocated;
+    allocated = ఆధారం_glyph.compile_బైట్లు_with_deltas (plan, font, glyf, dest_ప్రారంభం, dest_చివర);
+    తిరిగి allocated;
   }
 
-  void free_compiled_bytes ()
+  శూన్య free_compiled_బైట్లు ()
   {
-    if (likely (allocated)) {
-      allocated = false;
-      dest_start.fini ();
-      dest_end.fini ();
+    ఒకవేళ (likely (allocated)) {
+      allocated = అబద్ధం;
+      dest_ప్రారంభం.fini ();
+      dest_చివర.fini ();
     }
   }
 
-  void drop_hints_bytes ()
-  { source_glyph.drop_hints_bytes (dest_start, dest_end); }
+  శూన్య drop_hints_బైట్లు ()
+  { ఆధారం_glyph.drop_hints_బైట్లు (dest_ప్రారంభం, dest_చివర); }
 
-  unsigned int      length () const { return dest_start.length + dest_end.length; }
+  గుర్తులేని పూర్ణాంకం      నిడివి () స్థిరరాశి { తిరిగి dest_ప్రారంభం.నిడివి + dest_చివర.నిడివి; }
   /* pad to 2 to ensure 2-byte loca will be ok */
-  unsigned int     padding () const { return length () % 2; }
-  unsigned int padded_size () const { return length () + padding (); }
+  గుర్తులేని పూర్ణాంకం     padding () స్థిరరాశి { తిరిగి నిడివి () % 2; }
+  గుర్తులేని పూర్ణాంకం padded_కొలత () స్థిరరాశి { తిరిగి నిడివి () + padding (); }
 };
 
 
@@ -143,4 +143,4 @@ struct SubsetGlyph
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_SUBSETGLYPH_HH */
+#అయితే_ముగింపు /* OT_GLYF_SUBSETGLYPH_HH */

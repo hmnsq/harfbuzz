@@ -26,62 +26,62 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BLOB_HH
-#define HB_BLOB_HH
+#నిర్వచితం_కాకపోతే HB_BLOB_HH
+#నిర్వచించు HB_BLOB_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 
 /*
  * hb_blob_t
  */
 
-struct hb_blob_t
+నిర్మాణం hb_blob_t
 {
-  ~hb_blob_t () { destroy_user_data (); }
+  ~hb_blob_t () { destroy_user_దత్తాంశం (); }
 
-  void destroy_user_data ()
+  శూన్య destroy_user_దత్తాంశం ()
   {
-    if (destroy)
+    ఒకవేళ (destroy)
     {
-      destroy (user_data);
-      user_data = nullptr;
-      destroy = nullptr;
+      destroy (user_దత్తాంశం);
+      user_దత్తాంశం = శూన్యసూచిక;
+      destroy = శూన్యసూచిక;
     }
   }
 
-  void replace_buffer (const char       *new_data,
-		       unsigned          new_length,
-		       hb_memory_mode_t  new_mode,
-		       void             *new_user_data,
+  శూన్య replace_బఫరు (స్థిరరాశి అక్షరం       *new_దత్తాంశం,
+		       గుర్తులేని          new_నిడివి,
+		       hb_జ్ఞాపకం_బహుళకం_t  new_బహుళకం,
+		       శూన్య             *new_user_దత్తాంశం,
 		       hb_destroy_func_t new_destroy)
   {
-    if (new_data != data)
-      destroy_user_data ();
-    data = new_data;
-    length = new_length;
-    mode = new_mode;
-    user_data = new_user_data;
+    ఒకవేళ (new_దత్తాంశం != దత్తాంశం)
+      destroy_user_దత్తాంశం ();
+    దత్తాంశం = new_దత్తాంశం;
+    నిడివి = new_నిడివి;
+    బహుళకం = new_బహుళకం;
+    user_దత్తాంశం = new_user_దత్తాంశం;
     destroy = new_destroy;
   }
 
-  HB_INTERNAL bool try_make_writable ();
-  HB_INTERNAL bool try_make_writable_inplace ();
-  HB_INTERNAL bool try_make_writable_inplace_unix ();
+  HB_అంతర్గత తార్కిక try_make_writable ();
+  HB_అంతర్గత తార్కిక try_make_writable_inplace ();
+  HB_అంతర్గత తార్కిక try_make_writable_inplace_unix ();
 
-  hb_bytes_t as_bytes () const { return hb_bytes_t (data, length); }
-  template <typename Type>
-  const Type* as () const { return as_bytes ().as<Type> (); }
+  hb_బైట్లు_t as_బైట్లు () స్థిరరాశి { తిరిగి hb_బైట్లు_t (దత్తాంశం, నిడివి); }
+  మూస <రకం_పేరు Type>
+  స్థిరరాశి Type* as () స్థిరరాశి { తిరిగి as_బైట్లు ().as<Type> (); }
 
-  public:
-  hb_object_header_t header;
+  బహిరంగ:
+  hb_object_శీర్షిక_t శీర్షిక;
 
-  const char *data = nullptr;
-  unsigned int length = 0;
-  hb_memory_mode_t mode = (hb_memory_mode_t) 0;
+  స్థిరరాశి అక్షరం *దత్తాంశం = శూన్యసూచిక;
+  గుర్తులేని పూర్ణాంకం నిడివి = 0;
+  hb_జ్ఞాపకం_బహుళకం_t బహుళకం = (hb_జ్ఞాపకం_బహుళకం_t) 0;
 
-  void *user_data = nullptr;
-  hb_destroy_func_t destroy = nullptr;
+  శూన్య *user_దత్తాంశం = శూన్యసూచిక;
+  hb_destroy_func_t destroy = శూన్యసూచిక;
 
   /*
    * Blob-recycling helpers.
@@ -97,15 +97,15 @@ struct hb_blob_t
    * of recycle_data_destroy.
    */
 
-  struct recycle_data_t
+  నిర్మాణం recycle_దత్తాంశం_t
   {
-    char *buf;
-    unsigned capacity;
+    అక్షరం *buf;
+    గుర్తులేని capacity;
   };
 
-  static inline void recycle_data_destroy (void *user_data)
+  స్థిర అంతఃవరుస శూన్య recycle_దత్తాంశం_destroy (శూన్య *user_దత్తాంశం)
   {
-    auto *bd = (recycle_data_t *) user_data;
+    స్వయంచాలక *bd = (recycle_దత్తాంశం_t *) user_దత్తాంశం;
     hb_free (bd->buf);
     hb_free (bd);
   }
@@ -117,97 +117,97 @@ struct hb_blob_t
    * fails and a fresh buffer was allocated instead -- the caller
    * must hb_free() that buf after recycle_finalize() runs.  Returns
    * nullptr on allocation failure. */
-  static inline char *
+  స్థిర అంతఃవరుస అక్షరం *
   recycle_acquire (hb_blob_t *recycled,
-		   unsigned   needed,
-		   unsigned  *out_capacity,
-		   char     **out_replaced_buf)
+		   గుర్తులేని   needed,
+		   గుర్తులేని  *బహిర్గతం_సామర్థ్యం,
+		   అక్షరం     **బహిర్గతం_replaced_buf)
   {
-    *out_replaced_buf = nullptr;
+    *బహిర్గతం_replaced_buf = శూన్యసూచిక;
 
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    ఒకవేళ (recycled && recycled->destroy == recycle_దత్తాంశం_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (bd->capacity >= needed)
+      స్వయంచాలక *bd = (recycle_దత్తాంశం_t *) recycled->user_దత్తాంశం;
+      ఒకవేళ (bd->capacity >= needed)
       {
-	*out_capacity = bd->capacity;
-	return bd->buf;
+	*బహిర్గతం_సామర్థ్యం = bd->capacity;
+	తిరిగి bd->buf;
       }
       /* Grow with a 1.5x ramp to amortize repeated growth. */
-      unsigned alloc_bytes = needed;
-      if (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
-					       &alloc_bytes)))
-	alloc_bytes = needed;
-      char *new_buf = (char *) hb_realloc (bd->buf, alloc_bytes);
-      if (new_buf)
+      గుర్తులేని alloc_బైట్లు = needed;
+      ఒకవేళ (unlikely (hb_unsigned_కూడు_overflows (needed, needed / 2,
+					       &alloc_బైట్లు)))
+	alloc_బైట్లు = needed;
+      అక్షరం *new_buf = (అక్షరం *) hb_realloc (bd->buf, alloc_బైట్లు);
+      ఒకవేళ (new_buf)
       {
 	bd->buf = new_buf;
-	bd->capacity = alloc_bytes;
-	*out_capacity = alloc_bytes;
-	return new_buf;
+	bd->capacity = alloc_బైట్లు;
+	*బహిర్గతం_సామర్థ్యం = alloc_బైట్లు;
+	తిరిగి new_buf;
       }
       /* Realloc failed.  Fall through to a fresh hb_malloc and stash
        * the old buf for the caller to free after recycle_finalize. */
-      *out_replaced_buf = bd->buf;
+      *బహిర్గతం_replaced_buf = bd->buf;
     }
 
-    char *buf = (char *) hb_malloc (needed);
-    if (unlikely (!buf))
-      return nullptr;
-    *out_capacity = needed;
-    return buf;
+    అక్షరం *buf = (అక్షరం *) hb_malloc (needed);
+    ఒకవేళ (unlikely (!buf))
+      తిరిగి శూన్యసూచిక;
+    *బహిర్గతం_సామర్థ్యం = needed;
+    తిరిగి buf;
   }
 
   /* Wrap @buf (of @capacity, with @length used) into an hb_blob_t.
    * If @recycled is one of our blobs, update and return it (cheap);
    * otherwise create a new blob.  Pass @replaced_recycled_buf from
    * recycle_acquire(). */
-  static inline hb_blob_t *
-  recycle_finalize (char      *buf,
-		    unsigned   capacity,
-		    unsigned   length,
+  స్థిర అంతఃవరుస hb_blob_t *
+  recycle_finalize (అక్షరం      *buf,
+		    గుర్తులేని   capacity,
+		    గుర్తులేని   నిడివి,
 		    hb_blob_t *recycled,
-		    char      *replaced_recycled_buf)
+		    అక్షరం      *replaced_recycled_buf)
   {
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    ఒకవేళ (recycled && recycled->destroy == recycle_దత్తాంశం_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (replaced_recycled_buf && replaced_recycled_buf != buf)
+      స్వయంచాలక *bd = (recycle_దత్తాంశం_t *) recycled->user_దత్తాంశం;
+      ఒకవేళ (replaced_recycled_buf && replaced_recycled_buf != buf)
 	hb_free (replaced_recycled_buf);
       bd->buf = buf;
       bd->capacity = capacity;
-      recycled->data = (const char *) buf;
-      recycled->length = length;
-      return recycled;
+      recycled->దత్తాంశం = (స్థిరరాశి అక్షరం *) buf;
+      recycled->నిడివి = నిడివి;
+      తిరిగి recycled;
     }
 
     /* No recycled blob to update -- create a fresh one with our
      * destroy closure so the next recycle round can reuse it. */
-    recycle_data_t *bd = (recycle_data_t *) hb_malloc (sizeof (*bd));
-    if (unlikely (!bd))
+    recycle_దత్తాంశం_t *bd = (recycle_దత్తాంశం_t *) hb_malloc (పరిమాణం (*bd));
+    ఒకవేళ (unlikely (!bd))
     {
       hb_free (buf);
-      return nullptr;
+      తిరిగి శూన్యసూచిక;
     }
     bd->buf = buf;
     bd->capacity = capacity;
 
-    return hb_blob_create ((const char *) buf, length,
-			   HB_MEMORY_MODE_WRITABLE,
-			   bd, recycle_data_destroy);
+    తిరిగి hb_blob_create ((స్థిరరాశి అక్షరం *) buf, నిడివి,
+			   HB_జ్ఞాపకం_బహుళకం_WRITABLE,
+			   bd, recycle_దత్తాంశం_destroy);
   }
 
   /* Discard @buf returned by recycle_acquire without committing to
    * a blob.  Frees @buf if it was a fresh allocation; leaves any
    * recycled buffer untouched. */
-  static inline void
-  recycle_abort (char *buf, hb_blob_t *recycled)
+  స్థిర అంతఃవరుస శూన్య
+  recycle_abort (అక్షరం *buf, hb_blob_t *recycled)
   {
-    if (!buf) return;
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    ఒకవేళ (!buf) తిరిగి;
+    ఒకవేళ (recycled && recycled->destroy == recycle_దత్తాంశం_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (buf == bd->buf) return;  /* owned by the recycled blob */
+      స్వయంచాలక *bd = (recycle_దత్తాంశం_t *) recycled->user_దత్తాంశం;
+      ఒకవేళ (buf == bd->buf) తిరిగి;  /* owned by the recycled blob */
     }
     hb_free (buf);
   }
@@ -216,14 +216,14 @@ struct hb_blob_t
    * encode.  Destroys any previously stashed blob.  Safe to call
    * with @blob = nullptr or the empty-singleton blob (treated as
    * "drop"). */
-  static inline void
-  recycle_stash (hb_blob_t **slot, hb_blob_t *blob)
+  స్థిర అంతఃవరుస శూన్య
+  recycle_stash (hb_blob_t **స్థానం, hb_blob_t *blob)
   {
-    hb_blob_destroy (*slot);
-    *slot = nullptr;
-    if (!blob || blob == hb_blob_get_empty ())
-      return;
-    *slot = blob;
+    hb_blob_destroy (*స్థానం);
+    *స్థానం = శూన్యసూచిక;
+    ఒకవేళ (!blob || blob == hb_blob_get_ఖాళీలు ())
+      తిరిగి;
+    *స్థానం = blob;
   }
 };
 
@@ -232,25 +232,25 @@ struct hb_blob_t
  * hb_blob_ptr_t
  */
 
-template <typename P>
-struct hb_blob_ptr_t
+మూస <రకం_పేరు P>
+నిర్మాణం hb_blob_ptr_t
 {
-  typedef hb_remove_pointer<P> T;
+  రకనిర్వచనం hb_remove_సూచిక<P> T;
 
-  hb_blob_ptr_t (hb_blob_t *b_ = nullptr) : b (b_) {}
-  hb_blob_t * operator = (hb_blob_t *b_) { return b = b_; }
-  const T * operator -> () const { return get (); }
-  const T & operator * () const  { return *get (); }
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  const T * get () const { return b->as<T> (); }
-  hb_blob_t * get_blob () const { return b.get_raw (); }
-  unsigned int get_length () const { return b.get ()->length; }
-  void destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
+  hb_blob_ptr_t (hb_blob_t *b_ = శూన్యసూచిక) : b (b_) {}
+  hb_blob_t * క్రియాకారకం = (hb_blob_t *b_) { తిరిగి b = b_; }
+  స్థిరరాశి T * క్రియాకారకం -> () స్థిరరాశి { తిరిగి get (); }
+  స్థిరరాశి T & క్రియాకారకం * () స్థిరరాశి  { తిరిగి *get (); }
+  మూస <రకం_పేరు C> క్రియాకారకం స్థిరరాశి C * () స్థిరరాశి { తిరిగి get (); }
+  క్రియాకారకం స్థిరరాశి అక్షరం * () స్థిరరాశి { తిరిగి (స్థిరరాశి అక్షరం *) get (); }
+  స్థిరరాశి T * get () స్థిరరాశి { తిరిగి b->as<T> (); }
+  hb_blob_t * get_blob () స్థిరరాశి { తిరిగి b.get_raw (); }
+  గుర్తులేని పూర్ణాంకం get_నిడివి () స్థిరరాశి { తిరిగి b.get ()->నిడివి; }
+  శూన్య destroy () { hb_blob_destroy (b.get_raw ()); b = శూన్యసూచిక; }
 
-  private:
+  అంతరంగ:
   hb_nonnull_ptr_t<hb_blob_t> b;
 };
 
 
-#endif /* HB_BLOB_HH */
+#అయితే_ముగింపు /* HB_BLOB_HH */

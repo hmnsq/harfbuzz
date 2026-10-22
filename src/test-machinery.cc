@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+నిర్మాణం hb_intp_lazy_loader_t : hb_lazy_loader_t<పూర్ణాంకం, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  స్థిర పూర్ణాంకం* create () { తిరిగి శూన్యసూచిక; }
+  స్థిర శూన్య destroy (పూర్ణాంకం* l) {}
+  స్థిర పూర్ణాంకం* get_null () { తిరిగి శూన్యసూచిక; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+నిర్మాణం hb_void_lazy_loader_t : hb_lazy_loader_t<శూన్య, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  స్థిర శూన్య* create () { తిరిగి శూన్యసూచిక; }
+  స్థిర శూన్య destroy (శూన్య* l) {}
+  స్థిర శూన్య* get_null () { తిరిగి శూన్యసూచిక; }
 };
 
-int
-main (int argc, char **argv)
+పూర్ణాంకం
+ప్రధాన (పూర్ణాంకం argc, అక్షరం **argv)
 {
-  return 0;
+  తిరిగి 0;
 }

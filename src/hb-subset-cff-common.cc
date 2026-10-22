@@ -24,19 +24,19 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_SUBSET_CFF
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_CFF
 
-#include "hb-ot-cff-common.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-subset-cff-common.hh"
+#అన్తర్భావ "hb-ot-cff-common.hh"
+#అన్తర్భావ "hb-ot-cff2-table.hh"
+#అన్తర్భావ "hb-subset-cff-common.hh"
 
 /* Disable FDSelect format 0 for compatibility with fonttools which doesn't seem choose it.
  * Rarely any/much smaller than format 3 anyway. */
-#define CFF_SERIALIZE_FDSELECT_0  0
+#నిర్వచించు CFF_SERIALIZE_FDSELECT_0  0
 
-using namespace CFF;
+ఉపయోగించి నామాకాశ CFF;
 
 
 /* Determine an optimal FDSelect format according to a provided plan.
@@ -45,192 +45,192 @@ using namespace CFF;
  * along with a font index remapping table
  */
 
-bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			     unsigned int fdCount,
-			     const FDSelect &src, /* IN */
-			     unsigned int src_num_glyphs,
-			     unsigned int &subset_fd_count /* OUT */,
-			     unsigned int &subset_fdselect_size /* OUT */,
-			     unsigned int &subset_fdselect_format /* OUT */,
-			     hb_vector_t<code_pair_t> &fdselect_ranges /* OUT */,
-			     hb_inc_bimap_t &fdmap /* OUT */)
+తార్కిక
+hb_plan_subset_cff_fdselect (స్థిరరాశి hb_subset_plan_t *plan,
+			     గుర్తులేని పూర్ణాంకం fd_లెక్క,
+			     స్థిరరాశి FDSelect &src, /*లోపల*/
+			     గుర్తులేని పూర్ణాంకం src_అంకె_glyphs,
+			     గుర్తులేని పూర్ణాంకం &subset_fd_లెక్క /*బహిర్గతం*/,
+			     గుర్తులేని పూర్ణాంకం &subset_fdselect_కొలత /*బహిర్గతం*/,
+			     గుర్తులేని పూర్ణాంకం &subset_fdselect_format /*బహిర్గతం*/,
+			     hb_సదిశ_t<సంకేతం_pair_t> &fdselect_ranges /*బహిర్గతం*/,
+			     hb_inc_bimap_t &fdmap /*బహిర్గతం*/)
 {
-  subset_fd_count = 0;
-  subset_fdselect_size = 0;
+  subset_fd_లెక్క = 0;
+  subset_fdselect_కొలత = 0;
   subset_fdselect_format = 0;
-  unsigned int num_ranges = 0;
+  గుర్తులేని పూర్ణాంకం అంకె_ranges = 0;
 
-  unsigned int subset_num_glyphs = plan->num_output_glyphs ();
-  if (subset_num_glyphs == 0)
-    return true;
+  గుర్తులేని పూర్ణాంకం subset_అంకె_glyphs = plan->అంకె_output_glyphs ();
+  ఒకవేళ (subset_అంకె_glyphs == 0)
+    తిరిగి నిజం;
 
   {
     /* use hb_set to determine the subset of font dicts */
-    hb_set_t set;
-    hb_codepoint_t prev_fd = CFF_UNDEF_CODE;
-    auto it = hb_iter (plan->new_to_old_gid_list);
-    auto _ = *it;
-    for (hb_codepoint_t gid = 0; gid < subset_num_glyphs; gid++)
+    hb_సమితి_t సమితి;
+    hb_codepoint_t prev_fd = CFF_UNDEF_సంకేతం;
+    స్వయంచాలక it = hb_iter (plan->new_గమ్యం_old_gid_list);
+    స్వయంచాలక _ = *it;
+    కొరకు (hb_codepoint_t gid = 0; gid < subset_అంకె_glyphs; gid++)
     {
       hb_codepoint_t old_glyph;
-      if (gid == _.first)
+      ఒకవేళ (gid == _.మొదటి)
       {
 	old_glyph = _.second;
 	_ = *++it;
       }
-      else
+      లేకపోతే
       {
 	/* fonttools retains FDSelect & font dicts for missing glyphs. do the same */
 	old_glyph = gid;
       }
       /* FDSelect may only cover the CharStrings glyphs; see subset_get_fd (). */
-      hb_pair_t<unsigned, hb_codepoint_t> fd_range =
-	likely (old_glyph < src_num_glyphs) ?
+      hb_pair_t<గుర్తులేని, hb_codepoint_t> fd_range =
+	likely (old_glyph < src_అంకె_glyphs) ?
 	src.get_fd_range (old_glyph) :
-	hb_pair_t<unsigned, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
-      if (old_glyph < src_num_glyphs)
-	fd_range.second = hb_min (fd_range.second, src_num_glyphs);
-      unsigned fd = fd_range.first;
+	hb_pair_t<గుర్తులేని, hb_codepoint_t> {0, HB_CODEPOINT_INVALID};
+      ఒకవేళ (old_glyph < src_అంకె_glyphs)
+	fd_range.second = hb_min (fd_range.second, src_అంకె_glyphs);
+      గుర్తులేని fd = fd_range.మొదటి;
 
-      if (fd != prev_fd)
+      ఒకవేళ (fd != prev_fd)
       {
-	set.add (fd);
-	num_ranges++;
+	సమితి.కూడు (fd);
+	అంకె_ranges++;
 	prev_fd = fd;
-	fdselect_ranges.push (code_pair_t { fd, gid });
+	fdselect_ranges.push (సంకేతం_pair_t { fd, gid });
 
-	if (gid == old_glyph)
-	  gid = hb_min (_.first - 1, fd_range.second - 1);
+	ఒకవేళ (gid == old_glyph)
+	  gid = hb_min (_.మొదటి - 1, fd_range.second - 1);
       }
     }
 
-    subset_fd_count = set.get_population ();
-    if (subset_fd_count == fdCount)
+    subset_fd_లెక్క = సమితి.get_population ();
+    ఒకవేళ (subset_fd_లెక్క == fd_లెక్క)
     {
       /* all font dicts belong to the subset. no need to subset FDSelect & FDArray */
-      fdmap.identity (fdCount);
+      fdmap.తటస్థం (fd_లెక్క);
     }
-    else
+    లేకపోతే
     {
       /* create a fdmap */
       fdmap.reset ();
 
-      hb_codepoint_t fd = CFF_UNDEF_CODE;
-      while (set.next (&fd))
-	fdmap.add (fd);
-      if (unlikely (fdmap.get_population () != subset_fd_count))
-	return false;
+      hb_codepoint_t fd = CFF_UNDEF_సంకేతం;
+      అయితే (సమితి.next (&fd))
+	fdmap.కూడు (fd);
+      ఒకవేళ (unlikely (fdmap.get_population () != subset_fd_లెక్క))
+	తిరిగి అబద్ధం;
     }
 
     /* update each font dict index stored as "code" in fdselect_ranges */
-    for (unsigned int i = 0; i < fdselect_ranges.length; i++)
-      fdselect_ranges[i].code = fdmap[fdselect_ranges[i].code];
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < fdselect_ranges.నిడివి; i++)
+      fdselect_ranges[i].సంకేతం_2 = fdmap[fdselect_ranges[i].సంకేతం_2];
   }
 
   /* determine which FDSelect format is most compact */
-  if (subset_fd_count > 0xFF)
+  ఒకవేళ (subset_fd_లెక్క > 0xFF)
   {
-    if (unlikely (src.format != 4))
-      return false;
+    ఒకవేళ (unlikely (src.format != 4))
+      తిరిగి అబద్ధం;
     subset_fdselect_format = 4;
-    subset_fdselect_size = FDSelect::min_size + FDSelect4::min_size + FDSelect4_Range::static_size * num_ranges + HBUINT32::static_size;
+    subset_fdselect_కొలత = FDSelect::min_కొలత + FDSelect4::min_కొలత + FDSelect4_Range::static_కొలత * అంకె_ranges + HBUINT32::static_కొలత;
   }
-  else
+  లేకపోతే
   {
-#if CFF_SERIALIZE_FDSELECT_0
-    unsigned int format0_size = FDSelect::min_size + FDSelect0::min_size + HBUINT8::static_size * subset_num_glyphs;
-#endif
-    unsigned int format3_size = FDSelect::min_size + FDSelect3::min_size + FDSelect3_Range::static_size * num_ranges + HBUINT16::static_size;
+#ఒకవేళ CFF_SERIALIZE_FDSELECT_0
+    గుర్తులేని పూర్ణాంకం format0_కొలత = FDSelect::min_కొలత + FDSelect0::min_కొలత + HBUINT8::static_కొలత * subset_అంకె_glyphs;
+#అయితే_ముగింపు
+    గుర్తులేని పూర్ణాంకం format3_కొలత = FDSelect::min_కొలత + FDSelect3::min_కొలత + FDSelect3_Range::static_కొలత * అంకె_ranges + HBUINT16::static_కొలత;
 
-#if CFF_SERIALIZE_FDSELECT_0
-    if (format0_size <= format3_size)
+#ఒకవేళ CFF_SERIALIZE_FDSELECT_0
+    ఒకవేళ (format0_కొలత <= format3_కొలత)
     {
       // subset_fdselect_format = 0;
-      subset_fdselect_size = format0_size;
+      subset_fdselect_కొలత = format0_కొలత;
     }
-    else
-#endif
+    లేకపోతే
+#అయితే_ముగింపు
     {
       subset_fdselect_format = 3;
-      subset_fdselect_size = format3_size;
+      subset_fdselect_కొలత = format3_కొలత;
     }
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-template <typename FDSELECT3_4>
-static inline bool
+మూస <రకం_పేరు FDSELECT3_4>
+స్థిర అంతఃవరుస తార్కిక
 serialize_fdselect_3_4 (hb_serialize_context_t *c,
-			const unsigned int num_glyphs,
-			const FDSelect &src,
-			unsigned int size,
-			const hb_vector_t<code_pair_t> &fdselect_ranges)
+			స్థిరరాశి గుర్తులేని పూర్ణాంకం అంకె_glyphs,
+			స్థిరరాశి FDSelect &src,
+			గుర్తులేని పూర్ణాంకం కొలత,
+			స్థిరరాశి hb_సదిశ_t<సంకేతం_pair_t> &fdselect_ranges)
 {
-  TRACE_SERIALIZE (this);
-  FDSELECT3_4 *p = c->allocate_size<FDSELECT3_4> (size);
-  if (unlikely (!p)) return_trace (false);
-  p->nRanges () = fdselect_ranges.length;
-  for (unsigned int i = 0; i < fdselect_ranges.length; i++)
+  TRACE_SERIALIZE (ఇది);
+  FDSELECT3_4 *p = c->allocate_కొలత<FDSELECT3_4> (కొలత);
+  ఒకవేళ (unlikely (!p)) return_trace (అబద్ధం);
+  p->nRanges () = fdselect_ranges.నిడివి;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < fdselect_ranges.నిడివి; i++)
   {
-    p->ranges[i].first = fdselect_ranges[i].glyph;
-    p->ranges[i].fd = fdselect_ranges[i].code;
+    p->ranges[i].మొదటి = fdselect_ranges[i].glyph;
+    p->ranges[i].fd = fdselect_ranges[i].సంకేతం_2;
   }
-  p->sentinel () = num_glyphs;
-  return_trace (true);
+  p->sentinel () = అంకె_glyphs;
+  return_trace (నిజం);
 }
 
 /* Serialize a subset FDSelect format planned above. */
-bool
+తార్కిక
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			   const unsigned int num_glyphs,
-			   const FDSelect &src,
-			   unsigned int fd_count,
-			   unsigned int fdselect_format,
-			   unsigned int size,
-			   const hb_vector_t<code_pair_t> &fdselect_ranges)
+			   స్థిరరాశి గుర్తులేని పూర్ణాంకం అంకె_glyphs,
+			   స్థిరరాశి FDSelect &src,
+			   గుర్తులేని పూర్ణాంకం fd_లెక్క_2,
+			   గుర్తులేని పూర్ణాంకం fdselect_format,
+			   గుర్తులేని పూర్ణాంకం కొలత,
+			   స్థిరరాశి hb_సదిశ_t<సంకేతం_pair_t> &fdselect_ranges)
 {
-  TRACE_SERIALIZE (this);
+  TRACE_SERIALIZE (ఇది);
   FDSelect *p = c->allocate_min<FDSelect> ();
-  if (unlikely (!p)) return_trace (false);
+  ఒకవేళ (unlikely (!p)) return_trace (అబద్ధం);
   p->format = fdselect_format;
-  size -= FDSelect::min_size;
+  కొలత -= FDSelect::min_కొలత;
 
-  switch (fdselect_format)
+  ఎంపిక (fdselect_format)
   {
-#if CFF_SERIALIZE_FDSELECT_0
-  case 0:
+#ఒకవేళ CFF_SERIALIZE_FDSELECT_0
+  స్థితి 0:
   {
-    FDSelect0 *p = c->allocate_size<FDSelect0> (size);
-    if (unlikely (!p)) return_trace (false);
-    unsigned int range_index = 0;
-    unsigned int fd = fdselect_ranges[range_index++].code;
-    for (unsigned int i = 0; i < num_glyphs; i++)
+    FDSelect0 *p = c->allocate_కొలత<FDSelect0> (కొలత);
+    ఒకవేళ (unlikely (!p)) return_trace (అబద్ధం);
+    గుర్తులేని పూర్ణాంకం range_సూచీ = 0;
+    గుర్తులేని పూర్ణాంకం fd = fdselect_ranges[range_సూచీ++].సంకేతం_2;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_glyphs; i++)
     {
-      if ((range_index < fdselect_ranges.len) &&
-	  (i >= fdselect_ranges[range_index].glyph))
+      ఒకవేళ ((range_సూచీ < fdselect_ranges.len) &&
+	  (i >= fdselect_ranges[range_సూచీ].glyph))
       {
-	fd = fdselect_ranges[range_index++].code;
+	fd = fdselect_ranges[range_సూచీ++].సంకేతం_2;
       }
       p->fds[i] = fd;
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
-#endif /* CFF_SERIALIZE_FDSELECT_0 */
+#అయితే_ముగింపు /* CFF_SERIALIZE_FDSELECT_0 */
 
-  case 3:
-    return serialize_fdselect_3_4<FDSelect3> (c, num_glyphs, src,
-					      size, fdselect_ranges);
+  స్థితి 3:
+    తిరిగి serialize_fdselect_3_4<FDSelect3> (c, అంకె_glyphs, src,
+					      కొలత, fdselect_ranges);
 
-  case 4:
-    return serialize_fdselect_3_4<FDSelect4> (c, num_glyphs, src,
-					      size, fdselect_ranges);
+  స్థితి 4:
+    తిరిగి serialize_fdselect_3_4<FDSelect4> (c, అంకె_glyphs, src,
+					      కొలత, fdselect_ranges);
 
-  default:
-    return_trace (false);
+  అప్రమేయ:
+    return_trace (అబద్ధం);
   }
 }
 
 
-#endif
+#అయితే_ముగింపు

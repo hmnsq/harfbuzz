@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DECYCLER_HH
-#define HB_DECYCLER_HH
+#నిర్వచితం_కాకపోతే HB_DECYCLER_HH
+#నిర్వచించు HB_DECYCLER_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 /*
  * hb_decycler_t is an efficient cycle detector for graph traversal.
@@ -82,83 +82,83 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+నిర్మాణం hb_decycler_కణుపు_t;
 
-struct hb_decycler_t
+నిర్మాణం hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  మిత్ర నిర్మాణం hb_decycler_కణుపు_t;
 
-  private:
-  bool tortoise_awake = false;
-  hb_decycler_node_t *tortoise = nullptr;
-  hb_decycler_node_t *hare = nullptr;
+  అంతరంగ:
+  తార్కిక tortoise_awake = అబద్ధం;
+  hb_decycler_కణుపు_t *tortoise = శూన్యసూచిక;
+  hb_decycler_కణుపు_t *hare = శూన్యసూచిక;
 };
 
-struct hb_decycler_node_t
+నిర్మాణం hb_decycler_కణుపు_t
 {
-  hb_decycler_node_t (hb_decycler_t &decycler)
+  hb_decycler_కణుపు_t (hb_decycler_t &decycler)
   {
     u.decycler = &decycler;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    ఒకవేళ (!decycler.tortoise)
     {
       // First node.
-      assert (decycler.tortoise_awake);
-      assert (!decycler.hare);
-      decycler.tortoise = decycler.hare = this;
-      return;
+      ప్రతిజ్ఞా (decycler.tortoise_awake);
+      ప్రతిజ్ఞా (!decycler.hare);
+      decycler.tortoise = decycler.hare = ఇది;
+      తిరిగి;
     }
 
-    if (decycler.tortoise_awake)
+    ఒకవేళ (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
-    this->prev = decycler.hare;
-    decycler.hare->u.next = this;
-    decycler.hare = this;
+    ఇది->prev = decycler.hare;
+    decycler.hare->u.next = ఇది;
+    decycler.hare = ఇది;
   }
 
-  ~hb_decycler_node_t ()
+  ~hb_decycler_కణుపు_t ()
   {
     hb_decycler_t &decycler = *u.decycler;
 
     // Inverse of the constructor.
 
-    assert (decycler.hare == this);
+    ప్రతిజ్ఞా (decycler.hare == ఇది);
     decycler.hare = prev;
-    if (prev)
+    ఒకవేళ (prev)
       prev->u.decycler = &decycler;
 
-    assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    ప్రతిజ్ఞా (decycler.tortoise);
+    ఒకవేళ (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  తార్కిక సందర్శించు (uintptr_t విలువ_3)
   {
-    value = value_;
+    value = విలువ_3;
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    ఒకవేళ (decycler.tortoise == ఇది)
+      తిరిగి నిజం; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    ఒకవేళ (decycler.tortoise->value == value)
+      తిరిగి అబద్ధం; // Cycle detected.
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  private:
-  union {
+  అంతరంగ:
+  సంఘం {
     hb_decycler_t *decycler;
-    hb_decycler_node_t *next;
-  } u = {nullptr};
-  hb_decycler_node_t *prev = nullptr;
+    hb_decycler_కణుపు_t *next;
+  } u = {శూన్యసూచిక};
+  hb_decycler_కణుపు_t *prev = శూన్యసూచిక;
   uintptr_t value = 0;
 };
 
-#endif /* HB_DECYCLER_HH */
+#అయితే_ముగింపు /* HB_DECYCLER_HH */

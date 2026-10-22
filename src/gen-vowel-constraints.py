@@ -13,53 +13,53 @@ Input file:
 * https://unicode.org/Public/UCD/latest/ucd/Scripts.txt
 """
 
-import collections
-import os
-def write (s):
+దిగుమతి collections
+దిగుమతి os
+నిర్వచనం లిఖ (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
-import sys
+	sys.stdout.బఫరు.లిఖ (s.encode ('utf-8'))
+దిగుమతి sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
-	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+ఒకవేళ పొడవు (sys.argv) > 1 మరియు sys.argv[1] == '--rust':
+	తీసివేయి sys.argv[1]
+	output_rust = నిజం
+లేకపోతే:
+	output_rust = అబద్ధం
 
-if len (sys.argv) != 3:
+ఒకవేళ పొడవు (sys.argv) != 3:
 	sys.exit (__doc__)
 
-with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+తోడుగా open (sys.argv[2], encoding='utf-8') ఇవ f:
+	scripts_శీర్షిక = [f.readline () కొరకు i లో శ్రేణి (2)]
 	scripts = {}
-	script_order = {}
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
-		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
-			end = start
-		else:
-			end = int (uu[1], 16)
+	script_క్రమం = {}
+	కొరకు పంక్తి లో f:
+		j = పంక్తి.కనుగొను ('#')
+		ఒకవేళ j >= 0:
+			పంక్తి = పంక్తి[:j]
+		fields = [x.strip () కొరకు x లో పంక్తి.విభజించు (';')]
+		ఒకవేళ పొడవు (fields) == 1:
+			కొనసాగు
+		uu = fields[0].విభజించు ('..')
+		ప్రారంభం = పూర్ణాంకం (uu[0], 16)
+		ఒకవేళ పొడవు (uu) == 1:
+			చివర = ప్రారంభం
+		లేకపోతే:
+			చివర = పూర్ణాంకం (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		కొరకు u లో శ్రేణి (ప్రారంభం, చివర + 1):
 			scripts[u] = script
-		if script not in script_order:
-			script_order[script] = start
+		ఒకవేళ script కాదు లో script_క్రమం:
+			script_క్రమం[script] = ప్రారంభం
 
-class ConstraintSet (object):
+తరగతి Constraint_సమితి (object):
 	"""A set of prohibited code point sequences.
 
 	Args:
 		constraint (List[int]): A prohibited code point sequence.
 
 	"""
-	def __init__ (self, constraint):
+	నిర్వచనం __init__ (self, constraint):
 		# Either a list or a dictionary. As a list of code points, it
 		# represents a prohibited code point sequence. As a dictionary,
 		# it represents a set of prohibited sequences, where each item
@@ -68,259 +68,259 @@ class ConstraintSet (object):
 		# (ConstraintSets).
 		self._c = constraint
 
-	def add (self, constraint):
+	నిర్వచనం కూడు (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
-		first = constraint[0]
+		ఒకవేళ కాదు constraint:
+			తిరిగి
+		మొదటి = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		ఒకవేళ isinstance (self._c, list):
+			ఒకవేళ constraint == self._c[:పొడవు (constraint)]:
 				self._c = constraint
-			elif self._c != constraint[:len (self._c)]:
-				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
-				self._c[first].add (rest)
-			else:
-				self._c[first] = ConstraintSet (rest)
+			లేదావేళ self._c != constraint[:పొడవు (self._c)]:
+				self._c = {self._c[0]: Constraint_సమితి (self._c[1:])}
+		ఒకవేళ isinstance (self._c, dict):
+			ఒకవేళ మొదటి లో self._c:
+				self._c[మొదటి].కూడు (rest)
+			లేకపోతే:
+				self._c[మొదటి] = Constraint_సమితి (rest)
 
 	@staticmethod
-	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+	నిర్వచనం _indent (లోతు):
+		తిరిగి ('  ' * లోతు).replace ('        ', '\t')
 
-	def __str__ (self, index=0, depth=4):
+	నిర్వచనం __str__ (self, సూచీ_2=0, లోతు=4):
 		s = []
-		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		indent = self._indent (లోతు)
+		ఒకవేళ isinstance (self._c, list):
+			ఒకవేళ పొడవు (self._c) == 0:
+				ప్రతిజ్ఞా సూచీ_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
-				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
-					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			లేదావేళ పొడవు (self._c) == 1:
+				ప్రతిజ్ఞా సూచీ_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, తదుపరి (iter (self._c)), సూచీ_2 లేదా ''))
+			లేకపోతే:
+				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], సూచీ_2 లేదా ''))
+				ఒకవేళ సూచీ_2:
+					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (లోతు + 2), సూచీ_2 + 1))
+				కొరకు i, cp లో enumerate (self._c[1:], ప్రారంభం=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (లోతు + 2), cp, సూచీ_2 + i, ')' ఒకవేళ i == పొడవు (self._c) - 1 లేకపోతే ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
-					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
-				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
+				కొరకు i లో శ్రేణి (సూచీ_2):
+					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (లోతు + 1)))
+				s.append ('{}matched = true;\n'.format (self._indent (లోతు + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
-			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
+		లేకపోతే:
+			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, సూచీ_2 లేదా ''))
 			s.append ('{}{{\n'.format (indent))
-			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
-						s.append (self._indent (depth + 1))
-					else:
+			cases = collections.defaultdict (సమితి)
+			కొరకు మొదటి, rest లో sorted (self._c.వస్తువులు ()):
+				cases[rest.__str__ (సూచీ_2 + 1, లోతు + 2)].కూడు (మొదటి)
+			కొరకు body, labels లో sorted (cases.వస్తువులు (), కీలకం_2=అజ్ఞాత b_ls: sorted (b_ls[1])[0]):
+				కొరకు i, cp లో enumerate (sorted (labels)):
+					ఒకవేళ i % 4 == 0:
+						s.append (self._indent (లోతు + 1))
+					లేకపోతే:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' ఒకవేళ i % 4 == 3 లేకపోతే ''))
+				ఒకవేళ పొడవు (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
-				s.append ('{}break;\n'.format (self._indent (depth + 2)))
+				s.append ('{}break;\n'.format (self._indent (లోతు + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		తిరిగి ''.join (s)
 
-	def rust_str (self, index=0):
+	నిర్వచనం rust_str (self, సూచీ_2=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
-				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+		ఒకవేళ isinstance (self._c, list):
+			ఒకవేళ పొడవు (self._c) == 0:
+				ప్రతిజ్ఞా సూచీ_2 == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
-			elif len (self._c) == 1:
-				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
-				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
-				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
-					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+			లేదావేళ పొడవు (self._c) == 1:
+				ప్రతిజ్ఞా సూచీ_2 == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
+				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (తదుపరి (iter (self._c)), సూచీ_2))
+			లేకపోతే:
+				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], సూచీ_2))
+				ఒకవేళ సూచీ_2:
+					s.append ('buffer.idx + {} < buffer.len &&\n'.format (సూచీ_2 + 1))
+				కొరకు i, cp లో enumerate (self._c[1:], ప్రారంభం=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, సూచీ_2 + i, '' ఒకవేళ i == పొడవు (self._c) - 1 లేకపోతే ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				కొరకు i లో శ్రేణి (సూచీ_2 + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
-			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
-			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
-				cases[rest.rust_str (index + 1)].add (first)
-			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+		లేకపోతే:
+			s.append ('match buffer.cur({}).glyph_id {{\n'.format (సూచీ_2))
+			cases = collections.defaultdict (సమితి)
+			కొరకు మొదటి, rest లో sorted (self._c.వస్తువులు ()):
+				cases[rest.rust_str (సూచీ_2 + 1)].కూడు (మొదటి)
+			వస్తువులు = sorted (cases.వస్తువులు (), కీలకం_2=అజ్ఞాత b_ls: sorted (b_ls[1])[0])
+			కొరకు ii, (body, labels) లో enumerate (వస్తువులు):
+				కొరకు i, cp లో enumerate (sorted (labels)):
+					ఒకవేళ i == పొడవు (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' ఒకవేళ i % 4 == 3 లేకపోతే ''))
+					లేకపోతే:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' ఒకవేళ i % 4 == 3 లేకపోతే ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				ఒకవేళ ii == పొడవు (వస్తువులు) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		తిరిగి ''.join (s)
 
 constraints = {}
-with open (sys.argv[1], encoding='utf-8') as f:
-	constraints_header = []
-	while True:
-		line = f.readline ().strip ()
-		if line == '#':
-			break
-		constraints_header.append(line)
-	for line in f:
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
-		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
+తోడుగా open (sys.argv[1], encoding='utf-8') ఇవ f:
+	constraints_శీర్షిక = []
+	అయితే నిజం:
+		పంక్తి = f.readline ().strip ()
+		ఒకవేళ పంక్తి == '#':
+			ఆపు
+		constraints_శీర్షిక.append(పంక్తి)
+	కొరకు పంక్తి లో f:
+		j = పంక్తి.కనుగొను ('#')
+		ఒకవేళ j >= 0:
+			పంక్తి = పంక్తి[:j]
+		constraint = [పూర్ణాంకం (cp, 16) కొరకు cp లో పంక్తి.విభజించు (';')[0].విభజించు ()]
+		ఒకవేళ కాదు constraint: కొనసాగు
+		ప్రతిజ్ఞా 2 <= పొడవు (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
-			constraints[script].add (constraint)
-		else:
-			constraints[script] = ConstraintSet (constraint)
-		assert constraints, 'No constraints found'
+		ఒకవేళ script లో constraints:
+			constraints[script].కూడు (constraint)
+		లేకపోతే:
+			constraints[script] = Constraint_సమితి (constraint)
+		ప్రతిజ్ఞా constraints, 'No constraints found'
 
-print ('/* == Start of generated functions == */')
-if output_rust:
-	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
-	print ()
-	print ('#![allow(clippy::single_match)]')
-	print ()
-	print ('use super::buffer::hb_buffer_t;')
-	print ('use super::script;')
-	print ('use crate::BufferFlags;')
-	print ()
-	print ('fn output_dotted_circle(buffer: &mut hb_buffer_t) {')
-	print ('    buffer.output_glyph(0x25CC);')
-	print ('    {')
-	print ('        let out_idx = buffer.out_len - 1;')
-	print ('        buffer.out_info_mut()[out_idx].clear_continuation();')
-	print ('    }')
-	print ('}')
-	print ()
-	print ('fn output_with_dotted_circle(buffer: &mut hb_buffer_t) {')
-	print ('    output_dotted_circle(buffer);')
-	print ('    buffer.next_glyph();')
-	print ('}')
-	print ()
-	print ('pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {')
-	print ('    if buffer.flags.contains(BufferFlags::DO_NOT_INSERT_DOTTED_CIRCLE) {')
-	print ('        return;')
-	print ('    }')
-	print ()
-	print ('    // UGLY UGLY UGLY business of adding dotted-circle in the middle of')
-	print ('    // vowel-sequences that look like another vowel.  Data for each script')
-	print ('    // collected from the USE script development spec.')
-	print ('    //')
-	print ('    // https://github.com/harfbuzz/harfbuzz/issues/1019')
-	print ('    buffer.clear_output();')
-	print ('    match buffer.script {')
+ముద్రించు ('/* == Start of generated functions == */')
+ఒకవేళ output_rust:
+	ముద్రించు ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
+	ముద్రించు ()
+	ముద్రించు ('#![allow(clippy::single_match)]')
+	ముద్రించు ()
+	ముద్రించు ('use super::buffer::hb_buffer_t;')
+	ముద్రించు ('use super::script;')
+	ముద్రించు ('use crate::BufferFlags;')
+	ముద్రించు ()
+	ముద్రించు ('fn output_dotted_circle(buffer: &mut hb_buffer_t) {')
+	ముద్రించు ('    buffer.output_glyph(0x25CC);')
+	ముద్రించు ('    {')
+	ముద్రించు ('        let out_idx = buffer.out_len - 1;')
+	ముద్రించు ('        buffer.out_info_mut()[out_idx].clear_continuation();')
+	ముద్రించు ('    }')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ('fn output_with_dotted_circle(buffer: &mut hb_buffer_t) {')
+	ముద్రించు ('    output_dotted_circle(buffer);')
+	ముద్రించు ('    buffer.next_glyph();')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ('pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {')
+	ముద్రించు ('    if buffer.flags.contains(BufferFlags::DO_NOT_INSERT_DOTTED_CIRCLE) {')
+	ముద్రించు ('        return;')
+	ముద్రించు ('    }')
+	ముద్రించు ()
+	ముద్రించు ('    // UGLY UGLY UGLY business of adding dotted-circle in the middle of')
+	ముద్రించు ('    // vowel-sequences that look like another vowel.  Data for each script')
+	ముద్రించు ('    // collected from the USE script development spec.')
+	ముద్రించు ('    //')
+	ముద్రించు ('    // https://github.com/harfbuzz/harfbuzz/issues/1019')
+	ముద్రించు ('    buffer.clear_output();')
+	ముద్రించు ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
-		print ('        Some(script::{}) => {{'.format (script.upper ()))
-		print ('            buffer.idx = 0;')
-		print ('            while buffer.idx + 1 < buffer.len {')
-		print ('                #[allow(unused_mut)]')
-		print ('                let mut matched = false;')
-		write (constraints.rust_str ())
-		print ('                buffer.next_glyph();')
-		print ('                if matched { output_with_dotted_circle(buffer); }')
-		print ('            }')
-		print ('        }')
-		print ()
+	కొరకు script, constraints లో sorted (constraints.వస్తువులు (), కీలకం_2=అజ్ఞాత s_c: script_క్రమం[s_c[0]]):
+		ముద్రించు ('        Some(script::{}) => {{'.format (script.పై ()))
+		ముద్రించు ('            buffer.idx = 0;')
+		ముద్రించు ('            while buffer.idx + 1 < buffer.len {')
+		ముద్రించు ('                #[allow(unused_mut)]')
+		ముద్రించు ('                let mut matched = false;')
+		లిఖ (constraints.rust_str ())
+		ముద్రించు ('                buffer.next_glyph();')
+		ముద్రించు ('                if matched { output_with_dotted_circle(buffer); }')
+		ముద్రించు ('            }')
+		ముద్రించు ('        }')
+		ముద్రించు ()
 
-	print ('        _ => {}')
-	print ('    }')
-	print ('    buffer.sync();')
-	print ('}')
-else:
-	print ('/*')
-	print (' * The following functions are generated by running:')
-	print (' *')
-	print (' *   %s ms-use/IndicShapingInvalidCluster.txt Scripts.txt' % os.path.basename (sys.argv[0]))
-	print (' *')
-	print (' * on files with these headers:')
-	print (' *')
-	for line in constraints_header:
-		print (' * %s' % line.strip ())
-	print (' *')
-	for line in scripts_header:
-		print (' * %s' % line.strip ())
-	print (' */')
-	print ()
-	print ('#include "hb.hh"')
-	print ()
-	print ('#ifndef HB_NO_OT_SHAPE')
-	print ()
-	print ('#include "hb-ot-shaper-vowel-constraints.hh"')
-	print ()
-	print ('static void')
-	print ('_output_dotted_circle (hb_buffer_t *buffer)')
-	print ('{')
-	print ('  (void) buffer->output_glyph (0x25CCu);')
-	print ('  _hb_glyph_info_clear_continuation (&buffer->prev());')
-	print ('}')
-	print ()
-	print ('static void')
-	print ('_output_with_dotted_circle (hb_buffer_t *buffer)')
-	print ('{')
-	print ('  _output_dotted_circle (buffer);')
-	print ('  (void) buffer->next_glyph ();')
-	print ('}')
-	print ()
-	print ('void')
-	print ('_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,')
-	print ('\t\t\t\t       hb_buffer_t              *buffer,')
-	print ('\t\t\t\t       hb_font_t                *font HB_UNUSED)')
-	print ('{')
-	print ('#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS')
-	print ('  return;')
-	print ('#endif')
-	print ('  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)')
-	print ('    return;')
-	print ()
-	print ('  /* UGLY UGLY UGLY business of adding dotted-circle in the middle of')
-	print ('   * vowel-sequences that look like another vowel.  Data for each script')
-	print ('   * collected from the USE script development spec.')
-	print ('   *')
-	print ('   * https://github.com/harfbuzz/harfbuzz/issues/1019')
-	print ('   */')
-	print ('  buffer->clear_output ();')
-	print ('  unsigned int count = buffer->len;')
-	print ('  switch ((unsigned) buffer->props.script)')
-	print ('  {')
+	ముద్రించు ('        _ => {}')
+	ముద్రించు ('    }')
+	ముద్రించు ('    buffer.sync();')
+	ముద్రించు ('}')
+లేకపోతే:
+	ముద్రించు ('/*')
+	ముద్రించు (' * The following functions are generated by running:')
+	ముద్రించు (' *')
+	ముద్రించు (' *   %s ms-use/IndicShapingInvalidCluster.txt Scripts.txt' % os.మార్గం.basename (sys.argv[0]))
+	ముద్రించు (' *')
+	ముద్రించు (' * on files with these headers:')
+	ముద్రించు (' *')
+	కొరకు పంక్తి లో constraints_శీర్షిక:
+		ముద్రించు (' * %s' % పంక్తి.strip ())
+	ముద్రించు (' *')
+	కొరకు పంక్తి లో scripts_శీర్షిక:
+		ముద్రించు (' * %s' % పంక్తి.strip ())
+	ముద్రించు (' */')
+	ముద్రించు ()
+	ముద్రించు ('#include "hb.hh"')
+	ముద్రించు ()
+	ముద్రించు ('#ifndef HB_NO_OT_SHAPE')
+	ముద్రించు ()
+	ముద్రించు ('#include "hb-ot-shaper-vowel-constraints.hh"')
+	ముద్రించు ()
+	ముద్రించు ('static void')
+	ముద్రించు ('_output_dotted_circle (hb_buffer_t *buffer)')
+	ముద్రించు ('{')
+	ముద్రించు ('  (void) buffer->output_glyph (0x25CCu);')
+	ముద్రించు ('  _hb_glyph_info_clear_continuation (&buffer->prev());')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ('static void')
+	ముద్రించు ('_output_with_dotted_circle (hb_buffer_t *buffer)')
+	ముద్రించు ('{')
+	ముద్రించు ('  _output_dotted_circle (buffer);')
+	ముద్రించు ('  (void) buffer->next_glyph ();')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ('void')
+	ముద్రించు ('_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,')
+	ముద్రించు ('\t\t\t\t       hb_buffer_t              *buffer,')
+	ముద్రించు ('\t\t\t\t       hb_font_t                *font HB_UNUSED)')
+	ముద్రించు ('{')
+	ముద్రించు ('#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS')
+	ముద్రించు ('  return;')
+	ముద్రించు ('#endif')
+	ముద్రించు ('  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)')
+	ముద్రించు ('    return;')
+	ముద్రించు ()
+	ముద్రించు ('  /* UGLY UGLY UGLY business of adding dotted-circle in the middle of')
+	ముద్రించు ('   * vowel-sequences that look like another vowel.  Data for each script')
+	ముద్రించు ('   * collected from the USE script development spec.')
+	ముద్రించు ('   *')
+	ముద్రించు ('   * https://github.com/harfbuzz/harfbuzz/issues/1019')
+	ముద్రించు ('   */')
+	ముద్రించు ('  buffer->clear_output ();')
+	ముద్రించు ('  unsigned int count = buffer->len;')
+	ముద్రించు ('  switch ((unsigned) buffer->props.script)')
+	ముద్రించు ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
-		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
-		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
-		print ('      {')
-		print ('\tbool matched = false;')
-		write (str (constraints))
-		print ('\t(void) buffer->next_glyph ();')
-		print ('\tif (matched) _output_with_dotted_circle (buffer);')
-		print ('      }')
-		print ('      break;')
-		print ()
+	కొరకు script, constraints లో sorted (constraints.వస్తువులు (), కీలకం_2=అజ్ఞాత s_c: script_క్రమం[s_c[0]]):
+		ముద్రించు ('    case HB_SCRIPT_{}:'.format (script.పై ()))
+		ముద్రించు ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
+		ముద్రించు ('      {')
+		ముద్రించు ('\tbool matched = false;')
+		లిఖ (str (constraints))
+		ముద్రించు ('\t(void) buffer->next_glyph ();')
+		ముద్రించు ('\tif (matched) _output_with_dotted_circle (buffer);')
+		ముద్రించు ('      }')
+		ముద్రించు ('      break;')
+		ముద్రించు ()
 
-	print ('    default:')
-	print ('      break;')
-	print ('  }')
-	print ('  buffer->sync ();')
-	print ('}')
-	print ()
-	print ()
-	print ('#endif')
-print ('/* == End of generated functions == */')
+	ముద్రించు ('    default:')
+	ముద్రించు ('      break;')
+	ముద్రించు ('  }')
+	ముద్రించు ('  buffer->sync ();')
+	ముద్రించు ('}')
+	ముద్రించు ()
+	ముద్రించు ()
+	ముద్రించు ('#endif')
+ముద్రించు ('/* == End of generated functions == */')

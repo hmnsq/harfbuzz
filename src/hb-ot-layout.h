@@ -24,16 +24,16 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#ఒకవేళ !defined(HB_OT_H_లోపల) && !defined(HB_NO_SINGLE_శీర్షిక_ERROR)
+#దోషం "Include <hb-ot.h> instead."
+#అయితే_ముగింపు
 
-#ifndef HB_OT_LAYOUT_H
-#define HB_OT_LAYOUT_H
+#నిర్వచితం_కాకపోతే HB_OT_LAYOUT_H
+#నిర్వచించు HB_OT_LAYOUT_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
-#include "hb-ot-name.h"
+#అన్తర్భావ "hb-ot-name.h"
 
 HB_BEGIN_DECLS
 
@@ -43,31 +43,31 @@ HB_BEGIN_DECLS
  *
  * OpenType [Baseline Table](https://docs.microsoft.com/en-us/typography/opentype/spec/base).
  */
-#define HB_OT_TAG_BASE HB_TAG('B','A','S','E')
+#నిర్వచించు HB_OT_ట్యాగ్_పునాది HB_ట్యాగ్('B','A','S','E')
 /**
  * HB_OT_TAG_GDEF:
  *
  * OpenType [Glyph Definition Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gdef).
  */
-#define HB_OT_TAG_GDEF HB_TAG('G','D','E','F')
+#నిర్వచించు HB_OT_ట్యాగ్_GDEF HB_ట్యాగ్('G','D','E','F')
 /**
  * HB_OT_TAG_GSUB:
  *
  * OpenType [Glyph Substitution Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gsub).
  */
-#define HB_OT_TAG_GSUB HB_TAG('G','S','U','B')
+#నిర్వచించు HB_OT_ట్యాగ్_GSUB HB_ట్యాగ్('G','S','U','B')
 /**
  * HB_OT_TAG_GPOS:
  *
  * OpenType [Glyph Positioning Table](https://docs.microsoft.com/en-us/typography/opentype/spec/gpos).
  */
-#define HB_OT_TAG_GPOS HB_TAG('G','P','O','S')
+#నిర్వచించు HB_OT_ట్యాగ్_GPOS HB_ట్యాగ్('G','P','O','S')
 /**
  * HB_OT_TAG_JSTF:
  *
  * OpenType [Justification Table](https://docs.microsoft.com/en-us/typography/opentype/spec/jstf).
  */
-#define HB_OT_TAG_JSTF HB_TAG('J','S','T','F')
+#నిర్వచించు HB_OT_ట్యాగ్_JSTF HB_ట్యాగ్('J','S','T','F')
 
 
 /*
@@ -80,14 +80,14 @@ HB_BEGIN_DECLS
  * OpenType script tag, `DFLT`, for features that are not script-specific.
  *
  */
-#define HB_OT_TAG_DEFAULT_SCRIPT	HB_TAG ('D', 'F', 'L', 'T')
+#నిర్వచించు HB_OT_ట్యాగ్_DEFAULT_SCRIPT	HB_ట్యాగ్ ('D', 'F', 'L', 'T')
 /**
  * HB_OT_TAG_DEFAULT_LANGUAGE:
  *
  * OpenType language tag, `dflt`. Not a valid language tag, but some fonts
  * mistakenly use it.
  */
-#define HB_OT_TAG_DEFAULT_LANGUAGE	HB_TAG ('d', 'f', 'l', 't')
+#నిర్వచించు HB_OT_ట్యాగ్_DEFAULT_LANGUAGE	HB_ట్యాగ్ ('d', 'f', 'l', 't')
 
 /**
  * HB_OT_MAX_TAGS_PER_SCRIPT:
@@ -96,7 +96,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.0.0
  **/
-#define HB_OT_MAX_TAGS_PER_SCRIPT	3u
+#నిర్వచించు HB_OT_MAX_ట్యాగులు_చొప్పున_SCRIPT	3u
 /**
  * HB_OT_MAX_TAGS_PER_LANGUAGE:
  *
@@ -104,27 +104,27 @@ HB_BEGIN_DECLS
  *
  * Since: 2.0.0
  **/
-#define HB_OT_MAX_TAGS_PER_LANGUAGE	3u
+#నిర్వచించు HB_OT_MAX_ట్యాగులు_చొప్పున_LANGUAGE	3u
 
-HB_EXTERN void
-hb_ot_tags_from_script_and_language (hb_script_t   script,
+HB_EXTERN శూన్య
+hb_ot_ట్యాగులు_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
-				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
-				     hb_tag_t     *language_tags /* OUT */);
+				     గుర్తులేని పూర్ణాంకం *script_లెక్క /* IN/OUT */,
+				     hb_ట్యాగ్_t     *script_ట్యాగులు /*బహిర్గతం*/,
+				     గుర్తులేని పూర్ణాంకం *language_లెక్క /* IN/OUT */,
+				     hb_ట్యాగ్_t     *language_ట్యాగులు /*బహిర్గతం*/);
 
 HB_EXTERN hb_script_t
-hb_ot_tag_to_script (hb_tag_t tag);
+hb_ot_ట్యాగ్_గమ్యం_script (hb_ట్యాగ్_t ట్యాగ్_2);
 
 HB_EXTERN hb_language_t
-hb_ot_tag_to_language (hb_tag_t tag);
+hb_ot_ట్యాగ్_గమ్యం_language (hb_ట్యాగ్_t ట్యాగ్_2);
 
-HB_EXTERN void
-hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
-				   hb_tag_t       language_tag,
-				   hb_script_t   *script /* OUT */,
-				   hb_language_t *language /* OUT */);
+HB_EXTERN శూన్య
+hb_ot_ట్యాగులు_గమ్యం_script_and_language (hb_ట్యాగ్_t       script_ట్యాగ్,
+				   hb_ట్యాగ్_t       language_ట్యాగ్,
+				   hb_script_t   *script /*బహిర్గతం*/,
+				   hb_language_t *language /*బహిర్గతం*/);
 
 
 /*
@@ -145,9 +145,9 @@ hb_ot_layout_has_glyph_classes (hb_face_t *face);
  * The GDEF classes defined for glyphs.
  *
  **/
-typedef enum {
+రకనిర్వచనం గణన {
   HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED	= 0,
-  HB_OT_LAYOUT_GLYPH_CLASS_BASE_GLYPH	= 1,
+  HB_OT_LAYOUT_GLYPH_CLASS_పునాది_GLYPH	= 1,
   HB_OT_LAYOUT_GLYPH_CLASS_LIGATURE	= 2,
   HB_OT_LAYOUT_GLYPH_CLASS_MARK		= 3,
   HB_OT_LAYOUT_GLYPH_CLASS_COMPONENT	= 4
@@ -157,28 +157,28 @@ HB_EXTERN hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph);
 
-HB_EXTERN void
-hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
+HB_EXTERN శూన్య
+hb_ot_layout_get_glyphs_లోపల_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
-				  hb_set_t                   *glyphs /* OUT */);
+				  hb_సమితి_t                   *glyphs /*బహిర్గతం*/);
 
 /* Not that useful.  Provides list of attach points for a glyph that a
  * client may want to cache */
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */);
+				గుర్తులేని పూర్ణాంకం    ప్రారంభం_స్థానభ్రంశం,
+				గుర్తులేని పూర్ణాంకం   *బిందువు_లెక్క /* IN/OUT */,
+				గుర్తులేని పూర్ణాంకం   *బిందువు_array /*బహిర్గతం*/);
 
 /* Ligature caret positions */
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
-				  hb_position_t  *caret_array /* OUT */);
+				  గుర్తులేని పూర్ణాంకం    ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం   *caret_లెక్క /* IN/OUT */,
+				  hb_position_t  *caret_array /*బహిర్గతం*/);
 
 
 /*
@@ -190,182 +190,182 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
  *
  * Special value for script index indicating unsupported script.
  */
-#define HB_OT_LAYOUT_NO_SCRIPT_INDEX		0xFFFFu
+#నిర్వచించు HB_OT_LAYOUT_NO_SCRIPT_సూచీ		0xFFFFu
 /**
  * HB_OT_LAYOUT_NO_FEATURE_INDEX:
  *
  * Special value for feature index indicating unsupported feature.
  */
-#define HB_OT_LAYOUT_NO_FEATURE_INDEX		0xFFFFu
+#నిర్వచించు HB_OT_LAYOUT_NO_FEATURE_సూచీ		0xFFFFu
 /**
  * HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX:
  *
  * Special value for language index indicating default or unsupported language.
  */
-#define HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX	0xFFFFu
+#నిర్వచించు HB_OT_LAYOUT_DEFAULT_LANGUAGE_సూచీ	0xFFFFu
 /**
  * HB_OT_LAYOUT_NO_VARIATIONS_INDEX:
  *
  * Special value for variations index indicating unsupported variation.
  */
-#define HB_OT_LAYOUT_NO_VARIATIONS_INDEX	0xFFFFFFFFu
+#నిర్వచించు HB_OT_LAYOUT_NO_VARIATIONS_సూచీ	0xFFFFFFFFu
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_script_tags (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
-				    hb_tag_t     *script_tags /* OUT */);
-
-HB_EXTERN hb_bool_t
-hb_ot_layout_table_find_script (hb_face_t    *face,
-				hb_tag_t      table_tag,
-				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_layout_పట్టిక_get_script_ట్యాగులు (hb_face_t    *face,
+				    hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				    గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+				    గుర్తులేని పూర్ణాంకం *script_లెక్క /* IN/OUT */,
+				    hb_ట్యాగ్_t     *script_ట్యాగులు /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_select_script (hb_face_t      *face,
-				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index /* OUT */,
-				  hb_tag_t       *chosen_script /* OUT */);
+hb_ot_layout_పట్టిక_కనుగొను_script (hb_face_t    *face,
+				hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				hb_ట్యాగ్_t      script_ట్యాగ్,
+				గుర్తులేని పూర్ణాంకం *script_సూచీ /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
-				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
-				     hb_tag_t     *feature_tags /* OUT */);
+HB_EXTERN hb_bool_t
+hb_ot_layout_పట్టిక_select_script (hb_face_t      *face,
+				  hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+				  గుర్తులేని పూర్ణాంకం    script_లెక్క,
+				  స్థిరరాశి hb_ట్యాగ్_t *script_ట్యాగులు,
+				  గుర్తులేని పూర్ణాంకం   *script_సూచీ /*బహిర్గతం*/,
+				  hb_ట్యాగ్_t       *chosen_script /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_script_get_language_tags (hb_face_t    *face,
-				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
-				       hb_tag_t     *language_tags /* OUT */);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_layout_పట్టిక_get_feature_ట్యాగులు (hb_face_t    *face,
+				     hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				     గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+				     గుర్తులేని పూర్ణాంకం *feature_లెక్క_2 /* IN/OUT */,
+				     hb_ట్యాగ్_t     *feature_ట్యాగులు /*బహిర్గతం*/);
+
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_layout_script_get_language_ట్యాగులు (hb_face_t    *face,
+				       hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				       గుర్తులేని పూర్ణాంకం  script_సూచీ,
+				       గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+				       గుర్తులేని పూర్ణాంకం *language_లెక్క /* IN/OUT */,
+				       hb_ట్యాగ్_t     *language_ట్యాగులు /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */);
+				     hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+				     గుర్తులేని పూర్ణాంకం    script_సూచీ,
+				     గుర్తులేని పూర్ణాంకం    language_లెక్క,
+				     స్థిరరాశి hb_ట్యాగ్_t *language_ట్యాగులు,
+				     గుర్తులేని పూర్ణాంకం   *language_సూచీ /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
-				     hb_tag_t       *chosen_language /* OUT */);
+				     hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+				     గుర్తులేని పూర్ణాంకం    script_సూచీ,
+				     గుర్తులేని పూర్ణాంకం    language_లెక్క,
+				     స్థిరరాశి hb_ట్యాగ్_t *language_ట్యాగులు,
+				     గుర్తులేని పూర్ణాంకం   *language_సూచీ /*బహిర్గతం*/,
+				     hb_ట్యాగ్_t       *chosen_language /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */);
+hb_ot_layout_language_get_required_feature_సూచీ (hb_face_t    *face,
+						  hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+						  గుర్తులేని పూర్ణాంకం  script_సూచీ,
+						  గుర్తులేని పూర్ణాంకం  language_సూచీ,
+						  గుర్తులేని పూర్ణాంకం *feature_సూచీ /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
-					    hb_tag_t     *feature_tag /* OUT */);
+					    hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+					    గుర్తులేని పూర్ణాంకం  script_సూచీ,
+					    గుర్తులేని పూర్ణాంకం  language_సూచీ,
+					    గుర్తులేని పూర్ణాంకం *feature_సూచీ /*బహిర్గతం*/,
+					    hb_ట్యాగ్_t     *feature_ట్యాగ్ /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
-					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */);
+					   hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+					   గుర్తులేని పూర్ణాంకం  script_సూచీ,
+					   గుర్తులేని పూర్ణాంకం  language_సూచీ,
+					   గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+					   గుర్తులేని పూర్ణాంకం *feature_లెక్క_2 /* IN/OUT */,
+					   గుర్తులేని పూర్ణాంకం *feature_indexes /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
-					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
-					hb_tag_t     *feature_tags /* OUT */);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_layout_language_get_feature_ట్యాగులు (hb_face_t    *face,
+					hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+					గుర్తులేని పూర్ణాంకం  script_సూచీ,
+					గుర్తులేని పూర్ణాంకం  language_సూచీ,
+					గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+					గుర్తులేని పూర్ణాంకం *feature_లెక్క_2 /* IN/OUT */,
+					hb_ట్యాగ్_t     *feature_ట్యాగులు /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_language_find_feature (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
-				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */);
+hb_ot_layout_language_కనుగొను_feature (hb_face_t    *face,
+				    hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				    గుర్తులేని పూర్ణాంకం  script_సూచీ,
+				    గుర్తులేని పూర్ణాంకం  language_సూచీ,
+				    hb_ట్యాగ్_t      feature_ట్యాగ్,
+				    గుర్తులేని పూర్ణాంకం *feature_సూచీ /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
-				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */);
+				  hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				  గుర్తులేని పూర్ణాంకం  feature_సూచీ,
+				  గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం *lookup_లెక్క /* IN/OUT */,
+				  గుర్తులేని పూర్ణాంకం *lookup_indexes /*బహిర్గతం*/);
 
-HB_EXTERN unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
-				     hb_tag_t      table_tag);
+HB_EXTERN గుర్తులేని పూర్ణాంకం
+hb_ot_layout_పట్టిక_get_lookup_లెక్క (hb_face_t    *face,
+				     hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_layout_collect_features (hb_face_t      *face,
-			       hb_tag_t        table_tag,
-			       const hb_tag_t *scripts,
-			       const hb_tag_t *languages,
-			       const hb_tag_t *features,
-			       hb_set_t       *feature_indexes /* OUT */);
+			       hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+			       స్థిరరాశి hb_ట్యాగ్_t *scripts,
+			       స్థిరరాశి hb_ట్యాగ్_t *languages,
+			       స్థిరరాశి hb_ట్యాగ్_t *features,
+			       hb_సమితి_t       *feature_indexes /*బహిర్గతం*/);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_layout_collect_features_map (hb_face_t      *face,
-				   hb_tag_t        table_tag,
-				   unsigned        script_index,
-				   unsigned        language_index,
-				   hb_map_t       *feature_map /* OUT */);
+				   hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+				   గుర్తులేని        script_సూచీ,
+				   గుర్తులేని        language_సూచీ,
+				   hb_map_t       *feature_map /*బహిర్గతం*/);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_layout_collect_lookups (hb_face_t      *face,
-			      hb_tag_t        table_tag,
-			      const hb_tag_t *scripts,
-			      const hb_tag_t *languages,
-			      const hb_tag_t *features,
-			      hb_set_t       *lookup_indexes /* OUT */);
+			      hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+			      స్థిరరాశి hb_ట్యాగ్_t *scripts,
+			      స్థిరరాశి hb_ట్యాగ్_t *languages,
+			      స్థిరరాశి hb_ట్యాగ్_t *features,
+			      hb_సమితి_t       *lookup_indexes /*బహిర్గతం*/);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
-				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */);
+				    hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+				    గుర్తులేని పూర్ణాంకం  lookup_సూచీ,
+				    hb_సమితి_t     *glyphs_before, /* OUT.  May be NULL */
+				    hb_సమితి_t     *glyphs_ఆదానం,  /* OUT.  May be NULL */
+				    hb_సమితి_t     *glyphs_after,  /* OUT.  May be NULL */
+				    hb_సమితి_t     *glyphs_output  /* OUT.  May be NULL */);
 
 
 /* Variations support */
 
 HB_EXTERN hb_bool_t
-hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */);
+hb_ot_layout_పట్టిక_కనుగొను_feature_variations (hb_face_t    *face,
+					    hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+					    స్థిరరాశి పూర్ణాంకం    *coords,
+					    గుర్తులేని పూర్ణాంకం  అంకె_coords,
+					    గుర్తులేని పూర్ణాంకం *variations_సూచీ /* out */);
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */);
+						  hb_ట్యాగ్_t      పట్టిక_ట్యాగ్_2,
+						  గుర్తులేని పూర్ణాంకం  feature_సూచీ,
+						  గుర్తులేని పూర్ణాంకం  variations_సూచీ,
+						  గుర్తులేని పూర్ణాంకం  ప్రారంభం_స్థానభ్రంశం,
+						  గుర్తులేని పూర్ణాంకం *lookup_లెక్క /* IN/OUT */,
+						  గుర్తులేని పూర్ణాంకం *lookup_indexes /*బహిర్గతం*/);
 
 
 /*
@@ -375,37 +375,37 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face);
 
-HB_EXTERN unsigned
+HB_EXTERN గుర్తులేని
 hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
-					  unsigned        lookup_index,
+					  గుర్తులేని        lookup_సూచీ,
 					  hb_codepoint_t  glyph,
-					  unsigned        start_offset,
-					  unsigned       *alternate_count /* IN/OUT */,
-					  hb_codepoint_t *alternate_glyphs /* OUT */);
+					  గుర్తులేని        ప్రారంభం_స్థానభ్రంశం,
+					  గుర్తులేని       *alternate_లెక్క /* IN/OUT */,
+					  hb_codepoint_t *alternate_glyphs /*బహిర్గతం*/);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
-					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      గుర్తులేని   lookup_సూచీ,
+					      hb_map_t  *alternate_లెక్క /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
-				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      గుర్తులేని పూర్ణాంకం          lookup_సూచీ,
+				      స్థిరరాశి hb_codepoint_t *glyphs,
+				      గుర్తులేని పూర్ణాంకం          glyphs_నిడివి,
 				      hb_bool_t             zero_context);
 
-HB_EXTERN void
-hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
-					hb_set_t     *glyphs
+HB_EXTERN శూన్య
+hb_ot_layout_lookup_substitute_సంవృతం (hb_face_t    *face,
+					గుర్తులేని పూర్ణాంకం  lookup_సూచీ,
+					hb_సమితి_t     *glyphs
 					/*TODO , hb_bool_t  inclusive */);
 
-HB_EXTERN void
-hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
-					 const hb_set_t *lookups,
-					 hb_set_t       *glyphs);
+HB_EXTERN శూన్య
+hb_ot_layout_lookups_substitute_సంవృతం (hb_face_t      *face,
+					 స్థిరరాశి hb_సమితి_t *lookups,
+					 hb_సమితి_t       *glyphs);
 
 
 /*
@@ -418,16 +418,16 @@ hb_ot_layout_has_positioning (hb_face_t *face);
 /* Optical 'size' feature info.  Returns true if found.
  * https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
 HB_EXTERN hb_bool_t
-hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+hb_ot_layout_get_కొలత_params (hb_face_t       *face,
+			      గుర్తులేని పూర్ణాంకం    *design_కొలత_2,       /* OUT.  May be NULL */
+			      గుర్తులేని పూర్ణాంకం    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */);
+			      గుర్తులేని పూర్ణాంకం    *range_ప్రారంభం_2,       /* OUT.  May be NULL */
+			      గుర్తులేని పూర్ణాంకం    *range_చివర_2          /* OUT.  May be NULL */);
 
 HB_EXTERN hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
-				       unsigned        lookup_index,
+				       గుర్తులేని        lookup_సూచీ,
 				       hb_direction_t  direction,
 				       hb_codepoint_t  glyph);
 
@@ -438,21 +438,21 @@ hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
-				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   hb_ట్యాగ్_t         పట్టిక_ట్యాగ్_2,
+				   గుర్తులేని పూర్ణాంకం     feature_సూచీ,
 				   hb_ot_name_id_t *label_id             /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *tooltip_id           /* OUT.  May be NULL */,
 				   hb_ot_name_id_t *sample_id            /* OUT.  May be NULL */,
-				   unsigned int    *num_named_parameters /* OUT.  May be NULL */,
-				   hb_ot_name_id_t *first_param_id       /* OUT.  May be NULL */);
+				   గుర్తులేని పూర్ణాంకం    *అంకె_named_parameters /* OUT.  May be NULL */,
+				   hb_ot_name_id_t *మొదటి_param_id       /* OUT.  May be NULL */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN గుర్తులేని పూర్ణాంకం
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count    /* IN/OUT.  May be NULL */,
+				     hb_ట్యాగ్_t        పట్టిక_ట్యాగ్_2,
+				     గుర్తులేని పూర్ణాంకం    feature_సూచీ,
+				     గుర్తులేని పూర్ణాంకం    ప్రారంభం_స్థానభ్రంశం,
+				     గుర్తులేని పూర్ణాంకం   *char_లెక్క    /* IN/OUT.  May be NULL */,
 				     hb_codepoint_t *characters    /* OUT.     May be NULL */);
 
 
@@ -463,8 +463,8 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_font_extents (hb_font_t         *font,
 			       hb_direction_t     direction,
-			       hb_tag_t           script_tag,
-			       hb_tag_t           language_tag,
+			       hb_ట్యాగ్_t           script_ట్యాగ్,
+			       hb_ట్యాగ్_t           language_ట్యాగ్,
 			       hb_font_extents_t *extents);
 
 HB_EXTERN hb_bool_t
@@ -500,56 +500,56 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
  *
  * Since: 2.6.0
  */
-typedef enum {
-  HB_OT_LAYOUT_BASELINE_TAG_ROMAN			= HB_TAG ('r','o','m','n'),
-  HB_OT_LAYOUT_BASELINE_TAG_HANGING			= HB_TAG ('h','a','n','g'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT	= HB_TAG ('i','c','f','b'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT	= HB_TAG ('i','c','f','t'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL		= HB_TAG ('I','c','f','c'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT	= HB_TAG ('i','d','e','o'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT	= HB_TAG ('i','d','t','p'),
-  HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL		= HB_TAG ('I','d','c','e'),
-  HB_OT_LAYOUT_BASELINE_TAG_MATH			= HB_TAG ('m','a','t','h'),
+రకనిర్వచనం గణన {
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_ROMAN			= HB_ట్యాగ్ ('r','o','m','n'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_HANGING			= HB_ట్యాగ్ ('h','a','n','g'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_IDEO_FACE_BOTTOM_OR_ఎడమ	= HB_ట్యాగ్ ('i','c','f','b'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_IDEO_FACE_శిఖరం_OR_కుడి	= HB_ట్యాగ్ ('i','c','f','t'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_IDEO_FACE_CENTRAL		= HB_ట్యాగ్ ('I','c','f','c'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_IDEO_EMBOX_BOTTOM_OR_ఎడమ	= HB_ట్యాగ్ ('i','d','e','o'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_IDEO_EMBOX_శిఖరం_OR_కుడి	= HB_ట్యాగ్ ('i','d','t','p'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_IDEO_EMBOX_CENTRAL		= HB_ట్యాగ్ ('I','d','c','e'),
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_MATH			= HB_ట్యాగ్ ('m','a','t','h'),
 
   /*< private >*/
-  _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
-} hb_ot_layout_baseline_tag_t;
+  HB_OT_LAYOUT_BASELINE_ట్యాగ్_MAX_విలువ = HB_ట్యాగ్_MAX_SIGNED /*< skip >*/
+} hb_ot_layout_baseline_ట్యాగ్_t;
 
-HB_EXTERN hb_ot_layout_baseline_tag_t
-hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script);
+HB_EXTERN hb_ot_layout_baseline_ట్యాగ్_t
+hb_ot_layout_get_horizontal_baseline_ట్యాగ్_for_script (hb_script_t script);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_baseline (hb_font_t                   *font,
-			   hb_ot_layout_baseline_tag_t  baseline_tag,
+			   hb_ot_layout_baseline_ట్యాగ్_t  baseline_ట్యాగ్,
 			   hb_direction_t               direction,
-			   hb_tag_t                     script_tag,
-			   hb_tag_t                     language_tag,
+			   hb_ట్యాగ్_t                     script_ట్యాగ్,
+			   hb_ట్యాగ్_t                     language_ట్యాగ్,
 			   hb_position_t               *coord        /* OUT.  May be NULL. */);
 
 HB_EXTERN hb_bool_t
 hb_ot_layout_get_baseline2 (hb_font_t                   *font,
-			    hb_ot_layout_baseline_tag_t  baseline_tag,
+			    hb_ot_layout_baseline_ట్యాగ్_t  baseline_ట్యాగ్,
 			    hb_direction_t               direction,
 			    hb_script_t                  script,
 			    hb_language_t                language,
 			    hb_position_t               *coord        /* OUT.  May be NULL. */);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
-					 hb_ot_layout_baseline_tag_t  baseline_tag,
+					 hb_ot_layout_baseline_ట్యాగ్_t  baseline_ట్యాగ్,
 					 hb_direction_t               direction,
-					 hb_tag_t                     script_tag,
-					 hb_tag_t                     language_tag,
-					 hb_position_t               *coord        /* OUT */);
+					 hb_ట్యాగ్_t                     script_ట్యాగ్,
+					 hb_ట్యాగ్_t                     language_ట్యాగ్,
+					 hb_position_t               *coord        /*బహిర్గతం*/);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
-					  hb_ot_layout_baseline_tag_t  baseline_tag,
+					  hb_ot_layout_baseline_ట్యాగ్_t  baseline_ట్యాగ్,
 					  hb_direction_t               direction,
 					  hb_script_t                  script,
 					  hb_language_t                language,
-					  hb_position_t               *coord        /* OUT */);
+					  hb_position_t               *coord        /*బహిర్గతం*/);
 
-HB_END_DECLS
+HB_చివర_DECLS
 
-#endif /* HB_OT_LAYOUT_H */
+#అయితే_ముగింపు /* HB_OT_LAYOUT_H */

@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_CORETEXT
+#నిర్వచితమైతే HAVE_CORETEXT
 
-#include "hb-shaper-impl.hh"
+#అన్తర్భావ "hb-shaper-impl.hh"
 
-#include "hb-coretext.hh"
+#అన్తర్భావ "hb-coretext.hh"
 
 
 /**
@@ -44,241 +44,241 @@
  * Functions for using HarfBuzz with the CoreText fonts.
  **/
 
-static void
-release_table_data (void *user_data)
+స్థిర శూన్య
+release_పట్టిక_దత్తాంశం (శూన్య *user_దత్తాంశం)
 {
-  CFDataRef cf_data = reinterpret_cast<CFDataRef> (user_data);
-  CFRelease(cf_data);
+  CFDataRef cf_దత్తాంశం = reinterpret_cast<CFDataRef> (user_దత్తాంశం);
+  CFRelease(cf_దత్తాంశం);
 }
 
-static hb_blob_t *
-_hb_cg_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+స్థిర hb_blob_t *
+hb_cg_reference_పట్టిక (hb_face_t *face HB_వాడని, hb_ట్యాగ్_t ట్యాగ్_2, శూన్య *user_దత్తాంశం)
 {
-  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
-  if (unlikely (!cg_font))
-    return nullptr;
+  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_దత్తాంశం);
+  ఒకవేళ (unlikely (!cg_font))
+    తిరిగి శూన్యసూచిక;
 
-  hb_cf_ptr_t<CFDataRef> cf_data (CGFontCopyTableForTag (cg_font, tag));
-  if (unlikely (!cf_data))
-    return nullptr;
+  hb_cf_ptr_t<CFDataRef> cf_దత్తాంశం (CGFont_Copy_పట్టిక_For_ట్యాగ్ (cg_font, ట్యాగ్_2));
+  ఒకవేళ (unlikely (!cf_దత్తాంశం))
+    తిరిగి శూన్యసూచిక;
 
-  const char *data = reinterpret_cast<const char*> (CFDataGetBytePtr (cf_data));
-  const size_t length = CFDataGetLength (cf_data);
-  if (!data || !length)
-    return nullptr;
+  స్థిరరాశి అక్షరం *దత్తాంశం = reinterpret_cast<స్థిరరాశి అక్షరం*> (CFDataGetBytePtr (cf_దత్తాంశం));
+  స్థిరరాశి size_t నిడివి = CFData_Get_నిడివి (cf_దత్తాంశం);
+  ఒకవేళ (!దత్తాంశం || !నిడివి)
+    తిరిగి శూన్యసూచిక;
 
-  return hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
-			 reinterpret_cast<void *> (const_cast<__CFData *> (cf_data.release ())),
-			 release_table_data);
+  తిరిగి hb_blob_create (దత్తాంశం, నిడివి, HB_జ్ఞాపకం_బహుళకం_READONLY,
+			 reinterpret_cast<శూన్య *> (const_cast<__CFData *> (cf_దత్తాంశం.release ())),
+			 release_పట్టిక_దత్తాంశం);
 }
 
-static unsigned
-_hb_cg_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
-		       hb_tag_t *table_tags,
-		       void *user_data)
+స్థిర గుర్తులేని
+hb_cg_get_పట్టిక_ట్యాగులు (స్థిరరాశి hb_face_t *face HB_వాడని,
+		       గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+		       గుర్తులేని పూర్ణాంకం *పట్టిక_లెక్క_2,
+		       hb_ట్యాగ్_t *పట్టిక_ట్యాగులు,
+		       శూన్య *user_దత్తాంశం)
 {
-  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
-  if (unlikely (!cg_font))
+  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_దత్తాంశం);
+  ఒకవేళ (unlikely (!cg_font))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    ఒకవేళ (పట్టిక_లెక్క_2)
+      *పట్టిక_లెక్క_2 = 0;
+    తిరిగి 0;
   }
 
-  hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_SIZE));
-  if (unlikely (!ct_font))
+  hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_కొలత));
+  ఒకవేళ (unlikely (!ct_font))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    ఒకవేళ (పట్టిక_లెక్క_2)
+      *పట్టిక_లెక్క_2 = 0;
+    తిరిగి 0;
   }
 
-  hb_cf_ptr_t<CFArrayRef> arr (CTFontCopyAvailableTables (ct_font, kCTFontTableOptionNoOptions));
-  if (unlikely (!arr))
+  hb_cf_ptr_t<CFArrayRef> arr (CTFont_Copy_అందుబాటు_Tables (ct_font, k_CTFont_పట్టిక_Option_No_Options));
+  ఒకవేళ (unlikely (!arr))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    ఒకవేళ (పట్టిక_లెక్క_2)
+      *పట్టిక_లెక్క_2 = 0;
+    తిరిగి 0;
   }
 
-  unsigned population = (unsigned) CFArrayGetCount (arr);
+  గుర్తులేని population = (గుర్తులేని) CFArray_Get_లెక్క (arr);
 
-  if (!table_count)
-    return population;
+  ఒకవేళ (!పట్టిక_లెక్క_2)
+    తిరిగి population;
 
-  if (unlikely (start_offset >= population))
+  ఒకవేళ (unlikely (ప్రారంభం_స్థానభ్రంశం >= population))
   {
-    *table_count = 0;
-    return population;
+    *పట్టిక_లెక్క_2 = 0;
+    తిరిగి population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset))
+  గుర్తులేని చివర_స్థానభ్రంశం = ప్రారంభం_స్థానభ్రంశం + *పట్టిక_లెక్క_2;
+  ఒకవేళ (unlikely (చివర_స్థానభ్రంశం < ప్రారంభం_స్థానభ్రంశం))
   {
-    *table_count = 0;
-    return population;
+    *పట్టిక_లెక్క_2 = 0;
+    తిరిగి population;
   }
-  end_offset = hb_min (end_offset, (unsigned) population);
+  చివర_స్థానభ్రంశం = hb_min (చివర_స్థానభ్రంశం, (గుర్తులేని) population);
 
-  *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  *పట్టిక_లెక్క_2 = చివర_స్థానభ్రంశం - ప్రారంభం_స్థానభ్రంశం;
+  ఒకవేళ (పట్టిక_ట్యాగులు)
+    కొరకు (గుర్తులేని i = ప్రారంభం_స్థానభ్రంశం; i < చివర_స్థానభ్రంశం; i++)
     {
-      CTFontTableTag tag = (CTFontTableTag)(uintptr_t) CFArrayGetValueAtIndex (arr, i);
-      table_tags[i - start_offset] = tag;
+      CTFont_పట్టిక_ట్యాగ్ ట్యాగ్_2 = (CTFont_పట్టిక_ట్యాగ్)(uintptr_t) CFArray_Get_విలువ_At_సూచీ (arr, i);
+      పట్టిక_ట్యాగులు[i - ప్రారంభం_స్థానభ్రంశం] = ట్యాగ్_2;
     }
 
-  return population;
+  తిరిగి population;
 }
 
-static void
-_hb_cg_font_release (void *data)
+స్థిర శూన్య
+_hb_cg_font_release (శూన్య *దత్తాంశం)
 {
-  if (data)
-    CGFontRelease ((CGFontRef) data);
+  ఒకవేళ (దత్తాంశం)
+    CGFontRelease ((CGFontRef) దత్తాంశం);
 }
 
 
-static CTFontDescriptorRef
-get_last_resort_font_desc ()
+స్థిర CTFontDescriptorRef
+get_చివరి_resort_font_desc ()
 {
-  hb_cf_ptr_t<CTFontDescriptorRef> last_resort (CTFontDescriptorCreateWithNameAndSize (CFSTR("LastResort"), 0));
-  if (unlikely (!last_resort))
-    return nullptr;
+  hb_cf_ptr_t<CTFontDescriptorRef> చివరి_resort (CTFont_Descriptor_Create_With_Name_And_కొలత (CFSTR("LastResort"), 0));
+  ఒకవేళ (unlikely (!చివరి_resort))
+    తిరిగి శూన్యసూచిక;
 
-  const void *cascade_elements[] = { last_resort.get () };
+  స్థిరరాశి శూన్య *cascade_elements[] = { చివరి_resort.get () };
   hb_cf_ptr_t<CFArrayRef> cascade_list (CFArrayCreate (kCFAllocatorDefault,
 						       cascade_elements,
 						       1,
 						       &kCFTypeArrayCallBacks));
-  if (unlikely (!cascade_list))
-    return nullptr;
+  ఒకవేళ (unlikely (!cascade_list))
+    తిరిగి శూన్యసూచిక;
 
-  const void *keys[] = { kCTFontCascadeListAttribute };
-  const void *values[] = { cascade_list.get () };
-  hb_cf_ptr_t<CFDictionaryRef> attributes (CFDictionaryCreate (kCFAllocatorDefault,
-							       keys,
+  స్థిరరాశి శూన్య *కీలకాలు[] = { kCTFontCascadeListAttribute };
+  స్థిరరాశి శూన్య *values[] = { cascade_list.get () };
+  hb_cf_ptr_t<CFDictionaryRef> లక్షణాలు (CFDictionaryCreate (kCFAllocatorDefault,
+							       కీలకాలు,
 							       values,
 							       1,
-							       &kCFTypeDictionaryKeyCallBacks,
-							       &kCFTypeDictionaryValueCallBacks));
-  if (unlikely (!attributes))
-    return nullptr;
+							       &k_CFType_Dictionary_కీలకం_Call_Backs,
+							       &k_CFType_Dictionary_విలువ_Call_Backs));
+  ఒకవేళ (unlikely (!లక్షణాలు))
+    తిరిగి శూన్యసూచిక;
 
-  return CTFontDescriptorCreateWithAttributes (attributes);
+  తిరిగి CTFont_Descriptor_Create_With_లక్షణాలు (లక్షణాలు);
 }
 
-static void
-release_data (void *info, const void *data, size_t size)
+స్థిర శూన్య
+release_దత్తాంశం (శూన్య *info, స్థిరరాశి శూన్య *దత్తాంశం, size_t కొలత)
 {
-  assert (hb_blob_get_length ((hb_blob_t *) info) == size &&
-	  hb_blob_get_data ((hb_blob_t *) info, nullptr) == data);
+  ప్రతిజ్ఞా (hb_blob_get_నిడివి ((hb_blob_t *) info) == కొలత &&
+	  hb_blob_get_దత్తాంశం ((hb_blob_t *) info, శూన్యసూచిక) == దత్తాంశం);
 
   hb_blob_destroy ((hb_blob_t *) info);
 }
 
 CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int named_instance_index)
+create_cg_font (CFArrayRef ct_font_desc_array, గుర్తులేని పూర్ణాంకం named_instance_సూచీ)
 {
   hb_cf_ptr_t<CFArrayRef> desc_array (ct_font_desc_array);
-  if (unlikely (!desc_array))
-    return nullptr;
+  ఒకవేళ (unlikely (!desc_array))
+    తిరిగి శూన్యసూచిక;
 
-  if (named_instance_index == 0)
+  ఒకవేళ (named_instance_సూచీ == 0)
   {
     // Default instance. We don't know which one is it. Return the first one.
     // We will set the correct variations on it later.
   }
-  else
-    named_instance_index--;
-  auto ct_font_desc = (CFArrayGetCount (desc_array) > (CFIndex) named_instance_index) ?
-		      (CTFontDescriptorRef) CFArrayGetValueAtIndex (desc_array, (CFIndex) named_instance_index) : nullptr;
-  if (unlikely (!ct_font_desc))
-    return nullptr;
+  లేకపోతే
+    named_instance_సూచీ--;
+  స్వయంచాలక ct_font_desc = (CFArray_Get_లెక్క (desc_array) > (CFIndex) named_instance_సూచీ) ?
+		      (CTFontDescriptorRef) CFArray_Get_విలువ_At_సూచీ (desc_array, (CFIndex) named_instance_సూచీ) : శూన్యసూచిక;
+  ఒకవేళ (unlikely (!ct_font_desc))
+    తిరిగి శూన్యసూచిక;
 
-  hb_cf_ptr_t<CTFontRef> ct_font (CTFontCreateWithFontDescriptor (ct_font_desc, 0, nullptr));
-  if (unlikely (!ct_font))
-    return nullptr;
+  hb_cf_ptr_t<CTFontRef> ct_font (CTFontCreateWithFontDescriptor (ct_font_desc, 0, శూన్యసూచిక));
+  ఒకవేళ (unlikely (!ct_font))
+    తిరిగి శూన్యసూచిక;
 
-  return CTFontCopyGraphicsFont (ct_font, nullptr);
+  తిరిగి CTFontCopyGraphicsFont (ct_font, శూన్యసూచిక);
 }
 
 CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index)
+create_cg_font (hb_blob_t *blob, గుర్తులేని పూర్ణాంకం సూచీ_2)
 {
   hb_blob_make_immutable (blob);
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
-    DEBUG_MSG (CORETEXT, blob, "Empty blob");
+  గుర్తులేని పూర్ణాంకం blob_నిడివి;
+  స్థిరరాశి అక్షరం *blob_దత్తాంశం = hb_blob_get_దత్తాంశం (blob, &blob_నిడివి);
+  ఒకవేళ (unlikely (!blob_నిడివి))
+    DEBUG_సందేశం (CORETEXT, blob, "Empty blob");
 
-  unsigned ttc_index = index & 0xFFFF;
-  unsigned named_instance_index = index >> 16;
+  గుర్తులేని ttc_సూచీ = సూచీ_2 & 0xFFFF;
+  గుర్తులేని named_instance_సూచీ = సూచీ_2 >> 16;
 
-  if (ttc_index != 0)
+  ఒకవేళ (ttc_సూచీ != 0)
   {
-    DEBUG_MSG (CORETEXT, blob, "TTC index %u not supported", ttc_index);
-    return nullptr; // CoreText does not support TTCs
+    DEBUG_సందేశం (CORETEXT, blob, "TTC index %u not supported", ttc_సూచీ);
+    తిరిగి శూన్యసూచిక; // CoreText does not support TTCs
   }
 
-  if (unlikely (named_instance_index != 0))
+  ఒకవేళ (unlikely (named_instance_సూచీ != 0))
   {
     // https://github.com/harfbuzz/harfbuzz/issues/5300
     // https://github.com/harfbuzz/harfbuzz/issues/5354
-#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000) || \
+#ఒకవేళ (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000) || \
     (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101500) || \
     (defined(__TV_OS_VERSION_MIN_REQUIRED) && __TV_OS_VERSION_MIN_REQUIRED >= 110000) || \
     (defined(__WATCH_OS_VERSION_MIN_REQUIRED) && __WATCH_OS_VERSION_MIN_REQUIRED >= 40000) || \
     (defined(__MACCATALYST_VERSION_MIN_REQUIRED) && __MACCATALYST_VERSION_MIN_REQUIRED >= 130100) || \
     (defined(__VISION_OS_VERSION_MIN_REQUIRED) && __VISION_OS_VERSION_MIN_REQUIRED >= 10000)
-    hb_cf_ptr_t<CFDataRef> data (CFDataCreate (kCFAllocatorDefault, (const UInt8 *) blob_data, blob_length));
-    if (data)
+    hb_cf_ptr_t<CFDataRef> దత్తాంశం (CFDataCreate (kCFAllocatorDefault, (స్థిరరాశి UInt8 *) blob_దత్తాంశం, blob_నిడివి));
+    ఒకవేళ (దత్తాంశం)
     {
-      auto ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromData (data);
-      if (likely (ct_font_desc_array))
-	return create_cg_font (ct_font_desc_array, named_instance_index);
+      స్వయంచాలక ct_font_desc_array = CTFont_Manager_Create_Font_Descriptors_From_దత్తాంశం (దత్తాంశం);
+      ఒకవేళ (likely (ct_font_desc_array))
+	తిరిగి create_cg_font (ct_font_desc_array, named_instance_సూచీ);
     }
-#endif
-    return nullptr;
+#అయితే_ముగింపు
+    తిరిగి శూన్యసూచిక;
   }
 
   hb_blob_reference (blob);
-  hb_cf_ptr_t<CGDataProviderRef> provider (CGDataProviderCreateWithData (blob, blob_data, blob_length, &release_data));
-  if (unlikely (!provider))
+  hb_cf_ptr_t<CGDataProviderRef> provider (CGData_Provider_Create_With_దత్తాంశం (blob, blob_దత్తాంశం, blob_నిడివి, &release_దత్తాంశం));
+  ఒకవేళ (unlikely (!provider))
   {
     hb_blob_destroy (blob);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
-  CGFontRef cg_font = CGFontCreateWithDataProvider (provider);
-  if (unlikely (!cg_font))
-    DEBUG_MSG (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
-  return cg_font;
+  CGFontRef cg_font = CGFont_Create_With_దత్తాంశం_Provider (provider);
+  ఒకవేళ (unlikely (!cg_font))
+    DEBUG_సందేశం (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
+  తిరిగి cg_font;
 }
 
 CGFontRef
 create_cg_font (hb_face_t *face)
 {
-  CGFontRef cg_font = nullptr;
-  if (unlikely (!face))
-    return nullptr;
-  if (face->destroy == _hb_cg_font_release)
-    cg_font = face->user_data ? CGFontRetain ((CGFontRef) face->user_data) : nullptr;
-  else
+  CGFontRef cg_font = శూన్యసూచిక;
+  ఒకవేళ (unlikely (!face))
+    తిరిగి శూన్యసూచిక;
+  ఒకవేళ (face->destroy == _hb_cg_font_release)
+    cg_font = face->user_దత్తాంశం ? CGFontRetain ((CGFontRef) face->user_దత్తాంశం) : శూన్యసూచిక;
+  లేకపోతే
   {
     hb_blob_t *blob = hb_face_reference_blob (face);
-    cg_font = create_cg_font (blob, face->index);
+    cg_font = create_cg_font (blob, face->సూచీ_2);
     hb_blob_destroy (blob);
   }
-  return cg_font;
+  తిరిగి cg_font;
 }
 
 CTFontRef
-create_ct_font (CGFontRef cg_font, CGFloat font_size)
+create_ct_font (CGFontRef cg_font, CGFloat font_కొలత)
 {
-  if (unlikely (!cg_font))
-    return nullptr;
+  ఒకవేళ (unlikely (!cg_font))
+    తిరిగి శూన్యసూచిక;
 
   hb_cf_ptr_t<CTFontRef> ct_font;
 
@@ -286,35 +286,35 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
    * using CTFontCreateWithGraphicsFont. The only way of enabling tracking seems
    * to be through the CTFontCreateUIFontForLanguage call. */
   hb_cf_ptr_t<CFStringRef> cg_postscript_name (CGFontCopyPostScriptName (cg_font));
-  if (cg_postscript_name)
+  ఒకవేళ (cg_postscript_name)
   {
-    if (CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSText")) ||
-	CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSDisplay")))
+    ఒకవేళ (CFString_Has_ఉపసర్గ (cg_postscript_name, CFSTR (".SFNSText")) ||
+	CFString_Has_ఉపసర్గ (cg_postscript_name, CFSTR (".SFNSDisplay")))
     {
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1080
+#ఒకవేళ !(defined(లక్ష్యం_OS_IPHONE) && లక్ష్యం_OS_IPHONE) && MAC_OS_X_సంస్కరణ_MIN_REQUIRED < 1080
 # define kCTFontUIFontSystem kCTFontSystemFontType
 # define kCTFontUIFontEmphasizedSystem kCTFontEmphasizedSystemFontType
-#endif
+#అయితే_ముగింపు
       CTFontUIFontType font_type = kCTFontUIFontSystem;
-      if (CFStringHasSuffix (cg_postscript_name, CFSTR ("-Bold")))
+      ఒకవేళ (CFStringHasSuffix (cg_postscript_name, CFSTR ("-Bold")))
 	font_type = kCTFontUIFontEmphasizedSystem;
 
-      ct_font.reset (CTFontCreateUIFontForLanguage (font_type, font_size, nullptr));
-      if (ct_font)
+      ct_font.reset (CTFontCreateUIFontForLanguage (font_type, font_కొలత, శూన్యసూచిక));
+      ఒకవేళ (ct_font)
       {
-	hb_cf_ptr_t<CFStringRef> ct_result_name (CTFontCopyPostScriptName (ct_font));
-	if (!ct_result_name || CFStringCompare (ct_result_name, cg_postscript_name, 0) != kCFCompareEqualTo)
+	hb_cf_ptr_t<CFStringRef> ct_ఫలితం_name (CTFontCopyPostScriptName (ct_font));
+	ఒకవేళ (!ct_ఫలితం_name || CFStringCompare (ct_ఫలితం_name, cg_postscript_name, 0) != k_CFCompare_Equal_గమ్యం)
 	  ct_font.reset ();
       }
     }
   }
 
-  if (!ct_font)
-    ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_size, nullptr, nullptr));
+  ఒకవేళ (!ct_font)
+    ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_కొలత, శూన్యసూచిక, శూన్యసూచిక));
 
-  if (unlikely (!ct_font)) {
-    DEBUG_MSG (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
-    return nullptr;
+  ఒకవేళ (unlikely (!ct_font)) {
+    DEBUG_సందేశం (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
+    తిరిగి శూన్యసూచిక;
   }
 
   /* crbug.com/576941 and crbug.com/625902 and the investigation in the latter
@@ -324,37 +324,37 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
    * reconfiguring the cascade list causes CoreText crashes. For details, see
    * crbug.com/549610 */
   // 0x00070000 stands for "kCTVersionNumber10_10", see CoreText.h
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  if (&CTGetCoreTextVersion != nullptr && CTGetCoreTextVersion() < 0x00070000) {
-#pragma GCC diagnostic pop
+#సూచన GCC diagnostic push
+#సూచన GCC diagnostic ignored "-Wdeprecated-declarations"
+  ఒకవేళ (&CTGet_Core_పాఠ్యం_సంస్కరణ != శూన్యసూచిక && CTGet_Core_పాఠ్యం_సంస్కరణ() < 0x00070000) {
+#సూచన GCC diagnostic తీయి
     hb_cf_ptr_t<CFStringRef> fontName (CTFontCopyPostScriptName (ct_font));
-    bool isEmojiFont = fontName && CFStringCompare (fontName, CFSTR("AppleColorEmoji"), 0) == kCFCompareEqualTo;
-    if (!isEmojiFont)
-      return ct_font.release ();
+    తార్కిక isEmojiFont = fontName && CFStringCompare (fontName, CFSTR("AppleColorEmoji"), 0) == k_CFCompare_Equal_గమ్యం;
+    ఒకవేళ (!isEmojiFont)
+      తిరిగి ct_font.release ();
   }
 
   hb_cf_ptr_t<CFURLRef> original_url;
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+#ఒకవేళ !(defined(లక్ష్యం_OS_IPHONE) && లక్ష్యం_OS_IPHONE) && MAC_OS_X_సంస్కరణ_MIN_REQUIRED < 1060
   ATSFontRef atsFont;
   FSRef fsref;
-  OSStatus status;
-  atsFont = CTFontGetPlatformFont (ct_font, NULL);
-  status = ATSFontGetFileReference (atsFont, &fsref);
-  if (status == noErr)
-    original_url.reset (CFURLCreateFromFSRef (NULL, &fsref));
-#else
+  OSStatus స్థితి_2;
+  atsFont = CTFontGetPlatformFont (ct_font, ఖాళీ);
+  స్థితి_2 = ATSFontGetFileReference (atsFont, &fsref);
+  ఒకవేళ (స్థితి_2 == noErr)
+    original_url.reset (CFURLCreateFromFSRef (ఖాళీ, &fsref));
+#లేకపోతే
   original_url.reset ((CFURLRef) CTFontCopyAttribute (ct_font, kCTFontURLAttribute));
-#endif
+#అయితే_ముగింపు
 
   /* Create font copy with cascade list that has LastResort first; this speeds up CoreText
    * font fallback which we don't need anyway. */
   {
-    hb_cf_ptr_t<CTFontDescriptorRef> last_resort_font_desc (get_last_resort_font_desc ());
-    if (last_resort_font_desc)
+    hb_cf_ptr_t<CTFontDescriptorRef> చివరి_resort_font_desc (get_చివరి_resort_font_desc ());
+    ఒకవేళ (చివరి_resort_font_desc)
     {
-      hb_cf_ptr_t<CTFontRef> new_ct_font (CTFontCreateCopyWithAttributes (ct_font, 0.0, nullptr, last_resort_font_desc));
-      if (new_ct_font)
+      hb_cf_ptr_t<CTFontRef> new_ct_font (CTFont_Create_Copy_With_లక్షణాలు (ct_font, 0.0, శూన్యసూచిక, చివరి_resort_font_desc));
+      ఒకవేళ (new_ct_font)
       {
 	/* The CTFontCreateCopyWithAttributes call fails to stay on the same font
 	 * when reconfiguring the cascade list and may switch to a different font
@@ -366,30 +366,30 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 	 * process in Blink. This can be detected by the new file URL location
 	 * that the newly found font points to. */
 	hb_cf_ptr_t<CFURLRef> new_url;
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
-	atsFont = CTFontGetPlatformFont (new_ct_font, NULL);
-	status = ATSFontGetFileReference (atsFont, &fsref);
-	if (status == noErr)
-	  new_url.reset (CFURLCreateFromFSRef (NULL, &fsref));
-#else
+#ఒకవేళ !(defined(లక్ష్యం_OS_IPHONE) && లక్ష్యం_OS_IPHONE) && MAC_OS_X_సంస్కరణ_MIN_REQUIRED < 1060
+	atsFont = CTFontGetPlatformFont (new_ct_font, ఖాళీ);
+	స్థితి_2 = ATSFontGetFileReference (atsFont, &fsref);
+	ఒకవేళ (స్థితి_2 == noErr)
+	  new_url.reset (CFURLCreateFromFSRef (ఖాళీ, &fsref));
+#లేకపోతే
 	new_url.reset ((CFURLRef) CTFontCopyAttribute (new_ct_font, kCTFontURLAttribute));
-#endif
+#అయితే_ముగింపు
 	// Keep reconfigured font if URL cannot be retrieved (seems to be the case
 	// on Mac OS 10.12 Sierra), speculative fix for crbug.com/625606
-	if (!original_url || !new_url || CFEqual (original_url, new_url)) {
+	ఒకవేళ (!original_url || !new_url || CFEqual (original_url, new_url)) {
 	  ct_font = std::move (new_ct_font);
-	} else {
-	  DEBUG_MSG (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
+	} లేకపోతే {
+	  DEBUG_సందేశం (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
 	}
       }
-      else
-	DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+      లేకపోతే
+	DEBUG_సందేశం (CORETEXT, ct_font, "Font copy with empty cascade list failed");
     }
-    else
-      DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+    లేకపోతే
+      DEBUG_సందేశం (CORETEXT, ct_font, "Font copy with empty cascade list failed");
   }
 
-  return ct_font.release ();
+  తిరిగి ct_font.release ();
 }
 
 /**
@@ -406,12 +406,12 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font)
 {
-  if (unlikely (!cg_font))
-    return hb_face_get_empty ();
+  ఒకవేళ (unlikely (!cg_font))
+    తిరిగి hb_face_get_ఖాళీలు ();
 
-  hb_face_t *face = hb_face_create_for_tables (_hb_cg_reference_table, CGFontRetain (cg_font), _hb_cg_font_release);
-  hb_face_set_get_table_tags_func (face, _hb_cg_get_table_tags, cg_font, nullptr);
-  return face;
+  hb_face_t *face = hb_face_create_for_tables (hb_cg_reference_పట్టిక, CGFontRetain (cg_font), _hb_cg_font_release);
+  hb_face_సమితి_get_పట్టిక_ట్యాగులు_func (face, hb_cg_get_పట్టిక_ట్యాగులు, cg_font, శూన్యసూచిక);
+  తిరిగి face;
 }
 
 /**
@@ -431,43 +431,43 @@ hb_coretext_face_create (CGFontRef cg_font)
  * Since: 10.1.0
  */
 hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index)
+hb_coretext_face_create_from_file_or_fail (స్థిరరాశి అక్షరం   *file_name,
+					   గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
-  unsigned ttc_index = index & 0xFFFF;
-  unsigned named_instance_index = index >> 16;
+  గుర్తులేని ttc_సూచీ = సూచీ_2 & 0xFFFF;
+  గుర్తులేని named_instance_సూచీ = సూచీ_2 >> 16;
 
-  if (ttc_index != 0)
+  ఒకవేళ (ttc_సూచీ != 0)
   {
-    DEBUG_MSG (CORETEXT, nullptr, "TTC index %u not supported", ttc_index);
-    return nullptr; // CoreText does not support TTCs
+    DEBUG_సందేశం (CORETEXT, శూన్యసూచిక, "TTC index %u not supported", ttc_సూచీ);
+    తిరిగి శూన్యసూచిక; // CoreText does not support TTCs
   }
 
-  hb_cf_ptr_t<CFURLRef> url (CFURLCreateFromFileSystemRepresentation (nullptr,
-								      (const UInt8 *) file_name,
-								      strlen (file_name),
-								      false));
-  if (unlikely (!url))
-    return nullptr;
+  hb_cf_ptr_t<CFURLRef> url (CFURLCreateFromFileSystemRepresentation (శూన్యసూచిక,
+								      (స్థిరరాశి UInt8 *) file_name,
+								      అక్షరశ్రేణి_పొడవు (file_name),
+								      అబద్ధం));
+  ఒకవేళ (unlikely (!url))
+    తిరిగి శూన్యసూచిక;
 
-  auto ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromURL (url);
-  if (unlikely (!ct_font_desc_array))
-    return nullptr;
+  స్వయంచాలక ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromURL (url);
+  ఒకవేళ (unlikely (!ct_font_desc_array))
+    తిరిగి శూన్యసూచిక;
 
-  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (ct_font_desc_array, named_instance_index));
-  if (unlikely (!cg_font))
-    return nullptr;
+  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (ct_font_desc_array, named_instance_సూచీ));
+  ఒకవేళ (unlikely (!cg_font))
+    తిరిగి శూన్యసూచిక;
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
-  if (unlikely (hb_face_is_immutable (face)))
+  ఒకవేళ (unlikely (hb_face_is_immutable (face)))
   {
     hb_face_destroy (face);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  hb_face_set_index (face, index);
+  hb_face_సమితి_సూచీ (face, సూచీ_2);
 
-  return face;
+  తిరిగి face;
 }
 
 /**
@@ -488,22 +488,22 @@ hb_coretext_face_create_from_file_or_fail (const char   *file_name,
  */
 hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index)
+					   గుర్తులేని పూర్ణాంకం  సూచీ_2)
 {
-  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (blob, index));
-  if (unlikely (!cg_font))
-    return nullptr;
+  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (blob, సూచీ_2));
+  ఒకవేళ (unlikely (!cg_font))
+    తిరిగి శూన్యసూచిక;
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
-  if (unlikely (hb_face_is_immutable (face)))
+  ఒకవేళ (unlikely (hb_face_is_immutable (face)))
   {
     hb_face_destroy (face);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  hb_face_set_index (face, index);
+  hb_face_సమితి_సూచీ (face, సూచీ_2);
 
-  return face;
+  తిరిగి face;
 }
 
 /**
@@ -520,7 +520,7 @@ hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
 CGFontRef
 hb_coretext_face_get_cg_font (hb_face_t *face)
 {
-  return face ? (CGFontRef) (const void *) face->data.coretext : nullptr;
+  తిరిగి face ? (CGFontRef) (స్థిరరాశి శూన్య *) face->దత్తాంశం.coretext : శూన్యసూచిక;
 }
 
 /**
@@ -542,58 +542,58 @@ hb_coretext_face_get_cg_font (hb_face_t *face)
 hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font)
 {
-  if (unlikely (!ct_font))
-    return hb_font_get_empty ();
+  ఒకవేళ (unlikely (!ct_font))
+    తిరిగి hb_font_get_ఖాళీలు ();
 
-  hb_cf_ptr_t<CGFontRef> cg_font (CTFontCopyGraphicsFont (ct_font, nullptr));
-  if (unlikely (!cg_font))
-    return hb_font_get_empty ();
+  hb_cf_ptr_t<CGFontRef> cg_font (CTFontCopyGraphicsFont (ct_font, శూన్యసూచిక));
+  ఒకవేళ (unlikely (!cg_font))
+    తిరిగి hb_font_get_ఖాళీలు ();
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
   cg_font.reset ();
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  ఒకవేళ (unlikely (hb_object_is_immutable (font)))
+    తిరిగి font;
 
-  hb_font_set_ptem (font, CTFontGetSize (ct_font));
+  hb_font_సమితి_ptem (font, CTFont_Get_కొలత (ct_font));
 
   /* Copy font variations */
   hb_cf_ptr_t<CFDictionaryRef> variations (CTFontCopyVariation (ct_font));
-  if (variations)
+  ఒకవేళ (variations)
   {
 
-    hb_vector_t<hb_variation_t> vars;
-    hb_vector_t<CFTypeRef> keys;
-    hb_vector_t<CFTypeRef> values;
+    hb_సదిశ_t<hb_variation_t> vars;
+    hb_సదిశ_t<CFTypeRef> కీలకాలు;
+    hb_సదిశ_t<CFTypeRef> values;
 
-    CFIndex count = CFDictionaryGetCount (variations);
-    if (likely (vars.alloc_exact (count) && keys.resize_exact (count) && values.resize_exact (count)))
+    CFIndex లెక్క = CFDictionary_Get_లెక్క (variations);
+    ఒకవేళ (likely (vars.alloc_exact (లెక్క) && కీలకాలు.resize_exact (లెక్క) && values.resize_exact (లెక్క)))
     {
       // Fetch them one by one and collect in a vector of our own.
-      CFDictionaryGetKeysAndValues (variations, keys.arrayZ, values.arrayZ);
-      for (CFIndex i = 0; i < count; i++)
+      CFDictionary_Get_కీలకాలు_And_విలువలు (variations, కీలకాలు.arrayZ, values.arrayZ);
+      కొరకు (CFIndex i = 0; i < లెక్క; i++)
       {
-	int tag;
-	float value;
-	CFNumberGetValue ((CFNumberRef) keys.arrayZ[i], kCFNumberIntType, &tag);
-	CFNumberGetValue ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
+	పూర్ణాంకం ట్యాగ్_2;
+	దశాంశం value;
+	CFNumber_Get_విలువ ((CFNumberRef) కీలకాలు.arrayZ[i], kCFNumberIntType, &ట్యాగ్_2);
+	CFNumber_Get_విలువ ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
 
-	hb_variation_t var = {(hb_tag_t) tag, value};
+	hb_variation_t var = {(hb_ట్యాగ్_t) ట్యాగ్_2, value};
 	vars.push (var);
       }
-      hb_font_set_variations (font, vars.arrayZ, vars.length);
+      hb_font_సమితి_variations (font, vars.arrayZ, vars.నిడివి);
     }
   }
 
   /* Let there be dragons here... */
-  font->data.coretext.cmpexch (nullptr, (hb_coretext_font_data_t *) CFRetain (ct_font));
+  font->దత్తాంశం.coretext.cmpexch (శూన్యసూచిక, (hb_coretext_font_దత్తాంశం_t *) CFRetain (ct_font));
 
   // https://github.com/harfbuzz/harfbuzz/pull/4895#issuecomment-2408471254
   //hb_coretext_font_set_funcs (font);
 
-  return font;
+  తిరిగి font;
 }
 
 /**
@@ -610,8 +610,8 @@ hb_coretext_font_create (CTFontRef ct_font)
 CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font)
 {
-  return font ? (CTFontRef) (const void *) font->data.coretext : nullptr;
+  తిరిగి font ? (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext : శూన్యసూచిక;
 }
 
 
-#endif
+#అయితే_ముగింపు

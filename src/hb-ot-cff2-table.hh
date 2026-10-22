@@ -24,576 +24,576 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF2_TABLE_HH
-#define HB_OT_CFF2_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_CFF2_పట్టిక_HH
+#నిర్వచించు HB_OT_CFF2_పట్టిక_HH
 
-#include "hb-ot-cff-common.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
+#అన్తర్భావ "hb-ot-cff-common.hh"
+#అన్తర్భావ "hb-subset-cff-common.hh"
+#అన్తర్భావ "hb-draw.hh"
+#అన్తర్భావ "hb-paint.hh"
 
-namespace CFF {
+నామాకాశ CFF {
 
 /*
  * CFF2 -- Compact Font Format (CFF) Version 2
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cff2
  */
-#define HB_OT_TAG_CFF2 HB_TAG('C','F','F','2')
+#నిర్వచించు HB_OT_ట్యాగ్_CFF2 HB_ట్యాగ్('C','F','F','2')
 
-typedef CFF2Index         CFF2CharStrings;
-typedef Subrs<HBUINT32>   CFF2Subrs;
+రకనిర్వచనం CFF2_సూచీ         CFF2_Char_అక్షరశ్రేణులు;
+రకనిర్వచనం Subrs<HBUINT32>   CFF2Subrs;
 
-typedef FDSelect3_4<HBUINT32, HBUINT16> FDSelect4;
-typedef FDSelect3_4_Range<HBUINT32, HBUINT16> FDSelect4_Range;
+రకనిర్వచనం FDSelect3_4<HBUINT32, HBUINT16> FDSelect4;
+రకనిర్వచనం FDSelect3_4_Range<HBUINT32, HBUINT16> FDSelect4_Range;
 
-struct CFF2FDSelect
+నిర్మాణం CFF2FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const CFF2FDSelect &src, unsigned int num_glyphs)
+  తార్కిక serialize (hb_serialize_context_t *c, స్థిరరాశి CFF2FDSelect &src, గుర్తులేని పూర్ణాంకం అంకె_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    CFF2FDSelect *dest = c->allocate_size<CFF2FDSelect> (size);
-    if (unlikely (!dest)) return_trace (false);
-    hb_memcpy (dest, &src, size);
-    return_trace (true);
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని పూర్ణాంకం కొలత = src.get_కొలత (అంకె_glyphs);
+    CFF2FDSelect *dest = c->allocate_కొలత<CFF2FDSelect> (కొలత);
+    ఒకవేళ (unlikely (!dest)) return_trace (అబద్ధం);
+    hb_memcpy (dest, &src, కొలత);
+    return_trace (నిజం);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_కొలత (గుర్తులేని పూర్ణాంకం అంకె_glyphs) స్థిరరాశి
   {
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return format.static_size + u.format0.get_size (num_glyphs);
-    case 3: hb_barrier (); return format.static_size + u.format3.get_size ();
-    case 4: hb_barrier (); return format.static_size + u.format4.get_size ();
-    default:return 0;
+    స్థితి 0: hb_barrier (); తిరిగి format.static_కొలత + u.format0.get_కొలత (అంకె_glyphs);
+    స్థితి 3: hb_barrier (); తిరిగి format.static_కొలత + u.format3.get_కొలత ();
+    స్థితి 4: hb_barrier (); తిరిగి format.static_కొలత + u.format4.get_కొలత ();
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  hb_codepoint_t get_fd (hb_codepoint_t glyph) const
+  hb_codepoint_t get_fd (hb_codepoint_t glyph) స్థిరరాశి
   {
-    if (this == &Null (CFF2FDSelect))
-      return 0;
+    ఒకవేళ (ఇది == &Null (CFF2FDSelect))
+      తిరిగి 0;
 
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    case 4: hb_barrier (); return u.format4.get_fd (glyph);
-    default:return 0;
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_fd (glyph);
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_fd (glyph);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.get_fd (glyph);
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int charstring_count = HB_CODEPOINT_INVALID) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, గుర్తులేని పూర్ణాంకం fdcount,
+                 గుర్తులేని పూర్ణాంకం charstring_లెక్క = HB_CODEPOINT_INVALID) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది)))
+      return_trace (అబద్ధం);
     hb_barrier ();
 
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount, charstring_count));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount, charstring_count));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c, fdcount, charstring_count));
-    default:return_trace (false);
+    స్థితి 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount, charstring_లెక్క));
+    స్థితి 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount, charstring_లెక్క));
+    స్థితి 4: hb_barrier (); return_trace (u.format4.sanitize (c, fdcount, charstring_లెక్క));
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
   HBUINT8	format;
-  union {
+  సంఘం {
   FDSelect0	format0;
   FDSelect3	format3;
   FDSelect4	format4;
   } u;
-  public:
-  DEFINE_SIZE_MIN (2);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (2);
 };
 
-struct CFF2ItemVariationStore
+నిర్మాణం CFF2_అంశం_Variation_Store
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  c->check_range (&varStore, size) &&
+		  c->check_range (&varStore, కొలత) &&
 		  varStore.sanitize (c));
   }
 
-  bool serialize (hb_serialize_context_t *c, const CFF2ItemVariationStore *varStore)
+  తార్కిక serialize (hb_serialize_context_t *c, స్థిరరాశి CFF2_అంశం_Variation_Store *varStore)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size_ = varStore->get_size ();
-    CFF2ItemVariationStore *dest = c->allocate_size<CFF2ItemVariationStore> (size_);
-    if (unlikely (!dest)) return_trace (false);
-    hb_memcpy (dest, varStore, size_);
-    return_trace (true);
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని పూర్ణాంకం కొలత_3 = varStore->get_కొలత ();
+    CFF2_అంశం_Variation_Store *dest = c->allocate_కొలత<CFF2_అంశం_Variation_Store> (కొలత_3);
+    ఒకవేళ (unlikely (!dest)) return_trace (అబద్ధం);
+    hb_memcpy (dest, varStore, కొలత_3);
+    return_trace (నిజం);
   }
 
-  size_t get_size () const { return HBUINT16::static_size + size; }
+  size_t get_కొలత () స్థిరరాశి { తిరిగి HBUINT16::static_కొలత + కొలత; }
 
-  HBUINT16	size;
-  ItemVariationStore  varStore;
+  HBUINT16	కొలత;
+  అంశం_Variation_Store  varStore;
 
-  DEFINE_SIZE_MIN (2 + ItemVariationStore::min_size);
+  DEFINE_కొలత_MIN (2 + అంశం_Variation_Store::min_కొలత);
 };
 
-struct cff2_top_dict_values_t : top_dict_values_t<>
+నిర్మాణం cff2_శిఖరం_dict_విలువలు_t : శిఖరం_dict_విలువలు_t<>
 {
-  void init ()
+  శూన్య init ()
   {
-    top_dict_values_t<>::init ();
-    vstoreOffset = 0;
-    FDSelectOffset = 0;
+    శిఖరం_dict_విలువలు_t<>::init ();
+    vstore_స్థానభ్రంశం = 0;
+    FDSelect_స్థానభ్రంశం = 0;
   }
-  void fini () { top_dict_values_t<>::fini (); }
+  శూన్య fini () { శిఖరం_dict_విలువలు_t<>::fini (); }
 
-  int  vstoreOffset;
-  int  FDSelectOffset;
+  పూర్ణాంకం  vstore_స్థానభ్రంశం;
+  పూర్ణాంకం  FDSelect_స్థానభ్రంశం;
 };
 
-struct cff2_top_dict_opset_t : top_dict_opset_t<>
+నిర్మాణం cff2_శిఖరం_dict_opset_t : శిఖరం_dict_opset_t<>
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff2_top_dict_values_t& dictval)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, అంకె_interp_env_t& env, cff2_శిఖరం_dict_విలువలు_t& dictval)
   {
-    switch (op) {
-      case OpCode_FontMatrix:
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_Font_మాతృక:
 	{
 	  dict_val_t val;
 	  val.init ();
-	  dictval.add_op (op, env.str_ref);
-	  env.clear_args ();
+	  dictval.కూడు_op (op, env.str_ref);
+	  env.clear_వాదనలు ();
 	}
-	break;
+	ఆపు;
 
-      case OpCode_vstore:
-	dictval.vstoreOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FDSelect:
-	dictval.FDSelectOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+      స్థితి Op_సంకేతం_vstore:
+	dictval.vstore_స్థానభ్రంశం = env.arg_దొంతర.తీయి_int ();
+	env.clear_వాదనలు ();
+	ఆపు;
+      స్థితి Op_సంకేతం_FDSelect:
+	dictval.FDSelect_స్థానభ్రంశం = env.arg_దొంతర.తీయి_int ();
+	env.clear_వాదనలు ();
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	SUPER::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
+	ఒకవేళ (!env.arg_దొంతర.is_empty ()) తిరిగి;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ఒకవేళ (unlikely (env.లోపల_error ())) తిరిగి;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.కూడు_op (op, env.str_ref);
   }
 
-  typedef top_dict_opset_t<> SUPER;
+  రకనిర్వచనం శిఖరం_dict_opset_t<> SUPER;
 };
 
-struct cff2_font_dict_values_t : dict_values_t<op_str_t>
+నిర్మాణం cff2_font_dict_విలువలు_t : dict_విలువలు_t<op_str_t>
 {
-  void init ()
+  శూన్య init ()
   {
-    dict_values_t<op_str_t>::init ();
-    privateDictInfo.init ();
+    dict_విలువలు_t<op_str_t>::init ();
+    వ్యక్తిగత_Dict_Info.init ();
   }
-  void fini () { dict_values_t<op_str_t>::fini (); }
+  శూన్య fini () { dict_విలువలు_t<op_str_t>::fini (); }
 
-  table_info_t    privateDictInfo;
+  పట్టిక_info_t    వ్యక్తిగత_Dict_Info;
 };
 
-struct cff2_font_dict_opset_t : dict_opset_t
+నిర్మాణం cff2_font_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff2_font_dict_values_t& dictval)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, అంకె_interp_env_t& env, cff2_font_dict_విలువలు_t& dictval)
   {
-    switch (op) {
-      case OpCode_Private:
-	dictval.privateDictInfo.offset = env.argStack.pop_uint ();
-	dictval.privateDictInfo.size = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_వ్యక్తిగత:
+	dictval.వ్యక్తిగత_Dict_Info.స్థానభ్రంశం = env.arg_దొంతర.తీయి_uint ();
+	dictval.వ్యక్తిగత_Dict_Info.కొలత = env.arg_దొంతర.తీయి_uint ();
+	env.clear_వాదనలు ();
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	SUPER::process_op (op, env);
-	if (!env.argStack.is_empty ())
-	  return;
+	ఒకవేళ (!env.arg_దొంతర.is_empty ())
+	  తిరిగి;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ఒకవేళ (unlikely (env.లోపల_error ())) తిరిగి;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.కూడు_op (op, env.str_ref);
   }
 
-  private:
-  typedef dict_opset_t SUPER;
+  అంతరంగ:
+  రకనిర్వచనం dict_opset_t SUPER;
 };
 
-template <typename VAL>
-struct cff2_private_dict_values_base_t : dict_values_t<VAL>
+మూస <రకం_పేరు VAL>
+నిర్మాణం cff2_వ్యక్తిగత_dict_విలువలు_పునాది_t : dict_విలువలు_t<VAL>
 {
-  void init ()
+  శూన్య init ()
   {
-    dict_values_t<VAL>::init ();
-    subrsOffset = 0;
+    dict_విలువలు_t<VAL>::init ();
+    subrs_స్థానభ్రంశం = 0;
     localSubrs = &Null (CFF2Subrs);
     ivs = 0;
   }
-  void fini () { dict_values_t<VAL>::fini (); }
+  శూన్య fini () { dict_విలువలు_t<VAL>::fini (); }
 
-  int                subrsOffset;
-  const CFF2Subrs   *localSubrs;
-  unsigned int      ivs;
+  పూర్ణాంకం                subrs_స్థానభ్రంశం;
+  స్థిరరాశి CFF2Subrs   *localSubrs;
+  గుర్తులేని పూర్ణాంకం      ivs;
 };
 
-typedef cff2_private_dict_values_base_t<op_str_t> cff2_private_dict_values_subset_t;
-typedef cff2_private_dict_values_base_t<num_dict_val_t> cff2_private_dict_values_t;
+రకనిర్వచనం cff2_వ్యక్తిగత_dict_విలువలు_పునాది_t<op_str_t> cff2_వ్యక్తిగత_dict_విలువలు_subset_t;
+రకనిర్వచనం cff2_వ్యక్తిగత_dict_విలువలు_పునాది_t<అంకె_dict_val_t> cff2_వ్యక్తిగత_dict_విలువలు_t;
 
-struct cff2_priv_dict_interp_env_t : num_interp_env_t
+నిర్మాణం cff2_priv_dict_interp_env_t : అంకె_interp_env_t
 {
-  cff2_priv_dict_interp_env_t (const hb_ubytes_t &str) :
-    num_interp_env_t (str) {}
+  cff2_priv_dict_interp_env_t (స్థిరరాశి hb_ubytes_t &str) :
+    అంకె_interp_env_t (str) {}
 
-  void process_vsindex ()
+  శూన్య process_vsindex ()
   {
-    if (likely (!seen_vsindex))
+    ఒకవేళ (likely (!చూసిన_vsindex))
     {
-      set_ivs (argStack.pop_uint ());
+      సమితి_ivs (arg_దొంతర.తీయి_uint ());
     }
-    seen_vsindex = true;
+    చూసిన_vsindex = నిజం;
   }
 
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  గుర్తులేని పూర్ణాంకం get_ivs () స్థిరరాశి { తిరిగి ivs; }
+  శూన్య	 సమితి_ivs (గుర్తులేని పూర్ణాంకం ivs_) { ivs = ivs_; }
 
-  protected:
-  unsigned int  ivs = 0;
-  bool	  seen_vsindex = false;
+  రక్షిత:
+  గుర్తులేని పూర్ణాంకం  ivs = 0;
+  తార్కిక	  చూసిన_vsindex = అబద్ధం;
 };
 
-struct cff2_private_dict_opset_t : dict_opset_t
+నిర్మాణం cff2_వ్యక్తిగత_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_dict_values_t& dictval)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, cff2_priv_dict_interp_env_t& env, cff2_వ్యక్తిగత_dict_విలువలు_t& dictval)
   {
-    num_dict_val_t val;
+    అంకె_dict_val_t val;
     val.init ();
 
-    switch (op) {
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ExpansionFactor:
-      case OpCode_LanguageGroup:
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-	env.clear_args ();
-	break;
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_vsindexdict:
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_Std_HW:
+      స్థితి Op_సంకేతం_Std_VW:
+      స్థితి Op_సంకేతం_Blue_Scale:
+      స్థితి Op_సంకేతం_Blue_జరుపు:
+      స్థితి Op_సంకేతం_Blue_Fuzz:
+      స్థితి Op_సంకేతం_Expansion_గుణకం:
+      స్థితి Op_సంకేతం_Language_సమూహం:
+      స్థితి Op_సంకేతం_Blue_విలువలు:
+      స్థితి Op_సంకేతం_Other_Blues:
+      స్థితి Op_సంకేతం_Family_Blues:
+      స్థితి Op_సంకేతం_Family_Other_Blues:
+      స్థితి Op_సంకేతం_Stem_Snap_H:
+      స్థితి Op_సంకేతం_Stem_Snap_V:
+	env.clear_వాదనలు ();
+	ఆపు;
+      స్థితి Op_సంకేతం_Subrs:
+	dictval.subrs_స్థానభ్రంశం = env.arg_దొంతర.తీయి_int ();
+	env.clear_వాదనలు ();
+	ఆపు;
+      స్థితి Op_సంకేతం_vsindexdict:
 	env.process_vsindex ();
 	dictval.ivs = env.get_ivs ();
-	env.clear_args ();
-	break;
-      case OpCode_blenddict:
+	env.clear_వాదనలు ();
+	ఆపు;
+      స్థితి Op_సంకేతం_blenddict:
         /* Hint values are ignored here. Discard each group so raw operands
          * from successive blends cannot overflow the stack. */
-        env.clear_args ();
-	break;
+        env.clear_వాదనలు ();
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ఒకవేళ (!env.arg_దొంతర.is_empty ()) తిరిగి;
+	ఆపు;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ఒకవేళ (unlikely (env.లోపల_error ())) తిరిగి;
 
-    dictval.add_op (op, env.str_ref, val);
+    dictval.కూడు_op (op, env.str_ref, val);
   }
 };
 
-struct cff2_private_dict_opset_subset_t : dict_opset_t
+నిర్మాణం cff2_వ్యక్తిగత_dict_opset_subset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, cff2_priv_dict_interp_env_t& env, cff2_private_dict_values_subset_t& dictval)
+  స్థిర శూన్య process_op (op_సంకేతం_t op, cff2_priv_dict_interp_env_t& env, cff2_వ్యక్తిగత_dict_విలువలు_subset_t& dictval)
   {
-    switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	env.clear_args ();
-	break;
+    ఎంపిక (op) {
+      స్థితి Op_సంకేతం_Blue_విలువలు:
+      స్థితి Op_సంకేతం_Other_Blues:
+      స్థితి Op_సంకేతం_Family_Blues:
+      స్థితి Op_సంకేతం_Family_Other_Blues:
+      స్థితి Op_సంకేతం_Std_HW:
+      స్థితి Op_సంకేతం_Std_VW:
+      స్థితి Op_సంకేతం_Blue_Scale:
+      స్థితి Op_సంకేతం_Blue_జరుపు:
+      స్థితి Op_సంకేతం_Blue_Fuzz:
+      స్థితి Op_సంకేతం_Stem_Snap_H:
+      స్థితి Op_సంకేతం_Stem_Snap_V:
+      స్థితి Op_సంకేతం_Language_సమూహం:
+      స్థితి Op_సంకేతం_Expansion_గుణకం:
+	env.clear_వాదనలు ();
+	ఆపు;
 
-      case OpCode_blenddict:
-	env.clear_args ();
-	return;
+      స్థితి Op_సంకేతం_blenddict:
+	env.clear_వాదనలు ();
+	తిరిగి;
 
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+      స్థితి Op_సంకేతం_Subrs:
+	dictval.subrs_స్థానభ్రంశం = env.arg_దొంతర.తీయి_int ();
+	env.clear_వాదనలు ();
+	ఆపు;
 
-      case OpCode_vsindexdict:
+      స్థితి Op_సంకేతం_vsindexdict:
 	env.process_vsindex ();
 	dictval.ivs = env.get_ivs ();
-	env.clear_args ();
-	break;
+	env.clear_వాదనలు ();
+	ఆపు;
 
-      default:
+      అప్రమేయ:
 	SUPER::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	ఒకవేళ (!env.arg_దొంతర.is_empty ()) తిరిగి;
+	ఆపు;
     }
 
-    if (unlikely (env.in_error ())) return;
+    ఒకవేళ (unlikely (env.లోపల_error ())) తిరిగి;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.కూడు_op (op, env.str_ref);
   }
 
-  private:
-  typedef dict_opset_t SUPER;
+  అంతరంగ:
+  రకనిర్వచనం dict_opset_t SUPER;
 };
 
-typedef dict_interpreter_t<cff2_top_dict_opset_t, cff2_top_dict_values_t> cff2_top_dict_interpreter_t;
-typedef dict_interpreter_t<cff2_font_dict_opset_t, cff2_font_dict_values_t> cff2_font_dict_interpreter_t;
+రకనిర్వచనం dict_interpreter_t<cff2_శిఖరం_dict_opset_t, cff2_శిఖరం_dict_విలువలు_t> cff2_శిఖరం_dict_interpreter_t;
+రకనిర్వచనం dict_interpreter_t<cff2_font_dict_opset_t, cff2_font_dict_విలువలు_t> cff2_font_dict_interpreter_t;
 
-struct CFF2FDArray : FDArray<HBUINT32>
+నిర్మాణం CFF2FDArray : FDArray<HBUINT32>
 {
   /* FDArray::serialize does not compile without this partial specialization */
-  template <typename ITER, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT32>::serialize<cff2_font_dict_values_t, table_info_t> (c, it, opszr); }
+  మూస <రకం_పేరు ITER, రకం_పేరు OP_SERIALIZER>
+  తార్కిక serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
+  { తిరిగి FDArray<HBUINT32>::serialize<cff2_font_dict_విలువలు_t, పట్టిక_info_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
 
-namespace OT {
+నామాకాశ OT {
 
-using namespace CFF;
+ఉపయోగించి నామాకాశ CFF;
 
-struct cff2
+నిర్మాణం cff2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CFF2;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_CFF2;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  likely (version.major == 2));
+		  likely (సంస్కరణ.major == 2));
   }
 
-  template <typename PRIVOPSET, typename PRIVDICTVAL>
-  struct accelerator_templ_t
+  మూస <రకం_పేరు PRIVOPSET, రకం_పేరు PRIVDICTVAL>
+  నిర్మాణం accelerator_templ_t
   {
-    static constexpr hb_tag_t tableTag = cff2::tableTag;
+    స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = cff2::పట్టిక_ట్యాగ్;
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      ఒకవేళ (!face) తిరిగి;
 
-      topDict.init ();
+      శిఖరం_Dict_2.init ();
       fontDicts.init ();
-      privateDicts.init ();
+      వ్యక్తిగత_Dicts.init ();
 
-      this->blob = sc.reference_table<cff2> (face);
+      ఇది->blob = sc.reference_పట్టిక<cff2> (face);
 
       /* setup for run-time sanitization */
-      sc.init (this->blob);
-      sc.start_processing ();
+      sc.init (ఇది->blob);
+      sc.ప్రారంభం_processing ();
 
-      const OT::cff2 *cff2 = this->blob->template as<OT::cff2> ();
+      స్థిరరాశి OT::cff2 *cff2 = ఇది->blob->మూస as<OT::cff2> ();
 
-      if (cff2 == &Null (OT::cff2))
-        goto fail;
+      ఒకవేళ (cff2 == &Null (OT::cff2))
+        వెళ్ళు fail;
 
       { /* parse top dict */
-	hb_ubytes_t topDictStr = (cff2 + cff2->topDict).as_ubytes (cff2->topDictSize);
-	if (unlikely (!topDictStr.sanitize (&sc))) goto fail;
+	hb_ubytes_t శిఖరం_Dict_Str = (cff2 + cff2->శిఖరం_Dict_2).as_ubytes (cff2->శిఖరం_Dict_కొలత);
+	ఒకవేళ (unlikely (!శిఖరం_Dict_Str.sanitize (&sc))) వెళ్ళు fail;
 	hb_barrier ();
-	num_interp_env_t env (topDictStr);
-	cff2_top_dict_interpreter_t top_interp (env);
-	topDict.init ();
-	if (unlikely (!top_interp.interpret (topDict))) goto fail;
+	అంకె_interp_env_t env (శిఖరం_Dict_Str);
+	cff2_శిఖరం_dict_interpreter_t శిఖరం_interp (env);
+	శిఖరం_Dict_2.init ();
+	ఒకవేళ (unlikely (!శిఖరం_interp.interpret (శిఖరం_Dict_2))) వెళ్ళు fail;
       }
 
-      globalSubrs = &StructAtOffsetOrNull<CFF2Subrs> (cff2, cff2->topDict + cff2->topDictSize, sc);
-      varStore = &StructAtOffsetOrNull<CFF2ItemVariationStore> (cff2, topDict.vstoreOffset, sc);
-      charStrings = &StructAtOffsetOrNull<CFF2CharStrings> (cff2, topDict.charStringsOffset, sc);
-      fdArray = &StructAtOffsetOrNull<CFF2FDArray> (cff2, topDict.FDArrayOffset, sc);
+      globalSubrs = &Struct_At_స్థానభ్రంశం_Or_Null<CFF2Subrs> (cff2, cff2->శిఖరం_Dict_2 + cff2->శిఖరం_Dict_కొలత, sc);
+      varStore = &Struct_At_స్థానభ్రంశం_Or_Null<CFF2_అంశం_Variation_Store> (cff2, శిఖరం_Dict_2.vstore_స్థానభ్రంశం, sc);
+      char_అక్షరశ్రేణులు = &Struct_At_స్థానభ్రంశం_Or_Null<CFF2_Char_అక్షరశ్రేణులు> (cff2, శిఖరం_Dict_2.char_అక్షరశ్రేణులు_స్థానభ్రంశం, sc);
+      fdArray = &Struct_At_స్థానభ్రంశం_Or_Null<CFF2FDArray> (cff2, శిఖరం_Dict_2.FDArray_స్థానభ్రంశం, sc);
 
-      if (charStrings == &Null (CFF2CharStrings) ||
+      ఒకవేళ (char_అక్షరశ్రేణులు == &Null (CFF2_Char_అక్షరశ్రేణులు) ||
 	  globalSubrs == &Null (CFF2Subrs) ||
 	  fdArray == &Null (CFF2FDArray))
-        goto fail;
+        వెళ్ళు fail;
 
-      num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
+      అంకె_glyphs = char_అక్షరశ్రేణులు->లెక్క;
+      ఒకవేళ (అంకె_glyphs != sc.get_అంకె_glyphs ())
       {
         /* VARC can define glyphs beyond the CFF2 CharStrings INDEX. */
-        hb_blob_t *varc = face->reference_table (HB_TAG ('V','A','R','C'));
-        bool valid_count = num_glyphs < sc.get_num_glyphs () &&
-                           hb_blob_get_length (varc);
+        hb_blob_t *varc = face->reference_పట్టిక (HB_ట్యాగ్ ('V','A','R','C'));
+        తార్కిక valid_లెక్క = అంకె_glyphs < sc.get_అంకె_glyphs () &&
+                           hb_blob_get_నిడివి (varc);
         hb_blob_destroy (varc);
-        if (!valid_count) goto fail;
+        ఒకవేళ (!valid_లెక్క) వెళ్ళు fail;
       }
 
-      fdSelect = &StructAtOffsetOrNull<CFF2FDSelect> (cff2, topDict.FDSelectOffset, sc,
-                                                   fdArray->count, num_glyphs);
-      if (topDict.FDSelectOffset && fdSelect == &Null (CFF2FDSelect))
-        goto fail;
+      fdSelect = &Struct_At_స్థానభ్రంశం_Or_Null<CFF2FDSelect> (cff2, శిఖరం_Dict_2.FDSelect_స్థానభ్రంశం, sc,
+                                                   fdArray->లెక్క, అంకె_glyphs);
+      ఒకవేళ (శిఖరం_Dict_2.FDSelect_స్థానభ్రంశం && fdSelect == &Null (CFF2FDSelect))
+        వెళ్ళు fail;
 
-      fdCount = fdArray->count;
-      if (!privateDicts.resize (fdCount))
-        goto fail;
+      fd_లెక్క = fdArray->లెక్క;
+      ఒకవేళ (!వ్యక్తిగత_Dicts.resize (fd_లెక్క))
+        వెళ్ళు fail;
 
       /* parse font dicts and gather private dicts */
-      for (unsigned int i = 0; i < fdCount; i++)
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < fd_లెక్క; i++)
       {
-	const hb_ubytes_t fontDictStr = (*fdArray)[i];
-	if (unlikely (!fontDictStr.sanitize (&sc))) goto fail;
+	స్థిరరాశి hb_ubytes_t fontDictStr = (*fdArray)[i];
+	ఒకవేళ (unlikely (!fontDictStr.sanitize (&sc))) వెళ్ళు fail;
 	hb_barrier ();
-	cff2_font_dict_values_t  *font;
-	num_interp_env_t env (fontDictStr);
+	cff2_font_dict_విలువలు_t  *font;
+	అంకె_interp_env_t env (fontDictStr);
 	cff2_font_dict_interpreter_t font_interp (env);
 	font = fontDicts.push ();
-	if (unlikely (font == &Crap (cff2_font_dict_values_t))) goto fail;
+	ఒకవేళ (unlikely (font == &Crap (cff2_font_dict_విలువలు_t))) వెళ్ళు fail;
 	font->init ();
-	if (unlikely (!font_interp.interpret (*font))) goto fail;
+	ఒకవేళ (unlikely (!font_interp.interpret (*font))) వెళ్ళు fail;
 
-	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff2, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (unlikely (font->privateDictInfo.size &&
-		      privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
+	స్థిరరాశి hb_ubytes_t privDictStr = Struct_At_స్థానభ్రంశం_Or_Null<UnsizedByteStr> (cff2, font->వ్యక్తిగత_Dict_Info.స్థానభ్రంశం, sc, font->వ్యక్తిగత_Dict_Info.కొలత).as_ubytes (font->వ్యక్తిగత_Dict_Info.కొలత);
+	ఒకవేళ (unlikely (font->వ్యక్తిగత_Dict_Info.కొలత &&
+		      privDictStr == (స్థిరరాశి గుర్తులేని అక్షరం *) &Null (UnsizedByteStr))) వెళ్ళు fail;
 	cff2_priv_dict_interp_env_t env2 (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL, cff2_priv_dict_interp_env_t> priv_interp (env2);
-	privateDicts[i].init ();
-	if (unlikely (!priv_interp.interpret (privateDicts[i]))) goto fail;
+	వ్యక్తిగత_Dicts[i].init ();
+	ఒకవేళ (unlikely (!priv_interp.interpret (వ్యక్తిగత_Dicts[i]))) వెళ్ళు fail;
 
-	privateDicts[i].localSubrs = &StructAtOffsetOrNull<CFF2Subrs> (&privDictStr[0], privateDicts[i].subrsOffset, sc);
+	వ్యక్తిగత_Dicts[i].localSubrs = &Struct_At_స్థానభ్రంశం_Or_Null<CFF2Subrs> (&privDictStr[0], వ్యక్తిగత_Dicts[i].subrs_స్థానభ్రంశం, sc);
       }
 
-      return;
+      తిరిగి;
 
       fail:
         _fini ();
     }
     ~accelerator_templ_t () { _fini (); }
-    void _fini ()
+    శూన్య _fini ()
     {
-      sc.end_processing ();
-      topDict.fini ();
+      sc.చివర_processing ();
+      శిఖరం_Dict_2.fini ();
       fontDicts.fini ();
-      privateDicts.fini ();
+      వ్యక్తిగత_Dicts.fini ();
       hb_blob_destroy (blob);
-      blob = nullptr;
+      blob = శూన్యసూచిక;
 
-      auto *scalars = cached_scalars_vector.get_acquire ();
-      if (scalars && cached_scalars_vector.cmpexch (scalars, nullptr))
+      స్వయంచాలక *scalars = cached_scalars_సదిశ.get_acquire ();
+      ఒకవేళ (scalars && cached_scalars_సదిశ.cmpexch (scalars, శూన్యసూచిక))
       {
 	scalars->fini ();
 	hb_free (scalars);
       }
     }
 
-    hb_vector_t<uint16_t> *create_glyph_to_sid_map () const
+    hb_సదిశ_t<uint16_t> *create_glyph_గమ్యం_sid_map () స్థిరరాశి
     {
-      return nullptr;
+      తిరిగి శూన్యసూచిక;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () స్థిరరాశి { తిరిగి blob; }
 
-    bool is_valid () const { return blob; }
+    తార్కిక is_valid () స్థిరరాశి { తిరిగి blob; }
 
-    protected:
+    రక్షిత:
     hb_sanitize_context_t	sc;
 
-    public:
-    hb_blob_t			*blob = nullptr;
-    cff2_top_dict_values_t	topDict;
-    const CFF2Subrs		*globalSubrs = nullptr;
-    const CFF2ItemVariationStore	*varStore = nullptr;
-    const CFF2CharStrings	*charStrings = nullptr;
-    const CFF2FDArray		*fdArray = nullptr;
-    const CFF2FDSelect		*fdSelect = nullptr;
-    unsigned int		fdCount = 0;
+    బహిరంగ:
+    hb_blob_t			*blob = శూన్యసూచిక;
+    cff2_శిఖరం_dict_విలువలు_t	శిఖరం_Dict_2;
+    స్థిరరాశి CFF2Subrs		*globalSubrs = శూన్యసూచిక;
+    స్థిరరాశి CFF2_అంశం_Variation_Store	*varStore = శూన్యసూచిక;
+    స్థిరరాశి CFF2_Char_అక్షరశ్రేణులు	*char_అక్షరశ్రేణులు = శూన్యసూచిక;
+    స్థిరరాశి CFF2FDArray		*fdArray = శూన్యసూచిక;
+    స్థిరరాశి CFF2FDSelect		*fdSelect = శూన్యసూచిక;
+    గుర్తులేని పూర్ణాంకం		fd_లెక్క = 0;
 
-    hb_vector_t<cff2_font_dict_values_t>     fontDicts;
-    hb_vector_t<PRIVDICTVAL>  privateDicts;
+    hb_సదిశ_t<cff2_font_dict_విలువలు_t>     fontDicts;
+    hb_సదిశ_t<PRIVDICTVAL>  వ్యక్తిగత_Dicts;
 
-    mutable hb_atomic_t<hb_vector_t<float> *> cached_scalars_vector;
+    మార్చదగిన hb_atomic_t<hb_సదిశ_t<దశాంశం> *> cached_scalars_సదిశ;
 
-    unsigned int	      num_glyphs = 0;
+    గుర్తులేని పూర్ణాంకం	      అంకె_glyphs = 0;
   };
 
-  struct accelerator_t : accelerator_templ_t<cff2_private_dict_opset_t, cff2_private_dict_values_t>
+  నిర్మాణం accelerator_t : accelerator_templ_t<cff2_వ్యక్తిగత_dict_opset_t, cff2_వ్యక్తిగత_dict_విలువలు_t>
   {
     accelerator_t (hb_face_t *face) : accelerator_templ_t (face) {}
 
-    HB_INTERNAL bool get_extents (hb_font_t *font,
+    HB_అంతర్గత తార్కిక get_extents (hb_font_t *font,
 				  hb_codepoint_t glyph,
-				  hb_glyph_extents_t *extents) const;
-    HB_INTERNAL bool get_extents_at (hb_font_t *font,
+				  hb_glyph_extents_t *extents) స్థిరరాశి;
+    HB_అంతర్గత తార్కిక get_extents_at (hb_font_t *font,
 				     hb_codepoint_t glyph,
 				     hb_glyph_extents_t *extents,
-				     hb_array_t<const int> coords,
-				     int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const int> coords, int64_t *budget = nullptr) const;
+				     hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+				     int64_t *budget = శూన్యసూచిక) స్థిరరాశి;
+    HB_అంతర్గత తార్కిక get_మార్గం (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = శూన్యసూచిక) స్థిరరాశి;
+    HB_అంతర్గత తార్కిక get_మార్గం_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<స్థిరరాశి పూర్ణాంకం> coords, int64_t *budget = శూన్యసూచిక) స్థిరరాశి;
   };
 
-  struct accelerator_subset_t : accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_values_subset_t>
+  నిర్మాణం accelerator_subset_t : accelerator_templ_t<cff2_వ్యక్తిగత_dict_opset_subset_t, cff2_వ్యక్తిగత_dict_విలువలు_subset_t>
   {
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      ఒకవేళ (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
-    HB_INTERNAL bool subset (hb_subset_context_t *c) const;
-    HB_INTERNAL bool serialize (hb_serialize_context_t *c,
-				struct cff2_subset_plan &plan,
-				hb_array_t<int> normalized_coords) const;
+    HB_అంతర్గత తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి;
+    HB_అంతర్గత తార్కిక serialize (hb_serialize_context_t *c,
+				నిర్మాణం cff2_subset_plan &plan,
+				hb_array_t<పూర్ణాంకం> normalized_coords) స్థిరరాశి;
 
-    mutable CFF::cff_subset_accelerator_t* cff_accelerator = nullptr;
+    మార్చదగిన CFF::cff_subset_accelerator_t* cff_accelerator = శూన్యసూచిక;
 
-    typedef accelerator_templ_t<cff2_private_dict_opset_subset_t, cff2_private_dict_values_subset_t> SUPER;
+    రకనిర్వచనం accelerator_templ_t<cff2_వ్యక్తిగత_dict_opset_subset_t, cff2_వ్యక్తిగత_dict_విలువలు_subset_t> SUPER;
   };
 
-  public:
-  FixedVersion<HBUINT8>		version;	/* Version of CFF2 table. set to 0x0200u */
-  NNOffsetTo<TopDict, HBUINT8>	topDict;	/* headerSize = Offset to Top DICT. */
-  HBUINT16			topDictSize;	/* Top DICT size */
+  బహిరంగ:
+  Fixed_సంస్కరణ<HBUINT8>		సంస్కరణ;	/* Version of CFF2 table. set to 0x0200u */
+  NNOffset_గమ్యం<శిఖరం_Dict, HBUINT8>	శిఖరం_Dict_2;	/* headerSize = Offset to Top DICT. */
+  HBUINT16			శిఖరం_Dict_కొలత;	/* Top DICT size */
 
-  public:
-  DEFINE_SIZE_STATIC (5);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (5);
 };
 
-struct cff2_accelerator_t : cff2::accelerator_t {
+నిర్మాణం cff2_accelerator_t : cff2::accelerator_t {
   cff2_accelerator_t (hb_face_t *face) : cff2::accelerator_t (face) {}
 };
 
-struct cff2_subset_accelerator_t : cff2::accelerator_subset_t {
+నిర్మాణం cff2_subset_accelerator_t : cff2::accelerator_subset_t {
   cff2_subset_accelerator_t (hb_face_t *face) : cff2::accelerator_subset_t (face) {}
 };
 
 } /* namespace OT */
 
-#endif /* HB_OT_CFF2_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_CFF2_TABLE_HH */

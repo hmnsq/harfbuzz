@@ -24,17 +24,17 @@
  * Google Author(s): Rod Sheeter
  */
 
-#ifndef HB_SUBSET_H
-#define HB_SUBSET_H
-#define HB_SUBSET_H_IN
+#నిర్వచితం_కాకపోతే HB_SUBSET_H
+#నిర్వచించు HB_SUBSET_H
+#నిర్వచించు HB_SUBSET_H_లోపల
 
-#include "hb.h"
-#include "hb-ot.h"
-#include "hb-subset-serialize.h"
-#include "hb-subset-depend.h"
-#include "hb-subset-serialize.h"
+#అన్తర్భావ "hb.h"
+#అన్తర్భావ "hb-ot.h"
+#అన్తర్భావ "hb-subset-serialize.h"
+#అన్తర్భావ "hb-subset-depend.h"
+#అన్తర్భావ "hb-subset-serialize.h"
 
-#undef HB_SUBSET_H_IN
+#నిర్వచనం_రద్దు HB_SUBSET_H_లోపల
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * Things that change based on the input. Characters to keep, etc.
  */
 
-typedef struct hb_subset_input_t hb_subset_input_t;
+రకనిర్వచనం నిర్మాణం hb_subset_ఆదానం_t hb_subset_ఆదానం_t;
 
 /**
  * hb_subset_plan_t:
@@ -53,7 +53,7 @@ typedef struct hb_subset_input_t hb_subset_input_t;
  * Such as mappings from the old glyph ids to the new ones in the subset.
  */
 
-typedef struct hb_subset_plan_t hb_subset_plan_t;
+రకనిర్వచనం నిర్మాణం hb_subset_plan_t hb_subset_plan_t;
 
 /**
  * hb_subset_flags_t:
@@ -101,26 +101,26 @@ typedef struct hb_subset_plan_t hb_subset_plan_t;
  *
  * Since: 2.9.0
  **/
-typedef enum { /*< flags >*/
+రకనిర్వచనం గణన { /*< flags >*/
   HB_SUBSET_FLAGS_DEFAULT =		     0x00000000u,
   HB_SUBSET_FLAGS_NO_HINTING =		     0x00000001u,
   HB_SUBSET_FLAGS_RETAIN_GIDS =		     0x00000002u,
   HB_SUBSET_FLAGS_DESUBROUTINIZE =	     0x00000004u,
   HB_SUBSET_FLAGS_NAME_LEGACY =		     0x00000008u,
-  HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG =	     0x00000010u,
+  HB_SUBSET_FLAGS_సమితి_OVERLAPS_FLAG =	     0x00000010u,
   HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED = 0x00000020u,
   HB_SUBSET_FLAGS_NOTDEF_OUTLINE =	     0x00000040u,
-  HB_SUBSET_FLAGS_GLYPH_NAMES =		     0x00000080u,
+  HB_SUBSET_FLAGS_GLYPH_పేర్లు =		     0x00000080u,
   HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES =  0x00000100u,
-  HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE =        0x00000200u,
+  HB_SUBSET_FLAGS_NO_LAYOUT_సంవృతం =        0x00000200u,
   HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS	  =  0x00000400u,
-  HB_SUBSET_FLAGS_NO_BIDI_CLOSURE         =  0x00000800u,
-#ifdef HB_EXPERIMENTAL_API
+  HB_SUBSET_FLAGS_NO_BIDI_సంవృతం         =  0x00000800u,
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
   HB_SUBSET_FLAGS_IFTB_REQUIREMENTS       =  0x00001000u,
-  HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS  =  0x00002000u,
-#endif
+  HB_SUBSET_FLAGS_RETAIN_అంకె_GLYPHS  =  0x00002000u,
+#అయితే_ముగింపు
   HB_SUBSET_FLAGS_DOWNGRADE_CFF2          =  0x00004000u,
-  HB_SUBSET_FLAGS_CFF_IDENTITY_CHARSET    =  0x00008000u,
+  HB_SUBSET_FLAGS_CFF_తటస్థం_CHARSET    =  0x00008000u,
 } hb_subset_flags_t;
 
 /**
@@ -142,113 +142,113 @@ typedef enum { /*< flags >*/
  *
  * Since: 2.9.1
  **/
-typedef enum {
-  HB_SUBSET_SETS_GLYPH_INDEX = 0,
+రకనిర్వచనం గణన {
+  HB_SUBSET_SETS_GLYPH_సూచీ = 0,
   HB_SUBSET_SETS_UNICODE,
-  HB_SUBSET_SETS_NO_SUBSET_TABLE_TAG,
-  HB_SUBSET_SETS_DROP_TABLE_TAG,
+  HB_SUBSET_SETS_NO_SUBSET_పట్టిక_ట్యాగ్,
+  HB_SUBSET_SETS_DROP_పట్టిక_ట్యాగ్,
   HB_SUBSET_SETS_NAME_ID,
   HB_SUBSET_SETS_NAME_LANG_ID,
-  HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
-  HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG,
+  HB_SUBSET_SETS_LAYOUT_FEATURE_ట్యాగ్,
+  HB_SUBSET_SETS_LAYOUT_SCRIPT_ట్యాగ్,
 } hb_subset_sets_t;
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_create_or_fail (void);
+HB_EXTERN hb_subset_ఆదానం_t *
+hb_subset_ఆదానం_create_or_fail (శూన్య);
 
-HB_EXTERN hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input);
+HB_EXTERN hb_subset_ఆదానం_t *
+hb_subset_ఆదానం_reference (hb_subset_ఆదానం_t *ఆదానం);
 
-HB_EXTERN void
-hb_subset_input_destroy (hb_subset_input_t *input);
+HB_EXTERN శూన్య
+hb_subset_ఆదానం_destroy (hb_subset_ఆదానం_t *ఆదానం);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_ఆదానం_సమితి_user_దత్తాంశం (hb_subset_ఆదానం_t  *ఆదానం,
+			       hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+			       శూన్య *		   దత్తాంశం,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace);
 
-HB_EXTERN void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t      *key);
+HB_EXTERN శూన్య *
+hb_subset_ఆదానం_get_user_దత్తాంశం (స్థిరరాశి hb_subset_ఆదానం_t *ఆదానం,
+			       hb_user_దత్తాంశం_కీలకం_t      *కీలకం_2);
 
-HB_EXTERN void
-hb_subset_input_keep_everything (hb_subset_input_t *input);
+HB_EXTERN శూన్య
+hb_subset_ఆదానం_keep_everything (hb_subset_ఆదానం_t *ఆదానం);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input);
+HB_EXTERN hb_సమితి_t *
+hb_subset_ఆదానం_unicode_సమితి (hb_subset_ఆదానం_t *ఆదానం);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input);
+HB_EXTERN hb_సమితి_t *
+hb_subset_ఆదానం_glyph_సమితి (hb_subset_ఆదానం_t *ఆదానం);
 
-HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type);
+HB_EXTERN hb_సమితి_t *
+hb_subset_ఆదానం_సమితి (hb_subset_ఆదానం_t *ఆదానం, hb_subset_sets_t సమితి_type);
 
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input);
+hb_subset_ఆదానం_old_గమ్యం_new_glyph_mapping (hb_subset_ఆదానం_t *ఆదానం);
 
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input);
+hb_subset_ఆదానం_get_flags (hb_subset_ఆదానం_t *ఆదానం);
 
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
-			   unsigned value);
+HB_EXTERN శూన్య
+hb_subset_ఆదానం_సమితి_flags (hb_subset_ఆదానం_t *ఆదానం,
+			   గుర్తులేని విలువ_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_ఆదానం_pin_all_axes_గమ్యం_default (hb_subset_ఆదానం_t  *ఆదానం,
 					 hb_face_t          *face);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_ఆదానం_pin_axis_గమ్యం_default (hb_subset_ఆదానం_t  *ఆదానం,
 				     hb_face_t          *face,
-				     hb_tag_t            axis_tag);
+				     hb_ట్యాగ్_t            axis_ట్యాగ్_2);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_ఆదానం_pin_axis_location (hb_subset_ఆదానం_t  *ఆదానం,
 				   hb_face_t          *face,
-				   hb_tag_t            axis_tag,
-				   float               axis_value);
+				   hb_ట్యాగ్_t            axis_ట్యాగ్_2,
+				   దశాంశం               axis_విలువ);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
-				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value);
+hb_subset_ఆదానం_get_axis_range (hb_subset_ఆదానం_t  *ఆదానం,
+				hb_ట్యాగ్_t            axis_ట్యాగ్_2,
+				దశాంశం              *axis_min_విలువ,
+				దశాంశం              *axis_max_విలువ,
+				దశాంశం              *axis_def_విలువ);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_ఆదానం_సమితి_axis_range (hb_subset_ఆదానం_t  *ఆదానం,
 				hb_face_t          *face,
-				hb_tag_t            axis_tag,
-				float               axis_min_value,
-				float               axis_max_value,
-				float               axis_def_value);
+				hb_ట్యాగ్_t            axis_ట్యాగ్_2,
+				దశాంశం               axis_min_విలువ,
+				దశాంశం               axis_max_విలువ,
+				దశాంశం               axis_def_విలువ);
 
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-				  float *axis_min_value,
-				  float *axis_max_value,
-				  float *axis_def_value);
+hb_subset_axis_range_from_string (స్థిరరాశి అక్షరం *str, పూర్ణాంకం len,
+				  దశాంశం *axis_min_విలువ,
+				  దశాంశం *axis_max_విలువ,
+				  దశాంశం *axis_def_విలువ);
 
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
-				hb_tag_t axis_tag,
-				char *buf,
-				unsigned size);
+HB_EXTERN శూన్య
+hb_subset_axis_range_గమ్యం_string (hb_subset_ఆదానం_t *ఆదానం,
+				hb_ట్యాగ్_t axis_ట్యాగ్_2,
+				అక్షరం *buf,
+				గుర్తులేని కొలత);
 
-#ifdef HB_EXPERIMENTAL_API
+#నిర్వచితమైతే HB_EXPERIMENTAL_API
 HB_EXTERN hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input);
+hb_subset_ఆదానం_గమ్యం_string_or_fail (hb_subset_ఆదానం_t *ఆదానం);
 
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_ఆదానం_override_name_పట్టిక (hb_subset_ఆదానం_t  *ఆదానం,
 				     hb_ot_name_id_t     name_id,
-				     unsigned            platform_id,
-				     unsigned            encoding_id,
-				     unsigned            language_id,
-				     const char         *name_str,
-				     int                 str_len);
+				     గుర్తులేని            platform_id,
+				     గుర్తులేని            encoding_id,
+				     గుర్తులేని            language_id,
+				     స్థిరరాశి అక్షరం         *name_str,
+				     పూర్ణాంకం                 str_len);
 
 
 /*
@@ -256,67 +256,67 @@ hb_subset_input_override_name_table (hb_subset_input_t  *input,
 */
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstring_data (hb_face_t* face, hb_codepoint_t glyph);
+hb_subset_cff_get_charstring_దత్తాంశం (hb_face_t* face, hb_codepoint_t glyph);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstrings_index (hb_face_t* face);
+hb_subset_cff_get_charstrings_సూచీ (hb_face_t* face);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstring_data (hb_face_t* face, hb_codepoint_t glyph);
+hb_subset_cff2_get_charstring_దత్తాంశం (hb_face_t* face, hb_codepoint_t glyph);
 
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstrings_index (hb_face_t* face);
-#endif
+hb_subset_cff2_get_charstrings_సూచీ (hb_face_t* face);
+#అయితే_ముగింపు
 
 HB_EXTERN hb_face_t *
-hb_subset_preprocess (hb_face_t *source);
+hb_subset_preprocess (hb_face_t *ఆధారం);
 
 HB_EXTERN hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input);
+hb_subset_or_fail (hb_face_t *ఆధారం, స్థిరరాశి hb_subset_ఆదానం_t *ఆదానం);
 
 HB_EXTERN hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t                 *face,
-                               const hb_subset_input_t   *input);
+                               స్థిరరాశి hb_subset_ఆదానం_t   *ఆదానం);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_subset_plan_destroy (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_old_గమ్యం_new_glyph_mapping (స్థిరరాశి hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_new_గమ్యం_old_glyph_mapping (స్థిరరాశి hb_subset_plan_t *plan);
 
 HB_EXTERN hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan);
+hb_subset_plan_unicode_గమ్యం_old_glyph_mapping (స్థిరరాశి hb_subset_plan_t *plan);
 
 
 HB_EXTERN hb_subset_plan_t *
 hb_subset_plan_reference (hb_subset_plan_t *plan);
 
 HB_EXTERN hb_bool_t
-hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_subset_plan_సమితి_user_దత్తాంశం (hb_subset_plan_t   *plan,
+                              hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+                              శూన్య               *దత్తాంశం,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace);
 
-HB_EXTERN void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key);
+HB_EXTERN శూన్య *
+hb_subset_plan_get_user_దత్తాంశం (స్థిరరాశి hb_subset_plan_t *plan,
+                              hb_user_దత్తాంశం_కీలకం_t     *కీలకం_2);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ఒకవేళ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_ఆదానం, nullptr);
 HB_DEFINE_VTABLE (subset_plan,  nullptr);
 } // namespace hb
-#endif
+#అయితే_ముగింపు
 
-#endif /* HB_SUBSET_H */
+#అయితే_ముగింపు /* HB_SUBSET_H */

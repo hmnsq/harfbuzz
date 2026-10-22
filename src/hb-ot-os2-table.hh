@@ -25,105 +25,105 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_OS2_TABLE_HH
-#define HB_OT_OS2_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_OS2_పట్టిక_HH
+#నిర్వచించు HB_OT_OS2_పట్టిక_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-os2-unicode-ranges.hh"
-#include "hb-ot-var-mvar-table.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-ot-os2-unicode-ranges.hh"
+#అన్తర్భావ "hb-ot-var-mvar-table.hh"
 
-#include "hb-set.hh"
+#అన్తర్భావ "hb-set.hh"
 
 /*
  * OS/2 and Windows Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/os2
  */
-#define HB_OT_TAG_OS2 HB_TAG('O','S','/','2')
+#నిర్వచించు HB_OT_ట్యాగ్_OS2 HB_ట్యాగ్('O','S','/','2')
 
 
-namespace OT {
+నామాకాశ OT {
 
-struct OS2V1Tail
+నిర్మాణం OS2_V1_తోక
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  public:
-  HBUINT32	ulCodePageRange1;
-  HBUINT32	ulCodePageRange2;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  HBUINT32	ul_సంకేతం_పుట_Range1;
+  HBUINT32	ul_సంకేతం_పుట_Range2;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct OS2V2Tail
+నిర్మాణం OS2_V2_తోక
 {
-  bool has_data () const { return sxHeight || sCapHeight; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి sx_ఎత్తు || s_Cap_ఎత్తు; }
 
-  const OS2V2Tail * operator -> () const { return this; }
-  OS2V2Tail * operator -> () { return this; }
+  స్థిరరాశి OS2_V2_తోక * క్రియాకారకం -> () స్థిరరాశి { తిరిగి ఇది; }
+  OS2_V2_తోక * క్రియాకారకం -> () { తిరిగి ఇది; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  public:
-  HBINT16	sxHeight;
-  HBINT16	sCapHeight;
+  బహిరంగ:
+  HBINT16	sx_ఎత్తు;
+  HBINT16	s_Cap_ఎత్తు;
   HBUINT16	usDefaultChar;
   HBUINT16	usBreakChar;
   HBUINT16	usMaxContext;
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
-struct OS2V5Tail
+నిర్మాణం OS2_V5_తోక
 {
-  inline bool get_optical_size (unsigned int *lower, unsigned int *upper) const
+  అంతఃవరుస తార్కిక get_optical_కొలత (గుర్తులేని పూర్ణాంకం *క్రింది, గుర్తులేని పూర్ణాంకం *పై) స్థిరరాశి
   {
-    unsigned int lower_optical_size = usLowerOpticalPointSize;
-    unsigned int upper_optical_size = usUpperOpticalPointSize;
+    గుర్తులేని పూర్ణాంకం క్రింది_optical_కొలత = us_క్రింది_Optical_బిందువు_కొలత;
+    గుర్తులేని పూర్ణాంకం పై_optical_కొలత = us_పై_Optical_బిందువు_కొలత;
 
     /* Per https://docs.microsoft.com/en-us/typography/opentype/spec/os2#lps */
-    if (lower_optical_size < upper_optical_size &&
-	lower_optical_size >= 1 && lower_optical_size <= 0xFFFE &&
-	upper_optical_size >= 2 && upper_optical_size <= 0xFFFF)
+    ఒకవేళ (క్రింది_optical_కొలత < పై_optical_కొలత &&
+	క్రింది_optical_కొలత >= 1 && క్రింది_optical_కొలత <= 0xFFFE &&
+	పై_optical_కొలత >= 2 && పై_optical_కొలత <= 0xFFFF)
     {
-      *lower = lower_optical_size;
-      *upper = upper_optical_size;
-      return true;
+      *క్రింది = క్రింది_optical_కొలత;
+      *పై = పై_optical_కొలత;
+      తిరిగి నిజం;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  public:
-  HBUINT16	usLowerOpticalPointSize;
-  HBUINT16	usUpperOpticalPointSize;
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  HBUINT16	us_క్రింది_Optical_బిందువు_కొలత;
+  HBUINT16	us_పై_Optical_బిందువు_కొలత;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
-struct OS2
+నిర్మాణం OS2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_OS2;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_OT_ట్యాగ్_OS2;
 
-  bool has_data () const { return usWeightClass || usWidthClass || usFirstCharIndex || usLastCharIndex; }
+  తార్కిక has_దత్తాంశం () స్థిరరాశి { తిరిగి us_బరువు_Class || us_వెడల్పు_Class || us_మొదటి_Char_సూచీ || us_చివరి_Char_సూచీ; }
 
-  const OS2V1Tail &v1 () const { return version >= 1 ? v1X : Null (OS2V1Tail); }
-  const OS2V2Tail &v2 () const { return version >= 2 ? v2X : Null (OS2V2Tail); }
-  const OS2V5Tail &v5 () const { return version >= 5 ? v5X : Null (OS2V5Tail); }
+  స్థిరరాశి OS2_V1_తోక &v1 () స్థిరరాశి { తిరిగి సంస్కరణ >= 1 ? v1X : Null (OS2_V1_తోక); }
+  స్థిరరాశి OS2_V2_తోక &v2 () స్థిరరాశి { తిరిగి సంస్కరణ >= 2 ? v2X : Null (OS2_V2_తోక); }
+  స్థిరరాశి OS2_V5_తోక &v5 () స్థిరరాశి { తిరిగి సంస్కరణ >= 5 ? v5X : Null (OS2_V5_తోక); }
 
-  enum selection_flag_t {
+  గణన selection_flag_t {
     ITALIC		= 1u<<0,
     UNDERSCORE		= 1u<<1,
     NEGATIVE		= 1u<<2,
@@ -136,239 +136,239 @@ struct OS2
     OBLIQUE		= 1u<<9
   };
 
-  bool        is_italic () const { return fsSelection & ITALIC; }
-  bool       is_oblique () const { return fsSelection & OBLIQUE; }
-  bool use_typo_metrics () const { return fsSelection & USE_TYPO_METRICS; }
+  తార్కిక        is_italic () స్థిరరాశి { తిరిగి fsSelection & ITALIC; }
+  తార్కిక       is_oblique () స్థిరరాశి { తిరిగి fsSelection & OBLIQUE; }
+  తార్కిక use_typo_metrics () స్థిరరాశి { తిరిగి fsSelection & USE_TYPO_METRICS; }
 
-  enum width_class_t {
+  గణన వెడల్పు_class_t {
     FWIDTH_ULTRA_CONDENSED	= 1, /* 50% */
     FWIDTH_EXTRA_CONDENSED	= 2, /* 62.5% */
     FWIDTH_CONDENSED		= 3, /* 75% */
     FWIDTH_SEMI_CONDENSED	= 4, /* 87.5% */
-    FWIDTH_NORMAL		= 5, /* 100% */
+    FWIDTH_సాధారణ		= 5, /* 100% */
     FWIDTH_SEMI_EXPANDED	= 6, /* 112.5% */
     FWIDTH_EXPANDED		= 7, /* 125% */
     FWIDTH_EXTRA_EXPANDED	= 8, /* 150% */
     FWIDTH_ULTRA_EXPANDED	= 9  /* 200% */
   };
 
-  float get_width () const
+  దశాంశం get_వెడల్పు () స్థిరరాశి
   {
-    switch (usWidthClass) {
-    case FWIDTH_ULTRA_CONDENSED:return 50.f;
-    case FWIDTH_EXTRA_CONDENSED:return 62.5f;
-    case FWIDTH_CONDENSED:	return 75.f;
-    case FWIDTH_SEMI_CONDENSED:	return 87.5f;
-    default:
-    case FWIDTH_NORMAL:		return 100.f;
-    case FWIDTH_SEMI_EXPANDED:	return 112.5f;
-    case FWIDTH_EXPANDED:	return 125.f;
-    case FWIDTH_EXTRA_EXPANDED:	return 150.f;
-    case FWIDTH_ULTRA_EXPANDED:	return 200.f;
+    ఎంపిక (us_వెడల్పు_Class) {
+    స్థితి FWIDTH_ULTRA_CONDENSED:తిరిగి 50.f;
+    స్థితి FWIDTH_EXTRA_CONDENSED:తిరిగి 62.5f;
+    స్థితి FWIDTH_CONDENSED:	తిరిగి 75.f;
+    స్థితి FWIDTH_SEMI_CONDENSED:	తిరిగి 87.5f;
+    అప్రమేయ:
+    స్థితి FWIDTH_సాధారణ:		తిరిగి 100.f;
+    స్థితి FWIDTH_SEMI_EXPANDED:	తిరిగి 112.5f;
+    స్థితి FWIDTH_EXPANDED:	తిరిగి 125.f;
+    స్థితి FWIDTH_EXTRA_EXPANDED:	తిరిగి 150.f;
+    స్థితి FWIDTH_ULTRA_EXPANDED:	తిరిగి 200.f;
     }
   }
 
-  float map_wdth_to_widthclass(float width) const
+  దశాంశం map_wdth_గమ్యం_widthclass(దశాంశం వెడల్పు) స్థిరరాశి
   {
-    if (width < 50) return 1.0f;
-    if (width > 200) return 9.0f;
+    ఒకవేళ (వెడల్పు < 50) తిరిగి 1.0f;
+    ఒకవేళ (వెడల్పు > 200) తిరిగి 9.0f;
 
-    float ratio = (width - 50) / 12.5f;
-    int a = (int) floorf (ratio);
-    int b = (int) ceilf (ratio);
+    దశాంశం నిష్పత్తి = (వెడల్పు - 50) / 12.5f;
+    పూర్ణాంకం a = (పూర్ణాంకం) floorf (నిష్పత్తి);
+    పూర్ణాంకం b = (పూర్ణాంకం) ceilf (నిష్పత్తి);
 
     /* follow this maping:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/os2#uswidthclass
      */
-    if (b <= 6) // 50-125
+    ఒకవేళ (b <= 6) // 50-125
     {
-      if (a == b) return a + 1.0f;
+      ఒకవేళ (a == b) తిరిగి a + 1.0f;
     }
-    else if (b == 7) // no mapping for 137.5
+    లేకపోతే ఒకవేళ (b == 7) // no mapping for 137.5
     {
       a = 6;
       b = 8;
     }
-    else if (b == 8)
+    లేకపోతే ఒకవేళ (b == 8)
     {
-      if (a == b) return 8.0f; // 150
+      ఒకవేళ (a == b) తిరిగి 8.0f; // 150
       a = 6;
     }
-    else
+    లేకపోతే
     {
-      if (a == b && a == 12) return 9.0f; //200
+      ఒకవేళ (a == b && a == 12) తిరిగి 9.0f; //200
       b = 12;
       a = 8;
     }
 
-    float va = 50 + a * 12.5f;
-    float vb = 50 + b * 12.5f;
+    దశాంశం va = 50 + a * 12.5f;
+    దశాంశం vb = 50 + b * 12.5f;
 
-    float ret =  a + (width - va) / (vb - va);
-    if (a <= 6) ret += 1.0f;
-    return ret;
+    దశాంశం ret =  a + (వెడల్పు - va) / (vb - va);
+    ఒకవేళ (a <= 6) ret += 1.0f;
+    తిరిగి ret;
   }
 
-  static unsigned calc_avg_char_width (const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>& hmtx_map)
+  స్థిర గుర్తులేని calc_avg_char_వెడల్పు (స్థిరరాశి hb_hashmap_t<hb_codepoint_t, hb_pair_t<గుర్తులేని, పూర్ణాంకం>>& hmtx_map)
   {
-    unsigned num = 0;
-    unsigned total_width = 0;
-    for (const auto& _ : hmtx_map.values_ref ())
+    గుర్తులేని అంకె = 0;
+    గుర్తులేని మొత్తం_వెడల్పు = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : hmtx_map.విలువలు_ref ())
     {
-      unsigned width = _.first;
-      if (width)
+      గుర్తులేని వెడల్పు = _.మొదటి;
+      ఒకవేళ (వెడల్పు)
       {
-        total_width += width;
-        num++;
+        మొత్తం_వెడల్పు += వెడల్పు;
+        అంకె++;
       }
     }
 
-    return num ? (unsigned) roundf ((double) total_width / (double) num) : 0;
+    తిరిగి అంకె ? (గుర్తులేని) roundf ((ద్విగుణ) మొత్తం_వెడల్పు / (ద్విగుణ) అంకె) : 0;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    OS2 *os2_prime = c->serializer->embed (this);
-    if (unlikely (!os2_prime)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    OS2 *os2_ప్రధానసంఖ్య = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!os2_ప్రధానసంఖ్య)) return_trace (అబద్ధం);
 
-#ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (c->plan->normalized_coords)
     {
-      auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = os2_prime;
+      స్వయంచాలక &MVAR = *c->plan->ఆధారం->పట్టిక.MVAR;
+      స్వయంచాలక *పట్టిక = os2_ప్రధానసంఖ్య;
 
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,         sTypoAscender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,        sTypoDescender);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,         sTypoLineGap);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE,         ySubscriptXSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE,         ySubscriptYSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET,       ySubscriptXOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET,       ySubscriptYOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE,       ySuperscriptXSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE,       ySuperscriptYSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET,     ySuperscriptXOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET,     ySuperscriptYOffset);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_SIZE,              yStrikeoutSize);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_STRIKEOUT_OFFSET,            yStrikeoutPosition);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_HORIZONTAL_ASCENDER,         sTypoAscender);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_HORIZONTAL_DESCENDER,        sTypoDescender);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_HORIZONTAL_పంక్తి_GAP,         s_Typo_పంక్తి_Gap);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CLIPPING_ASCENT,  usWinAscent);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_HORIZONTAL_CLIPPING_DESCENT, usWinDescent);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_X_కొలత,         ySubscriptXSize);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_Y_కొలత,         ySubscriptYSize);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_X_స్థానభ్రంశం,       ySubscriptXOffset);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUBSCRIPT_EM_Y_స్థానభ్రంశం,       ySubscriptYOffset);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_X_కొలత,       ySuperscriptXSize);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_Y_కొలత,       ySuperscriptYSize);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_X_స్థానభ్రంశం,     ySuperscriptXOffset);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_SUPERSCRIPT_EM_Y_స్థానభ్రంశం,     ySuperscriptYOffset);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_STRIKEOUT_కొలత,              y_Strikeout_కొలత);
+      HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_STRIKEOUT_స్థానభ్రంశం,            yStrikeoutPosition);
 
-      if (os2_prime->version >= 2)
+      ఒకవేళ (os2_ప్రధానసంఖ్య->సంస్కరణ >= 2)
       {
         hb_barrier ();
-        auto *table = & const_cast<OS2V2Tail &> (os2_prime->v2 ());
-        HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_X_HEIGHT,                   sxHeight);
-        HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_CAP_HEIGHT,                 sCapHeight);
+        స్వయంచాలక *పట్టిక = & const_cast<OS2_V2_తోక &> (os2_ప్రధానసంఖ్య->v2 ());
+        HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_X_ఎత్తు,                   sx_ఎత్తు);
+        HB_కూడు_MVAR_VAR (HB_OT_METRICS_ట్యాగ్_CAP_ఎత్తు,                 s_Cap_ఎత్తు);
       }
 
-      unsigned avg_char_width = calc_avg_char_width (c->plan->hmtx_map);
-      if (!c->serializer->check_assign (os2_prime->xAvgCharWidth, avg_char_width,
-                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
-        return_trace (false);
+      గుర్తులేని avg_char_వెడల్పు = calc_avg_char_వెడల్పు (c->plan->hmtx_map);
+      ఒకవేళ (!c->serializer->check_కేటాయించు (os2_ప్రధానసంఖ్య->x_Avg_Char_వెడల్పు, avg_char_వెడల్పు,
+                                        HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+        return_trace (అబద్ధం);
     }
-#endif
+#అయితే_ముగింపు
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('w','g','h','t'), &axis_range))
+    ఒకవేళ (c->plan->user_axes_location.has (HB_ట్యాగ్ ('w','g','h','t'), &axis_range))
     {
-      unsigned weight_class = static_cast<unsigned> (roundf (hb_clamp (axis_range->middle, 1.0f, 1000.0f)));
-      if (os2_prime->usWeightClass != weight_class)
-        os2_prime->usWeightClass = weight_class;
+      గుర్తులేని బరువు_class = static_cast<గుర్తులేని> (roundf (hb_clamp (axis_range->మధ్య, 1.0f, 1000.0f)));
+      ఒకవేళ (os2_ప్రధానసంఖ్య->us_బరువు_Class != బరువు_class)
+        os2_ప్రధానసంఖ్య->us_బరువు_Class = బరువు_class;
     }
 
-    if (c->plan->user_axes_location.has (HB_TAG ('w','d','t','h'), &axis_range))
+    ఒకవేళ (c->plan->user_axes_location.has (HB_ట్యాగ్ ('w','d','t','h'), &axis_range))
     {
-      unsigned width_class = static_cast<unsigned> (roundf (map_wdth_to_widthclass (axis_range->middle)));
-      if (os2_prime->usWidthClass != width_class)
-        os2_prime->usWidthClass = width_class;
+      గుర్తులేని వెడల్పు_class = static_cast<గుర్తులేని> (roundf (map_wdth_గమ్యం_widthclass (axis_range->మధ్య)));
+      ఒకవేళ (os2_ప్రధానసంఖ్య->us_వెడల్పు_Class != వెడల్పు_class)
+        os2_ప్రధానసంఖ్య->us_వెడల్పు_Class = వెడల్పు_class;
     }
 
-    os2_prime->usFirstCharIndex = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
-    os2_prime->usLastCharIndex  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
+    os2_ప్రధానసంఖ్య->us_మొదటి_Char_సూచీ = hb_min (0xFFFFu, c->plan->os2_info.min_cmap_codepoint);
+    os2_ప్రధానసంఖ్య->us_చివరి_Char_సూచీ  = hb_min (0xFFFFu, c->plan->os2_info.max_cmap_codepoint);
 
-    if (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
-      return_trace (true);
+    ఒకవేళ (c->plan->flags & HB_SUBSET_FLAGS_NO_PRUNE_UNICODE_RANGES)
+      return_trace (నిజం);
 
-    _update_unicode_ranges (&c->plan->unicodes, os2_prime->ulUnicodeRange);
+    _update_unicode_ranges (&c->plan->unicodes, os2_ప్రధానసంఖ్య->ulUnicodeRange);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void _update_unicode_ranges (const hb_set_t *codepoints,
-			       HBUINT32 ulUnicodeRange[4]) const
+  శూన్య _update_unicode_ranges (స్థిరరాశి hb_సమితి_t *codepoints,
+			       HBUINT32 ulUnicodeRange[4]) స్థిరరాశి
   {
-    HBUINT32 newBits[4];
-    for (unsigned int i = 0; i < 4; i++)
-      newBits[i] = 0;
+    HBUINT32 new_బిట్లు[4];
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < 4; i++)
+      new_బిట్లు[i] = 0;
 
     /* This block doesn't show up in profiles. If it ever did,
      * we can rewrite it to iterate over OS/2 ranges and use
      * set iteration to check if the range matches. */
-    for (auto cp : *codepoints)
+    కొరకు (స్వయంచాలక cp : *codepoints)
     {
-      unsigned int bit = _hb_ot_os2_get_unicode_range_bit (cp);
-      if (bit < 128)
+      గుర్తులేని పూర్ణాంకం bit = hb_ot_os2_get_unicode_range_బిట్టు (cp);
+      ఒకవేళ (bit < 128)
       {
-	unsigned int block = bit / 32;
-	unsigned int bit_in_block = bit % 32;
-	unsigned int mask = 1 << bit_in_block;
-	newBits[block] = newBits[block] | mask;
+	గుర్తులేని పూర్ణాంకం ఖండం = bit / 32;
+	గుర్తులేని పూర్ణాంకం బిట్టు_లోపల_ఖండం = bit % 32;
+	గుర్తులేని పూర్ణాంకం ముసుగు = 1 << బిట్టు_లోపల_ఖండం;
+	new_బిట్లు[ఖండం] = new_బిట్లు[ఖండం] | ముసుగు;
       }
-      if (cp >= 0x10000 && cp <= 0x110000)
+      ఒకవేళ (cp >= 0x10000 && cp <= 0x110000)
       {
 	/* the spec says that bit 57 ("Non Plane 0") implies that there's
 	   at least one codepoint beyond the BMP; so I also include all
 	   the non-BMP codepoints here */
-	newBits[1] = newBits[1] | (1 << 25);
+	new_బిట్లు[1] = new_బిట్లు[1] | (1 << 25);
       }
     }
 
-    for (unsigned int i = 0; i < 4; i++)
-      ulUnicodeRange[i] = ulUnicodeRange[i] & newBits[i]; // set bits only if set in the original
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < 4; i++)
+      ulUnicodeRange[i] = ulUnicodeRange[i] & new_బిట్లు[i]; // set bits only if set in the original
   }
 
   /* https://github.com/Microsoft/Font-Validator/blob/520aaae/OTFontFileVal/val_OS2.cs#L644-L681
    * https://docs.microsoft.com/en-us/typography/legacy/legacy_arabic_fonts */
-  enum font_page_t
+  గణన font_పుట_t
   {
-    FONT_PAGE_NONE		= 0,
-    FONT_PAGE_HEBREW		= 0xB100, /* Hebrew Windows 3.1 font page */
-    FONT_PAGE_SIMP_ARABIC	= 0xB200, /* Simplified Arabic Windows 3.1 font page */
-    FONT_PAGE_TRAD_ARABIC	= 0xB300, /* Traditional Arabic Windows 3.1 font page */
-    FONT_PAGE_OEM_ARABIC	= 0xB400, /* OEM Arabic Windows 3.1 font page */
-    FONT_PAGE_SIMP_FARSI	= 0xBA00, /* Simplified Farsi Windows 3.1 font page */
-    FONT_PAGE_TRAD_FARSI	= 0xBB00, /* Traditional Farsi Windows 3.1 font page */
-    FONT_PAGE_THAI		= 0xDE00  /* Thai Windows 3.1 font page */
+    FONT_పుట_NONE		= 0,
+    FONT_పుట_HEBREW		= 0xB100, /* Hebrew Windows 3.1 font page */
+    FONT_పుట_SIMP_ARABIC	= 0xB200, /* Simplified Arabic Windows 3.1 font page */
+    FONT_పుట_TRAD_ARABIC	= 0xB300, /* Traditional Arabic Windows 3.1 font page */
+    FONT_పుట_OEM_ARABIC	= 0xB400, /* OEM Arabic Windows 3.1 font page */
+    FONT_పుట_SIMP_FARSI	= 0xBA00, /* Simplified Farsi Windows 3.1 font page */
+    FONT_పుట_TRAD_FARSI	= 0xBB00, /* Traditional Farsi Windows 3.1 font page */
+    FONT_పుట_THAI		= 0xDE00  /* Thai Windows 3.1 font page */
   };
-  font_page_t get_font_page () const
-  { return (font_page_t) (version == 0 ? fsSelection & 0xFF00 : 0); }
+  font_పుట_t get_font_పుట () స్థిరరాశి
+  { తిరిగి (font_పుట_t) (సంస్కరణ == 0 ? fsSelection & 0xFF00 : 0); }
 
-  size_t get_size () const
+  size_t get_కొలత () స్థిరరాశి
   {
-    size_t result = min_size;
-    if (version >= 1) result = hb_unsigned_add_saturate (result, v1X.get_size ());
-    if (version >= 2) result = hb_unsigned_add_saturate (result, v2X.get_size ());
-    if (version >= 5) result = hb_unsigned_add_saturate (result, v5X.get_size ());
-    return result;
+    size_t ఫలితం = min_కొలత;
+    ఒకవేళ (సంస్కరణ >= 1) ఫలితం = hb_unsigned_కూడు_saturate (ఫలితం, v1X.get_కొలత ());
+    ఒకవేళ (సంస్కరణ >= 2) ఫలితం = hb_unsigned_కూడు_saturate (ఫలితం, v2X.get_కొలత ());
+    ఒకవేళ (సంస్కరణ >= 5) ఫలితం = hb_unsigned_కూడు_saturate (ఫలితం, v5X.get_కొలత ());
+    తిరిగి ఫలితం;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది))) return_trace (అబద్ధం);
     hb_barrier ();
-    if (unlikely (version >= 1 && !v1X.sanitize (c))) return_trace (false);
-    if (unlikely (version >= 2 && !v2X.sanitize (c))) return_trace (false);
-    if (unlikely (version >= 5 && !v5X.sanitize (c))) return_trace (false);
-    return_trace (true);
+    ఒకవేళ (unlikely (సంస్కరణ >= 1 && !v1X.sanitize (c))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (సంస్కరణ >= 2 && !v2X.sanitize (c))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (సంస్కరణ >= 5 && !v5X.sanitize (c))) return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  public:
-  HBUINT16	version;
-  HBINT16	xAvgCharWidth;
-  HBUINT16	usWeightClass;
-  HBUINT16	usWidthClass;
+  బహిరంగ:
+  HBUINT16	సంస్కరణ;
+  HBINT16	x_Avg_Char_వెడల్పు;
+  HBUINT16	us_బరువు_Class;
+  HBUINT16	us_వెడల్పు_Class;
   HBUINT16	fsType;
   HBINT16	ySubscriptXSize;
   HBINT16	ySubscriptYSize;
@@ -378,28 +378,28 @@ struct OS2
   HBINT16	ySuperscriptYSize;
   HBINT16	ySuperscriptXOffset;
   HBINT16	ySuperscriptYOffset;
-  HBINT16	yStrikeoutSize;
+  HBINT16	y_Strikeout_కొలత;
   HBINT16	yStrikeoutPosition;
   HBINT16	sFamilyClass;
   HBUINT8	panose[10];
   HBUINT32	ulUnicodeRange[4];
-  Tag		achVendID;
+  ట్యాగ్		achVendID;
   HBUINT16	fsSelection;
-  HBUINT16	usFirstCharIndex;
-  HBUINT16	usLastCharIndex;
+  HBUINT16	us_మొదటి_Char_సూచీ;
+  HBUINT16	us_చివరి_Char_సూచీ;
   HBINT16	sTypoAscender;
   HBINT16	sTypoDescender;
-  HBINT16	sTypoLineGap;
+  HBINT16	s_Typo_పంక్తి_Gap;
   HBUINT16	usWinAscent;
   HBUINT16	usWinDescent;
-  OS2V1Tail	v1X;
-  OS2V2Tail	v2X;
-  OS2V5Tail	v5X;
-  public:
-  DEFINE_SIZE_MIN (78);
+  OS2_V1_తోక	v1X;
+  OS2_V2_తోక	v2X;
+  OS2_V5_తోక	v5X;
+  బహిరంగ:
+  DEFINE_కొలత_MIN (78);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_OS2_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_OS2_TABLE_HH */

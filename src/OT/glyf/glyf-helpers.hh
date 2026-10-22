@@ -1,123 +1,123 @@
-#ifndef OT_GLYF_GLYF_HELPERS_HH
-#define OT_GLYF_GLYF_HELPERS_HH
+#నిర్వచితం_కాకపోతే OT_GLYF_GLYF_HELPERS_HH
+#నిర్వచించు OT_GLYF_GLYF_HELPERS_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-subset-plan.hh"
+#అన్తర్భావ "../../hb-open-type.hh"
+#అన్తర్భావ "../../hb-subset-plan.hh"
 
-#include "loca.hh"
-
-
-namespace OT {
-namespace glyf_impl {
+#అన్తర్భావ "loca.hh"
 
 
-template<typename IteratorIn, typename TypeOut,
-	 hb_requires (hb_is_source_of (IteratorIn, unsigned int))>
-static void
-_write_loca (IteratorIn&& it,
-	     const hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-	     bool short_offsets,
-	     TypeOut *dest,
-	     unsigned num_offsets)
+నామాకాశ OT {
+నామాకాశ glyf_impl {
+
+
+మూస<రకం_పేరు Iterator_లోపల, రకం_పేరు Type_బహిర్గతం,
+	 hb_requires (hb_is_ఆధారం_యొక్క (Iterator_లోపల, గుర్తులేని పూర్ణాంకం))>
+స్థిర శూన్య
+_write_loca (Iterator_లోపల&& it,
+	     స్థిరరాశి hb_sorted_సదిశ_t<hb_codepoint_pair_t> new_గమ్యం_old_gid_list,
+	     తార్కిక short_offsets,
+	     Type_బహిర్గతం *dest,
+	     గుర్తులేని అంకె_offsets)
 {
-  unsigned right_shift = short_offsets ? 1 : 0;
-  unsigned offset = 0;
-  TypeOut value;
+  గుర్తులేని కుడి_జరుపు = short_offsets ? 1 : 0;
+  గుర్తులేని స్థానభ్రంశం = 0;
+  Type_బహిర్గతం value;
   value = 0;
   *dest++ = value;
-  hb_codepoint_t last = 0;
-  for (auto _ : new_to_old_gid_list)
+  hb_codepoint_t చివరి = 0;
+  కొరకు (స్వయంచాలక _ : new_గమ్యం_old_gid_list)
   {
-    hb_codepoint_t gid = _.first;
-    for (; last < gid; last++)
+    hb_codepoint_t gid = _.మొదటి;
+    కొరకు (; చివరి < gid; చివరి++)
     {
-      DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+      DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "loca entry empty offset %u", స్థానభ్రంశం);
       *dest++ = value;
     }
 
-    unsigned padded_size = *it++;
-    offset += padded_size;
-    DEBUG_MSG (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
-    value = offset >> right_shift;
+    గుర్తులేని padded_కొలత = *it++;
+    స్థానభ్రంశం += padded_కొలత;
+    DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, స్థానభ్రంశం, padded_కొలత);
+    value = స్థానభ్రంశం >> కుడి_జరుపు;
     *dest++ = value;
 
-    last++; // Skip over gid
+    చివరి++; // Skip over gid
   }
-  unsigned num_glyphs = num_offsets - 1;
-  for (; last < num_glyphs; last++)
+  గుర్తులేని అంకె_glyphs = అంకె_offsets - 1;
+  కొరకు (; చివరి < అంకె_glyphs; చివరి++)
   {
-    DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+    DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "loca entry empty offset %u", స్థానభ్రంశం);
     *dest++ = value;
   }
 }
 
-static bool
-_add_head_and_set_loca_version (hb_subset_plan_t *plan, bool use_short_loca)
+స్థిర తార్కిక
+కూడు_తల_and_సమితి_loca_సంస్కరణ (hb_subset_plan_t *plan, తార్కిక use_short_loca)
 {
-  hb_blob_t *head_blob = hb_sanitize_context_t ().reference_table<head> (plan->source);
-  hb_blob_t *head_prime_blob = hb_blob_copy_writable_or_fail (head_blob);
-  hb_blob_destroy (head_blob);
+  hb_blob_t *తల_blob = hb_sanitize_context_t ().reference_పట్టిక<తల_2> (plan->ఆధారం);
+  hb_blob_t *తల_ప్రధానసంఖ్య_blob = hb_blob_copy_writable_or_fail (తల_blob);
+  hb_blob_destroy (తల_blob);
 
-  if (unlikely (!head_prime_blob))
-    return false;
+  ఒకవేళ (unlikely (!తల_ప్రధానసంఖ్య_blob))
+    తిరిగి అబద్ధం;
 
-  head *head_prime = (head *) hb_blob_get_data_writable (head_prime_blob, nullptr);
-  head_prime->indexToLocFormat = use_short_loca ? 0 : 1;
-  if (plan->normalized_coords)
+  తల_2 *తల_ప్రధానసంఖ్య = (తల_2 *) hb_blob_get_దత్తాంశం_writable (తల_ప్రధానసంఖ్య_blob, శూన్యసూచిక);
+  తల_ప్రధానసంఖ్య->సూచీ_గమ్యం_Loc_Format = use_short_loca ? 0 : 1;
+  ఒకవేళ (plan->normalized_coords)
   {
-    head_prime->xMin = plan->head_maxp_info.xMin;
-    head_prime->xMax = plan->head_maxp_info.xMax;
-    head_prime->yMin = plan->head_maxp_info.yMin;
-    head_prime->yMax = plan->head_maxp_info.yMax;
+    తల_ప్రధానసంఖ్య->xMin = plan->తల_maxp_info.xMin;
+    తల_ప్రధానసంఖ్య->xMax = plan->తల_maxp_info.xMax;
+    తల_ప్రధానసంఖ్య->yMin = plan->తల_maxp_info.yMin;
+    తల_ప్రధానసంఖ్య->yMax = plan->తల_maxp_info.yMax;
 
-    unsigned orig_flag = head_prime->flags;
-    if (plan->head_maxp_info.allXMinIsLsb)
+    గుర్తులేని orig_flag = తల_ప్రధానసంఖ్య->flags;
+    ఒకవేళ (plan->తల_maxp_info.allXMinIsLsb)
       orig_flag |= 1 << 1;
-    else
+    లేకపోతే
       orig_flag &= ~(1 << 1);
-    head_prime->flags = orig_flag;
+    తల_ప్రధానసంఖ్య->flags = orig_flag;
   }
-  bool success = plan->add_table (HB_OT_TAG_head, head_prime_blob);
+  తార్కిక success = plan->కూడు_పట్టిక (HB_OT_ట్యాగ్_తల, తల_ప్రధానసంఖ్య_blob);
 
-  hb_blob_destroy (head_prime_blob);
-  return success;
+  hb_blob_destroy (తల_ప్రధానసంఖ్య_blob);
+  తిరిగి success;
 }
 
-template<typename Iterator,
-	 hb_requires (hb_is_source_of (Iterator, unsigned int))>
-static bool
-_add_loca_and_head (hb_subset_context_t *c,
+మూస<రకం_పేరు Iterator,
+	 hb_requires (hb_is_ఆధారం_యొక్క (Iterator, గుర్తులేని పూర్ణాంకం))>
+స్థిర తార్కిక
+కూడు_loca_and_తల (hb_subset_context_t *c,
 		    Iterator padded_offsets,
-		    bool use_short_loca,
-		    bool extended)
+		    తార్కిక use_short_loca,
+		    తార్కిక extended)
 {
-  unsigned num_offsets = c->plan->num_output_glyphs () + 1;
-  unsigned entry_size = use_short_loca ? 2 : 4;
+  గుర్తులేని అంకె_offsets = c->plan->అంకె_output_glyphs () + 1;
+  గుర్తులేని నమోదు_కొలత = use_short_loca ? 2 : 4;
 
-  char *loca_prime_data = (char *) hb_malloc2 (num_offsets, entry_size);
+  అక్షరం *loca_ప్రధానసంఖ్య_దత్తాంశం = (అక్షరం *) hb_malloc2 (అంకె_offsets, నమోదు_కొలత);
 
-  if (unlikely (!loca_prime_data)) return false;
+  ఒకవేళ (unlikely (!loca_ప్రధానసంఖ్య_దత్తాంశం)) తిరిగి అబద్ధం;
 
-  DEBUG_MSG (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
-	     entry_size, num_offsets, entry_size * num_offsets);
+  DEBUG_సందేశం (SUBSET, శూన్యసూచిక, "loca entry_size %u num_offsets %u size %u",
+	     నమోదు_కొలత, అంకె_offsets, నమోదు_కొలత * అంకె_offsets);
 
-  if (use_short_loca)
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_prime_data, num_offsets);
-  else
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_prime_data, num_offsets);
+  ఒకవేళ (use_short_loca)
+    _write_loca (padded_offsets, c->plan->new_గమ్యం_old_gid_list, నిజం, (HBUINT16 *) loca_ప్రధానసంఖ్య_దత్తాంశం, అంకె_offsets);
+  లేకపోతే
+    _write_loca (padded_offsets, c->plan->new_గమ్యం_old_gid_list, అబద్ధం, (HBUINT32 *) loca_ప్రధానసంఖ్య_దత్తాంశం, అంకె_offsets);
 
-  hb_blob_t *loca_blob = hb_blob_create (loca_prime_data,
-					 entry_size * num_offsets,
-					 HB_MEMORY_MODE_WRITABLE,
-					 loca_prime_data,
+  hb_blob_t *loca_blob = hb_blob_create (loca_ప్రధానసంఖ్య_దత్తాంశం,
+					 నమోదు_కొలత * అంకె_offsets,
+					 HB_జ్ఞాపకం_బహుళకం_WRITABLE,
+					 loca_ప్రధానసంఖ్య_దత్తాంశం,
 					 hb_free);
 
-  bool result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
-	     && _add_head_and_set_loca_version (c->plan, use_short_loca);
+  తార్కిక ఫలితం = c->plan->కూడు_పట్టిక (extended ? HB_OT_ట్యాగ్_LOCA : HB_OT_ట్యాగ్_loca, loca_blob)
+	     && కూడు_తల_and_సమితి_loca_సంస్కరణ (c->plan, use_short_loca);
 
   hb_blob_destroy (loca_blob);
-  return result;
+  తిరిగి ఫలితం;
 }
 
 
@@ -125,4 +125,4 @@ _add_loca_and_head (hb_subset_context_t *c,
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYF_HELPERS_HH */
+#అయితే_ముగింపు /* OT_GLYF_GLYF_HELPERS_HH */

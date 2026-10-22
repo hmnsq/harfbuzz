@@ -27,8 +27,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-buffer.hh"
-#include "hb-utf.hh"
+#అన్తర్భావ "hb-buffer.hh"
+#అన్తర్భావ "hb-utf.hh"
 
 
 /**
@@ -61,10 +61,10 @@
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b)
+hb_segment_properties_equal (స్థిరరాశి hb_segment_properties_t *a,
+			     స్థిరరాశి hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  తిరిగి a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p)
+గుర్తులేని పూర్ణాంకం
+hb_segment_properties_hash (స్థిరరాశి hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  తిరిగి ((గుర్తులేని పూర్ణాంకం) p->direction * 31 +
+	  (గుర్తులేని పూర్ణాంకం) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -109,26 +109,26 @@ hb_segment_properties_hash (const hb_segment_properties_t *p)
  *
  * Since: 3.3.0
  **/
-void
+శూన్య
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src)
+			       స్థిరరాశి hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  ఒకవేళ (unlikely (!p || !src))
+    తిరిగి;
 
-  if (!p->direction)
+  ఒకవేళ (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  ఒకవేళ (p->direction != src->direction)
+    తిరిగి;
 
-  if (!p->script)
+  ఒకవేళ (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  ఒకవేళ (p->script != src->script)
+    తిరిగి;
 
-  if (!p->language)
+  ఒకవేళ (!p->language)
     p->language = src->language;
 }
 
@@ -155,87 +155,87 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 
 /* Internal API */
 
-bool
-hb_buffer_t::enlarge (unsigned int size)
+తార్కిక
+hb_బఫరు_t::enlarge (గుర్తులేని పూర్ణాంకం కొలత)
 {
-  if (unlikely (size > max_len))
+  ఒకవేళ (unlikely (కొలత > max_len))
   {
-    successful = false;
-    return false;
+    successful = అబద్ధం;
+    తిరిగి అబద్ధం;
   }
 
-  if (unlikely (!successful))
-    return false;
+  ఒకవేళ (unlikely (!successful))
+    తిరిగి అబద్ధం;
 
-  unsigned int new_allocated = allocated;
-  hb_glyph_position_t *new_pos = nullptr;
-  hb_glyph_info_t *new_info = nullptr;
-  bool separate_out = out_info != info;
+  గుర్తులేని పూర్ణాంకం new_allocated = allocated;
+  hb_glyph_position_t *new_pos = శూన్యసూచిక;
+  hb_glyph_info_t *new_info = శూన్యసూచిక;
+  తార్కిక separate_బహిర్గతం = బహిర్గతం_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
-    goto done;
+  ఒకవేళ (unlikely (hb_unsigned_mul_overflows (కొలత, పరిమాణం (info[0]))))
+    వెళ్ళు పూర్తి;
 
-  while (size >= new_allocated)
+  అయితే (కొలత >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
-  unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
-    goto done;
+  గుర్తులేని new_బైట్లు;
+  ఒకవేళ (unlikely (hb_unsigned_mul_overflows (new_allocated, పరిమాణం (info[0]), &new_బైట్లు)))
+    వెళ్ళు పూర్తి;
 
-  static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
-  new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_bytes);
-  new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
+  static_assert (పరిమాణం (info[0]) == పరిమాణం (pos[0]), "");
+  new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_బైట్లు);
+  new_info = (hb_glyph_info_t *) hb_realloc (info, new_బైట్లు);
 
-done:
-  if (unlikely (!new_pos || !new_info))
-    successful = false;
+పూర్తి:
+  ఒకవేళ (unlikely (!new_pos || !new_info))
+    successful = అబద్ధం;
 
-  if (likely (new_pos))
+  ఒకవేళ (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  ఒకవేళ (likely (new_info))
     info = new_info;
 
-  out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  బహిర్గతం_info = separate_బహిర్గతం ? (hb_glyph_info_t *) pos : info;
+  ఒకవేళ (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  తిరిగి likely (successful);
 }
 
-bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+తార్కిక
+hb_బఫరు_t::make_స్థలం_for (గుర్తులేని పూర్ణాంకం అంకె_లోపల,
+			    గుర్తులేని పూర్ణాంకం అంకె_బహిర్గతం)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  ఒకవేళ (unlikely (!ensure (బహిర్గతం_len + అంకె_బహిర్గతం))) తిరిగి అబద్ధం;
 
-  if (out_info == info &&
-      out_len + num_out > idx + num_in)
+  ఒకవేళ (బహిర్గతం_info == info &&
+      బహిర్గతం_len + అంకె_బహిర్గతం > idx + అంకె_లోపల)
   {
-    assert (have_output);
+    ప్రతిజ్ఞా (have_output);
 
-    out_info = (hb_glyph_info_t *) pos;
-    hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
+    బహిర్గతం_info = (hb_glyph_info_t *) pos;
+    hb_memcpy (బహిర్గతం_info, info, బహిర్గతం_len * పరిమాణం (బహిర్గతం_info[0]));
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-bool
-hb_buffer_t::shift_forward (unsigned int count)
+తార్కిక
+hb_బఫరు_t::జరుపు_forward (గుర్తులేని పూర్ణాంకం లెక్క)
 {
-  assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  ప్రతిజ్ఞా (have_output);
+  ఒకవేళ (unlikely (!ensure (len + లెక్క))) తిరిగి అబద్ధం;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  ఒకవేళ (unlikely (max_ops < 0))
   {
-    successful = false;
-    return false;
+    successful = అబద్ధం;
+    తిరిగి అబద్ధం;
   }
 
-  memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  memmove (info + idx + లెక్క, info + idx, (len - idx) * పరిమాణం (info[0]));
+  ఒకవేళ (idx + లెక్క > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -243,34 +243,34 @@ hb_buffer_t::shift_forward (unsigned int count)
      * Ideally, we should at least set Default_Ignorable bits on
      * these, as well as consistent cluster values.  But the former
      * is layering violation... */
-    hb_memset (info + len, 0, (idx + count - len) * sizeof (info[0]));
+    hb_memset (info + len, 0, (idx + లెక్క - len) * పరిమాణం (info[0]));
   }
-  len += count;
-  idx += count;
+  len += లెక్క;
+  idx += లెక్క;
 
-  return true;
+  తిరిగి నిజం;
 }
 
-hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_బఫరు_t::scratch_బఫరు_t *
+hb_బఫరు_t::get_scratch_బఫరు (గుర్తులేని పూర్ణాంకం *కొలత)
 {
-  have_output = false;
-  have_positions = false;
+  have_output = అబద్ధం;
+  have_positions = అబద్ధం;
 
-  out_len = 0;
-  out_info = info;
+  బహిర్గతం_len = 0;
+  బహిర్గతం_info = info;
 
-  assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
-  *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  ప్రతిజ్ఞా ((uintptr_t) pos % పరిమాణం (scratch_బఫరు_t) == 0);
+  *కొలత = allocated * పరిమాణం (pos[0]) / పరిమాణం (scratch_బఫరు_t);
+  తిరిగి (scratch_బఫరు_t *) (శూన్య *) pos;
 }
 
 
 
 /* HarfBuzz-Internal API */
 
-void
-hb_buffer_t::similar (const hb_buffer_t &src)
+శూన్య
+hb_బఫరు_t::similar (స్థిరరాశి hb_బఫరు_t &src)
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (src.unicode);
@@ -278,227 +278,227 @@ hb_buffer_t::similar (const hb_buffer_t &src)
   cluster_level = src.cluster_level;
   replacement = src.replacement;
   invisible = src.invisible;
-  not_found = src.not_found;
-  not_found_variation_selector = src.not_found_variation_selector;
+  not_దొరికింది = src.not_దొరికింది;
+  not_దొరికింది_variation_selector = src.not_దొరికింది_variation_selector;
 }
 
-void
-hb_buffer_t::reset ()
+శూన్య
+hb_బఫరు_t::reset ()
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (hb_unicode_funcs_get_default ());
-  flags = HB_BUFFER_FLAG_DEFAULT;
-  cluster_level = HB_BUFFER_CLUSTER_LEVEL_DEFAULT;
-  replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+  flags = HB_బఫరు_FLAG_DEFAULT;
+  cluster_level = HB_బఫరు_CLUSTER_LEVEL_DEFAULT;
+  replacement = HB_బఫరు_REPLACEMENT_CODEPOINT_DEFAULT;
   invisible = 0;
-  not_found = 0;
-  not_found_variation_selector = HB_CODEPOINT_INVALID;
+  not_దొరికింది = 0;
+  not_దొరికింది_variation_selector = HB_CODEPOINT_INVALID;
 
   clear ();
 }
 
-void
-hb_buffer_t::clear ()
+శూన్య
+hb_బఫరు_t::clear ()
 {
-  content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
+  content_type = HB_బఫరు_CONTENT_TYPE_INVALID;
   hb_segment_properties_t default_props = HB_SEGMENT_PROPERTIES_DEFAULT;
   props = default_props;
 
-  successful = true;
-  have_output = false;
-  have_positions = false;
+  successful = నిజం;
+  have_output = అబద్ధం;
+  have_positions = అబద్ధం;
 
   idx = 0;
   len = 0;
-  out_len = 0;
-  out_info = info;
+  బహిర్గతం_len = 0;
+  బహిర్గతం_info = info;
 
-  hb_memset (context, 0, sizeof context);
-  hb_memset (context_len, 0, sizeof context_len);
+  hb_memset (context, 0, పరిమాణం context);
+  hb_memset (context_len, 0, పరిమాణం context_len);
 
   deallocate_var_all ();
   serial = 0;
   random_state = 1;
-  scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
+  scratch_flags = HB_బఫరు_SCRATCH_FLAG_DEFAULT;
 }
 
-void
-hb_buffer_t::enter ()
+శూన్య
+hb_బఫరు_t::enter ()
 {
   deallocate_var_all ();
   serial = 0;
-  scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
-  unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  scratch_flags = HB_బఫరు_SCRATCH_FLAG_DEFAULT;
+  గుర్తులేని mul;
+  ఒకవేళ (likely (!hb_unsigned_mul_overflows (len, HB_బఫరు_MAX_LEN_గుణకం, &mul)))
   {
-    max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
+    max_len = hb_max (mul, (గుర్తులేని) HB_బఫరు_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  ఒకవేళ (likely (!hb_unsigned_mul_overflows (len, HB_బఫరు_MAX_OPS_గుణకం, &mul)))
   {
-    max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
+    max_ops = hb_max (mul, (గుర్తులేని) HB_బఫరు_MAX_OPS_MIN);
   }
 }
-void
-hb_buffer_t::leave ()
+శూన్య
+hb_బఫరు_t::leave ()
 {
-  max_len = HB_BUFFER_MAX_LEN_DEFAULT;
-  max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
+  max_len = HB_బఫరు_MAX_LEN_DEFAULT;
+  max_ops = HB_బఫరు_MAX_OPS_DEFAULT;
   deallocate_var_all ();
   serial = 0;
 }
 
 
-void
-hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+శూన్య
+hb_బఫరు_t::కూడు (hb_codepoint_t  codepoint,
+		  గుర్తులేని పూర్ణాంకం    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  ఒకవేళ (unlikely (!ensure (len + 1))) తిరిగి;
 
   glyph = &info[len];
 
-  hb_memset (glyph, 0, sizeof (*glyph));
+  hb_memset (glyph, 0, పరిమాణం (*glyph));
   glyph->codepoint = codepoint;
-  glyph->mask = 0;
+  glyph->ముసుగు = 0;
   glyph->cluster = cluster;
 
   len++;
 }
 
-void
-hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
+శూన్య
+hb_బఫరు_t::కూడు_info (స్థిరరాశి hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  ఒకవేళ (unlikely (!ensure (len + 1))) తిరిగి;
 
   info[len] = glyph_info;
 
   len++;
 }
-void
-hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
-			       const hb_glyph_position_t &glyph_pos)
+శూన్య
+hb_బఫరు_t::కూడు_info_and_pos (స్థిరరాశి hb_glyph_info_t &glyph_info,
+			       స్థిరరాశి hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  ఒకవేళ (unlikely (!ensure (len + 1))) తిరిగి;
 
   info[len] = glyph_info;
-  assert (have_positions);
+  ప్రతిజ్ఞా (have_positions);
   pos[len] = glyph_pos;
 
   len++;
 }
 
 
-void
-hb_buffer_t::clear_output ()
+శూన్య
+hb_బఫరు_t::clear_output ()
 {
-  have_output = true;
-  have_positions = false;
+  have_output = నిజం;
+  have_positions = అబద్ధం;
 
   idx = 0;
-  out_len = 0;
-  out_info = info;
+  బహిర్గతం_len = 0;
+  బహిర్గతం_info = info;
 }
 
-void
-hb_buffer_t::clear_positions ()
+శూన్య
+hb_బఫరు_t::clear_positions ()
 {
-  have_output = false;
-  have_positions = true;
+  have_output = అబద్ధం;
+  have_positions = నిజం;
 
-  out_len = 0;
-  out_info = info;
+  బహిర్గతం_len = 0;
+  బహిర్గతం_info = info;
 
-  hb_memset (pos, 0, sizeof (pos[0]) * len);
+  hb_memset (pos, 0, పరిమాణం (pos[0]) * len);
 }
 
-bool
-hb_buffer_t::sync ()
+తార్కిక
+hb_బఫరు_t::సమకాలీకరణ ()
 {
-  bool ret = false;
+  తార్కిక ret = అబద్ధం;
 
-  assert (have_output);
+  ప్రతిజ్ఞా (have_output);
 
-  assert (idx <= len);
+  ప్రతిజ్ఞా (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
-    goto reset;
+  ఒకవేళ (unlikely (!successful || !తదుపరి_glyphs (len - idx)))
+    వెళ్ళు reset;
 
-  if (out_info != info)
+  ఒకవేళ (బహిర్గతం_info != info)
   {
     pos = (hb_glyph_position_t *) info;
-    info = out_info;
+    info = బహిర్గతం_info;
   }
-  len = out_len;
-  ret = true;
+  len = బహిర్గతం_len;
+  ret = నిజం;
 
 reset:
-  have_output = false;
-  out_len = 0;
-  out_info = info;
+  have_output = అబద్ధం;
+  బహిర్గతం_len = 0;
+  బహిర్గతం_info = info;
   idx = 0;
 
-  return ret;
+  తిరిగి ret;
 }
 
-int
-hb_buffer_t::sync_so_far ()
+పూర్ణాంకం
+hb_బఫరు_t::sync_so_far ()
 {
-  bool had_output = have_output;
-  unsigned out_i = out_len;
-  unsigned i = idx;
-  unsigned old_idx = idx;
+  తార్కిక had_output = have_output;
+  గుర్తులేని బహిర్గతం_i = బహిర్గతం_len;
+  గుర్తులేని i = idx;
+  గుర్తులేని old_idx = idx;
 
-  if (sync ())
-    idx = out_i;
-  else
+  ఒకవేళ (సమకాలీకరణ ())
+    idx = బహిర్గతం_i;
+  లేకపోతే
     idx = i;
 
-  if (had_output)
+  ఒకవేళ (had_output)
   {
-    have_output = true;
-    out_len = idx;
+    have_output = నిజం;
+    బహిర్గతం_len = idx;
   }
 
-  assert (idx <= len);
+  ప్రతిజ్ఞా (idx <= len);
 
-  return idx - old_idx;
+  తిరిగి idx - old_idx;
 }
 
-bool
-hb_buffer_t::move_to (unsigned int i)
+తార్కిక
+hb_బఫరు_t::move_గమ్యం (గుర్తులేని పూర్ణాంకం i)
 {
-  if (!have_output)
+  ఒకవేళ (!have_output)
   {
-    assert (i <= len);
+    ప్రతిజ్ఞా (i <= len);
     idx = i;
-    return true;
+    తిరిగి నిజం;
   }
-  if (unlikely (!successful))
-    return false;
+  ఒకవేళ (unlikely (!successful))
+    తిరిగి అబద్ధం;
 
-  assert (i <= out_len + (len - idx));
+  ప్రతిజ్ఞా (i <= బహిర్గతం_len + (len - idx));
 
-  if (out_len < i)
+  ఒకవేళ (బహిర్గతం_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    గుర్తులేని పూర్ణాంకం లెక్క = i - బహిర్గతం_len;
+    ఒకవేళ (unlikely (!make_స్థలం_for (లెక్క, లెక్క))) తిరిగి అబద్ధం;
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= లెక్క;
+    ఒకవేళ (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = అబద్ధం;
+      తిరిగి అబద్ధం;
     }
 
-    memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
-    idx += count;
-    out_len += count;
+    memmove (బహిర్గతం_info + బహిర్గతం_len, info + idx, లెక్క * పరిమాణం (బహిర్గతం_info[0]));
+    idx += లెక్క;
+    బహిర్గతం_len += లెక్క;
   }
-  else if (out_len > i)
+  లేకపోతే ఒకవేళ (బహిర్గతం_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    గుర్తులేని పూర్ణాంకం లెక్క = బహిర్గతం_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,191 +507,191 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    ఒకవేళ (unlikely (idx < లెక్క && !జరుపు_forward (లెక్క - idx))) తిరిగి అబద్ధం;
 
-    assert (idx >= count);
+    ప్రతిజ్ఞా (idx >= లెక్క);
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= లెక్క;
+    ఒకవేళ (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = అబద్ధం;
+      తిరిగి అబద్ధం;
     }
 
-    idx -= count;
-    out_len -= count;
-    memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
+    idx -= లెక్క;
+    బహిర్గతం_len -= లెక్క;
+    memmove (info + idx, బహిర్గతం_info + బహిర్గతం_len, లెక్క * పరిమాణం (బహిర్గతం_info[0]));
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
 
-void
-hb_buffer_t::set_masks (hb_mask_t    value,
-			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+శూన్య
+hb_బఫరు_t::సమితి_masks (hb_ముసుగు_t    value,
+			hb_ముసుగు_t    ముసుగు,
+			గుర్తులేని పూర్ణాంకం cluster_ప్రారంభం,
+			గుర్తులేని పూర్ణాంకం cluster_చివర)
 {
-  if (!mask)
-    return;
+  ఒకవేళ (!ముసుగు)
+    తిరిగి;
 
-  hb_mask_t not_mask = ~mask;
-  value &= mask;
+  hb_ముసుగు_t not_ముసుగు = ~ముసుగు;
+  value &= ముసుగు;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  ఒకవేళ (unlikely (max_ops < 0))
+    successful = అబద్ధం;
 
-  unsigned int count = len;
+  గుర్తులేని పూర్ణాంకం లెక్క = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  ఒకవేళ (cluster_ప్రారంభం == 0 && cluster_చివర == (గుర్తులేని పూర్ణాంకం) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
-      info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      info[i].ముసుగు = (info[i].ముసుగు & not_ముసుగు) | value;
+    తిరిగి;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
-      info[i].mask = (info[i].mask & not_mask) | value;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+    ఒకవేళ (cluster_ప్రారంభం <= info[i].cluster && info[i].cluster < cluster_చివర)
+      info[i].ముసుగు = (info[i].ముసుగు & not_ముసుగు) | value;
 }
 
-void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+శూన్య
+hb_బఫరు_t::విలీనం_clusters_impl (గుర్తులేని పూర్ణాంకం ప్రారంభం,
+				  గుర్తులేని పూర్ణాంకం చివర)
 {
-  max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  max_ops -= చివర - ప్రారంభం;
+  ఒకవేళ (unlikely (max_ops < 0))
+    successful = అబద్ధం;
 
-  unsigned int cluster = info[start].cluster;
+  గుర్తులేని పూర్ణాంకం cluster = info[ప్రారంభం].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం + 1; i < చివర; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
-      end++;
+  ఒకవేళ (cluster != info[చివర - 1].cluster)
+    అయితే (చివర < len && info[చివర - 1].cluster == info[చివర].cluster)
+      చివర++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
-      start--;
+  ఒకవేళ (cluster != info[ప్రారంభం].cluster)
+    అయితే (idx < ప్రారంభం && info[ప్రారంభం - 1].cluster == info[ప్రారంభం].cluster)
+      ప్రారంభం--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
-      set_cluster (out_info[i - 1], cluster);
+  ఒకవేళ (idx == ప్రారంభం && info[ప్రారంభం].cluster != cluster)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = బహిర్గతం_len; i && బహిర్గతం_info[i - 1].cluster == info[ప్రారంభం].cluster; i--)
+      సమితి_cluster (బహిర్గతం_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
-    set_cluster (info[i], cluster);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
+    సమితి_cluster (info[i], cluster);
 }
-void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+శూన్య
+hb_బఫరు_t::విలీనం_బహిర్గతం_clusters_impl (గుర్తులేని పూర్ణాంకం ప్రారంభం,
+				      గుర్తులేని పూర్ణాంకం చివర)
 {
-  max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  max_ops -= చివర - ప్రారంభం;
+  ఒకవేళ (unlikely (max_ops < 0))
+    successful = అబద్ధం;
 
-  unsigned int cluster = out_info[start].cluster;
+  గుర్తులేని పూర్ణాంకం cluster = బహిర్గతం_info[ప్రారంభం].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
-    cluster = hb_min (cluster, out_info[i].cluster);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం + 1; i < చివర; i++)
+    cluster = hb_min (cluster, బహిర్గతం_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
-    start--;
+  అయితే (ప్రారంభం && బహిర్గతం_info[ప్రారంభం - 1].cluster == బహిర్గతం_info[ప్రారంభం].cluster)
+    ప్రారంభం--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
-    end++;
+  అయితే (చివర < బహిర్గతం_len && బహిర్గతం_info[చివర - 1].cluster == బహిర్గతం_info[చివర].cluster)
+    చివర++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
-      set_cluster (info[i], cluster);
+  ఒకవేళ (చివర == బహిర్గతం_len)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = idx; i < len && info[i].cluster == బహిర్గతం_info[చివర - 1].cluster; i++)
+      సమితి_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
-    set_cluster (out_info[i], cluster);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
+    సమితి_cluster (బహిర్గతం_info[i], cluster);
 }
-void
-hb_buffer_t::delete_glyph ()
+శూన్య
+hb_బఫరు_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
-      (out_len && cluster == out_info[out_len - 1].cluster))
+  గుర్తులేని పూర్ణాంకం cluster = info[idx].cluster;
+  ఒకవేళ ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+      (బహిర్గతం_len && cluster == బహిర్గతం_info[బహిర్గతం_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
-    goto done;
+    వెళ్ళు పూర్తి;
   }
 
-  if (out_len)
+  ఒకవేళ (బహిర్గతం_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    ఒకవేళ (cluster < బహిర్గతం_info[బహిర్గతం_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
-	set_cluster (out_info[i - 1], cluster, mask);
+      గుర్తులేని పూర్ణాంకం ముసుగు = info[idx].ముసుగు;
+      గుర్తులేని పూర్ణాంకం old_cluster = బహిర్గతం_info[బహిర్గతం_len - 1].cluster;
+      కొరకు (గుర్తులేని i = బహిర్గతం_len; i && బహిర్గతం_info[i - 1].cluster == old_cluster; i--)
+	సమితి_cluster (బహిర్గతం_info[i - 1], cluster, ముసుగు);
     }
-    goto done;
+    వెళ్ళు పూర్తి;
   }
 
-  if (idx + 1 < len)
+  ఒకవేళ (idx + 1 < len)
   {
     /* Merge cluster forward. */
-    merge_clusters (idx, idx + 2);
-    goto done;
+    విలీనం_clusters (idx, idx + 2);
+    వెళ్ళు పూర్తి;
   }
 
-done:
+పూర్తి:
   skip_glyph ();
 }
 
-void
-hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info))
+శూన్య
+hb_బఫరు_t::delete_glyphs_inplace (తార్కిక (*filter) (స్థిరరాశి hb_glyph_info_t *info))
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  గుర్తులేని పూర్ణాంకం j = 0;
+  గుర్తులేని పూర్ణాంకం లెక్క = len;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    if (filter (&info[i]))
+    ఒకవేళ (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
-	continue; /* Cluster survives; do nothing. */
+      గుర్తులేని పూర్ణాంకం cluster = info[i].cluster;
+      ఒకవేళ (i + 1 < లెక్క && cluster == info[i + 1].cluster)
+	కొనసాగు; /* Cluster survives; do nothing. */
 
-      if (j)
+      ఒకవేళ (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	ఒకవేళ (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
-	    set_cluster (info[k - 1], cluster, mask);
+	  గుర్తులేని పూర్ణాంకం ముసుగు = info[i].ముసుగు;
+	  గుర్తులేని పూర్ణాంకం old_cluster = info[j - 1].cluster;
+	  కొరకు (గుర్తులేని k = j; k && info[k - 1].cluster == old_cluster; k--)
+	    సమితి_cluster (info[k - 1], cluster, ముసుగు);
 	}
-	continue;
+	కొనసాగు;
       }
 
-      if (i + 1 < count)
-	merge_clusters (i, i + 2); /* Merge cluster forward. */
+      ఒకవేళ (i + 1 < లెక్క)
+	విలీనం_clusters (i, i + 2); /* Merge cluster forward. */
 
-      continue;
+      కొనసాగు;
     }
 
-    if (j != i)
+    ఒకవేళ (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -701,33 +701,33 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
   len = j;
 }
 
-void
-hb_buffer_t::guess_segment_properties ()
+శూన్య
+hb_బఫరు_t::guess_segment_properties ()
 {
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  ఒకవేళ (props.script == HB_SCRIPT_INVALID) {
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      ఒకవేళ (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
-	break;
+	ఆపు;
       }
     }
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  ఒకవేళ (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    ఒకవేళ (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  ఒకవేళ (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -736,25 +736,25 @@ hb_buffer_t::guess_segment_properties ()
 
 /* Public API */
 
-DEFINE_NULL_INSTANCE (hb_buffer_t) =
+DEFINE_NULL_INSTANCE (hb_బఫరు_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_శీర్షిక_STATIC,
 
   const_cast<hb_unicode_funcs_t *> (&_hb_Null_hb_unicode_funcs_t),
-  HB_BUFFER_FLAG_DEFAULT,
-  HB_BUFFER_CLUSTER_LEVEL_DEFAULT,
-  HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT,
+  HB_బఫరు_FLAG_DEFAULT,
+  HB_బఫరు_CLUSTER_LEVEL_DEFAULT,
+  HB_బఫరు_REPLACEMENT_CODEPOINT_DEFAULT,
   0, /* invisible */
   0, /* not_found */
   HB_CODEPOINT_INVALID, /* not_found_variation_selector */
 
 
-  HB_BUFFER_CONTENT_TYPE_INVALID,
+  HB_బఫరు_CONTENT_TYPE_INVALID,
   HB_SEGMENT_PROPERTIES_DEFAULT,
 
-  false, /* successful */
-  false, /* have_output */
-  true  /* have_positions */
+  అబద్ధం, /* successful */
+  అబద్ధం, /* have_output */
+  నిజం  /* have_positions */
 
   /* Zero is good enough for everything else. */
 };
@@ -774,20 +774,20 @@ DEFINE_NULL_INSTANCE (hb_buffer_t) =
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_create ()
+hb_బఫరు_t *
+hb_బఫరు_create ()
 {
-  hb_buffer_t *buffer;
+  hb_బఫరు_t *బఫరు;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  ఒకవేళ (!(బఫరు = hb_object_create<hb_బఫరు_t> ()))
+    తిరిగి hb_బఫరు_get_ఖాళీలు ();
 
-  buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
-  buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
+  బఫరు->max_len = HB_బఫరు_MAX_LEN_DEFAULT;
+  బఫరు->max_ops = HB_బఫరు_MAX_OPS_DEFAULT;
 
-  buffer->reset ();
+  బఫరు->reset ();
 
-  return buffer;
+  తిరిగి బఫరు;
 }
 
 /**
@@ -802,14 +802,14 @@ hb_buffer_create ()
  *
  * Since: 3.3.0
  **/
-hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src)
+hb_బఫరు_t *
+hb_బఫరు_create_similar (స్థిరరాశి hb_బఫరు_t *src)
 {
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_బఫరు_t *బఫరు = hb_బఫరు_create ();
 
-  buffer->similar (*src);
+  బఫరు->similar (*src);
 
-  return buffer;
+  తిరిగి బఫరు;
 }
 
 /**
@@ -825,13 +825,13 @@ hb_buffer_create_similar (const hb_buffer_t *src)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reset (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_reset (hb_బఫరు_t *బఫరు)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->reset ();
+  బఫరు->reset ();
 }
 
 /**
@@ -843,10 +843,10 @@ hb_buffer_reset (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_get_empty ()
+hb_బఫరు_t *
+hb_బఫరు_get_ఖాళీలు ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  తిరిగి const_cast<hb_బఫరు_t *> (&Null (hb_బఫరు_t));
 }
 
 /**
@@ -861,10 +861,10 @@ hb_buffer_get_empty ()
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_reference (hb_buffer_t *buffer)
+hb_బఫరు_t *
+hb_బఫరు_reference (hb_బఫరు_t *బఫరు)
 {
-  return hb_object_reference (buffer);
+  తిరిగి hb_object_reference (బఫరు);
 }
 
 /**
@@ -877,21 +877,21 @@ hb_buffer_reference (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_destroy (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_destroy (hb_బఫరు_t *బఫరు)
 {
-  if (!hb_object_destroy (buffer)) return;
+  ఒకవేళ (!hb_object_destroy (బఫరు)) తిరిగి;
 
-  hb_unicode_funcs_destroy (buffer->unicode);
+  hb_unicode_funcs_destroy (బఫరు->unicode);
 
-  hb_free (buffer->info);
-  hb_free (buffer->pos);
-#ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
-    buffer->message_destroy (buffer->message_data);
-#endif
+  hb_free (బఫరు->info);
+  hb_free (బఫరు->pos);
+#నిర్వచితం_కాకపోతే HB_NO_బఫరు_సందేశం
+  ఒకవేళ (బఫరు->సందేశం_destroy)
+    బఫరు->సందేశం_destroy (బఫరు->సందేశం_దత్తాంశం);
+#అయితే_ముగింపు
 
-  hb_free (buffer);
+  hb_free (బఫరు);
 }
 
 /**
@@ -909,13 +909,13 @@ hb_buffer_destroy (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+hb_బఫరు_సమితి_user_దత్తాంశం (hb_బఫరు_t        *బఫరు,
+			 hb_user_దత్తాంశం_కీలకం_t *key,
+			 శూన్య *              దత్తాంశం,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (బఫరు, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -930,11 +930,11 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
  *
  * Since: 0.9.2
  **/
-void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key)
+శూన్య *
+hb_బఫరు_get_user_దత్తాంశం (స్థిరరాశి hb_బఫరు_t  *బఫరు,
+			 hb_user_దత్తాంశం_కీలకం_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (బఫరు, key);
 }
 
 
@@ -974,14 +974,14 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * Since: 0.9.5
  **/
-void
-hb_buffer_set_content_type (hb_buffer_t              *buffer,
-			    hb_buffer_content_type_t  content_type)
+శూన్య
+hb_బఫరు_సమితి_content_type (hb_బఫరు_t              *బఫరు,
+			    hb_బఫరు_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->content_type = content_type;
+  బఫరు->content_type = content_type;
 }
 
 /**
@@ -996,10 +996,10 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
  *
  * Since: 0.9.5
  **/
-hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer)
+hb_బఫరు_content_type_t
+hb_బఫరు_get_content_type (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->content_type;
+  తిరిగి బఫరు->content_type;
 }
 
 
@@ -1013,19 +1013,19 @@ hb_buffer_get_content_type (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
+శూన్య
+hb_బఫరు_సమితి_unicode_funcs (hb_బఫరు_t        *బఫరు,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  if (!unicode_funcs)
+  ఒకవేళ (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
-  hb_unicode_funcs_destroy (buffer->unicode);
-  buffer->unicode = unicode_funcs;
+  hb_unicode_funcs_destroy (బఫరు->unicode);
+  బఫరు->unicode = unicode_funcs;
 }
 
 /**
@@ -1039,9 +1039,9 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
+hb_బఫరు_get_unicode_funcs (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->unicode;
+  తిరిగి బఫరు->unicode;
 }
 
 /**
@@ -1059,14 +1059,14 @@ hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_direction (hb_buffer_t    *buffer,
+శూన్య
+hb_బఫరు_సమితి_direction (hb_బఫరు_t    *బఫరు,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->props.direction = direction;
+  బఫరు->props.direction = direction;
 }
 
 /**
@@ -1081,9 +1081,9 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer)
+hb_బఫరు_get_direction (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->props.direction;
+  తిరిగి బఫరు->props.direction;
 }
 
 /**
@@ -1103,14 +1103,14 @@ hb_buffer_get_direction (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_script (hb_buffer_t *buffer,
+శూన్య
+hb_బఫరు_సమితి_script (hb_బఫరు_t *బఫరు,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->props.script = script;
+  బఫరు->props.script = script;
 }
 
 /**
@@ -1125,9 +1125,9 @@ hb_buffer_set_script (hb_buffer_t *buffer,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer)
+hb_బఫరు_get_script (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->props.script;
+  తిరిగి బఫరు->props.script;
 }
 
 /**
@@ -1147,14 +1147,14 @@ hb_buffer_get_script (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_language (hb_buffer_t   *buffer,
+శూన్య
+hb_బఫరు_సమితి_language (hb_బఫరు_t   *బఫరు,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->props.language = language;
+  బఫరు->props.language = language;
 }
 
 /**
@@ -1169,9 +1169,9 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer)
+hb_బఫరు_get_language (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->props.language;
+  తిరిగి బఫరు->props.language;
 }
 
 /**
@@ -1185,14 +1185,14 @@ hb_buffer_get_language (const hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props)
+శూన్య
+hb_బఫరు_సమితి_segment_properties (hb_బఫరు_t *బఫరు,
+				  స్థిరరాశి hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->props = *props;
+  బఫరు->props = *props;
 }
 
 /**
@@ -1204,11 +1204,11 @@ hb_buffer_set_segment_properties (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+శూన్య
+hb_బఫరు_get_segment_properties (స్థిరరాశి hb_బఫరు_t *బఫరు,
 				  hb_segment_properties_t *props)
 {
-  *props = buffer->props;
+  *props = బఫరు->props;
 }
 
 
@@ -1221,14 +1221,14 @@ hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_set_flags (hb_buffer_t       *buffer,
-		     hb_buffer_flags_t  flags)
+శూన్య
+hb_బఫరు_సమితి_flags (hb_బఫరు_t       *బఫరు,
+		     hb_బఫరు_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->flags = flags;
+  బఫరు->flags = flags;
 }
 
 /**
@@ -1242,10 +1242,10 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
  *
  * Since: 0.9.7
  **/
-hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer)
+hb_బఫరు_flags_t
+hb_బఫరు_get_flags (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->flags;
+  తిరిగి బఫరు->flags;
 }
 
 /**
@@ -1259,14 +1259,14 @@ hb_buffer_get_flags (const hb_buffer_t *buffer)
  *
  * Since: 0.9.42
  **/
-void
-hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
-			     hb_buffer_cluster_level_t  cluster_level)
+శూన్య
+hb_బఫరు_సమితి_cluster_level (hb_బఫరు_t               *బఫరు,
+			     hb_బఫరు_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->cluster_level = cluster_level;
+  బఫరు->cluster_level = cluster_level;
 }
 
 /**
@@ -1281,10 +1281,10 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
  *
  * Since: 0.9.42
  **/
-hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
+hb_బఫరు_cluster_level_t
+hb_బఫరు_get_cluster_level (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->cluster_level;
+  తిరిగి బఫరు->cluster_level;
 }
 
 
@@ -1300,14 +1300,14 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
  *
  * Since: 0.9.31
  **/
-void
-hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
+శూన్య
+hb_బఫరు_సమితి_replacement_codepoint (hb_బఫరు_t    *బఫరు,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->replacement = replacement;
+  బఫరు->replacement = replacement;
 }
 
 /**
@@ -1323,9 +1323,9 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
  * Since: 0.9.31
  **/
 hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
+hb_బఫరు_get_replacement_codepoint (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->replacement;
+  తిరిగి బఫరు->replacement;
 }
 
 
@@ -1341,14 +1341,14 @@ hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
  *
  * Since: 2.0.0
  **/
-void
-hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
+శూన్య
+hb_బఫరు_సమితి_invisible_glyph (hb_బఫరు_t    *బఫరు,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->invisible = invisible;
+  బఫరు->invisible = invisible;
 }
 
 /**
@@ -1363,9 +1363,9 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
  * Since: 2.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
+hb_బఫరు_get_invisible_glyph (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->invisible;
+  తిరిగి బఫరు->invisible;
 }
 
 /**
@@ -1381,14 +1381,14 @@ hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
  *
  * Since: 3.1.0
  **/
-void
-hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
-			       hb_codepoint_t  not_found)
+శూన్య
+hb_బఫరు_సమితి_not_దొరికింది_glyph (hb_బఫరు_t    *బఫరు,
+			       hb_codepoint_t  not_దొరికింది)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->not_found = not_found;
+  బఫరు->not_దొరికింది = not_దొరికింది;
 }
 
 /**
@@ -1403,9 +1403,9 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
  * Since: 3.1.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
+hb_బఫరు_get_not_దొరికింది_glyph (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->not_found;
+  తిరిగి బఫరు->not_దొరికింది;
 }
 
 /**
@@ -1424,11 +1424,11 @@ hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
  *
  * Since: 10.0.0
  **/
-void
-hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
-						  hb_codepoint_t  not_found_variation_selector)
+శూన్య
+hb_బఫరు_సమితి_not_దొరికింది_variation_selector_glyph (hb_బఫరు_t    *బఫరు,
+						  hb_codepoint_t  not_దొరికింది_variation_selector)
 {
-  buffer->not_found_variation_selector = not_found_variation_selector;
+  బఫరు->not_దొరికింది_variation_selector = not_దొరికింది_variation_selector;
 }
 
 /**
@@ -1443,9 +1443,9 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
  * Since: 10.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
+hb_బఫరు_get_not_దొరికింది_variation_selector_glyph (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->not_found_variation_selector;
+  తిరిగి బఫరు->not_దొరికింది_variation_selector;
 }
 
 /**
@@ -1465,14 +1465,14 @@ hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
  *
  * Since: 8.4.0
  **/
-void
-hb_buffer_set_random_state (hb_buffer_t    *buffer,
-			    unsigned        state)
+శూన్య
+hb_బఫరు_సమితి_random_state (hb_బఫరు_t    *బఫరు,
+			    గుర్తులేని        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->random_state = state;
+  బఫరు->random_state = state;
 }
 
 /**
@@ -1486,10 +1486,10 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
  *
  * Since: 8.4.0
  **/
-unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer)
+గుర్తులేని
+hb_బఫరు_get_random_state (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->random_state;
+  తిరిగి బఫరు->random_state;
 }
 
 /**
@@ -1505,13 +1505,13 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
  *
  * Since: 0.9.11
  **/
-void
-hb_buffer_clear_contents (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_clear_contents (hb_బఫరు_t *బఫరు)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  buffer->clear ();
+  బఫరు->clear ();
 }
 
 /**
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_బఫరు_pre_allocate (hb_బఫరు_t *బఫరు, గుర్తులేని పూర్ణాంకం కొలత)
 {
-  return buffer->ensure (size);
+  తిరిగి బఫరు->ensure (కొలత);
 }
 
 /**
@@ -1544,9 +1544,9 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_allocation_successful (hb_buffer_t  *buffer)
+hb_బఫరు_కేటాయింపు_successful (hb_బఫరు_t  *బఫరు)
 {
-  return buffer->successful;
+  తిరిగి బఫరు->successful;
 }
 
 /**
@@ -1566,13 +1566,13 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_add (hb_buffer_t    *buffer,
+శూన్య
+hb_బఫరు_కూడు (hb_బఫరు_t    *బఫరు,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       గుర్తులేని పూర్ణాంకం    cluster)
 {
-  buffer->add (codepoint, cluster);
-  buffer->clear_context (1);
+  బఫరు->కూడు (codepoint, cluster);
+  బఫరు->clear_context (1);
 }
 
 /**
@@ -1589,32 +1589,32 @@ hb_buffer_add (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+hb_బఫరు_సమితి_నిడివి (hb_బఫరు_t  *బఫరు,
+		      గుర్తులేని పూర్ణాంకం  నిడివి)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి నిడివి == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  ఒకవేళ (unlikely (!బఫరు->ensure (నిడివి)))
+    తిరిగి అబద్ధం;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
-    hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
-      hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
+  ఒకవేళ (నిడివి > బఫరు->len) {
+    hb_memset (బఫరు->info + బఫరు->len, 0, పరిమాణం (బఫరు->info[0]) * (నిడివి - బఫరు->len));
+    ఒకవేళ (బఫరు->have_positions)
+      hb_memset (బఫరు->pos + బఫరు->len, 0, పరిమాణం (బఫరు->pos[0]) * (నిడివి - బఫరు->len));
   }
 
-  buffer->len = length;
+  బఫరు->len = నిడివి;
 
-  if (!length)
+  ఒకవేళ (!నిడివి)
   {
-    buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
-    buffer->clear_context (0);
+    బఫరు->content_type = HB_బఫరు_CONTENT_TYPE_INVALID;
+    బఫరు->clear_context (0);
   }
-  buffer->clear_context (1);
+  బఫరు->clear_context (1);
 
-  return true;
+  తిరిగి నిజం;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer)
+గుర్తులేని పూర్ణాంకం
+hb_బఫరు_get_నిడివి (స్థిరరాశి hb_బఫరు_t *బఫరు)
 {
-  return buffer->len;
+  తిరిగి బఫరు->len;
 }
 
 /**
@@ -1650,13 +1650,13 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_glyph_info_t *
-hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+hb_బఫరు_get_glyph_infos (hb_బఫరు_t  *బఫరు,
+			   గుర్తులేని పూర్ణాంకం *నిడివి)
 {
-  if (length)
-    *length = buffer->len;
+  ఒకవేళ (నిడివి)
+    *నిడివి = బఫరు->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  తిరిగి (hb_glyph_info_t *) బఫరు->info;
 }
 
 /**
@@ -1679,21 +1679,21 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  * Since: 0.9.2
  **/
 hb_glyph_position_t *
-hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+hb_బఫరు_get_glyph_positions (hb_బఫరు_t  *బఫరు,
+			       గుర్తులేని పూర్ణాంకం *నిడివి)
 {
-  if (length)
-    *length = buffer->len;
+  ఒకవేళ (నిడివి)
+    *నిడివి = బఫరు->len;
 
-  if (!buffer->have_positions)
+  ఒకవేళ (!బఫరు->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    ఒకవేళ (unlikely (బఫరు->సందేశం_లోతు))
+      తిరిగి శూన్యసూచిక;
 
-    buffer->clear_positions ();
+    బఫరు->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  తిరిగి (hb_glyph_position_t *) బఫరు->pos;
 }
 
 /**
@@ -1710,9 +1710,9 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
  * Since: 2.7.3
  **/
 HB_EXTERN hb_bool_t
-hb_buffer_has_positions (hb_buffer_t  *buffer)
+hb_బఫరు_has_positions (hb_బఫరు_t  *బఫరు)
 {
-  return buffer->have_positions;
+  తిరిగి బఫరు->have_positions;
 }
 
 /**
@@ -1727,9 +1727,9 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
  * Since: 1.5.0
  **/
 hb_glyph_flags_t
-(hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
+(hb_glyph_info_get_glyph_flags) (స్థిరరాశి hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  తిరిగి hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1740,10 +1740,10 @@ hb_glyph_flags_t
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reverse (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_తిరగేయి (hb_బఫరు_t *బఫరు)
 {
-  buffer->reverse ();
+  బఫరు->reverse ();
 }
 
 /**
@@ -1756,11 +1756,11 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  *
  * Since: 0.9.41
  **/
-void
-hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+శూన్య
+hb_బఫరు_తిరగేయి_range (hb_బఫరు_t *బఫరు,
+			 గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర)
 {
-  buffer->reverse_range (start, end);
+  బఫరు->తిరగేయి_range (ప్రారంభం, చివర);
 }
 
 /**
@@ -1773,10 +1773,10 @@ hb_buffer_reverse_range (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reverse_clusters (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_తిరగేయి_clusters (hb_బఫరు_t *బఫరు)
 {
-  buffer->reverse_clusters ();
+  బఫరు->తిరగేయి_clusters ();
 }
 
 /**
@@ -1807,41 +1807,41 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_guess_segment_properties (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_guess_segment_properties (hb_బఫరు_t *బఫరు)
 {
-  buffer->guess_segment_properties ();
+  బఫరు->guess_segment_properties ();
 }
 
-template <typename utf_t>
-static inline void
-hb_buffer_add_utf (hb_buffer_t  *buffer,
-		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+మూస <రకం_పేరు utf_t>
+స్థిర అంతఃవరుస శూన్య
+hb_బఫరు_కూడు_utf (hb_బఫరు_t  *బఫరు,
+		   స్థిరరాశి రకం_పేరు utf_t::codepoint_t *పాఠ్యం,
+		   పూర్ణాంకం           పాఠ్యం_నిడివి,
+		   గుర్తులేని పూర్ణాంకం  అంశం_స్థానభ్రంశం,
+		   పూర్ణాంకం           అంశం_నిడివి)
 {
-  typedef typename utf_t::codepoint_t T;
-  const hb_codepoint_t replacement = buffer->replacement;
+  రకనిర్వచనం రకం_పేరు utf_t::codepoint_t T;
+  స్థిరరాశి hb_codepoint_t replacement = బఫరు->replacement;
 
-  buffer->assert_unicode ();
+  బఫరు->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)))
+    తిరిగి;
 
-  if (text_length == -1)
-    text_length = utf_t::strlen (text);
+  ఒకవేళ (పాఠ్యం_నిడివి == -1)
+    పాఠ్యం_నిడివి = utf_t::అక్షరశ్రేణి_పొడవు (పాఠ్యం);
 
-  if (item_length == -1)
-    item_length = text_length - item_offset;
+  ఒకవేళ (అంశం_నిడివి == -1)
+    అంశం_నిడివి = పాఠ్యం_నిడివి - అంశం_స్థానభ్రంశం;
 
-  item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  అంశం_స్థానభ్రంశం = hb_min (అంశం_స్థానభ్రంశం, (గుర్తులేని) పాఠ్యం_నిడివి);
+  అంశం_నిడివి = hb_clamp (అంశం_నిడివి, 0, పాఠ్యం_నిడివి - (పూర్ణాంకం) అంశం_స్థానభ్రంశం);
 
-  if (unlikely (item_length < 0 ||
-		item_length > INT_MAX / 8 ||
-		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+  ఒకవేళ (unlikely (అంశం_నిడివి < 0 ||
+		అంశం_నిడివి > గరిష్ఠ_పూర్ణాంకం / 8 ||
+		!బఫరు->ensure (బఫరు->len + అంశం_నిడివి * పరిమాణం (T) / 4)))
+    తిరిగి;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,41 +1850,41 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  ఒకవేళ (!బఫరు->len && అంశం_స్థానభ్రంశం > 0)
   {
     /* Add pre-context */
-    buffer->clear_context (0);
-    const T *prev = text + item_offset;
-    const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    బఫరు->clear_context (0);
+    స్థిరరాశి T *prev = పాఠ్యం + అంశం_స్థానభ్రంశం;
+    స్థిరరాశి T *ప్రారంభం = పాఠ్యం;
+    అయితే (ప్రారంభం < prev && బఫరు->context_len[0] < బఫరు->CONTEXT_నిడివి)
     {
       hb_codepoint_t u;
-      prev = utf_t::prev (prev, start, &u, replacement);
-      buffer->context[0][buffer->context_len[0]++] = u;
+      prev = utf_t::prev (prev, ప్రారంభం, &u, replacement);
+      బఫరు->context[0][బఫరు->context_len[0]++] = u;
     }
   }
 
-  const T *next = text + item_offset;
-  const T *end = next + item_length;
-  while (next < end)
+  స్థిరరాశి T *next = పాఠ్యం + అంశం_స్థానభ్రంశం;
+  స్థిరరాశి T *చివర = next + అంశం_నిడివి;
+  అయితే (next < చివర)
   {
     hb_codepoint_t u;
-    const T *old_next = next;
-    next = utf_t::next (next, end, &u, replacement);
-    buffer->add (u, old_next - (const T *) text);
+    స్థిరరాశి T *old_తదుపరి = next;
+    next = utf_t::next (next, చివర, &u, replacement);
+    బఫరు->కూడు (u, old_తదుపరి - (స్థిరరాశి T *) పాఠ్యం);
   }
 
   /* Add post-context */
-  buffer->clear_context (1);
-  end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  బఫరు->clear_context (1);
+  చివర = పాఠ్యం + పాఠ్యం_నిడివి;
+  అయితే (next < చివర && బఫరు->context_len[1] < బఫరు->CONTEXT_నిడివి)
   {
     hb_codepoint_t u;
-    next = utf_t::next (next, end, &u, replacement);
-    buffer->context[1][buffer->context_len[1]++] = u;
+    next = utf_t::next (next, చివర, &u, replacement);
+    బఫరు->context[1][బఫరు->context_len[1]++] = u;
   }
 
-  buffer->content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
+  బఫరు->content_type = HB_బఫరు_CONTENT_TYPE_UNICODE;
 }
 
 /**
@@ -1904,14 +1904,14 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+శూన్య
+hb_బఫరు_కూడు_utf8 (hb_బఫరు_t  *బఫరు,
+		    స్థిరరాశి అక్షరం   *పాఠ్యం,
+		    పూర్ణాంకం           పాఠ్యం_నిడివి,
+		    గుర్తులేని పూర్ణాంకం  అంశం_స్థానభ్రంశం,
+		    పూర్ణాంకం           అంశం_నిడివి)
 {
-  hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
+  hb_బఫరు_కూడు_utf<hb_utf8_t> (బఫరు, (స్థిరరాశి uint8_t *) పాఠ్యం, పాఠ్యం_నిడివి, అంశం_స్థానభ్రంశం, అంశం_నిడివి);
 }
 
 /**
@@ -1930,14 +1930,14 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+శూన్య
+hb_బఫరు_కూడు_utf16 (hb_బఫరు_t    *బఫరు,
+		     స్థిరరాశి uint16_t *పాఠ్యం,
+		     పూర్ణాంకం             పాఠ్యం_నిడివి,
+		     గుర్తులేని పూర్ణాంకం    అంశం_స్థానభ్రంశం,
+		     పూర్ణాంకం             అంశం_నిడివి)
 {
-  hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
+  hb_బఫరు_కూడు_utf<hb_utf16_t> (బఫరు, పాఠ్యం, పాఠ్యం_నిడివి, అంశం_స్థానభ్రంశం, అంశం_నిడివి);
 }
 
 /**
@@ -1956,14 +1956,14 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+శూన్య
+hb_బఫరు_కూడు_utf32 (hb_బఫరు_t    *బఫరు,
+		     స్థిరరాశి uint32_t *పాఠ్యం,
+		     పూర్ణాంకం             పాఠ్యం_నిడివి,
+		     గుర్తులేని పూర్ణాంకం    అంశం_స్థానభ్రంశం,
+		     పూర్ణాంకం             అంశం_నిడివి)
 {
-  hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
+  hb_బఫరు_కూడు_utf<hb_utf32_t> (బఫరు, పాఠ్యం, పాఠ్యం_నిడివి, అంశం_స్థానభ్రంశం, అంశం_నిడివి);
 }
 
 /**
@@ -1983,14 +1983,14 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.39
  **/
-void
-hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+శూన్య
+hb_బఫరు_కూడు_latin1 (hb_బఫరు_t   *బఫరు,
+		      స్థిరరాశి uint8_t *పాఠ్యం,
+		      పూర్ణాంకం            పాఠ్యం_నిడివి,
+		      గుర్తులేని పూర్ణాంకం   అంశం_స్థానభ్రంశం,
+		      పూర్ణాంకం            అంశం_నిడివి)
 {
-  hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
+  hb_బఫరు_కూడు_utf<hb_latin1_t> (బఫరు, పాఠ్యం, పాఠ్యం_నిడివి, అంశం_స్థానభ్రంశం, అంశం_నిడివి);
 }
 
 /**
@@ -2019,14 +2019,14 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
  *
  * Since: 0.9.31
  **/
-void
-hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+శూన్య
+hb_బఫరు_కూడు_codepoints (hb_బఫరు_t          *బఫరు,
+			  స్థిరరాశి hb_codepoint_t *పాఠ్యం,
+			  పూర్ణాంకం                   పాఠ్యం_నిడివి,
+			  గుర్తులేని పూర్ణాంకం          అంశం_స్థానభ్రంశం,
+			  పూర్ణాంకం                   అంశం_నిడివి)
 {
-  hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
+  hb_బఫరు_కూడు_utf<hb_utf32_novalidate_t> (బఫరు, పాఠ్యం, పాఠ్యం_నిడివి, అంశం_స్థానభ్రంశం, అంశం_నిడివి);
 }
 
 
@@ -2041,123 +2041,123 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
  *
  * Since: 1.5.0
  **/
-HB_EXTERN void
-hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+HB_EXTERN శూన్య
+hb_బఫరు_append (hb_బఫరు_t *బఫరు,
+		  స్థిరరాశి hb_బఫరు_t *ఆధారం,
+		  గుర్తులేని పూర్ణాంకం ప్రారంభం,
+		  గుర్తులేని పూర్ణాంకం చివర)
 {
-  assert (!buffer->have_output && !source->have_output);
-  assert (buffer->have_positions == source->have_positions ||
-	  !buffer->len || !source->len);
-  assert (buffer->content_type == source->content_type ||
-	  !buffer->len || !source->len);
+  ప్రతిజ్ఞా (!బఫరు->have_output && !ఆధారం->have_output);
+  ప్రతిజ్ఞా (బఫరు->have_positions == ఆధారం->have_positions ||
+	  !బఫరు->len || !ఆధారం->len);
+  ప్రతిజ్ఞా (బఫరు->content_type == ఆధారం->content_type ||
+	  !బఫరు->len || !ఆధారం->len);
 
-  if (end > source->len)
-    end = source->len;
-  if (start > end)
-    start = end;
-  if (start == end)
-    return;
+  ఒకవేళ (చివర > ఆధారం->len)
+    చివర = ఆధారం->len;
+  ఒకవేళ (ప్రారంభం > చివర)
+    ప్రారంభం = చివర;
+  ఒకవేళ (ప్రారంభం == చివర)
+    తిరిగి;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  ఒకవేళ (బఫరు->len + (చివర - ప్రారంభం) < బఫరు->len) /* Overflows. */
   {
-    buffer->successful = false;
-    return;
+    బఫరు->successful = అబద్ధం;
+    తిరిగి;
   }
 
-  unsigned int orig_len = buffer->len;
-  hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  గుర్తులేని పూర్ణాంకం orig_len = బఫరు->len;
+  hb_బఫరు_సమితి_నిడివి (బఫరు, బఫరు->len + (చివర - ప్రారంభం));
+  ఒకవేళ (unlikely (!బఫరు->successful))
+    తిరిగి;
 
-  if (!orig_len)
-    buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
-    buffer->clear_positions ();
+  ఒకవేళ (!orig_len)
+    బఫరు->content_type = ఆధారం->content_type;
+  ఒకవేళ (!బఫరు->have_positions && ఆధారం->have_positions)
+    బఫరు->clear_positions ();
 
-  hb_segment_properties_overlay (&buffer->props, &source->props);
+  hb_segment_properties_overlay (&బఫరు->props, &ఆధారం->props);
 
-  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
-    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
+  hb_memcpy (బఫరు->info + orig_len, ఆధారం->info + ప్రారంభం, (చివర - ప్రారంభం) * పరిమాణం (బఫరు->info[0]));
+  ఒకవేళ (బఫరు->have_positions)
+    hb_memcpy (బఫరు->pos + orig_len, ఆధారం->pos + ప్రారంభం, (చివర - ప్రారంభం) * పరిమాణం (బఫరు->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  ఒకవేళ (ఆధారం->content_type == HB_బఫరు_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    ఒకవేళ (!orig_len && ప్రారంభం + ఆధారం->context_len[0] > 0)
     {
-      buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
-	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
-	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
+      బఫరు->clear_context (0);
+      అయితే (ప్రారంభం > 0 && బఫరు->context_len[0] < బఫరు->CONTEXT_నిడివి)
+	బఫరు->context[0][బఫరు->context_len[0]++] = ఆధారం->info[--ప్రారంభం].codepoint;
+      కొరకు (స్వయంచాలక i = 0u; i < ఆధారం->context_len[0] && బఫరు->context_len[0] < బఫరు->CONTEXT_నిడివి; i++)
+	బఫరు->context[0][బఫరు->context_len[0]++] = ఆధారం->context[0][i];
     }
 
     /* post-context */
-    buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
-      buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
-      buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
+    బఫరు->clear_context (1);
+    అయితే (చివర < ఆధారం->len && బఫరు->context_len[1] < బఫరు->CONTEXT_నిడివి)
+      బఫరు->context[1][బఫరు->context_len[1]++] = ఆధారం->info[చివర++].codepoint;
+    కొరకు (స్వయంచాలక i = 0u; i < ఆధారం->context_len[1] && బఫరు->context_len[1] < బఫరు->CONTEXT_నిడివి; i++)
+      బఫరు->context[1][బఫరు->context_len[1]++] = ఆధారం->context[1][i];
   }
 }
 
 
-static int
-compare_info_codepoint (const hb_glyph_info_t *pa,
-			const hb_glyph_info_t *pb)
+స్థిర పూర్ణాంకం
+compare_info_codepoint (స్థిరరాశి hb_glyph_info_t *pa,
+			స్థిరరాశి hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  తిరిగి (పూర్ణాంకం) pb->codepoint - (పూర్ణాంకం) pa->codepoint;
 }
 
-static inline void
-normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
-			  bool backward)
+స్థిర అంతఃవరుస శూన్య
+normalize_glyphs_cluster (hb_బఫరు_t *బఫరు,
+			  గుర్తులేని పూర్ణాంకం ప్రారంభం,
+			  గుర్తులేని పూర్ణాంకం చివర,
+			  తార్కిక backward)
 {
-  hb_glyph_position_t *pos = buffer->pos;
+  hb_glyph_position_t *pos = బఫరు->pos;
 
   /* Total cluster advance */
-  hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  hb_position_t మొత్తం_x_advance = 0, మొత్తం_y_advance = 0;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
-    total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
+    మొత్తం_x_advance = hb_saturate_కూడు (మొత్తం_x_advance, pos[i].x_advance);
+    మొత్తం_y_advance = hb_saturate_కూడు (మొత్తం_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం; i < చివర; i++)
   {
-    pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
-    pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
+    pos[i].x_స్థానభ్రంశం_2 = hb_saturate_కూడు (pos[i].x_స్థానభ్రంశం_2, x_advance);
+    pos[i].y_స్థానభ్రంశం_2 = hb_saturate_కూడు (pos[i].y_స్థానభ్రంశం_2, y_advance);
 
-    x_advance = hb_saturate_add (x_advance, pos[i].x_advance);
-    y_advance = hb_saturate_add (y_advance, pos[i].y_advance);
+    x_advance = hb_saturate_కూడు (x_advance, pos[i].x_advance);
+    y_advance = hb_saturate_కూడు (y_advance, pos[i].y_advance);
 
     pos[i].x_advance = 0;
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  ఒకవేళ (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
-    pos[end - 1].x_advance = total_x_advance;
-    pos[end - 1].y_advance = total_y_advance;
+    pos[చివర - 1].x_advance = మొత్తం_x_advance;
+    pos[చివర - 1].y_advance = మొత్తం_y_advance;
 
-    hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+    hb_stable_క్రమీకరించు (బఫరు->info + ప్రారంభం, చివర - ప్రారంభం - 1, compare_info_codepoint, బఫరు->pos + ప్రారంభం);
+  } లేకపోతే {
     /* Transfer all cluster advance to the first glyph. */
-    pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
-    pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
-      pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
-      pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
+    pos[ప్రారంభం].x_advance = hb_saturate_కూడు (pos[ప్రారంభం].x_advance, మొత్తం_x_advance);
+    pos[ప్రారంభం].y_advance = hb_saturate_కూడు (pos[ప్రారంభం].y_advance, మొత్తం_y_advance);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం + 1; i < చివర; i++) {
+      pos[i].x_స్థానభ్రంశం_2 = hb_saturate_sub (pos[i].x_స్థానభ్రంశం_2, మొత్తం_x_advance);
+      pos[i].y_స్థానభ్రంశం_2 = hb_saturate_sub (pos[i].y_స్థానభ్రంశం_2, మొత్తం_y_advance);
     }
-    hb_stable_sort (buffer->info + start + 1, end - start - 1, compare_info_codepoint, buffer->pos + start + 1);
+    hb_stable_క్రమీకరించు (బఫరు->info + ప్రారంభం + 1, చివర - ప్రారంభం - 1, compare_info_codepoint, బఫరు->pos + ప్రారంభం + 1);
   }
 }
 
@@ -2172,35 +2172,35 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_normalize_glyphs (hb_బఫరు_t *బఫరు)
 {
-  assert (buffer->have_positions);
+  ప్రతిజ్ఞా (బఫరు->have_positions);
 
-  buffer->assert_glyphs ();
+  బఫరు->assert_glyphs ();
 
-  bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  తార్కిక backward = HB_DIRECTION_IS_BACKWARD (బఫరు->props.direction);
 
-  foreach_cluster (buffer, start, end)
-    normalize_glyphs_cluster (buffer, start, end, backward);
+  foreach_cluster (బఫరు, ప్రారంభం, చివర)
+    normalize_glyphs_cluster (బఫరు, ప్రారంభం, చివర, backward);
 }
 
-void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+శూన్య
+hb_బఫరు_t::sort (గుర్తులేని పూర్ణాంకం ప్రారంభం, గుర్తులేని పూర్ణాంకం చివర, పూర్ణాంకం(*compar)(స్థిరరాశి hb_glyph_info_t *, స్థిరరాశి hb_glyph_info_t *))
 {
-  assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  ప్రతిజ్ఞా (!have_positions);
+  కొరకు (గుర్తులేని పూర్ణాంకం i = ప్రారంభం + 1; i < చివర; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    గుర్తులేని పూర్ణాంకం j = i;
+    అయితే (j > ప్రారంభం && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    ఒకవేళ (i == j)
+      కొనసాగు;
     /* Move item i to occupy place for item j, shift what's in between. */
-    merge_clusters (j, i + 1);
+    విలీనం_clusters (j, i + 1);
     {
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (hb_glyph_info_t));
+      memmove (&info[j + 1], &info[j], (i - j) * పరిమాణం (hb_glyph_info_t));
       info[j] = t;
     }
   }
@@ -2224,86 +2224,86 @@ hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_g
  *
  * Since: 1.5.0
  **/
-hb_buffer_diff_flags_t
-hb_buffer_diff (hb_buffer_t *buffer,
-		hb_buffer_t *reference,
+hb_బఫరు_diff_flags_t
+hb_బఫరు_diff (hb_బఫరు_t *బఫరు,
+		hb_బఫరు_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		గుర్తులేని పూర్ణాంకం position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  ఒకవేళ (బఫరు->content_type != reference->content_type && బఫరు->len && reference->len)
+    తిరిగి HB_బఫరు_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
-  hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
-  bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
+  hb_బఫరు_diff_flags_t ఫలితం = HB_బఫరు_DIFF_FLAG_EQUAL;
+  తార్కిక కలిగియుంది = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  గుర్తులేని పూర్ణాంకం లెక్క = reference->len;
 
-  if (buffer->len != count)
+  ఒకవేళ (బఫరు->len != లెక్క)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
-    const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    స్థిరరాశి hb_glyph_info_t *info = reference->info;
+    గుర్తులేని పూర్ణాంకం i;
+    కొరకు (i = 0; i < లెక్క; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
-	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
-	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
+      ఒకవేళ (కలిగియుంది && info[i].codepoint == dottedcircle_glyph)
+	ఫలితం |= HB_బఫరు_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
+      ఒకవేళ (కలిగియుంది && info[i].codepoint == 0)
+	ఫలితం |= HB_బఫరు_DIFF_FLAG_NOTDEF_PRESENT;
     }
-    result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    ఫలితం |= HB_బఫరు_DIFF_FLAG_నిడివి_MISMATCH;
+    తిరిగి hb_బఫరు_diff_flags_t (ఫలితం);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  ఒకవేళ (!లెక్క)
+    తిరిగి hb_బఫరు_diff_flags_t (ఫలితం);
 
-  const hb_glyph_info_t *buf_info = buffer->info;
-  const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  స్థిరరాశి hb_glyph_info_t *buf_info = బఫరు->info;
+  స్థిరరాశి hb_glyph_info_t *ref_info = reference->info;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
-      result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
-      result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
-      result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
-      result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
-      result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
+    ఒకవేళ (buf_info->codepoint != ref_info->codepoint)
+      ఫలితం |= HB_బఫరు_DIFF_FLAG_CODEPOINT_MISMATCH;
+    ఒకవేళ (buf_info->cluster != ref_info->cluster)
+      ఫలితం |= HB_బఫరు_DIFF_FLAG_CLUSTER_MISMATCH;
+    ఒకవేళ ((buf_info->ముసుగు ^ ref_info->ముసుగు) & HB_GLYPH_FLAG_DEFINED)
+      ఫలితం |= HB_బఫరు_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
+    ఒకవేళ (కలిగియుంది && ref_info->codepoint == dottedcircle_glyph)
+      ఫలితం |= HB_బఫరు_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
+    ఒకవేళ (కలిగియుంది && ref_info->codepoint == 0)
+      ఫలితం |= HB_బఫరు_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  ఒకవేళ (బఫరు->content_type == HB_బఫరు_CONTENT_TYPE_GLYPHS)
   {
-    auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
+    స్వయంచాలక position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      తిరిగి diff < 0 ? -diff : diff;
     };
-    assert (buffer->have_positions);
-    const hb_glyph_position_t *buf_pos = buffer->pos;
-    const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    ప్రతిజ్ఞా (బఫరు->have_positions);
+    స్థిరరాశి hb_glyph_position_t *buf_pos = బఫరు->pos;
+    స్థిరరాశి hb_glyph_position_t *ref_pos = reference->pos;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      ఒకవేళ (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
-	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
-	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
+	  position_diff (buf_pos->x_స్థానభ్రంశం_2, ref_pos->x_స్థానభ్రంశం_2) > position_fuzz ||
+	  position_diff (buf_pos->y_స్థానభ్రంశం_2, ref_pos->y_స్థానభ్రంశం_2) > position_fuzz)
       {
-	result |= HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH;
-	break;
+	ఫలితం |= HB_బఫరు_DIFF_FLAG_POSITION_MISMATCH;
+	ఆపు;
       }
       buf_pos++;
       ref_pos++;
     }
   }
 
-  return result;
+  తిరిగి ఫలితం;
 }
 
 
@@ -2311,23 +2311,23 @@ hb_buffer_diff (hb_buffer_t *buffer,
  * Debugging.
  */
 
-void
-hb_buffer_t::changed ()
+శూన్య
+hb_బఫరు_t::మారింది ()
 {
-#ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+#నిర్వచితమైతే HB_NO_బఫరు_సందేశం
+  తిరిగి;
+#లేకపోతే
+  ఒకవేళ (!సందేశం_లోతు)
+    తిరిగి;
 
-  if (changed_func)
-    changed_func (this, changed_data);
-  else
+  ఒకవేళ (మారింది_func)
+    మారింది_func (ఇది, మారింది_దత్తాంశం);
+  లేకపోతే
     update_digest ();
-#endif
+#అయితే_ముగింపు
 }
 
-#ifndef HB_NO_BUFFER_MESSAGE
+#నిర్వచితం_కాకపోతే HB_NO_బఫరు_సందేశం
 /**
  * hb_buffer_set_message_func:
  * @buffer: An #hb_buffer_t
@@ -2342,30 +2342,30 @@ hb_buffer_t::changed ()
  *
  * Since: 1.1.3
  **/
-void
-hb_buffer_set_message_func (hb_buffer_t *buffer,
-			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy)
+శూన్య
+hb_బఫరు_సమితి_సందేశం_func (hb_బఫరు_t *బఫరు,
+			    hb_బఫరు_సందేశం_func_t func,
+			    శూన్య *user_దత్తాంశం, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
-      unlikely (buffer->message_depth))
+  ఒకవేళ (unlikely (hb_object_is_immutable (బఫరు)) ||
+      unlikely (బఫరు->సందేశం_లోతు))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    ఒకవేళ (destroy)
+      destroy (user_దత్తాంశం);
+    తిరిగి;
   }
 
-  if (buffer->message_destroy)
-    buffer->message_destroy (buffer->message_data);
+  ఒకవేళ (బఫరు->సందేశం_destroy)
+    బఫరు->సందేశం_destroy (బఫరు->సందేశం_దత్తాంశం);
 
-  if (func) {
-    buffer->message_func = func;
-    buffer->message_data = user_data;
-    buffer->message_destroy = destroy;
-  } else {
-    buffer->message_func = nullptr;
-    buffer->message_data = nullptr;
-    buffer->message_destroy = nullptr;
+  ఒకవేళ (func) {
+    బఫరు->సందేశం_func = func;
+    బఫరు->సందేశం_దత్తాంశం = user_దత్తాంశం;
+    బఫరు->సందేశం_destroy = destroy;
+  } లేకపోతే {
+    బఫరు->సందేశం_func = శూన్యసూచిక;
+    బఫరు->సందేశం_దత్తాంశం = శూన్యసూచిక;
+    బఫరు->సందేశం_destroy = శూన్యసూచిక;
   }
 }
 /**
@@ -2379,25 +2379,25 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
  *
  * Since: 13.0.0
  **/
-void
-hb_buffer_changed (hb_buffer_t *buffer)
+శూన్య
+hb_బఫరు_మారింది (hb_బఫరు_t *బఫరు)
 {
-  buffer->changed ();
+  బఫరు->మారింది ();
 }
 
-bool
-hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
+తార్కిక
+hb_బఫరు_t::సందేశం_impl (hb_font_t *font, స్థిరరాశి అక్షరం *fmt, va_list ap)
 {
-  assert (!have_output || (out_info == info && out_len == idx));
+  ప్రతిజ్ఞా (!have_output || (బహిర్గతం_info == info && బహిర్గతం_len == idx));
 
-  message_depth++;
+  సందేశం_లోతు++;
 
-  char buf[100];
-  vsnprintf (buf, sizeof (buf), fmt, ap);
-  bool ret = (bool) this->message_func (this, font, buf, this->message_data);
+  అక్షరం buf[100];
+  vsnprintf (buf, పరిమాణం (buf), fmt, ap);
+  తార్కిక ret = (తార్కిక) ఇది->సందేశం_func (ఇది, font, buf, ఇది->సందేశం_దత్తాంశం);
 
-  message_depth--;
+  సందేశం_లోతు--;
 
-  return ret;
+  తిరిగి ret;
 }
-#endif
+#అయితే_ముగింపు

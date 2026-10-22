@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_GLIB
+#నిర్వచితమైతే HAVE_GLIB
 
-#include "hb-glib.h"
+#అన్తర్భావ "hb-glib.h"
 
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
 
 /**
@@ -61,9 +61,9 @@
  * Since: 0.9.38
  **/
 hb_script_t
-hb_glib_script_to_script (GUnicodeScript script)
+hb_glib_script_గమ్యం_script (GUnicodeScript script)
 {
-  return (hb_script_t) g_unicode_script_to_iso15924 (script);
+  తిరిగి (hb_script_t) g_unicode_script_గమ్యం_iso15924 (script);
 }
 
 /**
@@ -80,92 +80,92 @@ hb_glib_script_to_script (GUnicodeScript script)
 GUnicodeScript
 hb_glib_script_from_script (hb_script_t script)
 {
-  return g_unicode_script_from_iso15924 (script);
+  తిరిగి g_unicode_script_from_iso15924 (script);
 }
 
 
-static hb_unicode_combining_class_t
-hb_glib_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_unicode_combining_class_t
+hb_glib_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_వాడని,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 శూన్య               *user_దత్తాంశం HB_వాడని)
 
 {
-  return (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
+  తిరిగి (hb_unicode_combining_class_t) g_unichar_combining_class (unicode);
 }
 
-static hb_unicode_general_category_t
-hb_glib_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_unicode_general_category_t
+hb_glib_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_వాడని,
 				  hb_codepoint_t      unicode,
-				  void               *user_data HB_UNUSED)
+				  శూన్య               *user_దత్తాంశం HB_వాడని)
 
 {
   /* hb_unicode_general_category_t and GUnicodeType are identical */
-  return (hb_unicode_general_category_t) g_unichar_type (unicode);
+  తిరిగి (hb_unicode_general_category_t) g_unichar_type (unicode);
 }
 
-static hb_codepoint_t
-hb_glib_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_codepoint_t
+hb_glib_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			   hb_codepoint_t      unicode,
-			   void               *user_data HB_UNUSED)
+			   శూన్య               *user_దత్తాంశం HB_వాడని)
 {
   g_unichar_get_mirror_char (unicode, &unicode);
-  return unicode;
+  తిరిగి unicode;
 }
 
-static hb_script_t
-hb_glib_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_script_t
+hb_glib_unicode_script (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			hb_codepoint_t      unicode,
-			void               *user_data HB_UNUSED)
+			శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  return hb_glib_script_to_script (g_unichar_get_script (unicode));
+  తిరిగి hb_glib_script_గమ్యం_script (g_unichar_get_script (unicode));
 }
 
-static hb_bool_t
-hb_glib_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_bool_t
+hb_glib_unicode_compose (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			 hb_codepoint_t      a,
 			 hb_codepoint_t      b,
 			 hb_codepoint_t     *ab,
-			 void               *user_data HB_UNUSED)
+			 శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  return g_unichar_compose (a, b, ab);
+  తిరిగి g_unichar_compose (a, b, ab);
 }
 
-static hb_bool_t
-hb_glib_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+స్థిర hb_bool_t
+hb_glib_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_వాడని,
 			   hb_codepoint_t      ab,
 			   hb_codepoint_t     *a,
 			   hb_codepoint_t     *b,
-			   void               *user_data HB_UNUSED)
+			   శూన్య               *user_దత్తాంశం HB_వాడని)
 {
-  return g_unichar_decompose (ab, a, b);
+  తిరిగి g_unichar_decompose (ab, a, b);
 }
 
 
-static inline void free_static_glib_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_glib_funcs ();
 
-static struct hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_glib_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_glib_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  స్థిర hb_unicode_funcs_t *create ()
   {
-    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
+    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (శూన్యసూచిక);
 
-    hb_unicode_funcs_set_combining_class_func (funcs, hb_glib_unicode_combining_class, nullptr, nullptr);
-    hb_unicode_funcs_set_general_category_func (funcs, hb_glib_unicode_general_category, nullptr, nullptr);
-    hb_unicode_funcs_set_mirroring_func (funcs, hb_glib_unicode_mirroring, nullptr, nullptr);
-    hb_unicode_funcs_set_script_func (funcs, hb_glib_unicode_script, nullptr, nullptr);
-    hb_unicode_funcs_set_compose_func (funcs, hb_glib_unicode_compose, nullptr, nullptr);
-    hb_unicode_funcs_set_decompose_func (funcs, hb_glib_unicode_decompose, nullptr, nullptr);
+    hb_unicode_funcs_సమితి_combining_class_func (funcs, hb_glib_unicode_combining_class, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_general_category_func (funcs, hb_glib_unicode_general_category, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_mirroring_func (funcs, hb_glib_unicode_mirroring, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_script_func (funcs, hb_glib_unicode_script, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_compose_func (funcs, hb_glib_unicode_compose, శూన్యసూచిక, శూన్యసూచిక);
+    hb_unicode_funcs_సమితి_decompose_func (funcs, hb_glib_unicode_decompose, శూన్యసూచిక, శూన్యసూచిక);
 
     hb_unicode_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_glib_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_glib_funcs;
 
-static inline
-void free_static_glib_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_glib_funcs ()
 {
   static_glib_funcs.free_instance ();
 }
@@ -183,17 +183,17 @@ void free_static_glib_funcs ()
 hb_unicode_funcs_t *
 hb_glib_get_unicode_funcs ()
 {
-  return static_glib_funcs.get_unconst ();
+  తిరిగి static_glib_funcs.get_unconst ();
 }
 
 
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#ఒకవేళ GLIB_CHECK_సంస్కరణ(2,31,10)
 
-static void
-_hb_g_bytes_unref (void *data)
+స్థిర శూన్య
+hb_g_బైట్లు_unref (శూన్య *దత్తాంశం)
 {
-  g_bytes_unref ((GBytes *) data);
+  g_బైట్లు_unref ((GBytes *) దత్తాంశం);
 }
 
 /**
@@ -210,15 +210,15 @@ _hb_g_bytes_unref (void *data)
 hb_blob_t *
 hb_glib_blob_create (GBytes *gbytes)
 {
-  gsize size = 0;
-  gconstpointer data = g_bytes_get_data (gbytes, &size);
-  return hb_blob_create ((const char *) data,
-			 size,
-			 HB_MEMORY_MODE_READONLY,
-			 g_bytes_ref (gbytes),
-			 _hb_g_bytes_unref);
+  gsize కొలత = 0;
+  gconstpointer దత్తాంశం = g_బైట్లు_get_దత్తాంశం (gbytes, &కొలత);
+  తిరిగి hb_blob_create ((స్థిరరాశి అక్షరం *) దత్తాంశం,
+			 కొలత,
+			 HB_జ్ఞాపకం_బహుళకం_READONLY,
+			 g_బైట్లు_ref (gbytes),
+			 hb_g_బైట్లు_unref);
 }
-#endif
+#అయితే_ముగింపు
 
 
-#endif
+#అయితే_ముగింపు

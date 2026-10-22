@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shape-plan.hh"
-#include "hb-shaper.hh"
-#include "hb-font.hh"
-#include "hb-buffer.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-shape-plan.hh"
+#అన్తర్భావ "hb-shaper.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-buffer.hh"
 
 
-#ifndef HB_NO_SHAPER
+#నిర్వచితం_కాకపోతే HB_NO_SHAPER
 
 /**
  * SECTION:hb-shape-plan
@@ -52,17 +52,17 @@
  * Most client programs will not need to deal with shape plans directly.
  **/
 
-#ifdef HAVE_HARFRUST
-extern "C" void _hb_harfrust_shape_plan_destroy_rs (void *data);
-#endif
+#నిర్వచితమైతే HAVE_HARFRUST
+బాహ్య "C" శూన్య _hb_harfrust_shape_plan_destroy_rs (శూన్య *దత్తాంశం);
+#అయితే_ముగింపు
 
 hb_shape_plan_t::~hb_shape_plan_t ()
 {
-#ifdef HAVE_HARFRUST
-  void *data = harfrust_data.get_relaxed ();
-  if (data)
-    _hb_harfrust_shape_plan_destroy_rs (data);
-#endif
+#నిర్వచితమైతే HAVE_HARFRUST
+  శూన్య *దత్తాంశం = harfrust_దత్తాంశం.get_relaxed ();
+  ఒకవేళ (దత్తాంశం)
+    _hb_harfrust_shape_plan_destroy_rs (దత్తాంశం);
+#అయితే_ముగింపు
   key.fini ();
 }
 
@@ -71,117 +71,117 @@ hb_shape_plan_t::~hb_shape_plan_t ()
  * hb_shape_plan_key_t
  */
 
-bool
-hb_shape_plan_key_t::init (bool                           copy,
+తార్కిక
+hb_shape_plan_కీలకం_t::init (తార్కిక                           copy,
 			   hb_face_t                     *face,
-			   const hb_segment_properties_t *props,
-			   const hb_feature_t            *user_features,
-			   unsigned int                   num_user_features,
-			   const int                     *coords,
-			   unsigned int                   num_coords,
-			   const char * const            *shaper_list)
+			   స్థిరరాశి hb_segment_properties_t *props,
+			   స్థిరరాశి hb_feature_t            *user_features,
+			   గుర్తులేని పూర్ణాంకం                   అంకె_user_features,
+			   స్థిరరాశి పూర్ణాంకం                     *coords,
+			   గుర్తులేని పూర్ణాంకం                   అంకె_coords,
+			   స్థిరరాశి అక్షరం * స్థిరరాశి            *shaper_list)
 {
-  hb_feature_t *features = nullptr;
-  if (copy && num_user_features && !(features = (hb_feature_t *) hb_calloc (num_user_features, sizeof (hb_feature_t))))
-    goto bail;
+  hb_feature_t *features = శూన్యసూచిక;
+  ఒకవేళ (copy && అంకె_user_features && !(features = (hb_feature_t *) hb_calloc (అంకె_user_features, పరిమాణం (hb_feature_t))))
+    వెళ్ళు bail;
 
-  this->props = *props;
-  this->num_user_features = num_user_features;
-  this->user_features = copy ? features : user_features;
-  if (copy && num_user_features)
+  ఇది->props = *props;
+  ఇది->అంకె_user_features = అంకె_user_features;
+  ఇది->user_features = copy ? features : user_features;
+  ఒకవేళ (copy && అంకె_user_features)
   {
-    hb_memcpy (features, user_features, num_user_features * sizeof (hb_feature_t));
+    hb_memcpy (features, user_features, అంకె_user_features * పరిమాణం (hb_feature_t));
     /* Make start/end uniform to easier catch bugs. */
-    for (unsigned int i = 0; i < num_user_features; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_user_features; i++)
     {
-      if (features[0].start != HB_FEATURE_GLOBAL_START)
-	features[0].start = 1;
-      if (features[0].end   != HB_FEATURE_GLOBAL_END)
-	features[0].end   = 2;
+      ఒకవేళ (features[0].ప్రారంభం != HB_FEATURE_GLOBAL_ప్రారంభం)
+	features[0].ప్రారంభం = 1;
+      ఒకవేళ (features[0].చివర   != HB_FEATURE_GLOBAL_చివర)
+	features[0].చివర   = 2;
     }
   }
-  this->shaper_func = nullptr;
-  this->shaper_name = nullptr;
-#ifndef HB_NO_OT_SHAPE
-  if (unlikely (!this->ot.init (face, coords, num_coords)))
-    goto bail;
-#endif
+  ఇది->shaper_func = శూన్యసూచిక;
+  ఇది->shaper_name = శూన్యసూచిక;
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
+  ఒకవేళ (unlikely (!ఇది->ot.init (face, coords, అంకె_coords)))
+    వెళ్ళు bail;
+#అయితే_ముగింపు
 
   /*
    * Choose shaper.
    */
 
-#define HB_SHAPER_PLAN(shaper) \
-	HB_STMT_START { \
-	  if (face->data.shaper) \
+#నిర్వచించు HB_SHAPER_PLAN(shaper) \
+	HB_STMT_ప్రారంభం { \
+	  ఒకవేళ (face->దత్తాంశం.shaper) \
 	  { \
-	    this->shaper_func = _hb_##shaper##_shape; \
-	    this->shaper_name = #shaper; \
-	    return true; \
+	    ఇది->shaper_func = _hb_##shaper##_shape; \
+	    ఇది->shaper_name = #shaper; \
+	    తిరిగి నిజం; \
 	  } \
-	} HB_STMT_END
+	} HB_STMT_చివర
 
-  if (unlikely (shaper_list))
+  ఒకవేళ (unlikely (shaper_list))
   {
-    for (; *shaper_list; shaper_list++)
-      if (false)
+    కొరకు (; *shaper_list; shaper_list++)
+      ఒకవేళ (అబద్ధం)
 	;
-#define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (0 == strcmp (*shaper_list, #shaper)) \
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) \
+      లేకపోతే ఒకవేళ (0 == strcmp (*shaper_list, #shaper)) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#అన్తర్భావ "hb-shaper-list.hh"
 
-#undef HB_SHAPER_IMPLEMENT
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
   }
-  else
+  లేకపోతే
   {
-    const HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    for (unsigned int i = 0; i < HB_SHAPERS_COUNT; i++)
-      if (false)
+    స్థిరరాశి HB_వాడని hb_shaper_నమోదు_t *shapers = _hb_shapers_get ();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < HB_SHAPERS_లెక్క; i++)
+      ఒకవేళ (అబద్ధం)
 	;
-#define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (shapers[i].func == _hb_##shaper##_shape) \
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) \
+      లేకపోతే ఒకవేళ (shapers[i].func == _hb_##shaper##_shape) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
   }
-#undef HB_SHAPER_PLAN
+#నిర్వచనం_రద్దు HB_SHAPER_PLAN
 
 bail:
-#ifndef HB_NO_OT_SHAPE
-  this->ot.fini ();
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
+  ఇది->ot.fini ();
+#అయితే_ముగింపు
   ::hb_free (features);
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-bool
-hb_shape_plan_key_t::user_features_match (const hb_shape_plan_key_t *other)
+తార్కిక
+hb_shape_plan_కీలకం_t::user_features_సరిపోలిక (స్థిరరాశి hb_shape_plan_కీలకం_t *other)
 {
-  if (this->num_user_features != other->num_user_features)
-    return false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  ఒకవేళ (ఇది->అంకె_user_features != other->అంకె_user_features)
+    తిరిగి అబద్ధం;
+  కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అంకె_user_features; i++)
   {
-    if (this->user_features[i].tag   != other->user_features[i].tag   ||
-	this->user_features[i].value != other->user_features[i].value ||
-	(this->user_features[i].start == HB_FEATURE_GLOBAL_START &&
-	 this->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
-	(other->user_features[i].start == HB_FEATURE_GLOBAL_START &&
-	 other->user_features[i].end   == HB_FEATURE_GLOBAL_END))
-      return false;
+    ఒకవేళ (ఇది->user_features[i].ట్యాగ్_2   != other->user_features[i].ట్యాగ్_2   ||
+	ఇది->user_features[i].value != other->user_features[i].value ||
+	(ఇది->user_features[i].ప్రారంభం == HB_FEATURE_GLOBAL_ప్రారంభం &&
+	 ఇది->user_features[i].చివర   == HB_FEATURE_GLOBAL_చివర) !=
+	(other->user_features[i].ప్రారంభం == HB_FEATURE_GLOBAL_ప్రారంభం &&
+	 other->user_features[i].చివర   == HB_FEATURE_GLOBAL_చివర))
+      తిరిగి అబద్ధం;
   }
-  return true;
+  తిరిగి నిజం;
 }
 
-bool
-hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
+తార్కిక
+hb_shape_plan_కీలకం_t::equal (స్థిరరాశి hb_shape_plan_కీలకం_t *other)
 {
-  return hb_segment_properties_equal (&this->props, &other->props) &&
-	 this->user_features_match (other) &&
-#ifndef HB_NO_OT_SHAPE
-	 this->ot.equal (&other->ot) &&
-#endif
-	 this->shaper_func == other->shaper_func;
+  తిరిగి hb_segment_properties_equal (&ఇది->props, &other->props) &&
+	 ఇది->user_features_సరిపోలిక (other) &&
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
+	 ఇది->ot.equal (&other->ot) &&
+#అయితే_ముగింపు
+	 ఇది->shaper_func == other->shaper_func;
 }
 
 
@@ -207,14 +207,14 @@ hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
  **/
 hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list)
+		      స్థిరరాశి hb_segment_properties_t *props,
+		      స్థిరరాశి hb_feature_t            *user_features,
+		      గుర్తులేని పూర్ణాంకం                   అంకె_user_features,
+		      స్థిరరాశి అక్షరం * స్థిరరాశి            *shaper_list)
 {
-  return hb_shape_plan_create2 (face, props,
-				user_features, num_user_features,
-				nullptr, 0,
+  తిరిగి hb_shape_plan_create2 (face, props,
+				user_features, అంకె_user_features,
+				శూన్యసూచిక, 0,
 				shaper_list);
 }
 
@@ -238,59 +238,59 @@ hb_shape_plan_create (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list)
+		       స్థిరరాశి hb_segment_properties_t *props,
+		       స్థిరరాశి hb_feature_t            *user_features,
+		       గుర్తులేని పూర్ణాంకం                   అంకె_user_features,
+		       స్థిరరాశి పూర్ణాంకం                     *coords,
+		       గుర్తులేని పూర్ణాంకం                   అంకె_coords,
+		       స్థిరరాశి అక్షరం * స్థిరరాశి            *shaper_list)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
+  DEBUG_సందేశం_FUNC (SHAPE_PLAN, శూన్యసూచిక,
 		  "face=%p num_features=%u num_coords=%u shaper_list=%p",
 		  face,
-		  num_user_features,
-		  num_coords,
+		  అంకె_user_features,
+		  అంకె_coords,
 		  shaper_list);
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
-    return hb_shape_plan_get_empty ();
+  ఒకవేళ (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
+    తిరిగి hb_shape_plan_get_ఖాళీలు ();
 
   hb_shape_plan_t *shape_plan;
 
-  if (unlikely (!props))
-    goto bail;
-  if (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
-    goto bail;
+  ఒకవేళ (unlikely (!props))
+    వెళ్ళు bail;
+  ఒకవేళ (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
+    వెళ్ళు bail;
 
-  if (unlikely (!face))
-    face = hb_face_get_empty ();
+  ఒకవేళ (unlikely (!face))
+    face = hb_face_get_ఖాళీలు ();
   hb_face_make_immutable (face);
   shape_plan->face_unsafe = face;
 
-  if (unlikely (!shape_plan->key.init (true,
+  ఒకవేళ (unlikely (!shape_plan->key.init (నిజం,
 				       face,
 				       props,
 				       user_features,
-				       num_user_features,
+				       అంకె_user_features,
 				       coords,
-				       num_coords,
+				       అంకె_coords,
 				       shaper_list)))
-    goto bail2;
-#ifndef HB_NO_OT_SHAPE
-  if (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
-    goto bail3;
-#endif
+    వెళ్ళు bail2;
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
+  ఒకవేళ (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
+    వెళ్ళు bail3;
+#అయితే_ముగింపు
 
-  return shape_plan;
+  తిరిగి shape_plan;
 
-#ifndef HB_NO_OT_SHAPE
+#నిర్వచితం_కాకపోతే HB_NO_OT_SHAPE
 bail3:
-#endif
+#అయితే_ముగింపు
   shape_plan->key.fini ();
 bail2:
   hb_free (shape_plan);
 bail:
-  return hb_shape_plan_get_empty ();
+  తిరిగి hb_shape_plan_get_ఖాళీలు ();
 }
 
 /**
@@ -303,9 +303,9 @@ bail:
  * Since: 0.9.7
  **/
 hb_shape_plan_t *
-hb_shape_plan_get_empty ()
+hb_shape_plan_get_ఖాళీలు ()
 {
-  return const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
+  తిరిగి const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
 }
 
 /**
@@ -321,7 +321,7 @@ hb_shape_plan_get_empty ()
 hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
 {
-  return hb_object_reference (shape_plan);
+  తిరిగి hb_object_reference (shape_plan);
 }
 
 /**
@@ -334,10 +334,10 @@ hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
  *
  * Since: 0.9.7
  **/
-void
+శూన్య
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
 {
-  if (!hb_object_destroy (shape_plan)) return;
+  ఒకవేళ (!hb_object_destroy (shape_plan)) తిరిగి;
 
   hb_free (shape_plan);
 }
@@ -357,13 +357,13 @@ hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_shape_plan_సమితి_user_దత్తాంశం (hb_shape_plan_t    *shape_plan,
+			     hb_user_దత్తాంశం_కీలకం_t *key,
+			     శూన్య *              దత్తాంశం,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (shape_plan, key, data, destroy, replace);
+  తిరిగి hb_object_సమితి_user_దత్తాంశం (shape_plan, key, దత్తాంశం, destroy, replace);
 }
 
 /**
@@ -378,11 +378,11 @@ hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key)
+శూన్య *
+hb_shape_plan_get_user_దత్తాంశం (స్థిరరాశి hb_shape_plan_t *shape_plan,
+			     hb_user_దత్తాంశం_కీలకం_t    *key)
 {
-  return hb_object_get_user_data (shape_plan, key);
+  తిరిగి hb_object_get_user_దత్తాంశం (shape_plan, key);
 }
 
 /**
@@ -395,56 +395,56 @@ hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
  *
  * Since: 0.9.7
  **/
-const char *
+స్థిరరాశి అక్షరం *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan)
 {
-  return shape_plan->key.shaper_name;
+  తిరిగి shape_plan->key.shaper_name;
 }
 
 
-static bool
-_hb_shape_plan_execute_internal (hb_shape_plan_t    *shape_plan,
+స్థిర తార్కిక
+hb_shape_plan_execute_అంతర్గత (hb_shape_plan_t    *shape_plan,
 				 hb_font_t          *font,
-				 hb_buffer_t        *buffer,
-				 const hb_feature_t *features,
-				 unsigned int        num_features)
+				 hb_బఫరు_t        *బఫరు,
+				 స్థిరరాశి hb_feature_t *features,
+				 గుర్తులేని పూర్ణాంకం        అంకె_features)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan,
+  DEBUG_సందేశం_FUNC (SHAPE_PLAN, shape_plan,
 		  "num_features=%u shaper_func=%p, shaper_name=%s",
-		  num_features,
+		  అంకె_features,
 		  shape_plan->key.shaper_func,
 		  shape_plan->key.shaper_name);
 
-  if (unlikely (!buffer->len))
-    return true;
+  ఒకవేళ (unlikely (!బఫరు->len))
+    తిరిగి నిజం;
 
-  assert (!hb_object_is_immutable (buffer));
+  ప్రతిజ్ఞా (!hb_object_is_immutable (బఫరు));
 
-  buffer->assert_unicode ();
+  బఫరు->assert_unicode ();
 
-  if (unlikely (!hb_object_is_valid (shape_plan)))
-    return false;
+  ఒకవేళ (unlikely (!hb_object_is_valid (shape_plan)))
+    తిరిగి అబద్ధం;
 
-  assert (shape_plan->face_unsafe == font->face);
-  assert (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
+  ప్రతిజ్ఞా (shape_plan->face_unsafe == font->face);
+  ప్రతిజ్ఞా (hb_segment_properties_equal (&shape_plan->key.props, &బఫరు->props));
 
-#define HB_SHAPER_EXECUTE(shaper) \
-	HB_STMT_START { \
-	  return font->data.shaper && \
-		 _hb_##shaper##_shape (shape_plan, font, buffer, features, num_features); \
-	} HB_STMT_END
+#నిర్వచించు HB_SHAPER_EXECUTE(shaper) \
+	HB_STMT_ప్రారంభం { \
+	  తిరిగి font->దత్తాంశం.shaper && \
+		 _hb_##shaper##_shape (shape_plan, font, బఫరు, features, అంకె_features); \
+	} HB_STMT_చివర
 
-  if (false)
+  ఒకవేళ (అబద్ధం)
     ;
-#define HB_SHAPER_IMPLEMENT(shaper) \
-  else if (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
+#నిర్వచించు HB_SHAPER_IMPLEMENT(shaper) \
+  లేకపోతే ఒకవేళ (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
     HB_SHAPER_EXECUTE (shaper);
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#అన్తర్భావ "hb-shaper-list.hh"
+#నిర్వచనం_రద్దు HB_SHAPER_IMPLEMENT
 
-#undef HB_SHAPER_EXECUTE
+#నిర్వచనం_రద్దు HB_SHAPER_EXECUTE
 
-  return false;
+  తిరిగి అబద్ధం;
 }
 /**
  * hb_shape_plan_execute:
@@ -464,17 +464,17 @@ _hb_shape_plan_execute_internal (hb_shape_plan_t    *shape_plan,
 hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       hb_బఫరు_t        *బఫరు,
+		       స్థిరరాశి hb_feature_t *features,
+		       గుర్తులేని పూర్ణాంకం        అంకె_features)
 {
-  bool ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
-					      features, num_features);
+  తార్కిక ret = hb_shape_plan_execute_అంతర్గత (shape_plan, font, బఫరు,
+					      features, అంకె_features);
 
-  if (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
-    buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
+  ఒకవేళ (ret && బఫరు->content_type == HB_బఫరు_CONTENT_TYPE_UNICODE)
+    బఫరు->content_type = HB_బఫరు_CONTENT_TYPE_GLYPHS;
 
-  return ret;
+  తిరిగి ret;
 }
 
 
@@ -499,14 +499,14 @@ hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list)
+			     స్థిరరాశి hb_segment_properties_t *props,
+			     స్థిరరాశి hb_feature_t            *user_features,
+			     గుర్తులేని పూర్ణాంకం                   అంకె_user_features,
+			     స్థిరరాశి అక్షరం * స్థిరరాశి            *shaper_list)
 {
-  return hb_shape_plan_create_cached2 (face, props,
-				       user_features, num_user_features,
-				       nullptr, 0,
+  తిరిగి hb_shape_plan_create_cached2 (face, props,
+				       user_features, అంకె_user_features,
+				       శూన్యసూచిక, 0,
 				       shaper_list);
 }
 
@@ -531,70 +531,70 @@ hb_shape_plan_create_cached (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list)
+			      స్థిరరాశి hb_segment_properties_t *props,
+			      స్థిరరాశి hb_feature_t            *user_features,
+			      గుర్తులేని పూర్ణాంకం                   అంకె_user_features,
+			      స్థిరరాశి పూర్ణాంకం                     *coords,
+			      గుర్తులేని పూర్ణాంకం                   అంకె_coords,
+			      స్థిరరాశి అక్షరం * స్థిరరాశి            *shaper_list)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
+  DEBUG_సందేశం_FUNC (SHAPE_PLAN, శూన్యసూచిక,
 		  "face=%p num_features=%u shaper_list=%p",
 		  face,
-		  num_user_features,
+		  అంకె_user_features,
 		  shaper_list);
 
 retry:
-  hb_face_t::plan_node_t *cached_plan_nodes = face->shape_plans;
+  hb_face_t::plan_కణుపు_t *cached_plan_nodes = face->shape_plans;
 
-  bool dont_cache = !hb_object_is_valid (face);
+  తార్కిక dont_cache = !hb_object_is_valid (face);
 
-  if (likely (!dont_cache))
+  ఒకవేళ (likely (!dont_cache))
   {
-    hb_shape_plan_key_t key;
-    if (!key.init (false,
+    hb_shape_plan_కీలకం_t key;
+    ఒకవేళ (!key.init (అబద్ధం,
 		   face,
 		   props,
 		   user_features,
-		   num_user_features,
+		   అంకె_user_features,
 		   coords,
-		   num_coords,
+		   అంకె_coords,
 		   shaper_list))
-      return hb_shape_plan_get_empty ();
+      తిరిగి hb_shape_plan_get_ఖాళీలు ();
 
-    for (hb_face_t::plan_node_t *node = cached_plan_nodes; node; node = node->next)
-      if (node->shape_plan->key.equal (&key))
+    కొరకు (hb_face_t::plan_కణుపు_t *node = cached_plan_nodes; node; node = node->next)
+      ఒకవేళ (node->shape_plan->key.equal (&key))
       {
-	DEBUG_MSG_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
-	return hb_shape_plan_reference (node->shape_plan);
+	DEBUG_సందేశం_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
+	తిరిగి hb_shape_plan_reference (node->shape_plan);
       }
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create2 (face, props,
-						       user_features, num_user_features,
-						       coords, num_coords,
+						       user_features, అంకె_user_features,
+						       coords, అంకె_coords,
 						       shaper_list);
 
-  if (unlikely (dont_cache))
-    return shape_plan;
+  ఒకవేళ (unlikely (dont_cache))
+    తిరిగి shape_plan;
 
-  hb_face_t::plan_node_t *node = (hb_face_t::plan_node_t *) hb_calloc (1, sizeof (hb_face_t::plan_node_t));
-  if (unlikely (!node))
-    return shape_plan;
+  hb_face_t::plan_కణుపు_t *node = (hb_face_t::plan_కణుపు_t *) hb_calloc (1, పరిమాణం (hb_face_t::plan_కణుపు_t));
+  ఒకవేళ (unlikely (!node))
+    తిరిగి shape_plan;
 
   node->shape_plan = shape_plan;
   node->next = cached_plan_nodes;
 
-  if (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
+  ఒకవేళ (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
   {
     hb_shape_plan_destroy (shape_plan);
     hb_free (node);
-    goto retry;
+    వెళ్ళు retry;
   }
-  DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
+  DEBUG_సందేశం_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
 
-  return hb_shape_plan_reference (shape_plan);
+  తిరిగి hb_shape_plan_reference (shape_plan);
 }
 
 
-#endif
+#అయితే_ముగింపు

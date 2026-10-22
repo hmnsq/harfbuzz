@@ -22,96 +22,96 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_FACE_HH
-#define HB_WASM_API_FACE_HH
+#నిర్వచితం_కాకపోతే HB_WASM_API_FACE_HH
+#నిర్వచించు HB_WASM_API_FACE_HH
 
-#include "hb-wasm-api.hh"
+#అన్తర్భావ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+నామాకాశ hb {
+నామాకాశ wasm {
 
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int index)
+					  గుర్తులేని పూర్ణాంకం సూచీ_2)
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return nullref;
+  ఒకవేళ (unlikely (!blob))
+    తిరిగి nullref;
 
-  char *data = HB_ARRAY_APP2NATIVE (char, blob->data, blob->length);
-  if (unlikely (!data))
-    return nullref;
+  అక్షరం *దత్తాంశం = HB_ARRAY_APP2NATIVE (అక్షరం, blob->దత్తాంశం, blob->నిడివి);
+  ఒకవేళ (unlikely (!దత్తాంశం))
+    తిరిగి nullref;
 
   hb_blob_t *hb_blob = hb_blob_create(
-				      data,
-				      blob->length,
-				      HB_MEMORY_MODE_DUPLICATE,
-				      NULL,
-				      NULL);
+				      దత్తాంశం,
+				      blob->నిడివి,
+				      HB_జ్ఞాపకం_బహుళకం_DUPLICATE,
+				      ఖాళీ,
+				      ఖాళీ);
 
-  hb_face_t *face = hb_face_create(hb_blob, index);
+  hb_face_t *face = hb_face_create(hb_blob, సూచీ_2);
   hb_blob_destroy (hb_blob);
 
   HB_OBJ2REF (face);
-  return faceref;
+  తిరిగి faceref;
 }
 
-HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, face_copy_పట్టిక) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
-				       tag_t table_tag,
+				       ట్యాగ్_t పట్టిక_ట్యాగ్_2,
 				       ptr_d(blob_t, blob))
 {
   HB_REF2OBJ (face);
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return false;
+  ఒకవేళ (unlikely (!blob))
+    తిరిగి అబద్ధం;
 
-  hb_blob_t *hb_blob = hb_face_reference_table (face, table_tag);
+  hb_blob_t *hb_blob = hb_face_reference_పట్టిక (face, పట్టిక_ట్యాగ్_2);
 
-  unsigned length;
-  const char *hb_data = hb_blob_get_data (hb_blob, &length);
+  గుర్తులేని నిడివి;
+  స్థిరరాశి అక్షరం *hb_దత్తాంశం = hb_blob_get_దత్తాంశం (hb_blob, &నిడివి);
 
-  if (length <= blob->length)
+  ఒకవేళ (నిడివి <= blob->నిడివి)
   {
-    char *data = HB_ARRAY_APP2NATIVE (char, blob->data, length);
+    అక్షరం *దత్తాంశం = HB_ARRAY_APP2NATIVE (అక్షరం, blob->దత్తాంశం, నిడివి);
 
-    if (unlikely (!data))
+    ఒకవేళ (unlikely (!దత్తాంశం))
     {
-      blob->length = 0;
-      return false;
+      blob->నిడివి = 0;
+      తిరిగి అబద్ధం;
     }
 
-    hb_memcpy (data, hb_data, length);
+    hb_memcpy (దత్తాంశం, hb_దత్తాంశం, నిడివి);
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  module_free (blob->data);
+  module_free (blob->దత్తాంశం);
 
-  blob->length = length;
-  blob->data = wasm_runtime_module_dup_data (module_inst, hb_data, length);
+  blob->నిడివి = నిడివి;
+  blob->దత్తాంశం = wasm_runtime_module_dup_దత్తాంశం (module_inst, hb_దత్తాంశం, నిడివి);
 
   hb_blob_destroy (hb_blob);
 
-  if (blob->length && !blob->data)
+  ఒకవేళ (blob->నిడివి && !blob->దత్తాంశం)
   {
-    blob->length = 0;
-    return false;
+    blob->నిడివి = 0;
+    తిరిగి అబద్ధం;
   }
 
-  return true;
+  తిరిగి నిజం;
 }
 
-HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
+HB_WASM_API (గుర్తులేని, face_get_upem) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face))
 {
   HB_REF2OBJ (face);
 
-  return hb_face_get_upem (face);
+  తిరిగి hb_face_get_upem (face);
 }
 
 
 }}
 
-#endif /* HB_WASM_API_FACE_HH */
+#అయితే_ముగింపు /* HB_WASM_API_FACE_HH */

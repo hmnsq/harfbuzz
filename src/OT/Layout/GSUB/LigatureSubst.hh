@@ -1,61 +1,61 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURESUBST_HH
-#define OT_LAYOUT_GSUB_LIGATURESUBST_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GSUB_LIGATURESUBST_HH
+#నిర్వచించు OT_LAYOUT_GSUB_LIGATURESUBST_HH
 
-#include "Common.hh"
-#include "LigatureSubstFormat1.hh"
+#అన్తర్భావ "Common.hh"
+#అన్తర్భావ "LigatureSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GSUB_impl {
 
-struct LigatureSubst
+నిర్మాణం LigatureSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }		format;         /* Format identifier */
   LigatureSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
   LigatureSubstFormat1_2<MediumTypes>	format2;
-#endif
+#అయితే_ముగింపు
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  బహిరంగ:
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ఒకవేళ (unlikely (!c->may_dispatch (ఇది, &u.format.v))) తిరిగి c->no_dispatch_return_విలువ ();
+    TRACE_DISPATCH (ఇది, u.format.v);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (c->default_return_విలువ ());
     }
   }
 
   /* TODO This function should be done using iterators. While at it perhaps
    * using iterator of arrays of hb_codepoint_t instead. */
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
-                  hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+  మూస <రకం_పేరు GlyphID>
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  hb_sorted_array_t<GlyphID> మొదటి_glyphs,
+                  hb_array_t<స్థిరరాశి గుర్తులేని పూర్ణాంకం> ligature_చొప్పున_మొదటి_glyph_లెక్క_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<స్థిరరాశి గుర్తులేని పూర్ణాంకం> component_లెక్క_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (u.format.v))) return_trace (అబద్ధం);
+    గుర్తులేని పూర్ణాంకం format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c,
-                                               first_glyphs,
-                                               ligature_per_first_glyph_count_list,
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.serialize (c,
+                                               మొదటి_glyphs,
+                                               ligature_చొప్పున_మొదటి_glyph_లెక్క_list,
                                                ligatures_list,
-                                               component_count_list,
+                                               component_లెక్క_list,
                                                component_list));
-    default:return_trace (false);
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
@@ -68,4 +68,4 @@ struct LigatureSubst
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURESUBST_HH */
+#అయితే_ముగింపు  /* OT_LAYOUT_GSUB_LIGATURESUBST_HH */

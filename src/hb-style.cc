@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_STYLE
+#నిర్వచితం_కాకపోతే HB_NO_STYLE
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-face.hh"
+#అన్తర్భావ "hb-ot-var-avar-table.hh"
+#అన్తర్భావ "hb-ot-var-fvar-table.hh"
+#అన్తర్భావ "hb-ot-stat-table.hh"
+#అన్తర్భావ "hb-ot-os2-table.hh"
+#అన్తర్భావ "hb-ot-head-table.hh"
+#అన్తర్భావ "hb-ot-post-table.hh"
+#అన్తర్భావ "hb-ot-face.hh"
 
 /**
  * SECTION:hb-style
@@ -43,16 +43,16 @@
  * Functions for fetching style information from fonts.
  **/
 
-static inline float
-_hb_angle_to_ratio (float a)
+స్థిర అంతఃవరుస దశాంశం
+hb_angle_గమ్యం_నిష్పత్తి (దశాంశం a)
 {
-  return tanf (a * -HB_PI / 180.f);
+  తిరిగి tanf (a * -HB_PI / 180.f);
 }
 
-static inline float
-_hb_ratio_to_angle (float r)
+స్థిర అంతఃవరుస దశాంశం
+hb_నిష్పత్తి_గమ్యం_angle (దశాంశం r)
 {
-  return atanf (r) * -180.f / HB_PI;
+  తిరిగి atanf (r) * -180.f / HB_PI;
 }
 
 /**
@@ -68,67 +68,67 @@ _hb_ratio_to_angle (float r)
  *
  * Since: 3.0.0
  **/
-float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
+దశాంశం
+hb_style_get_విలువ (hb_font_t *font, hb_style_ట్యాగ్_t style_ట్యాగ్)
 {
-  if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+  ఒకవేళ (unlikely (style_ట్యాగ్ == HB_STYLE_ట్యాగ్_SLANT_నిష్పత్తి))
+    తిరిగి hb_angle_గమ్యం_నిష్పత్తి (hb_style_get_విలువ (font, HB_STYLE_ట్యాగ్_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
   hb_ot_var_axis_info_t axis;
-  if (hb_ot_var_find_axis_info (face, style_tag, &axis))
+  ఒకవేళ (hb_ot_var_కనుగొను_axis_info (face, style_ట్యాగ్, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    ఒకవేళ (axis.axis_సూచీ < font->అంకె_coords) తిరిగి font->design_coords[axis.axis_సూచీ];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    తిరిగి axis.default_విలువ;
   }
-#endif
+#అయితే_ముగింపు
 
-  if (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
-    return font->ptem;
+  ఒకవేళ (style_ట్యాగ్ == HB_STYLE_ట్యాగ్_OPTICAL_కొలత && font->ptem)
+    తిరిగి font->ptem;
 
   /* STAT */
-  float value;
-  if (face->table.STAT->get_value (style_tag, &value))
-    return value;
+  దశాంశం value;
+  ఒకవేళ (face->పట్టిక.STAT->get_విలువ (style_ట్యాగ్, &value))
+    తిరిగి value;
 
-  switch ((unsigned) style_tag)
+  ఎంపిక ((గుర్తులేని) style_ట్యాగ్)
   {
-  case HB_STYLE_TAG_ITALIC:
-    return face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
-  case HB_STYLE_TAG_OPTICAL_SIZE:
+  స్థితి HB_STYLE_ట్యాగ్_ITALIC:
+    తిరిగి face->పట్టిక.OS2->is_italic () || face->పట్టిక.తల_2->is_italic () ? 1 : 0;
+  స్థితి HB_STYLE_ట్యాగ్_OPTICAL_కొలత:
   {
-    unsigned int lower, design, upper;
-    return face->table.OS2->v5 ().get_optical_size (&lower, &upper)
-	   ? (float) (lower + upper) / 2.f
-	   : hb_ot_layout_get_size_params (face, &design, nullptr, nullptr, nullptr, nullptr)
+    గుర్తులేని పూర్ణాంకం క్రింది, design, పై;
+    తిరిగి face->పట్టిక.OS2->v5 ().get_optical_కొలత (&క్రింది, &పై)
+	   ? (దశాంశం) (క్రింది + పై) / 2.f
+	   : hb_ot_layout_get_కొలత_params (face, &design, శూన్యసూచిక, శూన్యసూచిక, శూన్యసూచిక, శూన్యసూచిక)
 	   ? design / 10.f
 	   : 12.f;
   }
-  case HB_STYLE_TAG_SLANT_ANGLE:
+  స్థితి HB_STYLE_ట్యాగ్_SLANT_ANGLE:
   {
-    float angle = face->table.post->table->italicAngle.to_float ();
+    దశాంశం angle = face->పట్టిక.post->పట్టిక->italicAngle.గమ్యం_float ();
 
-    if (font->slant)
-      angle = _hb_ratio_to_angle (font->slant + _hb_angle_to_ratio (angle));
+    ఒకవేళ (font->slant)
+      angle = hb_నిష్పత్తి_గమ్యం_angle (font->slant + hb_angle_గమ్యం_నిష్పత్తి (angle));
 
-    return angle;
+    తిరిగి angle;
   }
-  case HB_STYLE_TAG_WIDTH:
-    return face->table.OS2->has_data ()
-	   ? face->table.OS2->get_width ()
-	   : (face->table.head->is_condensed () ? 75 :
-	      face->table.head->is_expanded () ? 125 :
+  స్థితి HB_STYLE_ట్యాగ్_వెడల్పు:
+    తిరిగి face->పట్టిక.OS2->has_దత్తాంశం ()
+	   ? face->పట్టిక.OS2->get_వెడల్పు ()
+	   : (face->పట్టిక.తల_2->is_condensed () ? 75 :
+	      face->పట్టిక.తల_2->is_expanded () ? 125 :
 	      100);
-  case HB_STYLE_TAG_WEIGHT:
-    return face->table.OS2->has_data ()
-	   ? face->table.OS2->usWeightClass
-	   : (face->table.head->is_bold () ? 700 : 400);
-  default:
-    return 0;
+  స్థితి HB_STYLE_ట్యాగ్_బరువు:
+    తిరిగి face->పట్టిక.OS2->has_దత్తాంశం ()
+	   ? face->పట్టిక.OS2->us_బరువు_Class
+	   : (face->పట్టిక.తల_2->is_bold () ? 700 : 400);
+  అప్రమేయ:
+    తిరిగి 0;
   }
 }
 
-#endif
+#అయితే_ముగింపు

@@ -1,22 +1,22 @@
-#ifndef HB_OT_VAR_VARC_CC
-#define HB_OT_VAR_VARC_CC
-#ifdef HB_OT_VAR_VARC_CC /* Pacify -Wunused-macros. */
+#నిర్వచితం_కాకపోతే HB_OT_VAR_VARC_CC
+#నిర్వచించు HB_OT_VAR_VARC_CC
+#నిర్వచితమైతే HB_OT_VAR_VARC_CC /* Pacify -Wunused-macros. */
 
-#include "VARC.hh"
+#అన్తర్భావ "VARC.hh"
 
-#ifndef HB_NO_VAR_COMPOSITES
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
 
-#include "../../../hb-draw.hh"
-#include "../../../hb-depend-data.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-layout-gdef-table.hh"
+#అన్తర్భావ "../../../hb-draw.hh"
+#అన్తర్భావ "../../../hb-depend-data.hh"
+#అన్తర్భావ "../../../hb-ot-layout-common.hh"
+#అన్తర్భావ "../../../hb-ot-layout-gdef-table.hh"
 
-namespace OT {
+నామాకాశ OT {
 
 //namespace Var {
 
-#define VARC_PROCESS_TRANSFORM_COMPONENTS \
-	HB_STMT_START { \
+#నిర్వచించు VARC_PROCESS_TRANSFORM_COMPONENTS \
+	HB_STMT_ప్రారంభం { \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TRANSLATE_X, translateX); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TRANSLATE_Y, translateY); \
 	PROCESS_TRANSFORM_COMPONENT (12, F4DOT12, HAVE_ROTATION, rotation); \
@@ -26,540 +26,540 @@ namespace OT {
 	PROCESS_TRANSFORM_COMPONENT (12, F4DOT12, HAVE_SKEW_Y, skewY); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TCENTER_X, tCenterX); \
 	PROCESS_TRANSFORM_COMPONENT ( 0, FWORD, HAVE_TCENTER_Y, tCenterY); \
-	} HB_STMT_END
+	} HB_STMT_చివర
 
-bool
-VarComponent::decompile_record (const VARC &varc,
-				hb_ubytes_t total_record,
-				hb_vector_t<unsigned> *axis_indices,
-				hb_vector_t<double> *axis_values,
-				record_t *decoded,
+తార్కిక
+VarComponent::decompile_రికార్డు (స్థిరరాశి VARC &varc,
+				hb_ubytes_t మొత్తం_రికార్డు,
+				hb_సదిశ_t<గుర్తులేని> *axis_indices,
+				hb_సదిశ_t<ద్విగుణ> *axis_విలువలు,
+				రికార్డు_t *decoded,
 				int64_t *budget)
 {
-  const unsigned char *start = total_record.arrayZ;
-  const unsigned char *record = start;
-  const unsigned char *end = start + total_record.length;
+  స్థిరరాశి గుర్తులేని అక్షరం *ప్రారంభం = మొత్తం_రికార్డు.arrayZ;
+  స్థిరరాశి గుర్తులేని అక్షరం *రికార్డు = ప్రారంభం;
+  స్థిరరాశి గుర్తులేని అక్షరం *చివర = ప్రారంభం + మొత్తం_రికార్డు.నిడివి;
 
-  if (axis_indices) axis_indices->clear ();
-  if (axis_values) axis_values->clear ();
+  ఒకవేళ (axis_indices) axis_indices->clear ();
+  ఒకవేళ (axis_విలువలు) axis_విలువలు->clear ();
 
-#define READ_UINT32VAR(name) \
-  HB_STMT_START { \
-    if (unlikely (unsigned (end - record) < HBUINT32VAR::min_size)) return false; \
+#నిర్వచించు READ_UINT32VAR(name) \
+  HB_STMT_ప్రారంభం { \
+    ఒకవేళ (unlikely (గుర్తులేని (చివర - రికార్డు) < HBUINT32VAR::min_కొలత)) తిరిగి అబద్ధం; \
     hb_barrier (); \
-    auto &varint = * (const HBUINT32VAR *) record; \
-    unsigned size = varint.get_size (); \
-    if (unlikely (unsigned (end - record) < size)) return false; \
+    స్వయంచాలక &varint = * (స్థిరరాశి HBUINT32VAR *) రికార్డు; \
+    గుర్తులేని కొలత = varint.get_కొలత (); \
+    ఒకవేళ (unlikely (గుర్తులేని (చివర - రికార్డు) < కొలత)) తిరిగి అబద్ధం; \
     name = (uint32_t) varint; \
-    record += size; \
-  } HB_STMT_END
-#define READ_UINT32VAR_FIELD(name, field) \
-  HB_STMT_START { \
-    decoded->field##_offset = record - start; \
+    రికార్డు += కొలత; \
+  } HB_STMT_చివర
+#నిర్వచించు READ_UINT32_VAR_క్షేత్రం(name, క్షేత్రం) \
+  HB_STMT_ప్రారంభం { \
+    decoded->క్షేత్రం##_offset = రికార్డు - ప్రారంభం; \
     READ_UINT32VAR (name); \
-    decoded->field##_size = record - start - decoded->field##_offset; \
-  } HB_STMT_END
+    decoded->క్షేత్రం##_size = రికార్డు - ప్రారంభం - decoded->క్షేత్రం##_offset; \
+  } HB_STMT_చివర
 
   READ_UINT32VAR (decoded->flags);
 
-  decoded->gid_offset = record - start;
-  if (decoded->flags & (unsigned) flags_t::GID_IS_24BIT)
+  decoded->gid_స్థానభ్రంశం = రికార్డు - ప్రారంభం;
+  ఒకవేళ (decoded->flags & (గుర్తులేని) flags_t::GID_IS_24_బిట్టు)
   {
-    decoded->gid_size = HBGlyphID24::static_size;
-    if (unlikely (unsigned (end - record) < HBGlyphID24::static_size)) return false;
+    decoded->gid_కొలత = HBGlyphID24::static_కొలత;
+    ఒకవేళ (unlikely (గుర్తులేని (చివర - రికార్డు) < HBGlyphID24::static_కొలత)) తిరిగి అబద్ధం;
     hb_barrier ();
-    decoded->gid = * (const HBGlyphID24 *) record;
-    record += HBGlyphID24::static_size;
+    decoded->gid = * (స్థిరరాశి HBGlyphID24 *) రికార్డు;
+    రికార్డు += HBGlyphID24::static_కొలత;
   }
-  else
+  లేకపోతే
   {
-    decoded->gid_size = HBGlyphID16::static_size;
-    if (unlikely (unsigned (end - record) < HBGlyphID16::static_size)) return false;
+    decoded->gid_కొలత = HBGlyphID16::static_కొలత;
+    ఒకవేళ (unlikely (గుర్తులేని (చివర - రికార్డు) < HBGlyphID16::static_కొలత)) తిరిగి అబద్ధం;
     hb_barrier ();
-    decoded->gid = * (const HBGlyphID16 *) record;
-    record += HBGlyphID16::static_size;
+    decoded->gid = * (స్థిరరాశి HBGlyphID16 *) రికార్డు;
+    రికార్డు += HBGlyphID16::static_కొలత;
   }
 
-  if (decoded->flags & (unsigned) flags_t::HAVE_CONDITION)
-    READ_UINT32VAR_FIELD (decoded->condition_index, condition);
+  ఒకవేళ (decoded->flags & (గుర్తులేని) flags_t::HAVE_CONDITION)
+    READ_UINT32_VAR_క్షేత్రం (decoded->condition_సూచీ, condition);
 
-  if (decoded->flags & (unsigned) flags_t::HAVE_AXES)
+  ఒకవేళ (decoded->flags & (గుర్తులేని) flags_t::HAVE_AXES)
   {
-    READ_UINT32VAR_FIELD (decoded->axis_indices_index, axis_indices);
-    unsigned axis_count;
-    if (axis_indices)
+    READ_UINT32_VAR_క్షేత్రం (decoded->axis_indices_సూచీ, axis_indices);
+    గుర్తులేని axis_లెక్క;
+    ఒకవేళ (axis_indices)
     {
-      axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-      if (unlikely (axis_indices->in_error ())) return false;
-      axis_count = axis_indices->length;
+      axis_indices->extend ((&varc+varc.axisIndicesList)[decoded->axis_indices_సూచీ]);
+      ఒకవేళ (unlikely (axis_indices->లోపల_error ())) తిరిగి అబద్ధం;
+      axis_లెక్క = axis_indices->నిడివి;
     }
-    else
-      axis_count = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_index]);
-    if (unlikely (budget && axis_count &&
-		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_count)))
-      return false;
-    if (axis_values)
+    లేకపోతే
+      axis_లెక్క = hb_len ((&varc+varc.axisIndicesList)[decoded->axis_indices_సూచీ]);
+    ఒకవేళ (unlikely (budget && axis_లెక్క &&
+		  !hb_budget_spend (*budget, HB_BUDGET_1, axis_లెక్క)))
+      తిరిగి అబద్ధం;
+    ఒకవేళ (axis_విలువలు)
     {
-      if (unlikely (!axis_values->resize (axis_count))) return false;
-      const HBUINT8 *p = (const HBUINT8 *) record;
-      if (unlikely (!TupleValues::decompile (p, *axis_values,
-					    (const HBUINT8 *) end)))
-	return false;
-      record = (const unsigned char *) p;
+      ఒకవేళ (unlikely (!axis_విలువలు->resize (axis_లెక్క))) తిరిగి అబద్ధం;
+      స్థిరరాశి HBUINT8 *p = (స్థిరరాశి HBUINT8 *) రికార్డు;
+      ఒకవేళ (unlikely (!Tuple_విలువలు::decompile (p, *axis_విలువలు,
+					    (స్థిరరాశి HBUINT8 *) చివర)))
+	తిరిగి అబద్ధం;
+      రికార్డు = (స్థిరరాశి గుర్తులేని అక్షరం *) p;
     }
-    else if (unlikely (!TupleValues::skip (record, end, axis_count)))
-      return false;
+    లేకపోతే ఒకవేళ (unlikely (!Tuple_విలువలు::skip (రికార్డు, చివర, axis_లెక్క)))
+      తిరిగి అబద్ధం;
   }
 
-  decoded->axis_values_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->axis_values_var_idx, axis_values_var);
+  decoded->axis_విలువలు_var_idx = VarIdx::NO_VARIATION;
+  ఒకవేళ (decoded->flags & (గుర్తులేని) flags_t::AXIS_విలువలు_HAVE_VARIATION)
+    READ_UINT32_VAR_క్షేత్రం (decoded->axis_విలువలు_var_idx, axis_విలువలు_var);
 
   decoded->transform_var_idx = VarIdx::NO_VARIATION;
-  if (decoded->flags & (unsigned) flags_t::TRANSFORM_HAS_VARIATION)
-    READ_UINT32VAR_FIELD (decoded->transform_var_idx, transform_var);
+  ఒకవేళ (decoded->flags & (గుర్తులేని) flags_t::TRANSFORM_HAS_VARIATION)
+    READ_UINT32_VAR_క్షేత్రం (decoded->transform_var_idx, transform_var);
 
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-  if (decoded->flags & (unsigned) flags_t::flag) \
+#నిర్వచించు PROCESS_TRANSFORM_COMPONENT(జరుపు, type, flag, name) \
+  ఒకవేళ (decoded->flags & (గుర్తులేని) flags_t::flag) \
   { \
-    static_assert (type::static_size == HBINT16::static_size, ""); \
-    if (unlikely (unsigned (end - record) < HBINT16::static_size)) return false; \
+    static_assert (type::static_కొలత == HBINT16::static_కొలత, ""); \
+    ఒకవేళ (unlikely (గుర్తులేని (చివర - రికార్డు) < HBINT16::static_కొలత)) తిరిగి అబద్ధం; \
     hb_barrier (); \
-    decoded->transform.name = * (const HBINT16 *) record; \
-    record += HBINT16::static_size; \
+    decoded->transform.name = * (స్థిరరాశి HBINT16 *) రికార్డు; \
+    రికార్డు += HBINT16::static_కొలత; \
   }
   VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#నిర్వచనం_రద్దు PROCESS_TRANSFORM_COMPONENT
 
-  unsigned reserved = decoded->flags & (unsigned) flags_t::RESERVED_MASK;
-  while (reserved)
+  గుర్తులేని reserved = decoded->flags & (గుర్తులేని) flags_t::RESERVED_ముసుగు;
+  అయితే (reserved)
   {
-    uint32_t discard HB_UNUSED;
+    uint32_t discard HB_వాడని;
     READ_UINT32VAR (discard);
     reserved &= reserved - 1;
   }
 
-  decoded->size = record - start;
-#undef READ_UINT32VAR_FIELD
-#undef READ_UINT32VAR
-  return true;
+  decoded->కొలత = రికార్డు - ప్రారంభం;
+#నిర్వచనం_రద్దు READ_UINT32_VAR_క్షేత్రం
+#నిర్వచనం_రద్దు READ_UINT32VAR
+  తిరిగి నిజం;
 }
 
-bool
-VARC::closure_glyphs (hb_set_t *glyphset) const
+తార్కిక
+VARC::సంవృతం_glyphs (hb_సమితి_t *glyphset) స్థిరరాశి
 {
-  if (unlikely (glyphset->in_error ()))
-    return false;
+  ఒకవేళ (unlikely (glyphset->లోపల_error ()))
+    తిరిగి అబద్ధం;
 
-  hb_set_t pending = *glyphset;
-  if (unlikely (pending.in_error ()))
-    return false;
+  hb_సమితి_t pending = *glyphset;
+  ఒకవేళ (unlikely (pending.లోపల_error ()))
+    తిరిగి అబద్ధం;
 
-  while (pending)
+  అయితే (pending)
   {
     hb_codepoint_t gid = pending.get_min ();
     pending.del (gid);
 
-    unsigned index = (this+coverage).get_coverage (gid);
-    if (index == NOT_COVERED) continue;
+    గుర్తులేని సూచీ_2 = (ఇది+coverage).get_coverage (gid);
+    ఒకవేళ (సూచీ_2 == NOT_COVERED) కొనసాగు;
 
-    hb_ubytes_t record = (this+glyphRecords)[index];
-    while (record)
+    hb_ubytes_t రికార్డు = (ఇది+glyph_రికార్డులు)[సూచీ_2];
+    అయితే (రికార్డు)
     {
-      VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (*this, record,
-						     nullptr, nullptr, &component)))
-	return false;
-      if (!glyphset->has (component.gid))
+      VarComponent::రికార్డు_t component;
+      ఒకవేళ (unlikely (!VarComponent::decompile_రికార్డు (*ఇది, రికార్డు,
+						     శూన్యసూచిక, శూన్యసూచిక, &component)))
+	తిరిగి అబద్ధం;
+      ఒకవేళ (!glyphset->has (component.gid))
       {
-	glyphset->add (component.gid);
-	if (unlikely (glyphset->in_error ()))
-	  return false;
-	pending.add (component.gid);
-	if (unlikely (pending.in_error ()))
-	  return false;
+	glyphset->కూడు (component.gid);
+	ఒకవేళ (unlikely (glyphset->లోపల_error ()))
+	  తిరిగి అబద్ధం;
+	pending.కూడు (component.gid);
+	ఒకవేళ (unlikely (pending.లోపల_error ()))
+	  తిరిగి అబద్ధం;
       }
-      record = record.sub_array (component.size);
+      రికార్డు = రికార్డు.sub_array (component.కొలత);
     }
   }
-  return true;
+  తిరిగి నిజం;
 }
 
-void
-VARC::depend (hb_depend_data_builder_t *depend_data) const
+శూన్య
+VARC::depend (hb_depend_దత్తాంశం_builder_t *depend_దత్తాంశం) స్థిరరాశి
 {
-  const CFF2Index &records = this+glyphRecords;
-  for (auto _ : + hb_zip (this+coverage,
-			  hb_range ((unsigned) records.count)))
+  స్థిరరాశి CFF2_సూచీ &రికార్డులు = ఇది+glyph_రికార్డులు;
+  కొరకు (స్వయంచాలక _ : + hb_zip (ఇది+coverage,
+			  hb_range ((గుర్తులేని) రికార్డులు.లెక్క)))
   {
-    hb_codepoint_t gid = _.first;
-    hb_ubytes_t record = records[_.second];
-    while (record)
+    hb_codepoint_t gid = _.మొదటి;
+    hb_ubytes_t రికార్డు = రికార్డులు[_.second];
+    అయితే (రికార్డు)
     {
-	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (*this, record,
-						       nullptr, nullptr, &component)))
+	VarComponent::రికార్డు_t component;
+	ఒకవేళ (unlikely (!VarComponent::decompile_రికార్డు (*ఇది, రికార్డు,
+						       శూన్యసూచిక, శూన్యసూచిక, &component)))
 	{
-	  depend_data->fail ();
-	  return;
+	  depend_దత్తాంశం->fail ();
+	  తిరిగి;
 	}
-      depend_data->add_depend (gid, tableTag, component.gid);
-      record = record.sub_array (component.size);
+      depend_దత్తాంశం->కూడు_depend (gid, పట్టిక_ట్యాగ్, component.gid);
+      రికార్డు = రికార్డు.sub_array (component.కొలత);
     }
   }
 }
 
 
-#ifndef HB_NO_DRAW
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
 
-struct hb_transforming_pen_context_t
+నిర్మాణం hb_transforming_pen_context_t
 {
   hb_transform_t<> transform;
   hb_draw_funcs_t *dfuncs;
-  void *data;
+  శూన్య *దత్తాంశం;
   hb_draw_state_t *st;
-  int64_t *budget_remaining;
+  int64_t *budget_మిగిలిన;
 };
 
-static void
-hb_transforming_pen_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data,
+స్థిర శూన్య
+hb_transforming_pen_move_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+			     శూన్య *దత్తాంశం,
 			     hb_draw_state_t *st,
-			     float to_x, float to_y,
-			     void *user_data HB_UNUSED)
+			     దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) దత్తాంశం;
 
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_బిందువు (గమ్యం_x, గమ్యం_y);
 
-  c->dfuncs->move_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->move_గమ్యం (c->దత్తాంశం, *c->st, గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_transforming_pen_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			     void *data,
+స్థిర శూన్య
+hb_transforming_pen_పంక్తి_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+			     శూన్య *దత్తాంశం,
 			     hb_draw_state_t *st,
-			     float to_x, float to_y,
-			     void *user_data HB_UNUSED)
+			     దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			     శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) దత్తాంశం;
 
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_బిందువు (గమ్యం_x, గమ్యం_y);
 
-  c->dfuncs->line_to (c->data, *c->st, to_x, to_y);
+  c->dfuncs->పంక్తి_గమ్యం (c->దత్తాంశం, *c->st, గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_transforming_pen_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				  void *data,
+స్థిర శూన్య
+hb_transforming_pen_quadratic_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				  శూన్య *దత్తాంశం,
 				  hb_draw_state_t *st,
-				  float control_x, float control_y,
-				  float to_x, float to_y,
-				  void *user_data HB_UNUSED)
+				  దశాంశం control_x, దశాంశం control_y,
+				  దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) దత్తాంశం;
 
-  c->transform.transform_point (control_x, control_y);
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_బిందువు (control_x, control_y);
+  c->transform.transform_బిందువు (గమ్యం_x, గమ్యం_y);
 
-  c->dfuncs->quadratic_to (c->data, *c->st, control_x, control_y, to_x, to_y);
+  c->dfuncs->quadratic_గమ్యం (c->దత్తాంశం, *c->st, control_x, control_y, గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_transforming_pen_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			      void *data,
+స్థిర శూన్య
+hb_transforming_pen_cubic_గమ్యం (hb_draw_funcs_t *dfuncs HB_వాడని,
+			      శూన్య *దత్తాంశం,
 			      hb_draw_state_t *st,
-			      float control1_x, float control1_y,
-			      float control2_x, float control2_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      దశాంశం control1_x, దశాంశం control1_y,
+			      దశాంశం control2_x, దశాంశం control2_y,
+			      దశాంశం గమ్యం_x, దశాంశం గమ్యం_y,
+			      శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) దత్తాంశం;
 
-  c->transform.transform_point (control1_x, control1_y);
-  c->transform.transform_point (control2_x, control2_y);
-  c->transform.transform_point (to_x, to_y);
+  c->transform.transform_బిందువు (control1_x, control1_y);
+  c->transform.transform_బిందువు (control2_x, control2_y);
+  c->transform.transform_బిందువు (గమ్యం_x, గమ్యం_y);
 
-  c->dfuncs->cubic_to (c->data, *c->st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
+  c->dfuncs->cubic_గమ్యం (c->దత్తాంశం, *c->st, control1_x, control1_y, control2_x, control2_y, గమ్యం_x, గమ్యం_y);
 }
 
-static void
-hb_transforming_pen_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-				void *data,
+స్థిర శూన్య
+hb_transforming_pen_close_మార్గం (hb_draw_funcs_t *dfuncs HB_వాడని,
+				శూన్య *దత్తాంశం,
 				hb_draw_state_t *st,
-				void *user_data HB_UNUSED)
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) data;
+  hb_transforming_pen_context_t *c = (hb_transforming_pen_context_t *) దత్తాంశం;
 
-  c->dfuncs->close_path (c->data, *c->st);
+  c->dfuncs->close_మార్గం (c->దత్తాంశం, *c->st);
 }
 
-static int64_t *
-hb_transforming_pen_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+స్థిర int64_t *
+hb_transforming_pen_get_budget_మిగిలిన (hb_draw_funcs_t *, శూన్య *draw_దత్తాంశం, శూన్య *)
 {
-  return ((hb_transforming_pen_context_t *) draw_data)->budget_remaining;
+  తిరిగి ((hb_transforming_pen_context_t *) draw_దత్తాంశం)->budget_మిగిలిన;
 }
 
-static inline void free_static_transforming_pen_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_transforming_pen_funcs ();
 
-static struct hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_transforming_pen_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_transforming_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_transforming_pen_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  స్థిర hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func (funcs, hb_transforming_pen_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, hb_transforming_pen_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_transforming_pen_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, hb_transforming_pen_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, hb_transforming_pen_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_transforming_pen_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_సమితి_move_గమ్యం_func (funcs, hb_transforming_pen_move_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_పంక్తి_గమ్యం_func (funcs, hb_transforming_pen_పంక్తి_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_quadratic_గమ్యం_func (funcs, hb_transforming_pen_quadratic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_cubic_గమ్యం_func (funcs, hb_transforming_pen_cubic_గమ్యం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_close_మార్గం_func (funcs, hb_transforming_pen_close_మార్గం, శూన్యసూచిక, శూన్యసూచిక);
+    hb_draw_funcs_సమితి_get_budget_మిగిలిన_func (funcs, hb_transforming_pen_get_budget_మిగిలిన, శూన్యసూచిక, శూన్యసూచిక);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_transforming_pen_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_transforming_pen_funcs;
 
-static inline
-void free_static_transforming_pen_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_transforming_pen_funcs ()
 {
   static_transforming_pen_funcs.free_instance ();
 }
 
-static hb_draw_funcs_t *
+స్థిర hb_draw_funcs_t *
 hb_transforming_pen_get_funcs ()
 {
-  return static_transforming_pen_funcs.get_unconst ();
+  తిరిగి static_transforming_pen_funcs.get_unconst ();
 }
 
 hb_ubytes_t
-VarComponent::get_path_at (const hb_varc_context_t &c,
-			   hb_codepoint_t parent_gid,
-			   hb_array_t<const int> coords,
-			   hb_transform_t<> total_transform,
-			   hb_ubytes_t total_record,
-			   hb_scalar_cache_t *cache) const
+VarComponent::get_మార్గం_at (స్థిరరాశి hb_varc_context_t &c,
+			   hb_codepoint_t మాతృ_gid,
+			   hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+			   hb_transform_t<> మొత్తం_transform,
+			   hb_ubytes_t మొత్తం_రికార్డు,
+			   hb_scalar_cache_t *cache) స్థిరరాశి
 {
-  if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_4)))
-    return hb_ubytes_t ();
+  ఒకవేళ (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_4)))
+    తిరిగి hb_ubytes_t ();
 
-  const unsigned char *end = total_record.arrayZ + total_record.length;
-  auto &VARC = *c.font->face->table.VARC->table;
-  auto &varStore = &VARC+VARC.varStore;
+  స్థిరరాశి గుర్తులేని అక్షరం *చివర = మొత్తం_రికార్డు.arrayZ + మొత్తం_రికార్డు.నిడివి;
+  స్వయంచాలక &VARC = *c.font->face->పట్టిక.VARC->పట్టిక;
+  స్వయంచాలక &varStore = &VARC+VARC.varStore;
 
-  auto &axisIndices = c.scratch.axisIndices;
-  auto &axisValues = c.scratch.axisValues;
-  record_t component;
-  if (unlikely (!decompile_record (VARC, total_record,
-				   &axisIndices, &axisValues, &component,
+  స్వయంచాలక &axisIndices = c.scratch.axisIndices;
+  స్వయంచాలక &axis_విలువలు_2 = c.scratch.axis_విలువలు_2;
+  రికార్డు_t component;
+  ఒకవేళ (unlikely (!decompile_రికార్డు (VARC, మొత్తం_రికార్డు,
+				   &axisIndices, &axis_విలువలు_2, &component,
 				   &c.budget)))
-    return hb_ubytes_t ();
+    తిరిగి hb_ubytes_t ();
 
   uint32_t flags = component.flags;
   hb_codepoint_t gid = component.gid;
-  const unsigned char *record = total_record.arrayZ + component.size;
+  స్థిరరాశి గుర్తులేని అక్షరం *రికార్డు = మొత్తం_రికార్డు.arrayZ + component.కొలత;
 
   // Condition
-  bool show = true;
-  if (flags & (unsigned) flags_t::HAVE_CONDITION)
+  తార్కిక show = నిజం;
+  ఒకవేళ (flags & (గుర్తులేని) flags_t::HAVE_CONDITION)
   {
-    const auto &condition = (&VARC+VARC.conditionList)[component.condition_index];
-    auto instancer = MultiItemVarStoreInstancer(&varStore, nullptr, coords, cache);
-    show = condition.evaluate (coords.arrayZ, coords.length, &instancer);
+    స్థిరరాశి స్వయంచాలక &condition = (&VARC+VARC.conditionList)[component.condition_సూచీ];
+    స్వయంచాలక instancer = Multi_అంశం_Var_Store_Instancer(&varStore, శూన్యసూచిక, coords, cache);
+    show = condition.evaluate (coords.arrayZ, coords.నిడివి, &instancer);
   }
 
   // Axis values
 
   // Apply variations if any
-  if ((flags & (unsigned) flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-      show && !axisValues.in_error ())
+  ఒకవేళ ((flags & (గుర్తులేని) flags_t::AXIS_విలువలు_HAVE_VARIATION) &&
+      show && !axis_విలువలు_2.లోపల_error ())
   {
-    if (unlikely (!hb_budget_spend (c.budget, axisValues.length,
-				    coords.length)))
-      return hb_ubytes_t ();
-    varStore.get_delta (component.axis_values_var_idx, coords,
-			axisValues.as_array (), cache);
+    ఒకవేళ (unlikely (!hb_budget_spend (c.budget, axis_విలువలు_2.నిడివి,
+				    coords.నిడివి)))
+      తిరిగి hb_ubytes_t ();
+    varStore.get_delta (component.axis_విలువలు_var_idx, coords,
+			axis_విలువలు_2.as_array (), cache);
   }
 
-  auto component_coords = coords;
+  స్వయంచాలక component_coords = coords;
   /* Copying coords is expensive; so we have put an arbitrary
    * limit on the max number of coords for now. */
-  if ((flags & (unsigned) flags_t::RESET_UNSPECIFIED_AXES) ||
-      coords.length > HB_VAR_COMPOSITE_MAX_AXES)
-    component_coords = hb_array (c.font->coords, c.font->num_coords);
+  ఒకవేళ ((flags & (గుర్తులేని) flags_t::RESET_UNSPECIFIED_AXES) ||
+      coords.నిడివి > HB_VAR_సంయుక్త_MAX_AXES)
+    component_coords = hb_array (c.font->coords, c.font->అంకె_coords);
 
   uint32_t transformVarIdx = component.transform_var_idx;
   hb_transform_decomposed_t<> transform = component.transform;
 
-  if (show)
+  ఒకవేళ (show)
   {
     // Only use coord_setter if there's actually any axis overrides.
-    if (unlikely (axisIndices &&
+    ఒకవేళ (unlikely (axisIndices &&
 		  !hb_budget_spend (c.budget, HB_BUDGET_1,
-				    component_coords.length)))
-      return hb_ubytes_t ();
-    coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<int> ());
-    for (unsigned i = 0; i < axisIndices.length; i++)
-      coord_setter[axisIndices[i]] = hb_clamp_to<int> (round (axisValues[i]));
-    if (axisIndices)
+				    component_coords.నిడివి)))
+      తిరిగి hb_ubytes_t ();
+    coord_setter_t coord_setter (axisIndices ? component_coords : hb_array<పూర్ణాంకం> ());
+    కొరకు (గుర్తులేని i = 0; i < axisIndices.నిడివి; i++)
+      coord_setter[axisIndices[i]] = hb_clamp_గమ్యం<పూర్ణాంకం> (round (axis_విలువలు_2[i]));
+    ఒకవేళ (axisIndices)
       component_coords = coord_setter.get_coords ();
 
     // Apply transform variations if any
-    if (transformVarIdx != VarIdx::NO_VARIATION)
+    ఒకవేళ (transformVarIdx != VarIdx::NO_VARIATION)
     {
-      double transformValues[9];
-      unsigned numTransformValues = 0;
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (flags & (unsigned) flags_t::flag) \
-	    transformValues[numTransformValues++] = (double) transform.name;
+      ద్విగుణ transform_విలువలు[9];
+      గుర్తులేని అంకె_Transform_విలువలు = 0;
+#నిర్వచించు PROCESS_TRANSFORM_COMPONENT(జరుపు, type, flag, name) \
+	  ఒకవేళ (flags & (గుర్తులేని) flags_t::flag) \
+	    transform_విలువలు[అంకె_Transform_విలువలు++] = (ద్విగుణ) transform.name;
       VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
-      if (unlikely (!hb_budget_spend (c.budget, numTransformValues,
-				      coords.length)))
-	return hb_ubytes_t ();
-      varStore.get_delta (transformVarIdx, coords, hb_array (transformValues, numTransformValues), cache);
-      numTransformValues = 0;
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (flags & (unsigned) flags_t::flag) \
-	    transform.name = (float) transformValues[numTransformValues++];
+#నిర్వచనం_రద్దు PROCESS_TRANSFORM_COMPONENT
+      ఒకవేళ (unlikely (!hb_budget_spend (c.budget, అంకె_Transform_విలువలు,
+				      coords.నిడివి)))
+	తిరిగి hb_ubytes_t ();
+      varStore.get_delta (transformVarIdx, coords, hb_array (transform_విలువలు, అంకె_Transform_విలువలు), cache);
+      అంకె_Transform_విలువలు = 0;
+#నిర్వచించు PROCESS_TRANSFORM_COMPONENT(జరుపు, type, flag, name) \
+	  ఒకవేళ (flags & (గుర్తులేని) flags_t::flag) \
+	    transform.name = (దశాంశం) transform_విలువలు[అంకె_Transform_విలువలు++];
       VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#నిర్వచనం_రద్దు PROCESS_TRANSFORM_COMPONENT
     }
 
     // Divide them by their divisors
-#define PROCESS_TRANSFORM_COMPONENT(shift, type, flag, name) \
-	  if (shift && (flags & (unsigned) flags_t::flag)) \
-	     transform.name *= 1.f / (1 << shift);
+#నిర్వచించు PROCESS_TRANSFORM_COMPONENT(జరుపు, type, flag, name) \
+	  ఒకవేళ (జరుపు && (flags & (గుర్తులేని) flags_t::flag)) \
+	     transform.name *= 1.f / (1 << జరుపు);
     VARC_PROCESS_TRANSFORM_COMPONENTS;
-#undef PROCESS_TRANSFORM_COMPONENT
+#నిర్వచనం_రద్దు PROCESS_TRANSFORM_COMPONENT
 
-    if (!(flags & (unsigned) flags_t::HAVE_SCALE_Y))
+    ఒకవేళ (!(flags & (గుర్తులేని) flags_t::HAVE_SCALE_Y))
       transform.scaleY = transform.scaleX;
 
     transform.rotation *= HB_PI;
     transform.skewX *= HB_PI;
     transform.skewY *= HB_PI;
 
-    total_transform.transform (transform.to_transform ());
+    మొత్తం_transform.transform (transform.గమ్యం_transform ());
 
-    bool same_coords = component_coords.length == coords.length &&
+    తార్కిక same_coords = component_coords.నిడివి == coords.నిడివి &&
 		       component_coords.arrayZ == coords.arrayZ;
 
-    c.depth_left--;
-    VARC.get_path_at (c, gid,
-		      component_coords, total_transform,
-		      parent_gid,
-		      same_coords ? cache : nullptr);
-    c.depth_left++;
+    c.లోతు_ఎడమ--;
+    VARC.get_మార్గం_at (c, gid,
+		      component_coords, మొత్తం_transform,
+		      మాతృ_gid,
+		      same_coords ? cache : శూన్యసూచిక);
+    c.లోతు_ఎడమ++;
   }
 
-  return hb_ubytes_t (record, end - record);
+  తిరిగి hb_ubytes_t (రికార్డు, చివర - రికార్డు);
 }
 
-bool
-VARC::get_path_at (const hb_varc_context_t &c,
+తార్కిక
+VARC::get_మార్గం_at (స్థిరరాశి hb_varc_context_t &c,
 		   hb_codepoint_t glyph,
-		   hb_array_t<const int> coords,
+		   hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
 		   hb_transform_t<> transform,
-		   hb_codepoint_t parent_glyph,
-		   hb_scalar_cache_t *parent_cache) const
+		   hb_codepoint_t మాతృ_glyph,
+		   hb_scalar_cache_t *మాతృ_cache) స్థిరరాశి
 {
   // Don't recurse on the same glyph.
-  unsigned idx = glyph == parent_glyph ?
+  గుర్తులేని idx = glyph == మాతృ_glyph ?
 		 NOT_COVERED :
-		 (this+coverage).get_coverage (glyph);
-  if (idx == NOT_COVERED)
+		 (ఇది+coverage).get_coverage (glyph);
+  ఒకవేళ (idx == NOT_COVERED)
   {
-    if (c.draw_session)
+    ఒకవేళ (c.draw_session)
     {
       /* Out of budget: draw nothing, but signal success so remaining
        * leaves are skipped instead of falling back per-glyph. */
-      if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) return true;
+      ఒకవేళ (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) తిరిగి నిజం;
 
-      hb_transform_t<> leaf_transform = transform;
-      leaf_transform.x0 *= c.font->x_multf;
-      leaf_transform.y0 *= c.font->y_multf;
+      hb_transform_t<> ఆకు_transform = transform;
+      ఆకు_transform.x0 *= c.font->x_multf;
+      ఆకు_transform.y0 *= c.font->y_multf;
 
       // Build a transforming pen to apply the transform.
       hb_draw_funcs_t *transformer_funcs = hb_transforming_pen_get_funcs ();
-      hb_transforming_pen_context_t context {leaf_transform,
+      hb_transforming_pen_context_t context {ఆకు_transform,
 					     c.draw_session->funcs,
-					     c.draw_session->draw_data,
+					     c.draw_session->draw_దత్తాంశం,
 					     &c.draw_session->st,
 					     &c.budget};
       hb_draw_session_t transformer_session {transformer_funcs, &context};
-      hb_draw_session_t &shape_draw_session = leaf_transform.is_identity () ? *c.draw_session : transformer_session;
+      hb_draw_session_t &shape_draw_session = ఆకు_transform.is_తటస్థం () ? *c.draw_session : transformer_session;
 
-      if (c.font->face->table.glyf->get_path_at (c.font, glyph, shape_draw_session, coords, c.scratch.glyf_scratch, nullptr, &shape_draw_session.get_budget ())) return true;
-#ifndef HB_NO_CFF
-      if (c.font->face->table.cff2->get_path_at (c.font, glyph, shape_draw_session, coords, &shape_draw_session.get_budget ())) return true;
-      if (c.font->face->table.cff1->get_path (c.font, glyph, shape_draw_session, &shape_draw_session.get_budget ())) return true; // Doesn't have variations
-#endif
-      return false;
+      ఒకవేళ (c.font->face->పట్టిక.glyf->get_మార్గం_at (c.font, glyph, shape_draw_session, coords, c.scratch.glyf_scratch, శూన్యసూచిక, &shape_draw_session.get_budget ())) తిరిగి నిజం;
+#నిర్వచితం_కాకపోతే HB_NO_CFF
+      ఒకవేళ (c.font->face->పట్టిక.cff2->get_మార్గం_at (c.font, glyph, shape_draw_session, coords, &shape_draw_session.get_budget ())) తిరిగి నిజం;
+      ఒకవేళ (c.font->face->పట్టిక.cff1->get_మార్గం (c.font, glyph, shape_draw_session, &shape_draw_session.get_budget ())) తిరిగి నిజం; // Doesn't have variations
+#అయితే_ముగింపు
+      తిరిగి అబద్ధం;
     }
-    else if (c.extents)
+    లేకపోతే ఒకవేళ (c.extents)
     {
-      if (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) return true;
+      ఒకవేళ (unlikely (!hb_budget_spend (c.budget, HB_BUDGET_1))) తిరిగి నిజం;
 
       hb_glyph_extents_t glyph_extents;
-      if (!c.font->face->table.glyf->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
-#ifndef HB_NO_CFF
-      if (!c.font->face->table.cff2->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
-      if (!c.font->face->table.cff1->get_extents (c.font, glyph, &glyph_extents, &c.budget)) // Doesn't have variations
-#endif
-	return false;
+      ఒకవేళ (!c.font->face->పట్టిక.glyf->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
+#నిర్వచితం_కాకపోతే HB_NO_CFF
+      ఒకవేళ (!c.font->face->పట్టిక.cff2->get_extents_at (c.font, glyph, &glyph_extents, coords, &c.budget))
+      ఒకవేళ (!c.font->face->పట్టిక.cff1->get_extents (c.font, glyph, &glyph_extents, &c.budget)) // Doesn't have variations
+#అయితే_ముగింపు
+	తిరిగి అబద్ధం;
 
       hb_extents_t<> comp_extents (glyph_extents);
-      hb_transform_t<> leaf_transform = transform;
-      leaf_transform.x0 *= c.font->x_multf;
-      leaf_transform.y0 *= c.font->y_multf;
-      leaf_transform.transform_extents (comp_extents);
+      hb_transform_t<> ఆకు_transform = transform;
+      ఆకు_transform.x0 *= c.font->x_multf;
+      ఆకు_transform.y0 *= c.font->y_multf;
+      ఆకు_transform.transform_extents (comp_extents);
       c.extents->union_ (comp_extents);
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  if (c.depth_left <= 0)
-    return true;
+  ఒకవేళ (c.లోతు_ఎడమ <= 0)
+    తిరిగి నిజం;
 
-  if (c.edges_left <= 0)
-    return true;
-  (c.edges_left)--;
+  ఒకవేళ (c.అంచులు_ఎడమ <= 0)
+    తిరిగి నిజం;
+  (c.అంచులు_ఎడమ)--;
 
-  hb_decycler_node_t node (c.decycler);
-  if (unlikely (!node.visit (glyph)))
-    return true;
+  hb_decycler_కణుపు_t node (c.decycler);
+  ఒకవేళ (unlikely (!node.సందర్శించు (glyph)))
+    తిరిగి నిజం;
 
-  hb_ubytes_t record = (this+glyphRecords)[idx];
+  hb_ubytes_t రికార్డు = (ఇది+glyph_రికార్డులు)[idx];
 
   hb_scalar_cache_t static_cache;
-  hb_scalar_cache_t *cache = parent_cache ?
-				  parent_cache :
-				  (this+varStore).create_cache (&static_cache);
+  hb_scalar_cache_t *cache = మాతృ_cache ?
+				  మాతృ_cache :
+				  (ఇది+varStore).create_cache (&static_cache);
 
-  VarCompositeGlyph::get_path_at (c,
+  Var_సంయుక్త_Glyph::get_మార్గం_at (c,
 				  glyph,
 				  coords, transform,
-				  record,
+				  రికార్డు,
 				  cache);
 
-  if (cache != parent_cache)
-    (this+varStore).destroy_cache (cache, &static_cache);
+  ఒకవేళ (cache != మాతృ_cache)
+    (ఇది+varStore).destroy_cache (cache, &static_cache);
 
-  return true;
+  తిరిగి నిజం;
 }
 
-#endif
+#అయితే_ముగింపు
 
-#undef VARC_PROCESS_TRANSFORM_COMPONENTS
+#నిర్వచనం_రద్దు VARC_PROCESS_TRANSFORM_COMPONENTS
 
 //} // namespace Var
 } // namespace OT
 
-#endif
+#అయితే_ముగింపు
 
-#endif /* HB_OT_VAR_VARC_CC (pacify clang) */
-#endif /* HB_OT_VAR_VARC_CC */
+#అయితే_ముగింపు /* HB_OT_VAR_VARC_CC (pacify clang) */
+#అయితే_ముగింపు /* HB_OT_VAR_VARC_CC */

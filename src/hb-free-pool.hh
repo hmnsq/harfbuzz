@@ -24,10 +24,10 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FREE_POOL_HH
-#define HB_FREE_POOL_HH
+#నిర్వచితం_కాకపోతే HB_FREE_POOL_HH
+#నిర్వచించు HB_FREE_POOL_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 /* Memory pool for persistent alloc/free of small objects.
  *
@@ -40,13 +40,13 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+మూస <రకం_పేరు T, గుర్తులేని ChunkLen = 32>
+నిర్మాణం hb_free_pool_t
 {
-  hb_free_pool_t () : next (nullptr) {}
+  hb_free_pool_t () : next (శూన్యసూచిక) {}
   ~hb_free_pool_t ()
   {
-    next = nullptr;
+    next = శూన్యసూచిక;
 
     + hb_iter (chunks)
     | hb_apply (hb_free)
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    ఒకవేళ (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      ఒకవేళ (unlikely (!chunks.alloc (chunks.నిడివి + 1))) తిరిగి శూన్యసూచిక;
+      chunk_t *chunk = (chunk_t *) hb_malloc (పరిమాణం (chunk_t));
+      ఒకవేళ (unlikely (!chunk)) తిరిగి శూన్యసూచిక;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,41 +67,41 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, పరిమాణం (T));
 
-    return obj;
+    తిరిగి obj;
   }
 
-  void release (T* obj)
+  శూన్య release (T* obj)
   {
     * (T**) obj = next;
     next = obj;
   }
 
-  private:
+  అంతరంగ:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
-  static_assert (alignof (T) % alignof (void *) == 0, "");
+  static_assert (పరిమాణం (T) >= పరిమాణం (శూన్య *), "");
+  static_assert (alignof (T) % alignof (శూన్య *) == 0, "");
 
-  struct chunk_t
+  నిర్మాణం chunk_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      కొరకు (గుర్తులేని i = 0; i < ARRAY_నిడివి (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
-      * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
+      * (T**) &arrayZ[ARRAY_నిడివి (arrayZ) - 1] = శూన్యసూచిక;
 
-      return arrayZ;
+      తిరిగి arrayZ;
     }
 
     T arrayZ[ChunkLen];
   };
 
   T* next;
-  hb_vector_t<chunk_t *> chunks;
+  hb_సదిశ_t<chunk_t *> chunks;
 };
 
 
-#endif /* HB_FREE_POOL_HH */
+#అయితే_ముగింపు /* HB_FREE_POOL_HH */

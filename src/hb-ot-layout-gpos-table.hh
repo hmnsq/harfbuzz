@@ -26,64 +26,64 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GPOS_TABLE_HH
-#define HB_OT_LAYOUT_GPOS_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_OT_LAYOUT_GPOS_పట్టిక_HH
+#నిర్వచించు HB_OT_LAYOUT_GPOS_పట్టిక_HH
 
-#include "OT/Layout/GPOS/GPOS.hh"
+#అన్తర్భావ "OT/Layout/GPOS/GPOS.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
 // TODO(garretrieger): Move into new layout directory.
 /* Out-of-class implementation for methods recursing */
-#ifndef HB_NO_OT_LAYOUT
-template <typename context_t>
-/*static*/ typename context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+#నిర్వచితం_కాకపోతే HB_NO_OT_LAYOUT
+మూస <రకం_పేరు context_t>
+/*static*/ రకం_పేరు context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, గుర్తులేని పూర్ణాంకం lookup_సూచీ)
 {
-  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
+  స్థిరరాశి PosLookup &l = c->face->పట్టిక.GPOS.get_relaxed ()->పట్టిక->get_lookup (lookup_సూచీ);
+  తిరిగి l.dispatch (c);
 }
 
-template <>
-inline hb_closure_lookups_context_t::return_t
-PosLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
+మూస <>
+అంతఃవరుస hb_సంవృతం_lookups_context_t::return_t
+PosLookup::dispatch_recurse_func<hb_సంవృతం_lookups_context_t> (hb_సంవృతం_lookups_context_t *c, గుర్తులేని this_సూచీ)
 {
-  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  స్థిరరాశి PosLookup &l = c->face->పట్టిక.GPOS.get_relaxed ()->పట్టిక->get_lookup (this_సూచీ);
+  తిరిగి l.సంవృతం_lookups (c, this_సూచీ);
 }
 
-template <>
-inline bool PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+మూస <>
+అంతఃవరుస తార్కిక PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, గుర్తులేని పూర్ణాంకం lookup_సూచీ)
 {
-  auto *gpos = c->face->table.GPOS.get_relaxed ();
-  const PosLookup &l = gpos->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
-  c->set_lookup_index (lookup_index);
-  c->set_lookup_props (l.get_props ());
+  స్వయంచాలక *gpos = c->face->పట్టిక.GPOS.get_relaxed ();
+  స్థిరరాశి PosLookup &l = gpos->పట్టిక->get_lookup (lookup_సూచీ);
+  గుర్తులేని పూర్ణాంకం saved_lookup_props = c->lookup_props;
+  గుర్తులేని పూర్ణాంకం saved_lookup_సూచీ = c->lookup_సూచీ;
+  c->సమితి_lookup_సూచీ (lookup_సూచీ);
+  c->సమితి_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
-  hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
-  hb_swap (c->match_positions, saved_match_positions);
+  uint32_t దొంతర_సరిపోలిక_positions[8];
+  hb_సదిశ_t<uint32_t> saved_సరిపోలిక_positions;
+  saved_సరిపోలిక_positions.సమితి_storage (దొంతర_సరిపోలిక_positions);
+  hb_మార్పిడి (c->సరిపోలిక_positions, saved_సరిపోలిక_positions);
 
-  bool ret = false;
-  auto *accel = gpos->get_accel (lookup_index);
-  ret = accel && accel->apply (c, false);
+  తార్కిక ret = అబద్ధం;
+  స్వయంచాలక *accel = gpos->get_accel (lookup_సూచీ);
+  ret = accel && accel->apply (c, అబద్ధం);
 
-  c->set_lookup_index (saved_lookup_index);
-  c->set_lookup_props (saved_lookup_props);
+  c->సమితి_lookup_సూచీ (saved_lookup_సూచీ);
+  c->సమితి_lookup_props (saved_lookup_props);
 
-  hb_swap (c->match_positions, saved_match_positions);
+  hb_మార్పిడి (c->సరిపోలిక_positions, saved_సరిపోలిక_positions);
 
-  return ret;
+  తిరిగి ret;
 }
-#endif
+#అయితే_ముగింపు
 
 } /* namespace GPOS_impl */
 } /* namespace Layout */
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_GPOS_TABLE_HH */
+#అయితే_ముగింపు /* HB_OT_LAYOUT_GPOS_TABLE_HH */

@@ -24,482 +24,482 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifdef HAVE_CORETEXT
+#నిర్వచితమైతే HAVE_CORETEXT
 
-#include "hb-coretext.hh"
-#include "hb-aat-layout-trak-table.hh"
+#అన్తర్భావ "hb-coretext.hh"
+#అన్తర్భావ "hb-aat-layout-trak-table.hh"
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#అన్తర్భావ "hb-draw.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-machinery.hh"
 
-#if (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
+#ఒకవేళ (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
     || (defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ < 60000) \
     || (defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ < 90000)
 #  define kCTFontOrientationDefault kCTFontDefaultOrientation
 #  define kCTFontOrientationHorizontal kCTFontHorizontalOrientation
 #  define kCTFontOrientationVertical kCTFontVerticalOrientation
-#endif
+#అయితే_ముగింపు
 
-#define MAX_GLYPHS 256u
+#నిర్వచించు MAX_GLYPHS 256u
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_nominal_glyph (hb_font_t *font,
-			       void *font_data HB_UNUSED,
+			       శూన్య *font_దత్తాంశం HB_వాడని,
 			       hb_codepoint_t unicode,
 			       hb_codepoint_t *glyph,
-			       void *user_data HB_UNUSED)
+			       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
   UniChar ch[2];
   CGGlyph cg_glyph[2];
-  unsigned count = 0;
+  గుర్తులేని లెక్క = 0;
 
-  if (unicode <= 0xFFFF)
+  ఒకవేళ (unicode <= 0xFFFF)
   {
-    ch[count++] = unicode;
+    ch[లెక్క++] = unicode;
   }
-  else if (unicode <= 0x10FFFF)
+  లేకపోతే ఒకవేళ (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[లెక్క++] = (unicode >> 10) + 0xD7C0;
+    ch[లెక్క++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  లేకపోతే
+    ch[లెక్క++] = 0xFFFD;
 
-  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
+  ఒకవేళ (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, లెక్క))
   {
     *glyph = cg_glyph[0];
-    return true;
+    తిరిగి నిజం;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-static unsigned int
+స్థిర గుర్తులేని పూర్ణాంకం
 hb_coretext_get_nominal_glyphs (hb_font_t *font,
-				void *font_data,
-				unsigned int count,
-				const hb_codepoint_t *first_unicode,
-				unsigned int unicode_stride,
-				hb_codepoint_t *first_glyph,
-				unsigned int glyph_stride,
-				void *user_data HB_UNUSED)
+				శూన్య *font_దత్తాంశం,
+				గుర్తులేని పూర్ణాంకం లెక్క,
+				స్థిరరాశి hb_codepoint_t *మొదటి_unicode,
+				గుర్తులేని పూర్ణాంకం unicode_stride,
+				hb_codepoint_t *మొదటి_glyph,
+				గుర్తులేని పూర్ణాంకం glyph_stride,
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
   // If any non-BMP codepoint is requested, use the slow path.
-  bool slow_path = false;
-  auto *unicode = first_unicode;
-  for (unsigned i = 0; i < count; i++)
+  తార్కిక slow_మార్గం = అబద్ధం;
+  స్వయంచాలక *unicode = మొదటి_unicode;
+  కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
   {
-    if (*unicode > 0xFFFF)
+    ఒకవేళ (*unicode > 0xFFFF)
     {
-      slow_path = true;
-      break;
+      slow_మార్గం = నిజం;
+      ఆపు;
     }
-    unicode = &StructAtOffset<const hb_codepoint_t> (unicode, unicode_stride);
+    unicode = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (unicode, unicode_stride);
   }
 
-  if (unlikely (slow_path))
+  ఒకవేళ (unlikely (slow_మార్గం))
   {
-    for (unsigned i = 0; i < count; i++)
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      if (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
-	return i;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
-      first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+      ఒకవేళ (!hb_coretext_get_nominal_glyph (font, font_దత్తాంశం, *మొదటి_unicode, మొదటి_glyph, శూన్యసూచిక))
+	తిరిగి i;
+      మొదటి_unicode = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_unicode, unicode_stride);
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
-    return count;
+    తిరిగి లెక్క;
   }
 
   UniChar ch[MAX_GLYPHS];
   CGGlyph cg_glyph[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  కొరకు (గుర్తులేని i = 0; i < లెక్క; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    గుర్తులేని c = (గుర్తులేని) hb_min ((పూర్ణాంకం) MAX_GLYPHS, (పూర్ణాంకం) లెక్క - (పూర్ణాంకం) i);
+    కొరకు (గుర్తులేని j = 0; j < c; j++)
     {
-      ch[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      ch[j] = *మొదటి_unicode;
+      మొదటి_unicode = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_unicode, unicode_stride);
     }
-    if (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
+    ఒకవేళ (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
     {
       // Use slow path partially and return at first failure.
-      for (unsigned j = 0; j < c; j++)
+      కొరకు (గుర్తులేని j = 0; j < c; j++)
       {
-	if (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
-	  return i + j;
-	first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+	ఒకవేళ (!hb_coretext_get_nominal_glyph (font, font_దత్తాంశం, ch[j], మొదటి_glyph, శూన్యసూచిక))
+	  తిరిగి i + j;
+	మొదటి_glyph = &Struct_At_స్థానభ్రంశం<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
       }
     }
-    for (unsigned j = 0; j < c; j++)
+    కొరకు (గుర్తులేని j = 0; j < c; j++)
     {
-      *first_glyph = cg_glyph[j];
-      first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+      *మొదటి_glyph = cg_glyph[j];
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
   }
 
-  return count;
+  తిరిగి లెక్క;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_variation_glyph (hb_font_t *font,
-				 void *font_data HB_UNUSED,
+				 శూన్య *font_దత్తాంశం HB_వాడని,
 				 hb_codepoint_t unicode,
 				 hb_codepoint_t variation_selector,
 				 hb_codepoint_t *glyph,
-				 void *user_data HB_UNUSED)
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
   UniChar ch[4];
   CGGlyph cg_glyph[4];
-  unsigned count = 0;
+  గుర్తులేని లెక్క = 0;
 
   // Add Unicode, then variation selector. Ugly, but works.
   //
-  if (unicode <= 0xFFFF)
-    ch[count++] = unicode;
-  else if (unicode <= 0x10FFFF)
+  ఒకవేళ (unicode <= 0xFFFF)
+    ch[లెక్క++] = unicode;
+  లేకపోతే ఒకవేళ (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[లెక్క++] = (unicode >> 10) + 0xD7C0;
+    ch[లెక్క++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  లేకపోతే
+    ch[లెక్క++] = 0xFFFD;
 
-  if (variation_selector <= 0xFFFF)
-    ch[count++] = variation_selector;
-  else if (variation_selector <= 0x10FFFF)
+  ఒకవేళ (variation_selector <= 0xFFFF)
+    ch[లెక్క++] = variation_selector;
+  లేకపోతే ఒకవేళ (variation_selector <= 0x10FFFF)
   {
-    ch[count++] = (variation_selector >> 10) + 0xD7C0;
-    ch[count++] = (variation_selector & 0x3FF) + 0xDC00;
+    ch[లెక్క++] = (variation_selector >> 10) + 0xD7C0;
+    ch[లెక్క++] = (variation_selector & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  లేకపోతే
+    ch[లెక్క++] = 0xFFFD;
 
-  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count);
+  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, లెక్క);
 
   // All except for first should be zero if we succeeded
-  for (unsigned i = 1; i < count; i++)
-    if (cg_glyph[i])
-      return false;
+  కొరకు (గుర్తులేని i = 1; i < లెక్క; i++)
+    ఒకవేళ (cg_glyph[i])
+      తిరిగి అబద్ధం;
 
   // Humm. CoreText falls back to the default glyph if the variation selector
   // is not supported.  We cannot truly detect that case. So, in essence,
   // we are always returning true here...
 
   *glyph = cg_glyph[0];
-  return true;
+  తిరిగి నిజం;
 }
 
-static void
+స్థిర శూన్య
 hb_coretext_get_glyph_h_advances (hb_font_t* font,
-				  void* font_data HB_UNUSED,
-				  unsigned count,
-				  const hb_codepoint_t *first_glyph,
-				  unsigned glyph_stride,
-				  hb_position_t *first_advance,
-				  unsigned advance_stride,
-				  void *user_data HB_UNUSED)
+				  శూన్య* font_దత్తాంశం HB_వాడని,
+				  గుర్తులేని లెక్క,
+				  స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				  గుర్తులేని glyph_stride,
+				  hb_position_t *మొదటి_advance,
+				  గుర్తులేని advance_stride,
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  hb_position_t tracking = font->face->table.trak->get_tracking (font, HB_DIRECTION_LTR, 0.f);
+  CGFloat ct_font_కొలత = CTFont_Get_కొలత (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_కొలత;
+  hb_position_t tracking = font->face->పట్టిక.trak->get_tracking (font, HB_DIRECTION_LTR, 0.f);
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  కొరకు (గుర్తులేని i = 0; i < లెక్క; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    గుర్తులేని c = (గుర్తులేని) hb_min ((పూర్ణాంకం) MAX_GLYPHS, (పూర్ణాంకం) లెక్క - (పూర్ణాంకం) i);
+    కొరకు (గుర్తులేని j = 0; j < c; j++)
     {
-      cg_glyph[j] = *first_glyph;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      cg_glyph[j] = *మొదటి_glyph;
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationHorizontal, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    కొరకు (గుర్తులేని j = 0; j < c; j++)
     {
-      *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * x_mult) - (double) tracking);
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = hb_clamp_గమ్యం<hb_position_t> (
+	  round (advances[j].వెడల్పు * x_mult) - (ద్విగుణ) tracking);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం<hb_position_t> (మొదటి_advance, advance_stride);
     }
   }
 }
 
-#ifndef HB_NO_VERTICAL
-static void
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+స్థిర శూన్య
 hb_coretext_get_glyph_v_advances (hb_font_t* font,
-				  void* font_data HB_UNUSED,
-				  unsigned count,
-				  const hb_codepoint_t *first_glyph,
-				  unsigned glyph_stride,
-				  hb_position_t *first_advance,
-				  unsigned advance_stride,
-				  void *user_data HB_UNUSED)
+				  శూన్య* font_దత్తాంశం HB_వాడని,
+				  గుర్తులేని లెక్క,
+				  స్థిరరాశి hb_codepoint_t *మొదటి_glyph,
+				  గుర్తులేని glyph_stride,
+				  hb_position_t *మొదటి_advance,
+				  గుర్తులేని advance_stride,
+				  శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_size;
-  hb_position_t tracking = font->face->table.trak->get_tracking (font, HB_DIRECTION_TTB, 0.f);
+  CGFloat ct_font_కొలత = CTFont_Get_కొలత (ct_font);
+  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_కొలత;
+  hb_position_t tracking = font->face->పట్టిక.trak->get_tracking (font, HB_DIRECTION_TTB, 0.f);
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  కొరకు (గుర్తులేని i = 0; i < లెక్క; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    గుర్తులేని c = (గుర్తులేని) hb_min ((పూర్ణాంకం) MAX_GLYPHS, (పూర్ణాంకం) లెక్క - (పూర్ణాంకం) i);
+    కొరకు (గుర్తులేని j = 0; j < c; j++)
     {
-      cg_glyph[j] = *first_glyph;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      cg_glyph[j] = *మొదటి_glyph;
+      మొదటి_glyph = &Struct_At_స్థానభ్రంశం<స్థిరరాశి hb_codepoint_t> (మొదటి_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationVertical, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    కొరకు (గుర్తులేని j = 0; j < c; j++)
     {
-      *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * y_mult) - (double) tracking);
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      *మొదటి_advance = hb_clamp_గమ్యం<hb_position_t> (
+	  round (advances[j].వెడల్పు * y_mult) - (ద్విగుణ) tracking);
+      మొదటి_advance = &Struct_At_స్థానభ్రంశం<hb_position_t> (మొదటి_advance, advance_stride);
     }
   }
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_glyph_v_origin (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				శూన్య *font_దత్తాంశం HB_వాడని,
 				hb_codepoint_t glyph,
 				hb_position_t *x,
 				hb_position_t *y,
-				void *user_data HB_UNUSED)
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = -(CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_కొలత = CTFont_Get_కొలత (ct_font);
+  CGFloat x_mult = -(CGFloat) font->x_scale / ct_font_కొలత;
+  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_కొలత;
 
-  const CGGlyph glyphs = glyph;
+  స్థిరరాశి CGGlyph glyphs = glyph;
   CGSize origin;
   CTFontGetVerticalTranslationsForGlyphs (ct_font, &glyphs, &origin, 1);
 
-  *x = hb_clamp_to<hb_position_t> (round (x_mult * origin.width));
-  *y = hb_clamp_to<hb_position_t> (round (y_mult * origin.height));
+  *x = hb_clamp_గమ్యం<hb_position_t> (round (x_mult * origin.వెడల్పు));
+  *y = hb_clamp_గమ్యం<hb_position_t> (round (y_mult * origin.ఎత్తు));
 
-  return true;
+  తిరిగి నిజం;
 }
-#endif
+#అయితే_ముగింపు
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_glyph_extents (hb_font_t *font,
-			       void *font_data HB_UNUSED,
+			       శూన్య *font_దత్తాంశం HB_వాడని,
 			       hb_codepoint_t glyph,
 			       hb_glyph_extents_t *extents,
-			       void *user_data HB_UNUSED)
+			       శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_కొలత = CTFont_Get_కొలత (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_కొలత;
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_కొలత;
 
   CGGlyph glyphs[1] = { glyph };
   CGRect bounds = ::CTFontGetBoundingRectsForGlyphs(ct_font,
-						    kCTFontOrientationDefault, glyphs, NULL, 1);
+						    kCTFontOrientationDefault, glyphs, ఖాళీ, 1);
 
-  double y_bearing = round ((bounds.origin.y + bounds.size.height) * y_mult);
+  ద్విగుణ y_bearing = round ((bounds.origin.y + bounds.కొలత.ఎత్తు) * y_mult);
 
-  extents->x_bearing = hb_clamp_to<hb_position_t> (round (bounds.origin.x * x_mult));
-  extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-  extents->width = hb_clamp_to<hb_position_t> (round (bounds.size.width * x_mult));
-  extents->height = hb_clamp_to<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
+  extents->x_bearing = hb_clamp_గమ్యం<hb_position_t> (round (bounds.origin.x * x_mult));
+  extents->y_bearing = hb_clamp_గమ్యం<hb_position_t> (y_bearing);
+  extents->వెడల్పు = hb_clamp_గమ్యం<hb_position_t> (round (bounds.కొలత.వెడల్పు * x_mult));
+  extents->ఎత్తు = hb_clamp_గమ్యం<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_font_h_extents (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				శూన్య *font_దత్తాంశం HB_వాడని,
 				hb_font_extents_t *metrics,
-				void *user_data HB_UNUSED)
+				శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_కొలత = CTFont_Get_కొలత (ct_font);
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_కొలత;
 
-  metrics->ascender = hb_clamp_to<hb_position_t> (round (CTFontGetAscent (ct_font) * y_mult));
-  metrics->descender = hb_clamp_to<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
-  metrics->line_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
+  metrics->ascender = hb_clamp_గమ్యం<hb_position_t> (round (CTFontGetAscent (ct_font) * y_mult));
+  metrics->descender = hb_clamp_గమ్యం<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
+  metrics->పంక్తి_gap = hb_clamp_గమ్యం<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
 
-  return true;
+  తిరిగి నిజం;
 }
 
-#ifndef HB_NO_DRAW
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
 
-static void
-ct_apply_func (void *info, const CGPathElement *element)
+స్థిర శూన్య
+ct_apply_func (శూన్య *info, స్థిరరాశి CGPathElement *element)
 {
   hb_draw_session_t *draws = (hb_draw_session_t *) info;
 
-  switch (element->type)
+  ఎంపిక (element->type)
   {
-  case kCGPathElementMoveToPoint:
-    draws->move_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddLineToPoint:
-    draws->line_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddQuadCurveToPoint:
-    draws->quadratic_to (element->points[0].x, element->points[0].y,
+  స్థితి k_CGPath_Element_Move_గమ్యం_బిందువు:
+    draws->move_గమ్యం (element->points[0].x, element->points[0].y);
+    ఆపు;
+  స్థితి k_CGPath_Element_కూడు_పంక్తి_గమ్యం_బిందువు:
+    draws->పంక్తి_గమ్యం (element->points[0].x, element->points[0].y);
+    ఆపు;
+  స్థితి k_CGPath_Element_కూడు_Quad_వక్రం_గమ్యం_బిందువు:
+    draws->quadratic_గమ్యం (element->points[0].x, element->points[0].y,
 			 element->points[1].x, element->points[1].y);
-    break;
-  case kCGPathElementAddCurveToPoint:
-    draws->cubic_to (element->points[0].x, element->points[0].y,
+    ఆపు;
+  స్థితి k_CGPath_Element_కూడు_వక్రం_గమ్యం_బిందువు:
+    draws->cubic_గమ్యం (element->points[0].x, element->points[0].y,
 		     element->points[1].x, element->points[1].y,
 		     element->points[2].x, element->points[2].y);
-    break;
-  case kCGPathElementCloseSubpath:
-    draws->close_path ();
-    break;
+    ఆపు;
+  స్థితి kCGPathElementCloseSubpath:
+    draws->close_మార్గం ();
+    ఆపు;
   }
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_draw_glyph_or_fail (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				శూన్య *font_దత్తాంశం HB_వాడని,
 				hb_codepoint_t glyph,
-				hb_draw_funcs_t *draw_funcs, void *draw_data,
-				void *user_data)
+				hb_draw_funcs_t *draw_funcs, శూన్య *draw_దత్తాంశం,
+				శూన్య *user_దత్తాంశం)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_కొలత = CTFont_Get_కొలత (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_కొలత;
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_కొలత;
 
-  CGAffineTransform transform = CGAffineTransformIdentity;
+  CGAffineTransform transform = CGAffine_Transform_తటస్థం;
   transform = CGAffineTransformScale (transform, x_mult, y_mult);
 
-  hb_cf_ptr_t<CGPathRef> path (CTFontCreatePathForGlyph (ct_font, glyph, &transform));
-  if (!path)
-    return false;
+  hb_cf_ptr_t<CGPathRef> మార్గం (CTFont_Create_మార్గం_For_Glyph (ct_font, glyph, &transform));
+  ఒకవేళ (!మార్గం)
+    తిరిగి అబద్ధం;
 
-  hb_draw_session_t drawing {draw_funcs, draw_data};
+  hb_draw_session_t drawing {draw_funcs, draw_దత్తాంశం};
 
-  CGPathApply (path, &drawing, ct_apply_func);
+  CGPathApply (మార్గం, &drawing, ct_apply_func);
 
-  return true;
+  తిరిగి నిజం;
 }
-#endif
+#అయితే_ముగింపు
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_glyph_name (hb_font_t *font,
-			    void *font_data HB_UNUSED,
+			    శూన్య *font_దత్తాంశం HB_వాడని,
 			    hb_codepoint_t glyph,
-			    char *name, unsigned int size,
-			    void *user_data HB_UNUSED)
+			    అక్షరం *name, గుర్తులేని పూర్ణాంకం కొలత,
+			    శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CGFontRef cg_font = (CGFontRef) (const void *) font->face->data.coretext;
+  CGFontRef cg_font = (CGFontRef) (స్థిరరాశి శూన్య *) font->face->దత్తాంశం.coretext;
 
   CGGlyph cg_glyph = glyph;
   hb_cf_ptr_t<CFStringRef> cf_name (CGFontCopyGlyphNameForGlyph (cg_font, cg_glyph));
-  if (!cf_name)
-    return false;
+  ఒకవేళ (!cf_name)
+    తిరిగి అబద్ధం;
 
-  if (!size)
-    return true;
+  ఒకవేళ (!కొలత)
+    తిరిగి నిజం;
 
-  CFIndex len = CFStringGetLength (cf_name);
-  if (len > (CFIndex)size - 1)
-    len = (CFIndex)size - 1;
+  CFIndex len = CFString_Get_నిడివి (cf_name);
+  ఒకవేళ (len > (CFIndex)కొలత - 1)
+    len = (CFIndex)కొలత - 1;
 
-  CFStringGetBytes (cf_name, CFRangeMake (0, len),
-		    kCFStringEncodingUTF8, 0, false,
-		    (UInt8 *) name, size, &len);
+  CFString_Get_బైట్లు (cf_name, CFRangeMake (0, len),
+		    kCFStringEncodingUTF8, 0, అబద్ధం,
+		    (UInt8 *) name, కొలత, &len);
 
   name[len] = '\0';
 
-  return true;
+  తిరిగి నిజం;
 }
 
-static hb_bool_t
+స్థిర hb_bool_t
 hb_coretext_get_glyph_from_name (hb_font_t *font,
-				 void *font_data HB_UNUSED,
-				 const char *name, int len,
+				 శూన్య *font_దత్తాంశం HB_వాడని,
+				 స్థిరరాశి అక్షరం *name, పూర్ణాంకం len,
 				 hb_codepoint_t *glyph,
-				 void *user_data HB_UNUSED)
+				 శూన్య *user_దత్తాంశం HB_వాడని)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (స్థిరరాశి శూన్య *) font->దత్తాంశం.coretext;
 
-  if (len == -1)
-    len = strlen (name);
+  ఒకవేళ (len == -1)
+    len = అక్షరశ్రేణి_పొడవు (name);
 
-  hb_cf_ptr_t<CFStringRef> cf_name (CFStringCreateWithBytes (kCFAllocatorDefault,
-							     (const UInt8 *) name, len,
-							     kCFStringEncodingUTF8, false));
+  hb_cf_ptr_t<CFStringRef> cf_name (CFString_Create_With_బైట్లు (kCFAllocatorDefault,
+							     (స్థిరరాశి UInt8 *) name, len,
+							     kCFStringEncodingUTF8, అబద్ధం));
   CGGlyph cg_glyph = CTFontGetGlyphWithName (ct_font, cf_name);
   *glyph = cg_glyph;
 
   // TODO Return true for .notdef; hb-ft does that.
 
-  return cg_glyph != 0;
+  తిరిగి cg_glyph != 0;
 }
 
 
-static inline void free_static_coretext_funcs ();
+స్థిర అంతఃవరుస శూన్య free_static_coretext_funcs ();
 
-static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
+స్థిర నిర్మాణం hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  స్థిర hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyph_func (funcs, hb_coretext_get_nominal_glyph, nullptr, nullptr);
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_coretext_get_nominal_glyphs, nullptr, nullptr);
-    hb_font_funcs_set_variation_glyph_func (funcs, hb_coretext_get_variation_glyph, nullptr, nullptr);
+    hb_font_funcs_సమితి_nominal_glyph_func (funcs, hb_coretext_get_nominal_glyph, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_nominal_glyphs_func (funcs, hb_coretext_get_nominal_glyphs, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_variation_glyph_func (funcs, hb_coretext_get_variation_glyph, శూన్యసూచిక, శూన్యసూచిక);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_coretext_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_coretext_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_సమితి_font_h_extents_func (funcs, hb_coretext_get_font_h_extents, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_h_advances_func (funcs, hb_coretext_get_glyph_h_advances, శూన్యసూచిక, శూన్యసూచిక);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_glyph_v_advances_func (funcs, hb_coretext_get_glyph_v_advances, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origin_func (funcs, hb_coretext_get_glyph_v_origin, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_VERTICAL
+    hb_font_funcs_సమితి_glyph_v_advances_func (funcs, hb_coretext_get_glyph_v_advances, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_v_origin_func (funcs, hb_coretext_get_glyph_v_origin, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_coretext_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_DRAW
+    hb_font_funcs_సమితి_draw_glyph_or_fail_func (funcs, hb_coretext_draw_glyph_or_fail, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_coretext_get_glyph_extents, nullptr, nullptr);
+    hb_font_funcs_సమితి_glyph_extents_func (funcs, hb_coretext_get_glyph_extents, శూన్యసూచిక, శూన్యసూచిక);
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
-    hb_font_funcs_set_glyph_name_func (funcs, hb_coretext_get_glyph_name, nullptr, nullptr);
-    hb_font_funcs_set_glyph_from_name_func (funcs, hb_coretext_get_glyph_from_name, nullptr, nullptr);
-#endif
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_GLYPH_పేర్లు
+    hb_font_funcs_సమితి_glyph_name_func (funcs, hb_coretext_get_glyph_name, శూన్యసూచిక, శూన్యసూచిక);
+    hb_font_funcs_సమితి_glyph_from_name_func (funcs, hb_coretext_get_glyph_from_name, శూన్యసూచిక, శూన్యసూచిక);
+#అయితే_ముగింపు
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_coretext_funcs);
 
-    return funcs;
+    తిరిగి funcs;
   }
 } static_coretext_funcs;
 
-static inline
-void free_static_coretext_funcs ()
+స్థిర అంతఃవరుస
+శూన్య free_static_coretext_funcs ()
 {
   static_coretext_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+స్థిర hb_font_funcs_t *
 _hb_coretext_get_font_funcs ()
 {
-  return static_coretext_funcs.get_unconst ();
+  తిరిగి static_coretext_funcs.get_unconst ();
 }
 
 
@@ -521,23 +521,23 @@ _hb_coretext_get_font_funcs ()
  *
  * Since: 10.1.0
  **/
-void
-hb_coretext_font_set_funcs (hb_font_t *font)
+శూన్య
+hb_coretext_font_సమితి_funcs (hb_font_t *font)
 {
   CTFontRef ct_font = hb_coretext_font_get_ct_font (font);
-  if (unlikely (!ct_font))
+  ఒకవేళ (unlikely (!ct_font))
   {
-    hb_font_set_funcs (font,
-		       hb_font_funcs_get_empty (),
-		       nullptr, nullptr);
-    return;
+    hb_font_సమితి_funcs (font,
+		       hb_font_funcs_get_ఖాళీలు (),
+		       శూన్యసూచిక, శూన్యసూచిక);
+    తిరిగి;
   }
 
-  hb_font_set_funcs (font,
+  hb_font_సమితి_funcs (font,
 		     _hb_coretext_get_font_funcs (),
-		     nullptr, nullptr);
+		     శూన్యసూచిక, శూన్యసూచిక);
 }
 
-#undef MAX_GLYPHS
+#నిర్వచనం_రద్దు MAX_GLYPHS
 
-#endif
+#అయితే_ముగింపు

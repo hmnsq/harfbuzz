@@ -26,266 +26,266 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_COMMON_HH
-#define HB_OT_LAYOUT_COMMON_HH
+#నిర్వచితం_కాకపోతే HB_OT_LAYOUT_COMMON_HH
+#నిర్వచించు HB_OT_LAYOUT_COMMON_HH
 
-#include "hb.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-set.hh"
-#include "hb-bimap.hh"
-#include "hb-cache.hh"
-#include "hb-ot-dual.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-ot-layout.hh"
+#అన్తర్భావ "hb-open-type.hh"
+#అన్తర్భావ "hb-set.hh"
+#అన్తర్భావ "hb-bimap.hh"
+#అన్తర్భావ "hb-cache.hh"
+#అన్తర్భావ "hb-ot-dual.hh"
 
-using hb_ot_layout_mapping_cache_t = hb_cache_t<16, 8, 8>;
-static_assert (sizeof (hb_ot_layout_mapping_cache_t) == 512, "");
+ఉపయోగించి hb_ot_layout_mapping_cache_t = hb_cache_t<16, 8, 8>;
+static_assert (పరిమాణం (hb_ot_layout_mapping_cache_t) == 512, "");
 
-using hb_ot_layout_binary_cache_t = hb_cache_t<14, 1, 8>;
-static_assert (sizeof (hb_ot_layout_binary_cache_t) == 256, "");
+ఉపయోగించి hb_ot_layout_ద్విమాన_cache_t = hb_cache_t<14, 1, 8>;
+static_assert (పరిమాణం (hb_ot_layout_ద్విమాన_cache_t) == 256, "");
 
-#include "OT/Layout/Common/Coverage.hh"
+#అన్తర్భావ "OT/Layout/Common/Coverage.hh"
 
 // TODO(garretrieger): cleanup these after migration.
-using OT::Layout::Common::Coverage;
-using OT::Layout::Common::RangeRecord;
-using OT::Layout::SmallTypes;
-using OT::Layout::MediumTypes;
+ఉపయోగించి OT::Layout::Common::Coverage;
+ఉపయోగించి OT::Layout::Common::Range_రికార్డు;
+ఉపయోగించి OT::Layout::SmallTypes;
+ఉపయోగించి OT::Layout::MediumTypes;
 
 
-namespace OT {
+నామాకాశ OT {
 
-template<typename Iterator>
-static inline bool ClassDef_serialize (hb_serialize_context_t *c,
+మూస<రకం_పేరు Iterator>
+స్థిర అంతఃవరుస తార్కిక ClassDef_serialize (hb_serialize_context_t *c,
 				       Iterator it);
 
-static bool ClassDef_remap_and_serialize (
+స్థిర తార్కిక ClassDef_remap_and_serialize (
     hb_serialize_context_t *c,
-    const hb_set_t &klasses,
-    bool use_class_zero,
-    hb_sorted_vector_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
+    స్థిరరాశి hb_సమితి_t &klasses,
+    తార్కిక use_class_zero,
+    hb_sorted_సదిశ_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
     hb_map_t *klass_map /*IN/OUT*/);
 
-struct ItemVarStoreInstancer;
+నిర్మాణం అంశం_Var_Store_Instancer;
 
-struct hb_collect_feature_substitutes_with_var_context_t
+నిర్మాణం hb_collect_feature_substitutes_with_var_context_t
 {
-  const hb_map_t *axes_index_tag_map;
-  const hb_hashmap_t<hb_tag_t, Triple> *axes_location;
-  hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *record_cond_idx_map;
-  hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map;
-  hb_set_t& catch_all_record_feature_idxes;
+  స్థిరరాశి hb_map_t *axes_సూచీ_ట్యాగ్_map;
+  స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> *axes_location;
+  hb_hashmap_t<గుర్తులేని, hb::shared_ptr<hb_సమితి_t>> *రికార్డు_cond_idx_map;
+  hb_hashmap_t<గుర్తులేని, స్థిరరాశి Feature*> *feature_substitutes_map;
+  hb_సమితి_t& catch_all_రికార్డు_feature_idxes;
 
   // not stored in subset_plan
-  hb_set_t *feature_indices;
-  bool apply;
-  bool variation_applied;
-  bool universal;
-  unsigned cur_record_idx;
-  hb_hashmap_t<hb::shared_ptr<hb_map_t>, unsigned> *conditionset_map;
-  ItemVarStoreInstancer *instancer;
-  bool all_axes_pinned;
+  hb_సమితి_t *feature_indices;
+  తార్కిక apply;
+  తార్కిక variation_applied;
+  తార్కిక universal;
+  గుర్తులేని cur_రికార్డు_idx;
+  hb_hashmap_t<hb::shared_ptr<hb_map_t>, గుర్తులేని> *conditionset_map;
+  అంశం_Var_Store_Instancer *instancer;
+  తార్కిక all_axes_pinned;
 };
 
-struct hb_prune_langsys_context_t
+నిర్మాణం hb_prune_langsys_context_t
 {
-  hb_prune_langsys_context_t (const void         *table_,
-                              hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map_,
-                              const hb_map_t     *duplicate_feature_map_,
-                              hb_set_t           *new_collected_feature_indexes_)
-      :table (table_),
+  hb_prune_langsys_context_t (స్థిరరాశి శూన్య         *పట్టిక_2,
+                              hb_hashmap_t<గుర్తులేని, hb::unique_ptr<hb_సమితి_t>> *script_langsys_map_,
+                              స్థిరరాశి hb_map_t     *duplicate_feature_map_,
+                              hb_సమితి_t           *new_collected_feature_indexes_)
+      :పట్టిక (పట్టిక_2),
       script_langsys_map (script_langsys_map_),
       duplicate_feature_map (duplicate_feature_map_),
       new_feature_indexes (new_collected_feature_indexes_),
-      script_count (0),langsys_feature_count (0) {}
+      script_లెక్క (0),langsys_feature_లెక్క (0) {}
 
-  bool visitScript ()
-  { return script_count++ < HB_MAX_SCRIPTS; }
+  తార్కిక సందర్శించు_Script ()
+  { తిరిగి script_లెక్క++ < HB_MAX_SCRIPTS; }
 
-  bool visitLangsys (unsigned feature_count)
+  తార్కిక సందర్శించు_Langsys (గుర్తులేని feature_లెక్క_2)
   {
-    langsys_feature_count += feature_count;
-    return langsys_feature_count < HB_MAX_LANGSYS_FEATURE_COUNT;
+    langsys_feature_లెక్క += feature_లెక్క_2;
+    తిరిగి langsys_feature_లెక్క < HB_MAX_LANGSYS_FEATURE_లెక్క;
   }
 
-  public:
-  const void *table;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
-  const hb_map_t     *duplicate_feature_map;
-  hb_set_t           *new_feature_indexes;
+  బహిరంగ:
+  స్థిరరాశి శూన్య *పట్టిక;
+  hb_hashmap_t<గుర్తులేని, hb::unique_ptr<hb_సమితి_t>> *script_langsys_map;
+  స్థిరరాశి hb_map_t     *duplicate_feature_map;
+  hb_సమితి_t           *new_feature_indexes;
 
-  private:
-  unsigned script_count;
-  unsigned langsys_feature_count;
+  అంతరంగ:
+  గుర్తులేని script_లెక్క;
+  గుర్తులేని langsys_feature_లెక్క;
 };
 
-struct hb_subset_layout_context_t :
-  hb_dispatch_context_t<hb_subset_layout_context_t, hb_empty_t, HB_DEBUG_SUBSET>
+నిర్మాణం hb_subset_layout_context_t :
+  hb_dispatch_context_t<hb_subset_layout_context_t, hb_ఖాళీలు_t, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET_LAYOUT"; }
-  static return_t default_return_value () { return hb_empty_t (); }
+  స్థిరరాశి అక్షరం *get_name () { తిరిగి "SUBSET_LAYOUT"; }
+  స్థిర return_t default_return_విలువ () { తిరిగి hb_ఖాళీలు_t (); }
 
-  bool visitScript ()
+  తార్కిక సందర్శించు_Script ()
   {
-    return script_count++ < HB_MAX_SCRIPTS;
+    తిరిగి script_లెక్క++ < HB_MAX_SCRIPTS;
   }
 
-  bool visitLangSys ()
+  తార్కిక సందర్శించు_Lang_Sys ()
   {
-    return langsys_count++ < HB_MAX_LANGSYS;
+    తిరిగి langsys_లెక్క++ < HB_MAX_LANGSYS;
   }
 
-  bool visitFeatureIndex (int count)
+  తార్కిక సందర్శించు_Feature_సూచీ (పూర్ణాంకం లెక్క)
   {
-    feature_index_count += count;
-    return feature_index_count < HB_MAX_FEATURE_INDICES;
+    feature_సూచీ_లెక్క += లెక్క;
+    తిరిగి feature_సూచీ_లెక్క < HB_MAX_FEATURE_INDICES;
   }
 
-  bool visitLookupIndex()
+  తార్కిక సందర్శించు_Lookup_సూచీ()
   {
-    lookup_index_count++;
-    return lookup_index_count < HB_MAX_LOOKUP_VISIT_COUNT;
+    lookup_సూచీ_లెక్క++;
+    తిరిగి lookup_సూచీ_లెక్క < HB_MAX_LOOKUP_సందర్శించు_లెక్క;
   }
 
   hb_subset_context_t *subset_context;
-  const hb_tag_t table_tag;
-  const hb_map_t *lookup_index_map;
-  const hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map;
-  const hb_map_t *feature_index_map;
-  const hb_map_t *feature_map_w_duplicates;
-  const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map;
-  const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations;
-  hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map;
-  const hb_set_t *catch_all_record_feature_idxes;
-  const hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>> *feature_idx_tag_map;
+  స్థిరరాశి hb_ట్యాగ్_t పట్టిక_ట్యాగ్_2;
+  స్థిరరాశి hb_map_t *lookup_సూచీ_map;
+  స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb::unique_ptr<hb_సమితి_t>> *script_langsys_map;
+  స్థిరరాశి hb_map_t *feature_సూచీ_map;
+  స్థిరరాశి hb_map_t *feature_map_w_duplicates;
+  స్థిరరాశి hb_hashmap_t<గుర్తులేని, స్థిరరాశి Feature*> *feature_substitutes_map;
+  స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb::shared_ptr<hb_సమితి_t>> *lookup_variations;
+  hb_hashmap_t<గుర్తులేని, hb::shared_ptr<hb_సమితి_t>> *feature_రికార్డు_cond_idx_map;
+  స్థిరరాశి hb_సమితి_t *catch_all_రికార్డు_feature_idxes;
+  స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<స్థిరరాశి శూన్య*, స్థిరరాశి శూన్య*>> *feature_idx_ట్యాగ్_map;
 
-  unsigned cur_script_index;
-  unsigned cur_feature_index;
-  unsigned cur_feature_var_record_idx;
+  గుర్తులేని cur_script_సూచీ;
+  గుర్తులేని cur_feature_సూచీ;
+  గుర్తులేని cur_feature_var_రికార్డు_idx;
 
   hb_subset_layout_context_t (hb_subset_context_t *c_,
-			      hb_tag_t tag_) :
+			      hb_ట్యాగ్_t ట్యాగ్_4) :
 				subset_context (c_),
-				table_tag (tag_),
-				cur_script_index (0xFFFFu),
-				cur_feature_index (Index::NOT_FOUND_INDEX),
-				cur_feature_var_record_idx (0u),
-				script_count (0),
-				langsys_count (0),
-				feature_index_count (0),
-				lookup_index_count (0)
+				పట్టిక_ట్యాగ్_2 (ట్యాగ్_4),
+				cur_script_సూచీ (0xFFFFu),
+				cur_feature_సూచీ (సూచీ::NOT_దొరికింది_సూచీ),
+				cur_feature_var_రికార్డు_idx (0u),
+				script_లెక్క (0),
+				langsys_లెక్క (0),
+				feature_సూచీ_లెక్క (0),
+				lookup_సూచీ_లెక్క (0)
   {
-    if (tag_ == HB_OT_TAG_GSUB)
+    ఒకవేళ (ట్యాగ్_4 == HB_OT_ట్యాగ్_GSUB)
     {
-      lookup_index_map = &c_->plan->gsub_lookups;
+      lookup_సూచీ_map = &c_->plan->gsub_lookups;
       script_langsys_map = &c_->plan->gsub_langsys;
-      feature_index_map = &c_->plan->gsub_features;
+      feature_సూచీ_map = &c_->plan->gsub_features;
       feature_map_w_duplicates = &c_->plan->gsub_features_w_duplicates;
       feature_substitutes_map = &c_->plan->gsub_feature_substitutes_map;
       lookup_variations = &c_->plan->gsub_lookup_variations;
-      feature_record_cond_idx_map = c_->plan->user_axes_location.is_empty () ? nullptr : &c_->plan->gsub_feature_record_cond_idx_map;
-      catch_all_record_feature_idxes = &c_->plan->gsub_old_features;
-      feature_idx_tag_map = &c_->plan->gsub_old_feature_idx_tag_map;
+      feature_రికార్డు_cond_idx_map = c_->plan->user_axes_location.is_empty () ? శూన్యసూచిక : &c_->plan->gsub_feature_రికార్డు_cond_idx_map;
+      catch_all_రికార్డు_feature_idxes = &c_->plan->gsub_old_features;
+      feature_idx_ట్యాగ్_map = &c_->plan->gsub_old_feature_idx_ట్యాగ్_map;
     }
-    else
+    లేకపోతే
     {
-      lookup_index_map = &c_->plan->gpos_lookups;
+      lookup_సూచీ_map = &c_->plan->gpos_lookups;
       script_langsys_map = &c_->plan->gpos_langsys;
-      feature_index_map = &c_->plan->gpos_features;
+      feature_సూచీ_map = &c_->plan->gpos_features;
       feature_map_w_duplicates = &c_->plan->gpos_features_w_duplicates;
       feature_substitutes_map = &c_->plan->gpos_feature_substitutes_map;
       lookup_variations = &c_->plan->gpos_lookup_variations;
-      feature_record_cond_idx_map = c_->plan->user_axes_location.is_empty () ? nullptr : &c_->plan->gpos_feature_record_cond_idx_map;
-      catch_all_record_feature_idxes = &c_->plan->gpos_old_features;
-      feature_idx_tag_map = &c_->plan->gpos_old_feature_idx_tag_map;
+      feature_రికార్డు_cond_idx_map = c_->plan->user_axes_location.is_empty () ? శూన్యసూచిక : &c_->plan->gpos_feature_రికార్డు_cond_idx_map;
+      catch_all_రికార్డు_feature_idxes = &c_->plan->gpos_old_features;
+      feature_idx_ట్యాగ్_map = &c_->plan->gpos_old_feature_idx_ట్యాగ్_map;
     }
   }
 
-  private:
-  unsigned script_count;
-  unsigned langsys_count;
-  unsigned feature_index_count;
-  unsigned lookup_index_count;
+  అంతరంగ:
+  గుర్తులేని script_లెక్క;
+  గుర్తులేని langsys_లెక్క;
+  గుర్తులేని feature_సూచీ_లెక్క;
+  గుర్తులేని lookup_సూచీ_లెక్క;
 };
 
-struct ItemVariationStore;
-struct hb_collect_variation_indices_context_t :
+నిర్మాణం అంశం_Variation_Store;
+నిర్మాణం hb_collect_variation_indices_context_t :
        hb_dispatch_context_t<hb_collect_variation_indices_context_t>
 {
-  template <typename T>
-  return_t dispatch (const T &obj) { obj.collect_variation_indices (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  మూస <రకం_పేరు T>
+  return_t dispatch (స్థిరరాశి T &obj) { obj.collect_variation_indices (ఇది); తిరిగి hb_ఖాళీలు_t (); }
+  స్థిర return_t default_return_విలువ () { తిరిగి hb_ఖాళీలు_t (); }
 
-  hb_set_t *layout_variation_indices;
-  const hb_set_t *glyph_set;
-  const hb_map_t *gpos_lookups;
-  hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr;
+  hb_సమితి_t *layout_variation_indices;
+  స్థిరరాశి hb_సమితి_t *glyph_సమితి;
+  స్థిరరాశి hb_map_t *gpos_lookups;
+  hb_hashmap_t<uintptr_t, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *condition_విలువలు = శూన్యసూచిక;
 
-  hb_collect_variation_indices_context_t (hb_set_t *layout_variation_indices_,
-					  const hb_set_t *glyph_set_,
-					  const hb_map_t *gpos_lookups_) :
+  hb_collect_variation_indices_context_t (hb_సమితి_t *layout_variation_indices_,
+					  స్థిరరాశి hb_సమితి_t *glyph_సమితి_2,
+					  స్థిరరాశి hb_map_t *gpos_lookups_) :
 					layout_variation_indices (layout_variation_indices_),
-					glyph_set (glyph_set_),
+					glyph_సమితి (glyph_సమితి_2),
 					gpos_lookups (gpos_lookups_) {}
 };
 
-template<typename OutputArray>
-struct subset_offset_array_t
+మూస<రకం_పేరు OutputArray>
+నిర్మాణం subset_స్థానభ్రంశం_array_t
 {
-  subset_offset_array_t (hb_subset_context_t *subset_context_,
-			 OutputArray& out_,
-			 const void *base_) : subset_context (subset_context_),
-					      out (out_), base (base_) {}
+  subset_స్థానభ్రంశం_array_t (hb_subset_context_t *subset_context_,
+			 OutputArray& బహిర్గతం_4,
+			 స్థిరరాశి శూన్య *పునాది_2) : subset_context (subset_context_),
+					      బహిర్గతం (బహిర్గతం_4), పునాది (పునాది_2) {}
 
-  template <typename T>
-  bool operator () (T&& offset)
+  మూస <రకం_పేరు T>
+  తార్కిక క్రియాకారకం () (T&& స్థానభ్రంశం)
   {
-    auto snap = subset_context->serializer->snapshot ();
-    auto *o = out.serialize_append (subset_context->serializer);
-    if (unlikely (!o)) return false;
-    bool ret = o->serialize_subset (subset_context, offset, base);
-    if (!ret)
+    స్వయంచాలక snap = subset_context->serializer->snapshot ();
+    స్వయంచాలక *o = బహిర్గతం.serialize_append (subset_context->serializer);
+    ఒకవేళ (unlikely (!o)) తిరిగి అబద్ధం;
+    తార్కిక ret = o->serialize_subset (subset_context, స్థానభ్రంశం, పునాది);
+    ఒకవేళ (!ret)
     {
-      out.pop ();
+      బహిర్గతం.తీయి ();
       subset_context->serializer->revert (snap);
     }
-    return ret;
+    తిరిగి ret;
   }
 
-  private:
+  అంతరంగ:
   hb_subset_context_t *subset_context;
-  OutputArray &out;
-  const void *base;
+  OutputArray &బహిర్గతం;
+  స్థిరరాశి శూన్య *పునాది;
 };
 
 
-template<typename OutputArray, typename Arg>
-struct subset_offset_array_arg_t
+మూస<రకం_పేరు OutputArray, రకం_పేరు Arg>
+నిర్మాణం subset_స్థానభ్రంశం_array_arg_t
 {
-  subset_offset_array_arg_t (hb_subset_context_t *subset_context_,
-			     OutputArray& out_,
-			     const void *base_,
-			     Arg &&arg_) : subset_context (subset_context_), out (out_),
-					  base (base_), arg (arg_) {}
+  subset_స్థానభ్రంశం_array_arg_t (hb_subset_context_t *subset_context_,
+			     OutputArray& బహిర్గతం_4,
+			     స్థిరరాశి శూన్య *పునాది_2,
+			     Arg &&arg_) : subset_context (subset_context_), బహిర్గతం (బహిర్గతం_4),
+					  పునాది (పునాది_2), arg (arg_) {}
 
-  template <typename T>
-  bool operator () (T&& offset)
+  మూస <రకం_పేరు T>
+  తార్కిక క్రియాకారకం () (T&& స్థానభ్రంశం)
   {
-    auto snap = subset_context->serializer->snapshot ();
-    auto *o = out.serialize_append (subset_context->serializer);
-    if (unlikely (!o)) return false;
-    bool ret = o->serialize_subset (subset_context, offset, base, arg);
-    if (!ret)
+    స్వయంచాలక snap = subset_context->serializer->snapshot ();
+    స్వయంచాలక *o = బహిర్గతం.serialize_append (subset_context->serializer);
+    ఒకవేళ (unlikely (!o)) తిరిగి అబద్ధం;
+    తార్కిక ret = o->serialize_subset (subset_context, స్థానభ్రంశం, పునాది, arg);
+    ఒకవేళ (!ret)
     {
-      out.pop ();
+      బహిర్గతం.తీయి ();
       subset_context->serializer->revert (snap);
     }
-    return ret;
+    తిరిగి ret;
   }
 
-  private:
+  అంతరంగ:
   hb_subset_context_t *subset_context;
-  OutputArray &out;
-  const void *base;
+  OutputArray &బహిర్గతం;
+  స్థిరరాశి శూన్య *పునాది;
   Arg &&arg;
 };
 
@@ -294,68 +294,68 @@ struct subset_offset_array_arg_t
  * and discards the offset in the array if the subset operation results in an empty
  * thing.
  */
-struct
+నిర్మాణం
 {
-  template<typename OutputArray>
-  subset_offset_array_t<OutputArray>
-  operator () (hb_subset_context_t *subset_context, OutputArray& out,
-	       const void *base) const
-  { return subset_offset_array_t<OutputArray> (subset_context, out, base); }
+  మూస<రకం_పేరు OutputArray>
+  subset_స్థానభ్రంశం_array_t<OutputArray>
+  క్రియాకారకం () (hb_subset_context_t *subset_context, OutputArray& బహిర్గతం,
+	       స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { తిరిగి subset_స్థానభ్రంశం_array_t<OutputArray> (subset_context, బహిర్గతం, పునాది); }
 
   /* Variant with one extra argument passed to serialize_subset */
-  template<typename OutputArray, typename Arg>
-  subset_offset_array_arg_t<OutputArray, Arg>
-  operator () (hb_subset_context_t *subset_context, OutputArray& out,
-	       const void *base, Arg &&arg) const
-  { return subset_offset_array_arg_t<OutputArray, Arg> (subset_context, out, base, arg); }
+  మూస<రకం_పేరు OutputArray, రకం_పేరు Arg>
+  subset_స్థానభ్రంశం_array_arg_t<OutputArray, Arg>
+  క్రియాకారకం () (hb_subset_context_t *subset_context, OutputArray& బహిర్గతం,
+	       స్థిరరాశి శూన్య *పునాది, Arg &&arg) స్థిరరాశి
+  { తిరిగి subset_స్థానభ్రంశం_array_arg_t<OutputArray, Arg> (subset_context, బహిర్గతం, పునాది, arg); }
 }
-HB_FUNCOBJ (subset_offset_array);
+HB_FUNCOBJ (subset_స్థానభ్రంశం_array);
 
-template<typename OutputArray>
-struct subset_record_array_t
+మూస<రకం_పేరు OutputArray>
+నిర్మాణం subset_రికార్డు_array_t
 {
-  subset_record_array_t (hb_subset_layout_context_t *c_, OutputArray* out_,
-			 const void *base_) : subset_layout_context (c_),
-					      out (out_), base (base_) {}
+  subset_రికార్డు_array_t (hb_subset_layout_context_t *c_, OutputArray* బహిర్గతం_4,
+			 స్థిరరాశి శూన్య *పునాది_2) : subset_layout_context (c_),
+					      బహిర్గతం (బహిర్గతం_4), పునాది (పునాది_2) {}
 
-  template <typename T>
-  void
-  operator () (T&& record)
+  మూస <రకం_పేరు T>
+  శూన్య
+  క్రియాకారకం () (T&& రికార్డు)
   {
-    auto snap = subset_layout_context->subset_context->serializer->snapshot ();
-    bool ret = record.subset (subset_layout_context, base);
-    if (!ret) subset_layout_context->subset_context->serializer->revert (snap);
-    else out->len++;
+    స్వయంచాలక snap = subset_layout_context->subset_context->serializer->snapshot ();
+    తార్కిక ret = రికార్డు.subset (subset_layout_context, పునాది);
+    ఒకవేళ (!ret) subset_layout_context->subset_context->serializer->revert (snap);
+    లేకపోతే బహిర్గతం->len++;
   }
 
-  private:
+  అంతరంగ:
   hb_subset_layout_context_t *subset_layout_context;
-  OutputArray *out;
-  const void *base;
+  OutputArray *బహిర్గతం;
+  స్థిరరాశి శూన్య *పునాది;
 };
 
-template<typename OutputArray, typename Arg>
-struct subset_record_array_arg_t
+మూస<రకం_పేరు OutputArray, రకం_పేరు Arg>
+నిర్మాణం subset_రికార్డు_array_arg_t
 {
-  subset_record_array_arg_t (hb_subset_layout_context_t *c_, OutputArray* out_,
-			     const void *base_,
+  subset_రికార్డు_array_arg_t (hb_subset_layout_context_t *c_, OutputArray* బహిర్గతం_4,
+			     స్థిరరాశి శూన్య *పునాది_2,
 			     Arg &&arg_) : subset_layout_context (c_),
-					   out (out_), base (base_), arg (arg_) {}
+					   బహిర్గతం (బహిర్గతం_4), పునాది (పునాది_2), arg (arg_) {}
 
-  template <typename T>
-  void
-  operator () (T&& record)
+  మూస <రకం_పేరు T>
+  శూన్య
+  క్రియాకారకం () (T&& రికార్డు)
   {
-    auto snap = subset_layout_context->subset_context->serializer->snapshot ();
-    bool ret = record.subset (subset_layout_context, base, arg);
-    if (!ret) subset_layout_context->subset_context->serializer->revert (snap);
-    else out->len++;
+    స్వయంచాలక snap = subset_layout_context->subset_context->serializer->snapshot ();
+    తార్కిక ret = రికార్డు.subset (subset_layout_context, పునాది, arg);
+    ఒకవేళ (!ret) subset_layout_context->subset_context->serializer->revert (snap);
+    లేకపోతే బహిర్గతం->len++;
   }
 
-  private:
+  అంతరంగ:
   hb_subset_layout_context_t *subset_layout_context;
-  OutputArray *out;
-  const void *base;
+  OutputArray *బహిర్గతం;
+  స్థిరరాశి శూన్య *పునాది;
   Arg &&arg;
 };
 
@@ -363,63 +363,63 @@ struct subset_record_array_arg_t
  * Helper to subset a RecordList/record array. Subsets each Record in the array and
  * discards the record if the subset operation returns false.
  */
-struct
+నిర్మాణం
 {
-  template<typename OutputArray>
-  subset_record_array_t<OutputArray>
-  operator () (hb_subset_layout_context_t *c, OutputArray* out,
-	       const void *base) const
-  { return subset_record_array_t<OutputArray> (c, out, base); }
+  మూస<రకం_పేరు OutputArray>
+  subset_రికార్డు_array_t<OutputArray>
+  క్రియాకారకం () (hb_subset_layout_context_t *c, OutputArray* బహిర్గతం,
+	       స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { తిరిగి subset_రికార్డు_array_t<OutputArray> (c, బహిర్గతం, పునాది); }
 
   /* Variant with one extra argument passed to subset */
-  template<typename OutputArray, typename Arg>
-  subset_record_array_arg_t<OutputArray, Arg>
-  operator () (hb_subset_layout_context_t *c, OutputArray* out,
-               const void *base, Arg &&arg) const
-  { return subset_record_array_arg_t<OutputArray, Arg> (c, out, base, arg); }
+  మూస<రకం_పేరు OutputArray, రకం_పేరు Arg>
+  subset_రికార్డు_array_arg_t<OutputArray, Arg>
+  క్రియాకారకం () (hb_subset_layout_context_t *c, OutputArray* బహిర్గతం,
+               స్థిరరాశి శూన్య *పునాది, Arg &&arg) స్థిరరాశి
+  { తిరిగి subset_రికార్డు_array_arg_t<OutputArray, Arg> (c, బహిర్గతం, పునాది, arg); }
 }
-HB_FUNCOBJ (subset_record_array);
+HB_FUNCOBJ (subset_రికార్డు_array);
 
 
-template<typename OutputArray>
-struct serialize_math_record_array_t
+మూస<రకం_పేరు OutputArray>
+నిర్మాణం serialize_math_రికార్డు_array_t
 {
-  serialize_math_record_array_t (hb_serialize_context_t *serialize_context_,
-                         OutputArray& out_,
-                         const void *base_,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map_) :
+  serialize_math_రికార్డు_array_t (hb_serialize_context_t *serialize_context_,
+                         OutputArray& బహిర్గతం_4,
+                         స్థిరరాశి శూన్య *పునాది_2,
+                         స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map_) :
                                               serialize_context (serialize_context_),
-                                              out (out_), base (base_), variation_map (variation_map_) {}
+                                              బహిర్గతం (బహిర్గతం_4), పునాది (పునాది_2), variation_map (variation_map_) {}
 
-  template <typename T>
-  bool operator () (T&& record)
+  మూస <రకం_పేరు T>
+  తార్కిక క్రియాకారకం () (T&& రికార్డు)
   {
-    if (!serialize_context->copy (record, base, variation_map)) return false;
-    out.len++;
-    return true;
+    ఒకవేళ (!serialize_context->copy (రికార్డు, పునాది, variation_map)) తిరిగి అబద్ధం;
+    బహిర్గతం.len++;
+    తిరిగి నిజం;
   }
 
-  private:
+  అంతరంగ:
   hb_serialize_context_t *serialize_context;
-  OutputArray &out;
-  const void *base;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map;
+  OutputArray &బహిర్గతం;
+  స్థిరరాశి శూన్య *పునాది;
+  స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map;
 };
 
 /*
  * Helper to serialize an array of MATH records.
  */
-struct
+నిర్మాణం
 {
-  template<typename OutputArray>
-  serialize_math_record_array_t<OutputArray>
-  operator () (hb_serialize_context_t *serialize_context, OutputArray& out,
-               const void *base,
-               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
-  { return serialize_math_record_array_t<OutputArray> (serialize_context, out, base, variation_map); }
+  మూస<రకం_పేరు OutputArray>
+  serialize_math_రికార్డు_array_t<OutputArray>
+  క్రియాకారకం () (hb_serialize_context_t *serialize_context, OutputArray& బహిర్గతం,
+               స్థిరరాశి శూన్య *పునాది,
+               స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *variation_map) స్థిరరాశి
+  { తిరిగి serialize_math_రికార్డు_array_t<OutputArray> (serialize_context, బహిర్గతం, పునాది, variation_map); }
 
 }
-HB_FUNCOBJ (serialize_math_record_array);
+HB_FUNCOBJ (serialize_math_రికార్డు_array);
 
 /*
  *
@@ -432,58 +432,58 @@ HB_FUNCOBJ (serialize_math_record_array);
  * Script, ScriptList, LangSys, Feature, FeatureList, Lookup, LookupList
  */
 
-struct IndexArray : Array16Of<Index>
+నిర్మాణం సూచీ_Array : Array16_యొక్క<సూచీ>
 {
-  bool intersects (const hb_map_t *indexes) const
-  { return hb_any (*this, indexes); }
+  తార్కిక intersects (స్థిరరాశి hb_map_t *indexes) స్థిరరాశి
+  { తిరిగి hb_any (*ఇది, indexes); }
 
-  template <typename Iterator,
+  మూస <రకం_పేరు Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  శూన్య serialize (hb_serialize_context_t *c,
 		  hb_subset_layout_context_t *l,
 		  Iterator it)
   {
-    if (!it) return;
-    if (unlikely (!c->extend_min ((*this)))) return;
+    ఒకవేళ (!it) తిరిగి;
+    ఒకవేళ (unlikely (!c->extend_min ((*ఇది)))) తిరిగి;
 
-    for (const auto _ : it)
+    కొరకు (స్థిరరాశి స్వయంచాలక _ : it)
     {
-      if (!l->visitLookupIndex()) break;
+      ఒకవేళ (!l->సందర్శించు_Lookup_సూచీ()) ఆపు;
 
-      Index i;
+      సూచీ i;
       i = _;
       c->copy (i);
-      this->len++;
+      ఇది->len++;
     }
   }
 
-  unsigned int get_indexes (unsigned int start_offset,
-			    unsigned int *_count /* IN/OUT */,
-			    unsigned int *_indexes /* OUT */) const
+  గుర్తులేని పూర్ణాంకం get_indexes (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+			    గుర్తులేని పూర్ణాంకం *లెక్క_2 /* IN/OUT */,
+			    గుర్తులేని పూర్ణాంకం *_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (_count && _indexes)
+    ఒకవేళ (లెక్క_2 && _indexes)
     {
-      + this->as_array ().sub_array (start_offset, _count)
-      | hb_sink (hb_array (_indexes, *_count))
+      + ఇది->as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, లెక్క_2)
+      | hb_sink (hb_array (_indexes, *లెక్క_2))
       ;
     }
-    return this->len;
+    తిరిగి ఇది->len;
   }
 
-  void add_indexes_to (hb_set_t* output /* OUT */) const
+  శూన్య కూడు_indexes_గమ్యం (hb_సమితి_t* output /*బహిర్గతం*/) స్థిరరాశి
   {
-    output->add_array (as_array ());
+    output->కూడు_array (as_array ());
   }
 };
 
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#size */
-struct FeatureParamsSize
+నిర్మాణం Feature_Params_కొలత
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది))) return_trace (అబద్ధం);
     hb_barrier ();
 
     /* This subtable has some "history", if you will.  Some earlier versions of
@@ -535,32 +535,32 @@ struct FeatureParamsSize
      *     passes test.
      */
 
-    if (!designSize)
-      return_trace (false);
-    else if (subfamilyID == 0 &&
+    ఒకవేళ (!design_కొలత)
+      return_trace (అబద్ధం);
+    లేకపోతే ఒకవేళ (subfamilyID == 0 &&
 	     subfamilyNameID == 0 &&
-	     rangeStart == 0 &&
-	     rangeEnd == 0)
-      return_trace (true);
-    else if (designSize < rangeStart ||
-	     designSize > rangeEnd ||
+	     range_ప్రారంభం == 0 &&
+	     range_చివర == 0)
+      return_trace (నిజం);
+    లేకపోతే ఒకవేళ (design_కొలత < range_ప్రారంభం ||
+	     design_కొలత > range_చివర ||
 	     subfamilyNameID < 256 ||
 	     subfamilyNameID > 32767)
-      return_trace (false);
-    else
-      return_trace (true);
+      return_trace (అబద్ధం);
+    లేకపోతే
+      return_trace (నిజం);
   }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
-  { nameids_to_retain->add (subfamilyNameID); }
+  శూన్య collect_name_ids (hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
+  { nameids_గమ్యం_retain->కూడు (subfamilyNameID); }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (ఇది);
+    return_trace ((తార్కిక) c->serializer->embed (*ఇది));
   }
 
-  HBUINT16	designSize;	/* Represents the design size in 720/inch
+  HBUINT16	design_కొలత;	/* Represents the design size in 720/inch
 				 * units (decipoints).  The design size entry
 				 * must be non-zero.  When there is a design
 				 * size but no recommended size range, the
@@ -589,37 +589,37 @@ struct FeatureParamsSize
 				 * subfamily in a menu.  Applications will
 				 * choose the appropriate version based on
 				 * their selection criteria. */
-  HBUINT16	rangeStart;	/* Large end of the recommended usage range
+  HBUINT16	range_ప్రారంభం;	/* Large end of the recommended usage range
 				 * (inclusive), stored in 720/inch units
 				 * (decipoints). */
-  HBUINT16	rangeEnd;	/* Small end of the recommended usage range
+  HBUINT16	range_చివర;	/* Small end of the recommended usage range
 				   (exclusive), stored in 720/inch units
 				 * (decipoints). */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (10);
 };
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_pt#ssxx */
-struct FeatureParamsStylisticSet
+నిర్మాణం Feature_Params_Stylistic_సమితి
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     /* Right now minorVersion is at zero.  Which means, any table supports
      * the uiNameID field. */
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (ఇది));
   }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
-  { nameids_to_retain->add (uiNameID); }
+  శూన్య collect_name_ids (hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
+  { nameids_గమ్యం_retain->కూడు (uiNameID); }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (ఇది);
+    return_trace ((తార్కిక) c->serializer->embed (*ఇది));
   }
 
-  HBUINT16	version;	/* (set to 0): This corresponds to a “minor”
+  HBUINT16	సంస్కరణ;	/* (set to 0): This corresponds to a “minor”
 				 * version number. Additional data may be
 				 * added to the end of this Feature Parameters
 				 * table in the future. */
@@ -638,51 +638,51 @@ struct FeatureParamsStylisticSet
 				 * fallback. The string should be kept to a
 				 * minimal length to fit comfortably with
 				 * different application interfaces. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (4);
 };
 
 /* https://docs.microsoft.com/en-us/typography/opentype/spec/features_ae#cv01-cv99 */
-struct FeatureParamsCharacterVariants
+నిర్మాణం FeatureParamsCharacterVariants
 {
-  unsigned
-  get_characters (unsigned start_offset, unsigned *char_count, hb_codepoint_t *chars) const
+  గుర్తులేని
+  get_characters (గుర్తులేని ప్రారంభం_స్థానభ్రంశం, గుర్తులేని *char_లెక్క, hb_codepoint_t *chars) స్థిరరాశి
   {
-    if (char_count && chars)
+    ఒకవేళ (char_లెక్క && chars)
     {
-      + characters.as_array ().sub_array (start_offset, char_count)
-      | hb_sink (hb_array (chars, *char_count))
+      + characters.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, char_లెక్క)
+      | hb_sink (hb_array (chars, *char_లెక్క))
       ;
     }
-    return characters.len;
+    తిరిగి characters.len;
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (characters.len, HBUINT24::static_size, min_size); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_mul_కూడు_saturate (characters.len, HBUINT24::static_కొలత, min_కొలత); }
 
-  void collect_name_ids (hb_set_t *nameids_to_retain /* OUT */) const
+  శూన్య collect_name_ids (hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (featUILableNameID) nameids_to_retain->add (featUILableNameID);
-    if (featUITooltipTextNameID) nameids_to_retain->add (featUITooltipTextNameID);
-    if (sampleTextNameID) nameids_to_retain->add (sampleTextNameID);
+    ఒకవేళ (featUILableNameID) nameids_గమ్యం_retain->కూడు (featUILableNameID);
+    ఒకవేళ (feat_UITooltip_పాఠ్యం_Name_ID) nameids_గమ్యం_retain->కూడు (feat_UITooltip_పాఠ్యం_Name_ID);
+    ఒకవేళ (sample_పాఠ్యం_Name_ID) nameids_గమ్యం_retain->కూడు (sample_పాఠ్యం_Name_ID);
 
-    if (!firstParamUILabelNameID || !numNamedParameters || numNamedParameters >= 0x7FFF)
-      return;
+    ఒకవేళ (!మొదటి_Param_UILabel_Name_ID || !అంకె_Named_Parameters || అంకె_Named_Parameters >= 0x7FFF)
+      తిరిగి;
 
-    unsigned last_name_id = (unsigned) firstParamUILabelNameID + (unsigned) numNamedParameters - 1;
-    nameids_to_retain->add_range (firstParamUILabelNameID, last_name_id);
+    గుర్తులేని చివరి_name_id = (గుర్తులేని) మొదటి_Param_UILabel_Name_ID + (గుర్తులేని) అంకె_Named_Parameters - 1;
+    nameids_గమ్యం_retain->కూడు_range (మొదటి_Param_UILabel_Name_ID, చివరి_name_id);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (ఇది);
+    return_trace ((తార్కిక) c->serializer->embed (*ఇది));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  characters.sanitize (c));
   }
 
@@ -692,717 +692,717 @@ struct FeatureParamsCharacterVariants
 					 * for multiple languages) for a
 					 * user-interface label for this
 					 * feature. (May be NULL.) */
-  NameID	featUITooltipTextNameID;/* The ‘name’ table name ID that
+  NameID	feat_UITooltip_పాఠ్యం_Name_ID;/* The ‘name’ table name ID that
 					 * specifies a string (or strings,
 					 * for multiple languages) that an
 					 * application can use for tooltip
 					 * text for this feature. (May be
 					 * nullptr.) */
-  NameID	sampleTextNameID;	/* The ‘name’ table name ID that
+  NameID	sample_పాఠ్యం_Name_ID;	/* The ‘name’ table name ID that
 					 * specifies sample text that
 					 * illustrates the effect of this
 					 * feature. (May be NULL.) */
-  HBUINT16	numNamedParameters;	/* Number of named parameters. (May
+  HBUINT16	అంకె_Named_Parameters;	/* Number of named parameters. (May
 					 * be zero.) */
-  NameID	firstParamUILabelNameID;/* The first ‘name’ table name ID
+  NameID	మొదటి_Param_UILabel_Name_ID;/* The first ‘name’ table name ID
 					 * used to specify strings for
 					 * user-interface labels for the
 					 * feature parameters. (Must be zero
 					 * if numParameters is zero.) */
-  Array16Of<HBUINT24>
+  Array16_యొక్క<HBUINT24>
 		characters;		/* Array of the Unicode Scalar Value
 					 * of the characters for which this
 					 * feature provides glyph variants.
 					 * (May be zero.) */
-  public:
-  DEFINE_SIZE_ARRAY (14, characters);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (14, characters);
 };
 
-struct FeatureParams
+నిర్మాణం FeatureParams
 {
-  bool sanitize (hb_sanitize_context_t *c, hb_tag_t tag) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, hb_ట్యాగ్_t ట్యాగ్_2) స్థిరరాశి
   {
-#ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return true;
-#endif
-    TRACE_SANITIZE (this);
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return_trace (u.size.sanitize (c));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return_trace (u.stylisticSet.sanitize (c));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+#నిర్వచితమైతే HB_NO_LAYOUT_FEATURE_PARAMS
+    తిరిగి నిజం;
+#అయితే_ముగింపు
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (ట్యాగ్_2 == HB_ట్యాగ్ ('s','i','z','e') && hb_barrier ())
+      return_trace (u.కొలత.sanitize (c));
+    ఒకవేళ ((ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('s','s','\0','\0')) /* ssXX */
+      return_trace (u.stylistic_సమితి.sanitize (c));
+    ఒకవేళ ((ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('c','v','\0','\0')) /* cvXX */
       return_trace (u.characterVariants.sanitize (c));
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) const
+  శూన్య collect_name_ids (hb_ట్యాగ్_t ట్యాగ్_2, hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
   {
-#ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return;
-#endif
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return (u.size.collect_name_ids (nameids_to_retain));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return (u.stylisticSet.collect_name_ids (nameids_to_retain));
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
-      return (u.characterVariants.collect_name_ids (nameids_to_retain));
+#నిర్వచితమైతే HB_NO_LAYOUT_FEATURE_PARAMS
+    తిరిగి;
+#అయితే_ముగింపు
+    ఒకవేళ (ట్యాగ్_2 == HB_ట్యాగ్ ('s','i','z','e') && hb_barrier ())
+      తిరిగి (u.కొలత.collect_name_ids (nameids_గమ్యం_retain));
+    ఒకవేళ ((ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('s','s','\0','\0')) /* ssXX */
+      తిరిగి (u.stylistic_సమితి.collect_name_ids (nameids_గమ్యం_retain));
+    ఒకవేళ ((ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('c','v','\0','\0')) /* cvXX */
+      తిరిగి (u.characterVariants.collect_name_ids (nameids_గమ్యం_retain));
   }
 
-  bool subset (hb_subset_context_t *c, const Tag* tag) const
+  తార్కిక subset (hb_subset_context_t *c, స్థిరరాశి ట్యాగ్* ట్యాగ్_2) స్థిరరాశి
   {
-#ifdef HB_NO_LAYOUT_FEATURE_PARAMS
-    return false;
-#endif
-    TRACE_SUBSET (this);
-    if (!tag) return_trace (false);
-    if (*tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return_trace (u.size.subset (c));
-    if ((*tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return_trace (u.stylisticSet.subset (c));
-    if ((*tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
+#నిర్వచితమైతే HB_NO_LAYOUT_FEATURE_PARAMS
+    తిరిగి అబద్ధం;
+#అయితే_ముగింపు
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (!ట్యాగ్_2) return_trace (అబద్ధం);
+    ఒకవేళ (*ట్యాగ్_2 == HB_ట్యాగ్ ('s','i','z','e') && hb_barrier ())
+      return_trace (u.కొలత.subset (c));
+    ఒకవేళ ((*ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('s','s','\0','\0')) /* ssXX */
+      return_trace (u.stylistic_సమితి.subset (c));
+    ఒకవేళ ((*ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('c','v','\0','\0')) /* cvXX */
       return_trace (u.characterVariants.subset (c));
-    return_trace (false);
+    return_trace (అబద్ధం);
   }
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  const FeatureParamsSize& get_size_params (hb_tag_t tag) const
+#నిర్వచితం_కాకపోతే HB_NO_LAYOUT_FEATURE_PARAMS
+  స్థిరరాశి Feature_Params_కొలత& get_కొలత_params (hb_ట్యాగ్_t ట్యాగ్_2) స్థిరరాశి
   {
-    if (tag == HB_TAG ('s','i','z','e') && hb_barrier ())
-      return u.size;
-    return Null (FeatureParamsSize);
+    ఒకవేళ (ట్యాగ్_2 == HB_ట్యాగ్ ('s','i','z','e') && hb_barrier ())
+      తిరిగి u.కొలత;
+    తిరిగి Null (Feature_Params_కొలత);
   }
-  const FeatureParamsStylisticSet& get_stylistic_set_params (hb_tag_t tag) const
+  స్థిరరాశి Feature_Params_Stylistic_సమితి& get_stylistic_సమితి_params (hb_ట్యాగ్_t ట్యాగ్_2) స్థిరరాశి
   {
-    if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0')) /* ssXX */
-      return u.stylisticSet;
-    return Null (FeatureParamsStylisticSet);
+    ఒకవేళ ((ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('s','s','\0','\0')) /* ssXX */
+      తిరిగి u.stylistic_సమితి;
+    తిరిగి Null (Feature_Params_Stylistic_సమితి);
   }
-  const FeatureParamsCharacterVariants& get_character_variants_params (hb_tag_t tag) const
+  స్థిరరాశి FeatureParamsCharacterVariants& get_character_variants_params (hb_ట్యాగ్_t ట్యాగ్_2) స్థిరరాశి
   {
-    if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0')) /* cvXX */
-      return u.characterVariants;
-    return Null (FeatureParamsCharacterVariants);
+    ఒకవేళ ((ట్యాగ్_2 & 0xFFFF0000u) == HB_ట్యాగ్ ('c','v','\0','\0')) /* cvXX */
+      తిరిగి u.characterVariants;
+    తిరిగి Null (FeatureParamsCharacterVariants);
   }
-#endif
+#అయితే_ముగింపు
 
-  private:
-  union {
-  FeatureParamsSize			size;
-  FeatureParamsStylisticSet		stylisticSet;
+  అంతరంగ:
+  సంఘం {
+  Feature_Params_కొలత			కొలత;
+  Feature_Params_Stylistic_సమితి		stylistic_సమితి;
   FeatureParamsCharacterVariants	characterVariants;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (0);
 };
 
-struct Record_sanitize_closure_t {
-  hb_tag_t tag;
-  const void *list_base;
+నిర్మాణం రికార్డు_sanitize_సంవృతం_t {
+  hb_ట్యాగ్_t ట్యాగ్_2;
+  స్థిరరాశి శూన్య *list_పునాది;
 };
 
-struct Feature
+నిర్మాణం Feature
 {
-  unsigned int get_lookup_count () const
-  { return lookupIndex.len; }
-  hb_tag_t get_lookup_index (unsigned int i) const
-  { return lookupIndex[i]; }
-  unsigned int get_lookup_indexes (unsigned int start_index,
-				   unsigned int *lookup_count /* IN/OUT */,
-				   unsigned int *lookup_tags /* OUT */) const
-  { return lookupIndex.get_indexes (start_index, lookup_count, lookup_tags); }
-  void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
-  { lookupIndex.add_indexes_to (lookup_indexes); }
+  గుర్తులేని పూర్ణాంకం get_lookup_లెక్క () స్థిరరాశి
+  { తిరిగి lookup_సూచీ_2.len; }
+  hb_ట్యాగ్_t get_lookup_సూచీ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి lookup_సూచీ_2[i]; }
+  గుర్తులేని పూర్ణాంకం get_lookup_indexes (గుర్తులేని పూర్ణాంకం ప్రారంభం_సూచీ,
+				   గుర్తులేని పూర్ణాంకం *lookup_లెక్క /* IN/OUT */,
+				   గుర్తులేని పూర్ణాంకం *lookup_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి lookup_సూచీ_2.get_indexes (ప్రారంభం_సూచీ, lookup_లెక్క, lookup_ట్యాగులు); }
+  శూన్య కూడు_lookup_indexes_గమ్యం (hb_సమితి_t *lookup_indexes) స్థిరరాశి
+  { lookup_సూచీ_2.కూడు_indexes_గమ్యం (lookup_indexes); }
 
-  const FeatureParams &get_feature_params () const
-  { return this+featureParams; }
+  స్థిరరాశి FeatureParams &get_feature_params () స్థిరరాశి
+  { తిరిగి ఇది+featureParams; }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
-  { return lookupIndex.intersects (lookup_indexes); }
+  తార్కిక intersects_lookup_indexes (స్థిరరాశి hb_map_t *lookup_indexes) స్థిరరాశి
+  { తిరిగి lookup_సూచీ_2.intersects (lookup_indexes); }
 
-  void collect_name_ids (hb_tag_t tag, hb_set_t *nameids_to_retain /* OUT */) const
+  శూన్య collect_name_ids (hb_ట్యాగ్_t ట్యాగ్_2, hb_సమితి_t *nameids_గమ్యం_retain /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (featureParams)
-      get_feature_params ().collect_name_ids (tag, nameids_to_retain);
+    ఒకవేళ (featureParams)
+      get_feature_params ().collect_name_ids (ట్యాగ్_2, nameids_గమ్యం_retain);
   }
 
-  bool subset (hb_subset_context_t         *c,
+  తార్కిక subset (hb_subset_context_t         *c,
 	       hb_subset_layout_context_t  *l,
-	       const Tag                   *tag = nullptr) const
+	       స్థిరరాశి ట్యాగ్                   *ట్యాగ్_2 = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    out->featureParams.serialize_subset (c, featureParams, this, tag);
+    బహిర్గతం->featureParams.serialize_subset (c, featureParams, ఇది, ట్యాగ్_2);
 
-    hb::shared_ptr<hb_set_t> *lookup_variations;
-    if (l->cur_feature_index != Index::NOT_FOUND_INDEX &&
-	l->lookup_variations->has (l->cur_feature_index, &lookup_variations))
+    hb::shared_ptr<hb_సమితి_t> *lookup_variations;
+    ఒకవేళ (l->cur_feature_సూచీ != సూచీ::NOT_దొరికింది_సూచీ &&
+	l->lookup_variations->has (l->cur_feature_సూచీ, &lookup_variations))
     {
-      auto it =
+      స్వయంచాలక it =
       + hb_iter (**lookup_variations)
-      | hb_filter (l->lookup_index_map)
-      | hb_map (l->lookup_index_map)
+      | hb_filter (l->lookup_సూచీ_map)
+      | hb_map (l->lookup_సూచీ_map)
       ;
-      out->lookupIndex.serialize (c->serializer, l, it);
+      బహిర్గతం->lookup_సూచీ_2.serialize (c->serializer, l, it);
     }
-    else
+    లేకపోతే
     {
-      auto it =
-      + hb_iter (lookupIndex)
-      | hb_filter (l->lookup_index_map)
-      | hb_map (l->lookup_index_map)
+      స్వయంచాలక it =
+      + hb_iter (lookup_సూచీ_2)
+      | hb_filter (l->lookup_సూచీ_map)
+      | hb_map (l->lookup_సూచీ_map)
       ;
-      out->lookupIndex.serialize (c->serializer, l, it);
+      బహిర్గతం->lookup_సూచీ_2.serialize (c->serializer, l, it);
     }
     // The decision to keep or drop this feature is already made before we get here
     // so always retain it.
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t *closure = nullptr) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి రికార్డు_sanitize_సంవృతం_t *సంవృతం = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  featureParams.sanitize (c, this, closure ? closure->tag : HB_TAG_NONE) &&
-		  lookupIndex.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  featureParams.sanitize (c, ఇది, సంవృతం ? సంవృతం->ట్యాగ్_2 : HB_ట్యాగ్_NONE) &&
+		  lookup_సూచీ_2.sanitize (c));
   }
 
-  Offset16To<FeatureParams>
+  Offset16_గమ్యం<FeatureParams>
 		 featureParams;	/* Offset to Feature Parameters table (if one
 				 * has been defined for the feature), relative
 				 * to the beginning of the Feature Table; = Null
 				 * if not required */
-  IndexArray	 lookupIndex;	/* Array of LookupList indices */
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (4, lookupIndex);
+  సూచీ_Array	 lookup_సూచీ_2;	/* Array of LookupList indices */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (4, lookup_సూచీ_2);
 };
 
-template <typename Type>
-struct Record
+మూస <రకం_పేరు Type>
+నిర్మాణం రికార్డు_2
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  పూర్ణాంకం cmp (hb_ట్యాగ్_t a) స్థిరరాశి { తిరిగి ట్యాగ్_2.cmp (a); }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base, const void *f_sub = nullptr) const
+  తార్కిక subset (hb_subset_layout_context_t *c, స్థిరరాశి శూన్య *పునాది, స్థిరరాశి శూన్య *f_sub = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->subset_context->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    if (!f_sub)
-      return_trace (out->offset.serialize_subset (c->subset_context, offset, base, c, &tag));
+    ఒకవేళ (!f_sub)
+      return_trace (బహిర్గతం->స్థానభ్రంశం.serialize_subset (c->subset_context, స్థానభ్రంశం, పునాది, c, &ట్యాగ్_2));
 
-    const Feature& f = *reinterpret_cast<const Feature *> (f_sub);
-    auto *s = c->subset_context->serializer;
+    స్థిరరాశి Feature& f = *reinterpret_cast<స్థిరరాశి Feature *> (f_sub);
+    స్వయంచాలక *s = c->subset_context->serializer;
     s->push ();
 
-    out->offset = 0;
-    bool ret = f.subset (c->subset_context, c, &tag);
-    if (ret)
-      s->add_link (out->offset, s->pop_pack ());
-    else
-      s->pop_discard ();
+    బహిర్గతం->స్థానభ్రంశం = 0;
+    తార్కిక ret = f.subset (c->subset_context, c, &ట్యాగ్_2);
+    ఒకవేళ (ret)
+      s->కూడు_link (బహిర్గతం->స్థానభ్రంశం, s->తీయి_pack ());
+    లేకపోతే
+      s->తీయి_discard ();
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
-		  offset.sanitize (c, base, &closure));
+    TRACE_SANITIZE (ఇది);
+    స్థిరరాశి రికార్డు_sanitize_సంవృతం_t సంవృతం = {ట్యాగ్_2, పునాది};
+    return_trace (c->check_struct (ఇది) &&
+		  స్థానభ్రంశం.sanitize (c, పునాది, &సంవృతం));
   }
 
-  Tag           tag;            /* 4-byte Tag identifier */
-  Offset16To<Type>
-                offset;         /* Offset from beginning of object holding
+  ట్యాగ్           ట్యాగ్_2;            /* 4-byte Tag identifier */
+  Offset16_గమ్యం<Type>
+                స్థానభ్రంశం;         /* Offset from beginning of object holding
                                  * the Record */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-template <typename Type>
-struct RecordArrayOf : SortedArray16Of<Record<Type>>
+మూస <రకం_పేరు Type>
+నిర్మాణం రికార్డు_Array_యొక్క : Sorted_Array16_యొక్క<రికార్డు_2<Type>>
 {
-  const Offset16To<Type>& get_offset (unsigned int i) const
-  { return (*this)[i].offset; }
-  Offset16To<Type>& get_offset (unsigned int i)
-  { return (*this)[i].offset; }
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-                         unsigned int *record_count /* IN/OUT */,
-                         hb_tag_t     *record_tags /* OUT */) const
+  స్థిరరాశి Offset16_గమ్యం<Type>& get_స్థానభ్రంశం (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి (*ఇది)[i].స్థానభ్రంశం; }
+  Offset16_గమ్యం<Type>& get_స్థానభ్రంశం (గుర్తులేని పూర్ణాంకం i)
+  { తిరిగి (*ఇది)[i].స్థానభ్రంశం; }
+  స్థిరరాశి ట్యాగ్& get_ట్యాగ్ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి (*ఇది)[i].ట్యాగ్_2; }
+  గుర్తులేని పూర్ణాంకం get_ట్యాగులు (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+                         గుర్తులేని పూర్ణాంకం *రికార్డు_లెక్క /* IN/OUT */,
+                         hb_ట్యాగ్_t     *రికార్డు_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (record_count && record_tags)
+    ఒకవేళ (రికార్డు_లెక్క && రికార్డు_ట్యాగులు)
     {
-      + this->as_array ().sub_array (start_offset, record_count)
-      | hb_map (&Record<Type>::tag)
-      | hb_sink (hb_array (record_tags, *record_count))
+      + ఇది->as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, రికార్డు_లెక్క)
+      | hb_map (&రికార్డు_2<Type>::ట్యాగ్_2)
+      | hb_sink (hb_array (రికార్డు_ట్యాగులు, *రికార్డు_లెక్క))
       ;
     }
-    return this->len;
+    తిరిగి ఇది->len;
   }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  తార్కిక కనుగొను_సూచీ (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని పూర్ణాంకం *సూచీ_2) స్థిరరాశి
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    తిరిగి ఇది->bfind (ట్యాగ్_2, సూచీ_2, HB_NOT_దొరికింది_STORE, సూచీ::NOT_దొరికింది_సూచీ);
   }
 };
 
-template <typename Type>
-struct RecordListOf : RecordArrayOf<Type>
+మూస <రకం_పేరు Type>
+నిర్మాణం రికార్డు_List_యొక్క : రికార్డు_Array_యొక్క<Type>
 {
-  const Type& operator [] (unsigned int i) const
-  { return this+this->get_offset (i); }
+  స్థిరరాశి Type& క్రియాకారకం [] (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి ఇది+ఇది->get_స్థానభ్రంశం (i); }
 
-  bool subset (hb_subset_context_t *c,
-               hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t *c,
+               hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    + this->iter ()
-    | hb_apply (subset_record_array (l, out, this))
+    + ఇది->iter ()
+    | hb_apply (subset_రికార్డు_array (l, బహిర్గతం, ఇది))
     ;
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (RecordArrayOf<Type>::sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (రికార్డు_Array_యొక్క<Type>::sanitize (c, ఇది));
   }
 };
 
-struct RecordListOfFeature : RecordListOf<Feature>
+నిర్మాణం రికార్డు_List_యొక్క_Feature : రికార్డు_List_యొక్క<Feature>
 {
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    + hb_enumerate (*this)
-    | hb_filter (l->feature_index_map, hb_first)
-    | hb_apply ([l, out, this] (const hb_pair_t<unsigned, const Record<Feature>&>& _)
+    + hb_enumerate (*ఇది)
+    | hb_filter (l->feature_సూచీ_map, hb_మొదటి)
+    | hb_apply ([l, బహిర్గతం, ఇది] (స్థిరరాశి hb_pair_t<గుర్తులేని, స్థిరరాశి రికార్డు_2<Feature>&>& _)
                 {
-                  const Feature *f_sub = nullptr;
-                  const Feature **f = nullptr;
-                  if (l->feature_substitutes_map->has (_.first, &f))
+                  స్థిరరాశి Feature *f_sub = శూన్యసూచిక;
+                  స్థిరరాశి Feature **f = శూన్యసూచిక;
+                  ఒకవేళ (l->feature_substitutes_map->has (_.మొదటి, &f))
                     f_sub = *f;
 
-                  l->cur_feature_index = _.first;
-                  subset_record_array (l, out, this, f_sub) (_.second);
-                  l->cur_feature_index = Index::NOT_FOUND_INDEX;
+                  l->cur_feature_సూచీ = _.మొదటి;
+                  subset_రికార్డు_array (l, బహిర్గతం, ఇది, f_sub) (_.second);
+                  l->cur_feature_సూచీ = సూచీ::NOT_దొరికింది_సూచీ;
                 })
     ;
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 };
 
-typedef RecordListOf<Feature> FeatureList;
+రకనిర్వచనం రికార్డు_List_యొక్క<Feature> FeatureList;
 
 
-struct LangSys
+నిర్మాణం LangSys
 {
-  unsigned int get_feature_count () const
-  { return featureIndex.len; }
-  hb_tag_t get_feature_index (unsigned int i) const
-  { return featureIndex[i]; }
-  unsigned int get_feature_indexes (unsigned int start_offset,
-				    unsigned int *feature_count /* IN/OUT */,
-				    unsigned int *feature_indexes /* OUT */) const
-  { return featureIndex.get_indexes (start_offset, feature_count, feature_indexes); }
-  void add_feature_indexes_to (hb_set_t *feature_indexes) const
-  { featureIndex.add_indexes_to (feature_indexes); }
+  గుర్తులేని పూర్ణాంకం get_feature_లెక్క () స్థిరరాశి
+  { తిరిగి feature_సూచీ_2.len; }
+  hb_ట్యాగ్_t get_feature_సూచీ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి feature_సూచీ_2[i]; }
+  గుర్తులేని పూర్ణాంకం get_feature_indexes (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				    గుర్తులేని పూర్ణాంకం *feature_లెక్క_2 /* IN/OUT */,
+				    గుర్తులేని పూర్ణాంకం *feature_indexes /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి feature_సూచీ_2.get_indexes (ప్రారంభం_స్థానభ్రంశం, feature_లెక్క_2, feature_indexes); }
+  శూన్య కూడు_feature_indexes_గమ్యం (hb_సమితి_t *feature_indexes) స్థిరరాశి
+  { feature_సూచీ_2.కూడు_indexes_గమ్యం (feature_indexes); }
 
-  bool has_required_feature () const { return reqFeatureIndex != 0xFFFFu; }
-  unsigned int get_required_feature_index () const
+  తార్కిక has_required_feature () స్థిరరాశి { తిరిగి req_Feature_సూచీ != 0xFFFFu; }
+  గుర్తులేని పూర్ణాంకం get_required_feature_సూచీ () స్థిరరాశి
   {
-    if (reqFeatureIndex == 0xFFFFu)
-      return Index::NOT_FOUND_INDEX;
-   return reqFeatureIndex;
+    ఒకవేళ (req_Feature_సూచీ == 0xFFFFu)
+      తిరిగి సూచీ::NOT_దొరికింది_సూచీ;
+   తిరిగి req_Feature_సూచీ;
   }
 
-  LangSys* copy (hb_serialize_context_t *c) const
+  LangSys* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (*this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed (*ఇది));
   }
 
-  bool compare (const LangSys& o, const hb_map_t *feature_index_map) const
+  తార్కిక compare (స్థిరరాశి LangSys& o, స్థిరరాశి hb_map_t *feature_సూచీ_map) స్థిరరాశి
   {
-    if (reqFeatureIndex != o.reqFeatureIndex)
-      return false;
+    ఒకవేళ (req_Feature_సూచీ != o.req_Feature_సూచీ)
+      తిరిగి అబద్ధం;
 
-    auto iter =
-    + hb_iter (featureIndex)
-    | hb_filter (feature_index_map)
-    | hb_map (feature_index_map)
+    స్వయంచాలక iter =
+    + hb_iter (feature_సూచీ_2)
+    | hb_filter (feature_సూచీ_map)
+    | hb_map (feature_సూచీ_map)
     ;
 
-    auto o_iter =
-    + hb_iter (o.featureIndex)
-    | hb_filter (feature_index_map)
-    | hb_map (feature_index_map)
+    స్వయంచాలక o_iter =
+    + hb_iter (o.feature_సూచీ_2)
+    | hb_filter (feature_సూచీ_map)
+    | hb_map (feature_సూచీ_map)
     ;
 
-    for (; iter && o_iter; iter++, o_iter++)
+    కొరకు (; iter && o_iter; iter++, o_iter++)
     {
-      unsigned a = *iter;
-      unsigned b = *o_iter;
-      if (a != b) return false;
+      గుర్తులేని a = *iter;
+      గుర్తులేని b = *o_iter;
+      ఒకవేళ (a != b) తిరిగి అబద్ధం;
     }
 
-    if (iter || o_iter) return false;
+    ఒకవేళ (iter || o_iter) తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  void collect_features (hb_prune_langsys_context_t *c) const
+  శూన్య collect_features (hb_prune_langsys_context_t *c) స్థిరరాశి
   {
-    if (!has_required_feature () && !get_feature_count ()) return;
-    if (has_required_feature () &&
-        c->duplicate_feature_map->has (reqFeatureIndex))
-      c->new_feature_indexes->add (get_required_feature_index ());
+    ఒకవేళ (!has_required_feature () && !get_feature_లెక్క ()) తిరిగి;
+    ఒకవేళ (has_required_feature () &&
+        c->duplicate_feature_map->has (req_Feature_సూచీ))
+      c->new_feature_indexes->కూడు (get_required_feature_సూచీ ());
 
-    + hb_iter (featureIndex)
+    + hb_iter (feature_సూచీ_2)
     | hb_filter (c->duplicate_feature_map)
     | hb_sink (c->new_feature_indexes)
     ;
   }
 
-  bool subset (hb_subset_context_t        *c,
+  తార్కిక subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-	       const Tag                  *tag = nullptr) const
+	       స్థిరరాశి ట్యాగ్                  *ట్యాగ్_2 = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    const uint32_t *v;
-    out->reqFeatureIndex = l->feature_map_w_duplicates->has (reqFeatureIndex, &v) ? *v : 0xFFFFu;
+    స్థిరరాశి uint32_t *v;
+    బహిర్గతం->req_Feature_సూచీ = l->feature_map_w_duplicates->has (req_Feature_సూచీ, &v) ? *v : 0xFFFFu;
 
-    if (!l->visitFeatureIndex (featureIndex.len))
-      return_trace (false);
+    ఒకవేళ (!l->సందర్శించు_Feature_సూచీ (feature_సూచీ_2.len))
+      return_trace (అబద్ధం);
 
-    auto it =
-    + hb_iter (featureIndex)
+    స్వయంచాలక it =
+    + hb_iter (feature_సూచీ_2)
     | hb_filter (l->feature_map_w_duplicates)
     | hb_map (l->feature_map_w_duplicates)
     ;
 
-    bool ret = bool (it);
-    out->featureIndex.serialize (c->serializer, l, it);
+    తార్కిక ret = తార్కిక (it);
+    బహిర్గతం->feature_సూచీ_2.serialize (c->serializer, l, it);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి రికార్డు_sanitize_సంవృతం_t * = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && featureIndex.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && feature_సూచీ_2.sanitize (c));
   }
 
-  Offset16	lookupOrderZ;	/* = Null (reserved for an offset to a
+  Offset16	lookup_క్రమం_Z;	/* = Null (reserved for an offset to a
 				 * reordering table) */
-  HBUINT16	reqFeatureIndex;/* Index of a feature required for this
+  HBUINT16	req_Feature_సూచీ;/* Index of a feature required for this
 				 * language system--if no required features
 				 * = 0xFFFFu */
-  IndexArray	featureIndex;	/* Array of indices into the FeatureList */
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (6, featureIndex);
+  సూచీ_Array	feature_సూచీ_2;	/* Array of indices into the FeatureList */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (6, feature_సూచీ_2);
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, LangSys);
+DECLARE_NULL_NAMESPACE_బైట్లు (OT, LangSys);
 
-struct Script
+నిర్మాణం Script
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const LangSys& get_lang_sys (unsigned int i) const
+  గుర్తులేని పూర్ణాంకం get_lang_sys_లెక్క () స్థిరరాశి
+  { తిరిగి langSys.len; }
+  స్థిరరాశి ట్యాగ్& get_lang_sys_ట్యాగ్ (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి langSys.get_ట్యాగ్ (i); }
+  గుర్తులేని పూర్ణాంకం get_lang_sys_ట్యాగులు (గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				  గుర్తులేని పూర్ణాంకం *lang_sys_లెక్క /* IN/OUT */,
+				  hb_ట్యాగ్_t     *lang_sys_ట్యాగులు /*బహిర్గతం*/) స్థిరరాశి
+  { తిరిగి langSys.get_ట్యాగులు (ప్రారంభం_స్థానభ్రంశం, lang_sys_లెక్క, lang_sys_ట్యాగులు); }
+  స్థిరరాశి LangSys& get_lang_sys (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    ఒకవేళ (i == సూచీ::NOT_దొరికింది_సూచీ) తిరిగి get_default_lang_sys ();
+    తిరిగి ఇది+langSys[i].స్థానభ్రంశం;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  తార్కిక కనుగొను_lang_sys_సూచీ (hb_ట్యాగ్_t ట్యాగ్_2, గుర్తులేని పూర్ణాంకం *సూచీ_2) స్థిరరాశి
+  { తిరిగి langSys.కనుగొను_సూచీ (ట్యాగ్_2, సూచీ_2); }
 
-  bool has_default_lang_sys () const           { return defaultLangSys != 0; }
-  const LangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  తార్కిక has_default_lang_sys () స్థిరరాశి           { తిరిగి defaultLangSys != 0; }
+  స్థిరరాశి LangSys& get_default_lang_sys () స్థిరరాశి { తిరిగి ఇది+defaultLangSys; }
 
-  void prune_langsys (hb_prune_langsys_context_t *c,
-                      unsigned script_index) const
+  శూన్య prune_langsys (hb_prune_langsys_context_t *c,
+                      గుర్తులేని script_సూచీ) స్థిరరాశి
   {
-    if (!has_default_lang_sys () && !get_lang_sys_count ()) return;
-    if (!c->visitScript ()) return;
+    ఒకవేళ (!has_default_lang_sys () && !get_lang_sys_లెక్క ()) తిరిగి;
+    ఒకవేళ (!c->సందర్శించు_Script ()) తిరిగి;
 
-    if (!c->script_langsys_map->has (script_index))
+    ఒకవేళ (!c->script_langsys_map->has (script_సూచీ))
     {
-      if (unlikely (!c->script_langsys_map->set (script_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	return;
+      ఒకవేళ (unlikely (!c->script_langsys_map->సమితి (script_సూచీ, hb::unique_ptr<hb_సమితి_t> {hb_సమితి_create ()})))
+	తిరిగి;
     }
 
-    if (has_default_lang_sys ())
+    ఒకవేళ (has_default_lang_sys ())
     {
       //only collect features from non-redundant langsys
-      const LangSys& d = get_default_lang_sys ();
-      if (c->visitLangsys (d.get_feature_count ())) {
+      స్థిరరాశి LangSys& d = get_default_lang_sys ();
+      ఒకవేళ (c->సందర్శించు_Langsys (d.get_feature_లెక్క ())) {
         d.collect_features (c);
       }
 
-      for (auto _ : + hb_enumerate (langSys))
+      కొరకు (స్వయంచాలక _ : + hb_enumerate (langSys))
       {
-        const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
-        if (l.compare (d, c->duplicate_feature_map)) continue;
+        స్థిరరాశి LangSys& l = ఇది+_.second.స్థానభ్రంశం;
+        ఒకవేళ (!c->సందర్శించు_Langsys (l.get_feature_లెక్క ())) కొనసాగు;
+        ఒకవేళ (l.compare (d, c->duplicate_feature_map)) కొనసాగు;
 
         l.collect_features (c);
-        c->script_langsys_map->get (script_index)->add (_.first);
+        c->script_langsys_map->get (script_సూచీ)->కూడు (_.మొదటి);
       }
     }
-    else
+    లేకపోతే
     {
-      for (auto _ : + hb_enumerate (langSys))
+      కొరకు (స్వయంచాలక _ : + hb_enumerate (langSys))
       {
-        const LangSys& l = this+_.second.offset;
-        if (!c->visitLangsys (l.get_feature_count ())) continue;
+        స్థిరరాశి LangSys& l = ఇది+_.second.స్థానభ్రంశం;
+        ఒకవేళ (!c->సందర్శించు_Langsys (l.get_feature_లెక్క ())) కొనసాగు;
         l.collect_features (c);
-        c->script_langsys_map->get (script_index)->add (_.first);
+        c->script_langsys_map->get (script_సూచీ)->కూడు (_.మొదటి);
       }
     }
   }
 
-  bool subset (hb_subset_context_t         *c,
+  తార్కిక subset (hb_subset_context_t         *c,
 	       hb_subset_layout_context_t  *l,
-	       const Tag                   *tag) const
+	       స్థిరరాశి ట్యాగ్                   *ట్యాగ్_2) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    if (!l->visitScript ()) return_trace (false);
-    if (tag && !c->plan->layout_scripts.has (*tag))
-      return false;
+    TRACE_SUBSET (ఇది);
+    ఒకవేళ (!l->సందర్శించు_Script ()) return_trace (అబద్ధం);
+    ఒకవేళ (ట్యాగ్_2 && !c->plan->layout_scripts.has (*ట్యాగ్_2))
+      తిరిగి అబద్ధం;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    bool defaultLang = false;
-    if (has_default_lang_sys ())
+    తార్కిక defaultLang = అబద్ధం;
+    ఒకవేళ (has_default_lang_sys ())
     {
       c->serializer->push ();
-      const LangSys& ls = this+defaultLangSys;
-      bool ret = ls.subset (c, l);
-      if (!ret && tag && *tag != HB_TAG ('D', 'F', 'L', 'T'))
+      స్థిరరాశి LangSys& ls = ఇది+defaultLangSys;
+      తార్కిక ret = ls.subset (c, l);
+      ఒకవేళ (!ret && ట్యాగ్_2 && *ట్యాగ్_2 != HB_ట్యాగ్ ('D', 'F', 'L', 'T'))
       {
-	c->serializer->pop_discard ();
-	out->defaultLangSys = 0;
+	c->serializer->తీయి_discard ();
+	బహిర్గతం->defaultLangSys = 0;
       }
-      else
+      లేకపోతే
       {
-	c->serializer->add_link (out->defaultLangSys, c->serializer->pop_pack ());
-	defaultLang = true;
+	c->serializer->కూడు_link (బహిర్గతం->defaultLangSys, c->serializer->తీయి_pack ());
+	defaultLang = నిజం;
       }
     }
 
-    const hb_set_t *active_langsys = l->script_langsys_map->get (l->cur_script_index);
-    if (active_langsys)
+    స్థిరరాశి hb_సమితి_t *చురుకైన_langsys = l->script_langsys_map->get (l->cur_script_సూచీ);
+    ఒకవేళ (చురుకైన_langsys)
     {
       + hb_enumerate (langSys)
-      | hb_filter (active_langsys, hb_first)
-      | hb_map (hb_second)
-      | hb_filter ([=] (const Record<LangSys>& record) {return l->visitLangSys (); })
-      | hb_apply (subset_record_array (l, &(out->langSys), this))
+      | hb_filter (చురుకైన_langsys, hb_మొదటి)
+      | hb_map (hb_రెండవ)
+      | hb_filter ([=] (స్థిరరాశి రికార్డు_2<LangSys>& రికార్డు) {తిరిగి l->సందర్శించు_Lang_Sys (); })
+      | hb_apply (subset_రికార్డు_array (l, &(బహిర్గతం->langSys), ఇది))
       ;
     }
 
-    return_trace (bool (out->langSys.len) || defaultLang || l->table_tag == HB_OT_TAG_GSUB);
+    return_trace (తార్కిక (బహిర్గతం->langSys.len) || defaultLang || l->పట్టిక_ట్యాగ్_2 == HB_OT_ట్యాగ్_GSUB);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  తార్కిక sanitize (hb_sanitize_context_t *c,
+		 స్థిరరాశి రికార్డు_sanitize_సంవృతం_t * = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (defaultLangSys.sanitize (c, this) && langSys.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (defaultLangSys.sanitize (c, ఇది) && langSys.sanitize (c, ఇది));
   }
 
-  protected:
-  Offset16To<LangSys>
+  రక్షిత:
+  Offset16_గమ్యం<LangSys>
 		defaultLangSys;	/* Offset to DefaultLangSys table--from
 				 * beginning of Script table--may be Null */
-  RecordArrayOf<LangSys>
+  రికార్డు_Array_యొక్క<LangSys>
 		langSys;	/* Array of LangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (4, langSys);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (4, langSys);
 };
 
-struct RecordListOfScript : RecordListOf<Script>
+నిర్మాణం రికార్డు_List_యొక్క_Script : రికార్డు_List_యొక్క<Script>
 {
-  bool subset (hb_subset_context_t *c,
-               hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t *c,
+               hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    for (auto _ : + hb_enumerate (*this))
+    కొరకు (స్వయంచాలక _ : + hb_enumerate (*ఇది))
     {
-      auto snap = c->serializer->snapshot ();
-      l->cur_script_index = _.first;
-      bool ret = _.second.subset (l, this);
-      if (!ret) c->serializer->revert (snap);
-      else out->len++;
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      l->cur_script_సూచీ = _.మొదటి;
+      తార్కిక ret = _.second.subset (l, ఇది);
+      ఒకవేళ (!ret) c->serializer->revert (snap);
+      లేకపోతే బహిర్గతం->len++;
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 };
 
-typedef RecordListOfScript ScriptList;
+రకనిర్వచనం రికార్డు_List_యొక్క_Script ScriptList;
 
 
 
-struct LookupFlag : HBUINT16
+నిర్మాణం LookupFlag : HBUINT16
 {
-  enum Flags {
-    RightToLeft		= 0x0001u,
-    IgnoreBaseGlyphs	= 0x0002u,
+  గణన Flags {
+    కుడి_గమ్యం_ఎడమ		= 0x0001u,
+    Ignore_పునాది_Glyphs	= 0x0002u,
     IgnoreLigatures	= 0x0004u,
     IgnoreMarks		= 0x0008u,
     IgnoreFlags		= 0x000Eu,
-    UseMarkFilteringSet	= 0x0010u,
+    Use_Mark_Filtering_సమితి	= 0x0010u,
     Reserved		= 0x00E0u,
     MarkAttachmentType	= 0xFF00u
   };
-  public:
-  DEFINE_SIZE_STATIC (2);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (2);
 };
 
 } /* namespace OT */
 /* This has to be outside the namespace. */
 HB_MARK_AS_FLAG_T (OT::LookupFlag::Flags);
-namespace OT {
+నామాకాశ OT {
 
-struct Lookup
+నిర్మాణం Lookup
 {
-  unsigned int get_subtable_count () const { return subTable.len; }
+  గుర్తులేని పూర్ణాంకం get_subtable_లెక్క () స్థిరరాశి { తిరిగి sub_పట్టిక.len; }
 
-  template <typename TSubTable>
-  const Array16OfOffset16To<TSubTable>& get_subtables () const
-  { return reinterpret_cast<const Array16OfOffset16To<TSubTable> &> (subTable); }
-  template <typename TSubTable>
-  Array16OfOffset16To<TSubTable>& get_subtables ()
-  { return reinterpret_cast<Array16OfOffset16To<TSubTable> &> (subTable); }
+  మూస <రకం_పేరు TSub_పట్టిక>
+  స్థిరరాశి Array16_యొక్క_Offset16_గమ్యం<TSub_పట్టిక>& get_subtables () స్థిరరాశి
+  { తిరిగి reinterpret_cast<స్థిరరాశి Array16_యొక్క_Offset16_గమ్యం<TSub_పట్టిక> &> (sub_పట్టిక); }
+  మూస <రకం_పేరు TSub_పట్టిక>
+  Array16_యొక్క_Offset16_గమ్యం<TSub_పట్టిక>& get_subtables ()
+  { తిరిగి reinterpret_cast<Array16_యొక్క_Offset16_గమ్యం<TSub_పట్టిక> &> (sub_పట్టిక); }
 
-  template <typename TSubTable>
-  const TSubTable& get_subtable (unsigned int i) const
-  { return this+get_subtables<TSubTable> ()[i]; }
-  template <typename TSubTable>
-  TSubTable& get_subtable (unsigned int i)
-  { return this+get_subtables<TSubTable> ()[i]; }
+  మూస <రకం_పేరు TSub_పట్టిక>
+  స్థిరరాశి TSub_పట్టిక& get_subtable (గుర్తులేని పూర్ణాంకం i) స్థిరరాశి
+  { తిరిగి ఇది+get_subtables<TSub_పట్టిక> ()[i]; }
+  మూస <రకం_పేరు TSub_పట్టిక>
+  TSub_పట్టిక& get_subtable (గుర్తులేని పూర్ణాంకం i)
+  { తిరిగి ఇది+get_subtables<TSub_పట్టిక> ()[i]; }
 
-  size_t get_size () const
+  size_t get_కొలత () స్థిరరాశి
   {
-    const HBUINT16 &markFilteringSet = StructAfter<const HBUINT16> (subTable);
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
-      return (const char *) &StructAfter<const char> (markFilteringSet) - (const char *) this;
-    return (const char *) &markFilteringSet - (const char *) this;
+    స్థిరరాశి HBUINT16 &mark_Filtering_సమితి = StructAfter<స్థిరరాశి HBUINT16> (sub_పట్టిక);
+    ఒకవేళ (lookupFlag & LookupFlag::Use_Mark_Filtering_సమితి)
+      తిరిగి (స్థిరరాశి అక్షరం *) &StructAfter<స్థిరరాశి అక్షరం> (mark_Filtering_సమితి) - (స్థిరరాశి అక్షరం *) ఇది;
+    తిరిగి (స్థిరరాశి అక్షరం *) &mark_Filtering_సమితి - (స్థిరరాశి అక్షరం *) ఇది;
   }
 
-  unsigned int get_type () const { return lookupType; }
+  గుర్తులేని పూర్ణాంకం get_type () స్థిరరాశి { తిరిగి lookupType; }
 
   /* lookup_props is a 32-bit integer where the lower 16-bit is LookupFlag and
    * higher 16-bit is mark-filtering-set if the lookup uses one.
    * Not to be confused with glyph_props which is very similar. */
-  uint32_t get_props () const
+  uint32_t get_props () స్థిరరాశి
   {
-    unsigned int flag = lookupFlag;
-    if (unlikely (flag & LookupFlag::UseMarkFilteringSet))
+    గుర్తులేని పూర్ణాంకం flag = lookupFlag;
+    ఒకవేళ (unlikely (flag & LookupFlag::Use_Mark_Filtering_సమితి))
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      flag += (markFilteringSet << 16);
+      స్థిరరాశి HBUINT16 &mark_Filtering_సమితి = StructAfter<HBUINT16> (sub_పట్టిక);
+      flag += (mark_Filtering_సమితి << 16);
     }
-    return flag;
+    తిరిగి flag;
   }
 
-  template <typename TSubTable, typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు TSub_పట్టిక, రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    unsigned int lookup_type = get_type ();
-    TRACE_DISPATCH (this, lookup_type);
-    unsigned int count = get_subtable_count ();
-    for (unsigned int i = 0; i < count; i++) {
-      typename context_t::return_t r = get_subtable<TSubTable> (i).dispatch (c, lookup_type, ds...);
-      if (c->stop_sublookup_iteration (r))
+    గుర్తులేని పూర్ణాంకం lookup_type = get_type ();
+    TRACE_DISPATCH (ఇది, lookup_type);
+    గుర్తులేని పూర్ణాంకం లెక్క = get_subtable_లెక్క ();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++) {
+      రకం_పేరు context_t::return_t r = get_subtable<TSub_పట్టిక> (i).dispatch (c, lookup_type, ds...);
+      ఒకవేళ (c->stop_sublookup_iteration (r))
 	return_trace (r);
     }
-    return_trace (c->default_return_value ());
+    return_trace (c->default_return_విలువ ());
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned int lookup_type,
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  గుర్తులేని పూర్ణాంకం lookup_type,
 		  uint32_t lookup_props,
-		  unsigned int num_subtables)
+		  గుర్తులేని పూర్ణాంకం అంకె_subtables)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
     lookupType = lookup_type;
     lookupFlag = lookup_props & 0xFFFFu;
-    if (unlikely (!subTable.serialize (c, num_subtables))) return_trace (false);
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    ఒకవేళ (unlikely (!sub_పట్టిక.serialize (c, అంకె_subtables))) return_trace (అబద్ధం);
+    ఒకవేళ (lookupFlag & LookupFlag::Use_Mark_Filtering_సమితి)
     {
-      if (unlikely (!c->extend (this))) return_trace (false);
-      HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      markFilteringSet = lookup_props >> 16;
+      ఒకవేళ (unlikely (!c->extend (ఇది))) return_trace (అబద్ధం);
+      HBUINT16 &mark_Filtering_సమితి = StructAfter<HBUINT16> (sub_పట్టిక);
+      mark_Filtering_సమితి = lookup_props >> 16;
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template <typename TSubTable>
-  bool subset (hb_subset_context_t *c) const
+  మూస <రకం_పేరు TSub_పట్టిక>
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->lookupType = lookupType;
-    out->lookupFlag = lookupFlag;
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+    బహిర్గతం->lookupType = lookupType;
+    బహిర్గతం->lookupFlag = lookupFlag;
 
-    const hb_set_t *glyphset = c->plan->glyphset_gsub ();
-    unsigned int lookup_type = get_type ();
-    + hb_iter (get_subtables <TSubTable> ())
-    | hb_filter ([this, glyphset, lookup_type] (const Offset16To<TSubTable> &_) { return (this+_).intersects (glyphset, lookup_type); })
-    | hb_apply (subset_offset_array (c, out->get_subtables<TSubTable> (), this, lookup_type))
+    స్థిరరాశి hb_సమితి_t *glyphset = c->plan->glyphset_gsub ();
+    గుర్తులేని పూర్ణాంకం lookup_type = get_type ();
+    + hb_iter (get_subtables <TSub_పట్టిక> ())
+    | hb_filter ([ఇది, glyphset, lookup_type] (స్థిరరాశి Offset16_గమ్యం<TSub_పట్టిక> &_) { తిరిగి (ఇది+_).intersects (glyphset, lookup_type); })
+    | hb_apply (subset_స్థానభ్రంశం_array (c, బహిర్గతం->get_subtables<TSub_పట్టిక> (), ఇది, lookup_type))
     ;
 
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    ఒకవేళ (lookupFlag & LookupFlag::Use_Mark_Filtering_సమితి)
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
+      స్థిరరాశి HBUINT16 &mark_Filtering_సమితి = StructAfter<HBUINT16> (sub_పట్టిక);
       hb_codepoint_t *idx;
-      if (!c->plan->used_mark_sets_map.has (markFilteringSet, &idx))
+      ఒకవేళ (!c->plan->వాడిన_mark_sets_map.has (mark_Filtering_సమితి, &idx))
       {
-        unsigned new_flag = lookupFlag;
-        new_flag &= ~LookupFlag::UseMarkFilteringSet;
+        గుర్తులేని new_flag = lookupFlag;
+        new_flag &= ~LookupFlag::Use_Mark_Filtering_సమితి;
         // https://github.com/harfbuzz/harfbuzz/issues/5499
         // If we remove UseMarkFilteringSet flag because the set is now empty,
         // we need to add IgnoreMarks flag, otherwise the lookup will not
         // ignore any marks, which changes the behavior.
         new_flag |= LookupFlag::IgnoreMarks;
-        out->lookupFlag = new_flag;
+        బహిర్గతం->lookupFlag = new_flag;
       }
-      else
+      లేకపోతే
       {
-        if (unlikely (!c->serializer->extend (out))) return_trace (false);
-        HBUINT16 &outMarkFilteringSet = StructAfter<HBUINT16> (out->subTable);
-        outMarkFilteringSet = *idx;
+        ఒకవేళ (unlikely (!c->serializer->extend (బహిర్గతం))) return_trace (అబద్ధం);
+        HBUINT16 &బహిర్గతం_Mark_Filtering_సమితి = StructAfter<HBUINT16> (బహిర్గతం->sub_పట్టిక);
+        బహిర్గతం_Mark_Filtering_సమితి = *idx;
       }
     }
 
@@ -1412,29 +1412,29 @@ struct Lookup
     // Generally we shouldn't end up with an empty lookup as we pre-prune them during the planning
     // phase, but it can happen in rare cases such as when during closure subtable is considered
     // degenerate (see: https://github.com/harfbuzz/harfbuzz/issues/3853)
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  template <typename TSubTable>
-  bool sanitize (hb_sanitize_context_t *c) const
+  మూస <రకం_పేరు TSub_పట్టిక>
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) && subTable.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!(c->check_struct (ఇది) && sub_పట్టిక.sanitize (c))) return_trace (అబద్ధం);
     hb_barrier ();
 
-    unsigned subtables = get_subtable_count ();
-    if (unlikely (!c->visit_subtables (subtables))) return_trace (false);
+    గుర్తులేని subtables = get_subtable_లెక్క ();
+    ఒకవేళ (unlikely (!c->సందర్శించు_subtables (subtables))) return_trace (అబద్ధం);
 
-    if (lookupFlag & LookupFlag::UseMarkFilteringSet)
+    ఒకవేళ (lookupFlag & LookupFlag::Use_Mark_Filtering_సమితి)
     {
-      const HBUINT16 &markFilteringSet = StructAfter<HBUINT16> (subTable);
-      if (!markFilteringSet.sanitize (c)) return_trace (false);
+      స్థిరరాశి HBUINT16 &mark_Filtering_సమితి = StructAfter<HBUINT16> (sub_పట్టిక);
+      ఒకవేళ (!mark_Filtering_సమితి.sanitize (c)) return_trace (అబద్ధం);
     }
 
-    if (unlikely (!get_subtables<TSubTable> ().sanitize (c, this, get_type ())))
-      return_trace (false);
+    ఒకవేళ (unlikely (!get_subtables<TSub_పట్టిక> ().sanitize (c, ఇది, get_type ())))
+      return_trace (అబద్ధం);
 
-    if (unlikely (get_type () == TSubTable::Extension))
+    ఒకవేళ (unlikely (get_type () == TSub_పట్టిక::Extension))
     {
       hb_barrier ();
 
@@ -1443,51 +1443,51 @@ struct Lookup
        * itself (but we already checked for that).
        * This is specially important if one has a reverse type!
        */
-      unsigned int type = get_subtable<TSubTable> (0).u.extension.get_type ();
-      for (unsigned int i = 1; i < subtables; i++)
-	if (get_subtable<TSubTable> (i).u.extension.get_type () != type)
-	  return_trace (false);
+      గుర్తులేని పూర్ణాంకం type = get_subtable<TSub_పట్టిక> (0).u.extension.get_type ();
+      కొరకు (గుర్తులేని పూర్ణాంకం i = 1; i < subtables; i++)
+	ఒకవేళ (get_subtable<TSub_పట్టిక> (i).u.extension.get_type () != type)
+	  return_trace (అబద్ధం);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	lookupType;		/* Different enumerations for GSUB and GPOS */
   HBUINT16	lookupFlag;		/* Lookup qualifiers */
-  Array16Of<Offset16>
-		subTable;		/* Array of SubTables */
+  Array16_యొక్క<Offset16>
+		sub_పట్టిక;		/* Array of SubTables */
 /*HBUINT16	markFilteringSetX[HB_VAR_ARRAY];*//* Index (base 0) into GDEF mark glyph sets
 					 * structure. This field is only present if bit
 					 * UseMarkFilteringSet of lookup flags is set. */
-  public:
-  DEFINE_SIZE_ARRAY (6, subTable);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, sub_పట్టిక);
 };
 
-template <typename Types>
-using LookupList = List16OfOffsetTo<Lookup, typename Types::HBLUINT>;
+మూస <రకం_పేరు Types>
+ఉపయోగించి LookupList = List16_యొక్క_స్థానభ్రంశం_గమ్యం<Lookup, రకం_పేరు Types::HBLUINT>;
 
-template <typename TLookup, typename OffsetType>
-struct LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
+మూస <రకం_పేరు TLookup, రకం_పేరు స్థానభ్రంశం_Type>
+నిర్మాణం Lookup_స్థానభ్రంశం_List : List16_యొక్క_స్థానభ్రంశం_గమ్యం<TLookup, స్థానభ్రంశం_Type>
 {
-  bool subset (hb_subset_context_t        *c,
-	       hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t        *c,
+	       hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    + hb_enumerate (*this)
-    | hb_filter (l->lookup_index_map, hb_first)
-    | hb_map (hb_second)
-    | hb_apply (subset_offset_array (c, *out, this))
+    + hb_enumerate (*ఇది)
+    | hb_filter (l->lookup_సూచీ_map, hb_మొదటి)
+    | hb_map (hb_రెండవ)
+    | hb_apply (subset_స్థానభ్రంశం_array (c, *బహిర్గతం, ఇది))
     ;
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace ((List16OfOffsetTo<TLookup, OffsetType>::sanitize (c, this)));
+    TRACE_SANITIZE (ఇది);
+    return_trace ((List16_యొక్క_స్థానభ్రంశం_గమ్యం<TLookup, స్థానభ్రంశం_Type>::sanitize (c, ఇది)));
   }
 };
 
@@ -1497,869 +1497,869 @@ struct LookupOffsetList : List16OfOffsetTo<TLookup, OffsetType>
  */
 
 
-static bool ClassDef_remap_and_serialize (hb_serialize_context_t *c,
-					  const hb_set_t &klasses,
-                                          bool use_class_zero,
-                                          hb_sorted_vector_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
+స్థిర తార్కిక ClassDef_remap_and_serialize (hb_serialize_context_t *c,
+					  స్థిరరాశి hb_సమితి_t &klasses,
+                                          తార్కిక use_class_zero,
+                                          hb_sorted_సదిశ_t<hb_codepoint_pair_t> &glyph_and_klass, /* IN/OUT */
 					  hb_map_t *klass_map /*IN/OUT*/)
 {
-  if (!klass_map)
-    return ClassDef_serialize (c, glyph_and_klass.iter ());
+  ఒకవేళ (!klass_map)
+    తిరిగి ClassDef_serialize (c, glyph_and_klass.iter ());
 
   /* any glyph not assigned a class value falls into Class zero (0),
    * if any glyph assigned to class 0, remapping must start with 0->0*/
-  if (!use_class_zero)
-    klass_map->set (0, 0);
+  ఒకవేళ (!use_class_zero)
+    klass_map->సమితి (0, 0);
 
-  unsigned idx = klass_map->has (0) ? 1 : 0;
-  for (const unsigned k: klasses)
+  గుర్తులేని idx = klass_map->has (0) ? 1 : 0;
+  కొరకు (స్థిరరాశి గుర్తులేని k: klasses)
   {
-    if (klass_map->has (k)) continue;
-    klass_map->set (k, idx);
+    ఒకవేళ (klass_map->has (k)) కొనసాగు;
+    klass_map->సమితి (k, idx);
     idx++;
   }
 
 
-  if (unlikely (!c->propagate_error (glyph_and_klass, klasses, klass_map)))
-    return false;
+  ఒకవేళ (unlikely (!c->propagate_error (glyph_and_klass, klasses, klass_map)))
+    తిరిగి అబద్ధం;
 
-  for (unsigned i = 0; i < glyph_and_klass.length; i++)
+  కొరకు (గుర్తులేని i = 0; i < glyph_and_klass.నిడివి; i++)
   {
     hb_codepoint_t klass = glyph_and_klass[i].second;
     glyph_and_klass[i].second = klass_map->get (klass);
   }
 
-  return ClassDef_serialize (c, glyph_and_klass.iter ());
+  తిరిగి ClassDef_serialize (c, glyph_and_klass.iter ());
 }
 
 /*
  * Class Definition Table
  */
 
-template <typename Types>
-struct ClassDefFormat1_3
+మూస <రకం_పేరు Types>
+నిర్మాణం ClassDefFormat1_3
 {
-  friend struct ClassDef;
+  మిత్ర నిర్మాణం ClassDef;
 
-  private:
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  అంతరంగ:
+  గుర్తులేని పూర్ణాంకం get_class (hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    return classValue[(unsigned int) (glyph_id - startGlyph)];
+    తిరిగి class_విలువ[(గుర్తులేని పూర్ణాంకం) (glyph_id - ప్రారంభం_Glyph)];
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    return classValue.len;
+    తిరిగి class_విలువ.len;
   }
 
-  template<typename Iterator,
-	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  మూస<రకం_పేరు Iterator,
+	   hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    if (unlikely (!it))
+    ఒకవేళ (unlikely (!it))
     {
-      classFormat = Types::size == 2 ? 1 : 3;
-      startGlyph = 0;
-      classValue.len = 0;
-      return_trace (true);
+      classFormat = Types::కొలత == 2 ? 1 : 3;
+      ప్రారంభం_Glyph = 0;
+      class_విలువ.len = 0;
+      return_trace (నిజం);
     }
 
-    hb_codepoint_t glyph_min = (*it).first;
+    hb_codepoint_t glyph_min = (*it).మొదటి;
     hb_codepoint_t glyph_max = + it
-			       | hb_map (hb_first)
+			       | hb_map (hb_మొదటి)
 			       | hb_reduce (hb_max, 0u);
-    unsigned glyph_count = glyph_max - glyph_min + 1;
+    గుర్తులేని glyph_లెక్క = glyph_max - glyph_min + 1;
 
-    startGlyph = glyph_min;
-    if (unlikely (!classValue.serialize (c, glyph_count))) return_trace (false);
-    for (const hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
+    ప్రారంభం_Glyph = glyph_min;
+    ఒకవేళ (unlikely (!class_విలువ.serialize (c, glyph_లెక్క))) return_trace (అబద్ధం);
+    కొరకు (స్థిరరాశి hb_pair_t<hb_codepoint_t, uint32_t> gid_klass_pair : + it)
     {
-      unsigned idx = gid_klass_pair.first - glyph_min;
-      classValue[idx] = gid_klass_pair.second;
+      గుర్తులేని idx = gid_klass_pair.మొదటి - glyph_min;
+      class_విలువ[idx] = gid_klass_pair.second;
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_map_t *klass_map = శూన్యసూచిక /*OUT*/,
+               తార్కిక keep_ఖాళీలు_పట్టిక = నిజం,
+               తార్కిక use_class_zero = నిజం,
+               స్థిరరాశి Coverage* glyph_filter = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ఇది);
 
-    hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
-    hb_set_t orig_klasses;
+    hb_sorted_సదిశ_t<hb_codepoint_pair_t> glyph_and_klass;
+    hb_సమితి_t orig_klasses;
 
-    hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end   = start + classValue.len;
+    hb_codepoint_t ప్రారంభం = ప్రారంభం_Glyph;
+    hb_codepoint_t చివర   = ప్రారంభం + class_విలువ.len;
 
-    for (const hb_codepoint_t gid : + hb_range (start, end))
+    కొరకు (స్థిరరాశి hb_codepoint_t gid : + hb_range (ప్రారంభం, చివర))
     {
       hb_codepoint_t new_gid = c->plan->map_gsub_glyph (gid);
-      if (new_gid == HB_MAP_VALUE_INVALID) continue;
-      if (glyph_filter && !glyph_filter->has(gid)) continue;
+      ఒకవేళ (new_gid == HB_MAP_విలువ_INVALID) కొనసాగు;
+      ఒకవేళ (glyph_filter && !glyph_filter->has(gid)) కొనసాగు;
 
-      unsigned klass = classValue[gid - start];
-      if (!klass) continue;
+      గుర్తులేని klass = class_విలువ[gid - ప్రారంభం];
+      ఒకవేళ (!klass) కొనసాగు;
 
       glyph_and_klass.push (hb_pair (new_gid, klass));
-      orig_klasses.add (klass);
+      orig_klasses.కూడు (klass);
     }
 
-    if (use_class_zero)
+    ఒకవేళ (use_class_zero)
     {
-      const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-      unsigned glyph_count = glyph_filter
+      స్థిరరాశి hb_సమితి_t& glyphset = *c->plan->glyphset_gsub ();
+      గుర్తులేని glyph_లెక్క = glyph_filter
 			     ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
 			     : glyphset.get_population ();
-      use_class_zero = glyph_count <= glyph_and_klass.length;
+      use_class_zero = glyph_లెక్క <= glyph_and_klass.నిడివి;
     }
-    if (!ClassDef_remap_and_serialize (c->serializer,
+    ఒకవేళ (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
                                        glyph_and_klass,
                                        klass_map))
-      return_trace (false);
-    return_trace (keep_empty_table || (bool) glyph_and_klass);
+      return_trace (అబద్ధం);
+    return_trace (keep_ఖాళీలు_పట్టిక || (తార్కిక) glyph_and_klass);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && classValue.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && class_విలువ.sanitize (c));
   }
 
-  unsigned cost () const { return 1; }
+  గుర్తులేని ఖర్చు () స్థిరరాశి { తిరిగి 1; }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
   {
-    unsigned int start = 0;
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం ప్రారంభం = 0;
+    గుర్తులేని పూర్ణాంకం లెక్క = class_విలువ.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (classValue[i])
-	continue;
+      ఒకవేళ (class_విలువ[i])
+	కొనసాగు;
 
-      if (start != i)
-	if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + i)))
-	  return false;
+      ఒకవేళ (ప్రారంభం != i)
+	ఒకవేళ (unlikely (!glyphs->కూడు_range (ప్రారంభం_Glyph + ప్రారంభం, ప్రారంభం_Glyph + i)))
+	  తిరిగి అబద్ధం;
 
-      start = i + 1;
+      ప్రారంభం = i + 1;
     }
-    if (start != count)
-      if (unlikely (!glyphs->add_range (startGlyph + start, startGlyph + count)))
-	return false;
+    ఒకవేళ (ప్రారంభం != లెక్క)
+      ఒకవేళ (unlikely (!glyphs->కూడు_range (ప్రారంభం_Glyph + ప్రారంభం, ప్రారంభం_Glyph + లెక్క)))
+	తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned klass) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_class (సమితి_t *glyphs, గుర్తులేని klass) స్థిరరాశి
   {
-    unsigned int count = classValue.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (classValue[i] == klass) glyphs->add (startGlyph + i);
-    return true;
+    గుర్తులేని పూర్ణాంకం లెక్క = class_విలువ.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (class_విలువ[i] == klass) glyphs->కూడు (ప్రారంభం_Glyph + i);
+    తిరిగి నిజం;
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    hb_codepoint_t start = startGlyph;
-    hb_codepoint_t end = startGlyph + classValue.len;
-    for (hb_codepoint_t iter = startGlyph - 1;
-	 glyphs->next (&iter) && iter < end;)
-      if (classValue[iter - start]) return true;
-    return false;
+    hb_codepoint_t ప్రారంభం = ప్రారంభం_Glyph;
+    hb_codepoint_t చివర = ప్రారంభం_Glyph + class_విలువ.len;
+    కొరకు (hb_codepoint_t iter = ప్రారంభం_Glyph - 1;
+	 glyphs->next (&iter) && iter < చివర;)
+      ఒకవేళ (class_విలువ[iter - ప్రారంభం]) తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
+  తార్కిక intersects_class (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని klass) స్థిరరాశి
   {
-    unsigned int count = classValue.len;
-    if (klass == 0)
+    గుర్తులేని పూర్ణాంకం లెక్క = class_విలువ.len;
+    ఒకవేళ (klass == 0)
     {
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      if (!glyphs->next (&g)) return false;
-      if (g < startGlyph) return true;
-      g = startGlyph + count - 1;
-      if (glyphs->next (&g)) return true;
+      hb_codepoint_t g = HB_సమితి_విలువ_INVALID;
+      ఒకవేళ (!glyphs->next (&g)) తిరిగి అబద్ధం;
+      ఒకవేళ (g < ప్రారంభం_Glyph) తిరిగి నిజం;
+      g = ప్రారంభం_Glyph + లెక్క - 1;
+      ఒకవేళ (glyphs->next (&g)) తిరిగి నిజం;
       /* Fall through. */
     }
     /* TODO Speed up, using set overlap first? */
     /* TODO(iter) Rewrite as dagger. */
-    const typename Types::HBUINT *arr = classValue.arrayZ;
-    for (unsigned int i = 0; i < count; i++)
-      if (arr[i] == klass && glyphs->has (startGlyph + i))
-	return true;
-    return false;
+    స్థిరరాశి రకం_పేరు Types::HBUINT *arr = class_విలువ.arrayZ;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (arr[i] == klass && glyphs->has (ప్రారంభం_Glyph + i))
+	తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
+  శూన్య intersected_class_glyphs (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని klass, hb_సమితి_t *intersect_glyphs) స్థిరరాశి
   {
-    unsigned count = classValue.len;
-    if (klass == 0)
+    గుర్తులేని లెక్క = class_విలువ.len;
+    ఒకవేళ (klass == 0)
     {
-      unsigned start_glyph = startGlyph;
-      for (uint32_t g = HB_SET_VALUE_INVALID;
-	   glyphs->next (&g) && g < start_glyph;)
-	intersect_glyphs->add (g);
+      గుర్తులేని ప్రారంభం_glyph = ప్రారంభం_Glyph;
+      కొరకు (uint32_t g = HB_సమితి_విలువ_INVALID;
+	   glyphs->next (&g) && g < ప్రారంభం_glyph;)
+	intersect_glyphs->కూడు (g);
 
-      for (uint32_t g = startGlyph + count - 1;
+      కొరకు (uint32_t g = ప్రారంభం_Glyph + లెక్క - 1;
 	   glyphs-> next (&g);)
-	intersect_glyphs->add (g);
+	intersect_glyphs->కూడు (g);
 
-      return;
+      తిరిగి;
     }
 
-    for (unsigned i = 0; i < count; i++)
-      if (classValue[i] == klass && glyphs->has (startGlyph + i))
-	intersect_glyphs->add (startGlyph + i);
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
+      ఒకవేళ (class_విలువ[i] == klass && glyphs->has (ప్రారంభం_Glyph + i))
+	intersect_glyphs->కూడు (ప్రారంభం_Glyph + i);
 
-#if 0
+#ఒకవేళ 0
     /* The following implementation is faster asymptotically, but slower
      * in practice. */
-    unsigned start_glyph = startGlyph;
-    unsigned end_glyph = start_glyph + count;
-    for (unsigned g = startGlyph - 1;
-	 glyphs->next (&g) && g < end_glyph;)
-      if (classValue.arrayZ[g - start_glyph] == klass)
-        intersect_glyphs->add (g);
-#endif
+    గుర్తులేని ప్రారంభం_glyph = ప్రారంభం_Glyph;
+    గుర్తులేని చివర_glyph = ప్రారంభం_glyph + లెక్క;
+    కొరకు (గుర్తులేని g = ప్రారంభం_Glyph - 1;
+	 glyphs->next (&g) && g < చివర_glyph;)
+      ఒకవేళ (class_విలువ.arrayZ[g - ప్రారంభం_glyph] == klass)
+        intersect_glyphs->కూడు (g);
+#అయితే_ముగింపు
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  శూన్య intersected_classes (స్థిరరాశి hb_సమితి_t *glyphs, hb_సమితి_t *intersect_classes) స్థిరరాశి
   {
-    if (glyphs->is_empty ()) return;
+    ఒకవేళ (glyphs->is_empty ()) తిరిగి;
 
     /* An empty ClassDef assigns class zero to every glyph, so every glyph in
      * `glyphs` intersects class zero.  Handle it up front: `end_glyph` below
      * underflows when startGlyph is zero, and neither comparison can then be
      * true. */
-    if (!classValue.len)
+    ఒకవేళ (!class_విలువ.len)
     {
-      intersect_classes->add (0);
-      return;
+      intersect_classes->కూడు (0);
+      తిరిగి;
     }
 
-    hb_codepoint_t end_glyph = startGlyph + classValue.len - 1;
-    if (glyphs->get_min () < startGlyph ||
-        glyphs->get_max () > end_glyph)
-      intersect_classes->add (0);
+    hb_codepoint_t చివర_glyph = ప్రారంభం_Glyph + class_విలువ.len - 1;
+    ఒకవేళ (glyphs->get_min () < ప్రారంభం_Glyph ||
+        glyphs->get_max () > చివర_glyph)
+      intersect_classes->కూడు (0);
 
-    for (const auto& _ : + hb_enumerate (classValue))
+    కొరకు (స్థిరరాశి స్వయంచాలక& _ : + hb_enumerate (class_విలువ))
     {
-      hb_codepoint_t g = startGlyph + _.first;
-      if (glyphs->has (g))
-        intersect_classes->add (_.second);
+      hb_codepoint_t g = ప్రారంభం_Glyph + _.మొదటి;
+      ఒకవేళ (glyphs->has (g))
+        intersect_classes->కూడు (_.second);
     }
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	classFormat;	/* Format identifier--format = 1 */
-  typename Types::HBGlyphID
-		 startGlyph;	/* First GlyphID of the classValueArray */
-  typename Types::template ArrayOf<typename Types::HBUINT>
-		classValue;	/* Array of Class Values--one per GlyphID */
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2 * Types::size, classValue);
+  రకం_పేరు Types::HBGlyphID
+		 ప్రారంభం_Glyph;	/* First GlyphID of the classValueArray */
+  రకం_పేరు Types::మూస Array_యొక్క<రకం_పేరు Types::HBUINT>
+		class_విలువ;	/* Array of Class Values--one per GlyphID */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + 2 * Types::కొలత, class_విలువ);
 };
 
-template <typename Types>
-struct ClassDefFormat2_4
+మూస <రకం_పేరు Types>
+నిర్మాణం ClassDefFormat2_4
 {
-  friend struct ClassDef;
+  మిత్ర నిర్మాణం ClassDef;
 
-  private:
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  అంతరంగ:
+  గుర్తులేని పూర్ణాంకం get_class (hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    return rangeRecord.bsearch (glyph_id).value;
+    తిరిగి range_రికార్డు.bsearch (glyph_id).value;
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    రకం_పేరు Types::large_int ret = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక &r : range_రికార్డు)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    తిరిగి ret > UINT_MAX ? UINT_MAX : (గుర్తులేని) ret;
   }
 
-  template<typename Iterator,
-	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  మూస<రకం_పేరు Iterator,
+	   hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    if (unlikely (!it))
+    ఒకవేళ (unlikely (!it))
     {
-      classFormat = Types::size == 2 ? 2 : 4;
-      rangeRecord.len = 0;
-      return_trace (true);
+      classFormat = Types::కొలత == 2 ? 2 : 4;
+      range_రికార్డు.len = 0;
+      return_trace (నిజం);
     }
 
-    unsigned unsorted = false;
-    unsigned num_ranges = 1;
-    hb_codepoint_t prev_gid = (*it).first;
-    unsigned prev_klass = (*it).second;
+    గుర్తులేని unsorted = అబద్ధం;
+    గుర్తులేని అంకె_ranges = 1;
+    hb_codepoint_t prev_gid = (*it).మొదటి;
+    గుర్తులేని prev_klass = (*it).second;
 
-    RangeRecord<Types> range_rec;
-    range_rec.first = prev_gid;
-    range_rec.last = prev_gid;
+    Range_రికార్డు<Types> range_rec;
+    range_rec.మొదటి = prev_gid;
+    range_rec.చివరి = prev_gid;
     range_rec.value = prev_klass;
 
-    auto *record = c->copy (range_rec);
-    if (unlikely (!record)) return_trace (false);
+    స్వయంచాలక *రికార్డు = c->copy (range_rec);
+    ఒకవేళ (unlikely (!రికార్డు)) return_trace (అబద్ధం);
 
-    for (const auto gid_klass_pair : + (++it))
+    కొరకు (స్థిరరాశి స్వయంచాలక gid_klass_pair : + (++it))
     {
-      hb_codepoint_t cur_gid = gid_klass_pair.first;
-      unsigned cur_klass = gid_klass_pair.second;
+      hb_codepoint_t cur_gid = gid_klass_pair.మొదటి;
+      గుర్తులేని cur_klass = gid_klass_pair.second;
 
-      if (cur_gid != prev_gid + 1 ||
+      ఒకవేళ (cur_gid != prev_gid + 1 ||
 	  cur_klass != prev_klass)
       {
 
-	if (unlikely (cur_gid < prev_gid))
-	  unsorted = true;
+	ఒకవేళ (unlikely (cur_gid < prev_gid))
+	  unsorted = నిజం;
 
-	if (unlikely (!record)) break;
-	record->last = prev_gid;
-	num_ranges++;
+	ఒకవేళ (unlikely (!రికార్డు)) ఆపు;
+	రికార్డు->చివరి = prev_gid;
+	అంకె_ranges++;
 
-	range_rec.first = cur_gid;
-	range_rec.last = cur_gid;
+	range_rec.మొదటి = cur_gid;
+	range_rec.చివరి = cur_gid;
 	range_rec.value = cur_klass;
 
-	record = c->copy (range_rec);
+	రికార్డు = c->copy (range_rec);
       }
 
       prev_klass = cur_klass;
       prev_gid = cur_gid;
     }
 
-    if (unlikely (c->in_error ())) return_trace (false);
+    ఒకవేళ (unlikely (c->లోపల_error ())) return_trace (అబద్ధం);
 
-    if (likely (record)) record->last = prev_gid;
-    rangeRecord.len = num_ranges;
+    ఒకవేళ (likely (రికార్డు)) రికార్డు->చివరి = prev_gid;
+    range_రికార్డు.len = అంకె_ranges;
 
-    if (unlikely (unsorted))
-      rangeRecord.as_array ().qsort (RangeRecord<Types>::cmp_range);
+    ఒకవేళ (unlikely (unsorted))
+      range_రికార్డు.as_array ().qsort (Range_రికార్డు<Types>::cmp_range);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_map_t *klass_map = శూన్యసూచిక /*OUT*/,
+               తార్కిక keep_ఖాళీలు_పట్టిక = నిజం,
+               తార్కిక use_class_zero = నిజం,
+               స్థిరరాశి Coverage* glyph_filter = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyph_set = *c->plan->glyphset_gsub ();
+    TRACE_SUBSET (ఇది);
+    స్థిరరాశి hb_సమితి_t &glyph_సమితి = *c->plan->glyphset_gsub ();
 
-    hb_sorted_vector_t<hb_codepoint_pair_t> glyph_and_klass;
-    hb_set_t orig_klasses;
+    hb_sorted_సదిశ_t<hb_codepoint_pair_t> glyph_and_klass;
+    hb_సమితి_t orig_klasses;
 
-    if (glyph_set.get_population () * hb_bit_storage ((unsigned) rangeRecord.len)
+    ఒకవేళ (glyph_సమితి.get_population () * hb_బిట్టు_storage ((గుర్తులేని) range_రికార్డు.len)
 	< get_population ())
     {
-      for (hb_codepoint_t g : glyph_set)
+      కొరకు (hb_codepoint_t g : glyph_సమితి)
       {
-	unsigned klass = get_class (g);
-	if (!klass) continue;
+	గుర్తులేని klass = get_class (g);
+	ఒకవేళ (!klass) కొనసాగు;
 	hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	if (new_gid == HB_MAP_VALUE_INVALID) continue;
-	if (glyph_filter && !glyph_filter->has (g)) continue;
+	ఒకవేళ (new_gid == HB_MAP_విలువ_INVALID) కొనసాగు;
+	ఒకవేళ (glyph_filter && !glyph_filter->has (g)) కొనసాగు;
 	glyph_and_klass.push (hb_pair (new_gid, klass));
-	orig_klasses.add (klass);
+	orig_klasses.కూడు (klass);
       }
     }
-    else
+    లేకపోతే
     {
-      unsigned num_source_glyphs = c->plan->source->get_num_glyphs ();
-      for (auto &range : rangeRecord)
+      గుర్తులేని అంకె_ఆధారం_glyphs = c->plan->ఆధారం->get_అంకె_glyphs ();
+      కొరకు (స్వయంచాలక &range : range_రికార్డు)
       {
-	unsigned klass = range.value;
-	if (!klass) continue;
-	hb_codepoint_t start = range.first;
-	hb_codepoint_t end   = hb_min (range.last + 1, num_source_glyphs);
-	for (hb_codepoint_t g = start; g < end; g++)
+	గుర్తులేని klass = range.value;
+	ఒకవేళ (!klass) కొనసాగు;
+	hb_codepoint_t ప్రారంభం = range.మొదటి;
+	hb_codepoint_t చివర   = hb_min (range.చివరి + 1, అంకె_ఆధారం_glyphs);
+	కొరకు (hb_codepoint_t g = ప్రారంభం; g < చివర; g++)
 	{
 	  hb_codepoint_t new_gid = c->plan->map_gsub_glyph (g);
-	  if (new_gid == HB_MAP_VALUE_INVALID) continue;
-	  if (glyph_filter && !glyph_filter->has (g)) continue;
+	  ఒకవేళ (new_gid == HB_MAP_విలువ_INVALID) కొనసాగు;
+	  ఒకవేళ (glyph_filter && !glyph_filter->has (g)) కొనసాగు;
 
 	  glyph_and_klass.push (hb_pair (new_gid, klass));
-	  orig_klasses.add (klass);
+	  orig_klasses.కూడు (klass);
 	}
       }
     }
 
-    const hb_set_t& glyphset = *c->plan->glyphset_gsub ();
-    unsigned glyph_count = glyph_filter
+    స్థిరరాశి hb_సమితి_t& glyphset = *c->plan->glyphset_gsub ();
+    గుర్తులేని glyph_లెక్క = glyph_filter
                            ? hb_len (hb_iter (glyphset) | hb_filter (glyph_filter))
                            : glyphset.get_population ();
-    use_class_zero = use_class_zero && glyph_count <= glyph_and_klass.length;
-    if (!ClassDef_remap_and_serialize (c->serializer,
+    use_class_zero = use_class_zero && glyph_లెక్క <= glyph_and_klass.నిడివి;
+    ఒకవేళ (!ClassDef_remap_and_serialize (c->serializer,
                                        orig_klasses,
                                        use_class_zero,
                                        glyph_and_klass,
                                        klass_map))
-      return_trace (false);
-    return_trace (keep_empty_table || (bool) glyph_and_klass);
+      return_trace (అబద్ధం);
+    return_trace (keep_ఖాళీలు_పట్టిక || (తార్కిక) glyph_and_klass);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (rangeRecord.sanitize (c));
+    TRACE_SANITIZE (ఇది);
+    return_trace (range_రికార్డు.sanitize (c));
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  గుర్తులేని ఖర్చు () స్థిరరాశి { తిరిగి hb_బిట్టు_storage ((గుర్తులేని) range_రికార్డు.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
   {
-    for (auto &range : rangeRecord)
-      if (range.value)
-	if (unlikely (!range.collect_coverage (glyphs)))
-	  return false;
-    return true;
+    కొరకు (స్వయంచాలక &range : range_రికార్డు)
+      ఒకవేళ (range.value)
+	ఒకవేళ (unlikely (!range.collect_coverage (glyphs)))
+	  తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned int klass) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_class (సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం klass) స్థిరరాశి
   {
-    for (auto &range : rangeRecord)
+    కొరకు (స్వయంచాలక &range : range_రికార్డు)
     {
-      if (range.value == klass)
-	if (unlikely (!range.collect_coverage (glyphs)))
-	  return false;
+      ఒకవేళ (range.value == klass)
+	ఒకవేళ (unlikely (!range.collect_coverage (glyphs)))
+	  తిరిగి అబద్ధం;
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    ఒకవేళ (range_రికార్డు.len > glyphs->get_population () * hb_బిట్టు_storage ((గుర్తులేని) range_రికార్డు.len))
     {
-      for (auto g : *glyphs)
-        if (get_class (g))
-	  return true;
-      return false;
+      కొరకు (స్వయంచాలక g : *glyphs)
+        ఒకవేళ (get_class (g))
+	  తిరిగి నిజం;
+      తిరిగి అబద్ధం;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const RangeRecord<Types> &range) { return range.intersects (*glyphs) && range.value; }));
+    తిరిగి hb_any (+ hb_iter (range_రికార్డు)
+                   | hb_map ([glyphs] (స్థిరరాశి Range_రికార్డు<Types> &range) { తిరిగి range.intersects (*glyphs) && range.value; }));
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned klass) const
+  తార్కిక intersects_class (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని klass) స్థిరరాశి
   {
-    if (klass == 0)
+    ఒకవేళ (klass == 0)
     {
       /* An empty ClassDef assigns class zero to every glyph, so it intersects
        * class zero as long as there is any glyph at all.  The loop below is a
        * no-op when there are no ranges, and the `g != HB_SET_VALUE_INVALID`
        * guard after it would then wrongly report no intersection. */
-      if (!rangeRecord.len)
-        return !glyphs->is_empty ();
+      ఒకవేళ (!range_రికార్డు.len)
+        తిరిగి !glyphs->is_empty ();
 
       /* Match if there's any glyph that is not listed! */
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      hb_codepoint_t last = HB_SET_VALUE_INVALID;
-      auto it = hb_iter (rangeRecord);
-      for (auto &range : it)
+      hb_codepoint_t g = HB_సమితి_విలువ_INVALID;
+      hb_codepoint_t చివరి = HB_సమితి_విలువ_INVALID;
+      స్వయంచాలక it = hb_iter (range_రికార్డు);
+      కొరకు (స్వయంచాలక &range : it)
       {
-        if (it->first == last + 1)
+        ఒకవేళ (it->మొదటి == చివరి + 1)
 	{
 	  it++;
-	  continue;
+	  కొనసాగు;
 	}
 
-	if (!glyphs->next (&g))
-	  break;
-	if (g < range.first)
-	  return true;
-	g = range.last;
-	last = g;
+	ఒకవేళ (!glyphs->next (&g))
+	  ఆపు;
+	ఒకవేళ (g < range.మొదటి)
+	  తిరిగి నిజం;
+	g = range.చివరి;
+	చివరి = g;
       }
-      if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
-	return true;
+      ఒకవేళ (g != HB_సమితి_విలువ_INVALID && glyphs->next (&g))
+	తిరిగి నిజం;
       /* Fall through. */
     }
-    for (const auto &range : rangeRecord)
-      if (range.value == klass && range.intersects (*glyphs))
-	return true;
-    return false;
+    కొరకు (స్థిరరాశి స్వయంచాలక &range : range_రికార్డు)
+      ఒకవేళ (range.value == klass && range.intersects (*glyphs))
+	తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
+  శూన్య intersected_class_glyphs (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని klass, hb_సమితి_t *intersect_glyphs) స్థిరరాశి
   {
-    if (klass == 0)
+    ఒకవేళ (klass == 0)
     {
-      hb_codepoint_t g = HB_SET_VALUE_INVALID;
-      for (auto &range : rangeRecord)
+      hb_codepoint_t g = HB_సమితి_విలువ_INVALID;
+      కొరకు (స్వయంచాలక &range : range_రికార్డు)
       {
-	if (!glyphs->next (&g))
-	  goto done;
-	while (g < range.first)
+	ఒకవేళ (!glyphs->next (&g))
+	  వెళ్ళు పూర్తి;
+	అయితే (g < range.మొదటి)
 	{
-	  intersect_glyphs->add (g);
-	  if (!glyphs->next (&g))
-	    goto done;
+	  intersect_glyphs->కూడు (g);
+	  ఒకవేళ (!glyphs->next (&g))
+	    వెళ్ళు పూర్తి;
         }
-        g = range.last;
+        g = range.చివరి;
       }
-      while (glyphs->next (&g))
-	intersect_glyphs->add (g);
-      done:
+      అయితే (glyphs->next (&g))
+	intersect_glyphs->కూడు (g);
+      పూర్తి:
 
-      return;
+      తిరిగి;
     }
 
-    unsigned count = rangeRecord.len;
-    if (count > glyphs->get_population () * hb_bit_storage (count))
+    గుర్తులేని లెక్క = range_రికార్డు.len;
+    ఒకవేళ (లెక్క > glyphs->get_population () * hb_బిట్టు_storage (లెక్క))
     {
-      for (auto g : *glyphs)
+      కొరకు (స్వయంచాలక g : *glyphs)
       {
-        unsigned i;
-        if (rangeRecord.as_array ().bfind (g, &i) &&
-	    rangeRecord.arrayZ[i].value == klass)
-	  intersect_glyphs->add (g);
+        గుర్తులేని i;
+        ఒకవేళ (range_రికార్డు.as_array ().bfind (g, &i) &&
+	    range_రికార్డు.arrayZ[i].value == klass)
+	  intersect_glyphs->కూడు (g);
       }
-      return;
+      తిరిగి;
     }
 
-    for (auto &range : rangeRecord)
+    కొరకు (స్వయంచాలక &range : range_రికార్డు)
     {
-      if (range.value != klass) continue;
+      ఒకవేళ (range.value != klass) కొనసాగు;
 
-      unsigned end = range.last + 1;
-      for (hb_codepoint_t g = range.first - 1;
-	   glyphs->next (&g) && g < end;)
-	intersect_glyphs->add (g);
+      గుర్తులేని చివర = range.చివరి + 1;
+      కొరకు (hb_codepoint_t g = range.మొదటి - 1;
+	   glyphs->next (&g) && g < చివర;)
+	intersect_glyphs->కూడు (g);
     }
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  శూన్య intersected_classes (స్థిరరాశి hb_సమితి_t *glyphs, hb_సమితి_t *intersect_classes) స్థిరరాశి
   {
-    if (glyphs->is_empty ()) return;
+    ఒకవేళ (glyphs->is_empty ()) తిరిగి;
 
     /* An empty ClassDef assigns class zero to every glyph, so every glyph in
      * `glyphs` intersects class zero.  Handle it up front: the loops below are
      * no-ops when there are no ranges, and the `g != HB_SET_VALUE_INVALID`
      * guard would then wrongly skip adding class zero. */
-    if (!rangeRecord.len)
+    ఒకవేళ (!range_రికార్డు.len)
     {
-      intersect_classes->add (0);
-      return;
+      intersect_classes->కూడు (0);
+      తిరిగి;
     }
 
-    hb_codepoint_t g = HB_SET_VALUE_INVALID;
-    for (auto &range : rangeRecord)
+    hb_codepoint_t g = HB_సమితి_విలువ_INVALID;
+    కొరకు (స్వయంచాలక &range : range_రికార్డు)
     {
-      if (!glyphs->next (&g))
-        break;
-      if (g < range.first)
+      ఒకవేళ (!glyphs->next (&g))
+        ఆపు;
+      ఒకవేళ (g < range.మొదటి)
       {
-        intersect_classes->add (0);
-        break;
+        intersect_classes->కూడు (0);
+        ఆపు;
       }
-      g = range.last;
+      g = range.చివరి;
     }
-    if (g != HB_SET_VALUE_INVALID && glyphs->next (&g))
-      intersect_classes->add (0);
+    ఒకవేళ (g != HB_సమితి_విలువ_INVALID && glyphs->next (&g))
+      intersect_classes->కూడు (0);
 
-    for (const auto& range : rangeRecord)
-      if (range.intersects (*glyphs))
-        intersect_classes->add (range.value);
+    కొరకు (స్థిరరాశి స్వయంచాలక& range : range_రికార్డు)
+      ఒకవేళ (range.intersects (*glyphs))
+        intersect_classes->కూడు (range.value);
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	classFormat;	/* Format identifier--format = 2 */
-  typename Types::template SortedArrayOf<RangeRecord<Types>>
-		rangeRecord;	/* Array of glyph ranges--ordered by
+  రకం_పేరు Types::మూస Sorted_Array_యొక్క<Range_రికార్డు<Types>>
+		range_రికార్డు;	/* Array of glyph ranges--ordered by
 				 * Start GlyphID */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::size, rangeRecord);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2 + Types::కొలత, range_రికార్డు);
 };
 
-struct ClassDef
+నిర్మాణం ClassDef
 {
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  గుర్తులేని క్రియాకారకం [] (hb_codepoint_t k) స్థిరరాశి { తిరిగి get (k); }
+  తార్కిక has (hb_codepoint_t k) స్థిరరాశి { తిరిగి (*ఇది)[k]; }
   /* Projection. */
-  hb_codepoint_t operator () (hb_codepoint_t k) const { return get (k); }
+  hb_codepoint_t క్రియాకారకం () (hb_codepoint_t k) స్థిరరాశి { తిరిగి get (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_class (k); }
-  unsigned int get_class (hb_codepoint_t glyph_id) const
+  గుర్తులేని పూర్ణాంకం get (hb_codepoint_t k) స్థిరరాశి { తిరిగి get_class (k); }
+  గుర్తులేని పూర్ణాంకం get_class (hb_codepoint_t glyph_id) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_class (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_class (glyph_id);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_class (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_class (glyph_id);
-#endif
-    default:return 0;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_class (glyph_id);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.get_class (glyph_id);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_class (glyph_id);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.get_class (glyph_id);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి 0;
     }
   }
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  hb_ot_layout_mapping_cache_t *cache) const
+  గుర్తులేని పూర్ణాంకం get_class (hb_codepoint_t glyph_id,
+			  hb_ot_layout_mapping_cache_t *cache) స్థిరరాశి
   {
-    unsigned klass;
-    if (cache && cache->get (glyph_id, &klass)) return klass;
+    గుర్తులేని klass;
+    ఒకవేళ (cache && cache->get (glyph_id, &klass)) తిరిగి klass;
     klass = get_class (glyph_id);
-    if (cache) cache->set (glyph_id, klass);
-    return klass;
+    ఒకవేళ (cache) cache->సమితి (glyph_id, klass);
+    తిరిగి klass;
   }
 
-  unsigned get_population () const
+  గుర్తులేని get_population () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
-#endif
-    default:return NOT_COVERED;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_population ();
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.get_population ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.get_population ();
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.get_population ();
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి NOT_COVERED;
     }
   }
 
-  template<typename Iterator,
-	   hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator it_with_class_zero)
+  మూస<రకం_పేరు Iterator,
+	   hb_requires (hb_is_sorted_ఆధారం_యొక్క (Iterator, hb_codepoint_t))>
+  తార్కిక serialize (hb_serialize_context_t *c, Iterator it_with_class_zero)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    auto glyphs = + it_with_class_zero | hb_filter (hb_second);
+    స్వయంచాలక glyphs = + it_with_class_zero | hb_filter (hb_రెండవ);
 
-    unsigned format = 2;
+    గుర్తులేని format = 2;
     hb_codepoint_t glyph_max = 0;
-    unsigned class_max = 0;
-    if (likely (glyphs))
+    గుర్తులేని class_max = 0;
+    ఒకవేళ (likely (glyphs))
     {
-      hb_codepoint_t glyph_min = (*glyphs).first;
+      hb_codepoint_t glyph_min = (*glyphs).మొదటి;
       glyph_max = glyph_min;
 
-      unsigned num_ranges = 1;
+      గుర్తులేని అంకె_ranges = 1;
       hb_codepoint_t prev_gid = glyph_min;
-      unsigned prev_klass = (*glyphs).second;
+      గుర్తులేని prev_klass = (*glyphs).second;
 
-      for (const auto gid_klass_pair : + glyphs)
+      కొరకు (స్థిరరాశి స్వయంచాలక gid_klass_pair : + glyphs)
       {
-	hb_codepoint_t cur_gid = gid_klass_pair.first;
-	unsigned cur_klass = gid_klass_pair.second;
-	if (cur_klass > class_max) class_max = cur_klass;
-	if (cur_gid == glyph_min) continue;
-        if (cur_gid > glyph_max) glyph_max = cur_gid;
-	if (cur_gid != prev_gid + 1 ||
+	hb_codepoint_t cur_gid = gid_klass_pair.మొదటి;
+	గుర్తులేని cur_klass = gid_klass_pair.second;
+	ఒకవేళ (cur_klass > class_max) class_max = cur_klass;
+	ఒకవేళ (cur_gid == glyph_min) కొనసాగు;
+        ఒకవేళ (cur_gid > glyph_max) glyph_max = cur_gid;
+	ఒకవేళ (cur_gid != prev_gid + 1 ||
 	    cur_klass != prev_klass)
-	  num_ranges++;
+	  అంకె_ranges++;
 
 	prev_gid = cur_gid;
 	prev_klass = cur_klass;
       }
 
-      uint64_t best_size = UINT64_MAX;
-      unsigned glyph_span = glyph_max - glyph_min + 1;
-      auto consider = [&] (unsigned candidate, uint64_t size)
+      uint64_t ఉత్తమ_కొలత = UINT64_MAX;
+      గుర్తులేని glyph_పరిధి = glyph_max - glyph_min + 1;
+      స్వయంచాలక consider = [&] (గుర్తులేని candidate, uint64_t కొలత)
       {
-	if (size >= best_size) return;
-	best_size = size;
+	ఒకవేళ (కొలత >= ఉత్తమ_కొలత) తిరిగి;
+	ఉత్తమ_కొలత = కొలత;
 	format = candidate;
       };
 
-      if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
-	consider (1, 6 + (uint64_t) HBUINT16::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFu && num_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
-	consider (2, 4 + (uint64_t) num_ranges *
-		     (2 * HBGlyphID16::static_size + HBUINT16::static_size));
-#ifndef HB_NO_BEYOND_64K
-      if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
-	consider (3, 8 + (uint64_t) HBUINT24::static_size * glyph_span);
-      if (glyph_max <= 0xFFFFFFu && num_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
-	consider (4, 5 + (uint64_t) num_ranges *
-		     (2 * HBGlyphID24::static_size + HBUINT16::static_size));
-#endif
-      if (unlikely (best_size == UINT64_MAX))
+      ఒకవేళ (glyph_max <= 0xFFFFu && glyph_పరిధి <= 0xFFFFu && class_max <= 0xFFFFu)
+	consider (1, 6 + (uint64_t) HBUINT16::static_కొలత * glyph_పరిధి);
+      ఒకవేళ (glyph_max <= 0xFFFFu && అంకె_ranges <= 0xFFFFu && class_max <= 0xFFFFu)
+	consider (2, 4 + (uint64_t) అంకె_ranges *
+		     (2 * HBGlyphID16::static_కొలత + HBUINT16::static_కొలత));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+      ఒకవేళ (glyph_max <= 0xFFFFFFu && glyph_పరిధి <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
+	consider (3, 8 + (uint64_t) HBUINT24::static_కొలత * glyph_పరిధి);
+      ఒకవేళ (glyph_max <= 0xFFFFFFu && అంకె_ranges <= 0xFFFFFFu && class_max <= 0xFFFFu)
+	consider (4, 5 + (uint64_t) అంకె_ranges *
+		     (2 * HBGlyphID24::static_కొలత + HBUINT16::static_కొలత));
+#అయితే_ముగింపు
+      ఒకవేళ (unlikely (ఉత్తమ_కొలత == UINT64_MAX))
       {
-	c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-	return_trace (false);
+	c->check_success (అబద్ధం, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం);
+	return_trace (అబద్ధం);
       }
     }
 
     u.format.v = format;
 
-    switch (u.format.v)
+    ఎంపిక (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, + it_with_class_zero | hb_filter (hb_second)));
-#endif
-    default:return_trace (false);
+    స్థితి 1: hb_barrier (); return_trace (u.format1.serialize (c, + it_with_class_zero | hb_filter (hb_రెండవ)));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.serialize (c, + it_with_class_zero | hb_filter (hb_రెండవ)));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); return_trace (u.format3.serialize (c, + it_with_class_zero | hb_filter (hb_రెండవ)));
+    స్థితి 4: hb_barrier (); return_trace (u.format4.serialize (c, + it_with_class_zero | hb_filter (hb_రెండవ)));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_map_t *klass_map = nullptr /*OUT*/,
-               bool keep_empty_table = true,
-               bool use_class_zero = true,
-               const Coverage* glyph_filter = nullptr) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_map_t *klass_map = శూన్యసూచిక /*OUT*/,
+               తార్కిక keep_ఖాళీలు_పట్టిక = నిజం,
+               తార్కిక use_class_zero = నిజం,
+               స్థిరరాశి Coverage* glyph_filter = శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-    case 4: hb_barrier (); return_trace (u.format4.subset (c, klass_map, keep_empty_table, use_class_zero, glyph_filter));
-#endif
-    default:return_trace (false);
+    TRACE_SUBSET (ఇది);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.subset (c, klass_map, keep_ఖాళీలు_పట్టిక, use_class_zero, glyph_filter));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.subset (c, klass_map, keep_ఖాళీలు_పట్టిక, use_class_zero, glyph_filter));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); return_trace (u.format3.subset (c, klass_map, keep_ఖాళీలు_పట్టిక, use_class_zero, glyph_filter));
+    స్థితి 4: hb_barrier (); return_trace (u.format4.subset (c, klass_map, keep_ఖాళీలు_పట్టిక, use_class_zero, glyph_filter));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!u.format.v.sanitize (c)) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-#endif
-    default:return_trace (true);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    స్థితి 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    స్థితి 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
-  unsigned cost () const
+  గుర్తులేని ఖర్చు () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
-#endif
-    default:return 0u;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.ఖర్చు ();
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.ఖర్చు ();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.ఖర్చు ();
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.ఖర్చు ();
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_coverage (సమితి_t *glyphs) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
-#endif
-    default:return false;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.collect_coverage (glyphs);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.collect_coverage (glyphs);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.collect_coverage (glyphs);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.collect_coverage (glyphs);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename set_t>
-  bool collect_class (set_t *glyphs, unsigned int klass) const
+  మూస <రకం_పేరు సమితి_t>
+  తార్కిక collect_class (సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం klass) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.collect_class (glyphs, klass);
-    case 2: hb_barrier (); return u.format2.collect_class (glyphs, klass);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_class (glyphs, klass);
-    case 4: hb_barrier (); return u.format4.collect_class (glyphs, klass);
-#endif
-    default:return false;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.collect_class (glyphs, klass);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.collect_class (glyphs, klass);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.collect_class (glyphs, klass);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.collect_class (glyphs, klass);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  తార్కిక intersects (స్థిరరాశి hb_సమితి_t *glyphs) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
-#endif
-    default:return false;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersects (glyphs);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersects (glyphs);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersects (glyphs);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersects (glyphs);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
-  bool intersects_class (const hb_set_t *glyphs, unsigned int klass) const
+  తార్కిక intersects_class (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని పూర్ణాంకం klass) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersects_class (glyphs, klass);
-    case 2: hb_barrier (); return u.format2.intersects_class (glyphs, klass);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_class (glyphs, klass);
-    case 4: hb_barrier (); return u.format4.intersects_class (glyphs, klass);
-#endif
-    default:return false;
-    }
-  }
-
-  void intersected_class_glyphs (const hb_set_t *glyphs, unsigned klass, hb_set_t *intersect_glyphs) const
-  {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
-#endif
-    default:return;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersects_class (glyphs, klass);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersects_class (glyphs, klass);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersects_class (glyphs, klass);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersects_class (glyphs, klass);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
-  void intersected_classes (const hb_set_t *glyphs, hb_set_t *intersect_classes) const
+  శూన్య intersected_class_glyphs (స్థిరరాశి hb_సమితి_t *glyphs, గుర్తులేని klass, hb_సమితి_t *intersect_glyphs) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.intersected_classes (glyphs, intersect_classes);
-    case 2: hb_barrier (); return u.format2.intersected_classes (glyphs, intersect_classes);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersected_classes (glyphs, intersect_classes);
-    case 4: hb_barrier (); return u.format4.intersected_classes (glyphs, intersect_classes);
-#endif
-    default:return;
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersected_class_glyphs (glyphs, klass, intersect_glyphs);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి;
+    }
+  }
+
+  శూన్య intersected_classes (స్థిరరాశి hb_సమితి_t *glyphs, hb_సమితి_t *intersect_classes) స్థిరరాశి
+  {
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.intersected_classes (glyphs, intersect_classes);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.intersected_classes (glyphs, intersect_classes);
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.intersected_classes (glyphs, intersect_classes);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.intersected_classes (glyphs, intersect_classes);
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి;
     }
   }
 
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }	format;		/* Format identifier */
   ClassDefFormat1_3<SmallTypes>	format1;
   ClassDefFormat2_4<SmallTypes>	format2;
-#ifndef HB_NO_BEYOND_64K
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
   ClassDefFormat1_3<MediumTypes>format3;
   ClassDefFormat2_4<MediumTypes>format4;
-#endif
+#అయితే_ముగింపు
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (2, format.v);
 };
 
-template<typename Iterator>
-static inline bool ClassDef_serialize (hb_serialize_context_t *c,
+మూస<రకం_పేరు Iterator>
+స్థిర అంతఃవరుస తార్కిక ClassDef_serialize (hb_serialize_context_t *c,
 				       Iterator it)
-{ return (c->start_embed<ClassDef> ()->serialize (c, it)); }
+{ తిరిగి (c->ప్రారంభం_embed<ClassDef> ()->serialize (c, it)); }
 
 
 /*
@@ -2367,533 +2367,533 @@ static inline bool ClassDef_serialize (hb_serialize_context_t *c,
  */
 
 /* ported from fonttools (class _Encoding) */
-struct delta_row_encoding_t
+నిర్మాణం delta_అడ్డువరుస_encoding_t
 {
   /* each byte represents a region, value is one of 0/1/2/4, which means bytes
    * needed for this region */
-  struct chars_t : hb_vector_t<uint8_t>
+  నిర్మాణం chars_t : hb_సదిశ_t<uint8_t>
   {
-    int cmp (const chars_t& other) const
+    పూర్ణాంకం cmp (స్థిరరాశి chars_t& other) స్థిరరాశి
     {
-      return as_array ().cmp (other.as_array ());
+      తిరిగి as_array ().cmp (other.as_array ());
     }
 
-    hb_pair_t<unsigned, unsigned> get_width ()
+    hb_pair_t<గుర్తులేని, గుర్తులేని> get_వెడల్పు ()
     {
-      unsigned width = 0;
-      unsigned columns = 0;
-      for (unsigned i = 0; i < length; i++)
+      గుర్తులేని వెడల్పు = 0;
+      గుర్తులేని columns = 0;
+      కొరకు (గుర్తులేని i = 0; i < నిడివి; i++)
       {
-	unsigned v = arrayZ[i];
-	width += v;
+	గుర్తులేని v = arrayZ[i];
+	వెడల్పు += v;
 	columns += (v != 0);
       }
-      return hb_pair (width, columns);
+      తిరిగి hb_pair (వెడల్పు, columns);
     }
 
     HB_HOT
-    hb_pair_t<unsigned, unsigned> combine_width (const chars_t& other) const
+    hb_pair_t<గుర్తులేని, గుర్తులేని> combine_వెడల్పు (స్థిరరాశి chars_t& other) స్థిరరాశి
     {
-      unsigned combined_width = 0;
-      unsigned combined_columns = 0;
-      for (unsigned i = 0; i < length; i++)
+      గుర్తులేని combined_వెడల్పు = 0;
+      గుర్తులేని combined_columns = 0;
+      కొరకు (గుర్తులేని i = 0; i < నిడివి; i++)
       {
-        unsigned v = hb_max (arrayZ[i], other.arrayZ[i]);
-	combined_width += v;
+        గుర్తులేని v = hb_max (arrayZ[i], other.arrayZ[i]);
+	combined_వెడల్పు += v;
 	combined_columns += (v != 0);
       }
-      return hb_pair (combined_width, combined_columns);
+      తిరిగి hb_pair (combined_వెడల్పు, combined_columns);
     }
   };
 
-  hb_pair_t<unsigned, unsigned> combine_width (const delta_row_encoding_t& other_encoding) const { return chars.combine_width (other_encoding.chars); }
+  hb_pair_t<గుర్తులేని, గుర్తులేని> combine_వెడల్పు (స్థిరరాశి delta_అడ్డువరుస_encoding_t& other_encoding) స్థిరరాశి { తిరిగి chars.combine_వెడల్పు (other_encoding.chars); }
 
   // Actual data
 
   chars_t chars;
-  unsigned width = 0;
-  unsigned overhead = 0;
-  hb_vector_t<const hb_vector_t<int>*> items;
+  గుర్తులేని వెడల్పు = 0;
+  గుర్తులేని overhead = 0;
+  hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>*> వస్తువులు;
 
-  delta_row_encoding_t () = default;
-  delta_row_encoding_t (hb_vector_t<const hb_vector_t<int>*> &&rows, unsigned num_cols)
+  delta_అడ్డువరుస_encoding_t () = అప్రమేయ;
+  delta_అడ్డువరుస_encoding_t (hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>*> &&అడ్డువరుసలు, గుర్తులేని అంకె_నిలువుల_సంఖ్య)
   {
-    assert (rows);
+    ప్రతిజ్ఞా (అడ్డువరుసలు);
 
-    items = std::move (rows);
+    వస్తువులు = std::move (అడ్డువరుసలు);
 
-    if (unlikely (!chars.resize (num_cols)))
-      return;
+    ఒకవేళ (unlikely (!chars.resize (అంకె_నిలువుల_సంఖ్య)))
+      తిరిగి;
 
     calculate_chars ();
   }
 
-  void merge (const delta_row_encoding_t& other)
+  శూన్య విలీనం (స్థిరరాశి delta_అడ్డువరుస_encoding_t& other)
   {
-    items.alloc (items.length + other.items.length);
-    for (auto &row : other.items)
-      add_row (row);
+    వస్తువులు.alloc (వస్తువులు.నిడివి + other.వస్తువులు.నిడివి);
+    కొరకు (స్వయంచాలక &అడ్డువరుస : other.వస్తువులు)
+      కూడు_అడ్డువరుస (అడ్డువరుస);
 
     // Merge chars
-    assert (chars.length == other.chars.length);
-    for (unsigned i = 0; i < chars.length; i++)
+    ప్రతిజ్ఞా (chars.నిడివి == other.chars.నిడివి);
+    కొరకు (గుర్తులేని i = 0; i < chars.నిడివి; i++)
       chars.arrayZ[i] = hb_max (chars.arrayZ[i], other.chars.arrayZ[i]);
-    chars_changed ();
+    chars_మారింది ();
   }
 
-  void chars_changed ()
+  శూన్య chars_మారింది ()
   {
-    auto _ = chars.get_width ();
-    width = _.first;
+    స్వయంచాలక _ = chars.get_వెడల్పు ();
+    వెడల్పు = _.మొదటి;
     overhead = get_chars_overhead (_.second);
   }
 
-  void calculate_chars ()
+  శూన్య calculate_chars ()
   {
-    assert (items);
+    ప్రతిజ్ఞా (వస్తువులు);
 
-    bool long_words = false;
+    తార్కిక long_పదాలు = అబద్ధం;
 
-    for (auto &row : items)
+    కొరకు (స్వయంచాలక &అడ్డువరుస : వస్తువులు)
     {
-      assert (row->length == chars.length);
+      ప్రతిజ్ఞా (అడ్డువరుస->నిడివి == chars.నిడివి);
 
       /* 0/1/2 byte encoding */
-      for (unsigned i = 0; i < row->length; i++)
+      కొరకు (గుర్తులేని i = 0; i < అడ్డువరుస->నిడివి; i++)
       {
-	int v =  row->arrayZ[i];
-	if (v == 0)
-	  continue;
-	else if (v > 32767 || v < -32768)
+	పూర్ణాంకం v =  అడ్డువరుస->arrayZ[i];
+	ఒకవేళ (v == 0)
+	  కొనసాగు;
+	లేకపోతే ఒకవేళ (v > 32767 || v < -32768)
 	{
-	  long_words = true;
+	  long_పదాలు = నిజం;
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 4);
 	}
-	else if (v > 127 || v < -128)
+	లేకపోతే ఒకవేళ (v > 127 || v < -128)
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 2);
-	else
+	లేకపోతే
 	  chars.arrayZ[i] = hb_max (chars.arrayZ[i], 1);
       }
     }
 
-    if (long_words)
+    ఒకవేళ (long_పదాలు)
     {
       // Convert 1s to 2s
-      for (auto &v : chars)
-	if (v == 1)
+      కొరకు (స్వయంచాలక &v : chars)
+	ఒకవేళ (v == 1)
 	  v = 2;
     }
 
-    chars_changed ();
+    chars_మారింది ();
   }
 
-  bool is_empty () const
-  { return !items; }
+  తార్కిక is_empty () స్థిరరాశి
+  { తిరిగి !వస్తువులు; }
 
-  bool in_error () const
-  { return chars.in_error () || items.in_error (); }
+  తార్కిక లోపల_error () స్థిరరాశి
+  { తిరిగి chars.లోపల_error () || వస్తువులు.లోపల_error (); }
 
-  static inline unsigned get_chars_overhead (unsigned num_columns)
+  స్థిర అంతఃవరుస గుర్తులేని get_chars_overhead (గుర్తులేని అంకె_columns)
   {
-    unsigned c = 4 + 6; // 4 bytes for LOffset, 6 bytes for VarData header
-    return c + num_columns * 2;
+    గుర్తులేని c = 4 + 6; // 4 bytes for LOffset, 6 bytes for VarData header
+    తిరిగి c + అంకె_columns * 2;
   }
 
-  unsigned get_gain (unsigned additional_bytes_per_rows = 1) const
+  గుర్తులేని get_gain (గుర్తులేని additional_బైట్లు_చొప్పున_అడ్డువరుసలు = 1) స్థిరరాశి
   {
-    int count = items.length;
-    return hb_max (0, (int) overhead - count * (int) additional_bytes_per_rows);
+    పూర్ణాంకం లెక్క = వస్తువులు.నిడివి;
+    తిరిగి hb_max (0, (పూర్ణాంకం) overhead - లెక్క * (పూర్ణాంకం) additional_బైట్లు_చొప్పున_అడ్డువరుసలు);
   }
 
-  int gain_from_merging (const delta_row_encoding_t& other_encoding) const
+  పూర్ణాంకం gain_from_merging (స్థిరరాశి delta_అడ్డువరుస_encoding_t& other_encoding) స్థిరరాశి
   {
     // Back of the envelope calculations to reject early.
-    signed additional_bytes_per_rows = other_encoding.width - width;
-    if (additional_bytes_per_rows > 0)
+    గుర్తుగల additional_బైట్లు_చొప్పున_అడ్డువరుసలు = other_encoding.వెడల్పు - వెడల్పు;
+    ఒకవేళ (additional_బైట్లు_చొప్పున_అడ్డువరుసలు > 0)
     {
-      if (get_gain (additional_bytes_per_rows) == 0)
-        return 0;
+      ఒకవేళ (get_gain (additional_బైట్లు_చొప్పున_అడ్డువరుసలు) == 0)
+        తిరిగి 0;
     }
-    else
+    లేకపోతే
     {
-      if (other_encoding.get_gain (-additional_bytes_per_rows) == 0)
-	return 0;
+      ఒకవేళ (other_encoding.get_gain (-additional_బైట్లు_చొప్పున_అడ్డువరుసలు) == 0)
+	తిరిగి 0;
     }
 
-    auto pair = combine_width (other_encoding);
-    unsigned combined_width = pair.first;
-    unsigned combined_columns = pair.second;
+    స్వయంచాలక pair = combine_వెడల్పు (other_encoding);
+    గుర్తులేని combined_వెడల్పు = pair.మొదటి;
+    గుర్తులేని combined_columns = pair.second;
 
-    int combined_gain = (int) overhead + (int) other_encoding.overhead;
-    combined_gain -= (combined_width - (int) width) * items.length;
-    combined_gain -= (combined_width - (int) other_encoding.width) * other_encoding.items.length;
+    పూర్ణాంకం combined_gain = (పూర్ణాంకం) overhead + (పూర్ణాంకం) other_encoding.overhead;
+    combined_gain -= (combined_వెడల్పు - (పూర్ణాంకం) వెడల్పు) * వస్తువులు.నిడివి;
+    combined_gain -= (combined_వెడల్పు - (పూర్ణాంకం) other_encoding.వెడల్పు) * other_encoding.వస్తువులు.నిడివి;
     combined_gain -= get_chars_overhead (combined_columns);
 
-    return combined_gain;
+    తిరిగి combined_gain;
   }
 
-  bool add_row (const hb_vector_t<int>* row)
-  { return items.push (row); }
+  తార్కిక కూడు_అడ్డువరుస (స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>* అడ్డువరుస)
+  { తిరిగి వస్తువులు.push (అడ్డువరుస); }
 
-  static int cmp (const void *pa, const void *pb)
+  స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య *pa, స్థిరరాశి శూన్య *pb)
   {
-    const delta_row_encoding_t *a = (const delta_row_encoding_t *)pa;
-    const delta_row_encoding_t *b = (const delta_row_encoding_t *)pb;
+    స్థిరరాశి delta_అడ్డువరుస_encoding_t *a = (స్థిరరాశి delta_అడ్డువరుస_encoding_t *)pa;
+    స్థిరరాశి delta_అడ్డువరుస_encoding_t *b = (స్థిరరాశి delta_అడ్డువరుస_encoding_t *)pb;
 
-    if (a->width != b->width)
-      return (int) a->width - (int) b->width;
+    ఒకవేళ (a->వెడల్పు != b->వెడల్పు)
+      తిరిగి (పూర్ణాంకం) a->వెడల్పు - (పూర్ణాంకం) b->వెడల్పు;
 
-    return b->chars.cmp (a->chars);
+    తిరిగి b->chars.cmp (a->chars);
   }
 };
 
-struct VarRegionAxis
+నిర్మాణం VarRegionAxis
 {
-  float evaluate (int coord) const
+  దశాంశం evaluate (పూర్ణాంకం coord) స్థిరరాశి
   {
-    int peak = peakCoord.to_int ();
-    if (peak == 0 || coord == peak)
-      return 1.f;
-    else if (coord == 0) // Faster
-      return 0.f;
+    పూర్ణాంకం peak = peakCoord.గమ్యం_int ();
+    ఒకవేళ (peak == 0 || coord == peak)
+      తిరిగి 1.f;
+    లేకపోతే ఒకవేళ (coord == 0) // Faster
+      తిరిగి 0.f;
 
-    int start = startCoord.to_int (), end = endCoord.to_int ();
+    పూర్ణాంకం ప్రారంభం = ప్రారంభం_Coord.గమ్యం_int (), చివర = చివర_Coord.గమ్యం_int ();
 
     /* TODO Move these to sanitize(). */
-    if (unlikely (start > peak || peak > end))
-      return 1.f;
-    if (unlikely (start < 0 && end > 0))
-      return 1.f;
+    ఒకవేళ (unlikely (ప్రారంభం > peak || peak > చివర))
+      తిరిగి 1.f;
+    ఒకవేళ (unlikely (ప్రారంభం < 0 && చివర > 0))
+      తిరిగి 1.f;
 
-    if (coord <= start || end <= coord)
-      return 0.f;
+    ఒకవేళ (coord <= ప్రారంభం || చివర <= coord)
+      తిరిగి 0.f;
 
     /* Interpolate */
-    if (coord < peak)
-      return float (coord - start) / (peak - start);
-    else
-      return float (end - coord) / (end - peak);
+    ఒకవేళ (coord < peak)
+      తిరిగి దశాంశం (coord - ప్రారంభం) / (peak - ప్రారంభం);
+    లేకపోతే
+      తిరిగి దశాంశం (చివర - coord) / (చివర - peak);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  తార్కిక serialize (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed (ఇది));
   }
 
-  public:
-  F2DOT14	startCoord;
+  బహిరంగ:
+  F2DOT14	ప్రారంభం_Coord;
   F2DOT14	peakCoord;
-  F2DOT14	endCoord;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  F2DOT14	చివర_Coord;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
-struct SparseVarRegionAxis
+నిర్మాణం SparseVarRegionAxis
 {
-  float evaluate (const int *coords, unsigned int coord_len) const
+  దశాంశం evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len) స్థిరరాశి
   {
-    unsigned i = axisIndex;
-    int coord = i < coord_len ? coords[i] : 0;
-    return axis.evaluate (coord);
+    గుర్తులేని i = axis_సూచీ_2;
+    పూర్ణాంకం coord = i < coord_len ? coords[i] : 0;
+    తిరిగి axis.evaluate (coord);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVarRegionAxis *src,
-		  const hb_map_t *axis_map)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి SparseVarRegionAxis *src,
+		  స్థిరరాశి hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (src);
-    if (unlikely (!out)) return_trace (false);
-    if (axis_map)
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->embed (src);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
+    ఒకవేళ (axis_map)
     {
-      if (unlikely (!axis_map->has (out->axisIndex)))
+      ఒకవేళ (unlikely (!axis_map->has (బహిర్గతం->axis_సూచీ_2)))
       {
 	c->err (HB_SERIALIZE_ERROR_OTHER);
-	return_trace (false);
+	return_trace (అబద్ధం);
       }
-      if (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
-				    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-	return_trace (false);
+      ఒకవేళ (unlikely (!c->check_కేటాయించు (బహిర్గతం->axis_సూచీ_2, axis_map->get (బహిర్గతం->axis_సూచీ_2),
+				    HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+	return_trace (అబద్ధం);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  public:
-  HBUINT16 axisIndex;
+  బహిరంగ:
+  HBUINT16 axis_సూచీ_2;
   VarRegionAxis axis;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct hb_scalar_cache_t
+నిర్మాణం hb_scalar_cache_t
 {
-  private:
-  static constexpr unsigned STATIC_LENGTH = 128;
-  static constexpr float INVALID = NAN;
+  అంతరంగ:
+  స్థిర constexpr గుర్తులేని STATIC_నిడివి = 128;
+  స్థిర constexpr దశాంశం INVALID = NAN;
 
-  public:
+  బహిరంగ:
   hb_scalar_cache_t () {}
 
-  hb_scalar_cache_t (const hb_scalar_cache_t&) = delete;
-  hb_scalar_cache_t (hb_scalar_cache_t&&) = delete;
-  hb_scalar_cache_t& operator= (const hb_scalar_cache_t&) = delete;
-  hb_scalar_cache_t& operator= (hb_scalar_cache_t&&) = delete;
+  hb_scalar_cache_t (స్థిరరాశి hb_scalar_cache_t&) = తొలగించు;
+  hb_scalar_cache_t (hb_scalar_cache_t&&) = తొలగించు;
+  hb_scalar_cache_t& క్రియాకారకం= (స్థిరరాశి hb_scalar_cache_t&) = తొలగించు;
+  hb_scalar_cache_t& క్రియాకారకం= (hb_scalar_cache_t&&) = తొలగించు;
 
-  static hb_scalar_cache_t *create (unsigned int count,
-				    hb_scalar_cache_t *scratch_cache = nullptr)
+  స్థిర hb_scalar_cache_t *create (గుర్తులేని పూర్ణాంకం లెక్క,
+				    hb_scalar_cache_t *scratch_cache = శూన్యసూచిక)
   {
-    if (!count) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    ఒకవేళ (!లెక్క) తిరిగి (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    if (scratch_cache && count <= STATIC_LENGTH)
+    ఒకవేళ (scratch_cache && లెక్క <= STATIC_నిడివి)
     {
-      scratch_cache->length = count;
+      scratch_cache->నిడివి = లెక్క;
       scratch_cache->clear ();
-      return scratch_cache;
+      తిరిగి scratch_cache;
     }
 
-    auto *cache = (hb_scalar_cache_t *) hb_malloc (sizeof (hb_scalar_cache_t) - sizeof (static_values) + sizeof (static_values[0]) * count);
-    if (unlikely (!cache)) return (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
+    స్వయంచాలక *cache = (hb_scalar_cache_t *) hb_malloc (పరిమాణం (hb_scalar_cache_t) - పరిమాణం (static_విలువలు) + పరిమాణం (static_విలువలు[0]) * లెక్క);
+    ఒకవేళ (unlikely (!cache)) తిరిగి (hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-    cache->length = count;
+    cache->నిడివి = లెక్క;
     cache->clear ();
 
-    return cache;
+    తిరిగి cache;
   }
 
-  static void destroy (hb_scalar_cache_t *cache,
-		       hb_scalar_cache_t *scratch_cache = nullptr)
+  స్థిర శూన్య destroy (hb_scalar_cache_t *cache,
+		       hb_scalar_cache_t *scratch_cache = శూన్యసూచిక)
   {
-    if (cache != &Null(hb_scalar_cache_t) && cache != scratch_cache)
+    ఒకవేళ (cache != &Null(hb_scalar_cache_t) && cache != scratch_cache)
       hb_free (cache);
   }
 
-  void clear ()
+  శూన్య clear ()
   {
-    auto *values = &static_values[0];
-    unsigned i = 0;
-#ifndef HB_OPTIMIZE_SIZE
-    for (; i + 3 < length; i += 4)
+    స్వయంచాలక *values = &static_విలువలు[0];
+    గుర్తులేని i = 0;
+#నిర్వచితం_కాకపోతే HB_OPTIMIZE_కొలత
+    కొరకు (; i + 3 < నిడివి; i += 4)
     {
       values[i + 0] = INVALID;
       values[i + 1] = INVALID;
       values[i + 2] = INVALID;
       values[i + 3] = INVALID;
     }
-#endif
-    for (; i < length; i++)
+#అయితే_ముగింపు
+    కొరకు (; i < నిడివి; i++)
       values[i] = INVALID;
   }
 
   HB_ALWAYS_INLINE
-  bool get (unsigned i, float *value) const
+  తార్కిక get (గుర్తులేని i, దశాంశం *value) స్థిరరాశి
   {
-    if (unlikely (i >= length))
+    ఒకవేళ (unlikely (i >= నిడివి))
     {
       *value = 0.f;
-      return true;
+      తిరిగి నిజం;
     }
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    float v = *cached_value;
-    if (std::isnan (v))
-      return false;
+    స్వయంచాలక *values = &static_విలువలు[0];
+    స్వయంచాలక *cached_విలువ = &values[i];
+    దశాంశం v = *cached_విలువ;
+    ఒకవేళ (std::isnan (v))
+      తిరిగి అబద్ధం;
     *value = v;
-    return true;
+    తిరిగి నిజం;
   }
 
   HB_ALWAYS_INLINE
-  void set (unsigned i, float value)
+  శూన్య సమితి (గుర్తులేని i, దశాంశం value)
   {
-    if (unlikely (i >= length)) return;
-    auto *values = &static_values[0];
-    auto *cached_value = &values[i];
-    *cached_value = value;
+    ఒకవేళ (unlikely (i >= నిడివి)) తిరిగి;
+    స్వయంచాలక *values = &static_విలువలు[0];
+    స్వయంచాలక *cached_విలువ = &values[i];
+    *cached_విలువ = value;
   }
 
-  public:
-  unsigned length;
-  private:
-  mutable hb_atomic_t<float> static_values[STATIC_LENGTH];
+  బహిరంగ:
+  గుర్తులేని నిడివి;
+  అంతరంగ:
+  మార్చదగిన hb_atomic_t<దశాంశం> static_విలువలు[STATIC_నిడివి];
 };
 
-struct VarRegionList
+నిర్మాణం VarRegionList
 {
-  private:
-  float evaluate_impl (unsigned int region_index,
-		       const int *coords, unsigned int coord_len) const
+  అంతరంగ:
+  దశాంశం evaluate_impl (గుర్తులేని పూర్ణాంకం region_సూచీ,
+		       స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len) స్థిరరాశి
   {
-    const VarRegionAxis *axes = axesZ.arrayZ + (region_index * axisCount);
-    float v = 1.f;
+    స్థిరరాశి VarRegionAxis *axes = axesZ.arrayZ + (region_సూచీ * axis_లెక్క_2);
+    దశాంశం v = 1.f;
 
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = axis_లెక్క_2;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      int coord = i < coord_len ? coords[i] : 0;
-      float factor = axes[i].evaluate (coord);
-      if (factor == 0.f)
+      పూర్ణాంకం coord = i < coord_len ? coords[i] : 0;
+      దశాంశం గుణకం = axes[i].evaluate (coord);
+      ఒకవేళ (గుణకం == 0.f)
       {
 	v = 0.f;
-	break;
+	ఆపు;
       }
-      v *= factor;
+      v *= గుణకం;
     }
 
-    return v;
+    తిరిగి v;
   }
 
-  public:
+  బహిరంగ:
   HB_ALWAYS_INLINE
-  float evaluate (unsigned int region_index,
-		  const int *coords, unsigned int coord_len,
-		  hb_scalar_cache_t *cache = nullptr) const
+  దశాంశం evaluate (గుర్తులేని పూర్ణాంకం region_సూచీ,
+		  స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		  hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    if (unlikely (region_index >= regionCount))
-      return 0.;
+    ఒకవేళ (unlikely (region_సూచీ >= region_లెక్క))
+      తిరిగి 0.;
 
-    float v;
-    if (cache && cache->get (region_index, &v))
-      return v;
+    దశాంశం v;
+    ఒకవేళ (cache && cache->get (region_సూచీ, &v))
+      తిరిగి v;
 
-    v = evaluate_impl (region_index, coords, coord_len);
+    v = evaluate_impl (region_సూచీ, coords, coord_len);
 
-    if (cache)
-      cache->set (region_index, v);
-    return v;
+    ఒకవేళ (cache)
+      cache->సమితి (region_సూచీ, v);
+    తిరిగి v;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-		  axesZ.sanitize (c, axisCount * regionCount));
+		  axesZ.sanitize (c, axis_లెక్క_2 * region_లెక్క));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_vector_t<hb_tag_t>& axis_tags,
-                  const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& regions)
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  స్థిరరాశి hb_సదిశ_t<hb_ట్యాగ్_t>& axis_ట్యాగులు,
+                  స్థిరరాశి hb_సదిశ_t<స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple>*>& regions)
   {
-    TRACE_SERIALIZE (this);
-    unsigned axis_count = axis_tags.length;
-    unsigned region_count = regions.length;
-    if (!axis_count || !region_count) return_trace (false);
-    if (unlikely (hb_unsigned_mul_overflows (axis_count * region_count,
-                                             VarRegionAxis::static_size))) return_trace (false);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = axis_count;
-    regionCount = region_count;
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని axis_లెక్క = axis_ట్యాగులు.నిడివి;
+    గుర్తులేని region_లెక్క_2 = regions.నిడివి;
+    ఒకవేళ (!axis_లెక్క || !region_లెక్క_2) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (hb_unsigned_mul_overflows (axis_లెక్క * region_లెక్క_2,
+                                             VarRegionAxis::static_కొలత))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    axis_లెక్క_2 = axis_లెక్క;
+    region_లెక్క = region_లెక్క_2;
 
-    for (unsigned r = 0; r < region_count; r++)
+    కొరకు (గుర్తులేని r = 0; r < region_లెక్క_2; r++)
     {
-      const auto& region = regions[r];
-      for (unsigned i = 0; i < axis_count; i++)
+      స్థిరరాశి స్వయంచాలక& region = regions[r];
+      కొరకు (గుర్తులేని i = 0; i < axis_లెక్క; i++)
       {
-        hb_tag_t tag = axis_tags.arrayZ[i];
+        hb_ట్యాగ్_t ట్యాగ్_2 = axis_ట్యాగులు.arrayZ[i];
         VarRegionAxis var_region_rec;
         Triple *coords;
-        if (region->has (tag, &coords))
+        ఒకవేళ (region->has (ట్యాగ్_2, &coords))
         {
-          var_region_rec.startCoord.set_float (coords->minimum);
-          var_region_rec.peakCoord.set_float (coords->middle);
-          var_region_rec.endCoord.set_float (coords->maximum);
+          var_region_rec.ప్రారంభం_Coord.సమితి_float (coords->minimum);
+          var_region_rec.peakCoord.సమితి_float (coords->మధ్య);
+          var_region_rec.చివర_Coord.సమితి_float (coords->గరిష్ఠ);
         }
-        else
+        లేకపోతే
         {
-          var_region_rec.startCoord.set_int (0);
-          var_region_rec.peakCoord.set_int (0);
-          var_region_rec.endCoord.set_int (0);
+          var_region_rec.ప్రారంభం_Coord.సమితి_int (0);
+          var_region_rec.peakCoord.సమితి_int (0);
+          var_region_rec.చివర_Coord.సమితి_int (0);
         }
-        if (!var_region_rec.serialize (c))
-          return_trace (false);
+        ఒకవేళ (!var_region_rec.serialize (c))
+          return_trace (అబద్ధం);
       }
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool serialize (hb_serialize_context_t *c, const VarRegionList *src, const hb_inc_bimap_t &region_map)
+  తార్కిక serialize (hb_serialize_context_t *c, స్థిరరాశి VarRegionList *src, స్థిరరాశి hb_inc_bimap_t &region_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    axisCount = src->axisCount;
-    regionCount = region_map.get_population ();
-    if (unlikely (hb_unsigned_mul_overflows (axisCount * regionCount,
-					     VarRegionAxis::static_size))) return_trace (false);
-    if (unlikely (!c->extend (this))) return_trace (false);
-    unsigned int region_count = src->regionCount;
-    for (unsigned int r = 0; r < regionCount; r++)
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    axis_లెక్క_2 = src->axis_లెక్క_2;
+    region_లెక్క = region_map.get_population ();
+    ఒకవేళ (unlikely (hb_unsigned_mul_overflows (axis_లెక్క_2 * region_లెక్క,
+					     VarRegionAxis::static_కొలత))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->extend (ఇది))) return_trace (అబద్ధం);
+    గుర్తులేని పూర్ణాంకం region_లెక్క_2 = src->region_లెక్క;
+    కొరకు (గుర్తులేని పూర్ణాంకం r = 0; r < region_లెక్క; r++)
     {
-      unsigned int backward = region_map.backward (r);
-      if (backward >= region_count) return_trace (false);
-      hb_memcpy (&axesZ[axisCount * r], &src->axesZ[axisCount * backward], VarRegionAxis::static_size * axisCount);
+      గుర్తులేని పూర్ణాంకం backward = region_map.backward (r);
+      ఒకవేళ (backward >= region_లెక్క_2) return_trace (అబద్ధం);
+      hb_memcpy (&axesZ[axis_లెక్క_2 * r], &src->axesZ[axis_లెక్క_2 * backward], VarRegionAxis::static_కొలత * axis_లెక్క_2);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool get_var_region (unsigned region_index,
-                       const hb_map_t& axes_old_index_tag_map,
-                       hb_hashmap_t<hb_tag_t, Triple>& axis_tuples /* OUT */) const
+  తార్కిక get_var_region (గుర్తులేని region_సూచీ,
+                       స్థిరరాశి hb_map_t& axes_old_సూచీ_ట్యాగ్_map,
+                       hb_hashmap_t<hb_ట్యాగ్_t, Triple>& axis_tuples /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (region_index >= regionCount) return false;
-    const VarRegionAxis* axis_region = axesZ.arrayZ + (region_index * axisCount);
-    for (unsigned i = 0; i < axisCount; i++)
+    ఒకవేళ (region_సూచీ >= region_లెక్క) తిరిగి అబద్ధం;
+    స్థిరరాశి VarRegionAxis* axis_region = axesZ.arrayZ + (region_సూచీ * axis_లెక్క_2);
+    కొరకు (గుర్తులేని i = 0; i < axis_లెక్క_2; i++)
     {
-      hb_tag_t *axis_tag;
-      if (!axes_old_index_tag_map.has (i, &axis_tag))
-        return false;
+      hb_ట్యాగ్_t *axis_ట్యాగ్_2;
+      ఒకవేళ (!axes_old_సూచీ_ట్యాగ్_map.has (i, &axis_ట్యాగ్_2))
+        తిరిగి అబద్ధం;
 
-      float min_val = axis_region->startCoord.to_float ();
-      float def_val = axis_region->peakCoord.to_float ();
-      float max_val = axis_region->endCoord.to_float ();
+      దశాంశం min_val = axis_region->ప్రారంభం_Coord.గమ్యం_float ();
+      దశాంశం def_val = axis_region->peakCoord.గమ్యం_float ();
+      దశాంశం max_val = axis_region->చివర_Coord.గమ్యం_float ();
 
-      if (def_val != 0.f)
-        axis_tuples.set (*axis_tag, Triple ((double) min_val, (double) def_val, (double) max_val));
+      ఒకవేళ (def_val != 0.f)
+        axis_tuples.సమితి (*axis_ట్యాగ్_2, Triple ((ద్విగుణ) min_val, (ద్విగుణ) def_val, (ద్విగుణ) max_val));
       axis_region++;
     }
-    return !axis_tuples.in_error ();
+    తిరిగి !axis_tuples.లోపల_error ();
   }
 
-  bool get_var_regions (const hb_map_t& axes_old_index_tag_map,
-                        hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>>& regions /* OUT */) const
+  తార్కిక get_var_regions (స్థిరరాశి hb_map_t& axes_old_సూచీ_ట్యాగ్_map,
+                        hb_సదిశ_t<hb_hashmap_t<hb_ట్యాగ్_t, Triple>>& regions /*బహిర్గతం*/) స్థిరరాశి
   {
-    if (!regions.alloc (regionCount))
-      return false;
+    ఒకవేళ (!regions.alloc (region_లెక్క))
+      తిరిగి అబద్ధం;
 
-    for (unsigned i = 0; i < regionCount; i++)
+    కొరకు (గుర్తులేని i = 0; i < region_లెక్క; i++)
     {
-      hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!get_var_region (i, axes_old_index_tag_map, axis_tuples))
-        return false;
+      hb_hashmap_t<hb_ట్యాగ్_t, Triple> axis_tuples;
+      ఒకవేళ (!get_var_region (i, axes_old_సూచీ_ట్యాగ్_map, axis_tuples))
+        తిరిగి అబద్ధం;
       regions.push (std::move (axis_tuples));
     }
-    return !regions.in_error ();
+    తిరిగి !regions.లోపల_error ();
   }
 
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size,
-				     hb_unsigned_mul_saturate (VarRegionAxis::static_size,
-							       axisCount, regionCount)); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_కూడు_saturate (min_కొలత,
+				     hb_unsigned_mul_saturate (VarRegionAxis::static_కొలత,
+							       axis_లెక్క_2, region_లెక్క)); }
 
-  public:
-  HBUINT16	axisCount;
-  HBUINT15	regionCount;
-  protected:
-  UnsizedArrayOf<VarRegionAxis>
+  బహిరంగ:
+  HBUINT16	axis_లెక్క_2;
+  HBUINT15	region_లెక్క;
+  రక్షిత:
+  Unsized_Array_యొక్క<VarRegionAxis>
 		axesZ;
-  public:
-  DEFINE_SIZE_ARRAY (4, axesZ);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, axesZ);
 };
 
 /* Whether a variation region is unreachable given per-axis reachable
@@ -2902,1377 +2902,1377 @@ struct VarRegionList
  * if some axis's tent evaluates to zero over the axis's entire reachable
  * range. Mirrors the runtime evaluation: invalid tents evaluate as
  * constant 1 and never kill a region. */
-static inline bool
-_hb_avar2_region_is_dead (const hb_hashmap_t<hb_tag_t, Triple> &axis_tuples,
-			  const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges)
+స్థిర అంతఃవరుస తార్కిక
+_hb_avar2_region_is_dead (స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> &axis_tuples,
+			  స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> &reachable_ranges)
 {
-  for (auto _ : axis_tuples)
+  కొరకు (స్వయంచాలక _ : axis_tuples)
   {
     Triple *range;
-    if (!reachable_ranges.has (_.first, &range)) continue;
-    const Triple &tent = _.second;
-    int start = (int) roundf ((float) tent.minimum * 16384.f);
-    int peak  = (int) roundf ((float) tent.middle * 16384.f);
-    int end   = (int) roundf ((float) tent.maximum * 16384.f);
-    if (!peak) continue;
-    if (start > peak || peak > end) continue;
-    if (start < 0 && end > 0) continue;
-    int lo = (int) roundf ((float) range->minimum * 16384.f);
-    int hi = (int) roundf ((float) range->maximum * 16384.f);
+    ఒకవేళ (!reachable_ranges.has (_.మొదటి, &range)) కొనసాగు;
+    స్థిరరాశి Triple &tent = _.second;
+    పూర్ణాంకం ప్రారంభం = (పూర్ణాంకం) roundf ((దశాంశం) tent.minimum * 16384.f);
+    పూర్ణాంకం peak  = (పూర్ణాంకం) roundf ((దశాంశం) tent.మధ్య * 16384.f);
+    పూర్ణాంకం చివర   = (పూర్ణాంకం) roundf ((దశాంశం) tent.గరిష్ఠ * 16384.f);
+    ఒకవేళ (!peak) కొనసాగు;
+    ఒకవేళ (ప్రారంభం > peak || peak > చివర) కొనసాగు;
+    ఒకవేళ (ప్రారంభం < 0 && చివర > 0) కొనసాగు;
+    పూర్ణాంకం lo = (పూర్ణాంకం) roundf ((దశాంశం) range->minimum * 16384.f);
+    పూర్ణాంకం hi = (పూర్ణాంకం) roundf ((దశాంశం) range->గరిష్ఠ * 16384.f);
     /* Strict comparisons: the scalar is 1 (not 0) at v == peak, so a tent
      * whose peak sits exactly on the range boundary is still live there.
      * (Reachable ranges are padded by one F2Dot14 unit at their producer,
      * which already covers this; strictness keeps the predicate correct on
      * its own terms.) */
-    if (hi < start || lo > end)
-      return true;
+    ఒకవేళ (hi < ప్రారంభం || lo > చివర)
+      తిరిగి నిజం;
   }
-  return false;
+  తిరిగి అబద్ధం;
 }
 
-struct SparseVariationRegion
+నిర్మాణం SparseVariationRegion
 {
-  float evaluate (const int *coords, unsigned int coord_len) const
+  దశాంశం evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len) స్థిరరాశి
   {
-    float v = 1.f;
-    unsigned int count = axes.len;
-    for (unsigned int i = 0; i < count; i++)
+    దశాంశం v = 1.f;
+    గుర్తులేని పూర్ణాంకం లెక్క = axes.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      float factor = (this+axes[i]).evaluate (coords, coord_len);
-      if (factor == 0.f)
-	return 0.;
-      v *= factor;
+      దశాంశం గుణకం = (ఇది+axes[i]).evaluate (coords, coord_len);
+      ఒకవేళ (గుణకం == 0.f)
+	తిరిగి 0.;
+      v *= గుణకం;
     }
-    return v;
+    తిరిగి v;
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVariationRegion *src,
-		  const hb_map_t *axis_map)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి SparseVariationRegion *src,
+		  స్థిరరాశి hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!axes.serialize (c, (unsigned) src->axes.len))) return_trace (false);
-    for (unsigned i = 0; i < axes.len; i++)
-      if (unlikely (src->axes[i].is_null () ||
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!axes.serialize (c, (గుర్తులేని) src->axes.len))) return_trace (అబద్ధం);
+    కొరకు (గుర్తులేని i = 0; i < axes.len; i++)
+      ఒకవేళ (unlikely (src->axes[i].is_null () ||
 		    !axes[i].serialize_serialize (c, &(src+src->axes[i]), axis_map)))
-	return_trace (false);
-    return_trace (true);
+	return_trace (అబద్ధం);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (axes.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (axes.sanitize (c, ఇది));
   }
 
-  protected:
-  Array16Of<Offset32To<SparseVarRegionAxis>> axes;
-  public:
-  DEFINE_SIZE_ARRAY (2, axes);
+  రక్షిత:
+  Array16_యొక్క<Offset32_గమ్యం<SparseVarRegionAxis>> axes;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, axes);
 };
 
-struct SparseVarRegionList
+నిర్మాణం SparseVarRegionList
 {
   HB_ALWAYS_INLINE
-  float evaluate (unsigned int region_index,
-		  const int *coords, unsigned int coord_len,
-		  hb_scalar_cache_t *cache = nullptr) const
+  దశాంశం evaluate (గుర్తులేని పూర్ణాంకం region_సూచీ,
+		  స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		  hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    if (unlikely (region_index >= regions.len))
-      return 0.;
+    ఒకవేళ (unlikely (region_సూచీ >= regions.len))
+      తిరిగి 0.;
 
-    float v;
-    if (cache && cache->get (region_index, &v))
-      return v;
+    దశాంశం v;
+    ఒకవేళ (cache && cache->get (region_సూచీ, &v))
+      తిరిగి v;
 
-    const SparseVariationRegion &region = this+regions[region_index];
+    స్థిరరాశి SparseVariationRegion &region = ఇది+regions[region_సూచీ];
 
     v = region.evaluate (coords, coord_len);
-    if (cache)
-      cache->set (region_index, v);
+    ఒకవేళ (cache)
+      cache->సమితి (region_సూచీ, v);
 
-    return v;
+    తిరిగి v;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (regions.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (regions.sanitize (c, ఇది));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const SparseVarRegionList *src,
-		  const hb_inc_bimap_t &region_map,
-		  const hb_map_t *axis_map)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి SparseVarRegionList *src,
+		  స్థిరరాశి hb_inc_bimap_t &region_map,
+		  స్థిరరాశి hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
     regions.len = region_map.get_population ();
-    if (unlikely (!c->extend (regions))) return_trace (false);
+    ఒకవేళ (unlikely (!c->extend (regions))) return_trace (అబద్ధం);
 
-    for (unsigned i = 0; i < regions.len; i++)
+    కొరకు (గుర్తులేని i = 0; i < regions.len; i++)
     {
-      unsigned old_index = region_map.backward (i);
-      if (unlikely (old_index >= src->regions.len ||
+      గుర్తులేని old_సూచీ = region_map.backward (i);
+      ఒకవేళ (unlikely (old_సూచీ >= src->regions.len ||
 		    !regions[i].serialize_serialize (c,
-					     &(src+src->regions[old_index]),
+					     &(src+src->regions[old_సూచీ]),
 					     axis_map)))
-	return_trace (false);
+	return_trace (అబద్ధం);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  public:
-  Array32Of<Offset32To<SparseVariationRegion>>
+  బహిరంగ:
+  Array32_యొక్క<Offset32_గమ్యం<SparseVariationRegion>>
 		regions;
-  public:
-  DEFINE_SIZE_ARRAY (4, regions);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, regions);
 };
 
 
-struct VarData
+నిర్మాణం Var_దత్తాంశం
 {
-  unsigned int get_item_count () const
-  { return itemCount; }
+  గుర్తులేని పూర్ణాంకం get_అంశం_లెక్క () స్థిరరాశి
+  { తిరిగి అంశం_లెక్క; }
 
-  unsigned int get_region_index_count () const
-  { return regionIndices.len; }
+  గుర్తులేని పూర్ణాంకం get_region_సూచీ_లెక్క () స్థిరరాశి
+  { తిరిగి regionIndices.len; }
 
-  unsigned get_region_index (unsigned i) const
-  { return i >= regionIndices.len ? -1 : regionIndices[i]; }
+  గుర్తులేని get_region_సూచీ (గుర్తులేని i) స్థిరరాశి
+  { తిరిగి i >= regionIndices.len ? -1 : regionIndices[i]; }
 
-  size_t get_row_size () const
-  { return (wordCount () + regionIndices.len) * (longWords () ? 2 : 1); }
+  size_t get_అడ్డువరుస_కొలత () స్థిరరాశి
+  { తిరిగి (మాట_లెక్క () + regionIndices.len) * (long_పదాలు_2 () ? 2 : 1); }
 
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
-				     regionIndices.get_size (),
-				     hb_unsigned_mul_saturate (itemCount, get_row_size ())); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_కూడు_saturate (min_కొలత - regionIndices.min_కొలత,
+				     regionIndices.get_కొలత (),
+				     hb_unsigned_mul_saturate (అంశం_లెక్క, get_అడ్డువరుస_కొలత ())); }
 
-  template <typename Float = float>
-  Float _get_delta (unsigned int inner,
-		    const int *coords, unsigned int coord_count,
-		    const VarRegionList &regions,
-		    hb_scalar_cache_t *cache = nullptr) const
+  మూస <రకం_పేరు Float = దశాంశం>
+  Float _get_delta (గుర్తులేని పూర్ణాంకం inner,
+		    స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		    స్థిరరాశి VarRegionList &regions,
+		    hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    if (unlikely (inner >= itemCount))
-      return 0.;
-    bool is_long = longWords ();
-    unsigned int count = regionIndices.len;
-    unsigned word_count = wordCount ();
-    unsigned int scount = is_long ? count : word_count;
-    unsigned int lcount = is_long ? word_count : 0;
+    ఒకవేళ (unlikely (inner >= అంశం_లెక్క))
+      తిరిగి 0.;
+    తార్కిక is_long = long_పదాలు_2 ();
+    గుర్తులేని పూర్ణాంకం లెక్క = regionIndices.len;
+    గుర్తులేని మాట_లెక్క_2 = మాట_లెక్క ();
+    గుర్తులేని పూర్ణాంకం scount = is_long ? లెక్క : మాట_లెక్క_2;
+    గుర్తులేని పూర్ణాంకం lcount = is_long ? మాట_లెక్క_2 : 0;
 
-    const HBUINT8 *bytes = get_delta_bytes ();
-    const HBUINT8 *row = bytes + inner * get_row_size ();
+    స్థిరరాశి HBUINT8 *బైట్లు = get_delta_బైట్లు ();
+    స్థిరరాశి HBUINT8 *అడ్డువరుస = బైట్లు + inner * get_అడ్డువరుస_కొలత ();
 
     Float delta = 0;
-    unsigned int i = 0;
+    గుర్తులేని పూర్ణాంకం i = 0;
 
-    const HBINT32 *lcursor = reinterpret_cast<const HBINT32 *> (row);
-    for (; i < lcount; i++)
+    స్థిరరాశి HBINT32 *lcursor = reinterpret_cast<స్థిరరాశి HBINT32 *> (అడ్డువరుస);
+    కొరకు (; i < lcount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-        delta += (Float) scalar * (int) *lcursor;
+      దశాంశం scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_లెక్క, cache);
+      ఒకవేళ (scalar)
+        delta += (Float) scalar * (పూర్ణాంకం) *lcursor;
       lcursor++;
     }
-    const HBINT16 *scursor = reinterpret_cast<const HBINT16 *> (lcursor);
-    for (; i < scount; i++)
+    స్థిరరాశి HBINT16 *scursor = reinterpret_cast<స్థిరరాశి HBINT16 *> (lcursor);
+    కొరకు (; i < scount; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-       delta += (Float) scalar * (int) *scursor;
+      దశాంశం scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_లెక్క, cache);
+      ఒకవేళ (scalar)
+       delta += (Float) scalar * (పూర్ణాంకం) *scursor;
       scursor++;
     }
-    const HBINT8 *bcursor = reinterpret_cast<const HBINT8 *> (scursor);
-    for (; i < count; i++)
+    స్థిరరాశి HBINT8 *bcursor = reinterpret_cast<స్థిరరాశి HBINT8 *> (scursor);
+    కొరకు (; i < లెక్క; i++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count, cache);
-      if (scalar)
-        delta += (Float) scalar * (int) *bcursor;
+      దశాంశం scalar = regions.evaluate (regionIndices.arrayZ[i], coords, coord_లెక్క, cache);
+      ఒకవేళ (scalar)
+        delta += (Float) scalar * (పూర్ణాంకం) *bcursor;
       bcursor++;
     }
 
-    return delta;
+    తిరిగి delta;
   }
 
-  template <typename Float = float>
+  మూస <రకం_పేరు Float = దశాంశం>
   HB_ALWAYS_INLINE
-  Float get_delta (unsigned int inner,
-		   const int *coords, unsigned int coord_count,
-		   const VarRegionList &regions,
-		   hb_scalar_cache_t *cache = nullptr) const
+  Float get_delta (గుర్తులేని పూర్ణాంకం inner,
+		   స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		   స్థిరరాశి VarRegionList &regions,
+		   hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    unsigned int count = regionIndices.len;
-    if (!count) return Float (0); // This is quite common, so optimize it.
-    return _get_delta<Float> (inner, coords, coord_count, regions, cache);
+    గుర్తులేని పూర్ణాంకం లెక్క = regionIndices.len;
+    ఒకవేళ (!లెక్క) తిరిగి Float (0); // This is quite common, so optimize it.
+    తిరిగి _get_delta<Float> (inner, coords, coord_లెక్క, regions, cache);
   }
 
-  void get_region_scalars (const int *coords, unsigned int coord_count,
-			   const VarRegionList &regions,
-			   float *scalars /*OUT */,
-			   unsigned int num_scalars) const
+  శూన్య get_region_scalars (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+			   స్థిరరాశి VarRegionList &regions,
+			   దశాంశం *scalars /*OUT */,
+			   గుర్తులేని పూర్ణాంకం అంకె_scalars) స్థిరరాశి
   {
-    unsigned count = hb_min (num_scalars, regionIndices.len);
-    for (unsigned int i = 0; i < count; i++)
-      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_count);
-    for (unsigned int i = count; i < num_scalars; i++)
+    గుర్తులేని లెక్క = hb_min (అంకె_scalars, regionIndices.len);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      scalars[i] = regions.evaluate (regionIndices.arrayZ[i], coords, coord_లెక్క);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = లెక్క; i < అంకె_scalars; i++)
       scalars[i] = 0.f;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  wordCount () <= regionIndices.len &&
-		  c->check_range (get_delta_bytes (),
-				  itemCount,
-				  get_row_size ()));
+		  మాట_లెక్క () <= regionIndices.len &&
+		  c->check_range (get_delta_బైట్లు (),
+				  అంశం_లెక్క,
+				  get_అడ్డువరుస_కొలత ()));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool has_long,
-                  const hb_vector_t<const hb_vector_t<int>*>& rows)
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  తార్కిక has_long,
+                  స్థిరరాశి hb_సదిశ_t<స్థిరరాశి hb_సదిశ_t<పూర్ణాంకం>*>& అడ్డువరుసలు)
   {
-    TRACE_SERIALIZE (this);
-    unsigned row_count = rows.length;
-    if (!row_count) {
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని అడ్డువరుస_లెక్క_3 = అడ్డువరుసలు.నిడివి;
+    ఒకవేళ (!అడ్డువరుస_లెక్క_3) {
       // Nothing to serialize, will be empty.
-      return false;
+      తిరిగి అబద్ధం;
     }
 
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!c->check_assign (itemCount, row_count,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->check_కేటాయించు (అంశం_లెక్క, అడ్డువరుస_లెక్క_3,
+                                    HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+      return_trace (అబద్ధం);
 
-    int min_threshold = has_long ? -32768 : -128;
-    int max_threshold = has_long ? +32767 : +127;
-    enum delta_size_t { kZero=0, kNonWord, kWord };
-    hb_vector_t<delta_size_t> delta_sz;
-    unsigned num_regions = rows[0]->length;
-    if (!delta_sz.resize (num_regions))
-      return_trace (false);
+    పూర్ణాంకం min_పరిమితి = has_long ? -32768 : -128;
+    పూర్ణాంకం max_పరిమితి = has_long ? +32767 : +127;
+    గణన delta_కొలత_t { kZero=0, k_Non_మాట, k_మాట };
+    hb_సదిశ_t<delta_కొలత_t> delta_sz;
+    గుర్తులేని అంకె_regions = అడ్డువరుసలు[0]->నిడివి;
+    ఒకవేళ (!delta_sz.resize (అంకె_regions))
+      return_trace (అబద్ధం);
 
-    unsigned word_count = 0;
-    for (unsigned r = 0; r < num_regions; r++)
+    గుర్తులేని మాట_లెక్క_2 = 0;
+    కొరకు (గుర్తులేని r = 0; r < అంకె_regions; r++)
     {
-      for (unsigned i = 0; i < row_count; i++)
+      కొరకు (గుర్తులేని i = 0; i < అడ్డువరుస_లెక్క_3; i++)
       {
-        int delta = rows[i]->arrayZ[r];
-        if (delta < min_threshold || delta > max_threshold)
+        పూర్ణాంకం delta = అడ్డువరుసలు[i]->arrayZ[r];
+        ఒకవేళ (delta < min_పరిమితి || delta > max_పరిమితి)
         {
-          delta_sz[r] = kWord;
-          word_count++;
-          break;
+          delta_sz[r] = k_మాట;
+          మాట_లెక్క_2++;
+          ఆపు;
         }
-        else if (delta != 0)
+        లేకపోతే ఒకవేళ (delta != 0)
         {
-          delta_sz[r] = kNonWord;
+          delta_sz[r] = k_Non_మాట;
         }
       }
     }
 
     /* reorder regions: words and then non-words*/
-    unsigned word_index = 0;
-    unsigned non_word_index = word_count;
+    గుర్తులేని మాట_సూచీ = 0;
+    గుర్తులేని non_మాట_సూచీ = మాట_లెక్క_2;
     hb_map_t ri_map;
-    for (unsigned r = 0; r < num_regions; r++)
+    కొరకు (గుర్తులేని r = 0; r < అంకె_regions; r++)
     {
-      if (!delta_sz[r]) continue;
-      unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
-      if (!ri_map.set (new_r, r))
-        return_trace (false);
+      ఒకవేళ (!delta_sz[r]) కొనసాగు;
+      గుర్తులేని new_r = (delta_sz[r] == k_మాట)? మాట_సూచీ++ : non_మాట_సూచీ++;
+      ఒకవేళ (!ri_map.సమితి (new_r, r))
+        return_trace (అబద్ధం);
     }
 
-    wordSizeCount = word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    మాట_కొలత_లెక్క = మాట_లెక్క_2 | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    unsigned ri_count = ri_map.get_population ();
-    regionIndices.len = ri_count;
-    if (unlikely (!c->extend (this))) return_trace (false);
+    గుర్తులేని ri_లెక్క = ri_map.get_population ();
+    regionIndices.len = ri_లెక్క;
+    ఒకవేళ (unlikely (!c->extend (ఇది))) return_trace (అబద్ధం);
 
-    for (unsigned r = 0; r < ri_count; r++)
+    కొరకు (గుర్తులేని r = 0; r < ri_లెక్క; r++)
     {
       hb_codepoint_t *idx;
-      if (!ri_map.has (r, &idx))
-        return_trace (false);
+      ఒకవేళ (!ri_map.has (r, &idx))
+        return_trace (అబద్ధం);
       regionIndices[r] = *idx;
     }
 
-    HBUINT8 *delta_bytes = get_delta_bytes ();
-    unsigned row_size = get_row_size ();
-    for (unsigned int i = 0; i < row_count; i++)
+    HBUINT8 *delta_బైట్లు = get_delta_బైట్లు ();
+    గుర్తులేని అడ్డువరుస_కొలత = get_అడ్డువరుస_కొలత ();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < అడ్డువరుస_లెక్క_3; i++)
     {
-      for (unsigned int r = 0; r < ri_count; r++)
+      కొరకు (గుర్తులేని పూర్ణాంకం r = 0; r < ri_లెక్క; r++)
       {
-        int delta = rows[i]->arrayZ[ri_map[r]];
-        set_item_delta_fast (i, r, delta, delta_bytes, row_size);
+        పూర్ణాంకం delta = అడ్డువరుసలు[i]->arrayZ[ri_map[r]];
+        సమితి_అంశం_delta_fast (i, r, delta, delta_బైట్లు, అడ్డువరుస_కొలత);
       }
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const VarData *src,
-		  const hb_inc_bimap_t &inner_map,
-		  const hb_inc_bimap_t &region_map,
-		  const hb_set_t *culled_regions = nullptr)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి Var_దత్తాంశం *src,
+		  స్థిరరాశి hb_inc_bimap_t &inner_map,
+		  స్థిరరాశి hb_inc_bimap_t &region_map,
+		  స్థిరరాశి hb_సమితి_t *culled_regions = శూన్యసూచిక)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    itemCount = inner_map.get_next_value ();
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
+    అంశం_లెక్క = inner_map.get_తదుపరి_విలువ ();
 
     /* Optimize word count */
-    unsigned ri_count = src->regionIndices.len;
-    enum delta_size_t { kZero=0, kNonWord, kWord };
-    hb_vector_t<delta_size_t> delta_sz;
-    hb_vector_t<unsigned int> ri_map;	/* maps new index to old index */
-    delta_sz.resize (ri_count);
-    ri_map.resize (ri_count);
-    unsigned int new_word_count = 0;
-    unsigned int r;
+    గుర్తులేని ri_లెక్క = src->regionIndices.len;
+    గణన delta_కొలత_t { kZero=0, k_Non_మాట, k_మాట };
+    hb_సదిశ_t<delta_కొలత_t> delta_sz;
+    hb_సదిశ_t<గుర్తులేని పూర్ణాంకం> ri_map;	/* maps new index to old index */
+    delta_sz.resize (ri_లెక్క);
+    ri_map.resize (ri_లెక్క);
+    గుర్తులేని పూర్ణాంకం new_మాట_లెక్క = 0;
+    గుర్తులేని పూర్ణాంకం r;
 
-    const HBUINT8 *src_delta_bytes = src->get_delta_bytes ();
-    unsigned src_row_size = src->get_row_size ();
-    unsigned src_word_count = src->wordCount ();
-    bool     src_long_words = src->longWords ();
+    స్థిరరాశి HBUINT8 *src_delta_బైట్లు = src->get_delta_బైట్లు ();
+    గుర్తులేని src_అడ్డువరుస_కొలత = src->get_అడ్డువరుస_కొలత ();
+    గుర్తులేని src_మాట_లెక్క = src->మాట_లెక్క ();
+    తార్కిక     src_long_పదాలు = src->long_పదాలు_2 ();
 
-    bool has_long = false;
-    if (src_long_words)
+    తార్కిక has_long = అబద్ధం;
+    ఒకవేళ (src_long_పదాలు)
     {
-      for (r = 0; r < src_word_count; r++)
+      కొరకు (r = 0; r < src_మాట_లెక్క; r++)
       {
-        for (unsigned old_gid : inner_map.keys())
+        కొరకు (గుర్తులేని old_gid : inner_map.కీలకాలు())
 	{
-	  int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
-	  if (delta < -32768 || 32767 < delta)
+	  int32_t delta = src->get_అంశం_delta_fast (old_gid, r, src_delta_బైట్లు, src_అడ్డువరుస_కొలత);
+	  ఒకవేళ (delta < -32768 || 32767 < delta)
 	  {
-	    has_long = true;
-	    break;
+	    has_long = నిజం;
+	    ఆపు;
 	  }
         }
       }
     }
 
-    signed min_threshold = has_long ? -32768 : -128;
-    signed max_threshold = has_long ? +32767 : +127;
-    for (r = 0; r < ri_count; r++)
+    గుర్తుగల min_పరిమితి = has_long ? -32768 : -128;
+    గుర్తుగల max_పరిమితి = has_long ? +32767 : +127;
+    కొరకు (r = 0; r < ri_లెక్క; r++)
     {
-      bool short_circuit = src_long_words == has_long && src_word_count <= r;
+      తార్కిక short_circuit = src_long_పదాలు == has_long && src_మాట_లెక్క <= r;
 
       delta_sz[r] = kZero;
-      if (culled_regions && culled_regions->has (src->regionIndices[r]))
-	continue; /* unreachable region: drop its column */
-      for (unsigned old_gid : inner_map.keys())
+      ఒకవేళ (culled_regions && culled_regions->has (src->regionIndices[r]))
+	కొనసాగు; /* unreachable region: drop its column */
+      కొరకు (గుర్తులేని old_gid : inner_map.కీలకాలు())
       {
-	int32_t delta = src->get_item_delta_fast (old_gid, r, src_delta_bytes, src_row_size);
-	if (delta < min_threshold || max_threshold < delta)
+	int32_t delta = src->get_అంశం_delta_fast (old_gid, r, src_delta_బైట్లు, src_అడ్డువరుస_కొలత);
+	ఒకవేళ (delta < min_పరిమితి || max_పరిమితి < delta)
 	{
-	  delta_sz[r] = kWord;
-	  new_word_count++;
-	  break;
+	  delta_sz[r] = k_మాట;
+	  new_మాట_లెక్క++;
+	  ఆపు;
 	}
-	else if (delta != 0)
+	లేకపోతే ఒకవేళ (delta != 0)
 	{
-	  delta_sz[r] = kNonWord;
-	  if (short_circuit)
-	    break;
+	  delta_sz[r] = k_Non_మాట;
+	  ఒకవేళ (short_circuit)
+	    ఆపు;
 	}
       }
     }
 
-    unsigned int word_index = 0;
-    unsigned int non_word_index = new_word_count;
-    unsigned int new_ri_count = 0;
-    for (r = 0; r < ri_count; r++)
-      if (delta_sz[r])
+    గుర్తులేని పూర్ణాంకం మాట_సూచీ = 0;
+    గుర్తులేని పూర్ణాంకం non_మాట_సూచీ = new_మాట_లెక్క;
+    గుర్తులేని పూర్ణాంకం new_ri_లెక్క = 0;
+    కొరకు (r = 0; r < ri_లెక్క; r++)
+      ఒకవేళ (delta_sz[r])
       {
-	unsigned new_r = (delta_sz[r] == kWord)? word_index++ : non_word_index++;
+	గుర్తులేని new_r = (delta_sz[r] == k_మాట)? మాట_సూచీ++ : non_మాట_సూచీ++;
 	ri_map[new_r] = r;
-	new_ri_count++;
+	new_ri_లెక్క++;
       }
 
-    wordSizeCount = new_word_count | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
+    మాట_కొలత_లెక్క = new_మాట_లెక్క | (has_long ? 0x8000u /* LONG_WORDS */ : 0);
 
-    regionIndices.len = new_ri_count;
+    regionIndices.len = new_ri_లెక్క;
 
-    if (unlikely (!c->extend (this))) return_trace (false);
+    ఒకవేళ (unlikely (!c->extend (ఇది))) return_trace (అబద్ధం);
 
-    for (r = 0; r < new_ri_count; r++)
+    కొరకు (r = 0; r < new_ri_లెక్క; r++)
       regionIndices[r] = region_map[src->regionIndices[ri_map[r]]];
 
-    HBUINT8 *delta_bytes = get_delta_bytes ();
-    unsigned row_size = get_row_size ();
-    unsigned count = itemCount;
-    for (unsigned int i = 0; i < count; i++)
+    HBUINT8 *delta_బైట్లు = get_delta_బైట్లు ();
+    గుర్తులేని అడ్డువరుస_కొలత = get_అడ్డువరుస_కొలత ();
+    గుర్తులేని లెక్క = అంశం_లెక్క;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      unsigned int old = inner_map.backward (i);
-      for (unsigned int r = 0; r < new_ri_count; r++)
-	set_item_delta_fast (i, r,
-			     src->get_item_delta_fast (old, ri_map[r],
-						       src_delta_bytes, src_row_size),
-			     delta_bytes, row_size);
+      గుర్తులేని పూర్ణాంకం old = inner_map.backward (i);
+      కొరకు (గుర్తులేని పూర్ణాంకం r = 0; r < new_ri_లెక్క; r++)
+	సమితి_అంశం_delta_fast (i, r,
+			     src->get_అంశం_delta_fast (old, ri_map[r],
+						       src_delta_బైట్లు, src_అడ్డువరుస_కొలత),
+			     delta_బైట్లు, అడ్డువరుస_కొలత);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  void collect_region_refs (hb_set_t &region_indices, const hb_inc_bimap_t &inner_map) const
+  శూన్య collect_region_refs (hb_సమితి_t &region_indices, స్థిరరాశి hb_inc_bimap_t &inner_map) స్థిరరాశి
   {
-    const HBUINT8 *delta_bytes = get_delta_bytes ();
-    unsigned row_size = get_row_size ();
+    స్థిరరాశి HBUINT8 *delta_బైట్లు = get_delta_బైట్లు ();
+    గుర్తులేని అడ్డువరుస_కొలత = get_అడ్డువరుస_కొలత ();
 
-    for (unsigned int r = 0; r < regionIndices.len; r++)
+    కొరకు (గుర్తులేని పూర్ణాంకం r = 0; r < regionIndices.len; r++)
     {
-      unsigned int region = regionIndices.arrayZ[r];
-      if (region_indices.has (region)) continue;
-      for (hb_codepoint_t old_gid : inner_map.keys())
-	if (get_item_delta_fast (old_gid, r, delta_bytes, row_size) != 0)
+      గుర్తులేని పూర్ణాంకం region = regionIndices.arrayZ[r];
+      ఒకవేళ (region_indices.has (region)) కొనసాగు;
+      కొరకు (hb_codepoint_t old_gid : inner_map.కీలకాలు())
+	ఒకవేళ (get_అంశం_delta_fast (old_gid, r, delta_బైట్లు, అడ్డువరుస_కొలత) != 0)
 	{
-	  region_indices.add (region);
-	  break;
+	  region_indices.కూడు (region);
+	  ఆపు;
 	}
     }
   }
 
-  public:
-  const HBUINT8 *get_delta_bytes () const
-  { return &StructAfter<HBUINT8> (regionIndices); }
+  బహిరంగ:
+  స్థిరరాశి HBUINT8 *get_delta_బైట్లు () స్థిరరాశి
+  { తిరిగి &StructAfter<HBUINT8> (regionIndices); }
 
-  protected:
-  HBUINT8 *get_delta_bytes ()
-  { return &StructAfter<HBUINT8> (regionIndices); }
+  రక్షిత:
+  HBUINT8 *get_delta_బైట్లు ()
+  { తిరిగి &StructAfter<HBUINT8> (regionIndices); }
 
-  public:
-  int32_t get_item_delta_fast (unsigned int item, unsigned int region,
-			       const HBUINT8 *delta_bytes, unsigned row_size) const
+  బహిరంగ:
+  int32_t get_అంశం_delta_fast (గుర్తులేని పూర్ణాంకం అంశం, గుర్తులేని పూర్ణాంకం region,
+			       స్థిరరాశి HBUINT8 *delta_బైట్లు, గుర్తులేని అడ్డువరుస_కొలత) స్థిరరాశి
   {
-    if (unlikely (item >= itemCount || region >= regionIndices.len)) return 0;
+    ఒకవేళ (unlikely (అంశం >= అంశం_లెక్క || region >= regionIndices.len)) తిరిగి 0;
 
-    const HBINT8 *p = (const HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
-    if (is_long)
+    స్థిరరాశి HBINT8 *p = (స్థిరరాశి HBINT8 *) delta_బైట్లు + అంశం * అడ్డువరుస_కొలత;
+    గుర్తులేని మాట_లెక్క_2 = మాట_లెక్క ();
+    తార్కిక is_long = long_పదాలు_2 ();
+    ఒకవేళ (is_long)
     {
-      if (region < word_count)
-	return ((const HBINT32 *) p)[region];
-      else
-	return ((const HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count];
+      ఒకవేళ (region < మాట_లెక్క_2)
+	తిరిగి ((స్థిరరాశి HBINT32 *) p)[region];
+      లేకపోతే
+	తిరిగి ((స్థిరరాశి HBINT16 *)(p + HBINT32::static_కొలత * మాట_లెక్క_2))[region - మాట_లెక్క_2];
     }
-    else
+    లేకపోతే
     {
-      if (region < word_count)
-	return ((const HBINT16 *) p)[region];
-      else
-	return (p + HBINT16::static_size * word_count)[region - word_count];
+      ఒకవేళ (region < మాట_లెక్క_2)
+	తిరిగి ((స్థిరరాశి HBINT16 *) p)[region];
+      లేకపోతే
+	తిరిగి (p + HBINT16::static_కొలత * మాట_లెక్క_2)[region - మాట_లెక్క_2];
     }
   }
-  int32_t get_item_delta (unsigned int item, unsigned int region) const
+  int32_t get_అంశం_delta (గుర్తులేని పూర్ణాంకం అంశం, గుర్తులేని పూర్ణాంకం region) స్థిరరాశి
   {
-     return get_item_delta_fast (item, region,
-				 get_delta_bytes (),
-				 get_row_size ());
+     తిరిగి get_అంశం_delta_fast (అంశం, region,
+				 get_delta_బైట్లు (),
+				 get_అడ్డువరుస_కొలత ());
   }
 
-  protected:
-  void set_item_delta_fast (unsigned int item, unsigned int region, int32_t delta,
-			    HBUINT8 *delta_bytes, unsigned row_size)
+  రక్షిత:
+  శూన్య సమితి_అంశం_delta_fast (గుర్తులేని పూర్ణాంకం అంశం, గుర్తులేని పూర్ణాంకం region, int32_t delta,
+			    HBUINT8 *delta_బైట్లు, గుర్తులేని అడ్డువరుస_కొలత)
   {
-    HBINT8 *p = (HBINT8 *) delta_bytes + item * row_size;
-    unsigned word_count = wordCount ();
-    bool is_long = longWords ();
-    if (is_long)
+    HBINT8 *p = (HBINT8 *) delta_బైట్లు + అంశం * అడ్డువరుస_కొలత;
+    గుర్తులేని మాట_లెక్క_2 = మాట_లెక్క ();
+    తార్కిక is_long = long_పదాలు_2 ();
+    ఒకవేళ (is_long)
     {
-      if (region < word_count)
+      ఒకవేళ (region < మాట_లెక్క_2)
 	((HBINT32 *) p)[region] = delta;
-      else
-	((HBINT16 *)(p + HBINT32::static_size * word_count))[region - word_count] = delta;
+      లేకపోతే
+	((HBINT16 *)(p + HBINT32::static_కొలత * మాట_లెక్క_2))[region - మాట_లెక్క_2] = delta;
     }
-    else
+    లేకపోతే
     {
-      if (region < word_count)
+      ఒకవేళ (region < మాట_లెక్క_2)
 	((HBINT16 *) p)[region] = delta;
-      else
-	(p + HBINT16::static_size * word_count)[region - word_count] = delta;
+      లేకపోతే
+	(p + HBINT16::static_కొలత * మాట_లెక్క_2)[region - మాట_లెక్క_2] = delta;
     }
   }
-  void set_item_delta (unsigned int item, unsigned int region, int32_t delta)
+  శూన్య సమితి_అంశం_delta (గుర్తులేని పూర్ణాంకం అంశం, గుర్తులేని పూర్ణాంకం region, int32_t delta)
   {
-    set_item_delta_fast (item, region, delta,
-			 get_delta_bytes (),
-			 get_row_size ());
+    సమితి_అంశం_delta_fast (అంశం, region, delta,
+			 get_delta_బైట్లు (),
+			 get_అడ్డువరుస_కొలత ());
   }
 
-  bool longWords () const { return wordSizeCount & 0x8000u /* LONG_WORDS */; }
-  unsigned wordCount () const { return wordSizeCount & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
+  తార్కిక long_పదాలు_2 () స్థిరరాశి { తిరిగి మాట_కొలత_లెక్క & 0x8000u /* LONG_WORDS */; }
+  గుర్తులేని మాట_లెక్క () స్థిరరాశి { తిరిగి మాట_కొలత_లెక్క & 0x7FFFu /* WORD_DELTA_COUNT_MASK */; }
 
-  protected:
-  HBUINT16		itemCount;
-  HBUINT16		wordSizeCount;
-  Array16Of<HBUINT16>	regionIndices;
+  రక్షిత:
+  HBUINT16		అంశం_లెక్క;
+  HBUINT16		మాట_కొలత_లెక్క;
+  Array16_యొక్క<HBUINT16>	regionIndices;
 /*UnsizedArrayOf<HBUINT8>bytesX;*/
-  public:
-  DEFINE_SIZE_ARRAY (6, regionIndices);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, regionIndices);
 };
 
-struct MultiVarData
+నిర్మాణం Multi_Var_దత్తాంశం
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate (min_size - regionIndices.min_size,
-				     regionIndices.get_size ()); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_కూడు_saturate (min_కొలత - regionIndices.min_కొలత,
+				     regionIndices.get_కొలత ()); }
 
-  const TupleList &get_delta_sets () const
-  { return this+StructAfter<decltype (deltaSetsX)> (regionIndices); }
+  స్థిరరాశి TupleList &get_delta_sets () స్థిరరాశి
+  { తిరిగి ఇది+StructAfter<decltype (deltaSetsX)> (regionIndices); }
 
-  void get_delta (unsigned int inner,
-		  const int *coords, unsigned int coord_count,
-		  const SparseVarRegionList &regions,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  శూన్య get_delta (గుర్తులేని పూర్ణాంకం inner,
+		  స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		  స్థిరరాశి SparseVarRegionList &regions,
+		  hb_array_t<ద్విగుణ> బహిర్గతం,
+		  hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    auto &deltaSets = get_delta_sets ();
+    స్వయంచాలక &deltaSets = get_delta_sets ();
 
-    auto values_iter = deltaSets.fetcher (inner);
-    unsigned regionCount = regionIndices.len;
-    unsigned skip = 0;
-    for (unsigned regionIndex = 0; regionIndex < regionCount; regionIndex++)
+    స్వయంచాలక విలువలు_iter = deltaSets.fetcher (inner);
+    గుర్తులేని region_లెక్క = regionIndices.len;
+    గుర్తులేని skip = 0;
+    కొరకు (గుర్తులేని region_సూచీ_2 = 0; region_సూచీ_2 < region_లెక్క; region_సూచీ_2++)
     {
-      float scalar = regions.evaluate (regionIndices.arrayZ[regionIndex],
-				       coords, coord_count,
+      దశాంశం scalar = regions.evaluate (regionIndices.arrayZ[region_సూచీ_2],
+				       coords, coord_లెక్క,
 				       cache);
       // We skip lazily. Helps with the tail end.
-      if (scalar == 0.0f)
-        skip += out.length;
-      else
+      ఒకవేళ (scalar == 0.0f)
+        skip += బహిర్గతం.నిడివి;
+      లేకపోతే
       {
-        if (skip)
+        ఒకవేళ (skip)
 	{
-	  values_iter.skip (skip);
+	  విలువలు_iter.skip (skip);
 	  skip = 0;
 	}
-	values_iter.add_to (out, scalar);
+	విలువలు_iter.కూడు_గమ్యం_2 (బహిర్గతం, scalar);
       }
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     return_trace (format.sanitize (c) &&
 		  hb_barrier () &&
 		  format == 1 &&
 		  regionIndices.sanitize (c) &&
 		  hb_barrier () &&
-		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, this));
+		  StructAfter<decltype (deltaSetsX)> (regionIndices).sanitize (c, ఇది));
   }
 
-  unsigned get_item_count () const
-  { return get_delta_sets ().count; }
+  గుర్తులేని get_అంశం_లెక్క () స్థిరరాశి
+  { తిరిగి get_delta_sets ().లెక్క; }
 
-  void collect_region_refs (hb_set_t &region_indices) const
+  శూన్య collect_region_refs (hb_సమితి_t &region_indices) స్థిరరాశి
   {
-    for (unsigned region : regionIndices)
-      region_indices.add (region);
+    కొరకు (గుర్తులేని region : regionIndices)
+      region_indices.కూడు (region);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const MultiVarData *src,
-		  const hb_inc_bimap_t &inner_map,
-		  const hb_inc_bimap_t &region_map)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి Multi_Var_దత్తాంశం *src,
+		  స్థిరరాశి hb_inc_bimap_t &inner_map,
+		  స్థిరరాశి hb_inc_bimap_t &region_map)
   {
-    TRACE_SERIALIZE (this);
-    unsigned region_count = src->regionIndices.len;
-    unsigned header_size = HBUINT8::static_size +
-			   Array16Of<HBUINT16>::min_size +
-			   region_count * HBUINT16::static_size +
-			   HBUINT32::static_size;
-    if (unlikely (!c->extend_size (this, header_size, false)))
-      return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని region_లెక్క_2 = src->regionIndices.len;
+    గుర్తులేని శీర్షిక_కొలత = HBUINT8::static_కొలత +
+			   Array16_యొక్క<HBUINT16>::min_కొలత +
+			   region_లెక్క_2 * HBUINT16::static_కొలత +
+			   HBUINT32::static_కొలత;
+    ఒకవేళ (unlikely (!c->extend_కొలత (ఇది, శీర్షిక_కొలత, అబద్ధం)))
+      return_trace (అబద్ధం);
     format = 1;
-    regionIndices.len = region_count;
-    for (unsigned i = 0; i < regionIndices.len; i++)
+    regionIndices.len = region_లెక్క_2;
+    కొరకు (గుర్తులేని i = 0; i < regionIndices.len; i++)
     {
-      unsigned old_region = src->regionIndices[i];
-      if (unlikely (!region_map.has (old_region)))
-	return_trace (false);
+      గుర్తులేని old_region = src->regionIndices[i];
+      ఒకవేళ (unlikely (!region_map.has (old_region)))
+	return_trace (అబద్ధం);
       regionIndices[i] = region_map.get (old_region);
     }
 
-    const auto &src_delta_sets = src->get_delta_sets ();
-    hb_vector_t<hb_ubytes_t> delta_sets;
-    unsigned data_size = 0;
-    if (unlikely (!delta_sets.alloc_exact (inner_map.get_population ())))
-      return_trace (false);
-    for (unsigned i = 0; i < inner_map.get_population (); i++)
+    స్థిరరాశి స్వయంచాలక &src_delta_sets = src->get_delta_sets ();
+    hb_సదిశ_t<hb_ubytes_t> delta_sets;
+    గుర్తులేని దత్తాంశం_కొలత = 0;
+    ఒకవేళ (unlikely (!delta_sets.alloc_exact (inner_map.get_population ())))
+      return_trace (అబద్ధం);
+    కొరకు (గుర్తులేని i = 0; i < inner_map.get_population (); i++)
     {
-      unsigned old_inner = inner_map.backward (i);
-      if (unlikely (old_inner >= src_delta_sets.count)) return_trace (false);
-      hb_ubytes_t bytes = static_cast<const CFF2Index &> (src_delta_sets)[old_inner];
-      data_size = hb_unsigned_add_saturate (data_size, bytes.length);
-      delta_sets.push (bytes);
+      గుర్తులేని old_inner = inner_map.backward (i);
+      ఒకవేళ (unlikely (old_inner >= src_delta_sets.లెక్క)) return_trace (అబద్ధం);
+      hb_ubytes_t బైట్లు = static_cast<స్థిరరాశి CFF2_సూచీ &> (src_delta_sets)[old_inner];
+      దత్తాంశం_కొలత = hb_unsigned_కూడు_saturate (దత్తాంశం_కొలత, బైట్లు.నిడివి);
+      delta_sets.push (బైట్లు);
     }
-    if (unlikely (data_size == UINT_MAX || delta_sets.in_error ()))
-      return_trace (false);
+    ఒకవేళ (unlikely (దత్తాంశం_కొలత == UINT_MAX || delta_sets.లోపల_error ()))
+      return_trace (అబద్ధం);
 
-    auto &out_delta_sets = StructAfter<decltype (deltaSetsX)> (regionIndices);
-    return_trace (out_delta_sets.serialize_serialize (c, delta_sets.iter (), &data_size));
+    స్వయంచాలక &బహిర్గతం_delta_sets = StructAfter<decltype (deltaSetsX)> (regionIndices);
+    return_trace (బహిర్గతం_delta_sets.serialize_serialize (c, delta_sets.iter (), &దత్తాంశం_కొలత));
   }
 
-  protected:
+  రక్షిత:
   HBUINT8	      format; // 1
-  Array16Of<HBUINT16> regionIndices;
-  Offset32To<TupleList> deltaSetsX;
-  public:
-  DEFINE_SIZE_MIN (7);
+  Array16_యొక్క<HBUINT16> regionIndices;
+  Offset32_గమ్యం<TupleList> deltaSetsX;
+  బహిరంగ:
+  DEFINE_కొలత_MIN (7);
 };
 
-struct ItemVariationStore
+నిర్మాణం అంశం_Variation_Store
 {
-  friend struct item_variations_t;
+  మిత్ర నిర్మాణం అంశం_variations_t;
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return hb_scalar_cache_t::create (0);
-#endif
-    return hb_scalar_cache_t::create ((this+regions).regionCount);
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి hb_scalar_cache_t::create (0);
+#అయితే_ముగింపు
+    తిరిగి hb_scalar_cache_t::create ((ఇది+regions).region_లెక్క);
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  స్థిర శూన్య destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  private:
-  template <typename Float = float>
-  Float get_delta (unsigned int outer, unsigned int inner,
-		   const int *coords, unsigned int coord_count,
-		   hb_scalar_cache_t *cache = nullptr) const
+  అంతరంగ:
+  మూస <రకం_పేరు Float = దశాంశం>
+  Float get_delta (గుర్తులేని పూర్ణాంకం outer, గుర్తులేని పూర్ణాంకం inner,
+		   స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		   hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return Float (0);
-#endif
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి Float (0);
+#అయితే_ముగింపు
 
-    if (unlikely (outer >= dataSets.len))
-      return Float (0);
+    ఒకవేళ (unlikely (outer >= దత్తాంశం_Sets.len))
+      తిరిగి Float (0);
 
-    return (this+dataSets[outer]).get_delta<Float> (inner,
-					     coords, coord_count,
-					     this+regions,
+    తిరిగి (ఇది+దత్తాంశం_Sets[outer]).get_delta<Float> (inner,
+					     coords, coord_లెక్క,
+					     ఇది+regions,
 					     cache);
   }
 
-  public:
-  bool has_delta_set (unsigned int index) const
+  బహిరంగ:
+  తార్కిక has_delta_సమితి (గుర్తులేని పూర్ణాంకం సూచీ_2) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return false;
-#endif
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి అబద్ధం;
+#అయితే_ముగింపు
 
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    return outer < dataSets.len &&
-	   inner < (this+dataSets[outer]).get_item_count ();
+    గుర్తులేని పూర్ణాంకం outer = సూచీ_2 >> 16;
+    గుర్తులేని పూర్ణాంకం inner = సూచీ_2 & 0xFFFF;
+    తిరిగి outer < దత్తాంశం_Sets.len &&
+	   inner < (ఇది+దత్తాంశం_Sets[outer]).get_అంశం_లెక్క ();
   }
 
-  template <typename Float = float>
-  Float get_delta (unsigned int index,
-		   const int *coords, unsigned int coord_count,
-		   hb_scalar_cache_t *cache = nullptr) const
+  మూస <రకం_పేరు Float = దశాంశం>
+  Float get_delta (గుర్తులేని పూర్ణాంకం సూచీ_2,
+		   స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		   hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    return get_delta<Float> (outer, inner, coords, coord_count, cache);
+    గుర్తులేని పూర్ణాంకం outer = సూచీ_2 >> 16;
+    గుర్తులేని పూర్ణాంకం inner = సూచీ_2 & 0xFFFF;
+    తిరిగి get_delta<Float> (outer, inner, coords, coord_లెక్క, cache);
   }
-  template <typename Float = float>
-  Float get_delta (unsigned int index,
-		   hb_array_t<const int> coords,
-		   hb_scalar_cache_t *cache = nullptr) const
+  మూస <రకం_పేరు Float = దశాంశం>
+  Float get_delta (గుర్తులేని పూర్ణాంకం సూచీ_2,
+		   hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+		   hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    return get_delta<Float> (index,
-		      coords.arrayZ, coords.length,
+    తిరిగి get_delta<Float> (సూచీ_2,
+		      coords.arrayZ, coords.నిడివి,
 		      cache);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return true;
-#endif
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి నిజం;
+#అయితే_ముగింపు
 
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
 		  format == 1 &&
-		  regions.sanitize (c, this) &&
-		  dataSets.sanitize (c, this));
+		  regions.sanitize (c, ఇది) &&
+		  దత్తాంశం_Sets.sanitize (c, ఇది));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  bool has_long,
-                  const hb_vector_t<hb_tag_t>& axis_tags,
-                  const hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple>*>& region_list,
-                  const hb_vector_t<delta_row_encoding_t>& vardata_encodings)
+  తార్కిక serialize (hb_serialize_context_t *c,
+                  తార్కిక has_long,
+                  స్థిరరాశి hb_సదిశ_t<hb_ట్యాగ్_t>& axis_ట్యాగులు,
+                  స్థిరరాశి hb_సదిశ_t<స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple>*>& region_list,
+                  స్థిరరాశి hb_సదిశ_t<delta_అడ్డువరుస_encoding_t>& vardata_encodings)
   {
-    TRACE_SERIALIZE (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+#నిర్వచితమైతే HB_NO_VAR
+    return_trace (అబద్ధం);
+#అయితే_ముగింపు
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
     format = 1;
-    if (!regions.serialize_serialize (c, axis_tags, region_list))
-      return_trace (false);
+    ఒకవేళ (!regions.serialize_serialize (c, axis_ట్యాగులు, region_list))
+      return_trace (అబద్ధం);
 
-    unsigned num_var_data = vardata_encodings.length;
-    if (!num_var_data) return_trace (false);
-    if (unlikely (!c->check_assign (dataSets.len, num_var_data,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+    గుర్తులేని అంకె_var_దత్తాంశం = vardata_encodings.నిడివి;
+    ఒకవేళ (!అంకె_var_దత్తాంశం) return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->check_కేటాయించు (దత్తాంశం_Sets.len, అంకె_var_దత్తాంశం,
+                                    HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+      return_trace (అబద్ధం);
 
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
-    for (unsigned i = 0; i < num_var_data; i++)
-      if (!dataSets[i].serialize_serialize (c, has_long, vardata_encodings[i].items))
-        return_trace (false);
+    ఒకవేళ (unlikely (!c->extend (దత్తాంశం_Sets))) return_trace (అబద్ధం);
+    కొరకు (గుర్తులేని i = 0; i < అంకె_var_దత్తాంశం; i++)
+      ఒకవేళ (!దత్తాంశం_Sets[i].serialize_serialize (c, has_long, vardata_encodings[i].వస్తువులు))
+        return_trace (అబద్ధం);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const ItemVariationStore *src,
-		  const hb_array_t <const hb_inc_bimap_t> &inner_maps,
-		  const hb_set_t *culled_regions = nullptr)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి అంశం_Variation_Store *src,
+		  స్థిరరాశి hb_array_t <స్థిరరాశి hb_inc_bimap_t> &inner_maps,
+		  స్థిరరాశి hb_సమితి_t *culled_regions = శూన్యసూచిక)
   {
-    TRACE_SERIALIZE (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
+    TRACE_SERIALIZE (ఇది);
+#నిర్వచితమైతే HB_NO_VAR
+    return_trace (అబద్ధం);
+#అయితే_ముగింపు
 
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    unsigned int set_count = 0;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
-      if (inner_maps[i].get_population ())
-	set_count++;
+    గుర్తులేని పూర్ణాంకం సమితి_లెక్క = 0;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < inner_maps.నిడివి; i++)
+      ఒకవేళ (inner_maps[i].get_population ())
+	సమితి_లెక్క++;
 
     format = 1;
 
-    const auto &src_regions = src+src->regions;
+    స్థిరరాశి స్వయంచాలక &src_regions = src+src->regions;
 
-    hb_set_t region_indices;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
-      (src+src->dataSets[i]).collect_region_refs (region_indices, inner_maps[i]);
+    hb_సమితి_t region_indices;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < inner_maps.నిడివి; i++)
+      (src+src->దత్తాంశం_Sets[i]).collect_region_refs (region_indices, inner_maps[i]);
 
-    if (region_indices.in_error ())
-      return_trace (false);
+    ఒకవేళ (region_indices.లోపల_error ())
+      return_trace (అబద్ధం);
 
-    region_indices.del_range ((src_regions).regionCount, hb_set_t::INVALID);
+    region_indices.del_range ((src_regions).region_లెక్క, hb_సమితి_t::INVALID);
 
-    if (culled_regions)
-      region_indices.subtract (*culled_regions);
+    ఒకవేళ (culled_regions)
+      region_indices.వ్యవకలనం (*culled_regions);
 
     /* TODO use constructor when our data-structures support that. */
     hb_inc_bimap_t region_map;
     + hb_iter (region_indices)
-    | hb_apply ([&region_map] (unsigned _) { region_map.add(_); })
+    | hb_apply ([&region_map] (గుర్తులేని _) { region_map.కూడు(_); })
     ;
-    if (region_map.in_error())
-      return_trace (false);
+    ఒకవేళ (region_map.లోపల_error())
+      return_trace (అబద్ధం);
 
-    if (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
-      return_trace (false);
+    ఒకవేళ (unlikely (!regions.serialize_serialize (c, &src_regions, region_map)))
+      return_trace (అబద్ధం);
 
-    dataSets.len = set_count;
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
+    దత్తాంశం_Sets.len = సమితి_లెక్క;
+    ఒకవేళ (unlikely (!c->extend (దత్తాంశం_Sets))) return_trace (అబద్ధం);
 
     /* TODO: The following code could be simplified when
      * List16OfOffset16To::subset () can take a custom param to be passed to VarData::serialize () */
-    unsigned int set_index = 0;
-    for (unsigned int i = 0; i < inner_maps.length; i++)
+    గుర్తులేని పూర్ణాంకం సమితి_సూచీ = 0;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < inner_maps.నిడివి; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      if (unlikely (!dataSets[set_index++]
-		     .serialize_serialize (c, &(src+src->dataSets[i]), inner_maps[i], region_map,
+      ఒకవేళ (!inner_maps[i].get_population ()) కొనసాగు;
+      ఒకవేళ (unlikely (!దత్తాంశం_Sets[సమితి_సూచీ++]
+		     .serialize_serialize (c, &(src+src->దత్తాంశం_Sets[i]), inner_maps[i], region_map,
 					   culled_regions)))
-	return_trace (false);
+	return_trace (అబద్ధం);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  ItemVariationStore *copy (hb_serialize_context_t *c) const
+  అంశం_Variation_Store *copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (శూన్యసూచిక);
 
-    hb_vector_t <hb_inc_bimap_t> inner_maps;
-    unsigned count = dataSets.len;
-    for (unsigned i = 0; i < count; i++)
+    hb_సదిశ_t <hb_inc_bimap_t> inner_maps;
+    గుర్తులేని లెక్క = దత్తాంశం_Sets.len;
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
       hb_inc_bimap_t *map = inner_maps.push ();
-      if (unlikely (!c->propagate_error(inner_maps)))
-        return_trace(nullptr);
-      auto &data = this+dataSets[i];
+      ఒకవేళ (unlikely (!c->propagate_error(inner_maps)))
+        return_trace(శూన్యసూచిక);
+      స్వయంచాలక &దత్తాంశం = ఇది+దత్తాంశం_Sets[i];
 
-      unsigned itemCount = data.get_item_count ();
-      for (unsigned j = 0; j < itemCount; j++)
-	map->add (j);
+      గుర్తులేని అంశం_లెక్క = దత్తాంశం.get_అంశం_లెక్క ();
+      కొరకు (గుర్తులేని j = 0; j < అంశం_లెక్క; j++)
+	map->కూడు (j);
     }
 
-    if (unlikely (!out->serialize (c, this, inner_maps))) return_trace (nullptr);
+    ఒకవేళ (unlikely (!బహిర్గతం->serialize (c, ఇది, inner_maps))) return_trace (శూన్యసూచిక);
 
-    return_trace (out);
+    return_trace (బహిర్గతం);
   }
 
   /* Collect regions that a partial avar2 instance can never reach, per the
    * plan's reachable final-coordinate ranges. */
-  bool collect_dead_regions (const hb_map_t &axes_old_index_tag_map,
-			     const hb_hashmap_t<hb_tag_t, Triple> &reachable_ranges,
-			     hb_set_t &dead_regions /* OUT */) const
+  తార్కిక collect_dead_regions (స్థిరరాశి hb_map_t &axes_old_సూచీ_ట్యాగ్_map,
+			     స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple> &reachable_ranges,
+			     hb_సమితి_t &dead_regions /*బహిర్గతం*/) స్థిరరాశి
   {
-#ifndef HB_NO_VAR
-    if (!reachable_ranges.get_population ()) return true;
-    const VarRegionList &region_list = this+regions;
-    unsigned count = region_list.regionCount;
-    for (unsigned i = 0; i < count; i++)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (!reachable_ranges.get_population ()) తిరిగి నిజం;
+    స్థిరరాశి VarRegionList &region_list = ఇది+regions;
+    గుర్తులేని లెక్క = region_list.region_లెక్క;
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      hb_hashmap_t<hb_tag_t, Triple> axis_tuples;
-      if (!region_list.get_var_region (i, axes_old_index_tag_map, axis_tuples))
-	return false;
-      if (_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
-	dead_regions.add (i);
+      hb_hashmap_t<hb_ట్యాగ్_t, Triple> axis_tuples;
+      ఒకవేళ (!region_list.get_var_region (i, axes_old_సూచీ_ట్యాగ్_map, axis_tuples))
+	తిరిగి అబద్ధం;
+      ఒకవేళ (_hb_avar2_region_is_dead (axis_tuples, reachable_ranges))
+	dead_regions.కూడు (i);
     }
-    return !dead_regions.in_error ();
-#else
-    return true;
-#endif
+    తిరిగి !dead_regions.లోపల_error ();
+#లేకపోతే
+    తిరిగి నిజం;
+#అయితే_ముగింపు
   }
 
-  bool subset (hb_subset_context_t *c, const hb_array_t<const hb_inc_bimap_t> &inner_maps) const
+  తార్కిక subset (hb_subset_context_t *c, స్థిరరాశి hb_array_t<స్థిరరాశి hb_inc_bimap_t> &inner_maps) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
+    TRACE_SUBSET (ఇది);
+#నిర్వచితమైతే HB_NO_VAR
+    return_trace (అబద్ధం);
+#అయితే_ముగింపు
 
-    ItemVariationStore *varstore_prime = c->serializer->start_embed<ItemVariationStore> ();
-    if (unlikely (!varstore_prime)) return_trace (false);
+    అంశం_Variation_Store *varstore_ప్రధానసంఖ్య = c->serializer->ప్రారంభం_embed<అంశం_Variation_Store> ();
+    ఒకవేళ (unlikely (!varstore_ప్రధానసంఖ్య)) return_trace (అబద్ధం);
 
     /* avar2 partial instancing: cull unreachable regions. */
-    hb_set_t dead_regions;
-    if (c->plan->has_avar2)
-      if (!collect_dead_regions (c->plan->axes_old_index_tag_map,
+    hb_సమితి_t dead_regions;
+    ఒకవేళ (c->plan->has_avar2)
+      ఒకవేళ (!collect_dead_regions (c->plan->axes_old_సూచీ_ట్యాగ్_map,
 				 c->plan->avar2_reachable_ranges,
 				 dead_regions))
-	return_trace (false);
+	return_trace (అబద్ధం);
 
-    varstore_prime->serialize (c->serializer, this, inner_maps,
-			       dead_regions.get_population () ? &dead_regions : nullptr);
+    varstore_ప్రధానసంఖ్య->serialize (c->serializer, ఇది, inner_maps,
+			       dead_regions.get_population () ? &dead_regions : శూన్యసూచిక);
 
     return_trace (
-        !c->serializer->in_error()
-        && varstore_prime->dataSets);
+        !c->serializer->లోపల_error()
+        && varstore_ప్రధానసంఖ్య->దత్తాంశం_Sets);
   }
 
-  unsigned int get_region_index_count (unsigned int major) const
+  గుర్తులేని పూర్ణాంకం get_region_సూచీ_లెక్క (గుర్తులేని పూర్ణాంకం major) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return 0;
-#endif
-    return (this+dataSets[major]).get_region_index_count ();
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి 0;
+#అయితే_ముగింపు
+    తిరిగి (ఇది+దత్తాంశం_Sets[major]).get_region_సూచీ_లెక్క ();
   }
 
-  void get_region_scalars (unsigned int major,
-			   const int *coords, unsigned int coord_count,
-			   float *scalars /*OUT*/,
-			   unsigned int num_scalars) const
+  శూన్య get_region_scalars (గుర్తులేని పూర్ణాంకం major,
+			   స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+			   దశాంశం *scalars /*OUT*/,
+			   గుర్తులేని పూర్ణాంకం అంకె_scalars) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    for (unsigned i = 0; i < num_scalars; i++)
+#నిర్వచితమైతే HB_NO_VAR
+    కొరకు (గుర్తులేని i = 0; i < అంకె_scalars; i++)
       scalars[i] = 0.f;
-    return;
-#endif
+    తిరిగి;
+#అయితే_ముగింపు
 
-    (this+dataSets[major]).get_region_scalars (coords, coord_count,
-					       this+regions,
-					       &scalars[0], num_scalars);
+    (ఇది+దత్తాంశం_Sets[major]).get_region_scalars (coords, coord_లెక్క,
+					       ఇది+regions,
+					       &scalars[0], అంకె_scalars);
   }
 
-  unsigned int get_sub_table_count () const
+  గుర్తులేని పూర్ణాంకం get_sub_పట్టిక_లెక్క () స్థిరరాశి
    {
-#ifdef HB_NO_VAR
-     return 0;
-#endif
-     return dataSets.len;
+#నిర్వచితమైతే HB_NO_VAR
+     తిరిగి 0;
+#అయితే_ముగింపు
+     తిరిగి దత్తాంశం_Sets.len;
    }
 
-  const VarData& get_sub_table (unsigned i) const
+  స్థిరరాశి Var_దత్తాంశం& get_sub_పట్టిక (గుర్తులేని i) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-     return Null (VarData);
-#endif
-     return this+dataSets[i];
+#నిర్వచితమైతే HB_NO_VAR
+     తిరిగి Null (Var_దత్తాంశం);
+#అయితే_ముగింపు
+     తిరిగి ఇది+దత్తాంశం_Sets[i];
   }
 
-  const VarRegionList& get_region_list () const
+  స్థిరరాశి VarRegionList& get_region_list () స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-     return Null (VarRegionList);
-#endif
-     return this+regions;
+#నిర్వచితమైతే HB_NO_VAR
+     తిరిగి Null (VarRegionList);
+#అయితే_ముగింపు
+     తిరిగి ఇది+regions;
   }
 
-  protected:
+  రక్షిత:
   HBUINT16				format;
-  Offset32To<VarRegionList>		regions;
-  Array16OfOffset32To<VarData>		dataSets;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
+  Offset32_గమ్యం<VarRegionList>		regions;
+  Array16_యొక్క_Offset32_గమ్యం<Var_దత్తాంశం>		దత్తాంశం_Sets;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (8, దత్తాంశం_Sets);
 };
 
-struct MultiItemVariationStore
+నిర్మాణం Multi_అంశం_Variation_Store
 {
-  hb_scalar_cache_t *create_cache (hb_scalar_cache_t *static_cache = nullptr) const
+  hb_scalar_cache_t *create_cache (hb_scalar_cache_t *static_cache = శూన్యసూచిక) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return hb_scalar_cache_t::create (0);
-#endif
-    auto &r = this+regions;
-    unsigned count = r.regions.len;
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి hb_scalar_cache_t::create (0);
+#అయితే_ముగింపు
+    స్వయంచాలక &r = ఇది+regions;
+    గుర్తులేని లెక్క = r.regions.len;
 
-    return hb_scalar_cache_t::create (count, static_cache);
+    తిరిగి hb_scalar_cache_t::create (లెక్క, static_cache);
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache,
-			     hb_scalar_cache_t *static_cache = nullptr)
+  స్థిర శూన్య destroy_cache (hb_scalar_cache_t *cache,
+			     hb_scalar_cache_t *static_cache = శూన్యసూచిక)
   {
     hb_scalar_cache_t::destroy (cache, static_cache);
   }
 
-  private:
-  void get_delta (unsigned int outer, unsigned int inner,
-		  const int *coords, unsigned int coord_count,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  అంతరంగ:
+  శూన్య get_delta (గుర్తులేని పూర్ణాంకం outer, గుర్తులేని పూర్ణాంకం inner,
+		  స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		  hb_array_t<ద్విగుణ> బహిర్గతం,
+		  hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return;
-#endif
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి;
+#అయితే_ముగింపు
 
-    if (unlikely (outer >= dataSets.len))
-      return;
+    ఒకవేళ (unlikely (outer >= దత్తాంశం_Sets.len))
+      తిరిగి;
 
-    return (this+dataSets[outer]).get_delta (inner,
-					     coords, coord_count,
-					     this+regions,
-					     out,
+    తిరిగి (ఇది+దత్తాంశం_Sets[outer]).get_delta (inner,
+					     coords, coord_లెక్క,
+					     ఇది+regions,
+					     బహిర్గతం,
 					     cache);
   }
 
-  public:
-  void get_delta (unsigned int index,
-		  const int *coords, unsigned int coord_count,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  బహిరంగ:
+  శూన్య get_delta (గుర్తులేని పూర్ణాంకం సూచీ_2,
+		  స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_లెక్క,
+		  hb_array_t<ద్విగుణ> బహిర్గతం,
+		  hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    unsigned int outer = index >> 16;
-    unsigned int inner = index & 0xFFFF;
-    get_delta (outer, inner, coords, coord_count, out, cache);
+    గుర్తులేని పూర్ణాంకం outer = సూచీ_2 >> 16;
+    గుర్తులేని పూర్ణాంకం inner = సూచీ_2 & 0xFFFF;
+    get_delta (outer, inner, coords, coord_లెక్క, బహిర్గతం, cache);
   }
-  void get_delta (unsigned int index,
-		  hb_array_t<const int> coords,
-		  hb_array_t<double> out,
-		  hb_scalar_cache_t *cache = nullptr) const
+  శూన్య get_delta (గుర్తులేని పూర్ణాంకం సూచీ_2,
+		  hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+		  hb_array_t<ద్విగుణ> బహిర్గతం,
+		  hb_scalar_cache_t *cache = శూన్యసూచిక) స్థిరరాశి
   {
-    return get_delta (index,
-		      coords.arrayZ, coords.length,
-		      out,
+    తిరిగి get_delta (సూచీ_2,
+		      coords.arrayZ, coords.నిడివి,
+		      బహిర్గతం,
 		      cache);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-#ifdef HB_NO_VAR
-    return true;
-#endif
+#నిర్వచితమైతే HB_NO_VAR
+    తిరిగి నిజం;
+#అయితే_ముగింపు
 
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
 		  format == 1 &&
-		  regions.sanitize (c, this) &&
-		  dataSets.sanitize (c, this));
+		  regions.sanitize (c, ఇది) &&
+		  దత్తాంశం_Sets.sanitize (c, ఇది));
   }
 
-  bool create_subset_plan (const hb_set_t &var_indices,
-			   hb_vector_t<hb_inc_bimap_t> *inner_maps,
-			   hb_map_t *varidx_map) const
+  తార్కిక create_subset_plan (స్థిరరాశి hb_సమితి_t &var_indices,
+			   hb_సదిశ_t<hb_inc_bimap_t> *inner_maps,
+			   hb_map_t *varidx_map) స్థిరరాశి
   {
-    if (unlikely (!inner_maps->resize (dataSets.len))) return false;
-    for (hb_codepoint_t var_idx : var_indices)
+    ఒకవేళ (unlikely (!inner_maps->resize (దత్తాంశం_Sets.len))) తిరిగి అబద్ధం;
+    కొరకు (hb_codepoint_t var_idx : var_indices)
     {
-      unsigned outer = var_idx >> 16;
-      unsigned inner = var_idx & 0xFFFFu;
-      if (unlikely (outer >= dataSets.len ||
-		    inner >= (this+dataSets[outer]).get_item_count ()))
-	return false;
-      (*inner_maps)[outer].add (inner);
+      గుర్తులేని outer = var_idx >> 16;
+      గుర్తులేని inner = var_idx & 0xFFFFu;
+      ఒకవేళ (unlikely (outer >= దత్తాంశం_Sets.len ||
+		    inner >= (ఇది+దత్తాంశం_Sets[outer]).get_అంశం_లెక్క ()))
+	తిరిగి అబద్ధం;
+      (*inner_maps)[outer].కూడు (inner);
     }
 
-    unsigned new_outer = 0;
-    for (unsigned outer = 0; outer < inner_maps->length; outer++)
+    గుర్తులేని new_outer = 0;
+    కొరకు (గుర్తులేని outer = 0; outer < inner_maps->నిడివి; outer++)
     {
-      const hb_inc_bimap_t &inner_map = (*inner_maps)[outer];
-      if (!inner_map.get_population ()) continue;
-      if (unlikely (inner_map.in_error ())) return false;
-      for (unsigned new_inner = 0;
+      స్థిరరాశి hb_inc_bimap_t &inner_map = (*inner_maps)[outer];
+      ఒకవేళ (!inner_map.get_population ()) కొనసాగు;
+      ఒకవేళ (unlikely (inner_map.లోపల_error ())) తిరిగి అబద్ధం;
+      కొరకు (గుర్తులేని new_inner = 0;
 	   new_inner < inner_map.get_population ();
 	   new_inner++)
       {
-	unsigned old_inner = inner_map.backward (new_inner);
-	varidx_map->set ((outer << 16) | old_inner,
+	గుర్తులేని old_inner = inner_map.backward (new_inner);
+	varidx_map->సమితి ((outer << 16) | old_inner,
 			(new_outer << 16) | new_inner);
       }
       new_outer++;
     }
-    return !inner_maps->in_error () && !varidx_map->in_error ();
+    తిరిగి !inner_maps->లోపల_error () && !varidx_map->లోపల_error ();
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const MultiItemVariationStore *src,
-		  const hb_array_t<const hb_inc_bimap_t> &inner_maps,
-		  const hb_map_t *axis_map)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి Multi_అంశం_Variation_Store *src,
+		  స్థిరరాశి hb_array_t<స్థిరరాశి hb_inc_bimap_t> &inner_maps,
+		  స్థిరరాశి hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this) ||
-		  inner_maps.length < src->dataSets.len))
-      return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది) ||
+		  inner_maps.నిడివి < src->దత్తాంశం_Sets.len))
+      return_trace (అబద్ధం);
     format = 1;
 
-    const auto &src_regions = src+src->regions;
-    hb_set_t region_indices;
-    unsigned set_count = 0;
-    for (unsigned i = 0; i < src->dataSets.len; i++)
+    స్థిరరాశి స్వయంచాలక &src_regions = src+src->regions;
+    hb_సమితి_t region_indices;
+    గుర్తులేని సమితి_లెక్క = 0;
+    కొరకు (గుర్తులేని i = 0; i < src->దత్తాంశం_Sets.len; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      set_count++;
-      (src+src->dataSets[i]).collect_region_refs (region_indices);
+      ఒకవేళ (!inner_maps[i].get_population ()) కొనసాగు;
+      సమితి_లెక్క++;
+      (src+src->దత్తాంశం_Sets[i]).collect_region_refs (region_indices);
     }
-    region_indices.del_range (src_regions.regions.len, hb_set_t::INVALID);
+    region_indices.del_range (src_regions.regions.len, hb_సమితి_t::INVALID);
     hb_inc_bimap_t region_map;
-    region_map.add_set (&region_indices);
-    if (unlikely (region_indices.in_error () || region_map.in_error () ||
+    region_map.కూడు_సమితి (&region_indices);
+    ఒకవేళ (unlikely (region_indices.లోపల_error () || region_map.లోపల_error () ||
 		  !regions.serialize_serialize (c, &src_regions, region_map, axis_map)))
-      return_trace (false);
+      return_trace (అబద్ధం);
 
-    dataSets.len = set_count;
-    if (unlikely (!c->extend (dataSets))) return_trace (false);
-    unsigned set_index = 0;
-    for (unsigned i = 0; i < src->dataSets.len; i++)
+    దత్తాంశం_Sets.len = సమితి_లెక్క;
+    ఒకవేళ (unlikely (!c->extend (దత్తాంశం_Sets))) return_trace (అబద్ధం);
+    గుర్తులేని సమితి_సూచీ = 0;
+    కొరకు (గుర్తులేని i = 0; i < src->దత్తాంశం_Sets.len; i++)
     {
-      if (!inner_maps[i].get_population ()) continue;
-      if (unlikely (!dataSets[set_index++].serialize_serialize (
-			    c, &(src+src->dataSets[i]), inner_maps[i], region_map)))
-	return_trace (false);
+      ఒకవేళ (!inner_maps[i].get_population ()) కొనసాగు;
+      ఒకవేళ (unlikely (!దత్తాంశం_Sets[సమితి_సూచీ++].serialize_serialize (
+			    c, &(src+src->దత్తాంశం_Sets[i]), inner_maps[i], region_map)))
+	return_trace (అబద్ధం);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  protected:
+  రక్షిత:
   HBUINT16				format; // 1
-  Offset32To<SparseVarRegionList>	regions;
-  Array16OfOffset32To<MultiVarData>	dataSets;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (8, dataSets);
+  Offset32_గమ్యం<SparseVarRegionList>	regions;
+  Array16_యొక్క_Offset32_గమ్యం<Multi_Var_దత్తాంశం>	దత్తాంశం_Sets;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (8, దత్తాంశం_Sets);
 };
 
-template <typename MapCountT>
-struct DeltaSetIndexMapFormat01
+మూస <రకం_పేరు Map_లెక్క_T>
+నిర్మాణం Delta_సమితి_సూచీ_Map_Format01
 {
-  friend struct DeltaSetIndexMap;
+  మిత్ర నిర్మాణం Delta_సమితి_సూచీ_Map;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (mapCount, get_width (), min_size); }
+  size_t get_కొలత () స్థిరరాశి
+  { తిరిగి hb_unsigned_mul_కూడు_saturate (map_లెక్క_2, get_వెడల్పు (), min_కొలత); }
 
-  private:
-  DeltaSetIndexMapFormat01* copy (hb_serialize_context_t *c) const
+  అంతరంగ:
+  Delta_సమితి_సూచీ_Map_Format01* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed (ఇది));
   }
 
-  template <typename T>
-  bool serialize (hb_serialize_context_t *c, const T &plan)
+  మూస <రకం_పేరు T>
+  తార్కిక serialize (hb_serialize_context_t *c, స్థిరరాశి T &plan)
   {
-    unsigned int width = plan.get_width ();
-    unsigned int inner_bit_count = plan.get_inner_bit_count ();
-    const hb_array_t<const uint32_t> output_map = plan.get_output_map ();
+    గుర్తులేని పూర్ణాంకం వెడల్పు = plan.get_వెడల్పు ();
+    గుర్తులేని పూర్ణాంకం inner_బిట్టు_లెక్క = plan.get_inner_బిట్టు_లెక్క ();
+    స్థిరరాశి hb_array_t<స్థిరరాశి uint32_t> output_map = plan.get_output_map ();
 
-    TRACE_SERIALIZE (this);
-    if (unlikely (output_map.length && ((((inner_bit_count-1)&~0xF)!=0) || (((width-1)&~0x3)!=0))))
-      return_trace (false);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (output_map.నిడివి && ((((inner_బిట్టు_లెక్క-1)&~0xF)!=0) || (((వెడల్పు-1)&~0x3)!=0))))
+      return_trace (అబద్ధం);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
 
-    entryFormat = ((width-1)<<4)|(inner_bit_count-1);
-    mapCount = output_map.length;
-    HBUINT8 *p = c->allocate_size<HBUINT8> (width * output_map.length);
-    if (unlikely (!p)) return_trace (false);
-    for (unsigned int i = 0; i < output_map.length; i++)
+    నమోదు_Format = ((వెడల్పు-1)<<4)|(inner_బిట్టు_లెక్క-1);
+    map_లెక్క_2 = output_map.నిడివి;
+    HBUINT8 *p = c->allocate_కొలత<HBUINT8> (వెడల్పు * output_map.నిడివి);
+    ఒకవేళ (unlikely (!p)) return_trace (అబద్ధం);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < output_map.నిడివి; i++)
     {
-      unsigned int v = output_map.arrayZ[i];
-      if (v)
+      గుర్తులేని పూర్ణాంకం v = output_map.arrayZ[i];
+      ఒకవేళ (v)
       {
-	unsigned int outer = v >> 16;
-	unsigned int inner = v & 0xFFFF;
-	unsigned int u = (outer << inner_bit_count) | inner;
-	for (unsigned int w = width; w > 0;)
+	గుర్తులేని పూర్ణాంకం outer = v >> 16;
+	గుర్తులేని పూర్ణాంకం inner = v & 0xFFFF;
+	గుర్తులేని పూర్ణాంకం u = (outer << inner_బిట్టు_లెక్క) | inner;
+	కొరకు (గుర్తులేని పూర్ణాంకం w = వెడల్పు; w > 0;)
 	{
 	  p[--w] = u;
 	  u >>= 8;
 	}
       }
-      p += width;
+      p += వెడల్పు;
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
   HB_ALWAYS_INLINE
-  uint32_t map (unsigned int v) const /* Returns 16.16 outer.inner. */
+  uint32_t map (గుర్తులేని పూర్ణాంకం v) స్థిరరాశి /* Returns 16.16 outer.inner. */
   {
     /* If count is zero, pass value unchanged.  This takes
      * care of direct mapping for advance map. */
-    if (!mapCount)
-      return v;
-    return _map (v);
+    ఒకవేళ (!map_లెక్క_2)
+      తిరిగి v;
+    తిరిగి _map (v);
   }
 
   HB_HOT
-  uint32_t _map (unsigned int v) const /* Returns 16.16 outer.inner. */
+  uint32_t _map (గుర్తులేని పూర్ణాంకం v) స్థిరరాశి /* Returns 16.16 outer.inner. */
   {
-    if (v >= mapCount)
-      v = mapCount - 1;
+    ఒకవేళ (v >= map_లెక్క_2)
+      v = map_లెక్క_2 - 1;
 
-    unsigned int u = 0;
+    గుర్తులేని పూర్ణాంకం u = 0;
     { /* Fetch it. */
-      unsigned int w = get_width ();
-      const HBUINT8 *p = mapDataZ.arrayZ + w * v;
-      for (; w; w--)
+      గుర్తులేని పూర్ణాంకం w = get_వెడల్పు ();
+      స్థిరరాశి HBUINT8 *p = map_దత్తాంశం_Z.arrayZ + w * v;
+      కొరకు (; w; w--)
         u = (u << 8) + *p++;
     }
 
     { /* Repack it. */
-      unsigned int n = get_inner_bit_count ();
-      unsigned int outer = u >> n;
-      unsigned int inner = u & ((1 << n) - 1);
+      గుర్తులేని పూర్ణాంకం n = get_inner_బిట్టు_లెక్క ();
+      గుర్తులేని పూర్ణాంకం outer = u >> n;
+      గుర్తులేని పూర్ణాంకం inner = u & ((1 << n) - 1);
       u = (outer<<16) | inner;
     }
 
-    return u;
+    తిరిగి u;
   }
 
-  unsigned get_map_count () const       { return mapCount; }
-  unsigned get_width () const           { return ((entryFormat >> 4) & 3) + 1; }
-  unsigned get_inner_bit_count () const { return (entryFormat & 0xF) + 1; }
+  గుర్తులేని get_map_లెక్క () స్థిరరాశి       { తిరిగి map_లెక్క_2; }
+  గుర్తులేని get_వెడల్పు () స్థిరరాశి           { తిరిగి ((నమోదు_Format >> 4) & 3) + 1; }
+  గుర్తులేని get_inner_బిట్టు_లెక్క () స్థిరరాశి { తిరిగి (నమోదు_Format & 0xF) + 1; }
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
 		  hb_barrier () &&
-                  c->check_range (mapDataZ.arrayZ,
-                                  mapCount,
-                                  get_width ()));
+                  c->check_range (map_దత్తాంశం_Z.arrayZ,
+                                  map_లెక్క_2,
+                                  get_వెడల్పు ()));
   }
 
-  protected:
+  రక్షిత:
   HBUINT8       format;         /* Format identifier--format = 0 */
-  HBUINT8       entryFormat;    /* A packed field that describes the compressed
+  HBUINT8       నమోదు_Format;    /* A packed field that describes the compressed
                                  * representation of delta-set indices. */
-  MapCountT     mapCount;       /* The number of mapping entries. */
-  UnsizedArrayOf<HBUINT8>
-                mapDataZ;       /* The delta-set index mapping data. */
+  Map_లెక్క_T     map_లెక్క_2;       /* The number of mapping entries. */
+  Unsized_Array_యొక్క<HBUINT8>
+                map_దత్తాంశం_Z;       /* The delta-set index mapping data. */
 
-  public:
-  DEFINE_SIZE_ARRAY (2+MapCountT::static_size, mapDataZ);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2+Map_లెక్క_T::static_కొలత, map_దత్తాంశం_Z);
 };
 
-struct DeltaSetIndexMap
+నిర్మాణం Delta_సమితి_సూచీ_Map
 {
-  template <typename T>
-  bool serialize (hb_serialize_context_t *c, const T &plan)
+  మూస <రకం_పేరు T>
+  తార్కిక serialize (hb_serialize_context_t *c, స్థిరరాశి T &plan)
   {
-    TRACE_SERIALIZE (this);
-    unsigned length = plan.get_output_map ().length;
-    u.format.v = length <= 0xFFFF ? 0 : 1;
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.serialize (c, plan));
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, plan));
-    default:return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    గుర్తులేని నిడివి = plan.get_output_map ().నిడివి;
+    u.format.v = నిడివి <= 0xFFFF ? 0 : 1;
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); return_trace (u.format0.serialize (c, plan));
+    స్థితి 1: hb_barrier (); return_trace (u.format1.serialize (c, plan));
+    అప్రమేయ:return_trace (అబద్ధం);
     }
   }
 
-  uint32_t map (unsigned v) const
+  uint32_t map (గుర్తులేని v) స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return (u.format0.map (v));
-    case 1: hb_barrier (); return (u.format1.map (v));
-    default:return v;
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); తిరిగి (u.format0.map (v));
+    స్థితి 1: hb_barrier (); తిరిగి (u.format1.map (v));
+    అప్రమేయ:తిరిగి v;
     }
   }
 
-  unsigned get_map_count () const
+  గుర్తులేని get_map_లెక్క () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_map_count ();
-    case 1: hb_barrier (); return u.format1.get_map_count ();
-    default:return 0;
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_map_లెక్క ();
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_map_లెక్క ();
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  unsigned get_width () const
+  గుర్తులేని get_వెడల్పు () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_width ();
-    case 1: hb_barrier (); return u.format1.get_width ();
-    default:return 0;
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_వెడల్పు ();
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_వెడల్పు ();
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  unsigned get_inner_bit_count () const
+  గుర్తులేని get_inner_బిట్టు_లెక్క () స్థిరరాశి
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_inner_bit_count ();
-    case 1: hb_barrier (); return u.format1.get_inner_bit_count ();
-    default:return 0;
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_inner_బిట్టు_లెక్క ();
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_inner_బిట్టు_లెక్క ();
+    అప్రమేయ:తిరిగి 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!u.format.v.sanitize (c)) return_trace (అబద్ధం);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    default:return_trace (true);
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); return_trace (u.format0.sanitize (c));
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
-  DeltaSetIndexMap* copy (hb_serialize_context_t *c) const
+  Delta_సమితి_సూచీ_Map* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format0.copy (c)));
-    case 1: hb_barrier (); return_trace (reinterpret_cast<DeltaSetIndexMap *> (u.format1.copy (c)));
-    default:return_trace (nullptr);
+    TRACE_SERIALIZE (ఇది);
+    ఎంపిక (u.format.v) {
+    స్థితి 0: hb_barrier (); return_trace (reinterpret_cast<Delta_సమితి_సూచీ_Map *> (u.format0.copy (c)));
+    స్థితి 1: hb_barrier (); return_trace (reinterpret_cast<Delta_సమితి_సూచీ_Map *> (u.format1.copy (c)));
+    అప్రమేయ:return_trace (శూన్యసూచిక);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }             format;         /* Format identifier */
-  DeltaSetIndexMapFormat01<HBUINT16> format0;
-  DeltaSetIndexMapFormat01<HBUINT32> format1;
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT8 v; }             format;         /* Format identifier */
+  Delta_సమితి_సూచీ_Map_Format01<HBUINT16> format0;
+  Delta_సమితి_సూచీ_Map_Format01<HBUINT32> format1;
   } u;
-  public:
-  DEFINE_SIZE_UNION (1, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (1, format.v);
 };
 
 
-struct ItemVarStoreInstancer
+నిర్మాణం అంశం_Var_Store_Instancer
 {
-  ItemVarStoreInstancer (const ItemVariationStore *varStore_,
-			 const DeltaSetIndexMap *varIdxMap,
-			 hb_array_t<const int> coords,
-			 hb_scalar_cache_t *cache = nullptr) :
+  అంశం_Var_Store_Instancer (స్థిరరాశి అంశం_Variation_Store *varStore_,
+			 స్థిరరాశి Delta_సమితి_సూచీ_Map *varIdxMap,
+			 hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+			 hb_scalar_cache_t *cache = శూన్యసూచిక) :
     varStore (varStore_), varIdxMap (varIdxMap), coords (coords), cache (cache)
   {
-    if (!varStore)
-      varStore = &Null(ItemVariationStore);
+    ఒకవేళ (!varStore)
+      varStore = &Null(అంశం_Variation_Store);
     /* Like hb_font_t::has_nonzero_coords, treat explicit all-zero coordinates
      * as the default instance, which uses unadjusted values (OFF 7.1). */
-    if (!hb_any (coords))
-      this->coords = {};
+    ఒకవేళ (!hb_any (coords))
+      ఇది->coords = {};
   }
 
-  operator bool () const { return varStore && bool (coords); }
+  క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి varStore && తార్కిక (coords); }
 
-  float operator[] (uint32_t varIdx) const
-  { return (*this) (varIdx); }
+  దశాంశం క్రియాకారకం[] (uint32_t varIdx) స్థిరరాశి
+  { తిరిగి (*ఇది) (varIdx); }
 
-  float operator() (uint32_t varIdx, unsigned short offset = 0) const
-  { return get_delta (varIdx, offset); }
+  దశాంశం క్రియాకారకం() (uint32_t varIdx, గుర్తులేని పొట్టి స్థానభ్రంశం = 0) స్థిరరాశి
+  { తిరిగి get_delta (varIdx, స్థానభ్రంశం); }
 
-  double get_condition_delta (uint32_t varIdx) const
-  { return get_delta<double> (varIdx); }
+  ద్విగుణ get_condition_delta (uint32_t varIdx) స్థిరరాశి
+  { తిరిగి get_delta<ద్విగుణ> (varIdx); }
 
-  template <typename Float = float>
-  Float get_delta (uint32_t varIdx, unsigned short offset = 0) const
+  మూస <రకం_పేరు Float = దశాంశం>
+  Float get_delta (uint32_t varIdx, గుర్తులేని పొట్టి స్థానభ్రంశం = 0) స్థిరరాశి
   {
    /* Ordinary stores do not apply deltas at the default instance. */
-   if (!coords || varIdx == VarIdx::NO_VARIATION)
-     return Float (0);
+   ఒకవేళ (!coords || varIdx == VarIdx::NO_VARIATION)
+     తిరిగి Float (0);
 
-    varIdx += offset;
-    if (varIdxMap)
+    varIdx += స్థానభ్రంశం;
+    ఒకవేళ (varIdxMap)
       varIdx = varIdxMap->map (varIdx);
-    return varStore->get_delta<Float> (varIdx, coords, cache);
+    తిరిగి varStore->get_delta<Float> (varIdx, coords, cache);
   }
 
-  const ItemVariationStore *varStore;
-  const DeltaSetIndexMap *varIdxMap;
-  hb_array_t<const int> coords;
+  స్థిరరాశి అంశం_Variation_Store *varStore;
+  స్థిరరాశి Delta_సమితి_సూచీ_Map *varIdxMap;
+  hb_array_t<స్థిరరాశి పూర్ణాంకం> coords;
   hb_scalar_cache_t *cache;
 };
 
-struct MultiItemVarStoreInstancer
+నిర్మాణం Multi_అంశం_Var_Store_Instancer
 {
-  MultiItemVarStoreInstancer (const MultiItemVariationStore *varStore,
-			      const DeltaSetIndexMap *varIdxMap,
-			      hb_array_t<const int> coords,
-			      hb_scalar_cache_t *cache = nullptr) :
+  Multi_అంశం_Var_Store_Instancer (స్థిరరాశి Multi_అంశం_Variation_Store *varStore,
+			      స్థిరరాశి Delta_సమితి_సూచీ_Map *varIdxMap,
+			      hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+			      hb_scalar_cache_t *cache = శూన్యసూచిక) :
     varStore (varStore), varIdxMap (varIdxMap), coords (coords), cache (cache)
   {
-    if (!varStore)
-      varStore = &Null(MultiItemVariationStore);
+    ఒకవేళ (!varStore)
+      varStore = &Null(Multi_అంశం_Variation_Store);
   }
 
-  operator bool () const { return varStore; }
+  క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి varStore; }
 
-  double get_condition_delta (uint32_t varIdx) const
-  { return (double) (*this)[varIdx]; }
+  ద్విగుణ get_condition_delta (uint32_t varIdx) స్థిరరాశి
+  { తిరిగి (ద్విగుణ) (*ఇది)[varIdx]; }
 
-  double operator[] (uint32_t varIdx) const
+  ద్విగుణ క్రియాకారకం[] (uint32_t varIdx) స్థిరరాశి
   {
-    double v = 0;
-    (*this) (hb_array (&v, 1), varIdx);
-    return v;
+    ద్విగుణ v = 0;
+    (*ఇది) (hb_array (&v, 1), varIdx);
+    తిరిగి v;
   }
 
-  void operator() (hb_array_t<double> out, uint32_t varIdx, unsigned short offset = 0) const
+  శూన్య క్రియాకారకం() (hb_array_t<ద్విగుణ> బహిర్గతం, uint32_t varIdx, గుర్తులేని పొట్టి స్థానభ్రంశం = 0) స్థిరరాశి
   {
     /* Static VARC fonts can have constant deltas even with empty coordinates. */
-    if (varIdx != VarIdx::NO_VARIATION)
+    ఒకవేళ (varIdx != VarIdx::NO_VARIATION)
     {
-      varIdx += offset;
-      if (varIdxMap)
+      varIdx += స్థానభ్రంశం;
+      ఒకవేళ (varIdxMap)
 	varIdx = varIdxMap->map (varIdx);
-      varStore->get_delta (varIdx, coords, out, cache);
+      varStore->get_delta (varIdx, coords, బహిర్గతం, cache);
     }
-    else
-      for (unsigned i = 0; i < out.length; i++)
-        out.arrayZ[i] = 0.;
+    లేకపోతే
+      కొరకు (గుర్తులేని i = 0; i < బహిర్గతం.నిడివి; i++)
+        బహిర్గతం.arrayZ[i] = 0.;
   }
 
-  const MultiItemVariationStore *varStore;
-  const DeltaSetIndexMap *varIdxMap;
-  hb_array_t<const int> coords;
+  స్థిరరాశి Multi_అంశం_Variation_Store *varStore;
+  స్థిరరాశి Delta_సమితి_సూచీ_Map *varIdxMap;
+  hb_array_t<స్థిరరాశి పూర్ణాంకం> coords;
   hb_scalar_cache_t *cache;
 };
 
@@ -4280,15 +4280,15 @@ struct MultiItemVarStoreInstancer
 /*
  * Feature Variations
  */
-enum Cond_with_Var_flag_t
+గణన Cond_with_Var_flag_t
 {
   KEEP_COND_WITH_VAR = 0,
-  KEEP_RECORD_WITH_VAR = 1,
+  KEEP_రికార్డు_WITH_VAR = 1,
   DROP_COND_WITH_VAR = 2,
-  DROP_RECORD_WITH_VAR = 3,
+  DROP_రికార్డు_WITH_VAR = 3,
 };
 
-enum lookup_condition_subset_result_t
+గణన lookup_condition_subset_ఫలితం_t
 {
   LOOKUP_CONDITION_SUBSET_ERROR,
   LOOKUP_CONDITION_SUBSET_FALSE,
@@ -4296,1885 +4296,1885 @@ enum lookup_condition_subset_result_t
   LOOKUP_CONDITION_SUBSET_KEEP,
 };
 
-struct Condition;
+నిర్మాణం Condition;
 
-template <typename Instancer>
-static bool
-_hb_recurse_condition_evaluate (const struct Condition &condition,
-				const int *coords,
-				unsigned int coord_len,
+మూస <రకం_పేరు Instancer>
+స్థిర తార్కిక
+_hb_recurse_condition_evaluate (స్థిరరాశి నిర్మాణం Condition &condition,
+				స్థిరరాశి పూర్ణాంకం *coords,
+				గుర్తులేని పూర్ణాంకం coord_len,
 				Instancer *instancer);
 
-struct ConditionAxisRange
+నిర్మాణం ConditionAxisRange
 {
-  friend struct Condition;
+  మిత్ర నిర్మాణం Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    const hb_map_t *index_map = &c->plan->axes_index_map;
-    if (index_map->is_empty ()) return_trace (true);
+    స్థిరరాశి hb_map_t *సూచీ_map = &c->plan->axes_సూచీ_map;
+    ఒకవేళ (సూచీ_map->is_empty ()) return_trace (నిజం);
 
-    const hb_map_t& axes_old_index_tag_map = c->plan->axes_old_index_tag_map;
-    hb_codepoint_t *axis_tag;
-    if (!axes_old_index_tag_map.has (axisIndex, &axis_tag) ||
-        !index_map->has (axisIndex))
-      return_trace (false);
+    స్థిరరాశి hb_map_t& axes_old_సూచీ_ట్యాగ్_map = c->plan->axes_old_సూచీ_ట్యాగ్_map;
+    hb_codepoint_t *axis_ట్యాగ్_2;
+    ఒకవేళ (!axes_old_సూచీ_ట్యాగ్_map.has (axis_సూచీ_2, &axis_ట్యాగ్_2) ||
+        !సూచీ_map->has (axis_సూచీ_2))
+      return_trace (అబద్ధం);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& normalized_axes_location = c->plan->axes_location;
-    Triple axis_limit{-1.0, 0.0, 1.0};
-    Triple *normalized_limit;
-    if (normalized_axes_location.has (*axis_tag, &normalized_limit))
-      axis_limit = *normalized_limit;
+    స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, Triple>& normalized_axes_location = c->plan->axes_location;
+    Triple axis_హద్దు{-1.0, 0.0, 1.0};
+    Triple *normalized_హద్దు;
+    ఒకవేళ (normalized_axes_location.has (*axis_ట్యాగ్_2, &normalized_హద్దు))
+      axis_హద్దు = *normalized_హద్దు;
 
-    const hb_hashmap_t<hb_tag_t, TripleDistances>& axes_triple_distances = c->plan->axes_triple_distances;
+    స్థిరరాశి hb_hashmap_t<hb_ట్యాగ్_t, TripleDistances>& axes_triple_distances = c->plan->axes_triple_distances;
     TripleDistances axis_triple_distances{1.0, 1.0};
     TripleDistances *triple_dists;
-    if (axes_triple_distances.has (*axis_tag, &triple_dists))
+    ఒకవేళ (axes_triple_distances.has (*axis_ట్యాగ్_2, &triple_dists))
       axis_triple_distances = *triple_dists;
 
-    float normalized_min = renormalizeValue ((double) filterRangeMinValue.to_float (), axis_limit, axis_triple_distances, false);
-    float normalized_max = renormalizeValue ((double) filterRangeMaxValue.to_float (), axis_limit, axis_triple_distances, false);
-    out->filterRangeMinValue.set_float (normalized_min);
-    out->filterRangeMaxValue.set_float (normalized_max);
+    దశాంశం normalized_min = renormalize_విలువ ((ద్విగుణ) filter_Range_Min_విలువ.గమ్యం_float (), axis_హద్దు, axis_triple_distances, అబద్ధం);
+    దశాంశం normalized_max = renormalize_విలువ ((ద్విగుణ) filter_Range_Max_విలువ.గమ్యం_float (), axis_హద్దు, axis_triple_distances, అబద్ధం);
+    బహిర్గతం->filter_Range_Min_విలువ.సమితి_float (normalized_min);
+    బహిర్గతం->filter_Range_Max_విలువ.సమితి_float (normalized_max);
 
-    return_trace (c->serializer->check_assign (out->axisIndex, index_map->get (axisIndex),
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_కేటాయించు (బహిర్గతం->axis_సూచీ_2, సూచీ_map->get (axis_సూచీ_2),
+                                               HB_SERIALIZE_ERROR_INT_అధికప్రవాహం));
   }
 
-  private:
+  అంతరంగ:
   Cond_with_Var_flag_t keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                             hb_map_t *condition_map /* OUT */) const
+                                             hb_map_t *condition_map /*బహిర్గతం*/) స్థిరరాశి
   {
     //invalid axis index, drop the entire record
-    if (!c->axes_index_tag_map->has (axisIndex))
-      return DROP_RECORD_WITH_VAR;
+    ఒకవేళ (!c->axes_సూచీ_ట్యాగ్_map->has (axis_సూచీ_2))
+      తిరిగి DROP_రికార్డు_WITH_VAR;
 
-    hb_tag_t axis_tag = c->axes_index_tag_map->get (axisIndex);
+    hb_ట్యాగ్_t axis_ట్యాగ్_2 = c->axes_సూచీ_ట్యాగ్_map->get (axis_సూచీ_2);
 
     Triple axis_range (-1.0, 0.0, 1.0);
-    Triple *axis_limit;
-    bool axis_set_by_user = false;
-    if (c->axes_location->has (axis_tag, &axis_limit))
+    Triple *axis_హద్దు;
+    తార్కిక axis_సమితి_by_user = అబద్ధం;
+    ఒకవేళ (c->axes_location->has (axis_ట్యాగ్_2, &axis_హద్దు))
     {
-      axis_range = *axis_limit;
-      axis_set_by_user = true;
+      axis_range = *axis_హద్దు;
+      axis_సమితి_by_user = నిజం;
     }
 
-    float axis_min_val = axis_range.minimum;
-    float axis_default_val = axis_range.middle;
-    float axis_max_val = axis_range.maximum;
+    దశాంశం axis_min_val = axis_range.minimum;
+    దశాంశం axis_default_val = axis_range.మధ్య;
+    దశాంశం axis_max_val = axis_range.గరిష్ఠ;
 
-    float filter_min_val = filterRangeMinValue.to_float ();
-    float filter_max_val = filterRangeMaxValue.to_float ();
+    దశాంశం filter_min_val = filter_Range_Min_విలువ.గమ్యం_float ();
+    దశాంశం filter_max_val = filter_Range_Max_విలువ.గమ్యం_float ();
 
-    if (axis_default_val < filter_min_val ||
+    ఒకవేళ (axis_default_val < filter_min_val ||
         axis_default_val > filter_max_val)
-      c->apply = false;
+      c->apply = అబద్ధం;
 
     //condition not met, drop the entire record
-    if (axis_min_val > filter_max_val || axis_max_val < filter_min_val ||
+    ఒకవేళ (axis_min_val > filter_max_val || axis_max_val < filter_min_val ||
         filter_min_val > filter_max_val)
-      return DROP_RECORD_WITH_VAR;
+      తిరిగి DROP_రికార్డు_WITH_VAR;
 
     //condition met and axis pinned, drop the condition
-    if (axis_set_by_user && axis_range.is_point ())
-      return DROP_COND_WITH_VAR;
+    ఒకవేళ (axis_సమితి_by_user && axis_range.is_బిందువు ())
+      తిరిగి DROP_COND_WITH_VAR;
 
-    if (filter_max_val != axis_max_val || filter_min_val != axis_min_val)
+    ఒకవేళ (filter_max_val != axis_max_val || filter_min_val != axis_min_val)
     {
       // add axisIndex->value into the hashmap so we can check if the record is
       // unique with variations
-      uint16_t int_filter_max_val = (uint16_t) filterRangeMaxValue.to_int ();
-      uint16_t int_filter_min_val = (uint16_t) filterRangeMinValue.to_int ();
+      uint16_t int_filter_max_val = (uint16_t) filter_Range_Max_విలువ.గమ్యం_int ();
+      uint16_t int_filter_min_val = (uint16_t) filter_Range_Min_విలువ.గమ్యం_int ();
       hb_codepoint_t val = (int_filter_max_val << 16) + int_filter_min_val;
 
-      condition_map->set (axisIndex, val);
-      return KEEP_COND_WITH_VAR;
+      condition_map->సమితి (axis_సూచీ_2, val);
+      తిరిగి KEEP_COND_WITH_VAR;
     }
-    return KEEP_RECORD_WITH_VAR;
+    తిరిగి KEEP_రికార్డు_WITH_VAR;
   }
 
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer HB_UNUSED) const
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer HB_వాడని) స్థిరరాశి
   {
-    int coord = axisIndex < coord_len ? coords[axisIndex] : 0;
-    return filterRangeMinValue.to_int () <= coord && coord <= filterRangeMaxValue.to_int ();
+    పూర్ణాంకం coord = axis_సూచీ_2 < coord_len ? coords[axis_సూచీ_2] : 0;
+    తిరిగి filter_Range_Min_విలువ.గమ్యం_int () <= coord && coord <= filter_Range_Max_విలువ.గమ్యం_int ();
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  బహిరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 1 */
-  HBUINT16	axisIndex;
-  F2DOT14	filterRangeMinValue;
-  F2DOT14	filterRangeMaxValue;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  HBUINT16	axis_సూచీ_2;
+  F2DOT14	filter_Range_Min_విలువ;
+  F2DOT14	filter_Range_Max_విలువ;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct ConditionValue
+నిర్మాణం Condition_విలువ
 {
-  friend struct Condition;
+  మిత్ర నిర్మాణం Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    if (varIdx == VarIdx::NO_VARIATION)
-      return_trace (true);
+    ఒకవేళ (varIdx == VarIdx::NO_VARIATION)
+      return_trace (నిజం);
 
-    hb_pair_t<unsigned, int> *condition_value;
-    if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) this, &condition_value))
+    hb_pair_t<గుర్తులేని, పూర్ణాంకం> *condition_విలువ;
+    ఒకవేళ (c->plan->layout_condition_idx_విలువ_map.has ((uintptr_t) ఇది, &condition_విలువ))
     {
-      out->defaultValue = condition_value->second;
-      out->varIdx = condition_value->first;
-      return_trace (true);
+      బహిర్గతం->default_విలువ_2 = condition_విలువ->second;
+      బహిర్గతం->varIdx = condition_విలువ->మొదటి;
+      return_trace (నిజం);
     }
 
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (!c->plan->layout_variation_idx_delta_map.has (varIdx, &new_varidx_delta))
-      return_trace (false);
+    hb_pair_t<గుర్తులేని, పూర్ణాంకం> *new_varidx_delta;
+    ఒకవేళ (!c->plan->layout_variation_idx_delta_map.has (varIdx, &new_varidx_delta))
+      return_trace (అబద్ధం);
 
-    if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		defaultValue + hb_second (*new_varidx_delta),
-		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
-    out->varIdx = hb_first (*new_varidx_delta);
-    return_trace (true);
+    ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (
+		బహిర్గతం->default_విలువ_2,
+		default_విలువ_2 + hb_రెండవ (*new_varidx_delta),
+		HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+      return_trace (అబద్ధం);
+    బహిర్గతం->varIdx = hb_మొదటి (*new_varidx_delta);
+    return_trace (నిజం);
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  అంతరంగ:
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer) స్థిరరాశి
   {
-    double value = defaultValue;
+    ద్విగుణ value = default_విలువ_2;
     value += instancer->get_condition_delta (varIdx);
-    return value > 0;
+    తిరిగి value > 0;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  బహిరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  HBINT16	defaultValue;   /* Value at default instance. */
+  HBINT16	default_విలువ_2;   /* Value at default instance. */
   VarIdx	varIdx;		/* Variation index */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct ConditionAnd
+నిర్మాణం ConditionAnd
 {
-  friend struct Condition;
+  మిత్ర నిర్మాణం Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం)))
+      return_trace (అబద్ధం);
+    బహిర్గతం->format = format;
 
-    for (const auto &offset : conditions)
+    కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : conditions)
     {
-      if (offset.is_null ())
+      ఒకవేళ (స్థానభ్రంశం.is_null ())
       {
-	auto *out_offset = out->conditions.serialize_append (c->serializer);
-	if (unlikely (!out_offset)) return_trace (false);
-	*out_offset = 0;
+	స్వయంచాలక *బహిర్గతం_స్థానభ్రంశం = బహిర్గతం->conditions.serialize_append (c->serializer);
+	ఒకవేళ (unlikely (!బహిర్గతం_స్థానభ్రంశం)) return_trace (అబద్ధం);
+	*బహిర్గతం_స్థానభ్రంశం = 0;
       }
-      else if (unlikely (!subset_offset_array (c, out->conditions, this) (offset)))
-	return_trace (false);
+      లేకపోతే ఒకవేళ (unlikely (!subset_స్థానభ్రంశం_array (c, బహిర్గతం->conditions, ఇది) (స్థానభ్రంశం)))
+	return_trace (అబద్ధం);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  అంతరంగ:
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer) స్థిరరాశి
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
+    గుర్తులేని పూర్ణాంకం లెక్క = conditions.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!_hb_recurse_condition_evaluate (ఇది+conditions.arrayZ[i],
 					   coords, coord_len,
 					   instancer))
-	return false;
-    return true;
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  బహిరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (conditions.sanitize (c, ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 3 */
-  Array8OfOffset24To<struct Condition>	conditions;
-  public:
-  DEFINE_SIZE_ARRAY (3, conditions);
+  Array8_యొక్క_Offset24_గమ్యం<నిర్మాణం Condition>	conditions;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (3, conditions);
 };
 
-struct ConditionOr
+నిర్మాణం ConditionOr
 {
-  friend struct Condition;
+  మిత్ర నిర్మాణం Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం)))
+      return_trace (అబద్ధం);
+    బహిర్గతం->format = format;
 
-    for (const auto &offset : conditions)
+    కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : conditions)
     {
-      if (offset.is_null ())
+      ఒకవేళ (స్థానభ్రంశం.is_null ())
       {
-	auto *out_offset = out->conditions.serialize_append (c->serializer);
-	if (unlikely (!out_offset)) return_trace (false);
-	*out_offset = 0;
+	స్వయంచాలక *బహిర్గతం_స్థానభ్రంశం = బహిర్గతం->conditions.serialize_append (c->serializer);
+	ఒకవేళ (unlikely (!బహిర్గతం_స్థానభ్రంశం)) return_trace (అబద్ధం);
+	*బహిర్గతం_స్థానభ్రంశం = 0;
       }
-      else if (unlikely (!subset_offset_array (c, out->conditions, this) (offset)))
-	return_trace (false);
+      లేకపోతే ఒకవేళ (unlikely (!subset_స్థానభ్రంశం_array (c, బహిర్గతం->conditions, ఇది) (స్థానభ్రంశం)))
+	return_trace (అబద్ధం);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  అంతరంగ:
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer) స్థిరరాశి
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (_hb_recurse_condition_evaluate (this+conditions.arrayZ[i],
+    గుర్తులేని పూర్ణాంకం లెక్క = conditions.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (_hb_recurse_condition_evaluate (ఇది+conditions.arrayZ[i],
 					  coords, coord_len,
 					  instancer))
-	return true;
-    return false;
+	తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  బహిరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (conditions.sanitize (c, ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 4 */
-  Array8OfOffset24To<struct Condition>	conditions;
-  public:
-  DEFINE_SIZE_ARRAY (3, conditions);
+  Array8_యొక్క_Offset24_గమ్యం<నిర్మాణం Condition>	conditions;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (3, conditions);
 };
 
-struct ConditionNegate
+నిర్మాణం ConditionNegate
 {
-  friend struct Condition;
+  మిత్ర నిర్మాణం Condition;
 
-  bool subset (hb_subset_context_t *c) const
+  తార్కిక subset (hb_subset_context_t *c) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (condition.is_null ())
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
+    ఒకవేళ (condition.is_null ())
     {
-      out->condition = 0;
-      return_trace (true);
+      బహిర్గతం->condition = 0;
+      return_trace (నిజం);
     }
-    return_trace (out->condition.serialize_subset (c, condition, this));
+    return_trace (బహిర్గతం->condition.serialize_subset (c, condition, ఇది));
   }
 
-  private:
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  అంతరంగ:
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer) స్థిరరాశి
   {
-    return !_hb_recurse_condition_evaluate (this+condition,
+    తిరిగి !_hb_recurse_condition_evaluate (ఇది+condition,
 					    coords, coord_len,
 					    instancer);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  బహిరంగ:
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (condition.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (condition.sanitize (c, ఇది));
   }
 
-  protected:
+  రక్షిత:
   HBUINT16	format;		/* Format identifier--format = 5 */
-  Offset24To<struct Condition>	condition;
-  public:
-  DEFINE_SIZE_STATIC (5);
+  Offset24_గమ్యం<నిర్మాణం Condition>	condition;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (5);
 };
 
-struct Condition
+నిర్మాణం Condition
 {
-  friend struct ConditionSet;
+  మిత్ర నిర్మాణం Condition_సమితి;
 
-  static bool serialize_constant (hb_serialize_context_t *c, bool value)
+  స్థిర తార్కిక serialize_constant (hb_serialize_context_t *c, తార్కిక value)
   {
-    auto *out = c->start_embed<ConditionValue> ();
-    if (unlikely (!out || !c->extend_min (out))) return false;
-    out->format = 2;
-    out->defaultValue = value ? 1 : 0;
-    out->varIdx = VarIdx::NO_VARIATION;
-    return true;
+    స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed<Condition_విలువ> ();
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->extend_min (బహిర్గతం))) తిరిగి అబద్ధం;
+    బహిర్గతం->format = 2;
+    బహిర్గతం->default_విలువ_2 = value ? 1 : 0;
+    బహిర్గతం->varIdx = VarIdx::NO_VARIATION;
+    తిరిగి నిజం;
   }
 
-  lookup_condition_subset_result_t subset_lookup_condition (
+  lookup_condition_subset_ఫలితం_t subset_lookup_condition (
 				      hb_subset_context_t *c,
-				      unsigned depth = HB_MAX_NESTING_LEVEL,
-				      bool materialize_true = false) const;
+				      గుర్తులేని లోతు = HB_MAX_NESTING_LEVEL,
+				      తార్కిక materialize_true = అబద్ధం) స్థిరరాశి;
 
-  template <typename Instancer>
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 Instancer *instancer) const
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer) స్థిరరాశి
   {
-    switch (u.format.v) {
+    ఎంపిక (u.format.v) {
     /* A null condition offset resolves to the nil Condition, whose reserved
      * format 0 represents the True condition required by the specification. */
-    case 0: return true;
-    case 1: hb_barrier (); return u.format1.evaluate (coords, coord_len, instancer);
-    case 2: hb_barrier (); return u.format2.evaluate (coords, coord_len, instancer);
-    case 3: hb_barrier (); return u.format3.evaluate (coords, coord_len, instancer);
-    case 4: hb_barrier (); return u.format4.evaluate (coords, coord_len, instancer);
-    case 5: hb_barrier (); return u.format5.evaluate (coords, coord_len, instancer);
-    default:return false;
+    స్థితి 0: తిరిగి నిజం;
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.evaluate (coords, coord_len, instancer);
+    స్థితి 2: hb_barrier (); తిరిగి u.format2.evaluate (coords, coord_len, instancer);
+    స్థితి 3: hb_barrier (); తిరిగి u.format3.evaluate (coords, coord_len, instancer);
+    స్థితి 4: hb_barrier (); తిరిగి u.format4.evaluate (coords, coord_len, instancer);
+    స్థితి 5: hb_barrier (); తిరిగి u.format5.evaluate (coords, coord_len, instancer);
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
   Cond_with_Var_flag_t keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                             hb_map_t *condition_map /* OUT */,
-                                             unsigned depth = HB_MAX_NESTING_LEVEL) const
+                                             hb_map_t *condition_map /*బహిర్గతం*/,
+                                             గుర్తులేని లోతు = HB_MAX_NESTING_LEVEL) స్థిరరాశి
   {
-    if (unlikely (!depth))
+    ఒకవేళ (unlikely (!లోతు))
     {
-      c->apply = false;
-      return DROP_RECORD_WITH_VAR;
+      c->apply = అబద్ధం;
+      తిరిగి DROP_రికార్డు_WITH_VAR;
     }
 
-    switch (u.format.v) {
-    case 0: return KEEP_RECORD_WITH_VAR;
-    case 1: hb_barrier (); return u.format1.keep_with_variations (c, condition_map);
-    case 2: case 3: case 4: case 5: break;
-    default: c->apply = false; return DROP_RECORD_WITH_VAR;
+    ఎంపిక (u.format.v) {
+    స్థితి 0: తిరిగి KEEP_రికార్డు_WITH_VAR;
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.keep_with_variations (c, condition_map);
+    స్థితి 2: స్థితి 3: స్థితి 4: స్థితి 5: ఆపు;
+    అప్రమేయ: c->apply = అబద్ధం; తిరిగి DROP_రికార్డు_WITH_VAR;
     }
 
     hb_barrier ();
-    bool applies = evaluate (c->instancer->coords.arrayZ,
-			     c->instancer->coords.length, c->instancer);
+    తార్కిక applies = evaluate (c->instancer->coords.arrayZ,
+			     c->instancer->coords.నిడివి, c->instancer);
     c->apply &= applies;
-    if (c->all_axes_pinned)
-      return applies ? DROP_COND_WITH_VAR : DROP_RECORD_WITH_VAR;
+    ఒకవేళ (c->all_axes_pinned)
+      తిరిగి applies ? DROP_COND_WITH_VAR : DROP_రికార్డు_WITH_VAR;
 
-    if (u.format.v == 2)
-      return u.format2.varIdx == VarIdx::NO_VARIATION ||
-             !c->instancer->varStore->has_delta_set (u.format2.varIdx) ?
-             (applies ? KEEP_RECORD_WITH_VAR : DROP_RECORD_WITH_VAR) :
+    ఒకవేళ (u.format.v == 2)
+      తిరిగి u.format2.varIdx == VarIdx::NO_VARIATION ||
+             !c->instancer->varStore->has_delta_సమితి (u.format2.varIdx) ?
+             (applies ? KEEP_రికార్డు_WITH_VAR : DROP_రికార్డు_WITH_VAR) :
              KEEP_COND_WITH_VAR;
 
-    auto classify_child = [c, condition_map, depth] (const Condition &child)
+    స్వయంచాలక classify_బిడ్డ = [c, condition_map, లోతు] (స్థిరరాశి Condition &బిడ్డ)
     {
-      auto child_context = *c;
-      child_context.apply = true;
-      return child.keep_with_variations (&child_context, condition_map, depth - 1);
+      స్వయంచాలక బిడ్డ_context = *c;
+      బిడ్డ_context.apply = నిజం;
+      తిరిగి బిడ్డ.keep_with_variations (&బిడ్డ_context, condition_map, లోతు - 1);
     };
 
-    if (u.format.v == 5)
+    ఒకవేళ (u.format.v == 5)
     {
-      auto result = classify_child (&u.format5 + u.format5.condition);
-      return result == DROP_RECORD_WITH_VAR ? KEEP_RECORD_WITH_VAR :
-             result == KEEP_COND_WITH_VAR ? KEEP_COND_WITH_VAR :
-             DROP_RECORD_WITH_VAR;
+      స్వయంచాలక ఫలితం = classify_బిడ్డ (&u.format5 + u.format5.condition);
+      తిరిగి ఫలితం == DROP_రికార్డు_WITH_VAR ? KEEP_రికార్డు_WITH_VAR :
+             ఫలితం == KEEP_COND_WITH_VAR ? KEEP_COND_WITH_VAR :
+             DROP_రికార్డు_WITH_VAR;
     }
 
-    bool is_and = u.format.v == 3;
-    bool variable = false;
-    const auto &conditions = is_and ? u.format3.conditions : u.format4.conditions;
-    const void *base = is_and ? (const void *) &u.format3 : (const void *) &u.format4;
-    for (const auto &offset : conditions)
+    తార్కిక is_and = u.format.v == 3;
+    తార్కిక variable = అబద్ధం;
+    స్థిరరాశి స్వయంచాలక &conditions = is_and ? u.format3.conditions : u.format4.conditions;
+    స్థిరరాశి శూన్య *పునాది = is_and ? (స్థిరరాశి శూన్య *) &u.format3 : (స్థిరరాశి శూన్య *) &u.format4;
+    కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : conditions)
     {
-      auto result = classify_child (base + offset);
-      if (is_and && result == DROP_RECORD_WITH_VAR)
-        return DROP_RECORD_WITH_VAR;
-      if (!is_and && (result == DROP_COND_WITH_VAR || result == KEEP_RECORD_WITH_VAR))
-        return KEEP_RECORD_WITH_VAR;
-      variable |= result == KEEP_COND_WITH_VAR;
+      స్వయంచాలక ఫలితం = classify_బిడ్డ (పునాది + స్థానభ్రంశం);
+      ఒకవేళ (is_and && ఫలితం == DROP_రికార్డు_WITH_VAR)
+        తిరిగి DROP_రికార్డు_WITH_VAR;
+      ఒకవేళ (!is_and && (ఫలితం == DROP_COND_WITH_VAR || ఫలితం == KEEP_రికార్డు_WITH_VAR))
+        తిరిగి KEEP_రికార్డు_WITH_VAR;
+      variable |= ఫలితం == KEEP_COND_WITH_VAR;
     }
-    return variable ? KEEP_COND_WITH_VAR :
-           is_and ? KEEP_RECORD_WITH_VAR : DROP_RECORD_WITH_VAR;
+    తిరిగి variable ? KEEP_COND_WITH_VAR :
+           is_and ? KEEP_రికార్డు_WITH_VAR : DROP_రికార్డు_WITH_VAR;
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    ఒకవేళ (unlikely (!c->may_dispatch (ఇది, &u.format.v))) తిరిగి c->no_dispatch_return_విలువ ();
+    TRACE_DISPATCH (ఇది, u.format.v);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    స్థితి 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    స్థితి 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    స్థితి 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    స్థితి 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    అప్రమేయ:return_trace (c->default_return_విలువ ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    ఒకవేళ (unlikely (!c->check_ప్రారంభం_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_విలువ ());
 
-    return_trace (c->end_recursion (this->dispatch (c)));
+    return_trace (c->చివర_recursion (ఇది->dispatch (c)));
   }
 
-  bool collect_var_indices (hb_set_t *var_indices,
-			    unsigned depth = HB_MAX_NESTING_LEVEL,
-                            hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values = nullptr) const;
+  తార్కిక collect_var_indices (hb_సమితి_t *var_indices,
+			    గుర్తులేని లోతు = HB_MAX_NESTING_LEVEL,
+                            hb_hashmap_t<uintptr_t, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *condition_విలువలు = శూన్యసూచిక) స్థిరరాశి;
 
-  bool serialize (hb_serialize_context_t *c,
-		  const Condition *src,
-		  const hb_map_t &varidx_map,
-		  const hb_map_t *axis_map = nullptr);
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి Condition *src,
+		  స్థిరరాశి hb_map_t &varidx_map,
+		  స్థిరరాశి hb_map_t *axis_map = శూన్యసూచిక);
 
-  private:
-  lookup_condition_subset_result_t subset_lookup_condition_impl (
+  అంతరంగ:
+  lookup_condition_subset_ఫలితం_t subset_lookup_condition_impl (
 				      hb_subset_context_t *c,
-				      unsigned depth) const;
+				      గుర్తులేని లోతు) స్థిరరాశి;
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; }	format;		/* Format identifier */
   ConditionAxisRange	format1;
-  ConditionValue	format2;
+  Condition_విలువ	format2;
   ConditionAnd		format3;
   ConditionOr		format4;
   ConditionNegate	format5;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (2, format.v);
 };
 
-template <typename Instancer>
-bool
-_hb_recurse_condition_evaluate (const struct Condition &condition,
-				const int *coords,
-				unsigned int coord_len,
+మూస <రకం_పేరు Instancer>
+తార్కిక
+_hb_recurse_condition_evaluate (స్థిరరాశి నిర్మాణం Condition &condition,
+				స్థిరరాశి పూర్ణాంకం *coords,
+				గుర్తులేని పూర్ణాంకం coord_len,
 				Instancer *instancer)
 {
-  return condition.evaluate (coords, coord_len, instancer);
+  తిరిగి condition.evaluate (coords, coord_len, instancer);
 }
 
-struct ConditionList
+నిర్మాణం ConditionList
 {
-  const Condition& operator[] (unsigned i) const
-  { return this+conditions[i]; }
+  స్థిరరాశి Condition& క్రియాకారకం[] (గుర్తులేని i) స్థిరరాశి
+  { తిరిగి ఇది+conditions[i]; }
 
-  unsigned get_count () const { return conditions.len; }
+  గుర్తులేని get_లెక్క () స్థిరరాశి { తిరిగి conditions.len; }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const ConditionList *src,
-		  const hb_inc_bimap_t &condition_map,
-		  const hb_map_t &varidx_map,
-		  const hb_map_t *axis_map)
+  తార్కిక serialize (hb_serialize_context_t *c,
+		  స్థిరరాశి ConditionList *src,
+		  స్థిరరాశి hb_inc_bimap_t &condition_map,
+		  స్థిరరాశి hb_map_t &varidx_map,
+		  స్థిరరాశి hb_map_t *axis_map)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (unlikely (!c->extend_min (ఇది))) return_trace (అబద్ధం);
     conditions.len = condition_map.get_population ();
-    if (unlikely (!c->extend (conditions))) return_trace (false);
-    for (unsigned i = 0; i < conditions.len; i++)
+    ఒకవేళ (unlikely (!c->extend (conditions))) return_trace (అబద్ధం);
+    కొరకు (గుర్తులేని i = 0; i < conditions.len; i++)
     {
-      unsigned old_index = condition_map.backward (i);
-      if (unlikely (old_index >= src->conditions.len ||
+      గుర్తులేని old_సూచీ = condition_map.backward (i);
+      ఒకవేళ (unlikely (old_సూచీ >= src->conditions.len ||
 		    !conditions[i].serialize_serialize (
-			c, &(src+src->conditions[old_index]), varidx_map, axis_map)))
-	return_trace (false);
+			c, &(src+src->conditions[old_సూచీ]), varidx_map, axis_map)))
+	return_trace (అబద్ధం);
     }
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (conditions.sanitize (c, ఇది));
   }
 
-  protected:
-  Array32OfOffset32To<Condition> conditions;
-  public:
-  DEFINE_SIZE_ARRAY (4, conditions);
+  రక్షిత:
+  Array32_యొక్క_Offset32_గమ్యం<Condition> conditions;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (4, conditions);
 };
 
-inline bool
-Condition::collect_var_indices (hb_set_t *var_indices, unsigned depth,
-                               hb_hashmap_t<uintptr_t, hb_pair_t<unsigned, int>> *condition_values) const
+అంతఃవరుస తార్కిక
+Condition::collect_var_indices (hb_సమితి_t *var_indices, గుర్తులేని లోతు,
+                               hb_hashmap_t<uintptr_t, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *condition_విలువలు) స్థిరరాశి
 {
-  if (unlikely (!depth)) return false;
-  switch (u.format.v)
+  ఒకవేళ (unlikely (!లోతు)) తిరిగి అబద్ధం;
+  ఎంపిక (u.format.v)
   {
-    case 0:
-    case 1:
-      return true;
-    case 2:
-      if (u.format2.varIdx != VarIdx::NO_VARIATION)
+    స్థితి 0:
+    స్థితి 1:
+      తిరిగి నిజం;
+    స్థితి 2:
+      ఒకవేళ (u.format2.varIdx != VarIdx::NO_VARIATION)
       {
-        var_indices->add (u.format2.varIdx);
-        if (condition_values &&
-            !condition_values->set ((uintptr_t) &u.format2,
-                                    hb_pair (unsigned (u.format2.varIdx), int (u.format2.defaultValue))))
-          return false;
+        var_indices->కూడు (u.format2.varIdx);
+        ఒకవేళ (condition_విలువలు &&
+            !condition_విలువలు->సమితి ((uintptr_t) &u.format2,
+                                    hb_pair (గుర్తులేని (u.format2.varIdx), పూర్ణాంకం (u.format2.default_విలువ_2))))
+          తిరిగి అబద్ధం;
       }
-      return !var_indices->in_error ();
-    case 3:
-      for (const auto &offset : u.format3.conditions)
-	if (unlikely (!(&u.format3+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
-	  return false;
-      return true;
-    case 4:
-      for (const auto &offset : u.format4.conditions)
-	if (unlikely (!(&u.format4+offset).collect_var_indices (var_indices,
-							     depth - 1, condition_values)))
-	  return false;
-      return true;
-    case 5:
-      return (&u.format5+u.format5.condition).collect_var_indices (var_indices,
-								  depth - 1, condition_values);
-    default:
-      return false;
+      తిరిగి !var_indices->లోపల_error ();
+    స్థితి 3:
+      కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : u.format3.conditions)
+	ఒకవేళ (unlikely (!(&u.format3+స్థానభ్రంశం).collect_var_indices (var_indices,
+							     లోతు - 1, condition_విలువలు)))
+	  తిరిగి అబద్ధం;
+      తిరిగి నిజం;
+    స్థితి 4:
+      కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : u.format4.conditions)
+	ఒకవేళ (unlikely (!(&u.format4+స్థానభ్రంశం).collect_var_indices (var_indices,
+							     లోతు - 1, condition_విలువలు)))
+	  తిరిగి అబద్ధం;
+      తిరిగి నిజం;
+    స్థితి 5:
+      తిరిగి (&u.format5+u.format5.condition).collect_var_indices (var_indices,
+								  లోతు - 1, condition_విలువలు);
+    అప్రమేయ:
+      తిరిగి అబద్ధం;
   }
 }
 
-inline bool
+అంతఃవరుస తార్కిక
 Condition::serialize (hb_serialize_context_t *c,
-		      const Condition *src,
-		      const hb_map_t &varidx_map,
-		      const hb_map_t *axis_map)
+		      స్థిరరాశి Condition *src,
+		      స్థిరరాశి hb_map_t &varidx_map,
+		      స్థిరరాశి hb_map_t *axis_map)
 {
-  TRACE_SERIALIZE (this);
-  switch (src->u.format.v)
+  TRACE_SERIALIZE (ఇది);
+  ఎంపిక (src->u.format.v)
   {
-    case 0:
+    స్థితి 0:
     {
-      auto *out = c->start_embed<ConditionValue> ();
-      if (unlikely (!out || !c->extend_min (out))) return_trace (false);
-      out->format = 2;
-      out->defaultValue = 1;
-      out->varIdx = VarIdx::NO_VARIATION;
-      return_trace (true);
+      స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed<Condition_విలువ> ();
+      ఒకవేళ (unlikely (!బహిర్గతం || !c->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+      బహిర్గతం->format = 2;
+      బహిర్గతం->default_విలువ_2 = 1;
+      బహిర్గతం->varIdx = VarIdx::NO_VARIATION;
+      return_trace (నిజం);
     }
-    case 1:
+    స్థితి 1:
     {
-      auto *out = c->embed (&src->u.format1);
-      if (unlikely (!out)) return_trace (false);
-      if (axis_map)
+      స్వయంచాలక *బహిర్గతం = c->embed (&src->u.format1);
+      ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
+      ఒకవేళ (axis_map)
       {
-	if (unlikely (!axis_map->has (out->axisIndex)))
+	ఒకవేళ (unlikely (!axis_map->has (బహిర్గతం->axis_సూచీ_2)))
 	{
 	  c->err (HB_SERIALIZE_ERROR_OTHER);
-	  return_trace (false);
+	  return_trace (అబద్ధం);
 	}
-	if (unlikely (!c->check_assign (out->axisIndex, axis_map->get (out->axisIndex),
-				      HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-	  return_trace (false);
+	ఒకవేళ (unlikely (!c->check_కేటాయించు (బహిర్గతం->axis_సూచీ_2, axis_map->get (బహిర్గతం->axis_సూచీ_2),
+				      HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+	  return_trace (అబద్ధం);
       }
-      return_trace (true);
+      return_trace (నిజం);
     }
-    case 2:
+    స్థితి 2:
     {
-      auto *out = c->embed (&src->u.format2);
-      if (unlikely (!out ||
+      స్వయంచాలక *బహిర్గతం = c->embed (&src->u.format2);
+      ఒకవేళ (unlikely (!బహిర్గతం ||
 		    (src->u.format2.varIdx != VarIdx::NO_VARIATION &&
 		     !varidx_map.has (src->u.format2.varIdx))))
-	return_trace (false);
-      out->varIdx = src->u.format2.varIdx == VarIdx::NO_VARIATION ?
+	return_trace (అబద్ధం);
+      బహిర్గతం->varIdx = src->u.format2.varIdx == VarIdx::NO_VARIATION ?
 		    src->u.format2.varIdx : varidx_map.get (src->u.format2.varIdx);
-      return_trace (true);
+      return_trace (నిజం);
     }
-    case 3:
+    స్థితి 3:
     {
-      auto *out = c->start_embed<ConditionAnd> ();
-      if (unlikely (!c->extend_min (out))) return_trace (false);
-      out->format = 3;
-      out->conditions.len = src->u.format3.conditions.len;
-      if (unlikely (!c->extend (out->conditions))) return_trace (false);
-      for (unsigned i = 0; i < out->conditions.len; i++)
-	if (unlikely (!out->conditions[i].serialize_serialize (
+      స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed<ConditionAnd> ();
+      ఒకవేళ (unlikely (!c->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+      బహిర్గతం->format = 3;
+      బహిర్గతం->conditions.len = src->u.format3.conditions.len;
+      ఒకవేళ (unlikely (!c->extend (బహిర్గతం->conditions))) return_trace (అబద్ధం);
+      కొరకు (గుర్తులేని i = 0; i < బహిర్గతం->conditions.len; i++)
+	ఒకవేళ (unlikely (!బహిర్గతం->conditions[i].serialize_serialize (
 			c, &(&src->u.format3+src->u.format3.conditions[i]),
 			varidx_map, axis_map)))
-	  return_trace (false);
-      return_trace (true);
+	  return_trace (అబద్ధం);
+      return_trace (నిజం);
     }
-    case 4:
+    స్థితి 4:
     {
-      auto *out = c->start_embed<ConditionOr> ();
-      if (unlikely (!c->extend_min (out))) return_trace (false);
-      out->format = 4;
-      out->conditions.len = src->u.format4.conditions.len;
-      if (unlikely (!c->extend (out->conditions))) return_trace (false);
-      for (unsigned i = 0; i < out->conditions.len; i++)
-	if (unlikely (!out->conditions[i].serialize_serialize (
+      స్వయంచాలక *బహిర్గతం = c->ప్రారంభం_embed<ConditionOr> ();
+      ఒకవేళ (unlikely (!c->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
+      బహిర్గతం->format = 4;
+      బహిర్గతం->conditions.len = src->u.format4.conditions.len;
+      ఒకవేళ (unlikely (!c->extend (బహిర్గతం->conditions))) return_trace (అబద్ధం);
+      కొరకు (గుర్తులేని i = 0; i < బహిర్గతం->conditions.len; i++)
+	ఒకవేళ (unlikely (!బహిర్గతం->conditions[i].serialize_serialize (
 			c, &(&src->u.format4+src->u.format4.conditions[i]),
 			varidx_map, axis_map)))
-	  return_trace (false);
-      return_trace (true);
+	  return_trace (అబద్ధం);
+      return_trace (నిజం);
     }
-    case 5:
+    స్థితి 5:
     {
-      auto *out = c->embed (&src->u.format5);
-      if (unlikely (!out ||
-		    !out->condition.serialize_serialize (
+      స్వయంచాలక *బహిర్గతం = c->embed (&src->u.format5);
+      ఒకవేళ (unlikely (!బహిర్గతం ||
+		    !బహిర్గతం->condition.serialize_serialize (
 			c, &(&src->u.format5+src->u.format5.condition),
 			varidx_map, axis_map)))
-	return_trace (false);
-      return_trace (true);
+	return_trace (అబద్ధం);
+      return_trace (నిజం);
     }
-    default:
-      return_trace (false);
+    అప్రమేయ:
+      return_trace (అబద్ధం);
   }
 }
 
-inline lookup_condition_subset_result_t
+అంతఃవరుస lookup_condition_subset_ఫలితం_t
 Condition::subset_lookup_condition (hb_subset_context_t *c,
-				    unsigned depth,
-				    bool materialize_true) const
+				    గుర్తులేని లోతు,
+				    తార్కిక materialize_true) స్థిరరాశి
 {
-  auto snap = c->serializer->snapshot ();
-  lookup_condition_subset_result_t result =
-      subset_lookup_condition_impl (c, depth);
-  if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-    return result;
+  స్వయంచాలక snap = c->serializer->snapshot ();
+  lookup_condition_subset_ఫలితం_t ఫలితం =
+      subset_lookup_condition_impl (c, లోతు);
+  ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_KEEP)
+    తిరిగి ఫలితం;
 
   c->serializer->revert (snap);
-  if (result != LOOKUP_CONDITION_SUBSET_TRUE || !materialize_true)
-    return result;
+  ఒకవేళ (ఫలితం != LOOKUP_CONDITION_SUBSET_TRUE || !materialize_true)
+    తిరిగి ఫలితం;
 
-  return serialize_constant (c->serializer, true) ?
+  తిరిగి serialize_constant (c->serializer, నిజం) ?
          LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
 }
 
-inline lookup_condition_subset_result_t
+అంతఃవరుస lookup_condition_subset_ఫలితం_t
 Condition::subset_lookup_condition_impl (hb_subset_context_t *c,
-					 unsigned depth) const
+					 గుర్తులేని లోతు) స్థిరరాశి
 {
-  if (unlikely (!depth))
-    return LOOKUP_CONDITION_SUBSET_ERROR;
+  ఒకవేళ (unlikely (!లోతు))
+    తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
 
-  auto subset_offset = [c, depth] (Array8OfOffset24To<Condition> &out,
-				   const Condition &condition)
-      -> lookup_condition_subset_result_t
+  స్వయంచాలక subset_స్థానభ్రంశం = [c, లోతు] (Array8_యొక్క_Offset24_గమ్యం<Condition> &బహిర్గతం,
+				   స్థిరరాశి Condition &condition)
+      -> lookup_condition_subset_ఫలితం_t
   {
-    auto snap = c->serializer->snapshot ();
-    auto *offset = out.serialize_append (c->serializer);
-    if (unlikely (!offset))
-      return LOOKUP_CONDITION_SUBSET_ERROR;
+    స్వయంచాలక snap = c->serializer->snapshot ();
+    స్వయంచాలక *స్థానభ్రంశం = బహిర్గతం.serialize_append (c->serializer);
+    ఒకవేళ (unlikely (!స్థానభ్రంశం))
+      తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
 
     c->serializer->push ();
-    lookup_condition_subset_result_t result =
-        condition.subset_lookup_condition (c, depth - 1);
-    if (result == LOOKUP_CONDITION_SUBSET_KEEP)
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
-    else
+    lookup_condition_subset_ఫలితం_t ఫలితం =
+        condition.subset_lookup_condition (c, లోతు - 1);
+    ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_KEEP)
+      c->serializer->కూడు_link (*స్థానభ్రంశం, c->serializer->తీయి_pack ());
+    లేకపోతే
     {
-      c->serializer->pop_discard ();
-      out.pop ();
+      c->serializer->తీయి_discard ();
+      బహిర్గతం.తీయి ();
       c->serializer->revert (snap);
     }
-    return result;
+    తిరిగి ఫలితం;
   };
 
-  switch (u.format.v)
+  ఎంపిక (u.format.v)
   {
-    case 0:
-      return LOOKUP_CONDITION_SUBSET_TRUE;
+    స్థితి 0:
+      తిరిగి LOOKUP_CONDITION_SUBSET_TRUE;
 
-    case 1:
+    స్థితి 1:
     {
-      const ConditionAxisRange &src = u.format1;
-      if (c->plan->user_axes_location.is_empty ())
-        return c->serializer->embed (&src) ?
+      స్థిరరాశి ConditionAxisRange &src = u.format1;
+      ఒకవేళ (c->plan->user_axes_location.is_empty ())
+        తిరిగి c->serializer->embed (&src) ?
                LOOKUP_CONDITION_SUBSET_KEEP :
                LOOKUP_CONDITION_SUBSET_ERROR;
 
-      hb_codepoint_t *axis_tag;
-      if (!c->plan->axes_old_index_tag_map.has (src.axisIndex, &axis_tag))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      hb_codepoint_t *axis_ట్యాగ్_2;
+      ఒకవేళ (!c->plan->axes_old_సూచీ_ట్యాగ్_map.has (src.axis_సూచీ_2, &axis_ట్యాగ్_2))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
 
-      Triple axis_limit {-1.f, 0.f, 1.f};
-      Triple *normalized_limit;
-      if (c->plan->axes_location.has (*axis_tag, &normalized_limit))
-        axis_limit = *normalized_limit;
+      Triple axis_హద్దు {-1.f, 0.f, 1.f};
+      Triple *normalized_హద్దు;
+      ఒకవేళ (c->plan->axes_location.has (*axis_ట్యాగ్_2, &normalized_హద్దు))
+        axis_హద్దు = *normalized_హద్దు;
 
-      float filter_min = src.filterRangeMinValue.to_float ();
-      float filter_max = src.filterRangeMaxValue.to_float ();
-      if (filter_min > filter_max)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (axis_limit.is_point ())
-        return filter_min <= axis_limit.middle &&
-	       axis_limit.middle <= filter_max ?
+      దశాంశం filter_min = src.filter_Range_Min_విలువ.గమ్యం_float ();
+      దశాంశం filter_max = src.filter_Range_Max_విలువ.గమ్యం_float ();
+      ఒకవేళ (filter_min > filter_max)
+        తిరిగి LOOKUP_CONDITION_SUBSET_FALSE;
+      ఒకవేళ (axis_హద్దు.is_బిందువు ())
+        తిరిగి filter_min <= axis_హద్దు.మధ్య &&
+	       axis_హద్దు.మధ్య <= filter_max ?
 	       LOOKUP_CONDITION_SUBSET_TRUE :
 	       LOOKUP_CONDITION_SUBSET_FALSE;
-      if (axis_limit.maximum < filter_min ||
-	  filter_max < axis_limit.minimum)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (filter_min <= axis_limit.minimum &&
-	  axis_limit.maximum <= filter_max)
-        return LOOKUP_CONDITION_SUBSET_TRUE;
-      if (!c->plan->axes_index_map.has (src.axisIndex))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      ఒకవేళ (axis_హద్దు.గరిష్ఠ < filter_min ||
+	  filter_max < axis_హద్దు.minimum)
+        తిరిగి LOOKUP_CONDITION_SUBSET_FALSE;
+      ఒకవేళ (filter_min <= axis_హద్దు.minimum &&
+	  axis_హద్దు.గరిష్ఠ <= filter_max)
+        తిరిగి LOOKUP_CONDITION_SUBSET_TRUE;
+      ఒకవేళ (!c->plan->axes_సూచీ_map.has (src.axis_సూచీ_2))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
 
-      auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      స్వయంచాలక *బహిర్గతం = c->serializer->embed (&src);
+      ఒకవేళ (unlikely (!బహిర్గతం))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
 
       TripleDistances axis_distances {1.f, 1.f};
       TripleDistances *distances;
-      if (c->plan->axes_triple_distances.has (*axis_tag, &distances))
+      ఒకవేళ (c->plan->axes_triple_distances.has (*axis_ట్యాగ్_2, &distances))
         axis_distances = *distances;
 
-      out->filterRangeMinValue.set_float (
-	  renormalizeValue (filter_min, axis_limit, axis_distances, false));
-      out->filterRangeMaxValue.set_float (
-	  renormalizeValue (filter_max, axis_limit, axis_distances, false));
-      if (unlikely (!c->serializer->check_assign (
-		out->axisIndex,
-		c->plan->axes_index_map.get (src.axisIndex),
-		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      return LOOKUP_CONDITION_SUBSET_KEEP;
+      బహిర్గతం->filter_Range_Min_విలువ.సమితి_float (
+	  renormalize_విలువ (filter_min, axis_హద్దు, axis_distances, అబద్ధం));
+      బహిర్గతం->filter_Range_Max_విలువ.సమితి_float (
+	  renormalize_విలువ (filter_max, axis_హద్దు, axis_distances, అబద్ధం));
+      ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (
+		బహిర్గతం->axis_సూచీ_2,
+		c->plan->axes_సూచీ_map.get (src.axis_సూచీ_2),
+		HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
+      తిరిగి LOOKUP_CONDITION_SUBSET_KEEP;
     }
 
-    case 2:
+    స్థితి 2:
     {
-      const ConditionValue &src = u.format2;
-      auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
+      స్థిరరాశి Condition_విలువ &src = u.format2;
+      స్వయంచాలక *బహిర్గతం = c->serializer->embed (&src);
+      ఒకవేళ (unlikely (!బహిర్గతం))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
 
-      if (src.varIdx == VarIdx::NO_VARIATION)
-        return c->plan->user_axes_location.is_empty () ?
+      ఒకవేళ (src.varIdx == VarIdx::NO_VARIATION)
+        తిరిగి c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((పూర్ణాంకం) src.default_విలువ_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      hb_pair_t<unsigned, int> *condition_value;
-      if (c->plan->layout_condition_idx_value_map.has ((uintptr_t) &src, &condition_value))
+      hb_pair_t<గుర్తులేని, పూర్ణాంకం> *condition_విలువ;
+      ఒకవేళ (c->plan->layout_condition_idx_విలువ_map.has ((uintptr_t) &src, &condition_విలువ))
       {
-        out->defaultValue = condition_value->second;
-        out->varIdx = condition_value->first;
-        if (out->varIdx == VarIdx::NO_VARIATION)
-          return out->defaultValue > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+        బహిర్గతం->default_విలువ_2 = condition_విలువ->second;
+        బహిర్గతం->varIdx = condition_విలువ->మొదటి;
+        ఒకవేళ (బహిర్గతం->varIdx == VarIdx::NO_VARIATION)
+          తిరిగి బహిర్గతం->default_విలువ_2 > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                                         LOOKUP_CONDITION_SUBSET_FALSE;
-        return LOOKUP_CONDITION_SUBSET_KEEP;
+        తిరిగి LOOKUP_CONDITION_SUBSET_KEEP;
       }
 
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (src.varIdx,
+      hb_pair_t<గుర్తులేని, పూర్ణాంకం> *new_varidx_delta;
+      ఒకవేళ (!c->plan->layout_variation_idx_delta_map.has (src.varIdx,
 							&new_varidx_delta))
-        return c->plan->user_axes_location.is_empty () ?
+        తిరిగి c->plan->user_axes_location.is_empty () ?
                LOOKUP_CONDITION_SUBSET_KEEP :
-               ((int) src.defaultValue > 0 ?
+               ((పూర్ణాంకం) src.default_విలువ_2 > 0 ?
 		LOOKUP_CONDITION_SUBSET_TRUE :
 		LOOKUP_CONDITION_SUBSET_FALSE);
 
-      if (!c->plan->user_axes_location.is_empty () &&
-          hb_first (*new_varidx_delta) == VarIdx::NO_VARIATION)
+      ఒకవేళ (!c->plan->user_axes_location.is_empty () &&
+          hb_మొదటి (*new_varidx_delta) == VarIdx::NO_VARIATION)
       {
         // Conditions becoming constant depend on the unrounded sign, not
         // the integer delta used to instance positioning values.
-        double value = (int) src.defaultValue +
+        ద్విగుణ value = (పూర్ణాంకం) src.default_విలువ_2 +
                       c->plan->layout_variation_delta (src.varIdx);
-        return value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
+        తిరిగి value > 0 ? LOOKUP_CONDITION_SUBSET_TRUE :
                           LOOKUP_CONDITION_SUBSET_FALSE;
       }
 
-      int default_value = (int) src.defaultValue +
-			  hb_second (*new_varidx_delta);
-      if (unlikely (!c->serializer->check_assign (
-		out->defaultValue,
-		default_value,
-		HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->varIdx = hb_first (*new_varidx_delta);
+      పూర్ణాంకం default_విలువ = (పూర్ణాంకం) src.default_విలువ_2 +
+			  hb_రెండవ (*new_varidx_delta);
+      ఒకవేళ (unlikely (!c->serializer->check_కేటాయించు (
+		బహిర్గతం->default_విలువ_2,
+		default_విలువ,
+		HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
+      బహిర్గతం->varIdx = hb_మొదటి (*new_varidx_delta);
 
-      return LOOKUP_CONDITION_SUBSET_KEEP;
+      తిరిగి LOOKUP_CONDITION_SUBSET_KEEP;
     }
 
-    case 3:
+    స్థితి 3:
     {
-      const ConditionAnd &src = u.format3;
-      auto *out = c->serializer->start_embed (&src);
-      if (unlikely (!out || !c->serializer->extend_min (out)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->format = 3;
+      స్థిరరాశి ConditionAnd &src = u.format3;
+      స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (&src);
+      ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం)))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
+      బహిర్గతం->format = 3;
 
-      for (const auto &offset : src.conditions)
+      కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : src.conditions)
       {
-        lookup_condition_subset_result_t result =
-            subset_offset (out->conditions, &src + offset);
-        if (result == LOOKUP_CONDITION_SUBSET_ERROR ||
-	    result == LOOKUP_CONDITION_SUBSET_FALSE)
-          return result;
+        lookup_condition_subset_ఫలితం_t ఫలితం =
+            subset_స్థానభ్రంశం (బహిర్గతం->conditions, &src + స్థానభ్రంశం);
+        ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_ERROR ||
+	    ఫలితం == LOOKUP_CONDITION_SUBSET_FALSE)
+          తిరిగి ఫలితం;
       }
-      return out->conditions ?
+      తిరిగి బహిర్గతం->conditions ?
 	     LOOKUP_CONDITION_SUBSET_KEEP :
 	     LOOKUP_CONDITION_SUBSET_TRUE;
     }
 
-    case 4:
+    స్థితి 4:
     {
-      const ConditionOr &src = u.format4;
-      auto *out = c->serializer->start_embed (&src);
-      if (unlikely (!out || !c->serializer->extend_min (out)))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->format = 4;
+      స్థిరరాశి ConditionOr &src = u.format4;
+      స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (&src);
+      ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం)))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
+      బహిర్గతం->format = 4;
 
-      for (const auto &offset : src.conditions)
+      కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : src.conditions)
       {
-        lookup_condition_subset_result_t result =
-            subset_offset (out->conditions, &src + offset);
-        if (result == LOOKUP_CONDITION_SUBSET_ERROR ||
-	    result == LOOKUP_CONDITION_SUBSET_TRUE)
-          return result;
+        lookup_condition_subset_ఫలితం_t ఫలితం =
+            subset_స్థానభ్రంశం (బహిర్గతం->conditions, &src + స్థానభ్రంశం);
+        ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_ERROR ||
+	    ఫలితం == LOOKUP_CONDITION_SUBSET_TRUE)
+          తిరిగి ఫలితం;
       }
-      return out->conditions ?
+      తిరిగి బహిర్గతం->conditions ?
 	     LOOKUP_CONDITION_SUBSET_KEEP :
 	     LOOKUP_CONDITION_SUBSET_FALSE;
     }
 
-    case 5:
+    స్థితి 5:
     {
-      const ConditionNegate &src = u.format5;
-      auto *out = c->serializer->embed (&src);
-      if (unlikely (!out))
-        return LOOKUP_CONDITION_SUBSET_ERROR;
-      out->condition = 0;
+      స్థిరరాశి ConditionNegate &src = u.format5;
+      స్వయంచాలక *బహిర్గతం = c->serializer->embed (&src);
+      ఒకవేళ (unlikely (!బహిర్గతం))
+        తిరిగి LOOKUP_CONDITION_SUBSET_ERROR;
+      బహిర్గతం->condition = 0;
 
       c->serializer->push ();
-      lookup_condition_subset_result_t result =
-          (&src + src.condition).subset_lookup_condition (c, depth - 1);
-      if (result == LOOKUP_CONDITION_SUBSET_KEEP)
+      lookup_condition_subset_ఫలితం_t ఫలితం =
+          (&src + src.condition).subset_lookup_condition (c, లోతు - 1);
+      ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_KEEP)
       {
-        c->serializer->add_link (out->condition,
-				 c->serializer->pop_pack ());
-        return result;
+        c->serializer->కూడు_link (బహిర్గతం->condition,
+				 c->serializer->తీయి_pack ());
+        తిరిగి ఫలితం;
       }
 
-      c->serializer->pop_discard ();
-      if (result == LOOKUP_CONDITION_SUBSET_TRUE)
-        return LOOKUP_CONDITION_SUBSET_FALSE;
-      if (result == LOOKUP_CONDITION_SUBSET_FALSE)
-        return LOOKUP_CONDITION_SUBSET_TRUE;
-      return result;
+      c->serializer->తీయి_discard ();
+      ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_TRUE)
+        తిరిగి LOOKUP_CONDITION_SUBSET_FALSE;
+      ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_FALSE)
+        తిరిగి LOOKUP_CONDITION_SUBSET_TRUE;
+      తిరిగి ఫలితం;
     }
 
-    default:
-      return LOOKUP_CONDITION_SUBSET_FALSE;
+    అప్రమేయ:
+      తిరిగి LOOKUP_CONDITION_SUBSET_FALSE;
   }
 }
 
-struct ConditionSet
+నిర్మాణం Condition_సమితి
 {
-  bool evaluate (const int *coords, unsigned int coord_len,
-		 ItemVarStoreInstancer *instancer) const
+  తార్కిక evaluate (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		 అంశం_Var_Store_Instancer *instancer) స్థిరరాశి
   {
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
-	return false;
-    return true;
+    గుర్తులేని పూర్ణాంకం లెక్క = conditions.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
+      ఒకవేళ (!(ఇది+conditions.arrayZ[i]).evaluate (coords, coord_len, instancer))
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  void keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  శూన్య keep_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) స్థిరరాశి
   {
     hb_map_t *condition_map = hb_map_create ();
-    if (unlikely (!condition_map)) return;
+    ఒకవేళ (unlikely (!condition_map)) తిరిగి;
     hb::shared_ptr<hb_map_t> p {condition_map};
 
-    hb_set_t *cond_set = hb_set_create ();
-    if (unlikely (!cond_set)) return;
-    hb::shared_ptr<hb_set_t> s {cond_set};
+    hb_సమితి_t *cond_సమితి = hb_సమితి_create ();
+    ఒకవేళ (unlikely (!cond_సమితి)) తిరిగి;
+    hb::shared_ptr<hb_సమితి_t> s {cond_సమితి};
 
-    c->apply = true;
-    bool should_keep = false;
+    c->apply = నిజం;
+    తార్కిక should_keep = అబద్ధం;
     /* The range map cannot identify value or boolean expressions uniquely. */
-    bool can_deduplicate = true;
-    unsigned num_kept_cond = 0, cond_idx = 0;
-    for (const auto& offset : conditions)
+    తార్కిక can_deduplicate = నిజం;
+    గుర్తులేని అంకె_kept_cond = 0, cond_idx = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& స్థానభ్రంశం : conditions)
     {
-      const Condition &condition = this+offset;
+      స్థిరరాశి Condition &condition = ఇది+స్థానభ్రంశం;
       can_deduplicate &= condition.u.format.v <= 1;
       Cond_with_Var_flag_t ret = condition.keep_with_variations (c, condition_map);
       // condition is not met or condition out of range, drop the entire record
-      if (ret == DROP_RECORD_WITH_VAR)
+      ఒకవేళ (ret == DROP_రికార్డు_WITH_VAR)
       {
-        c->apply = false;
-        return;
+        c->apply = అబద్ధం;
+        తిరిగి;
       }
 
-      if (ret == KEEP_COND_WITH_VAR)
+      ఒకవేళ (ret == KEEP_COND_WITH_VAR)
       {
-        should_keep = true;
-        cond_set->add (cond_idx);
-        num_kept_cond++;
+        should_keep = నిజం;
+        cond_సమితి->కూడు (cond_idx);
+        అంకె_kept_cond++;
       }
 
-      if (ret == KEEP_RECORD_WITH_VAR)
-        should_keep = true;
+      ఒకవేళ (ret == KEEP_రికార్డు_WITH_VAR)
+        should_keep = నిజం;
 
       cond_idx++;
     }
 
     /* Satisfied pinned conditions still terminate first-match processing.
      * Keep their universal record when other axes remain variable. */
-    c->universal = num_kept_cond == 0;
-    if (!should_keep && c->all_axes_pinned) return;
+    c->universal = అంకె_kept_cond == 0;
+    ఒకవేళ (!should_keep && c->all_axes_pinned) తిరిగి;
 
     //check if condition_set is unique with variations
-    if (can_deduplicate && c->conditionset_map->has (p))
+    ఒకవేళ (can_deduplicate && c->conditionset_map->has (p))
       //duplicate found, drop the entire record
-      return;
+      తిరిగి;
 
-    if (can_deduplicate)
-      c->conditionset_map->set (p, 1);
-    c->record_cond_idx_map->set (c->cur_record_idx, s);
+    ఒకవేళ (can_deduplicate)
+      c->conditionset_map->సమితి (p, 1);
+    c->రికార్డు_cond_idx_map->సమితి (c->cur_రికార్డు_idx, s);
   }
 
-  bool subset (hb_subset_context_t *c,
+  తార్కిక subset (hb_subset_context_t *c,
                hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               తార్కిక చొప్పించు_catch_all) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    if (insert_catch_all) return_trace (true);
+    ఒకవేళ (చొప్పించు_catch_all) return_trace (నిజం);
 
-    hb_set_t *retained_cond_set = nullptr;
-    if (l->feature_record_cond_idx_map != nullptr)
-      retained_cond_set = l->feature_record_cond_idx_map->get (l->cur_feature_var_record_idx);
+    hb_సమితి_t *retained_cond_సమితి = శూన్యసూచిక;
+    ఒకవేళ (l->feature_రికార్డు_cond_idx_map != శూన్యసూచిక)
+      retained_cond_సమితి = l->feature_రికార్డు_cond_idx_map->get (l->cur_feature_var_రికార్డు_idx);
 
-    unsigned int count = conditions.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = conditions.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (retained_cond_set != nullptr && !retained_cond_set->has (i))
-        continue;
-      const Condition &condition = this+conditions[i];
-      if (condition.u.format.v == 1)
+      ఒకవేళ (retained_cond_సమితి != శూన్యసూచిక && !retained_cond_సమితి->has (i))
+        కొనసాగు;
+      స్థిరరాశి Condition &condition = ఇది+conditions[i];
+      ఒకవేళ (condition.u.format.v == 1)
       {
-        subset_offset_array (c, out->conditions, this) (conditions[i]);
-        continue;
+        subset_స్థానభ్రంశం_array (c, బహిర్గతం->conditions, ఇది) (conditions[i]);
+        కొనసాగు;
       }
 
-      auto *offset = out->conditions.serialize_append (c->serializer);
-      if (unlikely (!offset)) return_trace (false);
+      స్వయంచాలక *స్థానభ్రంశం = బహిర్గతం->conditions.serialize_append (c->serializer);
+      ఒకవేళ (unlikely (!స్థానభ్రంశం)) return_trace (అబద్ధం);
       c->serializer->push ();
-      auto result = condition.subset_lookup_condition (c, HB_MAX_NESTING_LEVEL, true);
-      if (result == LOOKUP_CONDITION_SUBSET_FALSE)
+      స్వయంచాలక ఫలితం = condition.subset_lookup_condition (c, HB_MAX_NESTING_LEVEL, నిజం);
+      ఒకవేళ (ఫలితం == LOOKUP_CONDITION_SUBSET_FALSE)
         /* A false condition must not become a null (true) ConditionSet. */
-        result = Condition::serialize_constant (c->serializer, false) ?
+        ఫలితం = Condition::serialize_constant (c->serializer, అబద్ధం) ?
                  LOOKUP_CONDITION_SUBSET_KEEP : LOOKUP_CONDITION_SUBSET_ERROR;
-      if (unlikely (result == LOOKUP_CONDITION_SUBSET_ERROR))
+      ఒకవేళ (unlikely (ఫలితం == LOOKUP_CONDITION_SUBSET_ERROR))
       {
-        c->serializer->pop_discard ();
-        c->serializer->check_success (false);
-        return_trace (false);
+        c->serializer->తీయి_discard ();
+        c->serializer->check_success (అబద్ధం);
+        return_trace (అబద్ధం);
       }
-      c->serializer->add_link (*offset, c->serializer->pop_pack ());
+      c->serializer->కూడు_link (*స్థానభ్రంశం, c->serializer->తీయి_pack ());
     }
 
-    return_trace (bool (out->conditions));
+    return_trace (తార్కిక (బహిర్గతం->conditions));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (conditions.sanitize (c, ఇది));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const auto &offset : conditions)
-      if (unlikely (!(this+offset).collect_var_indices (c->layout_variation_indices,
+    కొరకు (స్థిరరాశి స్వయంచాలక &స్థానభ్రంశం : conditions)
+      ఒకవేళ (unlikely (!(ఇది+స్థానభ్రంశం).collect_var_indices (c->layout_variation_indices,
                                                        HB_MAX_NESTING_LEVEL,
-                                                       c->condition_values)))
+                                                       c->condition_విలువలు)))
 	c->layout_variation_indices->err ();
   }
 
-  protected:
-  Array16OfOffset32To<Condition>	conditions;
-  public:
-  DEFINE_SIZE_ARRAY (2, conditions);
+  రక్షిత:
+  Array16_యొక్క_Offset32_గమ్యం<Condition>	conditions;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (2, conditions);
 };
 
-struct FeatureTableSubstitutionRecord
+నిర్మాణం Feature_పట్టిక_Substitution_రికార్డు
 {
-  friend struct FeatureTableSubstitution;
+  మిత్ర నిర్మాణం Feature_పట్టిక_Substitution;
 
-  void collect_lookups (const void *base, hb_set_t *lookup_indexes /* OUT */) const
+  శూన్య collect_lookups (స్థిరరాశి శూన్య *పునాది, hb_సమితి_t *lookup_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    return (base+feature).add_lookup_indexes_to (lookup_indexes);
+    తిరిగి (పునాది+feature).కూడు_lookup_indexes_గమ్యం (lookup_indexes);
   }
 
-  void closure_features (const void *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  శూన్య సంవృతం_features (స్థిరరాశి శూన్య *పునాది,
+			 స్థిరరాశి hb_map_t *lookup_indexes,
+			 hb_సమితి_t       *feature_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    if ((base+feature).intersects_lookup_indexes (lookup_indexes))
-      feature_indexes->add (featureIndex);
+    ఒకవేళ ((పునాది+feature).intersects_lookup_indexes (lookup_indexes))
+      feature_indexes->కూడు (feature_సూచీ_2);
   }
 
-  void collect_feature_substitutes_with_variations (hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map,
-                                                    hb_set_t& catch_all_record_feature_idxes,
-                                                    const hb_set_t *feature_indices,
-                                                    const void *base) const
+  శూన్య collect_feature_substitutes_with_variations (hb_hashmap_t<గుర్తులేని, స్థిరరాశి Feature*> *feature_substitutes_map,
+                                                    hb_సమితి_t& catch_all_రికార్డు_feature_idxes,
+                                                    స్థిరరాశి hb_సమితి_t *feature_indices,
+                                                    స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    if (feature_indices->has (featureIndex))
+    ఒకవేళ (feature_indices->has (feature_సూచీ_2))
     {
-      feature_substitutes_map->set (featureIndex, &(base+feature));
-      catch_all_record_feature_idxes.add (featureIndex);
+      feature_substitutes_map->సమితి (feature_సూచీ_2, &(పునాది+feature));
+      catch_all_రికార్డు_feature_idxes.కూడు (feature_సూచీ_2);
     }
   }
 
-  bool serialize (hb_subset_layout_context_t *c,
-                  unsigned feature_index,
-                  const Feature *f, const Tag *tag)
+  తార్కిక serialize (hb_subset_layout_context_t *c,
+                  గుర్తులేని feature_సూచీ,
+                  స్థిరరాశి Feature *f, స్థిరరాశి ట్యాగ్ *ట్యాగ్_2)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ఇది);
     hb_serialize_context_t *s = c->subset_context->serializer;
-    if (unlikely (!s->extend_min (this))) return_trace (false);
+    ఒకవేళ (unlikely (!s->extend_min (ఇది))) return_trace (అబద్ధం);
 
     uint32_t *new_feature_idx;
-    if (!c->feature_map_w_duplicates->has (feature_index, &new_feature_idx))
-      return_trace (false);
+    ఒకవేళ (!c->feature_map_w_duplicates->has (feature_సూచీ, &new_feature_idx))
+      return_trace (అబద్ధం);
 
-    if (!s->check_assign (featureIndex, *new_feature_idx, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    ఒకవేళ (!s->check_కేటాయించు (feature_సూచీ_2, *new_feature_idx, HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (అబద్ధం);
 
     s->push ();
-    bool ret = f->subset (c->subset_context, c, tag);
-    if (ret) s->add_link (feature, s->pop_pack ());
-    else s->pop_discard ();
+    తార్కిక ret = f->subset (c->subset_context, c, ట్యాగ్_2);
+    ఒకవేళ (ret) s->కూడు_link (feature, s->తీయి_pack ());
+    లేకపోతే s->తీయి_discard ();
 
     return_trace (ret);
   }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base) const
+  తార్కిక subset (hb_subset_layout_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    uint32_t *new_feature_index;
-    if (!c->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    uint32_t *new_feature_సూచీ;
+    ఒకవేళ (!c->feature_map_w_duplicates->has (feature_సూచీ_2, &new_feature_సూచీ))
+      return_trace (అబద్ధం);
 
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->subset_context->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->featureIndex = *new_feature_index;
-    hb_pair_t<const void*, const void*> *original;
-    if (!c->feature_idx_tag_map->has (featureIndex, &original))
-      return_trace (false);
-    const Tag *tag = reinterpret_cast<const Tag*> (original->second);
-    return_trace (out->feature.serialize_subset (c->subset_context, feature, base, c, tag));
+    బహిర్గతం->feature_సూచీ_2 = *new_feature_సూచీ;
+    hb_pair_t<స్థిరరాశి శూన్య*, స్థిరరాశి శూన్య*> *original;
+    ఒకవేళ (!c->feature_idx_ట్యాగ్_map->has (feature_సూచీ_2, &original))
+      return_trace (అబద్ధం);
+    స్థిరరాశి ట్యాగ్ *ట్యాగ్_2 = reinterpret_cast<స్థిరరాశి ట్యాగ్*> (original->second);
+    return_trace (బహిర్గతం->feature.serialize_subset (c->subset_context, feature, పునాది, c, ట్యాగ్_2));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base,
-		 const FeatureList *feature_list) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది,
+		 స్థిరరాశి FeatureList *feature_list) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది))) return_trace (అబద్ధం);
     hb_barrier ();
     /* The substitute is read with the tag of the feature it replaces. */
-    const Record_sanitize_closure_t closure = {feature_list->get_tag (featureIndex), base};
-    return_trace (feature.sanitize (c, base, &closure));
+    స్థిరరాశి రికార్డు_sanitize_సంవృతం_t సంవృతం = {feature_list->get_ట్యాగ్ (feature_సూచీ_2), పునాది};
+    return_trace (feature.sanitize (c, పునాది, &సంవృతం));
   }
 
-  protected:
-  HBUINT16		featureIndex;
-  Offset32To<Feature>	feature;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  రక్షిత:
+  HBUINT16		feature_సూచీ_2;
+  Offset32_గమ్యం<Feature>	feature;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct FeatureTableSubstitution
+నిర్మాణం Feature_పట్టిక_Substitution
 {
-  void collect_feature_indices (hb_set_t *feature_indices) const
+  శూన్య collect_feature_indices (hb_సమితి_t *feature_indices) స్థిరరాశి
   {
-    for (const FeatureTableSubstitutionRecord &record : substitutions)
-      feature_indices->add (record.featureIndex);
+    కొరకు (స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు &రికార్డు : substitutions)
+      feature_indices->కూడు (రికార్డు.feature_సూచీ_2);
   }
 
-  const Feature *find_substitute (unsigned int feature_index) const
+  స్థిరరాశి Feature *కనుగొను_substitute (గుర్తులేని పూర్ణాంకం feature_సూచీ) స్థిరరాశి
   {
-    unsigned int count = substitutions.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = substitutions.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      const FeatureTableSubstitutionRecord &record = substitutions.arrayZ[i];
-      if (record.featureIndex == feature_index)
-	return &(this+record.feature);
+      స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు &రికార్డు = substitutions.arrayZ[i];
+      ఒకవేళ (రికార్డు.feature_సూచీ_2 == feature_సూచీ)
+	తిరిగి &(ఇది+రికార్డు.feature);
     }
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  void collect_lookups (const hb_set_t *feature_indexes,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  శూన్య collect_lookups (స్థిరరాశి hb_సమితి_t *feature_indexes,
+			hb_సమితి_t       *lookup_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
     + hb_iter (substitutions)
-    | hb_filter (feature_indexes, &FeatureTableSubstitutionRecord::featureIndex)
-    | hb_apply ([this, lookup_indexes] (const FeatureTableSubstitutionRecord& r)
-		{ r.collect_lookups (this, lookup_indexes); })
+    | hb_filter (feature_indexes, &Feature_పట్టిక_Substitution_రికార్డు::feature_సూచీ_2)
+    | hb_apply ([ఇది, lookup_indexes] (స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు& r)
+		{ r.collect_lookups (ఇది, lookup_indexes); })
     ;
   }
 
-  template <typename TagGetter>
-  void collect_name_ids (const hb_map_t *feature_index_map,
-                         TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+  మూస <రకం_పేరు ట్యాగ్_Getter>
+  శూన్య collect_name_ids (స్థిరరాశి hb_map_t *feature_సూచీ_map,
+                         ట్యాగ్_Getter get_ట్యాగ్,
+                         hb_సమితి_t *nameids_గమ్యం_retain) స్థిరరాశి
   {
-    for (const FeatureTableSubstitutionRecord &record : substitutions)
-      if (feature_index_map->has (record.featureIndex))
-        (this+record.feature).collect_name_ids (get_tag (record.featureIndex), nameids_to_retain);
+    కొరకు (స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు &రికార్డు : substitutions)
+      ఒకవేళ (feature_సూచీ_map->has (రికార్డు.feature_సూచీ_2))
+        (ఇది+రికార్డు.feature).collect_name_ids (get_ట్యాగ్ (రికార్డు.feature_సూచీ_2), nameids_గమ్యం_retain);
   }
 
-  void closure_features (const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  శూన్య సంవృతం_features (స్థిరరాశి hb_map_t *lookup_indexes,
+			 hb_సమితి_t       *feature_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
-      record.closure_features (this, lookup_indexes, feature_indexes);
+    కొరకు (స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు& రికార్డు : substitutions)
+      రికార్డు.సంవృతం_features (ఇది, lookup_indexes, feature_indexes);
   }
 
-  bool intersects_features (const hb_map_t *feature_index_map) const
+  తార్కిక intersects_features (స్థిరరాశి hb_map_t *feature_సూచీ_map) స్థిరరాశి
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
+    కొరకు (స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు& రికార్డు : substitutions)
     {
-      if (feature_index_map->has (record.featureIndex)) return true;
+      ఒకవేళ (feature_సూచీ_map->has (రికార్డు.feature_సూచీ_2)) తిరిగి నిజం;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  శూన్య collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) స్థిరరాశి
   {
-    for (const FeatureTableSubstitutionRecord& record : substitutions)
-      record.collect_feature_substitutes_with_variations (c->feature_substitutes_map,
-                                                          c->catch_all_record_feature_idxes,
-                                                          c->feature_indices, this);
+    కొరకు (స్థిరరాశి Feature_పట్టిక_Substitution_రికార్డు& రికార్డు : substitutions)
+      రికార్డు.collect_feature_substitutes_with_variations (c->feature_substitutes_map,
+                                                          c->catch_all_రికార్డు_feature_idxes,
+                                                          c->feature_indices, ఇది);
   }
 
-  bool subset (hb_subset_context_t        *c,
+  తార్కిక subset (hb_subset_context_t        *c,
 	       hb_subset_layout_context_t *l,
-               bool insert_catch_all) const
+               తార్కిక చొప్పించు_catch_all) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
+    బహిర్గతం->సంస్కరణ.major = సంస్కరణ.major;
+    బహిర్గతం->సంస్కరణ.minor = సంస్కరణ.minor;
 
-    if (insert_catch_all)
+    ఒకవేళ (చొప్పించు_catch_all)
     {
-      for (unsigned feature_index : *(l->catch_all_record_feature_idxes))
+      కొరకు (గుర్తులేని feature_సూచీ : *(l->catch_all_రికార్డు_feature_idxes))
       {
-        hb_pair_t<const void*, const void*> *p;
-        if (!l->feature_idx_tag_map->has (feature_index, &p))
-          return_trace (false);
-        auto *o = out->substitutions.serialize_append (c->serializer);
-        if (!o->serialize (l, feature_index,
-                           reinterpret_cast<const Feature*> (p->first),
-                           reinterpret_cast<const Tag*> (p->second)))
-          return_trace (false);
+        hb_pair_t<స్థిరరాశి శూన్య*, స్థిరరాశి శూన్య*> *p;
+        ఒకవేళ (!l->feature_idx_ట్యాగ్_map->has (feature_సూచీ, &p))
+          return_trace (అబద్ధం);
+        స్వయంచాలక *o = బహిర్గతం->substitutions.serialize_append (c->serializer);
+        ఒకవేళ (!o->serialize (l, feature_సూచీ,
+                           reinterpret_cast<స్థిరరాశి Feature*> (p->మొదటి),
+                           reinterpret_cast<స్థిరరాశి ట్యాగ్*> (p->second)))
+          return_trace (అబద్ధం);
       }
-      return_trace (true);
+      return_trace (నిజం);
     }
 
     + substitutions.iter ()
-    | hb_apply (subset_record_array (l, &(out->substitutions), this))
+    | hb_apply (subset_రికార్డు_array (l, &(బహిర్గతం->substitutions), ఇది))
     ;
 
-    return_trace (bool (out->substitutions));
+    return_trace (తార్కిక (బహిర్గతం->substitutions));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const FeatureList *feature_list) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి FeatureList *feature_list) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (సంస్కరణ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  substitutions.sanitize (c, this, feature_list));
+		  likely (సంస్కరణ.major == 1) &&
+		  substitutions.sanitize (c, ఇది, feature_list));
   }
 
-  protected:
-  FixedVersion<>	version;	/* Version--0x00010000u */
-  Array16Of<FeatureTableSubstitutionRecord>
+  రక్షిత:
+  Fixed_సంస్కరణ<>	సంస్కరణ;	/* Version--0x00010000u */
+  Array16_యొక్క<Feature_పట్టిక_Substitution_రికార్డు>
 			substitutions;
-  public:
-  DEFINE_SIZE_ARRAY (6, substitutions);
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, substitutions);
 };
 
-struct FeatureVariationRecord
+నిర్మాణం Feature_Variation_రికార్డు
 {
-  friend struct FeatureVariations;
+  మిత్ర నిర్మాణం FeatureVariations;
 
-  void collect_lookups (const void     *base,
-			const hb_set_t *feature_indexes,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  శూన్య collect_lookups (స్థిరరాశి శూన్య     *పునాది,
+			స్థిరరాశి hb_సమితి_t *feature_indexes,
+			hb_సమితి_t       *lookup_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    return (base+substitutions).collect_lookups (feature_indexes, lookup_indexes);
+    తిరిగి (పునాది+substitutions).collect_lookups (feature_indexes, lookup_indexes);
   }
 
-  template <typename TagGetter>
-  void collect_name_ids (const void *base,
-                         const hb_map_t *feature_index_map,
-                         TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+  మూస <రకం_పేరు ట్యాగ్_Getter>
+  శూన్య collect_name_ids (స్థిరరాశి శూన్య *పునాది,
+                         స్థిరరాశి hb_map_t *feature_సూచీ_map,
+                         ట్యాగ్_Getter get_ట్యాగ్,
+                         hb_సమితి_t *nameids_గమ్యం_retain) స్థిరరాశి
   {
-    (base+substitutions).collect_name_ids (feature_index_map, get_tag, nameids_to_retain);
+    (పునాది+substitutions).collect_name_ids (feature_సూచీ_map, get_ట్యాగ్, nameids_గమ్యం_retain);
   }
 
-  void closure_features (const void     *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  శూన్య సంవృతం_features (స్థిరరాశి శూన్య     *పునాది,
+			 స్థిరరాశి hb_map_t *lookup_indexes,
+			 hb_సమితి_t       *feature_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    (base+substitutions).closure_features (lookup_indexes, feature_indexes);
+    (పునాది+substitutions).సంవృతం_features (lookup_indexes, feature_indexes);
   }
 
-  bool intersects_features (const void *base, const hb_map_t *feature_index_map) const
+  తార్కిక intersects_features (స్థిరరాశి శూన్య *పునాది, స్థిరరాశి hb_map_t *feature_సూచీ_map) స్థిరరాశి
   {
-    return (base+substitutions).intersects_features (feature_index_map);
+    తిరిగి (పునాది+substitutions).intersects_features (feature_సూచీ_map);
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
-                                                    const void *base) const
+  శూన్య collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c,
+                                                    స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    (base+conditions).keep_with_variations (c);
-    if (c->apply && !c->variation_applied)
+    (పునాది+conditions).keep_with_variations (c);
+    ఒకవేళ (c->apply && !c->variation_applied)
     {
-      (base+substitutions).collect_feature_substitutes_with_variations (c);
-      c->variation_applied = true; // set variations only once
+      (పునాది+substitutions).collect_feature_substitutes_with_variations (c);
+      c->variation_applied = నిజం; // set variations only once
     }
   }
 
-  bool subset (hb_subset_layout_context_t *c, const void *base,
-               bool insert_catch_all = false) const
+  తార్కిక subset (hb_subset_layout_context_t *c, స్థిరరాశి శూన్య *పునాది,
+               తార్కిక చొప్పించు_catch_all = అబద్ధం) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->subset_context->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->subset_context->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    hb_set_t *retained_conditions = c->feature_record_cond_idx_map ?
-        c->feature_record_cond_idx_map->get (c->cur_feature_var_record_idx).get () : nullptr;
-    if (!insert_catch_all && retained_conditions && retained_conditions->is_empty ())
+    hb_సమితి_t *retained_conditions = c->feature_రికార్డు_cond_idx_map ?
+        c->feature_రికార్డు_cond_idx_map->get (c->cur_feature_var_రికార్డు_idx).get () : శూన్యసూచిక;
+    ఒకవేళ (!చొప్పించు_catch_all && retained_conditions && retained_conditions->is_empty ())
       /* A null ConditionSet is the unconditional first-match record. */
-      out->conditions = 0;
-    else
-      out->conditions.serialize_subset (c->subset_context, conditions, base, c, insert_catch_all);
-    out->substitutions.serialize_subset (c->subset_context, substitutions, base, c, insert_catch_all);
+      బహిర్గతం->conditions = 0;
+    లేకపోతే
+      బహిర్గతం->conditions.serialize_subset (c->subset_context, conditions, పునాది, c, చొప్పించు_catch_all);
+    బహిర్గతం->substitutions.serialize_subset (c->subset_context, substitutions, పునాది, c, చొప్పించు_catch_all);
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base,
-		 const FeatureList *feature_list) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది,
+		 స్థిరరాశి FeatureList *feature_list) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (conditions.sanitize (c, base) &&
-		  substitutions.sanitize (c, base, feature_list));
+    TRACE_SANITIZE (ఇది);
+    return_trace (conditions.sanitize (c, పునాది) &&
+		  substitutions.sanitize (c, పునాది, feature_list));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
-  { (base+conditions).collect_variation_indices (c); }
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { (పునాది+conditions).collect_variation_indices (c); }
 
-  protected:
-  Offset32To<ConditionSet>
+  రక్షిత:
+  Offset32_గమ్యం<Condition_సమితి>
 			conditions;
-  Offset32To<FeatureTableSubstitution>
+  Offset32_గమ్యం<Feature_పట్టిక_Substitution>
 			substitutions;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct LookupIndexList
+నిర్మాణం Lookup_సూచీ_List
 {
-  void add_lookup_indexes_to (hb_set_t *lookup_indexes) const
-  { lookupIndices.add_indexes_to (lookup_indexes); }
+  శూన్య కూడు_lookup_indexes_గమ్యం (hb_సమితి_t *lookup_indexes) స్థిరరాశి
+  { lookupIndices.కూడు_indexes_గమ్యం (lookup_indexes); }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
-  { return lookupIndices.intersects (lookup_indexes); }
+  తార్కిక intersects_lookup_indexes (స్థిరరాశి hb_map_t *lookup_indexes) స్థిరరాశి
+  { తిరిగి lookupIndices.intersects (lookup_indexes); }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం)))
+      return_trace (అబద్ధం);
 
-    auto it =
+    స్వయంచాలక it =
     + hb_iter (lookupIndices)
-    | hb_filter (l->lookup_index_map)
-    | hb_map (l->lookup_index_map)
+    | hb_filter (l->lookup_సూచీ_map)
+    | hb_map (l->lookup_సూచీ_map)
     ;
-    out->lookupIndices.serialize (c->serializer, l, it);
-    return_trace (bool (out->lookupIndices));
+    బహిర్గతం->lookupIndices.serialize (c->serializer, l, it);
+    return_trace (తార్కిక (బహిర్గతం->lookupIndices));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ఇది);
     return_trace (lookupIndices.sanitize (c));
   }
 
-  protected:
-  IndexArray	lookupIndices;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (2, lookupIndices);
+  రక్షిత:
+  సూచీ_Array	lookupIndices;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (2, lookupIndices);
 };
 
-struct LookupConditionRecord
+నిర్మాణం Lookup_Condition_రికార్డు
 {
-  unsigned get_condition_offset (const void *base, const void *variations) const
-  { return (const char *) &(base+condition) - (const char *) variations; }
+  గుర్తులేని get_condition_స్థానభ్రంశం (స్థిరరాశి శూన్య *పునాది, స్థిరరాశి శూన్య *variations) స్థిరరాశి
+  { తిరిగి (స్థిరరాశి అక్షరం *) &(పునాది+condition) - (స్థిరరాశి అక్షరం *) variations; }
 
-  template <typename Instancer>
-  bool evaluate (const void *base,
-		 const int *coords,
-		 unsigned int coord_len,
-		 Instancer *instancer) const
-  { return (base+condition).evaluate (coords, coord_len, instancer); }
+  మూస <రకం_పేరు Instancer>
+  తార్కిక evaluate (స్థిరరాశి శూన్య *పునాది,
+		 స్థిరరాశి పూర్ణాంకం *coords,
+		 గుర్తులేని పూర్ణాంకం coord_len,
+		 Instancer *instancer) స్థిరరాశి
+  { తిరిగి (పునాది+condition).evaluate (coords, coord_len, instancer); }
 
-  bool evaluate (const void *base,
-                 const void *variations,
-                 hb_sorted_array_t<const unsigned> conditions) const
+  తార్కిక evaluate (స్థిరరాశి శూన్య *పునాది,
+                 స్థిరరాశి శూన్య *variations,
+                 hb_sorted_array_t<స్థిరరాశి గుర్తులేని> conditions) స్థిరరాశి
   {
-    return !condition || hb_bsearch (get_condition_offset (base, variations),
-                                     conditions.arrayZ, conditions.length,
-                                     sizeof (unsigned),
-                                     _hb_cmp_operator<unsigned, unsigned>);
+    తిరిగి !condition || hb_bsearch (get_condition_స్థానభ్రంశం (పునాది, variations),
+                                     conditions.arrayZ, conditions.నిడివి,
+                                     పరిమాణం (గుర్తులేని),
+                                     _hb_cmp_operator<గుర్తులేని, గుర్తులేని>);
   }
 
-  bool collect_condition (const void *base,
-                          const void *variations,
-                          const int *coords,
-                          unsigned int coord_len,
-                          ItemVarStoreInstancer *instancer,
-                          hb_set_t *visited,
-                          hb_vector_t<unsigned> *conditions) const
+  తార్కిక collect_condition (స్థిరరాశి శూన్య *పునాది,
+                          స్థిరరాశి శూన్య *variations,
+                          స్థిరరాశి పూర్ణాంకం *coords,
+                          గుర్తులేని పూర్ణాంకం coord_len,
+                          అంశం_Var_Store_Instancer *instancer,
+                          hb_సమితి_t *సందర్శించిన,
+                          hb_సదిశ_t<గుర్తులేని> *conditions) స్థిరరాశి
   {
     /* Null conditions always apply and need no key state. */
-    if (!condition) return true;
+    ఒకవేళ (!condition) తిరిగి నిజం;
 
-    unsigned offset = get_condition_offset (base, variations);
-    if (visited->has (offset)) return true;
-    visited->add (offset);
-    if (unlikely (visited->in_error ())) return false;
+    గుర్తులేని స్థానభ్రంశం = get_condition_స్థానభ్రంశం (పునాది, variations);
+    ఒకవేళ (సందర్శించిన->has (స్థానభ్రంశం)) తిరిగి నిజం;
+    సందర్శించిన->కూడు (స్థానభ్రంశం);
+    ఒకవేళ (unlikely (సందర్శించిన->లోపల_error ())) తిరిగి అబద్ధం;
 
-    if (evaluate (base, coords, coord_len, instancer))
-      conditions->push (offset);
-    return !conditions->in_error ();
+    ఒకవేళ (evaluate (పునాది, coords, coord_len, instancer))
+      conditions->push (స్థానభ్రంశం);
+    తిరిగి !conditions->లోపల_error ();
   }
 
-  void add_lookup_indexes_to (const void *base,
-			      hb_set_t *lookup_indexes) const
-  { (base+lookupIndices).add_lookup_indexes_to (lookup_indexes); }
+  శూన్య కూడు_lookup_indexes_గమ్యం (స్థిరరాశి శూన్య *పునాది,
+			      hb_సమితి_t *lookup_indexes) స్థిరరాశి
+  { (పునాది+lookupIndices).కూడు_lookup_indexes_గమ్యం (lookup_indexes); }
 
-  bool intersects_lookup_indexes (const void *base,
-				   const hb_map_t *lookup_indexes) const
-  { return (base+lookupIndices).intersects_lookup_indexes (lookup_indexes); }
+  తార్కిక intersects_lookup_indexes (స్థిరరాశి శూన్య *పునాది,
+				   స్థిరరాశి hb_map_t *lookup_indexes) స్థిరరాశి
+  { తిరిగి (పునాది+lookupIndices).intersects_lookup_indexes (lookup_indexes); }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    if (unlikely (!(base+condition).collect_var_indices (c->layout_variation_indices,
+    ఒకవేళ (unlikely (!(పునాది+condition).collect_var_indices (c->layout_variation_indices,
                                                         HB_MAX_NESTING_LEVEL,
-                                                        c->condition_values)))
+                                                        c->condition_విలువలు)))
       c->layout_variation_indices->err ();
   }
 
-  bool subset (hb_subset_context_t *c,
+  తార్కిక subset (hb_subset_context_t *c,
 	       hb_subset_layout_context_t *l,
-	       const void *base) const
+	       స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (అబద్ధం);
 
-    out->condition = 0;
+    బహిర్గతం->condition = 0;
     c->serializer->push ();
-    lookup_condition_subset_result_t result =
-        (base + condition).subset_lookup_condition (c,
+    lookup_condition_subset_ఫలితం_t ఫలితం =
+        (పునాది + condition).subset_lookup_condition (c,
 					    HB_MAX_NESTING_LEVEL,
-					    true);
-    if (result != LOOKUP_CONDITION_SUBSET_KEEP)
+					    నిజం);
+    ఒకవేళ (ఫలితం != LOOKUP_CONDITION_SUBSET_KEEP)
     {
-      c->serializer->pop_discard ();
-      return_trace (false);
+      c->serializer->తీయి_discard ();
+      return_trace (అబద్ధం);
     }
-    c->serializer->add_link (out->condition, c->serializer->pop_pack ());
+    c->serializer->కూడు_link (బహిర్గతం->condition, c->serializer->తీయి_pack ());
 
-    return_trace (out->lookupIndices.serialize_subset (c, lookupIndices, base, l));
+    return_trace (బహిర్గతం->lookupIndices.serialize_subset (c, lookupIndices, పునాది, l));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (condition.sanitize (c, base) &&
-		  lookupIndices.sanitize (c, base));
+    TRACE_SANITIZE (ఇది);
+    return_trace (condition.sanitize (c, పునాది) &&
+		  lookupIndices.sanitize (c, పునాది));
   }
 
-  protected:
-  Offset32To<Condition>		condition;
-  Offset32To<LookupIndexList>	lookupIndices;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  రక్షిత:
+  Offset32_గమ్యం<Condition>		condition;
+  Offset32_గమ్యం<Lookup_సూచీ_List>	lookupIndices;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct FeatureLookupsTable
+నిర్మాణం Feature_Lookups_పట్టిక
 {
-  bool adds_default_lookups () const { return flags & 0x0001u; }
+  తార్కిక adds_default_lookups () స్థిరరాశి { తిరిగి flags & 0x0001u; }
 
-  bool collect_conditions (const void *variations,
-                           const int *coords,
-                           unsigned int coord_len,
-                           ItemVarStoreInstancer *instancer,
-                           hb_set_t *visited,
-                           hb_vector_t<unsigned> *conditions) const
+  తార్కిక collect_conditions (స్థిరరాశి శూన్య *variations,
+                           స్థిరరాశి పూర్ణాంకం *coords,
+                           గుర్తులేని పూర్ణాంకం coord_len,
+                           అంశం_Var_Store_Instancer *instancer,
+                           hb_సమితి_t *సందర్శించిన,
+                           hb_సదిశ_t<గుర్తులేని> *conditions) స్థిరరాశి
   {
-    for (const LookupConditionRecord &record : records)
-      if (unlikely (!record.collect_condition (this, variations, coords, coord_len,
-                                               instancer, visited, conditions)))
-	return false;
-    return true;
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
+      ఒకవేళ (unlikely (!రికార్డు.collect_condition (ఇది, variations, coords, coord_len,
+                                               instancer, సందర్శించిన, conditions)))
+	తిరిగి అబద్ధం;
+    తిరిగి నిజం;
   }
 
-  void collect_lookups (const void *variations,
-                       hb_sorted_array_t<const unsigned> conditions,
-                       hb_set_t *lookup_indexes) const
+  శూన్య collect_lookups (స్థిరరాశి శూన్య *variations,
+                       hb_sorted_array_t<స్థిరరాశి గుర్తులేని> conditions,
+                       hb_సమితి_t *lookup_indexes) స్థిరరాశి
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.evaluate (this, variations, conditions))
-	record.add_lookup_indexes_to (this, lookup_indexes);
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
+      ఒకవేళ (రికార్డు.evaluate (ఇది, variations, conditions))
+	రికార్డు.కూడు_lookup_indexes_గమ్యం (ఇది, lookup_indexes);
   }
 
-  template <typename Instancer>
-  void collect_lookups (const int *coords,
-			unsigned int coord_len,
+  మూస <రకం_పేరు Instancer>
+  శూన్య collect_lookups (స్థిరరాశి పూర్ణాంకం *coords,
+			గుర్తులేని పూర్ణాంకం coord_len,
 			Instancer *instancer,
-			hb_set_t *lookup_indexes) const
+			hb_సమితి_t *lookup_indexes) స్థిరరాశి
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.evaluate (this, coords, coord_len, instancer))
-	record.add_lookup_indexes_to (this, lookup_indexes);
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
+      ఒకవేళ (రికార్డు.evaluate (ఇది, coords, coord_len, instancer))
+	రికార్డు.కూడు_lookup_indexes_గమ్యం (ఇది, lookup_indexes);
   }
 
-  void collect_lookups (hb_set_t *lookup_indexes) const
+  శూన్య collect_lookups (hb_సమితి_t *lookup_indexes) స్థిరరాశి
   {
-    for (const LookupConditionRecord &record : records)
-      record.add_lookup_indexes_to (this, lookup_indexes);
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
+      రికార్డు.కూడు_lookup_indexes_గమ్యం (ఇది, lookup_indexes);
   }
 
-  bool intersects_lookup_indexes (const hb_map_t *lookup_indexes) const
+  తార్కిక intersects_lookup_indexes (స్థిరరాశి hb_map_t *lookup_indexes) స్థిరరాశి
   {
-    for (const LookupConditionRecord &record : records)
-      if (record.intersects_lookup_indexes (this, lookup_indexes))
-	return true;
-    return false;
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
+      ఒకవేళ (రికార్డు.intersects_lookup_indexes (ఇది, lookup_indexes))
+	తిరిగి నిజం;
+    తిరిగి అబద్ధం;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const LookupConditionRecord &record : records)
-      record.collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
+      రికార్డు.collect_variation_indices (c, ఇది);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!out || !c->serializer->extend_min (out)))
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం)))
+      return_trace (అబద్ధం);
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
-    out->flags = flags;
+    బహిర్గతం->సంస్కరణ.major = సంస్కరణ.major;
+    బహిర్గతం->సంస్కరణ.minor = సంస్కరణ.minor;
+    బహిర్గతం->flags = flags;
 
-    for (const LookupConditionRecord &record : records)
+    కొరకు (స్థిరరాశి Lookup_Condition_రికార్డు &రికార్డు : రికార్డులు)
     {
-      auto snap = c->serializer->snapshot ();
-      if (record.subset (c, l, this))
-	out->records.len++;
-      else
+      స్వయంచాలక snap = c->serializer->snapshot ();
+      ఒకవేళ (రికార్డు.subset (c, l, ఇది))
+	బహిర్గతం->రికార్డులు.len++;
+      లేకపోతే
 	c->serializer->revert (snap);
     }
 
-    return_trace (true);
+    return_trace (నిజం);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (సంస్కరణ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  records.sanitize (c, this));
+		  likely (సంస్కరణ.major == 1) &&
+		  రికార్డులు.sanitize (c, ఇది));
   }
 
-  protected:
-  FixedVersion<>	version;	/* Version--0x00010000u */
+  రక్షిత:
+  Fixed_సంస్కరణ<>	సంస్కరణ;	/* Version--0x00010000u */
   HBUINT16	flags;
-  Array32Of<LookupConditionRecord>
-		records;
-  public:
-  DEFINE_SIZE_ARRAY (10, records);
+  Array32_యొక్క<Lookup_Condition_రికార్డు>
+		రికార్డులు;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (10, రికార్డులు);
 };
 
-struct LookupVariationRecord
+నిర్మాణం Lookup_Variation_రికార్డు
 {
-  friend struct FeatureVariations;
+  మిత్ర నిర్మాణం FeatureVariations;
 
-  unsigned get_feature_index () const { return featureIndex; }
+  గుర్తులేని get_feature_సూచీ () స్థిరరాశి { తిరిగి feature_సూచీ_2; }
 
-  void collect_lookups (const void *base,
-                       const Feature &feature,
-                       hb_sorted_array_t<const unsigned> conditions,
-                       hb_set_t *lookup_indexes) const
+  శూన్య collect_lookups (స్థిరరాశి శూన్య *పునాది,
+                       స్థిరరాశి Feature &feature,
+                       hb_sorted_array_t<స్థిరరాశి గుర్తులేని> conditions,
+                       hb_సమితి_t *lookup_indexes) స్థిరరాశి
   {
-    const FeatureLookupsTable &feature_lookups = base+featureLookups;
-    if (feature_lookups.adds_default_lookups ())
-      feature.add_lookup_indexes_to (lookup_indexes);
-    feature_lookups.collect_lookups (base, conditions, lookup_indexes);
+    స్థిరరాశి Feature_Lookups_పట్టిక &feature_lookups = పునాది+featureLookups;
+    ఒకవేళ (feature_lookups.adds_default_lookups ())
+      feature.కూడు_lookup_indexes_గమ్యం (lookup_indexes);
+    feature_lookups.collect_lookups (పునాది, conditions, lookup_indexes);
   }
 
-  void collect_lookups (const void *base,
-			const hb_set_t *feature_indexes,
-			hb_set_t *lookup_indexes) const
+  శూన్య collect_lookups (స్థిరరాశి శూన్య *పునాది,
+			స్థిరరాశి hb_సమితి_t *feature_indexes,
+			hb_సమితి_t *lookup_indexes) స్థిరరాశి
   {
-    if (feature_indexes->has (featureIndex))
-      (base+featureLookups).collect_lookups (lookup_indexes);
+    ఒకవేళ (feature_indexes->has (feature_సూచీ_2))
+      (పునాది+featureLookups).collect_lookups (lookup_indexes);
   }
 
-  void closure_features (const void *base,
-			 const hb_map_t *lookup_indexes,
-			 hb_set_t *feature_indexes) const
+  శూన్య సంవృతం_features (స్థిరరాశి శూన్య *పునాది,
+			 స్థిరరాశి hb_map_t *lookup_indexes,
+			 hb_సమితి_t *feature_indexes) స్థిరరాశి
   {
-    if ((base+featureLookups).intersects_lookup_indexes (lookup_indexes))
-      feature_indexes->add (featureIndex);
+    ఒకవేళ ((పునాది+featureLookups).intersects_lookup_indexes (lookup_indexes))
+      feature_indexes->కూడు (feature_సూచీ_2);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-				  const void *base) const
-  { (base+featureLookups).collect_variation_indices (c); }
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c,
+				  స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
+  { (పునాది+featureLookups).collect_variation_indices (c); }
 
-  bool subset (hb_subset_layout_context_t *l, const void *base) const
+  తార్కిక subset (hb_subset_layout_context_t *l, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
     hb_subset_context_t *c = l->subset_context;
-    TRACE_SUBSET (this);
-    uint32_t *new_feature_index;
-    if (!l->feature_map_w_duplicates->has (featureIndex, &new_feature_index))
-      return_trace (false);
+    TRACE_SUBSET (ఇది);
+    uint32_t *new_feature_సూచీ;
+    ఒకవేళ (!l->feature_map_w_duplicates->has (feature_సూచీ_2, &new_feature_సూచీ))
+      return_trace (అబద్ధం);
 
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out ||
-		  !c->serializer->check_assign (out->featureIndex,
-						*new_feature_index,
-						HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-      return_trace (false);
+    స్వయంచాలక *బహిర్గతం = c->serializer->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం ||
+		  !c->serializer->check_కేటాయించు (బహిర్గతం->feature_సూచీ_2,
+						*new_feature_సూచీ,
+						HB_SERIALIZE_ERROR_INT_అధికప్రవాహం)))
+      return_trace (అబద్ధం);
 
-    return_trace (out->featureLookups.serialize_subset (c, featureLookups, base, l));
+    return_trace (బహిర్గతం->featureLookups.serialize_subset (c, featureLookups, పునాది, l));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  featureLookups.sanitize (c, base));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) &&
+		  featureLookups.sanitize (c, పునాది));
   }
 
-  protected:
-  HBUINT16			featureIndex;
-  Offset32To<FeatureLookupsTable>	featureLookups;
-  public:
-  DEFINE_SIZE_STATIC (6);
+  రక్షిత:
+  HBUINT16			feature_సూచీ_2;
+  Offset32_గమ్యం<Feature_Lookups_పట్టిక>	featureLookups;
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct FeatureVariations
+నిర్మాణం FeatureVariations
 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFFFFFu;
+  స్థిర constexpr గుర్తులేని NOT_దొరికింది_సూచీ = 0xFFFFFFFFu;
 
-  const Array32Of<LookupVariationRecord> &get_lookup_variation_records () const
+  స్థిరరాశి Array32_యొక్క<Lookup_Variation_రికార్డు> &get_lookup_variation_రికార్డులు () స్థిరరాశి
   {
-    if (version.to_int () < 0x00010001u)
-      return Null (Array32Of<LookupVariationRecord>);
-    return StructAfter<Array32Of<LookupVariationRecord>> (varRecords);
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () < 0x00010001u)
+      తిరిగి Null (Array32_యొక్క<Lookup_Variation_రికార్డు>);
+    తిరిగి StructAfter<Array32_యొక్క<Lookup_Variation_రికార్డు>> (var_రికార్డులు);
   }
 
-  unsigned record_count () const
+  గుర్తులేని రికార్డు_లెక్క () స్థిరరాశి
   {
-    return varRecords.len;
+    తిరిగి var_రికార్డులు.len;
   }
 
-  bool find_index (const int *coords, unsigned int coord_len,
-		   unsigned int *index,
-		   ItemVarStoreInstancer *instancer) const
+  తార్కిక కనుగొను_సూచీ (స్థిరరాశి పూర్ణాంకం *coords, గుర్తులేని పూర్ణాంకం coord_len,
+		   గుర్తులేని పూర్ణాంకం *సూచీ_2,
+		   అంశం_Var_Store_Instancer *instancer) స్థిరరాశి
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = var_రికార్డులు.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      const FeatureVariationRecord &record = varRecords.arrayZ[i];
-      if ((this+record.conditions).evaluate (coords, coord_len, instancer))
+      స్థిరరాశి Feature_Variation_రికార్డు &రికార్డు = var_రికార్డులు.arrayZ[i];
+      ఒకవేళ ((ఇది+రికార్డు.conditions).evaluate (coords, coord_len, instancer))
       {
-	*index = i;
-	return true;
+	*సూచీ_2 = i;
+	తిరిగి నిజం;
       }
     }
-    *index = NOT_FOUND_INDEX;
-    return false;
+    *సూచీ_2 = NOT_దొరికింది_సూచీ;
+    తిరిగి అబద్ధం;
   }
 
-  const Feature *find_substitute (unsigned int variations_index,
-				  unsigned int feature_index) const
+  స్థిరరాశి Feature *కనుగొను_substitute (గుర్తులేని పూర్ణాంకం variations_సూచీ,
+				  గుర్తులేని పూర్ణాంకం feature_సూచీ) స్థిరరాశి
   {
-    const FeatureVariationRecord &record = varRecords[variations_index];
-    return (this+record.substitutions).find_substitute (feature_index);
+    స్థిరరాశి Feature_Variation_రికార్డు &రికార్డు = var_రికార్డులు[variations_సూచీ];
+    తిరిగి (ఇది+రికార్డు.substitutions).కనుగొను_substitute (feature_సూచీ);
   }
 
-  bool collect_lookup_conditions (const int *coords,
-                                  unsigned int coord_len,
-                                  ItemVarStoreInstancer *instancer,
-                                  hb_vector_t<unsigned> *state) const
+  తార్కిక collect_lookup_conditions (స్థిరరాశి పూర్ణాంకం *coords,
+                                  గుర్తులేని పూర్ణాంకం coord_len,
+                                  అంశం_Var_Store_Instancer *instancer,
+                                  hb_సదిశ_t<గుర్తులేని> *state) స్థిరరాశి
   {
-    hb_set_t visited_tables, visited_conditions;
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    hb_సమితి_t సందర్శించిన_tables, సందర్శించిన_conditions;
+    కొరకు (స్థిరరాశి Lookup_Variation_రికార్డు &రికార్డు : get_lookup_variation_రికార్డులు ())
     {
-      unsigned offset = record.featureLookups;
-      if (visited_tables.has (offset)) continue;
-      visited_tables.add (offset);
-      if (unlikely (visited_tables.in_error ())) return false;
+      గుర్తులేని స్థానభ్రంశం = రికార్డు.featureLookups;
+      ఒకవేళ (సందర్శించిన_tables.has (స్థానభ్రంశం)) కొనసాగు;
+      సందర్శించిన_tables.కూడు (స్థానభ్రంశం);
+      ఒకవేళ (unlikely (సందర్శించిన_tables.లోపల_error ())) తిరిగి అబద్ధం;
 
-      const FeatureLookupsTable &feature_lookups = this+record.featureLookups;
-      if (unlikely (!feature_lookups.collect_conditions (this, coords, coord_len,
-                                                         instancer, &visited_conditions,
+      స్థిరరాశి Feature_Lookups_పట్టిక &feature_lookups = ఇది+రికార్డు.featureLookups;
+      ఒకవేళ (unlikely (!feature_lookups.collect_conditions (ఇది, coords, coord_len,
+                                                         instancer, &సందర్శించిన_conditions,
                                                          state)))
-	return false;
+	తిరిగి అబద్ధం;
     }
 
     /* Key size depends on distinct conditions, not expanded lookup sets.
      * Sorting makes it independent of their first traversal order. */
-    state->qsort (_hb_cmp_operator<unsigned, unsigned>);
-    return true;
+    state->qsort (_hb_cmp_operator<గుర్తులేని, గుర్తులేని>);
+    తిరిగి నిజం;
   }
 
-  bool get_lookup_variations (unsigned feature_index,
-                              const Feature &feature,
-                              hb_sorted_array_t<const unsigned> conditions,
-                              hb_set_t *lookup_indexes) const
+  తార్కిక get_lookup_variations (గుర్తులేని feature_సూచీ,
+                              స్థిరరాశి Feature &feature,
+                              hb_sorted_array_t<స్థిరరాశి గుర్తులేని> conditions,
+                              hb_సమితి_t *lookup_indexes) స్థిరరాశి
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    కొరకు (స్థిరరాశి Lookup_Variation_రికార్డు &రికార్డు : get_lookup_variation_రికార్డులు ())
     {
-      if (record.featureIndex != feature_index) continue;
+      ఒకవేళ (రికార్డు.feature_సూచీ_2 != feature_సూచీ) కొనసాగు;
 
-      record.collect_lookups (this, feature, conditions, lookup_indexes);
-      return true;
+      రికార్డు.collect_lookups (ఇది, feature, conditions, lookup_indexes);
+      తిరిగి నిజం;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  శూన్య collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) స్థిరరాశి
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = var_రికార్డులు.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      c->cur_record_idx = i;
-      varRecords[i].collect_feature_substitutes_with_variations (c, this);
-      if (c->universal)
-        break;
+      c->cur_రికార్డు_idx = i;
+      var_రికార్డులు[i].collect_feature_substitutes_with_variations (c, ఇది);
+      ఒకవేళ (c->universal)
+        ఆపు;
     }
-    if (c->universal || c->record_cond_idx_map->is_empty ())
-      c->catch_all_record_feature_idxes.reset ();
+    ఒకవేళ (c->universal || c->రికార్డు_cond_idx_map->is_empty ())
+      c->catch_all_రికార్డు_feature_idxes.reset ();
   }
 
-  FeatureVariations* copy (hb_serialize_context_t *c) const
+  FeatureVariations* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (*this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed (*ఇది));
   }
 
-  void collect_lookups (const hb_set_t *feature_indexes,
-			const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-			hb_set_t       *lookup_indexes /* OUT */) const
+  శూన్య collect_lookups (స్థిరరాశి hb_సమితి_t *feature_indexes,
+			స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb::shared_ptr<hb_సమితి_t>> *feature_రికార్డు_cond_idx_map,
+			hb_సమితి_t       *lookup_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    unsigned count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని లెక్క = var_రికార్డులు.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (feature_record_cond_idx_map &&
-          !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].collect_lookups (this, feature_indexes, lookup_indexes);
+      ఒకవేళ (feature_రికార్డు_cond_idx_map &&
+          !feature_రికార్డు_cond_idx_map->has (i))
+        కొనసాగు;
+      var_రికార్డులు[i].collect_lookups (ఇది, feature_indexes, lookup_indexes);
     }
 
     collect_lookup_variation_lookups (feature_indexes, lookup_indexes);
   }
 
-  template <typename TagGetter>
-  void collect_name_ids (const hb_map_t *feature_index_map,
-                         const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-                         TagGetter get_tag,
-                         hb_set_t *nameids_to_retain) const
+  మూస <రకం_పేరు ట్యాగ్_Getter>
+  శూన్య collect_name_ids (స్థిరరాశి hb_map_t *feature_సూచీ_map,
+                         స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb::shared_ptr<hb_సమితి_t>> *feature_రికార్డు_cond_idx_map,
+                         ట్యాగ్_Getter get_ట్యాగ్,
+                         hb_సమితి_t *nameids_గమ్యం_retain) స్థిరరాశి
   {
-    for (unsigned i = 0; i < varRecords.len; i++)
+    కొరకు (గుర్తులేని i = 0; i < var_రికార్డులు.len; i++)
     {
-      if (feature_record_cond_idx_map && !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].collect_name_ids (this, feature_index_map, get_tag, nameids_to_retain);
+      ఒకవేళ (feature_రికార్డు_cond_idx_map && !feature_రికార్డు_cond_idx_map->has (i))
+        కొనసాగు;
+      var_రికార్డులు[i].collect_name_ids (ఇది, feature_సూచీ_map, get_ట్యాగ్, nameids_గమ్యం_retain);
     }
   }
 
-  void collect_lookup_variation_lookups (const hb_set_t *feature_indexes,
-					 hb_set_t *lookup_indexes /* OUT */) const
+  శూన్య collect_lookup_variation_lookups (స్థిరరాశి hb_సమితి_t *feature_indexes,
+					 hb_సమితి_t *lookup_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.collect_lookups (this, feature_indexes, lookup_indexes);
+    కొరకు (స్థిరరాశి Lookup_Variation_రికార్డు &రికార్డు : get_lookup_variation_రికార్డులు ())
+      రికార్డు.collect_lookups (ఇది, feature_indexes, lookup_indexes);
   }
 
-  void closure_features (const hb_map_t *lookup_indexes,
-			 const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-			 hb_set_t       *feature_indexes /* OUT */) const
+  శూన్య సంవృతం_features (స్థిరరాశి hb_map_t *lookup_indexes,
+			 స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb::shared_ptr<hb_సమితి_t>> *feature_రికార్డు_cond_idx_map,
+			 hb_సమితి_t       *feature_indexes /*బహిర్గతం*/) స్థిరరాశి
   {
-    unsigned int count = varRecords.len;
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = var_రికార్డులు.len;
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
-      if (feature_record_cond_idx_map != nullptr &&
-          !feature_record_cond_idx_map->has (i))
-        continue;
-      varRecords[i].closure_features (this, lookup_indexes, feature_indexes);
+      ఒకవేళ (feature_రికార్డు_cond_idx_map != శూన్యసూచిక &&
+          !feature_రికార్డు_cond_idx_map->has (i))
+        కొనసాగు;
+      var_రికార్డులు[i].సంవృతం_features (ఇది, lookup_indexes, feature_indexes);
     }
 
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.closure_features (this, lookup_indexes, feature_indexes);
+    కొరకు (స్థిరరాశి Lookup_Variation_రికార్డు &రికార్డు : get_lookup_variation_రికార్డులు ())
+      రికార్డు.సంవృతం_features (ఇది, lookup_indexes, feature_indexes);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    for (const FeatureVariationRecord &record : varRecords)
-      record.collect_variation_indices (c, this);
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
-      record.collect_variation_indices (c, this);
+    కొరకు (స్థిరరాశి Feature_Variation_రికార్డు &రికార్డు : var_రికార్డులు)
+      రికార్డు.collect_variation_indices (c, ఇది);
+    కొరకు (స్థిరరాశి Lookup_Variation_రికార్డు &రికార్డు : get_lookup_variation_రికార్డులు ())
+      రికార్డు.collect_variation_indices (c, ఇది);
   }
 
-  void collect_feature_indices (hb_set_t *feature_indices) const
+  శూన్య collect_feature_indices (hb_సమితి_t *feature_indices) స్థిరరాశి
   {
-    for (const FeatureVariationRecord &record : varRecords)
-      (this+record.substitutions).collect_feature_indices (feature_indices);
+    కొరకు (స్థిరరాశి Feature_Variation_రికార్డు &రికార్డు : var_రికార్డులు)
+      (ఇది+రికార్డు.substitutions).collect_feature_indices (feature_indices);
   }
 
-  bool has_lookup_variations (unsigned feature_index) const
+  తార్కిక has_lookup_variations (గుర్తులేని feature_సూచీ) స్థిరరాశి
   {
-    for (const LookupVariationRecord &record : get_lookup_variation_records ())
+    కొరకు (స్థిరరాశి Lookup_Variation_రికార్డు &రికార్డు : get_lookup_variation_రికార్డులు ())
     {
-      if (record.featureIndex == feature_index)
-	return true;
-      if (record.featureIndex > feature_index)
-	break;
+      ఒకవేళ (రికార్డు.feature_సూచీ_2 == feature_సూచీ)
+	తిరిగి నిజం;
+      ఒకవేళ (రికార్డు.feature_సూచీ_2 > feature_సూచీ)
+	ఆపు;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  bool subset (hb_subset_context_t *c,
-	       hb_subset_layout_context_t *l) const
+  తార్కిక subset (hb_subset_context_t *c,
+	       hb_subset_layout_context_t *l) స్థిరరాశి
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ఇది);
+    స్వయంచాలక *బహిర్గతం = c->serializer->ప్రారంభం_embed (*ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం || !c->serializer->extend_min (బహిర్గతం))) return_trace (అబద్ధం);
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
+    బహిర్గతం->సంస్కరణ.major = సంస్కరణ.major;
+    బహిర్గతం->సంస్కరణ.minor = సంస్కరణ.minor;
 
-    int keep_up_to = -1;
-    for (int i = varRecords.len - 1; i >= 0; i--) {
-      if (varRecords[i].intersects_features (this, l->feature_map_w_duplicates)) {
-        keep_up_to = i;
-        break;
+    పూర్ణాంకం keep_పైకి_గమ్యం = -1;
+    కొరకు (పూర్ణాంకం i = var_రికార్డులు.len - 1; i >= 0; i--) {
+      ఒకవేళ (var_రికార్డులు[i].intersects_features (ఇది, l->feature_map_w_duplicates)) {
+        keep_పైకి_గమ్యం = i;
+        ఆపు;
       }
     }
 
-    unsigned count = (unsigned) (keep_up_to + 1);
-    for (unsigned i = 0; i < count; i++)
+    గుర్తులేని లెక్క = (గుర్తులేని) (keep_పైకి_గమ్యం + 1);
+    కొరకు (గుర్తులేని i = 0; i < లెక్క; i++)
     {
-      if (l->feature_record_cond_idx_map != nullptr &&
-          !l->feature_record_cond_idx_map->has (i))
-        continue;
+      ఒకవేళ (l->feature_రికార్డు_cond_idx_map != శూన్యసూచిక &&
+          !l->feature_రికార్డు_cond_idx_map->has (i))
+        కొనసాగు;
 
-      l->cur_feature_var_record_idx = i;
-      subset_record_array (l, &(out->varRecords), this) (varRecords[i]);
+      l->cur_feature_var_రికార్డు_idx = i;
+      subset_రికార్డు_array (l, &(బహిర్గతం->var_రికార్డులు), ఇది) (var_రికార్డులు[i]);
     }
 
-    if (out->varRecords.len && !l->catch_all_record_feature_idxes->is_empty ())
+    ఒకవేళ (బహిర్గతం->var_రికార్డులు.len && !l->catch_all_రికార్డు_feature_idxes->is_empty ())
     {
-      bool insert_catch_all_record = true;
-      subset_record_array (l, &(out->varRecords), this, insert_catch_all_record) (varRecords[0]);
+      తార్కిక చొప్పించు_catch_all_రికార్డు = నిజం;
+      subset_రికార్డు_array (l, &(బహిర్గతం->var_రికార్డులు), ఇది, చొప్పించు_catch_all_రికార్డు) (var_రికార్డులు[0]);
     }
 
-    Array32Of<LookupVariationRecord> *out_lookup_records = nullptr;
-    if (version.minor >= 1)
+    Array32_యొక్క<Lookup_Variation_రికార్డు> *బహిర్గతం_lookup_రికార్డులు = శూన్యసూచిక;
+    ఒకవేళ (సంస్కరణ.minor >= 1)
     {
-      out_lookup_records = &StructAfter<Array32Of<LookupVariationRecord>> (out->varRecords);
-      if (unlikely (!c->serializer->extend_min (out_lookup_records)))
-	return_trace (false);
+      బహిర్గతం_lookup_రికార్డులు = &StructAfter<Array32_యొక్క<Lookup_Variation_రికార్డు>> (బహిర్గతం->var_రికార్డులు);
+      ఒకవేళ (unlikely (!c->serializer->extend_min (బహిర్గతం_lookup_రికార్డులు)))
+	return_trace (అబద్ధం);
 
-      + get_lookup_variation_records ().iter ()
-      | hb_apply (subset_record_array (l, out_lookup_records, this))
+      + get_lookup_variation_రికార్డులు ().iter ()
+      | hb_apply (subset_రికార్డు_array (l, బహిర్గతం_lookup_రికార్డులు, ఇది))
       ;
     }
 
-    return_trace (bool (out->varRecords) ||
-		  (out_lookup_records && bool (*out_lookup_records)));
+    return_trace (తార్కిక (బహిర్గతం->var_రికార్డులు) ||
+		  (బహిర్గతం_lookup_రికార్డులు && తార్కిక (*బహిర్గతం_lookup_రికార్డులు)));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const FeatureList *feature_list) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి FeatureList *feature_list) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (ఇది);
+    return_trace (సంస్కరణ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  varRecords.sanitize (c, this, feature_list) &&
-		  (version.minor < 1 ||
-		   get_lookup_variation_records ().sanitize (c, this)));
+		  likely (సంస్కరణ.major == 1) &&
+		  var_రికార్డులు.sanitize (c, ఇది, feature_list) &&
+		  (సంస్కరణ.minor < 1 ||
+		   get_lookup_variation_రికార్డులు ().sanitize (c, ఇది)));
   }
 
-  protected:
-  FixedVersion<>	version;	/* Version--0x00010000u */
-  Array32Of<FeatureVariationRecord>
-			varRecords;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (8, varRecords);
+  రక్షిత:
+  Fixed_సంస్కరణ<>	సంస్కరణ;	/* Version--0x00010000u */
+  Array32_యొక్క<Feature_Variation_రికార్డు>
+			var_రికార్డులు;
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY_SIZED (8, var_రికార్డులు);
 };
 
 
@@ -6182,348 +6182,348 @@ struct FeatureVariations
  * Device Tables
  */
 
-struct HintingDevice
+నిర్మాణం HintingDevice
 {
-  friend struct Device;
+  మిత్ర నిర్మాణం Device;
 
-  private:
+  అంతరంగ:
 
-  hb_position_t get_x_delta (hb_font_t *font) const
-  { return get_delta (font->x_ppem, font->x_scale); }
+  hb_position_t get_x_delta (hb_font_t *font) స్థిరరాశి
+  { తిరిగి get_delta (font->x_ppem, font->x_scale); }
 
-  hb_position_t get_y_delta (hb_font_t *font) const
-  { return get_delta (font->y_ppem, font->y_scale); }
+  hb_position_t get_y_delta (hb_font_t *font) స్థిరరాశి
+  { తిరిగి get_delta (font->y_ppem, font->y_scale); }
 
-  public:
+  బహిరంగ:
 
-  size_t get_size () const
+  size_t get_కొలత () స్థిరరాశి
   {
-    unsigned int f = deltaFormat;
-    if (unlikely (f < 1 || f > 3 || startSize > endSize)) return 3 * HBUINT16::static_size;
-    return HBUINT16::static_size * (4 + ((endSize - startSize) >> (4 - f)));
+    గుర్తులేని పూర్ణాంకం f = deltaFormat;
+    ఒకవేళ (unlikely (f < 1 || f > 3 || ప్రారంభం_కొలత > చివర_కొలత)) తిరిగి 3 * HBUINT16::static_కొలత;
+    తిరిగి HBUINT16::static_కొలత * (4 + ((చివర_కొలత - ప్రారంభం_కొలత) >> (4 - f)));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && c->check_range (this, this->get_size ()));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది) && c->check_range (ఇది, ఇది->get_కొలత ()));
   }
 
-  HintingDevice* copy (hb_serialize_context_t *c) const
+  HintingDevice* copy (hb_serialize_context_t *c) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed<HintingDevice> (this));
+    TRACE_SERIALIZE (ఇది);
+    return_trace (c->embed<HintingDevice> (ఇది));
   }
 
-  private:
+  అంతరంగ:
 
-  int get_delta (unsigned int ppem, int scale) const
+  పూర్ణాంకం get_delta (గుర్తులేని పూర్ణాంకం ppem, పూర్ణాంకం scale) స్థిరరాశి
   {
-    if (!ppem) return 0;
+    ఒకవేళ (!ppem) తిరిగి 0;
 
-    int pixels = get_delta_pixels (ppem);
+    పూర్ణాంకం pixels = get_delta_pixels (ppem);
 
-    if (!pixels) return 0;
+    ఒకవేళ (!pixels) తిరిగి 0;
 
-    return (int) (pixels * (int64_t) scale / ppem);
+    తిరిగి (పూర్ణాంకం) (pixels * (int64_t) scale / ppem);
   }
-  int get_delta_pixels (unsigned int ppem_size) const
+  పూర్ణాంకం get_delta_pixels (గుర్తులేని పూర్ణాంకం ppem_కొలత) స్థిరరాశి
   {
-    unsigned int f = deltaFormat;
-    if (unlikely (f < 1 || f > 3))
-      return 0;
+    గుర్తులేని పూర్ణాంకం f = deltaFormat;
+    ఒకవేళ (unlikely (f < 1 || f > 3))
+      తిరిగి 0;
 
-    if (ppem_size < startSize || ppem_size > endSize)
-      return 0;
+    ఒకవేళ (ppem_కొలత < ప్రారంభం_కొలత || ppem_కొలత > చివర_కొలత)
+      తిరిగి 0;
 
-    unsigned int s = ppem_size - startSize;
+    గుర్తులేని పూర్ణాంకం s = ppem_కొలత - ప్రారంభం_కొలత;
 
-    unsigned int byte = deltaValueZ[s >> (4 - f)];
-    unsigned int bits = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
-    unsigned int mask = (0xFFFFu >> (16 - (1 << f)));
+    గుర్తులేని పూర్ణాంకం byte = delta_విలువ_Z[s >> (4 - f)];
+    గుర్తులేని పూర్ణాంకం బిట్లు = (byte >> (16 - (((s & ((1 << (4 - f)) - 1)) + 1) << f)));
+    గుర్తులేని పూర్ణాంకం ముసుగు = (0xFFFFu >> (16 - (1 << f)));
 
-    int delta = bits & mask;
+    పూర్ణాంకం delta = బిట్లు & ముసుగు;
 
-    if ((unsigned int) delta >= ((mask + 1) >> 1))
-      delta -= mask + 1;
+    ఒకవేళ ((గుర్తులేని పూర్ణాంకం) delta >= ((ముసుగు + 1) >> 1))
+      delta -= ముసుగు + 1;
 
-    return delta;
+    తిరిగి delta;
   }
 
-  protected:
-  HBUINT16	startSize;		/* Smallest size to correct--in ppem */
-  HBUINT16	endSize;		/* Largest size to correct--in ppem */
+  రక్షిత:
+  HBUINT16	ప్రారంభం_కొలత;		/* Smallest size to correct--in ppem */
+  HBUINT16	చివర_కొలత;		/* Largest size to correct--in ppem */
   HBUINT16	deltaFormat;		/* Format of DeltaValue array data: 1, 2, or 3
 					 * 1	Signed 2-bit value, 8 values per uint16
 					 * 2	Signed 4-bit value, 4 values per uint16
 					 * 3	Signed 8-bit value, 2 values per uint16
 					 */
-  UnsizedArrayOf<HBUINT16>
-		deltaValueZ;		/* Array of compressed data */
-  public:
-  DEFINE_SIZE_ARRAY (6, deltaValueZ);
+  Unsized_Array_యొక్క<HBUINT16>
+		delta_విలువ_Z;		/* Array of compressed data */
+  బహిరంగ:
+  DEFINE_కొలత_ARRAY (6, delta_విలువ_Z);
 };
 
-struct VariationDevice
+నిర్మాణం VariationDevice
 {
-  friend struct Device;
+  మిత్ర నిర్మాణం Device;
 
-  private:
+  అంతరంగ:
 
   hb_position_t get_x_delta (hb_font_t *font,
-			     const ItemVariationStore &store,
-			     hb_scalar_cache_t *store_cache = nullptr) const
-  { return !font->has_nonzero_coords ? 0 : font->em_scalef_x (get_delta (font, store, store_cache)); }
+			     స్థిరరాశి అంశం_Variation_Store &store,
+			     hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
+  { తిరిగి !font->has_nonzero_coords ? 0 : font->em_scalef_x (get_delta (font, store, store_cache)); }
 
   hb_position_t get_y_delta (hb_font_t *font,
-			     const ItemVariationStore &store,
-			     hb_scalar_cache_t *store_cache = nullptr) const
-  { return !font->has_nonzero_coords ? 0 : font->em_scalef_y (get_delta (font, store, store_cache)); }
+			     స్థిరరాశి అంశం_Variation_Store &store,
+			     hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
+  { తిరిగి !font->has_nonzero_coords ? 0 : font->em_scalef_y (get_delta (font, store, store_cache)); }
 
-  float get_x_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache) const
-  { return !font->has_nonzero_coords ? 0.f : font->em_fscalef_x (get_delta (font, store, store_cache)); }
+  దశాంశం get_x_delta_f (hb_font_t *font,
+		       స్థిరరాశి అంశం_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache) స్థిరరాశి
+  { తిరిగి !font->has_nonzero_coords ? 0.f : font->em_fscalef_x (get_delta (font, store, store_cache)); }
 
-  float get_y_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache) const
-  { return !font->has_nonzero_coords ? 0.f : font->em_fscalef_y (get_delta (font, store, store_cache)); }
+  దశాంశం get_y_delta_f (hb_font_t *font,
+		       స్థిరరాశి అంశం_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache) స్థిరరాశి
+  { తిరిగి !font->has_nonzero_coords ? 0.f : font->em_fscalef_y (get_delta (font, store, store_cache)); }
 
   VariationDevice* copy (hb_serialize_context_t *c,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+                         స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    if (!layout_variation_idx_delta_map) return_trace (nullptr);
+    TRACE_SERIALIZE (ఇది);
+    ఒకవేళ (!layout_variation_idx_delta_map) return_trace (శూన్యసూచిక);
 
-    hb_pair_t<unsigned, int> *v;
-    if (!layout_variation_idx_delta_map->has (varIdx, &v))
-      return_trace (nullptr);
+    hb_pair_t<గుర్తులేని, పూర్ణాంకం> *v;
+    ఒకవేళ (!layout_variation_idx_delta_map->has (varIdx, &v))
+      return_trace (శూన్యసూచిక);
     /* The varidx was mapped to "no variations" during instancing (e.g. the
      * instantiated row is all zeros). Drop the device instead of emitting one
      * with an out-of-range varidx. */
-    if (hb_first (*v) == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-      return_trace (nullptr);
+    ఒకవేళ (hb_మొదటి (*v) == HB_OT_LAYOUT_NO_VARIATIONS_సూచీ)
+      return_trace (శూన్యసూచిక);
 
-    c->start_zerocopy (this->static_size);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    c->ప్రారంభం_zerocopy (ఇది->static_కొలత);
+    స్వయంచాలక *బహిర్గతం = c->embed (ఇది);
+    ఒకవేళ (unlikely (!బహిర్గతం)) return_trace (శూన్యసూచిక);
 
-    if (!c->check_assign (out->varIdx, hb_first (*v), HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (nullptr);
-    return_trace (out);
+    ఒకవేళ (!c->check_కేటాయించు (బహిర్గతం->varIdx, hb_మొదటి (*v), HB_SERIALIZE_ERROR_INT_అధికప్రవాహం))
+      return_trace (శూన్యసూచిక);
+    return_trace (బహిర్గతం);
   }
 
-  void collect_variation_index (hb_collect_variation_indices_context_t *c) const
-  { c->layout_variation_indices->add (varIdx); }
+  శూన్య collect_variation_సూచీ (hb_collect_variation_indices_context_t *c) స్థిరరాశి
+  { c->layout_variation_indices->కూడు (varIdx); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  private:
+  అంతరంగ:
 
-  float get_delta (hb_font_t *font,
-		   const ItemVariationStore &store,
-		   hb_scalar_cache_t *store_cache = nullptr) const
+  దశాంశం get_delta (hb_font_t *font,
+		   స్థిరరాశి అంశం_Variation_Store &store,
+		   hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
   {
-    return store.get_delta (varIdx, font->coords, font->num_coords, store_cache);
+    తిరిగి store.get_delta (varIdx, font->coords, font->అంకె_coords, store_cache);
   }
 
-  protected:
+  రక్షిత:
   VarIdx	varIdx;		/* Variation index */
   HBUINT16	deltaFormat;	/* Format identifier for this table: 0x0x8000 */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct DeviceHeader
+నిర్మాణం Device_శీర్షిక
 {
-  protected:
+  రక్షిత:
   HBUINT16		reserved1;
   HBUINT16		reserved2;
-  public:
+  బహిరంగ:
   HBUINT16		format;		/* Format identifier */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (6);
 };
 
-struct Device
+నిర్మాణం Device
 {
   // Anchors retain fractional coordinates until their difference is rounded.
   // Hinting adjustments and value records keep their integer semantics.
-  float get_x_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache = nullptr) const
+  దశాంశం get_x_delta_f (hb_font_t *font,
+		       స్థిరరాశి అంశం_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
   {
-#ifndef HB_NO_VAR
-    if (u.b.format == 0x8000)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (u.b.format == 0x8000)
     {
       hb_barrier ();
-      return u.variation.get_x_delta_f (font, store, store_cache);
+      తిరిగి u.variation.get_x_delta_f (font, store, store_cache);
     }
-#endif
-    return get_x_delta (font, store, store_cache);
+#అయితే_ముగింపు
+    తిరిగి get_x_delta (font, store, store_cache);
   }
 
-  float get_y_delta_f (hb_font_t *font,
-		       const ItemVariationStore &store,
-		       hb_scalar_cache_t *store_cache = nullptr) const
+  దశాంశం get_y_delta_f (hb_font_t *font,
+		       స్థిరరాశి అంశం_Variation_Store &store,
+		       hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
   {
-#ifndef HB_NO_VAR
-    if (u.b.format == 0x8000)
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    ఒకవేళ (u.b.format == 0x8000)
     {
       hb_barrier ();
-      return u.variation.get_y_delta_f (font, store, store_cache);
+      తిరిగి u.variation.get_y_delta_f (font, store, store_cache);
     }
-#endif
-    return get_y_delta (font, store, store_cache);
+#అయితే_ముగింపు
+    తిరిగి get_y_delta (font, store, store_cache);
   }
 
   hb_position_t get_x_delta (hb_font_t *font,
-			     const ItemVariationStore &store=Null (ItemVariationStore),
-			     hb_scalar_cache_t *store_cache = nullptr) const
+			     స్థిరరాశి అంశం_Variation_Store &store=Null (అంశం_Variation_Store),
+			     hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
   {
-    switch (u.b.format)
+    ఎంపిక (u.b.format)
     {
-#ifndef HB_NO_HINTING
-    case 1: case 2: case 3:
+#నిర్వచితం_కాకపోతే HB_NO_HINTING
+    స్థితి 1: స్థితి 2: స్థితి 3:
       hb_barrier ();
-      return u.hinting.get_x_delta (font);
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+      తిరిగి u.hinting.get_x_delta (font);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
       hb_barrier ();
-      return u.variation.get_x_delta (font, store, store_cache);
-#endif
-    default:
-      return 0;
+      తిరిగి u.variation.get_x_delta (font, store, store_cache);
+#అయితే_ముగింపు
+    అప్రమేయ:
+      తిరిగి 0;
     }
   }
   hb_position_t get_y_delta (hb_font_t *font,
-			     const ItemVariationStore &store=Null (ItemVariationStore),
-			     hb_scalar_cache_t *store_cache = nullptr) const
+			     స్థిరరాశి అంశం_Variation_Store &store=Null (అంశం_Variation_Store),
+			     hb_scalar_cache_t *store_cache = శూన్యసూచిక) స్థిరరాశి
   {
-    switch (u.b.format)
+    ఎంపిక (u.b.format)
     {
-    case 1: case 2: case 3:
-#ifndef HB_NO_HINTING
+    స్థితి 1: స్థితి 2: స్థితి 3:
+#నిర్వచితం_కాకపోతే HB_NO_HINTING
       hb_barrier ();
-      return u.hinting.get_y_delta (font);
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+      తిరిగి u.hinting.get_y_delta (font);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
       hb_barrier ();
-      return u.variation.get_y_delta (font, store, store_cache);
-#endif
-    default:
-      return 0;
+      తిరిగి u.variation.get_y_delta (font, store, store_cache);
+#అయితే_ముగింపు
+    అప్రమేయ:
+      తిరిగి 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (!u.b.format.sanitize (c)) return_trace (false);
-    switch (u.b.format) {
-#ifndef HB_NO_HINTING
-    case 1: case 2: case 3:
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (!u.b.format.sanitize (c)) return_trace (అబద్ధం);
+    ఎంపిక (u.b.format) {
+#నిర్వచితం_కాకపోతే HB_NO_HINTING
+    స్థితి 1: స్థితి 2: స్థితి 3:
       hb_barrier ();
       return_trace (u.hinting.sanitize (c));
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
       hb_barrier ();
       return_trace (u.variation.sanitize (c));
-#endif
-    default:
-      return_trace (true);
+#అయితే_ముగింపు
+    అప్రమేయ:
+      return_trace (నిజం);
     }
   }
 
   Device* copy (hb_serialize_context_t *c,
-                const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map=nullptr) const
+                స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map=శూన్యసూచిక) స్థిరరాశి
   {
-    TRACE_SERIALIZE (this);
-    switch (u.b.format) {
-#ifndef HB_NO_HINTING
-    case 1:
-    case 2:
-    case 3:
+    TRACE_SERIALIZE (ఇది);
+    ఎంపిక (u.b.format) {
+#నిర్వచితం_కాకపోతే HB_NO_HINTING
+    స్థితి 1:
+    స్థితి 2:
+    స్థితి 3:
       hb_barrier ();
       return_trace (reinterpret_cast<Device *> (u.hinting.copy (c)));
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
       hb_barrier ();
       return_trace (reinterpret_cast<Device *> (u.variation.copy (c, layout_variation_idx_delta_map)));
-#endif
-    default:
-      return_trace (nullptr);
+#అయితే_ముగింపు
+    అప్రమేయ:
+      return_trace (శూన్యసూచిక);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  శూన్య collect_variation_indices (hb_collect_variation_indices_context_t *c) స్థిరరాశి
   {
-    switch (u.b.format) {
-#ifndef HB_NO_HINTING
-    case 1:
-    case 2:
-    case 3:
-      return;
-#endif
-#ifndef HB_NO_VAR
-    case 0x8000:
+    ఎంపిక (u.b.format) {
+#నిర్వచితం_కాకపోతే HB_NO_HINTING
+    స్థితి 1:
+    స్థితి 2:
+    స్థితి 3:
+      తిరిగి;
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
       hb_barrier ();
-      u.variation.collect_variation_index (c);
-      return;
-#endif
-    default:
-      return;
+      u.variation.collect_variation_సూచీ (c);
+      తిరిగి;
+#అయితే_ముగింపు
+    అప్రమేయ:
+      తిరిగి;
     }
   }
 
-  unsigned get_variation_index () const
+  గుర్తులేని get_variation_సూచీ () స్థిరరాశి
   {
-    switch (u.b.format) {
-#ifndef HB_NO_VAR
-    case 0x8000:
+    ఎంపిక (u.b.format) {
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
       hb_barrier ();
-      return u.variation.varIdx;
-#endif
-    default:
-      return HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+      తిరిగి u.variation.varIdx;
+#అయితే_ముగింపు
+    అప్రమేయ:
+      తిరిగి HB_OT_LAYOUT_NO_VARIATIONS_సూచీ;
     }
   }
 
-  bool is_variation_device () const
+  తార్కిక is_variation_device () స్థిరరాశి
   {
-    switch (u.b.format) {
-#ifndef HB_NO_VAR
-    case 0x8000:
-      return true;
-#endif
-    default:
-      return false;
+    ఎంపిక (u.b.format) {
+#నిర్వచితం_కాకపోతే HB_NO_VAR
+    స్థితి 0x8000:
+      తిరిగి నిజం;
+#అయితే_ముగింపు
+    అప్రమేయ:
+      తిరిగి అబద్ధం;
     }
   }
 
-  protected:
-  union {
-  DeviceHeader		b;
+  రక్షిత:
+  సంఘం {
+  Device_శీర్షిక		b;
   HintingDevice		hinting;
-#ifndef HB_NO_VAR
+#నిర్వచితం_కాకపోతే HB_NO_VAR
   VariationDevice	variation;
-#endif
+#అయితే_ముగింపు
   } u;
-  public:
-  DEFINE_SIZE_UNION (6, b);
+  బహిరంగ:
+  DEFINE_కొలత_UNION (6, b);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_COMMON_HH */
+#అయితే_ముగింపు /* HB_OT_LAYOUT_COMMON_HH */

@@ -24,10 +24,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CACHE_HH
-#define HB_CACHE_HH
+#నిర్వచితం_కాకపోతే HB_CACHE_HH
+#నిర్వచించు HB_CACHE_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,66 +57,66 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+మూస <గుర్తులేని పూర్ణాంకం కీలకం_బిట్లు=16,
+	 గుర్తులేని పూర్ణాంకం విలువ_బిట్లు=8 + 32 - కీలకం_బిట్లు,
+	 గుర్తులేని పూర్ణాంకం cache_బిట్లు=8,
+	 తార్కిక thread_సురక్షిత=నిజం>
+నిర్మాణం hb_cache_t
 {
-  using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       unsigned short,
-											       unsigned int>::type>::type
+  ఉపయోగించి అంశం_t = రకం_పేరు std::conditional<thread_సురక్షిత,
+					   రకం_పేరు std::conditional<కీలకం_బిట్లు + విలువ_బిట్లు - cache_బిట్లు <= 8,
+								     hb_atomic_t<గుర్తులేని అక్షరం>,
+								     రకం_పేరు std::conditional<కీలకం_బిట్లు + విలువ_బిట్లు - cache_బిట్లు <= 16,
+											       hb_atomic_t<గుర్తులేని పొట్టి>,
+											       hb_atomic_t<గుర్తులేని పూర్ణాంకం>>::type>::type,
+					   రకం_పేరు std::conditional<కీలకం_బిట్లు + విలువ_బిట్లు - cache_బిట్లు <= 8,
+								     గుర్తులేని అక్షరం,
+								     రకం_పేరు std::conditional<కీలకం_బిట్లు + విలువ_బిట్లు - cache_బిట్లు <= 16,
+											       గుర్తులేని పొట్టి,
+											       గుర్తులేని పూర్ణాంకం>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((కీలకం_బిట్లు >= cache_బిట్లు), "");
+  static_assert ((కీలకం_బిట్లు + విలువ_బిట్లు <= cache_బిట్లు + 8 * పరిమాణం (అంశం_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  స్థిర constexpr గుర్తులేని MAX_విలువ = (1u << విలువ_బిట్లు) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  శూన్య clear ()
   {
-    for (auto &v : values)
+    కొరకు (స్వయంచాలక &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  తార్కిక get (గుర్తులేని పూర్ణాంకం key, గుర్తులేని పూర్ణాంకం *value) స్థిరరాశి
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    గుర్తులేని పూర్ణాంకం k = key & ((1u<<cache_బిట్లు)-1);
+    గుర్తులేని పూర్ణాంకం v = values[k];
+    constexpr గుర్తులేని పూర్ణాంకం ఖాళీలు_2 = (1ULL << (8 * పరిమాణం (అంశం_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    ఒకవేళ ((key >> కీలకం_బిట్లు) |
+	((v >> విలువ_బిట్లు) ^ (key >> cache_బిట్లు)) |
+	((కీలకం_బిట్లు + విలువ_బిట్లు - cache_బిట్లు == 8 * పరిమాణం (అంశం_t)) && (v == ఖాళీలు_2)))
+      తిరిగి అబద్ధం;
+    *value = v & ((1u<<విలువ_బిట్లు)-1);
+    తిరిగి నిజం;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  శూన్య సమితి (గుర్తులేని పూర్ణాంకం key, గుర్తులేని పూర్ణాంకం value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    ఒకవేళ (unlikely ((key >> కీలకం_బిట్లు) || (value >> విలువ_బిట్లు)))
+      తిరిగి; /* Overflows */
+    గుర్తులేని పూర్ణాంకం k = key & ((1u<<cache_బిట్లు)-1);
+    గుర్తులేని పూర్ణాంకం v = ((key>>cache_బిట్లు)<<విలువ_బిట్లు) | value;
     values[k] = v;
   }
 
-  private:
-  item_t values[1u<<cache_bits];
+  అంతరంగ:
+  అంశం_t values[1u<<cache_బిట్లు];
 };
 
 
-#endif /* HB_CACHE_HH */
+#అయితే_ముగింపు /* HB_CACHE_HH */

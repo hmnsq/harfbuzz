@@ -24,62 +24,62 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_STRING_ARRAY_HH
-#if 0 /* Make checks happy. */
-#define HB_STRING_ARRAY_HH
-#endif
+#నిర్వచితం_కాకపోతే HB_STRING_ARRAY_HH
+#ఒకవేళ 0 /* Make checks happy. */
+#నిర్వచించు HB_STRING_ARRAY_HH
+#అయితే_ముగింపు
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
 /* Based on Bruno Haible's code in Appendix B of Ulrich Drepper's dsohowto.pdf:
  * https://software.intel.com/sites/default/files/m/a/1/e/dsohowto.pdf */
 
-#define HB_STRING_ARRAY_TYPE_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr_t)
-#define HB_STRING_ARRAY_POOL_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr)
-#define HB_STRING_ARRAY_OFFS_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgidx)
-#define HB_STRING_ARRAY_LENG_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _length)
+#నిర్వచించు HB_STRING_ARRAY_TYPE_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr_t)
+#నిర్వచించు HB_STRING_ARRAY_POOL_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgstr)
+#నిర్వచించు HB_STRING_ARRAY_OFFS_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, _msgidx)
+#నిర్వచించు HB_STRING_ARRAY_LENG_NAME	HB_PASTE(HB_STRING_ARRAY_NAME, నిడివి_4)
 
-static const union HB_STRING_ARRAY_TYPE_NAME {
-  struct {
+స్థిర స్థిరరాశి సంఘం HB_STRING_ARRAY_TYPE_NAME {
+  నిర్మాణం {
 /* I like to avoid storing the nul-termination byte since we don't need it,
  * but C++ does not allow that.
  * https://stackoverflow.com/q/28433862
  */
-#define HB_STR(s) char HB_PASTE (str, __LINE__)[sizeof (s)];
-#include HB_STRING_ARRAY_LIST
-#undef HB_STR
+#నిర్వచించు HB_STR(s) అక్షరం HB_PASTE (str, __LINE__)[పరిమాణం (s)];
+#అన్తర్భావ HB_STRING_ARRAY_LIST
+#నిర్వచనం_రద్దు HB_STR
   } st;
-  char str[HB_VAR_ARRAY];
+  అక్షరం str[HB_VAR_ARRAY];
 }
 HB_STRING_ARRAY_POOL_NAME =
 {
   {
-#define HB_STR(s) s,
-#include HB_STRING_ARRAY_LIST
-#undef HB_STR
+#నిర్వచించు HB_STR(s) s,
+#అన్తర్భావ HB_STRING_ARRAY_LIST
+#నిర్వచనం_రద్దు HB_STR
   }
 };
-static const unsigned int HB_STRING_ARRAY_OFFS_NAME[] =
+స్థిర స్థిరరాశి గుర్తులేని పూర్ణాంకం HB_STRING_ARRAY_OFFS_NAME[] =
 {
-#define HB_STR(s) offsetof (union HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
-#include HB_STRING_ARRAY_LIST
-#undef HB_STR
-  sizeof (HB_STRING_ARRAY_TYPE_NAME)
+#నిర్వచించు HB_STR(s) offsetof (సంఘం HB_STRING_ARRAY_TYPE_NAME, st.HB_PASTE(str, __LINE__)),
+#అన్తర్భావ HB_STRING_ARRAY_LIST
+#నిర్వచనం_రద్దు HB_STR
+  పరిమాణం (HB_STRING_ARRAY_TYPE_NAME)
 };
 
-static const unsigned int HB_STRING_ARRAY_LENG_NAME = ARRAY_LENGTH_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
+స్థిర స్థిరరాశి గుర్తులేని పూర్ణాంకం HB_STRING_ARRAY_LENG_NAME = ARRAY_నిడివి_CONST (HB_STRING_ARRAY_OFFS_NAME) - 1;
 
-static inline hb_bytes_t
-HB_STRING_ARRAY_NAME (unsigned int i)
+స్థిర అంతఃవరుస hb_బైట్లు_t
+HB_STRING_ARRAY_NAME (గుర్తులేని పూర్ణాంకం i)
 {
-  assert (i < ARRAY_LENGTH (HB_STRING_ARRAY_OFFS_NAME) - 1);
-  return hb_bytes_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
+  ప్రతిజ్ఞా (i < ARRAY_నిడివి (HB_STRING_ARRAY_OFFS_NAME) - 1);
+  తిరిగి hb_బైట్లు_t (HB_STRING_ARRAY_POOL_NAME.str + HB_STRING_ARRAY_OFFS_NAME[i],
 		     HB_STRING_ARRAY_OFFS_NAME[i + 1] - HB_STRING_ARRAY_OFFS_NAME[i] - 1);
 }
 
-#undef HB_STRING_ARRAY_TYPE_NAME
-#undef HB_STRING_ARRAY_POOL_NAME
-#undef HB_STRING_ARRAY_OFFS_NAME
-#undef HB_STRING_ARRAY_LENG_NAME
+#నిర్వచనం_రద్దు HB_STRING_ARRAY_TYPE_NAME
+#నిర్వచనం_రద్దు HB_STRING_ARRAY_POOL_NAME
+#నిర్వచనం_రద్దు HB_STRING_ARRAY_OFFS_NAME
+#నిర్వచనం_రద్దు HB_STRING_ARRAY_LENG_NAME
 
-#endif /* HB_STRING_ARRAY_HH */
+#అయితే_ముగింపు /* HB_STRING_ARRAY_HH */

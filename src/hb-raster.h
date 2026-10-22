@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_RASTER_H
-#define HB_RASTER_H
+#నిర్వచితం_కాకపోతే HB_RASTER_H
+#నిర్వచించు HB_RASTER_H
 
-#include "hb.h"
+#అన్తర్భావ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -42,7 +42,7 @@ HB_BEGIN_DECLS
  *
  * Since: 13.0.0
  */
-typedef enum {
+రకనిర్వచనం గణన {
   HB_RASTER_FORMAT_A8     = 0,
   HB_RASTER_FORMAT_BGRA32 = 1,
 } hb_raster_format_t;
@@ -59,10 +59,10 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_raster_extents_t {
-  int      x_origin, y_origin;
-  unsigned int width, height;
-  unsigned int stride;
+రకనిర్వచనం నిర్మాణం hb_raster_extents_t {
+  పూర్ణాంకం      x_origin, y_origin;
+  గుర్తులేని పూర్ణాంకం వెడల్పు, ఎత్తు;
+  గుర్తులేని పూర్ణాంకం stride;
 } hb_raster_extents_t;
 
 
@@ -77,52 +77,52 @@ typedef struct hb_raster_extents_t {
  *
  * Since: 13.0.0
  **/
-typedef struct hb_raster_image_t hb_raster_image_t;
+రకనిర్వచనం నిర్మాణం hb_raster_image_t hb_raster_image_t;
 
 HB_EXTERN hb_raster_image_t *
-hb_raster_image_create_or_fail (void);
+hb_raster_image_create_or_fail (శూన్య);
 
 HB_EXTERN hb_raster_image_t *
 hb_raster_image_reference (hb_raster_image_t *image);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_image_destroy (hb_raster_image_t *image);
 
 HB_EXTERN hb_bool_t
-hb_raster_image_set_user_data (hb_raster_image_t  *image,
-			       hb_user_data_key_t *key,
-			       void               *data,
+hb_raster_image_సమితి_user_దత్తాంశం (hb_raster_image_t  *image,
+			       hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+			       శూన్య               *దత్తాంశం,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_raster_image_get_user_data (const hb_raster_image_t  *image,
-			       hb_user_data_key_t *key);
+HB_EXTERN శూన్య *
+hb_raster_image_get_user_దత్తాంశం (స్థిరరాశి hb_raster_image_t  *image,
+			       hb_user_దత్తాంశం_కీలకం_t *కీలకం_2);
 
 HB_EXTERN hb_bool_t
 hb_raster_image_configure (hb_raster_image_t         *image,
 			   hb_raster_format_t        format,
-			   const hb_raster_extents_t *extents);
+			   స్థిరరాశి hb_raster_extents_t *extents);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_image_clear (hb_raster_image_t *image);
 
-HB_EXTERN const uint8_t *
-hb_raster_image_get_buffer (const hb_raster_image_t *image);
+HB_EXTERN స్థిరరాశి uint8_t *
+hb_raster_image_get_బఫరు (స్థిరరాశి hb_raster_image_t *image);
 
-HB_EXTERN void
-hb_raster_image_get_extents (const hb_raster_image_t   *image,
+HB_EXTERN శూన్య
+hb_raster_image_get_extents (స్థిరరాశి hb_raster_image_t   *image,
 			     hb_raster_extents_t *extents);
 
 HB_EXTERN hb_raster_format_t
-hb_raster_image_get_format (const hb_raster_image_t *image);
+hb_raster_image_get_format (స్థిరరాశి hb_raster_image_t *image);
 
 HB_EXTERN hb_bool_t
 hb_raster_image_deserialize_from_png_or_fail (hb_raster_image_t *image,
 					      hb_blob_t         *png);
 
 HB_EXTERN hb_blob_t *
-hb_raster_image_serialize_to_png_or_fail (const hb_raster_image_t *image);
+hb_raster_image_serialize_గమ్యం_png_or_fail (స్థిరరాశి hb_raster_image_t *image);
 
 
 /* hb_raster_draw_t */
@@ -136,66 +136,66 @@ hb_raster_image_serialize_to_png_or_fail (const hb_raster_image_t *image);
  *
  * Since: 13.0.0
  **/
-typedef struct hb_raster_draw_t hb_raster_draw_t;
+రకనిర్వచనం నిర్మాణం hb_raster_draw_t hb_raster_draw_t;
 
 HB_EXTERN hb_raster_draw_t *
-hb_raster_draw_create_or_fail (void);
+hb_raster_draw_create_or_fail (శూన్య);
 
 HB_EXTERN hb_raster_draw_t *
 hb_raster_draw_reference (hb_raster_draw_t *draw);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_draw_destroy (hb_raster_draw_t *draw);
 
 HB_EXTERN hb_bool_t
-hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key,
-			      void               *data,
+hb_raster_draw_సమితి_user_దత్తాంశం (hb_raster_draw_t   *draw,
+			      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+			      శూన్య               *దత్తాంశం,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key);
+HB_EXTERN శూన్య *
+hb_raster_draw_get_user_దత్తాంశం (స్థిరరాశి hb_raster_draw_t   *draw,
+			      hb_user_దత్తాంశం_కీలకం_t *కీలకం_2);
 
-HB_EXTERN void
-hb_raster_draw_set_transform (hb_raster_draw_t *draw,
-			      float xx, float yx,
-			      float xy, float yy,
-			      float dx, float dy);
+HB_EXTERN శూన్య
+hb_raster_draw_సమితి_transform (hb_raster_draw_t *draw,
+			      దశాంశం xx, దశాంశం yx,
+			      దశాంశం xy, దశాంశం yy,
+			      దశాంశం dx, దశాంశం dy);
 
-HB_EXTERN void
-hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
-			      float *xx, float *yx,
-			      float *xy, float *yy,
-			      float *dx, float *dy);
+HB_EXTERN శూన్య
+hb_raster_draw_get_transform (స్థిరరాశి hb_raster_draw_t *draw,
+			      దశాంశం *xx, దశాంశం *yx,
+			      దశాంశం *xy, దశాంశం *yy,
+			      దశాంశం *dx, దశాంశం *dy);
 
-HB_EXTERN void
-hb_raster_draw_set_scale_factor (hb_raster_draw_t *draw,
-				 float x_scale_factor,
-				 float y_scale_factor);
+HB_EXTERN శూన్య
+hb_raster_draw_సమితి_scale_గుణకం (hb_raster_draw_t *draw,
+				 దశాంశం x_scale_గుణకం,
+				 దశాంశం y_scale_గుణకం);
 
-HB_EXTERN void
-hb_raster_draw_get_scale_factor (const hb_raster_draw_t *draw,
-				 float *x_scale_factor,
-				 float *y_scale_factor);
+HB_EXTERN శూన్య
+hb_raster_draw_get_scale_గుణకం (స్థిరరాశి hb_raster_draw_t *draw,
+				 దశాంశం *x_scale_గుణకం,
+				 దశాంశం *y_scale_గుణకం);
 
-HB_EXTERN void
-hb_raster_draw_set_extents (hb_raster_draw_t          *draw,
-			    const hb_raster_extents_t *extents);
+HB_EXTERN శూన్య
+hb_raster_draw_సమితి_extents (hb_raster_draw_t          *draw,
+			    స్థిరరాశి hb_raster_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_raster_draw_get_extents (const hb_raster_draw_t    *draw,
+hb_raster_draw_get_extents (స్థిరరాశి hb_raster_draw_t    *draw,
 			    hb_raster_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_raster_draw_set_glyph_extents (hb_raster_draw_t          *draw,
-				  const hb_glyph_extents_t  *glyph_extents);
+hb_raster_draw_సమితి_glyph_extents (hb_raster_draw_t          *draw,
+				  స్థిరరాశి hb_glyph_extents_t  *glyph_extents);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_raster_draw_get_funcs (const hb_raster_draw_t *draw);
+hb_raster_draw_get_funcs (స్థిరరాశి hb_raster_draw_t *draw);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_draw_glyph (hb_raster_draw_t *draw,
 		      hb_font_t       *font,
 		      hb_codepoint_t   glyph);
@@ -208,13 +208,13 @@ hb_raster_draw_glyph_or_fail (hb_raster_draw_t *draw,
 HB_EXTERN hb_raster_image_t *
 hb_raster_draw_render (hb_raster_draw_t *draw);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_draw_clear (hb_raster_draw_t *draw);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_draw_reset (hb_raster_draw_t *draw);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
 			      hb_raster_image_t *image);
 
@@ -231,95 +231,95 @@ hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
  *
  * Since: 13.0.0
  **/
-typedef struct hb_raster_paint_t hb_raster_paint_t;
+రకనిర్వచనం నిర్మాణం hb_raster_paint_t hb_raster_paint_t;
 
 HB_EXTERN hb_raster_paint_t *
-hb_raster_paint_create_or_fail (void);
+hb_raster_paint_create_or_fail (శూన్య);
 
 HB_EXTERN hb_raster_paint_t *
 hb_raster_paint_reference (hb_raster_paint_t *paint);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_paint_destroy (hb_raster_paint_t *paint);
 
 HB_EXTERN hb_bool_t
-hb_raster_paint_set_user_data (hb_raster_paint_t  *paint,
-			       hb_user_data_key_t *key,
-			       void               *data,
+hb_raster_paint_సమితి_user_దత్తాంశం (hb_raster_paint_t  *paint,
+			       hb_user_దత్తాంశం_కీలకం_t *కీలకం_2,
+			       శూన్య               *దత్తాంశం,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_raster_paint_get_user_data (const hb_raster_paint_t  *paint,
-			       hb_user_data_key_t *key);
+HB_EXTERN శూన్య *
+hb_raster_paint_get_user_దత్తాంశం (స్థిరరాశి hb_raster_paint_t  *paint,
+			       hb_user_దత్తాంశం_కీలకం_t *కీలకం_2);
 
-HB_EXTERN void
-hb_raster_paint_set_transform (hb_raster_paint_t *paint,
-			       float xx, float yx,
-			       float xy, float yy,
-			       float dx, float dy);
+HB_EXTERN శూన్య
+hb_raster_paint_సమితి_transform (hb_raster_paint_t *paint,
+			       దశాంశం xx, దశాంశం yx,
+			       దశాంశం xy, దశాంశం yy,
+			       దశాంశం dx, దశాంశం dy);
 
-HB_EXTERN void
-hb_raster_paint_get_transform (const hb_raster_paint_t *paint,
-			       float *xx, float *yx,
-			       float *xy, float *yy,
-			       float *dx, float *dy);
+HB_EXTERN శూన్య
+hb_raster_paint_get_transform (స్థిరరాశి hb_raster_paint_t *paint,
+			       దశాంశం *xx, దశాంశం *yx,
+			       దశాంశం *xy, దశాంశం *yy,
+			       దశాంశం *dx, దశాంశం *dy);
 
-HB_EXTERN void
-hb_raster_paint_set_scale_factor (hb_raster_paint_t *paint,
-				  float x_scale_factor,
-				  float y_scale_factor);
+HB_EXTERN శూన్య
+hb_raster_paint_సమితి_scale_గుణకం (hb_raster_paint_t *paint,
+				  దశాంశం x_scale_గుణకం,
+				  దశాంశం y_scale_గుణకం);
 
-HB_EXTERN void
-hb_raster_paint_get_scale_factor (const hb_raster_paint_t *paint,
-				  float *x_scale_factor,
-				  float *y_scale_factor);
+HB_EXTERN శూన్య
+hb_raster_paint_get_scale_గుణకం (స్థిరరాశి hb_raster_paint_t *paint,
+				  దశాంశం *x_scale_గుణకం,
+				  దశాంశం *y_scale_గుణకం);
 
-HB_EXTERN void
-hb_raster_paint_set_extents (hb_raster_paint_t         *paint,
-			     const hb_raster_extents_t *extents);
+HB_EXTERN శూన్య
+hb_raster_paint_సమితి_extents (hb_raster_paint_t         *paint,
+			     స్థిరరాశి hb_raster_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_raster_paint_get_extents (const hb_raster_paint_t   *paint,
+hb_raster_paint_get_extents (స్థిరరాశి hb_raster_paint_t   *paint,
 			     hb_raster_extents_t *extents);
 
 HB_EXTERN hb_bool_t
-hb_raster_paint_set_glyph_extents (hb_raster_paint_t         *paint,
-				   const hb_glyph_extents_t  *glyph_extents);
+hb_raster_paint_సమితి_glyph_extents (hb_raster_paint_t         *paint,
+				   స్థిరరాశి hb_glyph_extents_t  *glyph_extents);
 
-HB_EXTERN void
-hb_raster_paint_set_foreground (hb_raster_paint_t *paint,
+HB_EXTERN శూన్య
+hb_raster_paint_సమితి_foreground (hb_raster_paint_t *paint,
 				hb_color_t         foreground);
 
 HB_EXTERN hb_color_t
-hb_raster_paint_get_foreground (const hb_raster_paint_t *paint);
+hb_raster_paint_get_foreground (స్థిరరాశి hb_raster_paint_t *paint);
 
-HB_EXTERN void
-hb_raster_paint_set_background (hb_raster_paint_t *paint,
+HB_EXTERN శూన్య
+hb_raster_paint_సమితి_background (hb_raster_paint_t *paint,
 				hb_color_t         background);
 
 HB_EXTERN hb_color_t
-hb_raster_paint_get_background (const hb_raster_paint_t *paint);
+hb_raster_paint_get_background (స్థిరరాశి hb_raster_paint_t *paint);
 
-HB_EXTERN void
-hb_raster_paint_set_palette (hb_raster_paint_t *paint,
-			     unsigned           palette);
+HB_EXTERN శూన్య
+hb_raster_paint_సమితి_palette (hb_raster_paint_t *paint,
+			     గుర్తులేని           palette);
 
-HB_EXTERN unsigned
-hb_raster_paint_get_palette (const hb_raster_paint_t *paint);
+HB_EXTERN గుర్తులేని
+hb_raster_paint_get_palette (స్థిరరాశి hb_raster_paint_t *paint);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_paint_clear_custom_palette_colors (hb_raster_paint_t *paint);
 
 HB_EXTERN hb_bool_t
-hb_raster_paint_set_custom_palette_color (hb_raster_paint_t *paint,
-					  unsigned int       color_index,
+hb_raster_paint_సమితి_custom_palette_color (hb_raster_paint_t *paint,
+					  గుర్తులేని పూర్ణాంకం       color_సూచీ,
 					  hb_color_t         color);
 
 HB_EXTERN hb_paint_funcs_t *
-hb_raster_paint_get_funcs (const hb_raster_paint_t *paint);
+hb_raster_paint_get_funcs (స్థిరరాశి hb_raster_paint_t *paint);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_paint_glyph (hb_raster_paint_t *paint,
 		       hb_font_t        *font,
 		       hb_codepoint_t    glyph);
@@ -332,26 +332,26 @@ hb_raster_paint_glyph_or_fail (hb_raster_paint_t *paint,
 HB_EXTERN hb_raster_image_t *
 hb_raster_paint_render (hb_raster_paint_t *paint);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_paint_clear (hb_raster_paint_t *paint);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_paint_reset (hb_raster_paint_t *paint);
 
-HB_EXTERN void
+HB_EXTERN శూన్య
 hb_raster_paint_recycle_image (hb_raster_paint_t  *paint,
 			       hb_raster_image_t  *image);
 
 
-HB_END_DECLS
+HB_చివర_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ఒకవేళ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (raster_image, nullptr);
 HB_DEFINE_VTABLE (raster_draw,  nullptr);
 HB_DEFINE_VTABLE (raster_paint, nullptr);
 } // namespace hb
-#endif
+#అయితే_ముగింపు
 
-#endif /* HB_RASTER_H */
+#అయితే_ముగింపు /* HB_RASTER_H */

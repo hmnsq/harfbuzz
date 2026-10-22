@@ -24,51 +24,51 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_PATH_HH
-#define HB_VECTOR_PATH_HH
+#నిర్వచితం_కాకపోతే HB_సదిశ_మార్గం_HH
+#నిర్వచించు HB_సదిశ_మార్గం_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
-#include "hb-vector.h"
-#include "hb-draw.h"
-#include "hb-vector-buf.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-vector.hh"
+#అన్తర్భావ "hb-vector.h"
+#అన్తర్భావ "hb-draw.h"
+#అన్తర్భావ "hb-vector-buf.hh"
 
 /* Lightweight path sink: serializes hb_draw_* calls into an
  * external char buffer as either SVG path-data or PDF path
  * operators, depending on format.  Used by the vector paint
  * backends to accumulate arbitrary clip paths (and by the
  * SVG backend to emit glyph outlines into defs). */
-struct hb_vector_path_sink_t
+నిర్మాణం hb_సదిశ_మార్గం_sink_t
 {
-  hb_vector_buf_t *path;
-  unsigned precision;
-  float x_scale;
-  float y_scale;
+  hb_సదిశ_buf_t *మార్గం;
+  గుర్తులేని precision;
+  దశాంశం x_scale;
+  దశాంశం y_scale;
   int64_t *budget;
 
-  bool begin_command ()
+  తార్కిక begin_command ()
   {
-    return likely (!path->in_error () && !(budget && *budget < 0));
+    తిరిగి likely (!మార్గం->లోపల_error () && !(budget && *budget < 0));
   }
 
-  void end_command ()
+  శూన్య చివర_command ()
   {
     /* Serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (!budget) return;
-    if (unlikely (path->in_error ()))
+    ఒకవేళ (!budget) తిరిగి;
+    ఒకవేళ (unlikely (మార్గం->లోపల_error ()))
       *budget = 0;
   }
 };
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_svg_path_draw_funcs_get ();
+HB_అంతర్గత hb_draw_funcs_t *
+hb_సదిశ_svg_మార్గం_draw_funcs_get ();
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_pdf_path_draw_funcs_get ();
+HB_అంతర్గత hb_draw_funcs_t *
+hb_సదిశ_pdf_మార్గం_draw_funcs_get ();
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_path_draw_funcs_get (hb_vector_format_t format);
+HB_అంతర్గత hb_draw_funcs_t *
+hb_సదిశ_మార్గం_draw_funcs_get (hb_సదిశ_format_t format);
 
-#endif /* HB_VECTOR_PATH_HH */
+#అయితే_ముగింపు /* HB_VECTOR_PATH_HH */

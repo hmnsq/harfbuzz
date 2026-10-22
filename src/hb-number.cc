@@ -23,126 +23,126 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#నిర్వచితం_కాకపోతే HB_సంఖ్య_CC
+#నిర్వచించు HB_సంఖ్య_CC
+#నిర్వచితమైతే HB_సంఖ్య_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-number.hh"
+#అన్తర్భావ "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+తార్కిక
+hb_parse_double (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, ద్విగుణ *pv, తార్కిక సంపూర్ణ_బఫరు)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  స్థిరరాశి అక్షరం *pend = చివర;
+  ద్విగుణ value = hb_strtod (*pp, &pend);
+  ఒకవేళ (unlikely (*pp == pend)) తిరిగి అబద్ధం;
+  ఒకవేళ (unlikely (సంపూర్ణ_బఫరు && చివర != pend)) తిరిగి అబద్ధం;
   *pv = value;
   *pp = pend;
-  return true;
+  తిరిగి నిజం;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+స్థిర పూర్ణాంకం
+hb_digit_విలువ (అక్షరం c, పూర్ణాంకం పునాది)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  పూర్ణాంకం d;
+  ఒకవేళ ('0' <= c && c <= '9')      d = c - '0';
+  లేకపోతే ఒకవేళ ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  లేకపోతే ఒకవేళ ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  లేకపోతే తిరిగి -1;
+  తిరిగి d < పునాది ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+స్థిర స్థిరరాశి అక్షరం *
+hb_పరిశీలన_digits (స్థిరరాశి అక్షరం *p, స్థిరరాశి అక్షరం *pe, పూర్ణాంకం పునాది,
+                 uint64_t *value, తార్కిక *అధికప్రవాహం, తార్కిక *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  స్థిరరాశి uint64_t cutoff = UINT64_MAX / (గుర్తులేని) పునాది;
+  స్థిరరాశి uint64_t cutlim = UINT64_MAX % (గుర్తులేని) పునాది;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  తార్కిక ov = అబద్ధం, any = అబద్ధం;
 
-  for (; p < pe; p++)
+  కొరకు (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
-      v = v * (unsigned) base + (uint64_t) d;
+    పూర్ణాంకం d = hb_digit_విలువ (*p, పునాది);
+    ఒకవేళ (d < 0) ఆపు;
+    any = నిజం;
+    ఒకవేళ (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = నిజం;
+    లేకపోతే
+      v = v * (గుర్తులేని) పునాది + (uint64_t) d;
   }
 
   *value = v;
-  *overflow = ov;
+  *అధికప్రవాహం = ov;
   *any_digits = any;
-  return p;
+  తిరిగి p;
 }
 
-template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+మూస<రకం_పేరు T, రకం_పేరు Postprocess>
+స్థిర తార్కిక
+parse_సంఖ్య (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, T *pv,
+               తార్కిక సంపూర్ణ_బఫరు, పూర్ణాంకం పునాది, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  స్థిరరాశి అక్షరం *pend = చివర;
+  స్థిరరాశి అక్షరం *p = *pp;
+  తార్కిక neg = అబద్ధం, any = అబద్ధం, అధికప్రవాహం = అబద్ధం;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  అయితే (p < pend && ISSPACE (*p)) p++;
+  ఒకవేళ (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+  ఒకవేళ (పునాది == 16 && p + 2 < pend && p[0] == '0' &&
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_విలువ (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
-  p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  p = hb_పరిశీలన_digits (p, pend, పునాది, &v, &అధికప్రవాహం, &any);
+  ఒకవేళ (unlikely (!any || అధికప్రవాహం)) తిరిగి అబద్ధం;
 
-  T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  T బహిర్గతం;
+  ఒకవేళ (unlikely (!post (v, neg, &బహిర్గతం))) తిరిగి అబద్ధం;
+  ఒకవేళ (unlikely (సంపూర్ణ_బఫరు && p != pend)) తిరిగి అబద్ధం;
 
-  *pv = out;
+  *pv = బహిర్గతం;
   *pp = p;
-  return true;
+  తిరిగి నిజం;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+తార్కిక
+hb_parse_int (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, పూర్ణాంకం *pv, తార్కిక సంపూర్ణ_బఫరు)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  తిరిగి parse_సంఖ్య (pp, చివర, pv, సంపూర్ణ_బఫరు, 10,
+                        [] (uint64_t v, తార్కిక neg, పూర్ణాంకం *బహిర్గతం) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
-    uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    uint64_t హద్దు = neg ? (uint64_t) గరిష్ఠ_పూర్ణాంకం + 1 : (uint64_t) గరిష్ఠ_పూర్ణాంకం;
+    ఒకవేళ (unlikely (v > హద్దు)) తిరిగి అబద్ధం;
+    *బహిర్గతం = (పూర్ణాంకం) (neg ? -(int64_t) v : (int64_t) v);
+    తిరిగి నిజం;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+తార్కిక
+hb_parse_uint (స్థిరరాశి అక్షరం **pp, స్థిరరాశి అక్షరం *చివర, గుర్తులేని *pv,
+               తార్కిక సంపూర్ణ_బఫరు, పూర్ణాంకం పునాది)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  తిరిగి parse_సంఖ్య (pp, చివర, pv, సంపూర్ణ_బఫరు, పునాది,
+                        [] (uint64_t v, తార్కిక neg, గుర్తులేని *బహిర్గతం) {
+    ఒకవేళ (unlikely (v > UINT_MAX)) తిరిగి అబద్ధం;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
-    unsigned u = (unsigned) v;
-    *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    గుర్తులేని u = (గుర్తులేని) v;
+    *బహిర్గతం = neg ? (గుర్తులేని) (0u - u) : u;
+    తిరిగి నిజం;
   });
 }
 
-#endif /* HB_NUMBER_CC pacify */
-#endif /* HB_NUMBER_CC guard */
+#అయితే_ముగింపు /* HB_NUMBER_CC pacify */
+#అయితే_ముగింపు /* HB_NUMBER_CC guard */

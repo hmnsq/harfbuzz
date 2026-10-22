@@ -22,153 +22,153 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_OPBD_TABLE_HH
-#define HB_AAT_LAYOUT_OPBD_TABLE_HH
+#నిర్వచితం_కాకపోతే HB_AAT_LAYOUT_OPBD_పట్టిక_HH
+#నిర్వచించు HB_AAT_LAYOUT_OPBD_పట్టిక_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-open-type.hh"
+#అన్తర్భావ "hb-aat-layout-common.hh"
+#అన్తర్భావ "hb-open-type.hh"
 
 /*
  * opbd -- Optical Bounds
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6opbd.html
  */
-#define HB_AAT_TAG_opbd HB_TAG('o','p','b','d')
+#నిర్వచించు HB_AAT_ట్యాగ్_opbd HB_ట్యాగ్('o','p','b','d')
 
 
-namespace AAT {
+నామాకాశ AAT {
 
-struct OpticalBounds
+నిర్మాణం OpticalBounds
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ఇది);
+    return_trace (c->check_struct (ఇది));
   }
 
-  FWORD		leftSide;
-  FWORD		topSide;
-  FWORD		rightSide;
+  FWORD		ఎడమ_Side;
+  FWORD		శిఖరం_Side;
+  FWORD		కుడి_Side;
   FWORD		bottomSide;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  బహిరంగ:
+  DEFINE_కొలత_STATIC (8);
 };
 
-struct opbdFormat0
+నిర్మాణం opbdFormat0
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  తార్కిక get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    స్థిరరాశి Offset16_గమ్యం<OpticalBounds> *bounds_స్థానభ్రంశం = lookup_పట్టిక.get_విలువ (glyph_id, font->face->get_అంకె_glyphs ());
+    ఒకవేళ (!bounds_స్థానభ్రంశం) తిరిగి అబద్ధం;
+    స్థిరరాశి OpticalBounds &bounds = పునాది+*bounds_స్థానభ్రంశం;
 
-    if (extents)
+    ఒకవేళ (extents)
       *extents = {
-	font->em_scale_x (bounds.leftSide),
-	font->em_scale_y (bounds.topSide),
-	font->em_scale_x (bounds.rightSide),
+	font->em_scale_x (bounds.ఎడమ_Side),
+	font->em_scale_y (bounds.శిఖరం_Side),
+	font->em_scale_x (bounds.కుడి_Side),
 	font->em_scale_y (bounds.bottomSide)
       };
-    return true;
+    తిరిగి నిజం;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) && lookup_పట్టిక.sanitize (c, పునాది)));
   }
 
-  protected:
-  Lookup<Offset16To<OpticalBounds>>
-		lookupTable;	/* Lookup table associating glyphs with the four
+  రక్షిత:
+  Lookup<Offset16_గమ్యం<OpticalBounds>>
+		lookup_పట్టిక;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
-  DEFINE_SIZE_MIN (2);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (2);
 };
 
-struct opbdFormat1
+నిర్మాణం opbdFormat1
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  తార్కిక get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    స్థిరరాశి Offset16_గమ్యం<OpticalBounds> *bounds_స్థానభ్రంశం = lookup_పట్టిక.get_విలువ (glyph_id, font->face->get_అంకె_glyphs ());
+    ఒకవేళ (!bounds_స్థానభ్రంశం) తిరిగి అబద్ధం;
+    స్థిరరాశి OpticalBounds &bounds = పునాది+*bounds_స్థానభ్రంశం;
 
-    hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
-	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
+    hb_position_t ఎడమ = 0, శిఖరం_2 = 0, కుడి = 0, bottom = 0, ignore;
+    ఒకవేళ (font->get_glyph_contour_బిందువు (glyph_id, bounds.ఎడమ_Side, &ఎడమ, &ignore) ||
+	font->get_glyph_contour_బిందువు (glyph_id, bounds.శిఖరం_Side, &ignore, &శిఖరం_2) ||
+	font->get_glyph_contour_బిందువు (glyph_id, bounds.కుడి_Side, &కుడి, &ignore) ||
+	font->get_glyph_contour_బిందువు (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
-      if (extents)
-	*extents = {left, top, right, bottom};
-      return true;
+      ఒకవేళ (extents)
+	*extents = {ఎడమ, శిఖరం_2, కుడి, bottom};
+      తిరిగి నిజం;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  తార్కిక sanitize (hb_sanitize_context_t *c, స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (ఇది);
+    return_trace (likely (c->check_struct (ఇది) && lookup_పట్టిక.sanitize (c, పునాది)));
   }
 
-  protected:
-  Lookup<Offset16To<OpticalBounds>>
-		lookupTable;	/* Lookup table associating glyphs with the four
+  రక్షిత:
+  Lookup<Offset16_గమ్యం<OpticalBounds>>
+		lookup_పట్టిక;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
-  DEFINE_SIZE_MIN (2);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (2);
 };
 
-struct opbd
+నిర్మాణం opbd
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
+  స్థిర constexpr hb_ట్యాగ్_t పట్టిక_ట్యాగ్ = HB_AAT_ట్యాగ్_opbd;
 
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents) const
+  తార్కిక get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents) స్థిరరాశి
   {
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return u.format0.get_bounds (font, glyph_id, extents, this);
-    case 1: hb_barrier (); return u.format1.get_bounds (font, glyph_id, extents, this);
-    default:return false;
+    స్థితి 0: hb_barrier (); తిరిగి u.format0.get_bounds (font, glyph_id, extents, ఇది);
+    స్థితి 1: hb_barrier (); తిరిగి u.format1.get_bounds (font, glyph_id, extents, ఇది);
+    అప్రమేయ:తిరిగి అబద్ధం;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  తార్కిక sanitize (hb_sanitize_context_t *c) స్థిరరాశి
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this) || version.major != 1))
-      return_trace (false);
+    TRACE_SANITIZE (ఇది);
+    ఒకవేళ (unlikely (!c->check_struct (ఇది) || సంస్కరణ.major != 1))
+      return_trace (అబద్ధం);
     hb_barrier ();
 
-    switch (format)
+    ఎంపిక (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, this));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, this));
-    default:return_trace (true);
+    స్థితి 0: hb_barrier (); return_trace (u.format0.sanitize (c, ఇది));
+    స్థితి 1: hb_barrier (); return_trace (u.format1.sanitize (c, ఇది));
+    అప్రమేయ:return_trace (నిజం);
     }
   }
 
-  protected:
-  FixedVersion<>version;	/* Version number of the optical bounds
+  రక్షిత:
+  Fixed_సంస్కరణ<>సంస్కరణ;	/* Version number of the optical bounds
 				 * table (0x00010000 for the current version). */
   HBUINT16	format;		/* Format of the optical bounds table.
 				 * Format 0 indicates distance and Format 1 indicates
 				 * control point. */
-  union {
+  సంఘం {
   opbdFormat0	format0;
   opbdFormat1	format1;
   } u;
-  public:
-  DEFINE_SIZE_MIN (8);
+  బహిరంగ:
+  DEFINE_కొలత_MIN (8);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_OPBD_TABLE_HH */
+#అయితే_ముగింపు /* HB_AAT_LAYOUT_OPBD_TABLE_HH */

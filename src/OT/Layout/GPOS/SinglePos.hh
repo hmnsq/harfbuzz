@@ -1,128 +1,128 @@
-#ifndef OT_LAYOUT_GPOS_SINGLEPOS_HH
-#define OT_LAYOUT_GPOS_SINGLEPOS_HH
+#నిర్వచితం_కాకపోతే OT_LAYOUT_GPOS_SINGLEPOS_HH
+#నిర్వచించు OT_LAYOUT_GPOS_SINGLEPOS_HH
 
-#include "SinglePosFormat1.hh"
-#include "SinglePosFormat2.hh"
+#అన్తర్భావ "SinglePosFormat1.hh"
+#అన్తర్భావ "SinglePosFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+నామాకాశ OT {
+నామాకాశ Layout {
+నామాకాశ GPOS_impl {
 
-struct SinglePos
+నిర్మాణం SinglePos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  రక్షిత:
+  సంఘం {
+  నిర్మాణం { HBUINT16 v; } format;        /* Format identifier */
   SinglePosFormat1_3<SmallTypes> format1;
   SinglePosFormat2_4<SmallTypes> format2;
-#ifndef HB_NO_BEYOND_64K
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
   SinglePosFormat1_3<MediumTypes> format3;
   SinglePosFormat2_4<MediumTypes> format4;
-#endif
+#అయితే_ముగింపు
   } u;
 
-  public:
-  template<typename Iterator,
+  బహిరంగ:
+  మూస<రకం_పేరు Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  unsigned get_format (Iterator glyph_val_iter_pairs)
+  గుర్తులేని get_format (Iterator glyph_val_iter_జతలు)
   {
-    hb_array_t<const Value> first_val_iter = hb_second (*glyph_val_iter_pairs);
+    hb_array_t<స్థిరరాశి విలువ> మొదటి_val_iter = hb_రెండవ (*glyph_val_iter_జతలు);
 
-    for (const auto iter : glyph_val_iter_pairs)
-      for (const auto _ : hb_zip (iter.second, first_val_iter))
-        if (_.first != _.second)
-          return 2;
+    కొరకు (స్థిరరాశి స్వయంచాలక iter : glyph_val_iter_జతలు)
+      కొరకు (స్థిరరాశి స్వయంచాలక _ : hb_zip (iter.second, మొదటి_val_iter))
+        ఒకవేళ (_.మొదటి != _.second)
+          తిరిగి 2;
 
-    return 1;
+    తిరిగి 1;
   }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase* src,
-                  ValueFormat src_format,
-                  Iterator glyph_val_iter_pairs,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                  unsigned newFormat)
+  శూన్య serialize (hb_serialize_context_t *c,
+                  స్థిరరాశి విలువ_పునాది* src,
+                  విలువ_Format src_format,
+                  Iterator glyph_val_iter_జతలు,
+                  స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map,
+                  గుర్తులేని newFormat)
   {
-    if (unlikely (!c->extend_min (u.format.v))) return;
-    unsigned format = 2;
-    ValueFormat new_format;
+    ఒకవేళ (unlikely (!c->extend_min (u.format.v))) తిరిగి;
+    గుర్తులేని format = 2;
+    విలువ_Format new_format;
     new_format = newFormat;
 
-    if (glyph_val_iter_pairs)
-      format = get_format (glyph_val_iter_pairs);
+    ఒకవేళ (glyph_val_iter_జతలు)
+      format = get_format (glyph_val_iter_జతలు);
 
-#ifndef HB_NO_BEYOND_64K
-    if (+ glyph_val_iter_pairs
-	| hb_map_retains_sorting (hb_first)
-	| hb_filter ([] (hb_codepoint_t gid) { return gid > 0xFFFFu; }))
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (+ glyph_val_iter_జతలు
+	| hb_map_retains_క్రమీకరణ (hb_మొదటి)
+	| hb_filter ([] (hb_codepoint_t gid) { తిరిగి gid > 0xFFFFu; }))
       format += 2;
-#endif
+#అయితే_ముగింపు
 
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.serialize (c,
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); u.format1.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_జతలు,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-    case 2: hb_barrier (); u.format2.serialize (c,
+      తిరిగి;
+    స్థితి 2: hb_barrier (); u.format2.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_జతలు,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-#ifndef HB_NO_BEYOND_64K
-    case 3: u.format3.serialize (c,
+      తిరిగి;
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: u.format3.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_జతలు,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-    case 4: u.format4.serialize (c,
+      తిరిగి;
+    స్థితి 4: u.format4.serialize (c,
                                  src, src_format,
-                                 glyph_val_iter_pairs,
+                                 glyph_val_iter_జతలు,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-#endif
-    default:return;
+      తిరిగి;
+#అయితే_ముగింపు
+    అప్రమేయ:తిరిగి;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  మూస <రకం_పేరు context_t, రకం_పేరు ...Ts>
+  రకం_పేరు context_t::return_t dispatch (context_t *c, Ts&&... ds) స్థిరరాశి
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    ఒకవేళ (unlikely (!c->may_dispatch (ఇది, &u.format.v))) తిరిగి c->no_dispatch_return_విలువ ();
+    TRACE_DISPATCH (ఇది, u.format.v);
+    ఎంపిక (u.format.v) {
+    స్థితి 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    స్థితి 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    స్థితి 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    స్థితి 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+#అయితే_ముగింపు
+    అప్రమేయ:return_trace (c->default_return_విలువ ());
     }
   }
 };
 
 
-template<typename Iterator>
-static void
+మూస<రకం_పేరు Iterator>
+స్థిర శూన్య
 SinglePos_serialize (hb_serialize_context_t *c,
-                     const ValueBase *src,
-                     ValueFormat src_format,
+                     స్థిరరాశి విలువ_పునాది *src,
+                     విలువ_Format src_format,
                      Iterator it,
-                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                     unsigned new_format)
-{ c->start_embed<SinglePos> ()->serialize (c, src, src_format, it, layout_variation_idx_delta_map, new_format); }
+                     స్థిరరాశి hb_hashmap_t<గుర్తులేని, hb_pair_t<గుర్తులేని, పూర్ణాంకం>> *layout_variation_idx_delta_map,
+                     గుర్తులేని new_format)
+{ c->ప్రారంభం_embed<SinglePos> ()->serialize (c, src, src_format, it, layout_variation_idx_delta_map, new_format); }
 
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_SINGLEPOS_HH */
+#అయితే_ముగింపు /* OT_LAYOUT_GPOS_SINGLEPOS_HH */

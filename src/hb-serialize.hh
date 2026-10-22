@@ -28,78 +28,78 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SERIALIZE_HH
-#define HB_SERIALIZE_HH
+#నిర్వచితం_కాకపోతే HB_SERIALIZE_HH
+#నిర్వచించు HB_SERIALIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-map.hh"
-#include "hb-free-pool.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-blob.hh"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ "hb-free-pool.hh"
 
-#include "hb-subset-serialize.h"
+#అన్తర్భావ "hb-subset-serialize.h"
 
 /*
  * Serialize
  */
 
-enum hb_serialize_error_t {
+గణన hb_serialize_error_t {
   HB_SERIALIZE_ERROR_NONE =            0x00000000u,
   HB_SERIALIZE_ERROR_OTHER =           0x00000001u,
-  HB_SERIALIZE_ERROR_OFFSET_OVERFLOW = 0x00000002u,
-  HB_SERIALIZE_ERROR_OUT_OF_ROOM =     0x00000004u,
-  HB_SERIALIZE_ERROR_INT_OVERFLOW =    0x00000008u,
-  HB_SERIALIZE_ERROR_ARRAY_OVERFLOW =  0x00000010u
+  HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం = 0x00000002u,
+  HB_SERIALIZE_ERROR_బహిర్గతం_యొక్క_స్థలం =     0x00000004u,
+  HB_SERIALIZE_ERROR_INT_అధికప్రవాహం =    0x00000008u,
+  HB_SERIALIZE_ERROR_ARRAY_అధికప్రవాహం =  0x00000010u
 };
 HB_MARK_AS_FLAG_T (hb_serialize_error_t);
 
-struct hb_serialize_context_t
+నిర్మాణం hb_serialize_context_t
 {
-  typedef unsigned objidx_t;
+  రకనిర్వచనం గుర్తులేని objidx_t;
 
-  enum whence_t {
-     Head,	/* Relative to the current object head (default). */
-     Tail,	/* Relative to the current object tail after packed. */
+  గణన whence_t {
+     తల,	/* Relative to the current object head (default). */
+     తోక_2,	/* Relative to the current object tail after packed. */
      Absolute	/* Absolute: from the start of the serialize buffer. */
    };
 
 
 
-  struct object_t
+  నిర్మాణం object_t
   {
-    void fini () {
+    శూన్య fini () {
       real_links.fini ();
       virtual_links.fini ();
     }
 
-    object_t () = default;
+    object_t () = అప్రమేయ;
 
-    object_t (const hb_subset_serialize_object_t &o)
+    object_t (స్థిరరాశి hb_subset_serialize_object_t &o)
     {
-      head = o.head;
-      tail = o.tail;
-      next = nullptr;
-      real_links.alloc_exact (o.num_real_links);
-      for (unsigned i = 0 ; i < o.num_real_links; i++)
+      తల_2 = o.తల_2;
+      తోక = o.తోక;
+      next = శూన్యసూచిక;
+      real_links.alloc_exact (o.అంకె_real_links);
+      కొరకు (గుర్తులేని i = 0 ; i < o.అంకె_real_links; i++)
         real_links.push (o.real_links[i]);
 
-      virtual_links.alloc_exact (o.num_virtual_links);
-      for (unsigned i = 0; i < o.num_virtual_links; i++)
+      virtual_links.alloc_exact (o.అంకె_virtual_links);
+      కొరకు (గుర్తులేని i = 0; i < o.అంకె_virtual_links; i++)
         virtual_links.push (o.virtual_links[i]);
     }
 
-    bool in_error () const
+    తార్కిక లోపల_error () స్థిరరాశి
     {
-      return real_links.in_error() || virtual_links.in_error();
+      తిరిగి real_links.లోపల_error() || virtual_links.లోపల_error();
     }
 
-    bool add_virtual_link (objidx_t objidx)
+    తార్కిక కూడు_virtual_link (objidx_t objidx)
     {
-      if (!objidx)
-        return false;
+      ఒకవేళ (!objidx)
+        తిరిగి అబద్ధం;
 
-      auto& link = *virtual_links.push ();
-      if (virtual_links.in_error ())
-        return false;
+      స్వయంచాలక& link = *virtual_links.push ();
+      ఒకవేళ (virtual_links.లోపల_error ())
+        తిరిగి అబద్ధం;
 
       link.objidx = objidx;
       // Remaining fields were previously zero'd by push():
@@ -109,49 +109,49 @@ struct hb_serialize_context_t
       // link.position = 0;
       // link.bias = 0;
 
-      return true;
+      తిరిగి నిజం;
     }
 
-    friend void swap (object_t& a, object_t& b) noexcept
+    మిత్ర శూన్య swap (object_t& a, object_t& b) noexcept
     {
-      hb_swap (a.head, b.head);
-      hb_swap (a.tail, b.tail);
-      hb_swap (a.next, b.next);
-      hb_swap (a.real_links, b.real_links);
-      hb_swap (a.virtual_links, b.virtual_links);
+      hb_మార్పిడి (a.తల_2, b.తల_2);
+      hb_మార్పిడి (a.తోక, b.తోక);
+      hb_మార్పిడి (a.next, b.next);
+      hb_మార్పిడి (a.real_links, b.real_links);
+      hb_మార్పిడి (a.virtual_links, b.virtual_links);
     }
 
-    bool operator == (const object_t &o) const
+    తార్కిక క్రియాకారకం == (స్థిరరాశి object_t &o) స్థిరరాశి
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return (tail - head == o.tail - o.head)
-	  && (real_links.length == o.real_links.length)
-	  && 0 == hb_memcmp (head, o.head, tail - head)
-	  && real_links.as_bytes () == o.real_links.as_bytes ();
+      తిరిగి (తోక - తల_2 == o.తోక - o.తల_2)
+	  && (real_links.నిడివి == o.real_links.నిడివి)
+	  && 0 == hb_memcmp (తల_2, o.తల_2, తోక - తల_2)
+	  && real_links.as_బైట్లు () == o.real_links.as_బైట్లు ();
     }
-    uint32_t hash () const
+    uint32_t hash () స్థిరరాశి
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
-          real_links.as_bytes ().hash ();
+      తిరిగి hb_బైట్లు_t (తల_2, hb_min (128, తోక - తల_2)).hash () ^
+          real_links.as_బైట్లు ().hash ();
     }
 
-    struct link_t
+    నిర్మాణం link_t
     {
-      unsigned width: 3;
-      unsigned is_signed: 1;
-      unsigned whence: 2;
-      unsigned bias : 26;
-      unsigned position;
+      గుర్తులేని వెడల్పు: 3;
+      గుర్తులేని is_signed: 1;
+      గుర్తులేని whence: 2;
+      గుర్తులేని bias : 26;
+      గుర్తులేని position;
       objidx_t objidx;
 
-      link_t () = default;
+      link_t () = అప్రమేయ;
 
-      link_t (const hb_subset_serialize_link_t &o)
+      link_t (స్థిరరాశి hb_subset_serialize_link_t &o)
       {
-        width = o.width;
+        వెడల్పు = o.వెడల్పు;
         is_signed = 0;
         whence = 0;
         position = o.position;
@@ -159,204 +159,204 @@ struct hb_serialize_context_t
         objidx = o.objidx;
       }
 
-      HB_INTERNAL static int cmp (const void* a, const void* b)
+      HB_అంతర్గత స్థిర పూర్ణాంకం cmp (స్థిరరాశి శూన్య* a, స్థిరరాశి శూన్య* b)
       {
-        int cmp = ((const link_t*)a)->position - ((const link_t*)b)->position;
-        if (cmp) return cmp;
+        పూర్ణాంకం cmp = ((స్థిరరాశి link_t*)a)->position - ((స్థిరరాశి link_t*)b)->position;
+        ఒకవేళ (cmp) తిరిగి cmp;
 
-        return ((const link_t*)a)->objidx - ((const link_t*)b)->objidx;
+        తిరిగి ((స్థిరరాశి link_t*)a)->objidx - ((స్థిరరాశి link_t*)b)->objidx;
       }
     };
 
-    char *head;
-    char *tail;
-    hb_vector_t<link_t> real_links;
-    hb_vector_t<link_t> virtual_links;
+    అక్షరం *తల_2;
+    అక్షరం *తోక;
+    hb_సదిశ_t<link_t> real_links;
+    hb_సదిశ_t<link_t> virtual_links;
     object_t *next;
 
-    auto all_links () const HB_AUTO_RETURN
+    స్వయంచాలక all_links () స్థిరరాశి HB_AUTO_RETURN
         (( hb_concat (real_links, virtual_links) ));
-    auto all_links_writer () HB_AUTO_RETURN
+    స్వయంచాలక all_links_writer () HB_AUTO_RETURN
         (( hb_concat (real_links.writer (), virtual_links.writer ()) ));
   };
 
-  struct snapshot_t
+  నిర్మాణం snapshot_t
   {
-    char *head;
-    char *tail;
+    అక్షరం *తల_2;
+    అక్షరం *తోక;
     object_t *current; // Just for sanity check
-    unsigned num_real_links;
-    unsigned num_virtual_links;
+    గుర్తులేని అంకె_real_links;
+    గుర్తులేని అంకె_virtual_links;
     hb_serialize_error_t errors;
   };
 
   snapshot_t snapshot ()
   {
-    return snapshot_t {
-      head, tail, current,
-      current ? current->real_links.length : 0,
-      current ? current->virtual_links.length : 0,
+    తిరిగి snapshot_t {
+      తల_2, తోక, current,
+      current ? current->real_links.నిడివి : 0,
+      current ? current->virtual_links.నిడివి : 0,
       errors
      };
   }
 
-  hb_serialize_context_t (void *start_, size_t size) :
-    start ((char *) start_),
-    end (start + size),
-    current (nullptr)
+  hb_serialize_context_t (శూన్య *ప్రారంభం_2, size_t కొలత) :
+    ప్రారంభం ((అక్షరం *) ప్రారంభం_2),
+    చివర (ప్రారంభం + కొలత),
+    current (శూన్యసూచిక)
   { reset (); }
   ~hb_serialize_context_t () { fini (); }
 
-  void fini ()
+  శూన్య fini ()
   {
-    for (object_t *_ : ++hb_iter (packed)) _->fini ();
+    కొరకు (object_t *_ : ++hb_iter (packed)) _->fini ();
     packed.fini ();
-    this->packed_map.fini ();
+    ఇది->packed_map.fini ();
 
-    while (current)
+    అయితే (current)
     {
-      auto *_ = current;
+      స్వయంచాలక *_ = current;
       current = current->next;
       _->fini ();
     }
   }
 
-  bool in_error () const { return bool (errors); }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి తార్కిక (errors); }
 
-  bool successful () const { return !bool (errors); }
+  తార్కిక successful () స్థిరరాశి { తిరిగి !తార్కిక (errors); }
 
-  HB_NODISCARD bool ran_out_of_room () const { return errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
-  HB_NODISCARD bool offset_overflow () const { return errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_offset_overflow () const { return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_overflow () const
+  HB_NODISCARD తార్కిక ran_బహిర్గతం_యొక్క_స్థలం () స్థిరరాశి { తిరిగి errors & HB_SERIALIZE_ERROR_బహిర్గతం_యొక్క_స్థలం; }
+  HB_NODISCARD తార్కిక స్థానభ్రంశం_అధికప్రవాహం () స్థిరరాశి { తిరిగి errors & HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం; }
+  HB_NODISCARD తార్కిక only_స్థానభ్రంశం_అధికప్రవాహం () స్థిరరాశి { తిరిగి errors == HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం; }
+  HB_NODISCARD తార్కిక only_అధికప్రవాహం () స్థిరరాశి
   {
-    return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
-        || errors == HB_SERIALIZE_ERROR_INT_OVERFLOW
-        || errors == HB_SERIALIZE_ERROR_ARRAY_OVERFLOW;
+    తిరిగి errors == HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం
+        || errors == HB_SERIALIZE_ERROR_INT_అధికప్రవాహం
+        || errors == HB_SERIALIZE_ERROR_ARRAY_అధికప్రవాహం;
   }
 
-  void reset (void *start_, size_t size)
+  శూన్య reset (శూన్య *ప్రారంభం_2, size_t కొలత)
   {
-    start = (char*) start_;
-    end = start + size;
+    ప్రారంభం = (అక్షరం*) ప్రారంభం_2;
+    చివర = ప్రారంభం + కొలత;
     reset ();
-    current = nullptr;
+    current = శూన్యసూచిక;
   }
 
-  void reset ()
+  శూన్య reset ()
   {
-    this->errors = HB_SERIALIZE_ERROR_NONE;
-    this->head = this->start;
-    this->tail = this->end;
-    this->zerocopy = nullptr;
-    this->debug_depth = 0;
+    ఇది->errors = HB_SERIALIZE_ERROR_NONE;
+    ఇది->తల_2 = ఇది->ప్రారంభం;
+    ఇది->తోక = ఇది->చివర;
+    ఇది->zerocopy = శూన్యసూచిక;
+    ఇది->debug_లోతు = 0;
 
     fini ();
-    this->packed.push (nullptr);
-    this->packed_map.init ();
+    ఇది->packed.push (శూన్యసూచిక);
+    ఇది->packed_map.init ();
   }
 
-  bool check_success (bool success,
+  తార్కిక check_success (తార్కిక success,
                       hb_serialize_error_t err_type = HB_SERIALIZE_ERROR_OTHER)
   {
-    return successful ()
+    తిరిగి successful ()
         && (success || err (err_type));
   }
 
-  template <typename T1, typename T2>
-  bool check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
+  మూస <రకం_పేరు T1, రకం_పేరు T2>
+  తార్కిక check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
   {
-    if ((long long) v1 != (long long) v2)
+    ఒకవేళ ((దీర్ఘ దీర్ఘ) v1 != (దీర్ఘ దీర్ఘ) v2)
     {
-      return err (err_type);
+      తిరిగి err (err_type);
     }
-    return true;
+    తిరిగి నిజం;
   }
 
-  template <typename T1, typename T2>
-  bool check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
-  { return check_equal (v1 = v2, v2, err_type); }
+  మూస <రకం_పేరు T1, రకం_పేరు T2>
+  తార్కిక check_కేటాయించు (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
+  { తిరిగి check_equal (v1 = v2, v2, err_type); }
 
-  template <typename T> bool propagate_error (T &&obj)
-  { return check_success (!hb_deref (obj).in_error ()); }
+  మూస <రకం_పేరు T> తార్కిక propagate_error (T &&obj)
+  { తిరిగి check_success (!hb_deref (obj).లోపల_error ()); }
 
-  template <typename T1, typename... Ts> bool propagate_error (T1 &&o1, Ts&&... os)
-  { return propagate_error (std::forward<T1> (o1)) &&
+  మూస <రకం_పేరు T1, రకం_పేరు... Ts> తార్కిక propagate_error (T1 &&o1, Ts&&... os)
+  { తిరిగి propagate_error (std::forward<T1> (o1)) &&
 	   propagate_error (std::forward<Ts> (os)...); }
 
   /* To be called around main operation. */
-  template <typename Type=char>
+  మూస <రకం_పేరు Type=అక్షరం>
   __attribute__((returns_nonnull))
-  Type *start_serialize ()
+  Type *ప్రారంభం_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, +1,
+    DEBUG_సందేశం_LEVEL (SERIALIZE, ఇది->ప్రారంభం, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     ఇది->ప్రారంభం, ఇది->చివర,
+		     (గుర్తులేని దీర్ఘ) (ఇది->చివర - ఇది->ప్రారంభం));
 
-    assert (!current);
-    return push<Type> ();
+    ప్రతిజ్ఞా (!current);
+    తిరిగి push<Type> ();
   }
-  void end_serialize ()
+  శూన్య చివర_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, -1,
+    DEBUG_సందేశం_LEVEL (SERIALIZE, ఇది->ప్రారంభం, 0, -1,
 		     "end [%p..%p] serialized %u bytes; %s",
-		     this->start, this->end,
-		     (unsigned) (this->head - this->start),
+		     ఇది->ప్రారంభం, ఇది->చివర,
+		     (గుర్తులేని) (ఇది->తల_2 - ఇది->ప్రారంభం),
 		     successful () ? "successful" : "UNSUCCESSFUL");
 
     propagate_error (packed, packed_map);
 
-    if (unlikely (!current)) return;
-    if (unlikely (in_error()))
+    ఒకవేళ (unlikely (!current)) తిరిగి;
+    ఒకవేళ (unlikely (లోపల_error()))
     {
       // Offset overflows that occur before link resolution cannot be handled
       // by repacking, so set a more general error.
-      if (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
-      return;
+      ఒకవేళ (స్థానభ్రంశం_అధికప్రవాహం ()) err (HB_SERIALIZE_ERROR_OTHER);
+      తిరిగి;
     }
 
-    assert (!current->next);
+    ప్రతిజ్ఞా (!current->next);
 
     /* Only "pack" if there exist other objects... Otherwise, don't bother.
      * Saves a move. */
-    if (packed.length <= 1)
-      return;
+    ఒకవేళ (packed.నిడివి <= 1)
+      తిరిగి;
 
-    pop_pack (false);
+    తీయి_pack (అబద్ధం);
 
     resolve_links ();
   }
 
-  template <typename Type = void>
+  మూస <రకం_పేరు Type = శూన్య>
   __attribute__((returns_nonnull))
   Type *push ()
   {
-    if (unlikely (in_error ())) return start_embed<Type> ();
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి ప్రారంభం_embed<Type> ();
 
     object_t *obj = object_pool.alloc ();
-    if (unlikely (!obj))
-      check_success (false);
-    else
+    ఒకవేళ (unlikely (!obj))
+      check_success (అబద్ధం);
+    లేకపోతే
     {
-      obj->head = head;
-      obj->tail = tail;
+      obj->తల_2 = తల_2;
+      obj->తోక = తోక;
       obj->next = current;
       current = obj;
     }
-    return start_embed<Type> ();
+    తిరిగి ప్రారంభం_embed<Type> ();
   }
-  void pop_discard ()
+  శూన్య తీయి_discard ()
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return;
+    ఒకవేళ (unlikely (!obj)) తిరిగి;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error() && !only_overflow ())) return;
+    ఒకవేళ (unlikely (లోపల_error() && !only_అధికప్రవాహం ())) తిరిగి;
 
     current = current->next;
-    revert (zerocopy ? zerocopy : obj->head, obj->tail);
-    zerocopy = nullptr;
+    revert (zerocopy ? zerocopy : obj->తల_2, obj->తోక);
+    zerocopy = శూన్యసూచిక;
     obj->fini ();
     object_pool.release (obj);
   }
@@ -365,113 +365,113 @@ struct hb_serialize_context_t
    * so not worth an attempt, or a contiguous table is serialized as
    * multiple consecutive objects in the reverse order so can't be shared.
    */
-  objidx_t pop_pack (bool share=true)
+  objidx_t తీయి_pack (తార్కిక share=నిజం)
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return 0;
+    ఒకవేళ (unlikely (!obj)) తిరిగి 0;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error()  && !only_overflow ())) return 0;
+    ఒకవేళ (unlikely (లోపల_error()  && !only_అధికప్రవాహం ())) తిరిగి 0;
 
     current = current->next;
-    obj->tail = head;
-    obj->next = nullptr;
-    assert (obj->head <= obj->tail);
-    unsigned len = obj->tail - obj->head;
-    head = zerocopy ? zerocopy : obj->head; /* Rewind head. */
-    bool was_zerocopy = zerocopy;
-    zerocopy = nullptr;
+    obj->తోక = తల_2;
+    obj->next = శూన్యసూచిక;
+    ప్రతిజ్ఞా (obj->తల_2 <= obj->తోక);
+    గుర్తులేని len = obj->తోక - obj->తల_2;
+    తల_2 = zerocopy ? zerocopy : obj->తల_2; /* Rewind head. */
+    తార్కిక was_zerocopy = zerocopy;
+    zerocopy = శూన్యసూచిక;
 
-    if (!len)
+    ఒకవేళ (!len)
     {
-      assert (!obj->real_links.length);
-      assert (!obj->virtual_links.length);
-      return 0;
+      ప్రతిజ్ఞా (!obj->real_links.నిడివి);
+      ప్రతిజ్ఞా (!obj->virtual_links.నిడివి);
+      తిరిగి 0;
     }
 
     objidx_t objidx;
     uint32_t hash = 0;
-    if (share)
+    ఒకవేళ (share)
     {
       hash = hb_hash (obj);
       objidx = packed_map.get_with_hash (obj, hash);
-      if (objidx)
+      ఒకవేళ (objidx)
       {
-        merge_virtual_links (obj, objidx);
+        విలీనం_virtual_links (obj, objidx);
 	obj->fini ();
         object_pool.release (obj);
-	return objidx;
+	తిరిగి objidx;
       }
     }
 
-    tail -= len;
-    if (was_zerocopy)
-      assert (tail == obj->head);
-    else
-      memmove (tail, obj->head, len);
+    తోక -= len;
+    ఒకవేళ (was_zerocopy)
+      ప్రతిజ్ఞా (తోక == obj->తల_2);
+    లేకపోతే
+      memmove (తోక, obj->తల_2, len);
 
-    obj->head = tail;
-    obj->tail = tail + len;
+    obj->తల_2 = తోక;
+    obj->తోక = తోక + len;
 
     packed.push (obj);
 
-    if (unlikely (!propagate_error (packed)))
+    ఒకవేళ (unlikely (!propagate_error (packed)))
     {
       /* Obj wasn't successfully added to packed, so clean it up otherwise its
        * links will be leaked. When we use constructor/destructors properly, we
        * can remove these. */
       obj->fini ();
-      return 0;
+      తిరిగి 0;
     }
 
-    objidx = packed.length - 1;
+    objidx = packed.నిడివి - 1;
 
-    if (share) packed_map.set_with_hash (obj, hash, objidx);
+    ఒకవేళ (share) packed_map.సమితి_with_hash (obj, hash, objidx);
     propagate_error (packed_map);
 
-    return objidx;
+    తిరిగి objidx;
   }
 
-  void revert (snapshot_t snap)
+  శూన్య revert (snapshot_t snap)
   {
     // Overflows that happened after the snapshot will be erased by the revert.
-    if (unlikely (in_error () && !only_overflow ())) return;
-    assert (snap.current == current);
-    if (current)
+    ఒకవేళ (unlikely (లోపల_error () && !only_అధికప్రవాహం ())) తిరిగి;
+    ప్రతిజ్ఞా (snap.current == current);
+    ఒకవేళ (current)
     {
-      current->real_links.shrink (snap.num_real_links);
-      current->virtual_links.shrink (snap.num_virtual_links);
+      current->real_links.shrink (snap.అంకె_real_links);
+      current->virtual_links.shrink (snap.అంకె_virtual_links);
     }
     errors = snap.errors;
-    revert (snap.head, snap.tail);
+    revert (snap.తల_2, snap.తోక);
   }
 
-  void revert (char *snap_head,
-	       char *snap_tail)
+  శూన్య revert (అక్షరం *snap_తల,
+	       అక్షరం *snap_తోక)
   {
-    if (unlikely (in_error ())) return;
-    assert (snap_head <= head);
-    assert (tail <= snap_tail);
-    head = snap_head;
-    tail = snap_tail;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
+    ప్రతిజ్ఞా (snap_తల <= తల_2);
+    ప్రతిజ్ఞా (తోక <= snap_తోక);
+    తల_2 = snap_తల;
+    తోక = snap_తోక;
     discard_stale_objects ();
   }
 
-  void discard_stale_objects ()
+  శూన్య discard_stale_objects ()
   {
-    if (unlikely (in_error ())) return;
-    while (packed.length > 1 &&
-	   packed.tail ()->head < tail)
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
+    అయితే (packed.నిడివి > 1 &&
+	   packed.తోక ()->తల_2 < తోక)
     {
-      object_t *obj = packed.tail ();
+      object_t *obj = packed.తోక ();
       packed_map.del (obj);
-      assert (!obj->next);
+      ప్రతిజ్ఞా (!obj->next);
       obj->fini ();
       object_pool.release (obj);
-      packed.pop ();
+      packed.తీయి ();
     }
-    if (packed.length > 1)
-      assert (packed.tail ()->head == tail);
+    ఒకవేళ (packed.నిడివి > 1)
+      ప్రతిజ్ఞా (packed.తోక ()->తల_2 == తోక);
   }
 
   // Adds a virtual link from the current object to objidx. A virtual link is not associated with
@@ -482,28 +482,28 @@ struct hb_serialize_context_t
   // This is useful in certain situations where there needs to be a specific ordering in the
   // final serialization. Such as when platform bugs require certain orderings, or to provide
   //  guidance to the repacker for better offset overflow resolution.
-  void add_virtual_link (objidx_t objidx)
+  శూన్య కూడు_virtual_link (objidx_t objidx)
   {
-    if (unlikely (in_error ())) return;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
 
-    if (!objidx)
-      return;
+    ఒకవేళ (!objidx)
+      తిరిగి;
 
-    assert (current);
+    ప్రతిజ్ఞా (current);
 
-    if (!current->add_virtual_link(objidx))
+    ఒకవేళ (!current->కూడు_virtual_link(objidx))
       err (HB_SERIALIZE_ERROR_OTHER);
   }
 
-  objidx_t last_added_child_index() const {
-    if (unlikely (in_error ())) return (objidx_t) -1;
+  objidx_t చివరి_added_బిడ్డ_సూచీ() స్థిరరాశి {
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి (objidx_t) -1;
 
-    assert (current);
-    if (!bool(current->real_links)) {
-      return (objidx_t) -1;
+    ప్రతిజ్ఞా (current);
+    ఒకవేళ (!తార్కిక(current->real_links)) {
+      తిరిగి (objidx_t) -1;
     }
 
-    return current->real_links[current->real_links.length - 1].objidx;
+    తిరిగి current->real_links[current->real_links.నిడివి - 1].objidx;
   }
 
   // For the current object ensure that the sub-table bytes for child objidx are always placed
@@ -511,42 +511,42 @@ struct hb_serialize_context_t
   // repacker will not move the target subtable before the other children
   // (by adding virtual links). It is up to the caller to ensure the initial serialization
   // order is correct.
-  void repack_last(objidx_t objidx) {
-    if (unlikely (in_error ())) return;
+  శూన్య repack_చివరి(objidx_t objidx) {
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
 
-    if (!objidx)
-      return;
+    ఒకవేళ (!objidx)
+      తిరిగి;
 
-    assert (current);
-    for (auto& l : current->real_links) {
-      if (l.objidx == objidx) {
-        continue;
+    ప్రతిజ్ఞా (current);
+    కొరకు (స్వయంచాలక& l : current->real_links) {
+      ఒకవేళ (l.objidx == objidx) {
+        కొనసాగు;
       }
 
-      packed[l.objidx]->add_virtual_link(objidx);
+      packed[l.objidx]->కూడు_virtual_link(objidx);
     }
   }
 
-  template <typename T>
-  void add_link (T &ofs, objidx_t objidx,
-		 whence_t whence = Head,
-		 unsigned bias = 0)
+  మూస <రకం_పేరు T>
+  శూన్య కూడు_link (T &ofs, objidx_t objidx,
+		 whence_t whence = తల,
+		 గుర్తులేని bias = 0)
   {
-    if (unlikely (in_error ())) return;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
 
-    if (!objidx)
-      return;
+    ఒకవేళ (!objidx)
+      తిరిగి;
 
-    assert (current);
-    assert (current->head <= (const char *) &ofs);
+    ప్రతిజ్ఞా (current);
+    ప్రతిజ్ఞా (current->తల_2 <= (స్థిరరాశి అక్షరం *) &ofs);
 
-    auto& link = *current->real_links.push ();
-    if (current->real_links.in_error ())
+    స్వయంచాలక& link = *current->real_links.push ();
+    ఒకవేళ (current->real_links.లోపల_error ())
       err (HB_SERIALIZE_ERROR_OTHER);
 
-    link.width = sizeof (T);
+    link.వెడల్పు = పరిమాణం (T);
     link.objidx = objidx;
-    if (unlikely (!sizeof (T)))
+    ఒకవేళ (unlikely (!పరిమాణం (T)))
     {
       // This link is not associated with an actual offset and exists merely to enforce
       // an ordering constraint.
@@ -554,268 +554,268 @@ struct hb_serialize_context_t
       link.whence = 0;
       link.position = 0;
       link.bias = 0;
-      return;
+      తిరిగి;
     }
 
     link.is_signed = std::is_signed<hb_unwrap_type (T)>::value;
-    link.whence = (unsigned) whence;
-    link.position = (const char *) &ofs - current->head;
+    link.whence = (గుర్తులేని) whence;
+    link.position = (స్థిరరాశి అక్షరం *) &ofs - current->తల_2;
     link.bias = bias;
   }
 
-  unsigned to_bias (const void *base) const
+  గుర్తులేని గమ్యం_bias (స్థిరరాశి శూన్య *పునాది) స్థిరరాశి
   {
-    if (unlikely (in_error ())) return 0;
-    if (!base) return 0;
-    assert (current);
-    assert (current->head <= (const char *) base);
-    return (const char *) base - current->head;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి 0;
+    ఒకవేళ (!పునాది) తిరిగి 0;
+    ప్రతిజ్ఞా (current);
+    ప్రతిజ్ఞా (current->తల_2 <= (స్థిరరాశి అక్షరం *) పునాది);
+    తిరిగి (స్థిరరాశి అక్షరం *) పునాది - current->తల_2;
   }
 
-  void resolve_links ()
+  శూన్య resolve_links ()
   {
-    if (unlikely (in_error ())) return;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి;
 
-    assert (!current);
-    assert (packed.length > 1);
+    ప్రతిజ్ఞా (!current);
+    ప్రతిజ్ఞా (packed.నిడివి > 1);
 
-    for (const object_t* parent : ++hb_iter (packed))
-      for (const object_t::link_t &link : parent->real_links)
+    కొరకు (స్థిరరాశి object_t* మాతృ : ++hb_iter (packed))
+      కొరకు (స్థిరరాశి object_t::link_t &link : మాతృ->real_links)
       {
-	const object_t* child = packed[link.objidx];
-	if (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); return; }
-	unsigned offset = 0;
-	switch ((whence_t) link.whence) {
-	case Head:     offset = child->head - parent->head; break;
-	case Tail:     offset = child->head - parent->tail; break;
-	case Absolute: offset = (head - start) + (child->head - tail); break;
+	స్థిరరాశి object_t* బిడ్డ = packed[link.objidx];
+	ఒకవేళ (unlikely (!బిడ్డ)) { err (HB_SERIALIZE_ERROR_OTHER); తిరిగి; }
+	గుర్తులేని స్థానభ్రంశం = 0;
+	ఎంపిక ((whence_t) link.whence) {
+	స్థితి తల:     స్థానభ్రంశం = బిడ్డ->తల_2 - మాతృ->తల_2; ఆపు;
+	స్థితి తోక_2:     స్థానభ్రంశం = బిడ్డ->తల_2 - మాతృ->తోక; ఆపు;
+	స్థితి Absolute: స్థానభ్రంశం = (తల_2 - ప్రారంభం) + (బిడ్డ->తల_2 - తోక); ఆపు;
 	}
 
-	assert (offset >= link.bias);
-	offset -= link.bias;
-	if (link.is_signed)
+	ప్రతిజ్ఞా (స్థానభ్రంశం >= link.bias);
+	స్థానభ్రంశం -= link.bias;
+	ఒకవేళ (link.is_signed)
 	{
-	  assert (link.width == 2 || link.width == 4);
-	  if (link.width == 4)
-	    assign_offset<int32_t> (parent, link, offset);
-	  else
-	    assign_offset<int16_t> (parent, link, offset);
+	  ప్రతిజ్ఞా (link.వెడల్పు == 2 || link.వెడల్పు == 4);
+	  ఒకవేళ (link.వెడల్పు == 4)
+	    కేటాయించు_స్థానభ్రంశం<int32_t> (మాతృ, link, స్థానభ్రంశం);
+	  లేకపోతే
+	    కేటాయించు_స్థానభ్రంశం<int16_t> (మాతృ, link, స్థానభ్రంశం);
 	}
-	else
+	లేకపోతే
 	{
-	  assert (link.width == 2 || link.width == 3 || link.width == 4);
-	  if (link.width == 4)
-	    assign_offset<uint32_t> (parent, link, offset);
-	  else if (link.width == 3)
-	    assign_offset<uint32_t, 3> (parent, link, offset);
-	  else
-	    assign_offset<uint16_t> (parent, link, offset);
+	  ప్రతిజ్ఞా (link.వెడల్పు == 2 || link.వెడల్పు == 3 || link.వెడల్పు == 4);
+	  ఒకవేళ (link.వెడల్పు == 4)
+	    కేటాయించు_స్థానభ్రంశం<uint32_t> (మాతృ, link, స్థానభ్రంశం);
+	  లేకపోతే ఒకవేళ (link.వెడల్పు == 3)
+	    కేటాయించు_స్థానభ్రంశం<uint32_t, 3> (మాతృ, link, స్థానభ్రంశం);
+	  లేకపోతే
+	    కేటాయించు_స్థానభ్రంశం<uint16_t> (మాతృ, link, స్థానభ్రంశం);
 	}
       }
   }
 
-  unsigned int length () const
+  గుర్తులేని పూర్ణాంకం నిడివి () స్థిరరాశి
   {
-    if (unlikely (!current)) return 0;
-    return this->head - current->head;
+    ఒకవేళ (unlikely (!current)) తిరిగి 0;
+    తిరిగి ఇది->తల_2 - current->తల_2;
   }
 
-  void align (unsigned int alignment)
+  శూన్య align (గుర్తులేని పూర్ణాంకం alignment)
   {
-    unsigned int l = length () % alignment;
-    if (l)
-      (void) allocate_size<void> (alignment - l);
+    గుర్తులేని పూర్ణాంకం l = నిడివి () % alignment;
+    ఒకవేళ (l)
+      (శూన్య) allocate_కొలత<శూన్య> (alignment - l);
   }
 
-  template <typename Type = void>
+  మూస <రకం_పేరు Type = శూన్య>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type *obj HB_UNUSED = nullptr) const
-  { return reinterpret_cast<Type *> (this->head); }
-  template <typename Type>
+  Type *ప్రారంభం_embed (స్థిరరాశి Type *obj HB_వాడని = శూన్యసూచిక) స్థిరరాశి
+  { తిరిగి reinterpret_cast<Type *> (ఇది->తల_2); }
+  మూస <రకం_పేరు Type>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type &obj) const
-  { return start_embed (std::addressof (obj)); }
+  Type *ప్రారంభం_embed (స్థిరరాశి Type &obj) స్థిరరాశి
+  { తిరిగి ప్రారంభం_embed (std::addressof (obj)); }
 
-  bool err (hb_serialize_error_t err_type)
+  తార్కిక err (hb_serialize_error_t err_type)
   {
-    return !bool ((errors = (errors | err_type)));
+    తిరిగి !తార్కిక ((errors = (errors | err_type)));
   }
 
-  bool start_zerocopy (size_t size)
+  తార్కిక ప్రారంభం_zerocopy (size_t కొలత)
   {
-    if (unlikely (in_error ())) return false;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి అబద్ధం;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    ఒకవేళ (unlikely (కొలత > గరిష్ఠ_పూర్ణాంకం || ఇది->తోక - ఇది->తల_2 < ptrdiff_t (కొలత)))
     {
-      err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return false;
+      err (HB_SERIALIZE_ERROR_బహిర్గతం_యొక్క_స్థలం);
+      తిరిగి అబద్ధం;
     }
 
-    assert (!this->zerocopy);
-    this->zerocopy = this->head;
+    ప్రతిజ్ఞా (!ఇది->zerocopy);
+    ఇది->zerocopy = ఇది->తల_2;
 
-    assert (this->current->head == this->head);
-    this->current->head = this->current->tail = this->head = this->tail - size;
-    return true;
+    ప్రతిజ్ఞా (ఇది->current->తల_2 == ఇది->తల_2);
+    ఇది->current->తల_2 = ఇది->current->తోక = ఇది->తల_2 = ఇది->తోక - కొలత;
+    తిరిగి నిజం;
   }
 
-  template <typename Type>
+  మూస <రకం_పేరు Type>
   HB_NODISCARD
-  Type *allocate_size (size_t size, bool clear = true)
+  Type *allocate_కొలత (size_t కొలత, తార్కిక clear = నిజం)
   {
-    if (unlikely (in_error ())) return nullptr;
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి శూన్యసూచిక;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    ఒకవేళ (unlikely (కొలత > గరిష్ఠ_పూర్ణాంకం || ఇది->తోక - ఇది->తల_2 < ptrdiff_t (కొలత)))
     {
-      err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return nullptr;
+      err (HB_SERIALIZE_ERROR_బహిర్గతం_యొక్క_స్థలం);
+      తిరిగి శూన్యసూచిక;
     }
-    if (clear)
-      hb_memset (this->head, 0, size);
-    char *ret = this->head;
-    this->head += size;
-    return reinterpret_cast<Type *> (ret);
+    ఒకవేళ (clear)
+      hb_memset (ఇది->తల_2, 0, కొలత);
+    అక్షరం *ret = ఇది->తల_2;
+    ఇది->తల_2 += కొలత;
+    తిరిగి reinterpret_cast<Type *> (ret);
   }
 
-  template <typename Type>
+  మూస <రకం_పేరు Type>
   Type *allocate_min ()
-  { return this->allocate_size<Type> (Type::min_size); }
+  { తిరిగి ఇది->allocate_కొలత<Type> (Type::min_కొలత); }
 
-  template <typename Type>
+  మూస <రకం_పేరు Type>
   HB_NODISCARD
-  Type *embed (const Type *obj)
+  Type *embed (స్థిరరాశి Type *obj)
   {
-    size_t size = obj->get_size ();
-    Type *ret = this->allocate_size<Type> (size, false);
-    if (unlikely (!ret)) return nullptr;
-    hb_memcpy (ret, obj, size);
-    return ret;
+    size_t కొలత = obj->get_కొలత ();
+    Type *ret = ఇది->allocate_కొలత<Type> (కొలత, అబద్ధం);
+    ఒకవేళ (unlikely (!ret)) తిరిగి శూన్యసూచిక;
+    hb_memcpy (ret, obj, కొలత);
+    తిరిగి ret;
   }
-  template <typename Type>
+  మూస <రకం_పేరు Type>
   HB_NODISCARD
-  Type *embed (const Type &obj)
-  { return embed (std::addressof (obj)); }
-  char *embed (const char *obj, unsigned size)
+  Type *embed (స్థిరరాశి Type &obj)
+  { తిరిగి embed (std::addressof (obj)); }
+  అక్షరం *embed (స్థిరరాశి అక్షరం *obj, గుర్తులేని కొలత)
   {
-    char *ret = this->allocate_size<char> (size, false);
-    if (unlikely (!ret)) return nullptr;
-    hb_memcpy (ret, obj, size);
-    return ret;
+    అక్షరం *ret = ఇది->allocate_కొలత<అక్షరం> (కొలత, అబద్ధం);
+    ఒకవేళ (unlikely (!ret)) తిరిగి శూన్యసూచిక;
+    hb_memcpy (ret, obj, కొలత);
+    తిరిగి ret;
   }
 
-  template <typename Type, typename ...Ts> auto
-  _copy (const Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
-  (Type *, src.copy (this, std::forward<Ts> (ds)...))
+  మూస <రకం_పేరు Type, రకం_పేరు ...Ts> స్వయంచాలక
+  _copy (స్థిరరాశి Type &src, hb_ప్రాధాన్యత<1>, Ts&&... ds) HB_RETURN
+  (Type *, src.copy (ఇది, std::forward<Ts> (ds)...))
 
-  template <typename Type> auto
-  _copy (const Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
+  మూస <రకం_పేరు Type> స్వయంచాలక
+  _copy (స్థిరరాశి Type &src, hb_ప్రాధాన్యత<0>) -> decltype (&(hb_declval<Type> () = src))
   {
-    Type *ret = this->allocate_size<Type> (sizeof (Type));
-    if (unlikely (!ret)) return nullptr;
+    Type *ret = ఇది->allocate_కొలత<Type> (పరిమాణం (Type));
+    ఒకవేళ (unlikely (!ret)) తిరిగి శూన్యసూచిక;
     *ret = src;
-    return ret;
+    తిరిగి ret;
   }
 
   /* Like embed, but active: calls obj.operator=() or obj.copy() to transfer data
    * instead of hb_memcpy(). */
-  template <typename Type, typename ...Ts>
-  Type *copy (const Type &src, Ts&&... ds)
-  { return _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
-  template <typename Type, typename ...Ts>
-  Type *copy (const Type *src, Ts&&... ds)
-  { return copy (*src, std::forward<Ts> (ds)...); }
+  మూస <రకం_పేరు Type, రకం_పేరు ...Ts>
+  Type *copy (స్థిరరాశి Type &src, Ts&&... ds)
+  { తిరిగి _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
+  మూస <రకం_పేరు Type, రకం_పేరు ...Ts>
+  Type *copy (స్థిరరాశి Type *src, Ts&&... ds)
+  { తిరిగి copy (*src, std::forward<Ts> (ds)...); }
 
-  template<typename Iterator,
+  మూస<రకం_పేరు Iterator,
 	   hb_requires (hb_is_iterator (Iterator)),
-	   typename ...Ts>
-  void copy_all (Iterator it, Ts&&... ds)
-  { for (decltype (*it) _ : it) copy (_, ds...); }
+	   రకం_పేరు ...Ts>
+  శూన్య copy_all (Iterator it, Ts&&... ds)
+  { కొరకు (decltype (*it) _ : it) copy (_, ds...); }
 
-  template <typename Type>
-  hb_serialize_context_t& operator << (const Type &obj) & { embed (obj); return *this; }
+  మూస <రకం_పేరు Type>
+  hb_serialize_context_t& క్రియాకారకం << (స్థిరరాశి Type &obj) & { embed (obj); తిరిగి *ఇది; }
 
-  template <typename Type>
-  Type *extend_size (Type *obj, size_t size, bool clear = true)
+  మూస <రకం_పేరు Type>
+  Type *extend_కొలత (Type *obj, size_t కొలత, తార్కిక clear = నిజం)
   {
-    if (unlikely (in_error ())) return nullptr;
-    if (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); return nullptr; }
+    ఒకవేళ (unlikely (లోపల_error ())) తిరిగి శూన్యసూచిక;
+    ఒకవేళ (unlikely (కొలత >= గరిష్ఠ_పూర్ణాంకం)) { err (HB_SERIALIZE_ERROR_OTHER); తిరిగి శూన్యసూచిక; }
 
-    assert (this->start <= (char *) obj);
-    assert ((char *) obj <= this->head);
-    assert ((size_t) (this->head - (char *) obj) <= size);
-    if (unlikely (((char *) obj + size < (char *) obj) ||
-		  !this->allocate_size<Type> (((char *) obj) + size - this->head, clear))) return nullptr;
-    return reinterpret_cast<Type *> (obj);
+    ప్రతిజ్ఞా (ఇది->ప్రారంభం <= (అక్షరం *) obj);
+    ప్రతిజ్ఞా ((అక్షరం *) obj <= ఇది->తల_2);
+    ప్రతిజ్ఞా ((size_t) (ఇది->తల_2 - (అక్షరం *) obj) <= కొలత);
+    ఒకవేళ (unlikely (((అక్షరం *) obj + కొలత < (అక్షరం *) obj) ||
+		  !ఇది->allocate_కొలత<Type> (((అక్షరం *) obj) + కొలత - ఇది->తల_2, clear))) తిరిగి శూన్యసూచిక;
+    తిరిగి reinterpret_cast<Type *> (obj);
   }
-  template <typename Type>
-  Type *extend_size (Type &obj, size_t size, bool clear = true)
-  { return extend_size (std::addressof (obj), size, clear); }
+  మూస <రకం_పేరు Type>
+  Type *extend_కొలత (Type &obj, size_t కొలత, తార్కిక clear = నిజం)
+  { తిరిగి extend_కొలత (std::addressof (obj), కొలత, clear); }
 
-  template <typename Type>
-  Type *extend_min (Type *obj) { return extend_size (obj, obj->min_size); }
-  template <typename Type>
-  Type *extend_min (Type &obj) { return extend_min (std::addressof (obj)); }
+  మూస <రకం_పేరు Type>
+  Type *extend_min (Type *obj) { తిరిగి extend_కొలత (obj, obj->min_కొలత); }
+  మూస <రకం_పేరు Type>
+  Type *extend_min (Type &obj) { తిరిగి extend_min (std::addressof (obj)); }
 
-  template <typename Type, typename ...Ts>
+  మూస <రకం_పేరు Type, రకం_పేరు ...Ts>
   Type *extend (Type *obj, Ts&&... ds)
-  { return extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
-  template <typename Type, typename ...Ts>
+  { తిరిగి extend_కొలత (obj, obj->get_కొలత (std::forward<Ts> (ds)...)); }
+  మూస <రకం_పేరు Type, రకం_పేరు ...Ts>
   Type *extend (Type &obj, Ts&&... ds)
-  { return extend (std::addressof (obj), std::forward<Ts> (ds)...); }
+  { తిరిగి extend (std::addressof (obj), std::forward<Ts> (ds)...); }
 
   /* Output routines. */
-  hb_bytes_t copy_bytes () const
+  hb_బైట్లు_t copy_బైట్లు () స్థిరరాశి
   {
-    assert (successful ());
+    ప్రతిజ్ఞా (successful ());
     /* Copy both items from head side and tail side... */
-    unsigned int len = (this->head - this->start)
-		     + (this->end  - this->tail);
+    గుర్తులేని పూర్ణాంకం len = (ఇది->తల_2 - ఇది->ప్రారంభం)
+		     + (ఇది->చివర  - ఇది->తోక);
 
     // If len is zero don't hb_malloc as the memory won't get properly
     // cleaned up later.
-    if (!len) return hb_bytes_t ();
+    ఒకవేళ (!len) తిరిగి hb_బైట్లు_t ();
 
-    char *p = (char *) hb_malloc (len);
-    if (unlikely (!p)) return hb_bytes_t ();
+    అక్షరం *p = (అక్షరం *) hb_malloc (len);
+    ఒకవేళ (unlikely (!p)) తిరిగి hb_బైట్లు_t ();
 
-    hb_memcpy (p, this->start, this->head - this->start);
-    hb_memcpy (p + (this->head - this->start), this->tail, this->end - this->tail);
-    return hb_bytes_t (p, len);
+    hb_memcpy (p, ఇది->ప్రారంభం, ఇది->తల_2 - ఇది->ప్రారంభం);
+    hb_memcpy (p + (ఇది->తల_2 - ఇది->ప్రారంభం), ఇది->తోక, ఇది->చివర - ఇది->తోక);
+    తిరిగి hb_బైట్లు_t (p, len);
   }
-  template <typename Type>
-  Type *copy () const
-  { return reinterpret_cast<Type *> ((char *) copy_bytes ().arrayZ); }
-  hb_blob_t *copy_blob () const
+  మూస <రకం_పేరు Type>
+  Type *copy () స్థిరరాశి
+  { తిరిగి reinterpret_cast<Type *> ((అక్షరం *) copy_బైట్లు ().arrayZ); }
+  hb_blob_t *copy_blob () స్థిరరాశి
   {
-    hb_bytes_t b = copy_bytes ();
-    return hb_blob_create (b.arrayZ, b.length,
-			   HB_MEMORY_MODE_WRITABLE,
-			   (char *) b.arrayZ, hb_free);
+    hb_బైట్లు_t b = copy_బైట్లు ();
+    తిరిగి hb_blob_create (b.arrayZ, b.నిడివి,
+			   HB_జ్ఞాపకం_బహుళకం_WRITABLE,
+			   (అక్షరం *) b.arrayZ, hb_free);
   }
 
-  const hb_vector_t<object_t *>& object_graph() const
-  { return packed; }
+  స్థిరరాశి hb_సదిశ_t<object_t *>& object_లేఖాచిత్రం() స్థిరరాశి
+  { తిరిగి packed; }
 
-  private:
-  template <typename T, unsigned Size = sizeof (T)>
-  void assign_offset (const object_t* parent, const object_t::link_t &link, unsigned offset)
+  అంతరంగ:
+  మూస <రకం_పేరు T, గుర్తులేని కొలత_2 = పరిమాణం (T)>
+  శూన్య కేటాయించు_స్థానభ్రంశం (స్థిరరాశి object_t* మాతృ, స్థిరరాశి object_t::link_t &link, గుర్తులేని స్థానభ్రంశం)
   {
     // XXX We should stop assuming big-endian!
-    auto &off = * ((HBInt<true, T, Size> *) (parent->head + link.position));
-    assert (0 == off);
-    check_assign (off, offset, HB_SERIALIZE_ERROR_OFFSET_OVERFLOW);
+    స్వయంచాలక &off = * ((HBInt<నిజం, T, కొలత_2> *) (మాతృ->తల_2 + link.position));
+    ప్రతిజ్ఞా (0 == off);
+    check_కేటాయించు (off, స్థానభ్రంశం, HB_SERIALIZE_ERROR_స్థానభ్రంశం_అధికప్రవాహం);
   }
 
-  public:
-  char *start, *head, *tail, *end, *zerocopy;
-  unsigned int debug_depth;
+  బహిరంగ:
+  అక్షరం *ప్రారంభం, *తల_2, *తోక, *చివర, *zerocopy;
+  గుర్తులేని పూర్ణాంకం debug_లోతు;
   hb_serialize_error_t errors;
 
-  private:
+  అంతరంగ:
 
-  void merge_virtual_links (const object_t* from, objidx_t to_idx) {
-    object_t* to = packed[to_idx];
-    for (const auto& l : from->virtual_links) {
+  శూన్య విలీనం_virtual_links (స్థిరరాశి object_t* from, objidx_t గమ్యం_idx) {
+    object_t* to = packed[గమ్యం_idx];
+    కొరకు (స్థిరరాశి స్వయంచాలక& l : from->virtual_links) {
       to->virtual_links.push (l);
     }
   }
@@ -827,10 +827,10 @@ struct hb_serialize_context_t
   object_t *current;
 
   /* Stack of packed objects.  Object 0 is always nil object. */
-  hb_vector_t<object_t *> packed;
+  hb_సదిశ_t<object_t *> packed;
 
   /* Map view of packed objects. */
-  hb_hashmap_t<const object_t *, objidx_t> packed_map;
+  hb_hashmap_t<స్థిరరాశి object_t *, objidx_t> packed_map;
 };
 
-#endif /* HB_SERIALIZE_HH */
+#అయితే_ముగింపు /* HB_SERIALIZE_HH */

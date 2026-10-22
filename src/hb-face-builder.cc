@@ -26,175 +26,175 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-face.hh"
+#అన్తర్భావ "hb-face.hh"
 
-#include "hb-map.hh"
-#include "hb-open-file.hh"
-#include "hb-serialize.hh"
+#అన్తర్భావ "hb-map.hh"
+#అన్తర్భావ "hb-open-file.hh"
+#అన్తర్భావ "hb-serialize.hh"
 
 
 /*
  * face-builder: A face that has add_table().
  */
 
-struct face_table_info_t
+నిర్మాణం face_పట్టిక_info_t
 {
-  hb_blob_t* data;
-  unsigned order;
+  hb_blob_t* దత్తాంశం;
+  గుర్తులేని క్రమం;
 };
 
-struct hb_face_builder_data_t
+నిర్మాణం hb_face_builder_దత్తాంశం_t
 {
-  hb_hashmap_t<hb_tag_t, face_table_info_t> tables;
+  hb_hashmap_t<hb_ట్యాగ్_t, face_పట్టిక_info_t> tables;
 };
 
-static int compare_entries (const void* pa, const void* pb)
+స్థిర పూర్ణాంకం compare_entries (స్థిరరాశి శూన్య* pa, స్థిరరాశి శూన్య* pb)
 {
-  const auto& a = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
-  const auto& b = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
+  స్థిరరాశి స్వయంచాలక& a = * (స్థిరరాశి hb_pair_t<hb_ట్యాగ్_t, face_పట్టిక_info_t> *) pa;
+  స్థిరరాశి స్వయంచాలక& b = * (స్థిరరాశి hb_pair_t<hb_ట్యాగ్_t, face_పట్టిక_info_t> *) pb;
 
   /* Order by blob size first (smallest to largest) and then table tag */
 
-  if (a.second.order != b.second.order)
-    return a.second.order < b.second.order ? -1 : +1;
+  ఒకవేళ (a.second.క్రమం != b.second.క్రమం)
+    తిరిగి a.second.క్రమం < b.second.క్రమం ? -1 : +1;
 
-  if (a.second.data->length != b.second.data->length)
-    return a.second.data->length < b.second.data->length ? -1 : +1;
+  ఒకవేళ (a.second.దత్తాంశం->నిడివి != b.second.దత్తాంశం->నిడివి)
+    తిరిగి a.second.దత్తాంశం->నిడివి < b.second.దత్తాంశం->నిడివి ? -1 : +1;
 
-  return a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
+  తిరిగి a.మొదటి < b.మొదటి ? -1 : a.మొదటి == b.మొదటి ? 0 : +1;
 }
 
-static hb_face_builder_data_t *
-_hb_face_builder_data_create ()
+స్థిర hb_face_builder_దత్తాంశం_t *
+hb_face_builder_దత్తాంశం_create ()
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, sizeof (hb_face_builder_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = (hb_face_builder_దత్తాంశం_t *) hb_calloc (1, పరిమాణం (hb_face_builder_దత్తాంశం_t));
+  ఒకవేళ (unlikely (!దత్తాంశం))
+    తిరిగి శూన్యసూచిక;
 
-  data->tables.init ();
+  దత్తాంశం->tables.init ();
 
-  return data;
+  తిరిగి దత్తాంశం;
 }
 
-static void
-_hb_face_builder_data_destroy (void *user_data)
+స్థిర శూన్య
+hb_face_builder_దత్తాంశం_destroy (శూన్య *user_దత్తాంశం)
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = (hb_face_builder_దత్తాంశం_t *) user_దత్తాంశం;
 
-  for (auto info : data->tables.values())
-    hb_blob_destroy (info.data);
+  కొరకు (స్వయంచాలక info : దత్తాంశం->tables.values())
+    hb_blob_destroy (info.దత్తాంశం);
 
-  data->tables.fini ();
+  దత్తాంశం->tables.fini ();
 
-  hb_free (data);
+  hb_free (దత్తాంశం);
 }
 
-static hb_blob_t *
-_hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
+స్థిర hb_blob_t *
+hb_face_builder_దత్తాంశం_reference_blob (hb_face_builder_దత్తాంశం_t *దత్తాంశం)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  గుర్తులేని పూర్ణాంకం పట్టిక_లెక్క_2 = దత్తాంశం->tables.get_population ();
+  గుర్తులేని పూర్ణాంకం face_నిడివి = పట్టిక_లెక్క_2 * 16 + 12;
 
-  for (auto info : data->tables.values())
-    face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
+  కొరకు (స్వయంచాలక info : దత్తాంశం->tables.values())
+    face_నిడివి += hb_ceil_గమ్యం_4 (hb_blob_get_నిడివి (info.దత్తాంశం));
 
-  char *buf = (char *) hb_malloc (face_length);
-  if (unlikely (!buf))
-    return nullptr;
+  అక్షరం *buf = (అక్షరం *) hb_malloc (face_నిడివి);
+  ఒకవేళ (unlikely (!buf))
+    తిరిగి శూన్యసూచిక;
 
-  hb_serialize_context_t c (buf, face_length);
-  c.propagate_error (data->tables);
-  OT::OpenTypeFontFile *f = c.start_serialize<OT::OpenTypeFontFile> ();
+  hb_serialize_context_t c (buf, face_నిడివి);
+  c.propagate_error (దత్తాంశం->tables);
+  OT::OpenTypeFontFile *f = c.ప్రారంభం_serialize<OT::OpenTypeFontFile> ();
 
-  bool is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
-                 || data->tables.has (HB_TAG ('C','F','F','2')));
-  hb_tag_t sfnt_tag = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::TrueTypeTag;
+  తార్కిక is_cff = (దత్తాంశం->tables.has (HB_ట్యాగ్ ('C','F','F',' '))
+                 || దత్తాంశం->tables.has (HB_ట్యాగ్ ('C','F','F','2')));
+  hb_ట్యాగ్_t sfnt_ట్యాగ్ = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::True_Type_ట్యాగ్;
 
   // Sort the tags so that produced face is deterministic.
-  hb_vector_t<hb_pair_t <hb_tag_t, face_table_info_t>> sorted_entries;
-  data->tables.iter () | hb_sink (sorted_entries);
-  if (unlikely (sorted_entries.in_error ()))
+  hb_సదిశ_t<hb_pair_t <hb_ట్యాగ్_t, face_పట్టిక_info_t>> sorted_entries;
+  దత్తాంశం->tables.iter () | hb_sink (sorted_entries);
+  ఒకవేళ (unlikely (sorted_entries.లోపల_error ()))
   {
     hb_free (buf);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
   sorted_entries.qsort (compare_entries);
 
-  bool ret = f->serialize_single (&c,
-                                  sfnt_tag,
+  తార్కిక ret = f->serialize_single (&c,
+                                  sfnt_ట్యాగ్,
                                   + sorted_entries.iter()
-                                  | hb_map ([&] (hb_pair_t<hb_tag_t, face_table_info_t> _) {
-                                    return hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
+                                  | hb_map ([&] (hb_pair_t<hb_ట్యాగ్_t, face_పట్టిక_info_t> _) {
+                                    తిరిగి hb_pair_t<hb_ట్యాగ్_t, hb_blob_t*> (_.మొదటి, _.second.దత్తాంశం);
                                   }));
 
-  c.end_serialize ();
+  c.చివర_serialize ();
 
-  if (unlikely (!ret))
+  ఒకవేళ (unlikely (!ret))
   {
     hb_free (buf);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  return hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  తిరిగి hb_blob_create (buf, face_నిడివి, HB_జ్ఞాపకం_బహుళకం_WRITABLE, buf, hb_free);
 }
 
-static hb_blob_t *
-_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+స్థిర hb_blob_t *
+hb_face_builder_reference_పట్టిక (hb_face_t *face HB_వాడని, hb_ట్యాగ్_t ట్యాగ్_2, శూన్య *user_దత్తాంశం)
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = (hb_face_builder_దత్తాంశం_t *) user_దత్తాంశం;
 
-  if (!tag)
-    return _hb_face_builder_data_reference_blob (data);
+  ఒకవేళ (!ట్యాగ్_2)
+    తిరిగి hb_face_builder_దత్తాంశం_reference_blob (దత్తాంశం);
 
-  return hb_blob_reference (data->tables[tag].data);
+  తిరిగి hb_blob_reference (దత్తాంశం->tables[ట్యాగ్_2].దత్తాంశం);
 }
 
-static unsigned
-_hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
-				 unsigned int start_offset,
-				 unsigned int *table_count,
-				 hb_tag_t *table_tags,
-				 void *user_data)
+స్థిర గుర్తులేని
+hb_face_builder_get_పట్టిక_ట్యాగులు (స్థిరరాశి hb_face_t *face HB_వాడని,
+				 గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+				 గుర్తులేని పూర్ణాంకం *పట్టిక_లెక్క_2,
+				 hb_ట్యాగ్_t *పట్టిక_ట్యాగులు,
+				 శూన్య *user_దత్తాంశం)
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = (hb_face_builder_దత్తాంశం_t *) user_దత్తాంశం;
 
-  unsigned population = data->tables.get_population ();
+  గుర్తులేని population = దత్తాంశం->tables.get_population ();
 
-  if (!table_count)
-    return population;
+  ఒకవేళ (!పట్టిక_లెక్క_2)
+    తిరిగి population;
 
-  if (unlikely (start_offset >= population))
+  ఒకవేళ (unlikely (ప్రారంభం_స్థానభ్రంశం >= population))
   {
-    *table_count = 0;
-    return population;
+    *పట్టిక_లెక్క_2 = 0;
+    తిరిగి population;
   }
 
   // Sort the tags.
-  hb_vector_t<hb_tag_t> sorted_tags;
-  data->tables.keys () | hb_sink (sorted_tags);
-  if (unlikely (sorted_tags.in_error ()))
+  hb_సదిశ_t<hb_ట్యాగ్_t> sorted_ట్యాగులు;
+  దత్తాంశం->tables.కీలకాలు () | hb_sink (sorted_ట్యాగులు);
+  ఒకవేళ (unlikely (sorted_ట్యాగులు.లోపల_error ()))
   {
     // Not much to do...
   }
-  sorted_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) {
-    return (a > b) - (a < b);
+  sorted_ట్యాగులు.qsort ([] (స్థిరరాశి hb_ట్యాగ్_t &a, స్థిరరాశి hb_ట్యాగ్_t &b) {
+    తిరిగి (a > b) - (a < b);
   });
 
-  auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
-  if (table_tags)
+  స్వయంచాలక array = sorted_ట్యాగులు.as_array ().sub_array (ప్రారంభం_స్థానభ్రంశం, పట్టిక_లెక్క_2);
+  ఒకవేళ (పట్టిక_ట్యాగులు)
   {
-    auto out = hb_array (table_tags, *table_count);
+    స్వయంచాలక బహిర్గతం = hb_array (పట్టిక_ట్యాగులు, *పట్టిక_లెక్క_2);
 
     + array.iter ()
-    | hb_sink (out)
+    | hb_sink (బహిర్గతం)
     ;
   }
 
-  return population;
+  తిరిగి population;
 }
 
 
@@ -212,19 +212,19 @@ _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
 hb_face_t *
 hb_face_builder_create ()
 {
-  hb_face_builder_data_t *data = _hb_face_builder_data_create ();
-  if (unlikely (!data)) return hb_face_get_empty ();
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = hb_face_builder_దత్తాంశం_create ();
+  ఒకవేళ (unlikely (!దత్తాంశం)) తిరిగి hb_face_get_ఖాళీలు ();
 
-  hb_face_t *face = hb_face_create_for_tables (_hb_face_builder_reference_table,
-					       data,
-					       _hb_face_builder_data_destroy);
+  hb_face_t *face = hb_face_create_for_tables (hb_face_builder_reference_పట్టిక,
+					       దత్తాంశం,
+					       hb_face_builder_దత్తాంశం_destroy);
 
-  hb_face_set_get_table_tags_func (face,
-				   _hb_face_builder_get_table_tags,
-				   data,
-				   nullptr);
+  hb_face_సమితి_get_పట్టిక_ట్యాగులు_func (face,
+				   hb_face_builder_get_పట్టిక_ట్యాగులు,
+				   దత్తాంశం,
+				   శూన్యసూచిక);
 
-  return face;
+  తిరిగి face;
 }
 
 /**
@@ -239,25 +239,25 @@ hb_face_builder_create ()
  * Since: 1.9.0
  **/
 hb_bool_t
-hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
+hb_face_builder_కూడు_పట్టిక (hb_face_t *face, hb_ట్యాగ్_t ట్యాగ్_2, hb_blob_t *blob)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return false;
+  ఒకవేళ (unlikely (face->destroy != (hb_destroy_func_t) hb_face_builder_దత్తాంశం_destroy))
+    తిరిగి అబద్ధం;
 
-  if (tag == HB_MAP_VALUE_INVALID)
-    return false;
+  ఒకవేళ (ట్యాగ్_2 == HB_MAP_విలువ_INVALID)
+    తిరిగి అబద్ధం;
 
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = (hb_face_builder_దత్తాంశం_t *) face->user_దత్తాంశం;
 
-  hb_blob_t* previous = data->tables.get (tag).data;
-  if (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
+  hb_blob_t* మునుపటి = దత్తాంశం->tables.get (ట్యాగ్_2).దత్తాంశం;
+  ఒకవేళ (!దత్తాంశం->tables.సమితి (ట్యాగ్_2, face_పట్టిక_info_t {hb_blob_reference (blob), (గుర్తులేని) -1}))
   {
     hb_blob_destroy (blob);
-    return false;
+    తిరిగి అబద్ధం;
   }
 
-  hb_blob_destroy (previous);
-  return true;
+  hb_blob_destroy (మునుపటి);
+  తిరిగి నిజం;
 }
 
 /**
@@ -272,26 +272,26 @@ hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
  *
  * Since: 5.3.0
  **/
-void
-hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags)
+శూన్య
+hb_face_builder_క్రమీకరించు_tables (hb_face_t *face,
+                             స్థిరరాశి hb_ట్యాగ్_t  *ట్యాగులు)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return;
+  ఒకవేళ (unlikely (face->destroy != (hb_destroy_func_t) hb_face_builder_దత్తాంశం_destroy))
+    తిరిగి;
 
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
+  hb_face_builder_దత్తాంశం_t *దత్తాంశం = (hb_face_builder_దత్తాంశం_t *) face->user_దత్తాంశం;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
-    info.order = (unsigned) -1;
+  కొరకు (స్వయంచాలక& info : దత్తాంశం->tables.విలువలు_ref())
+    info.క్రమం = (గుర్తులేని) -1;
 
-  signed order = 0;
-  for (const hb_tag_t* tag = tags;
-       *tag;
-       tag++)
+  గుర్తుగల క్రమం = 0;
+  కొరకు (స్థిరరాశి hb_ట్యాగ్_t* ట్యాగ్_2 = ట్యాగులు;
+       *ట్యాగ్_2;
+       ట్యాగ్_2++)
   {
-    face_table_info_t* info;
-    if (!data->tables.has (*tag, &info)) continue;
-    info->order = order++;
+    face_పట్టిక_info_t* info;
+    ఒకవేళ (!దత్తాంశం->tables.has (*ట్యాగ్_2, &info)) కొనసాగు;
+    info->క్రమం = క్రమం++;
   }
 }

@@ -22,265 +22,265 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_HH
-#define HB_PAINT_HH
+#నిర్వచితం_కాకపోతే HB_PAINT_HH
+#నిర్వచించు HB_PAINT_HH
 
-#include "hb.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-geometry.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-face.hh"
+#అన్తర్భావ "hb-font.hh"
+#అన్తర్భావ "hb-geometry.hh"
 
-#define HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_PAINT_FUNC_IMPLEMENT (push_transform) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_transform) \
+#నిర్వచించు HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (తీయి_transform) \
   HB_PAINT_FUNC_IMPLEMENT (color_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_rectangle) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_start) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_end) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_clip) \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_clip_glyph) \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_clip_rectangle) \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_clip_మార్గం_ప్రారంభం) \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_clip_మార్గం_చివర) \
+  HB_PAINT_FUNC_IMPLEMENT (తీయి_clip) \
   HB_PAINT_FUNC_IMPLEMENT (color) \
   HB_PAINT_FUNC_IMPLEMENT (image) \
-  HB_PAINT_FUNC_IMPLEMENT (linear_gradient) \
+  HB_PAINT_FUNC_IMPLEMENT (రేఖీయ_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (radial_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (sweep_gradient) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group_for) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_group) \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_సమూహం) \
+  HB_PAINT_FUNC_IMPLEMENT (నెట్టు_సమూహం_for) \
+  HB_PAINT_FUNC_IMPLEMENT (తీయి_సమూహం) \
   HB_PAINT_FUNC_IMPLEMENT (custom_palette_color) \
   HB_PAINT_FUNC_IMPLEMENT (fill_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (set_budget) \
+  HB_PAINT_FUNC_IMPLEMENT (సమితి_budget) \
   HB_PAINT_FUNC_IMPLEMENT (get_budget) \
-  HB_PAINT_FUNC_IMPLEMENT (get_budget_remaining) \
+  HB_PAINT_FUNC_IMPLEMENT (get_budget_మిగిలిన) \
   /* ^--- Add new callbacks here */
 
-struct hb_paint_funcs_t
+నిర్మాణం hb_paint_funcs_t
 {
-  hb_object_header_t header;
+  hb_object_శీర్షిక_t శీర్షిక;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
+  నిర్మాణం {
+#నిర్వచించు HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_PAINT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_PAINT_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) void *name;
+  నిర్మాణం {
+#నిర్వచించు HB_PAINT_FUNC_IMPLEMENT(name) శూన్య *name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_PAINT_FUNC_IMPLEMENT
-  } *user_data;
+#నిర్వచనం_రద్దు HB_PAINT_FUNC_IMPLEMENT
+  } *user_దత్తాంశం;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
+  నిర్మాణం {
+#నిర్వచించు HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_PAINT_FUNC_IMPLEMENT
+#నిర్వచనం_రద్దు HB_PAINT_FUNC_IMPLEMENT
   } *destroy;
 
-  void push_transform (void *paint_data,
-                       float xx, float yx,
-                       float xy, float yy,
-                       float dx, float dy)
+  శూన్య నెట్టు_transform (శూన్య *paint_దత్తాంశం,
+                       దశాంశం xx, దశాంశం yx,
+                       దశాంశం xy, దశాంశం yy,
+                       దశాంశం dx, దశాంశం dy)
   {
     // Handle -0.f to avoid -0.f == 0.f in the transform matrix.
-    if (dx == -0.f) dx = 0.f;
-    if (dy == -0.f) dy = 0.f;
-    func.push_transform (this, paint_data,
+    ఒకవేళ (dx == -0.f) dx = 0.f;
+    ఒకవేళ (dy == -0.f) dy = 0.f;
+    func.నెట్టు_transform (ఇది, paint_దత్తాంశం,
                          xx, yx, xy, yy, dx, dy,
-                         !user_data ? nullptr : user_data->push_transform); }
-  void pop_transform (void *paint_data)
-  { func.pop_transform (this, paint_data,
-                        !user_data ? nullptr : user_data->pop_transform); }
-  bool color_glyph (void *paint_data,
+                         !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_transform); }
+  శూన్య తీయి_transform (శూన్య *paint_దత్తాంశం)
+  { func.తీయి_transform (ఇది, paint_దత్తాంశం,
+                        !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->తీయి_transform); }
+  తార్కిక color_glyph (శూన్య *paint_దత్తాంశం,
                     hb_codepoint_t glyph,
                     hb_font_t *font)
-  { return func.color_glyph (this, paint_data,
+  { తిరిగి func.color_glyph (ఇది, paint_దత్తాంశం,
                              glyph,
                              font,
-                             !user_data ? nullptr : user_data->color_glyph); }
-  void push_clip_glyph (void *paint_data,
+                             !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->color_glyph); }
+  శూన్య నెట్టు_clip_glyph (శూన్య *paint_దత్తాంశం,
                         hb_codepoint_t glyph,
                         hb_font_t *font)
-  { func.push_clip_glyph (this, paint_data,
+  { func.నెట్టు_clip_glyph (ఇది, paint_దత్తాంశం,
                           glyph,
                           font,
-                          !user_data ? nullptr : user_data->push_clip_glyph); }
-  void push_clip_rectangle (void *paint_data,
-                           float xmin, float ymin, float xmax, float ymax)
-  { func.push_clip_rectangle (this, paint_data,
+                          !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_clip_glyph); }
+  శూన్య నెట్టు_clip_rectangle (శూన్య *paint_దత్తాంశం,
+                           దశాంశం xmin, దశాంశం ymin, దశాంశం xmax, దశాంశం ymax)
+  { func.నెట్టు_clip_rectangle (ఇది, paint_దత్తాంశం,
                               xmin, ymin, xmax, ymax,
-                              !user_data ? nullptr : user_data->push_clip_rectangle); }
-  hb_draw_funcs_t *push_clip_path_start (void *paint_data,
-                                         void **draw_data)
-  { return func.push_clip_path_start (this, paint_data, draw_data,
-                                      !user_data ? nullptr : user_data->push_clip_path_start); }
-  void push_clip_path_end (void *paint_data)
-  { func.push_clip_path_end (this, paint_data,
-                             !user_data ? nullptr : user_data->push_clip_path_end); }
-  void pop_clip (void *paint_data)
-  { func.pop_clip (this, paint_data,
-                   !user_data ? nullptr : user_data->pop_clip); }
-  void color (void *paint_data,
+                              !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_clip_rectangle); }
+  hb_draw_funcs_t *నెట్టు_clip_మార్గం_ప్రారంభం (శూన్య *paint_దత్తాంశం,
+                                         శూన్య **draw_దత్తాంశం)
+  { తిరిగి func.నెట్టు_clip_మార్గం_ప్రారంభం (ఇది, paint_దత్తాంశం, draw_దత్తాంశం,
+                                      !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_clip_మార్గం_ప్రారంభం); }
+  శూన్య నెట్టు_clip_మార్గం_చివర (శూన్య *paint_దత్తాంశం)
+  { func.నెట్టు_clip_మార్గం_చివర (ఇది, paint_దత్తాంశం,
+                             !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_clip_మార్గం_చివర); }
+  శూన్య తీయి_clip (శూన్య *paint_దత్తాంశం)
+  { func.తీయి_clip (ఇది, paint_దత్తాంశం,
+                   !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->తీయి_clip); }
+  శూన్య color (శూన్య *paint_దత్తాంశం,
               hb_bool_t is_foreground,
               hb_color_t color)
-  { func.color (this, paint_data,
+  { func.color (ఇది, paint_దత్తాంశం,
                 is_foreground, color,
-                !user_data ? nullptr : user_data->color); }
-  void fill_glyph (void *paint_data,
+                !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->color); }
+  శూన్య fill_glyph (శూన్య *paint_దత్తాంశం,
                    hb_codepoint_t glyph,
                    hb_font_t *font,
                    hb_bool_t is_foreground,
                    hb_color_t color)
-  { func.fill_glyph (this, paint_data,
+  { func.fill_glyph (ఇది, paint_దత్తాంశం,
                      glyph, font,
                      is_foreground, color,
-                     !user_data ? nullptr : user_data->fill_glyph); }
-  bool image (void *paint_data,
+                     !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->fill_glyph); }
+  తార్కిక image (శూన్య *paint_దత్తాంశం,
               hb_blob_t *image,
-              unsigned width, unsigned height,
-              hb_tag_t format,
-              float slant,
+              గుర్తులేని వెడల్పు, గుర్తులేని ఎత్తు,
+              hb_ట్యాగ్_t format,
+              దశాంశం slant,
               hb_glyph_extents_t *extents)
-  { return func.image (this, paint_data,
-                       image, width, height, format, slant, extents,
-                       !user_data ? nullptr : user_data->image); }
-  void linear_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0,
-                        float x1, float y1,
-                        float x2, float y2)
-  { func.linear_gradient (this, paint_data,
-                          color_line, x0, y0, x1, y1, x2, y2,
-                          !user_data ? nullptr : user_data->linear_gradient); }
-  void radial_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0, float r0,
-                        float x1, float y1, float r1)
-  { func.radial_gradient (this, paint_data,
-                          color_line, x0, y0, r0, x1, y1, r1,
-                          !user_data ? nullptr : user_data->radial_gradient); }
-  void sweep_gradient (void *paint_data,
-                       hb_color_line_t *color_line,
-                       float x0, float y0,
-                       float start_angle,
-                       float end_angle)
-  { func.sweep_gradient (this, paint_data,
-                         color_line, x0, y0, start_angle, end_angle,
-                         !user_data ? nullptr : user_data->sweep_gradient); }
-  void push_group (void *paint_data)
-  { func.push_group (this, paint_data,
-                     !user_data ? nullptr : user_data->push_group); }
-  void push_group_for (void *paint_data,
-                       hb_paint_composite_mode_t mode)
-  { func.push_group_for (this, paint_data,
-                         mode,
-                         !user_data ? nullptr : user_data->push_group_for); }
-  void pop_group (void *paint_data,
-                  hb_paint_composite_mode_t mode)
-  { func.pop_group (this, paint_data,
-                    mode,
-                    !user_data ? nullptr : user_data->pop_group); }
-  bool custom_palette_color (void *paint_data,
-                             unsigned int color_index,
+  { తిరిగి func.image (ఇది, paint_దత్తాంశం,
+                       image, వెడల్పు, ఎత్తు, format, slant, extents,
+                       !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->image); }
+  శూన్య రేఖీయ_gradient (శూన్య *paint_దత్తాంశం,
+                        hb_color_పంక్తి_t *color_పంక్తి,
+                        దశాంశం x0, దశాంశం y0,
+                        దశాంశం x1, దశాంశం y1,
+                        దశాంశం x2, దశాంశం y2)
+  { func.రేఖీయ_gradient (ఇది, paint_దత్తాంశం,
+                          color_పంక్తి, x0, y0, x1, y1, x2, y2,
+                          !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->రేఖీయ_gradient); }
+  శూన్య radial_gradient (శూన్య *paint_దత్తాంశం,
+                        hb_color_పంక్తి_t *color_పంక్తి,
+                        దశాంశం x0, దశాంశం y0, దశాంశం r0,
+                        దశాంశం x1, దశాంశం y1, దశాంశం r1)
+  { func.radial_gradient (ఇది, paint_దత్తాంశం,
+                          color_పంక్తి, x0, y0, r0, x1, y1, r1,
+                          !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->radial_gradient); }
+  శూన్య sweep_gradient (శూన్య *paint_దత్తాంశం,
+                       hb_color_పంక్తి_t *color_పంక్తి,
+                       దశాంశం x0, దశాంశం y0,
+                       దశాంశం ప్రారంభం_angle,
+                       దశాంశం చివర_angle)
+  { func.sweep_gradient (ఇది, paint_దత్తాంశం,
+                         color_పంక్తి, x0, y0, ప్రారంభం_angle, చివర_angle,
+                         !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->sweep_gradient); }
+  శూన్య నెట్టు_సమూహం (శూన్య *paint_దత్తాంశం)
+  { func.నెట్టు_సమూహం (ఇది, paint_దత్తాంశం,
+                     !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_సమూహం); }
+  శూన్య నెట్టు_సమూహం_for (శూన్య *paint_దత్తాంశం,
+                       hb_paint_సంయుక్త_బహుళకం_t బహుళకం)
+  { func.నెట్టు_సమూహం_for (ఇది, paint_దత్తాంశం,
+                         బహుళకం,
+                         !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->నెట్టు_సమూహం_for); }
+  శూన్య తీయి_సమూహం (శూన్య *paint_దత్తాంశం,
+                  hb_paint_సంయుక్త_బహుళకం_t బహుళకం)
+  { func.తీయి_సమూహం (ఇది, paint_దత్తాంశం,
+                    బహుళకం,
+                    !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->తీయి_సమూహం); }
+  తార్కిక custom_palette_color (శూన్య *paint_దత్తాంశం,
+                             గుర్తులేని పూర్ణాంకం color_సూచీ,
                              hb_color_t *color)
-  { return func.custom_palette_color (this, paint_data,
-                                      color_index,
+  { తిరిగి func.custom_palette_color (ఇది, paint_దత్తాంశం,
+                                      color_సూచీ,
                                       color,
-                                      !user_data ? nullptr : user_data->custom_palette_color); }
-  bool set_budget (void *paint_data, int64_t budget)
+                                      !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->custom_palette_color); }
+  తార్కిక సమితి_budget (శూన్య *paint_దత్తాంశం, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    ఒకవేళ (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, paint_data, budget,
-			    !user_data ? nullptr : user_data->set_budget);
+    తిరిగి func.సమితి_budget (ఇది, paint_దత్తాంశం, budget,
+			    !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->సమితి_budget);
   }
-  int64_t get_budget (void *paint_data)
-  { return func.get_budget (this, paint_data,
-			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *paint_data)
-  { return func.get_budget_remaining (this, paint_data,
-				      !user_data ? nullptr : user_data->get_budget_remaining); }
+  int64_t get_budget (శూన్య *paint_దత్తాంశం)
+  { తిరిగి func.get_budget (ఇది, paint_దత్తాంశం,
+			    !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->get_budget); }
+  int64_t *get_budget_మిగిలిన_ptr (శూన్య *paint_దత్తాంశం)
+  { తిరిగి func.get_budget_మిగిలిన (ఇది, paint_దత్తాంశం,
+				      !user_దత్తాంశం ? శూన్యసూచిక : user_దత్తాంశం->get_budget_మిగిలిన); }
 
 
   /* Internal specializations. */
 
-  void push_font_transform (void *paint_data,
-                            const hb_font_t *font)
+  శూన్య నెట్టు_font_transform (శూన్య *paint_దత్తాంశం,
+                            స్థిరరాశి hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale, yscale = font->y_scale;
+    దశాంశం upem = font->face->get_upem ();
+    పూర్ణాంకం xscale = font->x_scale, yscale = font->y_scale;
 
-    push_transform (paint_data,
+    నెట్టు_transform (paint_దత్తాంశం,
 		    xscale/upem, 0,
 		    0, yscale/upem,
 		    0, 0);
   }
 
-  void push_inverse_font_transform (void *paint_data,
-                                    const hb_font_t *font)
+  శూన్య నెట్టు_inverse_font_transform (శూన్య *paint_దత్తాంశం,
+                                    స్థిరరాశి hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale ? font->x_scale : upem;
-    int yscale = font->y_scale ? font->y_scale : upem;
+    దశాంశం upem = font->face->get_upem ();
+    పూర్ణాంకం xscale = font->x_scale ? font->x_scale : upem;
+    పూర్ణాంకం yscale = font->y_scale ? font->y_scale : upem;
 
-    push_transform (paint_data,
+    నెట్టు_transform (paint_దత్తాంశం,
 		    upem/xscale, 0,
 		    0, upem/yscale,
 		    0, 0);
   }
 
-  void push_transform (void *paint_data, hb_transform_t<float> t)
+  శూన్య నెట్టు_transform (శూన్య *paint_దత్తాంశం, hb_transform_t<దశాంశం> t)
   {
-    push_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+    నెట్టు_transform (paint_దత్తాంశం, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   }
 
-  void push_translate (void *paint_data,
-                       float dx, float dy)
+  శూన్య నెట్టు_translate (శూన్య *paint_దత్తాంశం,
+                       దశాంశం dx, దశాంశం dy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::translation (dx, dy));
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::translation (dx, dy));
   }
 
-  void push_scale (void *paint_data,
-                   float sx, float sy)
+  శూన్య నెట్టు_scale (శూన్య *paint_దత్తాంశం,
+                   దశాంశం sx, దశాంశం sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling (sx, sy));
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::scaling (sx, sy));
   }
-  void push_scale_around_center (void *paint_data,
-				 float sx, float sy,
-				 float cx, float cy)
+  శూన్య నెట్టు_scale_around_center (శూన్య *paint_దత్తాంశం,
+				 దశాంశం sx, దశాంశం sy,
+				 దశాంశం cx, దశాంశం cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling_around_center (sx, sy, cx, cy));
-  }
-
-  void push_rotate (void *paint_data,
-                    float a)
-  {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation (a * HB_PI));
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::scaling_around_center (sx, sy, cx, cy));
   }
 
-  void push_rotate_around_center (void *paint_data,
-				  float a,
-				  float cx, float cy)
+  శూన్య నెట్టు_rotate (శూన్య *paint_దత్తాంశం,
+                    దశాంశం a)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation_around_center (a * HB_PI, cx, cy));
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::rotation (a * HB_PI));
   }
 
-  void push_skew (void *paint_data,
-                  float sx, float sy)
+  శూన్య నెట్టు_rotate_around_center (శూన్య *paint_దత్తాంశం,
+				  దశాంశం a,
+				  దశాంశం cx, దశాంశం cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing (-sx * HB_PI, sy * HB_PI));
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::rotation_around_center (a * HB_PI, cx, cy));
   }
-  void push_skew_around_center (void *paint_data,
-				float sx, float sy,
-				float cx, float cy)
+
+  శూన్య నెట్టు_skew (శూన్య *paint_దత్తాంశం,
+                  దశాంశం sx, దశాంశం sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::skewing (-sx * HB_PI, sy * HB_PI));
+  }
+  శూన్య నెట్టు_skew_around_center (శూన్య *paint_దత్తాంశం,
+				దశాంశం sx, దశాంశం sy,
+				దశాంశం cx, దశాంశం cy)
+  {
+    నెట్టు_transform (paint_దత్తాంశం,
+		    hb_transform_t<దశాంశం>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
   }
 };
 DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
@@ -288,20 +288,20 @@ DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
 
 /* Linearly interpolate between two hb_color_t values, component-wise,
  * in byte-channel space with rounding. */
-static inline hb_color_t
-hb_color_lerp (hb_color_t c0, hb_color_t c1, float t)
+స్థిర అంతఃవరుస hb_color_t
+hb_color_lerp (hb_color_t c0, hb_color_t c1, దశాంశం t)
 {
-  auto lerp = [&] (unsigned shift) -> unsigned {
-    unsigned v0 = (c0 >> shift) & 0xFF;
-    unsigned v1 = (c1 >> shift) & 0xFF;
-    float v = v0 + t * ((float) v1 - (float) v0) + 0.5f;
+  స్వయంచాలక lerp = [&] (గుర్తులేని జరుపు) -> గుర్తులేని {
+    గుర్తులేని v0 = (c0 >> జరుపు) & 0xFF;
+    గుర్తులేని v1 = (c1 >> జరుపు) & 0xFF;
+    దశాంశం v = v0 + t * ((దశాంశం) v1 - (దశాంశం) v0) + 0.5f;
     /* t may be outside [0,1] (or NaN) for malformed gradients;
      * keep the float-to-unsigned conversion defined. */
-    if (!(v > 0.f)) return 0;
-    if (v > 255.f) return 255;
-    return (unsigned) v;
+    ఒకవేళ (!(v > 0.f)) తిరిగి 0;
+    ఒకవేళ (v > 255.f) తిరిగి 255;
+    తిరిగి (గుర్తులేని) v;
   };
-  return HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
+  తిరిగి HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
 }
 
-#endif /* HB_PAINT_HH */
+#అయితే_ముగింపు /* HB_PAINT_HH */

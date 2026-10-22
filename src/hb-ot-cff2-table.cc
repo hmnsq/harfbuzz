@@ -24,73 +24,73 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF2_TABLE_CC
-#define HB_OT_CFF2_TABLE_CC
-#ifdef HB_OT_CFF2_TABLE_CC /* Pacify -Wunused-macros. */
+#నిర్వచితం_కాకపోతే HB_OT_CFF2_పట్టిక_CC
+#నిర్వచించు HB_OT_CFF2_పట్టిక_CC
+#నిర్వచితమైతే HB_OT_CFF2_పట్టిక_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#ifndef HB_NO_OT_FONT_CFF
+#నిర్వచితం_కాకపోతే HB_NO_OT_FONT_CFF
 
-#include "hb-ot-cff2-table.hh"
-#include "hb-cff2-interp-cs.hh"
-#include "hb-draw.hh"
+#అన్తర్భావ "hb-ot-cff2-table.hh"
+#అన్తర్భావ "hb-cff2-interp-cs.hh"
+#అన్తర్భావ "hb-draw.hh"
 
-using namespace CFF;
+ఉపయోగించి నామాకాశ CFF;
 
-struct cff2_extents_param_t
+నిర్మాణం cff2_extents_param_t
 {
   cff2_extents_param_t ()
   {
-    min_x.set_int (INT_MAX);
-    min_y.set_int (INT_MAX);
-    max_x.set_int (INT_MIN);
-    max_y.set_int (INT_MIN);
+    min_x.సమితి_int (గరిష్ఠ_పూర్ణాంకం);
+    min_y.సమితి_int (గరిష్ఠ_పూర్ణాంకం);
+    max_x.సమితి_int (INT_MIN);
+    max_y.సమితి_int (INT_MIN);
   }
 
-  void   start_path ()       { path_open = true; }
-  void     end_path ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  శూన్య   ప్రారంభం_మార్గం ()       { మార్గం_open = నిజం; }
+  శూన్య     చివర_మార్గం ()       { మార్గం_open = అబద్ధం; }
+  తార్కిక is_మార్గం_open () స్థిరరాశి { తిరిగి మార్గం_open; }
 
-  void update_bounds (const point_t &pt)
+  శూన్య update_bounds (స్థిరరాశి బిందువు_t &pt)
   {
-    if (pt.x < min_x) min_x = pt.x;
-    if (pt.x > max_x) max_x = pt.x;
-    if (pt.y < min_y) min_y = pt.y;
-    if (pt.y > max_y) max_y = pt.y;
+    ఒకవేళ (pt.x < min_x) min_x = pt.x;
+    ఒకవేళ (pt.x > max_x) max_x = pt.x;
+    ఒకవేళ (pt.y < min_y) min_y = pt.y;
+    ఒకవేళ (pt.y > max_y) max_y = pt.y;
   }
 
-  bool  path_open = false;
-  number_t min_x;
-  number_t min_y;
-  number_t max_x;
-  number_t max_y;
+  తార్కిక  మార్గం_open = అబద్ధం;
+  సంఖ్య_t min_x;
+  సంఖ్య_t min_y;
+  సంఖ్య_t max_x;
+  సంఖ్య_t max_y;
 };
 
-struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_cs_interp_env_t<number_t>, cff2_extents_param_t>
+నిర్మాణం cff2_మార్గం_procs_extents_t : మార్గం_procs_t<cff2_మార్గం_procs_extents_t, cff2_cs_interp_env_t<సంఖ్య_t>, cff2_extents_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt)
+  స్థిర శూన్య moveto (cff2_cs_interp_env_t<సంఖ్య_t> &env, cff2_extents_param_t& param, స్థిరరాశి బిందువు_t &pt)
   {
-    param.end_path ();
+    param.చివర_మార్గం ();
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1)
+  స్థిర శూన్య పంక్తి (cff2_cs_interp_env_t<సంఖ్య_t> &env, cff2_extents_param_t& param, స్థిరరాశి బిందువు_t &pt1)
   {
-    if (!param.is_path_open ())
+    ఒకవేళ (!param.is_మార్గం_open ())
     {
-      param.start_path ();
+      param.ప్రారంభం_మార్గం ();
       param.update_bounds (env.get_pt ());
     }
     env.moveto (pt1);
     param.update_bounds (env.get_pt ());
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  స్థిర శూన్య వక్రం (cff2_cs_interp_env_t<సంఖ్య_t> &env, cff2_extents_param_t& param, స్థిరరాశి బిందువు_t &pt1, స్థిరరాశి బిందువు_t &pt2, స్థిరరాశి బిందువు_t &pt3)
   {
-    if (!param.is_path_open ())
+    ఒకవేళ (!param.is_మార్గం_open ())
     {
-      param.start_path ();
+      param.ప్రారంభం_మార్గం ();
       param.update_bounds (env.get_pt ());
     }
     /* include control points */
@@ -101,152 +101,152 @@ struct cff2_path_procs_extents_t : path_procs_t<cff2_path_procs_extents_t, cff2_
   }
 };
 
-struct cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t, cff2_path_procs_extents_t> {};
+నిర్మాణం cff2_cs_opset_extents_t : cff2_cs_opset_t<cff2_cs_opset_extents_t, cff2_extents_param_t, సంఖ్య_t, cff2_మార్గం_procs_extents_t> {};
 
-bool OT::cff2::accelerator_t::get_extents (hb_font_t *font,
+తార్కిక OT::cff2::accelerator_t::get_extents (hb_font_t *font,
 					   hb_codepoint_t glyph,
-					   hb_glyph_extents_t *extents) const
+					   hb_glyph_extents_t *extents) స్థిరరాశి
 {
-  return get_extents_at (font, glyph, extents, hb_array (font->coords, font->num_coords));
+  తిరిగి get_extents_at (font, glyph, extents, hb_array (font->coords, font->అంకె_coords));
 }
 
-bool OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
+తార్కిక OT::cff2::accelerator_t::get_extents_at (hb_font_t *font,
 					      hb_codepoint_t glyph,
 					      hb_glyph_extents_t *extents,
-					      hb_array_t<const int> coords,
-					      int64_t *budget) const
+					      hb_array_t<స్థిరరాశి పూర్ణాంకం> coords,
+					      int64_t *budget) స్థిరరాశి
 {
-#ifdef HB_NO_OT_FONT_CFF
+#నిర్వచితమైతే HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  తిరిగి నిజం;
+#అయితే_ముగింపు
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ఒకవేళ (unlikely (!is_valid () || (glyph >= అంకె_glyphs))) తిరిగి అబద్ధం;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t దొంతర_budget = HB_BUDGET_GLYPH;
+  ఒకవేళ (!budget) budget = &దొంతర_budget;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, number_t> interp (env);
+  గుర్తులేని పూర్ణాంకం fd = fdSelect->get_fd (glyph);
+  స్థిరరాశి hb_ubytes_t str = (*char_అక్షరశ్రేణులు)[glyph];
+  cff2_cs_interp_env_t<సంఖ్య_t> env (str, *ఇది, fd, coords.arrayZ, coords.నిడివి);
+  cff2_cs_interpreter_t<cff2_cs_opset_extents_t, cff2_extents_param_t, సంఖ్య_t> interp (env);
   cff2_extents_param_t  param;
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ఒకవేళ (unlikely (!interp.interpret (param, budget))) తిరిగి అబద్ధం;
 
-  if (param.min_x >= param.max_x)
+  ఒకవేళ (param.min_x >= param.max_x)
   {
-    extents->width = 0;
+    extents->వెడల్పు = 0;
     extents->x_bearing = 0;
   }
-  else
+  లేకపోతే
   {
-    double x_bearing = roundf (param.min_x.to_real ());
-    extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (param.max_x.to_real ()) - x_bearing);
+    ద్విగుణ x_bearing = roundf (param.min_x.గమ్యం_real ());
+    extents->x_bearing = hb_clamp_గమ్యం<hb_position_t> (x_bearing);
+    extents->వెడల్పు = hb_clamp_గమ్యం<hb_position_t> ((ద్విగుణ) roundf (param.max_x.గమ్యం_real ()) - x_bearing);
   }
-  if (param.min_y >= param.max_y)
+  ఒకవేళ (param.min_y >= param.max_y)
   {
-    extents->height = 0;
+    extents->ఎత్తు = 0;
     extents->y_bearing = 0;
   }
-  else
+  లేకపోతే
   {
-    double y_bearing = roundf (param.max_y.to_real ());
-    extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (param.min_y.to_real ()) - y_bearing);
+    ద్విగుణ y_bearing = roundf (param.max_y.గమ్యం_real ());
+    extents->y_bearing = hb_clamp_గమ్యం<hb_position_t> (y_bearing);
+    extents->ఎత్తు = hb_clamp_గమ్యం<hb_position_t> ((ద్విగుణ) roundf (param.min_y.గమ్యం_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  తిరిగి నిజం;
 }
 
-struct cff2_path_param_t
+నిర్మాణం cff2_మార్గం_param_t
 {
-  cff2_path_param_t (hb_font_t *font_, hb_draw_session_t &draw_session_)
+  cff2_మార్గం_param_t (hb_font_t *font_, hb_draw_session_t &draw_session_)
   {
     draw_session = &draw_session_;
     font = font_;
   }
 
-  void move_to (const point_t &p)
-  { draw_session->move_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
+  శూన్య move_గమ్యం (స్థిరరాశి బిందువు_t &p)
+  { draw_session->move_గమ్యం (font->em_fscalef_x (p.x.గమ్యం_real ()), font->em_fscalef_y (p.y.గమ్యం_real ())); }
 
-  void line_to (const point_t &p)
-  { draw_session->line_to (font->em_fscalef_x (p.x.to_real ()), font->em_fscalef_y (p.y.to_real ())); }
+  శూన్య పంక్తి_గమ్యం (స్థిరరాశి బిందువు_t &p)
+  { draw_session->పంక్తి_గమ్యం (font->em_fscalef_x (p.x.గమ్యం_real ()), font->em_fscalef_y (p.y.గమ్యం_real ())); }
 
-  void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
+  శూన్య cubic_గమ్యం (స్థిరరాశి బిందువు_t &p1, స్థిరరాశి బిందువు_t &p2, స్థిరరాశి బిందువు_t &p3)
   {
-    draw_session->cubic_to (font->em_fscalef_x (p1.x.to_real ()), font->em_fscalef_y (p1.y.to_real ()),
-			   font->em_fscalef_x (p2.x.to_real ()), font->em_fscalef_y (p2.y.to_real ()),
-			   font->em_fscalef_x (p3.x.to_real ()), font->em_fscalef_y (p3.y.to_real ()));
+    draw_session->cubic_గమ్యం (font->em_fscalef_x (p1.x.గమ్యం_real ()), font->em_fscalef_y (p1.y.గమ్యం_real ()),
+			   font->em_fscalef_x (p2.x.గమ్యం_real ()), font->em_fscalef_y (p2.y.గమ్యం_real ()),
+			   font->em_fscalef_x (p3.x.గమ్యం_real ()), font->em_fscalef_y (p3.y.గమ్యం_real ()));
   }
 
-  protected:
+  రక్షిత:
   hb_draw_session_t *draw_session;
   hb_font_t *font;
 };
 
-struct cff2_path_procs_path_t : path_procs_t<cff2_path_procs_path_t, cff2_cs_interp_env_t<number_t>, cff2_path_param_t>
+నిర్మాణం cff2_మార్గం_procs_మార్గం_t : మార్గం_procs_t<cff2_మార్గం_procs_మార్గం_t, cff2_cs_interp_env_t<సంఖ్య_t>, cff2_మార్గం_param_t>
 {
-  static void moveto (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt)
+  స్థిర శూన్య moveto (cff2_cs_interp_env_t<సంఖ్య_t> &env, cff2_మార్గం_param_t& param, స్థిరరాశి బిందువు_t &pt)
   {
-    param.move_to (pt);
+    param.move_గమ్యం (pt);
     env.moveto (pt);
   }
 
-  static void line (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1)
+  స్థిర శూన్య పంక్తి (cff2_cs_interp_env_t<సంఖ్య_t> &env, cff2_మార్గం_param_t& param, స్థిరరాశి బిందువు_t &pt1)
   {
-    param.line_to (pt1);
+    param.పంక్తి_గమ్యం (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff2_cs_interp_env_t<number_t> &env, cff2_path_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  స్థిర శూన్య వక్రం (cff2_cs_interp_env_t<సంఖ్య_t> &env, cff2_మార్గం_param_t& param, స్థిరరాశి బిందువు_t &pt1, స్థిరరాశి బిందువు_t &pt2, స్థిరరాశి బిందువు_t &pt3)
   {
-    param.cubic_to (pt1, pt2, pt3);
+    param.cubic_గమ్యం (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-struct cff2_cs_opset_path_t : cff2_cs_opset_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t, cff2_path_procs_path_t> {};
+నిర్మాణం cff2_cs_opset_మార్గం_t : cff2_cs_opset_t<cff2_cs_opset_మార్గం_t, cff2_మార్గం_param_t, సంఖ్య_t, cff2_మార్గం_procs_మార్గం_t> {};
 
-bool OT::cff2::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph,
+తార్కిక OT::cff2::accelerator_t::get_మార్గం (hb_font_t *font, hb_codepoint_t glyph,
 				       hb_draw_session_t &draw_session,
-				       int64_t *budget) const
+				       int64_t *budget) స్థిరరాశి
 {
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t దొంతర_budget = HB_BUDGET_GLYPH;
+  ఒకవేళ (!budget) budget = &దొంతర_budget;
 
-  return get_path_at (font,
+  తిరిగి get_మార్గం_at (font,
 		      glyph,
 		      draw_session,
 		      hb_array (font->coords,
-				font->has_nonzero_coords ? font->num_coords : 0),
+				font->has_nonzero_coords ? font->అంకె_coords : 0),
 		      budget);
 }
 
-bool OT::cff2::accelerator_t::get_path_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<const int> coords, int64_t *budget) const
+తార్కిక OT::cff2::accelerator_t::get_మార్గం_at (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, hb_array_t<స్థిరరాశి పూర్ణాంకం> coords, int64_t *budget) స్థిరరాశి
 {
-#ifdef HB_NO_OT_FONT_CFF
+#నిర్వచితమైతే HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  తిరిగి నిజం;
+#అయితే_ముగింపు
 
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ఒకవేళ (unlikely (!is_valid () || (glyph >= అంకె_glyphs))) తిరిగి అబద్ధం;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t దొంతర_budget = HB_BUDGET_GLYPH;
+  ఒకవేళ (!budget) budget = &దొంతర_budget;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  cff2_cs_interp_env_t<number_t> env (str, *this, fd, coords.arrayZ, coords.length);
-  cff2_cs_interpreter_t<cff2_cs_opset_path_t, cff2_path_param_t, number_t> interp (env);
-  cff2_path_param_t param (font, draw_session);
-  if (unlikely (!interp.interpret (param, budget))) return false;
-  return true;
+  గుర్తులేని పూర్ణాంకం fd = fdSelect->get_fd (glyph);
+  స్థిరరాశి hb_ubytes_t str = (*char_అక్షరశ్రేణులు)[glyph];
+  cff2_cs_interp_env_t<సంఖ్య_t> env (str, *ఇది, fd, coords.arrayZ, coords.నిడివి);
+  cff2_cs_interpreter_t<cff2_cs_opset_మార్గం_t, cff2_మార్గం_param_t, సంఖ్య_t> interp (env);
+  cff2_మార్గం_param_t param (font, draw_session);
+  ఒకవేళ (unlikely (!interp.interpret (param, budget))) తిరిగి అబద్ధం;
+  తిరిగి నిజం;
 }
 
-#endif
+#అయితే_ముగింపు
 
-#endif /* HB_OT_CFF2_TABLE_CC pacify */
-#endif /* HB_OT_CFF2_TABLE_CC guard */
+#అయితే_ముగింపు /* HB_OT_CFF2_TABLE_CC pacify */
+#అయితే_ముగింపు /* HB_OT_CFF2_TABLE_CC guard */

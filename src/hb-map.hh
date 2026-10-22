@@ -24,526 +24,526 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MAP_HH
-#define HB_MAP_HH
+#నిర్వచితం_కాకపోతే HB_MAP_HH
+#నిర్వచించు HB_MAP_HH
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-set.hh"
+#అన్తర్భావ "hb-set.hh"
 
 
 /*
  * hb_hashmap_t
  */
 
-extern HB_INTERNAL const hb_codepoint_t minus_1;
+బాహ్య HB_అంతర్గత స్థిరరాశి hb_codepoint_t minus_1;
 
-template <typename K, typename V,
-	  bool minus_one = false>
-struct hb_hashmap_t
+మూస <రకం_పేరు K, రకం_పేరు V,
+	  తార్కిక minus_one = అబద్ధం>
+నిర్మాణం hb_hashmap_t
 {
-  static constexpr bool realloc_move = true;
+  స్థిర constexpr తార్కిక realloc_move = నిజం;
 
   hb_hashmap_t ()  { init (); }
   ~hb_hashmap_t () { fini (); }
 
-  void _copy (const hb_hashmap_t& o)
+  శూన్య _copy (స్థిరరాశి hb_hashmap_t& o)
   {
-    if (unlikely (!o.successful))
+    ఒకవేళ (unlikely (!o.successful))
     {
-      successful = false;
-      return;
+      successful = అబద్ధం;
+      తిరిగి;
     }
-    if (unlikely (!o.mask)) return;
+    ఒకవేళ (unlikely (!o.ముసుగు)) తిరిగి;
 
-    if (hb_is_trivially_copy_assignable (item_t))
+    ఒకవేళ (hb_is_trivially_copy_assignable (అంశం_t))
     {
-      items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      వస్తువులు = (అంశం_t *) hb_malloc2 ((o.ముసుగు + 1), పరిమాణం (అంశం_t));
+      ఒకవేళ (unlikely (!వస్తువులు))
       {
-	successful = false;
-	return;
+	successful = అబద్ధం;
+	తిరిగి;
       }
       population = o.population;
       occupancy = o.occupancy;
-      mask = o.mask;
-      prime = o.prime;
-      max_chain_length = o.max_chain_length;
-      memcpy (items, o.items, sizeof (item_t) * (mask + 1));
-      return;
+      ముసుగు = o.ముసుగు;
+      ప్రధానసంఖ్య = o.ప్రధానసంఖ్య;
+      max_chain_నిడివి = o.max_chain_నిడివి;
+      జ్ఞాపకం_నకలు (వస్తువులు, o.వస్తువులు, పరిమాణం (అంశం_t) * (ముసుగు + 1));
+      తిరిగి;
     }
 
-    alloc (o.population); hb_copy (o, *this);
+    alloc (o.population); hb_copy (o, *ఇది);
   }
 
-  hb_hashmap_t (const hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
-  hb_hashmap_t& operator= (const hb_hashmap_t& o)
+  hb_hashmap_t (స్థిరరాశి hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
+  hb_hashmap_t& క్రియాకారకం= (స్థిరరాశి hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
-    alloc (o.population); hb_copy (o, *this); return *this;
+    ఒకవేళ (!వస్తువులు) { _copy (o); తిరిగి *ఇది; }
+    alloc (o.population); hb_copy (o, *ఇది); తిరిగి *ఇది;
   }
 
-  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*this, o); }
-  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); return *this; }
+  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_మార్పిడి (*ఇది, o); }
+  hb_hashmap_t& క్రియాకారకం= (hb_hashmap_t&& o)   noexcept { hb_మార్పిడి (*ఇది, o); తిరిగి *ఇది; }
 
   hb_hashmap_t (std::initializer_list<hb_pair_t<K, V>> lst) : hb_hashmap_t ()
   {
-    for (auto&& item : lst)
-      set (item.first, item.second);
+    కొరకు (స్వయంచాలక&& అంశం : lst)
+      సమితి (అంశం.మొదటి, అంశం.second);
   }
-  template <typename Iterable,
+  మూస <రకం_పేరు Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_hashmap_t (const Iterable &o) : hb_hashmap_t ()
+  hb_hashmap_t (స్థిరరాశి Iterable &o) : hb_hashmap_t ()
   {
-    auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    స్వయంచాలక iter = hb_iter (o);
+    ఒకవేళ (iter.is_random_access_iterator || iter.has_fast_len)
       alloc (hb_len (iter));
-    hb_copy (iter, *this);
+    hb_copy (iter, *ఇది);
   }
 
-  struct item_t
+  నిర్మాణం అంశం_t
   {
     K key;
     uint32_t is_real_ : 1;
-    uint32_t is_used_ : 1;
+    uint32_t is_వాడిన : 1;
     uint32_t hash : 30;
     V value;
 
-    item_t () : key (),
-		is_real_ (false), is_used_ (false),
+    అంశం_t () : key (),
+		is_real_ (అబద్ధం), is_వాడిన (అబద్ధం),
 		hash (0),
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_కీలకం () { తిరిగి key; }
+    V& get_విలువ () { తిరిగి value; }
 
-    bool is_used () const { return is_used_; }
-    void set_used (bool is_used) { is_used_ = is_used; }
-    void set_real (bool is_real) { is_real_ = is_real; }
-    bool is_real () const { return is_real_; }
+    తార్కిక is_వాడిన_2 () స్థిరరాశి { తిరిగి is_వాడిన; }
+    శూన్య సమితి_వాడిన (తార్కిక is_వాడిన_2) { is_వాడిన = is_వాడిన_2; }
+    శూన్య సమితి_real (తార్కిక is_real) { is_real_ = is_real; }
+    తార్కిక is_real () స్థిరరాశి { తిరిగి is_real_; }
 
-    template <bool v = minus_one,
-	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
-    template <bool v = minus_one,
-	      hb_enable_if (v == true)>
-    static inline const V& default_value ()
+    మూస <తార్కిక v = minus_one,
+	      hb_enable_if (v == అబద్ధం)>
+    స్థిర అంతఃవరుస స్థిరరాశి V& default_విలువ () { తిరిగి Null(V); };
+    మూస <తార్కిక v = minus_one,
+	      hb_enable_if (v == నిజం)>
+    స్థిర అంతఃవరుస స్థిరరాశి V& default_విలువ ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
-      return minus_1;
+      తిరిగి minus_1;
     };
 
-    bool operator == (const K &o) const { return hb_deref (key) == hb_deref (o); }
-    bool operator == (const item_t &o) const { return *this == o.key; }
-    hb_pair_t<K, V> get_pair() const { return hb_pair_t<K, V> (key, value); }
-    hb_pair_t<const K &, V &> get_pair_ref() { return hb_pair_t<const K &, V &> (key, value); }
+    తార్కిక క్రియాకారకం == (స్థిరరాశి K &o) స్థిరరాశి { తిరిగి hb_deref (key) == hb_deref (o); }
+    తార్కిక క్రియాకారకం == (స్థిరరాశి అంశం_t &o) స్థిరరాశి { తిరిగి *ఇది == o.key; }
+    hb_pair_t<K, V> get_pair() స్థిరరాశి { తిరిగి hb_pair_t<K, V> (key, value); }
+    hb_pair_t<స్థిరరాశి K &, V &> get_pair_ref() { తిరిగి hb_pair_t<స్థిరరాశి K &, V &> (key, value); }
 
-    uint32_t total_hash () const
-    { return (hash * 31u) + hb_hash (value); }
+    uint32_t మొత్తం_hash () స్థిరరాశి
+    { తిరిగి (hash * 31u) + hb_hash (value); }
 
-    static constexpr bool is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
+    స్థిర constexpr తార్కిక is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
   };
 
-  hb_object_header_t header;
-  bool successful; /* Allocations successful */
-  unsigned short max_chain_length;
-  unsigned int population; /* Not including tombstones. */
-  unsigned int occupancy; /* Including tombstones. */
-  unsigned int mask;
-  unsigned int prime;
-  item_t *items;
+  hb_object_శీర్షిక_t శీర్షిక;
+  తార్కిక successful; /* Allocations successful */
+  గుర్తులేని పొట్టి max_chain_నిడివి;
+  గుర్తులేని పూర్ణాంకం population; /* Not including tombstones. */
+  గుర్తులేని పూర్ణాంకం occupancy; /* Including tombstones. */
+  గుర్తులేని పూర్ణాంకం ముసుగు;
+  గుర్తులేని పూర్ణాంకం ప్రధానసంఖ్య;
+  అంశం_t *వస్తువులు;
 
-  friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
+  మిత్ర శూన్య swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
-    if (unlikely (!a.successful || !b.successful))
-      return;
-    hb_swap (a.max_chain_length, b.max_chain_length);
-    hb_swap (a.population, b.population);
-    hb_swap (a.occupancy, b.occupancy);
-    hb_swap (a.mask, b.mask);
-    hb_swap (a.prime, b.prime);
-    hb_swap (a.items, b.items);
+    ఒకవేళ (unlikely (!a.successful || !b.successful))
+      తిరిగి;
+    hb_మార్పిడి (a.max_chain_నిడివి, b.max_chain_నిడివి);
+    hb_మార్పిడి (a.population, b.population);
+    hb_మార్పిడి (a.occupancy, b.occupancy);
+    hb_మార్పిడి (a.ముసుగు, b.ముసుగు);
+    hb_మార్పిడి (a.ప్రధానసంఖ్య, b.ప్రధానసంఖ్య);
+    hb_మార్పిడి (a.వస్తువులు, b.వస్తువులు);
   }
-  void init ()
+  శూన్య init ()
   {
-    hb_object_init (this);
+    hb_object_init (ఇది);
 
-    successful = true;
-    max_chain_length = 0;
+    successful = నిజం;
+    max_chain_నిడివి = 0;
     population = occupancy = 0;
-    mask = 0;
-    prime = 0;
-    items = nullptr;
+    ముసుగు = 0;
+    ప్రధానసంఖ్య = 0;
+    వస్తువులు = శూన్యసూచిక;
   }
-  void fini ()
+  శూన్య fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (ఇది);
 
-    if (likely (items))
+    ఒకవేళ (likely (వస్తువులు))
     {
-      unsigned size = mask + 1;
-      for (unsigned i = 0; i < size; i++)
-	items[i].~item_t ();
-      hb_free (items);
-      items = nullptr;
+      గుర్తులేని కొలత = ముసుగు + 1;
+      కొరకు (గుర్తులేని i = 0; i < కొలత; i++)
+	వస్తువులు[i].~అంశం_t ();
+      hb_free (వస్తువులు);
+      వస్తువులు = శూన్యసూచిక;
     }
     population = occupancy = 0;
   }
 
   hb_hashmap_t& reset ()
   {
-    successful = true;
+    successful = నిజం;
     clear ();
-    return *this;
+    తిరిగి *ఇది;
   }
 
-  bool in_error () const { return !successful; }
+  తార్కిక లోపల_error () స్థిరరాశి { తిరిగి !successful; }
 
-  bool alloc (unsigned new_population = 0)
+  తార్కిక alloc (గుర్తులేని new_population = 0)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
+    ఒకవేళ (unlikely (!successful)) తిరిగి అబద్ధం;
+    ఒకవేళ (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
     {
       // Population sizes >0x3FFFFFFF will result in power
       // being larger than 31, which in turn leads to a new size
       // that overflows u32.
-      successful = false;
-      return false;
+      successful = అబద్ధం;
+      తిరిగి అబద్ధం;
     }
 
-    if (new_population != 0 && (new_population + new_population / 2) < mask) return true;
+    ఒకవేళ (new_population != 0 && (new_population + new_population / 2) < ముసుగు) తిరిగి నిజం;
 
-    unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
-    unsigned int new_size = 1u << power;
-    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    గుర్తులేని పూర్ణాంకం power = hb_బిట్టు_storage (hb_max (hb_max ((గుర్తులేని) population, new_population) * 2, 4u));
+    గుర్తులేని పూర్ణాంకం new_కొలత = 1u << power;
+    అంశం_t *new_వస్తువులు = (అంశం_t *) hb_malloc2 ((size_t) new_కొలత, పరిమాణం (అంశం_t));
+    ఒకవేళ (unlikely (!new_వస్తువులు))
     {
-      successful = false;
-      return false;
+      successful = అబద్ధం;
+      తిరిగి అబద్ధం;
     }
-    if (!item_t::is_trivially_constructible)
-      for (auto &_ : hb_iter (new_items, new_size))
-	new (&_) item_t ();
-    else
-      hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
+    ఒకవేళ (!అంశం_t::is_trivially_constructible)
+      కొరకు (స్వయంచాలక &_ : hb_iter (new_వస్తువులు, new_కొలత))
+	కొత్త (&_) అంశం_t ();
+    లేకపోతే
+      hb_memset (new_వస్తువులు, 0, (size_t) new_కొలత * పరిమాణం (అంశం_t));
 
-    unsigned int old_size = size ();
-    item_t *old_items = items;
+    గుర్తులేని పూర్ణాంకం old_కొలత = కొలత ();
+    అంశం_t *old_వస్తువులు = వస్తువులు;
 
     /* Switch to new, empty, array. */
     population = occupancy = 0;
-    mask = new_size - 1;
-    prime = prime_for (power);
-    max_chain_length = power * 2;
-    items = new_items;
+    ముసుగు = new_కొలత - 1;
+    ప్రధానసంఖ్య = ప్రధానసంఖ్య_for (power);
+    max_chain_నిడివి = power * 2;
+    వస్తువులు = new_వస్తువులు;
 
     /* Insert back old items. */
-    for (unsigned int i = 0; i < old_size; i++)
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < old_కొలత; i++)
     {
-      if (old_items[i].is_real ())
+      ఒకవేళ (old_వస్తువులు[i].is_real ())
       {
-	set_with_hash (std::move (old_items[i].key),
-		       old_items[i].hash,
-		       std::move (old_items[i].value));
+	సమితి_with_hash (std::move (old_వస్తువులు[i].key),
+		       old_వస్తువులు[i].hash,
+		       std::move (old_వస్తువులు[i].value));
       }
     }
-    for (unsigned int i = 0; i < old_size; i++)
-      old_items[i].~item_t ();
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < old_కొలత; i++)
+      old_వస్తువులు[i].~అంశం_t ();
 
-    hb_free (old_items);
+    hb_free (old_వస్తువులు);
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  template <typename T>
-  bool in_storage (const T &v) const
+  మూస <రకం_పేరు T>
+  తార్కిక లోపల_storage (స్థిరరాశి T &v) స్థిరరాశి
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
-	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
+    తిరిగి వస్తువులు &&
+	   (uintptr_t) వస్తువులు <= p && p < (uintptr_t) (వస్తువులు + కొలత ());
   }
 
-  template <typename KK, typename VV>
-  bool set_with_hash (KK&& key, uint32_t hash, VV&& value, bool overwrite = true)
+  మూస <రకం_పేరు KK, రకం_పేరు VV>
+  తార్కిక సమితి_with_hash (KK&& key, uint32_t hash, VV&& value, తార్కిక overwrite = నిజం)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely ((occupancy + occupancy / 2) >= mask))
+    ఒకవేళ (unlikely (!successful)) తిరిగి అబద్ధం;
+    ఒకవేళ (unlikely ((occupancy + occupancy / 2) >= ముసుగు))
     {
       /* key or value may live in our own storage, eg. m.set (k, m.get (j)).
        * alloc() frees that storage, so copy them out first. */
-      if (unlikely (in_storage (key) || in_storage (value)))
+      ఒకవేళ (unlikely (లోపల_storage (key) || లోపల_storage (value)))
       {
-	K key_copy;
-	key_copy = std::forward<KK> (key);
-	V value_copy;
-	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	K కీలకం_copy;
+	కీలకం_copy = std::forward<KK> (key);
+	V విలువ_copy;
+	విలువ_copy = std::forward<VV> (value);
+	తిరిగి సమితి_with_hash (std::move (కీలకం_copy), hash, std::move (విలువ_copy), overwrite);
       }
-      if (unlikely (!alloc ())) return false;
+      ఒకవేళ (unlikely (!alloc ())) తిరిగి అబద్ధం;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
-    unsigned length = 0;
-    unsigned step = 0;
-    while (items[i].is_used ())
+    గుర్తులేని పూర్ణాంకం tombstone = (గుర్తులేని పూర్ణాంకం) -1;
+    గుర్తులేని పూర్ణాంకం i = hash % ప్రధానసంఖ్య;
+    గుర్తులేని నిడివి = 0;
+    గుర్తులేని అడుగు = 0;
+    అయితే (వస్తువులు[i].is_వాడిన_2 ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      ఒకవేళ ((std::is_integral<K>::value || వస్తువులు[i].hash == hash) &&
+	  వస్తువులు[i] == key)
       {
-        if (!overwrite)
-	  return false;
-        else
-	  break;
+        ఒకవేళ (!overwrite)
+	  తిరిగి అబద్ధం;
+        లేకపోతే
+	  ఆపు;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      ఒకవేళ (!వస్తువులు[i].is_real () && tombstone == (గుర్తులేని) -1)
         tombstone = i;
-      i = (i + ++step) & mask;
-      length++;
+      i = (i + ++అడుగు) & ముసుగు;
+      నిడివి++;
     }
 
-    item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
+    అంశం_t &అంశం = వస్తువులు[tombstone == (గుర్తులేని) -1 ? i : tombstone];
 
-    if (item.is_used ())
+    ఒకవేళ (అంశం.is_వాడిన_2 ())
     {
       occupancy--;
-      population -= item.is_real ();
+      population -= అంశం.is_real ();
     }
 
-    item.key = std::forward<KK> (key);
-    item.value = std::forward<VV> (value);
-    item.hash = hash;
-    item.set_used (true);
-    item.set_real (true);
+    అంశం.key = std::forward<KK> (key);
+    అంశం.value = std::forward<VV> (value);
+    అంశం.hash = hash;
+    అంశం.సమితి_వాడిన (నిజం);
+    అంశం.సమితి_real (నిజం);
 
     occupancy++;
     population++;
 
-    if (unlikely (length > max_chain_length) && occupancy > mask / 8)
-      alloc (mask - 8); // This ensures we jump to next larger size
+    ఒకవేళ (unlikely (నిడివి > max_chain_నిడివి) && occupancy > ముసుగు / 8)
+      alloc (ముసుగు - 8); // This ensures we jump to next larger size
 
-    return true;
+    తిరిగి నిజం;
   }
 
-  template <typename VV>
-  bool set (const K &key, VV&& value, bool overwrite = true) { return set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
-  template <typename VV>
-  bool set (K &&key, VV&& value, bool overwrite = true)
+  మూస <రకం_పేరు VV>
+  తార్కిక సమితి (స్థిరరాశి K &key, VV&& value, తార్కిక overwrite = నిజం) { తిరిగి సమితి_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
+  మూస <రకం_పేరు VV>
+  తార్కిక సమితి (K &&key, VV&& value, తార్కిక overwrite = నిజం)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
+    తిరిగి సమితి_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
   }
-  bool add (const K &key)
+  తార్కిక కూడు (స్థిరరాశి K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    తిరిగి సమితి_with_hash (key, hash, అంశం_t::default_విలువ ());
   }
 
-  const V& get_with_hash (const K &key, uint32_t hash) const
+  స్థిరరాశి V& get_with_hash (స్థిరరాశి K &key, uint32_t hash) స్థిరరాశి
   {
-    if (!items) return item_t::default_value ();
-    auto *item = fetch_item (key, hash);
-    if (item)
-      return item->value;
-    return item_t::default_value ();
+    ఒకవేళ (!వస్తువులు) తిరిగి అంశం_t::default_విలువ ();
+    స్వయంచాలక *అంశం = fetch_అంశం (key, hash);
+    ఒకవేళ (అంశం)
+      తిరిగి అంశం->value;
+    తిరిగి అంశం_t::default_విలువ ();
   }
-  const V& get (const K &key) const
+  స్థిరరాశి V& get (స్థిరరాశి K &key) స్థిరరాశి
   {
-    if (!items) return item_t::default_value ();
-    return get_with_hash (key, hb_hash (key));
+    ఒకవేళ (!వస్తువులు) తిరిగి అంశం_t::default_విలువ ();
+    తిరిగి get_with_hash (key, hb_hash (key));
   }
 
-  void del (const K &key)
+  శూన్య del (స్థిరరాశి K &key)
   {
-    if (!items) return;
-    auto *item = fetch_item (key, hb_hash (key));
-    if (item)
+    ఒకవేళ (!వస్తువులు) తిరిగి;
+    స్వయంచాలక *అంశం = fetch_అంశం (key, hb_hash (key));
+    ఒకవేళ (అంశం)
     {
-      item->set_real (false);
+      అంశం->సమితి_real (అబద్ధం);
       population--;
     }
   }
 
   /* Has interface. */
-  const V& operator [] (K k) const { return get (k); }
-  template <typename VV=V>
-  bool has (const K &key, VV **vp = nullptr) const
+  స్థిరరాశి V& క్రియాకారకం [] (K k) స్థిరరాశి { తిరిగి get (k); }
+  మూస <రకం_పేరు VV=V>
+  తార్కిక has (స్థిరరాశి K &key, VV **vp = శూన్యసూచిక) స్థిరరాశి
   {
-    if (!items) return false;
-    return has_with_hash (key, hb_hash (key), vp);
+    ఒకవేళ (!వస్తువులు) తిరిగి అబద్ధం;
+    తిరిగి has_with_hash (key, hb_hash (key), vp);
   }
-  template <typename VV=V>
-  bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
+  మూస <రకం_పేరు VV=V>
+  తార్కిక has_with_hash (స్థిరరాశి K &key, uint32_t hash, VV **vp = శూన్యసూచిక) స్థిరరాశి
   {
-    if (!items) return false;
-    auto *item = fetch_item (key, hash);
-    if (item)
+    ఒకవేళ (!వస్తువులు) తిరిగి అబద్ధం;
+    స్వయంచాలక *అంశం = fetch_అంశం (key, hash);
+    ఒకవేళ (అంశం)
     {
-      if (vp) *vp = std::addressof (item->value);
-      return true;
+      ఒకవేళ (vp) *vp = std::addressof (అంశం->value);
+      తిరిగి నిజం;
     }
-    return false;
+    తిరిగి అబద్ధం;
   }
-  item_t *fetch_item (const K &key, uint32_t hash) const
+  అంశం_t *fetch_అంశం (స్థిరరాశి K &key, uint32_t hash) స్థిరరాశి
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
-    unsigned step = 0;
-    while (items[i].is_used ())
+    గుర్తులేని పూర్ణాంకం i = hash % ప్రధానసంఖ్య;
+    గుర్తులేని అడుగు = 0;
+    అయితే (వస్తువులు[i].is_వాడిన_2 ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      ఒకవేళ ((std::is_integral<K>::value || వస్తువులు[i].hash == hash) &&
+	  వస్తువులు[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
-	else
-	  return nullptr;
+	ఒకవేళ (వస్తువులు[i].is_real ())
+	  తిరిగి &వస్తువులు[i];
+	లేకపోతే
+	  తిరిగి శూన్యసూచిక;
       }
-      i = (i + ++step) & mask;
+      i = (i + ++అడుగు) & ముసుగు;
     }
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
   /* Projection. */
-  const V& operator () (K k) const { return get (k); }
+  స్థిరరాశి V& క్రియాకారకం () (K k) స్థిరరాశి { తిరిగి get (k); }
 
-  unsigned size () const { return mask ? mask + 1 : 0; }
+  గుర్తులేని కొలత () స్థిరరాశి { తిరిగి ముసుగు ? ముసుగు + 1 : 0; }
 
-  void clear ()
+  శూన్య clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (zero-initialized) from any writes.  Any non-empty hashmap
      * is a real heap instance with writable items, so clearing
      * under !successful is safe. */
-    if (!population && !occupancy) return;
+    ఒకవేళ (!population && !occupancy) తిరిగి;
 
-    for (auto &_ : hb_iter (items, size ()))
+    కొరకు (స్వయంచాలక &_ : hb_iter (వస్తువులు, కొలత ()))
     {
       /* Reconstruct items. */
-      _.~item_t ();
-      new (&_) item_t ();
+      _.~అంశం_t ();
+      కొత్త (&_) అంశం_t ();
     }
 
     population = occupancy = 0;
   }
 
-  bool is_empty () const { return population == 0; }
-  explicit operator bool () const { return !is_empty (); }
+  తార్కిక is_empty () స్థిరరాశి { తిరిగి population == 0; }
+  స్పష్టమైన క్రియాకారకం తార్కిక () స్థిరరాశి { తిరిగి !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () స్థిరరాశి
   {
-    return
-    + iter_items ()
-    | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
+    తిరిగి
+    + iter_వస్తువులు ()
+    | hb_reduce ([] (uint32_t h, స్థిరరాశి అంశం_t &_) { తిరిగి h ^ _.మొత్తం_hash (); }, (uint32_t) 0u)
     ;
   }
 
-  bool is_equal (const hb_hashmap_t &other) const
+  తార్కిక is_equal (స్థిరరాశి hb_hashmap_t &other) స్థిరరాశి
   {
-    if (population != other.population) return false;
+    ఒకవేళ (population != other.population) తిరిగి అబద్ధం;
 
-    for (auto pair : iter ())
-      if (other.get (pair.first) != pair.second)
-        return false;
+    కొరకు (స్వయంచాలక pair : iter ())
+      ఒకవేళ (other.get (pair.మొదటి) != pair.second)
+        తిరిగి అబద్ధం;
 
-    return true;
+    తిరిగి నిజం;
   }
-  bool operator == (const hb_hashmap_t &other) const { return is_equal (other); }
-  bool operator != (const hb_hashmap_t &other) const { return !is_equal (other); }
+  తార్కిక క్రియాకారకం == (స్థిరరాశి hb_hashmap_t &other) స్థిరరాశి { తిరిగి is_equal (other); }
+  తార్కిక క్రియాకారకం != (స్థిరరాశి hb_hashmap_t &other) స్థిరరాశి { తిరిగి !is_equal (other); }
 
-  unsigned int get_population () const { return population; }
+  గుర్తులేని పూర్ణాంకం get_population () స్థిరరాశి { తిరిగి population; }
 
-  void update (const hb_hashmap_t &other)
+  శూన్య update (స్థిరరాశి hb_hashmap_t &other)
   {
-    if (unlikely (!successful)) return;
+    ఒకవేళ (unlikely (!successful)) తిరిగి;
 
-    hb_copy (other, *this);
+    hb_copy (other, *ఇది);
   }
 
   /*
    * Iterator
    */
 
-  auto iter_items () const HB_AUTO_RETURN
+  స్వయంచాలక iter_వస్తువులు () స్థిరరాశి HB_AUTO_RETURN
   (
-    + hb_iter (items, this->size ())
-    | hb_filter (&item_t::is_real)
+    + hb_iter (వస్తువులు, ఇది->కొలత ())
+    | hb_filter (&అంశం_t::is_real)
   )
-  auto iter_ref () const HB_AUTO_RETURN
+  స్వయంచాలక iter_ref () స్థిరరాశి HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_pair_ref)
+    + ఇది->iter_వస్తువులు ()
+    | hb_map (&అంశం_t::get_pair_ref)
   )
-  auto iter () const HB_AUTO_RETURN
+  స్వయంచాలక iter () స్థిరరాశి HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_pair)
+    + ఇది->iter_వస్తువులు ()
+    | hb_map (&అంశం_t::get_pair)
   )
-  auto keys_ref () const HB_AUTO_RETURN
+  స్వయంచాలక కీలకాలు_ref () స్థిరరాశి HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_key)
+    + ఇది->iter_వస్తువులు ()
+    | hb_map (&అంశం_t::get_కీలకం)
   )
-  auto keys () const HB_AUTO_RETURN
+  స్వయంచాలక కీలకాలు () స్థిరరాశి HB_AUTO_RETURN
   (
-    + this->keys_ref ()
+    + ఇది->కీలకాలు_ref ()
     | hb_map (hb_ridentity)
   )
-  auto values_ref () const HB_AUTO_RETURN
+  స్వయంచాలక విలువలు_ref () స్థిరరాశి HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_value)
+    + ఇది->iter_వస్తువులు ()
+    | hb_map (&అంశం_t::get_విలువ)
   )
-  auto values () const HB_AUTO_RETURN
+  స్వయంచాలక values () స్థిరరాశి HB_AUTO_RETURN
   (
-    + this->values_ref ()
+    + ఇది->విలువలు_ref ()
     | hb_map (hb_ridentity)
   )
 
   /* C iterator. */
-  bool next (int *idx,
+  తార్కిక next (పూర్ణాంకం *idx,
 	     K *key,
-	     V *value) const
+	     V *value) స్థిరరాశి
   {
-    unsigned i = (unsigned) (*idx + 1);
+    గుర్తులేని i = (గుర్తులేని) (*idx + 1);
 
-    unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    గుర్తులేని లెక్క = కొలత ();
+    అయితే (i < లెక్క && !వస్తువులు[i].is_real ())
       i++;
 
-    if (i >= count)
+    ఒకవేళ (i >= లెక్క)
     {
       *idx = -1;
-      return false;
+      తిరిగి అబద్ధం;
     }
 
-    *key = items[i].key;
-    *value = items[i].value;
+    *key = వస్తువులు[i].key;
+    *value = వస్తువులు[i].value;
 
-    *idx = (signed) i;
-    return true;
+    *idx = (గుర్తుగల) i;
+    తిరిగి నిజం;
   }
 
   /* Sink interface. */
-  hb_hashmap_t& operator << (const hb_pair_t<K, V>& v)
-  { set (v.first, v.second); return *this; }
-  template <typename V2 = V,
+  hb_hashmap_t& క్రియాకారకం << (స్థిరరాశి hb_pair_t<K, V>& v)
+  { సమితి (v.మొదటి, v.second); తిరిగి *ఇది; }
+  మూస <రకం_పేరు V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K, V&&>& v)
-  { set (v.first, std::move (v.second)); return *this; }
-  template <typename K2 = K,
+  hb_hashmap_t& క్రియాకారకం << (స్థిరరాశి hb_pair_t<K, V&&>& v)
+  { సమితి (v.మొదటి, std::move (v.second)); తిరిగి *ఇది; }
+  మూస <రకం_పేరు K2 = K,
 	    hb_enable_if (!hb_is_trivially_copyable (K2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V>& v)
-  { set (std::move (v.first), v.second); return *this; }
-  template <typename K2 = K, typename V2 = V,
+  hb_hashmap_t& క్రియాకారకం << (స్థిరరాశి hb_pair_t<K&&, V>& v)
+  { సమితి (std::move (v.మొదటి), v.second); తిరిగి *ఇది; }
+  మూస <రకం_పేరు K2 = K, రకం_పేరు V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (K2) &&
 			  !hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
-  { set (std::move (v.first), std::move (v.second)); return *this; }
+  hb_hashmap_t& క్రియాకారకం << (స్థిరరాశి hb_pair_t<K&&, V&&>& v)
+  { సమితి (std::move (v.మొదటి), std::move (v.second)); తిరిగి *ఇది; }
 
-  static unsigned int prime_for (unsigned int shift)
+  స్థిర గుర్తులేని పూర్ణాంకం ప్రధానసంఖ్య_for (గుర్తులేని పూర్ణాంకం జరుపు)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ స్థిరరాశి గుర్తులేని పూర్ణాంకం ప్రధానసంఖ్య_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    ఒకవేళ (unlikely (జరుపు >= ARRAY_నిడివి (ప్రధానసంఖ్య_mod)))
+      తిరిగి ప్రధానసంఖ్య_mod[ARRAY_నిడివి (ప్రధానసంఖ్య_mod) - 1];
 
-    return prime_mod[shift];
+    తిరిగి ప్రధానసంఖ్య_mod[జరుపు];
   }
 };
 
@@ -599,25 +599,25 @@ struct hb_hashmap_t
  * hb_map_t
  */
 
-struct hb_map_t : hb_hashmap_t<hb_codepoint_t,
+నిర్మాణం hb_map_t : hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
-			       true>
+			       నిజం>
 {
-  using hashmap = hb_hashmap_t<hb_codepoint_t,
+  ఉపయోగించి hashmap = hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
-			       true>;
+			       నిజం>;
 
-  ~hb_map_t () = default;
+  ~hb_map_t () = అప్రమేయ;
   hb_map_t () : hashmap () {}
-  hb_map_t (const hb_map_t &o) : hashmap ((hashmap &) o) {}
+  hb_map_t (స్థిరరాశి hb_map_t &o) : hashmap ((hashmap &) o) {}
   hb_map_t (hb_map_t &&o)  noexcept : hashmap (std::move ((hashmap &) o)) {}
-  hb_map_t& operator= (const hb_map_t&) = default;
-  hb_map_t& operator= (hb_map_t&&) = default;
+  hb_map_t& క్రియాకారకం= (స్థిరరాశి hb_map_t&) = అప్రమేయ;
+  hb_map_t& క్రియాకారకం= (hb_map_t&&) = అప్రమేయ;
   hb_map_t (std::initializer_list<hb_codepoint_pair_t> lst) : hashmap (lst) {}
-  template <typename Iterable,
+  మూస <రకం_పేరు Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_map_t (const Iterable &o) : hashmap (o) {}
+  hb_map_t (స్థిరరాశి Iterable &o) : hashmap (o) {}
 };
 
 
-#endif /* HB_MAP_HH */
+#అయితే_ముగింపు /* HB_MAP_HH */

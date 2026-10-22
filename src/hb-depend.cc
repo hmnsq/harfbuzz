@@ -24,19 +24,19 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#include "hb.hh"
+#అన్తర్భావ "hb.hh"
 
-#include "hb-depend.hh"
+#అన్తర్భావ "hb-depend.hh"
 
-#include "hb-face.hh"
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-depend.hh"
+#అన్తర్భావ "hb-face.hh"
+#అన్తర్భావ "hb-ot-cmap-table.hh"
+#అన్తర్భావ "hb-ot-glyf-table.hh"
+#అన్తర్భావ "hb-ot-layout-gsub-table.hh"
+#అన్తర్భావ "hb-ot-math-table.hh"
+#అన్తర్భావ "hb-ot-cff1-table.hh"
+#అన్తర్భావ "hb-ot-var-varc-table.hh"
+#అన్తర్భావ "OT/Color/COLR/COLR.hh"
+#అన్తర్భావ "OT/Color/COLR/colrv1-depend.hh"
 
 /**
  * SECTION:hb-subset-depend
@@ -63,15 +63,15 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
-    successful = false;
-    return;
+  ఒకవేళ (unlikely (!దత్తాంశం.glyph_dependencies.resize_exact (f->get_అంకె_glyphs ()))) {
+    successful = అబద్ధం;
+    తిరిగి;
   }
-  successful = hb_depend_data_builder_t (data).compile (f);
+  successful = hb_depend_దత్తాంశం_builder_t (దత్తాంశం).compile (f);
 }
 
-bool
-hb_depend_data_builder_t::compile (hb_face_t *face)
+తార్కిక
+hb_depend_దత్తాంశం_builder_t::compile (hb_face_t *face)
 {
   /* Extract dependencies from all relevant OpenType tables.
    * Note: cmap (UVS) dependencies are not extracted - UVS closure is handled
@@ -82,26 +82,26 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
-    face->table.GSUB.get_relaxed ()->depend (this, face);
-#ifndef HB_NO_MATH
-  face->table.MATH->depend (this);
-#endif
-#ifndef HB_NO_COLOR
-  face->table.COLR->depend (this);
-#endif
-  face->table.glyf->depend (this);
-#ifndef HB_NO_CFF
-  OT::cff1_subset_accelerator_t (face).depend (this);
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  face->table.VARC->depend (this);
-#endif
-  return successful;
+  ఒకవేళ (hb_ot_layout_has_substitution (face))
+    face->పట్టిక.GSUB.get_relaxed ()->depend (ఇది, face);
+#నిర్వచితం_కాకపోతే HB_NO_MATH
+  face->పట్టిక.MATH->depend (ఇది);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_COLOR
+  face->పట్టిక.COLR->depend (ఇది);
+#అయితే_ముగింపు
+  face->పట్టిక.glyf->depend (ఇది);
+#నిర్వచితం_కాకపోతే HB_NO_CFF
+  OT::cff1_subset_accelerator_t (face).depend (ఇది);
+#అయితే_ముగింపు
+#నిర్వచితం_కాకపోతే HB_NO_VAR_COMPOSITES
+  face->పట్టిక.VARC->depend (ఇది);
+#అయితే_ముగింపు
+  తిరిగి successful;
 }
 
 
-#ifndef HB_NO_SUBSET_DEPEND
+#నిర్వచితం_కాకపోతే HB_NO_SUBSET_DEPEND
 
 /**
  * hb_subset_depend_from_face_or_fail:
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  ఒకవేళ (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    తిరిగి శూన్యసూచిక;
 
-  if (unlikely (depend->in_error ()))
+  ఒకవేళ (unlikely (depend->లోపల_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    తిరిగి శూన్యసూచిక;
   }
 
-  return depend;
+  తిరిగి depend;
 }
 
 /**
@@ -173,31 +173,31 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+గుర్తులేని పూర్ణాంకం
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
-                                hb_subset_depend_entry_t *entries)
+                                గుర్తులేని పూర్ణాంకం ప్రారంభం_స్థానభ్రంశం,
+                                గుర్తులేని పూర్ణాంకం *నమోదు_లెక్క,
+                                hb_subset_depend_నమోదు_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  గుర్తులేని పూర్ణాంకం మొత్తం = depend->దత్తాంశం.get_glyph_నమోదు_లెక్క (gid);
+  ఒకవేళ (నమోదు_లెక్క)
   {
-    unsigned int count = hb_min (*entry_count,
-                                  start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    గుర్తులేని పూర్ణాంకం లెక్క = hb_min (*నమోదు_లెక్క,
+                                  ప్రారంభం_స్థానభ్రంశం < మొత్తం ? మొత్తం - ప్రారంభం_స్థానభ్రంశం : 0u);
+    కొరకు (గుర్తులేని పూర్ణాంకం i = 0; i < లెక్క; i++)
     {
       uint8_t flags_byte = 0;
-      depend->data.get_glyph_entry (gid, start_offset + i,
-                                    &entries[i].table_tag, &entries[i].dependent,
-                                    &entries[i].layout_tag, &entries[i].ligature_set_index,
-                                    &entries[i].context_set_index,
+      depend->దత్తాంశం.get_glyph_నమోదు (gid, ప్రారంభం_స్థానభ్రంశం + i,
+                                    &entries[i].పట్టిక_ట్యాగ్_2, &entries[i].dependent,
+                                    &entries[i].layout_ట్యాగ్, &entries[i].ligature_సమితి_సూచీ,
+                                    &entries[i].context_సమితి_సూచీ,
                                     &flags_byte);
-      entries[i].flags = (hb_subset_depend_edge_flags_t) flags_byte;
+      entries[i].flags = (hb_subset_depend_అంచు_flags_t) flags_byte;
     }
-    *entry_count = count;
+    *నమోదు_లెక్క = లెక్క;
   }
-  return total;
+  తిరిగి మొత్తం;
 }
 
 /**
@@ -224,13 +224,13 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
  * Since: 14.3.0
  **/
 hb_bool_t
-hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
-                              hb_set_t *out)
+hb_subset_depend_lookup_సమితి (hb_subset_depend_t *depend, hb_codepoint_t సూచీ_2,
+                              hb_సమితి_t *బహిర్గతం)
 {
-  const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
-  out->set (*s);
-  return true;
+  స్థిరరాశి hb_సమితి_t *s = depend->get_సమితి_from_సూచీ (సూచీ_2);
+  ఒకవేళ (!s) తిరిగి అబద్ధం;
+  బహిర్గతం->సమితి (*s);
+  తిరిగి నిజం;
 }
 
 /**
@@ -242,12 +242,12 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
  *
  * Since: 14.3.0
  **/
-void
+శూన్య
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  ఒకవేళ (!hb_object_destroy (depend)) తిరిగి;
 
   hb_free (depend);
 }
 
-#endif /* !HB_NO_SUBSET_DEPEND */
+#అయితే_ముగింపు /* !HB_NO_SUBSET_DEPEND */

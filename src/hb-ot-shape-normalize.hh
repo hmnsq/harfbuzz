@@ -24,80 +24,80 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_NORMALIZE_HH
-#define HB_OT_SHAPE_NORMALIZE_HH
+#నిర్వచితం_కాకపోతే HB_OT_SHAPE_NORMALIZE_HH
+#నిర్వచించు HB_OT_SHAPE_NORMALIZE_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
+#అన్తర్భావ "hb.hh"
+#అన్తర్భావ "hb-unicode.hh"
 
 
 /* buffer var allocations, used during the normalization process */
-#define normalizer_glyph_index()	var1.u32
+#నిర్వచించు normalizer_glyph_సూచీ()	var1.u32
 
-struct hb_ot_shape_plan_t;
+నిర్మాణం hb_ot_shape_plan_t;
 
-enum hb_ot_shape_normalization_mode_t {
-  HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
-  HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED,
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS, /* Never composes base-to-base */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT, /* Always fully decomposes and then recompose back */
+గణన hb_ot_shape_normalization_బహుళకం_t {
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_NONE,
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_DECOMPOSED,
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_COMPOSED_DIACRITICS, /* Never composes base-to-base */
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT, /* Always fully decomposes and then recompose back */
 
-  HB_OT_SHAPE_NORMALIZATION_MODE_AUTO, /* See hb-ot-shape-normalize.cc for logic. */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT = HB_OT_SHAPE_NORMALIZATION_MODE_AUTO
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_AUTO, /* See hb-ot-shape-normalize.cc for logic. */
+  HB_OT_SHAPE_NORMALIZATION_బహుళకం_DEFAULT = HB_OT_SHAPE_NORMALIZATION_బహుళకం_AUTO
 };
 
-HB_INTERNAL void _hb_ot_shape_normalize (const hb_ot_shape_plan_t *shaper,
-					 hb_buffer_t *buffer,
+HB_అంతర్గత శూన్య _hb_ot_shape_normalize (స్థిరరాశి hb_ot_shape_plan_t *shaper,
+					 hb_బఫరు_t *బఫరు,
 					 hb_font_t *font);
 
 
-struct hb_ot_shape_normalize_context_t
+నిర్మాణం hb_ot_shape_normalize_context_t
 {
-  static bool
-  decompose_unicode (const hb_ot_shape_normalize_context_t *c,
+  స్థిర తార్కిక
+  decompose_unicode (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b)
   {
-    return (bool) c->unicode->decompose (ab, a, b);
+    తిరిగి (తార్కిక) c->unicode->decompose (ab, a, b);
   }
 
-  static bool
-  compose_unicode (const hb_ot_shape_normalize_context_t *c,
+  స్థిర తార్కిక
+  compose_unicode (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab)
   {
-    return (bool) c->unicode->compose (a, b, ab);
+    తిరిగి (తార్కిక) c->unicode->compose (a, b, ab);
   }
 
-  void
-  override_decompose_and_compose (bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  శూన్య
+  override_decompose_and_compose (తార్కిక (*decompose) (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 						      hb_codepoint_t  ab,
 						      hb_codepoint_t *a,
 						      hb_codepoint_t *b),
-				  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+				  తార్కిక (*compose) (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 						   hb_codepoint_t  a,
 						   hb_codepoint_t  b,
 						   hb_codepoint_t *ab))
   {
-    this->decompose = decompose ? decompose : decompose_unicode;
-    this->compose = compose ? compose : compose_unicode;
+    ఇది->decompose = decompose ? decompose : decompose_unicode;
+    ఇది->compose = compose ? compose : compose_unicode;
   }
 
-  const hb_ot_shape_plan_t *plan;
-  hb_buffer_t *buffer;
+  స్థిరరాశి hb_ot_shape_plan_t *plan;
+  hb_బఫరు_t *బఫరు;
   hb_font_t *font;
   hb_unicode_funcs_t *unicode;
-  bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  తార్కిక (*decompose) (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b);
-  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+  తార్కిక (*compose) (స్థిరరాశి hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab);
 };
 
 
-#endif /* HB_OT_SHAPE_NORMALIZE_HH */
+#అయితే_ముగింపు /* HB_OT_SHAPE_NORMALIZE_HH */

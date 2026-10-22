@@ -24,464 +24,464 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
-#include "../OT/Layout/GSUB/ExtensionSubst.hh"
-#include "../OT/Layout/GSUB/SubstLookupSubTable.hh"
-#include "gsubgpos-context.hh"
-#include "pairpos-graph.hh"
-#include "markbasepos-graph.hh"
-#include "ligature-graph.hh"
+#అన్తర్భావ "graph.hh"
+#అన్తర్భావ "../hb-ot-layout-gsubgpos.hh"
+#అన్తర్భావ "../OT/Layout/GSUB/ExtensionSubst.hh"
+#అన్తర్భావ "../OT/Layout/GSUB/SubstLookupSubTable.hh"
+#అన్తర్భావ "gsubgpos-context.hh"
+#అన్తర్భావ "pairpos-graph.hh"
+#అన్తర్భావ "markbasepos-graph.hh"
+#అన్తర్భావ "ligature-graph.hh"
 
-#ifndef GRAPH_GSUBGPOS_GRAPH_HH
-#define GRAPH_GSUBGPOS_GRAPH_HH
+#నిర్వచితం_కాకపోతే లేఖాచిత్రం_GSUBGPOS_లేఖాచిత్రం_HH
+#నిర్వచించు లేఖాచిత్రం_GSUBGPOS_లేఖాచిత్రం_HH
 
-namespace graph {
+నామాకాశ లేఖాచిత్రం {
 
-struct Lookup;
+నిర్మాణం Lookup;
 
-template<typename T>
-struct ExtensionFormat1 : public OT::ExtensionFormat1<T>
+మూస<రకం_పేరు T>
+నిర్మాణం ExtensionFormat1 : బహిరంగ OT::ExtensionFormat1<T>
 {
-  void reset(unsigned type)
+  శూన్య reset(గుర్తులేని type)
   {
-    this->format = 1;
-    this->extensionLookupType = type;
-    this->extensionOffset = 0;
+    ఇది->format = 1;
+    ఇది->extensionLookupType = type;
+    ఇది->extension_స్థానభ్రంశం = 0;
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::ExtensionFormat1<T>::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (శీర్షం_len < OT::ExtensionFormat1<T>::static_కొలత))
+      తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 
-  unsigned get_lookup_type () const
+  గుర్తులేని get_lookup_type () స్థిరరాశి
   {
-    return this->extensionLookupType;
+    తిరిగి ఇది->extensionLookupType;
   }
 
-  graph_result_t<unsigned> get_subtable_index (graph_t& graph, unsigned this_index) const
+  లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> get_subtable_సూచీ (లేఖాచిత్రం_t& లేఖాచిత్రం, గుర్తులేని this_సూచీ) స్థిరరాశి
   {
-    return graph.index_for_offset (this_index, &this->extensionOffset);
+    తిరిగి లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (this_సూచీ, &ఇది->extension_స్థానభ్రంశం);
   }
 };
 
-struct Lookup : public OT::Lookup
+నిర్మాణం Lookup : బహిరంగ OT::Lookup
 {
-  unsigned number_of_subtables () const
+  గుర్తులేని సంఖ్య_యొక్క_subtables () స్థిరరాశి
   {
-    return subTable.len;
+    తిరిగి sub_పట్టిక.len;
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Lookup::min_size)) return Err(SANITIZE_FAILURE);
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (శీర్షం_len < OT::Lookup::min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < this->get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    ఒకవేళ (unlikely (శీర్షం_len < ఇది->get_కొలత ())) తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 
-  bool is_extension (hb_tag_t table_tag) const
+  తార్కిక is_extension (hb_ట్యాగ్_t పట్టిక_ట్యాగ్_2) స్థిరరాశి
   {
-    return lookupType == extension_type (table_tag);
+    తిరిగి lookupType == extension_type (పట్టిక_ట్యాగ్_2);
   }
 
-  bool use_mark_filtering_set () const
+  తార్కిక use_mark_filtering_సమితి () స్థిరరాశి
   {
-    unsigned flag = lookupFlag;
-    return flag & 0x0010u;
+    గుర్తులేని flag = lookupFlag;
+    తిరిగి flag & 0x0010u;
   }
 
-  graph_result_t<void> make_extension (gsubgpos_graph_context_t& c,
-                                       unsigned this_index)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> make_extension (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                       గుర్తులేని this_సూచీ)
   {
-    unsigned type = lookupType;
-    unsigned ext_type = extension_type (c.table_tag);
-    if (!ext_type || is_extension (c.table_tag))
+    గుర్తులేని type = lookupType;
+    గుర్తులేని ext_type = extension_type (c.పట్టిక_ట్యాగ్_2);
+    ఒకవేళ (!ext_type || is_extension (c.పట్టిక_ట్యాగ్_2))
     {
       // NOOP
-      return Ok();
+      తిరిగి Ok();
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_సందేశం (SUBSET_REPACK, శూన్యసూచిక,
                "Promoting lookup type %u (obj %u) to extension.",
                type,
-               this_index);
+               this_సూచీ);
 
-    hb_set_t seen;
-    hb_vector_t<unsigned> subtables;
-    for (unsigned i = 0; i < subTable.len; i++)
+    hb_సమితి_t చూసిన;
+    hb_సదిశ_t<గుర్తులేని> subtables;
+    కొరకు (గుర్తులేని i = 0; i < sub_పట్టిక.len; i++)
     {
-      TRY_ASSIGN (unsigned subtable_index, c.graph.index_for_offset (this_index, &subTable[i]));
-      if (seen.has (subtable_index))
-        continue;
-      seen.add (subtable_index);
-      subtables.push (subtable_index);
+      TRY_కేటాయించు (గుర్తులేని subtable_సూచీ, c.లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (this_సూచీ, &sub_పట్టిక[i]));
+      ఒకవేళ (చూసిన.has (subtable_సూచీ))
+        కొనసాగు;
+      చూసిన.కూడు (subtable_సూచీ);
+      subtables.push (subtable_సూచీ);
     }
-    TRY (graph_result_t<void>::from (seen, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (subtables, ALLOCATION_FAILURE));
+    TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (చూసిన, కేటాయింపు_FAILURE));
+    TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (subtables, కేటాయింపు_FAILURE));
 
-    for (unsigned subtable_index : subtables)
-      TRY (make_subtable_extension (c, this_index, subtable_index));
+    కొరకు (గుర్తులేని subtable_సూచీ : subtables)
+      TRY (make_subtable_extension (c, this_సూచీ, subtable_సూచీ));
 
     lookupType = ext_type;
-    return Ok();
+    తిరిగి Ok();
   }
 
-  graph_result_t<void> split_subtables_if_needed (gsubgpos_graph_context_t& c,
-                                                  unsigned this_index)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> విభజించు_subtables_if_needed (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                  గుర్తులేని this_సూచీ)
   {
-    unsigned type = lookupType;
-    bool is_ext = is_extension (c.table_tag);
+    గుర్తులేని type = lookupType;
+    తార్కిక is_ext = is_extension (c.పట్టిక_ట్యాగ్_2);
 
-    if (c.table_tag != HB_OT_TAG_GPOS && c.table_tag != HB_OT_TAG_GSUB)
-      return Ok();
+    ఒకవేళ (c.పట్టిక_ట్యాగ్_2 != HB_OT_ట్యాగ్_GPOS && c.పట్టిక_ట్యాగ్_2 != HB_OT_ట్యాగ్_GSUB)
+      తిరిగి Ok();
 
-    if (!is_ext && !is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
-      return Ok();
+    ఒకవేళ (!is_ext && !is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
+      తిరిగి Ok();
 
-    hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>> all_new_subtables;
-    for (unsigned i = 0; i < subTable.len; i++)
+    hb_సదిశ_t<hb_pair_t<గుర్తులేని, hb_సదిశ_t<గుర్తులేని>>> all_new_subtables;
+    కొరకు (గుర్తులేని i = 0; i < sub_పట్టిక.len; i++)
     {
       // This assumes we are working with something like a GSUB/GPOS table, if
       // sanitization fails we ignore and skip splitting for the particular sub table.
-      auto idx_res = c.graph.index_for_offset (this_index, &subTable[i]);
-      if (!idx_res.is_ok ()) continue;
-      unsigned subtable_index = *idx_res;
-      if (is_ext) {
-        unsigned ext_subtable_index = subtable_index;
+      స్వయంచాలక idx_res = c.లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (this_సూచీ, &sub_పట్టిక[i]);
+      ఒకవేళ (!idx_res.is_ok ()) కొనసాగు;
+      గుర్తులేని subtable_సూచీ = *idx_res;
+      ఒకవేళ (is_ext) {
+        గుర్తులేని ext_subtable_సూచీ = subtable_సూచీ;
         ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
             (ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*)
-            c.graph.object (ext_subtable_index).head;
-        if (!extension || !extension->sanitize (c.graph.vertices_[ext_subtable_index]).is_ok ())
-          continue;
+            c.లేఖాచిత్రం.object (ext_subtable_సూచీ).తల_2;
+        ఒకవేళ (!extension || !extension->sanitize (c.లేఖాచిత్రం.vertices_[ext_subtable_సూచీ]).is_ok ())
+          కొనసాగు;
 
-        TRY_ASSIGN (subtable_index, extension->get_subtable_index (c.graph, ext_subtable_index));
+        TRY_కేటాయించు (subtable_సూచీ, extension->get_subtable_సూచీ (c.లేఖాచిత్రం, ext_subtable_సూచీ));
         type = extension->get_lookup_type ();
-        if (!is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
-          continue;
+        ఒకవేళ (!is_supported_gpos_type(type, c) && !is_supported_gsub_type(type, c))
+          కొనసాగు;
       }
 
-      hb_vector_t<unsigned>* split_result;
-      if (c.split_subtables.has (subtable_index, &split_result))
+      hb_సదిశ_t<గుర్తులేని>* విభజించు_ఫలితం;
+      ఒకవేళ (c.విభజించు_subtables.has (subtable_సూచీ, &విభజించు_ఫలితం))
       {
-        if (split_result->length == 0)
-          continue;
-        all_new_subtables.push (hb_pair(i, *split_result));
-        TRY (graph_result_t<void>::from (all_new_subtables, ALLOCATION_FAILURE));
+        ఒకవేళ (విభజించు_ఫలితం->నిడివి == 0)
+          కొనసాగు;
+        all_new_subtables.push (hb_pair(i, *విభజించు_ఫలితం));
+        TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (all_new_subtables, కేటాయింపు_FAILURE));
       }
-      else
+      లేకపోతే
       {
-        hb_vector_t<unsigned> new_sub_tables;
+        hb_సదిశ_t<గుర్తులేని> new_sub_tables;
 
-        if (c.table_tag == HB_OT_TAG_GPOS) {
-          switch (type)
+        ఒకవేళ (c.పట్టిక_ట్యాగ్_2 == HB_OT_ట్యాగ్_GPOS) {
+          ఎంపిక (type)
           {
-          case 2:
+          స్థితి 2:
             {
-              TRY_ASSIGN (new_sub_tables, split_subtable<PairPos> (c, subtable_index));
-              break;
+              TRY_కేటాయించు (new_sub_tables, విభజించు_subtable<PairPos> (c, subtable_సూచీ));
+              ఆపు;
             }
-          case 4:
+          స్థితి 4:
             {
-              TRY_ASSIGN (new_sub_tables, split_subtable<MarkBasePos> (c, subtable_index));
-              break;
+              TRY_కేటాయించు (new_sub_tables, విభజించు_subtable<Mark_పునాది_Pos> (c, subtable_సూచీ));
+              ఆపు;
             }
-          default:
-            break;
+          అప్రమేయ:
+            ఆపు;
           }
-        } else if (c.table_tag == HB_OT_TAG_GSUB) {
-          switch (type)
+        } లేకపోతే ఒకవేళ (c.పట్టిక_ట్యాగ్_2 == HB_OT_ట్యాగ్_GSUB) {
+          ఎంపిక (type)
           {
-          case 4:
+          స్థితి 4:
             {
-              TRY_ASSIGN (new_sub_tables, split_subtable<graph::LigatureSubst> (c, subtable_index));
-              break;
+              TRY_కేటాయించు (new_sub_tables, విభజించు_subtable<లేఖాచిత్రం::LigatureSubst> (c, subtable_సూచీ));
+              ఆపు;
             }
-          default:
-            break;
+          అప్రమేయ:
+            ఆపు;
           }
         }
 
-        c.split_subtables.set (subtable_index, new_sub_tables);
-        TRY (graph_result_t<void>::from (c.split_subtables, ALLOCATION_FAILURE));
-        if (new_sub_tables) {
+        c.విభజించు_subtables.సమితి (subtable_సూచీ, new_sub_tables);
+        TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (c.విభజించు_subtables, కేటాయింపు_FAILURE));
+        ఒకవేళ (new_sub_tables) {
           all_new_subtables.push (hb_pair (i, std::move (new_sub_tables)));
-          TRY (graph_result_t<void>::from (all_new_subtables, ALLOCATION_FAILURE));
+          TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (all_new_subtables, కేటాయింపు_FAILURE));
         }
       }
     }
 
-    if (all_new_subtables) {
-      TRY (add_sub_tables (c, this_index, type, all_new_subtables));
+    ఒకవేళ (all_new_subtables) {
+      TRY (కూడు_sub_tables (c, this_సూచీ, type, all_new_subtables));
     }
 
-    return Ok();
+    తిరిగి Ok();
   }
 
-  template<typename T>
-  graph_result_t<hb_vector_t<unsigned>> split_subtable (gsubgpos_graph_context_t& c,
-                                                        unsigned objidx)
+  మూస<రకం_పేరు T>
+  లేఖాచిత్రం_ఫలితం_t<hb_సదిశ_t<గుర్తులేని>> విభజించు_subtable (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                        గుర్తులేని objidx)
   {
-    T* sub_table = (T*) c.graph.object (objidx).head;
-    if (!sub_table || !sub_table->sanitize (c.graph.vertices_[objidx]).is_ok ())
-      return Ok(hb_vector_t<unsigned> ());
+    T* sub_పట్టిక_2 = (T*) c.లేఖాచిత్రం.object (objidx).తల_2;
+    ఒకవేళ (!sub_పట్టిక_2 || !sub_పట్టిక_2->sanitize (c.లేఖాచిత్రం.vertices_[objidx]).is_ok ())
+      తిరిగి Ok(hb_సదిశ_t<గుర్తులేని> ());
 
-    return sub_table->split_subtables (c, objidx);
+    తిరిగి sub_పట్టిక_2->విభజించు_subtables (c, objidx);
   }
 
-  graph_result_t<void> add_sub_tables (gsubgpos_graph_context_t& c,
-                                       unsigned this_index,
-                                       unsigned type,
-                                       const hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> కూడు_sub_tables (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                       గుర్తులేని this_సూచీ,
+                                       గుర్తులేని type,
+                                       స్థిరరాశి hb_సదిశ_t<hb_pair_t<గుర్తులేని, hb_సదిశ_t<గుర్తులేని>>>& subtable_ids)
   {
-    bool is_ext = is_extension (c.table_tag);
-    auto* v = &c.graph.vertices_[this_index];
-    fix_existing_subtable_links (c, this_index, subtable_ids);
+    తార్కిక is_ext = is_extension (c.పట్టిక_ట్యాగ్_2);
+    స్వయంచాలక* v = &c.లేఖాచిత్రం.vertices_[this_సూచీ];
+    fix_existing_subtable_links (c, this_సూచీ, subtable_ids);
 
-    unsigned new_subtable_count = 0;
-    for (const auto& p : subtable_ids)
-      new_subtable_count += p.second.length;
+    గుర్తులేని new_subtable_లెక్క = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& p : subtable_ids)
+      new_subtable_లెక్క += p.second.నిడివి;
 
-    size_t new_size = v->table_size ()
-                      + new_subtable_count * OT::Offset16::static_size;
-    char* buffer = (char*) hb_calloc (1, new_size);
-    if (unlikely (!buffer)) return Err(ALLOCATION_FAILURE);
-    auto res = c.add_buffer (buffer);
-    if (unlikely (!res.is_ok ()))
+    size_t new_కొలత = v->పట్టిక_కొలత ()
+                      + new_subtable_లెక్క * OT::Offset16::static_కొలత;
+    అక్షరం* బఫరు = (అక్షరం*) hb_calloc (1, new_కొలత);
+    ఒకవేళ (unlikely (!బఫరు)) తిరిగి Err(కేటాయింపు_FAILURE);
+    స్వయంచాలక res = c.కూడు_బఫరు (బఫరు);
+    ఒకవేళ (unlikely (!res.is_ok ()))
     {
-      hb_free (buffer);
-      return res;
+      hb_free (బఫరు);
+      తిరిగి res;
     }
-    hb_memcpy (buffer, v->obj ().head, v->table_size());
+    hb_memcpy (బఫరు, v->obj ().తల_2, v->పట్టిక_కొలత());
 
-    if (use_mark_filtering_set ())
-      hb_memcpy (buffer + new_size - 2, v->obj ().tail - 2, 2);
+    ఒకవేళ (use_mark_filtering_సమితి ())
+      hb_memcpy (బఫరు + new_కొలత - 2, v->obj ().తోక - 2, 2);
 
-    v->set_buffer (buffer, buffer + new_size);
+    v->సమితి_బఫరు (బఫరు, బఫరు + new_కొలత);
 
-    Lookup* new_lookup = (Lookup*) buffer;
+    Lookup* new_lookup = (Lookup*) బఫరు;
 
-    unsigned shift = 0;
-    new_lookup->subTable.len = subTable.len + new_subtable_count;
-    for (const auto& p : subtable_ids)
+    గుర్తులేని జరుపు = 0;
+    new_lookup->sub_పట్టిక.len = sub_పట్టిక.len + new_subtable_లెక్క;
+    కొరకు (స్థిరరాశి స్వయంచాలక& p : subtable_ids)
     {
-      unsigned offset_index = p.first + shift + 1;
-      shift += p.second.length;
+      గుర్తులేని స్థానభ్రంశం_సూచీ = p.మొదటి + జరుపు + 1;
+      జరుపు += p.second.నిడివి;
 
-      for (unsigned subtable_id : p.second)
+      కొరకు (గుర్తులేని subtable_id : p.second)
       {
-        if (is_ext)
+        ఒకవేళ (is_ext)
         {
-          TRY_ASSIGN (unsigned ext_id, create_extension_subtable (c, subtable_id, type));
-          TRY(c.graph.vertices_[subtable_id].add_parent (ext_id, false));
+          TRY_కేటాయించు (గుర్తులేని ext_id, create_extension_subtable (c, subtable_id, type));
+          TRY(c.లేఖాచిత్రం.vertices_[subtable_id].కూడు_మాతృ (ext_id, అబద్ధం));
           subtable_id = ext_id;
           // the reference to v may have changed on adding a node, so reassign it.
-          v = &c.graph.vertices_[this_index];
+          v = &c.లేఖాచిత్రం.vertices_[this_సూచీ];
         }
 
-        TRY(v->add_real_link(2, subtable_id,
-          (char*) &new_lookup->subTable[offset_index++] - (char*) new_lookup));
-        TRY(c.graph.vertices_[subtable_id].add_parent (this_index, false));
+        TRY(v->కూడు_real_link(2, subtable_id,
+          (అక్షరం*) &new_lookup->sub_పట్టిక[స్థానభ్రంశం_సూచీ++] - (అక్షరం*) new_lookup));
+        TRY(c.లేఖాచిత్రం.vertices_[subtable_id].కూడు_మాతృ (this_సూచీ, అబద్ధం));
       }
     }
 
     // Repacker sort order depends on link order, which we've messed up so resort it.
-    v->sort_real_links ();
+    v->క్రమీకరించు_real_links ();
 
     // The head location of the lookup has changed, invalidating the lookups map entry
     // in the context. Update the map.
-    c.lookups.set (this_index, new_lookup);
-    TRY (graph_result_t<void>::from (c.lookups, ALLOCATION_FAILURE));
-    return Ok();
+    c.lookups.సమితి (this_సూచీ, new_lookup);
+    TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (c.lookups, కేటాయింపు_FAILURE));
+    తిరిగి Ok();
   }
 
-  void fix_existing_subtable_links (gsubgpos_graph_context_t& c,
-                                    unsigned this_index,
-                                    const hb_vector_t<hb_pair_t<unsigned, hb_vector_t<unsigned>>>& subtable_ids)
+  శూన్య fix_existing_subtable_links (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                    గుర్తులేని this_సూచీ,
+                                    స్థిరరాశి hb_సదిశ_t<hb_pair_t<గుర్తులేని, hb_సదిశ_t<గుర్తులేని>>>& subtable_ids)
   {
-    auto& v = c.graph.vertices_[this_index];
-    unsigned shift = 0;
-    for (const auto& p : subtable_ids)
+    స్వయంచాలక& v = c.లేఖాచిత్రం.vertices_[this_సూచీ];
+    గుర్తులేని జరుపు = 0;
+    కొరకు (స్థిరరాశి స్వయంచాలక& p : subtable_ids)
     {
-      unsigned insert_index = p.first + shift;
-      unsigned pos_offset = p.second.length * OT::Offset16::static_size;
-      unsigned insert_offset = Lookup::min_size + insert_index * OT::Offset16::static_size;
-      shift += p.second.length;
+      గుర్తులేని చొప్పించు_సూచీ = p.మొదటి + జరుపు;
+      గుర్తులేని pos_స్థానభ్రంశం = p.second.నిడివి * OT::Offset16::static_కొలత;
+      గుర్తులేని చొప్పించు_స్థానభ్రంశం = Lookup::min_కొలత + చొప్పించు_సూచీ * OT::Offset16::static_కొలత;
+      జరుపు += p.second.నిడివి;
 
-      for (auto& l : v.all_links_writer ())
+      కొరకు (స్వయంచాలక& l : v.all_links_writer ())
       {
-        if (l.position > insert_offset) l.position += pos_offset;
+        ఒకవేళ (l.position > చొప్పించు_స్థానభ్రంశం) l.position += pos_స్థానభ్రంశం;
       }
     }
   }
 
-  graph_result_t<unsigned> create_extension_subtable (gsubgpos_graph_context_t& c,
-                                                      unsigned subtable_index,
-                                                      unsigned type)
+  లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> create_extension_subtable (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                      గుర్తులేని subtable_సూచీ,
+                                                      గుర్తులేని type)
   {
-    unsigned extension_size = OT::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>::static_size;
+    గుర్తులేని extension_కొలత = OT::ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>::static_కొలత;
 
-    TRY_ASSIGN (unsigned ext_index, c.create_node (extension_size));
+    TRY_కేటాయించు (గుర్తులేని ext_సూచీ, c.create_కణుపు (extension_కొలత));
 
-    auto& ext_vertex = c.graph.vertices_[ext_index];
+    స్వయంచాలక& ext_శీర్షం = c.లేఖాచిత్రం.vertices_[ext_సూచీ];
     ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>* extension =
-        ext_vertex.as<ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
+        ext_శీర్షం.as<ExtensionFormat1<OT::Layout::GSUB_impl::ExtensionSubst>*> ();
     extension->reset (type);
 
     // Make extension point at the subtable.
-    TRY(ext_vertex.add_real_link (4, subtable_index, 4));
+    TRY(ext_శీర్షం.కూడు_real_link (4, subtable_సూచీ, 4));
 
-    return Ok(ext_index);
+    తిరిగి Ok(ext_సూచీ);
   }
 
-  graph_result_t<void> make_subtable_extension (gsubgpos_graph_context_t& c,
-                                                unsigned lookup_index,
-                                                unsigned subtable_index)
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> make_subtable_extension (gsubgpos_లేఖాచిత్రం_context_t& c,
+                                                గుర్తులేని lookup_సూచీ,
+                                                గుర్తులేని subtable_సూచీ)
   {
-    unsigned type = lookupType;
-    unsigned ext_index = HB_GRAPH_INVALID;
-    unsigned* existing_ext_index = nullptr;
-    if (c.subtable_to_extension.has(subtable_index, &existing_ext_index)) {
-      ext_index = *existing_ext_index;
-    } else {
-      TRY_ASSIGN (ext_index, create_extension_subtable(c, subtable_index, type));
-      c.subtable_to_extension.set(subtable_index, ext_index);
-      TRY (graph_result_t<void>::from (c.subtable_to_extension, ALLOCATION_FAILURE));
+    గుర్తులేని type = lookupType;
+    గుర్తులేని ext_సూచీ = HB_లేఖాచిత్రం_INVALID;
+    గుర్తులేని* existing_ext_సూచీ = శూన్యసూచిక;
+    ఒకవేళ (c.subtable_గమ్యం_extension.has(subtable_సూచీ, &existing_ext_సూచీ)) {
+      ext_సూచీ = *existing_ext_సూచీ;
+    } లేకపోతే {
+      TRY_కేటాయించు (ext_సూచీ, create_extension_subtable(c, subtable_సూచీ, type));
+      c.subtable_గమ్యం_extension.సమితి(subtable_సూచీ, ext_సూచీ);
+      TRY (లేఖాచిత్రం_ఫలితం_t<శూన్య>::from (c.subtable_గమ్యం_extension, కేటాయింపు_FAILURE));
     }
 
-    auto& subtable_vertex = c.graph.vertices_[subtable_index];
-    auto& lookup_vertex = c.graph.vertices_[lookup_index];
-    unsigned replaced = 0;
-    for (auto& l : lookup_vertex.real_links_writer ())
+    స్వయంచాలక& subtable_శీర్షం = c.లేఖాచిత్రం.vertices_[subtable_సూచీ];
+    స్వయంచాలక& lookup_శీర్షం = c.లేఖాచిత్రం.vertices_[lookup_సూచీ];
+    గుర్తులేని replaced = 0;
+    కొరకు (స్వయంచాలక& l : lookup_శీర్షం.real_links_writer ())
     {
-      if (l.objidx == subtable_index) {
+      ఒకవేళ (l.objidx == subtable_సూచీ) {
         // Change lookup to point at the extension.
-        l.objidx = ext_index;
+        l.objidx = ext_సూచీ;
         replaced++;
       }
     }
 
     // Make extension point at the subtable.
-    auto& ext_vertex = c.graph.vertices_[ext_index];
-    for (unsigned i = 0; i < replaced; i++)
+    స్వయంచాలక& ext_శీర్షం = c.లేఖాచిత్రం.vertices_[ext_సూచీ];
+    కొరకు (గుర్తులేని i = 0; i < replaced; i++)
     {
-      subtable_vertex.remove_parent (lookup_index);
-      TRY(ext_vertex.add_parent (lookup_index, false));
+      subtable_శీర్షం.remove_మాతృ (lookup_సూచీ);
+      TRY(ext_శీర్షం.కూడు_మాతృ (lookup_సూచీ, అబద్ధం));
     }
-    if (!existing_ext_index)
-      TRY(subtable_vertex.add_parent (ext_index, false));
+    ఒకవేళ (!existing_ext_సూచీ)
+      TRY(subtable_శీర్షం.కూడు_మాతృ (ext_సూచీ, అబద్ధం));
 
-    return Ok();
+    తిరిగి Ok();
   }
 
- private:
-  bool is_supported_gsub_type(unsigned type, gsubgpos_graph_context_t& c) const {
-    return (c.table_tag == HB_OT_TAG_GSUB) && (
-      type == OT::Layout::GSUB_impl::SubstLookupSubTable::Type::Ligature
+ అంతరంగ:
+  తార్కిక is_supported_gsub_type(గుర్తులేని type, gsubgpos_లేఖాచిత్రం_context_t& c) స్థిరరాశి {
+    తిరిగి (c.పట్టిక_ట్యాగ్_2 == HB_OT_ట్యాగ్_GSUB) && (
+      type == OT::Layout::GSUB_impl::Subst_Lookup_Sub_పట్టిక::Type::Ligature
     );
   }
 
-  bool is_supported_gpos_type(unsigned type, gsubgpos_graph_context_t& c) const {
-   return (c.table_tag == HB_OT_TAG_GPOS) && (
-      type == OT::Layout::GPOS_impl::PosLookupSubTable::Type::Pair ||
-      type == OT::Layout::GPOS_impl::PosLookupSubTable::Type::MarkBase
+  తార్కిక is_supported_gpos_type(గుర్తులేని type, gsubgpos_లేఖాచిత్రం_context_t& c) స్థిరరాశి {
+   తిరిగి (c.పట్టిక_ట్యాగ్_2 == HB_OT_ట్యాగ్_GPOS) && (
+      type == OT::Layout::GPOS_impl::Pos_Lookup_Sub_పట్టిక::Type::Pair ||
+      type == OT::Layout::GPOS_impl::Pos_Lookup_Sub_పట్టిక::Type::Mark_పునాది
     );
   }
 
-  unsigned extension_type (hb_tag_t table_tag) const
+  గుర్తులేని extension_type (hb_ట్యాగ్_t పట్టిక_ట్యాగ్_2) స్థిరరాశి
   {
-    switch (table_tag)
+    ఎంపిక (పట్టిక_ట్యాగ్_2)
     {
-    case HB_OT_TAG_GPOS: return 9;
-    case HB_OT_TAG_GSUB: return 7;
-    default: return 0;
+    స్థితి HB_OT_ట్యాగ్_GPOS: తిరిగి 9;
+    స్థితి HB_OT_ట్యాగ్_GSUB: తిరిగి 7;
+    అప్రమేయ: తిరిగి 0;
     }
   }
 };
 
-template <typename T>
-struct LookupList : public OT::LookupList<T>
+మూస <రకం_పేరు T>
+నిర్మాణం LookupList : బహిరంగ OT::LookupList<T>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::LookupList<T>::min_size)) return Err(SANITIZE_FAILURE);
+    size_t శీర్షం_len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (శీర్షం_len < OT::LookupList<T>::min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < OT::LookupList<T>::item_size * this->len)) return Err(SANITIZE_FAILURE);
-    return Ok();
+    ఒకవేళ (unlikely (శీర్షం_len < OT::LookupList<T>::అంశం_కొలత * ఇది->len)) తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 };
 
-struct GSTAR : public OT::GSUBGPOS
+నిర్మాణం GSTAR : బహిరంగ OT::GSUBGPOS
 {
-  static graph_result_t<const GSTAR*> graph_to_gstar (graph_t& graph)
+  స్థిర లేఖాచిత్రం_ఫలితం_t<స్థిరరాశి GSTAR*> లేఖాచిత్రం_గమ్యం_gstar (లేఖాచిత్రం_t& లేఖాచిత్రం)
   {
-    const auto& r = graph.root ();
+    స్థిరరాశి స్వయంచాలక& r = లేఖాచిత్రం.మూలం ();
 
-    const GSTAR* gstar = (GSTAR*) r.obj ().head;
-    if (unlikely (!gstar)) return Err(INVALID_ARGUMENT);
+    స్థిరరాశి GSTAR* gstar = (GSTAR*) r.obj ().తల_2;
+    ఒకవేళ (unlikely (!gstar)) తిరిగి Err(INVALID_వాదం);
     TRY (gstar->sanitize (r));
     hb_barrier ();
 
-    return gstar;
+    తిరిగి gstar;
   }
 
-  const void* get_lookup_list_field_offset () const
+  స్థిరరాశి శూన్య* get_lookup_list_క్షేత్రం_స్థానభ్రంశం () స్థిరరాశి
   {
-    return OT::GSUBGPOS::get_lookup_list_field_offset ();
+    తిరిగి OT::GSUBGPOS::get_lookup_list_క్షేత్రం_స్థానభ్రంశం ();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> sanitize (స్థిరరాశి లేఖాచిత్రం_t::శీర్షం_t& శీర్షం) స్థిరరాశి
   {
-    size_t len = vertex.table_size ();
-    if (unlikely (len < OT::GSUBGPOS::min_size)) return Err(SANITIZE_FAILURE);
+    size_t len = శీర్షం.పట్టిక_కొలత ();
+    ఒకవేళ (unlikely (len < OT::GSUBGPOS::min_కొలత)) తిరిగి Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (version.major != 1)) return Err(SANITIZE_FAILURE);
-    if (unlikely (len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    ఒకవేళ (unlikely (సంస్కరణ.major != 1)) తిరిగి Err(SANITIZE_FAILURE);
+    ఒకవేళ (unlikely (len < get_కొలత ())) తిరిగి Err(SANITIZE_FAILURE);
+    తిరిగి Ok();
   }
 
-  graph_result_t<void> find_lookups (graph_t& graph,
-                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) const
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> కనుగొను_lookups (లేఖాచిత్రం_t& లేఖాచిత్రం,
+                                     hb_hashmap_t<గుర్తులేని, Lookup*>& lookups /*బహిర్గతం*/) స్థిరరాశి
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return find_lookups<MediumTypes> (graph, lookups);
-#endif
-    TRY(find_lookups<SmallTypes> (graph, lookups));
-    return Ok();
+#నిర్వచితం_కాకపోతే HB_NO_BEYOND_64K
+    ఒకవేళ (సంస్కరణ.గమ్యం_int () >= 0x00010002u && lookupList2)
+      తిరిగి కనుగొను_lookups<MediumTypes> (లేఖాచిత్రం, lookups);
+#అయితే_ముగింపు
+    TRY(కనుగొను_lookups<SmallTypes> (లేఖాచిత్రం, lookups));
+    తిరిగి Ok();
   }
 
-  graph_result_t<unsigned> get_lookup_list_index (graph_t& graph) const
+  లేఖాచిత్రం_ఫలితం_t<గుర్తులేని> get_lookup_list_సూచీ (లేఖాచిత్రం_t& లేఖాచిత్రం) స్థిరరాశి
   {
-    const void* offset = get_lookup_list_field_offset ();
-    if (unlikely (!offset)) return Err(INVALID_ARGUMENT);
-    return graph.index_for_offset (graph.root_idx (), offset);
+    స్థిరరాశి శూన్య* స్థానభ్రంశం = get_lookup_list_క్షేత్రం_స్థానభ్రంశం ();
+    ఒకవేళ (unlikely (!స్థానభ్రంశం)) తిరిగి Err(INVALID_వాదం);
+    తిరిగి లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (లేఖాచిత్రం.మూలం_idx (), స్థానభ్రంశం);
   }
 
-  template<typename Types>
-  graph_result_t<void> find_lookups (graph_t& graph,
-                                     hb_hashmap_t<unsigned, Lookup*>& lookups /* OUT */) const
+  మూస<రకం_పేరు Types>
+  లేఖాచిత్రం_ఫలితం_t<శూన్య> కనుగొను_lookups (లేఖాచిత్రం_t& లేఖాచిత్రం,
+                                     hb_hashmap_t<గుర్తులేని, Lookup*>& lookups /*బహిర్గతం*/) స్థిరరాశి
   {
-    TRY_ASSIGN (unsigned lookup_list_idx, get_lookup_list_index (graph));
-    const LookupList<Types>* lookupList =
-        (const LookupList<Types>*) graph.object (lookup_list_idx).head;
-    if (unlikely (!lookupList)) return Err(INVALID_ARGUMENT);
-    TRY(lookupList->sanitize (graph.vertices_[lookup_list_idx]));
+    TRY_కేటాయించు (గుర్తులేని lookup_list_idx, get_lookup_list_సూచీ (లేఖాచిత్రం));
+    స్థిరరాశి LookupList<Types>* lookupList =
+        (స్థిరరాశి LookupList<Types>*) లేఖాచిత్రం.object (lookup_list_idx).తల_2;
+    ఒకవేళ (unlikely (!lookupList)) తిరిగి Err(INVALID_వాదం);
+    TRY(lookupList->sanitize (లేఖాచిత్రం.vertices_[lookup_list_idx]));
 
-    for (unsigned i = 0; i < lookupList->len; i++)
+    కొరకు (గుర్తులేని i = 0; i < lookupList->len; i++)
     {
-      TRY_ASSIGN (unsigned lookup_idx, graph.index_for_offset (lookup_list_idx, &(lookupList->arrayZ[i])));
-      Lookup* lookup = (Lookup*) graph.object (lookup_idx).head;
-      if (!lookup || !lookup->sanitize (graph.vertices_[lookup_idx]).is_ok ()) continue;
-      lookups.set (lookup_idx, lookup);
+      TRY_కేటాయించు (గుర్తులేని lookup_idx, లేఖాచిత్రం.సూచీ_for_స్థానభ్రంశం (lookup_list_idx, &(lookupList->arrayZ[i])));
+      Lookup* lookup = (Lookup*) లేఖాచిత్రం.object (lookup_idx).తల_2;
+      ఒకవేళ (!lookup || !lookup->sanitize (లేఖాచిత్రం.vertices_[lookup_idx]).is_ok ()) కొనసాగు;
+      lookups.సమితి (lookup_idx, lookup);
     }
-    return Ok();
+    తిరిగి Ok();
   }
 };
 
@@ -490,4 +490,4 @@ struct GSTAR : public OT::GSUBGPOS
 
 }
 
-#endif  /* GRAPH_GSUBGPOS_GRAPH_HH */
+#అయితే_ముగింపు  /* GRAPH_GSUBGPOS_GRAPH_HH */
