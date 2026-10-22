@@ -98,8 +98,8 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::shared_ptr<hb_set_t>>), gpo
 
 //feature index-> address of substituation feature table mapping with
 //variations
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, const OT::Feature*>), gsub_feature_substitutes_map)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, const OT::Feature*>), gpos_feature_substitutes_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, ثابت OT::Feature*>), gsub_feature_substitutes_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, ثابت OT::Feature*>), gpos_feature_substitutes_map)
 
 //feature index->resolved lookup set mapping for fully-instanced lookup variations
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::shared_ptr<hb_set_t>>), gsub_lookup_variations)
@@ -111,8 +111,8 @@ HB_SUBSET_PLAN_MEMBER (hb_set_t, gpos_old_features)
 
 //feature_index->pair of (address of old feature, feature tag), used for alternate feature
 //parameter formats and inserting a catch all record if necessary
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb_pair_t E(<const void*, const void*>)>), gsub_old_feature_idx_tag_map)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb_pair_t E(<const void*, const void*>)>), gpos_old_feature_idx_tag_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb_pair_t E(<ثابت فراغ*, ثابت فراغ*>)>), gsub_old_feature_idx_tag_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb_pair_t E(<ثابت فراغ*, ثابت فراغ*>)>), gpos_old_feature_idx_tag_map)
 
 //active layers/palettes we'd like to retain
 HB_SUBSET_PLAN_MEMBER (hb_map_t, colrv1_layers)
@@ -120,17 +120,17 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, colr_palettes)
 //colrv1 varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, colrv1_varstore_inner_maps)
 //colrv1 retained varidx -> (new varidx, delta) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), colrv1_variation_idx_delta_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, صحيح>)>), colrv1_variation_idx_delta_map)
 //colrv1 retained new delta set index -> new varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_map_t, colrv1_new_deltaset_idx_varidx_map)
 
 //Old layout item variation index -> (New varidx, delta) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), layout_variation_idx_delta_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, صحيح>)>), layout_variation_idx_delta_map)
 
 //Layout condition -> (source variation index, default value)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, int>)>), layout_condition_values)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, صحيح>)>), layout_condition_قىممەتلەر)
 //Layout condition -> (private variation index, rescaled default value)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, int>)>), layout_condition_idx_value_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, صحيح>)>), layout_condition_idx_قىممەت_map)
 
 //gdef varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, gdef_varstore_inner_maps)
@@ -139,7 +139,7 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, hb::unique_ptr<hb_blob_t>>), sa
 
 //normalized axes range map
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), axes_location)
-HB_SUBSET_PLAN_MEMBER (hb_vector_t<int>, normalized_coords)
+HB_SUBSET_PLAN_MEMBER (hb_vector_t<صحيح>, normalized_coords)
 
 //user specified axes range map
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), user_axes_location)
@@ -161,7 +161,7 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), avar2_reachable_range
 //avar2: self-contained pinned axes -> constant old-space final coord.
 //These axes are removed from fvar/avar entirely; their contribution is
 //baked into the variation tables like an ordinary pin at that coord.
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, double>), avar2_self_contained)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, مزدوج>), avar2_self_contained)
 
 //axis_index->axis_tag mapping in fvar axis array
 HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_old_index_tag_map)
@@ -169,9 +169,9 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_old_index_tag_map)
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_tag_t>, axis_tags)
 
 //hmtx metrics map: new gid->(advance, lsb)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, int>)>), hmtx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, صحيح>)>), hmtx_map)
 //vmtx metrics map: new gid->(advance, lsb)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, int>)>), vmtx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, صحيح>)>), vmtx_map)
 //boundsWidth map: new gid->boundsWidth, boundWidth=xMax - xMin
 HB_SUBSET_PLAN_MEMBER (mutable hb_vector_t<unsigned>, bounds_width_vec)
 //boundsHeight map: new gid->boundsHeight, boundsHeight=yMax - yMin
@@ -184,7 +184,7 @@ HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, contour_point_vec
 HB_SUBSET_PLAN_MEMBER (hb_set_t, composite_new_gids)
 
 //Old BASE item variation index -> (New varidx, 0) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), base_variation_idx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, صحيح>)>), base_variation_idx_map)
 
 //BASE table varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, base_varstore_inner_maps)

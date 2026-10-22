@@ -25,7 +25,7 @@
 #ifndef HB_OT_META_TABLE_HH
 #define HB_OT_META_TABLE_HH
 
-#include "hb-open-type.hh"
+#ضمن "hb-open-type.hh"
 
 /*
  * meta -- Metadata Table
@@ -35,79 +35,79 @@
 #define HB_OT_TAG_meta HB_TAG ('m','e','t','a')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct DataMap
+بنية DataMap
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  صحيح cmp (hb_tag_t a) ثابت { أرجع tag.cmp (a); }
 
-  hb_tag_t get_tag () const { return tag; }
+  hb_tag_t get_tag () ثابت { أرجع tag; }
 
-  hb_blob_t *reference_entry (hb_blob_t *meta_blob) const
-  { return hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
+  hb_blob_t *reference_entry (hb_blob_t *meta_blob) ثابت
+  { أرجع hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
 			  dataZ.sanitize (c, base, dataLength)));
   }
 
-  protected:
+  محمي:
   Tag		tag;		/* A tag indicating the type of metadata. */
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
 		dataZ;		/* Offset in bytes from the beginning of the
 				 * metadata table to the data for this tag. */
   HBUINT32	dataLength;	/* Length of the data. The data is not required to
 				 * be padded to any byte boundary. */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct meta
+بنية meta
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_meta;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_meta;
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
     { table = hb_sanitize_context_t ().reference_table<meta> (face); }
     ~accelerator_t () { table.destroy (); }
 
-    hb_blob_t *reference_entry (hb_tag_t tag) const
-    { return table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
+    hb_blob_t *reference_entry (hb_tag_t tag) ثابت
+    { أرجع table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
 
-    unsigned int get_entries (unsigned int      start_offset,
-			      unsigned int     *count,
-			      hb_ot_meta_tag_t *entries) const
+    unsigned صحيح get_entries (unsigned صحيح      start_offset,
+			      unsigned صحيح     *سانى,
+			      hb_ot_meta_tag_t *entries) ثابت
     {
-      if (count && entries)
+      إذا (سانى && entries)
       {
-	+ table->dataMaps.as_array ().sub_array (start_offset, count)
+	+ table->dataMaps.as_array ().sub_array (start_offset, سانى)
 	| hb_map (&DataMap::get_tag)
-	| hb_map ([](hb_tag_t tag) { return (hb_ot_meta_tag_t) tag; })
-	| hb_sink (hb_array (entries, *count))
+	| hb_map ([](hb_tag_t tag) { أرجع (hb_ot_meta_tag_t) tag; })
+	| hb_sink (hb_array (entries, *سانى))
 	;
       }
-      return table->dataMaps.len;
+      أرجع table->dataMaps.len;
     }
 
-    private:
+    خاص:
     hb_blob_ptr_t<meta> table;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
 			  version == 1 &&
-			  dataMaps.sanitize (c, this)));
+			  dataMaps.sanitize (c, هذا)));
   }
 
-  protected:
+  محمي:
   HBUINT32	version;	/* Version number of the metadata table — set to 1. */
   HBUINT32	flags;		/* Flags — currently unused; set to 0. */
   HBUINT32	dataOffset;
@@ -117,11 +117,11 @@ struct meta
 				 * Reserved. Not used; should be set to 0. */
   Array32Of<DataMap>
 		dataMaps;/* Array of data map records. */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (16, dataMaps);
 };
 
-struct meta_accelerator_t : meta::accelerator_t {
+بنية meta_accelerator_t : meta::accelerator_t {
   meta_accelerator_t (hb_face_t *face) : meta::accelerator_t (face) {}
 };
 
