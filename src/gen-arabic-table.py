@@ -8,24 +8,24 @@ Input files:
 * https://unicode.org/Public/UCD/latest/ucd/Blocks.txt
 """
 
-import os.path, sys
+आनयन os.path, sys
 
-import packTab
+आनयन packTab
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+सचे len(sys.argv) > 1 च sys.argv[1] == "--rust":
 	del sys.argv[1]
 	language = packTab.languages["rust"]
-else:
+अञ्ञथा:
 	language = packTab.languages["c"]
 
-if len (sys.argv) != 4:
+सचे len (sys.argv) != 4:
 	sys.exit (__doc__)
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') अत्थाय x अन्तः sys.argv[1:]]
 
 headers = [[files[0].readline (), files[0].readline ()], [files[2].readline (), files[2].readline ()]]
 headers.append (["UnicodeData.txt does not have a header."])
-while files[0].readline ().find ('##################') < 0:
+याव files[0].readline ().find ('##################') < 0:
 	pass
 
 blocks = {}
@@ -43,58 +43,58 @@ JOINING_CODE = {
 }
 
 def read_blocks(f):
-	global blocks
-	for line in f:
+	वैश्विक blocks
+	अत्थाय पङ्क्तिः अन्तः f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = पङ्क्तिः.find ('#')
+		सचे j >= 0:
+			पङ्क्तिः = पङ्क्तिः[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () अत्थाय x अन्तः पङ्क्तिः.split (';')]
+		सचे len (fields) == 1:
+			अनुवर्त
 
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = पूर्णाङ्क (uu[0], 16)
+		सचे len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		अञ्ञथा:
+			end = पूर्णाङ्क (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
+		अत्थाय u अन्तः range (start, end + 1):
 			blocks[u] = t
 
 def print_joining_table(f):
 
-	values = {}
-	for line in f:
+	मानानि = {}
+	अत्थाय पङ्क्तिः अन्तः f:
 
-		if line[0] == '#':
-			continue
+		सचे पङ्क्तिः[0] == '#':
+			अनुवर्त
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () अत्थाय x अन्तः पङ्क्तिः.split (';')]
+		सचे len (fields) == 1:
+			अनुवर्त
 
-		u = int (fields[0], 16)
+		u = पूर्णाङ्क (fields[0], 16)
 
-		if fields[3] in ["ALAPH", "DALATH RISH"]:
-			value = "JOINING_GROUP_" + fields[3].replace(' ', '_')
-		else:
-			value = "JOINING_TYPE_" + fields[2]
-		values[u] = value
+		सचे fields[3] अन्तः ["ALAPH", "DALATH RISH"]:
+			मानम्_2 = "JOINING_GROUP_" + fields[3].replace(' ', '_')
+		अञ्ञथा:
+			मानम्_2 = "JOINING_TYPE_" + fields[2]
+		मानानि[u] = मानम्_2
 
 	code = packTab.Code ('_hb_arabic_joining')
-	data = {u: JOINING_CODE[v] for u, v in values.items ()}
-	sol = packTab.pack_table (data, default=JOINING_CODE['JOINING_TYPE_X'], compression=9)
-	if language.name == "c":
-		sol.genCode (code, 'joining_type', language=language, private=True)
+	data = {u: JOINING_CODE[v] अत्थाय u, v अन्तः मानानि.वस्तूनि ()}
+	sol = packTab.pack_table (data, स्वभाव=JOINING_CODE['JOINING_TYPE_X'], compression=9)
+	सचे language.name == "c":
+		sol.genCode (code, 'joining_type', language=language, गुप्त=सच्च)
 
 		print ("#include \"hb.hh\"")
 		print ()
-		code.print_code (file=sys.stdout, language=language, private=True)
+		code.print_code (file=sys.stdout, language=language, गुप्त=सच्च)
 		print ()
 		print ("static unsigned int")
 		print ("joining_type (hb_codepoint_t u)")
@@ -102,8 +102,8 @@ def print_joining_table(f):
 		print ("  return _hb_arabic_joining_joining_type (u);")
 		print ("}")
 		print ()
-	elif language.name == "rust":
-		sol.genCode (code, 'joining_type_u8', language=language, private=False)
+	नोचेद्यदि language.name == "rust":
+		sol.genCode (code, 'joining_type_u8', language=language, गुप्त=मिच्छा)
 
 		print ("#![allow(unused_parens)]")
 		print ("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
@@ -115,7 +115,7 @@ def print_joining_table(f):
 			"self, D, GroupAlaph, GroupDalathRish, L, R, T, U, X};"
 		)
 		print ()
-		code.print_code (file=sys.stdout, language=language, private=False)
+		code.print_code (file=sys.stdout, language=language, गुप्त=मिच्छा)
 		print ()
 		print ("#[inline]")
 		print ("pub(crate) fn joining_type (u: Codepoint) -> hb_arabic_joining_type_t")
@@ -133,8 +133,8 @@ def print_joining_table(f):
 		print ("  }")
 		print ("}")
 		print ()
-	else:
-		assert False, "Unknown language: %s" % language.name
+	अञ्ञथा:
+		प्रतिज्ञा मिच्छा, "Unknown language: %s" % language.name
 
 LIGATURES = (
 	0xF2EE, 0xFC08, 0xFC0E, 0xFC12, 0xFC32, 0xFC3F, 0xFC40, 0xFC41, 0xFC42,
@@ -152,90 +152,90 @@ def read_shaping_table(f):
 	shapes = {}
 	ligatures = {}
 	names = {}
-	lines = f.readlines()
-	lines += [
+	पङ्क्तयः = f.readlines()
+	पङ्क्तयः += [
 		"F201;PUA ARABIC LIGATURE LELLAH ISOLATED FORM;Lo;0;AL;<isolated> 0644 0644 0647;;;;N;;;;;",
 		"F211;PUA ARABIC LIGATURE LAM WITH MEEM WITH JEEM INITIAL FORM;Lo;0;AL;<initial> 0644 0645 062C;;;;N;;;;;",
 		"F2EE;PUA ARABIC LIGATURE SHADDA WITH FATHATAN ISOLATED FORM;Lo;0;AL;<isolated> 0020 064B 0651;;;;N;;;;;",
 	]
-	for line in lines:
+	अत्थाय पङ्क्तिः अन्तः पङ्क्तयः:
 
-		fields = [x.strip () for x in line.split (';')]
-		if fields[5][0:1] != '<':
-			continue
+		fields = [x.strip () अत्थाय x अन्तः पङ्क्तिः.split (';')]
+		सचे fields[5][0:1] != '<':
+			अनुवर्त
 
-		items = fields[5].split (' ')
-		shape, items = items[0][1:-1], tuple (int (x, 16) for x in items[1:])
-		c = int (fields[0], 16)
+		वस्तूनि = fields[5].split (' ')
+		shape, वस्तूनि = वस्तूनि[0][1:-1], tuple (पूर्णाङ्क (x, 16) अत्थाय x अन्तः वस्तूनि[1:])
+		c = पूर्णाङ्क (fields[0], 16)
 
-		if not shape in ['initial', 'medial', 'isolated', 'final']:
-			continue
+		सचे न shape अन्तः ['initial', 'medial', 'isolated', 'final']:
+			अनुवर्त
 
-		if len (items) != 1:
+		सचे len (वस्तूनि) != 1:
 			# Mark ligatures start with space and are in visual order, so we
 			# remove the space and reverse the items.
-			if items[0] == 0x0020:
-				items = items[:0:-1]
+			सचे वस्तूनि[0] == 0x0020:
+				वस्तूनि = वस्तूनि[:0:-1]
 				shape = None
 			# We only care about a subset of ligatures
-			if c not in LIGATURES:
-				continue
+			सचे c न अन्तः LIGATURES:
+				अनुवर्त
 
 			# Save ligature
 			names[c] = fields[1]
-			if items not in ligatures:
-				ligatures[items] = {}
-			ligatures[items][shape] = c
-		else:
+			सचे वस्तूनि न अन्तः ligatures:
+				ligatures[वस्तूनि] = {}
+			ligatures[वस्तूनि][shape] = c
+		अञ्ञथा:
 			# Save shape
-			if items[0] not in names:
-				names[items[0]] = fields[1]
-			else:
-				names[items[0]] = os.path.commonprefix ([names[items[0]], fields[1]]).strip ()
-			if items[0] not in shapes:
-				shapes[items[0]] = {}
-			shapes[items[0]][shape] = c
+			सचे वस्तूनि[0] न अन्तः names:
+				names[वस्तूनि[0]] = fields[1]
+			अञ्ञथा:
+				names[वस्तूनि[0]] = os.path.commonprefix ([names[वस्तूनि[0]], fields[1]]).strip ()
+			सचे वस्तूनि[0] न अन्तः shapes:
+				shapes[वस्तूनि[0]] = {}
+			shapes[वस्तूनि[0]][shape] = c
 
 	ligas_2 = {}
 	ligas_3 = {}
 	ligas_mark_2 = {}
-	for key in ligatures.keys ():
-		for shape in ligatures[key]:
-			c = ligatures[key][shape]
-			if len(key) == 3:
-				if shape == 'isolated':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'], shapes[key[2]]['final'])
-				elif shape == 'final':
-					liga = (shapes[key[0]]['medial'], shapes[key[1]]['medial'], shapes[key[2]]['final'])
-				elif shape == 'initial':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'], shapes[key[2]]['medial'])
-				else:
-					raise Exception ("Unexpected shape", shape)
-				if liga[0] not in ligas_3:
+	अत्थाय कुञ्चिका_2 अन्तः ligatures.कुञ्चिकाः ():
+		अत्थाय shape अन्तः ligatures[कुञ्चिका_2]:
+			c = ligatures[कुञ्चिका_2][shape]
+			सचे len(कुञ्चिका_2) == 3:
+				सचे shape == 'isolated':
+					liga = (shapes[कुञ्चिका_2[0]]['initial'], shapes[कुञ्चिका_2[1]]['medial'], shapes[कुञ्चिका_2[2]]['final'])
+				नोचेद्यदि shape == 'final':
+					liga = (shapes[कुञ्चिका_2[0]]['medial'], shapes[कुञ्चिका_2[1]]['medial'], shapes[कुञ्चिका_2[2]]['final'])
+				नोचेद्यदि shape == 'initial':
+					liga = (shapes[कुञ्चिका_2[0]]['initial'], shapes[कुञ्चिका_2[1]]['medial'], shapes[कुञ्चिका_2[2]]['medial'])
+				अञ्ञथा:
+					उत्थापय Exception ("Unexpected shape", shape)
+				सचे liga[0] न अन्तः ligas_3:
 					ligas_3[liga[0]] = []
 				ligas_3[liga[0]].append ((liga[1], liga[2], c))
-			elif len(key) == 2:
-				if shape is None:
-					liga = key
-					if liga[0] not in ligas_mark_2:
+			नोचेद्यदि len(कुञ्चिका_2) == 2:
+				सचे shape is None:
+					liga = कुञ्चिका_2
+					सचे liga[0] न अन्तः ligas_mark_2:
 						ligas_mark_2[liga[0]] = []
 					ligas_mark_2[liga[0]].append ((liga[1], c))
-					continue
-				elif shape == 'isolated':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['final'])
-				elif shape == 'final':
-					liga = (shapes[key[0]]['medial'], shapes[key[1]]['final'])
-				elif shape == 'initial':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'])
-				else:
-					raise Exception ("Unexpected shape", shape)
-				if liga[0] not in ligas_2:
+					अनुवर्त
+				नोचेद्यदि shape == 'isolated':
+					liga = (shapes[कुञ्चिका_2[0]]['initial'], shapes[कुञ्चिका_2[1]]['final'])
+				नोचेद्यदि shape == 'final':
+					liga = (shapes[कुञ्चिका_2[0]]['medial'], shapes[कुञ्चिका_2[1]]['final'])
+				नोचेद्यदि shape == 'initial':
+					liga = (shapes[कुञ्चिका_2[0]]['initial'], shapes[कुञ्चिका_2[1]]['medial'])
+				अञ्ञथा:
+					उत्थापय Exception ("Unexpected shape", shape)
+				सचे liga[0] न अन्तः ligas_2:
 					ligas_2[liga[0]] = []
 				ligas_2[liga[0]].append ((liga[1], c))
-			else:
-				raise Exception ("Unexpected number of ligature components", key)
+			अञ्ञथा:
+				उत्थापय Exception ("Unexpected number of ligature components", कुञ्चिका_2)
 
-	return shapes, names, ligas_2, ligas_mark_2, ligas_3
+	पटिनिवत्त shapes, names, ligas_2, ligas_mark_2, ligas_3
 
 
 def print_shaping_table(f):
@@ -246,13 +246,13 @@ def print_shaping_table(f):
 	print ("static const uint16_t shaping_table[][4] =")
 	print ("{")
 
-	keys = shapes.keys ()
-	min_u, max_u = min (keys), max (keys)
-	for u in range (min_u, max_u + 1):
-		s = [shapes[u][shape] if u in shapes and shape in shapes[u] else 0
-		     for shape in  ['initial', 'medial', 'final', 'isolated']]
-		value = ', '.join ("0x%04Xu" % c for c in s)
-		print ("  {%s}, /* U+%04X %s */" % (value, u, names[u] if u in names else ""))
+	कुञ्चिकाः = shapes.कुञ्चिकाः ()
+	min_u, max_u = min (कुञ्चिकाः), max (कुञ्चिकाः)
+	अत्थाय u अन्तः range (min_u, max_u + 1):
+		s = [shapes[u][shape] सचे u अन्तः shapes च shape अन्तः shapes[u] अञ्ञथा 0
+		     अत्थाय shape अन्तः  ['initial', 'medial', 'final', 'isolated']]
+		मानम्_2 = ', '.join ("0x%04Xu" % c अत्थाय c अन्तः s)
+		print ("  {%s}, /* U+%04X %s */" % (मानम्_2, u, names[u] सचे u अन्तः names अञ्ञथा ""))
 
 	print ("};")
 	print ()
@@ -260,7 +260,7 @@ def print_shaping_table(f):
 	print ("#define SHAPING_TABLE_LAST	0x%04Xu" % max_u)
 	print ()
 
-	max_i = max (len (ligas_2[l]) for l in ligas_2)
+	max_i = max (len (ligas_2[l]) अत्थाय l अन्तः ligas_2)
 	print ()
 	print ("static const struct ligature_set_t {")
 	print (" uint16_t first;")
@@ -270,17 +270,17 @@ def print_shaping_table(f):
 	print (" } ligatures[%d];" % max_i)
 	print ("} ligature_table[] =")
 	print ("{")
-	for first in sorted (ligas_2.keys ()):
+	अत्थाय first अन्तः sorted (ligas_2.कुञ्चिकाः ()):
 
 		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_2[first]:
+		अत्थाय liga अन्तः ligas_2[first]:
 			print ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], names[liga[1]]))
 		print ("  }},")
 
 	print ("};")
 	print ()
 
-	max_i = max (len (ligas_mark_2[l]) for l in ligas_mark_2)
+	max_i = max (len (ligas_mark_2[l]) अत्थाय l अन्तः ligas_mark_2)
 	print ()
 	print ("static const struct ligature_mark_set_t {")
 	print (" uint16_t first;")
@@ -290,17 +290,17 @@ def print_shaping_table(f):
 	print (" } ligatures[%d];" % max_i)
 	print ("} ligature_mark_table[] =")
 	print ("{")
-	for first in sorted (ligas_mark_2.keys ()):
+	अत्थाय first अन्तः sorted (ligas_mark_2.कुञ्चिकाः ()):
 
 		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_mark_2[first]:
+		अत्थाय liga अन्तः ligas_mark_2[first]:
 			print ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], names[liga[1]]))
 		print ("  }},")
 
 	print ("};")
 	print ()
 
-	max_i = max (len (ligas_3[l]) for l in ligas_3)
+	max_i = max (len (ligas_3[l]) अत्थाय l अन्तः ligas_3)
 	print ()
 	print ("static const struct ligature_3_set_t {")
 	print (" uint16_t first;")
@@ -310,10 +310,10 @@ def print_shaping_table(f):
 	print (" } ligatures[%d];" % max_i)
 	print ("} ligature_3_table[] =")
 	print ("{")
-	for first in sorted (ligas_3.keys ()):
+	अत्थाय first अन्तः sorted (ligas_3.कुञ्चिकाः ()):
 
 		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_3[first]:
+		अत्थाय liga अन्तः ligas_3[first]:
 			print ("    { {0x%04Xu, 0x%04Xu}, 0x%04Xu}, /* %s */" % (liga[0], liga[1], liga[2], names[liga[2]]))
 		print ("  }},")
 
@@ -324,38 +324,38 @@ def print_shaping_table(f):
 def print_shaping_table_rust(f):
 
 	shapes, _, ligas_2, ligas_mark_2, ligas_3 = read_shaping_table (f)
-	min_u, max_u = min (shapes.keys ()), max (shapes.keys ())
+	min_u, max_u = min (shapes.कुञ्चिकाः ()), max (shapes.कुञ्चिकाः ())
 
 	print ()
 	print ("pub(crate) const SHAPING_TABLE: &[(u16, [u16; 4])] = &[")
-	for u in range (min_u, max_u + 1):
-		s = [shapes[u][shape] if u in shapes and shape in shapes[u] else 0
-		     for shape in ['initial', 'medial', 'final', 'isolated']]
-		if any (s):
-			value = ", ".join ("0x%04X" % c for c in s)
-			print ("    (0x%04X, [%s])," % (u, value))
+	अत्थाय u अन्तः range (min_u, max_u + 1):
+		s = [shapes[u][shape] सचे u अन्तः shapes च shape अन्तः shapes[u] अञ्ञथा 0
+		     अत्थाय shape अन्तः ['initial', 'medial', 'final', 'isolated']]
+		सचे any (s):
+			मानम्_2 = ", ".join ("0x%04X" % c अत्थाय c अन्तः s)
+			print ("    (0x%04X, [%s])," % (u, मानम्_2))
 	print ("];")
 
 	print ()
 	print ("pub(crate) const LIGATURE_3_TABLE: &[([u16; 3], u16)] = &[")
-	for first in sorted (ligas_3.keys ()):
-		for liga in ligas_3[first]:
+	अत्थाय first अन्तः sorted (ligas_3.कुञ्चिकाः ()):
+		अत्थाय liga अन्तः ligas_3[first]:
 			print ("    ([0x%04X, 0x%04X, 0x%04X], 0x%04X)," %
 			       (first, liga[0], liga[1], liga[2]))
 	print ("];")
 
 	print ()
 	print ("pub(crate) const LIGATURE_TABLE: &[([u16; 2], u16)] = &[")
-	for first in sorted (ligas_2.keys ()):
-		for liga in ligas_2[first]:
+	अत्थाय first अन्तः sorted (ligas_2.कुञ्चिकाः ()):
+		अत्थाय liga अन्तः ligas_2[first]:
 			print ("    ([0x%04X, 0x%04X], 0x%04X)," %
 			       (first, liga[0], liga[1]))
 	print ("];")
 
 	print ()
 	print ("pub(crate) const LIGATURE_MARK_TABLE: &[([u16; 2], u16)] = &[")
-	for first in sorted (ligas_mark_2.keys ()):
-		for liga in ligas_mark_2[first]:
+	अत्थाय first अन्तः sorted (ligas_mark_2.कुञ्चिकाः ()):
+		अत्थाय liga अन्तः ligas_mark_2[first]:
 			print ("    ([0x%04X, 0x%04X], 0x%04X)," %
 			       (first, liga[0], liga[1]))
 	print ("];")
@@ -367,17 +367,17 @@ print ("/*")
 print (" * The following table is generated by running:")
 print (" *")
 print (" *   ./gen-arabic-table.py %sArabicShaping.txt UnicodeData.txt Blocks.txt" %
-		("--rust " if language.name == "rust" else ""))
+		("--rust " सचे language.name == "rust" अञ्ञथा ""))
 print (" *")
 print (" * on files with these headers:")
 print (" *")
-for h in headers:
-	for l in h:
+अत्थाय h अन्तः headers:
+	अत्थाय l अन्तः h:
 		print (" * %s" % (l.strip()))
 print (" */")
 print ()
 read_blocks (files[2])
-if language.name == "c":
+सचे language.name == "c":
 	print ("#ifndef HB_OT_SHAPER_ARABIC_TABLE_HH")
 	print ("#define HB_OT_SHAPER_ARABIC_TABLE_HH")
 	print ()
@@ -387,10 +387,10 @@ if language.name == "c":
 
 	print ()
 	print ("#endif /* HB_OT_SHAPER_ARABIC_TABLE_HH */")
-elif language.name == "rust":
+नोचेद्यदि language.name == "rust":
 	print_joining_table (files[0])
 	print_shaping_table_rust (files[1])
-else:
-	assert False, "Unknown language: %s" % language.name
+अञ्ञथा:
+	प्रतिज्ञा मिच्छा, "Unknown language: %s" % language.name
 print ()
 print ("/* == End of generated table == */")

@@ -27,92 +27,92 @@
 #ifndef HB_AAT_MAP_HH
 #define HB_AAT_MAP_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 
-struct hb_aat_map_t
+संरचना hb_aat_map_t
 {
-  friend struct hb_aat_map_builder_t;
+  friend संरचना hb_aat_map_builder_t;
 
-  public:
-  struct range_flags_t
+  सार्वजनिक:
+  संरचना range_flags_t
   {
     hb_mask_t flags;
     unsigned cluster_first;
     unsigned cluster_last; // end - 1
   };
 
-  public:
+  सार्वजनिक:
   hb_vector_t<hb_sorted_vector_t<range_flags_t>> chain_flags;
 };
 
-struct hb_aat_map_builder_t
+संरचना hb_aat_map_builder_t
 {
-  public:
+  सार्वजनिक:
 
   HB_INTERNAL hb_aat_map_builder_t (hb_face_t *face_,
-				    const hb_segment_properties_t props_) :
+				    ध्रुव hb_segment_properties_t props_) :
 				      face (face_),
 				      props (props_) {}
 
-  HB_INTERNAL void add_feature (const hb_feature_t &feature);
+  HB_INTERNAL शून्य add_feature (ध्रुव hb_feature_t &feature);
 
-  HB_INTERNAL void compile (hb_aat_map_t  &m);
+  HB_INTERNAL शून्य compile (hb_aat_map_t  &m);
 
-  public:
-  struct feature_info_t
+  सार्वजनिक:
+  संरचना feature_info_t
   {
     hb_aat_layout_feature_type_t  type;
     hb_aat_layout_feature_selector_t  setting;
-    bool is_exclusive;
+    तार्किक is_exclusive;
     unsigned  seq; /* For stable sorting only. */
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb)
+    HB_INTERNAL स्थिर पूर्णाङ्क cmp (ध्रुव शून्य *pa, ध्रुव शून्य *pb)
     {
-      const feature_info_t *a = (const feature_info_t *) pa;
-      const feature_info_t *b = (const feature_info_t *) pb;
-      if (a->type != b->type) return (a->type < b->type ? -1 : 1);
-      if (!a->is_exclusive &&
-	  (a->setting & ~1) != (b->setting & ~1)) return (a->setting < b->setting ? -1 : 1);
-	    return (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
+      ध्रुव feature_info_t *a = (ध्रुव feature_info_t *) pa;
+      ध्रुव feature_info_t *b = (ध्रुव feature_info_t *) pb;
+      सचे (a->type != b->type) पटिनिवत्त (a->type < b->type ? -1 : 1);
+      सचे (!a->is_exclusive &&
+	  (a->setting & ~1) != (b->setting & ~1)) पटिनिवत्त (a->setting < b->setting ? -1 : 1);
+	    पटिनिवत्त (a->seq < b->seq ? -1 : a->seq > b->seq ? 1 : 0);
     }
 
     /* compares type & setting only */
-    int cmp (const feature_info_t& f) const
+    पूर्णाङ्क cmp (ध्रुव feature_info_t& f) ध्रुव
     {
-      return (f.type != type) ? (f.type < type ? -1 : 1) :
+      पटिनिवत्त (f.type != type) ? (f.type < type ? -1 : 1) :
 	     (f.setting != setting) ? (f.setting < setting ? -1 : 1) : 0;
     }
   };
 
-  struct feature_range_t
+  संरचना feature_range_t
   {
     feature_info_t info;
     unsigned start;
     unsigned end;
   };
 
-  private:
-  struct feature_event_t
+  गुप्त:
+  संरचना feature_event_t
   {
-    unsigned int index;
-    bool start;
+    unsigned पूर्णाङ्क index;
+    तार्किक start;
     feature_info_t feature;
 
-    HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-      const feature_event_t *a = (const feature_event_t *) pa;
-      const feature_event_t *b = (const feature_event_t *) pb;
-      return a->index < b->index ? -1 : a->index > b->index ? 1 :
+    HB_INTERNAL स्थिर पूर्णाङ्क cmp (ध्रुव शून्य *pa, ध्रुव शून्य *pb) {
+      ध्रुव feature_event_t *a = (ध्रुव feature_event_t *) pa;
+      ध्रुव feature_event_t *b = (ध्रुव feature_event_t *) pb;
+      पटिनिवत्त a->index < b->index ? -1 : a->index > b->index ? 1 :
 	     a->start < b->start ? -1 : a->start > b->start ? 1 :
 	     feature_info_t::cmp (&a->feature, &b->feature);
     }
   };
 
-  public:
+  सार्वजनिक:
   hb_face_t *face;
   hb_segment_properties_t props;
 
-  public:
+  सार्वजनिक:
   hb_sorted_vector_t<feature_range_t> features;
   hb_sorted_vector_t<feature_info_t> current_features;
   unsigned range_first = HB_FEATURE_GLOBAL_START;

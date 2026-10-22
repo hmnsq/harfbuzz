@@ -24,11 +24,11 @@
  * Igalia Author(s): Frédéric Wang
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_MATH
 
-#include "hb-ot-math-table.hh"
+#अन्तर्भाव "hb-ot-math-table.hh"
 
 
 /**
@@ -63,7 +63,7 @@
 hb_bool_t
 hb_ot_math_has_data (hb_face_t *face)
 {
-  return face->table.MATH->has_data ();
+  पटिनिवत्त face->table.MATH->has_data ();
 }
 
 /**
@@ -92,16 +92,16 @@ hb_ot_math_get_constant (hb_font_t *font,
    * apparently Microsoft implementation swaps displayOperatorMinHeight and
    * delimitedSubFormulaMinHeight, so we do the same if we detect Cambria Math
    * with the swapped values. */
-  if ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT ||
+  सचे ((constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT ||
        constant == HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT) &&
       font->face->table.MATH->is_bad_cambria (font))
   {
-    if (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT)
+    सचे (constant == HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT)
       constant = HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT;
-    else
+    अञ्ञथा
       constant = HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT;
   }
-  return font->face->table.MATH->get_constant(constant, font);
+  पटिनिवत्त font->face->table.MATH->get_constant(constant, font);
 }
 
 /**
@@ -120,7 +120,7 @@ hb_position_t
 hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
 					 hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_italics_correction (glyph, font);
+  पटिनिवत्त font->face->table.MATH->get_glyph_info().get_italics_correction (glyph, font);
 }
 
 /**
@@ -143,10 +143,10 @@ hb_ot_math_get_glyph_italics_correction (hb_font_t *font,
  * Since: 1.3.3
  **/
 hb_position_t
-hb_ot_math_get_glyph_top_accent_attachment (hb_font_t *font,
+hb_ot_math_get_glyph_शिखरम्_accent_attachment (hb_font_t *font,
 					    hb_codepoint_t glyph)
 {
-  return font->face->table.MATH->get_glyph_info().get_top_accent_attachment (glyph, font);
+  पटिनिवत्त font->face->table.MATH->get_glyph_info().get_शिखरम्_accent_attachment (glyph, font);
 }
 
 /**
@@ -164,7 +164,7 @@ hb_bool_t
 hb_ot_math_is_glyph_extended_shape (hb_face_t *face,
 				    hb_codepoint_t glyph)
 {
-  return face->table.MATH->get_glyph_info().is_extended_shape (glyph);
+  पटिनिवत्त face->table.MATH->get_glyph_info().is_extended_shape (glyph);
 }
 
 /**
@@ -192,7 +192,7 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
 			      hb_ot_math_kern_t kern,
 			      hb_position_t correction_height)
 {
-  return font->face->table.MATH->get_glyph_info().get_kerning (glyph,
+  पटिनिवत्त font->face->table.MATH->get_glyph_info().get_kerning (glyph,
 							       kern,
 							       correction_height,
 							       font);
@@ -227,18 +227,18 @@ hb_ot_math_get_glyph_kerning (hb_font_t *font,
  *
  * Since: 3.4.0
  **/
-unsigned int
+unsigned पूर्णाङ्क
 hb_ot_math_get_glyph_kernings (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_ot_math_kern_t kern,
-			       unsigned int start_offset,
-			       unsigned int *entries_count, /* IN/OUT */
+			       unsigned पूर्णाङ्क start_offset,
+			       unsigned पूर्णाङ्क *entries_गणनम्, /* IN/OUT */
 			       hb_ot_math_kern_entry_t *kern_entries /* OUT */)
 {
-  return font->face->table.MATH->get_glyph_info().get_kernings (glyph,
+  पटिनिवत्त font->face->table.MATH->get_glyph_info().get_kernings (glyph,
 								kern,
 								start_offset,
-								entries_count,
+								entries_गणनम्,
 								kern_entries,
 								font);
 }
@@ -266,17 +266,17 @@ hb_ot_math_get_glyph_kernings (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+unsigned पूर्णाङ्क
 hb_ot_math_get_glyph_variants (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *variants_count, /* IN/OUT */
+			       unsigned पूर्णाङ्क start_offset,
+			       unsigned पूर्णाङ्क *variants_गणनम्, /* IN/OUT */
 			       hb_ot_math_glyph_variant_t *variants /* OUT */)
 {
-  return font->face->table.MATH->get_variants().get_glyph_variants (glyph, direction, font,
+  पटिनिवत्त font->face->table.MATH->get_variants().get_glyph_variants (glyph, direction, font,
 								    start_offset,
-								    variants_count,
+								    variants_गणनम्,
 								    variants);
 }
 
@@ -302,7 +302,7 @@ hb_position_t
 hb_ot_math_get_min_connector_overlap (hb_font_t *font,
 				      hb_direction_t direction)
 {
-  return font->face->table.MATH->get_variants().get_min_connector_overlap (direction, font);
+  पटिनिवत्त font->face->table.MATH->get_variants().get_min_connector_overlap (direction, font);
 }
 
 /**
@@ -330,20 +330,20 @@ hb_ot_math_get_min_connector_overlap (hb_font_t *font,
  *
  * Since: 1.3.3
  **/
-unsigned int
+unsigned पूर्णाङ्क
 hb_ot_math_get_glyph_assembly (hb_font_t *font,
 			       hb_codepoint_t glyph,
 			       hb_direction_t direction,
-			       unsigned int start_offset,
-			       unsigned int *parts_count, /* IN/OUT */
+			       unsigned पूर्णाङ्क start_offset,
+			       unsigned पूर्णाङ्क *parts_गणनम्, /* IN/OUT */
 			       hb_ot_math_glyph_part_t *parts, /* OUT */
 			       hb_position_t *italics_correction /* OUT */)
 {
-  return font->face->table.MATH->get_variants().get_glyph_parts (glyph,
+  पटिनिवत्त font->face->table.MATH->get_variants().get_glyph_parts (glyph,
 								 direction,
 								 font,
 								 start_offset,
-								 parts_count,
+								 parts_गणनम्,
 								 parts,
 								 italics_correction);
 }

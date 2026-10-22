@@ -24,35 +24,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#अन्तर्भाव "hb.h"
+#अन्तर्भाव "hb-ot.h"
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#अन्तर्भाव "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+पूर्णाङ्क
+main (पूर्णाङ्क argc, वर्ण **argv)
 {
-  bool ret = true;
+  तार्किक ret = सच्च;
 
 #ifndef HB_NO_BUFFER_SERIALIZE
 
   hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  सचे (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    सचे (!strcmp (argv[1], "--json"))
     {
       format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    अञ्ञथा सचे (!strcmp (argv[1], "--text"))
     {
       format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
       argc--;
@@ -60,8 +60,8 @@ main (int argc, char **argv)
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  सचे (argc < 2)
+    argv[1] = (वर्ण *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
@@ -69,7 +69,7 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned पूर्णाङ्क upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
   hb_font_set_scale (font, upem, upem);
@@ -77,46 +77,46 @@ main (int argc, char **argv)
   hb_buffer_t *buf;
   buf = hb_buffer_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  वर्ण पङ्क्तिः[BUFSIZ], out[BUFSIZ];
+  याव (fgets (पङ्क्तिः, परिमाण(पङ्क्तिः), stdin))
   {
     hb_buffer_clear_contents (buf);
 
-    while (true)
+    याव (सच्च)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
+      ध्रुव वर्ण *p = पङ्क्तिः;
+      ध्रुव वर्ण *end = p + strlen (p);
+      सचे (p < end && *(end - 1) == '\n')
 	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
+      सचे (!hb_buffer_deserialize_glyphs (buf,
 					 p, end - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = मिच्छा;
+        भङ्ग;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      सचे (*p == '\n')
+        भङ्ग;
+      सचे (p == पङ्क्तिः)
       {
-	ret = false;
-	break;
+	ret = मिच्छा;
+	भङ्ग;
       }
 
       unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      memmove (पङ्क्तिः, p, len);
+      सचे (!fgets (पङ्क्तिः + len, परिमाण(पङ्क्तिः) - len, stdin))
+        पङ्क्तिः[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    unsigned गणनम् = hb_buffer_get_length (buf);
+    अत्थाय (unsigned offset = 0; offset < गणनम्;)
     {
       unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      offset += hb_buffer_serialize_glyphs (buf, offset, गणनम्,
+					    out, परिमाण (out), &len,
 					    font,
 					    format,
 					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
@@ -131,5 +131,5 @@ main (int argc, char **argv)
 
 #endif
 
-  return !ret;
+  पटिनिवत्त !ret;
 }

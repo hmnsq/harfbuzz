@@ -27,76 +27,76 @@
 #ifndef HB_KERN_HH
 #define HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-aat-layout-common.hh"
+#अन्तर्भाव "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+नामाकाश OT {
 
 
 template <typename Driver>
-struct hb_kern_machine_t
+संरचना hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (ध्रुव Driver &driver_,
+		     तार्किक crossStream_ = मिच्छा) :
 		       driver (driver_),
 		       crossStream (crossStream_) {}
 
-  void kern (hb_font_t   *font,
+  शून्य kern (hb_font_t   *font,
 	     hb_buffer_t *buffer,
 	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+	     तार्किक         scale = सच्च) ध्रुव
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    सचे (!buffer->message (font, "start kern"))
+      पटिनिवत्त;
 
     buffer->unsafe_to_concat ();
     OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
     c.set_lookup_mask (kern_mask);
     c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    auto &skippy_iter = c.iter_निवेशः;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
+    तार्किक horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
+    unsigned पूर्णाङ्क गणनम् = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    अत्थाय (unsigned पूर्णाङ्क idx = 0; idx < गणनम्;)
     {
-      if (!(info[idx].mask & kern_mask))
+      सचे (!(info[idx].mask & kern_mask))
       {
 	idx++;
-	continue;
+	अनुवर्त;
       }
 
       skippy_iter.reset_fast (idx);
       unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      सचे (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
-	continue;
+	अनुवर्त;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      unsigned पूर्णाङ्क i = idx;
+      unsigned पूर्णाङ्क j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      सचे (likely (!kern))
+	गच्छ skip;
 
-      if (horizontal)
+      सचे (horizontal)
       {
-	if (scale)
+	सचे (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	सचे (crossStream)
 	{
 	  pos[j].y_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	अञ्ञथा
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      अञ्ञथा
       {
-	if (scale)
+	सचे (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	सचे (crossStream)
 	{
 	  pos[j].x_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	अञ्ञथा
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -130,11 +130,11 @@ struct hb_kern_machine_t
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (शून्य) buffer->message (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  ध्रुव Driver &driver;
+  तार्किक crossStream;
 };
 
 

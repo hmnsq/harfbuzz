@@ -27,13 +27,13 @@
 #ifndef HB_CORETEXT_H
 #define HB_CORETEXT_H
 
-#include "hb.h"
+#अन्तर्भाव "hb.h"
 
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#अन्तर्भाव <TargetConditionals.h>
+#सचे TARGET_OS_IPHONE
 #  include <CoreText/CoreText.h>
 #  include <CoreGraphics/CoreGraphics.h>
-#else
+#अञ्ञथा
 #  include <ApplicationServices/ApplicationServices.h>
 #endif
 
@@ -81,12 +81,12 @@ HB_EXTERN hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font);
 
 HB_EXTERN hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index);
+hb_coretext_face_create_from_file_or_fail (ध्रुव वर्ण   *file_name,
+					   unsigned पूर्णाङ्क  index);
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index);
+					   unsigned पूर्णाङ्क  index);
 
 HB_EXTERN hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font);
@@ -98,7 +98,7 @@ hb_coretext_face_get_cg_font (hb_face_t *face);
 HB_EXTERN CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_coretext_font_set_funcs (hb_font_t *font);
 
 

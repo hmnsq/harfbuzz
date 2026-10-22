@@ -1,60 +1,60 @@
-#include "hb-subset-table.hh"
+#अन्तर्भाव "hb-subset-table.hh"
 
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-gvar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
+#अन्तर्भाव "hb-ot-var-hvar-table.hh"
+#अन्तर्भाव "hb-ot-var-gvar-table.hh"
+#अन्तर्भाव "hb-ot-var-fvar-table.hh"
+#अन्तर्भाव "hb-ot-var-avar-table.hh"
+#अन्तर्भाव "hb-ot-var-cvar-table.hh"
+#अन्तर्भाव "hb-ot-var-mvar-table.hh"
 #ifndef HB_NO_VAR_COMPOSITES
-#include "OT/Var/VARC/VARC-subset.hh"
+#अन्तर्भाव "OT/Var/VARC/VARC-subset.hh"
 #endif
 
-bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+तार्किक _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<वर्ण> &buf, hb_tag_t tag, तार्किक *success)
 {
 #ifndef HB_NO_VAR
-  switch (tag)
+  विकल्प (tag)
   {
-  case HB_TAG('H','V','A','R'): *success = _hb_subset_table<const OT::HVAR> (plan, buf); return true;
-  case HB_TAG('V','V','A','R'): *success = _hb_subset_table<const OT::VVAR> (plan, buf); return true;
-  case HB_TAG('g','v','a','r'): *success = _hb_subset_table<const OT::gvar> (plan, buf); return true;
+  पक्ष HB_TAG('H','V','A','R'): *success = _hb_subset_table<ध्रुव OT::HVAR> (plan, buf); पटिनिवत्त सच्च;
+  पक्ष HB_TAG('V','V','A','R'): *success = _hb_subset_table<ध्रुव OT::VVAR> (plan, buf); पटिनिवत्त सच्च;
+  पक्ष HB_TAG('g','v','a','r'): *success = _hb_subset_table<ध्रुव OT::gvar> (plan, buf); पटिनिवत्त सच्च;
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'): *success = _hb_subset_table<const OT::GVAR> (plan, buf); return true;
+  पक्ष HB_TAG('G','V','A','R'): *success = _hb_subset_table<ध्रुव OT::GVAR> (plan, buf); पटिनिवत्त सच्च;
 #endif
 #ifndef HB_NO_VAR_COMPOSITES
-  case HB_TAG('V','A','R','C'): *success = _hb_subset_table<const OT::VARC> (plan, buf); return true;
+  पक्ष HB_TAG('V','A','R','C'): *success = _hb_subset_table<ध्रुव OT::VARC> (plan, buf); पटिनिवत्त सच्च;
 #endif
-  case HB_TAG('f','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
+  पक्ष HB_TAG('f','v','a','r'):
+    सचे (plan->user_axes_location.is_empty ())
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::fvar> (plan, buf);
-    return true;
-  case HB_TAG('a','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
+    अञ्ञथा
+      *success = _hb_subset_table<ध्रुव OT::fvar> (plan, buf);
+    पटिनिवत्त सच्च;
+  पक्ष HB_TAG('a','v','a','r'):
+    सचे (plan->user_axes_location.is_empty ())
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::avar> (plan, buf);
-    return true;
-  case HB_TAG('c','v','a','r'):
+    अञ्ञथा
+      *success = _hb_subset_table<ध्रुव OT::avar> (plan, buf);
+    पटिनिवत्त सच्च;
+  पक्ष HB_TAG('c','v','a','r'):
     /* TODO: For avar2 partial instancing, cull unreachable tuple
      * variations (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    सचे (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::cvar> (plan, buf);
-    return true;
-  case HB_TAG('M','V','A','R'):
+    अञ्ञथा
+      *success = _hb_subset_table<ध्रुव OT::cvar> (plan, buf);
+    पटिनिवत्त सच्च;
+  पक्ष HB_TAG('M','V','A','R'):
     /* TODO: For avar2 partial instancing, cull unreachable VarStore
      * regions (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    सचे (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::MVAR> (plan, buf);
-    return true;
+    अञ्ञथा
+      *success = _hb_subset_table<ध्रुव OT::MVAR> (plan, buf);
+    पटिनिवत्त सच्च;
   }
 #endif
-  return false;
+  पटिनिवत्त मिच्छा;
 }

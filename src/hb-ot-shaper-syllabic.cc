@@ -22,53 +22,53 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#अन्तर्भाव "hb-ot-shaper-syllabic.hh"
 
 
-bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
+तार्किक
+hb_syllabic_निवेशय_dotted_circles (hb_font_t *font,
 				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+				   unsigned पूर्णाङ्क broken_syllable_type,
+				   unsigned पूर्णाङ्क dottedcircle_category,
+				   पूर्णाङ्क repha_category,
+				   पूर्णाङ्क dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  सचे (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_निवेशय_DOTTED_CIRCLE))
+    पटिनिवत्त मिच्छा;
+  सचे (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    सचे (buffer->messaging ())
+      (शून्य) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
+    पटिनिवत्त मिच्छा;
   }
 
-  if (buffer->messaging () &&
+  सचे (buffer->messaging () &&
       !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+    पटिनिवत्त मिच्छा;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  सचे (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    पटिनिवत्त मिच्छा;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  सचे (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
   buffer->clear_output ();
 
   buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  unsigned पूर्णाङ्क last_syllable = 0;
+  याव (buffer->idx < buffer->len && buffer->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    unsigned पूर्णाङ्क syllable = buffer->cur().syllable();
+    सचे (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
       last_syllable = syllable;
 
@@ -78,34 +78,34 @@ hb_syllabic_insert_dotted_circles (hb_font_t *font,
       ginfo.syllable() = buffer->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      सचे (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
+	याव (buffer->idx < buffer->len && buffer->successful &&
 	       last_syllable == buffer->cur().syllable() &&
 	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	  (शून्य) buffer->next_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (शून्य) buffer->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    अञ्ञथा
+      (शून्य) buffer->next_glyph ();
   }
-  buffer->sync ();
+  buffer->समकाल ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  सचे (buffer->messaging ())
+    (शून्य) buffer->message (font, "end inserting dotted-circles");
 
-  return true;
+  पटिनिवत्त सच्च;
 }
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL तार्किक
+hb_syllabic_clear_var (ध्रुव hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
 		       hb_buffer_t *buffer)
 {
   HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  पटिनिवत्त मिच्छा;
 }
 
 

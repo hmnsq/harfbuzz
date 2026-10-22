@@ -27,74 +27,74 @@
 #ifndef HB_OT_SHAPE_HH
 #define HB_OT_SHAPE_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-ot-map.hh"
-#include "hb-aat-map.hh"
+#अन्तर्भाव "hb-ot-map.hh"
+#अन्तर्भाव "hb-aat-map.hh"
 
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
+						   ध्रुव पूर्णाङ्क             *coords,
+						   unsigned पूर्णाङ्क           अङ्कः_coords,
+						   unsigned पूर्णाङ्क          *variations_index,
 						   hb_vector_t<unsigned> *lookup_conditions);
 
-HB_INTERNAL bool
+HB_INTERNAL तार्किक
 _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
                                              hb_tag_t table_tag,
                                              unsigned feature_index,
                                              unsigned variations_index,
-                                             hb_sorted_array_t<const unsigned> conditions,
+                                             hb_sorted_array_t<ध्रुव unsigned> conditions,
                                              hb_set_t *lookup_indexes);
 
-struct hb_ot_shape_plan_key_t
+संरचना hb_ot_shape_plan_कुञ्चिका_t
 {
-  unsigned int variations_index[2];
+  unsigned पूर्णाङ्क variations_index[2];
   /* Sorted offsets of distinct true conditions within FeatureVariations.
    * Different outcomes may conservatively separate equivalent lookup sets. */
   hb_vector_t<unsigned> lookup_conditions[2];
 
-  bool init (hb_face_t *face,
-	     const int *coords,
-	     unsigned   num_coords)
+  तार्किक init (hb_face_t *face,
+	     ध्रुव पूर्णाङ्क *coords,
+	     unsigned   अङ्कः_coords)
   {
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
-      if (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
+    अत्थाय (unsigned पूर्णाङ्क table_index = 0; table_index < 2; table_index++)
+      सचे (unlikely (!_hb_ot_layout_table_get_feature_variations_state (
 			face,
 			table_tags[table_index],
 			coords,
-			num_coords,
+			अङ्कः_coords,
 			&variations_index[table_index],
 			&lookup_conditions[table_index])))
       {
-	for (auto &v : lookup_conditions)
+	अत्थाय (auto &v : lookup_conditions)
 	  v.fini ();
-	return false;
+	पटिनिवत्त मिच्छा;
       }
-    return true;
+    पटिनिवत्त सच्च;
   }
 
-  void fini ()
+  शून्य fini ()
   {
-    for (auto &v : lookup_conditions)
+    अत्थाय (auto &v : lookup_conditions)
       v.fini ();
   }
 
-  bool get_lookup_variations (hb_face_t *face,
-                              unsigned int table_index,
-			      unsigned int feature_index,
-			      hb_set_t *lookups) const
+  तार्किक get_lookup_variations (hb_face_t *face,
+                              unsigned पूर्णाङ्क table_index,
+			      unsigned पूर्णाङ्क feature_index,
+			      hb_set_t *lookups) ध्रुव
   {
-    return _hb_ot_layout_feature_get_lookup_variations (
+    पटिनिवत्त _hb_ot_layout_feature_get_lookup_variations (
 	face, table_tags[table_index], feature_index, variations_index[table_index],
 	lookup_conditions[table_index].as_sorted_array (), lookups);
   }
 
-  bool equal (const hb_ot_shape_plan_key_t *other)
+  तार्किक equal (ध्रुव hb_ot_shape_plan_कुञ्चिका_t *other)
   {
-    return variations_index[0] == other->variations_index[0] &&
+    पटिनिवत्त variations_index[0] == other->variations_index[0] &&
 	   variations_index[1] == other->variations_index[1] &&
 	   lookup_conditions[0] == other->lookup_conditions[0] &&
 	   lookup_conditions[1] == other->lookup_conditions[1];
@@ -102,87 +102,87 @@ struct hb_ot_shape_plan_key_t
 };
 
 
-struct hb_shape_plan_key_t;
+संरचना hb_shape_plan_कुञ्चिका_t;
 
-struct hb_ot_shape_plan_t
+संरचना hb_ot_shape_plan_t
 {
   ~hb_ot_shape_plan_t () { fini (); }
 
   hb_segment_properties_t props;
-  const struct hb_ot_shaper_t *shaper;
+  ध्रुव संरचना hb_ot_shaper_t *shaper;
   hb_ot_map_t map;
   hb_aat_map_t aat_map;
-  const void *data;
+  ध्रुव शून्य *data;
 #ifndef HB_NO_OT_SHAPE_FRACTIONS
   hb_mask_t frac_mask, numr_mask, dnom_mask;
-#else
-  static constexpr hb_mask_t frac_mask = 0;
-  static constexpr hb_mask_t numr_mask = 0;
-  static constexpr hb_mask_t dnom_mask = 0;
+#अञ्ञथा
+  स्थिर constexpr hb_mask_t frac_mask = 0;
+  स्थिर constexpr hb_mask_t numr_mask = 0;
+  स्थिर constexpr hb_mask_t dnom_mask = 0;
 #endif
   hb_mask_t rtlm_mask;
 #ifndef HB_NO_OT_KERN
   hb_mask_t kern_mask;
-#else
-  static constexpr hb_mask_t kern_mask = 0;
+#अञ्ञथा
+  स्थिर constexpr hb_mask_t kern_mask = 0;
 #endif
 
 #ifndef HB_NO_OT_KERN
-  bool requested_kerning : 1;
-#else
-  static constexpr bool requested_kerning = false;
+  तार्किक requested_kerning : 1;
+#अञ्ञथा
+  स्थिर constexpr तार्किक requested_kerning = मिच्छा;
 #endif
 #ifndef HB_NO_OT_SHAPE_FRACTIONS
-  bool has_frac : 1;
-#else
-  static constexpr bool has_frac = false;
+  तार्किक has_frac : 1;
+#अञ्ञथा
+  स्थिर constexpr तार्किक has_frac = मिच्छा;
 #endif
-  bool has_vert : 1;
-  bool has_gpos_mark : 1;
-  bool zero_marks : 1;
-  bool fallback_glyph_classes : 1;
-  bool fallback_mark_positioning : 1;
-  bool adjust_mark_positioning_when_zeroing : 1;
+  तार्किक has_vert : 1;
+  तार्किक has_gpos_mark : 1;
+  तार्किक zero_marks : 1;
+  तार्किक fallback_glyph_classes : 1;
+  तार्किक fallback_mark_positioning : 1;
+  तार्किक adjust_mark_positioning_when_zeroing : 1;
 
-  bool apply_gpos : 1;
+  तार्किक apply_gpos : 1;
 #ifndef HB_NO_OT_KERN
-  bool apply_kern : 1;
-#else
-  static constexpr bool apply_kern = false;
+  तार्किक apply_kern : 1;
+#अञ्ञथा
+  स्थिर constexpr तार्किक apply_kern = मिच्छा;
 #endif
-  bool apply_fallback_kern : 1;
+  तार्किक apply_fallback_kern : 1;
 #ifndef HB_NO_AAT_SHAPE
-  bool apply_kerx : 1;
-  bool apply_morx : 1;
-  bool apply_trak : 1;
-#else
-  static constexpr bool apply_kerx = false;
-  static constexpr bool apply_morx = false;
-  static constexpr bool apply_trak = false;
+  तार्किक apply_kerx : 1;
+  तार्किक apply_morx : 1;
+  तार्किक apply_trak : 1;
+#अञ्ञथा
+  स्थिर constexpr तार्किक apply_kerx = मिच्छा;
+  स्थिर constexpr तार्किक apply_morx = मिच्छा;
+  स्थिर constexpr तार्किक apply_trak = मिच्छा;
 #endif
 
-  void collect_lookups (hb_tag_t table_tag, hb_set_t *lookups) const
+  शून्य collect_lookups (hb_tag_t table_tag, hb_set_t *lookups) ध्रुव
   {
-    unsigned int table_index;
-    switch (table_tag) {
-      case HB_OT_TAG_GSUB: table_index = 0; break;
-      case HB_OT_TAG_GPOS: table_index = 1; break;
-      default: return;
+    unsigned पूर्णाङ्क table_index;
+    विकल्प (table_tag) {
+      पक्ष HB_OT_TAG_GSUB: table_index = 0; भङ्ग;
+      पक्ष HB_OT_TAG_GPOS: table_index = 1; भङ्ग;
+      स्वभाव: पटिनिवत्त;
     }
     map.collect_lookups (table_index, lookups);
   }
 
-  HB_INTERNAL bool init0 (hb_face_t                     *face,
-			  const hb_shape_plan_key_t     *key);
-  HB_INTERNAL void fini ();
+  HB_INTERNAL तार्किक init0 (hb_face_t                     *face,
+			  ध्रुव hb_shape_plan_कुञ्चिका_t     *key);
+  HB_INTERNAL शून्य fini ();
 
-  HB_INTERNAL void substitute (hb_font_t *font, hb_buffer_t *buffer) const;
-  HB_INTERNAL void position (hb_font_t *font, hb_buffer_t *buffer) const;
+  HB_INTERNAL शून्य substitute (hb_font_t *font, hb_buffer_t *buffer) ध्रुव;
+  HB_INTERNAL शून्य position (hb_font_t *font, hb_buffer_t *buffer) ध्रुव;
 };
 
-struct hb_shape_plan_t;
+संरचना hb_shape_plan_t;
 
-struct hb_ot_shape_planner_t
+संरचना hb_ot_shape_planner_t
 {
   /* In the order that they are filled in. */
   hb_face_t *face;
@@ -190,19 +190,19 @@ struct hb_ot_shape_planner_t
   hb_ot_map_builder_t map;
 #ifndef HB_NO_AAT_SHAPE
   hb_aat_map_builder_t aat_map;
-  bool apply_morx : 1;
-#else
-  static constexpr bool apply_morx = false;
+  तार्किक apply_morx : 1;
+#अञ्ञथा
+  स्थिर constexpr तार्किक apply_morx = मिच्छा;
 #endif
-  bool script_zero_marks : 1;
-  bool script_fallback_position : 1;
-  const struct hb_ot_shaper_t *shaper;
+  तार्किक script_zero_marks : 1;
+  तार्किक script_fallback_position : 1;
+  ध्रुव संरचना hb_ot_shaper_t *shaper;
 
   HB_INTERNAL hb_ot_shape_planner_t (hb_face_t                     *face,
-				     const hb_segment_properties_t &props);
+				     ध्रुव hb_segment_properties_t &props);
 
-  HB_INTERNAL void compile (hb_ot_shape_plan_t           &plan,
-			    const hb_ot_shape_plan_key_t &key);
+  HB_INTERNAL शून्य compile (hb_ot_shape_plan_t           &plan,
+			    ध्रुव hb_ot_shape_plan_कुञ्चिका_t &key);
 };
 
 

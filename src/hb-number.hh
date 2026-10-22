@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#ifndef HB_सङ्ख्या_HH
+#define HB_सङ्ख्या_HH
 
-HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+HB_INTERNAL तार्किक
+hb_parse_int (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, पूर्णाङ्क *pv,
+	      तार्किक whole_buffer = मिच्छा);
 
-HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+HB_INTERNAL तार्किक
+hb_parse_uint (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, unsigned पूर्णाङ्क *pv,
+	       तार्किक whole_buffer = मिच्छा, पूर्णाङ्क base = 10);
 
-HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+HB_INTERNAL तार्किक
+hb_parse_double (ध्रुव वर्ण **pp, ध्रुव वर्ण *end, द्विगुण *pv,
+		 तार्किक whole_buffer = मिच्छा);
 
 #endif /* HB_NUMBER_HH */

@@ -24,20 +24,20 @@
  * Google Author(s): Garret Rieger, Rod Sheeter, Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-open-file.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-open-file.hh"
 
-#include "hb-subset.hh"
-#include "hb-subset-table.hh"
-#include "hb-subset-accelerator.hh"
+#अन्तर्भाव "hb-subset.hh"
+#अन्तर्भाव "hb-subset-table.hh"
+#अन्तर्भाव "hb-subset-accelerator.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-post-table-v2subset.hh"
+#अन्तर्भाव "hb-ot-cmap-table.hh"
+#अन्तर्भाव "hb-ot-var-cvar-table.hh"
+#अन्तर्भाव "hb-ot-head-table.hh"
+#अन्तर्भाव "hb-ot-stat-table.hh"
+#अन्तर्भाव "hb-ot-post-table-v2subset.hh"
 
 
 /**
@@ -62,14 +62,14 @@
  */
 
 
-hb_user_data_key_t _hb_subset_accelerator_user_data_key = {};
+hb_user_data_कुञ्चिका_t hb_subset_accelerator_user_data_कुञ्चिका = {};
 
 
 /*
  * The list of tables in the open type spec. Used to check for tables that may need handling
  * if we are unable to list the tables in a face.
  */
-static hb_tag_t known_tables[] {
+स्थिर hb_tag_t known_tables[] {
   HB_TAG('a','v','a','r'),
   HB_TAG('B','A','S','E'),
   HB_TAG('C','B','D','T'),
@@ -147,23 +147,23 @@ static hb_tag_t known_tables[] {
   HB_TAG('O','S','/','2')
 };
 
-static bool _table_is_empty (const hb_face_t *face, hb_tag_t tag)
+स्थिर तार्किक _table_is_empty (ध्रुव hb_face_t *face, hb_tag_t tag)
 {
   hb_blob_t* blob = hb_face_reference_table (face, tag);
-  bool result = (blob == hb_blob_get_empty ());
+  तार्किक result = (blob == hb_blob_get_empty ());
   hb_blob_destroy (blob);
-  return result;
+  पटिनिवत्त result;
 }
 
-static unsigned int
-_get_table_tags (const hb_subset_plan_t* plan,
-                 unsigned int  start_offset,
-                 unsigned int *table_count, /* IN/OUT */
+स्थिर unsigned पूर्णाङ्क
+_get_table_tags (ध्रुव hb_subset_plan_t* plan,
+                 unsigned पूर्णाङ्क  start_offset,
+                 unsigned पूर्णाङ्क *table_गणनम्_2, /* IN/OUT */
                  hb_tag_t     *table_tags /* OUT */)
 {
-  unsigned num_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
-  if (num_tables)
-    return hb_face_get_table_tags (plan->source, start_offset, table_count, table_tags);
+  unsigned अङ्कः_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
+  सचे (अङ्कः_tables)
+    पटिनिवत्त hb_face_get_table_tags (plan->source, start_offset, table_गणनम्_2, table_tags);
 
   // If face has 0 tables associated with it, assume that it was built from
   // hb_face_create_tables and thus is unable to list its tables. Fallback to
@@ -172,162 +172,162 @@ _get_table_tags (const hb_subset_plan_t* plan,
       hb_concat (
           + hb_array (known_tables)
           | hb_filter ([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag) && !plan->no_subset_tables.has (tag);
+            पटिनिवत्त !_table_is_empty (plan->source, tag) && !plan->no_subset_tables.has (tag);
           })
-          | hb_map ([] (hb_tag_t tag) -> hb_tag_t { return tag; }),
+          | hb_map ([] (hb_tag_t tag) -> hb_tag_t { पटिनिवत्त tag; }),
 
           plan->no_subset_tables.iter ()
           | hb_filter([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag);
+            पटिनिवत्त !_table_is_empty (plan->source, tag);
           }));
 
   it += start_offset;
 
-  unsigned num_written = 0;
-  while (bool (it) && num_written < *table_count)
-    table_tags[num_written++] = *it++;
+  unsigned अङ्कः_written = 0;
+  याव (तार्किक (it) && अङ्कः_written < *table_गणनम्_2)
+    table_tags[अङ्कः_written++] = *it++;
 
-  *table_count = num_written;
-  return num_written;
+  *table_गणनम्_2 = अङ्कः_written;
+  पटिनिवत्त अङ्कः_written;
 }
 
 
-static bool
+स्थिर तार्किक
 _is_table_present (hb_face_t *source, hb_tag_t tag)
 {
 
-  if (!hb_face_get_table_tags (source, 0, nullptr, nullptr)) {
+  सचे (!hb_face_get_table_tags (source, 0, nullptr, nullptr)) {
     // If face has 0 tables associated with it, assume that it was built from
     // hb_face_create_tables and thus is unable to list its tables. Fallback to
     // checking if the blob associated with tag is empty.
-    return !_table_is_empty (source, tag);
+    पटिनिवत्त !_table_is_empty (source, tag);
   }
 
   hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
-  while (((void) hb_face_get_table_tags (source, offset, &num_tables, table_tags), num_tables))
+  unsigned offset = 0, अङ्कः_tables = ARRAY_LENGTH (table_tags);
+  याव (((शून्य) hb_face_get_table_tags (source, offset, &अङ्कः_tables, table_tags), अङ्कः_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
-      if (table_tags[i] == tag)
-	return true;
-    offset += num_tables;
+    अत्थाय (unsigned i = 0; i < अङ्कः_tables; ++i)
+      सचे (table_tags[i] == tag)
+	पटिनिवत्त सच्च;
+    offset += अङ्कः_tables;
   }
-  return false;
+  पटिनिवत्त मिच्छा;
 }
 
-static bool
+स्थिर तार्किक
 _should_drop_table (hb_subset_plan_t *plan, hb_tag_t tag)
 {
-  if (plan->drop_tables.has (tag))
-    return true;
+  सचे (plan->drop_tables.has (tag))
+    पटिनिवत्त सच्च;
 
-  switch (tag)
+  विकल्प (tag)
   {
-  case HB_TAG('c','v','a','r'): /* hint table, fallthrough */
-    return plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+  पक्ष HB_TAG('c','v','a','r'): /* hint table, fallthrough */
+    पटिनिवत्त plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
-  case HB_TAG('c','v','t',' '): /* hint table, fallthrough */
-  case HB_TAG('f','p','g','m'): /* hint table, fallthrough */
-  case HB_TAG('p','r','e','p'): /* hint table, fallthrough */
-  case HB_TAG('h','d','m','x'): /* hint table, fallthrough */
-  case HB_TAG('V','D','M','X'): /* hint table, fallthrough */
-    return plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
+  पक्ष HB_TAG('c','v','t',' '): /* hint table, fallthrough */
+  पक्ष HB_TAG('f','p','g','m'): /* hint table, fallthrough */
+  पक्ष HB_TAG('p','r','e','p'): /* hint table, fallthrough */
+  पक्ष HB_TAG('h','d','m','x'): /* hint table, fallthrough */
+  पक्ष HB_TAG('V','D','M','X'): /* hint table, fallthrough */
+    पटिनिवत्त plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
 
 #ifdef HB_NO_SUBSET_LAYOUT
     // Drop Layout Tables if requested.
-  case HB_TAG('G','D','E','F'):
-  case HB_TAG('G','P','O','S'):
-  case HB_TAG('G','S','U','B'):
-  case HB_TAG('m','o','r','x'):
-  case HB_TAG('m','o','r','t'):
-  case HB_TAG('k','e','r','x'):
-  case HB_TAG('k','e','r','n'):
-    return true;
+  पक्ष HB_TAG('G','D','E','F'):
+  पक्ष HB_TAG('G','P','O','S'):
+  पक्ष HB_TAG('G','S','U','B'):
+  पक्ष HB_TAG('m','o','r','x'):
+  पक्ष HB_TAG('m','o','r','t'):
+  पक्ष HB_TAG('k','e','r','x'):
+  पक्ष HB_TAG('k','e','r','n'):
+    पटिनिवत्त सच्च;
 #endif
 
-  case HB_TAG('a','v','a','r'):
-  case HB_TAG('f','v','a','r'):
-  case HB_TAG('g','v','a','r'):
+  पक्ष HB_TAG('a','v','a','r'):
+  पक्ष HB_TAG('f','v','a','r'):
+  पक्ष HB_TAG('g','v','a','r'):
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'):
+  पक्ष HB_TAG('G','V','A','R'):
 #endif
-  case HB_TAG('H','V','A','R'):
-  case HB_TAG('V','V','A','R'):
-  case HB_TAG('M','V','A','R'):
-    return plan->all_axes_pinned;
+  पक्ष HB_TAG('H','V','A','R'):
+  पक्ष HB_TAG('V','V','A','R'):
+  पक्ष HB_TAG('M','V','A','R'):
+    पटिनिवत्त plan->all_axes_pinned;
 
-  default:
-    return false;
+  स्वभाव:
+    पटिनिवत्त मिच्छा;
   }
 }
 
-static bool
+स्थिर तार्किक
 _dependencies_satisfied (hb_subset_plan_t *plan, hb_tag_t tag,
-                         const hb_set_t &subsetted_tags,
-                         const hb_set_t &pending_subset_tags)
+                         ध्रुव hb_set_t &subsetted_tags,
+                         ध्रुव hb_set_t &pending_subset_tags)
 {
-  bool outline_pending = pending_subset_tags.has (HB_TAG('g','l','y','f'));
+  तार्किक outline_pending = pending_subset_tags.has (HB_TAG('g','l','y','f'));
 #ifndef HB_NO_BEYOND_64K
   outline_pending |= pending_subset_tags.has (HB_TAG('G','L','Y','F'));
 #endif
 
-  switch (tag)
+  विकल्प (tag)
   {
-  case HB_TAG('h','m','t','x'):
-  case HB_TAG('v','m','t','x'):
-  case HB_TAG('m','a','x','p'):
+  पक्ष HB_TAG('h','m','t','x'):
+  पक्ष HB_TAG('v','m','t','x'):
+  पक्ष HB_TAG('m','a','x','p'):
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('H','M','T','X'):
-  case HB_TAG('V','M','T','X'):
-  case HB_TAG('M','A','X','P'):
+  पक्ष HB_TAG('H','M','T','X'):
+  पक्ष HB_TAG('V','M','T','X'):
+  पक्ष HB_TAG('M','A','X','P'):
 #endif
-  case HB_TAG('O','S','/','2'):
-    return !plan->normalized_coords || !outline_pending;
-  case HB_TAG('G','P','O','S'):
-  case HB_TAG('G','S','U','B'):
-    return plan->all_axes_pinned || !pending_subset_tags.has (HB_TAG('G','D','E','F'));
+  पक्ष HB_TAG('O','S','/','2'):
+    पटिनिवत्त !plan->normalized_coords || !outline_pending;
+  पक्ष HB_TAG('G','P','O','S'):
+  पक्ष HB_TAG('G','S','U','B'):
+    पटिनिवत्त plan->all_axes_pinned || !pending_subset_tags.has (HB_TAG('G','D','E','F'));
   /* For avar2, variation tables must wait for avar to be subsetted first. */
-  case HB_TAG('g','v','a','r'):
+  पक्ष HB_TAG('g','v','a','r'):
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'):
+  पक्ष HB_TAG('G','V','A','R'):
 #endif
-  case HB_TAG('c','v','a','r'):
-  case HB_TAG('H','V','A','R'):
-  case HB_TAG('V','V','A','R'):
-  case HB_TAG('M','V','A','R'):
-  case HB_TAG('G','D','E','F'):
-  case HB_TAG('C','F','F','2'):
-    return !plan->has_avar2 || !pending_subset_tags.has (HB_TAG('a','v','a','r'));
-  default:
-    return true;
+  पक्ष HB_TAG('c','v','a','r'):
+  पक्ष HB_TAG('H','V','A','R'):
+  पक्ष HB_TAG('V','V','A','R'):
+  पक्ष HB_TAG('M','V','A','R'):
+  पक्ष HB_TAG('G','D','E','F'):
+  पक्ष HB_TAG('C','F','F','2'):
+    पटिनिवत्त !plan->has_avar2 || !pending_subset_tags.has (HB_TAG('a','v','a','r'));
+  स्वभाव:
+    पटिनिवत्त सच्च;
   }
 }
 
-static bool
+स्थिर तार्किक
 _subset_table (hb_subset_plan_t *plan,
-	       hb_vector_t<char> &buf,
+	       hb_vector_t<वर्ण> &buf,
 	       hb_tag_t tag)
 {
-  if (plan->no_subset_tables.has (tag)) {
-    return _hb_subset_table_passthrough (plan, tag);
+  सचे (plan->no_subset_tables.has (tag)) {
+    पटिनिवत्त _hb_subset_table_passthrough (plan, tag);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
+  DEBUG_सन्देशः (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
 
-  bool success;
-  if (_hb_subset_table_layout (plan, buf, tag, &success) ||
+  तार्किक success;
+  सचे (_hb_subset_table_layout (plan, buf, tag, &success) ||
       _hb_subset_table_var (plan, buf, tag, &success) ||
       _hb_subset_table_cff (plan, buf, tag, &success) ||
       _hb_subset_table_color (plan, buf, tag, &success) ||
       _hb_subset_table_other (plan, buf, tag, &success))
-    return success;
+    पटिनिवत्त success;
 
 
-  switch (tag)
+  विकल्प (tag)
   {
-  case HB_TAG('h','e','a','d'):
+  पक्ष HB_TAG('h','e','a','d'):
   {
-    bool outline_table_handles_head =
+    तार्किक outline_table_handles_head =
 	_is_table_present (plan->source, HB_TAG('g','l','y','f')) &&
 	!_should_drop_table (plan, HB_TAG('g','l','y','f'));
 #ifndef HB_NO_BEYOND_64K
@@ -335,47 +335,47 @@ _subset_table (hb_subset_plan_t *plan,
 	_is_table_present (plan->source, HB_TAG('G','L','Y','F')) &&
 	!_should_drop_table (plan, HB_TAG('G','L','Y','F'));
 #endif
-    if (outline_table_handles_head)
-      return true; /* skip head, handled by the outline table */
-    return _hb_subset_table<const OT::head> (plan, buf);
+    सचे (outline_table_handles_head)
+      पटिनिवत्त सच्च; /* skip head, handled by the outline table */
+    पटिनिवत्त _hb_subset_table<ध्रुव OT::head> (plan, buf);
   }
 
-  case HB_TAG('S','T','A','T'):
-    if (!plan->user_axes_location.is_empty ()) return _hb_subset_table<const OT::STAT> (plan, buf);
-    else return _hb_subset_table_passthrough (plan, tag);
+  पक्ष HB_TAG('S','T','A','T'):
+    सचे (!plan->user_axes_location.is_empty ()) पटिनिवत्त _hb_subset_table<ध्रुव OT::STAT> (plan, buf);
+    अञ्ञथा पटिनिवत्त _hb_subset_table_passthrough (plan, tag);
 
-  case HB_TAG('c','v','t',' '):
+  पक्ष HB_TAG('c','v','t',' '):
 #ifndef HB_NO_VAR
-    if (_is_table_present (plan->source, HB_TAG('c','v','a','r')) &&
+    सचे (_is_table_present (plan->source, HB_TAG('c','v','a','r')) &&
         plan->normalized_coords && !plan->pinned_at_default)
     {
       auto &cvar = *plan->source->table.cvar;
-      return OT::cvar::add_cvt_and_apply_deltas (plan, cvar.get_tuple_var_data (), &cvar);
+      पटिनिवत्त OT::cvar::add_cvt_and_apply_deltas (plan, cvar.get_tuple_var_data (), &cvar);
     }
 #endif
-    return _hb_subset_table_passthrough (plan, tag);
+    पटिनिवत्त _hb_subset_table_passthrough (plan, tag);
   }
 
-  if (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
-    return _hb_subset_table_passthrough (plan, tag);
+  सचे (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
+    पटिनिवत्त _hb_subset_table_passthrough (plan, tag);
 
   // Drop table
-  return true;
+  पटिनिवत्त सच्च;
 }
 
-static void _attach_accelerator_data (hb_subset_plan_t* plan,
+स्थिर शून्य _attach_accelerator_data (hb_subset_plan_t* plan,
                                       hb_face_t* face /* IN/OUT */)
 {
-  if (!plan->inprogress_accelerator) return;
+  सचे (!plan->inprogress_accelerator) पटिनिवत्त;
 
   // Transfer the accelerator from the plan to us.
   hb_subset_accelerator_t* accel = plan->inprogress_accelerator;
   plan->inprogress_accelerator = nullptr;
 
-  if (accel->in_error ())
+  सचे (accel->in_error ())
   {
     hb_subset_accelerator_t::destroy (accel);
-    return;
+    पटिनिवत्त;
   }
 
   // Populate caches that need access to the final tables.
@@ -383,11 +383,11 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
   accel->cmap_cache = OT::cmap::create_filled_cache (cmap_ptr);
   accel->destroy_cmap_cache = OT::SubtableUnicodesCache::destroy;
 
-  if (!hb_face_set_user_data(face,
-                             hb_subset_accelerator_t::user_data_key(),
+  सचे (!hb_face_set_user_data(face,
+                             hb_subset_accelerator_t::user_data_कुञ्चिका(),
                              accel,
                              hb_subset_accelerator_t::destroy,
-                             true))
+                             सच्च))
     hb_subset_accelerator_t::destroy (accel);
 }
 
@@ -402,24 +402,24 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
  * Since: 2.9.0
  **/
 hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
+hb_subset_or_fail (hb_face_t *source, ध्रुव hb_subset_निवेशः_t *निवेशः)
 {
-  if (unlikely (!input || !source)) return nullptr;
+  सचे (unlikely (!निवेशः || !source)) पटिनिवत्त nullptr;
 
-  if (unlikely (!source->get_num_glyphs ()))
+  सचे (unlikely (!source->get_अङ्कः_glyphs ()))
   {
-    DEBUG_MSG (SUBSET, nullptr, "No glyphs in source font.");
-    return nullptr;
+    DEBUG_सन्देशः (SUBSET, nullptr, "No glyphs in source font.");
+    पटिनिवत्त nullptr;
   }
 
-  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, input);
-  if (unlikely (!plan)) {
-    return nullptr;
+  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, निवेशः);
+  सचे (unlikely (!plan)) {
+    पटिनिवत्त nullptr;
   }
 
   hb_face_t * result = hb_subset_plan_execute_or_fail (plan);
   hb_subset_plan_destroy (plan);
-  return result;
+  पटिनिवत्त result;
 }
 
 
@@ -438,76 +438,76 @@ hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
 hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
 {
-  if (unlikely (!plan || plan->in_error ())) {
-    return nullptr;
+  सचे (unlikely (!plan || plan->in_error ())) {
+    पटिनिवत्त nullptr;
   }
 
   hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
+  unsigned offset = 0, अङ्कः_tables = ARRAY_LENGTH (table_tags);
 
   hb_set_t subsetted_tags, pending_subset_tags;
-  while (((void) _get_table_tags (plan, offset, &num_tables, table_tags), num_tables))
+  याव (((शून्य) _get_table_tags (plan, offset, &अङ्कः_tables, table_tags), अङ्कः_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
+    अत्थाय (unsigned i = 0; i < अङ्कः_tables; ++i)
     {
       hb_tag_t tag = table_tags[i];
-      if (_should_drop_table (plan, tag)) continue;
+      सचे (_should_drop_table (plan, tag)) अनुवर्त;
       pending_subset_tags.add (tag);
     }
 
-    offset += num_tables;
+    offset += अङ्कः_tables;
   }
 
-  bool success = true;
+  तार्किक success = सच्च;
 
   {
     // Grouping to deallocate buf before calling hb_face_reference (plan->dest).
 
-    hb_vector_t<char> buf;
+    hb_vector_t<वर्ण> buf;
     buf.alloc (8192 - 16);
 
-    while (!pending_subset_tags.is_empty ())
+    याव (!pending_subset_tags.is_empty ())
     {
-      if (subsetted_tags.in_error ()
+      सचे (subsetted_tags.in_error ()
 	  || pending_subset_tags.in_error ()) {
-	success = false;
-	goto end;
+	success = मिच्छा;
+	गच्छ end;
       }
 
-      bool made_changes = false;
-      for (hb_tag_t tag : pending_subset_tags)
+      तार्किक made_changes = मिच्छा;
+      अत्थाय (hb_tag_t tag : pending_subset_tags)
       {
-	if (!_dependencies_satisfied (plan, tag,
+	सचे (!_dependencies_satisfied (plan, tag,
 				      subsetted_tags,
 				      pending_subset_tags))
 	{
 	  // delayed subsetting for some tables since they might have dependency on other tables
 	  // in some cases: e.g: during instantiating glyf tables, hmetrics/vmetrics are updated
 	  // and saved in subset plan, hmtx/vmtx subsetting need to use these updated metrics values
-	  continue;
+	  अनुवर्त;
 	}
 
 	pending_subset_tags.del (tag);
 	subsetted_tags.add (tag);
-	made_changes = true;
+	made_changes = सच्च;
 
 	success = _subset_table (plan, buf, tag);
-	if (unlikely (!success)) goto end;
+	सचे (unlikely (!success)) गच्छ end;
       }
 
-      if (!made_changes)
+      सचे (!made_changes)
       {
-	DEBUG_MSG (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
-	success = false;
-	goto end;
+	DEBUG_सन्देशः (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
+	success = मिच्छा;
+	गच्छ end;
       }
     }
   }
 
-  if (success && plan->attach_accelerator_data) {
+  सचे (success && plan->attach_accelerator_data) {
     _attach_accelerator_data (plan, plan->dest);
   }
 
 end:
-  return success ? hb_face_reference (plan->dest) : nullptr;
+  पटिनिवत्त success ? hb_face_reference (plan->dest) : nullptr;
 }

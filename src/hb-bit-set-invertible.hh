@@ -28,489 +28,489 @@
 #ifndef HB_BIT_SET_INVERTIBLE_HH
 #define HB_BIT_SET_INVERTIBLE_HH
 
-#include "hb.hh"
-#include "hb-bit-set.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-bit-set.hh"
 
 
-struct hb_bit_set_invertible_t
+संरचना hb_bit_set_invertible_t
 {
   hb_bit_set_t s;
-  bool inverted = false;
+  तार्किक inverted = मिच्छा;
 
-  hb_bit_set_invertible_t () = default;
-  hb_bit_set_invertible_t (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*this, other); }
-  hb_bit_set_invertible_t& operator= (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
+  hb_bit_set_invertible_t () = स्वभाव;
+  hb_bit_set_invertible_t (ध्रुव hb_bit_set_invertible_t& o) = स्वभाव;
+  hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*एतत्, other); }
+  hb_bit_set_invertible_t& operator= (ध्रुव hb_bit_set_invertible_t& o) = स्वभाव;
+  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*एतत्, other); पटिनिवत्त *एतत्; }
+  friend शून्य swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
   {
-    if (likely (!a.s.successful || !b.s.successful))
-      return;
+    सचे (likely (!a.s.successful || !b.s.successful))
+      पटिनिवत्त;
     hb_swap (a.inverted, b.inverted);
     hb_swap (a.s, b.s);
   }
 
-  void init () { s.init (); inverted = false; }
-  void fini () { s.fini (); }
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
-  explicit operator bool () const { return !is_empty (); }
+  शून्य init () { s.init (); inverted = मिच्छा; }
+  शून्य fini () { s.fini (); }
+  शून्य err () { s.err (); }
+  तार्किक in_error () ध्रुव { पटिनिवत्त s.in_error (); }
+  explicit operator तार्किक () ध्रुव { पटिनिवत्त !is_empty (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset ()
+  शून्य alloc (unsigned sz) { s.alloc (sz); }
+  शून्य reset ()
   {
     s.reset ();
-    inverted = false;
+    inverted = मिच्छा;
   }
-  void clear ()
+  शून्य clear ()
   {
     s.clear ();
-    if (likely (s.successful))
-      inverted = false;
+    सचे (likely (s.successful))
+      inverted = मिच्छा;
   }
-  void invert ()
+  शून्य invert ()
   {
-    if (likely (s.successful))
+    सचे (likely (s.successful))
       inverted = !inverted;
   }
 
-  bool is_inverted () const
+  तार्किक is_inverted () ध्रुव
   {
-    return inverted;
+    पटिनिवत्त inverted;
   }
 
-  bool is_empty () const
+  तार्किक is_empty () ध्रुव
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v == INVALID;
+    पटिनिवत्त v == INVALID;
   }
-  uint32_t hash () const { return s.hash () ^ (uint32_t) inverted; }
+  uint32_t hash () ध्रुव { पटिनिवत्त s.hash () ^ (uint32_t) inverted; }
 
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ध्रुव
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v;
+    पटिनिवत्त v;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ध्रुव
   {
     hb_codepoint_t v = INVALID;
     previous (&v);
-    return v;
+    पटिनिवत्त v;
   }
-  unsigned int get_population () const
-  { return inverted ? INVALID - s.get_population () : s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  unsigned पूर्णाङ्क get_population () ध्रुव
+  { पटिनिवत्त inverted ? INVALID - s.get_population () : s.get_population (); }
+  तार्किक get_singleton (hb_codepoint_t *codepoint) ध्रुव
   {
-    if (likely (!inverted))
-      return s.get_singleton (codepoint);
-    if (s.get_population () != INVALID - 1)
-      return false;
+    सचे (likely (!inverted))
+      पटिनिवत्त s.get_singleton (codepoint);
+    सचे (s.get_population () != INVALID - 1)
+      पटिनिवत्त मिच्छा;
     *codepoint = get_min ();
-    return *codepoint != INVALID;
+    पटिनिवत्त *codepoint != INVALID;
   }
 
 
-  void add (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  शून्य add (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.add (g); }
+  शून्य add_bits (hb_codepoint_t g, uint64_t bits)
   { unlikely (inverted) ? s.del_bits (g, bits) : s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
-  { return unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
+  तार्किक add_range (hb_codepoint_t a, hb_codepoint_t b)
+  { पटिनिवत्त unlikely (inverted) ? ((शून्य) s.del_range (a, b), सच्च) : s.add_range (a, b); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { inverted ? s.del_array (array, count, stride) : s.add_array (array, count, stride); }
+  शून्य add_array (ध्रुव T *array, unsigned पूर्णाङ्क गणनम्, unsigned पूर्णाङ्क stride=परिमाण(T))
+  { inverted ? s.del_array (array, गणनम्, stride) : s.add_array (array, गणनम्, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  शून्य add_array (ध्रुव hb_array_t<ध्रुव T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
+  तार्किक add_sorted_array (ध्रुव T *array, unsigned पूर्णाङ्क गणनम्, unsigned पूर्णाङ्क stride=परिमाण(T))
+  { पटिनिवत्त inverted ? s.del_sorted_array (array, गणनम्, stride) : s.add_sorted_array (array, गणनम्, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  तार्किक add_sorted_array (ध्रुव hb_sorted_array_t<ध्रुव T>& arr) { पटिनिवत्त add_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
-  { unlikely (inverted) ? (void) s.add_range (a, b) : s.del_range (a, b); }
+  शून्य del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
+  शून्य del_range (hb_codepoint_t a, hb_codepoint_t b)
+  { unlikely (inverted) ? (शून्य) s.add_range (a, b) : s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g) ^ inverted; }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  तार्किक get (hb_codepoint_t g) ध्रुव { पटिनिवत्त s.get (g) ^ inverted; }
+  तार्किक may_have (hb_codepoint_t g) ध्रुव { पटिनिवत्त get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  तार्किक operator [] (hb_codepoint_t k) ध्रुव { पटिनिवत्त get (k); }
+  तार्किक has (hb_codepoint_t k) ध्रुव { पटिनिवत्त (*एतत्)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  तार्किक operator () (hb_codepoint_t k) ध्रुव { पटिनिवत्त has (k); }
 
   /* Sink interface. */
   hb_bit_set_invertible_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_invertible_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); पटिनिवत्त *एतत्; }
+  hb_bit_set_invertible_t& operator << (ध्रुव hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); पटिनिवत्त *एतत्; }
 
-  bool may_intersect (const hb_bit_set_invertible_t &other) const
-  { return inverted || other.inverted || s.intersects (other.s); }
+  तार्किक may_intersect (ध्रुव hb_bit_set_invertible_t &other) ध्रुव
+  { पटिनिवत्त inverted || other.inverted || s.intersects (other.s); }
 
-  bool intersects (const hb_bit_set_invertible_t &other) const
+  तार्किक intersects (ध्रुव hb_bit_set_invertible_t &other) ध्रुव
   {
-    if (likely (!inverted))
-      return unlikely (other.inverted) ? !s.is_subset (other.s)
+    सचे (likely (!inverted))
+      पटिनिवत्त unlikely (other.inverted) ? !s.is_subset (other.s)
 				       : s.intersects (other.s);
-    if (likely (!other.inverted))
-      return !other.s.is_subset (s);
+    सचे (likely (!other.inverted))
+      पटिनिवत्त !other.s.is_subset (s);
 
     unsigned population = s.get_population ();
     unsigned other_population = other.s.get_population ();
-    if ((uint64_t) population + other_population < INVALID)
-      return true;
+    सचे ((uint64_t) population + other_population < INVALID)
+      पटिनिवत्त सच्च;
 
-    return population >= other_population
+    पटिनिवत्त population >= other_population
 	 ? !hb_all (iter (), other.s)
 	 : !hb_all (other.iter (), s);
   }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  तार्किक intersects (hb_codepoint_t first, hb_codepoint_t last) ध्रुव
   {
     hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    पटिनिवत्त next (&c) && c <= last;
   }
 
-  void set (const hb_bit_set_invertible_t &other)
+  शून्य set (ध्रुव hb_bit_set_invertible_t &other)
   {
     s.set (other.s);
-    if (likely (s.successful))
+    सचे (likely (s.successful))
       inverted = other.inverted;
   }
 
-  bool is_equal (const hb_bit_set_invertible_t &other) const
+  तार्किक is_equal (ध्रुव hb_bit_set_invertible_t &other) ध्रुव
   {
-    if (likely (inverted == other.inverted))
-      return s.is_equal (other.s);
-    else
+    सचे (likely (inverted == other.inverted))
+      पटिनिवत्त s.is_equal (other.s);
+    अञ्ञथा
     {
-      if (get_population () != other.get_population ())
-	return false;
+      सचे (get_population () != other.get_population ())
+	पटिनिवत्त मिच्छा;
 
       /* TODO Add iter_ranges() and use here. */
       auto it1 = iter ();
       auto it2 = other.iter ();
-      return hb_all (+ hb_zip (it1, it2)
-		     | hb_map ([](hb_codepoint_pair_t _) { return _.first == _.second; }));
+      पटिनिवत्त hb_all (+ hb_zip (it1, it2)
+		     | hb_map ([](hb_codepoint_pair_t _) { पटिनिवत्त _.first == _.second; }));
     }
   }
 
-  bool is_subset (const hb_bit_set_invertible_t &larger_set) const
+  तार्किक is_subset (ध्रुव hb_bit_set_invertible_t &larger_set) ध्रुव
   {
-    if (unlikely (inverted != larger_set.inverted))
+    सचे (unlikely (inverted != larger_set.inverted))
     {
-      if (inverted)
-	return hb_all (iter (), larger_set.s);
-      else
+      सचे (inverted)
+	पटिनिवत्त hb_all (iter (), larger_set.s);
+      अञ्ञथा
         // larger set is inverted so larger_set.s is the set of things that are not present
         // in larger_set, therefore if s has any of those it can't be a subset.
-	return !s.intersects (larger_set.s);
+	पटिनिवत्त !s.intersects (larger_set.s);
     }
-    else
-      return unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
+    अञ्ञथा
+      पटिनिवत्त unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
   }
 
-  protected:
+  रक्षित:
   template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_invertible_t &other,
+  शून्य process (ध्रुव Op& op,
+		ध्रुव hb_bit_set_invertible_t &other,
 		hb_vector_t<unsigned> *workspace = nullptr)
   { s.process (op, other.s, workspace); }
-  public:
-  void union_ (const hb_bit_set_invertible_t &other)
+  सार्वजनिक:
+  शून्य union_ (ध्रुव hb_bit_set_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    सचे (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      सचे (unlikely (inverted))
 	process (hb_bitwise_and, other);
-      else
+      अञ्ञथा
 	process (hb_bitwise_or, other); /* Main branch. */
     }
-    else
+    अञ्ञथा
     {
-      if (unlikely (inverted))
+      सचे (unlikely (inverted))
 	process (hb_bitwise_gt, other);
-      else
+      अञ्ञथा
 	process (hb_bitwise_lt, other);
     }
-    if (likely (s.successful))
+    सचे (likely (s.successful))
       inverted = inverted || other.inverted;
   }
-  void intersect (const hb_bit_set_invertible_t &other,
+  शून्य intersect (ध्रुव hb_bit_set_invertible_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   {
-    if (likely (inverted == other.inverted))
+    सचे (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      सचे (unlikely (inverted))
 	process (hb_bitwise_or, other, workspace);
-      else
+      अञ्ञथा
 	process (hb_bitwise_and, other, workspace); /* Main branch. */
     }
-    else
+    अञ्ञथा
     {
-      if (unlikely (inverted))
+      सचे (unlikely (inverted))
 	process (hb_bitwise_lt, other, workspace);
-      else
+      अञ्ञथा
 	process (hb_bitwise_gt, other, workspace);
     }
-    if (likely (s.successful))
+    सचे (likely (s.successful))
       inverted = inverted && other.inverted;
   }
-  void subtract (const hb_bit_set_invertible_t &other)
+  शून्य subtract (ध्रुव hb_bit_set_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    सचे (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      सचे (unlikely (inverted))
 	process (hb_bitwise_lt, other);
-      else
+      अञ्ञथा
 	process (hb_bitwise_gt, other); /* Main branch. */
     }
-    else
+    अञ्ञथा
     {
-      if (unlikely (inverted))
+      सचे (unlikely (inverted))
 	process (hb_bitwise_or, other);
-      else
+      अञ्ञथा
 	process (hb_bitwise_and, other);
     }
-    if (likely (s.successful))
+    सचे (likely (s.successful))
       inverted = inverted && !other.inverted;
   }
-  void symmetric_difference (const hb_bit_set_invertible_t &other)
+  शून्य symmetric_difference (ध्रुव hb_bit_set_invertible_t &other)
   {
     process (hb_bitwise_xor, other);
-    if (likely (s.successful))
+    सचे (likely (s.successful))
       inverted = inverted ^ other.inverted;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  तार्किक next (hb_codepoint_t *codepoint) ध्रुव
   {
-    if (likely (!inverted))
-      return s.next (codepoint);
+    सचे (likely (!inverted))
+      पटिनिवत्त s.next (codepoint);
 
     auto old = *codepoint;
-    if (unlikely (old + 1 == INVALID))
+    सचे (unlikely (old + 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      पटिनिवत्त मिच्छा;
     }
 
     auto v = old;
     s.next (&v);
-    if (old + 1 < v)
+    सचे (old + 1 < v)
     {
       *codepoint = old + 1;
-      return true;
+      पटिनिवत्त सच्च;
     }
 
     v = old;
     s.next_range (&old, &v);
 
     *codepoint = v + 1;
-    return *codepoint != INVALID;
+    पटिनिवत्त *codepoint != INVALID;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  तार्किक next_bits (hb_codepoint_t *codepoint, uint64_t *bits) ध्रुव
   {
-    if (likely (!inverted))
-      return s.next_bits (codepoint, bits);
+    सचे (likely (!inverted))
+      पटिनिवत्त s.next_bits (codepoint, bits);
 
     hb_codepoint_t base;
-    if (unlikely (*codepoint == INVALID))
+    सचे (unlikely (*codepoint == INVALID))
       base = 0;
-    else
+    अञ्ञथा
     {
       base = *codepoint & ~hb_bit_page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
-	goto done;
+      सचे (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
+	गच्छ done;
       base += hb_bit_page_t::ELT_BITS;
     }
 
-    while (true)
+    याव (सच्च)
     {
       hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
       uint64_t excluded = 0;
-      if (!s.next_bits (&cursor, &excluded) || cursor != base)
+      सचे (!s.next_bits (&cursor, &excluded) || cursor != base)
 	excluded = 0;
       *bits = ~excluded;
-      bool last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
-      if (last)
+      तार्किक last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
+      सचे (last)
 	*bits &= UINT64_MAX >> 1;
-      if (*bits)
+      सचे (*bits)
       {
 	*codepoint = base;
-	return true;
+	पटिनिवत्त सच्च;
       }
-      if (unlikely (last))
-	break;
+      सचे (unlikely (last))
+	भङ्ग;
       base += hb_bit_page_t::ELT_BITS;
     }
 
   done:
     *codepoint = INVALID;
     *bits = 0;
-    return false;
+    पटिनिवत्त मिच्छा;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  तार्किक previous (hb_codepoint_t *codepoint) ध्रुव
   {
-    if (likely (!inverted))
-      return s.previous (codepoint);
+    सचे (likely (!inverted))
+      पटिनिवत्त s.previous (codepoint);
 
     auto old = *codepoint;
-    if (unlikely (old - 1 == INVALID))
+    सचे (unlikely (old - 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      पटिनिवत्त मिच्छा;
     }
 
     auto v = old;
     s.previous (&v);
 
-    if (old - 1 > v || v == INVALID)
+    सचे (old - 1 > v || v == INVALID)
     {
       *codepoint = old - 1;
-      return true;
+      पटिनिवत्त सच्च;
     }
 
     v = old;
     s.previous_range (&v, &old);
 
     *codepoint = v - 1;
-    return *codepoint != INVALID;
+    पटिनिवत्त *codepoint != INVALID;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  तार्किक next_range (hb_codepoint_t *first, hb_codepoint_t *last) ध्रुव
   {
-    if (likely (!inverted))
-      return s.next_range (first, last);
+    सचे (likely (!inverted))
+      पटिनिवत्त s.next_range (first, last);
 
-    if (!next (last))
+    सचे (!next (last))
     {
       *last = *first = INVALID;
-      return false;
+      पटिनिवत्त मिच्छा;
     }
 
     *first = *last;
     s.next (last);
     --*last;
-    return true;
+    पटिनिवत्त सच्च;
   }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  तार्किक previous_range (hb_codepoint_t *first, hb_codepoint_t *last) ध्रुव
   {
-    if (likely (!inverted))
-      return s.previous_range (first, last);
+    सचे (likely (!inverted))
+      पटिनिवत्त s.previous_range (first, last);
 
-    if (!previous (first))
+    सचे (!previous (first))
     {
       *last = *first = INVALID;
-      return false;
+      पटिनिवत्त मिच्छा;
     }
 
     *last = *first;
     s.previous (first);
     ++*first;
-    return true;
+    पटिनिवत्त सच्च;
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
+  unsigned पूर्णाङ्क next_many (hb_codepoint_t  codepoint,
 			  hb_codepoint_t *out,
-			  unsigned int    size) const
+			  unsigned पूर्णाङ्क    size) ध्रुव
   {
-    return inverted ? s.next_many_inverted (codepoint, out, size)
+    पटिनिवत्त inverted ? s.next_many_inverted (codepoint, out, size)
 		    : s.next_many (codepoint, out, size);
   }
 
-  static constexpr hb_codepoint_t INVALID = hb_bit_set_t::INVALID;
+  स्थिर constexpr hb_codepoint_t INVALID = hb_bit_set_t::INVALID;
 
   /*
    * Iterator implementation.
    * Mutating the set invalidates its iterators.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  संरचना iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_invertible_t &s_ = Null (hb_bit_set_invertible_t),
-    bool init = true) : s (&s_), v (INVALID), remaining (0),
+    स्थिर constexpr तार्किक is_sorted_iterator = सच्च;
+    स्थिर constexpr तार्किक has_fast_len = सच्च;
+    iter_t (ध्रुव hb_bit_set_invertible_t &s_ = Null (hb_bit_set_invertible_t),
+    तार्किक init = सच्च) : s (&s_), v (INVALID), remaining (0),
 				     have_len (!init), base (INVALID), bits (0)
     {
-      if (init)
+      सचे (init)
 	advance ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ ()
+    प्रकारनिर्देश hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ध्रुव { पटिनिवत्त v; }
+    तार्किक __more__ () ध्रुव { पटिनिवत्त v != INVALID; }
+    शून्य __next__ ()
     {
       remaining--;
       advance ();
     }
-    void __prev__ ()
+    शून्य __prev__ ()
     {
-      if (s->previous (&v))
+      सचे (s->previous (&v))
       {
-	sync ();
+	समकाल ();
 	remaining++;
       }
-      else
+      अञ्ञथा
       {
 	base = INVALID;
 	bits = 0;
       }
     }
-    unsigned __len__ () const
+    unsigned __len__ () ध्रुव
     {
-      if (unlikely (!have_len))
+      सचे (unlikely (!have_len))
       {
 	remaining += s->get_population ();
-	have_len = true;
+	have_len = सच्च;
       }
-      return remaining;
+      पटिनिवत्त remaining;
     }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    iter_t end () ध्रुव { पटिनिवत्त iter_t (*s, मिच्छा); }
+    तार्किक operator != (ध्रुव iter_t& o) ध्रुव
+    { पटिनिवत्त v != o.v; }
 
-    protected:
-    const hb_bit_set_invertible_t *s;
+    रक्षित:
+    ध्रुव hb_bit_set_invertible_t *s;
     hb_codepoint_t v;
     mutable unsigned remaining;
-    mutable bool have_len;
+    mutable तार्किक have_len;
     hb_codepoint_t base;
     uint64_t bits;
 
-    void advance ()
+    शून्य advance ()
     {
-      if (likely (bits))
+      सचे (likely (bits))
       {
 	v = base + hb_ctz (bits);
 	bits &= bits - 1;
       }
-      else if (s->next_bits (&base, &bits))
+      अञ्ञथा सचे (s->next_bits (&base, &bits))
       {
 	v = base + hb_ctz (bits);
 	bits &= bits - 1;
       }
-      else
+      अञ्ञथा
 	v = INVALID;
     }
 
-    void sync ()
+    शून्य समकाल ()
     {
       base = v & ~hb_bit_page_t::ELT_MASK;
       hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
       s->next_bits (&cursor, &bits);
-      unsigned int bit = v & (hb_bit_page_t::ELT_BITS - 1);
+      unsigned पूर्णाङ्क bit = v & (hb_bit_page_t::ELT_BITS - 1);
       bits = bit == hb_bit_page_t::ELT_BITS - 1 ? 0 : bits >> (bit + 1) << (bit + 1);
     }
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ध्रुव { पटिनिवत्त iter_t (*एतत्); }
+  operator iter_t () ध्रुव { पटिनिवत्त iter (); }
 };
 
 

@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_BUFFER_SERIALIZE
 
-#include "hb-buffer.hh"
+#अन्तर्भाव "hb-buffer.hh"
 
 
-static const char *_hb_buffer_serialize_formats[] = {
+स्थिर ध्रुव वर्ण *_hb_buffer_serialize_formats[] = {
   "text",
   "json",
   nullptr
@@ -47,10 +47,10 @@ static const char *_hb_buffer_serialize_formats[] = {
  *
  * Since: 0.9.7
  **/
-const char **
+ध्रुव वर्ण **
 hb_buffer_serialize_list_formats ()
 {
-  return _hb_buffer_serialize_formats;
+  पटिनिवत्त _hb_buffer_serialize_formats;
 }
 
 /**
@@ -68,10 +68,10 @@ hb_buffer_serialize_list_formats ()
  * Since: 0.9.7
  **/
 hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len)
+hb_buffer_serialize_format_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len)
 {
   /* Upper-case it. */
-  return (hb_buffer_serialize_format_t) (hb_tag_from_string (str, len) & ~0x20202020u);
+  पटिनिवत्त (hb_buffer_serialize_format_t) (hb_tag_from_string (str, len) & ~0x20202020u);
 }
 
 /**
@@ -86,25 +86,25 @@ hb_buffer_serialize_format_from_string (const char *str, int len)
  *
  * Since: 0.9.7
  **/
-const char *
+ध्रुव वर्ण *
 hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format)
 {
-  switch ((unsigned) format)
+  विकल्प ((unsigned) format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT: return _hb_buffer_serialize_formats[0];
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON: return _hb_buffer_serialize_formats[1];
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:  return nullptr;
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_TEXT: पटिनिवत्त _hb_buffer_serialize_formats[0];
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_JSON: पटिनिवत्त _hb_buffer_serialize_formats[1];
+    स्वभाव:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_INVALID:  पटिनिवत्त nullptr;
   }
 }
 
-static unsigned int
+स्थिर unsigned पूर्णाङ्क
 _hb_buffer_serialize_glyphs_json (hb_buffer_t *buffer,
-                                  unsigned int start,
-                                  unsigned int end,
-                                  char *buf,
-                                  unsigned int buf_size,
-                                  unsigned int *buf_consumed,
+                                  unsigned पूर्णाङ्क start,
+                                  unsigned पूर्णाङ्क end,
+                                  वर्ण *buf,
+                                  unsigned पूर्णाङ्क buf_size,
+                                  unsigned पूर्णाङ्क *buf_consumed,
                                   hb_font_t *font,
                                   hb_buffer_serialize_flags_t flags)
 {
@@ -116,73 +116,73 @@ _hb_buffer_serialize_glyphs_json (hb_buffer_t *buffer,
   hb_position_t x = 0, y = 0;
 
   /* Calculate the advance of the previous glyphs */
-  if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+  सचे (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
   {
-    for (unsigned int i = 0; i < start; i++)
+    अत्थाय (unsigned पूर्णाङ्क i = 0; i < start; i++)
     {
       x = hb_saturate_add (x, pos[i].x_advance);
       y = hb_saturate_add (y, pos[i].y_advance);
     }
   }
 
-  for (unsigned int i = start; i < end; i++)
+  अत्थाय (unsigned पूर्णाङ्क i = start; i < end; i++)
   {
-    char b[1024];
-    char *p = b;
+    वर्ण b[1024];
+    वर्ण *p = b;
 
     /* In the following code, we know b is large enough that no overflow can happen. */
 
 #define APPEND(s) HB_STMT_START { strcpy (p, s); p += strlen (s); } HB_STMT_END
 
-    if (i)
+    सचे (i)
       *p++ = ',';
-    else
+    अञ्ञथा
       *p++ = '[';
 
     *p++ = '{';
 
     APPEND ("\"g\":");
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
+    सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
     {
-      char g[128];
-      hb_font_glyph_to_string (font, info[i].codepoint, g, sizeof (g));
+      वर्ण g[128];
+      hb_font_glyph_to_string (font, info[i].codepoint, g, परिमाण (g));
       *p++ = '"';
-      for (char *q = g; *q; q++)
+      अत्थाय (वर्ण *q = g; *q; q++)
       {
-	if (unlikely (*q == '"' || *q == '\\'))
+	सचे (unlikely (*q == '"' || *q == '\\'))
 	  *p++ = '\\';
 	*p++ = *q;
       }
       *p++ = '"';
     }
-    else
+    अञ्ञथा
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
+    सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"cl\":%u", info[i].cluster));
     }
 
-    if (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
+    सचे (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
     {
       hb_position_t dx = hb_saturate_add (x, pos[i].x_offset);
       hb_position_t dy = hb_saturate_add (y, pos[i].y_offset);
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"dx\":%d,\"dy\":%d",
 		   dx, dy));
-      if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+      सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
         p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"ax\":%d,\"ay\":%d",
 		     pos[i].x_advance, pos[i].y_advance));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
+    सचे (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
     {
-      if (info[i].mask & HB_GLYPH_FLAG_DEFINED)
+      सचे (info[i].mask & HB_GLYPH_FLAG_DEFINED)
         p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"fl\":%u", info[i].mask & HB_GLYPH_FLAG_DEFINED));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
+    सचे (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
     {
       hb_glyph_extents_t extents;
-      if (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
+      सचे (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
       {
 	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"xb\":%d,\"yb\":%d",
 				  extents.x_bearing, extents.y_bearing));
@@ -192,50 +192,50 @@ _hb_buffer_serialize_glyphs_json (hb_buffer_t *buffer,
     }
 
     *p++ = '}';
-    if (i == end-1)
+    सचे (i == end-1)
       *p++ = ']';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    unsigned पूर्णाङ्क l = p - b;
+    सचे (buf_size > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
       buf_size -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } अञ्ञथा
+      पटिनिवत्त i - start;
 
-    if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+    सचे (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
     {
       x = hb_saturate_add (x, pos[i].x_advance);
       y = hb_saturate_add (y, pos[i].y_advance);
     }
   }
 
-  return end - start;
+  पटिनिवत्त end - start;
 }
 
-static unsigned int
+स्थिर unsigned पूर्णाङ्क
 _hb_buffer_serialize_unicode_json (hb_buffer_t *buffer,
-          unsigned int start,
-          unsigned int end,
-          char *buf,
-          unsigned int buf_size,
-          unsigned int *buf_consumed,
+          unsigned पूर्णाङ्क start,
+          unsigned पूर्णाङ्क end,
+          वर्ण *buf,
+          unsigned पूर्णाङ्क buf_size,
+          unsigned पूर्णाङ्क *buf_consumed,
           hb_buffer_serialize_flags_t flags)
 {
   hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
 
   *buf_consumed = 0;
-  for (unsigned int i = start; i < end; i++)
+  अत्थाय (unsigned पूर्णाङ्क i = start; i < end; i++)
   {
-    char b[1024];
-    char *p = b;
+    वर्ण b[1024];
+    वर्ण *p = b;
 
-    if (i)
+    सचे (i)
       *p++ = ',';
-    else
+    अञ्ञथा
       *p++ = '[';
 
     *p++ = '{';
@@ -244,38 +244,38 @@ _hb_buffer_serialize_unicode_json (hb_buffer_t *buffer,
 
     p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
+    सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"cl\":%u", info[i].cluster));
     }
 
     *p++ = '}';
 
-    if (i == end-1)
+    सचे (i == end-1)
       *p++ = ']';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    unsigned पूर्णाङ्क l = p - b;
+    सचे (buf_size > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
       buf_size -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } अञ्ञथा
+      पटिनिवत्त i - start;
 
   }
 
-  return end - start;
+  पटिनिवत्त end - start;
 }
 
-static unsigned int
+स्थिर unsigned पूर्णाङ्क
 _hb_buffer_serialize_glyphs_text (hb_buffer_t *buffer,
-                                  unsigned int start,
-                                  unsigned int end,
-                                  char *buf,
-                                  unsigned int buf_size,
-                                  unsigned int *buf_consumed,
+                                  unsigned पूर्णाङ्क start,
+                                  unsigned पूर्णाङ्क end,
+                                  वर्ण *buf,
+                                  unsigned पूर्णाङ्क buf_size,
+                                  unsigned पूर्णाङ्क *buf_consumed,
                                   hb_font_t *font,
                                   hb_buffer_serialize_flags_t flags)
 {
@@ -287,137 +287,137 @@ _hb_buffer_serialize_glyphs_text (hb_buffer_t *buffer,
   hb_position_t x = 0, y = 0;
 
   /* Calculate the advance of the previous glyphs */
-  if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+  सचे (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
   {
-    for (unsigned int i = 0; i < start; i++)
+    अत्थाय (unsigned पूर्णाङ्क i = 0; i < start; i++)
     {
       x = hb_saturate_add (x, pos[i].x_advance);
       y = hb_saturate_add (y, pos[i].y_advance);
     }
   }
 
-  for (unsigned int i = start; i < end; i++)
+  अत्थाय (unsigned पूर्णाङ्क i = start; i < end; i++)
   {
-    char b[1024];
-    char *p = b;
+    वर्ण b[1024];
+    वर्ण *p = b;
 
     /* In the following code, we know b is large enough that no overflow can happen. */
 
-    if (i)
+    सचे (i)
       *p++ = '|';
-    else
+    अञ्ञथा
       *p++ = '[';
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
+    सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
     {
       /* TODO Escape delimiters we use. */
       hb_font_glyph_to_string (font, info[i].codepoint, p, 128);
       p += strlen (p);
     }
-    else
+    अञ्ञथा
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
+    सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "=%u", info[i].cluster));
     }
 
-    if (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
+    सचे (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
     {
       hb_position_t dx = hb_saturate_add (x, pos[i].x_offset);
       hb_position_t dy = hb_saturate_add (y, pos[i].y_offset);
-      if (dx || dy)
+      सचे (dx || dy)
         p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "@%d,%d", dx, dy));
 
-      if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+      सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
       {
         *p++ = '+';
         p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%d", pos[i].x_advance));
-        if (pos[i].y_advance)
+        सचे (pos[i].y_advance)
           p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",%d", pos[i].y_advance));
       }
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
+    सचे (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
     {
-      if (info[i].mask & HB_GLYPH_FLAG_DEFINED)
+      सचे (info[i].mask & HB_GLYPH_FLAG_DEFINED)
         p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "#%X", info[i].mask &HB_GLYPH_FLAG_DEFINED));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
+    सचे (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
     {
       hb_glyph_extents_t extents;
-      if (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
+      सचे (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
 	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "<%d,%d,%d,%d>", extents.x_bearing, extents.y_bearing, extents.width, extents.height));
     }
 
-    if (i == end-1) {
+    सचे (i == end-1) {
       *p++ = ']';
     }
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    unsigned पूर्णाङ्क l = p - b;
+    सचे (buf_size > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
       buf_size -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } अञ्ञथा
+      पटिनिवत्त i - start;
 
-    if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+    सचे (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
     {
       x = hb_saturate_add (x, pos[i].x_advance);
       y = hb_saturate_add (y, pos[i].y_advance);
     }
   }
 
-  return end - start;
+  पटिनिवत्त end - start;
 }
 
 
-static unsigned int
+स्थिर unsigned पूर्णाङ्क
 _hb_buffer_serialize_unicode_text (hb_buffer_t *buffer,
-                                   unsigned int start,
-                                   unsigned int end,
-                                   char *buf,
-                                   unsigned int buf_size,
-                                   unsigned int *buf_consumed,
+                                   unsigned पूर्णाङ्क start,
+                                   unsigned पूर्णाङ्क end,
+                                   वर्ण *buf,
+                                   unsigned पूर्णाङ्क buf_size,
+                                   unsigned पूर्णाङ्क *buf_consumed,
                                    hb_buffer_serialize_flags_t flags)
 {
   hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
   *buf_consumed = 0;
-  for (unsigned int i = start; i < end; i++)
+  अत्थाय (unsigned पूर्णाङ्क i = start; i < end; i++)
   {
-    char b[1024];
-    char *p = b;
+    वर्ण b[1024];
+    वर्ण *p = b;
 
-    if (i)
+    सचे (i)
       *p++ = '|';
-    else
+    अञ्ञथा
       *p++ = '<';
 
     p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "U+%04X", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
+    सचे (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
       p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "=%u", info[i].cluster));
     }
 
-    if (i == end-1)
+    सचे (i == end-1)
       *p++ = '>';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    unsigned पूर्णाङ्क l = p - b;
+    सचे (buf_size > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
       buf_size -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } अञ्ञथा
+      पटिनिवत्त i - start;
   }
-  return end - start;
+  पटिनिवत्त end - start;
 }
 
 /**
@@ -483,13 +483,13 @@ _hb_buffer_serialize_unicode_text (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-unsigned int
+unsigned पूर्णाङ्क
 hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-                            unsigned int start,
-                            unsigned int end,
-                            char *buf,
-                            unsigned int buf_size,
-                            unsigned int *buf_consumed,
+                            unsigned पूर्णाङ्क start,
+                            unsigned पूर्णाङ्क end,
+                            वर्ण *buf,
+                            unsigned पूर्णाङ्क buf_size,
+                            unsigned पूर्णाङ्क *buf_consumed,
                             hb_font_t *font,
                             hb_buffer_serialize_format_t format,
                             hb_buffer_serialize_flags_t flags)
@@ -497,39 +497,39 @@ hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
   end = hb_clamp (end, start, buffer->len);
   start = hb_min (start, end);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  unsigned पूर्णाङ्क sconsumed;
+  सचे (!buf_consumed)
     buf_consumed = &sconsumed;
   *buf_consumed = 0;
-  if (buf_size)
+  सचे (buf_size)
     *buf = '\0';
 
   buffer->assert_glyphs ();
 
-  if (!buffer->have_positions)
+  सचे (!buffer->have_positions)
     flags |= HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS;
 
-  if (unlikely (start == end))
-    return 0;
+  सचे (unlikely (start == end))
+    पटिनिवत्त 0;
 
-  if (!font)
+  सचे (!font)
     font = hb_font_get_empty ();
 
-  switch (format)
+  विकल्प (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      return _hb_buffer_serialize_glyphs_text (buffer, start, end,
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_TEXT:
+      पटिनिवत्त _hb_buffer_serialize_glyphs_text (buffer, start, end,
                  buf, buf_size, buf_consumed,
                  font, flags);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      return _hb_buffer_serialize_glyphs_json (buffer, start, end,
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_JSON:
+      पटिनिवत्त _hb_buffer_serialize_glyphs_json (buffer, start, end,
                  buf, buf_size, buf_consumed,
                  font, flags);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return 0;
+    स्वभाव:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_INVALID:
+      पटिनिवत्त 0;
 
   }
 }
@@ -585,76 +585,76 @@ hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
  *
  * Since: 2.7.3
  **/
-unsigned int
+unsigned पूर्णाङ्क
 hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-                             unsigned int start,
-                             unsigned int end,
-                             char *buf,
-                             unsigned int buf_size,
-                             unsigned int *buf_consumed,
+                             unsigned पूर्णाङ्क start,
+                             unsigned पूर्णाङ्क end,
+                             वर्ण *buf,
+                             unsigned पूर्णाङ्क buf_size,
+                             unsigned पूर्णाङ्क *buf_consumed,
                              hb_buffer_serialize_format_t format,
                              hb_buffer_serialize_flags_t flags)
 {
   end = hb_clamp (end, start, buffer->len);
   start = hb_min (start, end);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  unsigned पूर्णाङ्क sconsumed;
+  सचे (!buf_consumed)
     buf_consumed = &sconsumed;
   *buf_consumed = 0;
-  if (buf_size)
+  सचे (buf_size)
     *buf = '\0';
 
   buffer->assert_unicode ();
 
-  if (unlikely (start == end))
-    return 0;
+  सचे (unlikely (start == end))
+    पटिनिवत्त 0;
 
-  switch (format)
+  विकल्प (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      return _hb_buffer_serialize_unicode_text (buffer, start, end,
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_TEXT:
+      पटिनिवत्त _hb_buffer_serialize_unicode_text (buffer, start, end,
                                                 buf, buf_size, buf_consumed, flags);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      return _hb_buffer_serialize_unicode_json (buffer, start, end,
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_JSON:
+      पटिनिवत्त _hb_buffer_serialize_unicode_json (buffer, start, end,
                                                 buf, buf_size, buf_consumed, flags);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return 0;
+    स्वभाव:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_INVALID:
+      पटिनिवत्त 0;
 
   }
 }
 
-static unsigned int
+स्थिर unsigned पूर्णाङ्क
 _hb_buffer_serialize_invalid (hb_buffer_t *buffer,
-                              unsigned int start,
-                              unsigned int end,
-                              char *buf,
-                              unsigned int buf_size,
-                              unsigned int *buf_consumed,
+                              unsigned पूर्णाङ्क start,
+                              unsigned पूर्णाङ्क end,
+                              वर्ण *buf,
+                              unsigned पूर्णाङ्क buf_size,
+                              unsigned पूर्णाङ्क *buf_consumed,
                               hb_buffer_serialize_format_t format,
                               hb_buffer_serialize_flags_t flags)
 {
-  assert (!buffer->len);
+  प्रतिज्ञा (!buffer->len);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  unsigned पूर्णाङ्क sconsumed;
+  सचे (!buf_consumed)
     buf_consumed = &sconsumed;
-  if (buf_size < 3)
-    return 0;
-  if (format == HB_BUFFER_SERIALIZE_FORMAT_JSON) {
+  सचे (buf_size < 3)
+    पटिनिवत्त 0;
+  सचे (format == HB_BUFFER_SERIALIZE_FORMAT_JSON) {
     *buf++ = '[';
     *buf++ = ']';
     *buf = '\0';
-  } else if (format == HB_BUFFER_SERIALIZE_FORMAT_TEXT) {
+  } अञ्ञथा सचे (format == HB_BUFFER_SERIALIZE_FORMAT_TEXT) {
     *buf++ = '!';
     *buf++ = '!';
     *buf = '\0';
   }
   *buf_consumed = 2;
-  return 0;
+  पटिनिवत्त 0;
 }
 
 /**
@@ -683,74 +683,74 @@ _hb_buffer_serialize_invalid (hb_buffer_t *buffer,
  *
  * Since: 2.7.3
  **/
-unsigned int
+unsigned पूर्णाङ्क
 hb_buffer_serialize (hb_buffer_t *buffer,
-                     unsigned int start,
-                     unsigned int end,
-                     char *buf,
-                     unsigned int buf_size,
-                     unsigned int *buf_consumed,
+                     unsigned पूर्णाङ्क start,
+                     unsigned पूर्णाङ्क end,
+                     वर्ण *buf,
+                     unsigned पूर्णाङ्क buf_size,
+                     unsigned पूर्णाङ्क *buf_consumed,
                      hb_font_t *font,
                      hb_buffer_serialize_format_t format,
                      hb_buffer_serialize_flags_t flags)
 {
-  switch (buffer->content_type)
+  विकल्प (buffer->content_type)
   {
 
-    case HB_BUFFER_CONTENT_TYPE_GLYPHS:
-      return hb_buffer_serialize_glyphs (buffer, start, end, buf, buf_size,
+    पक्ष HB_BUFFER_CONTENT_TYPE_GLYPHS:
+      पटिनिवत्त hb_buffer_serialize_glyphs (buffer, start, end, buf, buf_size,
 					 buf_consumed, font, format, flags);
 
-    case HB_BUFFER_CONTENT_TYPE_UNICODE:
-      return hb_buffer_serialize_unicode (buffer, start, end, buf, buf_size,
+    पक्ष HB_BUFFER_CONTENT_TYPE_UNICODE:
+      पटिनिवत्त hb_buffer_serialize_unicode (buffer, start, end, buf, buf_size,
 					  buf_consumed, format, flags);
 
-    case HB_BUFFER_CONTENT_TYPE_INVALID:
-    default:
-      return _hb_buffer_serialize_invalid (buffer, start, end, buf, buf_size,
+    पक्ष HB_BUFFER_CONTENT_TYPE_INVALID:
+    स्वभाव:
+      पटिनिवत्त _hb_buffer_serialize_invalid (buffer, start, end, buf, buf_size,
 					   buf_consumed, format, flags);
   }
 }
 
-static bool
-parse_int (const char *pp, const char *end, int32_t *pv)
+स्थिर तार्किक
+parse_int (ध्रुव वर्ण *pp, ध्रुव वर्ण *end, int32_t *pv)
 {
-  int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_int (&p, end, &v, true/* whole buffer */)))
-    return false;
+  पूर्णाङ्क v;
+  ध्रुव वर्ण *p = pp;
+  सचे (unlikely (!hb_parse_int (&p, end, &v, सच्च/* whole buffer */)))
+    पटिनिवत्त मिच्छा;
 
   *pv = v;
-  return true;
+  पटिनिवत्त सच्च;
 }
 
-static bool
-parse_uint (const char *pp, const char *end, uint32_t *pv)
+स्थिर तार्किक
+parse_uint (ध्रुव वर्ण *pp, ध्रुव वर्ण *end, uint32_t *pv)
 {
-  unsigned int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */)))
-    return false;
+  unsigned पूर्णाङ्क v;
+  ध्रुव वर्ण *p = pp;
+  सचे (unlikely (!hb_parse_uint (&p, end, &v, सच्च/* whole buffer */)))
+    पटिनिवत्त मिच्छा;
 
   *pv = v;
-  return true;
+  पटिनिवत्त सच्च;
 }
 
-static bool
-parse_hex (const char *pp, const char *end, uint32_t *pv)
+स्थिर तार्किक
+parse_hex (ध्रुव वर्ण *pp, ध्रुव वर्ण *end, uint32_t *pv)
 {
-  unsigned int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, 16)))
-    return false;
+  unsigned पूर्णाङ्क v;
+  ध्रुव वर्ण *p = pp;
+  सचे (unlikely (!hb_parse_uint (&p, end, &v, सच्च/* whole buffer */, 16)))
+    पटिनिवत्त मिच्छा;
 
   *pv = v;
-  return true;
+  पटिनिवत्त सच्च;
 }
 
-#include "hb-buffer-deserialize-json.hh"
-#include "hb-buffer-deserialize-text-glyphs.hh"
-#include "hb-buffer-deserialize-text-unicode.hh"
+#अन्तर्भाव "hb-buffer-deserialize-json.hh"
+#अन्तर्भाव "hb-buffer-deserialize-text-glyphs.hh"
+#अन्तर्भाव "hb-buffer-deserialize-text-unicode.hh"
 
 /**
  * hb_buffer_deserialize_glyphs:
@@ -771,55 +771,55 @@ parse_hex (const char *pp, const char *end, uint32_t *pv)
  **/
 hb_bool_t
 hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-                              const char *buf,
-                              int buf_len, /* -1 means nul-terminated */
-                              const char **end_ptr, /* May be NULL */
+                              ध्रुव वर्ण *buf,
+                              पूर्णाङ्क buf_len, /* -1 means nul-terminated */
+                              ध्रुव वर्ण **end_ptr, /* May be NULL */
                               hb_font_t *font, /* May be NULL */
                               hb_buffer_serialize_format_t format)
 {
-  const char *end;
-  if (!end_ptr)
+  ध्रुव वर्ण *end;
+  सचे (!end_ptr)
     end_ptr = &end;
   *end_ptr = buf;
 
   buffer->assert_glyphs ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
+  सचे (unlikely (hb_object_is_immutable (buffer)))
   {
-    if (end_ptr)
+    सचे (end_ptr)
       *end_ptr = buf;
-    return false;
+    पटिनिवत्त मिच्छा;
   }
 
-  if (buf_len == -1)
+  सचे (buf_len == -1)
     buf_len = strlen (buf);
 
-  if (!buf_len)
+  सचे (!buf_len)
   {
     *end_ptr = buf;
-    return false;
+    पटिनिवत्त मिच्छा;
   }
 
-  if (!font)
+  सचे (!font)
     font = hb_font_get_empty ();
 
-  switch (format)
+  विकल्प (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_TEXT:
       hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-      return _hb_buffer_deserialize_text_glyphs (buffer,
+      पटिनिवत्त _hb_buffer_deserialize_text_glyphs (buffer,
 						 buf, buf_len, end_ptr,
 						 font);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_JSON:
       hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-      return _hb_buffer_deserialize_json (buffer,
+      पटिनिवत्त _hb_buffer_deserialize_json (buffer,
                                           buf, buf_len, end_ptr,
                                           font);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return false;
+    स्वभाव:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_INVALID:
+      पटिनिवत्त मिच्छा;
 
   }
 }
@@ -843,53 +843,53 @@ hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
  **/
 hb_bool_t
 hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-                               const char *buf,
-                               int buf_len, /* -1 means nul-terminated */
-                               const char **end_ptr, /* May be NULL */
+                               ध्रुव वर्ण *buf,
+                               पूर्णाङ्क buf_len, /* -1 means nul-terminated */
+                               ध्रुव वर्ण **end_ptr, /* May be NULL */
                                hb_buffer_serialize_format_t format)
 {
-  const char *end;
-  if (!end_ptr)
+  ध्रुव वर्ण *end;
+  सचे (!end_ptr)
     end_ptr = &end;
   *end_ptr = buf;
 
   buffer->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
+  सचे (unlikely (hb_object_is_immutable (buffer)))
   {
-    if (end_ptr)
+    सचे (end_ptr)
       *end_ptr = buf;
-    return false;
+    पटिनिवत्त मिच्छा;
   }
 
-  if (buf_len == -1)
+  सचे (buf_len == -1)
     buf_len = strlen (buf);
 
-  if (!buf_len)
+  सचे (!buf_len)
   {
     *end_ptr = buf;
-    return false;
+    पटिनिवत्त मिच्छा;
   }
 
   hb_font_t* font = hb_font_get_empty ();
 
-  switch (format)
+  विकल्प (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_TEXT:
       hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
-      return _hb_buffer_deserialize_text_unicode (buffer,
+      पटिनिवत्त _hb_buffer_deserialize_text_unicode (buffer,
 						  buf, buf_len, end_ptr,
 						  font);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_JSON:
       hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
-      return _hb_buffer_deserialize_json (buffer,
+      पटिनिवत्त _hb_buffer_deserialize_json (buffer,
                                           buf, buf_len, end_ptr,
                                           font);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return false;
+    स्वभाव:
+    पक्ष HB_BUFFER_SERIALIZE_FORMAT_INVALID:
+      पटिनिवत्त मिच्छा;
 
   }
 }
