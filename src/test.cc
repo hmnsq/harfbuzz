@@ -24,72 +24,72 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#اگر_تعریف_شده HAVE_FREETYPE
+#ضمن "hb-ft.h"
+#پایان_اگر
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#اگر_تعریف_شده HB_NO_OPEN
+#تعریف_کن hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی ()
+#پایان_اگر
 
-int
-main (int argc, char **argv)
+صحيح
+اصلی (صحيح argc, حرف **argv)
 {
-  if (argc != 2) {
+  إذا (argc != 2) {
     fprintf (stderr, "usage: %s font-file.ttf\n", argv[0]);
-    exit (1);
+    خروج (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
-  printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
+  أكد (blob);
+  چاپ_کن ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_درازی (blob));
 
   /* Create the face */
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
-  unsigned int upem = hb_face_get_upem (face);
+  blob = اشاره_تهی;
+  بیعلامت صحيح upem = hb_face_get_upem (face);
 
   hb_font_t *font = hb_font_create (face);
-  hb_font_set_scale (font, upem, upem);
+  hb_font_مجموعه_scale (font, upem, upem);
 
-#ifdef HAVE_FREETYPE
-  hb_ft_font_set_funcs (font);
-#endif
+#اگر_تعریف_شده HAVE_FREETYPE
+  hb_ft_font_مجموعه_funcs (font);
+#پایان_اگر
 
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_میانگیر_t *میانگیر = hb_میانگیر_create ();
 
-  hb_buffer_add_utf8 (buffer, "\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb0\xe0\xa5\x8d\xe0\xa4\x95", -1, 0, -1);
-  hb_buffer_guess_segment_properties (buffer);
+  hb_میانگیر_جمع_کن_utf8 (میانگیر, "\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb0\xe0\xa5\x8d\xe0\xa4\x95", -1, 0, -1);
+  hb_میانگیر_guess_segment_properties (میانگیر);
 
-  hb_shape (font, buffer, nullptr, 0);
+  hb_shape (font, میانگیر, اشاره_تهی, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
-  hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
+  بیعلامت صحيح شمار = hb_میانگیر_get_درازی (میانگیر);
+  hb_glyph_info_t *infos = hb_میانگیر_get_glyph_infos (میانگیر, اشاره_تهی);
+  hb_glyph_position_t *positions = hb_میانگیر_get_glyph_positions (میانگیر, اشاره_تهی);
 
-  for (unsigned int i = 0; i < count; i++)
+  لكل (بیعلامت صحيح i = 0; i < شمار; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];
 
-    printf ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
+    چاپ_کن ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
 	    info->cluster,
 	    info->codepoint,
-	    pos->x_offset,
-	    pos->y_offset,
+	    pos->x_جابه_جایی_2,
+	    pos->y_جابه_جایی_2,
 	    pos->x_advance,
 	    pos->y_advance);
 
   }
 
-  hb_buffer_destroy (buffer);
+  hb_میانگیر_destroy (میانگیر);
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  أرجع 0;
 }
 
 

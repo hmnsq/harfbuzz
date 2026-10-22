@@ -1,89 +1,89 @@
-#include "hb-subset-table.hh"
+#ضمن "hb-subset-table.hh"
 
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-vorg-table.hh"
+#ضمن "hb-ot-cff1-table.hh"
+#ضمن "hb-ot-cff2-table.hh"
+#ضمن "hb-ot-vorg-table.hh"
 
 
-#ifndef HB_NO_SUBSET_CFF
-template<>
-struct hb_subset_plan_t::source_table_loader<const OT::cff1>
+#اگر_تعریف_نشده HB_NO_SUBSET_CFF
+قالب<>
+بنية hb_subset_plan_t::منبع_جدول_loader<ثابت OT::cff1>
 {
-  auto operator () (hb_subset_plan_t *plan)
+  خودکار عملگر () (hb_subset_plan_t *plan)
   HB_AUTO_RETURN (plan->accelerator ? plan->accelerator->cff1_accel :
 		  plan->inprogress_accelerator ? plan->inprogress_accelerator->cff1_accel :
 		  plan->cff1_accel)
 };
-template<>
-struct hb_subset_plan_t::source_table_loader<const OT::cff2>
+قالب<>
+بنية hb_subset_plan_t::منبع_جدول_loader<ثابت OT::cff2>
 {
-  auto operator () (hb_subset_plan_t *plan)
+  خودکار عملگر () (hb_subset_plan_t *plan)
   HB_AUTO_RETURN (plan->accelerator ? plan->accelerator->cff2_accel :
 		  plan->inprogress_accelerator ? plan->inprogress_accelerator->cff2_accel :
 		  plan->cff2_accel)
 };
-#endif
+#پایان_اگر
 
 
-bool _hb_subset_table_cff		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+منطقي hb_subset_جدول_cff		(hb_subset_plan_t *plan, hb_وکتور_t<حرف> &buf, hb_برچسب_t برچسب_2, منطقي *success)
 {
-#ifndef HB_NO_SUBSET_CFF
-  switch (tag)
+#اگر_تعریف_نشده HB_NO_SUBSET_CFF
+  بدل (برچسب_2)
   {
-  case HB_TAG('C','F','F',' '): *success = _hb_subset_table<const OT::cff1> (plan, buf); return true;
-  case HB_TAG('C','F','F','2'): *success = _hb_subset_table<const OT::cff2> (plan, buf); return true;
-  case HB_TAG('V','O','R','G'): *success = _hb_subset_table<const OT::VORG> (plan, buf); return true;
+  حالة HB_برچسب('C','F','F',' '): *success = hb_subset_جدول<ثابت OT::cff1> (plan, buf); أرجع درست;
+  حالة HB_برچسب('C','F','F','2'): *success = hb_subset_جدول<ثابت OT::cff2> (plan, buf); أرجع درست;
+  حالة HB_برچسب('V','O','R','G'): *success = hb_subset_جدول<ثابت OT::VORG> (plan, buf); أرجع درست;
   }
-#endif
-  return false;
+#پایان_اگر
+  أرجع خطأ;
 }
 
 
-#ifdef HB_EXPERIMENTAL_API
-#ifndef HB_NO_CFF
+#اگر_تعریف_شده HB_EXPERIMENTAL_API
+#اگر_تعریف_نشده HB_NO_CFF
 
-template<typename accel_t>
-static hb_blob_t* get_charstrings_data(accel_t& accel, hb_codepoint_t glyph_index) {
-  if (!accel.is_valid()) {
-    return hb_blob_get_empty ();
+قالب<نام_نوع accel_t>
+ساكن hb_blob_t* get_charstrings_داده(accel_t& accel, hb_codepoint_t glyph_شاخص) {
+  إذا (!accel.is_valid()) {
+    أرجع hb_blob_get_خالی ();
   }
 
-  hb_ubytes_t bytes = (*accel.charStrings)[glyph_index];
-  if (!bytes) {
-    return hb_blob_get_empty ();
+  hb_ubytes_t بایتها = (*accel.char_رشتهها)[glyph_شاخص];
+  إذا (!بایتها) {
+    أرجع hb_blob_get_خالی ();
   }
 
   hb_blob_t* cff_blob = accel.get_blob();
-  uint32_t length;
-  const char* cff_data = hb_blob_get_data(cff_blob, &length) ;
+  uint32_t درازی;
+  ثابت حرف* cff_داده = hb_blob_get_داده(cff_blob, &درازی) ;
 
-  long int offset = (const char*) bytes.arrayZ - cff_data;
-  if (offset < 0 || offset > INT32_MAX) {
-    return hb_blob_get_empty ();
+  دراز صحيح جابه_جایی = (ثابت حرف*) بایتها.arrayZ - cff_داده;
+  إذا (جابه_جایی < 0 || جابه_جایی > INT32_MAX) {
+    أرجع hb_blob_get_خالی ();
   }
 
-  return hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, bytes.length);
+  أرجع hb_blob_create_sub_blob(cff_blob, (uint32_t) جابه_جایی, بایتها.درازی);
 }
 
-template<typename accel_t>
-static hb_blob_t* get_charstrings_index(accel_t& accel) {
-  if (!accel.is_valid()) {
-    return hb_blob_get_empty ();
+قالب<نام_نوع accel_t>
+ساكن hb_blob_t* get_charstrings_شاخص(accel_t& accel) {
+  إذا (!accel.is_valid()) {
+    أرجع hb_blob_get_خالی ();
   }
 
-  const char* charstrings_start = (const char*) accel.charStrings;
-  unsigned charstrings_length = accel.charStrings->get_size();
+  ثابت حرف* charstrings_شروع = (ثابت حرف*) accel.char_رشتهها;
+  بیعلامت charstrings_درازی = accel.char_رشتهها->get_اندازه();
 
   hb_blob_t* cff_blob = accel.get_blob();
-  uint32_t length;
-  const char* cff_data = hb_blob_get_data(cff_blob, &length) ;
+  uint32_t درازی;
+  ثابت حرف* cff_داده = hb_blob_get_داده(cff_blob, &درازی) ;
 
-  long int offset = charstrings_start - cff_data;
-  if (offset < 0 || offset > INT32_MAX) {
-    return hb_blob_get_empty ();
+  دراز صحيح جابه_جایی = charstrings_شروع - cff_داده;
+  إذا (جابه_جایی < 0 || جابه_جایی > INT32_MAX) {
+    أرجع hb_blob_get_خالی ();
   }
 
-  return hb_blob_create_sub_blob(cff_blob, (uint32_t) offset, charstrings_length);
+  أرجع hb_blob_create_sub_blob(cff_blob, (uint32_t) جابه_جایی, charstrings_درازی);
 }
 
 /**
@@ -96,8 +96,8 @@ static hb_blob_t* get_charstrings_index(accel_t& accel) {
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
-  return get_charstrings_data(*face->table.cff1, glyph);
+hb_subset_cff_get_charstring_داده(hb_face_t* face, hb_codepoint_t glyph) {
+  أرجع get_charstrings_داده(*face->جدول.cff1, glyph);
 }
 
 /**
@@ -109,8 +109,8 @@ hb_subset_cff_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_blob_t*
-hb_subset_cff_get_charstrings_index (hb_face_t* face) {
-  return get_charstrings_index (*face->table.cff1);
+hb_subset_cff_get_charstrings_شاخص (hb_face_t* face) {
+  أرجع get_charstrings_شاخص (*face->جدول.cff1);
 }
 
 /**
@@ -123,8 +123,8 @@ hb_subset_cff_get_charstrings_index (hb_face_t* face) {
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
-  return get_charstrings_data(*face->table.cff2, glyph);
+hb_subset_cff2_get_charstring_داده(hb_face_t* face, hb_codepoint_t glyph) {
+  أرجع get_charstrings_داده(*face->جدول.cff2, glyph);
 }
 
 /**
@@ -136,8 +136,8 @@ hb_subset_cff2_get_charstring_data(hb_face_t* face, hb_codepoint_t glyph) {
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_blob_t*
-hb_subset_cff2_get_charstrings_index (hb_face_t* face) {
-  return get_charstrings_index (*face->table.cff2);
+hb_subset_cff2_get_charstrings_شاخص (hb_face_t* face) {
+  أرجع get_charstrings_شاخص (*face->جدول.cff2);
 }
-#endif
-#endif
+#پایان_اگر
+#پایان_اگر

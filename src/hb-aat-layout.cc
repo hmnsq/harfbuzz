@@ -25,20 +25,20 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-layout-ankr-table.hh"
-#include "hb-aat-layout-bsln-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-aat-layout-just-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-aat-layout-kerx-table.hh"
-#include "hb-aat-layout-morx-table.hh"
-#include "hb-aat-layout-trak-table.hh"
-#include "hb-aat-ltag-table.hh"
+#ضمن "hb-aat-layout.hh"
+#ضمن "hb-aat-layout-ankr-table.hh"
+#ضمن "hb-aat-layout-bsln-table.hh" // Just so we compile it; unused otherwise.
+#ضمن "hb-aat-layout-feat-table.hh"
+#ضمن "hb-aat-layout-just-table.hh" // Just so we compile it; unused otherwise.
+#ضمن "hb-aat-layout-kerx-table.hh"
+#ضمن "hb-aat-layout-morx-table.hh"
+#ضمن "hb-aat-layout-trak-table.hh"
+#ضمن "hb-aat-ltag-table.hh"
 
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gdef-table.hh"
+#ضمن "hb-ot-layout-gsub-table.hh"
+#ضمن "hb-ot-layout-gdef-table.hh"
 
 
 /*
@@ -46,42 +46,42 @@
  */
 
 /* Note: This context is used for kerning, even without AAT, hence the condition. */
-#if !defined(HB_NO_AAT) || !defined(HB_NO_OT_KERN)
+#إذا !defined(HB_NO_AAT) || !defined(HB_NO_OT_KERN)
 
-AAT::hb_aat_apply_context_t::hb_aat_apply_context_t (const hb_ot_shape_plan_t *plan_,
+AAT::hb_aat_apply_context_t::hb_aat_apply_context_t (ثابت hb_ot_shape_plan_t *plan_,
 						     hb_font_t *font_,
-						     hb_buffer_t *buffer_,
+						     hb_میانگیر_t *میانگیر_2,
 						     hb_blob_t *blob) :
 						       plan (plan_),
 						       font (font_),
 						       face (font->face),
-						       buffer (buffer_),
+						       میانگیر (میانگیر_2),
 						       sanitizer (),
-						       ankr_table (&Null (AAT::ankr)),
+						       ankr_جدول (&Null (AAT::ankr)),
 						       gdef (
-#ifndef HB_NO_OT_LAYOUT
-							 *face->table.GDEF->table
-#else
+#اگر_تعریف_نشده HB_NO_OT_LAYOUT
+							 *face->جدول.GDEF->جدول
+#وإلا
 							 Null (GDEF)
-#endif
+#پایان_اگر
 						       ),
 						       has_glyph_classes (gdef.has_glyph_classes ()),
-						       lookup_index (0)
+						       lookup_شاخص (0)
 {
   sanitizer.init (blob);
-  sanitizer.set_num_glyphs (face->get_num_glyphs ());
-  sanitizer.start_processing ();
-  sanitizer.set_max_ops (HB_SANITIZE_MAX_OPS_MAX);
+  sanitizer.مجموعه_رقم_glyphs (face->get_رقم_glyphs ());
+  sanitizer.شروع_processing ();
+  sanitizer.مجموعه_max_ops (HB_SANITIZE_MAX_OPS_MAX);
 }
 
 AAT::hb_aat_apply_context_t::~hb_aat_apply_context_t ()
-{ sanitizer.end_processing (); }
+{ sanitizer.انتها_processing (); }
 
-void
-AAT::hb_aat_apply_context_t::set_ankr_table (const AAT::ankr *ankr_table_)
-{ ankr_table = ankr_table_; }
+فراغ
+AAT::hb_aat_apply_context_t::مجموعه_ankr_جدول (ثابت AAT::ankr *ankr_جدول_2)
+{ ankr_جدول = ankr_جدول_2; }
 
-#endif
+#پایان_اگر
 
 
 /**
@@ -97,92 +97,92 @@ AAT::hb_aat_apply_context_t::set_ankr_table (const AAT::ankr *ankr_table_)
  **/
 
 
-#if !defined(HB_NO_AAT) || defined(HAVE_CORETEXT)
+#إذا !defined(HB_NO_AAT) || defined(HAVE_CORETEXT)
 
 /* Mapping from OpenType feature tags to AAT feature names and selectors.
  *
  * Table data courtesy of Apple.  Converted from mnemonics to integers
  * when moving to this file. */
-static const hb_aat_feature_mapping_t feature_mappings[] =
+ساكن ثابت hb_aat_feature_mapping_t feature_mappings[] =
 {
-  {HB_TAG ('a','f','r','c'), HB_AAT_LAYOUT_FEATURE_TYPE_FRACTIONS,               HB_AAT_LAYOUT_FEATURE_SELECTOR_VERTICAL_FRACTIONS,             HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_FRACTIONS},
-  {HB_TAG ('c','2','p','c'), HB_AAT_LAYOUT_FEATURE_TYPE_UPPER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_UPPER_CASE},
-  {HB_TAG ('c','2','s','c'), HB_AAT_LAYOUT_FEATURE_TYPE_UPPER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_SMALL_CAPS,          HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_UPPER_CASE},
-  {HB_TAG ('c','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_ALTERNATES_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_ALTERNATES_OFF},
-  {HB_TAG ('c','a','s','e'), HB_AAT_LAYOUT_FEATURE_TYPE_CASE_SENSITIVE_LAYOUT,   HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_LAYOUT_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_LAYOUT_OFF},
-  {HB_TAG ('c','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_LIGATURES_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_LIGATURES_OFF},
-  {HB_TAG ('c','p','s','p'), HB_AAT_LAYOUT_FEATURE_TYPE_CASE_SENSITIVE_LAYOUT,   HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_SPACING_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_SPACING_OFF},
-  {HB_TAG ('c','s','w','h'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_SWASH_ALTERNATES_ON, HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_SWASH_ALTERNATES_OFF},
-  {HB_TAG ('d','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_RARE_LIGATURES_ON,              HB_AAT_LAYOUT_FEATURE_SELECTOR_RARE_LIGATURES_OFF},
-  {HB_TAG ('e','x','p','t'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_EXPERT_CHARACTERS,              (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('f','r','a','c'), HB_AAT_LAYOUT_FEATURE_TYPE_FRACTIONS,               HB_AAT_LAYOUT_FEATURE_SELECTOR_DIAGONAL_FRACTIONS,             HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_FRACTIONS},
-  {HB_TAG ('f','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_TEXT,                (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('h','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_HALF_WIDTH_TEXT,            (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('h','i','s','t'), (hb_aat_layout_feature_type_t) 40,                  (hb_aat_layout_feature_selector_t) 0,                          (hb_aat_layout_feature_selector_t) 1},
-  {HB_TAG ('h','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_ALTERNATE_KANA,          HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_HORIZ_KANA_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_HORIZ_KANA_OFF},
-  {HB_TAG ('h','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_HISTORICAL_LIGATURES_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_HISTORICAL_LIGATURES_OFF},
-  {HB_TAG ('h','n','g','l'), HB_AAT_LAYOUT_FEATURE_TYPE_TRANSLITERATION,         HB_AAT_LAYOUT_FEATURE_SELECTOR_HANJA_TO_HANGUL,                HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_TRANSLITERATION},
-  {HB_TAG ('h','o','j','o'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_HOJO_CHARACTERS,                (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('h','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_HALF_WIDTH_TEXT,                (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('i','t','a','l'), HB_AAT_LAYOUT_FEATURE_TYPE_ITALIC_CJK_ROMAN,        HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_ITALIC_ROMAN_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_ITALIC_ROMAN_OFF},
-  {HB_TAG ('j','p','0','4'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS2004_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('j','p','7','8'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1978_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('j','p','8','3'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1983_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('j','p','9','0'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1990_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('l','i','g','a'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_OFF},
-  {HB_TAG ('l','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
-  {HB_TAG ('m','g','r','k'), HB_AAT_LAYOUT_FEATURE_TYPE_MATHEMATICAL_EXTRAS,     HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_OFF},
-  {HB_TAG ('n','l','c','k'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_NLCCHARACTERS,                  (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('o','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
-  {HB_TAG ('o','r','d','n'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_ORDINALS,                       HB_AAT_LAYOUT_FEATURE_SELECTOR_NORMAL_POSITION},
-  {HB_TAG ('p','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_TEXT,          (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('p','c','a','p'), HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_LOWER_CASE},
-  {HB_TAG ('p','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_TEXT,              (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('p','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_NUMBERS,           (hb_aat_layout_feature_selector_t) 4},
-  {HB_TAG ('p','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_TEXT,              (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('q','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_QUARTER_WIDTH_TEXT,             (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('r','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_OFF},
-  {HB_TAG ('r','u','b','y'), HB_AAT_LAYOUT_FEATURE_TYPE_RUBY_KANA,               HB_AAT_LAYOUT_FEATURE_SELECTOR_RUBY_KANA_ON,                   HB_AAT_LAYOUT_FEATURE_SELECTOR_RUBY_KANA_OFF},
-  {HB_TAG ('s','i','n','f'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_SCIENTIFIC_INFERIORS,           HB_AAT_LAYOUT_FEATURE_SELECTOR_NORMAL_POSITION},
-  {HB_TAG ('s','m','c','p'), HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS,          HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_LOWER_CASE},
-  {HB_TAG ('s','m','p','l'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_SIMPLIFIED_CHARACTERS,          (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('s','s','0','1'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ONE_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ONE_OFF},
-  {HB_TAG ('s','s','0','2'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWO_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWO_OFF},
-  {HB_TAG ('s','s','0','3'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THREE_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THREE_OFF},
-  {HB_TAG ('s','s','0','4'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOUR_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOUR_OFF},
-  {HB_TAG ('s','s','0','5'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIVE_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIVE_OFF},
-  {HB_TAG ('s','s','0','6'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIX_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIX_OFF},
-  {HB_TAG ('s','s','0','7'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVEN_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVEN_OFF},
-  {HB_TAG ('s','s','0','8'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHT_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHT_OFF},
-  {HB_TAG ('s','s','0','9'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINE_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINE_OFF},
-  {HB_TAG ('s','s','1','0'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TEN_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TEN_OFF},
-  {HB_TAG ('s','s','1','1'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ELEVEN_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ELEVEN_OFF},
-  {HB_TAG ('s','s','1','2'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWELVE_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWELVE_OFF},
-  {HB_TAG ('s','s','1','3'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THIRTEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THIRTEEN_OFF},
-  {HB_TAG ('s','s','1','4'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOURTEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOURTEEN_OFF},
-  {HB_TAG ('s','s','1','5'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIFTEEN_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIFTEEN_OFF},
-  {HB_TAG ('s','s','1','6'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIXTEEN_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIXTEEN_OFF},
-  {HB_TAG ('s','s','1','7'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVENTEEN_ON,     HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVENTEEN_OFF},
-  {HB_TAG ('s','s','1','8'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHTEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHTEEN_OFF},
-  {HB_TAG ('s','s','1','9'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINETEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINETEEN_OFF},
-  {HB_TAG ('s','s','2','0'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWENTY_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWENTY_OFF},
-  {HB_TAG ('s','u','b','s'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_INFERIORS,                      HB_AAT_LAYOUT_FEATURE_SELECTOR_NORMAL_POSITION},
-  {HB_TAG ('s','u','p','s'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_SUPERIORS,                      HB_AAT_LAYOUT_FEATURE_SELECTOR_NORMAL_POSITION},
-  {HB_TAG ('s','w','s','h'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_OFF},
-  {HB_TAG ('t','i','t','l'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLE_OPTIONS,           HB_AAT_LAYOUT_FEATURE_SELECTOR_TITLING_CAPS,                   HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_STYLE_OPTIONS},
-  {HB_TAG ('t','n','a','m'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_NAMES_CHARACTERS,   (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('t','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_NUMBERS,             (hb_aat_layout_feature_selector_t) 4},
-  {HB_TAG ('t','r','a','d'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_CHARACTERS,         (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('t','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_THIRD_WIDTH_TEXT,               (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('u','n','i','c'), HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE,             (hb_aat_layout_feature_selector_t) 14,                 (hb_aat_layout_feature_selector_t) 15},
-  {HB_TAG ('v','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_TEXT,          (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('v','e','r','t'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_ON,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_OFF},
-  {HB_TAG ('v','h','a','l'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_HALF_WIDTH_TEXT,            (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('v','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_ALTERNATE_KANA,          HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_VERT_KANA_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_VERT_KANA_OFF},
-  {HB_TAG ('v','p','a','l'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_TEXT,          (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('v','r','t','2'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_ON,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_OFF},
-  {HB_TAG ('v','r','t','r'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION,   (hb_aat_layout_feature_selector_t) 2,                          (hb_aat_layout_feature_selector_t) 3},
-  {HB_TAG ('z','e','r','o'), HB_AAT_LAYOUT_FEATURE_TYPE_TYPOGRAPHIC_EXTRAS,      HB_AAT_LAYOUT_FEATURE_SELECTOR_SLASHED_ZERO_ON,                HB_AAT_LAYOUT_FEATURE_SELECTOR_SLASHED_ZERO_OFF},
+  {HB_برچسب ('a','f','r','c'), HB_AAT_LAYOUT_FEATURE_TYPE_FRACTIONS,               HB_AAT_LAYOUT_FEATURE_SELECTOR_VERTICAL_FRACTIONS,             HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_FRACTIONS},
+  {HB_برچسب ('c','2','p','c'), HB_AAT_LAYOUT_FEATURE_TYPE_فوقانی_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_فوقانی_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_فوقانی_CASE},
+  {HB_برچسب ('c','2','s','c'), HB_AAT_LAYOUT_FEATURE_TYPE_فوقانی_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_فوقانی_CASE_SMALL_CAPS,          HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_فوقانی_CASE},
+  {HB_برچسب ('c','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_ALTERNATES_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_ALTERNATES_OFF},
+  {HB_برچسب ('c','a','s','e'), HB_AAT_LAYOUT_FEATURE_TYPE_CASE_SENSITIVE_LAYOUT,   HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_LAYOUT_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_LAYOUT_OFF},
+  {HB_برچسب ('c','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_LIGATURES_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_LIGATURES_OFF},
+  {HB_برچسب ('c','p','s','p'), HB_AAT_LAYOUT_FEATURE_TYPE_CASE_SENSITIVE_LAYOUT,   HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_SPACING_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_CASE_SENSITIVE_SPACING_OFF},
+  {HB_برچسب ('c','s','w','h'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_SWASH_ALTERNATES_ON, HB_AAT_LAYOUT_FEATURE_SELECTOR_CONTEXTUAL_SWASH_ALTERNATES_OFF},
+  {HB_برچسب ('d','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_RARE_LIGATURES_ON,              HB_AAT_LAYOUT_FEATURE_SELECTOR_RARE_LIGATURES_OFF},
+  {HB_برچسب ('e','x','p','t'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_EXPERT_CHARACTERS,              (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('f','r','a','c'), HB_AAT_LAYOUT_FEATURE_TYPE_FRACTIONS,               HB_AAT_LAYOUT_FEATURE_SELECTOR_DIAGONAL_FRACTIONS,             HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_FRACTIONS},
+  {HB_برچسب ('f','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_متن,                (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('h','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_HALF_عرض_متن,            (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('h','i','s','t'), (hb_aat_layout_feature_type_t) 40,                  (hb_aat_layout_feature_selector_t) 0,                          (hb_aat_layout_feature_selector_t) 1},
+  {HB_برچسب ('h','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_ALTERNATE_KANA,          HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_HORIZ_KANA_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_HORIZ_KANA_OFF},
+  {HB_برچسب ('h','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_HISTORICAL_LIGATURES_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_HISTORICAL_LIGATURES_OFF},
+  {HB_برچسب ('h','n','g','l'), HB_AAT_LAYOUT_FEATURE_TYPE_TRANSLITERATION,         HB_AAT_LAYOUT_FEATURE_SELECTOR_HANJA_مقصد_HANGUL,                HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_TRANSLITERATION},
+  {HB_برچسب ('h','o','j','o'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_HOJO_CHARACTERS,                (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('h','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_HALF_عرض_متن,                (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('i','t','a','l'), HB_AAT_LAYOUT_FEATURE_TYPE_ITALIC_CJK_ROMAN,        HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_ITALIC_ROMAN_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_CJK_ITALIC_ROMAN_OFF},
+  {HB_برچسب ('j','p','0','4'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS2004_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('j','p','7','8'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1978_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('j','p','8','3'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1983_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('j','p','9','0'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1990_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('l','i','g','a'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_OFF},
+  {HB_برچسب ('l','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_عدد_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_فوقانی_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
+  {HB_برچسب ('m','g','r','k'), HB_AAT_LAYOUT_FEATURE_TYPE_MATHEMATICAL_EXTRAS,     HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_OFF},
+  {HB_برچسب ('n','l','c','k'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_NLCCHARACTERS,                  (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('o','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_عدد_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_پایینی_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
+  {HB_برچسب ('o','r','d','n'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_ORDINALS,                       HB_AAT_LAYOUT_FEATURE_SELECTOR_نرمال_POSITION},
+  {HB_برچسب ('p','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_متن,          (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('p','c','a','p'), HB_AAT_LAYOUT_FEATURE_TYPE_پایینی_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_پایینی_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_پایینی_CASE},
+  {HB_برچسب ('p','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_متن,              (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('p','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_عدد_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_NUMBERS,           (hb_aat_layout_feature_selector_t) 4},
+  {HB_برچسب ('p','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_متن,              (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('q','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_QUARTER_عرض_متن,             (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('r','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_OFF},
+  {HB_برچسب ('r','u','b','y'), HB_AAT_LAYOUT_FEATURE_TYPE_RUBY_KANA,               HB_AAT_LAYOUT_FEATURE_SELECTOR_RUBY_KANA_ON,                   HB_AAT_LAYOUT_FEATURE_SELECTOR_RUBY_KANA_OFF},
+  {HB_برچسب ('s','i','n','f'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_SCIENTIFIC_INFERIORS,           HB_AAT_LAYOUT_FEATURE_SELECTOR_نرمال_POSITION},
+  {HB_برچسب ('s','m','c','p'), HB_AAT_LAYOUT_FEATURE_TYPE_پایینی_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_پایینی_CASE_SMALL_CAPS,          HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_پایینی_CASE},
+  {HB_برچسب ('s','m','p','l'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_SIMPLIFIED_CHARACTERS,          (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('s','s','0','1'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ONE_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ONE_OFF},
+  {HB_برچسب ('s','s','0','2'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWO_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWO_OFF},
+  {HB_برچسب ('s','s','0','3'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THREE_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THREE_OFF},
+  {HB_برچسب ('s','s','0','4'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOUR_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOUR_OFF},
+  {HB_برچسب ('s','s','0','5'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIVE_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIVE_OFF},
+  {HB_برچسب ('s','s','0','6'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIX_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIX_OFF},
+  {HB_برچسب ('s','s','0','7'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVEN_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVEN_OFF},
+  {HB_برچسب ('s','s','0','8'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHT_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHT_OFF},
+  {HB_برچسب ('s','s','0','9'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINE_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINE_OFF},
+  {HB_برچسب ('s','s','1','0'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TEN_ON,           HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TEN_OFF},
+  {HB_برچسب ('s','s','1','1'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ELEVEN_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_ELEVEN_OFF},
+  {HB_برچسب ('s','s','1','2'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWELVE_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWELVE_OFF},
+  {HB_برچسب ('s','s','1','3'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THIRTEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_THIRTEEN_OFF},
+  {HB_برچسب ('s','s','1','4'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOURTEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FOURTEEN_OFF},
+  {HB_برچسب ('s','s','1','5'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIFTEEN_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_FIFTEEN_OFF},
+  {HB_برچسب ('s','s','1','6'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIXTEEN_ON,       HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SIXTEEN_OFF},
+  {HB_برچسب ('s','s','1','7'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVENTEEN_ON,     HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_SEVENTEEN_OFF},
+  {HB_برچسب ('s','s','1','8'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHTEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_EIGHTEEN_OFF},
+  {HB_برچسب ('s','s','1','9'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINETEEN_ON,      HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_NINETEEN_OFF},
+  {HB_برچسب ('s','s','2','0'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLISTIC_ALTERNATIVES,  HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWENTY_ON,        HB_AAT_LAYOUT_FEATURE_SELECTOR_STYLISTIC_ALT_TWENTY_OFF},
+  {HB_برچسب ('s','u','b','s'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_INFERIORS,                      HB_AAT_LAYOUT_FEATURE_SELECTOR_نرمال_POSITION},
+  {HB_برچسب ('s','u','p','s'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_SUPERIORS,                      HB_AAT_LAYOUT_FEATURE_SELECTOR_نرمال_POSITION},
+  {HB_برچسب ('s','w','s','h'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_OFF},
+  {HB_برچسب ('t','i','t','l'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLE_OPTIONS,           HB_AAT_LAYOUT_FEATURE_SELECTOR_TITLING_CAPS,                   HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_STYLE_OPTIONS},
+  {HB_برچسب ('t','n','a','m'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_نامها_CHARACTERS,   (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('t','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_عدد_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_NUMBERS,             (hb_aat_layout_feature_selector_t) 4},
+  {HB_برچسب ('t','r','a','d'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_CHARACTERS,         (hb_aat_layout_feature_selector_t) 16},
+  {HB_برچسب ('t','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_سوم_عرض_متن,               (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('u','n','i','c'), HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE,             (hb_aat_layout_feature_selector_t) 14,                 (hb_aat_layout_feature_selector_t) 15},
+  {HB_برچسب ('v','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_متن,          (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('v','e','r','t'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_ON,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_OFF},
+  {HB_برچسب ('v','h','a','l'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_HALF_عرض_متن,            (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('v','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_ALTERNATE_KANA,          HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_VERT_KANA_ON,         HB_AAT_LAYOUT_FEATURE_SELECTOR_ALTERNATE_VERT_KANA_OFF},
+  {HB_برچسب ('v','p','a','l'), HB_AAT_LAYOUT_FEATURE_TYPE_متن_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_متن,          (hb_aat_layout_feature_selector_t) 7},
+  {HB_برچسب ('v','r','t','2'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_ON,   HB_AAT_LAYOUT_FEATURE_SELECTOR_SUBSTITUTE_VERTICAL_FORMS_OFF},
+  {HB_برچسب ('v','r','t','r'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_SUBSTITUTION,   (hb_aat_layout_feature_selector_t) 2,                          (hb_aat_layout_feature_selector_t) 3},
+  {HB_برچسب ('z','e','r','o'), HB_AAT_LAYOUT_FEATURE_TYPE_TYPOGRAPHIC_EXTRAS,      HB_AAT_LAYOUT_FEATURE_SELECTOR_SLASHED_ZERO_ON,                HB_AAT_LAYOUT_FEATURE_SELECTOR_SLASHED_ZERO_OFF},
 };
 
 /**
@@ -196,67 +196,67 @@ static const hb_aat_feature_mapping_t feature_mappings[] =
  * OpenType feature tag queried
  *
  **/
-const hb_aat_feature_mapping_t *
-hb_aat_layout_find_feature_mapping (hb_tag_t tag)
+ثابت hb_aat_feature_mapping_t *
+hb_aat_layout_پیدا_کن_feature_mapping (hb_برچسب_t برچسب_2)
 {
-  return hb_sorted_array (feature_mappings).bsearch (tag);
+  أرجع hb_sorted_array (feature_mappings).bsearch (برچسب_2);
 }
-#endif
+#پایان_اگر
 
 
-#ifndef HB_NO_AAT_SHAPE
+#اگر_تعریف_نشده HB_NO_AAT_SHAPE
 
 /*
  * mort/morx/kerx/trak
  */
 
 
-bool
+منطقي
 AAT::morx::is_blocklisted (hb_blob_t *blob,
-                           hb_face_t *face) const
+                           hb_face_t *face) ثابت
 {
-#ifdef HB_NO_AAT_LAYOUT_BLOCKLIST
-  return false;
-#endif
+#اگر_تعریف_شده HB_NO_AAT_LAYOUT_BLOCKLIST
+  أرجع خطأ;
+#پایان_اگر
 
-  switch HB_CODEPOINT_ENCODE3 (blob->length,
-                               face->table.GSUB->table.get_length (),
-                               face->table.GDEF->table.get_length ())
+  بدل HB_CODEPOINT_ENCODE3 (blob->درازی,
+                               face->جدول.GSUB->جدول.get_درازی (),
+                               face->جدول.GDEF->جدول.get_درازی ())
   {
     /* https://github.com/harfbuzz/harfbuzz/issues/4108
        sha1sum:a71ca6813b7e56a772cffff7c24a5166b087197c  AALMAGHRIBI.ttf */
-    case HB_CODEPOINT_ENCODE3 (19892, 2794, 340):
-      return true;
+    حالة HB_CODEPOINT_ENCODE3 (19892, 2794, 340):
+      أرجع درست;
   }
-  return false;
+  أرجع خطأ;
 }
 
-bool
+منطقي
 AAT::mort::is_blocklisted (hb_blob_t *blob,
-                           hb_face_t *face) const
+                           hb_face_t *face) ثابت
 {
-#ifdef HB_NO_AAT_LAYOUT_BLOCKLIST
-  return false;
-#endif
-  return false;
+#اگر_تعریف_شده HB_NO_AAT_LAYOUT_BLOCKLIST
+  أرجع خطأ;
+#پایان_اگر
+  أرجع خطأ;
 }
 
-void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+فراغ
+hb_aat_layout_compile_map (ثابت hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map)
 {
-  const AAT::morx& morx = *mapper->face->table.morx->table;
-  if (morx.has_data ())
+  ثابت AAT::morx& morx = *mapper->face->جدول.morx->جدول;
+  إذا (morx.has_داده ())
   {
     morx.compile_flags (mapper, map);
-    return;
+    أرجع;
   }
 
-  const AAT::mort& mort = *mapper->face->table.mort->table;
-  if (mort.has_data ())
+  ثابت AAT::mort& mort = *mapper->face->جدول.mort->جدول;
+  إذا (mort.has_داده ())
   {
     mort.compile_flags (mapper, map);
-    return;
+    أرجع;
   }
 }
 
@@ -277,67 +277,67 @@ hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
 hb_bool_t
 hb_aat_layout_has_substitution (hb_face_t *face)
 {
-  return face->table.morx->table->has_data () ||
-	 face->table.mort->table->has_data ();
+  أرجع face->جدول.morx->جدول->has_داده () ||
+	 face->جدول.mort->جدول->has_داده ();
 }
 
-void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+فراغ
+hb_aat_layout_substitute (ثابت hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features)
+			  hb_میانگیر_t *میانگیر,
+			  ثابت hb_feature_t *features,
+			  بیعلامت رقم_features)
 {
   hb_aat_map_t map;
-  if (num_features)
+  إذا (رقم_features)
   {
     hb_aat_map_builder_t builder (font->face, plan->props);
-    for (unsigned i = 0; i < num_features; i++)
-      builder.add_feature (features[i]);
+    لكل (بیعلامت i = 0; i < رقم_features; i++)
+      builder.جمع_کن_feature (features[i]);
     builder.compile (map);
   }
 
   {
-    auto &accel = *font->face->table.morx;
-    const AAT::morx& morx = *accel.table;
-    if (morx.has_data ())
+    خودکار &accel = *font->face->جدول.morx;
+    ثابت AAT::morx& morx = *accel.جدول;
+    إذا (morx.has_داده ())
     {
-      AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
-      if (!buffer->message (font, "start table morx")) return;
-      c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
-      morx.apply (&c, num_features ? map : plan->aat_map, accel);
-      accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
-      c.buffer_glyph_set = nullptr;
-      (void) buffer->message (font, "end table morx");
-      return;
+      AAT::hb_aat_apply_context_t c (plan, font, میانگیر, accel.get_blob ());
+      إذا (!میانگیر->پیام (font, "start table morx")) أرجع;
+      c.میانگیر_glyph_مجموعه = accel.scratch.create_میانگیر_glyph_مجموعه ();
+      morx.apply (&c, رقم_features ? map : plan->aat_map, accel);
+      accel.scratch.destroy_میانگیر_glyph_مجموعه (c.میانگیر_glyph_مجموعه);
+      c.میانگیر_glyph_مجموعه = اشاره_تهی;
+      (فراغ) میانگیر->پیام (font, "end table morx");
+      أرجع;
     }
   }
 
   {
-    auto &accel = *font->face->table.mort;
-    const AAT::mort& mort = *accel.table;
-    if (mort.has_data ())
+    خودکار &accel = *font->face->جدول.mort;
+    ثابت AAT::mort& mort = *accel.جدول;
+    إذا (mort.has_داده ())
     {
-      AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
-      if (!buffer->message (font, "start table mort")) return;
-      mort.apply (&c, num_features ? map : plan->aat_map, accel);
-      (void) buffer->message (font, "end table mort");
-      return;
+      AAT::hb_aat_apply_context_t c (plan, font, میانگیر, accel.get_blob ());
+      إذا (!میانگیر->پیام (font, "start table mort")) أرجع;
+      mort.apply (&c, رقم_features ? map : plan->aat_map, accel);
+      (فراغ) میانگیر->پیام (font, "end table mort");
+      أرجع;
     }
   }
 }
 
-static bool
-is_deleted_glyph (const hb_glyph_info_t *info)
+ساكن منطقي
+is_deleted_glyph (ثابت hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_aat_deleted (info);
+  أرجع _hb_glyph_info_is_aat_deleted (info);
 }
 
-void
-hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer)
+فراغ
+hb_aat_layout_remove_deleted_glyphs (hb_میانگیر_t *میانگیر)
 {
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED)
-    buffer->delete_glyphs_inplace (is_deleted_glyph);
+  إذا (میانگیر->scratch_flags & HB_میانگیر_SCRATCH_FLAG_AAT_HAS_DELETED)
+    میانگیر->delete_glyphs_inplace (is_deleted_glyph);
 }
 
 /**
@@ -356,24 +356,24 @@ hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer)
 hb_bool_t
 hb_aat_layout_has_positioning (hb_face_t *face)
 {
-  return face->table.kerx->table->has_data ();
+  أرجع face->جدول.kerx->جدول->has_داده ();
 }
 
-void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+فراغ
+hb_aat_layout_position (ثابت hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer)
+			hb_میانگیر_t *میانگیر)
 {
-  auto &accel = *font->face->table.kerx;
+  خودکار &accel = *font->face->جدول.kerx;
 
-  AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
-  if (!buffer->message (font, "start table kerx")) return;
-  c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
-  c.set_ankr_table (font->face->table.ankr.get ());
+  AAT::hb_aat_apply_context_t c (plan, font, میانگیر, accel.get_blob ());
+  إذا (!میانگیر->پیام (font, "start table kerx")) أرجع;
+  c.میانگیر_glyph_مجموعه = accel.scratch.create_میانگیر_glyph_مجموعه ();
+  c.مجموعه_ankr_جدول (font->face->جدول.ankr.get ());
   accel.apply (&c);
-  accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
-  c.buffer_glyph_set = nullptr;
-  (void) buffer->message (font, "end table kerx");
+  accel.scratch.destroy_میانگیر_glyph_مجموعه (c.میانگیر_glyph_مجموعه);
+  c.میانگیر_glyph_مجموعه = اشاره_تهی;
+  (فراغ) میانگیر->پیام (font, "end table kerx");
 }
 
 
@@ -391,17 +391,17 @@ hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
 hb_bool_t
 hb_aat_layout_has_tracking (hb_face_t *face)
 {
-  return face->table.trak->has_data ();
+  أرجع face->جدول.trak->has_داده ();
 }
 
-void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+فراغ
+hb_aat_layout_track (ثابت hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer)
+		     hb_میانگیر_t *میانگیر)
 {
-  const AAT::trak& trak = *font->face->table.trak;
+  ثابت AAT::trak& trak = *font->face->جدول.trak;
 
-  AAT::hb_aat_apply_context_t c (plan, font, buffer);
+  AAT::hb_aat_apply_context_t c (plan, font, میانگیر);
   trak.apply (&c);
 }
 
@@ -419,13 +419,13 @@ hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
  *
  * Since: 2.2.0
  */
-unsigned int
+بیعلامت صحيح
 hb_aat_layout_get_feature_types (hb_face_t                    *face,
-				 unsigned int                  start_offset,
-				 unsigned int                 *feature_count, /* IN/OUT.  May be NULL. */
+				 بیعلامت صحيح                  شروع_جابه_جایی,
+				 بیعلامت صحيح                 *feature_شمار_2, /* IN/OUT.  May be NULL. */
 				 hb_aat_layout_feature_type_t *features       /* OUT.     May be NULL. */)
 {
-  return face->table.feat->get_feature_types (start_offset, feature_count, features);
+  أرجع face->جدول.feat->get_feature_types (شروع_جابه_جایی, feature_شمار_2, features);
 }
 
 /**
@@ -443,7 +443,7 @@ hb_ot_name_id_t
 hb_aat_layout_feature_type_get_name_id (hb_face_t                    *face,
 					hb_aat_layout_feature_type_t  feature_type)
 {
-  return face->table.feat->get_feature_name_id (feature_type);
+  أرجع face->جدول.feat->get_feature_name_id (feature_type);
 }
 
 /**
@@ -467,16 +467,16 @@ hb_aat_layout_feature_type_get_name_id (hb_face_t                    *face,
  *
  * Since: 2.2.0
  */
-unsigned int
+بیعلامت صحيح
 hb_aat_layout_feature_type_get_selector_infos (hb_face_t                             *face,
 					       hb_aat_layout_feature_type_t           feature_type,
-					       unsigned int                           start_offset,
-					       unsigned int                          *selector_count, /* IN/OUT.  May be NULL. */
+					       بیعلامت صحيح                           شروع_جابه_جایی,
+					       بیعلامت صحيح                          *selector_شمار, /* IN/OUT.  May be NULL. */
 					       hb_aat_layout_feature_selector_info_t *selectors,      /* OUT.     May be NULL. */
-					       unsigned int                          *default_index   /* OUT.     May be NULL. */)
+					       بیعلامت صحيح                          *default_شاخص   /* OUT.     May be NULL. */)
 {
-  return face->table.feat->get_selector_infos (feature_type, start_offset, selector_count, selectors, default_index);
+  أرجع face->جدول.feat->get_selector_infos (feature_type, شروع_جابه_جایی, selector_شمار, selectors, default_شاخص);
 }
 
 
-#endif
+#پایان_اگر

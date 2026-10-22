@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_درون) && !defined(HB_NO_SINGLE_سرآیند_ERROR)
+#خطا "Include <hb.h> instead."
+#پایان_اگر
 
-#ifndef HB_MAP_H
-#define HB_MAP_H
+#اگر_تعریف_نشده HB_MAP_H
+#تعریف_کن HB_MAP_H
 
-#include "hb-common.h"
-#include "hb-set.h"
+#ضمن "hb-common.h"
+#ضمن "hb-set.h"
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.7.7
  */
-#define HB_MAP_VALUE_INVALID HB_CODEPOINT_INVALID
+#تعریف_کن HB_MAP_مقدار_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_map_t:
@@ -52,92 +52,92 @@ HB_BEGIN_DECLS
  * Data type for holding integer-to-integer hash maps.
  *
  **/
-typedef struct hb_map_t hb_map_t;
+تعريفنوع بنية hb_map_t hb_map_t;
 
 
 HB_EXTERN hb_map_t *
-hb_map_create (void);
+hb_map_create (فراغ);
 
 HB_EXTERN hb_map_t *
-hb_map_get_empty (void);
+hb_map_get_خالی (فراغ);
 
 HB_EXTERN hb_map_t *
 hb_map_reference (hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_map_destroy (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_map_مجموعه_user_داده (hb_map_t           *map,
+		      hb_user_داده_کلید_t *کلید_2,
+		      فراغ *              داده,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_map_get_user_داده (ثابت hb_map_t     *map,
+		      hb_user_داده_کلید_t *کلید_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_map_allocation_successful (const hb_map_t *map);
+hb_map_تخصیص_successful (ثابت hb_map_t *map);
 
 HB_EXTERN hb_map_t *
-hb_map_copy (const hb_map_t *map);
+hb_map_copy (ثابت hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_map_clear (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_empty (const hb_map_t *map);
+hb_map_is_خالی (ثابت hb_map_t *map);
 
-HB_EXTERN unsigned int
-hb_map_get_population (const hb_map_t *map);
+HB_EXTERN بیعلامت صحيح
+hb_map_get_population (ثابت hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other);
+hb_map_is_equal (ثابت hb_map_t *map,
+		 ثابت hb_map_t *other);
 
-HB_EXTERN unsigned int
-hb_map_hash (const hb_map_t *map);
+HB_EXTERN بیعلامت صحيح
+hb_map_hash (ثابت hb_map_t *map);
 
-HB_EXTERN void
-hb_map_set (hb_map_t       *map,
-	    hb_codepoint_t  key,
-	    hb_codepoint_t  value);
+HB_EXTERN فراغ
+hb_map_مجموعه (hb_map_t       *map,
+	    hb_codepoint_t  کلید_2,
+	    hb_codepoint_t  مقدار_2);
 
 HB_EXTERN hb_codepoint_t
-hb_map_get (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_get (ثابت hb_map_t *map,
+	    hb_codepoint_t  کلید_2);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_map_del (hb_map_t       *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  کلید_2);
 
 HB_EXTERN hb_bool_t
-hb_map_has (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_has (ثابت hb_map_t *map,
+	    hb_codepoint_t  کلید_2);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other);
+	       ثابت hb_map_t *other);
 
 /* Pass -1 in for idx to get started. */
 HB_EXTERN hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
-	     hb_codepoint_t *key,
-	     hb_codepoint_t *value);
+hb_map_بعدی (ثابت hb_map_t *map,
+	     صحيح *idx,
+	     hb_codepoint_t *کلید_2,
+	     hb_codepoint_t *مقدار_2);
 
-HB_EXTERN void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys);
+HB_EXTERN فراغ
+hb_map_کلیدها (ثابت hb_map_t *map,
+	     hb_مجموعه_t *کلیدها);
 
-HB_EXTERN void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values);
+HB_EXTERN فراغ
+hb_map_مقادیر (ثابت hb_map_t *map,
+	       hb_مجموعه_t *مقادیر);
 
-HB_END_DECLS
+HB_انتها_DECLS
 
-#endif /* HB_MAP_H */
+#پایان_اگر /* HB_MAP_H */

@@ -24,350 +24,350 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_DIRECTWRITE
+#اگر_تعریف_شده HAVE_DIRECTWRITE
 
-#include "hb-directwrite.h"
+#ضمن "hb-directwrite.h"
 
-#include <d2d1.h>
+#ضمن <d2d1.h>
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#ضمن "hb-draw.hh"
+#ضمن "hb-font.hh"
+#ضمن "hb-machinery.hh"
 
-#define MAX_GLYPHS 256u
+#تعریف_کن MAX_GLYPHS 256u
 
-static hb_position_t
+ساكن hb_position_t
 hb_directwrite_scale_x (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_x ((int16_t) value);
-  return font->em_scalef_x ((float) value);
+  إذا (value >= INT16_MIN && value <= INT16_MAX)
+    أرجع font->em_scale_x ((int16_t) value);
+  أرجع font->em_scalef_x ((عائم) value);
 }
 
-static hb_position_t
+ساكن hb_position_t
 hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_y ((int16_t) value);
-  return font->em_scalef_y ((float) value);
+  إذا (value >= INT16_MIN && value <= INT16_MAX)
+    أرجع font->em_scale_y ((int16_t) value);
+  أرجع font->em_scalef_y ((عائم) value);
 }
 
-static unsigned int
+ساكن بیعلامت صحيح
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
-				   void *font_data HB_UNUSED,
-				   unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
-				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride,
-				   void *user_data HB_UNUSED)
+				   فراغ *font_داده HB_استفادهنشده,
+				   بیعلامت صحيح شمار,
+				   ثابت hb_codepoint_t *اولی_unicode,
+				   بیعلامت صحيح unicode_stride,
+				   hb_codepoint_t *اولی_glyph,
+				   بیعلامت صحيح glyph_stride,
+				   فراغ *user_داده HB_استفادهنشده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
-  for (unsigned i = 0; i < count;)
+  لكل (بیعلامت i = 0; i < شمار;)
   {
     UINT32 unicodes[MAX_GLYPHS];
     UINT16 gids[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    بیعلامت n = hb_min (MAX_GLYPHS, شمار - i);
 
-    for (unsigned j = 0; j < n; j++)
+    لكل (بیعلامت j = 0; j < n; j++)
     {
-      unicodes[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      unicodes[j] = *اولی_unicode;
+      اولی_unicode = &Struct_At_جابه_جایی<ثابت hb_codepoint_t> (اولی_unicode, unicode_stride);
     }
 
-    if (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
-      return i;
+    إذا (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
+      أرجع i;
 
-    for (unsigned j = 0; j < n; j++)
+    لكل (بیعلامت j = 0; j < n; j++)
     {
-      if (!gids[j])
-        return i + j;
-      *first_glyph = gids[j];
-      first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+      إذا (!gids[j])
+        أرجع i + j;
+      *اولی_glyph = gids[j];
+      اولی_glyph = &Struct_At_جابه_جایی<hb_codepoint_t> (اولی_glyph, glyph_stride);
     }
 
     i += n;
   }
 
-  return count;
+  أرجع شمار;
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_directwrite_get_font_h_extents (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   فراغ *font_داده HB_استفادهنشده,
 				   hb_font_extents_t *metrics,
-				   void *user_data HB_UNUSED)
+				   فراغ *user_داده HB_استفادهنشده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
   DWRITE_FONT_METRICS dw_metrics;
   dw_face->GetMetrics (&dw_metrics);
 
   metrics->ascender = hb_directwrite_scale_y (font, dw_metrics.ascent);
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
-  metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
+  metrics->سطر_gap = hb_directwrite_scale_y (font, dw_metrics.سطر_Gap);
 
-  return true;
+  أرجع درست;
 }
 
-static void
+ساكن فراغ
 hb_directwrite_get_glyph_h_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
-				     unsigned glyph_stride,
-				     hb_position_t *first_advance,
-				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     فراغ* font_داده HB_استفادهنشده,
+				     بیعلامت شمار,
+				     ثابت hb_codepoint_t *اولی_glyph,
+				     بیعلامت glyph_stride,
+				     hb_position_t *اولی_advance,
+				     بیعلامت advance_stride,
+				     فراغ *user_داده HB_استفادهنشده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
-  IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  IDWriteFontFace1 *dw_face1 = اشاره_تهی;
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (فراغ**)&dw_face1);
+  أكد (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  بیعلامت صحيح رقم_glyphs = font->face->get_رقم_glyphs ();
 
-  for (unsigned i = 0; i < count;)
+  لكل (بیعلامت i = 0; i < شمار;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    بیعلامت n = hb_min (MAX_GLYPHS, شمار - i);
 
-    for (unsigned j = 0; j < n; j++)
+    لكل (بیعلامت j = 0; j < n; j++)
     {
-      gids[j] = *first_glyph;
+      gids[j] = *اولی_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      اولی_glyph = &Struct_At_جابه_جایی<ثابت hb_codepoint_t> (اولی_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, false);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, خطأ);
+    لكل (بیعلامت j = 0; j < n; j++)
     {
       // https://github.com/harfbuzz/harfbuzz/issues/5319
-      auto advance = gids[j] < num_glyphs ? advances[j] : 0;
-      *first_advance = hb_directwrite_scale_x (font, advance);
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      خودکار advance = gids[j] < رقم_glyphs ? advances[j] : 0;
+      *اولی_advance = hb_directwrite_scale_x (font, advance);
+      اولی_advance = &Struct_At_جابه_جایی<hb_position_t> (اولی_advance, advance_stride);
     }
 
     i += n;
   }
 }
 
-#ifndef HB_NO_VERTICAL
+#اگر_تعریف_نشده HB_NO_VERTICAL
 
-static void
+ساكن فراغ
 hb_directwrite_get_glyph_v_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
-				     unsigned glyph_stride,
-				     hb_position_t *first_advance,
-				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     فراغ* font_داده HB_استفادهنشده,
+				     بیعلامت شمار,
+				     ثابت hb_codepoint_t *اولی_glyph,
+				     بیعلامت glyph_stride,
+				     hb_position_t *اولی_advance,
+				     بیعلامت advance_stride,
+				     فراغ *user_داده HB_استفادهنشده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
-  IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  IDWriteFontFace1 *dw_face1 = اشاره_تهی;
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (فراغ**)&dw_face1);
+  أكد (dw_face1);
 
-  for (unsigned i = 0; i < count;)
+  لكل (بیعلامت i = 0; i < شمار;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    بیعلامت n = hb_min (MAX_GLYPHS, شمار - i);
 
-    for (unsigned j = 0; j < n; j++)
+    لكل (بیعلامت j = 0; j < n; j++)
     {
-      gids[j] = *first_glyph;
+      gids[j] = *اولی_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      اولی_glyph = &Struct_At_جابه_جایی<ثابت hb_codepoint_t> (اولی_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, true);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, درست);
+    لكل (بیعلامت j = 0; j < n; j++)
     {
-      *first_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      *اولی_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
+      اولی_advance = &Struct_At_جابه_جایی<hb_position_t> (اولی_advance, advance_stride);
     }
 
     i += n;
   }
 }
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_directwrite_get_glyph_v_origin (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   فراغ *font_داده HB_استفادهنشده,
 				   hb_codepoint_t glyph,
 				   hb_position_t *x,
 				   hb_position_t *y,
-				   void *user_data HB_UNUSED)
+				   فراغ *user_داده HB_استفادهنشده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  إذا (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    أرجع خطأ;
 
-  *x = hb_directwrite_scale_x (font, metrics.advanceWidth / 2);
+  *x = hb_directwrite_scale_x (font, metrics.advance_عرض / 2);
   *y = hb_directwrite_scale_y (font, metrics.verticalOriginY); // Untested
 
-  return true;
+  أرجع درست;
 }
-#endif
+#پایان_اگر
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_directwrite_get_glyph_extents (hb_font_t *font,
-				  void *font_data HB_UNUSED,
+				  فراغ *font_داده HB_استفادهنشده,
 				  hb_codepoint_t glyph,
 				  hb_glyph_extents_t *extents,
-				  void *user_data HB_UNUSED)
+				  فراغ *user_داده HB_استفادهنشده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  إذا (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    أرجع خطأ;
 
-  int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
-  int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
-  int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advanceHeight + metrics.bottomSideBearing;
+  int64_t راست = (int64_t) metrics.advance_عرض - metrics.راست_Side_Bearing;
+  int64_t بالاترین_2 = (int64_t) metrics.verticalOriginY - metrics.بالاترین_Side_Bearing;
+  int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advance_ارتفاع + metrics.bottomSideBearing;
 
-  extents->x_bearing = hb_directwrite_scale_x (font, metrics.leftSideBearing);
-  extents->y_bearing = hb_directwrite_scale_y (font, top);
-  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, right), extents->x_bearing);
-  extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
+  extents->x_bearing = hb_directwrite_scale_x (font, metrics.چپ_Side_Bearing);
+  extents->y_bearing = hb_directwrite_scale_y (font, بالاترین_2);
+  extents->عرض = hb_saturate_sub (hb_directwrite_scale_x (font, راست), extents->x_bearing);
+  extents->ارتفاع = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
-  return true;
+  أرجع درست;
 }
 
 
-#ifndef HB_NO_DRAW
+#اگر_تعریف_نشده HB_NO_DRAW
 
-class GeometrySink : public IDWriteGeometrySink
+صنف GeometrySink : عام IDWriteGeometrySink
 {
   hb_font_t *font;
   hb_draw_session_t drawing;
 
-public:
+عام:
   GeometrySink(hb_font_t *font,
 	       hb_draw_funcs_t *draw_funcs,
-	       void *draw_data)
-    : font (font), drawing ({draw_funcs, draw_data}) {}
+	       فراغ *draw_داده)
+    : font (font), drawing ({draw_funcs, draw_داده}) {}
 
-  HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
-  void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
-  void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
+  HRESULT STDMETHODCALLTYPE Close() override { أرجع S_OK; }
+  فراغ STDMETHODCALLTYPE مجموعه_Fill_نما(D2_D1_FILL_نما) override {}
+  فراغ STDMETHODCALLTYPE مجموعه_Segment_Flags(D2_D1_مسیر_SEGMENT) override {}
 
-  IFACEMETHOD(QueryInterface)(REFIID, void **) override { return E_NOINTERFACE; }
-  IFACEMETHOD_(ULONG, AddRef)() override { return 1; }
-  IFACEMETHOD_(ULONG, Release)() override { return 1; }
+  IFACEMETHOD(QueryInterface)(REFIID, فراغ **) override { أرجع E_NOINTERFACE; }
+  IFACEMETHOD_(ULONG, جمع_کن_Ref)() override { أرجع 1; }
+  IFACEMETHOD_(ULONG, Release)() override { أرجع 1; }
 
-  void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
+  فراغ STDMETHODCALLTYPE BeginFigure(D2_D1_نقطه_2_F شروع_نقطه, D2D1_FIGURE_BEGIN) override
   {
-    drawing.move_to (font->em_scalef_x (startPoint.x), -(float) font->em_scalef_y (startPoint.y));
+    drawing.move_مقصد (font->em_scalef_x (شروع_نقطه.x), -(عائم) font->em_scalef_y (شروع_نقطه.y));
   }
 
-  void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziersCount) override
+  فراغ STDMETHODCALLTYPE جمع_کن_Beziers(ثابت D2D1_BEZIER_SEGMENT *beziers, UINT beziers_شمار) override
   {
-    for (unsigned i = 0; i < beziersCount; ++i)
-      drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(float) font->em_scalef_y (beziers[i].point1.y),
-			font->em_scalef_x (beziers[i].point2.x), -(float) font->em_scalef_y (beziers[i].point2.y),
-			font->em_scalef_x (beziers[i].point3.x), -(float) font->em_scalef_y (beziers[i].point3.y));
+    لكل (بیعلامت i = 0; i < beziers_شمار; ++i)
+      drawing.cubic_مقصد (font->em_scalef_x (beziers[i].point1.x), -(عائم) font->em_scalef_y (beziers[i].point1.y),
+			font->em_scalef_x (beziers[i].point2.x), -(عائم) font->em_scalef_y (beziers[i].point2.y),
+			font->em_scalef_x (beziers[i].point3.x), -(عائم) font->em_scalef_y (beziers[i].point3.y));
   }
 
-  void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F *points, UINT pointsCount) override
+  فراغ STDMETHODCALLTYPE جمع_کن_سطرها(ثابت D2_D1_نقطه_2_F *points, UINT points_شمار) override
   {
-    for (unsigned i = 0; i < pointsCount; ++i)
-      drawing.line_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
+    لكل (بیعلامت i = 0; i < points_شمار; ++i)
+      drawing.سطر_مقصد (font->em_scalef_x (points[i].x), -(عائم) font->em_scalef_y (points[i].y));
   }
 
-  void STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
+  فراغ STDMETHODCALLTYPE انتها_Figure(D2_D1_FIGURE_انتها) override
   {
-    drawing.close_path ();
+    drawing.close_مسیر ();
   }
 };
 
-static hb_bool_t
+ساكن hb_bool_t
 hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   فراغ *font_داده HB_استفادهنشده,
 				   hb_codepoint_t glyph,
-				   hb_draw_funcs_t *draw_funcs, void *draw_data,
-				   void *user_data)
+				   hb_draw_funcs_t *draw_funcs, فراغ *draw_داده,
+				   فراغ *user_داده)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
 
-  GeometrySink sink (font, draw_funcs, draw_data);
+  GeometrySink sink (font, draw_funcs, draw_داده);
   UINT16 gid = static_cast<UINT16>(glyph);
-  unsigned upem = font->face->get_upem();
+  بیعلامت upem = font->face->get_upem();
 
-  return S_OK == dw_face->GetGlyphRunOutline (upem,
-					      &gid, nullptr, nullptr,
+  أرجع S_OK == dw_face->Get_Glyph_پیاپی_Outline (upem,
+					      &gid, اشاره_تهی, اشاره_تهی,
 					      1,
-					      false, false,
+					      خطأ, خطأ,
 					      &sink);
 }
 
-#endif
+#پایان_اگر
 
-static inline void free_static_directwrite_funcs ();
+ساكن مضمن فراغ free_static_directwrite_funcs ();
 
-static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
+ساكن بنية hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  ساكن hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_directwrite_get_nominal_glyphs, nullptr, nullptr);
+    hb_font_funcs_مجموعه_nominal_glyphs_func (funcs, hb_directwrite_get_nominal_glyphs, اشاره_تهی, اشاره_تهی);
     //hb_font_funcs_set_variation_glyph_func (funcs, hb_directwrite_get_variation_glyph, nullptr, nullptr);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_directwrite_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_directwrite_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_مجموعه_font_h_extents_func (funcs, hb_directwrite_get_font_h_extents, اشاره_تهی, اشاره_تهی);
+    hb_font_funcs_مجموعه_glyph_h_advances_func (funcs, hb_directwrite_get_glyph_h_advances, اشاره_تهی, اشاره_تهی);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_glyph_v_advances_func (funcs, hb_directwrite_get_glyph_v_advances, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origin_func (funcs, hb_directwrite_get_glyph_v_origin, nullptr, nullptr);
-#endif
+#اگر_تعریف_نشده HB_NO_VERTICAL
+    hb_font_funcs_مجموعه_glyph_v_advances_func (funcs, hb_directwrite_get_glyph_v_advances, اشاره_تهی, اشاره_تهی);
+    hb_font_funcs_مجموعه_glyph_v_origin_func (funcs, hb_directwrite_get_glyph_v_origin, اشاره_تهی, اشاره_تهی);
+#پایان_اگر
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_directwrite_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#اگر_تعریف_نشده HB_NO_DRAW
+    hb_font_funcs_مجموعه_draw_glyph_or_fail_func (funcs, hb_directwrite_draw_glyph_or_fail, اشاره_تهی, اشاره_تهی);
+#پایان_اگر
 
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_directwrite_get_glyph_extents, nullptr, nullptr);
+    hb_font_funcs_مجموعه_glyph_extents_func (funcs, hb_directwrite_get_glyph_extents, اشاره_تهی, اشاره_تهی);
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
+#اگر_تعریف_نشده HB_NO_OT_FONT_GLYPH_نامها
     //hb_font_funcs_set_glyph_name_func (funcs, hb_directwrite_get_glyph_name, nullptr, nullptr);
     //hb_font_funcs_set_glyph_from_name_func (funcs, hb_directwrite_get_glyph_from_name, nullptr, nullptr);
-#endif
+#پایان_اگر
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_directwrite_funcs);
 
-    return funcs;
+    أرجع funcs;
   }
 } static_directwrite_funcs;
 
-static inline
-void free_static_directwrite_funcs ()
+ساكن مضمن
+فراغ free_static_directwrite_funcs ()
 {
   static_directwrite_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+ساكن hb_font_funcs_t *
 _hb_directwrite_get_font_funcs ()
 {
-  return static_directwrite_funcs.get_unconst ();
+  أرجع static_directwrite_funcs.get_unconst ();
 }
 
 /**
@@ -388,24 +388,24 @@ _hb_directwrite_get_font_funcs ()
  *
  * Since: 11.0.0
  **/
-void
-hb_directwrite_font_set_funcs (hb_font_t *font)
+فراغ
+hb_directwrite_font_مجموعه_funcs (hb_font_t *font)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  if (unlikely (!dw_face))
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
+  إذا (unlikely (!dw_face))
   {
-    hb_font_set_funcs (font,
-		       hb_font_funcs_get_empty (),
-		       nullptr, nullptr);
-    return;
+    hb_font_مجموعه_funcs (font,
+		       hb_font_funcs_get_خالی (),
+		       اشاره_تهی, اشاره_تهی);
+    أرجع;
   }
 
-  dw_face->AddRef ();
-  hb_font_set_funcs (font,
+  dw_face->جمع_کن_Ref ();
+  hb_font_مجموعه_funcs (font,
 		     _hb_directwrite_get_font_funcs (),
-		     nullptr, nullptr);
+		     اشاره_تهی, اشاره_تهی);
 }
 
-#undef MAX_GLYPHS
+#لغو_تعریف MAX_GLYPHS
 
-#endif
+#پایان_اگر

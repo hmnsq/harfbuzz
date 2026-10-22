@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-import sys
+استورد sys
 
 
-news_path = sys.argv[1]
+news_مسیر = sys.argv[1]
 release = sys.argv[2]
 
-with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+با open(news_مسیر, "r", encoding="utf-8") كـ news_file:
+    سطرها = news_file.readlines()
 
-start = None
-end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
-            end = i
-            break
-        if line.endswith(release):  # Start of the release
-            start = i + 3  # Skip the header lines
+شروع = هیچ
+انتها = هیچ
+لكل i, سطر في enumerate(سطرها):
+    سطر = سطر.rstrip()
+    إذا سطر.startswith("Overview of changes leading to"):
+        إذا شروع است ليس هیچ:  # Start of next release
+            انتها = i
+            اكسر
+        إذا سطر.endswith(release):  # Start of the release
+            شروع = i + 3  # Skip the header lines
 
-assert start and end and end > start
+أكد شروع و انتها و انتها > شروع
 
-print("".join(lines[start:end]))
+چاپ("".join(سطرها[شروع:انتها]))

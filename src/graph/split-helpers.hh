@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#اگر_تعریف_نشده گراف_تقسیم_HELPERS_HH
+#تعریف_کن گراف_تقسیم_HELPERS_HH
 
-#include "graph-result.hh"
+#ضمن "graph-result.hh"
 
-namespace graph {
+نطاق گراف {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+قالب<نام_نوع Context>
+HB_داخلی
+گراف_نتیجه_t<hb_وکتور_t<بیعلامت>> actuate_subtable_تقسیم (Context& تقسیم_context,
+                                                              ثابت hb_وکتور_t<بیعلامت>& تقسیم_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_وکتور_t<بیعلامت> new_objects;
+  إذا (!تقسیم_points)
+    أرجع Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  لكل (بیعلامت i = 0; i < تقسیم_points.درازی; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    بیعلامت شروع = تقسیم_points[i];
+    بیعلامت انتها = (i < تقسیم_points.درازی - 1)
+                   ? تقسیم_points[i + 1]
+                   : تقسیم_context.original_شمار_2 ();
+    TRY_تخصیص_بده (بیعلامت id, تقسیم_context.clone_range (شروع, انتها));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (گراف_نتیجه_t<فراغ>::from (new_objects, تخصیص_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (تقسیم_context.shrink (تقسیم_points[0]));
 
-  return Ok(new_objects);
+  أرجع Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#پایان_اگر  // GRAPH_SPLIT_HELPERS_HH

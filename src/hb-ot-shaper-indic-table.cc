@@ -14,125 +14,125 @@
  * # Date: 2026-07-08
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_تعریف_نشده HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-indic.hh"
+#ضمن "hb-ot-shaper-indic.hh"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-macros"
+#رهنمود GCC diagnostic push
+#رهنمود GCC diagnostic ignored "-Wunused-macros"
 
-#include "hb-ot-shaper-indic-machine.hh"
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-myanmar-machine.hh"
+#ضمن "hb-ot-shaper-indic-machine.hh"
+#ضمن "hb-ot-shaper-khmer-machine.hh"
+#ضمن "hb-ot-shaper-myanmar-machine.hh"
 
 /* indic */
-#define OT_X I_Cat(X)
-#define OT_C I_Cat(C)
-#define OT_V I_Cat(V)
-#define OT_N I_Cat(N)
-#define OT_H I_Cat(H)
-#define OT_ZWNJ I_Cat(ZWNJ)
-#define OT_ZWJ I_Cat(ZWJ)
-#define OT_M I_Cat(M)
-#define OT_SM I_Cat(SM)
-#define OT_A I_Cat(A)
-#define OT_VD I_Cat(VD)
-#define OT_PLACEHOLDER I_Cat(PLACEHOLDER)
-#define OT_DOTTEDCIRCLE I_Cat(DOTTEDCIRCLE)
-#define OT_RS I_Cat(RS)
-#define OT_MPst I_Cat(MPst)
-#define OT_Repha I_Cat(Repha)
-#define OT_Ra I_Cat(Ra)
-#define OT_CM I_Cat(CM)
-#define OT_Symbol I_Cat(Symbol)
-#define OT_CS I_Cat(CS)
-#define OT_SMPst I_Cat(SMPst)
+#تعریف_کن OT_X I_Cat(X)
+#تعریف_کن OT_C I_Cat(C)
+#تعریف_کن OT_V I_Cat(V)
+#تعریف_کن OT_N I_Cat(N)
+#تعریف_کن OT_H I_Cat(H)
+#تعریف_کن OT_ZWNJ I_Cat(ZWNJ)
+#تعریف_کن OT_ZWJ I_Cat(ZWJ)
+#تعریف_کن OT_M I_Cat(M)
+#تعریف_کن OT_SM I_Cat(SM)
+#تعریف_کن OT_A I_Cat(A)
+#تعریف_کن OT_VD I_Cat(VD)
+#تعریف_کن OT_PLACEHOLDER I_Cat(PLACEHOLDER)
+#تعریف_کن OT_DOTTEDCIRCLE I_Cat(DOTTEDCIRCLE)
+#تعریف_کن OT_RS I_Cat(RS)
+#تعریف_کن OT_MPst I_Cat(MPst)
+#تعریف_کن OT_Repha I_Cat(Repha)
+#تعریف_کن OT_Ra I_Cat(Ra)
+#تعریف_کن OT_CM I_Cat(CM)
+#تعریف_کن OT_نماد I_Cat(نماد_2)
+#تعریف_کن OT_CS I_Cat(CS)
+#تعریف_کن OT_SMPst I_Cat(SMPst)
 /* khmer */
-#define OT_VAbv K_Cat(VAbv)
-#define OT_VBlw K_Cat(VBlw)
-#define OT_VPre K_Cat(VPre)
-#define OT_VPst K_Cat(VPst)
-#define OT_Robatic K_Cat(Robatic)
-#define OT_Xgroup K_Cat(Xgroup)
-#define OT_Ygroup K_Cat(Ygroup)
+#تعریف_کن OT_VAbv K_Cat(VAbv)
+#تعریف_کن OT_VBlw K_Cat(VBlw)
+#تعریف_کن OT_VPre K_Cat(VPre)
+#تعریف_کن OT_VPst K_Cat(VPst)
+#تعریف_کن OT_Robatic K_Cat(Robatic)
+#تعریف_کن OT_Xgroup K_Cat(Xgroup)
+#تعریف_کن OT_Ygroup K_Cat(Ygroup)
 /* myanmar */
 static_assert (OT_VAbv == M_Cat(VAbv), "");
 static_assert (OT_VBlw == M_Cat(VBlw), "");
 static_assert (OT_VPre == M_Cat(VPre), "");
 static_assert (OT_VPst == M_Cat(VPst), "");
-#define OT_IV M_Cat(IV)
-#define OT_As M_Cat(As)
-#define OT_DB M_Cat(DB)
-#define OT_GB M_Cat(GB)
-#define OT_MH M_Cat(MH)
-#define OT_MR M_Cat(MR)
-#define OT_MW M_Cat(MW)
-#define OT_MY M_Cat(MY)
-#define OT_PT M_Cat(PT)
-#define OT_VS M_Cat(VS)
-#define OT_ML M_Cat(ML)
+#تعریف_کن OT_IV M_Cat(IV)
+#تعریف_کن OT_As M_Cat(As)
+#تعریف_کن OT_DB M_Cat(DB)
+#تعریف_کن OT_GB M_Cat(GB)
+#تعریف_کن OT_MH M_Cat(MH)
+#تعریف_کن OT_MR M_Cat(MR)
+#تعریف_کن OT_MW M_Cat(MW)
+#تعریف_کن OT_MY M_Cat(MY)
+#تعریف_کن OT_PT M_Cat(PT)
+#تعریف_کن OT_VS M_Cat(VS)
+#تعریف_کن OT_ML M_Cat(ML)
 
 
-#define _OT_A    OT_A            /*  53 chars; A */
-#define _OT_As   OT_As           /*   1 chars; As */
-#define _OT_C    OT_C            /* 476 chars; C */
-#define _OT_CM   OT_CM           /*   1 chars; CM */
-#define _OT_CS   OT_CS           /*   4 chars; CS */
-#define _OT_DC   OT_DOTTEDCIRCLE /*   1 chars; DOTTEDCIRCLE */
-#define _OT_H    OT_H            /*  11 chars; H */
-#define _OT_M    OT_M            /* 144 chars; M */
-#define _OT_MH   OT_MH           /*   1 chars; MH */
-#define _OT_ML   OT_ML           /*   1 chars; ML */
-#define _OT_MP   OT_MPst         /*   1 chars; MPst */
-#define _OT_MR   OT_MR           /*   1 chars; MR */
-#define _OT_MW   OT_MW           /*   2 chars; MW */
-#define _OT_MY   OT_MY           /*   3 chars; MY */
-#define _OT_N    OT_N            /*  17 chars; N */
-#define _OT_GB   OT_PLACEHOLDER  /* 185 chars; PLACEHOLDER */
-#define _OT_PT   OT_PT           /*   8 chars; PT */
-#define _OT_R    OT_Ra           /*  14 chars; Ra */
-#define _OT_Rf   OT_Repha        /*   1 chars; Repha */
-#define _OT_Rt   OT_Robatic      /*   3 chars; Robatic */
-#define _OT_SM   OT_SM           /*  50 chars; SM */
-#define _OT_SP   OT_SMPst        /*   6 chars; SMPst */
-#define _OT_S    OT_Symbol       /*  22 chars; Symbol */
-#define _OT_V    OT_V            /* 172 chars; V */
-#define _OT_VA   OT_VAbv         /*  18 chars; VAbv */
-#define _OT_VB   OT_VBlw         /*   7 chars; VBlw */
-#define _OT_VL   OT_VPre         /*   5 chars; VPre */
-#define _OT_VR   OT_VPst         /*  13 chars; VPst */
-#define _OT_VS   OT_VS           /*  16 chars; VS */
-#define _OT_X    OT_X            /*   2 chars; X */
-#define _OT_Xg   OT_Xgroup       /*   7 chars; Xgroup */
-#define _OT_Yg   OT_Ygroup       /*   4 chars; Ygroup */
-#define _OT_ZWJ  OT_ZWJ          /*   1 chars; ZWJ */
-#define _OT_ZWNJ OT_ZWNJ         /*   1 chars; ZWNJ */
+#تعریف_کن _OT_A    OT_A            /*  53 chars; A */
+#تعریف_کن _OT_As   OT_As           /*   1 chars; As */
+#تعریف_کن _OT_C    OT_C            /* 476 chars; C */
+#تعریف_کن _OT_CM   OT_CM           /*   1 chars; CM */
+#تعریف_کن _OT_CS   OT_CS           /*   4 chars; CS */
+#تعریف_کن _OT_DC   OT_DOTTEDCIRCLE /*   1 chars; DOTTEDCIRCLE */
+#تعریف_کن _OT_H    OT_H            /*  11 chars; H */
+#تعریف_کن _OT_M    OT_M            /* 144 chars; M */
+#تعریف_کن _OT_MH   OT_MH           /*   1 chars; MH */
+#تعریف_کن _OT_ML   OT_ML           /*   1 chars; ML */
+#تعریف_کن _OT_MP   OT_MPst         /*   1 chars; MPst */
+#تعریف_کن _OT_MR   OT_MR           /*   1 chars; MR */
+#تعریف_کن _OT_MW   OT_MW           /*   2 chars; MW */
+#تعریف_کن _OT_MY   OT_MY           /*   3 chars; MY */
+#تعریف_کن _OT_N    OT_N            /*  17 chars; N */
+#تعریف_کن _OT_GB   OT_PLACEHOLDER  /* 185 chars; PLACEHOLDER */
+#تعریف_کن _OT_PT   OT_PT           /*   8 chars; PT */
+#تعریف_کن _OT_R    OT_Ra           /*  14 chars; Ra */
+#تعریف_کن _OT_Rf   OT_Repha        /*   1 chars; Repha */
+#تعریف_کن _OT_Rt   OT_Robatic      /*   3 chars; Robatic */
+#تعریف_کن _OT_SM   OT_SM           /*  50 chars; SM */
+#تعریف_کن _OT_SP   OT_SMPst        /*   6 chars; SMPst */
+#تعریف_کن _OT_S    OT_نماد       /*  22 chars; Symbol */
+#تعریف_کن _OT_V    OT_V            /* 172 chars; V */
+#تعریف_کن _OT_VA   OT_VAbv         /*  18 chars; VAbv */
+#تعریف_کن _OT_VB   OT_VBlw         /*   7 chars; VBlw */
+#تعریف_کن _OT_VL   OT_VPre         /*   5 chars; VPre */
+#تعریف_کن _OT_VR   OT_VPst         /*  13 chars; VPst */
+#تعریف_کن _OT_VS   OT_VS           /*  16 chars; VS */
+#تعریف_کن _OT_X    OT_X            /*   2 chars; X */
+#تعریف_کن _OT_Xg   OT_Xgroup       /*   7 chars; Xgroup */
+#تعریف_کن _OT_Yg   OT_Ygroup       /*   4 chars; Ygroup */
+#تعریف_کن _OT_ZWJ  OT_ZWJ          /*   1 chars; ZWJ */
+#تعریف_کن _OT_ZWNJ OT_ZWNJ         /*   1 chars; ZWNJ */
 
-#define _POS_T   POS_ABOVE_C     /*  22 chars; ABOVE_C */
-#define _POS_A   POS_AFTER_MAIN  /*   5 chars; AFTER_MAIN */
-#define _POS_AP  POS_AFTER_POST  /*  50 chars; AFTER_POST */
-#define _POS_AS  POS_AFTER_SUB   /*  51 chars; AFTER_SUB */
-#define _POS_C   POS_BASE_C      /* 853 chars; BASE_C */
-#define _POS_BS  POS_BEFORE_SUB  /*  25 chars; BEFORE_SUB */
-#define _POS_B   POS_BELOW_C     /*  13 chars; BELOW_C */
-#define _POS_X   POS_END         /*  71 chars; END */
-#define _POS_R   POS_POST_C      /*  13 chars; POST_C */
-#define _POS_L   POS_PRE_C       /*   5 chars; PRE_C */
-#define _POS_LM  POS_PRE_M       /*  14 chars; PRE_M */
-#define _POS_SM  POS_SMVD        /* 130 chars; SMVD */
+#تعریف_کن _POS_T   POS_ABOVE_C     /*  22 chars; ABOVE_C */
+#تعریف_کن _POS_A   POS_AFTER_MAIN  /*   5 chars; AFTER_MAIN */
+#تعریف_کن _POS_AP  POS_AFTER_POST  /*  50 chars; AFTER_POST */
+#تعریف_کن _POS_AS  POS_AFTER_SUB   /*  51 chars; AFTER_SUB */
+#تعریف_کن _POS_C   POS_پایه_C      /* 853 chars; BASE_C */
+#تعریف_کن _POS_BS  POS_BEFORE_SUB  /*  25 chars; BEFORE_SUB */
+#تعریف_کن _POS_B   POS_زیر_C     /*  13 chars; BELOW_C */
+#تعریف_کن _POS_X   POS_انتها         /*  71 chars; END */
+#تعریف_کن _POS_R   POS_POST_C      /*  13 chars; POST_C */
+#تعریف_کن _POS_L   POS_PRE_C       /*   5 chars; PRE_C */
+#تعریف_کن _POS_LM  POS_PRE_M       /*  14 chars; PRE_M */
+#تعریف_کن _POS_SM  POS_SMVD        /* 130 chars; SMVD */
 
-#pragma GCC diagnostic pop
+#رهنمود GCC diagnostic برداشت
 
-#define INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))
+#تعریف_کن INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))
 
-#define _(S,M) INDIC_COMBINE_CATEGORIES (_OT_##S, _POS_##M)
+#تعریف_کن _(S,M) INDIC_COMBINE_CATEGORIES (_OT_##S, _POS_##M)
 
 
-#include <stdint.h>
+#ضمن <stdint.h>
 
-static const uint16_t _hb_indic_values[42]=
+ساكن ثابت uint16_t hb_indic_مقادیر[42]=
 {
     _(A,SM),  _(As,X),   _(C,C),  _(CM,C),  _(CS,C),  _(DC,C),  _(GB,C),   _(H,B),
      _(H,T),   _(H,X),   _(M,A),  _(M,AP),  _(M,AS),   _(M,B),  _(M,BS),  _(M,LM),
@@ -141,7 +141,7 @@ static const uint16_t _hb_indic_values[42]=
     _(VA,T),  _(VB,B),  _(VL,L),  _(VR,R),  _(VS,X),   _(X,X),  _(Xg,X),  _(Yg,X),
    _(ZWJ,X),_(ZWNJ,X),
 };
-static const uint8_t _hb_indic_u8[1224]=
+ساكن ثابت uint8_t _hb_indic_u8[1224]=
 {
     1,  0, 50,  4,  5, 96,  0,  7,  8,  9,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -222,73 +222,73 @@ static const uint8_t _hb_indic_u8[1224]=
     5, 37, 31, 12,  2, 23, 37, 22,
 };
 
-static inline uint8_t _hb_indic_b4 (const uint8_t* a, unsigned i)
+ساكن مضمن uint8_t _hb_indic_b4 (ثابت uint8_t* a, بیعلامت i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  أرجع (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_indic_get_categories_index (unsigned u)
+ساكن مضمن uint8_t hb_indic_get_categories_شاخص (بیعلامت u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^1] */
-  return u<71396u ? (uint8_t)(_hb_indic_u8[996u+_hb_indic_u8[488u+((_hb_indic_u8[186u+((_hb_indic_u8[70u+((_hb_indic_b4(_hb_indic_u8,((((((((u)>>1))>>2))>>3))>>3)))<<3)+((((((((u)>>1))>>2))>>3))&7)])<<3)+((((((u)>>1))>>2))&7)])<<2)+((((u)>>1))&3)]+((u)&1)]) : 37;
+  أرجع u<71396u ? (uint8_t)(_hb_indic_u8[996u+_hb_indic_u8[488u+((_hb_indic_u8[186u+((_hb_indic_u8[70u+((_hb_indic_b4(_hb_indic_u8,((((((((u)>>1))>>2))>>3))>>3)))<<3)+((((((((u)>>1))>>2))>>3))&7)])<<3)+((((((u)>>1))>>2))&7)])<<2)+((((u)>>1))&3)]+((u)&1)]) : 37;
 }
 
 uint16_t
 hb_indic_get_categories (hb_codepoint_t u)
 {
-  return _hb_indic_values[_hb_indic_get_categories_index (u)];
+  أرجع hb_indic_مقادیر[hb_indic_get_categories_شاخص (u)];
 }
 
-#undef _
-#undef INDIC_COMBINE_CATEGORIES
+#لغو_تعریف _
+#لغو_تعریف INDIC_COMBINE_CATEGORIES
 
-#undef _OT_A
-#undef _OT_As
-#undef _OT_C
-#undef _OT_CM
-#undef _OT_CS
-#undef _OT_DC
-#undef _OT_H
-#undef _OT_M
-#undef _OT_MH
-#undef _OT_ML
-#undef _OT_MP
-#undef _OT_MR
-#undef _OT_MW
-#undef _OT_MY
-#undef _OT_N
-#undef _OT_GB
-#undef _OT_PT
-#undef _OT_R
-#undef _OT_Rf
-#undef _OT_Rt
-#undef _OT_SM
-#undef _OT_SP
-#undef _OT_S
-#undef _OT_V
-#undef _OT_VA
-#undef _OT_VB
-#undef _OT_VL
-#undef _OT_VR
-#undef _OT_VS
-#undef _OT_X
-#undef _OT_Xg
-#undef _OT_Yg
-#undef _OT_ZWJ
-#undef _OT_ZWNJ
+#لغو_تعریف _OT_A
+#لغو_تعریف _OT_As
+#لغو_تعریف _OT_C
+#لغو_تعریف _OT_CM
+#لغو_تعریف _OT_CS
+#لغو_تعریف _OT_DC
+#لغو_تعریف _OT_H
+#لغو_تعریف _OT_M
+#لغو_تعریف _OT_MH
+#لغو_تعریف _OT_ML
+#لغو_تعریف _OT_MP
+#لغو_تعریف _OT_MR
+#لغو_تعریف _OT_MW
+#لغو_تعریف _OT_MY
+#لغو_تعریف _OT_N
+#لغو_تعریف _OT_GB
+#لغو_تعریف _OT_PT
+#لغو_تعریف _OT_R
+#لغو_تعریف _OT_Rf
+#لغو_تعریف _OT_Rt
+#لغو_تعریف _OT_SM
+#لغو_تعریف _OT_SP
+#لغو_تعریف _OT_S
+#لغو_تعریف _OT_V
+#لغو_تعریف _OT_VA
+#لغو_تعریف _OT_VB
+#لغو_تعریف _OT_VL
+#لغو_تعریف _OT_VR
+#لغو_تعریف _OT_VS
+#لغو_تعریف _OT_X
+#لغو_تعریف _OT_Xg
+#لغو_تعریف _OT_Yg
+#لغو_تعریف _OT_ZWJ
+#لغو_تعریف _OT_ZWNJ
 
-#undef _POS_T
-#undef _POS_A
-#undef _POS_AP
-#undef _POS_AS
-#undef _POS_C
-#undef _POS_BS
-#undef _POS_B
-#undef _POS_X
-#undef _POS_R
-#undef _POS_L
-#undef _POS_LM
-#undef _POS_SM
+#لغو_تعریف _POS_T
+#لغو_تعریف _POS_A
+#لغو_تعریف _POS_AP
+#لغو_تعریف _POS_AS
+#لغو_تعریف _POS_C
+#لغو_تعریف _POS_BS
+#لغو_تعریف _POS_B
+#لغو_تعریف _POS_X
+#لغو_تعریف _POS_R
+#لغو_تعریف _POS_L
+#لغو_تعریف _POS_LM
+#لغو_تعریف _POS_SM
 
-#endif
+#پایان_اگر
 
 /* == End of generated table == */

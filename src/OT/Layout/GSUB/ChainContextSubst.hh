@@ -1,18 +1,18 @@
-#ifndef OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
-#define OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
+#اگر_تعریف_نشده OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
+#تعریف_کن OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#ضمن "../../../hb-ot-layout-gsubgpos.hh"
+#ضمن "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-struct ChainContextSubst : ChainContext {};
+بنية ChainContextSubst : ChainContext {};
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH */
+#پایان_اگر  /* OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH */

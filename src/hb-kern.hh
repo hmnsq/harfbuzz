@@ -24,121 +24,121 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_KERN_HH
-#define HB_KERN_HH
+#اگر_تعریف_نشده HB_KERN_HH
+#تعریف_کن HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
-
-
-namespace OT {
+#ضمن "hb-open-type.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-ot-layout-gpos-table.hh"
 
 
-template <typename Driver>
-struct hb_kern_machine_t
+نطاق OT {
+
+
+قالب <نام_نوع Driver>
+بنية hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (ثابت Driver &driver_,
+		     منطقي cross_جریان_2 = خطأ) :
 		       driver (driver_),
-		       crossStream (crossStream_) {}
+		       cross_جریان (cross_جریان_2) {}
 
-  void kern (hb_font_t   *font,
-	     hb_buffer_t *buffer,
-	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+  فراغ kern (hb_font_t   *font,
+	     hb_میانگیر_t *میانگیر,
+	     hb_ماسک_t    kern_ماسک,
+	     منطقي         scale = درست) ثابت
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    إذا (!میانگیر->پیام (font, "start kern"))
+      أرجع;
 
-    buffer->unsafe_to_concat ();
-    OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
-    c.set_lookup_mask (kern_mask);
-    c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    میانگیر->unsafe_مقصد_concat ();
+    OT::hb_ot_apply_context_t c (1, font, میانگیر, hb_blob_get_خالی ());
+    c.مجموعه_lookup_ماسک (kern_ماسک);
+    c.مجموعه_lookup_props (OT::LookupFlag::IgnoreMarks);
+    خودکار &skippy_iter = c.iter_درون_داد;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    منطقي horizontal = HB_DIRECTION_IS_HORIZONTAL (میانگیر->props.direction);
+    بیعلامت صحيح شمار = میانگیر->len;
+    hb_glyph_info_t *info = میانگیر->info;
+    hb_glyph_position_t *pos = میانگیر->pos;
+    لكل (بیعلامت صحيح idx = 0; idx < شمار;)
     {
-      if (!(info[idx].mask & kern_mask))
+      إذا (!(info[idx].ماسک & kern_ماسک))
       {
 	idx++;
-	continue;
+	استمر;
       }
 
       skippy_iter.reset_fast (idx);
-      unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      بیعلامت unsafe_مقصد;
+      إذا (unlikely (!skippy_iter.next (&unsafe_مقصد)))
       {
-	idx = unsafe_to;
-	continue;
+	idx = unsafe_مقصد;
+	استمر;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      بیعلامت صحيح i = idx;
+      بیعلامت صحيح j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      إذا (likely (!kern))
+	اذهب skip;
 
-      if (horizontal)
+      إذا (horizontal)
       {
-	if (scale)
+	إذا (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	إذا (cross_جریان)
 	{
-	  pos[j].y_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].y_جابه_جایی_2 = kern;
+	  میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	وإلا
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].x_advance = hb_saturate_add (pos[i].x_advance, kern1);
-	  pos[j].x_advance = hb_saturate_add (pos[j].x_advance, kern2);
-	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
+	  pos[i].x_advance = hb_saturate_جمع_کن (pos[i].x_advance, kern1);
+	  pos[j].x_advance = hb_saturate_جمع_کن (pos[j].x_advance, kern2);
+	  pos[j].x_جابه_جایی_2 = hb_saturate_جمع_کن (pos[j].x_جابه_جایی_2, kern2);
 	}
       }
-      else
+      وإلا
       {
-	if (scale)
+	إذا (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	إذا (cross_جریان)
 	{
-	  pos[j].x_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  pos[j].x_جابه_جایی_2 = kern;
+	  میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	وإلا
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
-	  pos[i].y_advance = hb_saturate_add (pos[i].y_advance, kern1);
-	  pos[j].y_advance = hb_saturate_add (pos[j].y_advance, kern2);
-	  pos[j].y_offset = hb_saturate_add (pos[j].y_offset, kern2);
+	  pos[i].y_advance = hb_saturate_جمع_کن (pos[i].y_advance, kern1);
+	  pos[j].y_advance = hb_saturate_جمع_کن (pos[j].y_advance, kern2);
+	  pos[j].y_جابه_جایی_2 = hb_saturate_جمع_کن (pos[j].y_جابه_جایی_2, kern2);
 	}
       }
 
-      buffer->unsafe_to_break (i, j + 1);
+      میانگیر->unsafe_مقصد_break (i, j + 1);
 
     skip:
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (فراغ) میانگیر->پیام (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  ثابت Driver &driver;
+  منطقي cross_جریان;
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_KERN_HH */
+#پایان_اگر /* HB_KERN_HH */

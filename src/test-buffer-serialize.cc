@@ -24,112 +24,112 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#ضمن "hb.h"
+#ضمن "hb-ot.h"
+#اگر_تعریف_شده HAVE_FREETYPE
+#ضمن "hb-ft.h"
+#پایان_اگر
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#اگر_تعریف_شده HB_NO_OPEN
+#تعریف_کن hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی ()
+#پایان_اگر
 
-int
-main (int argc, char **argv)
+صحيح
+اصلی (صحيح argc, حرف **argv)
 {
-  bool ret = true;
+  منطقي ret = درست;
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#اگر_تعریف_نشده HB_NO_میانگیر_SERIALIZE
 
-  hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  hb_میانگیر_serialize_format_t format = HB_میانگیر_SERIALIZE_FORMAT_متن;
+  إذا (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    إذا (!strcmp (argv[1], "--json"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
+      format = HB_میانگیر_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    وإلا إذا (!strcmp (argv[1], "--text"))
     {
-      format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
+      format = HB_میانگیر_SERIALIZE_FORMAT_متن;
       argc--;
       argv++;
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  إذا (argc < 2)
+    argv[1] = (حرف *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = اشاره_تهی;
 
-  unsigned int upem = hb_face_get_upem (face);
+  بیعلامت صحيح upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
-  hb_font_set_scale (font, upem, upem);
+  hb_font_مجموعه_scale (font, upem, upem);
 
-  hb_buffer_t *buf;
-  buf = hb_buffer_create ();
+  hb_میانگیر_t *buf;
+  buf = hb_میانگیر_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  حرف سطر[BUFSIZ], بیرون[BUFSIZ];
+  طالما (fgets (سطر, حجم(سطر), stdin))
   {
-    hb_buffer_clear_contents (buf);
+    hb_میانگیر_clear_contents (buf);
 
-    while (true)
+    طالما (درست)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
-	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
-					 p, end - p, &p,
+      ثابت حرف *p = سطر;
+      ثابت حرف *انتها = p + طول_رشته (p);
+      إذا (p < انتها && *(انتها - 1) == '\n')
+	  انتها--;
+      إذا (!hb_میانگیر_deserialize_glyphs (buf,
+					 p, انتها - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = خطأ;
+        اكسر;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      إذا (*p == '\n')
+        اكسر;
+      إذا (p == سطر)
       {
-	ret = false;
-	break;
+	ret = خطأ;
+	اكسر;
       }
 
-      unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      بیعلامت len = طول_رشته (p);
+      memmove (سطر, p, len);
+      إذا (!fgets (سطر + len, حجم(سطر) - len, stdin))
+        سطر[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    بیعلامت شمار = hb_میانگیر_get_درازی (buf);
+    لكل (بیعلامت جابه_جایی = 0; جابه_جایی < شمار;)
     {
-      unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      بیعلامت len;
+      جابه_جایی += hb_میانگیر_serialize_glyphs (buf, جابه_جایی, شمار,
+					    بیرون, حجم (بیرون), &len,
 					    font,
 					    format,
-					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
-      fwrite (out, 1, len, stdout);
+					    HB_میانگیر_SERIALIZE_FLAG_GLYPH_FLAGS);
+      fwrite (بیرون, 1, len, stdout);
     }
     fputs ("\n", stdout);
   }
 
-  hb_buffer_destroy (buf);
+  hb_میانگیر_destroy (buf);
 
   hb_font_destroy (font);
 
-#endif
+#پایان_اگر
 
-  return !ret;
+  أرجع !ret;
 }

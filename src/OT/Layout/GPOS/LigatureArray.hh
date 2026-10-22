@@ -1,113 +1,113 @@
-#ifndef OT_LAYOUT_GPOS_LIGATUREARRAY_HH
-#define OT_LAYOUT_GPOS_LIGATUREARRAY_HH
+#اگر_تعریف_نشده OT_LAYOUT_GPOS_LIGATUREARRAY_HH
+#تعریف_کن OT_LAYOUT_GPOS_LIGATUREARRAY_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
-                                        const Coverage &coverage,
-                                        const void *base,
-                                        glyph_data_t offsets,
-                                        unsigned count,
-                                        unsigned class_count,
-                                        const hb_map_t &klass_mapping)
+HB_داخلی مضمن
+فراغ collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
+                                        ثابت Coverage &coverage,
+                                        ثابت فراغ *پایه,
+                                        glyph_داده_t offsets,
+                                        بیعلامت شمار,
+                                        بیعلامت class_شمار,
+                                        ثابت hb_map_t &klass_mapping)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  لكل (ثابت خودکار _ : hb_zip (coverage, hb_range (شمار)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    إذا (!c->glyph_مجموعه->has (_.اولی)) استمر;
     hb_barrier ();
-    unsigned offset = offsets[_.second];
-    if (!offset) continue;
+    بیعلامت جابه_جایی = offsets[_.second];
+    إذا (!جابه_جایی) استمر;
 
-    const void *matrix = &StructAtOffset<const HBUINT16> (base, offset);
+    ثابت فراغ *ماتریس = &Struct_At_جابه_جایی<ثابت HBUINT16> (پایه, جابه_جایی);
     /* LigatureAttach always has a 16-bit component count; its anchor
      * offsets have the same width as the LigatureArray offsets. */
-    unsigned rows = *static_cast<const HBUINT16 *> (matrix);
-    glyph_data_t anchors = offsets;
-    anchors.data = (const char *) matrix + HBUINT16::static_size;
+    بیعلامت ردیفها = *static_cast<ثابت HBUINT16 *> (ماتریس);
+    glyph_داده_t anchors = offsets;
+    anchors.داده = (ثابت حرف *) ماتریس + HBUINT16::static_اندازه;
 
-    hb_sorted_vector_t<unsigned> indexes;
-    collect_ligature_anchor_indexes (rows, class_count, klass_mapping, indexes);
-    collect_anchor_variation_indices (c, matrix, anchors, indexes.iter ());
+    hb_sorted_وکتور_t<بیعلامت> indexes;
+    collect_ligature_anchor_indexes (ردیفها, class_شمار, klass_mapping, indexes);
+    collect_anchor_variation_indices (c, ماتریس, anchors, indexes.iter ());
   }
 }
 
 
 /* Array of LigatureAttach tables ordered by LigatureCoverage Index */
-template <typename Types>
-struct LigatureArray :
-  Types::template ArrayOf<typename Types::template OffsetTo<AnchorMatrix<Types, HBUINT16>>>
+قالب <نام_نوع Types>
+بنية LigatureArray :
+  Types::قالب Array_از<نام_نوع Types::قالب جابه_جایی_مقصد<Anchor_ماتریس<Types, HBUINT16>>>
 {
-  typedef AnchorMatrix<Types, HBUINT16> LigatureAttach;
-  typedef typename Types::template OffsetTo<LigatureAttach> LigatureAttachOffset;
-  typedef typename Types::template ArrayOf<LigatureAttachOffset> Super;
+  تعريفنوع Anchor_ماتریس<Types, HBUINT16> LigatureAttach;
+  تعريفنوع نام_نوع Types::قالب جابه_جایی_مقصد<LigatureAttach> Ligature_Attach_جابه_جایی;
+  تعريفنوع نام_نوع Types::قالب Array_از<Ligature_Attach_جابه_جایی> Super;
 
-  const LigatureAttach& operator [] (int i_) const
+  ثابت LigatureAttach& عملگر [] (صحيح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (LigatureAttach);
+    بیعلامت صحيح i = (بیعلامت صحيح) i_;
+    إذا (unlikely (i >= هذا->len)) أرجع Null (LigatureAttach);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    أرجع هذا+هذا->arrayZ[i];
   }
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  قالب <نام_نوع ...Ts>
+  منطقي sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (Super::sanitize (c, this, std::forward<Ts> (ds)...));
+    TRACE_SANITIZE (هذا);
+    return_trace (Super::sanitize (c, هذا, std::forward<Ts> (ds)...));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const Coverage &coverage,
-                                  unsigned class_count,
-                                  const hb_map_t &klass_mapping) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت Coverage &coverage,
+                                  بیعلامت class_شمار,
+                                  ثابت hb_map_t &klass_mapping) ثابت
   {
-    collect_ligature_variation_indices (c, coverage, this, this->arrayZ,
-                                        this->len, class_count, klass_mapping);
+    collect_ligature_variation_indices (c, coverage, هذا, هذا->arrayZ,
+                                        هذا->len, class_شمار, klass_mapping);
   }
 
-  template <typename Iterator,
+  قالب <نام_نوع Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
+  منطقي subset (hb_subset_context_t *c,
                Iterator             coverage,
-               unsigned             class_count,
-               const hb_map_t      *klass_mapping,
-               hb_sorted_vector_t<hb_codepoint_t> &new_coverage /* OUT */) const
+               بیعلامت             class_شمار,
+               ثابت hb_map_t      *klass_mapping,
+               hb_sorted_وکتور_t<hb_codepoint_t> &new_coverage /*بیرون*/) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
+    TRACE_SUBSET (هذا);
+    ثابت hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    خودکار *بیرون = c->serializer->شروع_embed (هذا);
+    إذا (unlikely (!c->serializer->extend_min (بیرون)))  return_trace (خطأ);
 
-    bool ret = false;
-    for (const auto _ : + hb_zip (coverage, *this)
-                        | hb_filter (glyph_map, hb_first))
+    منطقي ret = خطأ;
+    لكل (ثابت خودکار _ : + hb_zip (coverage, *هذا)
+                        | hb_filter (glyph_map, hb_اولی))
     {
-      const LigatureAttach& src = (this + _.second);
-      bool non_empty = + hb_range (src.rows * class_count)
-                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
-                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_count, index % class_count, class_count); })
+      ثابت LigatureAttach& src = (هذا + _.second);
+      منطقي non_خالی = + hb_range (src.ردیفها * class_شمار)
+                       | hb_filter ([=] (بیعلامت شاخص_2) { أرجع klass_mapping->has (شاخص_2 % class_شمار); })
+                       | hb_map ([&] (ثابت بیعلامت شاخص_2) { أرجع !src.جابه_جایی_is_null (شاخص_2 / class_شمار, شاخص_2 % class_شمار, class_شمار); })
                        | hb_any;
 
-      if (!non_empty) continue;
+      إذا (!non_خالی) استمر;
 
-      auto *matrix = out->serialize_append (c->serializer);
-      if (unlikely (!matrix)) return_trace (false);
+      خودکار *ماتریس = بیرون->serialize_append (c->serializer);
+      إذا (unlikely (!ماتریس)) return_trace (خطأ);
 
-      auto indexes =
-          + hb_range (src.rows * class_count)
-          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
+      خودکار indexes =
+          + hb_range (src.ردیفها * class_شمار)
+          | hb_filter ([=] (بیعلامت شاخص_2) { أرجع klass_mapping->has (شاخص_2 % class_شمار); })
           ;
-      ret |= matrix->serialize_subset (c,
+      ret |= ماتریس->serialize_subset (c,
 				       _.second,
-				       this,
-				       src.rows,
+				       هذا,
+				       src.ردیفها,
 				       indexes);
 
-      hb_codepoint_t new_gid = glyph_map.get (_.first);
+      hb_codepoint_t new_gid = glyph_map.get (_.اولی);
       new_coverage.push (new_gid);
     }
     return_trace (ret);
@@ -119,4 +119,4 @@ struct LigatureArray :
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_LIGATUREARRAY_HH */
+#پایان_اگر /* OT_LAYOUT_GPOS_LIGATUREARRAY_HH */

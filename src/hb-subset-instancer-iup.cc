@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-subset-instancer-iup.hh"
+#ضمن "hb-subset-instancer-iup.hh"
 
-#include "hb-bit-page.hh"
+#ضمن "hb-bit-page.hh"
 
-using hb_iup_set_t = hb_bit_page_t;
+استفاده hb_iup_مجموعه_t = hb_بیت_صفحه_t;
 
 /* This file is a straight port of the following:
  *
@@ -36,52 +36,52 @@ using hb_iup_set_t = hb_bit_page_t;
  * referenced point indices.
  */
 
-constexpr static unsigned MAX_LOOKBACK = 8;
+constexpr ساكن بیعلامت MAX_LOOKBACK = 8;
 
-static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_t> contour_points,
-                                           const hb_array_t<const int> x_deltas,
-                                           const hb_array_t<const int> y_deltas,
-                                           hb_iup_set_t& forced_set, /* OUT */
-                                           double tolerance = 0.0)
+ساكن فراغ iup_contour_bound_forced_مجموعه (ثابت hb_array_t<ثابت contour_نقطه_t> contour_points,
+                                           ثابت hb_array_t<ثابت صحيح> x_deltas,
+                                           ثابت hb_array_t<ثابت صحيح> y_deltas,
+                                           hb_iup_مجموعه_t& forced_مجموعه, /*بیرون*/
+                                           مزدوج tolerance = 0.0)
 {
-  unsigned len = contour_points.length;
-  unsigned next_i = 0;
-  for (int i = len - 1; i >= 0; i--)
+  بیعلامت len = contour_points.درازی;
+  بیعلامت بعدی_i = 0;
+  لكل (صحيح i = len - 1; i >= 0; i--)
   {
-    unsigned last_i = (len + i - 1) % len;
-    for (unsigned j = 0; j < 2; j++)
+    بیعلامت آخرین_i = (len + i - 1) % len;
+    لكل (بیعلامت j = 0; j < 2; j++)
     {
-      double cj, lcj, ncj;
-      double dj, ldj, ndj;
-      if (j == 0)
+      مزدوج cj, lcj, ncj;
+      مزدوج dj, ldj, ndj;
+      إذا (j == 0)
       {
-        cj = static_cast<double> (contour_points.arrayZ[i].x);
+        cj = static_cast<مزدوج> (contour_points.arrayZ[i].x);
         dj = x_deltas.arrayZ[i];
-        lcj = static_cast<double> (contour_points.arrayZ[last_i].x);
-        ldj = x_deltas.arrayZ[last_i];
-        ncj = static_cast<double> (contour_points.arrayZ[next_i].x);
-        ndj = x_deltas.arrayZ[next_i];
+        lcj = static_cast<مزدوج> (contour_points.arrayZ[آخرین_i].x);
+        ldj = x_deltas.arrayZ[آخرین_i];
+        ncj = static_cast<مزدوج> (contour_points.arrayZ[بعدی_i].x);
+        ndj = x_deltas.arrayZ[بعدی_i];
       }
-      else
+      وإلا
       {
-        cj = static_cast<double> (contour_points.arrayZ[i].y);
+        cj = static_cast<مزدوج> (contour_points.arrayZ[i].y);
         dj = y_deltas.arrayZ[i];
-        lcj = static_cast<double> (contour_points.arrayZ[last_i].y);
-        ldj = y_deltas.arrayZ[last_i];
-        ncj = static_cast<double> (contour_points.arrayZ[next_i].y);
-        ndj = y_deltas.arrayZ[next_i];
+        lcj = static_cast<مزدوج> (contour_points.arrayZ[آخرین_i].y);
+        ldj = y_deltas.arrayZ[آخرین_i];
+        ncj = static_cast<مزدوج> (contour_points.arrayZ[بعدی_i].y);
+        ndj = y_deltas.arrayZ[بعدی_i];
       }
 
-      double c1, c2;
-      double d1, d2;
-      if (lcj <= ncj)
+      مزدوج c1, c2;
+      مزدوج d1, d2;
+      إذا (lcj <= ncj)
       {
         c1 = lcj;
         c2 = ncj;
         d1 = ldj;
         d2 = ndj;
       }
-      else
+      وإلا
       {
         c1 = ncj;
         c2 = lcj;
@@ -89,488 +89,488 @@ static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_
         d2 = ldj;
       }
 
-      bool force = false;
-      if (c1 == c2)
+      منطقي force = خطأ;
+      إذا (c1 == c2)
       {
-        if (fabs (d1 - d2) > tolerance && fabs (dj) > tolerance)
-          force = true;
+        إذا (fabs (d1 - d2) > tolerance && fabs (dj) > tolerance)
+          force = درست;
       }
-      else if (c1 <= cj && cj <= c2)
+      وإلا إذا (c1 <= cj && cj <= c2)
       {
-        if (!(hb_min (d1, d2) - tolerance <= dj &&
+        إذا (!(hb_min (d1, d2) - tolerance <= dj &&
               dj <= hb_max (d1, d2) + tolerance))
-          force = true;
+          force = درست;
       }
-      else
+      وإلا
       {
-        if (d1 != d2)
+        إذا (d1 != d2)
         {
-          if (cj < c1)
+          إذا (cj < c1)
           {
-            if (fabs (dj) > tolerance &&
+            إذا (fabs (dj) > tolerance &&
                 fabs (dj - d1) > tolerance &&
                 ((dj - tolerance < d1) != (d1 < d2)))
-                force = true;
+                force = درست;
           }
-          else
+          وإلا
           {
-            if (fabs (dj) > tolerance &&
+            إذا (fabs (dj) > tolerance &&
                 fabs (dj - d2) > tolerance &&
                 ((d2 < dj + tolerance) != (d1 < d2)))
-              force = true;
+              force = درست;
           }
         }
       }
 
-      if (force)
+      إذا (force)
       {
-        forced_set.add (i);
-        break;
+        forced_مجموعه.جمع_کن (i);
+        اكسر;
       }
     }
-    next_i = i;
+    بعدی_i = i;
   }
 }
 
-template <typename T,
+قالب <نام_نوع T,
           hb_enable_if (hb_is_trivially_copyable (T))>
-static bool rotate_array (const hb_array_t<const T>& org_array,
-                          int k,
-                          hb_vector_t<T>& out)
+ساكن منطقي rotate_array (ثابت hb_array_t<ثابت T>& org_array,
+                          صحيح k,
+                          hb_وکتور_t<T>& بیرون)
 {
-  unsigned n = org_array.length;
-  if (!n) return true;
-  if (unlikely (!out.resize_dirty  (n)))
-    return false;
+  بیعلامت n = org_array.درازی;
+  إذا (!n) أرجع درست;
+  إذا (unlikely (!بیرون.resize_dirty  (n)))
+    أرجع خطأ;
 
-  unsigned item_size = hb_static_size (T);
-  if (k < 0)
+  بیعلامت قلم_اندازه = hb_static_اندازه (T);
+  إذا (k < 0)
     k = n - (-k) % n;
-  else
+  وإلا
     k %= n;
 
-  hb_memcpy ((void *) out.arrayZ, (const void *) (org_array.arrayZ + n - k), k * item_size);
-  hb_memcpy ((void *) (out.arrayZ + k), (const void *) org_array.arrayZ, (n - k) * item_size);
-  return true;
+  hb_memcpy ((فراغ *) بیرون.arrayZ, (ثابت فراغ *) (org_array.arrayZ + n - k), k * قلم_اندازه);
+  hb_memcpy ((فراغ *) (بیرون.arrayZ + k), (ثابت فراغ *) org_array.arrayZ, (n - k) * قلم_اندازه);
+  أرجع درست;
 }
 
-static bool rotate_set (const hb_iup_set_t& org_set,
-                        int k,
-                        unsigned n,
-                        hb_iup_set_t& out)
+ساكن منطقي rotate_مجموعه (ثابت hb_iup_مجموعه_t& org_مجموعه,
+                        صحيح k,
+                        بیعلامت n,
+                        hb_iup_مجموعه_t& بیرون)
 {
-  if (!n) return false;
+  إذا (!n) أرجع خطأ;
   k %= n;
-  if (k < 0)
+  إذا (k < 0)
     k = n + k;
 
-  if (k == 0)
+  إذا (k == 0)
   {
-    out = org_set;
+    بیرون = org_مجموعه;
   }
-  else
+  وإلا
   {
-    for (unsigned v : org_set)
-      out.add ((v + k) % n);
+    لكل (بیعلامت v : org_مجموعه)
+      بیرون.جمع_کن ((v + k) % n);
   }
-  return true;
+  أرجع درست;
 }
 
 /* Given two reference coordinates (start and end of contour_points array),
  * output interpolated deltas for points in between */
-static bool _iup_segment (const hb_array_t<const contour_point_t> contour_points,
-                          const hb_array_t<const int> x_deltas,
-                          const hb_array_t<const int> y_deltas,
-                          const contour_point_t& p1, const contour_point_t& p2,
-                          int p1_dx, int p2_dx,
-                          int p1_dy, int p2_dy,
-			  double tolerance_sq,
-                          hb_vector_t<double>& interp_x_deltas, /* OUT */
-                          hb_vector_t<double>& interp_y_deltas /* OUT */)
+ساكن منطقي _iup_segment (ثابت hb_array_t<ثابت contour_نقطه_t> contour_points,
+                          ثابت hb_array_t<ثابت صحيح> x_deltas,
+                          ثابت hb_array_t<ثابت صحيح> y_deltas,
+                          ثابت contour_نقطه_t& p1, ثابت contour_نقطه_t& p2,
+                          صحيح p1_dx, صحيح p2_dx,
+                          صحيح p1_dy, صحيح p2_dy,
+			  مزدوج tolerance_sq,
+                          hb_وکتور_t<مزدوج>& interp_x_deltas, /*بیرون*/
+                          hb_وکتور_t<مزدوج>& interp_y_deltas /*بیرون*/)
 {
-  unsigned n = contour_points.length;
-  if (unlikely (!interp_x_deltas.resize_dirty  (n) ||
+  بیعلامت n = contour_points.درازی;
+  إذا (unlikely (!interp_x_deltas.resize_dirty  (n) ||
                 !interp_y_deltas.resize_dirty  (n)))
-    return false;
+    أرجع خطأ;
 
-  for (unsigned j = 0; j < 2; j++)
+  لكل (بیعلامت j = 0; j < 2; j++)
   {
-    float contour_point_t::* xp;
-    double x1, x2, d1, d2;
-    const int *in;
-    double *out;
-    if (j == 0)
+    عائم contour_نقطه_t::* xp;
+    مزدوج x1, x2, d1, d2;
+    ثابت صحيح *درون;
+    مزدوج *بیرون;
+    إذا (j == 0)
     {
-      xp = &contour_point_t::x;
-      x1 = static_cast<double> (p1.x);
-      x2 = static_cast<double> (p2.x);
+      xp = &contour_نقطه_t::x;
+      x1 = static_cast<مزدوج> (p1.x);
+      x2 = static_cast<مزدوج> (p2.x);
       d1 = p1_dx;
       d2 = p2_dx;
-      in = x_deltas.arrayZ;
-      out = interp_x_deltas.arrayZ;
+      درون = x_deltas.arrayZ;
+      بیرون = interp_x_deltas.arrayZ;
     }
-    else
+    وإلا
     {
-      xp = &contour_point_t::y;
-      x1 = static_cast<double> (p1.y);
-      x2 = static_cast<double> (p2.y);
+      xp = &contour_نقطه_t::y;
+      x1 = static_cast<مزدوج> (p1.y);
+      x2 = static_cast<مزدوج> (p2.y);
       d1 = p1_dy;
       d2 = p2_dy;
-      in = y_deltas.arrayZ;
-      out = interp_y_deltas.arrayZ;
+      درون = y_deltas.arrayZ;
+      بیرون = interp_y_deltas.arrayZ;
     }
 
-    if (x1 == x2)
+    إذا (x1 == x2)
     {
-      if (d1 == d2)
+      إذا (d1 == d2)
       {
-        for (unsigned i = 0; i < n; i++)
-          out[i] = d1;
+        لكل (بیعلامت i = 0; i < n; i++)
+          بیرون[i] = d1;
       }
-      else
+      وإلا
       {
-        for (unsigned i = 0; i < n; i++)
-          out[i] = 0.0;
+        لكل (بیعلامت i = 0; i < n; i++)
+          بیرون[i] = 0.0;
       }
-      continue;
+      استمر;
     }
 
-    if (x1 > x2)
+    إذا (x1 > x2)
     {
-      hb_swap (x1, x2);
-      hb_swap (d1, d2);
+      hb_جابجا (x1, x2);
+      hb_جابجا (d1, d2);
     }
 
-    double scale = (d2 - d1) / (x2 - x1);
-    for (unsigned i = 0; i < n; i++)
+    مزدوج scale = (d2 - d1) / (x2 - x1);
+    لكل (بیعلامت i = 0; i < n; i++)
     {
-      double x = (double) (contour_points.arrayZ[i].*xp);
-      double d;
-      if (x <= x1)
+      مزدوج x = (مزدوج) (contour_points.arrayZ[i].*xp);
+      مزدوج d;
+      إذا (x <= x1)
         d = d1;
-      else if (x >= x2)
+      وإلا إذا (x >= x2)
         d = d2;
-      else
+      وإلا
         d = d1 + (x - x1) * scale;
 
-      out[i] = d;
-      double err = d - in[i];
-      if (err * err > tolerance_sq)
-	return false;
+      بیرون[i] = d;
+      مزدوج err = d - درون[i];
+      إذا (err * err > tolerance_sq)
+	أرجع خطأ;
     }
   }
-  return true;
+  أرجع درست;
 }
 
-static bool _can_iup_in_between (const hb_array_t<const contour_point_t> contour_points,
-                                 const hb_array_t<const int> x_deltas,
-                                 const hb_array_t<const int> y_deltas,
-                                 const contour_point_t& p1, const contour_point_t& p2,
-                                 int p1_dx, int p2_dx,
-                                 int p1_dy, int p2_dy,
-                                 double tolerance_sq,
-				 hb_vector_t<double> &interp_x_deltas, /* scratch */
-				 hb_vector_t<double> &interp_y_deltas /* scratch */)
+ساكن منطقي can_iup_درون_between (ثابت hb_array_t<ثابت contour_نقطه_t> contour_points,
+                                 ثابت hb_array_t<ثابت صحيح> x_deltas,
+                                 ثابت hb_array_t<ثابت صحيح> y_deltas,
+                                 ثابت contour_نقطه_t& p1, ثابت contour_نقطه_t& p2,
+                                 صحيح p1_dx, صحيح p2_dx,
+                                 صحيح p1_dy, صحيح p2_dy,
+                                 مزدوج tolerance_sq,
+				 hb_وکتور_t<مزدوج> &interp_x_deltas, /* scratch */
+				 hb_وکتور_t<مزدوج> &interp_y_deltas /* scratch */)
 {
-  if (!_iup_segment (contour_points, x_deltas, y_deltas,
+  إذا (!_iup_segment (contour_points, x_deltas, y_deltas,
                      p1, p2, p1_dx, p2_dx, p1_dy, p2_dy,
 		     tolerance_sq,
                      interp_x_deltas, interp_y_deltas))
-    return false;
+    أرجع خطأ;
 
-  unsigned num = contour_points.length;
+  بیعلامت رقم = contour_points.درازی;
 
-  for (unsigned i = 0; i < num; i++)
+  لكل (بیعلامت i = 0; i < رقم; i++)
   {
-    double dx = static_cast<double> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
-    double dy = static_cast<double> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
+    مزدوج dx = static_cast<مزدوج> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
+    مزدوج dy = static_cast<مزدوج> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
 
-    if (dx * dx + dy * dy > tolerance_sq)
-      return false;
+    إذا (dx * dx + dy * dy > tolerance_sq)
+      أرجع خطأ;
   }
-  return true;
+  أرجع درست;
 }
 
-static bool _iup_contour_optimize_dp (const contour_point_vector_t& contour_points,
-                                      const hb_vector_t<int>& x_deltas,
-                                      const hb_vector_t<int>& y_deltas,
-                                      const hb_iup_set_t& forced_set,
-                                      double tolerance_sq,
-                                      unsigned lookback,
-                                      hb_vector_t<unsigned>& costs, /* OUT */
-                                      hb_vector_t<int>& chain, /* OUT */
-				      hb_vector_t<double> &interp_x_deltas_scratch,
-				      hb_vector_t<double> &interp_y_deltas_scratch)
+ساكن منطقي _iup_contour_optimize_dp (ثابت contour_نقطه_وکتور_t& contour_points,
+                                      ثابت hb_وکتور_t<صحيح>& x_deltas,
+                                      ثابت hb_وکتور_t<صحيح>& y_deltas,
+                                      ثابت hb_iup_مجموعه_t& forced_مجموعه,
+                                      مزدوج tolerance_sq,
+                                      بیعلامت lookback,
+                                      hb_وکتور_t<بیعلامت>& costs, /*بیرون*/
+                                      hb_وکتور_t<صحيح>& chain, /*بیرون*/
+				      hb_وکتور_t<مزدوج> &interp_x_deltas_scratch,
+				      hb_وکتور_t<مزدوج> &interp_y_deltas_scratch)
 {
-  unsigned n = contour_points.length;
-  if (unlikely (!costs.resize_dirty  (n) ||
+  بیعلامت n = contour_points.درازی;
+  إذا (unlikely (!costs.resize_dirty  (n) ||
                 !chain.resize_dirty  (n)))
-    return false;
+    أرجع خطأ;
 
   lookback = hb_min (lookback, MAX_LOOKBACK);
 
-  for (unsigned i = 0; i < n; i++)
+  لكل (بیعلامت i = 0; i < n; i++)
   {
-    unsigned best_cost = (i == 0 ? 1 : costs.arrayZ[i-1] + 1);
+    بیعلامت بهترین_هزینه = (i == 0 ? 1 : costs.arrayZ[i-1] + 1);
 
-    costs.arrayZ[i] = best_cost;
+    costs.arrayZ[i] = بهترین_هزینه;
     chain.arrayZ[i] = (i == 0 ? -1 : i - 1);
 
-    if (i > 0 && forced_set.has (i - 1))
-      continue;
+    إذا (i > 0 && forced_مجموعه.has (i - 1))
+      استمر;
 
-    int lookback_index = hb_max ((int) i - (int) lookback + 1, -1);
-    for (int j = i - 2; j >= lookback_index; j--)
+    صحيح lookback_شاخص = hb_max ((صحيح) i - (صحيح) lookback + 1, -1);
+    لكل (صحيح j = i - 2; j >= lookback_شاخص; j--)
     {
-      unsigned cost = j == -1 ? 1 : costs.arrayZ[j] + 1;
+      بیعلامت هزینه = j == -1 ? 1 : costs.arrayZ[j] + 1;
       /* num points between i and j */
-      unsigned num_points = i - j - 1;
-      unsigned p1 = (j == -1 ? n - 1 : j);
-      if (cost < best_cost &&
-          _can_iup_in_between (contour_points.as_array ().sub_array (j + 1, num_points),
-                               x_deltas.as_array ().sub_array (j + 1, num_points),
-                               y_deltas.as_array ().sub_array (j + 1, num_points),
+      بیعلامت رقم_points = i - j - 1;
+      بیعلامت p1 = (j == -1 ? n - 1 : j);
+      إذا (هزینه < بهترین_هزینه &&
+          can_iup_درون_between (contour_points.as_array ().sub_array (j + 1, رقم_points),
+                               x_deltas.as_array ().sub_array (j + 1, رقم_points),
+                               y_deltas.as_array ().sub_array (j + 1, رقم_points),
                                contour_points.arrayZ[p1], contour_points.arrayZ[i],
                                x_deltas.arrayZ[p1], x_deltas.arrayZ[i],
                                y_deltas.arrayZ[p1], y_deltas.arrayZ[i],
                                tolerance_sq,
 			       interp_x_deltas_scratch, interp_y_deltas_scratch))
       {
-        best_cost = cost;
-        costs.arrayZ[i] = best_cost;
+        بهترین_هزینه = هزینه;
+        costs.arrayZ[i] = بهترین_هزینه;
         chain.arrayZ[i] = j;
       }
 
-      if (j > 0 && forced_set.has (j))
-        break;
+      إذا (j > 0 && forced_مجموعه.has (j))
+        اكسر;
     }
   }
-  return true;
+  أرجع درست;
 }
 
-static bool _iup_contour_optimize (const hb_array_t<const contour_point_t> contour_points,
-                                   const hb_array_t<const int> x_deltas,
-                                   const hb_array_t<const int> y_deltas,
-                                   hb_array_t<bool> opt_indices, /* OUT */
-                                   double tolerance,
+ساكن منطقي _iup_contour_optimize (ثابت hb_array_t<ثابت contour_نقطه_t> contour_points,
+                                   ثابت hb_array_t<ثابت صحيح> x_deltas,
+                                   ثابت hb_array_t<ثابت صحيح> y_deltas,
+                                   hb_array_t<منطقي> opt_indices, /*بیرون*/
+                                   مزدوج tolerance,
 				   iup_scratch_t &scratch)
 {
-  unsigned n = contour_points.length;
-  if (opt_indices.length != n ||
-      x_deltas.length != n ||
-      y_deltas.length != n)
-    return false;
+  بیعلامت n = contour_points.درازی;
+  إذا (opt_indices.درازی != n ||
+      x_deltas.درازی != n ||
+      y_deltas.درازی != n)
+    أرجع خطأ;
 
-  if (unlikely (n > hb_iup_set_t::PAGE_BITS))
+  إذا (unlikely (n > hb_iup_مجموعه_t::صفحه_بیتها))
   {
     /* The forced and solution sets cannot hold this contour. Preserve
      * its explicit deltas instead of leaving every reference false. */
-    for (unsigned i = 0; i < n; i++)
-      opt_indices.arrayZ[i] = true;
-    return true;
+    لكل (بیعلامت i = 0; i < n; i++)
+      opt_indices.arrayZ[i] = درست;
+    أرجع درست;
   }
 
-  bool all_within_tolerance = true;
-  double tolerance_sq = tolerance * tolerance;
-  for (unsigned i = 0; i < n; i++)
+  منطقي all_within_tolerance = درست;
+  مزدوج tolerance_sq = tolerance * tolerance;
+  لكل (بیعلامت i = 0; i < n; i++)
   {
-    int dx = x_deltas.arrayZ[i];
-    int dy = y_deltas.arrayZ[i];
-    if ((double) dx * dx + (double) dy * dy > tolerance_sq)
+    صحيح dx = x_deltas.arrayZ[i];
+    صحيح dy = y_deltas.arrayZ[i];
+    إذا ((مزدوج) dx * dx + (مزدوج) dy * dy > tolerance_sq)
     {
-      all_within_tolerance = false;
-      break;
+      all_within_tolerance = خطأ;
+      اكسر;
     }
   }
 
   /* If all are within tolerance distance, do nothing, opt_indices is
    * initilized to false */
-  if (all_within_tolerance)
-    return true;
+  إذا (all_within_tolerance)
+    أرجع درست;
 
   /* If there's exactly one point, return it */
-  if (n == 1)
+  إذا (n == 1)
   {
-    opt_indices.arrayZ[0] = true;
-    return true;
+    opt_indices.arrayZ[0] = درست;
+    أرجع درست;
   }
 
   /* If all deltas are exactly the same, return just one (the first one) */
-  bool all_deltas_are_equal = true;
-  for (unsigned i = 1; i < n; i++)
-    if (x_deltas.arrayZ[i] != x_deltas.arrayZ[0] ||
+  منطقي all_deltas_are_equal = درست;
+  لكل (بیعلامت i = 1; i < n; i++)
+    إذا (x_deltas.arrayZ[i] != x_deltas.arrayZ[0] ||
         y_deltas.arrayZ[i] != y_deltas.arrayZ[0])
     {
-      all_deltas_are_equal = false;
-      break;
+      all_deltas_are_equal = خطأ;
+      اكسر;
     }
 
-  if (all_deltas_are_equal)
+  إذا (all_deltas_are_equal)
   {
-    opt_indices.arrayZ[0] = true;
-    return true;
+    opt_indices.arrayZ[0] = درست;
+    أرجع درست;
   }
 
   /* else, solve the general problem using Dynamic Programming */
-  hb_iup_set_t forced_set;
-  _iup_contour_bound_forced_set (contour_points, x_deltas, y_deltas, forced_set, tolerance);
+  hb_iup_مجموعه_t forced_مجموعه;
+  iup_contour_bound_forced_مجموعه (contour_points, x_deltas, y_deltas, forced_مجموعه, tolerance);
 
-  hb_vector_t<unsigned> &costs = scratch.costs.reset ();
-  hb_vector_t<int> &chain = scratch.chain.reset ();
+  hb_وکتور_t<بیعلامت> &costs = scratch.costs.reset ();
+  hb_وکتور_t<صحيح> &chain = scratch.chain.reset ();
 
-  if (!forced_set.is_empty ())
+  إذا (!forced_مجموعه.is_empty ())
   {
-    int k = n - 1 - forced_set.get_max ();
-    if (k < 0)
-      return false;
+    صحيح k = n - 1 - forced_مجموعه.get_max ();
+    إذا (k < 0)
+      أرجع خطأ;
 
-    hb_vector_t<int> &rot_x_deltas = scratch.rot_x_deltas.reset ();
-    hb_vector_t<int> &rot_y_deltas = scratch.rot_y_deltas.reset ();
-    contour_point_vector_t &rot_points = scratch.rot_points;
+    hb_وکتور_t<صحيح> &rot_x_deltas = scratch.rot_x_deltas.reset ();
+    hb_وکتور_t<صحيح> &rot_y_deltas = scratch.rot_y_deltas.reset ();
+    contour_نقطه_وکتور_t &rot_points = scratch.rot_points;
     rot_points.reset ();
-    hb_iup_set_t rot_forced_set;
-    if (!rotate_array (contour_points, k, rot_points) ||
+    hb_iup_مجموعه_t rot_forced_مجموعه;
+    إذا (!rotate_array (contour_points, k, rot_points) ||
         !rotate_array (x_deltas, k, rot_x_deltas) ||
         !rotate_array (y_deltas, k, rot_y_deltas) ||
-        !rotate_set (forced_set, k, n, rot_forced_set))
-      return false;
+        !rotate_مجموعه (forced_مجموعه, k, n, rot_forced_مجموعه))
+      أرجع خطأ;
 
-    if (!_iup_contour_optimize_dp (rot_points, rot_x_deltas, rot_y_deltas,
-                                   rot_forced_set, tolerance_sq, n,
+    إذا (!_iup_contour_optimize_dp (rot_points, rot_x_deltas, rot_y_deltas,
+                                   rot_forced_مجموعه, tolerance_sq, n,
                                    costs, chain,
 				   scratch.interp_x_deltas, scratch.interp_y_deltas))
-      return false;
+      أرجع خطأ;
 
-    hb_iup_set_t solution;
-    int index = n - 1;
-    while (index != -1)
+    hb_iup_مجموعه_t solution;
+    صحيح شاخص_2 = n - 1;
+    طالما (شاخص_2 != -1)
     {
-      solution.add (index);
-      index = chain.arrayZ[index];
+      solution.جمع_کن (شاخص_2);
+      شاخص_2 = chain.arrayZ[شاخص_2];
     }
 
-    if (solution.is_empty () ||
-        forced_set.get_population () > solution.get_population ())
-      return false;
+    إذا (solution.is_empty () ||
+        forced_مجموعه.get_population () > solution.get_population ())
+      أرجع خطأ;
 
-    for (unsigned i : solution)
-      opt_indices.arrayZ[i] = true;
+    لكل (بیعلامت i : solution)
+      opt_indices.arrayZ[i] = درست;
 
-    hb_vector_t<bool> &rot_indices = scratch.rot_indices.reset ();
-    const hb_array_t<const bool> opt_indices_array (opt_indices.arrayZ, opt_indices.length);
-    if (unlikely (!rotate_array (opt_indices_array, -k, rot_indices)))
-      return false;
+    hb_وکتور_t<منطقي> &rot_indices = scratch.rot_indices.reset ();
+    ثابت hb_array_t<ثابت منطقي> opt_indices_array (opt_indices.arrayZ, opt_indices.درازی);
+    إذا (unlikely (!rotate_array (opt_indices_array, -k, rot_indices)))
+      أرجع خطأ;
 
-    for (unsigned i = 0; i < n; i++)
+    لكل (بیعلامت i = 0; i < n; i++)
       opt_indices.arrayZ[i] = rot_indices.arrayZ[i];
   }
-  else
+  وإلا
   {
-    hb_vector_t<int> repeat_x_deltas, repeat_y_deltas;
-    contour_point_vector_t repeat_points;
+    hb_وکتور_t<صحيح> repeat_x_deltas, repeat_y_deltas;
+    contour_نقطه_وکتور_t repeat_points;
 
-    if (unlikely (!repeat_x_deltas.resize_dirty  (n * 2) ||
+    إذا (unlikely (!repeat_x_deltas.resize_dirty  (n * 2) ||
                   !repeat_y_deltas.resize_dirty  (n * 2) ||
                   !repeat_points.resize_dirty  (n * 2)))
-      return false;
+      أرجع خطأ;
 
-    unsigned contour_point_size = hb_static_size (contour_point_t);
-    for (unsigned i = 0; i < n; i++)
+    بیعلامت contour_نقطه_اندازه = hb_static_اندازه (contour_نقطه_t);
+    لكل (بیعلامت i = 0; i < n; i++)
     {
-      hb_memcpy ((void *) repeat_x_deltas.arrayZ, (const void *) x_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
-      hb_memcpy ((void *) (repeat_x_deltas.arrayZ + n), (const void *) x_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
+      hb_memcpy ((فراغ *) repeat_x_deltas.arrayZ, (ثابت فراغ *) x_deltas.arrayZ, n * حجم (repeat_x_deltas[0]));
+      hb_memcpy ((فراغ *) (repeat_x_deltas.arrayZ + n), (ثابت فراغ *) x_deltas.arrayZ, n * حجم (repeat_x_deltas[0]));
 
-      hb_memcpy ((void *) repeat_y_deltas.arrayZ, (const void *) y_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
-      hb_memcpy ((void *) (repeat_y_deltas.arrayZ + n), (const void *) y_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
+      hb_memcpy ((فراغ *) repeat_y_deltas.arrayZ, (ثابت فراغ *) y_deltas.arrayZ, n * حجم (repeat_x_deltas[0]));
+      hb_memcpy ((فراغ *) (repeat_y_deltas.arrayZ + n), (ثابت فراغ *) y_deltas.arrayZ, n * حجم (repeat_x_deltas[0]));
 
-      hb_memcpy ((void *) repeat_points.arrayZ, (const void *) contour_points.arrayZ, n * contour_point_size);
-      hb_memcpy ((void *) (repeat_points.arrayZ + n), (const void *) contour_points.arrayZ, n * contour_point_size);
+      hb_memcpy ((فراغ *) repeat_points.arrayZ, (ثابت فراغ *) contour_points.arrayZ, n * contour_نقطه_اندازه);
+      hb_memcpy ((فراغ *) (repeat_points.arrayZ + n), (ثابت فراغ *) contour_points.arrayZ, n * contour_نقطه_اندازه);
     }
 
-    if (!_iup_contour_optimize_dp (repeat_points, repeat_x_deltas, repeat_y_deltas,
-                                   forced_set, tolerance_sq, n,
+    إذا (!_iup_contour_optimize_dp (repeat_points, repeat_x_deltas, repeat_y_deltas,
+                                   forced_مجموعه, tolerance_sq, n,
                                    costs, chain,
 				   scratch.interp_x_deltas, scratch.interp_y_deltas))
-      return false;
+      أرجع خطأ;
 
-    unsigned best_cost = n + 1;
-    int len = costs.length;
-    hb_iup_set_t best_sol;
-    for (int start = n - 1; start < len; start++)
+    بیعلامت بهترین_هزینه = n + 1;
+    صحيح len = costs.درازی;
+    hb_iup_مجموعه_t بهترین_sol;
+    لكل (صحيح شروع = n - 1; شروع < len; شروع++)
     {
-      hb_iup_set_t solution;
-      int i = start;
-      int lookback = start - (int) n;
-      while (i > lookback)
+      hb_iup_مجموعه_t solution;
+      صحيح i = شروع;
+      صحيح lookback = شروع - (صحيح) n;
+      طالما (i > lookback)
       {
-        solution.add (i % n);
+        solution.جمع_کن (i % n);
         i = chain.arrayZ[i];
       }
-      if (i == lookback)
+      إذا (i == lookback)
       {
-        unsigned cost_i = i < 0 ? 0 : costs.arrayZ[i];
-        unsigned cost = costs.arrayZ[start] - cost_i;
-        if (cost <= best_cost)
+        بیعلامت هزینه_i = i < 0 ? 0 : costs.arrayZ[i];
+        بیعلامت هزینه = costs.arrayZ[شروع] - هزینه_i;
+        إذا (هزینه <= بهترین_هزینه)
         {
-          best_sol = solution;
-          best_cost = cost;
+          بهترین_sol = solution;
+          بهترین_هزینه = هزینه;
         }
       }
     }
 
-    for (unsigned i = 0; i < n; i++)
-      if (best_sol.has (i))
-        opt_indices.arrayZ[i] = true;
+    لكل (بیعلامت i = 0; i < n; i++)
+      إذا (بهترین_sol.has (i))
+        opt_indices.arrayZ[i] = درست;
   }
-  return true;
+  أرجع درست;
 }
 
-bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                         const hb_vector_t<int>& x_deltas,
-                         const hb_vector_t<int>& y_deltas,
-                         hb_vector_t<bool>& opt_indices, /* OUT */
+منطقي iup_delta_optimize (ثابت contour_نقطه_وکتور_t& contour_points,
+                         ثابت hb_وکتور_t<صحيح>& x_deltas,
+                         ثابت hb_وکتور_t<صحيح>& y_deltas,
+                         hb_وکتور_t<منطقي>& opt_indices, /*بیرون*/
 			 iup_scratch_t &scratch,
-                         double tolerance)
+                         مزدوج tolerance)
 {
-  if (!opt_indices.resize (contour_points.length))
-      return false;
+  إذا (!opt_indices.resize (contour_points.درازی))
+      أرجع خطأ;
 
-  hb_vector_t<unsigned> &end_points = scratch.end_points.reset ();
+  hb_وکتور_t<بیعلامت> &انتها_points = scratch.انتها_points.reset ();
 
-  unsigned count = contour_points.length;
-  if (unlikely (!end_points.alloc (count)))
-    return false;
+  بیعلامت شمار = contour_points.درازی;
+  إذا (unlikely (!انتها_points.alloc (شمار)))
+    أرجع خطأ;
 
-  if (count < 4)
+  إذا (شمار < 4)
   {
-    for (unsigned i = 0; i < count; i++)
-      end_points.push (i);
+    لكل (بیعلامت i = 0; i < شمار; i++)
+      انتها_points.push (i);
   }
-  else
+  وإلا
   {
-    for (unsigned i = 0; i < count - 4; i++)
-      if (contour_points.arrayZ[i].is_end_point)
-        end_points.push (i);
+    لكل (بیعلامت i = 0; i < شمار - 4; i++)
+      إذا (contour_points.arrayZ[i].is_انتها_نقطه)
+        انتها_points.push (i);
 
     /* phantom points */
-    for (unsigned i = count - 4; i < count; i++)
-      end_points.push (i);
+    لكل (بیعلامت i = شمار - 4; i < شمار; i++)
+      انتها_points.push (i);
   }
 
-  if (end_points.in_error ()) return false;
+  إذا (انتها_points.درون_error ()) أرجع خطأ;
 
-  unsigned start = 0;
-  for (unsigned end : end_points)
+  بیعلامت شروع = 0;
+  لكل (بیعلامت انتها : انتها_points)
   {
-    unsigned len = end - start + 1;
-    if (!_iup_contour_optimize (contour_points.as_array ().sub_array (start, len),
-                                x_deltas.as_array ().sub_array (start, len),
-                                y_deltas.as_array ().sub_array (start, len),
-                                opt_indices.as_array ().sub_array (start, len),
+    بیعلامت len = انتها - شروع + 1;
+    إذا (!_iup_contour_optimize (contour_points.as_array ().sub_array (شروع, len),
+                                x_deltas.as_array ().sub_array (شروع, len),
+                                y_deltas.as_array ().sub_array (شروع, len),
+                                opt_indices.as_array ().sub_array (شروع, len),
                                 tolerance,
 				scratch))
-      return false;
-    start = end + 1;
+      أرجع خطأ;
+    شروع = انتها + 1;
   }
-  return true;
+  أرجع درست;
 }

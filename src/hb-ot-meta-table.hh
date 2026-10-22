@@ -22,110 +22,110 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_META_TABLE_HH
-#define HB_OT_META_TABLE_HH
+#اگر_تعریف_نشده HB_OT_META_جدول_HH
+#تعریف_کن HB_OT_META_جدول_HH
 
-#include "hb-open-type.hh"
+#ضمن "hb-open-type.hh"
 
 /*
  * meta -- Metadata Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/meta
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6meta.html
  */
-#define HB_OT_TAG_meta HB_TAG ('m','e','t','a')
+#تعریف_کن HB_OT_برچسب_meta HB_برچسب ('m','e','t','a')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct DataMap
+بنية داده_Map
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  صحيح cmp (hb_برچسب_t a) ثابت { أرجع برچسب_2.cmp (a); }
 
-  hb_tag_t get_tag () const { return tag; }
+  hb_برچسب_t get_برچسب () ثابت { أرجع برچسب_2; }
 
-  hb_blob_t *reference_entry (hb_blob_t *meta_blob) const
-  { return hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
+  hb_blob_t *reference_مدخل (hb_blob_t *meta_blob) ثابت
+  { أرجع hb_blob_create_sub_blob (meta_blob, داده_Z, داده_درازی_2); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *پایه) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  dataZ.sanitize (c, base, dataLength)));
+			  داده_Z.sanitize (c, پایه, داده_درازی_2)));
   }
 
-  protected:
-  Tag		tag;		/* A tag indicating the type of metadata. */
-  NNOffset32To<UnsizedArrayOf<HBUINT8>>
-		dataZ;		/* Offset in bytes from the beginning of the
+  محمي:
+  برچسب		برچسب_2;		/* A tag indicating the type of metadata. */
+  NNOffset32_مقصد<Unsized_Array_از<HBUINT8>>
+		داده_Z;		/* Offset in bytes from the beginning of the
 				 * metadata table to the data for this tag. */
-  HBUINT32	dataLength;	/* Length of the data. The data is not required to
+  HBUINT32	داده_درازی_2;	/* Length of the data. The data is not required to
 				 * be padded to any byte boundary. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عام:
+  DEFINE_اندازه_STATIC (12);
 };
 
-struct meta
+بنية meta
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_meta;
+  ساكن constexpr hb_برچسب_t جدول_برچسب = HB_OT_برچسب_meta;
 
-  struct accelerator_t
+  بنية accelerator_t
   {
     accelerator_t (hb_face_t *face)
-    { table = hb_sanitize_context_t ().reference_table<meta> (face); }
-    ~accelerator_t () { table.destroy (); }
+    { جدول = hb_sanitize_context_t ().reference_جدول<meta> (face); }
+    ~accelerator_t () { جدول.destroy (); }
 
-    hb_blob_t *reference_entry (hb_tag_t tag) const
-    { return table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
+    hb_blob_t *reference_مدخل (hb_برچسب_t برچسب_2) ثابت
+    { أرجع جدول->داده_Maps.lsearch (برچسب_2).reference_مدخل (جدول.get_blob ()); }
 
-    unsigned int get_entries (unsigned int      start_offset,
-			      unsigned int     *count,
-			      hb_ot_meta_tag_t *entries) const
+    بیعلامت صحيح get_entries (بیعلامت صحيح      شروع_جابه_جایی,
+			      بیعلامت صحيح     *شمار,
+			      hb_ot_meta_برچسب_t *entries) ثابت
     {
-      if (count && entries)
+      إذا (شمار && entries)
       {
-	+ table->dataMaps.as_array ().sub_array (start_offset, count)
-	| hb_map (&DataMap::get_tag)
-	| hb_map ([](hb_tag_t tag) { return (hb_ot_meta_tag_t) tag; })
-	| hb_sink (hb_array (entries, *count))
+	+ جدول->داده_Maps.as_array ().sub_array (شروع_جابه_جایی, شمار)
+	| hb_map (&داده_Map::get_برچسب)
+	| hb_map ([](hb_برچسب_t برچسب_2) { أرجع (hb_ot_meta_برچسب_t) برچسب_2; })
+	| hb_sink (hb_array (entries, *شمار))
 	;
       }
-      return table->dataMaps.len;
+      أرجع جدول->داده_Maps.len;
     }
 
-    private:
-    hb_blob_ptr_t<meta> table;
+    خاص:
+    hb_blob_ptr_t<meta> جدول;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  version == 1 &&
-			  dataMaps.sanitize (c, this)));
+			  نسخه == 1 &&
+			  داده_Maps.sanitize (c, هذا)));
   }
 
-  protected:
-  HBUINT32	version;	/* Version number of the metadata table — set to 1. */
+  محمي:
+  HBUINT32	نسخه;	/* Version number of the metadata table — set to 1. */
   HBUINT32	flags;		/* Flags — currently unused; set to 0. */
-  HBUINT32	dataOffset;
+  HBUINT32	داده_جابه_جایی;
 				/* Per Apple specification:
 				 * Offset from the beginning of the table to the data.
 				 * Per OT specification:
 				 * Reserved. Not used; should be set to 0. */
-  Array32Of<DataMap>
-		dataMaps;/* Array of data map records. */
-  public:
-  DEFINE_SIZE_ARRAY (16, dataMaps);
+  Array32_از<داده_Map>
+		داده_Maps;/* Array of data map records. */
+  عام:
+  DEFINE_اندازه_ARRAY (16, داده_Maps);
 };
 
-struct meta_accelerator_t : meta::accelerator_t {
+بنية meta_accelerator_t : meta::accelerator_t {
   meta_accelerator_t (hb_face_t *face) : meta::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_META_TABLE_HH */
+#پایان_اگر /* HB_OT_META_TABLE_HH */

@@ -24,10 +24,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CACHE_HH
-#define HB_CACHE_HH
+#اگر_تعریف_نشده HB_CACHE_HH
+#تعریف_کن HB_CACHE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,66 +57,66 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+قالب <بیعلامت صحيح کلید_بیتها=16,
+	 بیعلامت صحيح مقدار_بیتها=8 + 32 - کلید_بیتها,
+	 بیعلامت صحيح cache_بیتها=8,
+	 منطقي thread_امن=درست>
+بنية hb_cache_t
 {
-  using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       unsigned short,
-											       unsigned int>::type>::type
+  استفاده قلم_t = نام_نوع std::conditional<thread_امن,
+					   نام_نوع std::conditional<کلید_بیتها + مقدار_بیتها - cache_بیتها <= 8,
+								     hb_atomic_t<بیعلامت حرف>,
+								     نام_نوع std::conditional<کلید_بیتها + مقدار_بیتها - cache_بیتها <= 16,
+											       hb_atomic_t<بیعلامت کوتاه>,
+											       hb_atomic_t<بیعلامت صحيح>>::type>::type,
+					   نام_نوع std::conditional<کلید_بیتها + مقدار_بیتها - cache_بیتها <= 8,
+								     بیعلامت حرف,
+								     نام_نوع std::conditional<کلید_بیتها + مقدار_بیتها - cache_بیتها <= 16,
+											       بیعلامت کوتاه,
+											       بیعلامت صحيح>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((کلید_بیتها >= cache_بیتها), "");
+  static_assert ((کلید_بیتها + مقدار_بیتها <= cache_بیتها + 8 * حجم (قلم_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  ساكن constexpr بیعلامت MAX_مقدار = (1u << مقدار_بیتها) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  فراغ clear ()
   {
-    for (auto &v : values)
+    لكل (خودکار &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  منطقي get (بیعلامت صحيح key, بیعلامت صحيح *value) ثابت
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    بیعلامت صحيح k = key & ((1u<<cache_بیتها)-1);
+    بیعلامت صحيح v = values[k];
+    constexpr بیعلامت صحيح خالی_2 = (1ULL << (8 * حجم (قلم_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    إذا ((key >> کلید_بیتها) |
+	((v >> مقدار_بیتها) ^ (key >> cache_بیتها)) |
+	((کلید_بیتها + مقدار_بیتها - cache_بیتها == 8 * حجم (قلم_t)) && (v == خالی_2)))
+      أرجع خطأ;
+    *value = v & ((1u<<مقدار_بیتها)-1);
+    أرجع درست;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  فراغ مجموعه (بیعلامت صحيح key, بیعلامت صحيح value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    إذا (unlikely ((key >> کلید_بیتها) || (value >> مقدار_بیتها)))
+      أرجع; /* Overflows */
+    بیعلامت صحيح k = key & ((1u<<cache_بیتها)-1);
+    بیعلامت صحيح v = ((key>>cache_بیتها)<<مقدار_بیتها) | value;
     values[k] = v;
   }
 
-  private:
-  item_t values[1u<<cache_bits];
+  خاص:
+  قلم_t values[1u<<cache_بیتها];
 };
 
 
-#endif /* HB_CACHE_HH */
+#پایان_اگر /* HB_CACHE_HH */

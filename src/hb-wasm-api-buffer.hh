@@ -22,198 +22,198 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_BUFFER_HH
-#define HB_WASM_API_BUFFER_HH
+#اگر_تعریف_نشده HB_WASM_API_میانگیر_HH
+#تعریف_کن HB_WASM_API_میانگیر_HH
 
-#include "hb-wasm-api.hh"
+#ضمن "hb-wasm-api.hh"
 
-#include "hb-buffer.hh"
+#ضمن "hb-buffer.hh"
 
-namespace hb {
-namespace wasm {
+نطاق hb {
+نطاق wasm {
 
-static_assert (sizeof (glyph_info_t) == sizeof (hb_glyph_info_t), "");
-static_assert (sizeof (glyph_position_t) == sizeof (hb_glyph_position_t), "");
+static_assert (حجم (glyph_info_t) == حجم (hb_glyph_info_t), "");
+static_assert (حجم (glyph_position_t) == حجم (hb_glyph_position_t), "");
 
-HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
-					       ptr_d(buffer_contents_t, contents),
-					       uint32_t size)
+HB_WASM_API (bool_t, میانگیر_contents_realloc) (HB_WASM_EXEC_ENV
+					       ptr_d(میانگیر_contents_t, contents),
+					       uint32_t اندازه)
 {
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  HB_PTR_PARAM (میانگیر_contents_t, contents);
+  إذا (unlikely (!contents))
+    أرجع خطأ;
 
-  if (size <= contents->length)
-    return true;
+  إذا (اندازه <= contents->درازی)
+    أرجع درست;
 
-  unsigned bytes;
-  if (hb_unsigned_mul_overflows (size, sizeof (glyph_info_t), &bytes))
-    return false;
+  بیعلامت بایتها;
+  إذا (hb_unsigned_mul_overflows (اندازه, حجم (glyph_info_t), &بایتها))
+    أرجع خطأ;
 
-  glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, contents->length);
-  glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, contents->length);
+  glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, contents->درازی);
+  glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, contents->درازی);
 
-  if (unlikely (!info || !pos))
-    return false;
+  إذا (unlikely (!info || !pos))
+    أرجع خطأ;
 
-  glyph_info_t *new_info = nullptr;
-  uint32_t new_inforef = module_malloc (bytes, (void **) &new_info);
-  glyph_position_t *new_pos = nullptr;
-  uint32_t new_posref = module_malloc (bytes, (void **) &new_pos);
+  glyph_info_t *new_info = اشاره_تهی;
+  uint32_t new_inforef = module_malloc (بایتها, (فراغ **) &new_info);
+  glyph_position_t *new_pos = اشاره_تهی;
+  uint32_t new_posref = module_malloc (بایتها, (فراغ **) &new_pos);
 
-  unsigned old_bytes = contents->length * sizeof (glyph_info_t);
-  if (likely (new_inforef))
+  بیعلامت old_بایتها = contents->درازی * حجم (glyph_info_t);
+  إذا (likely (new_inforef))
   {
-    hb_memcpy (new_info, info, old_bytes);
+    hb_memcpy (new_info, info, old_بایتها);
     module_free (contents->info);
     contents->info = new_inforef;
   }
-  if (likely (new_posref))
+  إذا (likely (new_posref))
   {
-    hb_memcpy (new_pos, pos, old_bytes);
+    hb_memcpy (new_pos, pos, old_بایتها);
     module_free (contents->pos);
     contents->pos = new_posref;
   }
 
-  if (likely (new_info && new_pos))
+  إذا (likely (new_info && new_pos))
   {
-    contents->length = size;
-    return true;
+    contents->درازی = اندازه;
+    أرجع درست;
   }
 
-  return false;
+  أرجع خطأ;
 }
 
-HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
-					  ptr_d(buffer_contents_t, contents))
+HB_WASM_API (فراغ, میانگیر_contents_free) (HB_WASM_EXEC_ENV
+					  ptr_d(میانگیر_contents_t, contents))
 {
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return;
+  HB_PTR_PARAM (میانگیر_contents_t, contents);
+  إذا (unlikely (!contents))
+    أرجع;
 
   module_free (contents->info);
   module_free (contents->pos);
 
   contents->info = nullref;
   contents->pos = nullref;
-  contents->length = 0;
+  contents->درازی = 0;
 }
 
-HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
-					    ptr_d(buffer_t, buffer),
-					    ptr_d(buffer_contents_t, contents))
+HB_WASM_API (bool_t, میانگیر_copy_contents) (HB_WASM_EXEC_ENV
+					    ptr_d(میانگیر_t, میانگیر),
+					    ptr_d(میانگیر_contents_t, contents))
 {
-  HB_REF2OBJ (buffer);
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  HB_REF2OBJ (میانگیر);
+  HB_PTR_PARAM (میانگیر_contents_t, contents);
+  إذا (unlikely (!contents))
+    أرجع خطأ;
 
-  if (buffer->have_output)
-    buffer->sync ();
-  if (!buffer->have_positions)
-    buffer->clear_positions ();
+  إذا (میانگیر->have_output)
+    میانگیر->متزامن ();
+  إذا (!میانگیر->have_positions)
+    میانگیر->clear_positions ();
 
-  unsigned length = buffer->len;
+  بیعلامت درازی = میانگیر->len;
 
-  if (length <= contents->length)
+  إذا (درازی <= contents->درازی)
   {
-    glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, length);
-    glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, length);
+    glyph_info_t *info = HB_ARRAY_APP2NATIVE (glyph_info_t, contents->info, درازی);
+    glyph_position_t *pos = HB_ARRAY_APP2NATIVE (glyph_position_t, contents->pos, درازی);
 
-    if (unlikely (!info || !pos))
+    إذا (unlikely (!info || !pos))
     {
-      contents->length = 0;
-      return false;
+      contents->درازی = 0;
+      أرجع خطأ;
     }
 
-    unsigned bytes = length * sizeof (hb_glyph_info_t);
-    hb_memcpy (info, buffer->info, bytes);
-    hb_memcpy (pos, buffer->pos, bytes);
+    بیعلامت بایتها = درازی * حجم (hb_glyph_info_t);
+    hb_memcpy (info, میانگیر->info, بایتها);
+    hb_memcpy (pos, میانگیر->pos, بایتها);
 
-    return true;
+    أرجع درست;
   }
 
   module_free (contents->info);
   module_free (contents->pos);
 
-  contents->length = length;
-  unsigned bytes = length * sizeof (hb_glyph_info_t);
-  contents->info = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->info, bytes);
-  contents->pos = wasm_runtime_module_dup_data (module_inst, (const char *) buffer->pos, bytes);
+  contents->درازی = درازی;
+  بیعلامت بایتها = درازی * حجم (hb_glyph_info_t);
+  contents->info = wasm_runtime_module_dup_داده (module_inst, (ثابت حرف *) میانگیر->info, بایتها);
+  contents->pos = wasm_runtime_module_dup_داده (module_inst, (ثابت حرف *) میانگیر->pos, بایتها);
 
-  if (length && (!contents->info || !contents->pos))
+  إذا (درازی && (!contents->info || !contents->pos))
   {
-    contents->length = 0;
-    return false;
+    contents->درازی = 0;
+    أرجع خطأ;
   }
 
-  return true;
+  أرجع درست;
 }
 
-HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer),
-					   ptr_d(const buffer_contents_t, contents))
+HB_WASM_API (bool_t, میانگیر_مجموعه_contents) (HB_WASM_EXEC_ENV
+					   ptr_d(میانگیر_t, میانگیر),
+					   ptr_d(ثابت میانگیر_contents_t, contents))
 {
-  HB_REF2OBJ (buffer);
-  HB_PTR_PARAM (buffer_contents_t, contents);
-  if (unlikely (!contents))
-    return false;
+  HB_REF2OBJ (میانگیر);
+  HB_PTR_PARAM (میانگیر_contents_t, contents);
+  إذا (unlikely (!contents))
+    أرجع خطأ;
 
-  unsigned length = contents->length;
-  unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (length, sizeof (buffer->info[0]), &bytes)))
-    return false;
+  بیعلامت درازی = contents->درازی;
+  بیعلامت بایتها;
+  إذا (unlikely (hb_unsigned_mul_overflows (درازی, حجم (میانگیر->info[0]), &بایتها)))
+    أرجع خطأ;
 
-  glyph_info_t *info = (glyph_info_t *) (validate_app_addr (contents->info, bytes) ? addr_app_to_native (contents->info) : nullptr);
-  glyph_position_t *pos = (glyph_position_t *) (validate_app_addr (contents->pos, bytes) ? addr_app_to_native (contents->pos) : nullptr);
-  if (unlikely (!info || !pos))
-    return false;
+  glyph_info_t *info = (glyph_info_t *) (validate_app_addr (contents->info, بایتها) ? addr_app_مقصد_native (contents->info) : اشاره_تهی);
+  glyph_position_t *pos = (glyph_position_t *) (validate_app_addr (contents->pos, بایتها) ? addr_app_مقصد_native (contents->pos) : اشاره_تهی);
+  إذا (unlikely (!info || !pos))
+    أرجع خطأ;
 
-  if (unlikely (!buffer->resize (length)))
-    return false;
+  إذا (unlikely (!میانگیر->resize (درازی)))
+    أرجع خطأ;
 
-  if (!buffer->have_positions)
-    buffer->clear_positions (); /* This is wasteful. */
+  إذا (!میانگیر->have_positions)
+    میانگیر->clear_positions (); /* This is wasteful. */
 
-  hb_memcpy (buffer->info, info, bytes);
-  hb_memcpy (buffer->pos, pos, bytes);
-  buffer->len = length;
+  hb_memcpy (میانگیر->info, info, بایتها);
+  hb_memcpy (میانگیر->pos, pos, بایتها);
+  میانگیر->len = درازی;
 
-  return true;
+  أرجع درست;
 }
 
-HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
-						 ptr_d(buffer_t, buffer))
+HB_WASM_API (direction_t, میانگیر_get_direction) (HB_WASM_EXEC_ENV
+						 ptr_d(میانگیر_t, میانگیر))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (میانگیر);
 
-  return (direction_t) hb_buffer_get_direction (buffer);
+  أرجع (direction_t) hb_میانگیر_get_direction (میانگیر);
 }
 
-HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer))
+HB_WASM_API (script_t, میانگیر_get_script) (HB_WASM_EXEC_ENV
+					   ptr_d(میانگیر_t, میانگیر))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (میانگیر);
 
-  return hb_script_to_iso15924_tag (hb_buffer_get_script (buffer));
+  أرجع hb_script_مقصد_iso15924_برچسب (hb_میانگیر_get_script (میانگیر));
 }
 
-HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
-				    ptr_d(buffer_t, buffer))
+HB_WASM_API (فراغ, میانگیر_معکوس) (HB_WASM_EXEC_ENV
+				    ptr_d(میانگیر_t, میانگیر))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (میانگیر);
 
-  hb_buffer_reverse (buffer);
+  hb_میانگیر_معکوس (میانگیر);
 }
 
-HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
-					     ptr_d(buffer_t, buffer))
+HB_WASM_API (فراغ, میانگیر_معکوس_clusters) (HB_WASM_EXEC_ENV
+					     ptr_d(میانگیر_t, میانگیر))
 {
-  HB_REF2OBJ (buffer);
+  HB_REF2OBJ (میانگیر);
 
-  hb_buffer_reverse_clusters (buffer);
+  hb_میانگیر_معکوس_clusters (میانگیر);
 }
 
 }}
 
-#endif /* HB_WASM_API_BUFFER_HH */
+#پایان_اگر /* HB_WASM_API_BUFFER_HH */

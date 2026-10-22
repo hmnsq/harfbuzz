@@ -25,1099 +25,1099 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_VAR_GVAR_TABLE_HH
-#define HB_OT_VAR_GVAR_TABLE_HH
+#اگر_تعریف_نشده HB_OT_VAR_GVAR_جدول_HH
+#تعریف_کن HB_OT_VAR_GVAR_جدول_HH
 
-#include "hb-decycler.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-var-common.hh"
+#ضمن "hb-decycler.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-dual.hh"
+#ضمن "hb-ot-var-common.hh"
 
 /*
  * gvar -- Glyph Variation Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gvar
  */
-#define HB_OT_TAG_gvar HB_TAG('g','v','a','r')
-#define HB_OT_TAG_GVAR HB_TAG('G','V','A','R')
+#تعریف_کن HB_OT_برچسب_gvar HB_برچسب('g','v','a','r')
+#تعریف_کن HB_OT_برچسب_GVAR HB_برچسب('G','V','A','R')
 
-struct hb_glyf_scratch_t
+بنية hb_glyf_scratch_t
 {
   // glyf
-  contour_point_vector_t all_points;
-  contour_point_vector_t comp_points;
+  contour_نقطه_وکتور_t all_points;
+  contour_نقطه_وکتور_t comp_points;
   hb_decycler_t decycler;
 
   // gvar
-  contour_point_vector_t orig_points;
-  hb_vector_t<int> x_deltas;
-  hb_vector_t<int> y_deltas;
-  contour_point_vector_t deltas;
-  hb_vector_t<unsigned int> shared_indices;
-  hb_vector_t<unsigned int> private_indices;
+  contour_نقطه_وکتور_t orig_points;
+  hb_وکتور_t<صحيح> x_deltas;
+  hb_وکتور_t<صحيح> y_deltas;
+  contour_نقطه_وکتور_t deltas;
+  hb_وکتور_t<بیعلامت صحيح> shared_indices;
+  hb_وکتور_t<بیعلامت صحيح> خصوصی_indices;
 };
 
-namespace OT {
+نطاق OT {
 
-template <typename OffsetType>
-struct glyph_variations_t
+قالب <نام_نوع جابه_جایی_Type>
+بنية glyph_variations_t
 {
   // TODO: Move tuple_variations_t to outside of TupleVariationData
-  using tuple_variations_t = typename TupleVariationData<OffsetType>::tuple_variations_t;
-  using GlyphVariationData = TupleVariationData<OffsetType>;
+  استفاده tuple_variations_t = نام_نوع Tuple_Variation_داده<جابه_جایی_Type>::tuple_variations_t;
+  استفاده Glyph_Variation_داده = Tuple_Variation_داده<جابه_جایی_Type>;
 
-  hb_vector_t<tuple_variations_t> glyph_variations;
+  hb_وکتور_t<tuple_variations_t> glyph_variations;
 
-  hb_vector_t<F2DOT14> compiled_shared_tuples;
-  private:
-  unsigned shared_tuples_count = 0;
+  hb_وکتور_t<F2DOT14> compiled_shared_tuples;
+  خاص:
+  بیعلامت shared_tuples_شمار = 0;
 
   /* shared coords-> index map after instantiation */
-  hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> shared_tuples_idx_map;
+  hb_hashmap_t<ثابت hb_وکتور_t<F2DOT14>*, بیعلامت> shared_tuples_idx_map;
 
   hb_alloc_pool_t pool;
 
-  public:
-  unsigned compiled_shared_tuples_count () const
-  { return shared_tuples_count; }
+  عام:
+  بیعلامت compiled_shared_tuples_شمار () ثابت
+  { أرجع shared_tuples_شمار; }
 
-  unsigned compiled_byte_size () const
+  بیعلامت compiled_byte_اندازه () ثابت
   {
-    unsigned byte_size = 0;
-    for (const auto& _ : glyph_variations)
-      byte_size += _.get_compiled_byte_size ();
+    بیعلامت byte_اندازه = 0;
+    لكل (ثابت خودکار& _ : glyph_variations)
+      byte_اندازه += _.get_compiled_byte_اندازه ();
 
-    return byte_size;
+    أرجع byte_اندازه;
   }
 
-  bool create_from_glyphs_var_data (unsigned axis_count,
-                                    const hb_array_t<const F2DOT14> shared_tuples,
-                                    const hb_subset_plan_t *plan,
-                                    const hb_hashmap_t<hb_codepoint_t, hb_bytes_t>& new_gid_var_data_map)
+  منطقي create_from_glyphs_var_داده (بیعلامت axis_شمار,
+                                    ثابت hb_array_t<ثابت F2DOT14> shared_tuples,
+                                    ثابت hb_subset_plan_t *plan,
+                                    ثابت hb_hashmap_t<hb_codepoint_t, hb_بایتها_t>& new_gid_var_داده_map)
   {
-    if (unlikely (!glyph_variations.alloc_exact (plan->new_to_old_gid_list.length)))
-      return false;
+    إذا (unlikely (!glyph_variations.alloc_exact (plan->new_مقصد_old_gid_list.درازی)))
+      أرجع خطأ;
 
-    auto it = hb_iter (plan->new_to_old_gid_list);
-    for (auto &_ : it)
+    خودکار it = hb_iter (plan->new_مقصد_old_gid_list);
+    لكل (خودکار &_ : it)
     {
-      hb_codepoint_t new_gid = _.first;
-      contour_point_vector_t *all_contour_points;
-      if (!new_gid_var_data_map.has (new_gid) ||
+      hb_codepoint_t new_gid = _.اولی;
+      contour_نقطه_وکتور_t *all_contour_points;
+      إذا (!new_gid_var_داده_map.has (new_gid) ||
           !plan->new_gid_contour_points_map.has (new_gid, &all_contour_points))
-        return false;
-      hb_bytes_t var_data = new_gid_var_data_map.get (new_gid);
+        أرجع خطأ;
+      hb_بایتها_t var_داده = new_gid_var_داده_map.get (new_gid);
 
-      const GlyphVariationData* p = reinterpret_cast<const GlyphVariationData*> (var_data.arrayZ);
-      typename GlyphVariationData::tuple_iterator_t iterator;
+      ثابت Glyph_Variation_داده* p = reinterpret_cast<ثابت Glyph_Variation_داده*> (var_داده.arrayZ);
+      نام_نوع Glyph_Variation_داده::tuple_iterator_t iterator;
       tuple_variations_t tuple_vars;
 
-      hb_vector_t<unsigned> shared_indices;
+      hb_وکتور_t<بیعلامت> shared_indices;
 
       /* in case variation data is empty, push an empty struct into the vector,
        * keep the vector in sync with the new_to_old_gid_list */
-      if (!var_data || ! p->has_data () || !all_contour_points->length ||
-          !GlyphVariationData::get_tuple_iterator (var_data, axis_count,
-                                                   var_data.arrayZ,
+      إذا (!var_داده || ! p->has_داده () || !all_contour_points->درازی ||
+          !Glyph_Variation_داده::get_tuple_iterator (var_داده, axis_شمار,
+                                                   var_داده.arrayZ,
                                                    shared_indices, &iterator))
       {
         glyph_variations.push (std::move (tuple_vars));
-        continue;
+        استمر;
       }
 
-      bool is_composite_glyph = false;
-      is_composite_glyph = plan->composite_new_gids.has (new_gid);
+      منطقي is_مرکب_glyph = خطأ;
+      is_مرکب_glyph = plan->مرکب_new_gids.has (new_gid);
 
-      if (!p->decompile_tuple_variations (all_contour_points->length, true /* is_gvar */,
-                                          iterator, &(plan->axes_old_index_tag_map),
+      إذا (!p->decompile_tuple_variations (all_contour_points->درازی, درست /* is_gvar */,
+                                          iterator, &(plan->axes_old_شاخص_برچسب_map),
                                           shared_indices, shared_tuples,
-                                          tuple_vars, /* OUT */
+                                          tuple_vars, /*بیرون*/
 					  &pool,
-                                          is_composite_glyph))
-        return false;
+                                          is_مرکب_glyph))
+        أرجع خطأ;
       glyph_variations.push (std::move (tuple_vars));
     }
-    return !glyph_variations.in_error () && glyph_variations.length == plan->new_to_old_gid_list.length;
+    أرجع !glyph_variations.درون_error () && glyph_variations.درازی == plan->new_مقصد_old_gid_list.درازی;
   }
 
-  bool instantiate (const hb_subset_plan_t *plan)
+  منطقي instantiate (ثابت hb_subset_plan_t *plan)
   {
-    unsigned count = plan->new_to_old_gid_list.length;
-    bool iup_optimize = false;
+    بیعلامت شمار = plan->new_مقصد_old_gid_list.درازی;
+    منطقي iup_optimize = خطأ;
     optimize_scratch_t scratch;
     iup_optimize = plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS;
-    for (unsigned i = 0; i < count; i++)
+    لكل (بیعلامت i = 0; i < شمار; i++)
     {
-      hb_codepoint_t new_gid = plan->new_to_old_gid_list[i].first;
-      contour_point_vector_t *all_points;
-      if (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
-        return false;
+      hb_codepoint_t new_gid = plan->new_مقصد_old_gid_list[i].اولی;
+      contour_نقطه_وکتور_t *all_points;
+      إذا (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
+        أرجع خطأ;
       /* IUP adds rebased constant deltas to the contour coordinates. Keep
        * the plan's original points intact across serialization retries. */
-      contour_point_vector_t points;
-      if (iup_optimize)
+      contour_نقطه_وکتور_t points;
+      إذا (iup_optimize)
       {
         points = *all_points;
-        if (unlikely (points.in_error ())) return false;
+        إذا (unlikely (points.درون_error ())) أرجع خطأ;
         all_points = &points;
       }
       /* avar2 partial instancing: cull unreachable tuples. */
-      if (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
+      إذا (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
 	glyph_variations[i].cull_unreachable (plan->avar2_reachable_ranges);
-      if (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
-        return false;
+      إذا (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
+        أرجع خطأ;
     }
-    return true;
+    أرجع درست;
   }
 
-  bool compile_bytes (const hb_map_t& axes_index_map,
-                      const hb_map_t& axes_old_index_tag_map)
+  منطقي compile_بایتها (ثابت hb_map_t& axes_شاخص_map,
+                      ثابت hb_map_t& axes_old_شاخص_برچسب_map)
   {
-    if (!compile_shared_tuples (axes_index_map, axes_old_index_tag_map))
-      return false;
-    for (tuple_variations_t& vars: glyph_variations)
-      if (!vars.compile_bytes (axes_index_map, axes_old_index_tag_map,
-                               true, /* use shared points*/
-                               true,
+    إذا (!compile_shared_tuples (axes_شاخص_map, axes_old_شاخص_برچسب_map))
+      أرجع خطأ;
+    لكل (tuple_variations_t& vars: glyph_variations)
+      إذا (!vars.compile_بایتها (axes_شاخص_map, axes_old_شاخص_برچسب_map,
+                               درست, /* use shared points*/
+                               درست,
                                &shared_tuples_idx_map,
 			       &pool))
-        return false;
+        أرجع خطأ;
 
-    return true;
+    أرجع درست;
   }
 
-  bool compile_shared_tuples (const hb_map_t& axes_index_map,
-                              const hb_map_t& axes_old_index_tag_map)
+  منطقي compile_shared_tuples (ثابت hb_map_t& axes_شاخص_map,
+                              ثابت hb_map_t& axes_old_شاخص_برچسب_map)
   {
     /* key is pointer to compiled_peak_coords inside each tuple, hashing
      * function will always deref pointers first */
-    hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> coords_count_map;
+    hb_hashmap_t<ثابت hb_وکتور_t<F2DOT14>*, بیعلامت> coords_شمار_map;
 
     /* count the num of shared coords */
-    for (tuple_variations_t& vars: glyph_variations)
+    لكل (tuple_variations_t& vars: glyph_variations)
     {
-      for (tuple_delta_t& var : vars.tuple_vars)
+      لكل (tuple_delta_t& var : vars.tuple_vars)
       {
-        if (!var.compile_coords (axes_index_map, axes_old_index_tag_map, &pool))
-          return false;
-        unsigned *count;
-	unsigned hash = hb_hash (&var.compiled_peak_coords);
-        if (coords_count_map.has_with_hash (&(var.compiled_peak_coords), hash, &count))
-	  (*count)++;
-        else
-          coords_count_map.set_with_hash (&(var.compiled_peak_coords), hash, 1);
+        إذا (!var.compile_coords (axes_شاخص_map, axes_old_شاخص_برچسب_map, &pool))
+          أرجع خطأ;
+        بیعلامت *شمار;
+	بیعلامت hash = hb_hash (&var.compiled_peak_coords);
+        إذا (coords_شمار_map.has_with_hash (&(var.compiled_peak_coords), hash, &شمار))
+	  (*شمار)++;
+        وإلا
+          coords_شمار_map.مجموعه_with_hash (&(var.compiled_peak_coords), hash, 1);
       }
     }
 
-    if (!coords_count_map || coords_count_map.in_error ())
-      return false;
+    إذا (!coords_شمار_map || coords_شمار_map.درون_error ())
+      أرجع خطأ;
 
     /* add only those coords that are used more than once into the vector and sort */
-    hb_vector_t<hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>> shared_coords {
-      + hb_iter (coords_count_map)
-      | hb_filter ([] (const hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>& p) { return p.second > 1; })
+    hb_وکتور_t<hb_pair_t<ثابت hb_وکتور_t<F2DOT14>*, بیعلامت>> shared_coords {
+      + hb_iter (coords_شمار_map)
+      | hb_filter ([] (ثابت hb_pair_t<ثابت hb_وکتور_t<F2DOT14>*, بیعلامت>& p) { أرجع p.second > 1; })
     };
-    if (unlikely (shared_coords.in_error ())) return false;
+    إذا (unlikely (shared_coords.درون_error ())) أرجع خطأ;
 
     /* no shared tuples: no coords are used more than once */
-    if (!shared_coords) return true;
+    إذا (!shared_coords) أرجع درست;
     /* sorting based on the coords frequency first (high to low), then compare
      * the coords bytes */
     shared_coords.qsort (_cmp_coords);
 
     /* build shared_coords->idx map and shared tuples byte array */
 
-    shared_tuples_count = hb_min (0xFFFu + 1, shared_coords.length);
-    unsigned len = shared_tuples_count * (shared_coords[0].first->length);
-    if (unlikely (!compiled_shared_tuples.alloc (len)))
-      return false;
+    shared_tuples_شمار = hb_min (0xFFFu + 1, shared_coords.درازی);
+    بیعلامت len = shared_tuples_شمار * (shared_coords[0].اولی->درازی);
+    إذا (unlikely (!compiled_shared_tuples.alloc (len)))
+      أرجع خطأ;
 
-    for (unsigned i = 0; i < shared_tuples_count; i++)
+    لكل (بیعلامت i = 0; i < shared_tuples_شمار; i++)
     {
-      shared_tuples_idx_map.set (shared_coords[i].first, i);
+      shared_tuples_idx_map.مجموعه (shared_coords[i].اولی, i);
       /* add a concat() in hb_vector_t? */
-      for (auto c : shared_coords[i].first->iter ())
+      لكل (خودکار c : shared_coords[i].اولی->iter ())
         compiled_shared_tuples.push (c);
     }
 
-    return true;
+    أرجع درست;
   }
 
-  static int _cmp_coords (const void *pa, const void *pb)
+  ساكن صحيح _cmp_coords (ثابت فراغ *pa, ثابت فراغ *pb)
   {
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *a = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pa;
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *b = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pb;
+    ثابت hb_pair_t<hb_وکتور_t<F2DOT14> *, بیعلامت> *a = (ثابت hb_pair_t<hb_وکتور_t<F2DOT14> *, بیعلامت> *) pa;
+    ثابت hb_pair_t<hb_وکتور_t<F2DOT14> *, بیعلامت> *b = (ثابت hb_pair_t<hb_وکتور_t<F2DOT14> *, بیعلامت> *) pb;
 
-    if (a->second != b->second)
-      return b->second - a->second; // high to low
+    إذا (a->second != b->second)
+      أرجع b->second - a->second; // high to low
 
-    return b->first->as_array().cmp (a->first->as_array ());
+    أرجع b->اولی->as_array().cmp (a->اولی->as_array ());
   }
 
-  template<typename Iterator,
+  قالب<نام_نوع Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_glyph_var_data (hb_serialize_context_t *c,
+  منطقي serialize_glyph_var_داده (hb_serialize_context_t *c,
                                  Iterator it,
-                                 bool long_offset,
-                                 unsigned num_glyphs,
-                                 char* glyph_var_data_offsets /* OUT: glyph var data offsets array */) const
+                                 منطقي long_جابه_جایی,
+                                 بیعلامت رقم_glyphs,
+                                 حرف* glyph_var_داده_offsets /* OUT: glyph var data offsets array */) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    if (long_offset)
+    إذا (long_جابه_جایی)
     {
-      ((HBUINT32 *) glyph_var_data_offsets)[0] = 0;
-      glyph_var_data_offsets += 4;
+      ((HBUINT32 *) glyph_var_داده_offsets)[0] = 0;
+      glyph_var_داده_offsets += 4;
     }
-    else
+    وإلا
     {
-      ((HBUINT16 *) glyph_var_data_offsets)[0] = 0;
-      glyph_var_data_offsets += 2;
+      ((HBUINT16 *) glyph_var_داده_offsets)[0] = 0;
+      glyph_var_داده_offsets += 2;
     }
-    unsigned glyph_offset = 0;
-    hb_codepoint_t last_gid = 0;
-    unsigned idx = 0;
+    بیعلامت glyph_جابه_جایی = 0;
+    hb_codepoint_t آخرین_gid = 0;
+    بیعلامت idx = 0;
 
-    GlyphVariationData* cur_glyph = c->start_embed<GlyphVariationData> ();
-    if (!cur_glyph) return_trace (false);
-    for (auto &_ : it)
+    Glyph_Variation_داده* cur_glyph = c->شروع_embed<Glyph_Variation_داده> ();
+    إذا (!cur_glyph) return_trace (خطأ);
+    لكل (خودکار &_ : it)
     {
-      hb_codepoint_t gid = _.first;
-      if (long_offset)
-        for (; last_gid < gid; last_gid++)
-          ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-      else
-        for (; last_gid < gid; last_gid++)
-          ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
+      hb_codepoint_t gid = _.اولی;
+      إذا (long_جابه_جایی)
+        لكل (; آخرین_gid < gid; آخرین_gid++)
+          ((HBUINT32 *) glyph_var_داده_offsets)[آخرین_gid] = glyph_جابه_جایی;
+      وإلا
+        لكل (; آخرین_gid < gid; آخرین_gid++)
+          ((HBUINT16 *) glyph_var_داده_offsets)[آخرین_gid] = glyph_جابه_جایی / 2;
 
-      if (idx >= glyph_variations.length) return_trace (false);
-      if (!cur_glyph->serialize (c, true, glyph_variations[idx])) return_trace (false);
-      GlyphVariationData* next_glyph = c->start_embed<GlyphVariationData> ();
-      glyph_offset += (char *) next_glyph - (char *) cur_glyph;
+      إذا (idx >= glyph_variations.درازی) return_trace (خطأ);
+      إذا (!cur_glyph->serialize (c, درست, glyph_variations[idx])) return_trace (خطأ);
+      Glyph_Variation_داده* بعدی_glyph = c->شروع_embed<Glyph_Variation_داده> ();
+      glyph_جابه_جایی += (حرف *) بعدی_glyph - (حرف *) cur_glyph;
 
-      if (long_offset)
-        ((HBUINT32 *) glyph_var_data_offsets)[gid] = glyph_offset;
-      else
-        ((HBUINT16 *) glyph_var_data_offsets)[gid] = glyph_offset / 2;
+      إذا (long_جابه_جایی)
+        ((HBUINT32 *) glyph_var_داده_offsets)[gid] = glyph_جابه_جایی;
+      وإلا
+        ((HBUINT16 *) glyph_var_داده_offsets)[gid] = glyph_جابه_جایی / 2;
 
-      last_gid++;
+      آخرین_gid++;
       idx++;
-      cur_glyph = next_glyph;
+      cur_glyph = بعدی_glyph;
     }
 
-    if (long_offset)
-      for (; last_gid < num_glyphs; last_gid++)
-        ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-    else
-      for (; last_gid < num_glyphs; last_gid++)
-        ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
-    return_trace (true);
+    إذا (long_جابه_جایی)
+      لكل (; آخرین_gid < رقم_glyphs; آخرین_gid++)
+        ((HBUINT32 *) glyph_var_داده_offsets)[آخرین_gid] = glyph_جابه_جایی;
+    وإلا
+      لكل (; آخرین_gid < رقم_glyphs; آخرین_gid++)
+        ((HBUINT16 *) glyph_var_داده_offsets)[آخرین_gid] = glyph_جابه_جایی / 2;
+    return_trace (درست);
   }
 };
 
-template <typename T, typename Types>
-struct gvar_GVAR
+قالب <نام_نوع T, نام_نوع Types>
+بنية gvar_GVAR
 {
-  using GlyphCountType = typename Types::HBUINT;
+  استفاده Glyph_شمار_Type = نام_نوع Types::HBUINT;
 
-  using GlyphVariationData = TupleVariationData<GlyphCountType>;
-  static constexpr unsigned glyph_count_max ()
-  { return (1u << (8 * GlyphCountType::static_size)) - 1; }
+  استفاده Glyph_Variation_داده = Tuple_Variation_داده<Glyph_شمار_Type>;
+  ساكن constexpr بیعلامت glyph_شمار_max ()
+  { أرجع (1u << (8 * Glyph_شمار_Type::static_اندازه)) - 1; }
 
-  bool has_data () const { return version.to_int () != 0; }
+  منطقي has_داده () ثابت { أرجع نسخه.مقصد_int () != 0; }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  منطقي sanitize_shallow (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  (version.major == 1) &&
-		  sharedTuples.sanitize (c, this, axisCount * sharedTupleCount) &&
-		  (is_long_offset () ?
-		     c->check_array (get_long_offset_array (), c->get_num_glyphs () + 1) :
-		     c->check_array (get_short_offset_array (), c->get_num_glyphs () + 1)));
+		  (نسخه.major == 1) &&
+		  sharedTuples.sanitize (c, هذا, axis_شمار_2 * shared_Tuple_شمار) &&
+		  (is_long_جابه_جایی () ?
+		     c->check_array (get_long_جابه_جایی_array (), c->get_رقم_glyphs () + 1) :
+		     c->check_array (get_short_جابه_جایی_array (), c->get_رقم_glyphs () + 1)));
   }
 
   /* GlyphVariationData not sanitized here; must be checked while accessing each glyph variation data */
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return sanitize_shallow (c); }
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
+  { أرجع sanitize_shallow (c); }
 
-  bool decompile_glyph_variations (hb_subset_context_t *c,
-                                   glyph_variations_t<GlyphCountType>& glyph_vars /* OUT */) const
+  منطقي decompile_glyph_variations (hb_subset_context_t *c,
+                                   glyph_variations_t<Glyph_شمار_Type>& glyph_vars /*بیرون*/) ثابت
   {
-    hb_hashmap_t<hb_codepoint_t, hb_bytes_t> new_gid_var_data_map;
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_hashmap_t<hb_codepoint_t, hb_بایتها_t> new_gid_var_داده_map;
+    خودکار it = hb_iter (c->plan->new_مقصد_old_gid_list);
+    إذا (it->اولی == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      new_gid_var_data_map.set (0, hb_bytes_t ());
+      new_gid_var_داده_map.مجموعه (0, hb_بایتها_t ());
       it++;
     }
 
-    for (auto &_ : it)
+    لكل (خودکار &_ : it)
     {
-      hb_codepoint_t new_gid = _.first;
+      hb_codepoint_t new_gid = _.اولی;
       hb_codepoint_t old_gid = _.second;
-      hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyphCountX, old_gid);
-      new_gid_var_data_map.set (new_gid, var_data_bytes);
+      hb_بایتها_t var_داده_بایتها = get_glyph_var_داده_بایتها (c->منبع_blob, glyph_شمار_X, old_gid);
+      new_gid_var_داده_map.مجموعه (new_gid, var_داده_بایتها);
     }
 
-    if (new_gid_var_data_map.in_error ()) return false;
+    إذا (new_gid_var_داده_map.درون_error ()) أرجع خطأ;
 
-    hb_array_t<const F2DOT14> shared_tuples = (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-    return glyph_vars.create_from_glyphs_var_data (axisCount, shared_tuples, c->plan, new_gid_var_data_map);
+    hb_array_t<ثابت F2DOT14> shared_tuples = (هذا+sharedTuples).as_array ((بیعلامت) shared_Tuple_شمار * (بیعلامت) axis_شمار_2);
+    أرجع glyph_vars.create_from_glyphs_var_داده (axis_شمار_2, shared_tuples, c->plan, new_gid_var_داده_map);
   }
 
-  template<typename Iterator,
+  قالب<نام_نوع Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-                  const glyph_variations_t<GlyphCountType>& glyph_vars,
+  منطقي serialize (hb_serialize_context_t *c,
+                  ثابت glyph_variations_t<Glyph_شمار_Type>& glyph_vars,
                   Iterator it,
-                  unsigned axis_count,
-                  unsigned num_glyphs,
-                  bool force_long_offsets) const
+                  بیعلامت axis_شمار,
+                  بیعلامت رقم_glyphs,
+                  منطقي force_long_offsets) ثابت
   {
-    TRACE_SERIALIZE (this);
-    gvar_GVAR *out = c->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    gvar_GVAR *بیرون = c->allocate_min<gvar_GVAR> ();
+    إذا (unlikely (!بیرون)) return_trace (خطأ);
 
-    out->version.major = 1;
-    out->version.minor = 0;
-    out->axisCount = axis_count;
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    بیرون->نسخه.major = 1;
+    بیرون->نسخه.minor = 0;
+    بیرون->axis_شمار_2 = axis_شمار;
+    بیرون->glyph_شمار_X = hb_min (glyph_شمار_max (), رقم_glyphs);
 
-    unsigned glyph_var_data_size = glyph_vars.compiled_byte_size ();
+    بیعلامت glyph_var_داده_اندازه = glyph_vars.compiled_byte_اندازه ();
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = glyph_var_data_size > 0x1FFFEu || force_long_offsets;
-    out->flags = long_offset ? 1 : 0;
+    منطقي long_جابه_جایی = glyph_var_داده_اندازه > 0x1FFFEu || force_long_offsets;
+    بیرون->flags = long_جابه_جایی ? 1 : 0;
 
-    unsigned glyph_var_data_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *glyph_var_data_offsets = c->allocate_size<HBUINT8> (glyph_var_data_offsets_size, false);
-    if (!glyph_var_data_offsets) return_trace (false);
+    بیعلامت glyph_var_داده_offsets_اندازه = (long_جابه_جایی ? 4 : 2) * (رقم_glyphs + 1);
+    HBUINT8 *glyph_var_داده_offsets = c->allocate_اندازه<HBUINT8> (glyph_var_داده_offsets_اندازه, خطأ);
+    إذا (!glyph_var_داده_offsets) return_trace (خطأ);
 
     /* shared tuples */
-    unsigned shared_tuple_count = glyph_vars.compiled_shared_tuples_count ();
-    out->sharedTupleCount = shared_tuple_count;
+    بیعلامت shared_tuple_شمار = glyph_vars.compiled_shared_tuples_شمار ();
+    بیرون->shared_Tuple_شمار = shared_tuple_شمار;
 
-    if (!shared_tuple_count)
-      out->sharedTuples = (char *) glyph_var_data_offsets + glyph_var_data_offsets_size - (char *) out;
-    else
+    إذا (!shared_tuple_شمار)
+      بیرون->sharedTuples = (حرف *) glyph_var_داده_offsets + glyph_var_داده_offsets_اندازه - (حرف *) بیرون;
+    وإلا
     {
-      hb_array_t<const F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
-      if (!shared_tuples.arrayZ) return_trace (false);
-      out->sharedTuples = (const char *) shared_tuples.arrayZ - (char *) out;
+      hb_array_t<ثابت F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
+      إذا (!shared_tuples.arrayZ) return_trace (خطأ);
+      بیرون->sharedTuples = (ثابت حرف *) shared_tuples.arrayZ - (حرف *) بیرون;
     }
 
-    char *glyph_var_data = c->start_embed<char> ();
-    if (!glyph_var_data) return_trace (false);
-    out->dataZ = glyph_var_data - (char *) out;
+    حرف *glyph_var_داده = c->شروع_embed<حرف> ();
+    إذا (!glyph_var_داده) return_trace (خطأ);
+    بیرون->داده_Z = glyph_var_داده - (حرف *) بیرون;
 
-    return_trace (glyph_vars.serialize_glyph_var_data (c, it, long_offset, num_glyphs,
-                                                       (char *) glyph_var_data_offsets));
+    return_trace (glyph_vars.serialize_glyph_var_داده (c, it, long_جابه_جایی, رقم_glyphs,
+                                                       (حرف *) glyph_var_داده_offsets));
   }
 
-  bool instantiate (hb_subset_context_t *c) const
+  منطقي instantiate (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    glyph_variations_t<GlyphCountType> glyph_vars;
-    if (!decompile_glyph_variations (c, glyph_vars))
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    glyph_variations_t<Glyph_شمار_Type> glyph_vars;
+    إذا (!decompile_glyph_variations (c, glyph_vars))
+      return_trace (خطأ);
 
-    if (!glyph_vars.instantiate (c->plan)) return_trace (false);
-    if (!glyph_vars.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map))
-      return_trace (false);
+    إذا (!glyph_vars.instantiate (c->plan)) return_trace (خطأ);
+    إذا (!glyph_vars.compile_بایتها (c->plan->axes_شاخص_map, c->plan->axes_old_شاخص_برچسب_map))
+      return_trace (خطأ);
 
-    unsigned axis_count = c->plan->axes_index_map.get_population ();
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
+    بیعلامت axis_شمار = c->plan->axes_شاخص_map.get_population ();
+    بیعلامت رقم_glyphs = c->plan->رقم_output_glyphs ();
+    خودکار it = hb_iter (c->plan->new_مقصد_old_gid_list);
 
-    bool force_long_offsets = false;
-#ifdef HB_EXPERIMENTAL_API
+    منطقي force_long_offsets = خطأ;
+#اگر_تعریف_شده HB_EXPERIMENTAL_API
     force_long_offsets = c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS;
-#endif
-    return_trace (serialize (c->serializer, glyph_vars, it, axis_count, num_glyphs, force_long_offsets));
+#پایان_اگر
+    return_trace (serialize (c->serializer, glyph_vars, it, axis_شمار, رقم_glyphs, force_long_offsets));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (هذا);
+    إذا (c->plan->all_axes_pinned)
+      return_trace (خطأ);
 
-    if (c->plan->normalized_coords)
+    إذا (c->plan->normalized_coords)
       return_trace (instantiate (c));
 
-    unsigned glyph_count = version.to_int () ? c->plan->source->get_num_glyphs () : 0;
+    بیعلامت glyph_شمار = نسخه.مقصد_int () ? c->plan->منبع->get_رقم_glyphs () : 0;
 
-    gvar_GVAR *out = c->serializer->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    gvar_GVAR *بیرون = c->serializer->allocate_min<gvar_GVAR> ();
+    إذا (unlikely (!بیرون)) return_trace (خطأ);
 
-    out->version.major = 1;
-    out->version.minor = 0;
-    out->axisCount = axisCount;
-    out->sharedTupleCount = sharedTupleCount;
+    بیرون->نسخه.major = 1;
+    بیرون->نسخه.minor = 0;
+    بیرون->axis_شمار_2 = axis_شمار_2;
+    بیرون->shared_Tuple_شمار = shared_Tuple_شمار;
 
-    unsigned int num_glyphs = c->plan->num_output_glyphs ();
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    بیعلامت صحيح رقم_glyphs = c->plan->رقم_output_glyphs ();
+    بیرون->glyph_شمار_X = hb_min (glyph_شمار_max (), رقم_glyphs);
 
     /* avar2 partial instancing: cull tuple variations whose region falls
      * outside the reachable old-space final-coord ranges. Rewritten glyph
      * data is cached per new gid; untouched glyphs are copied verbatim. */
-    hb_vector_t<hb_vector_t<char>> culled_vars;
-    hb_set_t culled_gids;
-    if (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
+    hb_وکتور_t<hb_وکتور_t<حرف>> culled_vars;
+    hb_مجموعه_t culled_gids;
+    إذا (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
     {
-      hb_array_t<const F2DOT14> shared_tuples_array =
-	  (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-      if (unlikely (!culled_vars.resize (num_glyphs))) return_trace (false);
-      auto cull_it = hb_iter (c->plan->new_to_old_gid_list);
-      if (cull_it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+      hb_array_t<ثابت F2DOT14> shared_tuples_array =
+	  (هذا+sharedTuples).as_array ((بیعلامت) shared_Tuple_شمار * (بیعلامت) axis_شمار_2);
+      إذا (unlikely (!culled_vars.resize (رقم_glyphs))) return_trace (خطأ);
+      خودکار cull_it = hb_iter (c->plan->new_مقصد_old_gid_list);
+      إذا (cull_it->اولی == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
 	cull_it++;
-      for (auto &_ : cull_it)
+      لكل (خودکار &_ : cull_it)
       {
-	hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyph_count, _.second);
-	if (var_data_bytes.length < GlyphVariationData::min_size) continue;
-	bool changed = false;
-	if (unlikely (!var_data_bytes.as<GlyphVariationData> ()
-		      ->cull_tuple_variations (var_data_bytes, axisCount,
+	hb_بایتها_t var_داده_بایتها = get_glyph_var_داده_بایتها (c->منبع_blob, glyph_شمار, _.second);
+	إذا (var_داده_بایتها.درازی < Glyph_Variation_داده::min_اندازه) استمر;
+	منطقي تغییریافته = خطأ;
+	إذا (unlikely (!var_داده_بایتها.as<Glyph_Variation_داده> ()
+		      ->cull_tuple_variations (var_داده_بایتها, axis_شمار_2,
 					       shared_tuples_array,
-					       &c->plan->axes_old_index_tag_map,
+					       &c->plan->axes_old_شاخص_برچسب_map,
 					       c->plan->avar2_reachable_ranges,
-					       culled_vars[_.first], &changed)))
-	  return_trace (false);
-	if (changed) culled_gids.add (_.first);
+					       culled_vars[_.اولی], &تغییریافته)))
+	  return_trace (خطأ);
+	إذا (تغییریافته) culled_gids.جمع_کن (_.اولی);
       }
-      if (unlikely (culled_gids.in_error ())) return_trace (false);
+      إذا (unlikely (culled_gids.درون_error ())) return_trace (خطأ);
     }
 
-    auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    خودکار it = hb_iter (c->plan->new_مقصد_old_gid_list);
+    إذا (it->اولی == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    unsigned subset_data_size = 0;
-    unsigned padding_size = 0;
-    for (auto &_ : it)
+    بیعلامت subset_داده_اندازه = 0;
+    بیعلامت padding_اندازه = 0;
+    لكل (خودکار &_ : it)
     {
       hb_codepoint_t old_gid = _.second;
-      unsigned glyph_data_size = culled_gids.has (_.first)
-				 ? culled_vars[_.first].length
-				 : get_glyph_var_data_bytes (c->source_blob, glyph_count, old_gid).length;
-      if (glyph_data_size % 2)
+      بیعلامت glyph_داده_اندازه = culled_gids.has (_.اولی)
+				 ? culled_vars[_.اولی].درازی
+				 : get_glyph_var_داده_بایتها (c->منبع_blob, glyph_شمار, old_gid).درازی;
+      إذا (glyph_داده_اندازه % 2)
       {
-        glyph_data_size++;
-        padding_size++;
+        glyph_داده_اندازه++;
+        padding_اندازه++;
       }
 
-      if (unlikely (hb_unsigned_add_overflows (subset_data_size, glyph_data_size, &subset_data_size)))
-	return_trace (false);
+      إذا (unlikely (hb_unsigned_جمع_کن_overflows (subset_داده_اندازه, glyph_داده_اندازه, &subset_داده_اندازه)))
+	return_trace (خطأ);
     }
 
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = subset_data_size > 0x1FFFEu;
-#ifdef HB_EXPERIMENTAL_API
-    long_offset = long_offset || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
-#endif
-    out->flags = long_offset ? 1 : 0;
+    منطقي long_جابه_جایی = subset_داده_اندازه > 0x1FFFEu;
+#اگر_تعریف_شده HB_EXPERIMENTAL_API
+    long_جابه_جایی = long_جابه_جایی || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
+#پایان_اگر
+    بیرون->flags = long_جابه_جایی ? 1 : 0;
 
-    unsigned subset_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *subset_offsets = c->serializer->allocate_size<HBUINT8> (subset_offsets_size, false);
-    if (!subset_offsets) return_trace (false);
+    بیعلامت subset_offsets_اندازه = (long_جابه_جایی ? 4 : 2) * (رقم_glyphs + 1);
+    HBUINT8 *subset_offsets = c->serializer->allocate_اندازه<HBUINT8> (subset_offsets_اندازه, خطأ);
+    إذا (!subset_offsets) return_trace (خطأ);
 
     /* shared tuples */
-    if (!sharedTupleCount || !sharedTuples)
-      out->sharedTuples = (char *) subset_offsets + subset_offsets_size - (char *) out;
-    else
+    إذا (!shared_Tuple_شمار || !sharedTuples)
+      بیرون->sharedTuples = (حرف *) subset_offsets + subset_offsets_اندازه - (حرف *) بیرون;
+    وإلا
     {
-      unsigned int shared_tuple_size = F2DOT14::static_size * axisCount * sharedTupleCount;
-      F2DOT14 *tuples = c->serializer->allocate_size<F2DOT14> (shared_tuple_size);
-      if (!tuples) return_trace (false);
-      out->sharedTuples = (char *) tuples - (char *) out;
-      hb_memcpy (tuples, this+sharedTuples, shared_tuple_size);
+      بیعلامت صحيح shared_tuple_اندازه = F2DOT14::static_اندازه * axis_شمار_2 * shared_Tuple_شمار;
+      F2DOT14 *tuples = c->serializer->allocate_اندازه<F2DOT14> (shared_tuple_اندازه);
+      إذا (!tuples) return_trace (خطأ);
+      بیرون->sharedTuples = (حرف *) tuples - (حرف *) بیرون;
+      hb_memcpy (tuples, هذا+sharedTuples, shared_tuple_اندازه);
     }
 
     /* This ordering relative to the shared tuples array, which puts the glyphVariationData
        last in the table, is required when HB_SUBSET_FLAGS_IFTB_REQUIREMENTS is set */
-    if (long_offset)
-      subset_data_size -= padding_size;
-    char *subset_data = c->serializer->allocate_size<char> (subset_data_size, false);
-    if (!subset_data) return_trace (false);
-    out->dataZ = subset_data - (char *) out;
+    إذا (long_جابه_جایی)
+      subset_داده_اندازه -= padding_اندازه;
+    حرف *subset_داده = c->serializer->allocate_اندازه<حرف> (subset_داده_اندازه, خطأ);
+    إذا (!subset_داده) return_trace (خطأ);
+    بیرون->داده_Z = subset_داده - (حرف *) بیرون;
 
 
-    if (long_offset)
+    إذا (long_جابه_جایی)
     {
       ((HBUINT32 *) subset_offsets)[0] = 0;
       subset_offsets += 4;
     }
-    else
+    وإلا
     {
       ((HBUINT16 *) subset_offsets)[0] = 0;
       subset_offsets += 2;
     }
-    unsigned int glyph_offset = 0;
+    بیعلامت صحيح glyph_جابه_جایی = 0;
 
-    hb_codepoint_t last = 0;
-    it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_codepoint_t آخرین = 0;
+    it = hb_iter (c->plan->new_مقصد_old_gid_list);
+    إذا (it->اولی == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    for (auto &_ : it)
+    لكل (خودکار &_ : it)
     {
-      hb_codepoint_t gid = _.first;
+      hb_codepoint_t gid = _.اولی;
       hb_codepoint_t old_gid = _.second;
 
-      if (long_offset)
-	for (; last < gid; last++)
-	  ((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-      else
-	for (; last < gid; last++)
-	  ((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
+      إذا (long_جابه_جایی)
+	لكل (; آخرین < gid; آخرین++)
+	  ((HBUINT32 *) subset_offsets)[آخرین] = glyph_جابه_جایی;
+      وإلا
+	لكل (; آخرین < gid; آخرین++)
+	  ((HBUINT16 *) subset_offsets)[آخرین] = glyph_جابه_جایی / 2;
 
-      hb_bytes_t var_data_bytes = culled_gids.has (gid)
-				  ? hb_bytes_t (culled_vars[gid].arrayZ,
-						culled_vars[gid].length)
-				  : get_glyph_var_data_bytes (c->source_blob,
-							      glyph_count,
+      hb_بایتها_t var_داده_بایتها = culled_gids.has (gid)
+				  ? hb_بایتها_t (culled_vars[gid].arrayZ,
+						culled_vars[gid].درازی)
+				  : get_glyph_var_داده_بایتها (c->منبع_blob,
+							      glyph_شمار,
 							      old_gid);
 
-      hb_memcpy (subset_data, var_data_bytes.arrayZ, var_data_bytes.length);
-      unsigned glyph_data_size = var_data_bytes.length;
-      subset_data += glyph_data_size;
-      glyph_offset += glyph_data_size;
+      hb_memcpy (subset_داده, var_داده_بایتها.arrayZ, var_داده_بایتها.درازی);
+      بیعلامت glyph_داده_اندازه = var_داده_بایتها.درازی;
+      subset_داده += glyph_داده_اندازه;
+      glyph_جابه_جایی += glyph_داده_اندازه;
 
-      if (!long_offset && (glyph_data_size % 2))
+      إذا (!long_جابه_جایی && (glyph_داده_اندازه % 2))
       {
-        *subset_data = 0;
-        subset_data++;
-        glyph_offset++;
+        *subset_داده = 0;
+        subset_داده++;
+        glyph_جابه_جایی++;
       }
 
-      if (long_offset)
-	((HBUINT32 *) subset_offsets)[gid] = glyph_offset;
-      else
-	((HBUINT16 *) subset_offsets)[gid] = glyph_offset / 2;
+      إذا (long_جابه_جایی)
+	((HBUINT32 *) subset_offsets)[gid] = glyph_جابه_جایی;
+      وإلا
+	((HBUINT16 *) subset_offsets)[gid] = glyph_جابه_جایی / 2;
 
-      last++; // Skip over gid
+      آخرین++; // Skip over gid
     }
 
-    if (long_offset)
-      for (; last < num_glyphs; last++)
-	((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-    else
-      for (; last < num_glyphs; last++)
-	((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
+    إذا (long_جابه_جایی)
+      لكل (; آخرین < رقم_glyphs; آخرین++)
+	((HBUINT32 *) subset_offsets)[آخرین] = glyph_جابه_جایی;
+    وإلا
+      لكل (; آخرین < رقم_glyphs; آخرین++)
+	((HBUINT16 *) subset_offsets)[آخرین] = glyph_جابه_جایی / 2;
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  protected:
-  const hb_bytes_t get_glyph_var_data_bytes (hb_blob_t *blob,
-					     unsigned glyph_count,
-					     hb_codepoint_t glyph) const
+  محمي:
+  ثابت hb_بایتها_t get_glyph_var_داده_بایتها (hb_blob_t *blob,
+					     بیعلامت glyph_شمار,
+					     hb_codepoint_t glyph) ثابت
   {
-    unsigned start_offset = get_offset (glyph_count, glyph);
-    unsigned end_offset = get_offset (glyph_count, glyph+1);
-    if (unlikely (end_offset < start_offset)) return hb_bytes_t ();
-    unsigned length = end_offset - start_offset;
-    hb_bytes_t var_data = blob->as_bytes ().sub_array (((unsigned) dataZ) + start_offset, length);
-    return likely (var_data.length >= GlyphVariationData::min_size) ? var_data : hb_bytes_t ();
+    بیعلامت شروع_جابه_جایی = get_جابه_جایی (glyph_شمار, glyph);
+    بیعلامت انتها_جابه_جایی = get_جابه_جایی (glyph_شمار, glyph+1);
+    إذا (unlikely (انتها_جابه_جایی < شروع_جابه_جایی)) أرجع hb_بایتها_t ();
+    بیعلامت درازی = انتها_جابه_جایی - شروع_جابه_جایی;
+    hb_بایتها_t var_داده = blob->as_بایتها ().sub_array (((بیعلامت) داده_Z) + شروع_جابه_جایی, درازی);
+    أرجع likely (var_داده.درازی >= Glyph_Variation_داده::min_اندازه) ? var_داده : hb_بایتها_t ();
   }
 
-  bool is_long_offset () const { return flags & 1; }
+  منطقي is_long_جابه_جایی () ثابت { أرجع flags & 1; }
 
-  unsigned get_offset (unsigned glyph_count, unsigned i) const
+  بیعلامت get_جابه_جایی (بیعلامت glyph_شمار, بیعلامت i) ثابت
   {
-    if (unlikely (i > glyph_count)) return 0;
+    إذا (unlikely (i > glyph_شمار)) أرجع 0;
     hb_barrier ();
-    return is_long_offset () ? get_long_offset_array ()[i] : get_short_offset_array ()[i] * 2;
+    أرجع is_long_جابه_جایی () ? get_long_جابه_جایی_array ()[i] : get_short_جابه_جایی_array ()[i] * 2;
   }
 
-  const HBUINT32 * get_long_offset_array () const { return (const HBUINT32 *) &offsetZ; }
-  const HBUINT16 *get_short_offset_array () const { return (const HBUINT16 *) &offsetZ; }
+  ثابت HBUINT32 * get_long_جابه_جایی_array () ثابت { أرجع (ثابت HBUINT32 *) &جابه_جایی_Z; }
+  ثابت HBUINT16 *get_short_جابه_جایی_array () ثابت { أرجع (ثابت HBUINT16 *) &جابه_جایی_Z; }
 
-  public:
-  struct accelerator_t
+  عام:
+  بنية accelerator_t
   {
 
-    hb_scalar_cache_t *create_cache () const
+    hb_scalar_cache_t *create_cache () ثابت
     {
-      return hb_scalar_cache_t::create (hb_min ((unsigned) table->sharedTupleCount,
-						+TupleVariationHeader::max_shared_tuple_count));
+      أرجع hb_scalar_cache_t::create (hb_min ((بیعلامت) جدول->shared_Tuple_شمار,
+						+Tuple_Variation_سرآیند::max_shared_tuple_شمار));
     }
 
-    static void destroy_cache (hb_scalar_cache_t *cache)
+    ساكن فراغ destroy_cache (hb_scalar_cache_t *cache)
     {
       hb_scalar_cache_t::destroy (cache);
     }
 
-    bool has_data () const { return table->has_data (); }
+    منطقي has_داده () ثابت { أرجع جدول->has_داده (); }
 
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<gvar_GVAR> (face, T::tableTag);
+      جدول = hb_sanitize_context_t ().reference_جدول<gvar_GVAR> (face, T::جدول_برچسب);
       /* If sanitize failed, set glyphCount to 0. */
-      glyphCount = table->version.to_int () ? face->get_num_glyphs () : 0;
+      glyph_شمار_2 = جدول->نسخه.مقصد_int () ? face->get_رقم_glyphs () : 0;
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { جدول.destroy (); }
 
-    private:
+    خاص:
 
-    static float infer_delta (const hb_array_t<contour_point_t> points,
-			      const hb_array_t<contour_point_t> deltas,
-			      unsigned int target, unsigned int prev, unsigned int next,
-			      float contour_point_t::*m)
+    ساكن عائم infer_delta (ثابت hb_array_t<contour_نقطه_t> points,
+			      ثابت hb_array_t<contour_نقطه_t> deltas,
+			      بیعلامت صحيح target, بیعلامت صحيح prev, بیعلامت صحيح next,
+			      عائم contour_نقطه_t::*m)
     {
-      float target_val = points.arrayZ[target].*m;
-      float prev_val = points.arrayZ[prev].*m;
-      float next_val = points.arrayZ[next].*m;
-      float prev_delta =  deltas.arrayZ[prev].*m;
-      float next_delta =  deltas.arrayZ[next].*m;
+      عائم هدف_val = points.arrayZ[target].*m;
+      عائم prev_val = points.arrayZ[prev].*m;
+      عائم بعدی_val = points.arrayZ[next].*m;
+      عائم prev_delta =  deltas.arrayZ[prev].*m;
+      عائم بعدی_delta =  deltas.arrayZ[next].*m;
 
-      if (prev_val == next_val)
-	return (prev_delta == next_delta) ? prev_delta : 0.f;
-      else if (target_val <= hb_min (prev_val, next_val))
-	return (prev_val < next_val) ? prev_delta : next_delta;
-      else if (target_val >= hb_max (prev_val, next_val))
-	return (prev_val > next_val) ? prev_delta : next_delta;
+      إذا (prev_val == بعدی_val)
+	أرجع (prev_delta == بعدی_delta) ? prev_delta : 0.f;
+      وإلا إذا (هدف_val <= hb_min (prev_val, بعدی_val))
+	أرجع (prev_val < بعدی_val) ? prev_delta : بعدی_delta;
+      وإلا إذا (هدف_val >= hb_max (prev_val, بعدی_val))
+	أرجع (prev_val > بعدی_val) ? prev_delta : بعدی_delta;
 
       /* linear interpolation */
-      float r = (target_val - prev_val) / (next_val - prev_val);
-      return prev_delta + r * (next_delta - prev_delta);
+      عائم r = (هدف_val - prev_val) / (بعدی_val - prev_val);
+      أرجع prev_delta + r * (بعدی_delta - prev_delta);
     }
 
-    static unsigned int next_index (unsigned int i, unsigned int start, unsigned int end)
-    { return (i >= end) ? start : (i + 1); }
+    ساكن بیعلامت صحيح بعدی_شاخص (بیعلامت صحيح i, بیعلامت صحيح شروع, بیعلامت صحيح انتها)
+    { أرجع (i >= انتها) ? شروع : (i + 1); }
 
-#ifndef HB_OPTIMIZE_SIZE
-    template <bool is_x>
-#endif
-    static bool decompile_deltas_add_to_points (const HBUINT8 *&p /* IN/OUT */,
-						hb_array_t<contour_point_t> points,
-						float scalar,
-						const HBUINT8 *end,
-						unsigned start
-#ifdef HB_OPTIMIZE_SIZE
-						, bool is_x
-#endif
+#اگر_تعریف_نشده HB_OPTIMIZE_اندازه
+    قالب <منطقي is_x>
+#پایان_اگر
+    ساكن منطقي decompile_deltas_جمع_کن_مقصد_points (ثابت HBUINT8 *&p /* IN/OUT */,
+						hb_array_t<contour_نقطه_t> points,
+						عائم scalar,
+						ثابت HBUINT8 *انتها,
+						بیعلامت شروع
+#اگر_تعریف_شده HB_OPTIMIZE_اندازه
+						, منطقي is_x
+#پایان_اگر
 						)
     {
-      unsigned i = 0;
-      unsigned count = points.length;
-      while (i < count)
+      بیعلامت i = 0;
+      بیعلامت شمار = points.درازی;
+      طالما (i < شمار)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned control = *p++;
-	unsigned run_count = (control & TupleValues::VALUE_RUN_COUNT_MASK) + 1;
-	unsigned stop = i + run_count;
-	if (unlikely (stop > count)) return false;
+	إذا (unlikely (p + 1 > انتها)) أرجع خطأ;
+	بیعلامت control = *p++;
+	بیعلامت پیاپی_شمار = (control & Tuple_مقادیر::مقدار_پیاپی_شمار_ماسک) + 1;
+	بیعلامت stop = i + پیاپی_شمار;
+	إذا (unlikely (stop > شمار)) أرجع خطأ;
 
-	unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+	بیعلامت skip = i < شروع ? hb_min (شروع - i, پیاپی_شمار) : 0;
 	i += skip;
 
-	switch (control & TupleValues::VALUES_SIZE_MASK)
+	بدل (control & Tuple_مقادیر::مقادیر_اندازه_ماسک)
 	{
-	  case TupleValues::VALUES_ARE_ZEROS:
+	  حالة Tuple_مقادیر::مقادیر_ARE_ZEROS:
 	    i = stop;
-	    break;
-	  case TupleValues::VALUES_ARE_WORDS:
+	    اكسر;
+	  حالة Tuple_مقادیر::مقادیر_ARE_واژگان:
 	  {
-	    if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
-	    p += skip * HBINT16::static_size;
-	    const auto *pp = (const HBINT16 *) p;
-	    for (; i < stop; i++)
+	    إذا (unlikely (p + پیاپی_شمار * HBINT16::static_اندازه > انتها)) أرجع خطأ;
+	    p += skip * HBINT16::static_اندازه;
+	    ثابت خودکار *pp = (ثابت HBINT16 *) p;
+	    لكل (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      عائم v = *pp++ * scalar;
+	      إذا (is_x) points.arrayZ[i].x += v;
+	      وإلا points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (ثابت HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_LONGS:
+	  اكسر;
+	  حالة Tuple_مقادیر::مقادیر_ARE_LONGS:
 	  {
-	    if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
-	    p += skip * HBINT32::static_size;
-	    const auto *pp = (const HBINT32 *) p;
-	    for (; i < stop; i++)
+	    إذا (unlikely (p + پیاپی_شمار * HBINT32::static_اندازه > انتها)) أرجع خطأ;
+	    p += skip * HBINT32::static_اندازه;
+	    ثابت خودکار *pp = (ثابت HBINT32 *) p;
+	    لكل (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      عائم v = *pp++ * scalar;
+	      إذا (is_x) points.arrayZ[i].x += v;
+	      وإلا points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (ثابت HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_BYTES:
+	  اكسر;
+	  حالة Tuple_مقادیر::مقادیر_ARE_بایتها:
 	  {
-	    if (unlikely (p + run_count > end)) return false;
-	    p += skip * HBINT8::static_size;
-	    const auto *pp = (const HBINT8 *) p;
-	    for (; i < stop; i++)
+	    إذا (unlikely (p + پیاپی_شمار > انتها)) أرجع خطأ;
+	    p += skip * HBINT8::static_اندازه;
+	    ثابت خودکار *pp = (ثابت HBINT8 *) p;
+	    لكل (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      عائم v = *pp++ * scalar;
+	      إذا (is_x) points.arrayZ[i].x += v;
+	      وإلا points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (ثابت HBUINT8 *) pp;
 	  }
-	  break;
+	  اكسر;
 	}
       }
-      return true;
+      أرجع درست;
     }
-    public:
-    bool apply_deltas_to_points (hb_codepoint_t glyph,
-				 hb_array_t<const int> coords,
-				 const hb_array_t<contour_point_t> points,
+    عام:
+    منطقي apply_deltas_مقصد_points (hb_codepoint_t glyph,
+				 hb_array_t<ثابت صحيح> coords,
+				 ثابت hb_array_t<contour_نقطه_t> points,
 				 hb_glyf_scratch_t &scratch,
-				 hb_scalar_cache_t *gvar_cache = nullptr,
-				 bool phantom_only = false,
-				 int64_t *budget = nullptr) const
+				 hb_scalar_cache_t *gvar_cache = اشاره_تهی,
+				 منطقي phantom_only = خطأ,
+				 int64_t *budget = اشاره_تهی) ثابت
     {
-      if (unlikely (glyph >= glyphCount)) return true;
+      إذا (unlikely (glyph >= glyph_شمار_2)) أرجع درست;
       hb_scalar_cache_t *scalar_cache = gvar_cache ?
 					gvar_cache :
 					(hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-      hb_bytes_t var_data_bytes = table->get_glyph_var_data_bytes (table.get_blob (), glyphCount, glyph);
-      if (!var_data_bytes.as<GlyphVariationData> ()->has_data ()) return true;
+      hb_بایتها_t var_داده_بایتها = جدول->get_glyph_var_داده_بایتها (جدول.get_blob (), glyph_شمار_2, glyph);
+      إذا (!var_داده_بایتها.as<Glyph_Variation_داده> ()->has_داده ()) أرجع درست;
 
-      auto &shared_indices = scratch.shared_indices;
+      خودکار &shared_indices = scratch.shared_indices;
       shared_indices.clear ();
 
-      typename GlyphVariationData::tuple_iterator_t iterator;
-      if (!GlyphVariationData::get_tuple_iterator (var_data_bytes, table->axisCount,
-						   var_data_bytes.arrayZ,
+      نام_نوع Glyph_Variation_داده::tuple_iterator_t iterator;
+      إذا (!Glyph_Variation_داده::get_tuple_iterator (var_داده_بایتها, جدول->axis_شمار_2,
+						   var_داده_بایتها.arrayZ,
 						   shared_indices, &iterator))
-	return true; /* so isn't applied at all */
+	أرجع درست; /* so isn't applied at all */
 
-      bool any_private_points = false;
-      bool private_points_checked = false;
+      منطقي any_خصوصی_points = خطأ;
+      منطقي خصوصی_points_checked = خطأ;
 
       /* Save original points for inferred delta calculation */
-      auto &orig_points_vec = scratch.orig_points;
+      خودکار &orig_points_vec = scratch.orig_points;
       orig_points_vec.clear (); // Populated lazily
-      auto orig_points = orig_points_vec.as_array ();
+      خودکار orig_points = orig_points_vec.as_array ();
 
       /* flag is used to indicate referenced point */
-      auto &deltas_vec = scratch.deltas;
+      خودکار &deltas_vec = scratch.deltas;
       deltas_vec.clear (); // Populated lazily
-      auto deltas = deltas_vec.as_array ();
+      خودکار deltas = deltas_vec.as_array ();
 
-      unsigned num_coords = table->axisCount;
-      hb_array_t<const F2DOT14> shared_tuples = (table+table->sharedTuples).as_array (table->sharedTupleCount * num_coords);
+      بیعلامت رقم_coords = جدول->axis_شمار_2;
+      hb_array_t<ثابت F2DOT14> shared_tuples = (جدول+جدول->sharedTuples).as_array (جدول->shared_Tuple_شمار * رقم_coords);
 
-      auto &private_indices = scratch.private_indices;
-      auto &x_deltas = scratch.x_deltas;
-      auto &y_deltas = scratch.y_deltas;
+      خودکار &خصوصی_indices = scratch.خصوصی_indices;
+      خودکار &x_deltas = scratch.x_deltas;
+      خودکار &y_deltas = scratch.y_deltas;
 
-      unsigned count = points.length;
-      bool flush = false;
+      بیعلامت شمار = points.درازی;
+      منطقي flush = خطأ;
 
-      do
+      افعل
       {
-	float scalar = iterator.current_tuple->calculate_scalar (coords, num_coords, shared_tuples,
+	عائم scalar = iterator.current_tuple->calculate_scalar (coords, رقم_coords, shared_tuples,
 								 scalar_cache);
 
-	if (scalar == 0.f) continue;
+	إذا (scalar == 0.f) استمر;
 
-	if (budget &&
+	إذا (budget &&
 	    unlikely (!hb_budget_spend (*budget, HB_BUDGET_1,
-					 phantom_only && count >= 4 ? 4 : count)))
-	  return false;
+					 phantom_only && شمار >= 4 ? 4 : شمار)))
+	  أرجع خطأ;
 
-	if (!private_points_checked)
+	إذا (!خصوصی_points_checked)
 	{
-	  auto scan = iterator;
-	  do
+	  خودکار پیمایش = iterator;
+	  افعل
 	  {
-	    if (scan.current_tuple->has_private_points ())
+	    إذا (پیمایش.current_tuple->has_خصوصی_points ())
 	    {
-	      any_private_points = true;
-	      break;
+	      any_خصوصی_points = درست;
+	      اكسر;
 	    }
-	  } while (scan.move_to_next ());
-	  private_points_checked = true;
+	  } طالما (پیمایش.move_مقصد_بعدی ());
+	  خصوصی_points_checked = درست;
 	}
-	const HBUINT8 *p = iterator.get_serialized_data ();
-	unsigned int length = iterator.current_tuple->get_data_size ();
-	if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-	  return false;
+	ثابت HBUINT8 *p = iterator.get_serialized_داده ();
+	بیعلامت صحيح درازی = iterator.current_tuple->get_داده_اندازه ();
+	إذا (unlikely (!iterator.var_داده_بایتها.check_range (p, درازی)))
+	  أرجع خطأ;
 
-	if (!deltas)
+	إذا (!deltas)
 	{
-	  if (unlikely (!deltas_vec.resize_dirty  (count))) return false;
+	  إذا (unlikely (!deltas_vec.resize_dirty  (شمار))) أرجع خطأ;
 	  deltas = deltas_vec.as_array ();
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? شمار - 4 : 0), 0,
+		     (phantom_only ? 4 : شمار) * حجم (deltas[0]));
 	}
 
-	const HBUINT8 *end = p + length;
+	ثابت HBUINT8 *انتها = p + درازی;
 
-	bool has_private_points = iterator.current_tuple->has_private_points ();
-	if (has_private_points &&
-	    !GlyphVariationData::decompile_points (p, private_indices, end))
-	  return false;
-	const hb_array_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+	منطقي has_خصوصی_points = iterator.current_tuple->has_خصوصی_points ();
+	إذا (has_خصوصی_points &&
+	    !Glyph_Variation_داده::decompile_points (p, خصوصی_indices, انتها))
+	  أرجع خطأ;
+	ثابت hb_array_t<بیعلامت صحيح> &indices = has_خصوصی_points ? خصوصی_indices : shared_indices;
 
-	bool apply_to_all = (indices.length == 0);
-	unsigned num_deltas = apply_to_all ? points.length : indices.length;
-	unsigned start_deltas = (apply_to_all && phantom_only && num_deltas >= 4 ? num_deltas - 4 : 0);
+	منطقي apply_مقصد_all = (indices.درازی == 0);
+	بیعلامت رقم_deltas = apply_مقصد_all ? points.درازی : indices.درازی;
+	بیعلامت شروع_deltas = (apply_مقصد_all && phantom_only && رقم_deltas >= 4 ? رقم_deltas - 4 : 0);
 
-	if (apply_to_all && !any_private_points)
+	إذا (apply_مقصد_all && !any_خصوصی_points)
 	{
-#ifdef HB_OPTIMIZE_SIZE
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, true))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, false))) return false;
-#else
-	  if (unlikely (!decompile_deltas_add_to_points<true> (p, points, scalar, end, start_deltas))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points<false> (p, points, scalar, end, start_deltas))) return false;
-#endif
-	  continue;
+#اگر_تعریف_شده HB_OPTIMIZE_اندازه
+	  إذا (unlikely (!decompile_deltas_جمع_کن_مقصد_points (p, points, scalar, انتها, شروع_deltas, درست))) أرجع خطأ;
+	  إذا (unlikely (!decompile_deltas_جمع_کن_مقصد_points (p, points, scalar, انتها, شروع_deltas, خطأ))) أرجع خطأ;
+#وإلا
+	  إذا (unlikely (!decompile_deltas_جمع_کن_مقصد_points<درست> (p, points, scalar, انتها, شروع_deltas))) أرجع خطأ;
+	  إذا (unlikely (!decompile_deltas_جمع_کن_مقصد_points<خطأ> (p, points, scalar, انتها, شروع_deltas))) أرجع خطأ;
+#پایان_اگر
+	  استمر;
 	}
 
-	if (unlikely (!x_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, x_deltas, end, false, start_deltas))) return false;
-	if (unlikely (!y_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, y_deltas, end, false, start_deltas))) return false;
+	إذا (unlikely (!x_deltas.resize_dirty  (رقم_deltas))) أرجع خطأ;
+	إذا (unlikely (!Glyph_Variation_داده::decompile_deltas (p, x_deltas, انتها, خطأ, شروع_deltas))) أرجع خطأ;
+	إذا (unlikely (!y_deltas.resize_dirty  (رقم_deltas))) أرجع خطأ;
+	إذا (unlikely (!Glyph_Variation_داده::decompile_deltas (p, y_deltas, انتها, خطأ, شروع_deltas))) أرجع خطأ;
 
-	if (!apply_to_all)
+	إذا (!apply_مقصد_all)
 	{
-	  if (!orig_points && !phantom_only)
+	  إذا (!orig_points && !phantom_only)
 	  {
 	    orig_points_vec.extend (points);
-	    if (unlikely (orig_points_vec.in_error ())) return false;
+	    إذا (unlikely (orig_points_vec.درون_error ())) أرجع خطأ;
 	    orig_points = orig_points_vec.as_array ();
 	  }
 
-	  if (flush)
+	  إذا (flush)
 	  {
-	    for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    لكل (بیعلامت صحيح i = phantom_only ? شمار - 4 : 0; i < شمار; i++)
 	      points.arrayZ[i].translate (deltas.arrayZ[i]);
 	  }
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? شمار - 4 : 0), 0,
+		     (phantom_only ? 4 : شمار) * حجم (deltas[0]));
 	}
 
-	if (HB_OPTIMIZE_SIZE_VAL)
+	إذا (HB_OPTIMIZE_اندازه_VAL)
 	{
-	  for (unsigned int i = 0; i < num_deltas; i++)
+	  لكل (بیعلامت صحيح i = 0; i < رقم_deltas; i++)
 	  {
-	    unsigned int pt_index;
-	    if (apply_to_all)
-	      pt_index = i;
-	    else
+	    بیعلامت صحيح pt_شاخص;
+	    إذا (apply_مقصد_all)
+	      pt_شاخص = i;
+	    وإلا
 	    {
-	      pt_index = indices[i];
-	      if (unlikely (pt_index >= deltas.length)) continue;
+	      pt_شاخص = indices[i];
+	      إذا (unlikely (pt_شاخص >= deltas.درازی)) استمر;
 	    }
-	    if (phantom_only && pt_index < count - 4) continue;
-	    auto &delta = deltas.arrayZ[pt_index];
+	    إذا (phantom_only && pt_شاخص < شمار - 4) استمر;
+	    خودکار &delta = deltas.arrayZ[pt_شاخص];
 	    delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-	    delta.add_delta (x_deltas.arrayZ[i] * scalar,
+	    delta.جمع_کن_delta (x_deltas.arrayZ[i] * scalar,
 			     y_deltas.arrayZ[i] * scalar);
 	  }
 	}
-	else
+	وإلا
 	{
 	  /* Ouch. Four cases... for optimization. */
-	  if (scalar != 1.0f)
+	  إذا (scalar != 1.0f)
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    إذا (apply_مقصد_all)
+	      لكل (بیعلامت صحيح i = phantom_only ? شمار - 4 : 0; i < شمار; i++)
 	      {
-		auto &delta = deltas.arrayZ[i];
-		delta.add_delta (x_deltas.arrayZ[i] * scalar,
+		خودکار &delta = deltas.arrayZ[i];
+		delta.جمع_کن_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    وإلا
+	      لكل (بیعلامت صحيح i = 0; i < رقم_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
-		auto &delta = deltas.arrayZ[pt_index];
+		بیعلامت صحيح pt_شاخص = indices[i];
+		إذا (unlikely (pt_شاخص >= deltas.درازی)) استمر;
+		إذا (phantom_only && pt_شاخص < شمار - 4) استمر;
+		خودکار &delta = deltas.arrayZ[pt_شاخص];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-		delta.add_delta (x_deltas.arrayZ[i] * scalar,
+		delta.جمع_کن_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
 	  }
-	  else
+	  وإلا
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    إذا (apply_مقصد_all)
+	      لكل (بیعلامت صحيح i = phantom_only ? شمار - 4 : 0; i < شمار; i++)
 	      {
-		auto &delta = deltas.arrayZ[i];
-		delta.add_delta (x_deltas.arrayZ[i],
+		خودکار &delta = deltas.arrayZ[i];
+		delta.جمع_کن_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    وإلا
+	      لكل (بیعلامت صحيح i = 0; i < رقم_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
-		auto &delta = deltas.arrayZ[pt_index];
+		بیعلامت صحيح pt_شاخص = indices[i];
+		إذا (unlikely (pt_شاخص >= deltas.درازی)) استمر;
+		إذا (phantom_only && pt_شاخص < شمار - 4) استمر;
+		خودکار &delta = deltas.arrayZ[pt_شاخص];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
-		delta.add_delta (x_deltas.arrayZ[i],
+		delta.جمع_کن_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
 	  }
 	}
 
 	/* infer deltas for unreferenced points */
-	if (!apply_to_all && !phantom_only)
+	إذا (!apply_مقصد_all && !phantom_only)
 	{
-	  unsigned start_point = 0;
-	  unsigned end_point = 0;
-	  while (true)
+	  بیعلامت شروع_نقطه_2 = 0;
+	  بیعلامت انتها_نقطه = 0;
+	  طالما (درست)
 	  {
-	    while (end_point < count && !points.arrayZ[end_point].is_end_point)
-	      end_point++;
-	    if (unlikely (end_point == count)) break;
+	    طالما (انتها_نقطه < شمار && !points.arrayZ[انتها_نقطه].is_انتها_نقطه)
+	      انتها_نقطه++;
+	    إذا (unlikely (انتها_نقطه == شمار)) اكسر;
 
 	    /* Check the number of unreferenced points in a contour. If no unref points or no ref points, nothing to do. */
-	    unsigned unref_count = 0;
-	    for (unsigned i = start_point; i < end_point + 1; i++)
-	      unref_count += deltas.arrayZ[i].flag;
-	    unref_count = (end_point - start_point + 1) - unref_count;
+	    بیعلامت unref_شمار = 0;
+	    لكل (بیعلامت i = شروع_نقطه_2; i < انتها_نقطه + 1; i++)
+	      unref_شمار += deltas.arrayZ[i].flag;
+	    unref_شمار = (انتها_نقطه - شروع_نقطه_2 + 1) - unref_شمار;
 
-	    unsigned j = start_point;
-	    if (unref_count == 0 || unref_count > end_point - start_point)
-	      goto no_more_gaps;
+	    بیعلامت j = شروع_نقطه_2;
+	    إذا (unref_شمار == 0 || unref_شمار > انتها_نقطه - شروع_نقطه_2)
+	      اذهب no_بیشتر_gaps;
 
-	    for (;;)
+	    لكل (;;)
 	    {
 	      /* Locate the next gap of unreferenced points between two referenced points prev and next.
 	       * Note that a gap may wrap around at left (start_point) and/or at right (end_point).
 	       */
-	      unsigned int prev, next, i;
-	      for (;;)
+	      بیعلامت صحيح prev, next, i;
+	      لكل (;;)
 	      {
 		i = j;
-		j = next_index (i, start_point, end_point);
-		if (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) break;
+		j = بعدی_شاخص (i, شروع_نقطه_2, انتها_نقطه);
+		إذا (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) اكسر;
 	      }
 	      prev = j = i;
-	      for (;;)
+	      لكل (;;)
 	      {
 		i = j;
-		j = next_index (i, start_point, end_point);
-		if (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) break;
+		j = بعدی_شاخص (i, شروع_نقطه_2, انتها_نقطه);
+		إذا (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) اكسر;
 	      }
 	      next = j;
 	      /* Infer deltas for all unref points in the gap between prev and next */
 	      i = prev;
-	      for (;;)
+	      لكل (;;)
 	      {
-		i = next_index (i, start_point, end_point);
-		if (i == next) break;
-		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::x);
-		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::y);
-		if (--unref_count == 0) goto no_more_gaps;
+		i = بعدی_شاخص (i, شروع_نقطه_2, انتها_نقطه);
+		إذا (i == next) اكسر;
+		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_نقطه_t::x);
+		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_نقطه_t::y);
+		إذا (--unref_شمار == 0) اذهب no_بیشتر_gaps;
 	      }
 	    }
-	  no_more_gaps:
-	    start_point = end_point = end_point + 1;
+	  no_بیشتر_gaps:
+	    شروع_نقطه_2 = انتها_نقطه = انتها_نقطه + 1;
 	  }
 	}
 
-	flush = true;
+	flush = درست;
 
-      } while (iterator.move_to_next ());
+      } طالما (iterator.move_مقصد_بعدی ());
 
-      if (flush)
+      إذا (flush)
       {
-	for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	لكل (بیعلامت صحيح i = phantom_only ? شمار - 4 : 0; i < شمار; i++)
 	  points.arrayZ[i].translate (deltas.arrayZ[i]);
       }
 
-      return true;
+      أرجع درست;
     }
 
-    unsigned int get_axis_count () const { return table->axisCount; }
+    بیعلامت صحيح get_axis_شمار () ثابت { أرجع جدول->axis_شمار_2; }
 
-    private:
-    hb_blob_ptr_t<gvar_GVAR> table;
-    unsigned glyphCount;
+    خاص:
+    hb_blob_ptr_t<gvar_GVAR> جدول;
+    بیعلامت glyph_شمار_2;
   };
 
-  protected:
-  FixedVersion<>version;	/* Version number of the glyph variations table
+  محمي:
+  Fixed_نسخه<>نسخه;	/* Version number of the glyph variations table
 				 * Set to 0x00010000u. */
-  HBUINT16	axisCount;	/* The number of variation axes for this font. This must be
+  HBUINT16	axis_شمار_2;	/* The number of variation axes for this font. This must be
 				 * the same number as axisCount in the 'fvar' table. */
-  HBUINT16	sharedTupleCount;
+  HBUINT16	shared_Tuple_شمار;
 				/* The number of shared tuple records. Shared tuple records
 				 * can be referenced within glyph variation data tables for
 				 * multiple glyphs, as opposed to other tuple records stored
 				 * directly within a glyph variation data table. */
-  NNOffset32To<UnsizedArrayOf<F2DOT14>>
+  NNOffset32_مقصد<Unsized_Array_از<F2DOT14>>
 		sharedTuples;	/* Offset from the start of this table to the shared tuple records.
 				 * Array of tuple records shared across all glyph variation data tables. */
-  GlyphCountType
-		glyphCountX;	/* The number of glyphs in this font. This must match the number of
+  Glyph_شمار_Type
+		glyph_شمار_X;	/* The number of glyphs in this font. This must match the number of
 				 * glyphs stored elsewhere in the font. */
   HBUINT16	flags;		/* Bit-field that gives the format of the offset array that follows.
 				 * If bit 0 is clear, the offsets are uint16; if bit 0 is set, the
 				 * offsets are uint32. */
-  Offset32To<GlyphVariationData>
-		dataZ;		/* Offset from the start of this table to the array of
+  Offset32_مقصد<Glyph_Variation_داده>
+		داده_Z;		/* Offset from the start of this table to the array of
 				 * GlyphVariationData tables. */
-  UnsizedArrayOf<HBUINT8>
-		offsetZ;	/* Offsets from the start of the GlyphVariationData array
+  Unsized_Array_از<HBUINT8>
+		جابه_جایی_Z;	/* Offsets from the start of the GlyphVariationData array
 				 * to each GlyphVariationData table. */
-  public:
-  DEFINE_SIZE_ARRAY (18 + GlyphCountType::static_size, offsetZ);
+  عام:
+  DEFINE_اندازه_ARRAY (18 + Glyph_شمار_Type::static_اندازه, جابه_جایی_Z);
 };
 
-struct gvar : gvar_GVAR<gvar, SmallTypes>
+بنية gvar : gvar_GVAR<gvar, SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gvar;
+  ساكن constexpr hb_برچسب_t جدول_برچسب = HB_OT_برچسب_gvar;
 };
 
-struct GVAR : gvar_GVAR<GVAR, MediumTypes>
+بنية GVAR : gvar_GVAR<GVAR, MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GVAR;
+  ساكن constexpr hb_برچسب_t جدول_برچسب = HB_OT_برچسب_GVAR;
 };
 
-struct gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
+بنية gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
 						  GVAR::accelerator_t>
 {
   gvar_accelerator_t (hb_face_t *face) :
     hb_dual_accelerator_t<gvar::accelerator_t, GVAR::accelerator_t> (face) {}
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () ثابت
   {
-    if (has_data ()) return HB_DUAL_GET (*this, create_cache ());
-    return nullptr;
+    إذا (has_داده ()) أرجع HB_DUAL_GET (*هذا, create_cache ());
+    أرجع اشاره_تهی;
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  ساكن فراغ destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  bool apply_deltas_to_points (hb_codepoint_t glyph,
-			       hb_array_t<const int> coords,
-			       const hb_array_t<contour_point_t> points,
+  منطقي apply_deltas_مقصد_points (hb_codepoint_t glyph,
+			       hb_array_t<ثابت صحيح> coords,
+			       ثابت hb_array_t<contour_نقطه_t> points,
 			       hb_glyf_scratch_t &scratch,
-			       hb_scalar_cache_t *gvar_cache = nullptr,
-			       bool phantom_only = false,
-			       int64_t *budget = nullptr) const
+			       hb_scalar_cache_t *gvar_cache = اشاره_تهی,
+			       منطقي phantom_only = خطأ,
+			       int64_t *budget = اشاره_تهی) ثابت
   {
-    return HB_DUAL_GET (*this, apply_deltas_to_points (glyph, coords, points,
+    أرجع HB_DUAL_GET (*هذا, apply_deltas_مقصد_points (glyph, coords, points,
 						       scratch, gvar_cache,
 						       phantom_only, budget));
   }
 
-  unsigned int get_axis_count () const
+  بیعلامت صحيح get_axis_شمار () ثابت
   {
-    if (has_data ()) return HB_DUAL_GET (*this, get_axis_count ());
-    return 0;
+    إذا (has_داده ()) أرجع HB_DUAL_GET (*هذا, get_axis_شمار ());
+    أرجع 0;
   }
 };
 
 } /* namespace OT */
 
-#endif /* HB_OT_VAR_GVAR_TABLE_HH */
+#پایان_اگر /* HB_OT_VAR_GVAR_TABLE_HH */

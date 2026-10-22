@@ -26,23 +26,23 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-blob.hh"
-#include "hb-open-file.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-cmap-table.hh"
+#ضمن "hb-face.hh"
+#ضمن "hb-blob.hh"
+#ضمن "hb-open-file.hh"
+#ضمن "hb-ot-face.hh"
+#ضمن "hb-ot-cmap-table.hh"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
-#ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
-#endif
-#ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
-#endif
+#اگر_تعریف_شده HAVE_FREETYPE
+#ضمن "hb-ft.h"
+#پایان_اگر
+#اگر_تعریف_شده HAVE_CORETEXT
+#ضمن "hb-coretext.h"
+#پایان_اگر
+#اگر_تعریف_شده HAVE_DIRECTWRITE
+#ضمن "hb-directwrite.h"
+#پایان_اگر
 
 
 /**
@@ -76,19 +76,19 @@
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_face_count (hb_blob_t *blob)
+بیعلامت صحيح
+hb_face_شمار (hb_blob_t *blob)
 {
-  if (unlikely (!blob))
-    return 0;
+  إذا (unlikely (!blob))
+    أرجع 0;
 
   hb_sanitize_context_t c (blob);
 
-  auto *ot = blob->as<OT::OpenTypeFontFile> ();
-  if (unlikely (!ot->sanitize (&c)))
-    return 0;
+  خودکار *ot = blob->as<OT::OpenTypeFontFile> ();
+  إذا (unlikely (!ot->sanitize (&c)))
+    أرجع 0;
 
-  return ot->get_face_count ();
+  أرجع ot->get_face_شمار ();
 }
 
 /*
@@ -97,9 +97,9 @@ hb_face_count (hb_blob_t *blob)
 
 DEFINE_NULL_INSTANCE (hb_face_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_سرآیند_STATIC,
 
-  0,    /* index */
+  0,    /*شاخص*/
   1000, /* upem */
   0,    /* num_glyphs */
 
@@ -127,92 +127,92 @@ DEFINE_NULL_INSTANCE (hb_face_t) =
  * Since: 0.9.2
  **/
 hb_face_t *
-hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+hb_face_create_for_tables (hb_reference_جدول_func_t  reference_جدول_func,
+			   فراغ                      *user_داده,
 			   hb_destroy_func_t          destroy)
 {
   hb_face_t *face;
 
-  if (!reference_table_func || !(face = hb_object_create<hb_face_t> ())) {
-    if (destroy)
-      destroy (user_data);
-    return hb_face_get_empty ();
+  إذا (!reference_جدول_func || !(face = hb_object_create<hb_face_t> ())) {
+    إذا (destroy)
+      destroy (user_داده);
+    أرجع hb_face_get_خالی ();
   }
 
-  face->reference_table_func = reference_table_func;
-  face->user_data = user_data;
+  face->reference_جدول_func = reference_جدول_func;
+  face->user_داده = user_داده;
   face->destroy = destroy;
 
-  face->num_glyphs = -1;
+  face->رقم_glyphs = -1;
 
-  face->data.init0 (face);
-  face->table.init0 (face);
+  face->داده.init0 (face);
+  face->جدول.init0 (face);
 
-  return face;
+  أرجع face;
 }
 
 
-typedef struct hb_face_for_data_closure_t {
+تعريفنوع بنية hb_face_for_داده_بستگی_t {
   hb_blob_t *blob;
-  uint16_t  index;
-} hb_face_for_data_closure_t;
+  uint16_t  شاخص_2;
+} hb_face_for_داده_بستگی_t;
 
-static hb_face_for_data_closure_t *
-_hb_face_for_data_closure_create (hb_blob_t *blob, unsigned int index)
+ساكن hb_face_for_داده_بستگی_t *
+hb_face_for_داده_بستگی_create (hb_blob_t *blob, بیعلامت صحيح شاخص_2)
 {
-  hb_face_for_data_closure_t *closure;
+  hb_face_for_داده_بستگی_t *بستگی;
 
-  closure = (hb_face_for_data_closure_t *) hb_calloc (1, sizeof (hb_face_for_data_closure_t));
-  if (unlikely (!closure))
-    return nullptr;
+  بستگی = (hb_face_for_داده_بستگی_t *) hb_calloc (1, حجم (hb_face_for_داده_بستگی_t));
+  إذا (unlikely (!بستگی))
+    أرجع اشاره_تهی;
 
-  closure->blob = blob;
-  closure->index = (uint16_t) (index & 0xFFFFu);
+  بستگی->blob = blob;
+  بستگی->شاخص_2 = (uint16_t) (شاخص_2 & 0xFFFFu);
 
-  return closure;
+  أرجع بستگی;
 }
 
-static void
-_hb_face_for_data_closure_destroy (void *data)
+ساكن فراغ
+hb_face_for_داده_بستگی_destroy (فراغ *داده)
 {
-  hb_face_for_data_closure_t *closure = (hb_face_for_data_closure_t *) data;
+  hb_face_for_داده_بستگی_t *بستگی = (hb_face_for_داده_بستگی_t *) داده;
 
-  hb_blob_destroy (closure->blob);
-  hb_free (closure);
+  hb_blob_destroy (بستگی->blob);
+  hb_free (بستگی);
 }
 
-static hb_blob_t *
-_hb_face_for_data_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ساكن hb_blob_t *
+hb_face_for_داده_reference_جدول (hb_face_t *face HB_استفادهنشده, hb_برچسب_t برچسب_2, فراغ *user_داده)
 {
-  hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
+  hb_face_for_داده_بستگی_t *داده = (hb_face_for_داده_بستگی_t *) user_داده;
 
-  if (tag == HB_TAG_NONE)
-    return hb_blob_reference (data->blob);
+  إذا (برچسب_2 == HB_برچسب_NONE)
+    أرجع hb_blob_reference (داده->blob);
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  unsigned int base_offset;
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index, &base_offset);
+  ثابت OT::OpenTypeFontFile &ot_file = *داده->blob->as<OT::OpenTypeFontFile> ();
+  بیعلامت صحيح پایه_جابه_جایی;
+  ثابت OT::OpenTypeFontFace &ot_face = ot_file.get_face (داده->شاخص_2, &پایه_جابه_جایی);
 
-  const OT::OpenTypeTable &table = ot_face.get_table_by_tag (tag);
+  ثابت OT::Open_Type_جدول &جدول = ot_face.get_جدول_by_برچسب (برچسب_2);
 
-  hb_blob_t *blob = hb_blob_create_sub_blob (data->blob, base_offset + table.offset, table.length);
+  hb_blob_t *blob = hb_blob_create_sub_blob (داده->blob, پایه_جابه_جایی + جدول.جابه_جایی, جدول.درازی);
 
-  return blob;
+  أرجع blob;
 }
 
-static unsigned
-_hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
-				  unsigned int start_offset,
-				  unsigned int *table_count,
-				  hb_tag_t *table_tags,
-				  void *user_data)
+ساكن بیعلامت
+hb_face_for_داده_get_جدول_برچسبها (ثابت hb_face_t *face HB_استفادهنشده,
+				  بیعلامت صحيح شروع_جابه_جایی,
+				  بیعلامت صحيح *جدول_شمار_2,
+				  hb_برچسب_t *جدول_برچسبها,
+				  فراغ *user_داده)
 {
-  hb_face_for_data_closure_t *data = (hb_face_for_data_closure_t *) user_data;
+  hb_face_for_داده_بستگی_t *داده = (hb_face_for_داده_بستگی_t *) user_داده;
 
-  const OT::OpenTypeFontFile &ot_file = *data->blob->as<OT::OpenTypeFontFile> ();
-  const OT::OpenTypeFontFace &ot_face = ot_file.get_face (data->index);
+  ثابت OT::OpenTypeFontFile &ot_file = *داده->blob->as<OT::OpenTypeFontFile> ();
+  ثابت OT::OpenTypeFontFace &ot_face = ot_file.get_face (داده->شاخص_2);
 
-  return ot_face.get_table_tags (start_offset, table_count, table_tags);
+  أرجع ot_face.get_جدول_برچسبها (شروع_جابه_جایی, جدول_شمار_2, جدول_برچسبها);
 }
 
 
@@ -242,34 +242,34 @@ _hb_face_for_data_get_table_tags (const hb_face_t *face HB_UNUSED,
  **/
 hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index)
+		بیعلامت صحيح  شاخص_2)
 {
   hb_face_t *face;
 
-  if (unlikely (!blob))
-    blob = hb_blob_get_empty ();
+  إذا (unlikely (!blob))
+    blob = hb_blob_get_خالی ();
 
   blob = hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (hb_blob_reference (blob));
 
-  hb_face_for_data_closure_t *closure = _hb_face_for_data_closure_create (blob, index);
+  hb_face_for_داده_بستگی_t *بستگی = hb_face_for_داده_بستگی_create (blob, شاخص_2);
 
-  if (unlikely (!closure))
+  إذا (unlikely (!بستگی))
   {
     hb_blob_destroy (blob);
-    return hb_face_get_empty ();
+    أرجع hb_face_get_خالی ();
   }
 
-  face = hb_face_create_for_tables (_hb_face_for_data_reference_table,
-				    closure,
-				    _hb_face_for_data_closure_destroy);
-  hb_face_set_get_table_tags_func (face,
-				   _hb_face_for_data_get_table_tags,
-				   closure,
-				   nullptr);
+  face = hb_face_create_for_tables (hb_face_for_داده_reference_جدول,
+				    بستگی,
+				    hb_face_for_داده_بستگی_destroy);
+  hb_face_مجموعه_get_جدول_برچسبها_func (face,
+				   hb_face_for_داده_get_جدول_برچسبها,
+				   بستگی,
+				   اشاره_تهی);
 
-  face->index = index;
+  face->شاخص_2 = شاخص_2;
 
-  return face;
+  أرجع face;
 }
 
 /**
@@ -287,20 +287,20 @@ hb_face_create (hb_blob_t    *blob,
  **/
 hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index)
+			بیعلامت صحيح  شاخص_2)
 {
-  unsigned num_faces = hb_face_count (blob);
-  if (index >= num_faces)
-    return nullptr;
+  بیعلامت رقم_faces = hb_face_شمار (blob);
+  إذا (شاخص_2 >= رقم_faces)
+    أرجع اشاره_تهی;
 
-  hb_face_t *face = hb_face_create (blob, index);
-  if (hb_object_is_immutable (face))
-    return nullptr;
+  hb_face_t *face = hb_face_create (blob, شاخص_2);
+  إذا (hb_object_is_immutable (face))
+    أرجع اشاره_تهی;
 
-  return face;
+  أرجع face;
 }
 
-#ifndef HB_NO_OPEN
+#اگر_تعریف_نشده HB_NO_OPEN
 /**
  * hb_face_create_from_file_or_fail:
  * @file_name: A font filename
@@ -315,66 +315,66 @@ hb_face_create_or_fail (hb_blob_t    *blob,
  * Since: 10.1.0
  **/
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index)
+hb_face_create_from_file_or_fail (ثابت حرف   *file_name,
+				  بیعلامت صحيح  شاخص_2)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  إذا (unlikely (!blob))
+    أرجع اشاره_تهی;
 
-  hb_face_t *face = hb_face_create_or_fail (blob, index);
+  hb_face_t *face = hb_face_create_or_fail (blob, شاخص_2);
   hb_blob_destroy (blob);
 
-  return face;
+  أرجع face;
 }
 
-static const struct supported_face_loaders_t {
-	char name[16];
-	hb_face_t * (*from_file) (const char *font_file, unsigned face_index);
-	hb_face_t * (*from_blob) (hb_blob_t *blob, unsigned face_index);
+ساكن ثابت بنية supported_face_loaders_t {
+	حرف name[16];
+	hb_face_t * (*from_file) (ثابت حرف *font_file, بیعلامت face_شاخص);
+	hb_face_t * (*from_blob) (hb_blob_t *blob, بیعلامت face_شاخص);
 } supported_face_loaders[] =
 {
   {"ot",
-#ifndef HB_NO_OPEN
+#اگر_تعریف_نشده HB_NO_OPEN
    hb_face_create_from_file_or_fail,
-#else
-   nullptr,
-#endif
+#وإلا
+   اشاره_تهی,
+#پایان_اگر
    hb_face_create_or_fail
   },
-#ifdef HAVE_FREETYPE
+#اگر_تعریف_شده HAVE_FREETYPE
   {"ft",
    hb_ft_face_create_from_file_or_fail,
    hb_ft_face_create_from_blob_or_fail
   },
-#endif
-#ifdef HAVE_CORETEXT
+#پایان_اگر
+#اگر_تعریف_شده HAVE_CORETEXT
   {"coretext",
    hb_coretext_face_create_from_file_or_fail,
    hb_coretext_face_create_from_blob_or_fail
   },
-#endif
-#ifdef HAVE_DIRECTWRITE
+#پایان_اگر
+#اگر_تعریف_شده HAVE_DIRECTWRITE
   {"directwrite",
    hb_directwrite_face_create_from_file_or_fail,
    hb_directwrite_face_create_from_blob_or_fail
   },
-#endif
+#پایان_اگر
 };
 
-static const char *get_default_loader_name ()
+ساكن ثابت حرف *get_default_loader_name ()
 {
-  static hb_atomic_t<const char *> static_loader_name;
-  const char *loader_name = static_loader_name.get_acquire ();
-  if (!loader_name)
+  ساكن hb_atomic_t<ثابت حرف *> static_loader_name;
+  ثابت حرف *loader_name = static_loader_name.get_acquire ();
+  إذا (!loader_name)
   {
     loader_name = getenv ("HB_FACE_LOADER");
-    if (!loader_name)
+    إذا (!loader_name)
       loader_name = "";
-    if (!static_loader_name.cmpexch (nullptr, loader_name))
+    إذا (!static_loader_name.cmpexch (اشاره_تهی, loader_name))
       loader_name = static_loader_name.get_acquire ();
   }
-  return loader_name;
+  أرجع loader_name;
 }
 
 /**
@@ -397,34 +397,34 @@ static const char *get_default_loader_name ()
  * Since: 11.0.0
  **/
 hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name)
+hb_face_create_from_file_or_fail_using (ثابت حرف   *file_name,
+					بیعلامت صحيح  شاخص_2,
+					ثابت حرف   *loader_name)
 {
   // Duplicated in hb_face_create_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  منطقي retry = خطأ;
+  إذا (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = درست;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  إذا (loader_name && !*loader_name) loader_name = اشاره_تهی;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  لكل (بیعلامت i = 0; i < ARRAY_درازی (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_file (file_name, index);
+    إذا (!loader_name || (supported_face_loaders[i].from_file && !strcmp (supported_face_loaders[i].name, loader_name)))
+      أرجع supported_face_loaders[i].from_file (file_name, شاخص_2);
   }
 
-  if (retry)
+  إذا (retry)
   {
-    retry = false;
-    loader_name = nullptr;
-    goto retry;
+    retry = خطأ;
+    loader_name = اشاره_تهی;
+    اذهب retry;
   }
 
-  return nullptr;
+  أرجع اشاره_تهی;
 }
 
 /**
@@ -448,65 +448,65 @@ retry:
  **/
 hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name)
+			      بیعلامت صحيح  شاخص_2,
+			      ثابت حرف   *loader_name)
 {
   // Duplicated in hb_face_create_from_file_or_fail_using
-  bool retry = false;
-  if (!loader_name || !*loader_name)
+  منطقي retry = خطأ;
+  إذا (!loader_name || !*loader_name)
   {
     loader_name = get_default_loader_name ();
-    retry = true;
+    retry = درست;
   }
-  if (loader_name && !*loader_name) loader_name = nullptr;
+  إذا (loader_name && !*loader_name) loader_name = اشاره_تهی;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+  لكل (بیعلامت i = 0; i < ARRAY_درازی (supported_face_loaders); i++)
   {
-    if (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
-      return supported_face_loaders[i].from_blob (blob, index);
+    إذا (!loader_name || (supported_face_loaders[i].from_blob && !strcmp (supported_face_loaders[i].name, loader_name)))
+      أرجع supported_face_loaders[i].from_blob (blob, شاخص_2);
   }
 
-  if (retry)
+  إذا (retry)
   {
-    retry = false;
-    loader_name = nullptr;
-    goto retry;
+    retry = خطأ;
+    loader_name = اشاره_تهی;
+    اذهب retry;
   }
 
-  return nullptr;
+  أرجع اشاره_تهی;
 }
 
-static inline void free_static_face_loader_list ();
+ساكن مضمن فراغ free_static_face_loader_list ();
 
-static const char * const nil_face_loader_list[] = {nullptr};
+ساكن ثابت حرف * ثابت nil_face_loader_list[] = {اشاره_تهی};
 
-static struct hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+ساكن بنية hb_face_loader_list_lazy_loader_t : hb_lazy_loader_t<ثابت حرف *,
 								  hb_face_loader_list_lazy_loader_t>
 {
-  static const char ** create ()
+  ساكن ثابت حرف ** create ()
   {
-    const char **face_loader_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_face_loaders), sizeof (const char *));
-    if (unlikely (!face_loader_list))
-      return nullptr;
+    ثابت حرف **face_loader_list = (ثابت حرف **) hb_calloc (1 + ARRAY_درازی (supported_face_loaders), حجم (ثابت حرف *));
+    إذا (unlikely (!face_loader_list))
+      أرجع اشاره_تهی;
 
-    unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_face_loaders); i++)
+    بیعلامت i;
+    لكل (i = 0; i < ARRAY_درازی (supported_face_loaders); i++)
       face_loader_list[i] = supported_face_loaders[i].name;
-    face_loader_list[i] = nullptr;
+    face_loader_list[i] = اشاره_تهی;
 
     hb_atexit (free_static_face_loader_list);
 
-    return face_loader_list;
+    أرجع face_loader_list;
   }
-  static void destroy (const char **l)
+  ساكن فراغ destroy (ثابت حرف **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_face_loader_list; }
+  ساكن ثابت حرف * ثابت * get_null ()
+  { أرجع nil_face_loader_list; }
 } static_face_loader_list;
 
-static inline
-void free_static_face_loader_list ()
+ساكن مضمن
+فراغ free_static_face_loader_list ()
 {
   static_face_loader_list.free_instance ();
 }
@@ -523,12 +523,12 @@ void free_static_face_loader_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+ثابت حرف **
 hb_face_list_loaders ()
 {
-  return static_face_loader_list.get_unconst ();
+  أرجع static_face_loader_list.get_unconst ();
 }
-#endif
+#پایان_اگر
 
 
 /**
@@ -541,9 +541,9 @@ hb_face_list_loaders ()
  * Since: 0.9.2
  **/
 hb_face_t *
-hb_face_get_empty ()
+hb_face_get_خالی ()
 {
-  return const_cast<hb_face_t *> (&Null (hb_face_t));
+  أرجع const_cast<hb_face_t *> (&Null (hb_face_t));
 }
 
 
@@ -560,7 +560,7 @@ hb_face_get_empty ()
 hb_face_t *
 hb_face_reference (hb_face_t *face)
 {
-  return hb_object_reference (face);
+  أرجع hb_object_reference (face);
 }
 
 /**
@@ -573,29 +573,29 @@ hb_face_reference (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_face_destroy (hb_face_t *face)
 {
-  if (!hb_object_destroy (face)) return;
+  إذا (!hb_object_destroy (face)) أرجع;
 
-#ifndef HB_NO_SHAPER
-  for (hb_face_t::plan_node_t *node = face->shape_plans; node; )
+#اگر_تعریف_نشده HB_NO_SHAPER
+  لكل (hb_face_t::plan_گره_t *node = face->shape_plans; node; )
   {
-    hb_face_t::plan_node_t *next = node->next;
+    hb_face_t::plan_گره_t *next = node->next;
     hb_shape_plan_destroy (node->shape_plan);
     hb_free (node);
     node = next;
   }
-#endif
+#پایان_اگر
 
-  face->data.fini ();
-  face->table.fini ();
+  face->داده.fini ();
+  face->جدول.fini ();
 
-  if (face->get_table_tags_destroy)
-    face->get_table_tags_destroy (face->get_table_tags_user_data);
+  إذا (face->get_جدول_برچسبها_destroy)
+    face->get_جدول_برچسبها_destroy (face->get_جدول_برچسبها_user_داده);
 
-  if (face->destroy)
-    face->destroy (face->user_data);
+  إذا (face->destroy)
+    face->destroy (face->user_داده);
 
   hb_free (face);
 }
@@ -615,13 +615,13 @@ hb_face_destroy (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_face_مجموعه_user_داده (hb_face_t          *face,
+		       hb_user_داده_کلید_t *key,
+		       فراغ *              داده,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (face, key, data, destroy, replace);
+  أرجع hb_object_مجموعه_user_داده (face, key, داده, destroy, replace);
 }
 
 /**
@@ -636,11 +636,11 @@ hb_face_set_user_data (hb_face_t          *face,
  *
  * Since: 0.9.2
  **/
-void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key)
+فراغ *
+hb_face_get_user_داده (ثابت hb_face_t    *face,
+		       hb_user_داده_کلید_t *key)
 {
-  return hb_object_get_user_data (face, key);
+  أرجع hb_object_get_user_داده (face, key);
 }
 
 /**
@@ -651,11 +651,11 @@ hb_face_get_user_data (const hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_face_make_immutable (hb_face_t *face)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  إذا (hb_object_is_immutable (face))
+    أرجع;
 
   hb_object_make_immutable (face);
 }
@@ -673,7 +673,7 @@ hb_face_make_immutable (hb_face_t *face)
 hb_bool_t
 hb_face_is_immutable (hb_face_t *face)
 {
-  return hb_object_is_immutable (face);
+  أرجع hb_object_is_immutable (face);
 }
 
 
@@ -691,13 +691,13 @@ hb_face_is_immutable (hb_face_t *face)
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
-			 hb_tag_t tag)
+hb_face_reference_جدول (ثابت hb_face_t *face,
+			 hb_برچسب_t برچسب_2)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return hb_blob_get_empty ();
+  إذا (unlikely (برچسب_2 == HB_برچسب_NONE))
+    أرجع hb_blob_get_خالی ();
 
-  return face->reference_table (tag);
+  أرجع face->reference_جدول (برچسب_2);
 }
 
 /**
@@ -716,32 +716,32 @@ hb_face_reference_table (const hb_face_t *face,
 hb_blob_t *
 hb_face_reference_blob (hb_face_t *face)
 {
-  hb_blob_t *blob = face->reference_table (HB_TAG_NONE);
+  hb_blob_t *blob = face->reference_جدول (HB_برچسب_NONE);
 
-  if (blob == hb_blob_get_empty ())
+  إذا (blob == hb_blob_get_خالی ())
   {
     // If referencing the face blob is not possible (e.g. not implemented by the
     // font functions), use face builder to create a blob out of individual
     // table blobs.
-    unsigned total_count = hb_face_get_table_tags (face, 0, nullptr, nullptr);
-    if (total_count)
+    بیعلامت مجموع_شمار = hb_face_get_جدول_برچسبها (face, 0, اشاره_تهی, اشاره_تهی);
+    إذا (مجموع_شمار)
     {
-      hb_tag_t tags[64];
-      unsigned count = ARRAY_LENGTH (tags);
+      hb_برچسب_t برچسبها[64];
+      بیعلامت شمار = ARRAY_درازی (برچسبها);
       hb_face_t* builder = hb_face_builder_create ();
 
-      for (unsigned offset = 0; offset < total_count; offset += count)
+      لكل (بیعلامت جابه_جایی = 0; جابه_جایی < مجموع_شمار; جابه_جایی += شمار)
       {
-        hb_face_get_table_tags (face, offset, &count, tags);
-	if (unlikely (!count))
-	  break; // Allocation error
-        for (unsigned i = 0; i < count; i++)
+        hb_face_get_جدول_برچسبها (face, جابه_جایی, &شمار, برچسبها);
+	إذا (unlikely (!شمار))
+	  اكسر; // Allocation error
+        لكل (بیعلامت i = 0; i < شمار; i++)
         {
-	  if (unlikely (!tags[i]))
-	    continue;
-	  hb_blob_t *table = hb_face_reference_table (face, tags[i]);
-	  hb_face_builder_add_table (builder, tags[i], table);
-	  hb_blob_destroy (table);
+	  إذا (unlikely (!برچسبها[i]))
+	    استمر;
+	  hb_blob_t *جدول = hb_face_reference_جدول (face, برچسبها[i]);
+	  hb_face_builder_جمع_کن_جدول (builder, برچسبها[i], جدول);
+	  hb_blob_destroy (جدول);
         }
       }
 
@@ -750,7 +750,7 @@ hb_face_reference_blob (hb_face_t *face)
     }
   }
 
-  return blob;
+  أرجع blob;
 }
 
 /**
@@ -766,14 +766,14 @@ hb_face_reference_blob (hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
-hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index)
+فراغ
+hb_face_مجموعه_شاخص (hb_face_t    *face,
+		   بیعلامت صحيح  شاخص_2)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  إذا (hb_object_is_immutable (face))
+    أرجع;
 
-  face->index = index;
+  face->شاخص_2 = شاخص_2;
 }
 
 /**
@@ -788,10 +788,10 @@ hb_face_set_index (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_index (const hb_face_t *face)
+بیعلامت صحيح
+hb_face_get_شاخص (ثابت hb_face_t *face)
 {
-  return face->index;
+  أرجع face->شاخص_2;
 }
 
 /**
@@ -805,12 +805,12 @@ hb_face_get_index (const hb_face_t *face)
  *
  * Since: 0.9.2
  **/
-void
-hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem)
+فراغ
+hb_face_مجموعه_upem (hb_face_t    *face,
+		  بیعلامت صحيح  upem)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  إذا (hb_object_is_immutable (face))
+    أرجع;
 
   face->upem = upem;
 }
@@ -828,10 +828,10 @@ hb_face_set_upem (hb_face_t    *face,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_face_get_upem (const hb_face_t *face)
+بیعلامت صحيح
+hb_face_get_upem (ثابت hb_face_t *face)
 {
-  return face->get_upem ();
+  أرجع face->get_upem ();
 }
 
 /**
@@ -845,14 +845,14 @@ hb_face_get_upem (const hb_face_t *face)
  *
  * Since: 0.9.7
  **/
-void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count)
+فراغ
+hb_face_مجموعه_glyph_شمار (hb_face_t    *face,
+			 بیعلامت صحيح  glyph_شمار)
 {
-  if (hb_object_is_immutable (face))
-    return;
+  إذا (hb_object_is_immutable (face))
+    أرجع;
 
-  face->num_glyphs = glyph_count;
+  face->رقم_glyphs = glyph_شمار;
 }
 
 /**
@@ -865,10 +865,10 @@ hb_face_set_glyph_count (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_face_get_glyph_count (const hb_face_t *face)
+بیعلامت صحيح
+hb_face_get_glyph_شمار (ثابت hb_face_t *face)
 {
-  return face->get_num_glyphs ();
+  أرجع face->get_رقم_glyphs ();
 }
 
 /**
@@ -882,25 +882,25 @@ hb_face_get_glyph_count (const hb_face_t *face)
  *
  * Since: 10.0.0
  */
-HB_EXTERN void
-hb_face_set_get_table_tags_func (hb_face_t *face,
-				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+HB_EXTERN فراغ
+hb_face_مجموعه_get_جدول_برچسبها_func (hb_face_t *face,
+				 hb_get_جدول_برچسبها_func_t func,
+				 فراغ                    *user_داده,
 				 hb_destroy_func_t        destroy)
 {
-  if (hb_object_is_immutable (face))
+  إذا (hb_object_is_immutable (face))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    إذا (destroy)
+      destroy (user_داده);
+    أرجع;
   }
 
-  if (face->get_table_tags_destroy)
-    face->get_table_tags_destroy (face->get_table_tags_user_data);
+  إذا (face->get_جدول_برچسبها_destroy)
+    face->get_جدول_برچسبها_destroy (face->get_جدول_برچسبها_user_داده);
 
-  face->get_table_tags_func = func;
-  face->get_table_tags_user_data = user_data;
-  face->get_table_tags_destroy = destroy;
+  face->get_جدول_برچسبها_func = func;
+  face->get_جدول_برچسبها_user_داده = user_داده;
+  face->get_جدول_برچسبها_destroy = destroy;
 }
 
 /**
@@ -918,20 +918,20 @@ hb_face_set_get_table_tags_func (hb_face_t *face,
  *
  * Since: 1.6.0
  **/
-unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
-			hb_tag_t     *table_tags /* OUT */)
+بیعلامت صحيح
+hb_face_get_جدول_برچسبها (ثابت hb_face_t *face,
+			بیعلامت صحيح  شروع_جابه_جایی,
+			بیعلامت صحيح *جدول_شمار_2, /* IN/OUT */
+			hb_برچسب_t     *جدول_برچسبها /*بیرون*/)
 {
-  if (!face->get_table_tags_func)
+  إذا (!face->get_جدول_برچسبها_func)
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    إذا (جدول_شمار_2)
+      *جدول_شمار_2 = 0;
+    أرجع 0;
   }
 
-  return face->get_table_tags_func (face, start_offset, table_count, table_tags, face->get_table_tags_user_data);
+  أرجع face->get_جدول_برچسبها_func (face, شروع_جابه_جایی, جدول_شمار_2, جدول_برچسبها, face->get_جدول_برچسبها_user_داده);
 }
 
 
@@ -940,7 +940,7 @@ hb_face_get_table_tags (const hb_face_t *face,
  */
 
 
-#ifndef HB_NO_FACE_COLLECT_UNICODES
+#اگر_تعریف_نشده HB_NO_FACE_COLLECT_UNICODES
 /**
  * hb_face_collect_unicodes:
  * @face: A face object
@@ -951,11 +951,11 @@ hb_face_get_table_tags (const hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+فراغ
 hb_face_collect_unicodes (hb_face_t *face,
-			  hb_set_t  *out)
+			  hb_مجموعه_t  *بیرون)
 {
-  face->table.cmap->collect_unicodes (out, face->get_num_glyphs ());
+  face->جدول.cmap->collect_unicodes (بیرون, face->get_رقم_glyphs ());
 }
 /**
  * hb_face_collect_nominal_glyph_mapping:
@@ -968,15 +968,15 @@ hb_face_collect_unicodes (hb_face_t *face,
  *
  * Since: 7.0.0
  */
-void
+فراغ
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
-				       hb_set_t  *unicodes)
+				       hb_مجموعه_t  *unicodes)
 {
-  hb_set_t stack_unicodes;
-  if (!unicodes)
-    unicodes = &stack_unicodes;
-  face->table.cmap->collect_mapping (unicodes, mapping, face->get_num_glyphs ());
+  hb_مجموعه_t پشته_unicodes;
+  إذا (!unicodes)
+    unicodes = &پشته_unicodes;
+  face->جدول.cmap->collect_mapping (unicodes, mapping, face->get_رقم_glyphs ());
 }
 /**
  * hb_face_collect_variation_selectors:
@@ -988,11 +988,11 @@ hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+فراغ
 hb_face_collect_variation_selectors (hb_face_t *face,
-				     hb_set_t  *out)
+				     hb_مجموعه_t  *بیرون)
 {
-  face->table.cmap->collect_variation_selectors (out);
+  face->جدول.cmap->collect_variation_selectors (بیرون);
 }
 /**
  * hb_face_collect_variation_unicodes:
@@ -1005,11 +1005,11 @@ hb_face_collect_variation_selectors (hb_face_t *face,
  *
  * Since: 1.9.0
  */
-void
+فراغ
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
-				    hb_set_t  *out)
+				    hb_مجموعه_t  *بیرون)
 {
-  face->table.cmap->collect_variation_unicodes (variation_selector, out);
+  face->جدول.cmap->collect_variation_unicodes (variation_selector, بیرون);
 }
-#endif
+#پایان_اگر

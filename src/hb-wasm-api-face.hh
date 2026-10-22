@@ -22,96 +22,96 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_FACE_HH
-#define HB_WASM_API_FACE_HH
+#اگر_تعریف_نشده HB_WASM_API_FACE_HH
+#تعریف_کن HB_WASM_API_FACE_HH
 
-#include "hb-wasm-api.hh"
+#ضمن "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+نطاق hb {
+نطاق wasm {
 
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int index)
+					  بیعلامت صحيح شاخص_2)
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return nullref;
+  إذا (unlikely (!blob))
+    أرجع nullref;
 
-  char *data = HB_ARRAY_APP2NATIVE (char, blob->data, blob->length);
-  if (unlikely (!data))
-    return nullref;
+  حرف *داده = HB_ARRAY_APP2NATIVE (حرف, blob->داده, blob->درازی);
+  إذا (unlikely (!داده))
+    أرجع nullref;
 
   hb_blob_t *hb_blob = hb_blob_create(
-				      data,
-				      blob->length,
-				      HB_MEMORY_MODE_DUPLICATE,
-				      NULL,
-				      NULL);
+				      داده,
+				      blob->درازی,
+				      HB_حافظه_نما_DUPLICATE,
+				      عدم,
+				      عدم);
 
-  hb_face_t *face = hb_face_create(hb_blob, index);
+  hb_face_t *face = hb_face_create(hb_blob, شاخص_2);
   hb_blob_destroy (hb_blob);
 
   HB_OBJ2REF (face);
-  return faceref;
+  أرجع faceref;
 }
 
-HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, face_copy_جدول) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
-				       tag_t table_tag,
+				       برچسب_t جدول_برچسب_2,
 				       ptr_d(blob_t, blob))
 {
   HB_REF2OBJ (face);
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return false;
+  إذا (unlikely (!blob))
+    أرجع خطأ;
 
-  hb_blob_t *hb_blob = hb_face_reference_table (face, table_tag);
+  hb_blob_t *hb_blob = hb_face_reference_جدول (face, جدول_برچسب_2);
 
-  unsigned length;
-  const char *hb_data = hb_blob_get_data (hb_blob, &length);
+  بیعلامت درازی;
+  ثابت حرف *hb_داده = hb_blob_get_داده (hb_blob, &درازی);
 
-  if (length <= blob->length)
+  إذا (درازی <= blob->درازی)
   {
-    char *data = HB_ARRAY_APP2NATIVE (char, blob->data, length);
+    حرف *داده = HB_ARRAY_APP2NATIVE (حرف, blob->داده, درازی);
 
-    if (unlikely (!data))
+    إذا (unlikely (!داده))
     {
-      blob->length = 0;
-      return false;
+      blob->درازی = 0;
+      أرجع خطأ;
     }
 
-    hb_memcpy (data, hb_data, length);
+    hb_memcpy (داده, hb_داده, درازی);
 
-    return true;
+    أرجع درست;
   }
 
-  module_free (blob->data);
+  module_free (blob->داده);
 
-  blob->length = length;
-  blob->data = wasm_runtime_module_dup_data (module_inst, hb_data, length);
+  blob->درازی = درازی;
+  blob->داده = wasm_runtime_module_dup_داده (module_inst, hb_داده, درازی);
 
   hb_blob_destroy (hb_blob);
 
-  if (blob->length && !blob->data)
+  إذا (blob->درازی && !blob->داده)
   {
-    blob->length = 0;
-    return false;
+    blob->درازی = 0;
+    أرجع خطأ;
   }
 
-  return true;
+  أرجع درست;
 }
 
-HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
+HB_WASM_API (بیعلامت, face_get_upem) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face))
 {
   HB_REF2OBJ (face);
 
-  return hb_face_get_upem (face);
+  أرجع hb_face_get_upem (face);
 }
 
 
 }}
 
-#endif /* HB_WASM_API_FACE_HH */
+#پایان_اگر /* HB_WASM_API_FACE_HH */

@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-set.hh"
+#ضمن "hb-set.hh"
 
 
 /**
@@ -48,15 +48,15 @@
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_create ()
+hb_مجموعه_t *
+hb_مجموعه_create ()
 {
-  hb_set_t *set;
+  hb_مجموعه_t *مجموعه;
 
-  if (!(set = hb_object_create<hb_set_t> ()))
-    return hb_set_get_empty ();
+  إذا (!(مجموعه = hb_object_create<hb_مجموعه_t> ()))
+    أرجع hb_مجموعه_get_خالی ();
 
-  return set;
+  أرجع مجموعه;
 }
 
 /**
@@ -68,10 +68,10 @@ hb_set_create ()
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_get_empty ()
+hb_مجموعه_t *
+hb_مجموعه_get_خالی ()
 {
-  return const_cast<hb_set_t *> (&Null (hb_set_t));
+  أرجع const_cast<hb_مجموعه_t *> (&Null (hb_مجموعه_t));
 }
 
 /**
@@ -84,10 +84,10 @@ hb_set_get_empty ()
  *
  * Since: 0.9.2
  **/
-hb_set_t *
-hb_set_reference (hb_set_t *set)
+hb_مجموعه_t *
+hb_مجموعه_reference (hb_مجموعه_t *مجموعه)
 {
-  return hb_object_reference (set);
+  أرجع hb_object_reference (مجموعه);
 }
 
 /**
@@ -100,12 +100,12 @@ hb_set_reference (hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
-hb_set_destroy (hb_set_t *set)
+فراغ
+hb_مجموعه_destroy (hb_مجموعه_t *مجموعه)
 {
-  if (!hb_object_destroy (set)) return;
+  إذا (!hb_object_destroy (مجموعه)) أرجع;
 
-  hb_free (set);
+  hb_free (مجموعه);
 }
 
 /**
@@ -123,13 +123,13 @@ hb_set_destroy (hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_مجموعه_مجموعه_user_داده (hb_مجموعه_t           *مجموعه,
+		      hb_user_داده_کلید_t *key,
+		      فراغ *              داده,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (set, key, data, destroy, replace);
+  أرجع hb_object_مجموعه_user_داده (مجموعه, key, داده, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_set_set_user_data (hb_set_t           *set,
  *
  * Since: 0.9.2
  **/
-void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key)
+فراغ *
+hb_مجموعه_get_user_داده (ثابت hb_مجموعه_t     *مجموعه,
+		      hb_user_داده_کلید_t *key)
 {
-  return hb_object_get_user_data (set, key);
+  أرجع hb_object_get_user_داده (مجموعه, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_set_get_user_data (const hb_set_t     *set,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_allocation_successful (const hb_set_t  *set)
+hb_مجموعه_تخصیص_successful (ثابت hb_مجموعه_t  *مجموعه)
 {
-  return !set->in_error ();
+  أرجع !مجموعه->درون_error ();
 }
 
 /**
@@ -178,15 +178,15 @@ hb_set_allocation_successful (const hb_set_t  *set)
  *
  * Since: 2.8.2
  **/
-hb_set_t *
-hb_set_copy (const hb_set_t *set)
+hb_مجموعه_t *
+hb_مجموعه_copy (ثابت hb_مجموعه_t *مجموعه)
 {
-  hb_set_t *copy = hb_set_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_set_get_empty ();
+  hb_مجموعه_t *copy = hb_مجموعه_create ();
+  إذا (unlikely (copy->درون_error ()))
+    أرجع hb_مجموعه_get_خالی ();
 
-  copy->set (*set);
-  return copy;
+  copy->مجموعه (*مجموعه);
+  أرجع copy;
 }
 
 /**
@@ -197,11 +197,11 @@ hb_set_copy (const hb_set_t *set)
  *
  * Since: 0.9.2
  **/
-void
-hb_set_clear (hb_set_t *set)
+فراغ
+hb_مجموعه_clear (hb_مجموعه_t *مجموعه)
 {
   /* Immutable-safe. */
-  set->clear ();
+  مجموعه->clear ();
 }
 
 /**
@@ -215,9 +215,9 @@ hb_set_clear (hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_empty (const hb_set_t *set)
+hb_مجموعه_is_خالی (ثابت hb_مجموعه_t *مجموعه)
 {
-  return set->is_empty ();
+  أرجع مجموعه->is_empty ();
 }
 
 /**
@@ -232,10 +232,10 @@ hb_set_is_empty (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_مجموعه_has (ثابت hb_مجموعه_t *مجموعه,
 	    hb_codepoint_t  codepoint)
 {
-  return set->has (codepoint);
+  أرجع مجموعه->has (codepoint);
 }
 
 /**
@@ -247,12 +247,12 @@ hb_set_has (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_add (hb_set_t       *set,
+فراغ
+hb_مجموعه_جمع_کن (hb_مجموعه_t       *مجموعه,
 	    hb_codepoint_t  codepoint)
 {
   /* Immutable-safe. */
-  set->add (codepoint);
+  مجموعه->جمع_کن (codepoint);
 }
 
 /**
@@ -267,15 +267,15 @@ hb_set_add (hb_set_t       *set,
  *
  * Since: 4.1.0
  */
-HB_EXTERN void
-hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints)
+HB_EXTERN فراغ
+hb_مجموعه_جمع_کن_sorted_array (hb_مجموعه_t             *مجموعه,
+		         ثابت hb_codepoint_t *sorted_codepoints,
+		         بیعلامت صحيح          رقم_codepoints)
 {
   /* Immutable-safe. */
-  set->add_sorted_array (sorted_codepoints,
-		         num_codepoints,
-		         sizeof(hb_codepoint_t));
+  مجموعه->جمع_کن_sorted_array (sorted_codepoints,
+		         رقم_codepoints,
+		         حجم(hb_codepoint_t));
 }
 
 /**
@@ -289,13 +289,13 @@ hb_set_add_sorted_array (hb_set_t             *set,
  *
  * Since: 0.9.7
  **/
-void
-hb_set_add_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last)
+فراغ
+hb_مجموعه_جمع_کن_range (hb_مجموعه_t       *مجموعه,
+		  hb_codepoint_t  اولی,
+		  hb_codepoint_t  آخرین)
 {
   /* Immutable-safe. */
-  set->add_range (first, last);
+  مجموعه->جمع_کن_range (اولی, آخرین);
 }
 
 /**
@@ -307,12 +307,12 @@ hb_set_add_range (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_del (hb_set_t       *set,
+فراغ
+hb_مجموعه_del (hb_مجموعه_t       *مجموعه,
 	    hb_codepoint_t  codepoint)
 {
   /* Immutable-safe. */
-  set->del (codepoint);
+  مجموعه->del (codepoint);
 }
 
 /**
@@ -329,13 +329,13 @@ hb_set_del (hb_set_t       *set,
  *
  * Since: 0.9.7
  **/
-void
-hb_set_del_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last)
+فراغ
+hb_مجموعه_del_range (hb_مجموعه_t       *مجموعه,
+		  hb_codepoint_t  اولی,
+		  hb_codepoint_t  آخرین)
 {
   /* Immutable-safe. */
-  set->del_range (first, last);
+  مجموعه->del_range (اولی, آخرین);
 }
 
 /**
@@ -351,10 +351,10 @@ hb_set_del_range (hb_set_t       *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other)
+hb_مجموعه_is_equal (ثابت hb_مجموعه_t *مجموعه,
+		 ثابت hb_مجموعه_t *other)
 {
-  return set->is_equal (*other);
+  أرجع مجموعه->is_equal (*other);
 }
 
 /**
@@ -369,10 +369,10 @@ hb_set_is_equal (const hb_set_t *set,
  * Since: 14.4.0
  **/
 hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other)
+hb_مجموعه_intersects (ثابت hb_مجموعه_t *مجموعه,
+		   ثابت hb_مجموعه_t *other)
 {
-  return set->intersects (*other);
+  أرجع مجموعه->intersects (*other);
 }
 
 /**
@@ -386,10 +386,10 @@ hb_set_intersects (const hb_set_t *set,
  *
  * Since: 4.4.0
  **/
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set)
+HB_EXTERN بیعلامت صحيح
+hb_مجموعه_hash (ثابت hb_مجموعه_t *مجموعه)
 {
-  return set->hash ();
+  أرجع مجموعه->hash ();
 }
 
 /**
@@ -404,10 +404,10 @@ hb_set_hash (const hb_set_t *set)
  * Since: 1.8.1
  **/
 hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set)
+hb_مجموعه_is_subset (ثابت hb_مجموعه_t *مجموعه,
+		  ثابت hb_مجموعه_t *larger_مجموعه)
 {
-  return set->is_subset (*larger_set);
+  أرجع مجموعه->is_subset (*larger_مجموعه);
 }
 
 /**
@@ -419,12 +419,12 @@ hb_set_is_subset (const hb_set_t *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other)
+فراغ
+hb_مجموعه_مجموعه (hb_مجموعه_t       *مجموعه,
+	    ثابت hb_مجموعه_t *other)
 {
   /* Immutable-safe. */
-  set->set (*other);
+  مجموعه->مجموعه (*other);
 }
 
 /**
@@ -436,12 +436,12 @@ hb_set_set (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other)
+فراغ
+hb_مجموعه_union (hb_مجموعه_t       *مجموعه,
+	      ثابت hb_مجموعه_t *other)
 {
   /* Immutable-safe. */
-  set->union_ (*other);
+  مجموعه->union_ (*other);
 }
 
 /**
@@ -453,12 +453,12 @@ hb_set_union (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other)
+فراغ
+hb_مجموعه_intersect (hb_مجموعه_t       *مجموعه,
+		  ثابت hb_مجموعه_t *other)
 {
   /* Immutable-safe. */
-  set->intersect (*other);
+  مجموعه->intersect (*other);
 }
 
 /**
@@ -470,12 +470,12 @@ hb_set_intersect (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other)
+فراغ
+hb_مجموعه_تفریق (hb_مجموعه_t       *مجموعه,
+		 ثابت hb_مجموعه_t *other)
 {
   /* Immutable-safe. */
-  set->subtract (*other);
+  مجموعه->تفریق (*other);
 }
 
 /**
@@ -488,12 +488,12 @@ hb_set_subtract (hb_set_t       *set,
  *
  * Since: 0.9.2
  **/
-void
-hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other)
+فراغ
+hb_مجموعه_متقارن_difference (hb_مجموعه_t       *مجموعه,
+			     ثابت hb_مجموعه_t *other)
 {
   /* Immutable-safe. */
-  set->symmetric_difference (*other);
+  مجموعه->متقارن_difference (*other);
 }
 
 /**
@@ -504,11 +504,11 @@ hb_set_symmetric_difference (hb_set_t       *set,
  *
  * Since: 3.0.0
  **/
-void
-hb_set_invert (hb_set_t *set)
+فراغ
+hb_مجموعه_invert (hb_مجموعه_t *مجموعه)
 {
   /* Immutable-safe. */
-  set->invert ();
+  مجموعه->invert ();
 }
 
 /**
@@ -522,9 +522,9 @@ hb_set_invert (hb_set_t *set)
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_set_is_inverted (const hb_set_t *set)
+hb_مجموعه_is_inverted (ثابت hb_مجموعه_t *مجموعه)
 {
-  return set->is_inverted ();
+  أرجع مجموعه->is_inverted ();
 }
 
 /**
@@ -537,10 +537,10 @@ hb_set_is_inverted (const hb_set_t *set)
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_set_get_population (const hb_set_t *set)
+بیعلامت صحيح
+hb_مجموعه_get_population (ثابت hb_مجموعه_t *مجموعه)
 {
-  return set->get_population ();
+  أرجع مجموعه->get_population ();
 }
 
 /**
@@ -554,9 +554,9 @@ hb_set_get_population (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_min (const hb_set_t *set)
+hb_مجموعه_get_min (ثابت hb_مجموعه_t *مجموعه)
 {
-  return set->get_min ();
+  أرجع مجموعه->get_min ();
 }
 
 /**
@@ -570,9 +570,9 @@ hb_set_get_min (const hb_set_t *set)
  * Since: 0.9.7
  **/
 hb_codepoint_t
-hb_set_get_max (const hb_set_t *set)
+hb_مجموعه_get_max (ثابت hb_مجموعه_t *مجموعه)
 {
-  return set->get_max ();
+  أرجع مجموعه->get_max ();
 }
 
 /**
@@ -590,10 +590,10 @@ hb_set_get_max (const hb_set_t *set)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_مجموعه_بعدی (ثابت hb_مجموعه_t *مجموعه,
 	     hb_codepoint_t *codepoint)
 {
-  return set->next (codepoint);
+  أرجع مجموعه->next (codepoint);
 }
 
 /**
@@ -611,10 +611,10 @@ hb_set_next (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_مجموعه_قبلی (ثابت hb_مجموعه_t *مجموعه,
 		 hb_codepoint_t *codepoint)
 {
-  return set->previous (codepoint);
+  أرجع مجموعه->قبلی (codepoint);
 }
 
 /**
@@ -634,11 +634,11 @@ hb_set_previous (const hb_set_t *set,
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_set_next_range (const hb_set_t *set,
-		   hb_codepoint_t *first,
-		   hb_codepoint_t *last)
+hb_مجموعه_بعدی_range (ثابت hb_مجموعه_t *مجموعه,
+		   hb_codepoint_t *اولی,
+		   hb_codepoint_t *آخرین)
 {
-  return set->next_range (first, last);
+  أرجع مجموعه->بعدی_range (اولی, آخرین);
 }
 
 /**
@@ -658,11 +658,11 @@ hb_set_next_range (const hb_set_t *set,
  * Since: 1.8.0
  **/
 hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
-		       hb_codepoint_t *first,
-		       hb_codepoint_t *last)
+hb_مجموعه_قبلی_range (ثابت hb_مجموعه_t *مجموعه,
+		       hb_codepoint_t *اولی,
+		       hb_codepoint_t *آخرین)
 {
-  return set->previous_range (first, last);
+  أرجع مجموعه->قبلی_range (اولی, آخرین);
 }
 
 /**
@@ -681,11 +681,11 @@ hb_set_previous_range (const hb_set_t *set,
  *
  * Since: 4.2.0
  **/
-unsigned int
-hb_set_next_many (const hb_set_t *set,
+بیعلامت صحيح
+hb_مجموعه_بعدی_many (ثابت hb_مجموعه_t *مجموعه,
 		  hb_codepoint_t  codepoint,
-		  hb_codepoint_t *out,
-		  unsigned int    size)
+		  hb_codepoint_t *بیرون,
+		  بیعلامت صحيح    اندازه)
 {
-  return set->next_many (codepoint, out, size);
+  أرجع مجموعه->بعدی_many (codepoint, بیرون, اندازه);
 }

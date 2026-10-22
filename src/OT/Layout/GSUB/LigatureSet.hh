@@ -1,111 +1,111 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURESET_HH
-#define OT_LAYOUT_GSUB_LIGATURESET_HH
+#اگر_تعریف_نشده OT_LAYOUT_GSUB_LIGATURESET_HH
+#تعریف_کن OT_LAYOUT_GSUB_LIGATURESET_HH
 
-#include "Common.hh"
-#include "Ligature.hh"
+#ضمن "Common.hh"
+#ضمن "Ligature.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GSUB_impl {
 
-template <typename Types>
-struct LigatureSet
+قالب <نام_نوع Types>
+بنية Ligature_مجموعه
 {
-  public:
-  Array16Of<typename Types::template OffsetTo<Ligature<Types>>>
+  عام:
+  Array16_از<نام_نوع Types::قالب جابه_جایی_مقصد<Ligature<Types>>>
                 ligature;               /* Array LigatureSet tables
                                          * ordered by preference */
   
-  DEFINE_SIZE_ARRAY (2, ligature);
+  DEFINE_اندازه_ARRAY (2, ligature);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (ligature.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (ligature.sanitize (c, هذا));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_مجموعه_t *glyphs) ثابت
   {
-    return
+    أرجع
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { return _.intersects (glyphs); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_map ([glyphs] (ثابت Ligature<Types> &_) { أرجع _.intersects (glyphs); })
     | hb_any
     ;
   }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
+  منطقي intersects_lig_glyph (ثابت hb_مجموعه_t *glyphs) ثابت
   {
-    return
+    أرجع
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([glyphs] (const Ligature<Types> &_) { 
-      return _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_map ([glyphs] (ثابت Ligature<Types> &_) { 
+      أرجع _.intersects_lig_glyph (glyphs) && _.intersects (glyphs);
     })
     | hb_any
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  فراغ بستگی (hb_بستگی_context_t *c) ثابت
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.closure (c); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_apply ([c] (ثابت Ligature<Types> &_) { _.بستگی (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  فراغ depend (hb_depend_context_t *c, hb_codepoint_t اولی) ثابت
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const Ligature<Types> &_) { _.depend (c, first); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_apply ([&] (ثابت Ligature<Types> &_) { _.depend (c, اولی); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Ligature<Types> &_) { _.collect_glyphs (c); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_apply ([c] (ثابت Ligature<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  template <typename set_t>
-  void collect_seconds (set_t &s) const
+  قالب <نام_نوع مجموعه_t>
+  فراغ collect_seconds (مجموعه_t &s) ثابت
   {
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_apply ([&s] (const Ligature<Types> &_) { _.collect_second (s); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_apply ([&s] (ثابت Ligature<Types> &_) { _.collect_دومی (s); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقي would_apply (hb_would_apply_context_t *c) ثابت
   {
-    return
+    أرجع
     + hb_iter (ligature)
-    | hb_map (hb_add (this))
-    | hb_map ([c] (const Ligature<Types> &_) { return _.would_apply (c); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_map ([c] (ثابت Ligature<Types> &_) { أرجع _.would_apply (c); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c, const hb_set_digest_t *seconds = nullptr) const
+  منطقي apply (hb_ot_apply_context_t *c, ثابت hb_مجموعه_digest_t *seconds = اشاره_تهی) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    unsigned int num_ligs = ligature.len;
+    بیعلامت صحيح رقم_ligs = ligature.len;
 
-#ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_ligs <= 1)
-#endif
+#اگر_تعریف_نشده HB_NO_OT_RULESETS_FAST_مسیر
+    إذا (HB_OPTIMIZE_اندازه_VAL || رقم_ligs <= 1)
+#پایان_اگر
     {
     slow:
-      for (unsigned int i = 0; i < num_ligs; i++)
+      لكل (بیعلامت صحيح i = 0; i < رقم_ligs; i++)
       {
-	const auto &lig = this+ligature.arrayZ[i];
-	if (lig.apply (c)) return_trace (true);
+	ثابت خودکار &lig = هذا+ligature.arrayZ[i];
+	إذا (lig.apply (c)) return_trace (درست);
       }
-      return_trace (false);
+      return_trace (خطأ);
     }
 
     /* This version is optimized for speed by matching the second component
@@ -113,93 +113,93 @@ struct LigatureSet
      *
      * This is replicated in ChainRuleSet and RuleSet. */
 
-    auto &skippy_iter = c->iter_context;
-    skippy_iter.reset (c->buffer->idx);
-    skippy_iter.set_match_func (match_always, nullptr);
-    skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
-    unsigned unsafe_to;
-    hb_codepoint_t second = (unsigned) -1;
-    bool matched = skippy_iter.next (&unsafe_to);
-    if (likely (matched))
+    خودکار &skippy_iter = c->iter_context;
+    skippy_iter.reset (c->میانگیر->idx);
+    skippy_iter.مجموعه_تطابق_func (تطابق_always, اشاره_تهی);
+    skippy_iter.مجموعه_glyph_داده ((HBUINT16 *) اشاره_تهی);
+    بیعلامت unsafe_مقصد;
+    hb_codepoint_t second = (بیعلامت) -1;
+    منطقي matched = skippy_iter.next (&unsafe_مقصد);
+    إذا (likely (matched))
     {
-      second = c->buffer->info[skippy_iter.idx].codepoint;
-      unsafe_to = skippy_iter.idx + 1;
+      second = c->میانگیر->info[skippy_iter.idx].codepoint;
+      unsafe_مقصد = skippy_iter.idx + 1;
 
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      إذا (skippy_iter.may_skip (c->میانگیر->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        اذهب slow;
       }
     }
-    else
-      goto slow;
+    وإلا
+      اذهب slow;
 
-    if (seconds && !seconds->may_have (second))
+    إذا (seconds && !seconds->may_have (second))
     {
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-      return_trace (false);
+      c->میانگیر->unsafe_مقصد_concat (c->میانگیر->idx, unsafe_مقصد);
+      return_trace (خطأ);
     }
-    bool unsafe_to_concat = false;
-    for (unsigned int i = 0; i < num_ligs; i++)
+    منطقي unsafe_مقصد_concat = خطأ;
+    لكل (بیعلامت صحيح i = 0; i < رقم_ligs; i++)
     {
-      const auto &lig = this+ligature.arrayZ[i];
-      if (unlikely (lig.component.lenP1 <= 1) ||
+      ثابت خودکار &lig = هذا+ligature.arrayZ[i];
+      إذا (unlikely (lig.component.lenP1 <= 1) ||
 	  lig.component.arrayZ[0] == second)
       {
-	if (lig.apply (c))
+	إذا (lig.apply (c))
 	{
-	  if (unsafe_to_concat)
-	    c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	  return_trace (true);
+	  إذا (unsafe_مقصد_concat)
+	    c->میانگیر->unsafe_مقصد_concat (c->میانگیر->idx, unsafe_مقصد);
+	  return_trace (درست);
 	}
       }
-      else if (likely (lig.component.lenP1 > 1))
-        unsafe_to_concat = true;
+      وإلا إذا (likely (lig.component.lenP1 > 1))
+        unsafe_مقصد_concat = درست;
     }
-    if (likely (unsafe_to_concat))
-      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
+    إذا (likely (unsafe_مقصد_concat))
+      c->میانگیر->unsafe_مقصد_concat (c->میانگیر->idx, unsafe_مقصد);
 
-    return_trace (false);
+    return_trace (خطأ);
   }
 
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  قالب <نام_نوع GlyphID>
+  منطقي serialize (hb_serialize_context_t *c,
                   hb_array_t<GlyphID> ligatures,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ثابت بیعلامت صحيح> component_شمار_list,
                   hb_array_t<GlyphID> &component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligature.serialize (c, ligatures.length))) return_trace (false);
-    for (unsigned int i = 0; i < ligatures.length; i++)
+    TRACE_SERIALIZE (هذا);
+    إذا (unlikely (!c->extend_min (هذا))) return_trace (خطأ);
+    إذا (unlikely (!ligature.serialize (c, ligatures.درازی))) return_trace (خطأ);
+    لكل (بیعلامت صحيح i = 0; i < ligatures.درازی; i++)
     {
-      unsigned int component_count = (unsigned) hb_max ((int) component_count_list[i] - 1, 0);
-      if (unlikely (!ligature[i].serialize_serialize (c,
+      بیعلامت صحيح component_شمار = (بیعلامت) hb_max ((صحيح) component_شمار_list[i] - 1, 0);
+      إذا (unlikely (!ligature[i].serialize_serialize (c,
                                                       ligatures[i],
-                                                      component_list.sub_array (0, component_count))))
-        return_trace (false);
-      component_list += component_count;
+                                                      component_list.sub_array (0, component_شمار))))
+        return_trace (خطأ);
+      component_list += component_شمار;
     }
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  منطقي subset (hb_subset_context_t *c, بیعلامت coverage_idx) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (هذا);
+    خودکار *بیرون = c->serializer->شروع_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (بیرون))) return_trace (خطأ);
 
     + hb_iter (ligature)
-    | hb_filter (subset_offset_array (c, out->ligature, this, coverage_idx))
+    | hb_filter (subset_جابه_جایی_array (c, بیرون->ligature, هذا, coverage_idx))
     | hb_drain
     ;
 
-    if (bool (out->ligature))
+    إذا (منطقي (بیرون->ligature))
       // Ensure Coverage table is always packed after this.
-      c->serializer->add_virtual_link (coverage_idx);
+      c->serializer->جمع_کن_virtual_link (coverage_idx);
 
-    return_trace (bool (out->ligature));
+    return_trace (منطقي (بیرون->ligature));
   }
 };
 
@@ -207,4 +207,4 @@ struct LigatureSet
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURESET_HH */
+#پایان_اگر  /* OT_LAYOUT_GSUB_LIGATURESET_HH */

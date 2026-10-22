@@ -1,123 +1,123 @@
-#ifndef OT_GLYF_GLYF_HELPERS_HH
-#define OT_GLYF_GLYF_HELPERS_HH
+#اگر_تعریف_نشده OT_GLYF_GLYF_HELPERS_HH
+#تعریف_کن OT_GLYF_GLYF_HELPERS_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-subset-plan.hh"
+#ضمن "../../hb-open-type.hh"
+#ضمن "../../hb-subset-plan.hh"
 
-#include "loca.hh"
-
-
-namespace OT {
-namespace glyf_impl {
+#ضمن "loca.hh"
 
 
-template<typename IteratorIn, typename TypeOut,
-	 hb_requires (hb_is_source_of (IteratorIn, unsigned int))>
-static void
-_write_loca (IteratorIn&& it,
-	     const hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-	     bool short_offsets,
-	     TypeOut *dest,
-	     unsigned num_offsets)
+نطاق OT {
+نطاق glyf_impl {
+
+
+قالب<نام_نوع Iterator_درون, نام_نوع Type_بیرون,
+	 hb_requires (hb_is_منبع_از (Iterator_درون, بیعلامت صحيح))>
+ساكن فراغ
+_write_loca (Iterator_درون&& it,
+	     ثابت hb_sorted_وکتور_t<hb_codepoint_pair_t> new_مقصد_old_gid_list,
+	     منطقي short_offsets,
+	     Type_بیرون *dest,
+	     بیعلامت رقم_offsets)
 {
-  unsigned right_shift = short_offsets ? 1 : 0;
-  unsigned offset = 0;
-  TypeOut value;
+  بیعلامت راست_لغزش = short_offsets ? 1 : 0;
+  بیعلامت جابه_جایی = 0;
+  Type_بیرون value;
   value = 0;
   *dest++ = value;
-  hb_codepoint_t last = 0;
-  for (auto _ : new_to_old_gid_list)
+  hb_codepoint_t آخرین = 0;
+  لكل (خودکار _ : new_مقصد_old_gid_list)
   {
-    hb_codepoint_t gid = _.first;
-    for (; last < gid; last++)
+    hb_codepoint_t gid = _.اولی;
+    لكل (; آخرین < gid; آخرین++)
     {
-      DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+      DEBUG_پیام (SUBSET, اشاره_تهی, "loca entry empty offset %u", جابه_جایی);
       *dest++ = value;
     }
 
-    unsigned padded_size = *it++;
-    offset += padded_size;
-    DEBUG_MSG (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
-    value = offset >> right_shift;
+    بیعلامت padded_اندازه = *it++;
+    جابه_جایی += padded_اندازه;
+    DEBUG_پیام (SUBSET, اشاره_تهی, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, جابه_جایی, padded_اندازه);
+    value = جابه_جایی >> راست_لغزش;
     *dest++ = value;
 
-    last++; // Skip over gid
+    آخرین++; // Skip over gid
   }
-  unsigned num_glyphs = num_offsets - 1;
-  for (; last < num_glyphs; last++)
+  بیعلامت رقم_glyphs = رقم_offsets - 1;
+  لكل (; آخرین < رقم_glyphs; آخرین++)
   {
-    DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+    DEBUG_پیام (SUBSET, اشاره_تهی, "loca entry empty offset %u", جابه_جایی);
     *dest++ = value;
   }
 }
 
-static bool
-_add_head_and_set_loca_version (hb_subset_plan_t *plan, bool use_short_loca)
+ساكن منطقي
+جمع_کن_سر_and_مجموعه_loca_نسخه (hb_subset_plan_t *plan, منطقي use_short_loca)
 {
-  hb_blob_t *head_blob = hb_sanitize_context_t ().reference_table<head> (plan->source);
-  hb_blob_t *head_prime_blob = hb_blob_copy_writable_or_fail (head_blob);
-  hb_blob_destroy (head_blob);
+  hb_blob_t *سر_blob = hb_sanitize_context_t ().reference_جدول<سر_2> (plan->منبع);
+  hb_blob_t *سر_اول_blob = hb_blob_copy_writable_or_fail (سر_blob);
+  hb_blob_destroy (سر_blob);
 
-  if (unlikely (!head_prime_blob))
-    return false;
+  إذا (unlikely (!سر_اول_blob))
+    أرجع خطأ;
 
-  head *head_prime = (head *) hb_blob_get_data_writable (head_prime_blob, nullptr);
-  head_prime->indexToLocFormat = use_short_loca ? 0 : 1;
-  if (plan->normalized_coords)
+  سر_2 *سر_اول = (سر_2 *) hb_blob_get_داده_writable (سر_اول_blob, اشاره_تهی);
+  سر_اول->شاخص_مقصد_Loc_Format = use_short_loca ? 0 : 1;
+  إذا (plan->normalized_coords)
   {
-    head_prime->xMin = plan->head_maxp_info.xMin;
-    head_prime->xMax = plan->head_maxp_info.xMax;
-    head_prime->yMin = plan->head_maxp_info.yMin;
-    head_prime->yMax = plan->head_maxp_info.yMax;
+    سر_اول->xMin = plan->سر_maxp_info.xMin;
+    سر_اول->xMax = plan->سر_maxp_info.xMax;
+    سر_اول->yMin = plan->سر_maxp_info.yMin;
+    سر_اول->yMax = plan->سر_maxp_info.yMax;
 
-    unsigned orig_flag = head_prime->flags;
-    if (plan->head_maxp_info.allXMinIsLsb)
+    بیعلامت orig_flag = سر_اول->flags;
+    إذا (plan->سر_maxp_info.allXMinIsLsb)
       orig_flag |= 1 << 1;
-    else
+    وإلا
       orig_flag &= ~(1 << 1);
-    head_prime->flags = orig_flag;
+    سر_اول->flags = orig_flag;
   }
-  bool success = plan->add_table (HB_OT_TAG_head, head_prime_blob);
+  منطقي success = plan->جمع_کن_جدول (HB_OT_برچسب_سر, سر_اول_blob);
 
-  hb_blob_destroy (head_prime_blob);
-  return success;
+  hb_blob_destroy (سر_اول_blob);
+  أرجع success;
 }
 
-template<typename Iterator,
-	 hb_requires (hb_is_source_of (Iterator, unsigned int))>
-static bool
-_add_loca_and_head (hb_subset_context_t *c,
+قالب<نام_نوع Iterator,
+	 hb_requires (hb_is_منبع_از (Iterator, بیعلامت صحيح))>
+ساكن منطقي
+جمع_کن_loca_and_سر (hb_subset_context_t *c,
 		    Iterator padded_offsets,
-		    bool use_short_loca,
-		    bool extended)
+		    منطقي use_short_loca,
+		    منطقي extended)
 {
-  unsigned num_offsets = c->plan->num_output_glyphs () + 1;
-  unsigned entry_size = use_short_loca ? 2 : 4;
+  بیعلامت رقم_offsets = c->plan->رقم_output_glyphs () + 1;
+  بیعلامت مدخل_اندازه = use_short_loca ? 2 : 4;
 
-  char *loca_prime_data = (char *) hb_malloc2 (num_offsets, entry_size);
+  حرف *loca_اول_داده = (حرف *) hb_malloc2 (رقم_offsets, مدخل_اندازه);
 
-  if (unlikely (!loca_prime_data)) return false;
+  إذا (unlikely (!loca_اول_داده)) أرجع خطأ;
 
-  DEBUG_MSG (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
-	     entry_size, num_offsets, entry_size * num_offsets);
+  DEBUG_پیام (SUBSET, اشاره_تهی, "loca entry_size %u num_offsets %u size %u",
+	     مدخل_اندازه, رقم_offsets, مدخل_اندازه * رقم_offsets);
 
-  if (use_short_loca)
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_prime_data, num_offsets);
-  else
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_prime_data, num_offsets);
+  إذا (use_short_loca)
+    _write_loca (padded_offsets, c->plan->new_مقصد_old_gid_list, درست, (HBUINT16 *) loca_اول_داده, رقم_offsets);
+  وإلا
+    _write_loca (padded_offsets, c->plan->new_مقصد_old_gid_list, خطأ, (HBUINT32 *) loca_اول_داده, رقم_offsets);
 
-  hb_blob_t *loca_blob = hb_blob_create (loca_prime_data,
-					 entry_size * num_offsets,
-					 HB_MEMORY_MODE_WRITABLE,
-					 loca_prime_data,
+  hb_blob_t *loca_blob = hb_blob_create (loca_اول_داده,
+					 مدخل_اندازه * رقم_offsets,
+					 HB_حافظه_نما_WRITABLE,
+					 loca_اول_داده,
 					 hb_free);
 
-  bool result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
-	     && _add_head_and_set_loca_version (c->plan, use_short_loca);
+  منطقي نتیجه = c->plan->جمع_کن_جدول (extended ? HB_OT_برچسب_LOCA : HB_OT_برچسب_loca, loca_blob)
+	     && جمع_کن_سر_and_مجموعه_loca_نسخه (c->plan, use_short_loca);
 
   hb_blob_destroy (loca_blob);
-  return result;
+  أرجع نتیجه;
 }
 
 
@@ -125,4 +125,4 @@ _add_loca_and_head (hb_subset_context_t *c,
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYF_HELPERS_HH */
+#پایان_اگر /* OT_GLYF_GLYF_HELPERS_HH */

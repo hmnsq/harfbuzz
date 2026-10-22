@@ -23,138 +23,138 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF1_INTERP_CS_HH
-#define HB_CFF1_INTERP_CS_HH
+#اگر_تعریف_نشده HB_CFF1_INTERP_CS_HH
+#تعریف_کن HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#ضمن "hb.hh"
+#ضمن "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نطاق CFF {
 
-using namespace OT;
+استفاده نطاق OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+تعريفنوع biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+بنية cff1_cs_interp_env_t : cs_interp_env_t<عدد_t, CFF1Subrs>
 {
-  template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
-    : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
+  قالب <نام_نوع ACC>
+  cff1_cs_interp_env_t (ثابت hb_ubytes_t &str, ACC &acc, بیعلامت صحيح fd,
+			ثابت صحيح *coords_=اشاره_تهی, بیعلامت صحيح رقم_coords_2=0)
+    : SUPER (str, acc.globalSubrs, acc.خصوصی_Dicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
-    arg_start = 0;
-    in_seac = false;
+    processed_عرض = خطأ;
+    has_عرض = خطأ;
+    arg_شروع = 0;
+    درون_seac = خطأ;
   }
 
-  void set_width (bool has_width_)
+  فراغ مجموعه_عرض (منطقي has_عرض_2)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    إذا (likely (!processed_عرض && (SUPER::arg_پشته.get_شمار () > 0)))
     {
-      if (has_width_)
+      إذا (has_عرض_2)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
-	arg_start = 1;
+	عرض = SUPER::arg_پشته[0];
+	has_عرض = درست;
+	arg_شروع = 1;
       }
     }
-    processed_width = true;
+    processed_عرض = درست;
   }
 
-  void clear_args ()
+  فراغ clear_آرگومانها ()
   {
-    arg_start = 0;
-    SUPER::clear_args ();
+    arg_شروع = 0;
+    SUPER::clear_آرگومانها ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  فراغ مجموعه_درون_seac (منطقي درون_seac_2) { درون_seac = درون_seac_2; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  منطقي	  processed_عرض;
+  منطقي	  has_عرض;
+  بیعلامت صحيح  arg_شروع;
+  عدد_t	عرض;
+  منطقي	  درون_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  خاص:
+  تعريفنوع cs_interp_env_t<عدد_t, CFF1Subrs> SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+قالب <نام_نوع OPSET, نام_نوع PARAM, نام_نوع مسیر_3=مسیر_procs_null_t<cff1_cs_interp_env_t, PARAM>>
+بنية cff1_cs_opset_t : cs_opset_t<عدد_t, OPSET, cff1_cs_interp_env_t, PARAM, مسیر_3>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_op (op_کد_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
-	SUPER::flush_args_and_op (op, env, param);
-	break;
+    بدل (op) {
+      حالة Op_کد_dotsection:
+	SUPER::flush_آرگومانها_and_op (op, env, param);
+	اكسر;
 
-      case OpCode_endchar:
-	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+      حالة Op_کد_endchar:
+	OPSET::check_عرض (op, env, param);
+	إذا (env.arg_پشته.get_شمار () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
-	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	OPSET::flush_آرگومانها_and_op (op, env, param);
+	env.مجموعه_endchar (درست);
+	اكسر;
 
-      default:
+      افتراضي:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ check_عرض (op_کد_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    إذا (!env.processed_عرض)
     {
-      bool  has_width = false;
-      switch (op)
+      منطقي  has_عرض = خطأ;
+      بدل (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	حالة Op_کد_endchar:
+	حالة Op_کد_hstem:
+	حالة Op_کد_hstemhm:
+	حالة Op_کد_vstem:
+	حالة Op_کد_vstemhm:
+	حالة Op_کد_hintmask:
+	حالة Op_کد_cntrmask:
+	  has_عرض = ((env.arg_پشته.get_شمار () & 1) != 0);
+	  اكسر;
+	حالة Op_کد_hmoveto:
+	حالة Op_کد_vmoveto:
+	  has_عرض = (env.arg_پشته.get_شمار () > 1);
+	  اكسر;
+	حالة Op_کد_rmoveto:
+	  has_عرض = (env.arg_پشته.get_شمار () > 2);
+	  اكسر;
+	افتراضي:
+	  أرجع;
       }
-      env.set_width (has_width);
+      env.مجموعه_عرض (has_عرض);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  ساكن فراغ flush_آرگومانها (cff1_cs_interp_env_t &env, PARAM& param)
   {
-    SUPER::flush_args (env, param);
-    env.clear_args ();  /* pop off width */
+    SUPER::flush_آرگومانها (env, param);
+    env.clear_آرگومانها ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  خاص:
+  تعريفنوع cs_opset_t<عدد_t, OPSET, cff1_cs_interp_env_t, PARAM, مسیر_3>  SUPER;
 };
 
-template <typename OPSET, typename PARAM>
-using cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
+قالب <نام_نوع OPSET, نام_نوع PARAM>
+استفاده cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF1_INTERP_CS_HH */
+#پایان_اگر /* HB_CFF1_INTERP_CS_HH */

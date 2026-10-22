@@ -26,101 +26,101 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_TAG
+#اگر_تعریف_نشده HB_NO_OT_برچسب
 
 
 /* hb_script_t */
 
-static hb_tag_t
-hb_ot_old_tag_from_script (hb_script_t script)
+ساكن hb_برچسب_t
+hb_ot_old_برچسب_from_script (hb_script_t script)
 {
   /* This seems to be accurate as of end of 2012. */
 
-  switch ((hb_tag_t) script)
+  بدل ((hb_برچسب_t) script)
   {
-    case HB_SCRIPT_INVALID:		return HB_OT_TAG_DEFAULT_SCRIPT;
-    case HB_SCRIPT_MATH:		return HB_OT_TAG_MATH_SCRIPT;
+    حالة HB_SCRIPT_INVALID:		أرجع HB_OT_برچسب_DEFAULT_SCRIPT;
+    حالة HB_SCRIPT_MATH:		أرجع HB_OT_برچسب_MATH_SCRIPT;
 
     /* Hiragana, Katakana, and their collective ISO 15924 script all map to 'kana'. */
-    case HB_SCRIPT_HIRAGANA:		return HB_TAG('k','a','n','a');
-    case HB_TAG('H','r','k','t'):
-					return HB_TAG('k','a','n','a');
+    حالة HB_SCRIPT_HIRAGANA:		أرجع HB_برچسب('k','a','n','a');
+    حالة HB_برچسب('H','r','k','t'):
+					أرجع HB_برچسب('k','a','n','a');
 
     /* Spaces at the end are preserved, unlike ISO 15924 */
-    case HB_SCRIPT_LAO:			return HB_TAG('l','a','o',' ');
-    case HB_SCRIPT_YI:			return HB_TAG('y','i',' ',' ');
+    حالة HB_SCRIPT_LAO:			أرجع HB_برچسب('l','a','o',' ');
+    حالة HB_SCRIPT_YI:			أرجع HB_برچسب('y','i',' ',' ');
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_NKO:			return HB_TAG('n','k','o',' ');
+    حالة HB_SCRIPT_NKO:			أرجع HB_برچسب('n','k','o',' ');
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_VAI:			return HB_TAG('v','a','i',' ');
+    حالة HB_SCRIPT_VAI:			أرجع HB_برچسب('v','a','i',' ');
   }
 
   /* Else, just change first char to lowercase and return */
-  return ((hb_tag_t) script) | 0x20000000u;
+  أرجع ((hb_برچسب_t) script) | 0x20000000u;
 }
 
-static hb_script_t
-hb_ot_old_tag_to_script (hb_tag_t tag)
+ساكن hb_script_t
+hb_ot_old_برچسب_مقصد_script (hb_برچسب_t برچسب_2)
 {
-  if (unlikely (tag == HB_OT_TAG_DEFAULT_SCRIPT))
-    return HB_SCRIPT_INVALID;
-  if (unlikely (tag == HB_OT_TAG_MATH_SCRIPT))
-    return HB_SCRIPT_MATH;
+  إذا (unlikely (برچسب_2 == HB_OT_برچسب_DEFAULT_SCRIPT))
+    أرجع HB_SCRIPT_INVALID;
+  إذا (unlikely (برچسب_2 == HB_OT_برچسب_MATH_SCRIPT))
+    أرجع HB_SCRIPT_MATH;
 
   /* This side of the conversion is fully algorithmic. */
 
   /* Any spaces at the end of the tag are replaced by repeating the last
    * letter.  Eg 'nko ' -> 'Nkoo' */
-  if (unlikely ((tag & 0x0000FF00u) == 0x00002000u))
-    tag |= (tag >> 8) & 0x0000FF00u; /* Copy second letter to third */
-  if (unlikely ((tag & 0x000000FFu) == 0x00000020u))
-    tag |= (tag >> 8) & 0x000000FFu; /* Copy third letter to fourth */
+  إذا (unlikely ((برچسب_2 & 0x0000FF00u) == 0x00002000u))
+    برچسب_2 |= (برچسب_2 >> 8) & 0x0000FF00u; /* Copy second letter to third */
+  إذا (unlikely ((برچسب_2 & 0x000000FFu) == 0x00000020u))
+    برچسب_2 |= (برچسب_2 >> 8) & 0x000000FFu; /* Copy third letter to fourth */
 
   /* Change first char to uppercase and return */
-  return (hb_script_t) (tag & ~0x20000000u);
+  أرجع (hb_script_t) (برچسب_2 & ~0x20000000u);
 }
 
-static hb_tag_t
-hb_ot_new_tag_from_script (hb_script_t script)
+ساكن hb_برچسب_t
+hb_ot_new_برچسب_from_script (hb_script_t script)
 {
-  switch ((hb_tag_t) script) {
-    case HB_SCRIPT_BENGALI:		return HB_TAG('b','n','g','2');
-    case HB_SCRIPT_DEVANAGARI:		return HB_TAG('d','e','v','2');
-    case HB_SCRIPT_GUJARATI:		return HB_TAG('g','j','r','2');
-    case HB_SCRIPT_GURMUKHI:		return HB_TAG('g','u','r','2');
-    case HB_SCRIPT_KANNADA:		return HB_TAG('k','n','d','2');
-    case HB_SCRIPT_MALAYALAM:		return HB_TAG('m','l','m','2');
-    case HB_SCRIPT_ORIYA:		return HB_TAG('o','r','y','2');
-    case HB_SCRIPT_TAMIL:		return HB_TAG('t','m','l','2');
-    case HB_SCRIPT_TELUGU:		return HB_TAG('t','e','l','2');
-    case HB_SCRIPT_MYANMAR:		return HB_TAG('m','y','m','2');
+  بدل ((hb_برچسب_t) script) {
+    حالة HB_SCRIPT_BENGALI:		أرجع HB_برچسب('b','n','g','2');
+    حالة HB_SCRIPT_DEVANAGARI:		أرجع HB_برچسب('d','e','v','2');
+    حالة HB_SCRIPT_GUJARATI:		أرجع HB_برچسب('g','j','r','2');
+    حالة HB_SCRIPT_GURMUKHI:		أرجع HB_برچسب('g','u','r','2');
+    حالة HB_SCRIPT_KANNADA:		أرجع HB_برچسب('k','n','d','2');
+    حالة HB_SCRIPT_MALAYALAM:		أرجع HB_برچسب('m','l','m','2');
+    حالة HB_SCRIPT_ORIYA:		أرجع HB_برچسب('o','r','y','2');
+    حالة HB_SCRIPT_TAMIL:		أرجع HB_برچسب('t','m','l','2');
+    حالة HB_SCRIPT_TELUGU:		أرجع HB_برچسب('t','e','l','2');
+    حالة HB_SCRIPT_MYANMAR:		أرجع HB_برچسب('m','y','m','2');
   }
 
-  return HB_OT_TAG_DEFAULT_SCRIPT;
+  أرجع HB_OT_برچسب_DEFAULT_SCRIPT;
 }
 
-static hb_script_t
-hb_ot_new_tag_to_script (hb_tag_t tag)
+ساكن hb_script_t
+hb_ot_new_برچسب_مقصد_script (hb_برچسب_t برچسب_2)
 {
-  switch (tag) {
-    case HB_TAG('b','n','g','2'):	return HB_SCRIPT_BENGALI;
-    case HB_TAG('d','e','v','2'):	return HB_SCRIPT_DEVANAGARI;
-    case HB_TAG('g','j','r','2'):	return HB_SCRIPT_GUJARATI;
-    case HB_TAG('g','u','r','2'):	return HB_SCRIPT_GURMUKHI;
-    case HB_TAG('k','n','d','2'):	return HB_SCRIPT_KANNADA;
-    case HB_TAG('m','l','m','2'):	return HB_SCRIPT_MALAYALAM;
-    case HB_TAG('o','r','y','2'):	return HB_SCRIPT_ORIYA;
-    case HB_TAG('t','m','l','2'):	return HB_SCRIPT_TAMIL;
-    case HB_TAG('t','e','l','2'):	return HB_SCRIPT_TELUGU;
-    case HB_TAG('m','y','m','2'):	return HB_SCRIPT_MYANMAR;
+  بدل (برچسب_2) {
+    حالة HB_برچسب('b','n','g','2'):	أرجع HB_SCRIPT_BENGALI;
+    حالة HB_برچسب('d','e','v','2'):	أرجع HB_SCRIPT_DEVANAGARI;
+    حالة HB_برچسب('g','j','r','2'):	أرجع HB_SCRIPT_GUJARATI;
+    حالة HB_برچسب('g','u','r','2'):	أرجع HB_SCRIPT_GURMUKHI;
+    حالة HB_برچسب('k','n','d','2'):	أرجع HB_SCRIPT_KANNADA;
+    حالة HB_برچسب('m','l','m','2'):	أرجع HB_SCRIPT_MALAYALAM;
+    حالة HB_برچسب('o','r','y','2'):	أرجع HB_SCRIPT_ORIYA;
+    حالة HB_برچسب('t','m','l','2'):	أرجع HB_SCRIPT_TAMIL;
+    حالة HB_برچسب('t','e','l','2'):	أرجع HB_SCRIPT_TELUGU;
+    حالة HB_برچسب('m','y','m','2'):	أرجع HB_SCRIPT_MYANMAR;
   }
 
-  return HB_SCRIPT_UNKNOWN;
+  أرجع HB_SCRIPT_UNKNOWN;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#اگر_تعریف_نشده HB_DISABLE_DEPRECATED
 /**
  * hb_ot_tags_from_script:
  * @script: an #hb_script_t to convert.
@@ -132,18 +132,18 @@ hb_ot_new_tag_to_script (hb_tag_t tag)
  * Since: 0.6.0
  * Deprecated: 2.0.0: use hb_ot_tags_from_script_and_language() instead
  **/
-void
-hb_ot_tags_from_script (hb_script_t  script,
-			hb_tag_t    *script_tag_1,
-			hb_tag_t    *script_tag_2)
+فراغ
+hb_ot_برچسبها_from_script (hb_script_t  script,
+			hb_برچسب_t    *script_برچسب_1,
+			hb_برچسب_t    *script_برچسب_2)
 {
-  unsigned int count = 2;
-  hb_tag_t tags[2];
-  hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &count, tags, nullptr, nullptr);
-  *script_tag_1 = count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *script_tag_2 = count > 1 ? tags[1] : HB_OT_TAG_DEFAULT_SCRIPT;
+  بیعلامت صحيح شمار = 2;
+  hb_برچسب_t برچسبها[2];
+  hb_ot_برچسبها_from_script_and_language (script, HB_LANGUAGE_INVALID, &شمار, برچسبها, اشاره_تهی, اشاره_تهی);
+  *script_برچسب_1 = شمار > 0 ? برچسبها[0] : HB_OT_برچسب_DEFAULT_SCRIPT;
+  *script_برچسب_2 = شمار > 1 ? برچسبها[1] : HB_OT_برچسب_DEFAULT_SCRIPT;
 }
-#endif
+#پایان_اگر
 
 /*
  * Complete list at:
@@ -153,31 +153,31 @@ hb_ot_tags_from_script (hb_script_t  script,
  * So we just do that, and handle the exceptional cases in a switch.
  */
 
-static void
-hb_ot_all_tags_from_script (hb_script_t   script,
-			    unsigned int *count /* IN/OUT */,
-			    hb_tag_t     *tags /* OUT */)
+ساكن فراغ
+hb_ot_all_برچسبها_from_script (hb_script_t   script,
+			    بیعلامت صحيح *شمار /* IN/OUT */,
+			    hb_برچسب_t     *برچسبها /*بیرون*/)
 {
-  unsigned int i = 0;
+  بیعلامت صحيح i = 0;
 
-  hb_tag_t new_tag = hb_ot_new_tag_from_script (script);
-  if (unlikely (new_tag != HB_OT_TAG_DEFAULT_SCRIPT))
+  hb_برچسب_t new_برچسب = hb_ot_new_برچسب_from_script (script);
+  إذا (unlikely (new_برچسب != HB_OT_برچسب_DEFAULT_SCRIPT))
   {
     /* HB_SCRIPT_MYANMAR maps to 'mym2', but there is no 'mym3'. */
-    if (new_tag != HB_TAG('m','y','m','2'))
-      tags[i++] = new_tag | '3';
-    if (*count > i)
-      tags[i++] = new_tag;
+    إذا (new_برچسب != HB_برچسب('m','y','m','2'))
+      برچسبها[i++] = new_برچسب | '3';
+    إذا (*شمار > i)
+      برچسبها[i++] = new_برچسب;
   }
 
-  if (*count > i)
+  إذا (*شمار > i)
   {
-    hb_tag_t old_tag = hb_ot_old_tag_from_script (script);
-    if (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
-      tags[i++] = old_tag;
+    hb_برچسب_t old_برچسب = hb_ot_old_برچسب_from_script (script);
+    إذا (old_برچسب != HB_OT_برچسب_DEFAULT_SCRIPT)
+      برچسبها[i++] = old_برچسب;
   }
 
-  *count = i;
+  *شمار = i;
 }
 
 /**
@@ -190,103 +190,103 @@ hb_ot_all_tags_from_script (hb_script_t   script,
  *
  **/
 hb_script_t
-hb_ot_tag_to_script (hb_tag_t tag)
+hb_ot_برچسب_مقصد_script (hb_برچسب_t برچسب_2)
 {
-  unsigned char digit = tag & 0x000000FFu;
-  if (unlikely (digit == '2' || digit == '3'))
-    return hb_ot_new_tag_to_script (tag & 0xFFFFFF32);
+  بیعلامت حرف digit = برچسب_2 & 0x000000FFu;
+  إذا (unlikely (digit == '2' || digit == '3'))
+    أرجع hb_ot_new_برچسب_مقصد_script (برچسب_2 & 0xFFFFFF32);
 
-  return hb_ot_old_tag_to_script (tag);
+  أرجع hb_ot_old_برچسب_مقصد_script (برچسب_2);
 }
 
 
 /* hb_language_t */
 
-static inline bool
-subtag_matches (const char *lang_str,
-		const char *limit,
-		const char *subtag,
-		unsigned    subtag_len)
+ساكن مضمن منطقي
+subtag_matches (ثابت حرف *lang_str,
+		ثابت حرف *حد,
+		ثابت حرف *subtag,
+		بیعلامت    subtag_len)
 {
-  if (likely ((unsigned) (limit - lang_str) < subtag_len))
-    return false;
+  إذا (likely ((بیعلامت) (حد - lang_str) < subtag_len))
+    أرجع خطأ;
 
-  do {
-    const char *s = strstr (lang_str, subtag);
-    if (!s || s >= limit)
-      return false;
-    if (!ISALNUM (s[subtag_len]))
-      return true;
+  افعل {
+    ثابت حرف *s = جستجوی_رشته (lang_str, subtag);
+    إذا (!s || s >= حد)
+      أرجع خطأ;
+    إذا (!ISALNUM (s[subtag_len]))
+      أرجع درست;
     lang_str = s + subtag_len;
-  } while (true);
+  } طالما (درست);
 }
 
-static bool
-lang_matches (const char *lang_str,
-	      const char *limit,
-	      const char *spec,
-	      unsigned    spec_len)
+ساكن منطقي
+lang_matches (ثابت حرف *lang_str,
+	      ثابت حرف *حد,
+	      ثابت حرف *spec,
+	      بیعلامت    spec_len)
 {
   /* Same as hb_language_matches(); duplicated. */
 
-  if (likely ((unsigned) (limit - lang_str) < spec_len))
-    return false;
+  إذا (likely ((بیعلامت) (حد - lang_str) < spec_len))
+    أرجع خطأ;
 
-  return strncmp (lang_str, spec, spec_len) == 0 &&
+  أرجع مقایسه_رشته (lang_str, spec, spec_len) == 0 &&
 	 (lang_str[spec_len] == '\0' || lang_str[spec_len] == '-');
 }
 
-static bool
-bfind_tag (const hb_tag_t *array,
-	   unsigned        len,
-	   hb_tag_t        key)
+ساكن منطقي
+bfind_برچسب (ثابت hb_برچسب_t *array,
+	   بیعلامت        len,
+	   hb_برچسب_t        key)
 {
-  unsigned min = 0;
-  unsigned max = len;
+  بیعلامت min = 0;
+  بیعلامت max = len;
 
-  while (min < max)
+  طالما (min < max)
   {
-    unsigned mid = min + (max - min) / 2;
-    hb_tag_t val = array[mid];
-    if (key < val)
+    بیعلامت mid = min + (max - min) / 2;
+    hb_برچسب_t val = array[mid];
+    إذا (key < val)
       max = mid;
-    else if (key > val)
+    وإلا إذا (key > val)
       min = mid + 1;
-    else
-      return true;
+    وإلا
+      أرجع درست;
   }
 
-  return false;
+  أرجع خطأ;
 }
 
-struct LangTag
+بنية Lang_برچسب
 {
-  hb_tag_t language;
-  hb_tag_t tag;
+  hb_برچسب_t language;
+  hb_برچسب_t برچسب_2;
 
-  int cmp (hb_tag_t a) const
+  صحيح cmp (hb_برچسب_t a) ثابت
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    أرجع a < هذا->language ? -1 : a > هذا->language ? +1 : 0;
   }
-  int cmp (const LangTag *that) const
-  { return cmp (that->language); }
+  صحيح cmp (ثابت Lang_برچسب *that) ثابت
+  { أرجع cmp (that->language); }
 };
 
-struct LangTagRange
+بنية Lang_برچسب_Range
 {
-  hb_tag_t language;
-  uint16_t offset;
-  uint8_t count;
+  hb_برچسب_t language;
+  uint16_t جابه_جایی;
+  uint8_t شمار;
 
-  int cmp (hb_tag_t a) const
+  صحيح cmp (hb_برچسب_t a) ثابت
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    أرجع a < هذا->language ? -1 : a > هذا->language ? +1 : 0;
   }
-  int cmp (const LangTagRange *that) const
-  { return cmp (that->language); }
+  صحيح cmp (ثابت Lang_برچسب_Range *that) ثابت
+  { أرجع cmp (that->language); }
 };
 
-#include "hb-ot-tag-table.hh"
+#ضمن "hb-ot-tag-table.hh"
 
 /* The corresponding languages IDs for the following IDs are unclear,
  * overlap, or are architecturally weird. Needs more research. */
@@ -298,7 +298,7 @@ struct LangTagRange
 /*{"??",	{HB_TAG('Y','I','C',' ')}},*/	/* Yi Classic */
 /*{"zh?",	{HB_TAG('Z','H','P',' ')}},*/	/* Chinese Phonetic */
 
-#ifndef HB_DISABLE_DEPRECATED
+#اگر_تعریف_نشده HB_DISABLE_DEPRECATED
 /**
  * hb_ot_tag_from_language:
  * @language: an #hb_language_t to convert.
@@ -308,182 +308,182 @@ struct LangTagRange
  * Since: 0.6.0
  * Deprecated: 2.0.0: use hb_ot_tags_from_script_and_language() instead
  **/
-hb_tag_t
-hb_ot_tag_from_language (hb_language_t language)
+hb_برچسب_t
+hb_ot_برچسب_from_language (hb_language_t language)
 {
-  unsigned int count = 1;
-  hb_tag_t tags[1];
-  hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &count, tags);
-  return count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  بیعلامت صحيح شمار = 1;
+  hb_برچسب_t برچسبها[1];
+  hb_ot_برچسبها_from_script_and_language (HB_SCRIPT_UNKNOWN, language, اشاره_تهی, اشاره_تهی, &شمار, برچسبها);
+  أرجع شمار > 0 ? برچسبها[0] : HB_OT_برچسب_DEFAULT_LANGUAGE;
 }
-#endif
+#پایان_اگر
 
-static void
-hb_ot_tags_from_language (const char   *lang_str,
-			  const char   *limit,
-			  unsigned int *count,
-			  hb_tag_t     *tags)
+ساكن فراغ
+hb_ot_برچسبها_from_language (ثابت حرف   *lang_str,
+			  ثابت حرف   *حد,
+			  بیعلامت صحيح *شمار,
+			  hb_برچسب_t     *برچسبها)
 {
 
-#ifndef HB_NO_LANGUAGE_LONG
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
   /* Check for matches of multiple subtags. */
-  if (hb_ot_tags_from_complex_language (lang_str, limit, count, tags))
-    return;
-#endif
+  إذا (hb_ot_برچسبها_from_complex_language (lang_str, حد, شمار, برچسبها))
+    أرجع;
+#پایان_اگر
 
   /* Find a language matching in the first component. */
-#ifndef HB_NO_LANGUAGE_LONG
-  const char *s; s = strchr (lang_str, '-');
-#endif
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
+  ثابت حرف *s; s = strchr (lang_str, '-');
+#پایان_اگر
   {
-#ifndef HB_NO_LANGUAGE_LONG
-    if (s && limit - lang_str >= 6)
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
+    إذا (s && حد - lang_str >= 6)
     {
-      const char *extlang_end = strchr (s + 1, '-');
+      ثابت حرف *extlang_انتها = strchr (s + 1, '-');
       /* If there is an extended language tag, use it. */
-      if (3 == (extlang_end ? extlang_end - s - 1 : strlen (s + 1)) &&
+      إذا (3 == (extlang_انتها ? extlang_انتها - s - 1 : طول_رشته (s + 1)) &&
 	  ISALPHA (s[1]))
 	lang_str = s + 1;
     }
-#endif
-    const char *dash = strchr (lang_str, '-');
-    unsigned first_len = dash ? dash - lang_str : limit - lang_str;
-    hb_tag_t lang_tag = hb_tag_from_string (lang_str, first_len);
+#پایان_اگر
+    ثابت حرف *dash = strchr (lang_str, '-');
+    بیعلامت اولی_len = dash ? dash - lang_str : حد - lang_str;
+    hb_برچسب_t lang_برچسب = hb_برچسب_from_string (lang_str, اولی_len);
 
-    if (first_len == 2)
+    إذا (اولی_len == 2)
     {
-      static hb_atomic_t<unsigned> last_tag_idx_2 {0}; /* Poor man's cache. */
-      unsigned tag_idx = last_tag_idx_2;
+      ساكن hb_atomic_t<بیعلامت> آخرین_برچسب_idx_2 {0}; /* Poor man's cache. */
+      بیعلامت برچسب_idx = آخرین_برچسب_idx_2;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages2) &&
-		  ot_languages2[tag_idx].language == lang_tag) ||
-	  hb_sorted_array (ot_languages2).bfind (lang_tag, &tag_idx))
+      إذا (likely (برچسب_idx < ARRAY_درازی (ot_languages2) &&
+		  ot_languages2[برچسب_idx].language == lang_برچسب) ||
+	  hb_sorted_array (ot_languages2).bfind (lang_برچسب, &برچسب_idx))
       {
-	last_tag_idx_2 = tag_idx;
-	unsigned int i;
-	while (tag_idx != 0 &&
-	       ot_languages2[tag_idx].language == ot_languages2[tag_idx - 1].language)
-	  tag_idx--;
-	for (i = 0;
-	     i < *count &&
-	     tag_idx + i < ARRAY_LENGTH (ot_languages2) &&
-	     ot_languages2[tag_idx + i].tag != HB_TAG_NONE &&
-	     ot_languages2[tag_idx + i].language == ot_languages2[tag_idx].language;
+	آخرین_برچسب_idx_2 = برچسب_idx;
+	بیعلامت صحيح i;
+	طالما (برچسب_idx != 0 &&
+	       ot_languages2[برچسب_idx].language == ot_languages2[برچسب_idx - 1].language)
+	  برچسب_idx--;
+	لكل (i = 0;
+	     i < *شمار &&
+	     برچسب_idx + i < ARRAY_درازی (ot_languages2) &&
+	     ot_languages2[برچسب_idx + i].برچسب_2 != HB_برچسب_NONE &&
+	     ot_languages2[برچسب_idx + i].language == ot_languages2[برچسب_idx].language;
 	     i++)
-	  tags[i] = ot_languages2[tag_idx + i].tag;
-	*count = i;
-	return;
+	  برچسبها[i] = ot_languages2[برچسب_idx + i].برچسب_2;
+	*شمار = i;
+	أرجع;
       }
     }
-#ifndef HB_NO_LANGUAGE_LONG
-    else if (first_len == 3)
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
+    وإلا إذا (اولی_len == 3)
     {
-      static hb_atomic_t<unsigned> last_tag_idx_3 {0}; /* Poor man's cache. */
-      unsigned tag_idx = last_tag_idx_3;
+      ساكن hb_atomic_t<بیعلامت> آخرین_برچسب_idx_3 {0}; /* Poor man's cache. */
+      بیعلامت برچسب_idx = آخرین_برچسب_idx_3;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages3) &&
-		  ot_languages3[tag_idx].language == lang_tag) ||
-	  hb_sorted_array (ot_languages3).bfind (lang_tag, &tag_idx))
+      إذا (likely (برچسب_idx < ARRAY_درازی (ot_languages3) &&
+		  ot_languages3[برچسب_idx].language == lang_برچسب) ||
+	  hb_sorted_array (ot_languages3).bfind (lang_برچسب, &برچسب_idx))
       {
-	last_tag_idx_3 = tag_idx;
-	if (*count)
+	آخرین_برچسب_idx_3 = برچسب_idx;
+	إذا (*شمار)
 	{
-	  tags[0] = ot_languages3[tag_idx].tag;
-	  *count = 1;
+	  برچسبها[0] = ot_languages3[برچسب_idx].برچسب_2;
+	  *شمار = 1;
 	}
-	else
-	  *count = 0;
-	return;
+	وإلا
+	  *شمار = 0;
+	أرجع;
       }
 
-      static hb_atomic_t<unsigned> last_tag_idx_3_multi {0}; /* Poor man's cache. */
-      unsigned multi_tag_idx = last_tag_idx_3_multi;
+      ساكن hb_atomic_t<بیعلامت> آخرین_برچسب_idx_3_multi {0}; /* Poor man's cache. */
+      بیعلامت multi_برچسب_idx = آخرین_برچسب_idx_3_multi;
 
-      if (likely (multi_tag_idx < ARRAY_LENGTH (ot_languages3_multi) &&
-		  ot_languages3_multi[multi_tag_idx].language == lang_tag) ||
-	  hb_sorted_array (ot_languages3_multi).bfind (lang_tag, &multi_tag_idx))
+      إذا (likely (multi_برچسب_idx < ARRAY_درازی (ot_languages3_multi) &&
+		  ot_languages3_multi[multi_برچسب_idx].language == lang_برچسب) ||
+	  hb_sorted_array (ot_languages3_multi).bfind (lang_برچسب, &multi_برچسب_idx))
       {
-	last_tag_idx_3_multi = multi_tag_idx;
-	const LangTagRange &range = ot_languages3_multi[multi_tag_idx];
-	unsigned int i;
-	for (i = 0; i < *count && i < range.count; i++)
-	  tags[i] = ot_languages3_multi_values[range.offset + i];
-	*count = i;
-	return;
+	آخرین_برچسب_idx_3_multi = multi_برچسب_idx;
+	ثابت Lang_برچسب_Range &range = ot_languages3_multi[multi_برچسب_idx];
+	بیعلامت صحيح i;
+	لكل (i = 0; i < *شمار && i < range.شمار; i++)
+	  برچسبها[i] = ot_languages3_multi_مقادیر[range.جابه_جایی + i];
+	*شمار = i;
+	أرجع;
       }
 
-      if (bfind_tag (ot_languages3_blocked, ARRAY_LENGTH (ot_languages3_blocked), lang_tag))
+      إذا (bfind_برچسب (ot_languages3_blocked, ARRAY_درازی (ot_languages3_blocked), lang_برچسب))
       {
-	*count = 0;
-	return;
+	*شمار = 0;
+	أرجع;
       }
 
       /* Assume it's ISO-639-3 and upper-case and use it. */
-      tags[0] = lang_tag & ~0x20202000u;
-      *count = 1;
-      return;
+      برچسبها[0] = lang_برچسب & ~0x20202000u;
+      *شمار = 1;
+      أرجع;
     }
-#endif
+#پایان_اگر
   }
 
-#ifndef HB_NO_LANGUAGE_LONG
-  if (!s)
-    s = lang_str + strlen (lang_str);
-  if (s - lang_str == 3) {
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
+  إذا (!s)
+    s = lang_str + طول_رشته (lang_str);
+  إذا (s - lang_str == 3) {
     /* Assume it's ISO-639-3 and upper-case and use it. */
-    tags[0] = hb_tag_from_string (lang_str, s - lang_str) & ~0x20202000u;
-    *count = 1;
-    return;
+    برچسبها[0] = hb_برچسب_from_string (lang_str, s - lang_str) & ~0x20202000u;
+    *شمار = 1;
+    أرجع;
   }
-#endif
+#پایان_اگر
 
-  *count = 0;
+  *شمار = 0;
 }
 
-static bool
-parse_private_use_subtag (const char     *private_use_subtag,
-			  unsigned int   *count,
-			  hb_tag_t       *tags,
-			  const char     *prefix,
-			  unsigned char (*normalize) (unsigned char))
+ساكن منطقي
+parse_خصوصی_use_subtag (ثابت حرف     *خصوصی_use_subtag,
+			  بیعلامت صحيح   *شمار,
+			  hb_برچسب_t       *برچسبها,
+			  ثابت حرف     *پیشوند,
+			  بیعلامت حرف (*normalize) (بیعلامت حرف))
 {
-#ifdef HB_NO_LANGUAGE_PRIVATE_SUBTAG
-  return false;
-#endif
+#اگر_تعریف_شده HB_NO_LANGUAGE_خصوصی_SUBTAG
+  أرجع خطأ;
+#پایان_اگر
 
-  if (!(private_use_subtag && count && tags && *count)) return false;
+  إذا (!(خصوصی_use_subtag && شمار && برچسبها && *شمار)) أرجع خطأ;
 
-  const char *s = strstr (private_use_subtag, prefix);
-  if (!s) return false;
+  ثابت حرف *s = جستجوی_رشته (خصوصی_use_subtag, پیشوند);
+  إذا (!s) أرجع خطأ;
 
-  char tag[4];
-  int i;
-  s += strlen (prefix);
-  if (s[0] == '-') {
+  حرف برچسب_2[4];
+  صحيح i;
+  s += طول_رشته (پیشوند);
+  إذا (s[0] == '-') {
     s += 1;
-    char c;
-    for (i = 0; i < 8 && ISHEX (s[i]); i++)
+    حرف c;
+    لكل (i = 0; i < 8 && ISHEX (s[i]); i++)
     {
       c = FROMHEX (s[i]);
-      if (i % 2 == 0)
-	tag[i / 2] = c << 4;
-      else
-	tag[i / 2] += c;
+      إذا (i % 2 == 0)
+	برچسب_2[i / 2] = c << 4;
+      وإلا
+	برچسب_2[i / 2] += c;
     }
-    if (i != 8) return false;
-  } else {
-    for (i = 0; i < 4 && ISALNUM (s[i]); i++)
-      tag[i] = normalize (s[i]);
-    if (!i) return false;
+    إذا (i != 8) أرجع خطأ;
+  } وإلا {
+    لكل (i = 0; i < 4 && ISALNUM (s[i]); i++)
+      برچسب_2[i] = normalize (s[i]);
+    إذا (!i) أرجع خطأ;
 
-    for (; i < 4; i++)
-      tag[i] = ' ';
+    لكل (; i < 4; i++)
+      برچسب_2[i] = ' ';
   }
-  tags[0] = HB_TAG (tag[0], tag[1], tag[2], tag[3]);
-  if ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
-    tags[0] ^= ~0xDFDFDFDF;
-  *count = 1;
-  return true;
+  برچسبها[0] = HB_برچسب (برچسب_2[0], برچسب_2[1], برچسب_2[2], برچسب_2[3]);
+  إذا ((برچسبها[0] & 0xDFDFDFDF) == HB_OT_برچسب_DEFAULT_SCRIPT)
+    برچسبها[0] ^= ~0xDFDFDFDF;
+  *شمار = 1;
+  أرجع درست;
 }
 
 /**
@@ -503,62 +503,62 @@ parse_private_use_subtag (const char     *private_use_subtag,
  *
  * Since: 2.0.0
  **/
-void
-hb_ot_tags_from_script_and_language (hb_script_t   script,
+فراغ
+hb_ot_برچسبها_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
-				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
-				     hb_tag_t     *language_tags /* OUT */)
+				     بیعلامت صحيح *script_شمار /* IN/OUT */,
+				     hb_برچسب_t     *script_برچسبها /*بیرون*/,
+				     بیعلامت صحيح *language_شمار /* IN/OUT */,
+				     hb_برچسب_t     *language_برچسبها /*بیرون*/)
 {
-  bool needs_script = true;
+  منطقي needs_script = درست;
 
-  if (language == HB_LANGUAGE_INVALID)
+  إذا (language == HB_LANGUAGE_INVALID)
   {
-    if (language_count && language_tags && *language_count)
-      *language_count = 0;
+    إذا (language_شمار && language_برچسبها && *language_شمار)
+      *language_شمار = 0;
   }
-  else
+  وإلا
   {
-    const char *lang_str, *s, *limit, *private_use_subtag;
-    bool needs_language;
+    ثابت حرف *lang_str, *s, *حد, *خصوصی_use_subtag;
+    منطقي needs_language;
 
-    lang_str = hb_language_to_string (language);
-    limit = nullptr;
-    private_use_subtag = nullptr;
-    if (lang_str[0] == 'x' && lang_str[1] == '-')
+    lang_str = hb_language_مقصد_string (language);
+    حد = اشاره_تهی;
+    خصوصی_use_subtag = اشاره_تهی;
+    إذا (lang_str[0] == 'x' && lang_str[1] == '-')
     {
-      private_use_subtag = lang_str;
-    } else {
-      for (s = lang_str + 1; *s; s++)
+      خصوصی_use_subtag = lang_str;
+    } وإلا {
+      لكل (s = lang_str + 1; *s; s++)
       {
-	if (s[-1] == '-' && s[1] == '-')
+	إذا (s[-1] == '-' && s[1] == '-')
 	{
-	  if (s[0] == 'x')
+	  إذا (s[0] == 'x')
 	  {
-	    private_use_subtag = s;
-	    if (!limit)
-	      limit = s - 1;
-	    break;
-	  } else if (!limit)
+	    خصوصی_use_subtag = s;
+	    إذا (!حد)
+	      حد = s - 1;
+	    اكسر;
+	  } وإلا إذا (!حد)
 	  {
-	    limit = s - 1;
+	    حد = s - 1;
 	  }
 	}
       }
-      if (!limit)
-	limit = s;
+      إذا (!حد)
+	حد = s;
     }
 
-    needs_script = !parse_private_use_subtag (private_use_subtag, script_count, script_tags, "-hbsc", TOLOWER);
-    needs_language = !parse_private_use_subtag (private_use_subtag, language_count, language_tags, "-hbot", TOUPPER);
+    needs_script = !parse_خصوصی_use_subtag (خصوصی_use_subtag, script_شمار, script_برچسبها, "-hbsc", TOLOWER);
+    needs_language = !parse_خصوصی_use_subtag (خصوصی_use_subtag, language_شمار, language_برچسبها, "-hbot", TOUPPER);
 
-    if (needs_language && language_count && language_tags && *language_count)
-      hb_ot_tags_from_language (lang_str, limit, language_count, language_tags);
+    إذا (needs_language && language_شمار && language_برچسبها && *language_شمار)
+      hb_ot_برچسبها_from_language (lang_str, حد, language_شمار, language_برچسبها);
   }
 
-  if (needs_script && script_count && script_tags && *script_count)
-    hb_ot_all_tags_from_script (script, script_count, script_tags);
+  إذا (needs_script && script_شمار && script_برچسبها && *script_شمار)
+    hb_ot_all_برچسبها_from_script (script, script_شمار, script_برچسبها);
 }
 
 /**
@@ -573,43 +573,43 @@ hb_ot_tags_from_script_and_language (hb_script_t   script,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_ot_tag_to_language (hb_tag_t tag)
+hb_ot_برچسب_مقصد_language (hb_برچسب_t برچسب_2)
 {
-  unsigned int i;
+  بیعلامت صحيح i;
 
-  if (tag == HB_OT_TAG_DEFAULT_LANGUAGE)
-    return nullptr;
+  إذا (برچسب_2 == HB_OT_برچسب_DEFAULT_LANGUAGE)
+    أرجع اشاره_تهی;
 
-#ifndef HB_NO_LANGUAGE_LONG
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
   {
-    hb_language_t disambiguated_tag = hb_ot_ambiguous_tag_to_language (tag);
-    if (disambiguated_tag != HB_LANGUAGE_INVALID)
-      return disambiguated_tag;
+    hb_language_t disambiguated_برچسب = hb_ot_ambiguous_برچسب_مقصد_language (برچسب_2);
+    إذا (disambiguated_برچسب != HB_LANGUAGE_INVALID)
+      أرجع disambiguated_برچسب;
   }
-#endif
+#پایان_اگر
 
-  char buf[4];
-  for (i = 0; i < ARRAY_LENGTH (ot_languages2); i++)
-    if (ot_languages2[i].tag == tag)
+  حرف buf[4];
+  لكل (i = 0; i < ARRAY_درازی (ot_languages2); i++)
+    إذا (ot_languages2[i].برچسب_2 == برچسب_2)
     {
-      hb_tag_to_string (ot_languages2[i].language, buf);
-      return hb_language_from_string (buf, 2);
+      hb_برچسب_مقصد_string (ot_languages2[i].language, buf);
+      أرجع hb_language_from_string (buf, 2);
     }
-#ifndef HB_NO_LANGUAGE_LONG
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3); i++)
-    if (ot_languages3[i].tag == tag)
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
+  لكل (i = 0; i < ARRAY_درازی (ot_languages3); i++)
+    إذا (ot_languages3[i].برچسب_2 == برچسب_2)
     {
-      hb_tag_to_string (ot_languages3[i].language, buf);
-      return hb_language_from_string (buf, 3);
+      hb_برچسب_مقصد_string (ot_languages3[i].language, buf);
+      أرجع hb_language_from_string (buf, 3);
     }
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3_multi); i++)
-    for (unsigned int j = 0; j < ot_languages3_multi[i].count; j++)
-      if (ot_languages3_multi_values[ot_languages3_multi[i].offset + j] == tag)
+  لكل (i = 0; i < ARRAY_درازی (ot_languages3_multi); i++)
+    لكل (بیعلامت صحيح j = 0; j < ot_languages3_multi[i].شمار; j++)
+      إذا (ot_languages3_multi_مقادیر[ot_languages3_multi[i].جابه_جایی + j] == برچسب_2)
       {
-	hb_tag_to_string (ot_languages3_multi[i].language, buf);
-	return hb_language_from_string (buf, 3);
+	hb_برچسب_مقصد_string (ot_languages3_multi[i].language, buf);
+	أرجع hb_language_from_string (buf, 3);
       }
-#endif
+#پایان_اگر
 
   /* Return a custom language in the form of "x-hbot-AABBCCDD".
    * If it's three letters long, also guess it's ISO 639-3 and lower-case and
@@ -618,21 +618,21 @@ hb_ot_tag_to_language (hb_tag_t tag)
    * the same tag as the original tag).
    */
   {
-    char buf[20];
-    char *str = buf;
-    if (ISALPHA (tag >> 24)
-	&& ISALPHA ((tag >> 16) & 0xFF)
-	&& ISALPHA ((tag >> 8) & 0xFF)
-	&& (tag & 0xFF) == ' ')
+    حرف buf[20];
+    حرف *str = buf;
+    إذا (ISALPHA (برچسب_2 >> 24)
+	&& ISALPHA ((برچسب_2 >> 16) & 0xFF)
+	&& ISALPHA ((برچسب_2 >> 8) & 0xFF)
+	&& (برچسب_2 & 0xFF) == ' ')
     {
-      buf[0] = TOLOWER (tag >> 24);
-      buf[1] = TOLOWER ((tag >> 16) & 0xFF);
-      buf[2] = TOLOWER ((tag >> 8) & 0xFF);
+      buf[0] = TOLOWER (برچسب_2 >> 24);
+      buf[1] = TOLOWER ((برچسب_2 >> 16) & 0xFF);
+      buf[2] = TOLOWER ((برچسب_2 >> 8) & 0xFF);
       buf[3] = '-';
       str += 4;
     }
-    snprintf (str, 16, "x-hbot-%08" PRIx32, tag);
-    return hb_language_from_string (&*buf, -1);
+    snprintf (str, 16, "x-hbot-%08" PRIx32, برچسب_2);
+    أرجع hb_language_from_string (&*buf, -1);
   }
 }
 
@@ -649,40 +649,40 @@ hb_ot_tag_to_language (hb_tag_t tag)
  *
  * Since: 2.0.0
  **/
-void
-hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
-				   hb_tag_t       language_tag,
-				   hb_script_t   *script /* OUT */,
-				   hb_language_t *language /* OUT */)
+فراغ
+hb_ot_برچسبها_مقصد_script_and_language (hb_برچسب_t       script_برچسب,
+				   hb_برچسب_t       language_برچسب,
+				   hb_script_t   *script /*بیرون*/,
+				   hb_language_t *language /*بیرون*/)
 {
-  hb_script_t script_out = hb_ot_tag_to_script (script_tag);
-  if (script)
-    *script = script_out;
-  if (language)
+  hb_script_t script_بیرون = hb_ot_برچسب_مقصد_script (script_برچسب);
+  إذا (script)
+    *script = script_بیرون;
+  إذا (language)
   {
-    unsigned int script_count = 1;
-    hb_tag_t primary_script_tag[1];
-    hb_ot_tags_from_script_and_language (script_out,
+    بیعلامت صحيح script_شمار = 1;
+    hb_برچسب_t primary_script_برچسب[1];
+    hb_ot_برچسبها_from_script_and_language (script_بیرون,
 					 HB_LANGUAGE_INVALID,
-					 &script_count,
-					 primary_script_tag,
-					 nullptr, nullptr);
-    *language = hb_ot_tag_to_language (language_tag);
-    const char *lang_str = *language ? hb_language_to_string (*language) : nullptr;
-    if (lang_str && (script_count == 0 || primary_script_tag[0] != script_tag))
+					 &script_شمار,
+					 primary_script_برچسب,
+					 اشاره_تهی, اشاره_تهی);
+    *language = hb_ot_برچسب_مقصد_language (language_برچسب);
+    ثابت حرف *lang_str = *language ? hb_language_مقصد_string (*language) : اشاره_تهی;
+    إذا (lang_str && (script_شمار == 0 || primary_script_برچسب[0] != script_برچسب))
     {
-      unsigned char *buf;
-      size_t len = strlen (lang_str);
-      buf = (unsigned char *) hb_malloc (len + 16);
-      if (unlikely (!buf))
+      بیعلامت حرف *buf;
+      size_t len = طول_رشته (lang_str);
+      buf = (بیعلامت حرف *) hb_malloc (len + 16);
+      إذا (unlikely (!buf))
       {
-	*language = nullptr;
+	*language = اشاره_تهی;
       }
-      else
+      وإلا
       {
-	int shift;
+	صحيح لغزش;
 	hb_memcpy (buf, lang_str, len);
-	if (lang_str[0] != 'x' || lang_str[1] != '-') {
+	إذا (lang_str[0] != 'x' || lang_str[1] != '-') {
 	  buf[len++] = '-';
 	  buf[len++] = 'x';
 	}
@@ -692,68 +692,68 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 	buf[len++] = 's';
 	buf[len++] = 'c';
 	buf[len++] = '-';
-	for (shift = 28; shift >= 0; shift -= 4)
-	  buf[len++] = TOHEX (script_tag >> shift);
-	*language = hb_language_from_string ((char *) buf, len);
+	لكل (لغزش = 28; لغزش >= 0; لغزش -= 4)
+	  buf[len++] = TOHEX (script_برچسب >> لغزش);
+	*language = hb_language_from_string ((حرف *) buf, len);
 	hb_free (buf);
       }
     }
   }
 }
 
-#ifdef MAIN
-static inline void
+#اگر_تعریف_شده MAIN
+ساكن مضمن فراغ
 test_langs_sorted ()
 {
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages2); i++)
+  لكل (بیعلامت صحيح i = 1; i < ARRAY_درازی (ot_languages2); i++)
   {
-    int c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
-    if (c > 0)
+    صحيح c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
+    إذا (c > 0)
     {
       fprintf (stderr, "ot_languages2 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages2[i-1].language, c, ot_languages2[i].language);
       abort();
     }
   }
-#ifndef HB_NO_LANGUAGE_LONG
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3); i++)
+#اگر_تعریف_نشده HB_NO_LANGUAGE_LONG
+  لكل (بیعلامت صحيح i = 1; i < ARRAY_درازی (ot_languages3); i++)
   {
-    int c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
-    if (c > 0)
+    صحيح c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
+    إذا (c > 0)
     {
       fprintf (stderr, "ot_languages3 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3[i-1].language, c, ot_languages3[i].language);
       abort();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_multi); i++)
+  لكل (بیعلامت صحيح i = 1; i < ARRAY_درازی (ot_languages3_multi); i++)
   {
-    int c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
-    if (c > 0)
+    صحيح c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
+    إذا (c > 0)
     {
       fprintf (stderr, "ot_languages3_multi not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3_multi[i-1].language, c, ot_languages3_multi[i].language);
       abort();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_blocked); i++)
-    if (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
+  لكل (بیعلامت صحيح i = 1; i < ARRAY_درازی (ot_languages3_blocked); i++)
+    إذا (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
     {
       fprintf (stderr, "ot_languages3_blocked not sorted at index %u: %08x < %08x\n",
 	       i, ot_languages3_blocked[i], ot_languages3_blocked[i - 1]);
       abort();
     }
-#endif
+#پایان_اگر
 }
 
-int
-main ()
+صحيح
+اصلی ()
 {
   test_langs_sorted ();
-  return 0;
+  أرجع 0;
 }
 
-#endif
+#پایان_اگر
 
 
-#endif
+#پایان_اگر

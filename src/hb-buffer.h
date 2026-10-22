@@ -27,16 +27,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_درون) && !defined(HB_NO_SINGLE_سرآیند_ERROR)
+#خطا "Include <hb.h> instead."
+#پایان_اگر
 
-#ifndef HB_BUFFER_H
-#define HB_BUFFER_H
+#اگر_تعریف_نشده HB_میانگیر_H
+#تعریف_کن HB_میانگیر_H
 
-#include "hb-common.h"
-#include "hb-unicode.h"
-#include "hb-font.h"
+#ضمن "hb-common.h"
+#ضمن "hb-unicode.h"
+#ضمن "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -59,10 +59,10 @@ HB_BEGIN_DECLS
  * The #hb_glyph_info_t is the structure that holds information about the
  * glyphs and their relation to input text.
  */
-typedef struct hb_glyph_info_t {
+تعريفنوع بنية hb_glyph_info_t {
   hb_codepoint_t codepoint;
   /*< private >*/
-  hb_mask_t      mask;
+  hb_ماسک_t      ماسک;
   /*< public >*/
   uint32_t       cluster;
 
@@ -157,19 +157,19 @@ typedef struct hb_glyph_info_t {
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
-  HB_GLYPH_FLAG_UNSAFE_TO_BREAK			= 0x00000001,
-  HB_GLYPH_FLAG_UNSAFE_TO_CONCAT		= 0x00000002,
-  HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL		= 0x00000004,
+تعريفنوع تعداد { /*< flags >*/
+  HB_GLYPH_FLAG_UNSAFE_مقصد_BREAK			= 0x00000001,
+  HB_GLYPH_FLAG_UNSAFE_مقصد_CONCAT		= 0x00000002,
+  HB_GLYPH_FLAG_امن_مقصد_درج_TATWEEL		= 0x00000004,
 
   HB_GLYPH_FLAG_DEFINED				= 0x00000007 /* OR of all defined flags */
 } hb_glyph_flags_t;
 
 HB_EXTERN hb_glyph_flags_t
-hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
+hb_glyph_info_get_glyph_flags (ثابت hb_glyph_info_t *info);
 
-#define hb_glyph_info_get_glyph_flags(info) \
-	((hb_glyph_flags_t) ((unsigned int) (info)->mask & HB_GLYPH_FLAG_DEFINED))
+#تعریف_کن hb_glyph_info_get_glyph_flags(info) \
+	((hb_glyph_flags_t) ((بیعلامت صحيح) (info)->ماسک & HB_GLYPH_FLAG_DEFINED))
 
 
 /**
@@ -188,11 +188,11 @@ hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
  * #hb_glyph_position_t are relative to the current point.
  *
  */
-typedef struct hb_glyph_position_t {
+تعريفنوع بنية hb_glyph_position_t {
   hb_position_t  x_advance;
   hb_position_t  y_advance;
-  hb_position_t  x_offset;
-  hb_position_t  y_offset;
+  hb_position_t  x_جابه_جایی_2;
+  hb_position_t  y_جابه_جایی_2;
 
   /*< private >*/
   hb_var_int_t   var;
@@ -208,13 +208,13 @@ typedef struct hb_glyph_position_t {
  * set and retrieved using hb_buffer_set_segment_properties() and
  * hb_buffer_get_segment_properties(), respectively.
  */
-typedef struct hb_segment_properties_t {
+تعريفنوع بنية hb_segment_properties_t {
   hb_direction_t  direction;
   hb_script_t     script;
   hb_language_t   language;
   /*< private >*/
-  void           *reserved1;
-  void           *reserved2;
+  فراغ           *reserved1;
+  فراغ           *reserved2;
 } hb_segment_properties_t;
 
 /**
@@ -222,22 +222,22 @@ typedef struct hb_segment_properties_t {
  *
  * The default #hb_segment_properties_t of of freshly created #hb_buffer_t.
  */
-#define HB_SEGMENT_PROPERTIES_DEFAULT {HB_DIRECTION_INVALID, \
+#تعریف_کن HB_SEGMENT_PROPERTIES_DEFAULT {HB_DIRECTION_INVALID, \
 				       HB_SCRIPT_INVALID, \
 				       HB_LANGUAGE_INVALID, \
-				       (void *) 0, \
-				       (void *) 0}
+				       (فراغ *) 0, \
+				       (فراغ *) 0}
 
 HB_EXTERN hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b);
+hb_segment_properties_equal (ثابت hb_segment_properties_t *a,
+			     ثابت hb_segment_properties_t *b);
 
-HB_EXTERN unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p);
+HB_EXTERN بیعلامت صحيح
+hb_segment_properties_hash (ثابت hb_segment_properties_t *p);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src);
+			       ثابت hb_segment_properties_t *src);
 
 
 /**
@@ -247,37 +247,37 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
  * and output glyphs and their information after shaping.
  */
 
-typedef struct hb_buffer_t hb_buffer_t;
+تعريفنوع بنية hb_میانگیر_t hb_میانگیر_t;
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_create (void);
+HB_EXTERN hb_میانگیر_t *
+hb_میانگیر_create (فراغ);
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src);
+HB_EXTERN hb_میانگیر_t *
+hb_میانگیر_create_similar (ثابت hb_میانگیر_t *src);
 
-HB_EXTERN void
-hb_buffer_reset (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_reset (hb_میانگیر_t *میانگیر);
 
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_get_empty (void);
+HB_EXTERN hb_میانگیر_t *
+hb_میانگیر_get_خالی (فراغ);
 
-HB_EXTERN hb_buffer_t *
-hb_buffer_reference (hb_buffer_t *buffer);
+HB_EXTERN hb_میانگیر_t *
+hb_میانگیر_reference (hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_destroy (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_destroy (hb_میانگیر_t *میانگیر);
 
 HB_EXTERN hb_bool_t
-hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+hb_میانگیر_مجموعه_user_داده (hb_میانگیر_t        *میانگیر,
+			 hb_user_داده_کلید_t *کلید_2,
+			 فراغ *              داده,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_میانگیر_get_user_داده (ثابت hb_میانگیر_t  *میانگیر,
+			 hb_user_داده_کلید_t *کلید_2);
 
 
 /**
@@ -288,59 +288,59 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * The type of #hb_buffer_t contents.
  */
-typedef enum {
-  HB_BUFFER_CONTENT_TYPE_INVALID = 0,
-  HB_BUFFER_CONTENT_TYPE_UNICODE,
-  HB_BUFFER_CONTENT_TYPE_GLYPHS
-} hb_buffer_content_type_t;
+تعريفنوع تعداد {
+  HB_میانگیر_CONTENT_TYPE_INVALID = 0,
+  HB_میانگیر_CONTENT_TYPE_UNICODE,
+  HB_میانگیر_CONTENT_TYPE_GLYPHS
+} hb_میانگیر_content_type_t;
 
-HB_EXTERN void
-hb_buffer_set_content_type (hb_buffer_t              *buffer,
-			    hb_buffer_content_type_t  content_type);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_content_type (hb_میانگیر_t              *میانگیر,
+			    hb_میانگیر_content_type_t  content_type);
 
-HB_EXTERN hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer);
+HB_EXTERN hb_میانگیر_content_type_t
+hb_میانگیر_get_content_type (ثابت hb_میانگیر_t *میانگیر);
 
 
-HB_EXTERN void
-hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_unicode_funcs (hb_میانگیر_t        *میانگیر,
 			     hb_unicode_funcs_t *unicode_funcs);
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t  *buffer);
+hb_میانگیر_get_unicode_funcs (ثابت hb_میانگیر_t  *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_direction (hb_buffer_t    *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_direction (hb_میانگیر_t    *میانگیر,
 			 hb_direction_t  direction);
 
 HB_EXTERN hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer);
+hb_میانگیر_get_direction (ثابت hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_script (hb_buffer_t *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_script (hb_میانگیر_t *میانگیر,
 		      hb_script_t  script);
 
 HB_EXTERN hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer);
+hb_میانگیر_get_script (ثابت hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_language (hb_buffer_t   *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_language (hb_میانگیر_t   *میانگیر,
 			hb_language_t  language);
 
 
 HB_EXTERN hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer);
+hb_میانگیر_get_language (ثابت hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_segment_properties (hb_میانگیر_t *میانگیر,
+				  ثابت hb_segment_properties_t *props);
 
-HB_EXTERN void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_get_segment_properties (ثابت hb_میانگیر_t *میانگیر,
 				  hb_segment_properties_t *props);
 
-HB_EXTERN void
-hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_guess_segment_properties (hb_میانگیر_t *میانگیر);
 
 
 /**
@@ -393,26 +393,26 @@ hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_FLAG_DEFAULT			= 0x00000000u,
-  HB_BUFFER_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
-  HB_BUFFER_FLAG_EOT				= 0x00000002u, /* End-of-text */
-  HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES	= 0x00000004u,
-  HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES	= 0x00000008u,
-  HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE	= 0x00000010u,
-  HB_BUFFER_FLAG_VERIFY				= 0x00000020u,
-  HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT	= 0x00000040u,
-  HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL	= 0x00000080u,
+تعريفنوع تعداد { /*< flags >*/
+  HB_میانگیر_FLAG_DEFAULT			= 0x00000000u,
+  HB_میانگیر_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
+  HB_میانگیر_FLAG_EOT				= 0x00000002u, /* End-of-text */
+  HB_میانگیر_FLAG_PRESERVE_DEFAULT_IGNORABLES	= 0x00000004u,
+  HB_میانگیر_FLAG_REMOVE_DEFAULT_IGNORABLES	= 0x00000008u,
+  HB_میانگیر_FLAG_DO_NOT_درج_DOTTED_CIRCLE	= 0x00000010u,
+  HB_میانگیر_FLAG_VERIFY				= 0x00000020u,
+  HB_میانگیر_FLAG_PRODUCE_UNSAFE_مقصد_CONCAT	= 0x00000040u,
+  HB_میانگیر_FLAG_PRODUCE_امن_مقصد_درج_TATWEEL	= 0x00000080u,
 
-  HB_BUFFER_FLAG_DEFINED			= 0x000000FFu
-} hb_buffer_flags_t;
+  HB_میانگیر_FLAG_DEFINED			= 0x000000FFu
+} hb_میانگیر_flags_t;
 
-HB_EXTERN void
-hb_buffer_set_flags (hb_buffer_t       *buffer,
-		     hb_buffer_flags_t  flags);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_flags (hb_میانگیر_t       *میانگیر,
+		     hb_میانگیر_flags_t  flags);
 
-HB_EXTERN hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer);
+HB_EXTERN hb_میانگیر_flags_t
+hb_میانگیر_get_flags (ثابت hb_میانگیر_t *میانگیر);
 
 /**
  * hb_buffer_cluster_level_t:
@@ -458,13 +458,13 @@ hb_buffer_get_flags (const hb_buffer_t *buffer);
  *
  * Since: 0.9.42
  */
-typedef enum {
-  HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
-  HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
-  HB_BUFFER_CLUSTER_LEVEL_CHARACTERS		= 2,
-  HB_BUFFER_CLUSTER_LEVEL_GRAPHEMES		= 3,
-  HB_BUFFER_CLUSTER_LEVEL_DEFAULT = HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
-} hb_buffer_cluster_level_t;
+تعريفنوع تعداد {
+  HB_میانگیر_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
+  HB_میانگیر_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
+  HB_میانگیر_CLUSTER_LEVEL_CHARACTERS		= 2,
+  HB_میانگیر_CLUSTER_LEVEL_GRAPHEMES		= 3,
+  HB_میانگیر_CLUSTER_LEVEL_DEFAULT = HB_میانگیر_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
+} hb_میانگیر_cluster_level_t;
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE:
@@ -475,10 +475,10 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS))))
+#تعریف_کن HB_میانگیر_CLUSTER_LEVEL_IS_MONOTONE(level) \
+	((bool) ((1u << (بیعلامت) (level)) & \
+		 ((1u << HB_میانگیر_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
+		  (1u << HB_میانگیر_CLUSTER_LEVEL_MONOTONE_CHARACTERS))))
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES:
@@ -489,10 +489,10 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_GRAPHEMES))))
+#تعریف_کن HB_میانگیر_CLUSTER_LEVEL_IS_GRAPHEMES(level) \
+	((bool) ((1u << (بیعلامت) (level)) & \
+		 ((1u << HB_میانگیر_CLUSTER_LEVEL_MONOTONE_GRAPHEMES) | \
+		  (1u << HB_میانگیر_CLUSTER_LEVEL_GRAPHEMES))))
 
 /**
  * HB_BUFFER_CLUSTER_LEVEL_IS_CHARACTERS:
@@ -503,17 +503,17 @@ typedef enum {
  *
  * Since: 11.0.0
  */
-#define HB_BUFFER_CLUSTER_LEVEL_IS_CHARACTERS(level) \
-	((bool) ((1u << (unsigned) (level)) & \
-		 ((1u << HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS) | \
-		  (1u << HB_BUFFER_CLUSTER_LEVEL_CHARACTERS))))
+#تعریف_کن HB_میانگیر_CLUSTER_LEVEL_IS_CHARACTERS(level) \
+	((bool) ((1u << (بیعلامت) (level)) & \
+		 ((1u << HB_میانگیر_CLUSTER_LEVEL_MONOTONE_CHARACTERS) | \
+		  (1u << HB_میانگیر_CLUSTER_LEVEL_CHARACTERS))))
 
-HB_EXTERN void
-hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
-			     hb_buffer_cluster_level_t  cluster_level);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_cluster_level (hb_میانگیر_t               *میانگیر,
+			     hb_میانگیر_cluster_level_t  cluster_level);
 
-HB_EXTERN hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer);
+HB_EXTERN hb_میانگیر_cluster_level_t
+hb_میانگیر_get_cluster_level (ثابت hb_میانگیر_t *میانگیر);
 
 /**
  * HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT:
@@ -523,140 +523,140 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer);
  *
  * Since: 0.9.31
  */
-#define HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT 0xFFFDu
+#تعریف_کن HB_میانگیر_REPLACEMENT_CODEPOINT_DEFAULT 0xFFFDu
 
-HB_EXTERN void
-hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_replacement_codepoint (hb_میانگیر_t    *میانگیر,
 				     hb_codepoint_t  replacement);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer);
+hb_میانگیر_get_replacement_codepoint (ثابت hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_invisible_glyph (hb_میانگیر_t    *میانگیر,
 			       hb_codepoint_t  invisible);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer);
+hb_میانگیر_get_invisible_glyph (ثابت hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
-			       hb_codepoint_t  not_found);
-
-HB_EXTERN hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer);
-
-HB_EXTERN void
-hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
-						  hb_codepoint_t  not_found_variation_selector);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_not_یافت_glyph (hb_میانگیر_t    *میانگیر,
+			       hb_codepoint_t  not_یافت);
 
 HB_EXTERN hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer);
+hb_میانگیر_get_not_یافت_glyph (ثابت hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_set_random_state (hb_buffer_t    *buffer,
-			    unsigned        state);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_not_یافت_variation_selector_glyph (hb_میانگیر_t    *میانگیر,
+						  hb_codepoint_t  not_یافت_variation_selector);
 
-HB_EXTERN unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer);
+HB_EXTERN hb_codepoint_t
+hb_میانگیر_get_not_یافت_variation_selector_glyph (ثابت hb_میانگیر_t *میانگیر);
+
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_random_state (hb_میانگیر_t    *میانگیر,
+			    بیعلامت        state);
+
+HB_EXTERN بیعلامت
+hb_میانگیر_get_random_state (ثابت hb_میانگیر_t *میانگیر);
 
 /*
  * Content API.
  */
 
-HB_EXTERN void
-hb_buffer_clear_contents (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_clear_contents (hb_میانگیر_t *میانگیر);
 
 HB_EXTERN hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t  *buffer,
-			unsigned int  size);
+hb_میانگیر_pre_allocate (hb_میانگیر_t  *میانگیر,
+			بیعلامت صحيح  اندازه);
 
 
 HB_EXTERN hb_bool_t
-hb_buffer_allocation_successful (hb_buffer_t  *buffer);
+hb_میانگیر_تخصیص_successful (hb_میانگیر_t  *میانگیر);
 
-HB_EXTERN void
-hb_buffer_reverse (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_معکوس (hb_میانگیر_t *میانگیر);
 
-HB_EXTERN void
-hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end);
+HB_EXTERN فراغ
+hb_میانگیر_معکوس_range (hb_میانگیر_t *میانگیر,
+			 بیعلامت صحيح شروع, بیعلامت صحيح انتها);
 
-HB_EXTERN void
-hb_buffer_reverse_clusters (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_معکوس_clusters (hb_میانگیر_t *میانگیر);
 
 
 /* Filling the buffer in */
 
-HB_EXTERN void
-hb_buffer_add (hb_buffer_t    *buffer,
+HB_EXTERN فراغ
+hb_میانگیر_جمع_کن (hb_میانگیر_t    *میانگیر,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster);
+	       بیعلامت صحيح    cluster);
 
-HB_EXTERN void
-hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length);
+HB_EXTERN فراغ
+hb_میانگیر_جمع_کن_utf8 (hb_میانگیر_t  *میانگیر,
+		    ثابت حرف   *متن,
+		    صحيح           متن_درازی,
+		    بیعلامت صحيح  قلم_جابه_جایی,
+		    صحيح           قلم_درازی);
 
-HB_EXTERN void
-hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+HB_EXTERN فراغ
+hb_میانگیر_جمع_کن_utf16 (hb_میانگیر_t    *میانگیر,
+		     ثابت uint16_t *متن,
+		     صحيح             متن_درازی,
+		     بیعلامت صحيح    قلم_جابه_جایی,
+		     صحيح             قلم_درازی);
 
-HB_EXTERN void
-hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+HB_EXTERN فراغ
+hb_میانگیر_جمع_کن_utf32 (hb_میانگیر_t    *میانگیر,
+		     ثابت uint32_t *متن,
+		     صحيح             متن_درازی,
+		     بیعلامت صحيح    قلم_جابه_جایی,
+		     صحيح             قلم_درازی);
 
-HB_EXTERN void
-hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length);
+HB_EXTERN فراغ
+hb_میانگیر_جمع_کن_latin1 (hb_میانگیر_t   *میانگیر,
+		      ثابت uint8_t *متن,
+		      صحيح            متن_درازی,
+		      بیعلامت صحيح   قلم_جابه_جایی,
+		      صحيح            قلم_درازی);
 
-HB_EXTERN void
-hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length);
+HB_EXTERN فراغ
+hb_میانگیر_جمع_کن_codepoints (hb_میانگیر_t          *میانگیر,
+			  ثابت hb_codepoint_t *متن,
+			  صحيح                   متن_درازی,
+			  بیعلامت صحيح          قلم_جابه_جایی,
+			  صحيح                   قلم_درازی);
 
-HB_EXTERN void
-hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end);
+HB_EXTERN فراغ
+hb_میانگیر_append (hb_میانگیر_t *میانگیر,
+		  ثابت hb_میانگیر_t *منبع,
+		  بیعلامت صحيح شروع,
+		  بیعلامت صحيح انتها);
 
 HB_EXTERN hb_bool_t
-hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length);
+hb_میانگیر_مجموعه_درازی (hb_میانگیر_t  *میانگیر,
+		      بیعلامت صحيح  درازی);
 
-HB_EXTERN unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer);
+HB_EXTERN بیعلامت صحيح
+hb_میانگیر_get_درازی (ثابت hb_میانگیر_t *میانگیر);
 
 /* Getting glyphs out of the buffer */
 
 HB_EXTERN hb_glyph_info_t *
-hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length);
+hb_میانگیر_get_glyph_infos (hb_میانگیر_t  *میانگیر,
+			   بیعلامت صحيح *درازی);
 
 HB_EXTERN hb_glyph_position_t *
-hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length);
+hb_میانگیر_get_glyph_positions (hb_میانگیر_t  *میانگیر,
+			       بیعلامت صحيح *درازی);
 
 HB_EXTERN hb_bool_t
-hb_buffer_has_positions (hb_buffer_t  *buffer);
+hb_میانگیر_has_positions (hb_میانگیر_t  *میانگیر);
 
 
-HB_EXTERN void
-hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_normalize_glyphs (hb_میانگیر_t *میانگیر);
 
 
 /*
@@ -684,17 +684,17 @@ hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES	= 0x00000004u,
-  HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS	= 0x00000008u,
-  HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS		= 0x00000010u,
-  HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES		= 0x00000020u,
+تعريفنوع تعداد { /*< flags >*/
+  HB_میانگیر_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
+  HB_میانگیر_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
+  HB_میانگیر_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
+  HB_میانگیر_SERIALIZE_FLAG_NO_GLYPH_نامها	= 0x00000004u,
+  HB_میانگیر_SERIALIZE_FLAG_GLYPH_EXTENTS	= 0x00000008u,
+  HB_میانگیر_SERIALIZE_FLAG_GLYPH_FLAGS		= 0x00000010u,
+  HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES		= 0x00000020u,
 
-  HB_BUFFER_SERIALIZE_FLAG_DEFINED		= 0x0000003Fu
-} hb_buffer_serialize_flags_t;
+  HB_میانگیر_SERIALIZE_FLAG_DEFINED		= 0x0000003Fu
+} hb_میانگیر_serialize_flags_t;
 
 /**
  * hb_buffer_serialize_format_t:
@@ -707,67 +707,67 @@ typedef enum { /*< flags >*/
  *
  * Since: 0.9.2
  */
-typedef enum {
-  HB_BUFFER_SERIALIZE_FORMAT_TEXT	= HB_TAG('T','E','X','T'),
-  HB_BUFFER_SERIALIZE_FORMAT_JSON	= HB_TAG('J','S','O','N'),
-  HB_BUFFER_SERIALIZE_FORMAT_INVALID	= HB_TAG_NONE
-} hb_buffer_serialize_format_t;
+تعريفنوع تعداد {
+  HB_میانگیر_SERIALIZE_FORMAT_متن	= HB_برچسب('T','E','X','T'),
+  HB_میانگیر_SERIALIZE_FORMAT_JSON	= HB_برچسب('J','S','O','N'),
+  HB_میانگیر_SERIALIZE_FORMAT_INVALID	= HB_برچسب_NONE
+} hb_میانگیر_serialize_format_t;
 
-HB_EXTERN hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len);
+HB_EXTERN hb_میانگیر_serialize_format_t
+hb_میانگیر_serialize_format_from_string (ثابت حرف *str, صحيح len);
 
-HB_EXTERN const char *
-hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format);
+HB_EXTERN ثابت حرف *
+hb_میانگیر_serialize_format_مقصد_string (hb_میانگیر_serialize_format_t format);
 
-HB_EXTERN const char **
-hb_buffer_serialize_list_formats (void);
+HB_EXTERN ثابت حرف **
+hb_میانگیر_serialize_list_formats (فراغ);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-			    unsigned int start,
-			    unsigned int end,
-			    char *buf,
-			    unsigned int buf_size,
-			    unsigned int *buf_consumed,
+HB_EXTERN بیعلامت صحيح
+hb_میانگیر_serialize_glyphs (hb_میانگیر_t *میانگیر,
+			    بیعلامت صحيح شروع,
+			    بیعلامت صحيح انتها,
+			    حرف *buf,
+			    بیعلامت صحيح buf_اندازه,
+			    بیعلامت صحيح *buf_consumed,
 			    hb_font_t *font,
-			    hb_buffer_serialize_format_t format,
-			    hb_buffer_serialize_flags_t flags);
+			    hb_میانگیر_serialize_format_t format,
+			    hb_میانگیر_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-			     unsigned int start,
-			     unsigned int end,
-			     char *buf,
-			     unsigned int buf_size,
-			     unsigned int *buf_consumed,
-			     hb_buffer_serialize_format_t format,
-			     hb_buffer_serialize_flags_t flags);
+HB_EXTERN بیعلامت صحيح
+hb_میانگیر_serialize_unicode (hb_میانگیر_t *میانگیر,
+			     بیعلامت صحيح شروع,
+			     بیعلامت صحيح انتها,
+			     حرف *buf,
+			     بیعلامت صحيح buf_اندازه,
+			     بیعلامت صحيح *buf_consumed,
+			     hb_میانگیر_serialize_format_t format,
+			     hb_میانگیر_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
-hb_buffer_serialize (hb_buffer_t *buffer,
-		     unsigned int start,
-		     unsigned int end,
-		     char *buf,
-		     unsigned int buf_size,
-		     unsigned int *buf_consumed,
+HB_EXTERN بیعلامت صحيح
+hb_میانگیر_serialize (hb_میانگیر_t *میانگیر,
+		     بیعلامت صحيح شروع,
+		     بیعلامت صحيح انتها,
+		     حرف *buf,
+		     بیعلامت صحيح buf_اندازه,
+		     بیعلامت صحيح *buf_consumed,
 		     hb_font_t *font,
-		     hb_buffer_serialize_format_t format,
-		     hb_buffer_serialize_flags_t flags);
+		     hb_میانگیر_serialize_format_t format,
+		     hb_میانگیر_serialize_flags_t flags);
 
 HB_EXTERN hb_bool_t
-hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-			      const char *buf,
-			      int buf_len,
-			      const char **end_ptr,
+hb_میانگیر_deserialize_glyphs (hb_میانگیر_t *میانگیر,
+			      ثابت حرف *buf,
+			      صحيح buf_len,
+			      ثابت حرف **end_ptr,
 			      hb_font_t *font,
-			      hb_buffer_serialize_format_t format);
+			      hb_میانگیر_serialize_format_t format);
 
 HB_EXTERN hb_bool_t
-hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-			       const char *buf,
-			       int buf_len,
-			       const char **end_ptr,
-			       hb_buffer_serialize_format_t format);
+hb_میانگیر_deserialize_unicode (hb_میانگیر_t *میانگیر,
+			       ثابت حرف *buf,
+			       صحيح buf_len,
+			       ثابت حرف **end_ptr,
+			       hb_میانگیر_serialize_format_t format);
 
 
 
@@ -804,39 +804,39 @@ hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
-  HB_BUFFER_DIFF_FLAG_EQUAL			= 0x0000,
+تعريفنوع تعداد { /*< flags >*/
+  HB_میانگیر_DIFF_FLAG_EQUAL			= 0x0000,
 
   /* Buffers with different content_type cannot be meaningfully compared
    * in any further detail. */
-  HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH	= 0x0001,
+  HB_میانگیر_DIFF_FLAG_CONTENT_TYPE_MISMATCH	= 0x0001,
 
   /* For buffers with differing length, the per-glyph comparison is not
    * attempted, though we do still scan reference for dottedcircle / .notdef
    * glyphs. */
-  HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH		= 0x0002,
+  HB_میانگیر_DIFF_FLAG_درازی_MISMATCH		= 0x0002,
 
   /* We want to know if dottedcircle / .notdef glyphs are present in the
    * reference, as we may not care so much about other differences in this
    * case. */
-  HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT		= 0x0004,
-  HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT	= 0x0008,
+  HB_میانگیر_DIFF_FLAG_NOTDEF_PRESENT		= 0x0004,
+  HB_میانگیر_DIFF_FLAG_DOTTED_CIRCLE_PRESENT	= 0x0008,
 
   /* If the buffers have the same length, we compare them glyph-by-glyph
    * and report which aspect(s) of the glyph info/position are different. */
-  HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH	= 0x0010,
-  HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH		= 0x0020,
-  HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH	= 0x0040,
-  HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH		= 0x0080
+  HB_میانگیر_DIFF_FLAG_CODEPOINT_MISMATCH	= 0x0010,
+  HB_میانگیر_DIFF_FLAG_CLUSTER_MISMATCH		= 0x0020,
+  HB_میانگیر_DIFF_FLAG_GLYPH_FLAGS_MISMATCH	= 0x0040,
+  HB_میانگیر_DIFF_FLAG_POSITION_MISMATCH		= 0x0080
 
-} hb_buffer_diff_flags_t;
+} hb_میانگیر_diff_flags_t;
 
 /* Compare the contents of two buffers, report types of differences. */
-HB_EXTERN hb_buffer_diff_flags_t
-hb_buffer_diff (hb_buffer_t *buffer,
-		hb_buffer_t *reference,
+HB_EXTERN hb_میانگیر_diff_flags_t
+hb_میانگیر_diff (hb_میانگیر_t *میانگیر,
+		hb_میانگیر_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz);
+		بیعلامت صحيح position_fuzz);
 
 
 /*
@@ -860,20 +860,20 @@ hb_buffer_diff (hb_buffer_t *buffer,
  *
  * Since: 1.1.3
  */
-typedef hb_bool_t	(*hb_buffer_message_func_t)	(hb_buffer_t *buffer,
+تعريفنوع hb_bool_t	(*hb_میانگیر_پیام_func_t)	(hb_میانگیر_t *میانگیر,
 							 hb_font_t   *font,
-							 const char  *message,
-							 void        *user_data);
+							 ثابت حرف  *پیام,
+							 فراغ        *user_داده);
 
-HB_EXTERN void
-hb_buffer_set_message_func (hb_buffer_t *buffer,
-			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_میانگیر_مجموعه_پیام_func (hb_میانگیر_t *میانگیر,
+			    hb_میانگیر_پیام_func_t func,
+			    فراغ *user_داده, hb_destroy_func_t destroy);
 
-HB_EXTERN void
-hb_buffer_changed (hb_buffer_t *buffer);
+HB_EXTERN فراغ
+hb_میانگیر_تغییریافته (hb_میانگیر_t *میانگیر);
 
 
-HB_END_DECLS
+HB_انتها_DECLS
 
-#endif /* HB_BUFFER_H */
+#پایان_اگر /* HB_BUFFER_H */

@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_درون) && !defined(HB_NO_SINGLE_سرآیند_ERROR)
+#خطا "Include <hb.h> instead."
+#پایان_اگر
 
-#ifndef HB_BLOB_H
-#define HB_BLOB_H
+#اگر_تعریف_نشده HB_BLOB_H
+#تعریف_کن HB_BLOB_H
 
-#include "hb-common.h"
+#ضمن "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -66,12 +66,12 @@ HB_BEGIN_DECLS
  *   @HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, however, using that mode
  *   correctly is very tricky.  Use @HB_MEMORY_MODE_READONLY instead.
  **/
-typedef enum {
-  HB_MEMORY_MODE_DUPLICATE,
-  HB_MEMORY_MODE_READONLY,
-  HB_MEMORY_MODE_WRITABLE,
-  HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE
-} hb_memory_mode_t;
+تعريفنوع تعداد {
+  HB_حافظه_نما_DUPLICATE,
+  HB_حافظه_نما_READONLY,
+  HB_حافظه_نما_WRITABLE,
+  HB_حافظه_نما_READONLY_MAY_MAKE_WRITABLE
+} hb_حافظه_نما_t;
 
 /**
  * hb_blob_t:
@@ -81,27 +81,27 @@ typedef enum {
  * a client program and HarfBuzz.
  *
  **/
-typedef struct hb_blob_t hb_blob_t;
+تعريفنوع بنية hb_blob_t hb_blob_t;
 
 HB_EXTERN hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
-		hb_memory_mode_t   mode,
-		void              *user_data,
+hb_blob_create (ثابت حرف        *داده,
+		بیعلامت صحيح       درازی,
+		hb_حافظه_نما_t   نما,
+		فراغ              *user_داده,
 		hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
-			hb_memory_mode_t   mode,
-			void              *user_data,
+hb_blob_create_or_fail (ثابت حرف        *داده,
+			بیعلامت صحيح       درازی,
+			hb_حافظه_نما_t   نما,
+			فراغ              *user_داده,
 			hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_from_file (const char *file_name);
+hb_blob_create_from_file (ثابت حرف *file_name);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name);
+hb_blob_create_from_file_or_fail (ثابت حرف *file_name);
 
 /* Always creates with MEMORY_MODE_READONLY.
  * Even if the parent blob is writable, we don't
@@ -110,51 +110,51 @@ hb_blob_create_from_file_or_fail (const char *file_name);
  * shared among multiple sub-blobs.
  */
 HB_EXTERN hb_blob_t *
-hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length);
+hb_blob_create_sub_blob (hb_blob_t    *والد,
+			 بیعلامت صحيح  جابه_جایی,
+			 بیعلامت صحيح  درازی);
 
 HB_EXTERN hb_blob_t *
 hb_blob_copy_writable_or_fail (hb_blob_t *blob);
 
 HB_EXTERN hb_blob_t *
-hb_blob_get_empty (void);
+hb_blob_get_خالی (فراغ);
 
 HB_EXTERN hb_blob_t *
 hb_blob_reference (hb_blob_t *blob);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_blob_destroy (hb_blob_t *blob);
 
 HB_EXTERN hb_bool_t
-hb_blob_set_user_data (hb_blob_t          *blob,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_blob_مجموعه_user_داده (hb_blob_t          *blob,
+		       hb_user_داده_کلید_t *کلید_2,
+		       فراغ *              داده,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_blob_get_user_data (const hb_blob_t    *blob,
-		       hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_blob_get_user_داده (ثابت hb_blob_t    *blob,
+		       hb_user_داده_کلید_t *کلید_2);
 
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_blob_make_immutable (hb_blob_t *blob);
 
 HB_EXTERN hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob);
 
 
-HB_EXTERN unsigned int
-hb_blob_get_length (hb_blob_t *blob);
+HB_EXTERN بیعلامت صحيح
+hb_blob_get_درازی (hb_blob_t *blob);
 
-HB_EXTERN const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length);
+HB_EXTERN ثابت حرف *
+hb_blob_get_داده (hb_blob_t *blob, بیعلامت صحيح *درازی);
 
-HB_EXTERN char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length);
+HB_EXTERN حرف *
+hb_blob_get_داده_writable (hb_blob_t *blob, بیعلامت صحيح *درازی);
 
-HB_END_DECLS
+HB_انتها_DECLS
 
-#endif /* HB_BLOB_H */
+#پایان_اگر /* HB_BLOB_H */

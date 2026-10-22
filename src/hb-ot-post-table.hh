@@ -24,288 +24,288 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_POST_TABLE_HH
-#define HB_OT_POST_TABLE_HH
+#اگر_تعریف_نشده HB_OT_POST_جدول_HH
+#تعریف_کن HB_OT_POST_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-var-mvar-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-var-mvar-table.hh"
 
-#define HB_STRING_ARRAY_NAME format1_names
-#define HB_STRING_ARRAY_LIST "hb-ot-post-macroman.hh"
-#include "hb-string-array.hh"
-#undef HB_STRING_ARRAY_LIST
-#undef HB_STRING_ARRAY_NAME
+#تعریف_کن HB_STRING_ARRAY_NAME format1_نامها
+#تعریف_کن HB_STRING_ARRAY_LIST "hb-ot-post-macroman.hh"
+#ضمن "hb-string-array.hh"
+#لغو_تعریف HB_STRING_ARRAY_LIST
+#لغو_تعریف HB_STRING_ARRAY_NAME
 
 /*
  * post -- PostScript
  * https://docs.microsoft.com/en-us/typography/opentype/spec/post
  */
-#define HB_OT_TAG_post HB_TAG('p','o','s','t')
+#تعریف_کن HB_OT_برچسب_post HB_برچسب('p','o','s','t')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct postV2Tail
+بنية post_V2_دم
 {
-  friend struct post;
+  دوست بنية post;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (glyphNameIndex.sanitize (c));
+    TRACE_SANITIZE (هذا);
+    return_trace (glyph_Name_شاخص.sanitize (c));
   }
 
-  template<typename Iterator>
-  bool serialize (hb_serialize_context_t *c,
+  قالب<نام_نوع Iterator>
+  منطقي serialize (hb_serialize_context_t *c,
                   Iterator it,
-                  const void* _post) const;
+                  ثابت فراغ* _post) ثابت;
 
-  bool subset (hb_subset_context_t *c) const;
+  منطقي subset (hb_subset_context_t *c) ثابت;
 
-  protected:
-  Array16Of<HBUINT16>	glyphNameIndex;	/* This is not an offset, but is the
+  محمي:
+  Array16_از<HBUINT16>	glyph_Name_شاخص;	/* This is not an offset, but is the
 					 * ordinal number of the glyph in 'post'
 					 * string tables. */
 /*UnsizedArrayOf<HBUINT8>
 			namesX;*/	/* Glyph names with length bytes [variable]
 					 * (a Pascal string). */
 
-  public:
-  DEFINE_SIZE_ARRAY (2, glyphNameIndex);
+  عام:
+  DEFINE_اندازه_ARRAY (2, glyph_Name_شاخص);
 };
 
-struct post
+بنية post
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_post;
+  ساكن constexpr hb_برچسب_t جدول_برچسب = HB_OT_برچسب_post;
 
-  bool serialize (hb_serialize_context_t *c, bool glyph_names) const
+  منطقي serialize (hb_serialize_context_t *c, منطقي glyph_نامها) ثابت
   {
-    TRACE_SERIALIZE (this);
-    post *post_prime = c->allocate_min<post> ();
-    if (unlikely (!post_prime))  return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    post *post_اول = c->allocate_min<post> ();
+    إذا (unlikely (!post_اول))  return_trace (خطأ);
 
-    hb_memcpy (post_prime, this, post::min_size);
-    if (!glyph_names)
-      return_trace (c->check_assign (post_prime->version.major, 3,
-                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)); // Version 3 does not have any glyph names.
+    hb_memcpy (post_اول, هذا, post::min_اندازه);
+    إذا (!glyph_نامها)
+      return_trace (c->check_تخصیص_بده (post_اول->نسخه.major, 3,
+                                     HB_SERIALIZE_ERROR_INT_سرریز)); // Version 3 does not have any glyph names.
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *post_prime = c->serializer->start_embed<post> ();
+    TRACE_SUBSET (هذا);
+    خودکار *post_اول = c->serializer->شروع_embed<post> ();
 
-    bool glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
-    if (!serialize (c->serializer, glyph_names))
-      return_trace (false);
+    منطقي glyph_نامها = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_نامها;
+    إذا (!serialize (c->serializer, glyph_نامها))
+      return_trace (خطأ);
 
-#ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+#اگر_تعریف_نشده HB_NO_VAR
+    إذا (c->plan->normalized_coords)
     {
-      auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = post_prime;
+      خودکار &MVAR = *c->plan->منبع->جدول.MVAR;
+      خودکار *جدول = post_اول;
 
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_UNDERLINE_SIZE,   underlineThickness);
-      HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_UNDERLINE_OFFSET, underlinePosition);
+      HB_جمع_کن_MVAR_VAR (HB_OT_METRICS_برچسب_UNDERLINE_اندازه,   underlineThickness);
+      HB_جمع_کن_MVAR_VAR (HB_OT_METRICS_برچسب_UNDERLINE_جابه_جایی, underlinePosition);
     }
-#endif
+#پایان_اگر
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
+    إذا (c->plan->user_axes_location.has (HB_برچسب ('s','l','n','t'), &axis_range))
     {
-      float italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
-      if (post_prime->italicAngle.to_float () != italic_angle)
-        post_prime->italicAngle.set_float (italic_angle);
+      عائم italic_angle = hb_max (-90.f, hb_min (axis_range->میانه, 90.f));
+      إذا (post_اول->italicAngle.مقصد_float () != italic_angle)
+        post_اول->italicAngle.مجموعه_float (italic_angle);
     }
 
-    if (glyph_names && version.major == 2)
+    إذا (glyph_نامها && نسخه.major == 2)
     {
       hb_barrier ();
       return_trace (v2X.subset (c));
     }
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  struct accelerator_t
+  بنية accelerator_t
   {
-    friend struct postV2Tail;
+    دوست بنية post_V2_دم;
 
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<post> (face);
-      unsigned int table_length = table.get_length ();
+      جدول = hb_sanitize_context_t ().reference_جدول<post> (face);
+      بیعلامت صحيح جدول_درازی = جدول.get_درازی ();
 
-      version = table->version.to_int ();
-      if (version != 0x00020000) return;
+      نسخه = جدول->نسخه.مقصد_int ();
+      إذا (نسخه != 0x00020000) أرجع;
       hb_barrier ();
 
-      const postV2Tail &v2 = table->v2X;
+      ثابت post_V2_دم &v2 = جدول->v2X;
 
-      glyphNameIndex = &v2.glyphNameIndex;
-      pool = &StructAfter<uint8_t> (v2.glyphNameIndex);
+      glyph_Name_شاخص = &v2.glyph_Name_شاخص;
+      pool = &StructAfter<uint8_t> (v2.glyph_Name_شاخص);
 
-      const uint8_t *end = (const uint8_t *) (const void *) table + table_length;
-      index_to_offset.alloc (hb_min (face->get_num_glyphs (), table_length / 8));
-      for (const uint8_t *data = pool;
-	   index_to_offset.length < 65535 && data < end && data + *data < end;
-	   data += 1 + *data)
-	index_to_offset.push (data - pool);
+      ثابت uint8_t *انتها = (ثابت uint8_t *) (ثابت فراغ *) جدول + جدول_درازی;
+      شاخص_مقصد_جابه_جایی.alloc (hb_min (face->get_رقم_glyphs (), جدول_درازی / 8));
+      لكل (ثابت uint8_t *داده = pool;
+	   شاخص_مقصد_جابه_جایی.درازی < 65535 && داده < انتها && داده + *داده < انتها;
+	   داده += 1 + *داده)
+	شاخص_مقصد_جابه_جایی.push (داده - pool);
     }
     ~accelerator_t ()
     {
       hb_free (gids_sorted_by_name.get_acquire ());
-      table.destroy ();
+      جدول.destroy ();
     }
 
-    bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+    منطقي get_glyph_name (hb_codepoint_t glyph,
+			 حرف *buf, بیعلامت صحيح buf_len) ثابت
     {
-      hb_bytes_t s = find_glyph_name (glyph);
-      if (!s.length) return false;
-      if (!buf_len) return true;
-      unsigned int len = hb_min (buf_len - 1, s.length);
+      hb_بایتها_t s = پیدا_کن_glyph_name (glyph);
+      إذا (!s.درازی) أرجع خطأ;
+      إذا (!buf_len) أرجع درست;
+      بیعلامت صحيح len = hb_min (buf_len - 1, s.درازی);
       strncpy (buf, s.arrayZ, len);
       buf[len] = '\0';
-      return true;
+      أرجع درست;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
-			      hb_codepoint_t *glyph) const
+    منطقي get_glyph_from_name (ثابت حرف *name, صحيح len,
+			      hb_codepoint_t *glyph) ثابت
     {
-      unsigned int count = get_glyph_count ();
-      if (unlikely (!count)) return false;
+      بیعلامت صحيح شمار = get_glyph_شمار ();
+      إذا (unlikely (!شمار)) أرجع خطأ;
 
-      if (len < 0) len = strlen (name);
+      إذا (len < 0) len = طول_رشته (name);
 
-      if (unlikely (!len)) return false;
+      إذا (unlikely (!len)) أرجع خطأ;
 
     retry:
       uint16_t *gids = gids_sorted_by_name.get_acquire ();
 
-      if (unlikely (!gids))
+      إذا (unlikely (!gids))
       {
-	gids = (uint16_t *) hb_malloc2 (count, sizeof (gids[0]));
-	if (unlikely (!gids))
-	  return false; /* Anything better?! */
+	gids = (uint16_t *) hb_malloc2 (شمار, حجم (gids[0]));
+	إذا (unlikely (!gids))
+	  أرجع خطأ; /* Anything better?! */
 
-	for (unsigned int i = 0; i < count; i++)
+	لكل (بیعلامت صحيح i = 0; i < شمار; i++)
 	  gids[i] = i;
-	auto thiz = this;
-	hb_array_t<uint16_t> (gids, count)
-	  .qsort ([thiz] (const uint16_t &a, const uint16_t &b) {
+	خودکار thiz = هذا;
+	hb_array_t<uint16_t> (gids, شمار)
+	  .qsort ([thiz] (ثابت uint16_t &a, ثابت uint16_t &b) {
 	    /* hb_array_t::cmp has reversed argument order, so
 	     * x.cmp(y) returns sign of (y - x).  Pass (b, a) to
 	     * get standard "negative when a < b" ordering. */
-	    return thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
+	    أرجع thiz->پیدا_کن_glyph_name (b).cmp (thiz->پیدا_کن_glyph_name (a));
 	  });
 
-	if (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
+	إذا (unlikely (!gids_sorted_by_name.cmpexch (اشاره_تهی, gids)))
 	{
 	  hb_free (gids);
-	  goto retry;
+	  اذهب retry;
 	}
       }
 
-      hb_bytes_t st (name, len);
-      auto* gid = hb_bsearch (st, gids, count, sizeof (gids[0]), cmp_key, (void *) this);
-      if (gid)
+      hb_بایتها_t st (name, len);
+      خودکار* gid = hb_bsearch (st, gids, شمار, حجم (gids[0]), cmp_کلید, (فراغ *) هذا);
+      إذا (gid)
       {
 	*glyph = *gid;
-	return true;
+	أرجع درست;
       }
 
-      return false;
+      أرجع خطأ;
     }
 
-    hb_blob_ptr_t<post> table;
+    hb_blob_ptr_t<post> جدول;
 
-    protected:
+    محمي:
 
-    unsigned int get_glyph_count () const
+    بیعلامت صحيح get_glyph_شمار () ثابت
     {
-      if (version == 0x00010000)
+      إذا (نسخه == 0x00010000)
       {
         hb_barrier ();
-	return format1_names_length;
+	أرجع format1_نامها_درازی;
       }
 
-      if (version == 0x00020000)
+      إذا (نسخه == 0x00020000)
       {
         hb_barrier ();
-	return glyphNameIndex->len;
+	أرجع glyph_Name_شاخص->len;
       }
 
-      return 0;
+      أرجع 0;
     }
 
-    static int cmp_key (const void *pk, const void *po, void *arg)
+    ساكن صحيح cmp_کلید (ثابت فراغ *pk, ثابت فراغ *po, فراغ *arg)
     {
-      const accelerator_t *thiz = (const accelerator_t *) arg;
-      const hb_bytes_t *key = (const hb_bytes_t *) pk;
-      uint16_t o = * (const uint16_t *) po;
-      return thiz->find_glyph_name (o).cmp (*key);
+      ثابت accelerator_t *thiz = (ثابت accelerator_t *) arg;
+      ثابت hb_بایتها_t *key = (ثابت hb_بایتها_t *) pk;
+      uint16_t o = * (ثابت uint16_t *) po;
+      أرجع thiz->پیدا_کن_glyph_name (o).cmp (*key);
     }
 
-    hb_bytes_t find_glyph_name (hb_codepoint_t glyph) const
+    hb_بایتها_t پیدا_کن_glyph_name (hb_codepoint_t glyph) ثابت
     {
-      if (version == 0x00010000)
+      إذا (نسخه == 0x00010000)
       {
         hb_barrier ();
-	if (glyph >= format1_names_length)
-	  return hb_bytes_t ();
+	إذا (glyph >= format1_نامها_درازی)
+	  أرجع hb_بایتها_t ();
 
-	return format1_names (glyph);
+	أرجع format1_نامها (glyph);
       }
 
-      if (version != 0x00020000)
-	return hb_bytes_t ();
+      إذا (نسخه != 0x00020000)
+	أرجع hb_بایتها_t ();
       hb_barrier ();
 
-      if (glyph >= glyphNameIndex->len)
-	return hb_bytes_t ();
+      إذا (glyph >= glyph_Name_شاخص->len)
+	أرجع hb_بایتها_t ();
 
-      unsigned int index = glyphNameIndex->arrayZ[glyph];
-      if (index < format1_names_length)
-	return format1_names (index);
-      index -= format1_names_length;
+      بیعلامت صحيح شاخص_2 = glyph_Name_شاخص->arrayZ[glyph];
+      إذا (شاخص_2 < format1_نامها_درازی)
+	أرجع format1_نامها (شاخص_2);
+      شاخص_2 -= format1_نامها_درازی;
 
-      if (index >= index_to_offset.length)
-	return hb_bytes_t ();
-      unsigned int offset = index_to_offset[index];
+      إذا (شاخص_2 >= شاخص_مقصد_جابه_جایی.درازی)
+	أرجع hb_بایتها_t ();
+      بیعلامت صحيح جابه_جایی = شاخص_مقصد_جابه_جایی[شاخص_2];
 
-      const uint8_t *data = pool + offset;
-      unsigned int name_length = *data;
-      data++;
+      ثابت uint8_t *داده = pool + جابه_جایی;
+      بیعلامت صحيح name_درازی = *داده;
+      داده++;
 
-      return hb_bytes_t ((const char *) data, name_length);
+      أرجع hb_بایتها_t ((ثابت حرف *) داده, name_درازی);
     }
 
-    private:
-    uint32_t version;
-    const Array16Of<HBUINT16> *glyphNameIndex = nullptr;
-    hb_vector_t<uint32_t> index_to_offset;
-    const uint8_t *pool = nullptr;
-    mutable hb_atomic_t<uint16_t *> gids_sorted_by_name;
+    خاص:
+    uint32_t نسخه;
+    ثابت Array16_از<HBUINT16> *glyph_Name_شاخص = اشاره_تهی;
+    hb_وکتور_t<uint32_t> شاخص_مقصد_جابه_جایی;
+    ثابت uint8_t *pool = اشاره_تهی;
+    تغییرپذیر hb_atomic_t<uint16_t *> gids_sorted_by_name;
   };
 
-  bool has_data () const { return version.to_int (); }
+  منطقي has_داده () ثابت { أرجع نسخه.مقصد_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  (version.to_int () == 0x00010000 ||
-		   (version.to_int () == 0x00020000 && hb_barrier () && v2X.sanitize (c)) ||
-		   version.to_int () == 0x00030000));
+		  (نسخه.مقصد_int () == 0x00010000 ||
+		   (نسخه.مقصد_int () == 0x00020000 && hb_barrier () && v2X.sanitize (c)) ||
+		   نسخه.مقصد_int () == 0x00030000));
   }
 
-  public:
-  FixedVersion<>version;		/* 0x00010000 for version 1.0
+  عام:
+  Fixed_نسخه<>نسخه;		/* 0x00010000 for version 1.0
 					 * 0x00020000 for version 2.0
 					 * 0x00025000 for version 2.5 (deprecated)
 					 * 0x00030000 for version 3.0 */
@@ -336,11 +336,11 @@ struct post
 					 * is downloaded as a Type 1 font. */
   HBUINT32	maxMemType1;		/* Maximum memory usage when an OpenType font
 					 * is downloaded as a Type 1 font. */
-  postV2Tail	v2X;
-  DEFINE_SIZE_MIN (32);
+  post_V2_دم	v2X;
+  DEFINE_اندازه_MIN (32);
 };
 
-struct post_accelerator_t : post::accelerator_t {
+بنية post_accelerator_t : post::accelerator_t {
   post_accelerator_t (hb_face_t *face) : post::accelerator_t (face) {}
 };
 
@@ -348,4 +348,4 @@ struct post_accelerator_t : post::accelerator_t {
 } /* namespace OT */
 
 
-#endif /* HB_OT_POST_TABLE_HH */
+#پایان_اگر /* HB_OT_POST_TABLE_HH */

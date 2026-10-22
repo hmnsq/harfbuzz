@@ -22,37 +22,37 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifdef HAVE_DIRECTWRITE
+#اگر_تعریف_شده HAVE_DIRECTWRITE
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#include "hb-directwrite.hh"
+#ضمن "hb-directwrite.hh"
 
-#include "hb-ms-feature-ranges.hh"
+#ضمن "hb-ms-feature-ranges.hh"
 
 
 /*
 * shaper face data
 */
 
-hb_directwrite_face_data_t *
-_hb_directwrite_shaper_face_data_create (hb_face_t *face)
+hb_directwrite_face_داده_t *
+hb_directwrite_shaper_face_داده_create (hb_face_t *face)
 {
   hb_blob_t *blob = hb_face_reference_blob (face);
 
-  hb_directwrite_face_data_t *data = (hb_directwrite_face_data_t *) dw_face_create (blob, face->index);
+  hb_directwrite_face_داده_t *داده = (hb_directwrite_face_داده_t *) dw_face_create (blob, face->شاخص_2);
 
   hb_blob_destroy (blob);
 
-  return data;
+  أرجع داده;
 }
 
-void
-_hb_directwrite_shaper_face_data_destroy (hb_directwrite_face_data_t *data)
+فراغ
+hb_directwrite_shaper_face_داده_destroy (hb_directwrite_face_داده_t *داده)
 {
-  ((IDWriteFontFace *) data)->Release ();
+  ((IDWriteFontFace *) داده)->Release ();
 }
 
 
@@ -60,40 +60,40 @@ _hb_directwrite_shaper_face_data_destroy (hb_directwrite_face_data_t *data)
  * shaper font data
  */
 
-struct hb_directwrite_font_data_t {};
+بنية hb_directwrite_font_داده_t {};
 
-hb_directwrite_font_data_t *
-_hb_directwrite_shaper_font_data_create (hb_font_t *font)
+hb_directwrite_font_داده_t *
+hb_directwrite_shaper_font_داده_create (hb_font_t *font)
 {
-  IDWriteFontFace *fontFace = (IDWriteFontFace *) (const void *) font->face->data.directwrite;
+  IDWriteFontFace *fontFace = (IDWriteFontFace *) (ثابت فراغ *) font->face->داده.directwrite;
 
   /*
    * Set up variations.
    */
-  IDWriteFontFace5 *fontFaceVariations = nullptr;
+  IDWriteFontFace5 *fontFaceVariations = اشاره_تهی;
   {
     IDWriteFontFace5 *fontFace5;
-    if (SUCCEEDED (fontFace->QueryInterface (__uuidof (IDWriteFontFace5), (void **) &fontFace5)))
+    إذا (SUCCEEDED (fontFace->QueryInterface (__uuidof (IDWriteFontFace5), (فراغ **) &fontFace5)))
     {
       IDWriteFontResource *fontResource;
-      if (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
+      إذا (SUCCEEDED (fontFace5->GetFontResource (&fontResource)))
       {
-	hb_vector_t<DWRITE_FONT_AXIS_VALUE> axis_values;
-	if (likely (axis_values.resize_exact (font->num_coords)))
+	hb_وکتور_t<DWRITE_FONT_AXIS_مقدار> axis_مقادیر;
+	إذا (likely (axis_مقادیر.resize_exact (font->رقم_coords)))
 	{
-	  for (unsigned int i = 0; i < font->num_coords; i++)
+	  لكل (بیعلامت صحيح i = 0; i < font->رقم_coords; i++)
 	  {
 	    hb_ot_var_axis_info_t info;
-	    unsigned int c = 1;
+	    بیعلامت صحيح c = 1;
 	    hb_ot_var_get_axis_infos (font->face, i, &c, &info);
-	    axis_values[i].axisTag = (DWRITE_FONT_AXIS_TAG) hb_uint32_swap (info.tag);
-	    axis_values[i].value = i < font->num_coords ?
-				   hb_clamp (font->design_coords[i], info.min_value, info.max_value) :
-				   info.default_value;
+	    axis_مقادیر[i].axis_برچسب = (DWRITE_FONT_AXIS_برچسب) hb_uint32_جابجا (info.برچسب_2);
+	    axis_مقادیر[i].value = i < font->رقم_coords ?
+				   hb_clamp (font->design_coords[i], info.min_مقدار, info.max_مقدار) :
+				   info.default_مقدار;
 	  }
 
 	  fontResource->CreateFontFace (DWRITE_FONT_SIMULATIONS::DWRITE_FONT_SIMULATIONS_NONE,
-					axis_values.arrayZ, axis_values.length, &fontFaceVariations);
+					axis_مقادیر.arrayZ, axis_مقادیر.درازی, &fontFaceVariations);
 	}
 	fontResource->Release ();
       }
@@ -101,81 +101,81 @@ _hb_directwrite_shaper_font_data_create (hb_font_t *font)
     }
   }
 
-  return (hb_directwrite_font_data_t *) fontFaceVariations;
+  أرجع (hb_directwrite_font_داده_t *) fontFaceVariations;
 }
 
-void
-_hb_directwrite_shaper_font_data_destroy (hb_directwrite_font_data_t *data)
+فراغ
+hb_directwrite_shaper_font_داده_destroy (hb_directwrite_font_داده_t *داده)
 {
-  ((IDWriteFontFace *) (const void *) data)->Release ();
+  ((IDWriteFontFace *) (ثابت فراغ *) داده)->Release ();
 }
 
 
 // Most of TextAnalysis is originally written by Bas Schouten for Mozilla project
 // but now is relicensed to MIT for HarfBuzz use
-class TextAnalysis : public IDWriteTextAnalysisSource, public IDWriteTextAnalysisSink
+صنف متن_Analysis : عام IDWrite_متن_Analysis_منبع, عام IDWrite_متن_Analysis_Sink
 {
-private:
-  hb_reference_count_t mRefCount;
-public:
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
-  IFACEMETHOD_ (ULONG, AddRef) ()
+خاص:
+  hb_reference_شمار_t m_Ref_شمار;
+عام:
+  IFACEMETHOD (QueryInterface) (IID ثابت& iid, بیرون_3 فراغ** ppObject)
+  { أرجع S_OK; }
+  IFACEMETHOD_ (ULONG, جمع_کن_Ref) ()
   {
-    return mRefCount.inc () + 1;
+    أرجع m_Ref_شمار.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    return 0;
+    علامتدار ref_شمار = m_Ref_شمار.dec () - 1;
+    أكد (ref_شمار >= 0);
+    إذا (ref_شمار)
+      أرجع ref_شمار;
+    أرجع 0;
   }
 
   // A single contiguous run of characters containing the same analysis
   // results.
-  struct Run
+  بنية پیاپی_2
   {
-    uint32_t mTextStart;   // starting text position of this run
-    uint32_t mTextLength;  // number of contiguous code units covered
-    uint32_t mGlyphStart;  // starting glyph in the glyphs array
-    uint32_t mGlyphCount;  // number of glyphs associated with this run
-    // text
+    uint32_t m_متن_شروع;   // starting text position of this run
+    uint32_t m_متن_درازی;  // number of contiguous code units covered
+    uint32_t m_Glyph_شروع;  // starting glyph in the glyphs array
+    uint32_t m_Glyph_شمار;  // number of glyphs associated with this run
+    //متن
     DWRITE_SCRIPT_ANALYSIS mScript;
     uint8_t mBidiLevel;
-    bool mIsSideways;
+    منطقي mIsSideways;
 
-    bool ContainsTextPosition (uint32_t aTextPosition) const
+    منطقي شامل_است_متن_Position (uint32_t a_متن_Position) ثابت
     {
-      return aTextPosition >= mTextStart &&
-	     aTextPosition <  mTextStart + mTextLength;
+      أرجع a_متن_Position >= m_متن_شروع &&
+	     a_متن_Position <  m_متن_شروع + m_متن_درازی;
     }
 
-    Run *nextRun;
+    پیاپی_2 *بعدی_پیاپی;
   };
 
-public:
-  TextAnalysis (const wchar_t* text, uint32_t textLength,
-		const wchar_t* localeName, DWRITE_READING_DIRECTION readingDirection)
-	       : mTextLength (textLength), mText (text), mLocaleName (localeName),
-		 mReadingDirection (readingDirection), mCurrentRun (nullptr)
+عام:
+  متن_Analysis (ثابت wchar_t* متن, uint32_t متن_درازی_2,
+		ثابت wchar_t* localeName, DWRITE_READING_DIRECTION readingDirection)
+	       : m_متن_درازی (متن_درازی_2), m_متن (متن), mLocaleName (localeName),
+		 mReadingDirection (readingDirection), m_Current_پیاپی (اشاره_تهی)
   {
-    mRefCount.init ();
+    m_Ref_شمار.init ();
   }
-  ~TextAnalysis ()
+  ~متن_Analysis ()
   {
     // free runs, except mRunHead which is part of the TextAnalysis object
-    for (Run *run = mRunHead.nextRun; run;)
+    لكل (پیاپی_2 *پیاپی = m_پیاپی_سر.بعدی_پیاپی; پیاپی;)
     {
-      Run *origRun = run;
-      run = run->nextRun;
-      hb_free (origRun);
+      پیاپی_2 *orig_پیاپی = پیاپی;
+      پیاپی = پیاپی->بعدی_پیاپی;
+      hb_free (orig_پیاپی);
     }
   }
 
   STDMETHODIMP
-  GenerateResults (IDWriteTextAnalyzer* textAnalyzer, Run **runHead)
+  GenerateResults (IDWrite_متن_Analyzer* متن_Analyzer, پیاپی_2 **پیاپی_سر)
   {
     // Analyzes the text using the script analyzer and returns
     // the result as a series of runs.
@@ -184,206 +184,206 @@ public:
 
     // Initially start out with one result that covers the entire range.
     // This result will be subdivided by the analysis processes.
-    mRunHead.mTextStart = 0;
-    mRunHead.mTextLength = mTextLength;
-    mRunHead.mBidiLevel =
-      (mReadingDirection == DWRITE_READING_DIRECTION_RIGHT_TO_LEFT);
-    mRunHead.nextRun = nullptr;
-    mCurrentRun = &mRunHead;
+    m_پیاپی_سر.m_متن_شروع = 0;
+    m_پیاپی_سر.m_متن_درازی = m_متن_درازی;
+    m_پیاپی_سر.mBidiLevel =
+      (mReadingDirection == DWRITE_READING_DIRECTION_راست_مقصد_چپ);
+    m_پیاپی_سر.بعدی_پیاپی = اشاره_تهی;
+    m_Current_پیاپی = &m_پیاپی_سر;
 
     // Call each of the analyzers in sequence, recording their results.
-    if (SUCCEEDED (hr = textAnalyzer->AnalyzeScript (this, 0, mTextLength, this)))
-      *runHead = &mRunHead;
+    إذا (SUCCEEDED (hr = متن_Analyzer->AnalyzeScript (هذا, 0, m_متن_درازی, هذا)))
+      *پیاپی_سر = &m_پیاپی_سر;
 
-    return hr;
+    أرجع hr;
   }
 
   // IDWriteTextAnalysisSource implementation
 
   IFACEMETHODIMP
-  GetTextAtPosition (uint32_t textPosition,
-		     OUT wchar_t const** textString,
-		     OUT uint32_t* textLength)
+  Get_متن_At_Position (uint32_t متن_Position,
+		     بیرون_3 wchar_t ثابت** متن_String,
+		     بیرون_3 uint32_t* متن_درازی_2)
   {
-    if (textPosition >= mTextLength)
+    إذا (متن_Position >= m_متن_درازی)
     {
       // No text at this position, valid query though.
-      *textString = nullptr;
-      *textLength = 0;
+      *متن_String = اشاره_تهی;
+      *متن_درازی_2 = 0;
     }
-    else
+    وإلا
     {
-      *textString = mText + textPosition;
-      *textLength = mTextLength - textPosition;
+      *متن_String = m_متن + متن_Position;
+      *متن_درازی_2 = m_متن_درازی - متن_Position;
     }
-    return S_OK;
+    أرجع S_OK;
   }
 
   IFACEMETHODIMP
-  GetTextBeforePosition (uint32_t textPosition,
-			 OUT wchar_t const** textString,
-			 OUT uint32_t* textLength)
+  Get_متن_Before_Position (uint32_t متن_Position,
+			 بیرون_3 wchar_t ثابت** متن_String,
+			 بیرون_3 uint32_t* متن_درازی_2)
   {
-    if (textPosition == 0 || textPosition > mTextLength)
+    إذا (متن_Position == 0 || متن_Position > m_متن_درازی)
     {
       // Either there is no text before here (== 0), or this
       // is an invalid position. The query is considered valid though.
-      *textString = nullptr;
-      *textLength = 0;
+      *متن_String = اشاره_تهی;
+      *متن_درازی_2 = 0;
     }
-    else
+    وإلا
     {
-      *textString = mText;
-      *textLength = textPosition;
+      *متن_String = m_متن;
+      *متن_درازی_2 = متن_Position;
     }
-    return S_OK;
+    أرجع S_OK;
   }
 
   IFACEMETHODIMP_ (DWRITE_READING_DIRECTION)
-  GetParagraphReadingDirection () { return mReadingDirection; }
+  GetParagraphReadingDirection () { أرجع mReadingDirection; }
 
-  IFACEMETHODIMP GetLocaleName (uint32_t textPosition, uint32_t* textLength,
-				wchar_t const** localeName)
-  { return S_OK; }
+  IFACEMETHODIMP GetLocaleName (uint32_t متن_Position, uint32_t* متن_درازی_2,
+				wchar_t ثابت** localeName)
+  { أرجع S_OK; }
 
   IFACEMETHODIMP
-  GetNumberSubstitution (uint32_t textPosition,
-			 OUT uint32_t* textLength,
-			 OUT IDWriteNumberSubstitution** numberSubstitution)
+  Get_عدد_Substitution (uint32_t متن_Position,
+			 بیرون_3 uint32_t* متن_درازی_2,
+			 بیرون_3 IDWrite_عدد_Substitution** عدد_Substitution)
   {
     // We do not support number substitution.
-    *numberSubstitution = nullptr;
-    *textLength = mTextLength - textPosition;
+    *عدد_Substitution = اشاره_تهی;
+    *متن_درازی_2 = m_متن_درازی - متن_Position;
 
-    return S_OK;
+    أرجع S_OK;
   }
 
   // IDWriteTextAnalysisSink implementation
 
   IFACEMETHODIMP
-  SetScriptAnalysis (uint32_t textPosition, uint32_t textLength,
-		     DWRITE_SCRIPT_ANALYSIS const* scriptAnalysis)
+  مجموعه_Script_Analysis (uint32_t متن_Position, uint32_t متن_درازی_2,
+		     DWRITE_SCRIPT_ANALYSIS ثابت* scriptAnalysis)
   {
-    SetCurrentRun (textPosition);
-    if (unlikely (!SplitCurrentRun (textPosition)))
-      return E_OUTOFMEMORY;
-    while (textLength > 0)
+    مجموعه_Current_پیاپی (متن_Position);
+    إذا (unlikely (!تقسیم_Current_پیاپی (متن_Position)))
+      أرجع E_OUTOFMEMORY;
+    طالما (متن_درازی_2 > 0)
     {
-      Run *run = FetchNextRun (&textLength);
-      if (unlikely (!run))
-        return E_OUTOFMEMORY;
-      run->mScript = *scriptAnalysis;
+      پیاپی_2 *پیاپی = Fetch_بعدی_پیاپی (&متن_درازی_2);
+      إذا (unlikely (!پیاپی))
+        أرجع E_OUTOFMEMORY;
+      پیاپی->mScript = *scriptAnalysis;
     }
 
-    return S_OK;
+    أرجع S_OK;
   }
 
   IFACEMETHODIMP
-  SetLineBreakpoints (uint32_t textPosition,
-		      uint32_t textLength,
-		      const DWRITE_LINE_BREAKPOINT* lineBreakpoints)
-  { return S_OK; }
+  مجموعه_سطر_Breakpoints (uint32_t متن_Position,
+		      uint32_t متن_درازی_2,
+		      ثابت DWRITE_سطر_BREAKPOINT* سطر_Breakpoints)
+  { أرجع S_OK; }
 
-  IFACEMETHODIMP SetBidiLevel (uint32_t textPosition, uint32_t textLength,
+  IFACEMETHODIMP مجموعه_Bidi_Level (uint32_t متن_Position, uint32_t متن_درازی_2,
 			       uint8_t explicitLevel, uint8_t resolvedLevel)
-  { return S_OK; }
+  { أرجع S_OK; }
 
   IFACEMETHODIMP
-  SetNumberSubstitution (uint32_t textPosition, uint32_t textLength,
-			 IDWriteNumberSubstitution* numberSubstitution)
-  { return S_OK; }
+  مجموعه_عدد_Substitution (uint32_t متن_Position, uint32_t متن_درازی_2,
+			 IDWrite_عدد_Substitution* عدد_Substitution)
+  { أرجع S_OK; }
 
-protected:
-  Run *FetchNextRun (IN OUT uint32_t* textLength)
+محمي:
+  پیاپی_2 *Fetch_بعدی_پیاپی (درون_2 بیرون_3 uint32_t* متن_درازی_2)
   {
     // Used by the sink setters, this returns a reference to the next run.
     // Position and length are adjusted to now point after the current run
     // being returned.
 
-    Run *origRun = mCurrentRun;
+    پیاپی_2 *orig_پیاپی = m_Current_پیاپی;
     // Split the tail if needed (the length remaining is less than the
     // current run's size).
-    if (*textLength < mCurrentRun->mTextLength)
+    إذا (*متن_درازی_2 < m_Current_پیاپی->m_متن_درازی)
     {
-      if (unlikely (!SplitCurrentRun (mCurrentRun->mTextStart + *textLength)))
-        return nullptr;
+      إذا (unlikely (!تقسیم_Current_پیاپی (m_Current_پیاپی->m_متن_شروع + *متن_درازی_2)))
+        أرجع اشاره_تهی;
     }
-    else
+    وإلا
       // Just advance the current run.
-      mCurrentRun = mCurrentRun->nextRun;
-    *textLength -= origRun->mTextLength;
+      m_Current_پیاپی = m_Current_پیاپی->بعدی_پیاپی;
+    *متن_درازی_2 -= orig_پیاپی->m_متن_درازی;
 
     // Return a reference to the run that was just current.
-    return origRun;
+    أرجع orig_پیاپی;
   }
 
-  void SetCurrentRun (uint32_t textPosition)
+  فراغ مجموعه_Current_پیاپی (uint32_t متن_Position)
   {
     // Move the current run to the given position.
     // Since the analyzers generally return results in a forward manner,
     // this will usually just return early. If not, find the
     // corresponding run for the text position.
 
-    if (mCurrentRun && mCurrentRun->ContainsTextPosition (textPosition))
-      return;
+    إذا (m_Current_پیاپی && m_Current_پیاپی->شامل_است_متن_Position (متن_Position))
+      أرجع;
 
-    for (Run *run = &mRunHead; run; run = run->nextRun)
-      if (run->ContainsTextPosition (textPosition))
+    لكل (پیاپی_2 *پیاپی = &m_پیاپی_سر; پیاپی; پیاپی = پیاپی->بعدی_پیاپی)
+      إذا (پیاپی->شامل_است_متن_Position (متن_Position))
       {
-	mCurrentRun = run;
-	return;
+	m_Current_پیاپی = پیاپی;
+	أرجع;
       }
-    assert (0); // We should always be able to find the text position in one of our runs
+    أكد (0); // We should always be able to find the text position in one of our runs
   }
 
-  bool SplitCurrentRun (uint32_t splitPosition)
+  منطقي تقسیم_Current_پیاپی (uint32_t تقسیم_Position)
   {
-    if (!mCurrentRun)
+    إذا (!m_Current_پیاپی)
     {
-      assert (0); // SplitCurrentRun called without current run
+      أكد (0); // SplitCurrentRun called without current run
       // Shouldn't be calling this when no current run is set!
-      return false;
+      أرجع خطأ;
     }
     // Split the current run.
-    if (splitPosition <= mCurrentRun->mTextStart)
+    إذا (تقسیم_Position <= m_Current_پیاپی->m_متن_شروع)
     {
       // No need to split, already the start of a run
       // or before it. Usually the first.
-      return true;
+      أرجع درست;
     }
-    Run *newRun = (Run *) hb_malloc (sizeof (Run));
-    if (unlikely (!newRun))
-      return false;
+    پیاپی_2 *new_پیاپی = (پیاپی_2 *) hb_malloc (حجم (پیاپی_2));
+    إذا (unlikely (!new_پیاپی))
+      أرجع خطأ;
 
-    *newRun = *mCurrentRun;
+    *new_پیاپی = *m_Current_پیاپی;
 
     // Insert the new run in our linked list.
-    newRun->nextRun = mCurrentRun->nextRun;
-    mCurrentRun->nextRun = newRun;
+    new_پیاپی->بعدی_پیاپی = m_Current_پیاپی->بعدی_پیاپی;
+    m_Current_پیاپی->بعدی_پیاپی = new_پیاپی;
 
     // Adjust runs' text positions and lengths.
-    uint32_t splitPoint = splitPosition - mCurrentRun->mTextStart;
-    newRun->mTextStart += splitPoint;
-    newRun->mTextLength -= splitPoint;
-    mCurrentRun->mTextLength = splitPoint;
-    mCurrentRun = newRun;
-    return true;
+    uint32_t تقسیم_نقطه = تقسیم_Position - m_Current_پیاپی->m_متن_شروع;
+    new_پیاپی->m_متن_شروع += تقسیم_نقطه;
+    new_پیاپی->m_متن_درازی -= تقسیم_نقطه;
+    m_Current_پیاپی->m_متن_درازی = تقسیم_نقطه;
+    m_Current_پیاپی = new_پیاپی;
+    أرجع درست;
   }
 
-protected:
-  // Input
+محمي:
+  //درون داد
   // (weak references are fine here, since this class is a transient
   //  stack-based helper that doesn't need to copy data)
-  uint32_t mTextLength;
-  const wchar_t* mText;
-  const wchar_t* mLocaleName;
+  uint32_t m_متن_درازی;
+  ثابت wchar_t* m_متن;
+  ثابت wchar_t* mLocaleName;
   DWRITE_READING_DIRECTION mReadingDirection;
 
   // Current processing state.
-  Run *mCurrentRun;
+  پیاپی_2 *m_Current_پیاپی;
 
   // Output is a list of runs starting here
-  Run  mRunHead;
+  پیاپی_2  m_پیاپی_سر;
 };
 
 /*
@@ -393,117 +393,117 @@ protected:
 hb_bool_t
 _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       hb_میانگیر_t        *میانگیر,
+		       ثابت hb_feature_t *features,
+		       بیعلامت صحيح        رقم_features)
 {
-  IDWriteFontFace *fontFace = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  auto *global = get_directwrite_global ();
-  if (unlikely (!global))
-    return false;
+  IDWriteFontFace *fontFace = (IDWriteFontFace *) (ثابت فراغ *) font->داده.directwrite;
+  خودکار *global = get_directwrite_global ();
+  إذا (unlikely (!global))
+    أرجع خطأ;
   IDWriteFactory *dwriteFactory = global->dwriteFactory;
 
-  IDWriteTextAnalyzer* analyzer;
-  dwriteFactory->CreateTextAnalyzer (&analyzer);
+  IDWrite_متن_Analyzer* analyzer;
+  dwriteFactory->Create_متن_Analyzer (&analyzer);
 
-  unsigned int scratch_size;
-  hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
-#define ALLOCATE_ARRAY(Type, name, len) \
+  بیعلامت صحيح scratch_اندازه;
+  hb_میانگیر_t::scratch_میانگیر_t *scratch = میانگیر->get_scratch_میانگیر (&scratch_اندازه);
+#تعریف_کن ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
-  do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    assert (_consumed <= scratch_size); \
+  افعل { \
+    بیعلامت صحيح _consumed = DIV_CEIL ((len) * حجم (Type), حجم (*scratch)); \
+    أكد (_consumed <= scratch_اندازه); \
     scratch += _consumed; \
-    scratch_size -= _consumed; \
-  } while (0)
+    scratch_اندازه -= _consumed; \
+  } طالما (0)
 
-#define utf16_index() var1.u32
+#تعریف_کن utf16_شاخص() var1.u32
 
-  ALLOCATE_ARRAY (wchar_t, textString, buffer->len * 2);
+  ALLOCATE_ARRAY (wchar_t, متن_String, میانگیر->len * 2);
 
-  unsigned int chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  بیعلامت صحيح chars_len = 0;
+  لكل (بیعلامت صحيح i = 0; i < میانگیر->len; i++)
   {
-    hb_codepoint_t c = buffer->info[i].codepoint;
-    buffer->info[i].utf16_index () = chars_len;
-    if (likely (c <= 0xFFFFu))
-      textString[chars_len++] = c;
-    else if (unlikely (c > 0x10FFFFu))
-      textString[chars_len++] = 0xFFFDu;
-    else
+    hb_codepoint_t c = میانگیر->info[i].codepoint;
+    میانگیر->info[i].utf16_شاخص () = chars_len;
+    إذا (likely (c <= 0xFFFFu))
+      متن_String[chars_len++] = c;
+    وإلا إذا (unlikely (c > 0x10FFFFu))
+      متن_String[chars_len++] = 0xFFFDu;
+    وإلا
     {
-      textString[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
-      textString[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
+      متن_String[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
+      متن_String[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
     }
   }
 
-  ALLOCATE_ARRAY (WORD, log_clusters, chars_len);
-#undef ALLOCATE_ARRAY
+  ALLOCATE_ARRAY (کلمه, log_clusters, chars_len);
+#لغو_تعریف ALLOCATE_ARRAY
   /* Need log_clusters to assign features. */
   chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  لكل (بیعلامت صحيح i = 0; i < میانگیر->len; i++)
   {
-    hb_codepoint_t c = buffer->info[i].codepoint;
-    unsigned int cluster = buffer->info[i].cluster;
+    hb_codepoint_t c = میانگیر->info[i].codepoint;
+    بیعلامت صحيح cluster = میانگیر->info[i].cluster;
     log_clusters[chars_len++] = cluster;
-    if (hb_in_range (c, 0x10000u, 0x10FFFFu))
+    إذا (hb_درون_range (c, 0x10000u, 0x10FFFFu))
       log_clusters[chars_len++] = cluster; /* Surrogates. */
   }
 
   DWRITE_READING_DIRECTION readingDirection;
-  readingDirection = buffer->props.direction ?
-		     DWRITE_READING_DIRECTION_RIGHT_TO_LEFT :
-		     DWRITE_READING_DIRECTION_LEFT_TO_RIGHT;
+  readingDirection = میانگیر->props.direction ?
+		     DWRITE_READING_DIRECTION_راست_مقصد_چپ :
+		     DWRITE_READING_DIRECTION_چپ_مقصد_راست;
 
   /*
   * There's an internal 16-bit limit on some things inside the analyzer,
   * but we never attempt to shape a word longer than 64K characters
   * in a single gfxShapedWord, so we cannot exceed that limit.
   */
-  uint32_t textLength = chars_len;
+  uint32_t متن_درازی_2 = chars_len;
 
-  TextAnalysis analysis (textString, textLength, nullptr, readingDirection);
-  TextAnalysis::Run *runHead;
+  متن_Analysis analysis (متن_String, متن_درازی_2, اشاره_تهی, readingDirection);
+  متن_Analysis::پیاپی_2 *پیاپی_سر;
   HRESULT hr;
-  hr = analysis.GenerateResults (analyzer, &runHead);
+  hr = analysis.GenerateResults (analyzer, &پیاپی_سر);
 
-#define FAIL(...) \
-  HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return false; \
-  } HB_STMT_END
+#تعریف_کن FAIL(...) \
+  HB_STMT_شروع { \
+    DEBUG_پیام (DIRECTWRITE, اشاره_تهی, __VA_ARGS__); \
+    أرجع خطأ; \
+  } HB_STMT_انتها
 
-  if (FAILED (hr))
+  إذا (FAILED (hr))
     FAIL ("Analyzer failed to generate results.");
 
-  uint32_t maxGlyphCount = 3 * textLength / 2 + 16;
-  uint32_t glyphCount;
-  bool isRightToLeft = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  uint32_t max_Glyph_شمار = 3 * متن_درازی_2 / 2 + 16;
+  uint32_t glyph_شمار_2;
+  منطقي is_راست_مقصد_چپ = HB_DIRECTION_IS_BACKWARD (میانگیر->props.direction);
 
-  const wchar_t localeName[20] = {0};
-  if (buffer->props.language)
+  ثابت wchar_t localeName[20] = {0};
+  إذا (میانگیر->props.language)
     mbstowcs ((wchar_t*) localeName,
-	      hb_language_to_string (buffer->props.language), 20);
+	      hb_language_مقصد_string (میانگیر->props.language), 20);
 
   /*
    * Set up features.
    */
-  static_assert ((sizeof (DWRITE_TYPOGRAPHIC_FEATURES) == sizeof (hb_ms_features_t)), "");
-  static_assert ((sizeof (DWRITE_FONT_FEATURE) == sizeof (hb_ms_feature_t)), "");
-  hb_vector_t<hb_ms_features_t *> range_features;
-  hb_vector_t<uint32_t> range_char_counts;
+  static_assert ((حجم (DWRITE_TYPOGRAPHIC_FEATURES) == حجم (hb_ms_features_t)), "");
+  static_assert ((حجم (DWRITE_FONT_FEATURE) == حجم (hb_ms_feature_t)), "");
+  hb_وکتور_t<hb_ms_features_t *> range_features;
+  hb_وکتور_t<uint32_t> range_char_counts;
 
   // https://github.com/harfbuzz/harfbuzz/pull/5114
   // The data allocated by these two vectors are used by the above two, so they
   // should remain alive as long as the above two are.
-  hb_vector_t<hb_ms_feature_t> feature_records;
-  hb_vector_t<hb_ms_range_record_t> range_records;
-  if (num_features)
+  hb_وکتور_t<hb_ms_feature_t> feature_رکوردها;
+  hb_وکتور_t<hb_ms_range_رکورد_t> range_رکوردها;
+  إذا (رقم_features)
   {
-    if (hb_ms_setup_features (features, num_features, feature_records, range_records))
+    إذا (hb_ms_راهاندازی_features (features, رقم_features, feature_رکوردها, range_رکوردها))
     {
-      hb_ms_make_feature_ranges (feature_records,
-				 range_records,
+      hb_ms_make_feature_ranges (feature_رکوردها,
+				 range_رکوردها,
 				 0,
 				 chars_len,
 				 log_clusters,
@@ -512,148 +512,148 @@ _hb_directwrite_shape (hb_shape_plan_t    *shape_plan,
     }
   }
 
-  hb_vector_t<uint16_t> clusterMap;
-  hb_vector_t<DWRITE_SHAPING_TEXT_PROPERTIES> textProperties;
-  if (unlikely (!clusterMap.resize_exact (textLength) ||
-                !textProperties.resize_exact (textLength)))
+  hb_وکتور_t<uint16_t> clusterMap;
+  hb_وکتور_t<DWRITE_SHAPING_متن_PROPERTIES> متن_Properties;
+  إذا (unlikely (!clusterMap.resize_exact (متن_درازی_2) ||
+                !متن_Properties.resize_exact (متن_درازی_2)))
     FAIL ("Failed to allocate shaping text data.");
 
-  hb_vector_t<uint16_t> glyphIndices;
-  hb_vector_t<DWRITE_SHAPING_GLYPH_PROPERTIES> glyphProperties;
+  hb_وکتور_t<uint16_t> glyphIndices;
+  hb_وکتور_t<DWRITE_SHAPING_GLYPH_PROPERTIES> glyphProperties;
 
 retry_getglyphs:
-  if (unlikely (!glyphIndices.resize_exact (maxGlyphCount) ||
-                !glyphProperties.resize_exact (maxGlyphCount)))
+  إذا (unlikely (!glyphIndices.resize_exact (max_Glyph_شمار) ||
+                !glyphProperties.resize_exact (max_Glyph_شمار)))
     FAIL ("Failed to allocate shaping glyph data.");
 
-  hr = analyzer->GetGlyphs (textString,
+  hr = analyzer->GetGlyphs (متن_String,
 			    chars_len,
 			    fontFace,
-			    false,
-			    isRightToLeft,
-			    &runHead->mScript,
+			    خطأ,
+			    is_راست_مقصد_چپ,
+			    &پیاپی_سر->mScript,
 			    localeName,
-			    nullptr,
-			    (const DWRITE_TYPOGRAPHIC_FEATURES**) range_features.arrayZ,
+			    اشاره_تهی,
+			    (ثابت DWRITE_TYPOGRAPHIC_FEATURES**) range_features.arrayZ,
 			    range_char_counts.arrayZ,
-			    range_features.length,
-			    maxGlyphCount,
+			    range_features.درازی,
+			    max_Glyph_شمار,
 			    clusterMap.arrayZ,
-			    textProperties.arrayZ,
+			    متن_Properties.arrayZ,
 			    glyphIndices.arrayZ,
 			    glyphProperties.arrayZ,
-			    &glyphCount);
+			    &glyph_شمار_2);
 
-  if (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)))
+  إذا (unlikely (hr == HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_میانگیر)))
   {
-    maxGlyphCount *= 2;
+    max_Glyph_شمار *= 2;
 
-    goto retry_getglyphs;
+    اذهب retry_getglyphs;
   }
-  if (FAILED (hr))
+  إذا (FAILED (hr))
     FAIL ("Analyzer failed to get glyphs.");
 
-  hb_vector_t<float> glyphAdvances;
-  hb_vector_t<DWRITE_GLYPH_OFFSET> glyphOffsets;
-  if (unlikely (!glyphAdvances.resize_exact (maxGlyphCount) ||
-                !glyphOffsets.resize_exact (maxGlyphCount)))
+  hb_وکتور_t<عائم> glyphAdvances;
+  hb_وکتور_t<DWRITE_GLYPH_جابه_جایی> glyphOffsets;
+  إذا (unlikely (!glyphAdvances.resize_exact (max_Glyph_شمار) ||
+                !glyphOffsets.resize_exact (max_Glyph_شمار)))
     FAIL ("Failed to allocate glyph positioning data.");
 
 
-  unsigned fontEmSize = font->face->get_upem ();
+  بیعلامت font_Em_اندازه = font->face->get_upem ();
 
-  float x_mult = font->x_multf;
-  float y_mult = font->y_multf;
+  عائم x_mult = font->x_multf;
+  عائم y_mult = font->y_multf;
 
-  hr = analyzer->GetGlyphPlacements (textString,
+  hr = analyzer->GetGlyphPlacements (متن_String,
 				     clusterMap.arrayZ,
-				     textProperties.arrayZ,
+				     متن_Properties.arrayZ,
 				     chars_len,
 				     glyphIndices.arrayZ,
 				     glyphProperties.arrayZ,
-				     glyphCount,
+				     glyph_شمار_2,
 				     fontFace,
-				     fontEmSize,
-				     false,
-				     isRightToLeft,
-				     &runHead->mScript,
+				     font_Em_اندازه,
+				     خطأ,
+				     is_راست_مقصد_چپ,
+				     &پیاپی_سر->mScript,
 				     localeName,
-				     (const DWRITE_TYPOGRAPHIC_FEATURES**) range_features.arrayZ,
+				     (ثابت DWRITE_TYPOGRAPHIC_FEATURES**) range_features.arrayZ,
 				     range_char_counts.arrayZ,
-				     range_features.length,
+				     range_features.درازی,
 				     glyphAdvances.arrayZ,
 				     glyphOffsets.arrayZ);
 
-  if (FAILED (hr))
+  إذا (FAILED (hr))
     FAIL ("Analyzer failed to get glyph placements.");
 
   /* Ok, we've got everything we need, now compose output buffer,
    * very, *very*, carefully! */
 
   /* Calculate visual-clusters.  That's what we ship. */
-  hb_vector_t<uint32_t> vis_clusters;
-  if (unlikely (!vis_clusters.resize_exact (glyphCount)))
+  hb_وکتور_t<uint32_t> vis_clusters;
+  إذا (unlikely (!vis_clusters.resize_exact (glyph_شمار_2)))
     FAIL ("Failed to allocate visual clusters.");
 
-  for (unsigned int i = 0; i < glyphCount; i++)
+  لكل (بیعلامت صحيح i = 0; i < glyph_شمار_2; i++)
     vis_clusters[i] = (uint32_t) -1;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  لكل (بیعلامت صحيح i = 0; i < میانگیر->len; i++)
   {
-    unsigned int c = clusterMap[buffer->info[i].utf16_index ()];
-    if (likely (c < glyphCount))
-      vis_clusters[c] = hb_min (vis_clusters[c], buffer->info[i].cluster);
+    بیعلامت صحيح c = clusterMap[میانگیر->info[i].utf16_شاخص ()];
+    إذا (likely (c < glyph_شمار_2))
+      vis_clusters[c] = hb_min (vis_clusters[c], میانگیر->info[i].cluster);
   }
-  for (unsigned int i = 1; i < glyphCount; i++)
-    if (vis_clusters[i] == (uint32_t) -1)
+  لكل (بیعلامت صحيح i = 1; i < glyph_شمار_2; i++)
+    إذا (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i - 1];
-  for (int i = (int) glyphCount - 2; i >= 0; i--)
-    if (vis_clusters[i] == (uint32_t) -1)
+  لكل (صحيح i = (صحيح) glyph_شمار_2 - 2; i >= 0; i--)
+    إذا (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i + 1];
 
-#undef utf16_index
+#لغو_تعریف utf16_شاخص
 
-  if (unlikely (!buffer->ensure (glyphCount)))
+  إذا (unlikely (!میانگیر->ensure (glyph_شمار_2)))
     FAIL ("Buffer in error");
 
-#undef FAIL
+#لغو_تعریف FAIL
 
   /* Set glyph infos */
-  buffer->len = 0;
-  for (unsigned int i = 0; i < glyphCount; i++)
+  میانگیر->len = 0;
+  لكل (بیعلامت صحيح i = 0; i < glyph_شمار_2; i++)
   {
-    hb_glyph_info_t *info = &buffer->info[buffer->len++];
+    hb_glyph_info_t *info = &میانگیر->info[میانگیر->len++];
 
     info->codepoint = glyphIndices[i];
     info->cluster = vis_clusters[i];
 
     /* The rest is crap.  Let's store position info there for now. */
-    info->mask = (hb_mask_t) hb_clamp_to<int32_t> (glyphAdvances[i]);
-    info->var1.i32 = hb_clamp_to<int32_t> (glyphOffsets[i].advanceOffset);
-    info->var2.i32 = hb_clamp_to<int32_t> (glyphOffsets[i].ascenderOffset);
+    info->ماسک = (hb_ماسک_t) hb_clamp_مقصد<int32_t> (glyphAdvances[i]);
+    info->var1.i32 = hb_clamp_مقصد<int32_t> (glyphOffsets[i].advance_جابه_جایی);
+    info->var2.i32 = hb_clamp_مقصد<int32_t> (glyphOffsets[i].ascender_جابه_جایی);
   }
 
   /* Set glyph positions */
-  buffer->clear_positions ();
-  for (unsigned int i = 0; i < glyphCount; i++)
+  میانگیر->clear_positions ();
+  لكل (بیعلامت صحيح i = 0; i < glyph_شمار_2; i++)
   {
-    hb_glyph_info_t *info = &buffer->info[i];
-    hb_glyph_position_t *pos = &buffer->pos[i];
+    hb_glyph_info_t *info = &میانگیر->info[i];
+    hb_glyph_position_t *pos = &میانگیر->pos[i];
 
     /* TODO vertical */
-    pos->x_advance = hb_clamp_to<hb_position_t> (round (x_mult * (int32_t) info->mask));
-    double x_offset = isRightToLeft ? -(double) info->var1.i32 : info->var1.i32;
-    pos->x_offset = hb_clamp_to<hb_position_t> (round ((double) x_mult * x_offset));
-    pos->y_offset = hb_clamp_to<hb_position_t> (round (y_mult * info->var2.i32));
+    pos->x_advance = hb_clamp_مقصد<hb_position_t> (round (x_mult * (int32_t) info->ماسک));
+    مزدوج x_جابه_جایی_2 = is_راست_مقصد_چپ ? -(مزدوج) info->var1.i32 : info->var1.i32;
+    pos->x_جابه_جایی_2 = hb_clamp_مقصد<hb_position_t> (round ((مزدوج) x_mult * x_جابه_جایی_2));
+    pos->y_جابه_جایی_2 = hb_clamp_مقصد<hb_position_t> (round (y_mult * info->var2.i32));
   }
 
-  if (isRightToLeft) hb_buffer_reverse (buffer);
+  إذا (is_راست_مقصد_چپ) hb_میانگیر_معکوس (میانگیر);
 
-  buffer->clear_glyph_flags ();
-  buffer->unsafe_to_break ();
+  میانگیر->clear_glyph_flags ();
+  میانگیر->unsafe_مقصد_break ();
 
   /* Wow, done! */
-  return true;
+  أرجع درست;
 }
 
 
-#endif
+#پایان_اگر

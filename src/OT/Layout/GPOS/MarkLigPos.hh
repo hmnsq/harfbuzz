@@ -1,35 +1,35 @@
-#ifndef OT_LAYOUT_GPOS_MARKLIGPOS_HH
-#define OT_LAYOUT_GPOS_MARKLIGPOS_HH
+#اگر_تعریف_نشده OT_LAYOUT_GPOS_MARKLIGPOS_HH
+#تعریف_کن OT_LAYOUT_GPOS_MARKLIGPOS_HH
 
-#include "MarkLigPosFormat1.hh"
+#ضمن "MarkLigPosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
-struct MarkLigPos
+بنية MarkLigPos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  محمي:
+  اتحاد {
+  بنية { HBUINT16 v; }		format;         /* Format identifier */
   MarkLigPosFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
+#اگر_تعریف_نشده HB_NO_BEYOND_64K
   MarkLigPosFormat1_2<MediumTypes>	format2;
-#endif
+#پایان_اگر
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  عام:
+  قالب <نام_نوع context_t, نام_نوع ...Ts>
+  نام_نوع context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    إذا (unlikely (!c->may_dispatch (هذا, &u.format.v))) أرجع c->no_dispatch_return_مقدار ();
+    TRACE_DISPATCH (هذا, u.format.v);
+    بدل (u.format.v) {
+    حالة 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#اگر_تعریف_نشده HB_NO_BEYOND_64K
+    حالة 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#پایان_اگر
+    افتراضي:return_trace (c->default_return_مقدار ());
     }
   }
 };
@@ -38,4 +38,4 @@ struct MarkLigPos
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKLIGPOS_HH */
+#پایان_اگر /* OT_LAYOUT_GPOS_MARKLIGPOS_HH */

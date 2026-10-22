@@ -22,65 +22,65 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OUTLINE_HH
-#define HB_OUTLINE_HH
+#اگر_تعریف_نشده HB_OUTLINE_HH
+#تعریف_کن HB_OUTLINE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-draw.hh"
+#ضمن "hb-draw.hh"
 
 
-struct hb_outline_point_t
+بنية hb_outline_نقطه_t
 {
-  enum class type_t
+  تعداد صنف type_t
   {
-    MOVE_TO,
-    LINE_TO,
-    QUADRATIC_TO,
-    CUBIC_TO,
+    MOVE_مقصد,
+    سطر_مقصد_2,
+    QUADRATIC_مقصد,
+    CUBIC_مقصد,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_نقطه_t (عائم x, عائم y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  عائم x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+بنية hb_outline_وکتور_t
 {
-  float normalize_len ()
+  عائم normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    عائم len = hypotf (x, y);
+    إذا (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    أرجع len;
   }
 
-  float x, y;
+  عائم x, y;
 };
 
-struct hb_outline_t
+بنية hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  فراغ reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_داخلی فراغ replay (hb_draw_funcs_t *pen, فراغ *pen_داده) ثابت;
+  HB_داخلی عائم control_area () ثابت;
+  HB_داخلی فراغ translate (عائم dx, عائم dy);
+  HB_داخلی فراغ slant (عائم slant_xy);
+  HB_داخلی فراغ embolden (عائم x_strength, عائم y_strength,
+			     عائم x_لغزش, عائم y_لغزش);
 
-  hb_vector_t<hb_outline_point_t> points;
-  hb_vector_t<unsigned> contours;
-  int64_t *budget_remaining = nullptr;
+  hb_وکتور_t<hb_outline_نقطه_t> points;
+  hb_وکتور_t<بیعلامت> contours;
+  int64_t *budget_مانده = اشاره_تهی;
 };
 
-HB_INTERNAL hb_draw_funcs_t *
+HB_داخلی hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ();
 
 
-#endif /* HB_OUTLINE_HH */
+#پایان_اگر /* HB_OUTLINE_HH */

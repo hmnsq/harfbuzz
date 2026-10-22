@@ -24,115 +24,115 @@
  *
  */
 
-#ifndef OT_COLOR_COLR_COLRV1_CLOSURE_HH
-#define OT_COLOR_COLR_COLRV1_CLOSURE_HH
+#اگر_تعریف_نشده OT_COLOR_COLR_COLRV1_بستگی_HH
+#تعریف_کن OT_COLOR_COLR_COLRV1_بستگی_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#ضمن "../../../hb-open-type.hh"
+#ضمن "COLR.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-namespace OT {
+نطاق OT {
 
-HB_INTERNAL void PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintColrLayers::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  c->add_layer_indices (firstLayerIndex, numLayers);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  c->جمع_کن_layer_indices (اولی_Layer_شاخص, رقم_Layers);
+  ثابت LayerList &paint_جابه_جایی_lists = c->get_colr_جدول ()->get_layerList ();
+  لكل (بیعلامت i = اولی_Layer_شاخص; i < اولی_Layer_شاخص + رقم_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    ثابت Paint &paint = paint_جابه_جایی_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
-template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) const
+قالب <نام_نوع Types>
+HB_داخلی فراغ PaintGlyph<Types>::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  c->add_glyph (gid);
-  (this+paint).dispatch (c);
+  c->جمع_کن_glyph (gid);
+  (هذا+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintColrGlyph::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
-  c->add_glyph (gid);
+  ثابت COLR *colr_جدول = c->get_colr_جدول ();
+  ثابت پایه_Glyph_Paint_رکورد* baseglyph_paintrecord = colr_جدول->get_پایه_glyph_paintrecord (gid);
+  إذا (!baseglyph_paintrecord) أرجع;
+  c->جمع_کن_glyph (gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  ثابت پایه_Glyph_List &baseglyph_list = colr_جدول->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) const
+قالب <قالب<نام_نوع> صنف Var>
+HB_داخلی فراغ PaintTransform<Var>::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  (this+transform).closurev1 (c);
+  (هذا+src).dispatch (c);
+  (هذا+transform).closurev1 (c);
 }
 
-HB_INTERNAL void PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintTranslate::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScale::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintScale::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintScaleAroundCenter::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ Paint_Scale_یکنواخت::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ Paint_Scale_یکنواخت_Around_Center::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintRotate::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintRotateAroundCenter::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintSkew::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ PaintSkewAroundCenter::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (هذا+src).dispatch (c);
+  c->رقم_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_داخلی فراغ Paint_مرکب::closurev1 (hb_colrv1_بستگی_context_t* c) ثابت
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (هذا+src).dispatch (c);
+  (هذا+backdrop).dispatch (c);
 }
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */
+#پایان_اگر /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */

@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_NULL_HH
-#define HB_NULL_HH
+#اگر_تعریف_نشده HB_NULL_HH
+#تعریف_کن HB_NULL_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#ضمن "hb.hh"
+#ضمن "hb-meta.hh"
 
 
 /*
@@ -37,25 +37,25 @@
 
 /* Global nul-content Null pool.  Enlarge as necessary. */
 
-#define HB_NULL_POOL_SIZE 640
+#تعریف_کن HB_NULL_POOL_اندازه 640
 
-template <typename T, typename>
-struct _hb_has_min_size : hb_false_type {};
-template <typename T>
-struct _hb_has_min_size<T, hb_void_t<decltype (T::min_size)>>
+قالب <نام_نوع T, نام_نوع>
+بنية hb_has_min_اندازه : hb_false_type {};
+قالب <نام_نوع T>
+بنية hb_has_min_اندازه<T, hb_void_t<decltype (T::min_اندازه)>>
 	: hb_true_type {};
-template <typename T>
-using hb_has_min_size = _hb_has_min_size<T, void>;
-#define hb_has_min_size(T) hb_has_min_size<T>::value
+قالب <نام_نوع T>
+استفاده hb_has_min_اندازه_2 = hb_has_min_اندازه<T, فراغ>;
+#تعریف_کن hb_has_min_اندازه_2(T) hb_has_min_اندازه_2<T>::value
 
-template <typename T, typename>
-struct _hb_has_null_size : hb_false_type {};
-template <typename T>
-struct _hb_has_null_size<T, hb_void_t<decltype (T::null_size)>>
+قالب <نام_نوع T, نام_نوع>
+بنية hb_has_null_اندازه : hb_false_type {};
+قالب <نام_نوع T>
+بنية hb_has_null_اندازه<T, hb_void_t<decltype (T::null_اندازه)>>
 	: hb_true_type {};
-template <typename T>
-using hb_has_null_size = _hb_has_null_size<T, void>;
-#define hb_has_null_size(T) hb_has_null_size<T>::value
+قالب <نام_نوع T>
+استفاده hb_has_null_اندازه_2 = hb_has_null_اندازه<T, فراغ>;
+#تعریف_کن hb_has_null_اندازه_2(T) hb_has_null_اندازه_2<T>::value
 
 /* Use SFINAE to sniff whether T has min_size; in which case return the larger
  * of sizeof(T) and T::null_size, otherwise return sizeof(T).
@@ -67,100 +67,100 @@ using hb_has_null_size = _hb_has_null_size<T, void>;
  * https://stackoverflow.com/questions/7776448/sfinae-tried-with-bool-gives-compiler-error-template-argument-tvalue-invol
  */
 
-template <typename T, typename>
-struct _hb_null_size : hb_integral_constant<unsigned, sizeof (T)> {};
-template <typename T>
-struct _hb_null_size<T, hb_void_t<decltype (T::min_size)>>
-	: hb_integral_constant<unsigned,
-			       (sizeof (T) > T::null_size ? sizeof (T) : T::null_size)> {};
-template <typename T>
-using hb_null_size = _hb_null_size<T, void>;
-#define hb_null_size(T) hb_null_size<T>::value
+قالب <نام_نوع T, نام_نوع>
+بنية hb_null_اندازه : hb_integral_constant<بیعلامت, حجم (T)> {};
+قالب <نام_نوع T>
+بنية hb_null_اندازه<T, hb_void_t<decltype (T::min_اندازه)>>
+	: hb_integral_constant<بیعلامت,
+			       (حجم (T) > T::null_اندازه ? حجم (T) : T::null_اندازه)> {};
+قالب <نام_نوع T>
+استفاده hb_null_اندازه_2 = hb_null_اندازه<T, فراغ>;
+#تعریف_کن hb_null_اندازه_2(T) hb_null_اندازه_2<T>::value
 
 /* These doesn't belong here, but since is copy/paste from above, put it here. */
 
 /* hb_static_size (T)
  * Returns T::static_size if T::min_size is defined, or sizeof (T) otherwise. */
 
-template <typename T, typename>
-struct _hb_static_size : hb_integral_constant<unsigned, sizeof (T)> {};
-template <typename T>
-struct _hb_static_size<T, hb_void_t<decltype (T::static_size)>> : hb_integral_constant<unsigned, T::static_size> {};
-template <typename T>
-using hb_static_size = _hb_static_size<T, void>;
-#define hb_static_size(T) hb_static_size<T>::value
+قالب <نام_نوع T, نام_نوع>
+بنية hb_static_اندازه_2 : hb_integral_constant<بیعلامت, حجم (T)> {};
+قالب <نام_نوع T>
+بنية hb_static_اندازه_2<T, hb_void_t<decltype (T::static_اندازه)>> : hb_integral_constant<بیعلامت, T::static_اندازه> {};
+قالب <نام_نوع T>
+استفاده hb_static_اندازه = hb_static_اندازه_2<T, فراغ>;
+#تعریف_کن hb_static_اندازه(T) hb_static_اندازه<T>::value
 
-template <typename T, typename>
-struct _hb_min_size : hb_integral_constant<unsigned, sizeof (T)> {};
-template <typename T>
-struct _hb_min_size<T, hb_void_t<decltype (T::min_size)>> : hb_integral_constant<unsigned, T::min_size> {};
-template <typename T>
-using hb_min_size = _hb_min_size<T, void>;
-#define hb_min_size(T) hb_min_size<T>::value
+قالب <نام_نوع T, نام_نوع>
+بنية hb_min_اندازه_2 : hb_integral_constant<بیعلامت, حجم (T)> {};
+قالب <نام_نوع T>
+بنية hb_min_اندازه_2<T, hb_void_t<decltype (T::min_اندازه)>> : hb_integral_constant<بیعلامت, T::min_اندازه> {};
+قالب <نام_نوع T>
+استفاده hb_min_اندازه = hb_min_اندازه_2<T, فراغ>;
+#تعریف_کن hb_min_اندازه(T) hb_min_اندازه<T>::value
 
 
 /*
  * Null()
  */
 
-extern HB_INTERNAL
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)];
+خارجي HB_داخلی
+uint64_t ثابت _hb_NullPool[(HB_NULL_POOL_اندازه + حجم (uint64_t) - 1) / حجم (uint64_t)];
 
 /* Generic nul-content Null objects. */
-template <typename Type>
-struct Null {
-  static Type const & get_null ()
+قالب <نام_نوع Type>
+بنية Null {
+  ساكن Type ثابت & get_null ()
   {
-    static_assert (hb_null_size (Type) <= HB_NULL_POOL_SIZE, "Increase HB_NULL_POOL_SIZE.");
-    return *reinterpret_cast<Type const *> (_hb_NullPool);
+    static_assert (hb_null_اندازه_2 (Type) <= HB_NULL_POOL_اندازه, "Increase HB_NULL_POOL_SIZE.");
+    أرجع *reinterpret_cast<Type ثابت *> (_hb_NullPool);
   }
 };
-template <typename QType>
-struct NullHelper
+قالب <نام_نوع QType>
+بنية NullHelper
 {
-  typedef hb_remove_const<hb_remove_reference<QType>> Type;
-  static const Type & get_null () { return Null<Type>::get_null (); }
+  تعريفنوع hb_remove_const<hb_remove_reference<QType>> Type;
+  ساكن ثابت Type & get_null () { أرجع Null<Type>::get_null (); }
 };
-#define Null(Type) NullHelper<Type>::get_null ()
+#تعریف_کن Null(Type) NullHelper<Type>::get_null ()
 
 /* Specializations for arbitrary-content Null objects expressed in bytes. */
-#define DECLARE_NULL_NAMESPACE_BYTES(Namespace, Type) \
+#تعریف_کن DECLARE_NULL_NAMESPACE_بایتها(Namespace, Type) \
 	} /* Close namespace. */ \
-	extern HB_INTERNAL const unsigned char _hb_Null_##Namespace##_##Type[hb_null_size (Namespace::Type)]; \
-	template <> \
-	struct Null<Namespace::Type> { \
-	  static Namespace::Type const & get_null () { \
-	    return *reinterpret_cast<const Namespace::Type *> (_hb_Null_##Namespace##_##Type); \
+	خارجي HB_داخلی ثابت بیعلامت حرف _hb_Null_##Namespace##_##Type[hb_null_اندازه_2 (Namespace::Type)]; \
+	قالب <> \
+	بنية Null<Namespace::Type> { \
+	  ساكن Namespace::Type ثابت & get_null () { \
+	    أرجع *reinterpret_cast<ثابت Namespace::Type *> (_hb_Null_##Namespace##_##Type); \
 	  } \
 	}; \
-	namespace Namespace { \
-	static_assert (true, "") /* Require semicolon after. */
-#define DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1(Namespace, Type, Size) \
+	نطاق Namespace { \
+	static_assert (درست, "") /* Require semicolon after. */
+#تعریف_کن DECLARE_NULL_NAMESPACE_بایتها_TEMPLATE1(Namespace, Type, اندازه_2) \
 	} /* Close namespace. */ \
-	extern HB_INTERNAL const unsigned char _hb_Null_##Namespace##_##Type[Size]; \
-	template <typename Spec> \
-	struct Null<Namespace::Type<Spec>> { \
-	  static Namespace::Type<Spec> const & get_null () { \
-	    return *reinterpret_cast<const Namespace::Type<Spec> *> (_hb_Null_##Namespace##_##Type); \
+	خارجي HB_داخلی ثابت بیعلامت حرف _hb_Null_##Namespace##_##Type[اندازه_2]; \
+	قالب <نام_نوع Spec> \
+	بنية Null<Namespace::Type<Spec>> { \
+	  ساكن Namespace::Type<Spec> ثابت & get_null () { \
+	    أرجع *reinterpret_cast<ثابت Namespace::Type<Spec> *> (_hb_Null_##Namespace##_##Type); \
 	  } \
 	}; \
-	namespace Namespace { \
-	static_assert (true, "") /* Require semicolon after. */
-#define DEFINE_NULL_NAMESPACE_BYTES(Namespace, Type) \
-	const unsigned char _hb_Null_##Namespace##_##Type[sizeof (_hb_Null_##Namespace##_##Type)]
+	نطاق Namespace { \
+	static_assert (درست, "") /* Require semicolon after. */
+#تعریف_کن DEFINE_NULL_NAMESPACE_بایتها(Namespace, Type) \
+	ثابت بیعلامت حرف _hb_Null_##Namespace##_##Type[حجم (_hb_Null_##Namespace##_##Type)]
 
 /* Specializations for arbitrary-content Null objects expressed as struct initializer. */
-#define DECLARE_NULL_INSTANCE(Type) \
-	extern HB_INTERNAL const Type _hb_Null_##Type; \
-	template <> \
-	struct Null<Type> { \
-	  static Type const & get_null () { \
-	    return _hb_Null_##Type; \
+#تعریف_کن DECLARE_NULL_INSTANCE(Type) \
+	خارجي HB_داخلی ثابت Type _hb_Null_##Type; \
+	قالب <> \
+	بنية Null<Type> { \
+	  ساكن Type ثابت & get_null () { \
+	    أرجع _hb_Null_##Type; \
 	  } \
 	}; \
-	static_assert (true, "") /* Require semicolon after. */
-#define DEFINE_NULL_INSTANCE(Type) \
-	const Type _hb_Null_##Type
+	static_assert (درست, "") /* Require semicolon after. */
+#تعریف_کن DEFINE_NULL_INSTANCE(Type) \
+	ثابت Type _hb_Null_##Type
 
 /* Global writable pool.  Enlarge as necessary. */
 
@@ -168,59 +168,59 @@ struct NullHelper
  * for correct operation. It only exist to catch and divert program logic bugs instead of
  * causing bad memory access. So, races there are not actually introducing incorrectness
  * in the code. Has ~12kb binary size overhead to have it, also clang build fails with it. */
-extern HB_INTERNAL
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)];
+خارجي HB_داخلی
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_اندازه + حجم (uint64_t) - 1) / حجم (uint64_t)];
 
 /* CRAP pool: Common Region for Access Protection. */
-template <typename Type>
-static inline Type& Crap () {
-  static_assert (hb_null_size (Type) <= HB_NULL_POOL_SIZE, "Increase HB_NULL_POOL_SIZE.");
+قالب <نام_نوع Type>
+ساكن مضمن Type& Crap () {
+  static_assert (hb_null_اندازه_2 (Type) <= HB_NULL_POOL_اندازه, "Increase HB_NULL_POOL_SIZE.");
   Type *obj = reinterpret_cast<Type *> (_hb_CrapPool);
-  memcpy (reinterpret_cast<void*>(obj), std::addressof (Null (Type)), sizeof (*obj));
-  return *obj;
+  کپی_حافظه (reinterpret_cast<فراغ*>(obj), std::addressof (Null (Type)), حجم (*obj));
+  أرجع *obj;
 }
-template <typename QType>
-struct CrapHelper
+قالب <نام_نوع QType>
+بنية CrapHelper
 {
-  typedef hb_remove_const<hb_remove_reference<QType>> Type;
-  static Type & get_crap () { return Crap<Type> (); }
+  تعريفنوع hb_remove_const<hb_remove_reference<QType>> Type;
+  ساكن Type & get_crap () { أرجع Crap<Type> (); }
 };
-#define Crap(Type) CrapHelper<Type>::get_crap ()
+#تعریف_کن Crap(Type) CrapHelper<Type>::get_crap ()
 
-template <typename Type>
-struct CrapOrNullHelper {
-  static Type & get () { return Crap (Type); }
+قالب <نام_نوع Type>
+بنية CrapOrNullHelper {
+  ساكن Type & get () { أرجع Crap (Type); }
 };
-template <typename Type>
-struct CrapOrNullHelper<const Type> {
-  static const Type & get () { return Null (Type); }
+قالب <نام_نوع Type>
+بنية CrapOrNullHelper<ثابت Type> {
+  ساكن ثابت Type & get () { أرجع Null (Type); }
 };
-#define CrapOrNull(Type) CrapOrNullHelper<Type>::get ()
+#تعریف_کن CrapOrNull(Type) CrapOrNullHelper<Type>::get ()
 
 
 /*
  * hb_nonnull_ptr_t
  */
 
-template <typename P>
-struct hb_nonnull_ptr_t
+قالب <نام_نوع P>
+بنية hb_nonnull_ptr_t
 {
-  typedef hb_remove_pointer<P> T;
+  تعريفنوع hb_remove_اشاره_گر<P> T;
 
-  hb_nonnull_ptr_t (T *v_ = nullptr) : v (v_) {}
-  T * operator = (T *v_)   { return v = v_; }
-  T * operator -> () const { return get (); }
-  T & operator * () const  { return *get (); }
-  T ** operator & () const { return std::addressof (v); }
+  hb_nonnull_ptr_t (T *v_ = اشاره_تهی) : v (v_) {}
+  T * عملگر = (T *v_)   { أرجع v = v_; }
+  T * عملگر -> () ثابت { أرجع get (); }
+  T & عملگر * () ثابت  { أرجع *get (); }
+  T ** عملگر & () ثابت { أرجع std::addressof (v); }
   /* Only auto-cast to const types. */
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  T * get () const { return v ? v : const_cast<T *> (std::addressof (Null (T))); }
-  T * get_raw () const { return v; }
+  قالب <نام_نوع C> عملگر ثابت C * () ثابت { أرجع get (); }
+  عملگر ثابت حرف * () ثابت { أرجع (ثابت حرف *) get (); }
+  T * get () ثابت { أرجع v ? v : const_cast<T *> (std::addressof (Null (T))); }
+  T * get_raw () ثابت { أرجع v; }
 
-  private:
+  خاص:
   T *v;
 };
 
 
-#endif /* HB_NULL_HH */
+#پایان_اگر /* HB_NULL_HH */

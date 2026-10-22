@@ -24,73 +24,73 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_STATIC_CC
-#define HB_STATIC_CC
-#ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
+#اگر_تعریف_نشده HB_STATIC_CC
+#تعریف_کن HB_STATIC_CC
+#اگر_تعریف_شده HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#ضمن "hb-aat-layout-common.hh"
+#ضمن "hb-aat-layout-feat-table.hh"
+#ضمن "hb-cff-interp-common.hh"
+#ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-ot-cmap-table.hh"
+#ضمن "OT/Color/COLR/COLR.hh"
+#ضمن "hb-ot-glyf-table.hh"
+#ضمن "hb-ot-head-table.hh"
+#ضمن "hb-ot-hmtx-table.hh"
+#ضمن "hb-ot-maxp-table.hh"
 
-#ifndef HB_NO_VISIBILITY
+#اگر_تعریف_نشده HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#ضمن "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t ثابت _hb_NullPool[(HB_NULL_POOL_اندازه + حجم (uint64_t) - 1) / حجم (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_اندازه + حجم (uint64_t) - 1) / حجم (uint64_t)] = {};
 
-DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
-DEFINE_NULL_NAMESPACE_BYTES (OT, RangeRecord) = {0x01};
-DEFINE_NULL_NAMESPACE_BYTES (OT, ClipRecord) = {0x01};
-DEFINE_NULL_NAMESPACE_BYTES (OT, CmapSubtableLongGroup) = {0x00,0x00,0x00,0x01, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00};
-DEFINE_NULL_NAMESPACE_BYTES (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
-DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_بایتها (OT, شاخص) =  {0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_بایتها (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_بایتها (OT, LangSys) = {0x00,0x00, 0xFF,0xFF, 0x00,0x00};
+DEFINE_NULL_NAMESPACE_بایتها (OT, Range_رکورد) = {0x01};
+DEFINE_NULL_NAMESPACE_بایتها (OT, Clip_رکورد) = {0x01};
+DEFINE_NULL_NAMESPACE_بایتها (OT, Cmap_Subtable_Long_گروه) = {0x00,0x00,0x00,0x01, 0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00};
+DEFINE_NULL_NAMESPACE_بایتها (AAT, SettingName) = {0xFF,0xFF, 0xFF,0xFF};
+DEFINE_NULL_NAMESPACE_بایتها (AAT, Lookup) = {0xFF,0xFF};
 
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+ثابت hb_codepoint_t minus_1 = -1;
+ساكن ثابت بیعلامت حرف static_endchar_str[] = {Op_کد_endchar};
+ثابت بیعلامت حرف *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+ساكن مضمن بیعلامت
+بارگیری_رقم_glyphs_from_maxp (ثابت hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  أرجع face->جدول.maxp->get_رقم_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+بیعلامت صحيح
+hb_face_t::بارگیری_رقم_glyphs () ثابت
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  رقم_glyphs = بارگیری_رقم_glyphs_from_maxp (هذا);
+  أرجع رقم_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+بیعلامت صحيح
+hb_face_t::بارگیری_upem () ثابت
 {
-  unsigned int ret = table.head->get_upem ();
+  بیعلامت صحيح ret = جدول.سر_2->get_upem ();
   upem = ret;
-  return ret;
+  أرجع ret;
 }
 
-#endif
+#پایان_اگر
 
-#endif /* HB_STATIC_CC pacify */
-#endif /* HB_STATIC_CC guard */
+#پایان_اگر /* HB_STATIC_CC pacify */
+#پایان_اگر /* HB_STATIC_CC guard */

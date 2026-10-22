@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
-from os import path
+استورد sys
+من os استورد مسیر
 
-print(path.relpath(sys.argv[1], sys.argv[2]))
+چاپ(مسیر.relpath(sys.argv[1], sys.argv[2]))

@@ -26,35 +26,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DISPATCH_HH
-#define HB_DISPATCH_HH
+#اگر_تعریف_نشده HB_DISPATCH_HH
+#تعریف_کن HB_DISPATCH_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+قالب <نام_نوع Context, نام_نوع Return=hb_خالی_t, بیعلامت صحيح Max_Debug_عمق=0>
+بنية hb_dispatch_context_t
 {
-  private:
+  خاص:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
-  template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
-  unsigned debug_depth = 0;
+  ثابت Context* thiz () ثابت { أرجع static_cast<ثابت Context *> (هذا); }
+	Context* thiz ()       { أرجع static_cast<      Context *> (هذا); }
+  عام:
+  ثابت حرف *get_name () { أرجع "UNKNOWN"; }
+  ساكن constexpr بیعلامت max_debug_عمق = Max_Debug_عمق;
+  تعريفنوع Return return_t;
+  قالب <نام_نوع T, نام_نوع F>
+  منطقي may_dispatch (ثابت T *obj HB_استفادهنشده, ثابت F *format HB_استفادهنشده) { أرجع درست; }
+  قالب <نام_نوع T, نام_نوع ...Ts>
+  return_t dispatch (ثابت T &obj, Ts&&... ds)
+  { أرجع obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  ساكن return_t no_dispatch_return_مقدار () { أرجع Context::default_return_مقدار (); }
+  ساكن منطقي stop_sublookup_iteration (ثابت return_t r HB_استفادهنشده) { أرجع خطأ; }
+  بیعلامت debug_عمق = 0;
 };
 
 
-#endif /* HB_DISPATCH_HH */
+#پایان_اگر /* HB_DISPATCH_HH */

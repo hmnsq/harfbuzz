@@ -24,29 +24,29 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_INDIC_HH
-#define HB_OT_SHAPER_INDIC_HH
+#اگر_تعریف_نشده HB_OT_SHAPER_INDIC_HH
+#تعریف_کن HB_OT_SHAPER_INDIC_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-shaper-syllabic.hh"
+#ضمن "hb-ot-shaper-syllabic.hh"
 
 
 /* Visual positions in a syllable from left to right. */
-enum ot_position_t {
-  POS_START = 0,
+تعداد ot_position_t {
+  POS_شروع = 0,
 
-  POS_RA_TO_BECOME_REPH = 1,
+  POS_RA_مقصد_BECOME_REPH = 1,
   POS_PRE_M = 2,
   POS_PRE_C = 3,
 
-  POS_BASE_C = 4,
+  POS_پایه_C = 4,
   POS_AFTER_MAIN = 5,
 
   POS_ABOVE_C = 6,
 
   POS_BEFORE_SUB = 7,
-  POS_BELOW_C = 8,
+  POS_زیر_C = 8,
   POS_AFTER_SUB = 9,
 
   POS_BEFORE_POST = 10,
@@ -55,12 +55,12 @@ enum ot_position_t {
 
   POS_SMVD = 13,
 
-  POS_END = 14
+  POS_انتها = 14
 };
 
 
-HB_INTERNAL uint16_t
+HB_داخلی uint16_t
 hb_indic_get_categories (hb_codepoint_t u);
 
 
-#endif /* HB_OT_SHAPER_INDIC_HH */
+#پایان_اگر /* HB_OT_SHAPER_INDIC_HH */

@@ -23,129 +23,129 @@
  *
  */
 
-#ifndef HB_OT_POST_TABLE_V2SUBSET_HH
-#define HB_OT_POST_TABLE_V2SUBSET_HH
+#اگر_تعریف_نشده HB_OT_POST_جدول_V2_SUBSET_HH
+#تعریف_کن HB_OT_POST_جدول_V2_SUBSET_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-post-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-post-table.hh"
 
 /*
  * post -- PostScript
  * https://docs.microsoft.com/en-us/typography/opentype/spec/post
  */
 
-namespace OT {
-template<typename Iterator>
-HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
+نطاق OT {
+قالب<نام_نوع Iterator>
+HB_داخلی منطقي post_V2_دم::serialize (hb_serialize_context_t *c,
                                         Iterator it,
-                                        const void* _post) const
+                                        ثابت فراغ* _post) ثابت
 {
-  TRACE_SERIALIZE (this);
-  auto *out = c->start_embed (this);
-  if (unlikely (!c->check_success (out))) return_trace (false);
-  if (!out->glyphNameIndex.serialize (c, + it
-                                         | hb_map (hb_second)))
-      return_trace (false);
+  TRACE_SERIALIZE (هذا);
+  خودکار *بیرون = c->شروع_embed (هذا);
+  إذا (unlikely (!c->check_success (بیرون))) return_trace (خطأ);
+  إذا (!بیرون->glyph_Name_شاخص.serialize (c, + it
+                                         | hb_map (hb_دومی)))
+      return_trace (خطأ);
 
-  hb_set_t copied_indices;
-  for (const auto& _ : + it )
+  hb_مجموعه_t copied_indices;
+  لكل (ثابت خودکار& _ : + it )
   {
-    unsigned glyph_id = _.first;
-    unsigned new_index = _.second;
+    بیعلامت glyph_id = _.اولی;
+    بیعلامت new_شاخص = _.second;
 
-    if (new_index < 258) continue;
-    if (copied_indices.has (new_index)) continue;
-    copied_indices.add (new_index);
+    إذا (new_شاخص < 258) استمر;
+    إذا (copied_indices.has (new_شاخص)) استمر;
+    copied_indices.جمع_کن (new_شاخص);
 
-    hb_bytes_t s = reinterpret_cast<const post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
-    HBUINT8 *o = c->allocate_size<HBUINT8> (HBUINT8::static_size * (s.length + 1));
-    if (unlikely (!o)) return_trace (false);
-    if (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_size * s.length);
+    hb_بایتها_t s = reinterpret_cast<ثابت post::accelerator_t*> (_post)->پیدا_کن_glyph_name (glyph_id);
+    HBUINT8 *o = c->allocate_اندازه<HBUINT8> (HBUINT8::static_اندازه * (s.درازی + 1));
+    إذا (unlikely (!o)) return_trace (خطأ);
+    إذا (!c->check_تخصیص_بده (o[0], s.درازی, HB_SERIALIZE_ERROR_INT_سرریز)) return_trace (خطأ);
+    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_اندازه * s.درازی);
   }
 
-  return_trace (true);
+  return_trace (درست);
 }
 
-HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
+HB_داخلی منطقي post_V2_دم::subset (hb_subset_context_t *c) ثابت
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (هذا);
 
-  const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-  unsigned num_glyphs = c->plan->num_output_glyphs ();
-  hb_map_t old_new_index_map, old_gid_new_index_map;
-  unsigned i = 0;
+  ثابت hb_map_t &معکوس_glyph_map = *c->plan->معکوس_glyph_map;
+  بیعلامت رقم_glyphs = c->plan->رقم_output_glyphs ();
+  hb_map_t old_new_شاخص_map, old_gid_new_شاخص_map;
+  بیعلامت i = 0;
 
-  post::accelerator_t _post (c->plan->source);
+  post::accelerator_t _post (c->plan->منبع);
 
-  hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_index;
+  hb_hashmap_t<hb_بایتها_t, uint32_t, درست> glyph_name_مقصد_new_شاخص;
 
-  old_new_index_map.alloc (num_glyphs);
-  old_gid_new_index_map.alloc (num_glyphs);
-  glyph_name_to_new_index.alloc (num_glyphs);
+  old_new_شاخص_map.alloc (رقم_glyphs);
+  old_gid_new_شاخص_map.alloc (رقم_glyphs);
+  glyph_name_مقصد_new_شاخص.alloc (رقم_glyphs);
 
-  for (auto _ : c->plan->new_to_old_gid_list)
+  لكل (خودکار _ : c->plan->new_مقصد_old_gid_list)
   {
     hb_codepoint_t old_gid = _.second;
-    unsigned old_index = glyphNameIndex[old_gid];
+    بیعلامت old_شاخص = glyph_Name_شاخص[old_gid];
 
-    unsigned new_index;
-    const uint32_t *new_index2;
-    if (old_index <= 257)
-      new_index = old_index;
-    else if (old_new_index_map.has (old_index, &new_index2))
-      new_index = *new_index2;
-    else
+    بیعلامت new_شاخص;
+    ثابت uint32_t *new_index2;
+    إذا (old_شاخص <= 257)
+      new_شاخص = old_شاخص;
+    وإلا إذا (old_new_شاخص_map.has (old_شاخص, &new_index2))
+      new_شاخص = *new_index2;
+    وإلا
     {
-      hb_bytes_t s = _post.find_glyph_name (old_gid);
-      new_index = glyph_name_to_new_index.get (s);
-      if (new_index == (unsigned)-1)
+      hb_بایتها_t s = _post.پیدا_کن_glyph_name (old_gid);
+      new_شاخص = glyph_name_مقصد_new_شاخص.get (s);
+      إذا (new_شاخص == (بیعلامت)-1)
       {
-        int standard_glyph_index = -1;
-        for (unsigned i = 0; i < format1_names_length; i++)
+        صحيح standard_glyph_شاخص = -1;
+        لكل (بیعلامت i = 0; i < format1_نامها_درازی; i++)
         {
-          if (s == format1_names (i))
+          إذا (s == format1_نامها (i))
           {
-            standard_glyph_index = i;
-            break;
+            standard_glyph_شاخص = i;
+            اكسر;
           }
         }
 
-        if (standard_glyph_index == -1)
+        إذا (standard_glyph_شاخص == -1)
         {
-          new_index = 258 + i;
+          new_شاخص = 258 + i;
           i++;
         }
-        else
-        { new_index = standard_glyph_index; }
-        glyph_name_to_new_index.set (s, new_index);
+        وإلا
+        { new_شاخص = standard_glyph_شاخص; }
+        glyph_name_مقصد_new_شاخص.مجموعه (s, new_شاخص);
       }
-      old_new_index_map.set (old_index, new_index);
+      old_new_شاخص_map.مجموعه (old_شاخص, new_شاخص);
     }
-    old_gid_new_index_map.set (old_gid, new_index);
+    old_gid_new_شاخص_map.مجموعه (old_gid, new_شاخص);
   }
 
-  if (old_gid_new_index_map.in_error())
-    return_trace (false);
+  إذا (old_gid_new_شاخص_map.درون_error())
+    return_trace (خطأ);
 
-  auto index_iter =
-  + hb_range (num_glyphs)
-  | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
+  خودکار شاخص_iter =
+  + hb_range (رقم_glyphs)
+  | hb_map_retains_ترتیبدهی ([&](hb_codepoint_t new_gid)
                             {
                               hb_codepoint_t *old_gid;
                               /* use 0 for retain-gid holes, which refers to the name .notdef,
                                * as the glyphNameIndex entry for that glyph ID."*/
-                              unsigned new_index = 0;
-                              if (reverse_glyph_map.has (new_gid, &old_gid)) {
-                                new_index = old_gid_new_index_map.get (*old_gid);
-                                return hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
+                              بیعلامت new_شاخص = 0;
+                              إذا (معکوس_glyph_map.has (new_gid, &old_gid)) {
+                                new_شاخص = old_gid_new_شاخص_map.get (*old_gid);
+                                أرجع hb_pair_t<بیعلامت, بیعلامت> (*old_gid, new_شاخص);
                               }
-                              return hb_pair_t<unsigned, unsigned> (new_gid, new_index);
+                              أرجع hb_pair_t<بیعلامت, بیعلامت> (new_gid, new_شاخص);
                             })
   ;
 
-  return_trace (serialize (c->serializer, index_iter, &_post));
+  return_trace (serialize (c->serializer, شاخص_iter, &_post));
 }
 
 } /* namespace OT */
-#endif /* HB_OT_POST_TABLE_V2SUBSET_HH */
+#پایان_اگر /* HB_OT_POST_TABLE_V2SUBSET_HH */

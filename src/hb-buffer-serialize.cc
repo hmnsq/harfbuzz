@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_BUFFER_SERIALIZE
+#اگر_تعریف_نشده HB_NO_میانگیر_SERIALIZE
 
-#include "hb-buffer.hh"
+#ضمن "hb-buffer.hh"
 
 
-static const char *_hb_buffer_serialize_formats[] = {
+ساكن ثابت حرف *hb_میانگیر_serialize_formats[] = {
   "text",
   "json",
-  nullptr
+  اشاره_تهی
 };
 
 /**
@@ -47,10 +47,10 @@ static const char *_hb_buffer_serialize_formats[] = {
  *
  * Since: 0.9.7
  **/
-const char **
-hb_buffer_serialize_list_formats ()
+ثابت حرف **
+hb_میانگیر_serialize_list_formats ()
 {
-  return _hb_buffer_serialize_formats;
+  أرجع hb_میانگیر_serialize_formats;
 }
 
 /**
@@ -67,11 +67,11 @@ hb_buffer_serialize_list_formats ()
  *
  * Since: 0.9.7
  **/
-hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len)
+hb_میانگیر_serialize_format_t
+hb_میانگیر_serialize_format_from_string (ثابت حرف *str, صحيح len)
 {
   /* Upper-case it. */
-  return (hb_buffer_serialize_format_t) (hb_tag_from_string (str, len) & ~0x20202020u);
+  أرجع (hb_میانگیر_serialize_format_t) (hb_برچسب_from_string (str, len) & ~0x20202020u);
 }
 
 /**
@@ -86,338 +86,338 @@ hb_buffer_serialize_format_from_string (const char *str, int len)
  *
  * Since: 0.9.7
  **/
-const char *
-hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format)
+ثابت حرف *
+hb_میانگیر_serialize_format_مقصد_string (hb_میانگیر_serialize_format_t format)
 {
-  switch ((unsigned) format)
+  بدل ((بیعلامت) format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT: return _hb_buffer_serialize_formats[0];
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON: return _hb_buffer_serialize_formats[1];
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:  return nullptr;
+    حالة HB_میانگیر_SERIALIZE_FORMAT_متن: أرجع hb_میانگیر_serialize_formats[0];
+    حالة HB_میانگیر_SERIALIZE_FORMAT_JSON: أرجع hb_میانگیر_serialize_formats[1];
+    افتراضي:
+    حالة HB_میانگیر_SERIALIZE_FORMAT_INVALID:  أرجع اشاره_تهی;
   }
 }
 
-static unsigned int
-_hb_buffer_serialize_glyphs_json (hb_buffer_t *buffer,
-                                  unsigned int start,
-                                  unsigned int end,
-                                  char *buf,
-                                  unsigned int buf_size,
-                                  unsigned int *buf_consumed,
+ساكن بیعلامت صحيح
+hb_میانگیر_serialize_glyphs_json (hb_میانگیر_t *میانگیر,
+                                  بیعلامت صحيح شروع,
+                                  بیعلامت صحيح انتها,
+                                  حرف *buf,
+                                  بیعلامت صحيح buf_اندازه,
+                                  بیعلامت صحيح *buf_consumed,
                                   hb_font_t *font,
-                                  hb_buffer_serialize_flags_t flags)
+                                  hb_میانگیر_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *pos = (flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS) ?
-                             nullptr : hb_buffer_get_glyph_positions (buffer, nullptr);
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, اشاره_تهی);
+  hb_glyph_position_t *pos = (flags & HB_میانگیر_SERIALIZE_FLAG_NO_POSITIONS) ?
+                             اشاره_تهی : hb_میانگیر_get_glyph_positions (میانگیر, اشاره_تهی);
 
   *buf_consumed = 0;
   hb_position_t x = 0, y = 0;
 
   /* Calculate the advance of the previous glyphs */
-  if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+  إذا (pos && (flags & HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES))
   {
-    for (unsigned int i = 0; i < start; i++)
+    لكل (بیعلامت صحيح i = 0; i < شروع; i++)
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_جمع_کن (x, pos[i].x_advance);
+      y = hb_saturate_جمع_کن (y, pos[i].y_advance);
     }
   }
 
-  for (unsigned int i = start; i < end; i++)
+  لكل (بیعلامت صحيح i = شروع; i < انتها; i++)
   {
-    char b[1024];
-    char *p = b;
+    حرف b[1024];
+    حرف *p = b;
 
     /* In the following code, we know b is large enough that no overflow can happen. */
 
-#define APPEND(s) HB_STMT_START { strcpy (p, s); p += strlen (s); } HB_STMT_END
+#تعریف_کن APPEND(s) HB_STMT_شروع { strcpy (p, s); p += طول_رشته (s); } HB_STMT_انتها
 
-    if (i)
+    إذا (i)
       *p++ = ',';
-    else
+    وإلا
       *p++ = '[';
 
     *p++ = '{';
 
     APPEND ("\"g\":");
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
+    إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_GLYPH_نامها))
     {
-      char g[128];
-      hb_font_glyph_to_string (font, info[i].codepoint, g, sizeof (g));
+      حرف g[128];
+      hb_font_glyph_مقصد_string (font, info[i].codepoint, g, حجم (g));
       *p++ = '"';
-      for (char *q = g; *q; q++)
+      لكل (حرف *q = g; *q; q++)
       {
-	if (unlikely (*q == '"' || *q == '\\'))
+	إذا (unlikely (*q == '"' || *q == '\\'))
 	  *p++ = '\\';
 	*p++ = *q;
       }
       *p++ = '"';
     }
-    else
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
+    وإلا
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"cl\":%u", info[i].cluster));
+    إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"cl\":%u", info[i].cluster));
     }
 
-    if (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
+    إذا (pos && !(flags & HB_میانگیر_SERIALIZE_FLAG_NO_POSITIONS))
     {
-      hb_position_t dx = hb_saturate_add (x, pos[i].x_offset);
-      hb_position_t dy = hb_saturate_add (y, pos[i].y_offset);
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"dx\":%d,\"dy\":%d",
+      hb_position_t dx = hb_saturate_جمع_کن (x, pos[i].x_جابه_جایی_2);
+      hb_position_t dy = hb_saturate_جمع_کن (y, pos[i].y_جابه_جایی_2);
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"dx\":%d,\"dy\":%d",
 		   dx, dy));
-      if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"ax\":%d,\"ay\":%d",
+      إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES))
+        p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"ax\":%d,\"ay\":%d",
 		     pos[i].x_advance, pos[i].y_advance));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
+    إذا (flags & HB_میانگیر_SERIALIZE_FLAG_GLYPH_FLAGS)
     {
-      if (info[i].mask & HB_GLYPH_FLAG_DEFINED)
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"fl\":%u", info[i].mask & HB_GLYPH_FLAG_DEFINED));
+      إذا (info[i].ماسک & HB_GLYPH_FLAG_DEFINED)
+        p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"fl\":%u", info[i].ماسک & HB_GLYPH_FLAG_DEFINED));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
+    إذا (flags & HB_میانگیر_SERIALIZE_FLAG_GLYPH_EXTENTS)
     {
       hb_glyph_extents_t extents;
-      if (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
+      إذا (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
       {
-	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"xb\":%d,\"yb\":%d",
+	p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"xb\":%d,\"yb\":%d",
 				  extents.x_bearing, extents.y_bearing));
-	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"w\":%d,\"h\":%d",
-				  extents.width, extents.height));
+	p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"w\":%d,\"h\":%d",
+				  extents.عرض, extents.ارتفاع));
       }
     }
 
     *p++ = '}';
-    if (i == end-1)
+    إذا (i == انتها-1)
       *p++ = ']';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    بیعلامت صحيح l = p - b;
+    إذا (buf_اندازه > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_اندازه -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } وإلا
+      أرجع i - شروع;
 
-    if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+    إذا (pos && (flags & HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES))
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_جمع_کن (x, pos[i].x_advance);
+      y = hb_saturate_جمع_کن (y, pos[i].y_advance);
     }
   }
 
-  return end - start;
+  أرجع انتها - شروع;
 }
 
-static unsigned int
-_hb_buffer_serialize_unicode_json (hb_buffer_t *buffer,
-          unsigned int start,
-          unsigned int end,
-          char *buf,
-          unsigned int buf_size,
-          unsigned int *buf_consumed,
-          hb_buffer_serialize_flags_t flags)
+ساكن بیعلامت صحيح
+hb_میانگیر_serialize_unicode_json (hb_میانگیر_t *میانگیر,
+          بیعلامت صحيح شروع,
+          بیعلامت صحيح انتها,
+          حرف *buf,
+          بیعلامت صحيح buf_اندازه,
+          بیعلامت صحيح *buf_consumed,
+          hb_میانگیر_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, اشاره_تهی);
 
   *buf_consumed = 0;
-  for (unsigned int i = start; i < end; i++)
+  لكل (بیعلامت صحيح i = شروع; i < انتها; i++)
   {
-    char b[1024];
-    char *p = b;
+    حرف b[1024];
+    حرف *p = b;
 
-    if (i)
+    إذا (i)
       *p++ = ',';
-    else
+    وإلا
       *p++ = '[';
 
     *p++ = '{';
 
     APPEND ("\"u\":");
 
-    p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
+    p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",\"cl\":%u", info[i].cluster));
+    إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",\"cl\":%u", info[i].cluster));
     }
 
     *p++ = '}';
 
-    if (i == end-1)
+    إذا (i == انتها-1)
       *p++ = ']';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    بیعلامت صحيح l = p - b;
+    إذا (buf_اندازه > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_اندازه -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } وإلا
+      أرجع i - شروع;
 
   }
 
-  return end - start;
+  أرجع انتها - شروع;
 }
 
-static unsigned int
-_hb_buffer_serialize_glyphs_text (hb_buffer_t *buffer,
-                                  unsigned int start,
-                                  unsigned int end,
-                                  char *buf,
-                                  unsigned int buf_size,
-                                  unsigned int *buf_consumed,
+ساكن بیعلامت صحيح
+hb_میانگیر_serialize_glyphs_متن (hb_میانگیر_t *میانگیر,
+                                  بیعلامت صحيح شروع,
+                                  بیعلامت صحيح انتها,
+                                  حرف *buf,
+                                  بیعلامت صحيح buf_اندازه,
+                                  بیعلامت صحيح *buf_consumed,
                                   hb_font_t *font,
-                                  hb_buffer_serialize_flags_t flags)
+                                  hb_میانگیر_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *pos = (flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS) ?
-           nullptr : hb_buffer_get_glyph_positions (buffer, nullptr);
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, اشاره_تهی);
+  hb_glyph_position_t *pos = (flags & HB_میانگیر_SERIALIZE_FLAG_NO_POSITIONS) ?
+           اشاره_تهی : hb_میانگیر_get_glyph_positions (میانگیر, اشاره_تهی);
 
   *buf_consumed = 0;
   hb_position_t x = 0, y = 0;
 
   /* Calculate the advance of the previous glyphs */
-  if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+  إذا (pos && (flags & HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES))
   {
-    for (unsigned int i = 0; i < start; i++)
+    لكل (بیعلامت صحيح i = 0; i < شروع; i++)
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_جمع_کن (x, pos[i].x_advance);
+      y = hb_saturate_جمع_کن (y, pos[i].y_advance);
     }
   }
 
-  for (unsigned int i = start; i < end; i++)
+  لكل (بیعلامت صحيح i = شروع; i < انتها; i++)
   {
-    char b[1024];
-    char *p = b;
+    حرف b[1024];
+    حرف *p = b;
 
     /* In the following code, we know b is large enough that no overflow can happen. */
 
-    if (i)
+    إذا (i)
       *p++ = '|';
-    else
+    وإلا
       *p++ = '[';
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_GLYPH_NAMES))
+    إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_GLYPH_نامها))
     {
       /* TODO Escape delimiters we use. */
-      hb_font_glyph_to_string (font, info[i].codepoint, p, 128);
-      p += strlen (p);
+      hb_font_glyph_مقصد_string (font, info[i].codepoint, p, 128);
+      p += طول_رشته (p);
     }
-    else
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%u", info[i].codepoint));
+    وإلا
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "%u", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "=%u", info[i].cluster));
+    إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "=%u", info[i].cluster));
     }
 
-    if (pos && !(flags & HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS))
+    إذا (pos && !(flags & HB_میانگیر_SERIALIZE_FLAG_NO_POSITIONS))
     {
-      hb_position_t dx = hb_saturate_add (x, pos[i].x_offset);
-      hb_position_t dy = hb_saturate_add (y, pos[i].y_offset);
-      if (dx || dy)
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "@%d,%d", dx, dy));
+      hb_position_t dx = hb_saturate_جمع_کن (x, pos[i].x_جابه_جایی_2);
+      hb_position_t dy = hb_saturate_جمع_کن (y, pos[i].y_جابه_جایی_2);
+      إذا (dx || dy)
+        p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "@%d,%d", dx, dy));
 
-      if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+      إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES))
       {
         *p++ = '+';
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "%d", pos[i].x_advance));
-        if (pos[i].y_advance)
-          p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), ",%d", pos[i].y_advance));
+        p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "%d", pos[i].x_advance));
+        إذا (pos[i].y_advance)
+          p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), ",%d", pos[i].y_advance));
       }
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS)
+    إذا (flags & HB_میانگیر_SERIALIZE_FLAG_GLYPH_FLAGS)
     {
-      if (info[i].mask & HB_GLYPH_FLAG_DEFINED)
-        p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "#%X", info[i].mask &HB_GLYPH_FLAG_DEFINED));
+      إذا (info[i].ماسک & HB_GLYPH_FLAG_DEFINED)
+        p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "#%X", info[i].ماسک &HB_GLYPH_FLAG_DEFINED));
     }
 
-    if (flags & HB_BUFFER_SERIALIZE_FLAG_GLYPH_EXTENTS)
+    إذا (flags & HB_میانگیر_SERIALIZE_FLAG_GLYPH_EXTENTS)
     {
       hb_glyph_extents_t extents;
-      if (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
-	p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "<%d,%d,%d,%d>", extents.x_bearing, extents.y_bearing, extents.width, extents.height));
+      إذا (hb_font_get_glyph_extents(font, info[i].codepoint, &extents))
+	p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "<%d,%d,%d,%d>", extents.x_bearing, extents.y_bearing, extents.عرض, extents.ارتفاع));
     }
 
-    if (i == end-1) {
+    إذا (i == انتها-1) {
       *p++ = ']';
     }
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    بیعلامت صحيح l = p - b;
+    إذا (buf_اندازه > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_اندازه -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } وإلا
+      أرجع i - شروع;
 
-    if (pos && (flags & HB_BUFFER_SERIALIZE_FLAG_NO_ADVANCES))
+    إذا (pos && (flags & HB_میانگیر_SERIALIZE_FLAG_NO_ADVANCES))
     {
-      x = hb_saturate_add (x, pos[i].x_advance);
-      y = hb_saturate_add (y, pos[i].y_advance);
+      x = hb_saturate_جمع_کن (x, pos[i].x_advance);
+      y = hb_saturate_جمع_کن (y, pos[i].y_advance);
     }
   }
 
-  return end - start;
+  أرجع انتها - شروع;
 }
 
 
-static unsigned int
-_hb_buffer_serialize_unicode_text (hb_buffer_t *buffer,
-                                   unsigned int start,
-                                   unsigned int end,
-                                   char *buf,
-                                   unsigned int buf_size,
-                                   unsigned int *buf_consumed,
-                                   hb_buffer_serialize_flags_t flags)
+ساكن بیعلامت صحيح
+hb_میانگیر_serialize_unicode_متن (hb_میانگیر_t *میانگیر,
+                                   بیعلامت صحيح شروع,
+                                   بیعلامت صحيح انتها,
+                                   حرف *buf,
+                                   بیعلامت صحيح buf_اندازه,
+                                   بیعلامت صحيح *buf_consumed,
+                                   hb_میانگیر_serialize_flags_t flags)
 {
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, nullptr);
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, اشاره_تهی);
   *buf_consumed = 0;
-  for (unsigned int i = start; i < end; i++)
+  لكل (بیعلامت صحيح i = شروع; i < انتها; i++)
   {
-    char b[1024];
-    char *p = b;
+    حرف b[1024];
+    حرف *p = b;
 
-    if (i)
+    إذا (i)
       *p++ = '|';
-    else
+    وإلا
       *p++ = '<';
 
-    p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "U+%04X", info[i].codepoint));
+    p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "U+%04X", info[i].codepoint));
 
-    if (!(flags & HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS)) {
-      p += hb_max (0, snprintf (p, ARRAY_LENGTH (b) - (p - b), "=%u", info[i].cluster));
+    إذا (!(flags & HB_میانگیر_SERIALIZE_FLAG_NO_CLUSTERS)) {
+      p += hb_max (0, snprintf (p, ARRAY_درازی (b) - (p - b), "=%u", info[i].cluster));
     }
 
-    if (i == end-1)
+    إذا (i == انتها-1)
       *p++ = '>';
 
-    unsigned int l = p - b;
-    if (buf_size > l)
+    بیعلامت صحيح l = p - b;
+    إذا (buf_اندازه > l)
     {
       hb_memcpy (buf, b, l);
       buf += l;
-      buf_size -= l;
+      buf_اندازه -= l;
       *buf_consumed += l;
       *buf = '\0';
-    } else
-      return i - start;
+    } وإلا
+      أرجع i - شروع;
   }
-  return end - start;
+  أرجع انتها - شروع;
 }
 
 /**
@@ -483,53 +483,53 @@ _hb_buffer_serialize_unicode_text (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-                            unsigned int start,
-                            unsigned int end,
-                            char *buf,
-                            unsigned int buf_size,
-                            unsigned int *buf_consumed,
+بیعلامت صحيح
+hb_میانگیر_serialize_glyphs (hb_میانگیر_t *میانگیر,
+                            بیعلامت صحيح شروع,
+                            بیعلامت صحيح انتها,
+                            حرف *buf,
+                            بیعلامت صحيح buf_اندازه,
+                            بیعلامت صحيح *buf_consumed,
                             hb_font_t *font,
-                            hb_buffer_serialize_format_t format,
-                            hb_buffer_serialize_flags_t flags)
+                            hb_میانگیر_serialize_format_t format,
+                            hb_میانگیر_serialize_flags_t flags)
 {
-  end = hb_clamp (end, start, buffer->len);
-  start = hb_min (start, end);
+  انتها = hb_clamp (انتها, شروع, میانگیر->len);
+  شروع = hb_min (شروع, انتها);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  بیعلامت صحيح sconsumed;
+  إذا (!buf_consumed)
     buf_consumed = &sconsumed;
   *buf_consumed = 0;
-  if (buf_size)
+  إذا (buf_اندازه)
     *buf = '\0';
 
-  buffer->assert_glyphs ();
+  میانگیر->assert_glyphs ();
 
-  if (!buffer->have_positions)
-    flags |= HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS;
+  إذا (!میانگیر->have_positions)
+    flags |= HB_میانگیر_SERIALIZE_FLAG_NO_POSITIONS;
 
-  if (unlikely (start == end))
-    return 0;
+  إذا (unlikely (شروع == انتها))
+    أرجع 0;
 
-  if (!font)
-    font = hb_font_get_empty ();
+  إذا (!font)
+    font = hb_font_get_خالی ();
 
-  switch (format)
+  بدل (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      return _hb_buffer_serialize_glyphs_text (buffer, start, end,
-                 buf, buf_size, buf_consumed,
+    حالة HB_میانگیر_SERIALIZE_FORMAT_متن:
+      أرجع hb_میانگیر_serialize_glyphs_متن (میانگیر, شروع, انتها,
+                 buf, buf_اندازه, buf_consumed,
                  font, flags);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      return _hb_buffer_serialize_glyphs_json (buffer, start, end,
-                 buf, buf_size, buf_consumed,
+    حالة HB_میانگیر_SERIALIZE_FORMAT_JSON:
+      أرجع hb_میانگیر_serialize_glyphs_json (میانگیر, شروع, انتها,
+                 buf, buf_اندازه, buf_consumed,
                  font, flags);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return 0;
+    افتراضي:
+    حالة HB_میانگیر_SERIALIZE_FORMAT_INVALID:
+      أرجع 0;
 
   }
 }
@@ -585,76 +585,76 @@ hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
  *
  * Since: 2.7.3
  **/
-unsigned int
-hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-                             unsigned int start,
-                             unsigned int end,
-                             char *buf,
-                             unsigned int buf_size,
-                             unsigned int *buf_consumed,
-                             hb_buffer_serialize_format_t format,
-                             hb_buffer_serialize_flags_t flags)
+بیعلامت صحيح
+hb_میانگیر_serialize_unicode (hb_میانگیر_t *میانگیر,
+                             بیعلامت صحيح شروع,
+                             بیعلامت صحيح انتها,
+                             حرف *buf,
+                             بیعلامت صحيح buf_اندازه,
+                             بیعلامت صحيح *buf_consumed,
+                             hb_میانگیر_serialize_format_t format,
+                             hb_میانگیر_serialize_flags_t flags)
 {
-  end = hb_clamp (end, start, buffer->len);
-  start = hb_min (start, end);
+  انتها = hb_clamp (انتها, شروع, میانگیر->len);
+  شروع = hb_min (شروع, انتها);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  بیعلامت صحيح sconsumed;
+  إذا (!buf_consumed)
     buf_consumed = &sconsumed;
   *buf_consumed = 0;
-  if (buf_size)
+  إذا (buf_اندازه)
     *buf = '\0';
 
-  buffer->assert_unicode ();
+  میانگیر->assert_unicode ();
 
-  if (unlikely (start == end))
-    return 0;
+  إذا (unlikely (شروع == انتها))
+    أرجع 0;
 
-  switch (format)
+  بدل (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      return _hb_buffer_serialize_unicode_text (buffer, start, end,
-                                                buf, buf_size, buf_consumed, flags);
+    حالة HB_میانگیر_SERIALIZE_FORMAT_متن:
+      أرجع hb_میانگیر_serialize_unicode_متن (میانگیر, شروع, انتها,
+                                                buf, buf_اندازه, buf_consumed, flags);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      return _hb_buffer_serialize_unicode_json (buffer, start, end,
-                                                buf, buf_size, buf_consumed, flags);
+    حالة HB_میانگیر_SERIALIZE_FORMAT_JSON:
+      أرجع hb_میانگیر_serialize_unicode_json (میانگیر, شروع, انتها,
+                                                buf, buf_اندازه, buf_consumed, flags);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return 0;
+    افتراضي:
+    حالة HB_میانگیر_SERIALIZE_FORMAT_INVALID:
+      أرجع 0;
 
   }
 }
 
-static unsigned int
-_hb_buffer_serialize_invalid (hb_buffer_t *buffer,
-                              unsigned int start,
-                              unsigned int end,
-                              char *buf,
-                              unsigned int buf_size,
-                              unsigned int *buf_consumed,
-                              hb_buffer_serialize_format_t format,
-                              hb_buffer_serialize_flags_t flags)
+ساكن بیعلامت صحيح
+hb_میانگیر_serialize_invalid (hb_میانگیر_t *میانگیر,
+                              بیعلامت صحيح شروع,
+                              بیعلامت صحيح انتها,
+                              حرف *buf,
+                              بیعلامت صحيح buf_اندازه,
+                              بیعلامت صحيح *buf_consumed,
+                              hb_میانگیر_serialize_format_t format,
+                              hb_میانگیر_serialize_flags_t flags)
 {
-  assert (!buffer->len);
+  أكد (!میانگیر->len);
 
-  unsigned int sconsumed;
-  if (!buf_consumed)
+  بیعلامت صحيح sconsumed;
+  إذا (!buf_consumed)
     buf_consumed = &sconsumed;
-  if (buf_size < 3)
-    return 0;
-  if (format == HB_BUFFER_SERIALIZE_FORMAT_JSON) {
+  إذا (buf_اندازه < 3)
+    أرجع 0;
+  إذا (format == HB_میانگیر_SERIALIZE_FORMAT_JSON) {
     *buf++ = '[';
     *buf++ = ']';
     *buf = '\0';
-  } else if (format == HB_BUFFER_SERIALIZE_FORMAT_TEXT) {
+  } وإلا إذا (format == HB_میانگیر_SERIALIZE_FORMAT_متن) {
     *buf++ = '!';
     *buf++ = '!';
     *buf = '\0';
   }
   *buf_consumed = 2;
-  return 0;
+  أرجع 0;
 }
 
 /**
@@ -683,74 +683,74 @@ _hb_buffer_serialize_invalid (hb_buffer_t *buffer,
  *
  * Since: 2.7.3
  **/
-unsigned int
-hb_buffer_serialize (hb_buffer_t *buffer,
-                     unsigned int start,
-                     unsigned int end,
-                     char *buf,
-                     unsigned int buf_size,
-                     unsigned int *buf_consumed,
+بیعلامت صحيح
+hb_میانگیر_serialize (hb_میانگیر_t *میانگیر,
+                     بیعلامت صحيح شروع,
+                     بیعلامت صحيح انتها,
+                     حرف *buf,
+                     بیعلامت صحيح buf_اندازه,
+                     بیعلامت صحيح *buf_consumed,
                      hb_font_t *font,
-                     hb_buffer_serialize_format_t format,
-                     hb_buffer_serialize_flags_t flags)
+                     hb_میانگیر_serialize_format_t format,
+                     hb_میانگیر_serialize_flags_t flags)
 {
-  switch (buffer->content_type)
+  بدل (میانگیر->content_type)
   {
 
-    case HB_BUFFER_CONTENT_TYPE_GLYPHS:
-      return hb_buffer_serialize_glyphs (buffer, start, end, buf, buf_size,
+    حالة HB_میانگیر_CONTENT_TYPE_GLYPHS:
+      أرجع hb_میانگیر_serialize_glyphs (میانگیر, شروع, انتها, buf, buf_اندازه,
 					 buf_consumed, font, format, flags);
 
-    case HB_BUFFER_CONTENT_TYPE_UNICODE:
-      return hb_buffer_serialize_unicode (buffer, start, end, buf, buf_size,
+    حالة HB_میانگیر_CONTENT_TYPE_UNICODE:
+      أرجع hb_میانگیر_serialize_unicode (میانگیر, شروع, انتها, buf, buf_اندازه,
 					  buf_consumed, format, flags);
 
-    case HB_BUFFER_CONTENT_TYPE_INVALID:
-    default:
-      return _hb_buffer_serialize_invalid (buffer, start, end, buf, buf_size,
+    حالة HB_میانگیر_CONTENT_TYPE_INVALID:
+    افتراضي:
+      أرجع hb_میانگیر_serialize_invalid (میانگیر, شروع, انتها, buf, buf_اندازه,
 					   buf_consumed, format, flags);
   }
 }
 
-static bool
-parse_int (const char *pp, const char *end, int32_t *pv)
+ساكن منطقي
+parse_int (ثابت حرف *pp, ثابت حرف *انتها, int32_t *pv)
 {
-  int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_int (&p, end, &v, true/* whole buffer */)))
-    return false;
+  صحيح v;
+  ثابت حرف *p = pp;
+  إذا (unlikely (!hb_parse_int (&p, انتها, &v, درست/* whole buffer */)))
+    أرجع خطأ;
 
   *pv = v;
-  return true;
+  أرجع درست;
 }
 
-static bool
-parse_uint (const char *pp, const char *end, uint32_t *pv)
+ساكن منطقي
+parse_uint (ثابت حرف *pp, ثابت حرف *انتها, uint32_t *pv)
 {
-  unsigned int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */)))
-    return false;
+  بیعلامت صحيح v;
+  ثابت حرف *p = pp;
+  إذا (unlikely (!hb_parse_uint (&p, انتها, &v, درست/* whole buffer */)))
+    أرجع خطأ;
 
   *pv = v;
-  return true;
+  أرجع درست;
 }
 
-static bool
-parse_hex (const char *pp, const char *end, uint32_t *pv)
+ساكن منطقي
+parse_hex (ثابت حرف *pp, ثابت حرف *انتها, uint32_t *pv)
 {
-  unsigned int v;
-  const char *p = pp;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, 16)))
-    return false;
+  بیعلامت صحيح v;
+  ثابت حرف *p = pp;
+  إذا (unlikely (!hb_parse_uint (&p, انتها, &v, درست/* whole buffer */, 16)))
+    أرجع خطأ;
 
   *pv = v;
-  return true;
+  أرجع درست;
 }
 
-#include "hb-buffer-deserialize-json.hh"
-#include "hb-buffer-deserialize-text-glyphs.hh"
-#include "hb-buffer-deserialize-text-unicode.hh"
+#ضمن "hb-buffer-deserialize-json.hh"
+#ضمن "hb-buffer-deserialize-text-glyphs.hh"
+#ضمن "hb-buffer-deserialize-text-unicode.hh"
 
 /**
  * hb_buffer_deserialize_glyphs:
@@ -770,56 +770,56 @@ parse_hex (const char *pp, const char *end, uint32_t *pv)
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-                              const char *buf,
-                              int buf_len, /* -1 means nul-terminated */
-                              const char **end_ptr, /* May be NULL */
+hb_میانگیر_deserialize_glyphs (hb_میانگیر_t *میانگیر,
+                              ثابت حرف *buf,
+                              صحيح buf_len, /* -1 means nul-terminated */
+                              ثابت حرف **end_ptr, /* May be NULL */
                               hb_font_t *font, /* May be NULL */
-                              hb_buffer_serialize_format_t format)
+                              hb_میانگیر_serialize_format_t format)
 {
-  const char *end;
-  if (!end_ptr)
-    end_ptr = &end;
+  ثابت حرف *انتها;
+  إذا (!end_ptr)
+    end_ptr = &انتها;
   *end_ptr = buf;
 
-  buffer->assert_glyphs ();
+  میانگیر->assert_glyphs ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
+  إذا (unlikely (hb_object_is_immutable (میانگیر)))
   {
-    if (end_ptr)
+    إذا (end_ptr)
       *end_ptr = buf;
-    return false;
+    أرجع خطأ;
   }
 
-  if (buf_len == -1)
-    buf_len = strlen (buf);
+  إذا (buf_len == -1)
+    buf_len = طول_رشته (buf);
 
-  if (!buf_len)
+  إذا (!buf_len)
   {
     *end_ptr = buf;
-    return false;
+    أرجع خطأ;
   }
 
-  if (!font)
-    font = hb_font_get_empty ();
+  إذا (!font)
+    font = hb_font_get_خالی ();
 
-  switch (format)
+  بدل (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-      return _hb_buffer_deserialize_text_glyphs (buffer,
+    حالة HB_میانگیر_SERIALIZE_FORMAT_متن:
+      hb_میانگیر_مجموعه_content_type (میانگیر, HB_میانگیر_CONTENT_TYPE_GLYPHS);
+      أرجع hb_میانگیر_deserialize_متن_glyphs (میانگیر,
 						 buf, buf_len, end_ptr,
 						 font);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_GLYPHS);
-      return _hb_buffer_deserialize_json (buffer,
+    حالة HB_میانگیر_SERIALIZE_FORMAT_JSON:
+      hb_میانگیر_مجموعه_content_type (میانگیر, HB_میانگیر_CONTENT_TYPE_GLYPHS);
+      أرجع hb_میانگیر_deserialize_json (میانگیر,
                                           buf, buf_len, end_ptr,
                                           font);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return false;
+    افتراضي:
+    حالة HB_میانگیر_SERIALIZE_FORMAT_INVALID:
+      أرجع خطأ;
 
   }
 }
@@ -842,57 +842,57 @@ hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
  * Since: 2.7.3
  **/
 hb_bool_t
-hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-                               const char *buf,
-                               int buf_len, /* -1 means nul-terminated */
-                               const char **end_ptr, /* May be NULL */
-                               hb_buffer_serialize_format_t format)
+hb_میانگیر_deserialize_unicode (hb_میانگیر_t *میانگیر,
+                               ثابت حرف *buf,
+                               صحيح buf_len, /* -1 means nul-terminated */
+                               ثابت حرف **end_ptr, /* May be NULL */
+                               hb_میانگیر_serialize_format_t format)
 {
-  const char *end;
-  if (!end_ptr)
-    end_ptr = &end;
+  ثابت حرف *انتها;
+  إذا (!end_ptr)
+    end_ptr = &انتها;
   *end_ptr = buf;
 
-  buffer->assert_unicode ();
+  میانگیر->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
+  إذا (unlikely (hb_object_is_immutable (میانگیر)))
   {
-    if (end_ptr)
+    إذا (end_ptr)
       *end_ptr = buf;
-    return false;
+    أرجع خطأ;
   }
 
-  if (buf_len == -1)
-    buf_len = strlen (buf);
+  إذا (buf_len == -1)
+    buf_len = طول_رشته (buf);
 
-  if (!buf_len)
+  إذا (!buf_len)
   {
     *end_ptr = buf;
-    return false;
+    أرجع خطأ;
   }
 
-  hb_font_t* font = hb_font_get_empty ();
+  hb_font_t* font = hb_font_get_خالی ();
 
-  switch (format)
+  بدل (format)
   {
-    case HB_BUFFER_SERIALIZE_FORMAT_TEXT:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
-      return _hb_buffer_deserialize_text_unicode (buffer,
+    حالة HB_میانگیر_SERIALIZE_FORMAT_متن:
+      hb_میانگیر_مجموعه_content_type (میانگیر, HB_میانگیر_CONTENT_TYPE_UNICODE);
+      أرجع hb_میانگیر_deserialize_متن_unicode (میانگیر,
 						  buf, buf_len, end_ptr,
 						  font);
 
-    case HB_BUFFER_SERIALIZE_FORMAT_JSON:
-      hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
-      return _hb_buffer_deserialize_json (buffer,
+    حالة HB_میانگیر_SERIALIZE_FORMAT_JSON:
+      hb_میانگیر_مجموعه_content_type (میانگیر, HB_میانگیر_CONTENT_TYPE_UNICODE);
+      أرجع hb_میانگیر_deserialize_json (میانگیر,
                                           buf, buf_len, end_ptr,
                                           font);
 
-    default:
-    case HB_BUFFER_SERIALIZE_FORMAT_INVALID:
-      return false;
+    افتراضي:
+    حالة HB_میانگیر_SERIALIZE_FORMAT_INVALID:
+      أرجع خطأ;
 
   }
 }
 
 
-#endif
+#پایان_اگر

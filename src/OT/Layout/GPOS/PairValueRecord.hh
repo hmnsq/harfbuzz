@@ -1,93 +1,93 @@
-#ifndef OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
-#define OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
+#اگر_تعریف_نشده OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
+#تعریف_کن OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 
-#include "ValueFormat.hh"
+#ضمن "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
-struct pair_value_record_context_t
+بنية pair_مقدار_رکورد_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
-  unsigned            len1; /* valueFormats[0].get_len() */
-  const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  ثابت مقدار_پایه     *پایه;
+  ثابت مقدار_Format   *مقدار_Formats;
+  ثابت مقدار_Format   *newFormats;
+  بیعلامت            len1; /* valueFormats[0].get_len() */
+  ثابت hb_map_t      *glyph_map;
+  ثابت hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  فراغ copy_مقادیر (hb_serialize_context_t *s, ثابت مقدار *values) ثابت
   {
-    valueFormats[0].copy_values (s, newFormats[0], base, values,
+    مقدار_Formats[0].copy_مقادیر (s, newFormats[0], پایه, values,
                                 layout_variation_idx_delta_map);
-    valueFormats[1].copy_values (s, newFormats[1], base, values + len1,
+    مقدار_Formats[1].copy_مقادیر (s, newFormats[1], پایه, values + len1,
                                 layout_variation_idx_delta_map);
   }
 };
 
-template <typename Types>
-struct PairValueRecord
+قالب <نام_نوع Types>
+بنية Pair_مقدار_رکورد
 {
-  template <typename Types2>
-  friend struct PairSet;
+  قالب <نام_نوع Types2>
+  دوست بنية Pair_مجموعه;
 
-  protected:
-  typename Types::HBGlyphID
-	        secondGlyph;            /* GlyphID of second glyph in the
+  محمي:
+  نام_نوع Types::HBGlyphID
+	        دومی_Glyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
-  ValueRecord   values;                 /* Positioning data for the first glyph
+  مقدار_رکورد   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
-  public:
-  DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
+  عام:
+  DEFINE_اندازه_ARRAY (Types::HBGlyphID::static_اندازه, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  صحيح cmp (hb_codepoint_t k) ثابت
+  { أرجع دومی_Glyph.cmp (k); }
 
-  bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+  منطقي subset (hb_subset_context_t *c,
+               pair_مقدار_رکورد_context_t *بستگی) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *s = c->serializer;
-    auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    TRACE_SERIALIZE (هذا);
+    خودکار *s = c->serializer;
+    خودکار *بیرون = s->شروع_embed (*هذا);
+    إذا (unlikely (!s->extend_min (بیرون))) return_trace (خطأ);
 
-    out->secondGlyph = (*closure->glyph_map)[secondGlyph];
+    بیرون->دومی_Glyph = (*بستگی->glyph_map)[دومی_Glyph];
 
-    closure->copy_values (s, values);
+    بستگی->copy_مقادیر (s, values);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت مقدار_Format *مقدار_Formats,
+                                  ثابت مقدار_پایه *پایه) ثابت
   {
-    unsigned record1_len = valueFormats[0].get_len ();
-    unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    بیعلامت record1_len = مقدار_Formats[0].get_len ();
+    بیعلامت record2_len = مقدار_Formats[1].get_len ();
+    ثابت hb_array_t<ثابت مقدار> مقادیر_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
-      valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
+    إذا (مقدار_Formats[0].has_device ())
+      مقدار_Formats[0].collect_variation_indices (c, پایه, مقادیر_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
-      valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
+    إذا (مقدار_Formats[1].has_device ())
+      مقدار_Formats[1].collect_variation_indices (c, پایه, مقادیر_array.sub_array (record1_len, record2_len));
   }
 
-  bool intersects (const hb_set_t& glyphset) const
+  منطقي intersects (ثابت hb_مجموعه_t& glyphset) ثابت
   {
-    return glyphset.has(secondGlyph);
+    أرجع glyphset.has(دومی_Glyph);
   }
 
-  const Value* get_values_1 () const
+  ثابت مقدار* get_مقادیر_1 () ثابت
   {
-    return &values[0];
+    أرجع &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  ثابت مقدار* get_مقادیر_2 (مقدار_Format format1) ثابت
   {
-    return &values[format1.get_len ()];
+    أرجع &values[format1.get_len ()];
   }
 };
 
@@ -96,4 +96,4 @@ struct PairValueRecord
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
+#پایان_اگر  // OT_LAYOUT_GPOS_PAIRVALUERECORD_HH

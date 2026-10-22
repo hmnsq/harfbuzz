@@ -22,75 +22,75 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_MULTIMAP_HH
-#define HB_MULTIMAP_HH
+#اگر_تعریف_نشده HB_MULTIMAP_HH
+#تعریف_کن HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+بنية hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  فراغ جمع_کن (hb_codepoint_t k, hb_codepoint_t v)
   {
-    hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    hb_وکتور_t<hb_codepoint_t> *m;
+    إذا (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      أرجع;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    إذا (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
-      multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      multiples.مجموعه (k, hb_وکتور_t<hb_codepoint_t> {old, v});
+      أرجع;
     }
 
-    singulars.set (k, v);
+    singulars.مجموعه (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<ثابت hb_codepoint_t> get (hb_codepoint_t k) ثابت
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ثابت hb_codepoint_t *v;
+    إذا (singulars.has (k, &v))
+      أرجع hb_array (v, 1);
 
-    hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    hb_وکتور_t<hb_codepoint_t> *m;
+    إذا (multiples.has (k, &m))
+      أرجع m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    أرجع hb_array_t<ثابت hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  منطقي درون_error () ثابت
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    إذا (singulars.درون_error () || multiples.درون_error ())
+      أرجع درست;
+    لكل (ثابت خودکار &m : multiples.مقادیر_ref ())
+      إذا (m.درون_error ())
+        أرجع درست;
+    أرجع خطأ;
   }
 
-  void alloc (unsigned size)
+  فراغ alloc (بیعلامت اندازه)
   {
-    singulars.alloc (size);
+    singulars.alloc (اندازه);
   }
 
-  protected:
+  محمي:
   hb_map_t singulars;
-  hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
+  hb_hashmap_t<hb_codepoint_t, hb_وکتور_t<hb_codepoint_t>> multiples;
 };
 
 
 
-#endif /* HB_MULTIMAP_HH */
+#پایان_اگر /* HB_MULTIMAP_HH */

@@ -24,93 +24,93 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DEBUG_HH
-#define HB_DEBUG_HH
+#اگر_تعریف_نشده HB_DEBUG_HH
+#تعریف_کن HB_DEBUG_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-algs.hh"
+#ضمن "hb.hh"
+#ضمن "hb-atomic.hh"
+#ضمن "hb-algs.hh"
 
 
-#ifndef HB_DEBUG
-#define HB_DEBUG 0
-#endif
+#اگر_تعریف_نشده HB_DEBUG
+#تعریف_کن HB_DEBUG 0
+#پایان_اگر
 
 
 /*
  * Debug output (needs enabling at compile time.)
  */
 
-static inline bool
-_hb_debug (unsigned int level,
-	   unsigned int max_level)
+ساكن مضمن منطقي
+_hb_debug (بیعلامت صحيح level,
+	   بیعلامت صحيح max_level)
 {
-  return level < max_level;
+  أرجع level < max_level;
 }
 
-#define DEBUG_LEVEL_ENABLED(WHAT, LEVEL) (_hb_debug ((LEVEL), HB_DEBUG_##WHAT))
-#define DEBUG_ENABLED(WHAT) (DEBUG_LEVEL_ENABLED (WHAT, 0))
+#تعریف_کن DEBUG_LEVEL_ENABLED(WHAT, LEVEL) (_hb_debug ((LEVEL), HB_DEBUG_##WHAT))
+#تعریف_کن DEBUG_ENABLED(WHAT) (DEBUG_LEVEL_ENABLED (WHAT, 0))
 
-static inline void
-_hb_print_func (const char *func)
+ساكن مضمن فراغ
+_hb_print_func (ثابت حرف *func)
 {
-  if (func)
+  إذا (func)
   {
-    unsigned int func_len = strlen (func);
+    بیعلامت صحيح func_len = طول_رشته (func);
     /* Skip "static" */
-    if (0 == strncmp (func, "static ", 7))
+    إذا (0 == مقایسه_رشته (func, "static ", 7))
       func += 7;
     /* Skip "typename" */
-    if (0 == strncmp (func, "typename ", 9))
+    إذا (0 == مقایسه_رشته (func, "typename ", 9))
       func += 9;
     /* Skip return type */
-    const char *space = strchr (func, ' ');
-    if (space)
+    ثابت حرف *space = strchr (func, ' ');
+    إذا (space)
       func = space + 1;
     /* Skip parameter list */
-    const char *paren = strchr (func, '(');
-    if (paren)
+    ثابت حرف *paren = strchr (func, '(');
+    إذا (paren)
       func_len = paren - func;
-    fprintf (stderr, "%.*s", (int) func_len, func);
+    fprintf (stderr, "%.*s", (صحيح) func_len, func);
   }
 }
 
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
-		  const void *obj,
-		  const char *func,
-		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+قالب <صحيح max_level> ساكن مضمن فراغ
+hb_debug_پیام_va (ثابت حرف *what,
+		  ثابت فراغ *obj,
+		  ثابت حرف *func,
+		  منطقي indented,
+		  بیعلامت صحيح level,
+		  صحيح level_dir,
+		  ثابت حرف *پیام,
 		  va_list ap) HB_PRINTF_FUNC(7, 0);
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
-		  const void *obj,
-		  const char *func,
-		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+قالب <صحيح max_level> ساكن مضمن فراغ
+hb_debug_پیام_va (ثابت حرف *what,
+		  ثابت فراغ *obj,
+		  ثابت حرف *func,
+		  منطقي indented,
+		  بیعلامت صحيح level,
+		  صحيح level_dir,
+		  ثابت حرف *پیام,
 		  va_list ap)
 {
-  if (!_hb_debug (level, max_level))
-    return;
+  إذا (!_hb_debug (level, max_level))
+    أرجع;
 
   fprintf (stderr, "%-10s", what ? what : "");
 
-  if (obj)
-    fprintf (stderr, "(%*p) ", (int) (2 * sizeof (void *)), obj);
-  else
-    fprintf (stderr, " %*s  ", (int) (2 * sizeof (void *)), "");
+  إذا (obj)
+    fprintf (stderr, "(%*p) ", (صحيح) (2 * حجم (فراغ *)), obj);
+  وإلا
+    fprintf (stderr, " %*s  ", (صحيح) (2 * حجم (فراغ *)), "");
 
-  if (indented) {
-#define VBAR	"\342\224\202"	/* U+2502 BOX DRAWINGS LIGHT VERTICAL */
-#define VRBAR	"\342\224\234"	/* U+251C BOX DRAWINGS LIGHT VERTICAL AND RIGHT */
-#define DLBAR	"\342\225\256"	/* U+256E BOX DRAWINGS LIGHT ARC DOWN AND LEFT */
-#define ULBAR	"\342\225\257"	/* U+256F BOX DRAWINGS LIGHT ARC UP AND LEFT */
-#define LBAR	"\342\225\264"	/* U+2574 BOX DRAWINGS LIGHT LEFT */
-    static const char bars[] =
+  إذا (indented) {
+#تعریف_کن VBAR	"\342\224\202"	/* U+2502 BOX DRAWINGS LIGHT VERTICAL */
+#تعریف_کن VRBAR	"\342\224\234"	/* U+251C BOX DRAWINGS LIGHT VERTICAL AND RIGHT */
+#تعریف_کن DLBAR	"\342\225\256"	/* U+256E BOX DRAWINGS LIGHT ARC DOWN AND LEFT */
+#تعریف_کن ULBAR	"\342\225\257"	/* U+256F BOX DRAWINGS LIGHT ARC UP AND LEFT */
+#تعریف_کن LBAR	"\342\225\264"	/* U+2574 BOX DRAWINGS LIGHT LEFT */
+    ساكن ثابت حرف bars[] =
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
@@ -118,96 +118,96 @@ _hb_debug_msg_va (const char *what,
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR;
     fprintf (stderr, "%2u %s" VRBAR "%s",
 	     level,
-	     bars + sizeof (bars) - 1 - hb_min ((unsigned int) sizeof (bars) - 1, (unsigned int) (sizeof (VBAR) - 1) * level),
+	     bars + حجم (bars) - 1 - hb_min ((بیعلامت صحيح) حجم (bars) - 1, (بیعلامت صحيح) (حجم (VBAR) - 1) * level),
 	     level_dir ? (level_dir > 0 ? DLBAR : ULBAR) : LBAR);
-  } else
+  } وإلا
     fprintf (stderr, "   " VRBAR LBAR);
 
   _hb_print_func (func);
 
-  if (message)
+  إذا (پیام)
   {
     fprintf (stderr, ": ");
-    vfprintf (stderr, message, ap);
+    vfprintf (stderr, پیام, ap);
   }
 
   fprintf (stderr, "\n");
 }
-template <> inline void HB_PRINTF_FUNC(7, 0)
-_hb_debug_msg_va<0> (const char *what HB_UNUSED,
-		     const void *obj HB_UNUSED,
-		     const char *func HB_UNUSED,
-		     bool indented HB_UNUSED,
-		     unsigned int level HB_UNUSED,
-		     int level_dir HB_UNUSED,
-		     const char *message HB_UNUSED,
-		     va_list ap HB_UNUSED) {}
+قالب <> مضمن فراغ HB_PRINTF_FUNC(7, 0)
+hb_debug_پیام_va<0> (ثابت حرف *what HB_استفادهنشده,
+		     ثابت فراغ *obj HB_استفادهنشده,
+		     ثابت حرف *func HB_استفادهنشده,
+		     منطقي indented HB_استفادهنشده,
+		     بیعلامت صحيح level HB_استفادهنشده,
+		     صحيح level_dir HB_استفادهنشده,
+		     ثابت حرف *پیام HB_استفادهنشده,
+		     va_list ap HB_استفادهنشده) {}
 
-template <int max_level> static inline void
-_hb_debug_msg (const char *what,
-	       const void *obj,
-	       const char *func,
-	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+قالب <صحيح max_level> ساكن مضمن فراغ
+hb_debug_پیام (ثابت حرف *what,
+	       ثابت فراغ *obj,
+	       ثابت حرف *func,
+	       منطقي indented,
+	       بیعلامت صحيح level,
+	       صحيح level_dir,
+	       ثابت حرف *پیام,
 	       ...) HB_PRINTF_FUNC(7, 8);
-template <int max_level> static inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg (const char *what,
-	       const void *obj,
-	       const char *func,
-	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+قالب <صحيح max_level> ساكن مضمن فراغ HB_PRINTF_FUNC(7, 8)
+hb_debug_پیام (ثابت حرف *what,
+	       ثابت فراغ *obj,
+	       ثابت حرف *func,
+	       منطقي indented,
+	       بیعلامت صحيح level,
+	       صحيح level_dir,
+	       ثابت حرف *پیام,
 	       ...)
 {
   va_list ap;
-  va_start (ap, message);
-  _hb_debug_msg_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
-  va_end (ap);
+  va_شروع (ap, پیام);
+  hb_debug_پیام_va<max_level> (what, obj, func, indented, level, level_dir, پیام, ap);
+  va_انتها (ap);
 }
-template <> inline void
-_hb_debug_msg<0> (const char *what HB_UNUSED,
-		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
-		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+قالب <> مضمن فراغ
+hb_debug_پیام<0> (ثابت حرف *what HB_استفادهنشده,
+		  ثابت فراغ *obj HB_استفادهنشده,
+		  ثابت حرف *func HB_استفادهنشده,
+		  منطقي indented HB_استفادهنشده,
+		  بیعلامت صحيح level HB_استفادهنشده,
+		  صحيح level_dir HB_استفادهنشده,
+		  ثابت حرف *پیام HB_استفادهنشده,
 		  ...) HB_PRINTF_FUNC(7, 8);
-template <> inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg<0> (const char *what HB_UNUSED,
-		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
-		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+قالب <> مضمن فراغ HB_PRINTF_FUNC(7, 8)
+hb_debug_پیام<0> (ثابت حرف *what HB_استفادهنشده,
+		  ثابت فراغ *obj HB_استفادهنشده,
+		  ثابت حرف *func HB_استفادهنشده,
+		  منطقي indented HB_استفادهنشده,
+		  بیعلامت صحيح level HB_استفادهنشده,
+		  صحيح level_dir HB_استفادهنشده,
+		  ثابت حرف *پیام HB_استفادهنشده,
 		  ...) {}
 
-#define DEBUG_MSG_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    true, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
-#define DEBUG_MSG(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    false, 0, 0, __VA_ARGS__)
-#define DEBUG_MSG_FUNC(WHAT, OBJ, ...)				_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, false, 0, 0, __VA_ARGS__)
+#تعریف_کن DEBUG_پیام_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	hb_debug_پیام<HB_DEBUG_##WHAT> (#WHAT, (OBJ), اشاره_تهی,    درست, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
+#تعریف_کن DEBUG_پیام(WHAT, OBJ, ...)				hb_debug_پیام<HB_DEBUG_##WHAT> (#WHAT, (OBJ), اشاره_تهی,    خطأ, 0, 0, __VA_ARGS__)
+#تعریف_کن DEBUG_پیام_FUNC(WHAT, OBJ, ...)				hb_debug_پیام<HB_DEBUG_##WHAT> (#WHAT, (OBJ), HB_FUNC, خطأ, 0, 0, __VA_ARGS__)
 
 
 /*
  * Printer
  */
 
-template <typename T>
-struct hb_printer_t {
-  const char *print (const T&) { return "something"; }
+قالب <نام_نوع T>
+بنية hb_printer_t {
+  ثابت حرف *print (ثابت T&) { أرجع "something"; }
 };
 
-template <>
-struct hb_printer_t<bool> {
-  const char *print (bool v) { return v ? "true" : "false"; }
+قالب <>
+بنية hb_printer_t<منطقي> {
+  ثابت حرف *print (منطقي v) { أرجع v ? "true" : "false"; }
 };
 
-template <>
-struct hb_printer_t<hb_empty_t> {
-  const char *print (hb_empty_t) { return ""; }
+قالب <>
+بنية hb_printer_t<hb_خالی_t> {
+  ثابت حرف *print (hb_خالی_t) { أرجع ""; }
 };
 
 
@@ -215,243 +215,243 @@ struct hb_printer_t<hb_empty_t> {
  * Trace
  */
 
-template <typename T>
-static inline void _hb_warn_no_return (bool returned)
+قالب <نام_نوع T>
+ساكن مضمن فراغ _hb_warn_no_return (منطقي returned)
 {
-  if (unlikely (!returned)) {
+  إذا (unlikely (!returned)) {
     fprintf (stderr, "OUCH, returned with no call to return_trace().  This is a bug, please report.\n");
   }
 }
-template <>
-/*static*/ inline void _hb_warn_no_return<hb_empty_t> (bool returned HB_UNUSED) {}
-template <>
-/*static*/ inline void _hb_warn_no_return<void> (bool returned HB_UNUSED) {}
+قالب <>
+/*static*/ مضمن فراغ _hb_warn_no_return<hb_خالی_t> (منطقي returned HB_استفادهنشده) {}
+قالب <>
+/*static*/ مضمن فراغ _hb_warn_no_return<فراغ> (منطقي returned HB_استفادهنشده) {}
 
-template <int max_level, typename ret_t>
-struct hb_auto_trace_t
+قالب <صحيح max_level, نام_نوع ret_t>
+بنية hb_auto_trace_t
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
-				   const void *obj_,
-				   const char *func,
-				   const char *message,
+  صریح مضمن hb_auto_trace_t (بیعلامت صحيح *plevel_,
+				   ثابت حرف *what_,
+				   ثابت فراغ *obj_,
+				   ثابت حرف *func,
+				   ثابت حرف *پیام,
 				   ...) HB_PRINTF_FUNC(6, 7)
-				   : plevel (plevel_), what (what_), obj (obj_), returned (false)
+				   : plevel (plevel_), what (what_), obj (obj_), returned (خطأ)
   {
-    if (plevel) ++*plevel;
+    إذا (plevel) ++*plevel;
 
     va_list ap;
-    va_start (ap, message);
-    _hb_debug_msg_va<max_level> (what, obj, func, true, plevel ? *plevel : 0, +1, message, ap);
-    va_end (ap);
+    va_شروع (ap, پیام);
+    hb_debug_پیام_va<max_level> (what, obj, func, درست, plevel ? *plevel : 0, +1, پیام, ap);
+    va_انتها (ap);
   }
   ~hb_auto_trace_t ()
   {
     _hb_warn_no_return<ret_t> (returned);
-    if (!returned) {
-      _hb_debug_msg<max_level> (what, obj, nullptr, true, plevel ? *plevel : 1, -1, " ");
+    إذا (!returned) {
+      hb_debug_پیام<max_level> (what, obj, اشاره_تهی, درست, plevel ? *plevel : 1, -1, " ");
     }
-    if (plevel) --*plevel;
+    إذا (plevel) --*plevel;
   }
 
-  template <typename T>
+  قالب <نام_نوع T>
   T ret (T&& v,
-	 const char *func = "",
-	 unsigned int line = 0)
+	 ثابت حرف *func = "",
+	 بیعلامت صحيح سطر = 0)
   {
-    if (unlikely (returned)) {
+    إذا (unlikely (returned)) {
       fprintf (stderr, "OUCH, double calls to return_trace().  This is a bug, please report.\n");
-      return std::forward<T> (v);
+      أرجع std::forward<T> (v);
     }
 
-    _hb_debug_msg<max_level> (what, obj, func, true, plevel ? *plevel : 1, -1,
+    hb_debug_پیام<max_level> (what, obj, func, درست, plevel ? *plevel : 1, -1,
 			      "return %s (line %u)",
-			      hb_printer_t<hb_decay<decltype (v)>>().print (v), line);
-    if (plevel) --*plevel;
-    plevel = nullptr;
-    returned = true;
-    return std::forward<T> (v);
+			      hb_printer_t<hb_decay<decltype (v)>>().print (v), سطر);
+    إذا (plevel) --*plevel;
+    plevel = اشاره_تهی;
+    returned = درست;
+    أرجع std::forward<T> (v);
   }
 
-  private:
-  unsigned int *plevel;
-  const char *what;
-  const void *obj;
-  bool returned;
+  خاص:
+  بیعلامت صحيح *plevel;
+  ثابت حرف *what;
+  ثابت فراغ *obj;
+  منطقي returned;
 };
-template <typename ret_t> /* Make sure we don't use hb_auto_trace_t when not tracing. */
-struct hb_auto_trace_t<0, ret_t>
+قالب <نام_نوع ret_t> /* Make sure we don't use hb_auto_trace_t when not tracing. */
+بنية hb_auto_trace_t<0, ret_t>
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
-				   const void *obj_,
-				   const char *func,
-				   const char *message,
+  صریح مضمن hb_auto_trace_t (بیعلامت صحيح *plevel_,
+				   ثابت حرف *what_,
+				   ثابت فراغ *obj_,
+				   ثابت حرف *func,
+				   ثابت حرف *پیام,
 				   ...) HB_PRINTF_FUNC(6, 7) {}
 
-  template <typename T>
+  قالب <نام_نوع T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 ثابت حرف *func HB_استفادهنشده = اشاره_تهی,
+	 بیعلامت صحيح سطر HB_استفادهنشده = 0) { أرجع std::forward<T> (v); }
 };
 
 /* For disabled tracing; optimize out everything.
  * https://github.com/harfbuzz/harfbuzz/pull/605 */
-template <typename ret_t>
-struct hb_no_trace_t {
-  template <typename T>
+قالب <نام_نوع ret_t>
+بنية hb_no_trace_t {
+  قالب <نام_نوع T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 ثابت حرف *func HB_استفادهنشده = اشاره_تهی,
+	 بیعلامت صحيح سطر HB_استفادهنشده = 0) { أرجع std::forward<T> (v); }
 };
 
-#define return_trace(RET) return trace.ret (RET, HB_FUNC, __LINE__)
+#تعریف_کن return_trace(RET) أرجع trace.ret (RET, HB_FUNC, __LINE__)
 
 
 /*
  * Instances.
  */
 
-#ifndef HB_DEBUG_ARABIC
-#define HB_DEBUG_ARABIC (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_ARABIC
+#تعریف_کن HB_DEBUG_ARABIC (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_BLOB
-#define HB_DEBUG_BLOB (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_BLOB
+#تعریف_کن HB_DEBUG_BLOB (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_CORETEXT
-#define HB_DEBUG_CORETEXT (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_CORETEXT
+#تعریف_کن HB_DEBUG_CORETEXT (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_DIRECTWRITE
-#define HB_DEBUG_DIRECTWRITE (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_DIRECTWRITE
+#تعریف_کن HB_DEBUG_DIRECTWRITE (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_FT
-#define HB_DEBUG_FT (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_FT
+#تعریف_کن HB_DEBUG_FT (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_JUSTIFY
-#define HB_DEBUG_JUSTIFY (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_JUSTIFY
+#تعریف_کن HB_DEBUG_JUSTIFY (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_OBJECT
-#define HB_DEBUG_OBJECT (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_OBJECT
+#تعریف_کن HB_DEBUG_OBJECT (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_SHAPE_PLAN
-#define HB_DEBUG_SHAPE_PLAN (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_SHAPE_PLAN
+#تعریف_کن HB_DEBUG_SHAPE_PLAN (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_UNISCRIBE
-#define HB_DEBUG_UNISCRIBE (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_UNISCRIBE
+#تعریف_کن HB_DEBUG_UNISCRIBE (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_WASM
-#define HB_DEBUG_WASM (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_WASM
+#تعریف_کن HB_DEBUG_WASM (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_KBTS
-#define HB_DEBUG_KBTS (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_KBTS
+#تعریف_کن HB_DEBUG_KBTS (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_DEPEND
-#define HB_DEBUG_DEPEND (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_DEPEND
+#تعریف_کن HB_DEBUG_DEPEND (HB_DEBUG+0)
+#پایان_اگر
 
 /*
  * With tracing.
  */
 
-#ifndef HB_DEBUG_APPLY
-#define HB_DEBUG_APPLY (HB_DEBUG+0)
-#endif
-#if HB_DEBUG_APPLY
-#define TRACE_APPLY(this) \
-	hb_auto_trace_t<HB_DEBUG_APPLY, bool> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#اگر_تعریف_نشده HB_DEBUG_APPLY
+#تعریف_کن HB_DEBUG_APPLY (HB_DEBUG+0)
+#پایان_اگر
+#إذا HB_DEBUG_APPLY
+#تعریف_کن TRACE_APPLY(هذا) \
+	hb_auto_trace_t<HB_DEBUG_APPLY, منطقي> trace \
+	(&c->debug_عمق, c->get_name (), هذا, HB_FUNC, \
 	 "idx %u gid %u lookup %d", \
-	 c->buffer->idx, c->buffer->cur().codepoint, (int) c->lookup_index)
-#else
-#define TRACE_APPLY(this) hb_no_trace_t<bool> trace
-#endif
+	 c->میانگیر->idx, c->میانگیر->cur().codepoint, (صحيح) c->lookup_شاخص)
+#وإلا
+#تعریف_کن TRACE_APPLY(هذا) hb_no_trace_t<منطقي> trace
+#پایان_اگر
 
-#ifndef HB_DEBUG_SANITIZE
-#define HB_DEBUG_SANITIZE (HB_DEBUG+0)
-#endif
-#if HB_DEBUG_SANITIZE
-#define TRACE_SANITIZE(this) \
-	hb_auto_trace_t<HB_DEBUG_SANITIZE, bool> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#اگر_تعریف_نشده HB_DEBUG_SANITIZE
+#تعریف_کن HB_DEBUG_SANITIZE (HB_DEBUG+0)
+#پایان_اگر
+#إذا HB_DEBUG_SANITIZE
+#تعریف_کن TRACE_SANITIZE(هذا) \
+	hb_auto_trace_t<HB_DEBUG_SANITIZE, منطقي> trace \
+	(&c->debug_عمق, c->get_name (), هذا, HB_FUNC, \
 	 " ")
-#else
-#define TRACE_SANITIZE(this) hb_no_trace_t<bool> trace
-#endif
+#وإلا
+#تعریف_کن TRACE_SANITIZE(هذا) hb_no_trace_t<منطقي> trace
+#پایان_اگر
 
-#ifndef HB_DEBUG_SERIALIZE
-#define HB_DEBUG_SERIALIZE (HB_DEBUG+0)
-#endif
-#if HB_DEBUG_SERIALIZE
-#define TRACE_SERIALIZE(this) \
-	hb_auto_trace_t<HB_DEBUG_SERIALIZE, bool> trace \
-	(&c->debug_depth, "SERIALIZE", c, HB_FUNC, \
+#اگر_تعریف_نشده HB_DEBUG_SERIALIZE
+#تعریف_کن HB_DEBUG_SERIALIZE (HB_DEBUG+0)
+#پایان_اگر
+#إذا HB_DEBUG_SERIALIZE
+#تعریف_کن TRACE_SERIALIZE(هذا) \
+	hb_auto_trace_t<HB_DEBUG_SERIALIZE, منطقي> trace \
+	(&c->debug_عمق, "SERIALIZE", c, HB_FUNC, \
 	 " ")
-#else
-#define TRACE_SERIALIZE(this) hb_no_trace_t<bool> trace
-#endif
+#وإلا
+#تعریف_کن TRACE_SERIALIZE(هذا) hb_no_trace_t<منطقي> trace
+#پایان_اگر
 
-#ifndef HB_DEBUG_SUBSET
-#define HB_DEBUG_SUBSET (HB_DEBUG+0)
-#endif
-#if HB_DEBUG_SUBSET
-#define TRACE_SUBSET(this) \
-  hb_auto_trace_t<HB_DEBUG_SUBSET, bool> trace \
-  (&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#اگر_تعریف_نشده HB_DEBUG_SUBSET
+#تعریف_کن HB_DEBUG_SUBSET (HB_DEBUG+0)
+#پایان_اگر
+#إذا HB_DEBUG_SUBSET
+#تعریف_کن TRACE_SUBSET(هذا) \
+  hb_auto_trace_t<HB_DEBUG_SUBSET, منطقي> trace \
+  (&c->debug_عمق, c->get_name (), هذا, HB_FUNC, \
    " ")
-#else
-#define TRACE_SUBSET(this) hb_no_trace_t<bool> trace
-#endif
+#وإلا
+#تعریف_کن TRACE_SUBSET(هذا) hb_no_trace_t<منطقي> trace
+#پایان_اگر
 
-#ifndef HB_DEBUG_SUBSET_REPACK
-#define HB_DEBUG_SUBSET_REPACK (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_DEBUG_SUBSET_REPACK
+#تعریف_کن HB_DEBUG_SUBSET_REPACK (HB_DEBUG+0)
+#پایان_اگر
 
-#ifndef HB_DEBUG_PAINT
-#define HB_DEBUG_PAINT (HB_DEBUG+0)
-#endif
-#if HB_DEBUG_PAINT
-#define TRACE_PAINT(this) \
-  HB_UNUSED hb_auto_trace_t<HB_DEBUG_PAINT, void> trace \
-  (&c->debug_depth, c->get_name (), this, HB_FUNC, \
+#اگر_تعریف_نشده HB_DEBUG_PAINT
+#تعریف_کن HB_DEBUG_PAINT (HB_DEBUG+0)
+#پایان_اگر
+#إذا HB_DEBUG_PAINT
+#تعریف_کن TRACE_PAINT(هذا) \
+  HB_استفادهنشده hb_auto_trace_t<HB_DEBUG_PAINT, فراغ> trace \
+  (&c->debug_عمق, c->get_name (), هذا, HB_FUNC, \
    " ")
-#else
-#define TRACE_PAINT(this) HB_UNUSED hb_no_trace_t<void> trace
-#endif
+#وإلا
+#تعریف_کن TRACE_PAINT(هذا) HB_استفادهنشده hb_no_trace_t<فراغ> trace
+#پایان_اگر
 
 
-#ifndef HB_DEBUG_DISPATCH
-#define HB_DEBUG_DISPATCH ( \
+#اگر_تعریف_نشده HB_DEBUG_DISPATCH
+#تعریف_کن HB_DEBUG_DISPATCH ( \
 	HB_DEBUG_APPLY + \
 	HB_DEBUG_SANITIZE + \
 	HB_DEBUG_SERIALIZE + \
 	HB_DEBUG_SUBSET + \
 	HB_DEBUG_PAINT + \
 	0)
-#endif
-#if HB_DEBUG_DISPATCH
-#define TRACE_DISPATCH(this, format) \
-	hb_auto_trace_t<context_t::max_debug_depth, typename context_t::return_t> trace \
-	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
-	 "format %u", (unsigned) format)
-#else
-#define TRACE_DISPATCH(this, format) hb_no_trace_t<typename context_t::return_t> trace
-#endif
+#پایان_اگر
+#إذا HB_DEBUG_DISPATCH
+#تعریف_کن TRACE_DISPATCH(هذا, format) \
+	hb_auto_trace_t<context_t::max_debug_عمق, نام_نوع context_t::return_t> trace \
+	(&c->debug_عمق, c->get_name (), هذا, HB_FUNC, \
+	 "format %u", (بیعلامت) format)
+#وإلا
+#تعریف_کن TRACE_DISPATCH(هذا, format) hb_no_trace_t<نام_نوع context_t::return_t> trace
+#پایان_اگر
 
 
-#ifndef HB_BUFFER_MESSAGE_MORE
-#define HB_BUFFER_MESSAGE_MORE (HB_DEBUG+0)
-#endif
+#اگر_تعریف_نشده HB_میانگیر_پیام_بیشتر
+#تعریف_کن HB_میانگیر_پیام_بیشتر (HB_DEBUG+0)
+#پایان_اگر
 
 
-#endif /* HB_DEBUG_HH */
+#پایان_اگر /* HB_DEBUG_HH */

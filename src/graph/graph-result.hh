@@ -24,44 +24,44 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#اگر_تعریف_نشده گراف_گراف_نتیجه_HH
+#تعریف_کن گراف_گراف_نتیجه_HH
 
-#include "../hb-result.hh"
+#ضمن "../hb-result.hh"
 
-namespace graph {
+نطاق گراف {
 
-enum graph_error_t {
-  ALLOCATION_FAILURE,
-  LIMIT_EXCEEDED,
-  INVALID_ARGUMENT,
-  CYCLE_DETECTED,
+تعداد گراف_error_t {
+  تخصیص_FAILURE,
+  حد_EXCEEDED,
+  INVALID_آرگومان,
+  چرخه_DETECTED,
   SANITIZE_FAILURE,
-  OUT_OF_BOUNDS,
+  بیرون_از_BOUNDS,
   ORPHANED_NODES,
-  OVERFLOW_RESOLUTION_FAILED,
+  سرریز_RESOLUTION_FAILED,
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ساكن مضمن ثابت حرف* to_string(گراف_error_t e) {
+  بدل (e) {
+    حالة تخصیص_FAILURE: أرجع "Memory Allocation Failed";
+    حالة حد_EXCEEDED: أرجع "Limit Exceeded";
+    حالة INVALID_آرگومان: أرجع "Invalid Argument";
+    حالة چرخه_DETECTED: أرجع "Cycle in Graph";
+    حالة SANITIZE_FAILURE: أرجع "Failed Sanitization";
+    حالة بیرون_از_BOUNDS: أرجع "Out of Bounds";
+    حالة ORPHANED_NODES: أرجع "Graph is not fully connected";
+    حالة سرریز_RESOLUTION_FAILED: أرجع "Overflows are not able to be resolved";
+    حالة UNKNOWN:
+    افتراضي:
+      أرجع "Unknown Error";
   }
 }
 
-template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+قالب<نام_نوع T>
+استفاده گراف_نتیجه_t = hb_نتیجه_t<T, گراف_error_t>;
 
 } // namespace graph
 
-#endif /* GRAPH_GRAPH_RESULT_HH */
+#پایان_اگر /* GRAPH_GRAPH_RESULT_HH */

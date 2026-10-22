@@ -1,5 +1,5 @@
 
-#line 1 "hb-ot-shaper-use-machine.rl"
+#سطر 1 "hb-ot-shaper-use-machine.rl"
 /*
  * Copyright © 2015  Mozilla Foundation.
  * Copyright © 2015  Google, Inc.
@@ -28,80 +28,80 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_USE_MACHINE_HH
-#define HB_OT_SHAPER_USE_MACHINE_HH
+#اگر_تعریف_نشده HB_OT_SHAPER_USE_MACHINE_HH
+#تعریف_کن HB_OT_SHAPER_USE_MACHINE_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-ot-shaper-syllabic.hh"
+#ضمن "hb-ot-shaper-syllabic.hh"
 
 /* buffer var allocations */
-#define use_category() ot_shaper_var_u8_category()
+#تعریف_کن use_category() ot_shaper_var_u8_category()
 
-#define USE(Cat) use_syllable_machine_ex_##Cat
+#تعریف_کن USE(Cat) use_syllable_machine_ex_##Cat
 
-enum use_syllable_type_t {
+تعداد use_syllable_type_t {
   use_virama_terminated_cluster,
   use_sakot_terminated_cluster,
   use_standard_cluster,
-  use_number_joiner_terminated_cluster,
+  use_عدد_joiner_terminated_cluster,
   use_numeral_cluster,
-  use_symbol_cluster,
+  use_نماد_cluster,
   use_hieroglyph_cluster,
   use_broken_cluster,
   use_non_cluster,
 };
 
 
-#line 54 "hb-ot-shaper-use-machine.hh"
-#define use_syllable_machine_ex_B 1u
-#define use_syllable_machine_ex_CGJ 6u
-#define use_syllable_machine_ex_CMAbv 31u
-#define use_syllable_machine_ex_CMBlw 32u
-#define use_syllable_machine_ex_CS 43u
-#define use_syllable_machine_ex_FAbv 24u
-#define use_syllable_machine_ex_FBlw 25u
-#define use_syllable_machine_ex_FMAbv 45u
-#define use_syllable_machine_ex_FMBlw 46u
-#define use_syllable_machine_ex_FMPst 47u
-#define use_syllable_machine_ex_FPst 26u
-#define use_syllable_machine_ex_G 49u
-#define use_syllable_machine_ex_GB 5u
-#define use_syllable_machine_ex_H 12u
-#define use_syllable_machine_ex_HM 54u
-#define use_syllable_machine_ex_HN 13u
-#define use_syllable_machine_ex_HR 55u
-#define use_syllable_machine_ex_HVM 53u
-#define use_syllable_machine_ex_IS 44u
-#define use_syllable_machine_ex_J 50u
-#define use_syllable_machine_ex_MAbv 27u
-#define use_syllable_machine_ex_MBlw 28u
-#define use_syllable_machine_ex_MPre 30u
-#define use_syllable_machine_ex_MPst 29u
-#define use_syllable_machine_ex_N 4u
-#define use_syllable_machine_ex_O 0u
-#define use_syllable_machine_ex_R 18u
-#define use_syllable_machine_ex_RK 56u
-#define use_syllable_machine_ex_SB 51u
-#define use_syllable_machine_ex_SE 52u
-#define use_syllable_machine_ex_SMAbv 41u
-#define use_syllable_machine_ex_SMBlw 42u
-#define use_syllable_machine_ex_SUB 11u
-#define use_syllable_machine_ex_Sk 48u
-#define use_syllable_machine_ex_VAbv 33u
-#define use_syllable_machine_ex_VBlw 34u
-#define use_syllable_machine_ex_VMAbv 37u
-#define use_syllable_machine_ex_VMBlw 38u
-#define use_syllable_machine_ex_VMPre 23u
-#define use_syllable_machine_ex_VMPst 39u
-#define use_syllable_machine_ex_VPre 22u
-#define use_syllable_machine_ex_VPst 35u
-#define use_syllable_machine_ex_WJ 16u
-#define use_syllable_machine_ex_ZWNJ 14u
+#سطر 54 "hb-ot-shaper-use-machine.hh"
+#تعریف_کن use_syllable_machine_ex_B 1u
+#تعریف_کن use_syllable_machine_ex_CGJ 6u
+#تعریف_کن use_syllable_machine_ex_CMAbv 31u
+#تعریف_کن use_syllable_machine_ex_CMBlw 32u
+#تعریف_کن use_syllable_machine_ex_CS 43u
+#تعریف_کن use_syllable_machine_ex_FAbv 24u
+#تعریف_کن use_syllable_machine_ex_FBlw 25u
+#تعریف_کن use_syllable_machine_ex_FMAbv 45u
+#تعریف_کن use_syllable_machine_ex_FMBlw 46u
+#تعریف_کن use_syllable_machine_ex_FMPst 47u
+#تعریف_کن use_syllable_machine_ex_FPst 26u
+#تعریف_کن use_syllable_machine_ex_G 49u
+#تعریف_کن use_syllable_machine_ex_GB 5u
+#تعریف_کن use_syllable_machine_ex_H 12u
+#تعریف_کن use_syllable_machine_ex_HM 54u
+#تعریف_کن use_syllable_machine_ex_HN 13u
+#تعریف_کن use_syllable_machine_ex_HR 55u
+#تعریف_کن use_syllable_machine_ex_HVM 53u
+#تعریف_کن use_syllable_machine_ex_IS 44u
+#تعریف_کن use_syllable_machine_ex_J 50u
+#تعریف_کن use_syllable_machine_ex_MAbv 27u
+#تعریف_کن use_syllable_machine_ex_MBlw 28u
+#تعریف_کن use_syllable_machine_ex_MPre 30u
+#تعریف_کن use_syllable_machine_ex_MPst 29u
+#تعریف_کن use_syllable_machine_ex_N 4u
+#تعریف_کن use_syllable_machine_ex_O 0u
+#تعریف_کن use_syllable_machine_ex_R 18u
+#تعریف_کن use_syllable_machine_ex_RK 56u
+#تعریف_کن use_syllable_machine_ex_SB 51u
+#تعریف_کن use_syllable_machine_ex_SE 52u
+#تعریف_کن use_syllable_machine_ex_SMAbv 41u
+#تعریف_کن use_syllable_machine_ex_SMBlw 42u
+#تعریف_کن use_syllable_machine_ex_SUB 11u
+#تعریف_کن use_syllable_machine_ex_Sk 48u
+#تعریف_کن use_syllable_machine_ex_VAbv 33u
+#تعریف_کن use_syllable_machine_ex_VBlw 34u
+#تعریف_کن use_syllable_machine_ex_VMAbv 37u
+#تعریف_کن use_syllable_machine_ex_VMBlw 38u
+#تعریف_کن use_syllable_machine_ex_VMPre 23u
+#تعریف_کن use_syllable_machine_ex_VMPst 39u
+#تعریف_کن use_syllable_machine_ex_VPre 22u
+#تعریف_کن use_syllable_machine_ex_VPst 35u
+#تعریف_کن use_syllable_machine_ex_WJ 16u
+#تعریف_کن use_syllable_machine_ex_ZWNJ 14u
 
 
-#line 99 "hb-ot-shaper-use-machine.hh"
-static const unsigned char _use_syllable_machine_trans_keys[] = {
+#سطر 99 "hb-ot-shaper-use-machine.hh"
+ساكن ثابت بیعلامت حرف use_syllable_machine_trans_کلیدها[] = {
 	49u, 51u, 0u, 56u, 11u, 56u, 11u, 56u, 1u, 53u, 14u, 48u, 14u, 47u, 14u, 47u, 
 	14u, 47u, 14u, 46u, 14u, 46u, 14u, 14u, 14u, 48u, 14u, 48u, 14u, 48u, 1u, 14u, 
 	14u, 48u, 14u, 53u, 14u, 53u, 14u, 53u, 14u, 53u, 12u, 53u, 14u, 53u, 12u, 53u, 
@@ -120,7 +120,7 @@ static const unsigned char _use_syllable_machine_trans_keys[] = {
 	14u, 42u, 1u, 5u, 14u, 55u, 14u, 51u, 14u, 52u, 14u, 54u, 11u, 56u, 0
 };
 
-static const char _use_syllable_machine_key_spans[] = {
+ساكن ثابت حرف use_syllable_machine_کلید_spans[] = {
 	3, 57, 46, 46, 53, 35, 34, 34, 
 	34, 33, 33, 1, 35, 35, 35, 14, 
 	35, 40, 40, 40, 40, 42, 40, 42, 
@@ -139,7 +139,7 @@ static const char _use_syllable_machine_key_spans[] = {
 	29, 5, 42, 38, 39, 41, 46
 };
 
-static const short _use_syllable_machine_index_offsets[] = {
+ساكن ثابت کوتاه use_syllable_machine_شاخص_offsets[] = {
 	0, 4, 62, 109, 156, 210, 246, 281, 
 	316, 351, 385, 419, 421, 457, 493, 529, 
 	544, 580, 621, 662, 703, 744, 787, 828, 
@@ -158,7 +158,7 @@ static const short _use_syllable_machine_index_offsets[] = {
 	4203, 4233, 4239, 4282, 4321, 4361, 4403
 };
 
-static const unsigned char _use_syllable_machine_indicies[] = {
+ساكن ثابت بیعلامت حرف _use_syllable_machine_indicies[] = {
 	1, 0, 2, 0, 3, 4, 5, 5, 
 	6, 7, 5, 5, 5, 5, 5, 8, 
 	9, 10, 11, 5, 5, 5, 12, 5, 
@@ -718,7 +718,7 @@ static const unsigned char _use_syllable_machine_indicies[] = {
 	64, 39, 0
 };
 
-static const char _use_syllable_machine_trans_targs[] = {
+ساكن ثابت حرف _use_syllable_machine_trans_targs[] = {
 	1, 122, 0, 2, 31, 1, 59, 61, 
 	90, 91, 116, 1, 118, 104, 92, 93, 
 	94, 95, 108, 110, 111, 112, 113, 105, 
@@ -740,7 +740,7 @@ static const char _use_syllable_machine_trans_targs[] = {
 	123, 124, 125
 };
 
-static const char _use_syllable_machine_trans_actions[] = {
+ساكن ثابت حرف _use_syllable_machine_trans_actions[] = {
 	1, 0, 0, 0, 0, 4, 0, 0, 
 	0, 0, 0, 5, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -762,7 +762,7 @@ static const char _use_syllable_machine_trans_actions[] = {
 	0, 0, 0
 };
 
-static const char _use_syllable_machine_to_state_actions[] = {
+ساكن ثابت حرف use_syllable_machine_مقصد_state_actions[] = {
 	0, 2, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -781,7 +781,7 @@ static const char _use_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0
 };
 
-static const char _use_syllable_machine_from_state_actions[] = {
+ساكن ثابت حرف _use_syllable_machine_from_state_actions[] = {
 	0, 3, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -800,7 +800,7 @@ static const char _use_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0, 0, 0
 };
 
-static const short _use_syllable_machine_eof_trans[] = {
+ساكن ثابت کوتاه _use_syllable_machine_eof_trans[] = {
 	1, 0, 40, 40, 40, 40, 40, 40, 
 	40, 40, 40, 40, 40, 40, 40, 40, 
 	40, 40, 40, 40, 40, 40, 40, 40, 
@@ -819,294 +819,294 @@ static const short _use_syllable_machine_eof_trans[] = {
 	136, 142, 143, 143, 143, 143, 40
 };
 
-static const int use_syllable_machine_start = 1;
-static const int use_syllable_machine_first_final = 1;
-static const int use_syllable_machine_error = -1;
+ساكن ثابت صحيح use_syllable_machine_شروع = 1;
+ساكن ثابت صحيح use_syllable_machine_اولی_final = 1;
+ساكن ثابت صحيح use_syllable_machine_error = -1;
 
-static const int use_syllable_machine_en_main = 1;
-
-
-#line 58 "hb-ot-shaper-use-machine.rl"
+ساكن ثابت صحيح use_syllable_machine_en_main = 1;
 
 
+#سطر 58 "hb-ot-shaper-use-machine.rl"
 
-#line 186 "hb-ot-shaper-use-machine.rl"
 
 
-#define found_syllable(syllable_type) \
-  HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.first, (*te).second.first, #syllable_type); \
-    for (unsigned i = (*ts).second.first; i < (*te).second.first; ++i) \
+#سطر 186 "hb-ot-shaper-use-machine.rl"
+
+
+#تعریف_کن یافت_syllable(syllable_type) \
+  HB_STMT_شروع { \
+    إذا (0) fprintf (stderr, "syllable %u..%u %s\n", (*ts).second.اولی, (*te).second.اولی, #syllable_type); \
+    لكل (بیعلامت i = (*ts).second.اولی; i < (*te).second.اولی; ++i) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
-  } HB_STMT_END
+    إذا (syllable_serial == 16) syllable_serial = 1; \
+  } HB_STMT_انتها
 
 
-template <typename Iter>
-struct machine_index_t :
-  hb_iter_with_fallback_t<machine_index_t<Iter>,
-			  typename Iter::item_t>
+قالب <نام_نوع Iter>
+بنية machine_شاخص_t :
+  hb_iter_with_fallback_t<machine_شاخص_t<Iter>,
+			  نام_نوع Iter::قلم_t>
 {
-  machine_index_t (const Iter& it) : it (it) {}
-  machine_index_t (const machine_index_t& o) : hb_iter_with_fallback_t<machine_index_t<Iter>,
-								       typename Iter::item_t> (),
+  machine_شاخص_t (ثابت Iter& it) : it (it) {}
+  machine_شاخص_t (ثابت machine_شاخص_t& o) : hb_iter_with_fallback_t<machine_شاخص_t<Iter>,
+								       نام_نوع Iter::قلم_t> (),
 					       it (o.it), is_null (o.is_null) {}
 
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
+  ساكن constexpr منطقي is_random_access_iterator = Iter::is_random_access_iterator;
+  ساكن constexpr منطقي is_sorted_iterator = Iter::is_sorted_iterator;
 
-  typename Iter::item_t __item__ () const { return *it; }
-  typename Iter::item_t __item_at__ (unsigned i) const { return it[i]; }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
+  نام_نوع Iter::قلم_t __item__ () ثابت { أرجع *it; }
+  نام_نوع Iter::قلم_t __item_at__ (بیعلامت i) ثابت { أرجع it[i]; }
+  بیعلامت __len__ () ثابت { أرجع it.len (); }
+  فراغ __next__ () { ++it; }
+  فراغ __forward__ (بیعلامت n) { it += n; }
+  فراغ __prev__ () { --it; }
+  فراغ __rewind__ (بیعلامت n) { it -= n; }
 
-  void operator = (unsigned n)
+  فراغ عملگر = (بیعلامت n)
   {
-    assert (n == 0);
-    is_null = true;
+    أكد (n == 0);
+    is_null = درست;
   }
-  explicit operator bool () { return !is_null; }
+  صریح عملگر منطقي () { أرجع !is_null; }
 
-  void operator = (const machine_index_t& o)
+  فراغ عملگر = (ثابت machine_شاخص_t& o)
   {
     is_null = o.is_null;
-    unsigned index = (*it).first;
-    unsigned n = (*o.it).first;
-    if (index < n) it += n - index; else if (index > n) it -= index - n;
+    بیعلامت شاخص_2 = (*it).اولی;
+    بیعلامت n = (*o.it).اولی;
+    إذا (شاخص_2 < n) it += n - شاخص_2; وإلا إذا (شاخص_2 > n) it -= شاخص_2 - n;
   }
-  bool operator == (const machine_index_t& o) const
-  { return is_null ? o.is_null : !o.is_null && (*it).first == (*o.it).first; }
-  bool operator != (const machine_index_t& o) const { return !(*this == o); }
+  منطقي عملگر == (ثابت machine_شاخص_t& o) ثابت
+  { أرجع is_null ? o.is_null : !o.is_null && (*it).اولی == (*o.it).اولی; }
+  منطقي عملگر != (ثابت machine_شاخص_t& o) ثابت { أرجع !(*هذا == o); }
 
-  private:
+  خاص:
   Iter it;
-  bool is_null = false;
+  منطقي is_null = خطأ;
 };
-struct
+بنية
 {
-  template <typename Iter,
+  قالب <نام_نوع Iter,
 	    hb_requires (hb_is_iterable (Iter))>
-  machine_index_t<hb_iter_type<Iter>>
-  operator () (Iter&& it) const
-  { return machine_index_t<hb_iter_type<Iter>> (hb_iter (it)); }
+  machine_شاخص_t<hb_iter_type<Iter>>
+  عملگر () (Iter&& it) ثابت
+  { أرجع machine_شاخص_t<hb_iter_type<Iter>> (hb_iter (it)); }
 }
-HB_FUNCOBJ (machine_index);
+HB_FUNCOBJ (machine_شاخص);
 
 
 
-static bool
-not_ccs_default_ignorable (const hb_glyph_info_t &i)
-{ return i.use_category() != USE(CGJ); }
+ساكن منطقي
+not_ccs_default_ignorable (ثابت hb_glyph_info_t &i)
+{ أرجع i.use_category() != USE(CGJ); }
 
-static inline void
-find_syllables_use (hb_buffer_t *buffer)
+ساكن مضمن فراغ
+پیدا_کن_syllables_use (hb_میانگیر_t *میانگیر)
 {
-  hb_glyph_info_t *info = buffer->info;
-  auto p =
-    + hb_iter (info, buffer->len)
+  hb_glyph_info_t *info = میانگیر->info;
+  خودکار p =
+    + hb_iter (info, میانگیر->len)
     | hb_enumerate
-    | hb_filter ([] (const hb_glyph_info_t &i) { return not_ccs_default_ignorable (i); },
-		 hb_second)
-    | hb_filter ([&] (const hb_pair_t<unsigned, const hb_glyph_info_t &> p)
+    | hb_filter ([] (ثابت hb_glyph_info_t &i) { أرجع not_ccs_default_ignorable (i); },
+		 hb_دومی)
+    | hb_filter ([&] (ثابت hb_pair_t<بیعلامت, ثابت hb_glyph_info_t &> p)
 		 {
-		   if (p.second.use_category() == USE(ZWNJ))
-		     for (unsigned i = p.first + 1; i < buffer->len; ++i)
-		       if (not_ccs_default_ignorable (info[i]))
-			 return !_hb_glyph_info_is_unicode_mark (&info[i]);
-		   return true;
+		   إذا (p.second.use_category() == USE(ZWNJ))
+		     لكل (بیعلامت i = p.اولی + 1; i < میانگیر->len; ++i)
+		       إذا (not_ccs_default_ignorable (info[i]))
+			 أرجع !_hb_glyph_info_is_unicode_mark (&info[i]);
+		   أرجع درست;
 		 })
     | hb_enumerate
-    | machine_index
+    | machine_شاخص
     ;
-  auto pe = p + p.len ();
-  auto eof = +pe;
-  auto ts = +p;
-  auto te = +p;
-  unsigned int act HB_UNUSED;
-  int cs;
+  خودکار pe = p + p.len ();
+  خودکار eof = +pe;
+  خودکار ts = +p;
+  خودکار te = +p;
+  بیعلامت صحيح act HB_استفادهنشده;
+  صحيح cs;
   
-#line 922 "hb-ot-shaper-use-machine.hh"
+#سطر 922 "hb-ot-shaper-use-machine.hh"
 	{
-	cs = use_syllable_machine_start;
+	cs = use_syllable_machine_شروع;
 	ts = 0;
 	te = 0;
 	act = 0;
 	}
 
-#line 286 "hb-ot-shaper-use-machine.rl"
+#سطر 286 "hb-ot-shaper-use-machine.rl"
 
 
-  unsigned int syllable_serial = 1;
+  بیعلامت صحيح syllable_serial = 1;
   
-#line 931 "hb-ot-shaper-use-machine.hh"
+#سطر 931 "hb-ot-shaper-use-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const unsigned char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	صحيح _slen;
+	صحيح _trans;
+	ثابت بیعلامت حرف *کلیدها_2;
+	ثابت بیعلامت حرف *_inds;
+	إذا ( p == pe )
+		اذهب _test_eof;
 _resume:
-	switch ( _use_syllable_machine_from_state_actions[cs] ) {
-	case 3:
-#line 1 "NONE"
+	بدل ( _use_syllable_machine_from_state_actions[cs] ) {
+	حالة 3:
+#سطر 1 "NONE"
 	{ts = p;}
-	break;
-#line 943 "hb-ot-shaper-use-machine.hh"
+	اكسر;
+#سطر 943 "hb-ot-shaper-use-machine.hh"
 	}
 
-	_keys = _use_syllable_machine_trans_keys + (cs<<1);
-	_inds = _use_syllable_machine_indicies + _use_syllable_machine_index_offsets[cs];
+	کلیدها_2 = use_syllable_machine_trans_کلیدها + (cs<<1);
+	_inds = _use_syllable_machine_indicies + use_syllable_machine_شاخص_offsets[cs];
 
-	_slen = _use_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( (*p).second.second.use_category()) &&
-		( (*p).second.second.use_category()) <= _keys[1] ?
-		( (*p).second.second.use_category()) - _keys[0] : _slen ];
+	_slen = use_syllable_machine_کلید_spans[cs];
+	_trans = _inds[ _slen > 0 && کلیدها_2[0] <=( (*p).second.second.use_category()) &&
+		( (*p).second.second.use_category()) <= کلیدها_2[1] ?
+		( (*p).second.second.use_category()) - کلیدها_2[0] : _slen ];
 
 _eof_trans:
 	cs = _use_syllable_machine_trans_targs[_trans];
 
-	if ( _use_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	إذا ( _use_syllable_machine_trans_actions[_trans] == 0 )
+		اذهب _again;
 
-	switch ( _use_syllable_machine_trans_actions[_trans] ) {
-	case 7:
-#line 1 "NONE"
+	بدل ( _use_syllable_machine_trans_actions[_trans] ) {
+	حالة 7:
+#سطر 1 "NONE"
 	{te = p+1;}
-	break;
-	case 16:
-#line 173 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_virama_terminated_cluster); }}
-	break;
-	case 14:
-#line 174 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_sakot_terminated_cluster); }}
-	break;
-	case 12:
-#line 175 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_standard_cluster); }}
-	break;
-	case 20:
-#line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_number_joiner_terminated_cluster); }}
-	break;
-	case 18:
-#line 177 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_numeral_cluster); }}
-	break;
-	case 10:
-#line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 25:
-#line 179 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_hieroglyph_cluster); }}
-	break;
-	case 5:
-#line 181 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 4:
-#line 182 "hb-ot-shaper-use-machine.rl"
-	{te = p+1;{ found_syllable (use_non_cluster); }}
-	break;
-	case 15:
-#line 173 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_virama_terminated_cluster); }}
-	break;
-	case 13:
-#line 174 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_sakot_terminated_cluster); }}
-	break;
-	case 11:
-#line 175 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_standard_cluster); }}
-	break;
-	case 19:
-#line 176 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_number_joiner_terminated_cluster); }}
-	break;
-	case 17:
-#line 177 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_numeral_cluster); }}
-	break;
-	case 9:
-#line 178 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 24:
-#line 179 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_hieroglyph_cluster); }}
-	break;
-	case 21:
-#line 181 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 23:
-#line 182 "hb-ot-shaper-use-machine.rl"
-	{te = p;p--;{ found_syllable (use_non_cluster); }}
-	break;
-	case 1:
-#line 178 "hb-ot-shaper-use-machine.rl"
-	{{p = ((te))-1;}{ found_syllable (use_symbol_cluster); }}
-	break;
-	case 22:
-#line 1 "NONE"
-	{	switch( act ) {
-	case 8:
-	{{p = ((te))-1;} found_syllable (use_non_cluster); }
-	break;
-	case 9:
-	{{p = ((te))-1;} found_syllable (use_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	اكسر;
+	حالة 16:
+#سطر 173 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_virama_terminated_cluster); }}
+	اكسر;
+	حالة 14:
+#سطر 174 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_sakot_terminated_cluster); }}
+	اكسر;
+	حالة 12:
+#سطر 175 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_standard_cluster); }}
+	اكسر;
+	حالة 20:
+#سطر 176 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_عدد_joiner_terminated_cluster); }}
+	اكسر;
+	حالة 18:
+#سطر 177 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_numeral_cluster); }}
+	اكسر;
+	حالة 10:
+#سطر 178 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_نماد_cluster); }}
+	اكسر;
+	حالة 25:
+#سطر 179 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_hieroglyph_cluster); }}
+	اكسر;
+	حالة 5:
+#سطر 181 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_broken_cluster); میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	اكسر;
+	حالة 4:
+#سطر 182 "hb-ot-shaper-use-machine.rl"
+	{te = p+1;{ یافت_syllable (use_non_cluster); }}
+	اكسر;
+	حالة 15:
+#سطر 173 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_virama_terminated_cluster); }}
+	اكسر;
+	حالة 13:
+#سطر 174 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_sakot_terminated_cluster); }}
+	اكسر;
+	حالة 11:
+#سطر 175 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_standard_cluster); }}
+	اكسر;
+	حالة 19:
+#سطر 176 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_عدد_joiner_terminated_cluster); }}
+	اكسر;
+	حالة 17:
+#سطر 177 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_numeral_cluster); }}
+	اكسر;
+	حالة 9:
+#سطر 178 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_نماد_cluster); }}
+	اكسر;
+	حالة 24:
+#سطر 179 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_hieroglyph_cluster); }}
+	اكسر;
+	حالة 21:
+#سطر 181 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_broken_cluster); میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	اكسر;
+	حالة 23:
+#سطر 182 "hb-ot-shaper-use-machine.rl"
+	{te = p;p--;{ یافت_syllable (use_non_cluster); }}
+	اكسر;
+	حالة 1:
+#سطر 178 "hb-ot-shaper-use-machine.rl"
+	{{p = ((te))-1;}{ یافت_syllable (use_نماد_cluster); }}
+	اكسر;
+	حالة 22:
+#سطر 1 "NONE"
+	{	بدل( act ) {
+	حالة 8:
+	{{p = ((te))-1;} یافت_syllable (use_non_cluster); }
+	اكسر;
+	حالة 9:
+	{{p = ((te))-1;} یافت_syllable (use_broken_cluster); میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
+	اكسر;
 	}
 	}
-	break;
-	case 6:
-#line 1 "NONE"
+	اكسر;
+	حالة 6:
+#سطر 1 "NONE"
 	{te = p+1;}
-#line 180 "hb-ot-shaper-use-machine.rl"
+#سطر 180 "hb-ot-shaper-use-machine.rl"
 	{act = 8;}
-	break;
-	case 8:
-#line 1 "NONE"
+	اكسر;
+	حالة 8:
+#سطر 1 "NONE"
 	{te = p+1;}
-#line 181 "hb-ot-shaper-use-machine.rl"
+#سطر 181 "hb-ot-shaper-use-machine.rl"
 	{act = 9;}
-	break;
-#line 1039 "hb-ot-shaper-use-machine.hh"
+	اكسر;
+#سطر 1039 "hb-ot-shaper-use-machine.hh"
 	}
 
 _again:
-	switch ( _use_syllable_machine_to_state_actions[cs] ) {
-	case 2:
-#line 1 "NONE"
+	بدل ( use_syllable_machine_مقصد_state_actions[cs] ) {
+	حالة 2:
+#سطر 1 "NONE"
 	{ts = 0;}
-	break;
-#line 1046 "hb-ot-shaper-use-machine.hh"
+	اكسر;
+#سطر 1046 "hb-ot-shaper-use-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	إذا ( ++p != pe )
+		اذهب _resume;
 	_test_eof: {}
-	if ( p == eof )
+	إذا ( p == eof )
 	{
-	if ( _use_syllable_machine_eof_trans[cs] > 0 ) {
+	إذا ( _use_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _use_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		اذهب _eof_trans;
 	}
 	}
 
 	}
 
-#line 291 "hb-ot-shaper-use-machine.rl"
+#سطر 291 "hb-ot-shaper-use-machine.rl"
 
 }
 
-#undef found_syllable
+#لغو_تعریف یافت_syllable
 
-#endif /* HB_OT_SHAPER_USE_MACHINE_HH */
+#پایان_اگر /* HB_OT_SHAPER_USE_MACHINE_HH */

@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_درون) && !defined(HB_NO_SINGLE_سرآیند_ERROR)
+#خطا "Include <hb.h> instead."
+#پایان_اگر
 
-#ifndef HB_SET_H
-#define HB_SET_H
+#اگر_تعریف_نشده HB_مجموعه_H
+#تعریف_کن HB_مجموعه_H
 
-#include "hb-common.h"
+#ضمن "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -43,7 +43,7 @@ HB_BEGIN_DECLS
  *
  * Since: 0.9.21
  */
-#define HB_SET_VALUE_INVALID HB_CODEPOINT_INVALID
+#تعریف_کن HB_مجموعه_مقدار_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_set_t:
@@ -54,154 +54,154 @@ HB_BEGIN_DECLS
  * values.
  *
  **/
-typedef struct hb_set_t hb_set_t;
+تعريفنوع بنية hb_مجموعه_t hb_مجموعه_t;
 
 
-HB_EXTERN hb_set_t *
-hb_set_create (void);
+HB_EXTERN hb_مجموعه_t *
+hb_مجموعه_create (فراغ);
 
-HB_EXTERN hb_set_t *
-hb_set_get_empty (void);
+HB_EXTERN hb_مجموعه_t *
+hb_مجموعه_get_خالی (فراغ);
 
-HB_EXTERN hb_set_t *
-hb_set_reference (hb_set_t *set);
+HB_EXTERN hb_مجموعه_t *
+hb_مجموعه_reference (hb_مجموعه_t *مجموعه);
 
-HB_EXTERN void
-hb_set_destroy (hb_set_t *set);
+HB_EXTERN فراغ
+hb_مجموعه_destroy (hb_مجموعه_t *مجموعه);
 
 HB_EXTERN hb_bool_t
-hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_مجموعه_مجموعه_user_داده (hb_مجموعه_t           *مجموعه,
+		      hb_user_داده_کلید_t *کلید_2,
+		      فراغ *              داده,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key);
+HB_EXTERN فراغ *
+hb_مجموعه_get_user_داده (ثابت hb_مجموعه_t     *مجموعه,
+		      hb_user_داده_کلید_t *کلید_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_set_allocation_successful (const hb_set_t *set);
+hb_مجموعه_تخصیص_successful (ثابت hb_مجموعه_t *مجموعه);
 
-HB_EXTERN hb_set_t *
-hb_set_copy (const hb_set_t *set);
+HB_EXTERN hb_مجموعه_t *
+hb_مجموعه_copy (ثابت hb_مجموعه_t *مجموعه);
 
-HB_EXTERN void
-hb_set_clear (hb_set_t *set);
-
-HB_EXTERN hb_bool_t
-hb_set_is_empty (const hb_set_t *set);
-
-HB_EXTERN void
-hb_set_invert (hb_set_t *set);
+HB_EXTERN فراغ
+hb_مجموعه_clear (hb_مجموعه_t *مجموعه);
 
 HB_EXTERN hb_bool_t
-hb_set_is_inverted (const hb_set_t *set);
+hb_مجموعه_is_خالی (ثابت hb_مجموعه_t *مجموعه);
+
+HB_EXTERN فراغ
+hb_مجموعه_invert (hb_مجموعه_t *مجموعه);
 
 HB_EXTERN hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_مجموعه_is_inverted (ثابت hb_مجموعه_t *مجموعه);
+
+HB_EXTERN hb_bool_t
+hb_مجموعه_has (ثابت hb_مجموعه_t *مجموعه,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_add (hb_set_t       *set,
+HB_EXTERN فراغ
+hb_مجموعه_جمع_کن (hb_مجموعه_t       *مجموعه,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_add_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last);
+HB_EXTERN فراغ
+hb_مجموعه_جمع_کن_range (hb_مجموعه_t       *مجموعه,
+		  hb_codepoint_t  اولی,
+		  hb_codepoint_t  آخرین);
 
-HB_EXTERN void
-hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints);
+HB_EXTERN فراغ
+hb_مجموعه_جمع_کن_sorted_array (hb_مجموعه_t             *مجموعه,
+		         ثابت hb_codepoint_t *sorted_codepoints,
+		         بیعلامت صحيح          رقم_codepoints);
 
-HB_EXTERN void
-hb_set_del (hb_set_t       *set,
+HB_EXTERN فراغ
+hb_مجموعه_del (hb_مجموعه_t       *مجموعه,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_del_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last);
+HB_EXTERN فراغ
+hb_مجموعه_del_range (hb_مجموعه_t       *مجموعه,
+		  hb_codepoint_t  اولی,
+		  hb_codepoint_t  آخرین);
 
 HB_EXTERN hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other);
+hb_مجموعه_is_equal (ثابت hb_مجموعه_t *مجموعه,
+		 ثابت hb_مجموعه_t *other);
 
 HB_EXTERN hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other);
+hb_مجموعه_intersects (ثابت hb_مجموعه_t *مجموعه,
+		   ثابت hb_مجموعه_t *other);
 
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set);
+HB_EXTERN بیعلامت صحيح
+hb_مجموعه_hash (ثابت hb_مجموعه_t *مجموعه);
 
 HB_EXTERN hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set);
+hb_مجموعه_is_subset (ثابت hb_مجموعه_t *مجموعه,
+		  ثابت hb_مجموعه_t *larger_مجموعه);
 
-HB_EXTERN void
-hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other);
+HB_EXTERN فراغ
+hb_مجموعه_مجموعه (hb_مجموعه_t       *مجموعه,
+	    ثابت hb_مجموعه_t *other);
 
-HB_EXTERN void
-hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other);
+HB_EXTERN فراغ
+hb_مجموعه_union (hb_مجموعه_t       *مجموعه,
+	      ثابت hb_مجموعه_t *other);
 
-HB_EXTERN void
-hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other);
+HB_EXTERN فراغ
+hb_مجموعه_intersect (hb_مجموعه_t       *مجموعه,
+		  ثابت hb_مجموعه_t *other);
 
-HB_EXTERN void
-hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other);
+HB_EXTERN فراغ
+hb_مجموعه_تفریق (hb_مجموعه_t       *مجموعه,
+		 ثابت hb_مجموعه_t *other);
 
-HB_EXTERN void
-hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other);
+HB_EXTERN فراغ
+hb_مجموعه_متقارن_difference (hb_مجموعه_t       *مجموعه,
+			     ثابت hb_مجموعه_t *other);
 
-HB_EXTERN unsigned int
-hb_set_get_population (const hb_set_t *set);
+HB_EXTERN بیعلامت صحيح
+hb_مجموعه_get_population (ثابت hb_مجموعه_t *مجموعه);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
 HB_EXTERN hb_codepoint_t
-hb_set_get_min (const hb_set_t *set);
+hb_مجموعه_get_min (ثابت hb_مجموعه_t *مجموعه);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
 HB_EXTERN hb_codepoint_t
-hb_set_get_max (const hb_set_t *set);
+hb_مجموعه_get_max (ثابت hb_مجموعه_t *مجموعه);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
 HB_EXTERN hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_مجموعه_بعدی (ثابت hb_مجموعه_t *مجموعه,
 	     hb_codepoint_t *codepoint);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
 HB_EXTERN hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_مجموعه_قبلی (ثابت hb_مجموعه_t *مجموعه,
 		 hb_codepoint_t *codepoint);
 
 /* Pass HB_SET_VALUE_INVALID for first and last to get started. */
 HB_EXTERN hb_bool_t
-hb_set_next_range (const hb_set_t *set,
-		   hb_codepoint_t *first,
-		   hb_codepoint_t *last);
+hb_مجموعه_بعدی_range (ثابت hb_مجموعه_t *مجموعه,
+		   hb_codepoint_t *اولی,
+		   hb_codepoint_t *آخرین);
 
 /* Pass HB_SET_VALUE_INVALID for first and last to get started. */
 HB_EXTERN hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
-		       hb_codepoint_t *first,
-		       hb_codepoint_t *last);
+hb_مجموعه_قبلی_range (ثابت hb_مجموعه_t *مجموعه,
+		       hb_codepoint_t *اولی,
+		       hb_codepoint_t *آخرین);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
-HB_EXTERN unsigned int
-hb_set_next_many (const hb_set_t *set,
+HB_EXTERN بیعلامت صحيح
+hb_مجموعه_بعدی_many (ثابت hb_مجموعه_t *مجموعه,
 		  hb_codepoint_t  codepoint,
-		  hb_codepoint_t *out,
-		  unsigned int    size);
+		  hb_codepoint_t *بیرون,
+		  بیعلامت صحيح    اندازه);
 
-HB_END_DECLS
+HB_انتها_DECLS
 
-#endif /* HB_SET_H */
+#پایان_اگر /* HB_SET_H */

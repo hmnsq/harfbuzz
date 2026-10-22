@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#إذا !defined(HB_H_درون) && !defined(HB_NO_SINGLE_سرآیند_ERROR)
+#خطا "Include <hb.h> instead."
+#پایان_اگر
 
-#ifndef HB_DRAW_H
-#define HB_DRAW_H
+#اگر_تعریف_نشده HB_DRAW_H
+#تعریف_کن HB_DRAW_H
 
-#include "hb.h"
+#ضمن "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -46,23 +46,23 @@ HB_BEGIN_DECLS
  *
  * Since: 4.0.0
  **/
-typedef struct hb_draw_state_t {
-  hb_bool_t path_open;
+تعريفنوع بنية hb_draw_state_t {
+  hb_bool_t مسیر_open;
 
-  float path_start_x;
-  float path_start_y;
+  عائم مسیر_شروع_x;
+  عائم مسیر_شروع_y;
 
-  float current_x;
-  float current_y;
+  عائم current_x;
+  عائم current_y;
 
   /*< private >*/
-  hb_var_num_t   reserved1;
-  hb_var_num_t   reserved2;
-  hb_var_num_t   reserved3;
-  hb_var_num_t   reserved4;
-  hb_var_num_t   reserved5;
-  hb_var_num_t   reserved6;
-  hb_var_num_t   reserved7;
+  hb_var_رقم_t_2   reserved1;
+  hb_var_رقم_t_2   reserved2;
+  hb_var_رقم_t_2   reserved3;
+  hb_var_رقم_t_2   reserved4;
+  hb_var_رقم_t_2   reserved5;
+  hb_var_رقم_t_2   reserved6;
+  hb_var_رقم_t_2   reserved7;
 } hb_draw_state_t;
 
 /**
@@ -70,7 +70,7 @@ typedef struct hb_draw_state_t {
  *
  * The default #hb_draw_state_t at the start of glyph drawing.
  */
-#define HB_DRAW_STATE_DEFAULT {0, 0.f, 0.f, 0.f, 0.f, {0}, {0}, {0}, {0}, {0}, {0}, {0}}
+#تعریف_کن HB_DRAW_STATE_DEFAULT {0, 0.f, 0.f, 0.f, 0.f, {0}, {0}, {0}, {0}, {0}, {0}, {0}}
 
 
 /**
@@ -86,7 +86,7 @@ typedef struct hb_draw_state_t {
  * Since: 4.0.0
  **/
 
-typedef struct hb_draw_funcs_t hb_draw_funcs_t;
+تعريفنوع بنية hb_draw_funcs_t hb_draw_funcs_t;
 
 
 /**
@@ -104,10 +104,10 @@ typedef struct hb_draw_funcs_t hb_draw_funcs_t;
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_move_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+تعريفنوع فراغ (*hb_draw_move_مقصد_func_t) (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 					hb_draw_state_t *st,
-					float to_x, float to_y,
-					void *user_data);
+					عائم مقصد_x, عائم مقصد_y,
+					فراغ *user_داده);
 
 /**
  * hb_draw_line_to_func_t:
@@ -124,10 +124,10 @@ typedef void (*hb_draw_move_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_line_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+تعريفنوع فراغ (*hb_draw_سطر_مقصد_func_t) (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 					hb_draw_state_t *st,
-					float to_x, float to_y,
-					void *user_data);
+					عائم مقصد_x, عائم مقصد_y,
+					فراغ *user_داده);
 
 /**
  * hb_draw_quadratic_to_func_t:
@@ -146,11 +146,11 @@ typedef void (*hb_draw_line_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_quadratic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+تعريفنوع فراغ (*hb_draw_quadratic_مقصد_func_t) (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 					     hb_draw_state_t *st,
-					     float control_x, float control_y,
-					     float to_x, float to_y,
-					     void *user_data);
+					     عائم control_x, عائم control_y,
+					     عائم مقصد_x, عائم مقصد_y,
+					     فراغ *user_داده);
 
 /**
  * hb_draw_cubic_to_func_t:
@@ -171,12 +171,12 @@ typedef void (*hb_draw_quadratic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_cubic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+تعريفنوع فراغ (*hb_draw_cubic_مقصد_func_t) (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 					 hb_draw_state_t *st,
-					 float control1_x, float control1_y,
-					 float control2_x, float control2_y,
-					 float to_x, float to_y,
-					 void *user_data);
+					 عائم control1_x, عائم control1_y,
+					 عائم control2_x, عائم control2_y,
+					 عائم مقصد_x, عائم مقصد_y,
+					 فراغ *user_داده);
 
 /**
  * hb_draw_close_path_func_t:
@@ -191,9 +191,9 @@ typedef void (*hb_draw_cubic_to_func_t) (hb_draw_funcs_t *dfuncs, void *draw_dat
  * Since: 4.0.0
  *
  **/
-typedef void (*hb_draw_close_path_func_t) (hb_draw_funcs_t *dfuncs, void *draw_data,
+تعريفنوع فراغ (*hb_draw_close_مسیر_func_t) (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 					   hb_draw_state_t *st,
-					   void *user_data);
+					   فراغ *user_داده);
 
 /**
  * hb_draw_set_budget_func_t:
@@ -209,10 +209,10 @@ typedef void (*hb_draw_close_path_func_t) (hb_draw_funcs_t *dfuncs, void *draw_d
  *
  * Since: 14.5.0
  **/
-typedef hb_bool_t (*hb_draw_set_budget_func_t) (hb_draw_funcs_t *dfuncs,
-						 void *draw_data,
+تعريفنوع hb_bool_t (*hb_draw_مجموعه_budget_func_t) (hb_draw_funcs_t *dfuncs,
+						 فراغ *draw_داده,
 						 int64_t budget,
-						 void *user_data);
+						 فراغ *user_داده);
 
 /**
  * hb_draw_get_budget_func_t:
@@ -226,9 +226,9 @@ typedef hb_bool_t (*hb_draw_set_budget_func_t) (hb_draw_funcs_t *dfuncs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t (*hb_draw_get_budget_func_t) (hb_draw_funcs_t *dfuncs,
-					      void *draw_data,
-					      void *user_data);
+تعريفنوع int64_t (*hb_draw_get_budget_func_t) (hb_draw_funcs_t *dfuncs,
+					      فراغ *draw_داده,
+					      فراغ *user_داده);
 
 /**
  * hb_draw_get_budget_remaining_func_t:
@@ -246,9 +246,9 @@ typedef int64_t (*hb_draw_get_budget_func_t) (hb_draw_funcs_t *dfuncs,
  *
  * Since: 14.5.0
  **/
-typedef int64_t *(*hb_draw_get_budget_remaining_func_t) (hb_draw_funcs_t *dfuncs,
-							 void *draw_data,
-							 void *user_data);
+تعريفنوع int64_t *(*hb_draw_get_budget_مانده_func_t) (hb_draw_funcs_t *dfuncs,
+							 فراغ *draw_داده,
+							 فراغ *user_داده);
 
 /**
  * hb_draw_funcs_set_move_to_func:
@@ -261,10 +261,10 @@ typedef int64_t *(*hb_draw_get_budget_remaining_func_t) (hb_draw_funcs_t *dfuncs
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_move_to_func (hb_draw_funcs_t        *dfuncs,
-				hb_draw_move_to_func_t  func,
-				void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_move_مقصد_func (hb_draw_funcs_t        *dfuncs,
+				hb_draw_move_مقصد_func_t  func,
+				فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_line_to_func:
@@ -277,10 +277,10 @@ hb_draw_funcs_set_move_to_func (hb_draw_funcs_t        *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_line_to_func (hb_draw_funcs_t        *dfuncs,
-				hb_draw_line_to_func_t  func,
-				void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_سطر_مقصد_func (hb_draw_funcs_t        *dfuncs,
+				hb_draw_سطر_مقصد_func_t  func,
+				فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_quadratic_to_func:
@@ -293,10 +293,10 @@ hb_draw_funcs_set_line_to_func (hb_draw_funcs_t        *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_quadratic_to_func (hb_draw_funcs_t             *dfuncs,
-				     hb_draw_quadratic_to_func_t  func,
-				     void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_quadratic_مقصد_func (hb_draw_funcs_t             *dfuncs,
+				     hb_draw_quadratic_مقصد_func_t  func,
+				     فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_cubic_to_func:
@@ -309,10 +309,10 @@ hb_draw_funcs_set_quadratic_to_func (hb_draw_funcs_t             *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_cubic_to_func (hb_draw_funcs_t         *dfuncs,
-				 hb_draw_cubic_to_func_t  func,
-				 void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_cubic_مقصد_func (hb_draw_funcs_t         *dfuncs,
+				 hb_draw_cubic_مقصد_func_t  func,
+				 فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_close_path_func:
@@ -325,10 +325,10 @@ hb_draw_funcs_set_cubic_to_func (hb_draw_funcs_t         *dfuncs,
  *
  * Since: 4.0.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_close_path_func (hb_draw_funcs_t           *dfuncs,
-				   hb_draw_close_path_func_t  func,
-				   void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_close_مسیر_func (hb_draw_funcs_t           *dfuncs,
+				   hb_draw_close_مسیر_func_t  func,
+				   فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_set_budget_func:
@@ -341,10 +341,10 @@ hb_draw_funcs_set_close_path_func (hb_draw_funcs_t           *dfuncs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_set_budget_func (hb_draw_funcs_t         *dfuncs,
-				   hb_draw_set_budget_func_t  func,
-				   void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_مجموعه_budget_func (hb_draw_funcs_t         *dfuncs,
+				   hb_draw_مجموعه_budget_func_t  func,
+				   فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_get_budget_func:
@@ -357,10 +357,10 @@ hb_draw_funcs_set_set_budget_func (hb_draw_funcs_t         *dfuncs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_get_budget_func (hb_draw_funcs_t         *dfuncs,
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_get_budget_func (hb_draw_funcs_t         *dfuncs,
 				   hb_draw_get_budget_func_t  func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   فراغ *user_داده, hb_destroy_func_t destroy);
 
 /**
  * hb_draw_funcs_set_get_budget_remaining_func:
@@ -373,78 +373,78 @@ hb_draw_funcs_set_get_budget_func (hb_draw_funcs_t         *dfuncs,
  *
  * Since: 14.5.0
  **/
-HB_EXTERN void
-hb_draw_funcs_set_get_budget_remaining_func (hb_draw_funcs_t                   *dfuncs,
-					     hb_draw_get_budget_remaining_func_t  func,
-					     void *user_data, hb_destroy_func_t destroy);
+HB_EXTERN فراغ
+hb_draw_funcs_مجموعه_get_budget_مانده_func (hb_draw_funcs_t                   *dfuncs,
+					     hb_draw_get_budget_مانده_func_t  func,
+					     فراغ *user_داده, hb_destroy_func_t destroy);
 
 
 HB_EXTERN hb_draw_funcs_t *
-hb_draw_funcs_create (void);
+hb_draw_funcs_create (فراغ);
 
 HB_EXTERN hb_draw_funcs_t *
-hb_draw_funcs_get_empty (void);
+hb_draw_funcs_get_خالی (فراغ);
 
 HB_EXTERN hb_draw_funcs_t *
 hb_draw_funcs_reference (hb_draw_funcs_t *dfuncs);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_draw_funcs_destroy (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
-hb_draw_funcs_set_user_data (hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_draw_funcs_مجموعه_user_داده (hb_draw_funcs_t *dfuncs,
+			     hb_user_داده_کلید_t *کلید_2,
+			     فراغ *              داده,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_draw_funcs_get_user_data (const hb_draw_funcs_t *dfuncs,
-			     hb_user_data_key_t       *key);
+HB_EXTERN فراغ *
+hb_draw_funcs_get_user_داده (ثابت hb_draw_funcs_t *dfuncs,
+			     hb_user_داده_کلید_t       *کلید_2);
 
-HB_EXTERN void
+HB_EXTERN فراغ
 hb_draw_funcs_make_immutable (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
 hb_draw_funcs_is_immutable (hb_draw_funcs_t *dfuncs);
 
 HB_EXTERN hb_bool_t
-hb_draw_set_budget (hb_draw_funcs_t *dfuncs, void *draw_data,
+hb_draw_مجموعه_budget (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		    int64_t budget);
 
 HB_EXTERN int64_t
-hb_draw_get_budget (hb_draw_funcs_t *dfuncs, void *draw_data);
+hb_draw_get_budget (hb_draw_funcs_t *dfuncs, فراغ *draw_داده);
 
 HB_EXTERN int64_t
-hb_draw_get_budget_remaining (hb_draw_funcs_t *dfuncs, void *draw_data);
+hb_draw_get_budget_مانده (hb_draw_funcs_t *dfuncs, فراغ *draw_داده);
 
 
-HB_EXTERN void
-hb_draw_move_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_move_مقصد (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y);
+		 عائم مقصد_x, عائم مقصد_y);
 
-HB_EXTERN void
-hb_draw_line_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_سطر_مقصد (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		 hb_draw_state_t *st,
-		 float to_x, float to_y);
+		 عائم مقصد_x, عائم مقصد_y);
 
-HB_EXTERN void
-hb_draw_quadratic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_quadratic_مقصد (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		      hb_draw_state_t *st,
-		      float control_x, float control_y,
-		      float to_x, float to_y);
+		      عائم control_x, عائم control_y,
+		      عائم مقصد_x, عائم مقصد_y);
 
-HB_EXTERN void
-hb_draw_cubic_to (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_cubic_مقصد (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		  hb_draw_state_t *st,
-		  float control1_x, float control1_y,
-		  float control2_x, float control2_y,
-		  float to_x, float to_y);
+		  عائم control1_x, عائم control1_y,
+		  عائم control2_x, عائم control2_y,
+		  عائم مقصد_x, عائم مقصد_y);
 
-HB_EXTERN void
-hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_close_مسیر (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		    hb_draw_state_t *st);
 
 
@@ -473,33 +473,33 @@ hb_draw_close_path (hb_draw_funcs_t *dfuncs, void *draw_data,
  *
  * Since: 14.2.0
  **/
-typedef enum {
-  HB_DRAW_LINE_CAP_BUTT   = 0,
-  HB_DRAW_LINE_CAP_SQUARE = 1,
-} hb_draw_line_cap_t;
+تعريفنوع تعداد {
+  HB_DRAW_سطر_CAP_BUTT   = 0,
+  HB_DRAW_سطر_CAP_مربع = 1,
+} hb_draw_سطر_cap_t;
 
-HB_EXTERN void
-hb_draw_line (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_سطر (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 	      hb_draw_state_t *st,
-	      float x0, float y0, float w0,
-	      float x1, float y1, float w1,
-	      hb_draw_line_cap_t cap);
+	      عائم x0, عائم y0, عائم w0,
+	      عائم x1, عائم y1, عائم w1,
+	      hb_draw_سطر_cap_t cap);
 
-HB_EXTERN void
-hb_draw_rectangle (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_rectangle (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		   hb_draw_state_t *st,
-		   float x, float y,
-		   float w, float h,
-	      float stroke_width);
+		   عائم x, عائم y,
+		   عائم w, عائم h,
+	      عائم stroke_عرض);
 
-HB_EXTERN void
-hb_draw_circle (hb_draw_funcs_t *dfuncs, void *draw_data,
+HB_EXTERN فراغ
+hb_draw_circle (hb_draw_funcs_t *dfuncs, فراغ *draw_داده,
 		hb_draw_state_t *st,
-		float cx, float cy,
-		float r,
-		float stroke_width);
+		عائم cx, عائم cy,
+		عائم r,
+		عائم stroke_عرض);
 
 
-HB_END_DECLS
+HB_انتها_DECLS
 
-#endif /* HB_DRAW_H */
+#پایان_اگر /* HB_DRAW_H */

@@ -22,237 +22,237 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_DRAW_HH
-#define HB_DRAW_HH
+#اگر_تعریف_نشده HB_DRAW_HH
+#تعریف_کن HB_DRAW_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
 /*
  * hb_draw_funcs_t
  */
 
-#define HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_DRAW_FUNC_IMPLEMENT (move_to) \
-  HB_DRAW_FUNC_IMPLEMENT (line_to) \
-  HB_DRAW_FUNC_IMPLEMENT (quadratic_to) \
-  HB_DRAW_FUNC_IMPLEMENT (cubic_to) \
-  HB_DRAW_FUNC_IMPLEMENT (close_path) \
-  HB_DRAW_FUNC_IMPLEMENT (set_budget) \
+#تعریف_کن HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
+  HB_DRAW_FUNC_IMPLEMENT (move_مقصد) \
+  HB_DRAW_FUNC_IMPLEMENT (سطر_مقصد) \
+  HB_DRAW_FUNC_IMPLEMENT (quadratic_مقصد) \
+  HB_DRAW_FUNC_IMPLEMENT (cubic_مقصد) \
+  HB_DRAW_FUNC_IMPLEMENT (close_مسیر) \
+  HB_DRAW_FUNC_IMPLEMENT (مجموعه_budget) \
   HB_DRAW_FUNC_IMPLEMENT (get_budget) \
-  HB_DRAW_FUNC_IMPLEMENT (get_budget_remaining) \
+  HB_DRAW_FUNC_IMPLEMENT (get_budget_مانده) \
   /* ^--- Add new callbacks here */
 
-struct hb_draw_funcs_t
+بنية hb_draw_funcs_t
 {
-  hb_object_header_t header;
+  hb_object_سرآیند_t سرآیند;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
+  بنية {
+#تعریف_کن HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#لغو_تعریف HB_DRAW_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) void *name;
+  بنية {
+#تعریف_کن HB_DRAW_FUNC_IMPLEMENT(name) فراغ *name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
-  } *user_data;
+#لغو_تعریف HB_DRAW_FUNC_IMPLEMENT
+  } *user_داده;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
+  بنية {
+#تعریف_کن HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#لغو_تعریف HB_DRAW_FUNC_IMPLEMENT
   } *destroy;
 
-  void emit_move_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.move_to (this, draw_data, &st,
-		  to_x, to_y,
-		  !user_data ? nullptr : user_data->move_to); }
-  void emit_line_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.line_to (this, draw_data, &st,
-		  to_x, to_y,
-		  !user_data ? nullptr : user_data->line_to); }
-  void emit_quadratic_to (void *draw_data, hb_draw_state_t &st,
-			  float control_x, float control_y,
-			  float to_x, float to_y)
-  { func.quadratic_to (this, draw_data, &st,
+  فراغ emit_move_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+		     عائم مقصد_x, عائم مقصد_y)
+  { func.move_مقصد (هذا, draw_داده, &st,
+		  مقصد_x, مقصد_y,
+		  !user_داده ? اشاره_تهی : user_داده->move_مقصد); }
+  فراغ emit_سطر_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+		     عائم مقصد_x, عائم مقصد_y)
+  { func.سطر_مقصد (هذا, draw_داده, &st,
+		  مقصد_x, مقصد_y,
+		  !user_داده ? اشاره_تهی : user_داده->سطر_مقصد); }
+  فراغ emit_quadratic_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+			  عائم control_x, عائم control_y,
+			  عائم مقصد_x, عائم مقصد_y)
+  { func.quadratic_مقصد (هذا, draw_داده, &st,
 		       control_x, control_y,
-		       to_x, to_y,
-		       !user_data ? nullptr : user_data->quadratic_to); }
-  void emit_cubic_to (void *draw_data, hb_draw_state_t &st,
-		      float control1_x, float control1_y,
-		      float control2_x, float control2_y,
-		      float to_x, float to_y)
-  { func.cubic_to (this, draw_data, &st,
+		       مقصد_x, مقصد_y,
+		       !user_داده ? اشاره_تهی : user_داده->quadratic_مقصد); }
+  فراغ emit_cubic_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+		      عائم control1_x, عائم control1_y,
+		      عائم control2_x, عائم control2_y,
+		      عائم مقصد_x, عائم مقصد_y)
+  { func.cubic_مقصد (هذا, draw_داده, &st,
 		   control1_x, control1_y,
 		   control2_x, control2_y,
-		   to_x, to_y,
-		   !user_data ? nullptr : user_data->cubic_to); }
-  void emit_close_path (void *draw_data, hb_draw_state_t &st)
-  { func.close_path (this, draw_data, &st,
-		     !user_data ? nullptr : user_data->close_path); }
+		   مقصد_x, مقصد_y,
+		   !user_داده ? اشاره_تهی : user_داده->cubic_مقصد); }
+  فراغ emit_close_مسیر (فراغ *draw_داده, hb_draw_state_t &st)
+  { func.close_مسیر (هذا, draw_داده, &st,
+		     !user_داده ? اشاره_تهی : user_داده->close_مسیر); }
 
-  bool set_budget (void *draw_data, int64_t budget)
+  منطقي مجموعه_budget (فراغ *draw_داده, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    إذا (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, draw_data, budget,
-			    !user_data ? nullptr : user_data->set_budget);
+    أرجع func.مجموعه_budget (هذا, draw_داده, budget,
+			    !user_داده ? اشاره_تهی : user_داده->مجموعه_budget);
   }
-  int64_t get_budget (void *draw_data)
-  { return func.get_budget (this, draw_data,
-			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *draw_data)
-  { return func.get_budget_remaining (this, draw_data,
-				      !user_data ? nullptr : user_data->get_budget_remaining); }
+  int64_t get_budget (فراغ *draw_داده)
+  { أرجع func.get_budget (هذا, draw_داده,
+			    !user_داده ? اشاره_تهی : user_داده->get_budget); }
+  int64_t *get_budget_مانده_ptr (فراغ *draw_داده)
+  { أرجع func.get_budget_مانده (هذا, draw_داده,
+				      !user_داده ? اشاره_تهی : user_داده->get_budget_مانده); }
 
 
-  void
+  فراغ
   HB_ALWAYS_INLINE
-  move_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
+  move_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+	   عائم مقصد_x, عائم مقصد_y)
   {
-    if (unlikely (st.path_open)) close_path (draw_data, st);
+    إذا (unlikely (st.مسیر_open)) close_مسیر (draw_داده, st);
 
-    st.current_x = to_x;
-    st.current_y = to_y;
-  }
-
-  void
-  HB_ALWAYS_INLINE
-  line_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
-  {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
-
-    emit_line_to (draw_data, st, to_x, to_y);
-
-    st.current_x = to_x;
-    st.current_y = to_y;
+    st.current_x = مقصد_x;
+    st.current_y = مقصد_y;
   }
 
-  void
+  فراغ
   HB_ALWAYS_INLINE
-  quadratic_to (void *draw_data, hb_draw_state_t &st,
-		float control_x, float control_y,
-		float to_x, float to_y)
+  سطر_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+	   عائم مقصد_x, عائم مقصد_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    إذا (unlikely (!st.مسیر_open)) شروع_مسیر (draw_داده, st);
 
-    emit_quadratic_to (draw_data, st, control_x, control_y, to_x, to_y);
+    emit_سطر_مقصد (draw_داده, st, مقصد_x, مقصد_y);
 
-    st.current_x = to_x;
-    st.current_y = to_y;
+    st.current_x = مقصد_x;
+    st.current_y = مقصد_y;
   }
 
-  void
+  فراغ
   HB_ALWAYS_INLINE
-  cubic_to (void *draw_data, hb_draw_state_t &st,
-	    float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  quadratic_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+		عائم control_x, عائم control_y,
+		عائم مقصد_x, عائم مقصد_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    إذا (unlikely (!st.مسیر_open)) شروع_مسیر (draw_داده, st);
 
-    emit_cubic_to (draw_data, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
+    emit_quadratic_مقصد (draw_داده, st, control_x, control_y, مقصد_x, مقصد_y);
 
-    st.current_x = to_x;
-    st.current_y = to_y;
+    st.current_x = مقصد_x;
+    st.current_y = مقصد_y;
   }
 
-  void
+  فراغ
   HB_ALWAYS_INLINE
-  close_path (void *draw_data, hb_draw_state_t &st)
+  cubic_مقصد (فراغ *draw_داده, hb_draw_state_t &st,
+	    عائم control1_x, عائم control1_y,
+	    عائم control2_x, عائم control2_y,
+	    عائم مقصد_x, عائم مقصد_y)
   {
-    if (likely (st.path_open))
+    إذا (unlikely (!st.مسیر_open)) شروع_مسیر (draw_داده, st);
+
+    emit_cubic_مقصد (draw_داده, st, control1_x, control1_y, control2_x, control2_y, مقصد_x, مقصد_y);
+
+    st.current_x = مقصد_x;
+    st.current_y = مقصد_y;
+  }
+
+  فراغ
+  HB_ALWAYS_INLINE
+  close_مسیر (فراغ *draw_داده, hb_draw_state_t &st)
+  {
+    إذا (likely (st.مسیر_open))
     {
-      if ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
-	emit_line_to (draw_data, st, st.path_start_x, st.path_start_y);
-      emit_close_path (draw_data, st);
+      إذا ((st.مسیر_شروع_x != st.current_x) || (st.مسیر_شروع_y != st.current_y))
+	emit_سطر_مقصد (draw_داده, st, st.مسیر_شروع_x, st.مسیر_شروع_y);
+      emit_close_مسیر (draw_داده, st);
     }
-    st.path_open = false;
-    st.path_start_x = st.current_x = st.path_start_y = st.current_y = 0;
+    st.مسیر_open = خطأ;
+    st.مسیر_شروع_x = st.current_x = st.مسیر_شروع_y = st.current_y = 0;
   }
 
-  protected:
+  محمي:
 
-  void start_path (void *draw_data, hb_draw_state_t &st)
+  فراغ شروع_مسیر (فراغ *draw_داده, hb_draw_state_t &st)
   {
-    assert (!st.path_open);
-    emit_move_to (draw_data, st, st.current_x, st.current_y);
-    st.path_open = true;
-    st.path_start_x = st.current_x;
-    st.path_start_y = st.current_y;
+    أكد (!st.مسیر_open);
+    emit_move_مقصد (draw_داده, st, st.current_x, st.current_y);
+    st.مسیر_open = درست;
+    st.مسیر_شروع_x = st.current_x;
+    st.مسیر_شروع_y = st.current_y;
   }
 };
 DECLARE_NULL_INSTANCE (hb_draw_funcs_t);
 
-struct hb_draw_session_t
+بنية hb_draw_session_t
 {
-  hb_draw_session_t (hb_draw_funcs_t *funcs_, void *draw_data_)
-    : funcs {funcs_}, draw_data {draw_data_}, st HB_DRAW_STATE_DEFAULT,
-      local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_remaining_ptr (draw_data)}
+  hb_draw_session_t (hb_draw_funcs_t *funcs_, فراغ *draw_داده_2)
+    : funcs {funcs_}, draw_داده {draw_داده_2}, st HB_DRAW_STATE_DEFAULT,
+      local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_مانده_ptr (draw_داده)}
   {
-    if (!budget)
+    إذا (!budget)
       budget = &local_budget;
   }
 
-  ~hb_draw_session_t () { close_path (); }
+  ~hb_draw_session_t () { close_مسیر (); }
 
   HB_ALWAYS_INLINE
-  void move_to (float to_x, float to_y)
+  فراغ move_مقصد (عائم مقصد_x, عائم مقصد_y)
   {
-    funcs->move_to (draw_data, st,
-		    to_x, to_y);
+    funcs->move_مقصد (draw_داده, st,
+		    مقصد_x, مقصد_y);
   }
   HB_ALWAYS_INLINE
-  void line_to (float to_x, float to_y)
+  فراغ سطر_مقصد (عائم مقصد_x, عائم مقصد_y)
   {
-    funcs->line_to (draw_data, st,
-		    to_x, to_y);
+    funcs->سطر_مقصد (draw_داده, st,
+		    مقصد_x, مقصد_y);
   }
-  void
+  فراغ
   HB_ALWAYS_INLINE
-  quadratic_to (float control_x, float control_y,
-		float to_x, float to_y)
+  quadratic_مقصد (عائم control_x, عائم control_y,
+		عائم مقصد_x, عائم مقصد_y)
   {
-    funcs->quadratic_to (draw_data, st,
+    funcs->quadratic_مقصد (draw_داده, st,
 			 control_x, control_y,
-			 to_x, to_y);
+			 مقصد_x, مقصد_y);
   }
-  void
+  فراغ
   HB_ALWAYS_INLINE
-  cubic_to (float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  cubic_مقصد (عائم control1_x, عائم control1_y,
+	    عائم control2_x, عائم control2_y,
+	    عائم مقصد_x, عائم مقصد_y)
   {
-    funcs->cubic_to (draw_data, st,
+    funcs->cubic_مقصد (draw_داده, st,
 		     control1_x, control1_y,
 		     control2_x, control2_y,
-		     to_x, to_y);
+		     مقصد_x, مقصد_y);
   }
   HB_ALWAYS_INLINE
-  void close_path ()
+  فراغ close_مسیر ()
   {
-    funcs->close_path (draw_data, st);
+    funcs->close_مسیر (draw_داده, st);
   }
 
-  int64_t &get_budget () { return *budget; }
+  int64_t &get_budget () { أرجع *budget; }
 
-  public:
+  عام:
   hb_draw_funcs_t *funcs;
-  void *draw_data;
+  فراغ *draw_داده;
   hb_draw_state_t st;
   int64_t local_budget;
   int64_t *budget;
 };
 
 
-HB_INTERNAL hb_draw_funcs_t *
+HB_داخلی hb_draw_funcs_t *
 hb_draw_extents_get_funcs ();
 
 
-#endif /* HB_DRAW_HH */
+#پایان_اگر /* HB_DRAW_HH */

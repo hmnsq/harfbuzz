@@ -24,65 +24,65 @@
  * Google Author(s): Garret Rieger, Qunxin Liu, Roderick Sheeter
  */
 
- #include "hb-ot-layout-common.hh"
-#include "hb-subset-plan.hh"
+ #ضمن "hb-ot-layout-common.hh"
+#ضمن "hb-subset-plan.hh"
 
- #include "hb-ot-var-common.hh"
- #include "hb-ot-layout-base-table.hh"
- #include "hb-ot-glyf-table.hh"
- #include "hb-ot-var-fvar-table.hh"
- #include "hb-ot-var-avar-table.hh"
- #include "hb-ot-cff2-table.hh"
+ #ضمن "hb-ot-var-common.hh"
+ #ضمن "hb-ot-layout-base-table.hh"
+ #ضمن "hb-ot-glyf-table.hh"
+ #ضمن "hb-ot-var-fvar-table.hh"
+ #ضمن "hb-ot-var-avar-table.hh"
+ #ضمن "hb-ot-cff2-table.hh"
 
- #ifndef HB_NO_VAR
+ #اگر_تعریف_نشده HB_NO_VAR
 
- void
- generate_varstore_inner_maps (const hb_set_t& varidx_set,
-                               unsigned subtable_count,
-                               hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */)
+ فراغ
+ generate_varstore_inner_maps (ثابت hb_مجموعه_t& varidx_مجموعه,
+                               بیعلامت subtable_شمار,
+                               hb_وکتور_t<hb_inc_bimap_t> &inner_maps /*بیرون*/)
  {
-   if (varidx_set.is_empty () || subtable_count == 0) return;
+   إذا (varidx_مجموعه.is_empty () || subtable_شمار == 0) أرجع;
 
-   if (unlikely (!inner_maps.resize (subtable_count))) return;
-   for (unsigned idx : varidx_set)
+   إذا (unlikely (!inner_maps.resize (subtable_شمار))) أرجع;
+   لكل (بیعلامت idx : varidx_مجموعه)
    {
      uint16_t major = idx >> 16;
      uint16_t minor = idx & 0xFFFF;
 
-     if (major >= subtable_count)
-       continue;
-     inner_maps[major].add (minor);
+     إذا (major >= subtable_شمار)
+       استمر;
+     inner_maps[major].جمع_کن (minor);
    }
  }
 
  /* Evaluate a variation-region tent at v, mirroring VarRegionAxis::evaluate
   * (invalid regions evaluate as constant 1). */
- static double
- _tent_eval (const Triple &tent, double v)
+ ساكن مزدوج
+ _tent_eval (ثابت Triple &tent, مزدوج v)
  {
-   double start = (double) tent.minimum;
-   double peak = (double) tent.middle;
-   double end = (double) tent.maximum;
-   if (unlikely (start > peak || peak > end)) return 1.0;
-   if (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) return 1.0;
-   if (peak == 0.0 || v == peak) return 1.0;
-   if (v <= start || end <= v) return 0.0;
-   if (v < peak) return (v - start) / (peak - start);
-   return (end - v) / (end - peak);
+   مزدوج شروع = (مزدوج) tent.minimum;
+   مزدوج peak = (مزدوج) tent.میانه;
+   مزدوج انتها = (مزدوج) tent.بیشینه;
+   إذا (unlikely (شروع > peak || peak > انتها)) أرجع 1.0;
+   إذا (unlikely (شروع < 0.0 && انتها > 0.0 && peak != 0.0)) أرجع 1.0;
+   إذا (peak == 0.0 || v == peak) أرجع 1.0;
+   إذا (v <= شروع || انتها <= v) أرجع 0.0;
+   إذا (v < peak) أرجع (v - شروع) / (peak - شروع);
+   أرجع (انتها - v) / (انتها - peak);
  }
 
  /* Range of a tent's scalar over an input interval [lo, hi]. The tent is
   * unimodal, so the extremes are at the interval endpoints, plus the peak
   * when it falls inside. */
- static void
- _tent_value_range (const Triple &tent, double lo, double hi,
-                    double *tmin, double *tmax)
+ ساكن فراغ
+ tent_مقدار_range (ثابت Triple &tent, مزدوج lo, مزدوج hi,
+                    مزدوج *tmin, مزدوج *tmax)
  {
-   double a = _tent_eval (tent, lo);
-   double b = _tent_eval (tent, hi);
+   مزدوج a = _tent_eval (tent, lo);
+   مزدوج b = _tent_eval (tent, hi);
    *tmin = hb_min (a, b);
    *tmax = hb_max (a, b);
-   if (lo <= (double) tent.middle && (double) tent.middle <= hi)
+   إذا (lo <= (مزدوج) tent.میانه && (مزدوج) tent.میانه <= hi)
      *tmax = hb_max (*tmax, 1.0);
  }
 
@@ -99,77 +99,77 @@
   * plan time (the same quantity fontTools bounds via getExtremes on the
   * instanced store). Only constraining ranges (narrower than [-1, +1]) are
   * recorded. */
- static bool
+ ساكن منطقي
  _compute_avar2_reachable_ranges (hb_subset_plan_t *plan,
-                                  hb_array_t<const OT::AxisRecord> axes,
-                                  const OT::avar *avar_table,
-                                  bool detect_self_contained)
+                                  hb_array_t<ثابت OT::Axis_رکورد> axes,
+                                  ثابت OT::avar *avar_جدول,
+                                  منطقي detect_self_contained)
  {
-   const OT::ItemVariationStore *var_store;
-   const OT::DeltaSetIndexMap *varidx_map;
-   if (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
-     return false;
+   ثابت OT::قلم_Variation_Store *var_store;
+   ثابت OT::Delta_مجموعه_شاخص_Map *varidx_map;
+   إذا (!avar_جدول->get_v2_store_and_map (&var_store, &varidx_map))
+     أرجع خطأ;
 
    /* Old-intermediate input box per axis. */
-   hb_hashmap_t<hb_tag_t, hb_pair_t<double, double>> box;
-   for (const auto &axis : axes)
+   hb_hashmap_t<hb_برچسب_t, hb_pair_t<مزدوج, مزدوج>> box;
+   لكل (ثابت خودکار &axis : axes)
    {
-     hb_tag_t tag = axis.get_axis_tag ();
-     double lo = -1.0, hi = +1.0;
+     hb_برچسب_t برچسب_2 = axis.get_axis_برچسب ();
+     مزدوج lo = -1.0, hi = +1.0;
      Triple *old_int;
-     if (plan->user_axes_location.has (tag))
+     إذا (plan->user_axes_location.has (برچسب_2))
      {
-       if (!plan->old_intermediates.has (tag, &old_int)) return false;
-       lo = (double) old_int->minimum;
-       hi = (double) old_int->maximum;
+       إذا (!plan->old_intermediates.has (برچسب_2, &old_int)) أرجع خطأ;
+       lo = (مزدوج) old_int->minimum;
+       hi = (مزدوج) old_int->بیشینه;
      }
-     else if (axis.is_hidden ())
+     وإلا إذا (axis.is_hidden ())
        lo = hi = 0.0; /* private axis: intermediate is always 0 */
-     if (!box.set (tag, hb_pair (lo, hi))) return false;
+     إذا (!box.مجموعه (برچسب_2, hb_pair (lo, hi))) أرجع خطأ;
    }
 
-   hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>> regions;
-   if (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
-     return false;
+   hb_وکتور_t<hb_hashmap_t<hb_برچسب_t, Triple>> regions;
+   إذا (!var_store->get_region_list ().get_var_regions (plan->axes_old_شاخص_برچسب_map, regions))
+     أرجع خطأ;
 
-   hb_hashmap_t<hb_tag_t, unsigned> grid_pos;
-   hb_vector_t<hb_vector_t<double>> grid_points;
-   for (unsigned i = 0; i < axes.length; i++)
+   hb_hashmap_t<hb_برچسب_t, بیعلامت> grid_pos;
+   hb_وکتور_t<hb_وکتور_t<مزدوج>> grid_points;
+   لكل (بیعلامت i = 0; i < axes.درازی; i++)
    {
      grid_pos.reset ();
      grid_points.reset ();
 
-     hb_tag_t tag = axes[i].get_axis_tag ();
-     hb_pair_t<double, double> *identity;
-     if (!box.has (tag, &identity)) return false;
+     hb_برچسب_t برچسب_2 = axes[i].get_axis_برچسب ();
+     hb_pair_t<مزدوج, مزدوج> *عنصر_خنثی;
+     إذا (!box.has (برچسب_2, &عنصر_خنثی)) أرجع خطأ;
 
      /* Collect the row's active regions (non-zero delta). A varidx (or the
       * implicit identity mapping) that doesn't resolve to a real store row
       * behaves as "no variation" at runtime, so it contributes no regions;
       * this also covers a NULL VarStore. */
-     hb_vector_t<hb_pair_t<int, unsigned>> active; /* (delta, region index) */
+     hb_وکتور_t<hb_pair_t<صحيح, بیعلامت>> فعال; /* (delta, region index) */
      uint32_t varidx = varidx_map->map (i);
      /* Runtime treats out-of-range delta-set indices as zero. */
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
-	 !var_store->has_delta_set (varidx))
-       varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+     إذا (varidx != HB_OT_LAYOUT_NO_VARIATIONS_شاخص &&
+	 !var_store->has_delta_مجموعه (varidx))
+       varidx = HB_OT_LAYOUT_NO_VARIATIONS_شاخص;
+     إذا (varidx != HB_OT_LAYOUT_NO_VARIATIONS_شاخص)
      {
-       unsigned outer = varidx >> 16;
-       unsigned inner = varidx & 0xFFFF;
-       const OT::VarData &vd = var_store->get_sub_table (outer);
-       const OT::HBUINT8 *delta_bytes = vd.get_delta_bytes ();
-       unsigned row_size = vd.get_row_size ();
-       unsigned region_count = vd.get_region_index_count ();
-       for (unsigned r = 0; r < region_count; r++)
+       بیعلامت outer = varidx >> 16;
+       بیعلامت inner = varidx & 0xFFFF;
+       ثابت OT::Var_داده &vd = var_store->get_sub_جدول (outer);
+       ثابت OT::HBUINT8 *delta_بایتها = vd.get_delta_بایتها ();
+       بیعلامت ردیف_اندازه = vd.get_ردیف_اندازه ();
+       بیعلامت region_شمار_2 = vd.get_region_شاخص_شمار ();
+       لكل (بیعلامت r = 0; r < region_شمار_2; r++)
        {
-	 int delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
-	 if (!delta) continue;
-	 unsigned region_idx = vd.get_region_index (r);
-	 if (region_idx >= regions.length) return false;
-	 active.push (hb_pair (delta, region_idx));
+	 صحيح delta = vd.get_قلم_delta_fast (inner, r, delta_بایتها, ردیف_اندازه);
+	 إذا (!delta) استمر;
+	 بیعلامت region_idx = vd.get_region_شاخص (r);
+	 إذا (region_idx >= regions.درازی) أرجع خطأ;
+	 فعال.push (hb_pair (delta, region_idx));
        }
-       if (active.in_error ()) return false;
+       إذا (فعال.درون_error ()) أرجع خطأ;
      }
 
      /* The delta is piecewise multilinear in the axis coordinates (each
@@ -180,136 +180,136 @@
       * arithmetic, which ignores correlations between regions and is
       * looser but still conservative. Mirrors fontTools'
       * VarStore.getExtremes. */
-     constexpr unsigned MAX_GRID = 1u << 14;
-     bool exact = true;
-     double dmin = 0.0, dmax = 0.0; /* delta extremes, F2Dot14 units */
-     double vmin = 0.0, vmax = 0.0; /* identity + delta extremes, coord units */
+     constexpr بیعلامت MAX_GRID = 1u << 14;
+     منطقي exact = درست;
+     مزدوج dmin = 0.0, dmax = 0.0; /* delta extremes, F2Dot14 units */
+     مزدوج vmin = 0.0, vmax = 0.0; /* identity + delta extremes, coord units */
 
      /* Grid axes: the target axis (identity term), plus every axis a valid
       * tent of an active region references. */
-     auto add_grid_axis = [&] (hb_tag_t t) -> int
+     خودکار جمع_کن_grid_axis = [&] (hb_برچسب_t t) -> صحيح
      {
-       unsigned *pos;
-       if (grid_pos.has (t, &pos)) return (int) *pos;
-       unsigned new_pos = grid_pos.get_population ();
-       hb_pair_t<double, double> *input;
-       double blo = -1.0, bhi = +1.0;
-       if (box.has (t, &input)) { blo = input->first; bhi = input->second; }
-       grid_points.push (hb_vector_t<double> ());
-       if (grid_points.in_error ()) return -1;
-       auto &points = grid_points[new_pos];
+       بیعلامت *pos;
+       إذا (grid_pos.has (t, &pos)) أرجع (صحيح) *pos;
+       بیعلامت new_pos = grid_pos.get_population ();
+       hb_pair_t<مزدوج, مزدوج> *درون_داد;
+       مزدوج blo = -1.0, bhi = +1.0;
+       إذا (box.has (t, &درون_داد)) { blo = درون_داد->اولی; bhi = درون_داد->second; }
+       grid_points.push (hb_وکتور_t<مزدوج> ());
+       إذا (grid_points.درون_error ()) أرجع -1;
+       خودکار &points = grid_points[new_pos];
        points.push (blo);
        points.push (bhi);
-       if (points.in_error () || !grid_pos.set (t, new_pos)) return -1;
-       return (int) new_pos;
+       إذا (points.درون_error () || !grid_pos.مجموعه (t, new_pos)) أرجع -1;
+       أرجع (صحيح) new_pos;
      };
 
-     if (add_grid_axis (tag) < 0) return false;
+     إذا (جمع_کن_grid_axis (برچسب_2) < 0) أرجع خطأ;
      /* Per active region: (grid axis position, tent) for its valid tents. */
-     hb_vector_t<hb_vector_t<hb_pair_t<unsigned, Triple>>> region_tents;
-     for (const auto &ar : active)
+     hb_وکتور_t<hb_وکتور_t<hb_pair_t<بیعلامت, Triple>>> region_tents;
+     لكل (ثابت خودکار &ar : فعال)
      {
-       region_tents.push (hb_vector_t<hb_pair_t<unsigned, Triple>> ());
-       if (region_tents.in_error ()) return false;
-       auto &tents = region_tents[region_tents.length - 1];
-       for (const auto &_ : regions[ar.second])
+       region_tents.push (hb_وکتور_t<hb_pair_t<بیعلامت, Triple>> ());
+       إذا (region_tents.درون_error ()) أرجع خطأ;
+       خودکار &tents = region_tents[region_tents.درازی - 1];
+       لكل (ثابت خودکار &_ : regions[ar.second])
        {
-	 const Triple &tent = _.second;
+	 ثابت Triple &tent = _.second;
 	 /* Tents the runtime ignores (constant scalar 1) add no breakpoints. */
-	 if (tent.middle == 0.f ||
-	     tent.minimum > tent.middle || tent.middle > tent.maximum ||
-	     (tent.minimum < 0.f && tent.maximum > 0.f))
-	   continue;
-	 int pos = add_grid_axis (_.first);
-	 if (pos < 0) return false;
-	 auto &points = grid_points[pos];
-	 double blo = points[0], bhi = points[1];
-	 points.push (hb_clamp ((double) tent.minimum, blo, bhi));
-	 points.push (hb_clamp ((double) tent.middle, blo, bhi));
-	 points.push (hb_clamp ((double) tent.maximum, blo, bhi));
-	 tents.push (hb_pair ((unsigned) pos, tent));
-	 if (points.in_error () || tents.in_error ()) return false;
+	 إذا (tent.میانه == 0.f ||
+	     tent.minimum > tent.میانه || tent.میانه > tent.بیشینه ||
+	     (tent.minimum < 0.f && tent.بیشینه > 0.f))
+	   استمر;
+	 صحيح pos = جمع_کن_grid_axis (_.اولی);
+	 إذا (pos < 0) أرجع خطأ;
+	 خودکار &points = grid_points[pos];
+	 مزدوج blo = points[0], bhi = points[1];
+	 points.push (hb_clamp ((مزدوج) tent.minimum, blo, bhi));
+	 points.push (hb_clamp ((مزدوج) tent.میانه, blo, bhi));
+	 points.push (hb_clamp ((مزدوج) tent.بیشینه, blo, bhi));
+	 tents.push (hb_pair ((بیعلامت) pos, tent));
+	 إذا (points.درون_error () || tents.درون_error ()) أرجع خطأ;
        }
      }
 
-     unsigned grid_size = 1;
-     for (auto &points : grid_points)
+     بیعلامت grid_اندازه = 1;
+     لكل (خودکار &points : grid_points)
      {
-       points.qsort ([] (const double &a, const double &b) -> int
-		     { return a < b ? -1 : a > b ? +1 : 0; });
-       unsigned n = 0;
-       for (unsigned j = 0; j < points.length; j++)
-	 if (!n || points.arrayZ[j] != points.arrayZ[n - 1])
+       points.qsort ([] (ثابت مزدوج &a, ثابت مزدوج &b) -> صحيح
+		     { أرجع a < b ? -1 : a > b ? +1 : 0; });
+       بیعلامت n = 0;
+       لكل (بیعلامت j = 0; j < points.درازی; j++)
+	 إذا (!n || points.arrayZ[j] != points.arrayZ[n - 1])
 	   points.arrayZ[n++] = points.arrayZ[j];
        points.shrink (n);
-       if (grid_size > MAX_GRID / points.length) { exact = false; break; }
-       grid_size *= points.length;
+       إذا (grid_اندازه > MAX_GRID / points.درازی) { exact = خطأ; اكسر; }
+       grid_اندازه *= points.درازی;
      }
 
-     if (exact)
+     إذا (exact)
      {
-       unsigned target_pos = 0; /* the target axis was added first */
-       hb_vector_t<unsigned> odometer;
-       if (!odometer.resize (grid_pos.get_population ())) return false;
-       bool first = true;
-       while (true)
+       بیعلامت هدف_pos = 0; /* the target axis was added first */
+       hb_وکتور_t<بیعلامت> odometer;
+       إذا (!odometer.resize (grid_pos.get_population ())) أرجع خطأ;
+       منطقي اولی = درست;
+       طالما (درست)
        {
-	 double delta_sum = 0.0;
-	 for (unsigned r = 0; r < active.length; r++)
+	 مزدوج delta_جمع = 0.0;
+	 لكل (بیعلامت r = 0; r < فعال.درازی; r++)
 	 {
-	   double scalar = 1.0;
-	   for (const auto &pt : region_tents[r])
+	   مزدوج scalar = 1.0;
+	   لكل (ثابت خودکار &pt : region_tents[r])
 	   {
-	     double v = grid_points[pt.first][odometer[pt.first]];
+	     مزدوج v = grid_points[pt.اولی][odometer[pt.اولی]];
 	     scalar *= _tent_eval (pt.second, v);
-	     if (scalar == 0.0) break;
+	     إذا (scalar == 0.0) اكسر;
 	   }
-	   delta_sum += scalar * active[r].first;
+	   delta_جمع += scalar * فعال[r].اولی;
 	 }
-	 double coord = grid_points[target_pos][odometer[target_pos]];
-	 double value = coord + delta_sum / 16384.0;
-	 if (first)
+	 مزدوج coord = grid_points[هدف_pos][odometer[هدف_pos]];
+	 مزدوج value = coord + delta_جمع / 16384.0;
+	 إذا (اولی)
 	 {
-	   dmin = dmax = delta_sum;
+	   dmin = dmax = delta_جمع;
 	   vmin = vmax = value;
-	   first = false;
+	   اولی = خطأ;
 	 }
-	 else
+	 وإلا
 	 {
-	   dmin = hb_min (dmin, delta_sum); dmax = hb_max (dmax, delta_sum);
+	   dmin = hb_min (dmin, delta_جمع); dmax = hb_max (dmax, delta_جمع);
 	   vmin = hb_min (vmin, value);     vmax = hb_max (vmax, value);
 	 }
-	 unsigned k = 0;
-	 for (; k < odometer.length; k++)
+	 بیعلامت k = 0;
+	 لكل (; k < odometer.درازی; k++)
 	 {
-	   if (++odometer[k] < grid_points[k].length) break;
+	   إذا (++odometer[k] < grid_points[k].درازی) اكسر;
 	   odometer[k] = 0;
 	 }
-	 if (k == odometer.length) break;
+	 إذا (k == odometer.درازی) اكسر;
        }
      }
-     else
+     وإلا
      {
-       for (const auto &ar : active)
+       لكل (ثابت خودکار &ar : فعال)
        {
-	 int delta = ar.first;
-	 double smin = 1.0, smax = 1.0;
-	 for (const auto &_ : regions[ar.second])
+	 صحيح delta = ar.اولی;
+	 مزدوج smin = 1.0, smax = 1.0;
+	 لكل (ثابت خودکار &_ : regions[ar.second])
 	 {
-	   hb_pair_t<double, double> *input;
-	   double blo = -1.0, bhi = +1.0;
-	   if (box.has (_.first, &input)) { blo = input->first; bhi = input->second; }
-	   double tmin, tmax;
-	   _tent_value_range (_.second, blo, bhi, &tmin, &tmax);
+	   hb_pair_t<مزدوج, مزدوج> *درون_داد;
+	   مزدوج blo = -1.0, bhi = +1.0;
+	   إذا (box.has (_.اولی, &درون_داد)) { blo = درون_داد->اولی; bhi = درون_داد->second; }
+	   مزدوج tmin, tmax;
+	   tent_مقدار_range (_.second, blo, bhi, &tmin, &tmax);
 	   smin *= tmin;
 	   smax *= tmax;
-	   if (smax == 0.0) break;
+	   إذا (smax == 0.0) اكسر;
 	 }
-	 if (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
-	 else           { dmin += smax * delta; dmax += smin * delta; }
+	 إذا (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
+	 وإلا           { dmin += smax * delta; dmax += smin * delta; }
        }
-       vmin = identity->first + dmin / 16384.0;
-       vmax = identity->second + dmax / 16384.0;
+       vmin = عنصر_خنثی->اولی + dmin / 16384.0;
+       vmax = عنصر_خنثی->second + dmax / 16384.0;
      }
      /* A pinned axis whose delta is constant over the box is self-contained:
       * its final coordinate is a constant. It can be removed from fvar/avar
@@ -318,212 +318,212 @@
       * and add it to the exact quantized intermediate, matching the runtime
       * (map_coords_2_14) and fontTools. */
      Triple *user;
-     if (detect_self_contained && dmin == dmax &&
-	 plan->user_axes_location.has (tag, &user) && user->is_point ())
+     إذا (detect_self_contained && dmin == dmax &&
+	 plan->user_axes_location.has (برچسب_2, &user) && user->is_نقطه ())
      {
-       int v_int = (int) roundf ((float) identity->first * 16384.f) +
-		   (int) roundf ((float) dmin);
+       صحيح v_int = (صحيح) roundf ((عائم) عنصر_خنثی->اولی * 16384.f) +
+		   (صحيح) roundf ((عائم) dmin);
        v_int = hb_clamp (v_int, -(1 << 14), +(1 << 14));
-       if (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) return false;
-       continue; /* axis is dropped; no region can reference it afterwards */
+       إذا (!plan->avar2_self_contained.مجموعه (برچسب_2, v_int / 16384.0)) أرجع خطأ;
+       استمر; /* axis is dropped; no region can reference it afterwards */
      }
 
      /* Pad by one F2Dot14 unit against rounding differences with the
       * runtime's fixed-point evaluation. */
-     double lo = hb_clamp (vmin - 1.0 / 16384.0, -1.0, +1.0);
-     double hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
+     مزدوج lo = hb_clamp (vmin - 1.0 / 16384.0, -1.0, +1.0);
+     مزدوج hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
      lo = floor (lo * 16384.0) / 16384.0;
      hi = ceil (hi * 16384.0) / 16384.0;
-     if (lo <= -1.0 && hi >= +1.0)
-       continue; /* not constraining */
-     if (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
-       return false;
+     إذا (lo <= -1.0 && hi >= +1.0)
+       استمر; /* not constraining */
+     إذا (!plan->avar2_reachable_ranges.مجموعه (برچسب_2, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
+       أرجع خطأ;
    }
-   return true;
+   أرجع درست;
  }
 
-#ifndef HB_NO_OT_FONT_CFF
- static inline hb_font_t*
- _get_hb_font_with_variations (const hb_subset_plan_t *plan)
+#اگر_تعریف_نشده HB_NO_OT_FONT_CFF
+ ساكن مضمن hb_font_t*
+ _get_hb_font_with_variations (ثابت hb_subset_plan_t *plan)
  {
-   hb_font_t *font = hb_font_create (plan->source);
+   hb_font_t *font = hb_font_create (plan->منبع);
 
-   if (plan->has_avar2)
+   إذا (plan->has_avar2)
    {
      /* Under avar2, instancing applies only to the self-contained pins,
       * whose constant final coordinates the plan holds in normalized_coords.
       * Setting user-space variations would run the full avar2 mapping and
       * bake contributions that remain live in the instance's variations. */
-     hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
-                                        plan->normalized_coords.length);
-     return font;
+     hb_font_مجموعه_var_coords_normalized (font, plan->normalized_coords.arrayZ,
+                                        plan->normalized_coords.درازی);
+     أرجع font;
    }
 
-   hb_vector_t<hb_variation_t> vars;
-   if (!vars.alloc (plan->user_axes_location.get_population ())) {
+   hb_وکتور_t<hb_variation_t> vars;
+   إذا (!vars.alloc (plan->user_axes_location.get_population ())) {
      hb_font_destroy (font);
-     return nullptr;
+     أرجع اشاره_تهی;
    }
 
-   for (auto _ : plan->user_axes_location)
+   لكل (خودکار _ : plan->user_axes_location)
    {
      hb_variation_t var;
-     var.tag = _.first;
-     var.value = _.second.middle;
+     var.برچسب_2 = _.اولی;
+     var.value = _.second.میانه;
      vars.push (var);
    }
 
-   hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
-   return font;
+   hb_font_مجموعه_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
+   أرجع font;
  }
-#endif
+#پایان_اگر
 
- template<typename ItemVarStore>
- void
- remap_variation_indices (const ItemVarStore &var_store,
-                          const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
-                          bool calculate_delta, /* not pinned at default */
-                          bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */)
+ قالب<نام_نوع قلم_Var_Store>
+ فراغ
+ remap_variation_indices (ثابت قلم_Var_Store &var_store,
+                          ثابت hb_مجموعه_t &variation_indices,
+                          ثابت hb_وکتور_t<صحيح>& normalized_coords,
+                          منطقي calculate_delta, /* not pinned at default */
+                          منطقي no_variations, /* all axes pinned */
+                          hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> &variation_idx_delta_map /*بیرون*/)
  {
-   if (&var_store == &Null (OT::ItemVariationStore)) return;
-   unsigned subtable_count = var_store.get_sub_table_count ();
-   auto *store_cache = var_store.create_cache ();
+   إذا (&var_store == &Null (OT::قلم_Variation_Store)) أرجع;
+   بیعلامت subtable_شمار = var_store.get_sub_جدول_شمار ();
+   خودکار *store_cache = var_store.create_cache ();
 
-   unsigned new_major = 0, new_minor = 0;
-   unsigned last_major = (variation_indices.get_min ()) >> 16;
-   for (unsigned idx : variation_indices)
+   بیعلامت new_major = 0, new_minor = 0;
+   بیعلامت آخرین_major = (variation_indices.get_min ()) >> 16;
+   لكل (بیعلامت idx : variation_indices)
    {
-     int delta = 0;
-     if (calculate_delta)
+     صحيح delta = 0;
+     إذا (calculate_delta)
        delta = roundf (var_store.get_delta (idx, normalized_coords.arrayZ,
-                                            normalized_coords.length, store_cache));
+                                            normalized_coords.درازی, store_cache));
 
-     if (no_variations)
+     إذا (no_variations)
      {
-       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
-       continue;
+       variation_idx_delta_map.مجموعه (idx, hb_pair_t<بیعلامت, صحيح> (HB_OT_LAYOUT_NO_VARIATIONS_شاخص, delta));
+       استمر;
      }
 
      uint16_t major = idx >> 16;
-     if (major >= subtable_count) break;
-     if (major != last_major)
+     إذا (major >= subtable_شمار) اكسر;
+     إذا (major != آخرین_major)
      {
        new_minor = 0;
        ++new_major;
      }
 
-     unsigned new_idx = (new_major << 16) + new_minor;
-     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (new_idx, delta));
+     بیعلامت new_idx = (new_major << 16) + new_minor;
+     variation_idx_delta_map.مجموعه (idx, hb_pair_t<بیعلامت, صحيح> (new_idx, delta));
      ++new_minor;
-     last_major = major;
+     آخرین_major = major;
    }
    var_store.destroy_cache (store_cache);
  }
 
- template
- void
- remap_variation_indices<OT::ItemVariationStore> (const OT::ItemVariationStore &var_store,
-                          const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
-                          bool calculate_delta, /* not pinned at default */
-                          bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+ قالب
+ فراغ
+ remap_variation_indices<OT::قلم_Variation_Store> (ثابت OT::قلم_Variation_Store &var_store,
+                          ثابت hb_مجموعه_t &variation_indices,
+                          ثابت hb_وکتور_t<صحيح>& normalized_coords,
+                          منطقي calculate_delta, /* not pinned at default */
+                          منطقي no_variations, /* all axes pinned */
+                          hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> &variation_idx_delta_map /*بیرون*/);
 
- #ifndef HB_NO_BASE
- void
- collect_base_variation_indices (hb_subset_plan_t* plan)
+ #اگر_تعریف_نشده HB_NO_پایه
+ فراغ
+ collect_پایه_variation_indices (hb_subset_plan_t* plan)
  {
-   hb_blob_ptr_t<OT::BASE> base = plan->source_table<OT::BASE> ();
-   if (!base->has_var_store ())
+   hb_blob_ptr_t<OT::پایه_4> پایه = plan->منبع_جدول<OT::پایه_4> ();
+   إذا (!پایه->has_var_store ())
    {
-     base.destroy ();
-     return;
+     پایه.destroy ();
+     أرجع;
    }
 
-   hb_set_t varidx_set;
-   base->collect_variation_indices (plan, varidx_set);
-   const OT::ItemVariationStore &var_store = base->get_var_store ();
-   unsigned subtable_count = var_store.get_sub_table_count ();
+   hb_مجموعه_t varidx_مجموعه;
+   پایه->collect_variation_indices (plan, varidx_مجموعه);
+   ثابت OT::قلم_Variation_Store &var_store = پایه->get_var_store ();
+   بیعلامت subtable_شمار = var_store.get_sub_جدول_شمار ();
 
 
-   remap_variation_indices (var_store, varidx_set,
+   remap_variation_indices (var_store, varidx_مجموعه,
                              plan->normalized_coords,
                              !plan->pinned_at_default,
                              plan->all_axes_pinned,
-                             plan->base_variation_idx_map);
-   generate_varstore_inner_maps (varidx_set, subtable_count, plan->base_varstore_inner_maps);
+                             plan->پایه_variation_idx_map);
+   generate_varstore_inner_maps (varidx_مجموعه, subtable_شمار, plan->پایه_varstore_inner_maps);
 
-   base.destroy ();
+   پایه.destroy ();
  }
 
- #endif
+ #پایان_اگر
 
-bool
+منطقي
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 {
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  إذا (plan->user_axes_location.is_empty ())
+    أرجع درست;
 
-  hb_array_t<const OT::AxisRecord> axes = face->table.fvar->get_axes ();
-  for (const auto &axis : axes)
+  hb_array_t<ثابت OT::Axis_رکورد> axes = face->جدول.fvar->get_axes ();
+  لكل (ثابت خودکار &axis : axes)
   {
-    hb_tag_t tag = axis.get_axis_tag ();
-    const Triple *range;
-    float minimum, middle, maximum;
-    axis.get_coordinates (minimum, middle, maximum);
-    if (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
+    hb_برچسب_t برچسب_2 = axis.get_axis_برچسب ();
+    ثابت Triple *range;
+    عائم minimum, میانه, بیشینه;
+    axis.get_coordinates (minimum, میانه, بیشینه);
+    إذا (plan->user_axes_location.has (برچسب_2, &range) && !range->is_نقطه () &&
         range->minimum == minimum &&
-        range->middle == middle &&
-        range->maximum == maximum)
-      plan->user_axes_location.del (tag);
+        range->میانه == میانه &&
+        range->بیشینه == بیشینه)
+      plan->user_axes_location.del (برچسب_2);
   }
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  إذا (plan->user_axes_location.is_empty ())
+    أرجع درست;
 
-  if (!plan->check_success (plan->normalized_coords.resize (axes.length)))
-    return false;
+  إذا (!plan->check_success (plan->normalized_coords.resize (axes.درازی)))
+    أرجع خطأ;
 
-  bool has_avar = face->table.avar->has_data ();
-  hb_vector_t<float> normalized_mins;
-  hb_vector_t<float> normalized_defaults;
-  hb_vector_t<float> normalized_maxs;
-  if (has_avar)
+  منطقي has_avar = face->جدول.avar->has_داده ();
+  hb_وکتور_t<عائم> normalized_mins;
+  hb_وکتور_t<عائم> normalized_defaults;
+  hb_وکتور_t<عائم> normalized_maxs;
+  إذا (has_avar)
   {
-    if (!plan->check_success (normalized_mins.resize (axes.length)) ||
-        !plan->check_success (normalized_defaults.resize (axes.length)) ||
-        !plan->check_success (normalized_maxs.resize (axes.length)))
-      return false;
+    إذا (!plan->check_success (normalized_mins.resize (axes.درازی)) ||
+        !plan->check_success (normalized_defaults.resize (axes.درازی)) ||
+        !plan->check_success (normalized_maxs.resize (axes.درازی)))
+      أرجع خطأ;
   }
 
-  bool axis_not_pinned = false;
-  unsigned new_axis_idx = 0;
-  unsigned last_idx = 0;
-  for (const auto& _ : + hb_enumerate (axes))
+  منطقي axis_not_pinned = خطأ;
+  بیعلامت new_axis_idx = 0;
+  بیعلامت آخرین_idx = 0;
+  لكل (ثابت خودکار& _ : + hb_enumerate (axes))
   {
-    unsigned i = _.first;
-    const OT::AxisRecord &axis = _.second;
-    hb_tag_t axis_tag = axis.get_axis_tag ();
-    plan->axes_old_index_tag_map.set (i, axis_tag);
+    بیعلامت i = _.اولی;
+    ثابت OT::Axis_رکورد &axis = _.second;
+    hb_برچسب_t axis_برچسب_2 = axis.get_axis_برچسب ();
+    plan->axes_old_شاخص_برچسب_map.مجموعه (i, axis_برچسب_2);
 
-    if (!plan->user_axes_location.has (axis_tag) ||
-        !plan->user_axes_location.get (axis_tag).is_point ())
+    إذا (!plan->user_axes_location.has (axis_برچسب_2) ||
+        !plan->user_axes_location.get (axis_برچسب_2).is_نقطه ())
     {
-      axis_not_pinned = true;
-      plan->axes_index_map.set (i, new_axis_idx);
-      plan->axis_tags.push (axis_tag);
+      axis_not_pinned = درست;
+      plan->axes_شاخص_map.مجموعه (i, new_axis_idx);
+      plan->axis_برچسبها.push (axis_برچسب_2);
       new_axis_idx++;
     }
 
     Triple *axis_range;
-    if (plan->user_axes_location.has (axis_tag, &axis_range))
+    إذا (plan->user_axes_location.has (axis_برچسب_2, &axis_range))
     {
-      plan->axes_triple_distances.set (axis_tag, axis.get_triple_distances ());
+      plan->axes_triple_distances.مجموعه (axis_برچسب_2, axis.get_triple_distances ());
 
-      float normalized_min = axis.normalize_axis_value (axis_range->minimum);
-      float normalized_default = axis.normalize_axis_value (axis_range->middle);
-      float normalized_max = axis.normalize_axis_value (axis_range->maximum);
+      عائم normalized_min = axis.normalize_axis_مقدار (axis_range->minimum);
+      عائم normalized_default = axis.normalize_axis_مقدار (axis_range->میانه);
+      عائم normalized_max = axis.normalize_axis_مقدار (axis_range->بیشینه);
 
       // TODO(behdad): Spec says axis normalization should be done in 16.16;
       // We used to do it in 2.14, but that's not correct.  I fixed this in
@@ -538,22 +538,22 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       normalized_default = roundf (normalized_default * 16384.f) / 16384.f;
       normalized_max = roundf (normalized_max * 16384.f) / 16384.f;
 
-      if (has_avar)
+      إذا (has_avar)
       {
         normalized_mins[i] = normalized_min;
         normalized_defaults[i] = normalized_default;
         normalized_maxs[i] = normalized_max;
-        last_idx = i;
+        آخرین_idx = i;
       }
-      else
+      وإلا
       {
-        plan->axes_location.set (axis_tag, Triple ((double) normalized_min,
-                                                   (double) normalized_default,
-                                                   (double) normalized_max));
-        if (normalized_default == -0.f)
+        plan->axes_location.مجموعه (axis_برچسب_2, Triple ((مزدوج) normalized_min,
+                                                   (مزدوج) normalized_default,
+                                                   (مزدوج) normalized_max));
+        إذا (normalized_default == -0.f)
           normalized_default = 0.f; // Normalize -0 to 0
-        if (normalized_default != 0.f)
-          plan->pinned_at_default = false;
+        إذا (normalized_default != 0.f)
+          plan->pinned_at_default = خطأ;
 
         plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
       }
@@ -563,33 +563,33 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 
   // TODO: use avar map_coords_16_16() when normalization is changed to 16.16
   // in fonttools
-  if (has_avar)
+  إذا (has_avar)
   {
-    const OT::avar* avar_table = face->table.avar;
-    unsigned coords_len = last_idx + 1;
+    ثابت OT::avar* avar_جدول = face->جدول.avar;
+    بیعلامت coords_len = آخرین_idx + 1;
 
-    if (avar_table->has_v2_data () && !plan->all_axes_pinned)
+    إذا (avar_جدول->has_v2_داده () && !plan->all_axes_pinned)
     {
       /* avar2 partial instancing: use v1-only mapping to get intermediate-space
        * coords. These are used for IVS rebasing and offset compensation. */
-      plan->has_avar2 = true;
+      plan->has_avar2 = درست;
 
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, true)) ||
-          !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len, true)) ||
-          !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len, true)))
-        return false;
+      إذا (!plan->check_success (avar_جدول->map_coords_2_14 (normalized_mins.arrayZ, coords_len, درست)) ||
+          !plan->check_success (avar_جدول->map_coords_2_14 (normalized_defaults.arrayZ, coords_len, درست)) ||
+          !plan->check_success (avar_جدول->map_coords_2_14 (normalized_maxs.arrayZ, coords_len, درست)))
+        أرجع خطأ;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      لكل (ثابت خودکار& _ : + hb_enumerate (axes))
       {
-        unsigned i = _.first;
-        hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        بیعلامت i = _.اولی;
+        hb_برچسب_t axis_برچسب_2 = _.second.get_axis_برچسب ();
+        إذا (plan->user_axes_location.has (axis_برچسب_2))
         {
           /* Store intermediate-space coords for offset compensation,
            * segment-map renormalization, and IVS rebasing. */
-          plan->old_intermediates.set (axis_tag, Triple ((double) normalized_mins[i],
-                                                         (double) normalized_defaults[i],
-                                                         (double) normalized_maxs[i]));
+          plan->old_intermediates.مجموعه (axis_برچسب_2, Triple ((مزدوج) normalized_mins[i],
+                                                         (مزدوج) normalized_defaults[i],
+                                                         (مزدوج) normalized_maxs[i]));
         }
       }
 
@@ -603,271 +603,271 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
        * https://github.com/fonttools/fonttools/pull/3506). Such axes stay
        * in fvar as ordinary hidden pins. VARC remaps its axis indices and
        * rejects instancing of axes it references. */
-      hb_blob_t *cff2_blob = hb_face_reference_table (face, HB_TAG ('C','F','F','2'));
-      bool detect_self_contained = !hb_blob_get_length (cff2_blob);
+      hb_blob_t *cff2_blob = hb_face_reference_جدول (face, HB_برچسب ('C','F','F','2'));
+      منطقي detect_self_contained = !hb_blob_get_درازی (cff2_blob);
       hb_blob_destroy (cff2_blob);
-      if (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
+      إذا (!_compute_avar2_reachable_ranges (plan, axes, avar_جدول,
                                             detect_self_contained))
-        return false;
+        أرجع خطأ;
 
-#ifndef HB_NO_VAR_COMPOSITES
+#اگر_تعریف_نشده HB_NO_VAR_COMPOSITES
       /* VARC overrides can reach coordinates outside the font-level
        * ranges. Do not cull variation data using those ranges. */
-      if (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
+      إذا (!plan->drop_tables.has (HB_برچسب ('V','A','R','C')))
       {
-        hb_blob_t *varc_blob = hb_face_reference_table (face, HB_TAG ('V','A','R','C'));
-        if (hb_blob_get_length (varc_blob))
+        hb_blob_t *varc_blob = hb_face_reference_جدول (face, HB_برچسب ('V','A','R','C'));
+        إذا (hb_blob_get_درازی (varc_blob))
           plan->avar2_reachable_ranges.reset ();
         hb_blob_destroy (varc_blob);
       }
-#endif
+#پایان_اگر
 
       /* Keep all axes in fvar (pinned ones as hidden), EXCEPT self-contained
        * pinned axes, which are removed entirely. */
-      plan->axes_index_map.reset ();
-      plan->axis_tags.reset ();
-      unsigned retained_axis_idx = 0;
-      for (const auto& _ : + hb_enumerate (axes))
+      plan->axes_شاخص_map.reset ();
+      plan->axis_برچسبها.reset ();
+      بیعلامت retained_axis_idx = 0;
+      لكل (ثابت خودکار& _ : + hb_enumerate (axes))
       {
-        unsigned i = _.first;
-        hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->avar2_self_contained.has (axis_tag))
-          continue;
-        plan->axes_index_map.set (i, retained_axis_idx++);
-        plan->axis_tags.push (axis_tag);
+        بیعلامت i = _.اولی;
+        hb_برچسب_t axis_برچسب_2 = _.second.get_axis_برچسب ();
+        إذا (plan->avar2_self_contained.has (axis_برچسب_2))
+          استمر;
+        plan->axes_شاخص_map.مجموعه (i, retained_axis_idx++);
+        plan->axis_برچسبها.push (axis_برچسب_2);
       }
       /* The other tables see ONLY the self-contained pins, as an ordinary
        * partial instancing in old final-coordinate space; the standard
        * instancing machinery bakes those axes' contributions in. The
        * remaining restriction is carried entirely by avar. */
       plan->axes_location.reset ();
-      if (plan->avar2_self_contained.get_population ())
+      إذا (plan->avar2_self_contained.get_population ())
       {
-        bool sc_pinned_at_default = true;
-        for (auto _ : plan->avar2_self_contained)
+        منطقي sc_pinned_at_default = درست;
+        لكل (خودکار _ : plan->avar2_self_contained)
         {
-          plan->axes_location.set (_.first, Triple (_.second, _.second, _.second));
-          if (_.second != 0.0)
-            sc_pinned_at_default = false;
+          plan->axes_location.مجموعه (_.اولی, Triple (_.second, _.second, _.second));
+          إذا (_.second != 0.0)
+            sc_pinned_at_default = خطأ;
         }
-        for (const auto& _ : + hb_enumerate (axes))
+        لكل (ثابت خودکار& _ : + hb_enumerate (axes))
         {
-          double *v;
-          plan->normalized_coords[_.first] =
-              plan->avar2_self_contained.has (_.second.get_axis_tag (), &v)
-              ? (int) roundf ((float) (*v * 16384.0)) : 0;
+          مزدوج *v;
+          plan->normalized_coords[_.اولی] =
+              plan->avar2_self_contained.has (_.second.get_axis_برچسب (), &v)
+              ? (صحيح) roundf ((عائم) (*v * 16384.0)) : 0;
         }
         plan->pinned_at_default = sc_pinned_at_default;
       }
-      else
+      وإلا
         plan->normalized_coords.shrink (0);
     }
-    else
+    وإلا
     {
       /* Standard avar v1 (or v1+v2 with all axes pinned) */
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
-          !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len)) ||
-          !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len)))
-        return false;
+      إذا (!plan->check_success (avar_جدول->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
+          !plan->check_success (avar_جدول->map_coords_2_14 (normalized_defaults.arrayZ, coords_len)) ||
+          !plan->check_success (avar_جدول->map_coords_2_14 (normalized_maxs.arrayZ, coords_len)))
+        أرجع خطأ;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      لكل (ثابت خودکار& _ : + hb_enumerate (axes))
       {
-        unsigned i = _.first;
-        hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        بیعلامت i = _.اولی;
+        hb_برچسب_t axis_برچسب_2 = _.second.get_axis_برچسب ();
+        إذا (plan->user_axes_location.has (axis_برچسب_2))
         {
-          plan->axes_location.set (axis_tag, Triple ((double) normalized_mins[i],
-                                                     (double) normalized_defaults[i],
-                                                     (double) normalized_maxs[i]));
-          float normalized_default = normalized_defaults[i];
-          if (normalized_default == -0.f)
+          plan->axes_location.مجموعه (axis_برچسب_2, Triple ((مزدوج) normalized_mins[i],
+                                                     (مزدوج) normalized_defaults[i],
+                                                     (مزدوج) normalized_maxs[i]));
+          عائم normalized_default = normalized_defaults[i];
+          إذا (normalized_default == -0.f)
             normalized_default = 0.f;
-          if (normalized_default != 0.f)
-            plan->pinned_at_default = false;
+          إذا (normalized_default != 0.f)
+            plan->pinned_at_default = خطأ;
 
           plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
         }
       }
     }
   }
-  return true;
+  أرجع درست;
 }
 
-#ifndef HB_NO_OT_FONT_CFF
-void
+#اگر_تعریف_نشده HB_NO_OT_FONT_CFF
+فراغ
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 {
-  if (!plan->normalized_coords) return;
-  OT::cff2::accelerator_t cff2 (plan->source);
-  if (!cff2.is_valid ()) return;
+  إذا (!plan->normalized_coords) أرجع;
+  OT::cff2::accelerator_t cff2 (plan->منبع);
+  إذا (!cff2.is_valid ()) أرجع;
 
   hb_font_t *font = _get_hb_font_with_variations (plan);
-  if (unlikely (!plan->check_success (font != nullptr)))
+  إذا (unlikely (!plan->check_success (font != اشاره_تهی)))
   {
     hb_font_destroy (font);
-    return;
+    أرجع;
   }
 
   hb_glyph_extents_t extents = {0x7FFF, -0x7FFF};
-  OT::hmtx_accelerator_t _hmtx (plan->source);
-  OT::hb_scalar_cache_t *hvar_store_cache = nullptr;
-  if (_hmtx.has_data () && _hmtx.var_table.get_length ())
-    hvar_store_cache = _hmtx.var_table->get_var_store ().create_cache ();
+  OT::hmtx_accelerator_t _hmtx (plan->منبع);
+  OT::hb_scalar_cache_t *hvar_store_cache = اشاره_تهی;
+  إذا (_hmtx.has_داده () && _hmtx.var_جدول.get_درازی ())
+    hvar_store_cache = _hmtx.var_جدول->get_var_store ().create_cache ();
 
-  OT::vmtx_accelerator_t _vmtx (plan->source);
-  OT::hb_scalar_cache_t *vvar_store_cache = nullptr;
-  if (_vmtx.has_data () && _vmtx.var_table.get_length ())
-    vvar_store_cache = _vmtx.var_table->get_var_store ().create_cache ();
+  OT::vmtx_accelerator_t _vmtx (plan->منبع);
+  OT::hb_scalar_cache_t *vvar_store_cache = اشاره_تهی;
+  إذا (_vmtx.has_داده () && _vmtx.var_جدول.get_درازی ())
+    vvar_store_cache = _vmtx.var_جدول->get_var_store ().create_cache ();
 
-  for (auto p : *plan->glyph_map)
+  لكل (خودکار p : *plan->glyph_map)
   {
-    hb_codepoint_t old_gid = p.first;
+    hb_codepoint_t old_gid = p.اولی;
     hb_codepoint_t new_gid = p.second;
-    if (!cff2.get_extents (font, old_gid, &extents)) continue;
-    bool has_bounds_info = true;
-    if (extents.x_bearing == 0 && extents.width == 0 &&
-        extents.height == 0 && extents.y_bearing == 0)
-      has_bounds_info = false;
+    إذا (!cff2.get_extents (font, old_gid, &extents)) استمر;
+    منطقي has_bounds_info = درست;
+    إذا (extents.x_bearing == 0 && extents.عرض == 0 &&
+        extents.ارتفاع == 0 && extents.y_bearing == 0)
+      has_bounds_info = خطأ;
 
-    if (has_bounds_info)
+    إذا (has_bounds_info)
     {
-      plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, extents.x_bearing);
-      plan->head_maxp_info.xMax = hb_max (plan->head_maxp_info.xMax,
-						 hb_saturate_add (extents.x_bearing, extents.width));
-      plan->head_maxp_info.yMax = hb_max (plan->head_maxp_info.yMax, extents.y_bearing);
-      plan->head_maxp_info.yMin = hb_min (plan->head_maxp_info.yMin,
-						 hb_saturate_add (extents.y_bearing, extents.height));
+      plan->سر_maxp_info.xMin = hb_min (plan->سر_maxp_info.xMin, extents.x_bearing);
+      plan->سر_maxp_info.xMax = hb_max (plan->سر_maxp_info.xMax,
+						 hb_saturate_جمع_کن (extents.x_bearing, extents.عرض));
+      plan->سر_maxp_info.yMax = hb_max (plan->سر_maxp_info.yMax, extents.y_bearing);
+      plan->سر_maxp_info.yMin = hb_min (plan->سر_maxp_info.yMin,
+						 hb_saturate_جمع_کن (extents.y_bearing, extents.ارتفاع));
     }
 
-    if (_hmtx.has_data ())
+    إذا (_hmtx.has_داده ())
     {
-      double hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
-      if (_hmtx.var_table.get_length ())
-        hori_aw += (double) roundf (_hmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
+      مزدوج hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
+      إذا (_hmtx.var_جدول.get_درازی ())
+        hori_aw += (مزدوج) roundf (_hmtx.var_جدول->get_advance_delta_unscaled (old_gid, font->coords, font->رقم_coords,
 									 hvar_store_cache));
       /* Malicious deltas can take the advance out of the UFWORD range that
        * hmtx serialization stores.  Clamp, to keep downstream consumers
        * (e.g. CFF width optimizer) bounded and consistent with hmtx. */
       hori_aw = hb_clamp (hori_aw, 0., 65535.);
-      int lsb = extents.x_bearing;
-      if (!has_bounds_info)
+      صحيح lsb = extents.x_bearing;
+      إذا (!has_bounds_info)
       {
         _hmtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
       }
-      plan->hmtx_map.set (new_gid, hb_pair ((unsigned) hori_aw, lsb));
-      plan->bounds_width_vec[new_gid] = extents.width;
+      plan->hmtx_map.مجموعه (new_gid, hb_pair ((بیعلامت) hori_aw, lsb));
+      plan->bounds_عرض_vec[new_gid] = extents.عرض;
     }
 
-    if (_vmtx.has_data ())
+    إذا (_vmtx.has_داده ())
     {
-      double vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
-      if (_vmtx.var_table.get_length ())
-        vert_aw += (double) roundf (_vmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
+      مزدوج vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
+      إذا (_vmtx.var_جدول.get_درازی ())
+        vert_aw += (مزدوج) roundf (_vmtx.var_جدول->get_advance_delta_unscaled (old_gid, font->coords, font->رقم_coords,
 									 vvar_store_cache));
       vert_aw = hb_clamp (vert_aw, 0., 65535.);
       hb_position_t vorg_x = 0;
       hb_position_t vorg_y = 0;
-      int tsb = 0;
-      if (has_bounds_info &&
+      صحيح tsb = 0;
+      إذا (has_bounds_info &&
            hb_font_get_glyph_v_origin (font, old_gid, &vorg_x, &vorg_y))
       {
         tsb = hb_saturate_sub (vorg_y, extents.y_bearing);
-      } else {
+      } وإلا {
         _vmtx.get_leading_bearing_without_var_unscaled (old_gid, &tsb);
       }
 
-      plan->vmtx_map.set (new_gid, hb_pair ((unsigned) vert_aw, tsb));
-      plan->bounds_height_vec[new_gid] = extents.height;
+      plan->vmtx_map.مجموعه (new_gid, hb_pair ((بیعلامت) vert_aw, tsb));
+      plan->bounds_ارتفاع_vec[new_gid] = extents.ارتفاع;
     }
   }
   /* No glyph contributed bounds: do not serialize the accumulator's
    * inverted sentinels into head (or a downgraded CFF FontBBox). */
-  if (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
+  إذا (plan->سر_maxp_info.xMin > plan->سر_maxp_info.xMax)
   {
-    plan->head_maxp_info.xMin = plan->head_maxp_info.xMax = 0;
-    plan->head_maxp_info.yMin = plan->head_maxp_info.yMax = 0;
+    plan->سر_maxp_info.xMin = plan->سر_maxp_info.xMax = 0;
+    plan->سر_maxp_info.yMin = plan->سر_maxp_info.yMax = 0;
   }
   hb_font_destroy (font);
-  if (hvar_store_cache)
-    _hmtx.var_table->get_var_store ().destroy_cache (hvar_store_cache);
-  if (vvar_store_cache)
-    _vmtx.var_table->get_var_store ().destroy_cache (vvar_store_cache);
+  إذا (hvar_store_cache)
+    _hmtx.var_جدول->get_var_store ().destroy_cache (hvar_store_cache);
+  إذا (vvar_store_cache)
+    _vmtx.var_جدول->get_var_store ().destroy_cache (vvar_store_cache);
 }
-#endif
+#پایان_اگر
 
-bool
+منطقي
 get_instance_glyphs_contour_points (hb_subset_plan_t *plan)
 {
   /* contour_points vector only needed for updating gvar table (infer delta and
    * iup delta optimization) during partial instancing */
-  if (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
-    return true;
+  إذا (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
+    أرجع درست;
 
-  OT::glyf_accelerator_t glyf (plan->source);
+  OT::glyf_accelerator_t glyf (plan->منبع);
 
-  for (auto &_ : plan->new_to_old_gid_list)
+  لكل (خودکار &_ : plan->new_مقصد_old_gid_list)
   {
-    hb_codepoint_t new_gid = _.first;
-    contour_point_vector_t all_points;
-    if (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    hb_codepoint_t new_gid = _.اولی;
+    contour_نقطه_وکتور_t all_points;
+    إذا (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-        return false;
-      continue;
+      إذا (unlikely (!plan->new_gid_contour_points_map.مجموعه (new_gid, all_points)))
+        أرجع خطأ;
+      استمر;
     }
 
     hb_codepoint_t old_gid = _.second;
-    auto glyph = glyf.glyph_for_gid (old_gid);
-    if (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
-      return false;
-    if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-      return false;
+    خودکار glyph = glyf.glyph_for_gid (old_gid);
+    إذا (unlikely (!glyph.get_all_points_without_var (plan->منبع, all_points)))
+      أرجع خطأ;
+    إذا (unlikely (!plan->new_gid_contour_points_map.مجموعه (new_gid, all_points)))
+      أرجع خطأ;
 
     /* composite new gids are only needed by iup delta optimization */
-    if ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
-      plan->composite_new_gids.add (new_gid);
+    إذا ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_مرکب ())
+      plan->مرکب_new_gids.جمع_کن (new_gid);
   }
-  return true;
+  أرجع درست;
 }
 
-template<typename DeltaSetIndexMap>
-void
-remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
-                                      hb_map_t &new_deltaset_idx_varidx_map /* OUT */)
+قالب<نام_نوع Delta_مجموعه_شاخص_Map>
+فراغ
+remap_colrv1_delta_مجموعه_شاخص_indices (ثابت Delta_مجموعه_شاخص_Map &شاخص_map,
+                                      ثابت hb_مجموعه_t &delta_مجموعه_idxes,
+                                      hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_map_t &new_deltaset_idx_varidx_map /*بیرون*/)
 {
-  if (!index_map.get_map_count ())
-    return;
+  إذا (!شاخص_map.get_map_شمار ())
+    أرجع;
 
-  hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> delta_set_idx_delta_map;
-  unsigned new_delta_set_idx = 0;
-  for (unsigned delta_set_idx : delta_set_idxes)
+  hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> delta_مجموعه_idx_delta_map;
+  بیعلامت new_delta_مجموعه_idx = 0;
+  لكل (بیعلامت delta_مجموعه_idx : delta_مجموعه_idxes)
   {
-    unsigned var_idx = index_map.map (delta_set_idx);
-    unsigned new_varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    int delta = 0;
+    بیعلامت var_idx = شاخص_map.map (delta_مجموعه_idx);
+    بیعلامت new_varidx = HB_OT_LAYOUT_NO_VARIATIONS_شاخص;
+    صحيح delta = 0;
 
-    if (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    إذا (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_شاخص)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) continue;
+      hb_pair_t<بیعلامت, صحيح> *new_varidx_delta;
+      إذا (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) استمر;
 
-      new_varidx = hb_first (*new_varidx_delta);
-      delta = hb_second (*new_varidx_delta);
+      new_varidx = hb_اولی (*new_varidx_delta);
+      delta = hb_دومی (*new_varidx_delta);
     }
 
-    new_deltaset_idx_varidx_map.set (new_delta_set_idx, new_varidx);
-    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, int> (new_delta_set_idx, delta));
-    new_delta_set_idx++;
+    new_deltaset_idx_varidx_map.مجموعه (new_delta_مجموعه_idx, new_varidx);
+    delta_مجموعه_idx_delta_map.مجموعه (delta_مجموعه_idx, hb_pair_t<بیعلامت, صحيح> (new_delta_مجموعه_idx, delta));
+    new_delta_مجموعه_idx++;
   }
-  variation_idx_delta_map = std::move (delta_set_idx_delta_map);
+  variation_idx_delta_map = std::move (delta_مجموعه_idx_delta_map);
 }
 
-template void
-remap_colrv1_delta_set_index_indices<OT::DeltaSetIndexMap> (const OT::DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
-                                      hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
+قالب فراغ
+remap_colrv1_delta_مجموعه_شاخص_indices<OT::Delta_مجموعه_شاخص_Map> (ثابت OT::Delta_مجموعه_شاخص_Map &شاخص_map,
+                                      ثابت hb_مجموعه_t &delta_مجموعه_idxes,
+                                      hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_map_t &new_deltaset_idx_varidx_map /*بیرون*/);
 
- #endif
+ #پایان_اگر

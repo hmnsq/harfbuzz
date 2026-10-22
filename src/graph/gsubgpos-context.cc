@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#ضمن "gsubgpos-graph.hh"
 
-namespace graph {
+نطاق گراف {
 
-graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
-                                                                           graph_t& graph_)
+گراف_نتیجه_t<gsubgpos_گراف_context_t> gsubgpos_گراف_context_t::create (hb_برچسب_t جدول_برچسب_3,
+                                                                           گراف_t& گراف_2)
 {
-  gsubgpos_graph_context_t context (table_tag_, graph_);
+  gsubgpos_گراف_context_t context (جدول_برچسب_3, گراف_2);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
-                && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+  إذا (unlikely (جدول_برچسب_3 != HB_OT_برچسب_GPOS
+                && جدول_برچسب_3 != HB_OT_برچسب_GSUB))
+    أرجع Err(INVALID_آرگومان);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
-  TRY(gstar->find_lookups (context.graph, context.lookups));
-  TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
+  TRY_تخصیص_بده (ثابت GSTAR* gstar, گراف::GSTAR::گراف_مقصد_gstar (context.گراف));
+  TRY(gstar->پیدا_کن_lookups (context.گراف, context.lookups));
+  TRY_تخصیص_بده (context.lookup_list_شاخص, gstar->get_lookup_list_شاخص (context.گراف));
 
-  return context;
+  أرجع context;
 }
 
-gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                                    graph_t& graph_)
-    : table_tag (table_tag_),
-      graph (graph_),
-      lookup_list_index (0),
+gsubgpos_گراف_context_t::gsubgpos_گراف_context_t (hb_برچسب_t جدول_برچسب_3,
+                                                    گراف_t& گراف_2)
+    : جدول_برچسب_2 (جدول_برچسب_3),
+      گراف (گراف_2),
+      lookup_list_شاخص (0),
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+گراف_نتیجه_t<بیعلامت> gsubgpos_گراف_context_t::create_گره (بیعلامت اندازه)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  حرف* میانگیر = (حرف*) hb_calloc (1, اندازه);
+  إذا (unlikely (!میانگیر))
+    أرجع Err(تخصیص_FAILURE);
 
-  auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  خودکار res = جمع_کن_میانگیر (میانگیر);
+  إذا (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
-    hb_free (buffer);
-    return Err(res.error ());
+    hb_free (میانگیر);
+    أرجع Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  أرجع گراف.new_گره (میانگیر, میانگیر + اندازه);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+بیعلامت gsubgpos_گراف_context_t::رقم_non_ext_subtables ()  {
+  بیعلامت شمار = 0;
+  لكل (خودکار l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    إذا (l->is_extension (جدول_برچسب_2)) استمر;
+    شمار += l->عدد_از_subtables ();
   }
-  return count;
+  أرجع شمار;
 }
 
 }

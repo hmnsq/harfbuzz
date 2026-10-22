@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_تعریف_نشده HB_NO_OT_SHAPE
 
-#include "hb-ot-shape-normalize.hh"
-#include "hb-ot-shaper.hh"
-#include "hb-ot-shape.hh"
+#ضمن "hb-ot-shape-normalize.hh"
+#ضمن "hb-ot-shaper.hh"
+#ضمن "hb-ot-shape.hh"
 
 
 /*
@@ -75,242 +75,242 @@
  */
 
 
-static inline void
-set_glyph (hb_glyph_info_t &info, hb_font_t *font)
+ساكن مضمن فراغ
+مجموعه_glyph (hb_glyph_info_t &info, hb_font_t *font)
 {
-  (void) font->get_nominal_glyph (info.codepoint, &info.normalizer_glyph_index());
+  (فراغ) font->get_nominal_glyph (info.codepoint, &info.normalizer_glyph_شاخص());
 }
 
-static inline void
-output_char (hb_buffer_t *buffer, hb_codepoint_t unichar, hb_codepoint_t glyph)
+ساكن مضمن فراغ
+output_char (hb_میانگیر_t *میانگیر, hb_codepoint_t unichar, hb_codepoint_t glyph)
 {
   /* This is very confusing indeed. */
-  buffer->cur().normalizer_glyph_index() = glyph;
-  (void) buffer->output_glyph (unichar);
-  _hb_glyph_info_set_unicode_props (&buffer->prev(), buffer);
+  میانگیر->cur().normalizer_glyph_شاخص() = glyph;
+  (فراغ) میانگیر->output_glyph (unichar);
+  hb_glyph_info_مجموعه_unicode_props (&میانگیر->prev(), میانگیر);
 }
 
-static inline void
-next_char (hb_buffer_t *buffer, hb_codepoint_t glyph)
+ساكن مضمن فراغ
+بعدی_char (hb_میانگیر_t *میانگیر, hb_codepoint_t glyph)
 {
-  buffer->cur().normalizer_glyph_index() = glyph;
-  (void) buffer->next_glyph ();
+  میانگیر->cur().normalizer_glyph_شاخص() = glyph;
+  (فراغ) میانگیر->بعدی_glyph ();
 }
 
-static inline void
-skip_char (hb_buffer_t *buffer)
+ساكن مضمن فراغ
+skip_char (hb_میانگیر_t *میانگیر)
 {
-  buffer->skip_glyph ();
+  میانگیر->skip_glyph ();
 }
 
 /* Returns 0 if didn't decompose, number of resulting characters otherwise. */
-static inline unsigned int
-decompose (const hb_ot_shape_normalize_context_t *c, bool shortest, hb_codepoint_t ab)
+ساكن مضمن بیعلامت صحيح
+decompose (ثابت hb_ot_shape_normalize_context_t *c, منطقي کوتاهترین, hb_codepoint_t ab)
 {
   hb_codepoint_t a = 0, b = 0, a_glyph = 0, b_glyph = 0;
-  hb_buffer_t * const buffer = c->buffer;
-  hb_font_t * const font = c->font;
+  hb_میانگیر_t * ثابت میانگیر = c->میانگیر;
+  hb_font_t * ثابت font = c->font;
 
-  if (!c->decompose (c, ab, &a, &b) ||
+  إذا (!c->decompose (c, ab, &a, &b) ||
       (b && !font->get_nominal_glyph (b, &b_glyph)))
-    return 0;
+    أرجع 0;
 
-  bool has_a = (bool) font->get_nominal_glyph (a, &a_glyph);
-  if (shortest && has_a) {
+  منطقي has_a = (منطقي) font->get_nominal_glyph (a, &a_glyph);
+  إذا (کوتاهترین && has_a) {
     /* Output a and b */
-    output_char (buffer, a, a_glyph);
-    if (likely (b)) {
-      output_char (buffer, b, b_glyph);
-      return 2;
+    output_char (میانگیر, a, a_glyph);
+    إذا (likely (b)) {
+      output_char (میانگیر, b, b_glyph);
+      أرجع 2;
     }
-    return 1;
+    أرجع 1;
   }
 
-  if (unsigned ret = decompose (c, shortest, a)) {
-    if (b) {
-      output_char (buffer, b, b_glyph);
-      return ret + 1;
+  إذا (بیعلامت ret = decompose (c, کوتاهترین, a)) {
+    إذا (b) {
+      output_char (میانگیر, b, b_glyph);
+      أرجع ret + 1;
     }
-    return ret;
+    أرجع ret;
   }
 
-  if (has_a) {
-    output_char (buffer, a, a_glyph);
-    if (likely (b)) {
-      output_char (buffer, b, b_glyph);
-      return 2;
+  إذا (has_a) {
+    output_char (میانگیر, a, a_glyph);
+    إذا (likely (b)) {
+      output_char (میانگیر, b, b_glyph);
+      أرجع 2;
     }
-    return 1;
+    أرجع 1;
   }
 
-  return 0;
+  أرجع 0;
 }
 
-static inline void
-decompose_current_character (const hb_ot_shape_normalize_context_t *c, bool shortest)
+ساكن مضمن فراغ
+decompose_current_character (ثابت hb_ot_shape_normalize_context_t *c, منطقي کوتاهترین)
 {
-  hb_buffer_t * const buffer = c->buffer;
-  hb_codepoint_t u = buffer->cur().codepoint;
+  hb_میانگیر_t * ثابت میانگیر = c->میانگیر;
+  hb_codepoint_t u = میانگیر->cur().codepoint;
   hb_codepoint_t glyph = 0;
 
-  if (shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
+  إذا (کوتاهترین && c->font->get_nominal_glyph (u, &glyph, میانگیر->not_یافت))
   {
-    next_char (buffer, glyph);
-    return;
+    بعدی_char (میانگیر, glyph);
+    أرجع;
   }
 
-  if (decompose (c, shortest, u))
+  إذا (decompose (c, کوتاهترین, u))
   {
-    skip_char (buffer);
-    return;
+    skip_char (میانگیر);
+    أرجع;
   }
 
-  if (!shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
+  إذا (!کوتاهترین && c->font->get_nominal_glyph (u, &glyph, میانگیر->not_یافت))
   {
-    next_char (buffer, glyph);
-    return;
+    بعدی_char (میانگیر, glyph);
+    أرجع;
   }
 
-  if (_hb_glyph_info_is_unicode_space (&buffer->cur()))
+  إذا (_hb_glyph_info_is_unicode_space (&میانگیر->cur()))
   {
     hb_codepoint_t space_glyph;
-    hb_unicode_funcs_t::space_t space_type = buffer->unicode->space_fallback_type (u);
-    if (space_type != hb_unicode_funcs_t::NOT_SPACE &&
-	(c->font->get_nominal_glyph (0x0020, &space_glyph) || (space_glyph = buffer->invisible)))
+    hb_unicode_funcs_t::space_t space_type = میانگیر->unicode->space_fallback_type (u);
+    إذا (space_type != hb_unicode_funcs_t::NOT_SPACE &&
+	(c->font->get_nominal_glyph (0x0020, &space_glyph) || (space_glyph = میانگیر->invisible)))
     {
-      _hb_glyph_info_set_unicode_space_fallback_type (&buffer->cur(), space_type);
-      next_char (buffer, space_glyph);
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK;
-      return;
+      hb_glyph_info_مجموعه_unicode_space_fallback_type (&میانگیر->cur(), space_type);
+      بعدی_char (میانگیر, space_glyph);
+      میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_SPACE_FALLBACK;
+      أرجع;
     }
   }
 
-  if (u == 0x2011u)
+  إذا (u == 0x2011u)
   {
     /* U+2011 is the only sensible character that is a no-break version of another character
      * and not a space.  The space ones are handled already.  Handle this lone one. */
     hb_codepoint_t other_glyph;
-    if (c->font->get_nominal_glyph (0x2010u, &other_glyph))
+    إذا (c->font->get_nominal_glyph (0x2010u, &other_glyph))
     {
-      next_char (buffer, other_glyph);
-      return;
+      بعدی_char (میانگیر, other_glyph);
+      أرجع;
     }
   }
 
-  next_char (buffer, glyph); /* glyph is initialized in earlier branches. */
+  بعدی_char (میانگیر, glyph); /* glyph is initialized in earlier branches. */
 }
 
-static inline void
-handle_variation_selector_cluster (const hb_ot_shape_normalize_context_t *c,
-				   unsigned int end,
-				   bool short_circuit HB_UNUSED)
+ساكن مضمن فراغ
+handle_variation_selector_cluster (ثابت hb_ot_shape_normalize_context_t *c,
+				   بیعلامت صحيح انتها,
+				   منطقي short_circuit HB_استفادهنشده)
 {
   /* Currently if there's a variation-selector we give-up on normalization, it's just too hard. */
-  hb_buffer_t * const buffer = c->buffer;
-  hb_font_t * const font = c->font;
-  for (; buffer->idx < end - 1 && buffer->successful;) {
-    if (unlikely (buffer->unicode->is_variation_selector (buffer->cur(+1).codepoint))) {
-      if (font->get_variation_glyph (buffer->cur().codepoint, buffer->cur(+1).codepoint, &buffer->cur().normalizer_glyph_index()))
+  hb_میانگیر_t * ثابت میانگیر = c->میانگیر;
+  hb_font_t * ثابت font = c->font;
+  لكل (; میانگیر->idx < انتها - 1 && میانگیر->successful;) {
+    إذا (unlikely (میانگیر->unicode->is_variation_selector (میانگیر->cur(+1).codepoint))) {
+      إذا (font->get_variation_glyph (میانگیر->cur().codepoint, میانگیر->cur(+1).codepoint, &میانگیر->cur().normalizer_glyph_شاخص()))
       {
-	hb_codepoint_t unicode = buffer->cur().codepoint;
-	(void) buffer->replace_glyphs (2, 1, &unicode);
+	hb_codepoint_t unicode = میانگیر->cur().codepoint;
+	(فراغ) میانگیر->replace_glyphs (2, 1, &unicode);
       }
-      else
+      وإلا
       {
 	/* Just pass on the two characters separately, let GSUB do its magic. */
-	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	مجموعه_glyph (میانگیر->cur(), font);
+	(فراغ) میانگیر->بعدی_glyph ();
 
-        buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK;
-	_hb_glyph_info_set_variation_selector (&buffer->cur(), true);
-	if (buffer->not_found_variation_selector != HB_CODEPOINT_INVALID)
-	  _hb_glyph_info_clear_default_ignorable (&buffer->cur());
+        میانگیر->scratch_flags |= HB_میانگیر_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK;
+	hb_glyph_info_مجموعه_variation_selector (&میانگیر->cur(), درست);
+	إذا (میانگیر->not_یافت_variation_selector != HB_CODEPOINT_INVALID)
+	  _hb_glyph_info_clear_default_ignorable (&میانگیر->cur());
 
-	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	مجموعه_glyph (میانگیر->cur(), font);
+	(فراغ) میانگیر->بعدی_glyph ();
       }
       /* Skip any further variation selectors. */
-      while (buffer->idx < end &&
-	     buffer->successful &&
-	     unlikely (buffer->unicode->is_variation_selector (buffer->cur().codepoint)))
+      طالما (میانگیر->idx < انتها &&
+	     میانگیر->successful &&
+	     unlikely (میانگیر->unicode->is_variation_selector (میانگیر->cur().codepoint)))
       {
-	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	مجموعه_glyph (میانگیر->cur(), font);
+	(فراغ) میانگیر->بعدی_glyph ();
       }
     }
-    else
+    وإلا
     {
-      set_glyph (buffer->cur(), font);
-      (void) buffer->next_glyph ();
+      مجموعه_glyph (میانگیر->cur(), font);
+      (فراغ) میانگیر->بعدی_glyph ();
     }
   }
-  if (likely (buffer->idx < end))
+  إذا (likely (میانگیر->idx < انتها))
   {
-    set_glyph (buffer->cur(), font);
-    (void) buffer->next_glyph ();
+    مجموعه_glyph (میانگیر->cur(), font);
+    (فراغ) میانگیر->بعدی_glyph ();
   }
 }
 
-static inline void
-decompose_multi_char_cluster (const hb_ot_shape_normalize_context_t *c, unsigned int end, bool short_circuit)
+ساكن مضمن فراغ
+decompose_multi_char_cluster (ثابت hb_ot_shape_normalize_context_t *c, بیعلامت صحيح انتها, منطقي short_circuit)
 {
-  hb_buffer_t * const buffer = c->buffer;
-  for (unsigned int i = buffer->idx; i < end && buffer->successful; i++)
-    if (unlikely (buffer->unicode->is_variation_selector (buffer->info[i].codepoint))) {
-      handle_variation_selector_cluster (c, end, short_circuit);
-      return;
+  hb_میانگیر_t * ثابت میانگیر = c->میانگیر;
+  لكل (بیعلامت صحيح i = میانگیر->idx; i < انتها && میانگیر->successful; i++)
+    إذا (unlikely (میانگیر->unicode->is_variation_selector (میانگیر->info[i].codepoint))) {
+      handle_variation_selector_cluster (c, انتها, short_circuit);
+      أرجع;
     }
 
-  while (buffer->idx < end && buffer->successful)
+  طالما (میانگیر->idx < انتها && میانگیر->successful)
     decompose_current_character (c, short_circuit);
 }
 
 
-static int
-compare_combining_class (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
+ساكن صحيح
+compare_combining_class (ثابت hb_glyph_info_t *pa, ثابت hb_glyph_info_t *pb)
 {
-  unsigned int a = _hb_glyph_info_get_modified_combining_class (pa);
-  unsigned int b = _hb_glyph_info_get_modified_combining_class (pb);
+  بیعلامت صحيح a = _hb_glyph_info_get_modified_combining_class (pa);
+  بیعلامت صحيح b = _hb_glyph_info_get_modified_combining_class (pb);
 
-  return a < b ? -1 : a == b ? 0 : +1;
+  أرجع a < b ? -1 : a == b ? 0 : +1;
 }
 
 
-void
-_hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
-			hb_buffer_t *buffer,
+فراغ
+_hb_ot_shape_normalize (ثابت hb_ot_shape_plan_t *plan,
+			hb_میانگیر_t *میانگیر,
 			hb_font_t *font)
 {
-  if (unlikely (!buffer->len)) return;
+  إذا (unlikely (!میانگیر->len)) أرجع;
 
-  _hb_buffer_assert_unicode_vars (buffer);
+  hb_میانگیر_assert_unicode_vars (میانگیر);
 
-  hb_ot_shape_normalization_mode_t mode = plan->shaper->normalization_preference;
-  if (mode == HB_OT_SHAPE_NORMALIZATION_MODE_AUTO)
+  hb_ot_shape_normalization_نما_t نما = plan->shaper->normalization_preference;
+  إذا (نما == HB_OT_SHAPE_NORMALIZATION_نما_AUTO)
   {
-    if (plan->has_gpos_mark)
+    إذا (plan->has_gpos_mark)
       // https://github.com/harfbuzz/harfbuzz/issues/653#issuecomment-423905920
       //mode = HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED;
-      mode = HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS;
-    else
-      mode = HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS;
+      نما = HB_OT_SHAPE_NORMALIZATION_نما_COMPOSED_DIACRITICS;
+    وإلا
+      نما = HB_OT_SHAPE_NORMALIZATION_نما_COMPOSED_DIACRITICS;
   }
 
   hb_ot_shape_normalize_context_t c = {
     plan,
-    buffer,
+    میانگیر,
     font,
-    buffer->unicode,
+    میانگیر->unicode,
     plan->shaper->decompose ? plan->shaper->decompose : hb_ot_shape_normalize_context_t::decompose_unicode,
     plan->shaper->compose   ? plan->shaper->compose   : hb_ot_shape_normalize_context_t::compose_unicode
   };
   c.override_decompose_and_compose (plan->shaper->decompose, plan->shaper->compose);
 
-  bool always_short_circuit = mode == HB_OT_SHAPE_NORMALIZATION_MODE_NONE;
-  bool might_short_circuit = always_short_circuit ||
-			     (mode != HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED &&
-			      mode != HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT);
-  unsigned int count;
+  منطقي always_short_circuit = نما == HB_OT_SHAPE_NORMALIZATION_نما_NONE;
+  منطقي might_short_circuit = always_short_circuit ||
+			     (نما != HB_OT_SHAPE_NORMALIZATION_نما_DECOMPOSED &&
+			      نما != HB_OT_SHAPE_NORMALIZATION_نما_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT);
+  بیعلامت صحيح شمار;
 
   /* We do a fairly straightforward yet custom normalization process in three
    * separate rounds: decompose, reorder, recompose (if desired).  Currently
@@ -321,95 +321,95 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 
   /* First round, decompose */
 
-  bool all_simple = true;
-  if (buffer->message (font, "start decompose"))
+  منطقي all_simple = درست;
+  إذا (میانگیر->پیام (font, "start decompose"))
   {
-    buffer->clear_output ();
-    count = buffer->len;
-    buffer->idx = 0;
-    do
+    میانگیر->clear_output ();
+    شمار = میانگیر->len;
+    میانگیر->idx = 0;
+    افعل
     {
-      unsigned int end;
-      for (end = buffer->idx + 1; end < count; end++)
-	if (_hb_glyph_info_is_unicode_mark (&buffer->info[end]))
-	  break;
+      بیعلامت صحيح انتها;
+      لكل (انتها = میانگیر->idx + 1; انتها < شمار; انتها++)
+	إذا (_hb_glyph_info_is_unicode_mark (&میانگیر->info[انتها]))
+	  اكسر;
 
-      if (end < count)
-	end--; /* Leave one base for the marks to cluster with. */
+      إذا (انتها < شمار)
+	انتها--; /* Leave one base for the marks to cluster with. */
 
       /* From idx to end are simple clusters. */
-      if (might_short_circuit)
+      إذا (might_short_circuit)
       {
-	unsigned int done = font->get_nominal_glyphs (end - buffer->idx,
-						      &buffer->cur().codepoint,
-						      sizeof (buffer->info[0]),
-						      &buffer->cur().normalizer_glyph_index(),
-						      sizeof (buffer->info[0]));
-	if (unlikely (!buffer->next_glyphs (done))) break;
+	بیعلامت صحيح انجامشده = font->get_nominal_glyphs (انتها - میانگیر->idx,
+						      &میانگیر->cur().codepoint,
+						      حجم (میانگیر->info[0]),
+						      &میانگیر->cur().normalizer_glyph_شاخص(),
+						      حجم (میانگیر->info[0]));
+	إذا (unlikely (!میانگیر->بعدی_glyphs (انجامشده))) اكسر;
       }
-      while (buffer->idx < end && buffer->successful)
+      طالما (میانگیر->idx < انتها && میانگیر->successful)
 	decompose_current_character (&c, might_short_circuit);
 
-      if (buffer->idx == count || !buffer->successful)
-	break;
+      إذا (میانگیر->idx == شمار || !میانگیر->successful)
+	اكسر;
 
-      all_simple = false;
+      all_simple = خطأ;
 
       /* Find all the marks now. */
-      for (end = buffer->idx + 1; end < count; end++)
-	if (!_hb_glyph_info_is_unicode_mark(&buffer->info[end]))
-	  break;
+      لكل (انتها = میانگیر->idx + 1; انتها < شمار; انتها++)
+	إذا (!_hb_glyph_info_is_unicode_mark(&میانگیر->info[انتها]))
+	  اكسر;
 
       /* idx to end is one non-simple cluster. */
-      decompose_multi_char_cluster (&c, end, always_short_circuit);
+      decompose_multi_char_cluster (&c, انتها, always_short_circuit);
     }
-    while (buffer->idx < count && buffer->successful);
-    buffer->sync ();
-    (void) buffer->message (font, "end decompose");
+    طالما (میانگیر->idx < شمار && میانگیر->successful);
+    میانگیر->متزامن ();
+    (فراغ) میانگیر->پیام (font, "end decompose");
   }
 
 
   /* Second round, reorder (inplace) */
 
-  if (!all_simple && buffer->message(font, "start reorder"))
+  إذا (!all_simple && میانگیر->پیام(font, "start reorder"))
   {
-    count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++)
+    شمار = میانگیر->len;
+    hb_glyph_info_t *info = میانگیر->info;
+    لكل (بیعلامت صحيح i = 0; i < شمار; i++)
     {
-      if (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
-	continue;
+      إذا (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
+	استمر;
 
-      unsigned int end;
-      for (end = i + 1; end < count; end++)
-	if (_hb_glyph_info_get_modified_combining_class (&info[end]) == 0)
-	  break;
+      بیعلامت صحيح انتها;
+      لكل (انتها = i + 1; انتها < شمار; انتها++)
+	إذا (_hb_glyph_info_get_modified_combining_class (&info[انتها]) == 0)
+	  اكسر;
 
       /* We are going to do a O(n^2).  Only do this if the sequence is short. */
-      if (end - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
-	i = end;
-	continue;
+      إذا (انتها - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
+	i = انتها;
+	استمر;
       }
 
-      buffer->sort (i, end, compare_combining_class);
+      میانگیر->sort (i, انتها, compare_combining_class);
 
-      if (plan->shaper->reorder_marks)
-	plan->shaper->reorder_marks (plan, buffer, i, end);
+      إذا (plan->shaper->reorder_marks)
+	plan->shaper->reorder_marks (plan, میانگیر, i, انتها);
 
-      i = end;
+      i = انتها;
     }
-    (void) buffer->message(font, "end reorder");
+    (فراغ) میانگیر->پیام(font, "end reorder");
   }
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CGJ)
+  إذا (میانگیر->scratch_flags & HB_میانگیر_SCRATCH_FLAG_HAS_CGJ)
   {
     /* For all CGJ, check if it prevented any reordering at all.
      * If it did NOT, then make it skippable.
      * https://github.com/harfbuzz/harfbuzz/issues/554
      */
-    unsigned count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i + 1 < count; i++)
-      if (info[i].codepoint == 0x034Fu/*CGJ*/ &&
+    بیعلامت شمار = میانگیر->len;
+    hb_glyph_info_t *info = میانگیر->info;
+    لكل (بیعلامت صحيح i = 1; i + 1 < شمار; i++)
+      إذا (info[i].codepoint == 0x034Fu/*CGJ*/ &&
 	  (info_cc(info[i+1]) == 0 || info_cc(info[i-1]) <= info_cc(info[i+1])))
       {
 	_hb_glyph_info_unhide (&info[i]);
@@ -419,63 +419,63 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 
   /* Third round, recompose */
 
-  if (!all_simple &&
-      buffer->successful &&
-      (mode == HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS ||
-       mode == HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT) &&
-      buffer->message (font, "start compose"))
+  إذا (!all_simple &&
+      میانگیر->successful &&
+      (نما == HB_OT_SHAPE_NORMALIZATION_نما_COMPOSED_DIACRITICS ||
+       نما == HB_OT_SHAPE_NORMALIZATION_نما_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT) &&
+      میانگیر->پیام (font, "start compose"))
   {
     /* As noted in the comment earlier, we don't try to combine
      * ccc=0 chars with their previous Starter. */
 
-    buffer->clear_output ();
-    count = buffer->len;
-    unsigned int starter = 0;
-    (void) buffer->next_glyph ();
-    while (buffer->idx < count /* No need for: && buffer->successful */)
+    میانگیر->clear_output ();
+    شمار = میانگیر->len;
+    بیعلامت صحيح starter = 0;
+    (فراغ) میانگیر->بعدی_glyph ();
+    طالما (میانگیر->idx < شمار /* No need for: && buffer->successful */)
     {
       hb_codepoint_t composed, glyph;
-      if (/* We don't try to compose a non-mark character with it's preceding starter.
+      إذا (/* We don't try to compose a non-mark character with it's preceding starter.
 	   * This is both an optimization to avoid trying to compose every two neighboring
 	   * glyphs in most scripts AND a desired feature for Hangul.  Apparently Hangul
 	   * fonts are not designed to mix-and-match pre-composed syllables and Jamo. */
-	  _hb_glyph_info_is_unicode_mark(&buffer->cur()))
+	  _hb_glyph_info_is_unicode_mark(&میانگیر->cur()))
       {
-	if (/* If there's anything between the starter and this char, they should have CCC
+	إذا (/* If there's anything between the starter and this char, they should have CCC
 	     * smaller than this character's. */
-	    (starter == buffer->out_len - 1 ||
-	     info_cc (buffer->prev()) < info_cc (buffer->cur())) &&
+	    (starter == میانگیر->بیرون_len - 1 ||
+	     info_cc (میانگیر->prev()) < info_cc (میانگیر->cur())) &&
 	    /* And compose. */
 	    c.compose (&c,
-		       buffer->out_info[starter].codepoint,
-		       buffer->cur().codepoint,
+		       میانگیر->بیرون_info[starter].codepoint,
+		       میانگیر->cur().codepoint,
 		       &composed) &&
 	    /* And the font has glyph for the composite. */
 	    font->get_nominal_glyph (composed, &glyph))
 	{
 	  /* Composes. */
-	  if (unlikely (!buffer->next_glyph ())) break; /* Copy to out-buffer. */
-	  buffer->merge_out_clusters (starter, buffer->out_len);
-	  buffer->out_len--; /* Remove the second composable. */
+	  إذا (unlikely (!میانگیر->بعدی_glyph ())) اكسر; /* Copy to out-buffer. */
+	  میانگیر->ادغام_بیرون_clusters (starter, میانگیر->بیرون_len);
+	  میانگیر->بیرون_len--; /* Remove the second composable. */
 	  /* Modify starter and carry on. */
-	  buffer->out_info[starter].codepoint = composed;
-	  buffer->out_info[starter].normalizer_glyph_index() = glyph;
-	  _hb_glyph_info_set_unicode_props (&buffer->out_info[starter], buffer);
+	  میانگیر->بیرون_info[starter].codepoint = composed;
+	  میانگیر->بیرون_info[starter].normalizer_glyph_شاخص() = glyph;
+	  hb_glyph_info_مجموعه_unicode_props (&میانگیر->بیرون_info[starter], میانگیر);
 
-	  continue;
+	  استمر;
 	}
       }
 
       /* Blocked, or doesn't compose. */
-      if (unlikely (!buffer->next_glyph ())) break;
+      إذا (unlikely (!میانگیر->بعدی_glyph ())) اكسر;
 
-      if (info_cc (buffer->prev()) == 0)
-	starter = buffer->out_len - 1;
+      إذا (info_cc (میانگیر->prev()) == 0)
+	starter = میانگیر->بیرون_len - 1;
     }
-    buffer->sync ();
-    (void) buffer->message (font, "end compose");
+    میانگیر->متزامن ();
+    (فراغ) میانگیر->پیام (font, "end compose");
   }
 }
 
 
-#endif
+#پایان_اگر

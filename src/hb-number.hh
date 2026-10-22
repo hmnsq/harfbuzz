@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#اگر_تعریف_نشده HB_عدد_HH
+#تعریف_کن HB_عدد_HH
 
-HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+HB_داخلی منطقي
+hb_parse_int (ثابت حرف **pp, ثابت حرف *انتها, صحيح *pv,
+	      منطقي کامل_میانگیر = خطأ);
 
-HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+HB_داخلی منطقي
+hb_parse_uint (ثابت حرف **pp, ثابت حرف *انتها, بیعلامت صحيح *pv,
+	       منطقي کامل_میانگیر = خطأ, صحيح پایه = 10);
 
-HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+HB_داخلی منطقي
+hb_parse_double (ثابت حرف **pp, ثابت حرف *انتها, مزدوج *pv,
+		 منطقي کامل_میانگیر = خطأ);
 
-#endif /* HB_NUMBER_HH */
+#پایان_اگر /* HB_NUMBER_HH */

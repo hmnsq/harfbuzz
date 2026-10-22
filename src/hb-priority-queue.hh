@@ -24,11 +24,11 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_PRIORITY_QUEUE_HH
-#define HB_PRIORITY_QUEUE_HH
+#اگر_تعریف_نشده HB_اولویت_صف_HH
+#تعریف_کن HB_اولویت_صف_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#ضمن "hb.hh"
+#ضمن "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -42,143 +42,143 @@
  * priority of its children. The heap is stored in an array, with the
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
-template <typename K>
-struct hb_priority_queue_t
+قالب <نام_نوع K>
+بنية hb_اولویت_صف_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ عام:
+  تعريفنوع hb_pair_t<K, بیعلامت> قلم_t;
 
- private:
-  hb_vector_t<item_t> heap;
+ خاص:
+  hb_وکتور_t<قلم_t> انباشته;
 
- public:
+ عام:
 
-  hb_priority_queue_t () = default;
-  hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
+  hb_اولویت_صف_t () = افتراضي;
+  hb_اولویت_صف_t (hb_وکتور_t<قلم_t>&& other) : انباشته (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
-      bubble_down (i);
+    لكل (صحيح i = (انباشته.درازی / 2) - 1; i >= 0; i--)
+      bubble_پایین (i);
   }
 
-  void reset () { heap.clear (); }
+  فراغ reset () { انباشته.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  منطقي درون_error () ثابت { أرجع انباشته.درون_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  منطقي alloc (بیعلامت اندازه)
+  { أرجع انباشته.alloc (اندازه); }
 
-#ifndef HB_OPTIMIZE_SIZE
+#اگر_تعریف_نشده HB_OPTIMIZE_اندازه
   HB_ALWAYS_INLINE
-#endif
-  void insert (K priority, unsigned value)
+#پایان_اگر
+  فراغ insert (K اولویت, بیعلامت value)
   {
-    heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
-    bubble_up (heap.length - 1);
+    انباشته.push (قلم_t (اولویت, value));
+    إذا (unlikely (انباشته.درون_error ())) أرجع;
+    bubble_به_بالا (انباشته.درازی - 1);
   }
 
-#ifndef HB_OPTIMIZE_SIZE
+#اگر_تعریف_نشده HB_OPTIMIZE_اندازه
   HB_ALWAYS_INLINE
-#endif
-  item_t pop_minimum ()
+#پایان_اگر
+  قلم_t برداشت_minimum ()
   {
-    assert (!is_empty ());
+    أكد (!is_empty ());
 
-    item_t result = heap.arrayZ[0];
+    قلم_t نتیجه = انباشته.arrayZ[0];
 
-    heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
-    heap.resize (heap.length - 1);
+    انباشته.arrayZ[0] = انباشته.arrayZ[انباشته.درازی - 1];
+    انباشته.resize (انباشته.درازی - 1);
 
-    if (!is_empty ())
-      bubble_down (0);
+    إذا (!is_empty ())
+      bubble_پایین (0);
 
-    return result;
+    أرجع نتیجه;
   }
 
-  const item_t& minimum ()
+  ثابت قلم_t& minimum ()
   {
-    return heap[0];
+    أرجع انباشته[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  منطقي is_empty () ثابت { أرجع انباشته.درازی == 0; }
+  صریح عملگر منطقي () ثابت { أرجع !is_empty (); }
+  بیعلامت صحيح get_population () ثابت { أرجع انباشته.درازی; }
 
   /* Sink interface. */
-  hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  hb_اولویت_صف_t& عملگر << (قلم_t قلم)
+  { insert (قلم.اولی, قلم.second); أرجع *هذا; }
 
- private:
+ خاص:
 
-  static constexpr unsigned parent (unsigned index)
+  ساكن constexpr بیعلامت والد (بیعلامت شاخص_2)
   {
-    return (index - 1) / 2;
+    أرجع (شاخص_2 - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  ساكن constexpr بیعلامت چپ_فرزند (بیعلامت شاخص_2)
   {
-    return 2 * index + 1;
+    أرجع 2 * شاخص_2 + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  ساكن constexpr بیعلامت راست_فرزند (بیعلامت شاخص_2)
   {
-    return 2 * index + 2;
+    أرجع 2 * شاخص_2 + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  فراغ bubble_پایین (بیعلامت شاخص_2)
   {
     repeat:
-    assert (index < heap.length);
+    أكد (شاخص_2 < انباشته.درازی);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    بیعلامت چپ = چپ_فرزند (شاخص_2);
+    بیعلامت راست = راست_فرزند (شاخص_2);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    منطقي has_چپ = چپ < انباشته.درازی;
+    إذا (!has_چپ)
       // If there's no left, then there's also no right.
-      return;
+      أرجع;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    منطقي has_راست = راست < انباشته.درازی;
+    إذا (انباشته.arrayZ[شاخص_2].اولی <= انباشته.arrayZ[چپ].اولی
+        && (!has_راست || انباشته.arrayZ[شاخص_2].اولی <= انباشته.arrayZ[راست].اولی))
+      أرجع;
 
-    unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
-      child = left;
-    else
-      child = right;
+    بیعلامت فرزند;
+    إذا (!has_راست || انباشته.arrayZ[چپ].اولی < انباشته.arrayZ[راست].اولی)
+      فرزند = چپ;
+    وإلا
+      فرزند = راست;
 
-    swap (index, child);
-    index = child;
-    goto repeat;
+    swap (شاخص_2, فرزند);
+    شاخص_2 = فرزند;
+    اذهب repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  فراغ bubble_به_بالا (بیعلامت شاخص_2)
   {
     repeat:
-    assert (index < heap.length);
+    أكد (شاخص_2 < انباشته.درازی);
 
-    if (index == 0) return;
+    إذا (شاخص_2 == 0) أرجع;
 
-    unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    بیعلامت والد_شاخص = والد (شاخص_2);
+    إذا (انباشته.arrayZ[والد_شاخص].اولی <= انباشته.arrayZ[شاخص_2].اولی)
+      أرجع;
 
-    swap (index, parent_index);
-    index = parent_index;
-    goto repeat;
+    swap (شاخص_2, والد_شاخص);
+    شاخص_2 = والد_شاخص;
+    اذهب repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  فراغ swap (بیعلامت a, بیعلامت b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
-    hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
+    أكد (a < انباشته.درازی);
+    أكد (b < انباشته.درازی);
+    hb_جابجا (انباشته.arrayZ[a], انباشته.arrayZ[b]);
   }
 };
 
-#endif /* HB_PRIORITY_QUEUE_HH */
+#پایان_اگر /* HB_PRIORITY_QUEUE_HH */

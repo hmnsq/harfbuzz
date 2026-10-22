@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#ضمن "graph.hh"
+#ضمن "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#اگر_تعریف_نشده گراف_GSUBGPOS_CONTEXT_HH
+#تعریف_کن گراف_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+نطاق گراف {
 
-struct Lookup;
+بنية Lookup;
 
-struct gsubgpos_graph_context_t
+بنية gsubgpos_گراف_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_داخلی ساكن گراف_نتیجه_t<gsubgpos_گراف_context_t> create (hb_برچسب_t جدول_برچسب_3,
+                                                                      گراف_t& گراف_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_برچسب_t جدول_برچسب_2;
+  گراف_t& گراف;
+  بیعلامت lookup_list_شاخص;
+  hb_hashmap_t<بیعلامت, گراف::Lookup*> lookups;
+  hb_hashmap_t<بیعلامت, بیعلامت> subtable_مقصد_extension;
+  hb_hashmap_t<بیعلامت, hb_وکتور_t<بیعلامت>> تقسیم_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_داخلی گراف_نتیجه_t<بیعلامت> create_گره (بیعلامت اندازه);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  گراف_نتیجه_t<فراغ> جمع_کن_میانگیر (حرف* میانگیر)
   {
-    return graph.add_buffer (buffer);
+    أرجع گراف.جمع_کن_میانگیر (میانگیر);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ خاص:
+  HB_داخلی gsubgpos_گراف_context_t (hb_برچسب_t جدول_برچسب_3,
+                                        گراف_t& گراف_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_داخلی بیعلامت رقم_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#پایان_اگر  // GRAPH_GSUBGPOS_CONTEXT

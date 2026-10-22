@@ -24,92 +24,92 @@ Input files:
 * https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
 """
 
-import collections
-import html
-from html.parser import HTMLParser
-import itertools
-import os
-import re
-import sys
-import unicodedata
+استورد collections
+استورد html
+من html.parser استورد HTMLParser
+استورد itertools
+استورد os
+استورد re
+استورد sys
+استورد unicodedata
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
-	del sys.argv[1]
-	output_rust = True
-else:
-	output_rust = False
+إذا طول (sys.argv) > 1 و sys.argv[1] == '--rust':
+	پاک sys.argv[1]
+	output_rust = درست
+وإلا:
+	output_rust = خطأ
 
-if len (sys.argv) != 3:
+إذا طول (sys.argv) != 3:
 	sys.exit (__doc__)
 
-def expect (condition, message=None):
-	if not condition:
-		if message is None:
-			raise AssertionError
-		raise AssertionError (message)
+تعریف expect (condition, پیام=هیچ):
+	إذا ليس condition:
+		إذا پیام است هیچ:
+			ارفع AssertionError
+		ارفع AssertionError (پیام)
 
-def write (s):
+تعریف اكتب (s):
 	sys.stdout.flush ()
-	sys.stdout.buffer.write (s.encode ('utf-8'))
+	sys.stdout.میانگیر.اكتب (s.encode ('utf-8'))
 
-_ALLOWED_COMMENT_PUNCT = set (" -—–.,;:’'ʼ()[]/!=>_+")
+_ALLOWED_COMMENT_PUNCT = مجموعه (" -—–.,;:’'ʼ()[]/!=>_+")
 
-def sanitize_comment (s):
+تعریف sanitize_comment (s):
 	"""Validate that a comment contains only safe characters and return the stripped string.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string for comment, got %s" % type (s).__name__)
+	إذا ليس isinstance (s, str):
+		ارفع TypeError ("Expected string for comment, got %s" % type (s).__name__)
 	s = s.strip ()
-	if not s:
-		return ''
-	for ch in s:
+	إذا ليس s:
+		أرجع ''
+	لكل ch في s:
 		cat = unicodedata.category (ch)
-		if not (cat.startswith (('L', 'M', 'N', 'Z')) or ch in _ALLOWED_COMMENT_PUNCT):
-			raise ValueError ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
-	return s
+		إذا ليس (cat.startswith (('L', 'M', 'N', 'Z')) أو ch في _ALLOWED_COMMENT_PUNCT):
+			ارفع مقدار_Error ("Disallowed character %r (U+%04X) in comment: %r" % (ch, ord (ch), s))
+	أرجع s
 
-def sanitize_header (s):
+تعریف sanitize_سرآیند (s):
 	"""Validate that a header string contains only safe characters and return the stripped string.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string for header, got %s" % type (s).__name__)
+	إذا ليس isinstance (s, str):
+		ارفع TypeError ("Expected string for header, got %s" % type (s).__name__)
 	s = s.strip ()
-	if not re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
-		raise ValueError ("Invalid header line %r: contains disallowed characters" % s)
-	return s
+	إذا ليس re.fullmatch (r'[a-zA-Z0-9 <>=/:\-_."]{1,200}', s):
+		ارفع مقدار_Error ("Invalid header line %r: contains disallowed characters" % s)
+	أرجع s
 
-def sanitize_bcp47_tag (s):
+تعریف sanitize_bcp47_برچسب (s):
 	"""Validate that a BCP-47 tag or subtag contains only alphanumeric characters and hyphens.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (s, str):
-		raise TypeError ("Expected string, got %s" % type (s).__name__)
-	if not re.fullmatch (r'[a-zA-Z0-9-]+', s):
-		raise ValueError ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
-	return s
+	إذا ليس isinstance (s, str):
+		ارفع TypeError ("Expected string, got %s" % type (s).__name__)
+	إذا ليس re.fullmatch (r'[a-zA-Z0-9-]+', s):
+		ارفع مقدار_Error ("Invalid BCP-47 tag or subtag literal %r: must contain only alphanumeric characters and hyphens" % s)
+	أرجع s
 
-def sanitize_tag (tag):
+تعریف sanitize_برچسب (برچسب_2):
 	"""Validate that an OpenType tag contains only 1-4 alphanumeric characters or spaces.
 
 	Raises ValueError if any character outside the allowlist is present.
 	"""
-	if not isinstance (tag, str):
-		raise TypeError ("Expected string for tag, got %s" % type (tag).__name__)
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
-		return ''
-	if not re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', tag):
-		raise ValueError ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % tag)
-	return tag
+	إذا ليس isinstance (برچسب_2, str):
+		ارفع TypeError ("Expected string for tag, got %s" % type (برچسب_2).__name__)
+	إذا برچسب_2 == DEFAULT_LANGUAGE_SYSTEM:
+		أرجع ''
+	إذا ليس re.fullmatch (r'[a-zA-Z0-9 ]{1,4}', برچسب_2):
+		ارفع مقدار_Error ("Invalid tag %r: must contain only 1-4 alphanumeric characters or spaces" % برچسب_2)
+	أرجع برچسب_2
 
 DEFAULT_LANGUAGE_SYSTEM = ''
 
 # from https://www-01.sil.org/iso639-3/iso-639-3.tab
-ISO_639_3_TO_1 = {
+ISO_639_3_مقصد_1 = {
 	'aar': 'aa',
 	'abk': 'ab',
 	'afr': 'af',
@@ -297,7 +297,7 @@ ISO_639_3_TO_1 = {
 	'zul': 'zu',
 }
 
-class LanguageTag (object):
+صنف Language_برچسب (object):
 	"""A BCP 47 language tag.
 
 	Attributes:
@@ -314,35 +314,35 @@ class LanguageTag (object):
 		tag (str): A BCP 47 language tag.
 
 	"""
-	def __init__ (self, tag):
-		global bcp_47
-		self.subtags = tag.lower ().split ('-')
-		self.grandfathered = tag.lower () in bcp_47.grandfathered
-		if self.grandfathered:
-			self.language = tag.lower ()
+	تعریف __init__ (self, برچسب_2):
+		عام bcp_47
+		self.subtags = برچسب_2.پایینی ().تقسیم ('-')
+		self.grandfathered = برچسب_2.پایینی () في bcp_47.grandfathered
+		إذا self.grandfathered:
+			self.language = برچسب_2.پایینی ()
 			self.script = ''
 			self.region = ''
 			self.variant = ''
-		else:
+		وإلا:
 			self.language = self.subtags[0]
-			self.script = self._find_first (lambda s: len (s) == 4 and s[0] > '9', self.subtags)
-			self.region = self._find_first (lambda s: len (s) == 2 and s[0] > '9' or len (s) == 3 and s[0] <= '9', self.subtags[1:])
-			self.variant = self._find_first (lambda s: len (s) > 4 or len (s) == 4 and s[0] <= '9', self.subtags)
+			self.script = self.پیدا_کن_اولی (مجهول s: طول (s) == 4 و s[0] > '9', self.subtags)
+			self.region = self.پیدا_کن_اولی (مجهول s: طول (s) == 2 و s[0] > '9' أو طول (s) == 3 و s[0] <= '9', self.subtags[1:])
+			self.variant = self.پیدا_کن_اولی (مجهول s: طول (s) > 4 أو طول (s) == 4 و s[0] <= '9', self.subtags)
 
-	def __str__(self):
-		return '-'.join(self.subtags)
+	تعریف __str__(self):
+		أرجع '-'.join(self.subtags)
 
-	def __repr__ (self):
-		return 'LanguageTag(%r)' % str(self)
+	تعریف __repr__ (self):
+		أرجع 'LanguageTag(%r)' % str(self)
 
 	@staticmethod
-	def _find_first (function, sequence):
-		try:
-			return next (iter (filter (function, sequence)))
-		except StopIteration:
-			return None
+	تعریف پیدا_کن_اولی (function, sequence):
+		حاول:
+			أرجع بعدی (iter (filter (function, sequence)))
+		استثناء StopIteration:
+			أرجع هیچ
 
-	def is_complex (self):
+	تعریف is_complex (self):
 		"""Return whether this tag is too complex to represent as a
 		``LangTag`` in the generated code.
 
@@ -352,12 +352,12 @@ class LanguageTag (object):
 		Returns:
 			Whether this tag is complex.
 		"""
-		return not (len (self.subtags) == 1
-			or self.grandfathered
-			and len (self.subtags[1]) != 3
-			and ot.from_bcp_47[self.subtags[0]] == ot.from_bcp_47[self.language])
+		أرجع ليس (طول (self.subtags) == 1
+			أو self.grandfathered
+			و طول (self.subtags[1]) != 3
+			و ot.from_bcp_47[self.subtags[0]] == ot.from_bcp_47[self.language])
 
-	def get_group (self):
+	تعریف get_گروه (self):
 		"""Return the group into which this tag should be categorized in
 		``hb_ot_tags_from_complex_language``.
 
@@ -368,12 +368,12 @@ class LanguageTag (object):
 		Returns:
 			This tag's group.
 		"""
-		return ('und'
-			if (self.language == 'und'
-				or self.variant in bcp_47.prefixes and len (bcp_47.prefixes[self.variant]) == 1)
-			else self.language[0])
+		أرجع ('und'
+			إذا (self.language == 'und'
+				أو self.variant في bcp_47.prefixes و طول (bcp_47.prefixes[self.variant]) == 1)
+			وإلا self.language[0])
 
-class OpenTypeRegistryParser (HTMLParser):
+صنف OpenTypeRegistryParser (HTMLParser):
 	"""A parser for the OpenType language system tag registry.
 
 	Attributes:
@@ -396,86 +396,86 @@ class OpenTypeRegistryParser (HTMLParser):
 			``inherit_from_macrolanguages``.
 
 	"""
-	def __init__ (self):
+	تعریف __init__ (self):
 		HTMLParser.__init__ (self)
-		self.header = ''
-		self.names = {}
-		self.ranks = collections.defaultdict (int)
-		self.to_bcp_47 = collections.defaultdict (set)
-		self.from_bcp_47 = collections.defaultdict (set)
-		self.from_bcp_47_uninherited = None
+		self.سرآیند = ''
+		self.نامها = {}
+		self.ranks = collections.defaultdict (صحيح)
+		self.مقصد_bcp_47 = collections.defaultdict (مجموعه)
+		self.from_bcp_47 = collections.defaultdict (مجموعه)
+		self.from_bcp_47_uninherited = هیچ
 		# Whether the parser is in a <td> element
-		self._td = False
+		self._td = خطأ
 		# Whether the parser ignores the rest of the current <td> element
-		self._disengaged = False
+		self._disengaged = خطأ
 		# The text of the <td> elements of the current <tr> element.
 		self._current_tr = []
 
-	def handle_starttag (self, tag, attrs):
-		if tag == 'a':
-			if self._current_tr and not self._disengaged:
+	تعریف handle_starttag (self, برچسب_2, attrs):
+		إذا برچسب_2 == 'a':
+			إذا self._current_tr و ليس self._disengaged:
 				self._current_tr[-1] = ''
-				self._disengaged = True
-		elif tag == 'br':
-			self._disengaged = True
-		elif tag == 'meta':
-			for attr, value in attrs:
-				if attr == 'name' and value == 'updated_at':
-					self.header = self.get_starttag_text ()
-					break
-		elif tag == 'td':
-			self._td = True
+				self._disengaged = درست
+		وإلاإذا برچسب_2 == 'br':
+			self._disengaged = درست
+		وإلاإذا برچسب_2 == 'meta':
+			لكل attr, مقدار_2 في attrs:
+				إذا attr == 'name' و مقدار_2 == 'updated_at':
+					self.سرآیند = self.get_starttag_متن ()
+					اكسر
+		وإلاإذا برچسب_2 == 'td':
+			self._td = درست
 			self._current_tr.append ('')
-		elif tag == 'tr':
-			self._disengaged = False
+		وإلاإذا برچسب_2 == 'tr':
+			self._disengaged = خطأ
 			self._current_tr = []
 
-	def handle_endtag (self, tag):
-		if tag == 'td':
-			self._td = False
-			self._disengaged = False
-		elif tag == 'tr' and self._current_tr:
-			expect (2 <= len (self._current_tr) <= 3)
+	تعریف handle_endtag (self, برچسب_2):
+		إذا برچسب_2 == 'td':
+			self._td = خطأ
+			self._disengaged = خطأ
+		وإلاإذا برچسب_2 == 'tr' و self._current_tr:
+			expect (2 <= طول (self._current_tr) <= 3)
 			name = self._current_tr[0].strip ()
-			tag = self._current_tr[1].strip ("\t\n\v\f\r '")
+			برچسب_2 = self._current_tr[1].strip ("\t\n\v\f\r '")
 			rank = 0
-			if len (tag) > 4:
-				expect (tag.endswith (' (deprecated)'), 'ill-formed OpenType tag: %s' % tag)
+			إذا طول (برچسب_2) > 4:
+				expect (برچسب_2.endswith (' (deprecated)'), 'ill-formed OpenType tag: %s' % برچسب_2)
 				name += ' (deprecated)'
-				tag = tag.split (' ')[0]
+				برچسب_2 = برچسب_2.تقسیم (' ')[0]
 				rank = 1
-			self.names[tag] = re.sub (' languages$', '', name)
-			if not self._current_tr[2]:
-				return
+			self.نامها[برچسب_2] = re.sub (' languages$', '', name)
+			إذا ليس self._current_tr[2]:
+				أرجع
 			iso_codes = self._current_tr[2].strip ()
-			self.to_bcp_47[tag].update (ISO_639_3_TO_1.get (code, code) for code in iso_codes.replace (' ', '').split (','))
-			rank += 2 * len (self.to_bcp_47[tag])
-			self.ranks[tag] = rank
+			self.مقصد_bcp_47[برچسب_2].update (ISO_639_3_مقصد_1.get (کد, کد) لكل کد في iso_codes.replace (' ', '').تقسیم (','))
+			rank += 2 * طول (self.مقصد_bcp_47[برچسب_2])
+			self.ranks[برچسب_2] = rank
 
-	def handle_data (self, data):
-		if self._td and not self._disengaged:
-			self._current_tr[-1] += data
+	تعریف handle_داده (self, داده):
+		إذا self._td و ليس self._disengaged:
+			self._current_tr[-1] += داده
 
-	def handle_charref (self, name):
-		self.handle_data (html.unescape ('&#%s;' % name))
+	تعریف handle_charref (self, name):
+		self.handle_داده (html.unescape ('&#%s;' % name))
 
-	def handle_entityref (self, name):
-		self.handle_data (html.unescape ('&%s;' % name))
+	تعریف handle_entityref (self, name):
+		self.handle_داده (html.unescape ('&%s;' % name))
 
-	def parse (self, filename):
+	تعریف parse (self, filename):
 		"""Parse the OpenType language system tag registry.
 
 		Args:
 			filename (str): The file name of the registry.
 		"""
-		with open (filename, encoding='utf-8') as f:
-			self.feed (f.read ())
-		expect (self.header)
-		for tag, iso_codes in self.to_bcp_47.items ():
-			for iso_code in iso_codes:
-				self.from_bcp_47[iso_code].add (tag)
+		با open (filename, encoding='utf-8') كـ f:
+			self.feed (f.اقرأ ())
+		expect (self.سرآیند)
+		لكل برچسب_2, iso_codes في self.مقصد_bcp_47.اقلام ():
+			لكل iso_کد في iso_codes:
+				self.from_bcp_47[iso_کد].جمع_کن (برچسب_2)
 
-	def add_language (self, bcp_47_tag, ot_tag):
+	تعریف جمع_کن_language (self, bcp_47_برچسب, ot_برچسب):
 		"""Add a language as if it were in the registry.
 
 		Args:
@@ -486,45 +486,45 @@ class OpenTypeRegistryParser (HTMLParser):
 				remainder of the tag appended.
 			ot_tag (str): An OpenType language system tag.
 		"""
-		global bcp_47
-		self.to_bcp_47[ot_tag].add (bcp_47_tag)
-		self.from_bcp_47[bcp_47_tag].add (ot_tag)
-		if bcp_47_tag.lower () not in bcp_47.grandfathered:
-			try:
-				[macrolanguage, suffix] = bcp_47_tag.split ('-', 1)
-				if macrolanguage in bcp_47.macrolanguages:
-					s = set ()
-					for language in bcp_47.macrolanguages[macrolanguage]:
-						if language.lower () not in bcp_47.grandfathered:
-							s.add ('%s-%s' % (language, suffix))
+		عام bcp_47
+		self.مقصد_bcp_47[ot_برچسب].جمع_کن (bcp_47_برچسب)
+		self.from_bcp_47[bcp_47_برچسب].جمع_کن (ot_برچسب)
+		إذا bcp_47_برچسب.پایینی () ليس في bcp_47.grandfathered:
+			حاول:
+				[macrolanguage, suffix] = bcp_47_برچسب.تقسیم ('-', 1)
+				إذا macrolanguage في bcp_47.macrolanguages:
+					s = مجموعه ()
+					لكل language في bcp_47.macrolanguages[macrolanguage]:
+						إذا language.پایینی () ليس في bcp_47.grandfathered:
+							s.جمع_کن ('%s-%s' % (language, suffix))
 					bcp_47.macrolanguages['%s-%s' % (macrolanguage, suffix)] = s
-			except ValueError:
-				pass
+			استثناء مقدار_Error:
+				بگذر
 
 	@staticmethod
-	def _remove_language (tag_1, dict_1, dict_2):
-		for tag_2 in dict_1.pop (tag_1):
-			dict_2[tag_2].remove (tag_1)
-			if not dict_2[tag_2]:
-				del dict_2[tag_2]
+	تعریف _remove_language (برچسب_1, dict_1, dict_2):
+		لكل برچسب_2_2 في dict_1.برداشت (برچسب_1):
+			dict_2[برچسب_2_2].remove (برچسب_1)
+			إذا ليس dict_2[برچسب_2_2]:
+				پاک dict_2[برچسب_2_2]
 
-	def remove_language_ot (self, ot_tag):
+	تعریف remove_language_ot (self, ot_برچسب):
 		"""Remove an OpenType tag from the registry.
 
 		Args:
 			ot_tag (str): An OpenType tag.
 		"""
-		self._remove_language (ot_tag, self.to_bcp_47, self.from_bcp_47)
+		self._remove_language (ot_برچسب, self.مقصد_bcp_47, self.from_bcp_47)
 
-	def remove_language_bcp_47 (self, bcp_47_tag):
+	تعریف remove_language_bcp_47 (self, bcp_47_برچسب):
 		"""Remove a BCP 47 tag from the registry.
 
 		Args:
 			bcp_47_tag (str): A BCP 47 tag.
 		"""
-		self._remove_language (bcp_47_tag, self.from_bcp_47, self.to_bcp_47)
+		self._remove_language (bcp_47_برچسب, self.from_bcp_47, self.مقصد_bcp_47)
 
-	def inherit_from_macrolanguages (self):
+	تعریف inherit_from_macrolanguages (self):
 		"""Copy mappings from macrolanguages to individual languages.
 
 		If a BCP 47 tag for an individual mapping has no OpenType
@@ -545,55 +545,55 @@ class OpenTypeRegistryParser (HTMLParser):
 		some of its individual languages do, their mappings are copied
 		to the macrolanguage.
 		"""
-		global bcp_47
-		first_time = self.from_bcp_47_uninherited is None
-		if first_time:
+		عام bcp_47
+		اولی_زمان = self.from_bcp_47_uninherited است هیچ
+		إذا اولی_زمان:
 			self.from_bcp_47_uninherited = dict (self.from_bcp_47)
-		for macrolanguage, languages in dict (bcp_47.macrolanguages).items ():
+		لكل macrolanguage, languages في dict (bcp_47.macrolanguages).اقلام ():
 			ot_macrolanguages = {
-				ot_macrolanguage for ot_macrolanguage in self.from_bcp_47_uninherited.get (macrolanguage, set ())
+				ot_macrolanguage لكل ot_macrolanguage في self.from_bcp_47_uninherited.get (macrolanguage, مجموعه ())
 			}
-			blocked_ot_macrolanguages = set ()
-			if 'retired code' not in bcp_47.scopes.get (macrolanguage, ''):
-				for ot_macrolanguage in ot_macrolanguages:
-					round_trip_macrolanguages = {
-						l for l in self.to_bcp_47[ot_macrolanguage]
-						if 'retired code' not in bcp_47.scopes.get (l, '')
+			blocked_ot_macrolanguages = مجموعه ()
+			إذا 'retired code' ليس في bcp_47.scopes.get (macrolanguage, ''):
+				لكل ot_macrolanguage في ot_macrolanguages:
+					دور_trip_macrolanguages = {
+						l لكل l في self.مقصد_bcp_47[ot_macrolanguage]
+						إذا 'retired code' ليس في bcp_47.scopes.get (l, '')
 					}
-					round_trip_languages = {
-						l for l in languages
-						if 'retired code' not in bcp_47.scopes.get (l, '')
+					دور_trip_languages = {
+						l لكل l في languages
+						إذا 'retired code' ليس في bcp_47.scopes.get (l, '')
 					}
-					intersection = round_trip_macrolanguages & round_trip_languages
-					if intersection and intersection != round_trip_languages:
-						blocked_ot_macrolanguages.add (ot_macrolanguage)
-			if ot_macrolanguages:
-				for ot_macrolanguage in ot_macrolanguages:
-					if ot_macrolanguage not in blocked_ot_macrolanguages:
-						for language in languages:
-							self.add_language (language, ot_macrolanguage)
-							if not blocked_ot_macrolanguages:
+					intersection = دور_trip_macrolanguages & دور_trip_languages
+					إذا intersection و intersection != دور_trip_languages:
+						blocked_ot_macrolanguages.جمع_کن (ot_macrolanguage)
+			إذا ot_macrolanguages:
+				لكل ot_macrolanguage في ot_macrolanguages:
+					إذا ot_macrolanguage ليس في blocked_ot_macrolanguages:
+						لكل language في languages:
+							self.جمع_کن_language (language, ot_macrolanguage)
+							إذا ليس blocked_ot_macrolanguages:
 								self.ranks[ot_macrolanguage] += 1
-			elif first_time:
-				for language in languages:
-					if language in self.from_bcp_47_uninherited:
+			وإلاإذا اولی_زمان:
+				لكل language في languages:
+					إذا language في self.from_bcp_47_uninherited:
 						ot_macrolanguages |= self.from_bcp_47_uninherited[language]
-					else:
+					وإلا:
 						ot_macrolanguages.clear ()
-					if not ot_macrolanguages:
-						break
-				for ot_macrolanguage in ot_macrolanguages:
-					self.add_language (macrolanguage, ot_macrolanguage)
+					إذا ليس ot_macrolanguages:
+						اكسر
+				لكل ot_macrolanguage في ot_macrolanguages:
+					self.جمع_کن_language (macrolanguage, ot_macrolanguage)
 
-	def sort_languages (self):
+	تعریف مرتب_سازی_languages (self):
 		"""Sort the values of ``from_bcp_47`` in ascending rank order."""
-		for language, tags in self.from_bcp_47.items ():
-			self.from_bcp_47[language] = sorted (tags,
-					key=lambda t: (self.ranks[t] + rank_delta (language, t), t))
+		لكل language, برچسبها في self.from_bcp_47.اقلام ():
+			self.from_bcp_47[language] = sorted (برچسبها,
+					کلید_2=مجهول t: (self.ranks[t] + rank_delta (language, t), t))
 
 ot = OpenTypeRegistryParser ()
 
-class BCP47Parser (object):
+صنف BCP47Parser (object):
 	"""A parser for the BCP 47 subtag registry.
 
 	Attributes:
@@ -614,111 +614,111 @@ class BCP47Parser (object):
 			normalized to lowercase.
 
 	"""
-	def __init__ (self):
-		self.header = ''
-		self.names = {}
+	تعریف __init__ (self):
+		self.سرآیند = ''
+		self.نامها = {}
 		self.scopes = {}
-		self.macrolanguages = collections.defaultdict (set)
-		self.prefixes = collections.defaultdict (set)
-		self.grandfathered = set ()
+		self.macrolanguages = collections.defaultdict (مجموعه)
+		self.prefixes = collections.defaultdict (مجموعه)
+		self.grandfathered = مجموعه ()
 
-	def parse (self, filename):
+	تعریف parse (self, filename):
 		"""Parse the BCP 47 subtag registry.
 
 		Args:
 			filename (str): The file name of the registry.
 		"""
-		with open (filename, encoding='utf-8') as f:
-			subtag_type = None
-			subtag = None
-			deprecated = False
-			has_preferred_value = False
-			line_buffer = ''
-			for line in itertools.chain (f, ['']):
-				line = line.rstrip ()
-				if line.startswith (' '):
-					line_buffer += line[1:]
-					continue
-				line, line_buffer = line_buffer, line
-				if line.startswith ('Type: '):
-					subtag_type = line.split (' ')[1]
-					deprecated = False
-					has_preferred_value = False
-				elif line.startswith ('Subtag: ') or line.startswith ('Tag: '):
-					subtag = line.split (' ')[1]
-					if subtag_type == 'grandfathered':
-						self.grandfathered.add (subtag.lower ())
-				elif line.startswith ('Description: '):
-					description = line.split (' ', 1)[1].replace (' (individual language)', '')
+		با open (filename, encoding='utf-8') كـ f:
+			subtag_type = هیچ
+			subtag = هیچ
+			deprecated = خطأ
+			has_preferred_مقدار = خطأ
+			سطر_میانگیر = ''
+			لكل سطر في itertools.chain (f, ['']):
+				سطر = سطر.rstrip ()
+				إذا سطر.startswith (' '):
+					سطر_میانگیر += سطر[1:]
+					استمر
+				سطر, سطر_میانگیر = سطر_میانگیر, سطر
+				إذا سطر.startswith ('Type: '):
+					subtag_type = سطر.تقسیم (' ')[1]
+					deprecated = خطأ
+					has_preferred_مقدار = خطأ
+				وإلاإذا سطر.startswith ('Subtag: ') أو سطر.startswith ('Tag: '):
+					subtag = سطر.تقسیم (' ')[1]
+					إذا subtag_type == 'grandfathered':
+						self.grandfathered.جمع_کن (subtag.پایینی ())
+				وإلاإذا سطر.startswith ('Description: '):
+					description = سطر.تقسیم (' ', 1)[1].replace (' (individual language)', '')
 					description = re.sub (r' (\(family\)|\((individual |macro)language\)|languages)$', '',
 							description)
-					if subtag in self.names:
-						self.names[subtag] += '\n' + description
-					else:
-						self.names[subtag] = description
-				elif subtag_type == 'language' or subtag_type == 'grandfathered':
-					if line.startswith ('Scope: '):
-						scope = line.split (' ')[1]
-						if scope == 'macrolanguage':
+					إذا subtag في self.نامها:
+						self.نامها[subtag] += '\n' + description
+					وإلا:
+						self.نامها[subtag] = description
+				وإلاإذا subtag_type == 'language' أو subtag_type == 'grandfathered':
+					إذا سطر.startswith ('Scope: '):
+						scope = سطر.تقسیم (' ')[1]
+						إذا scope == 'macrolanguage':
 							scope = ' [macrolanguage]'
-						elif scope == 'collection':
+						وإلاإذا scope == 'collection':
 							scope = ' [collection]'
-						else:
-							continue
+						وإلا:
+							استمر
 						self.scopes[subtag] = scope
-					elif line.startswith ('Deprecated: '):
+					وإلاإذا سطر.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-						deprecated = True
-					elif deprecated and line.startswith ('Comments: see '):
+						deprecated = درست
+					وإلاإذا deprecated و سطر.startswith ('Comments: see '):
 						# If a subtag is split into multiple replacement subtags,
 						# it essentially represents a macrolanguage.
-						for language in line.replace (',', '').split (' ')[2:]:
-							self._add_macrolanguage (subtag, language)
-					elif line.startswith ('Preferred-Value: '):
+						لكل language في سطر.replace (',', '').تقسیم (' ')[2:]:
+							self.جمع_کن_macrolanguage (subtag, language)
+					وإلاإذا سطر.startswith ('Preferred-Value: '):
 						# If a subtag is deprecated in favor of a single replacement subtag,
 						# it is either a dialect or synonym of the preferred subtag. Either
 						# way, it is close enough to the truth to consider the replacement
 						# the macrolanguage of the deprecated language.
-						has_preferred_value = True
-						macrolanguage = line.split (' ')[1]
-						self._add_macrolanguage (macrolanguage, subtag)
-					elif not has_preferred_value and line.startswith ('Macrolanguage: '):
-						self._add_macrolanguage (line.split (' ')[1], subtag)
-				elif subtag_type == 'variant':
-					if line.startswith ('Deprecated: '):
+						has_preferred_مقدار = درست
+						macrolanguage = سطر.تقسیم (' ')[1]
+						self.جمع_کن_macrolanguage (macrolanguage, subtag)
+					وإلاإذا ليس has_preferred_مقدار و سطر.startswith ('Macrolanguage: '):
+						self.جمع_کن_macrolanguage (سطر.تقسیم (' ')[1], subtag)
+				وإلاإذا subtag_type == 'variant':
+					إذا سطر.startswith ('Deprecated: '):
 						self.scopes[subtag] = ' (retired code)' + self.scopes.get (subtag, '')
-					elif line.startswith ('Prefix: '):
-						self.prefixes[subtag].add (line.split (' ')[1])
-				elif line.startswith ('File-Date: '):
-					self.header = line
-		expect (self.header)
+					وإلاإذا سطر.startswith ('Prefix: '):
+						self.prefixes[subtag].جمع_کن (سطر.تقسیم (' ')[1])
+				وإلاإذا سطر.startswith ('File-Date: '):
+					self.سرآیند = سطر
+		expect (self.سرآیند)
 
-	def _add_macrolanguage (self, macrolanguage, language):
-		global ot
-		if language not in ot.from_bcp_47:
-			for l in self.macrolanguages.get (language, set ()):
-				self._add_macrolanguage (macrolanguage, l)
-		if macrolanguage not in ot.from_bcp_47:
-			for ls in list (self.macrolanguages.values ()):
-				if macrolanguage in ls:
-					ls.add (language)
-					return
-		self.macrolanguages[macrolanguage].add (language)
+	تعریف جمع_کن_macrolanguage (self, macrolanguage, language):
+		عام ot
+		إذا language ليس في ot.from_bcp_47:
+			لكل l في self.macrolanguages.get (language, مجموعه ()):
+				self.جمع_کن_macrolanguage (macrolanguage, l)
+		إذا macrolanguage ليس في ot.from_bcp_47:
+			لكل ls في list (self.macrolanguages.مقادیر ()):
+				إذا macrolanguage في ls:
+					ls.جمع_کن (language)
+					أرجع
+		self.macrolanguages[macrolanguage].جمع_کن (language)
 
-	def remove_extra_macrolanguages (self):
+	تعریف remove_extra_macrolanguages (self):
 		"""Make every language have at most one macrolanguage."""
 		inverted = collections.defaultdict (list)
-		for macrolanguage, languages in self.macrolanguages.items ():
-			for language in languages:
+		لكل macrolanguage, languages في self.macrolanguages.اقلام ():
+			لكل language في languages:
 				inverted[language].append (macrolanguage)
-		for language, macrolanguages in inverted.items ():
-			if len (macrolanguages) > 1:
-				macrolanguages.sort (key=lambda ml: len (self.macrolanguages[ml]))
-				biggest_macrolanguage = macrolanguages.pop ()
-				for macrolanguage in macrolanguages:
-					self._add_macrolanguage (biggest_macrolanguage, macrolanguage)
+		لكل language, macrolanguages في inverted.اقلام ():
+			إذا طول (macrolanguages) > 1:
+				macrolanguages.مرتب_سازی (کلید_2=مجهول ml: طول (self.macrolanguages[ml]))
+				biggest_macrolanguage = macrolanguages.برداشت ()
+				لكل macrolanguage في macrolanguages:
+					self.جمع_کن_macrolanguage (biggest_macrolanguage, macrolanguage)
 
-	def _get_name_piece (self, subtag):
+	تعریف _get_name_piece (self, subtag):
 		"""Return the first name of a subtag plus its scope suffix.
 
 		Args:
@@ -727,9 +727,9 @@ class BCP47Parser (object):
 		Returns:
 			The name form of ``subtag``.
 		"""
-		return self.names[subtag].split ('\n')[0] + self.scopes.get (subtag, '')
+		أرجع self.نامها[subtag].تقسیم ('\n')[0] + self.scopes.get (subtag, '')
 
-	def get_name (self, lt):
+	تعریف get_name (self, lt):
 		"""Return the names of the subtags in a language tag.
 
 		Args:
@@ -739,116 +739,116 @@ class BCP47Parser (object):
 			The name form of ``lt``.
 		"""
 		name = self._get_name_piece (lt.language)
-		if lt.script:
+		إذا lt.script:
 			name += '; ' + self._get_name_piece (lt.script.title ())
-		if lt.region:
-			name += '; ' + self._get_name_piece (lt.region.upper ())
-		if lt.variant:
+		إذا lt.region:
+			name += '; ' + self._get_name_piece (lt.region.فوقانی ())
+		إذا lt.variant:
 			name += '; ' + self._get_name_piece (lt.variant)
-		return name
+		أرجع name
 
 bcp_47 = BCP47Parser ()
 
 ot.parse (sys.argv[1])
 bcp_47.parse (sys.argv[2])
 
-ot.add_language ('ary', 'MOR')
+ot.جمع_کن_language ('ary', 'MOR')
 
-ot.add_language ('ath', 'ATH')
+ot.جمع_کن_language ('ath', 'ATH')
 
-ot.add_language ('bai', 'BML')
+ot.جمع_کن_language ('bai', 'BML')
 
 ot.ranks['BAL'] = ot.ranks['KAR'] + 1
 
-ot.add_language ('ber', 'BBR')
+ot.جمع_کن_language ('ber', 'BBR')
 
 ot.remove_language_ot ('PGR')
-ot.add_language ('el-polyton', 'PGR')
+ot.جمع_کن_language ('el-polyton', 'PGR')
 
-bcp_47.names['flm'] = 'Falam Chin'
+bcp_47.نامها['flm'] = 'Falam Chin'
 bcp_47.scopes['flm'] = ' (retired code)'
 bcp_47.macrolanguages['flm'] = {'cfm'}
 
 ot.ranks['FNE'] = ot.ranks['TNE'] + 1
 
-ot.add_language ('und-fonipa', 'IPPH')
+ot.جمع_کن_language ('und-fonipa', 'IPPH')
 
-ot.add_language ('und-fonnapa', 'APPH')
+ot.جمع_کن_language ('und-fonnapa', 'APPH')
 
-ot.add_language ('und-fonupa', 'UPPH')
+ot.جمع_کن_language ('und-fonupa', 'UPPH')
 
-ot.add_language ('ga-Latg', 'IRT')
+ot.جمع_کن_language ('ga-Latg', 'IRT')
 
-ot.add_language ('hy-arevmda', 'HYE')
+ot.جمع_کن_language ('hy-arevmda', 'HYE')
 
 ot.remove_language_ot ('KGE')
-ot.add_language ('und-Geok', 'KGE')
+ot.جمع_کن_language ('und-Geok', 'KGE')
 
-ot.add_language ('kht', 'KHN')
-ot.names['KHN'] = ot.names['KHT'] + ' (Microsoft fonts)'
+ot.جمع_کن_language ('kht', 'KHN')
+ot.نامها['KHN'] = ot.نامها['KHT'] + ' (Microsoft fonts)'
 ot.ranks['KHN'] = ot.ranks['KHT'] + 1
 
 ot.ranks['LCR'] = ot.ranks['MCR'] + 1
 
-ot.names['MAL'] = 'Malayalam Traditional'
+ot.نامها['MAL'] = 'Malayalam Traditional'
 ot.ranks['MLR'] += 1
 
-bcp_47.names['mhv'] = 'Arakanese'
+bcp_47.نامها['mhv'] = 'Arakanese'
 bcp_47.scopes['mhv'] = ' (retired code)'
 
-ot.add_language ('mnw-TH', 'MONT')
+ot.جمع_کن_language ('mnw-TH', 'MONT')
 
-ot.add_language ('no', 'NOR')
+ot.جمع_کن_language ('no', 'NOR')
 
-ot.add_language ('oc-provenc', 'PRO')
+ot.جمع_کن_language ('oc-provenc', 'PRO')
 
 ot.remove_language_ot ('QUZ')
-ot.add_language ('qu', 'QUZ')
-ot.add_language ('qub', 'QWH')
-ot.add_language ('qud', 'QVI')
-ot.add_language ('qug', 'QVI')
-ot.add_language ('qul', 'QUH')
-ot.add_language ('qup', 'QVI')
-ot.add_language ('qur', 'QWH')
-ot.add_language ('qus', 'QUH')
-ot.add_language ('quw', 'QVI')
-ot.add_language ('qux', 'QWH')
-ot.add_language ('qva', 'QWH')
-ot.add_language ('qvh', 'QWH')
-ot.add_language ('qvj', 'QVI')
-ot.add_language ('qvl', 'QWH')
-ot.add_language ('qvm', 'QWH')
-ot.add_language ('qvn', 'QWH')
-ot.add_language ('qvo', 'QVI')
-ot.add_language ('qvp', 'QWH')
-ot.add_language ('qvw', 'QWH')
-ot.add_language ('qvz', 'QVI')
-ot.add_language ('qwa', 'QWH')
-ot.add_language ('qws', 'QWH')
-ot.add_language ('qxa', 'QWH')
-ot.add_language ('qxc', 'QWH')
-ot.add_language ('qxh', 'QWH')
-ot.add_language ('qxl', 'QVI')
-ot.add_language ('qxn', 'QWH')
-ot.add_language ('qxo', 'QWH')
-ot.add_language ('qxr', 'QVI')
-ot.add_language ('qxt', 'QWH')
-ot.add_language ('qxw', 'QWH')
+ot.جمع_کن_language ('qu', 'QUZ')
+ot.جمع_کن_language ('qub', 'QWH')
+ot.جمع_کن_language ('qud', 'QVI')
+ot.جمع_کن_language ('qug', 'QVI')
+ot.جمع_کن_language ('qul', 'QUH')
+ot.جمع_کن_language ('qup', 'QVI')
+ot.جمع_کن_language ('qur', 'QWH')
+ot.جمع_کن_language ('qus', 'QUH')
+ot.جمع_کن_language ('quw', 'QVI')
+ot.جمع_کن_language ('qux', 'QWH')
+ot.جمع_کن_language ('qva', 'QWH')
+ot.جمع_کن_language ('qvh', 'QWH')
+ot.جمع_کن_language ('qvj', 'QVI')
+ot.جمع_کن_language ('qvl', 'QWH')
+ot.جمع_کن_language ('qvm', 'QWH')
+ot.جمع_کن_language ('qvn', 'QWH')
+ot.جمع_کن_language ('qvo', 'QVI')
+ot.جمع_کن_language ('qvp', 'QWH')
+ot.جمع_کن_language ('qvw', 'QWH')
+ot.جمع_کن_language ('qvz', 'QVI')
+ot.جمع_کن_language ('qwa', 'QWH')
+ot.جمع_کن_language ('qws', 'QWH')
+ot.جمع_کن_language ('qxa', 'QWH')
+ot.جمع_کن_language ('qxc', 'QWH')
+ot.جمع_کن_language ('qxh', 'QWH')
+ot.جمع_کن_language ('qxl', 'QVI')
+ot.جمع_کن_language ('qxn', 'QWH')
+ot.جمع_کن_language ('qxo', 'QWH')
+ot.جمع_کن_language ('qxr', 'QVI')
+ot.جمع_کن_language ('qxt', 'QWH')
+ot.جمع_کن_language ('qxw', 'QWH')
 
-bcp_47.macrolanguages['ro-MD'].add ('mo')
+bcp_47.macrolanguages['ro-MD'].جمع_کن ('mo')
 
 ot.remove_language_ot ('SYRE')
 ot.remove_language_ot ('SYRJ')
 ot.remove_language_ot ('SYRN')
-ot.add_language ('und-Syre', 'SYRE')
-ot.add_language ('und-Syrj', 'SYRJ')
-ot.add_language ('und-Syrn', 'SYRN')
+ot.جمع_کن_language ('und-Syre', 'SYRE')
+ot.جمع_کن_language ('und-Syrj', 'SYRJ')
+ot.جمع_کن_language ('und-Syrn', 'SYRN')
 
-bcp_47.names['xst'] = "Silt'e"
+bcp_47.نامها['xst'] = "Silt'e"
 bcp_47.scopes['xst'] = ' (retired code)'
 bcp_47.macrolanguages['xst'] = {'stv', 'wle'}
 
-ot.add_language ('xwo', 'TOD')
+ot.جمع_کن_language ('xwo', 'TOD')
 
 ot.remove_language_ot ('ZHH')
 ot.remove_language_ot ('ZHP')
@@ -856,21 +856,21 @@ ot.remove_language_ot ('ZHT')
 ot.remove_language_ot ('ZHTM')
 bcp_47.macrolanguages['zh'].remove ('lzh')
 bcp_47.macrolanguages['zh'].remove ('yue')
-ot.add_language ('zh-Hant-MO', 'ZHH')
-ot.add_language ('zh-Hant-MO', 'ZHTM')
-ot.add_language ('zh-Hant-HK', 'ZHH')
-ot.add_language ('zh-Hans', 'ZHS')
-ot.add_language ('zh-Hant', 'ZHT')
-ot.add_language ('zh-HK', 'ZHH')
-ot.add_language ('zh-MO', 'ZHH')
-ot.add_language ('zh-MO', 'ZHTM')
-ot.add_language ('zh-TW', 'ZHT')
-ot.add_language ('lzh', 'ZHT')
-ot.add_language ('lzh-Hans', 'ZHS')
-ot.add_language ('yue', 'ZHH')
-ot.add_language ('yue-Hans', 'ZHS')
+ot.جمع_کن_language ('zh-Hant-MO', 'ZHH')
+ot.جمع_کن_language ('zh-Hant-MO', 'ZHTM')
+ot.جمع_کن_language ('zh-Hant-HK', 'ZHH')
+ot.جمع_کن_language ('zh-Hans', 'ZHS')
+ot.جمع_کن_language ('zh-Hant', 'ZHT')
+ot.جمع_کن_language ('zh-HK', 'ZHH')
+ot.جمع_کن_language ('zh-MO', 'ZHH')
+ot.جمع_کن_language ('zh-MO', 'ZHTM')
+ot.جمع_کن_language ('zh-TW', 'ZHT')
+ot.جمع_کن_language ('lzh', 'ZHT')
+ot.جمع_کن_language ('lzh-Hans', 'ZHS')
+ot.جمع_کن_language ('yue', 'ZHH')
+ot.جمع_کن_language ('yue-Hans', 'ZHS')
 
-def rank_delta (bcp_47, ot):
+تعریف rank_delta (bcp_47, ot):
 	"""Return a delta to apply to a BCP 47 tag's rank.
 
 	Most OpenType tags have a constant rank, but a few have ranks that
@@ -884,11 +884,11 @@ def rank_delta (bcp_47, ot):
 		A number to add to ``ot``'s rank when sorting ``bcp_47``'s
 		OpenType equivalents.
 	"""
-	if bcp_47 == 'ak' and ot == 'AKA':
-		return -1
-	if bcp_47 == 'tw' and ot == 'TWI':
-		return -1
-	return 0
+	إذا bcp_47 == 'ak' و ot == 'AKA':
+		أرجع -1
+	إذا bcp_47 == 'tw' و ot == 'TWI':
+		أرجع -1
+	أرجع 0
 
 disambiguation = {
 	'ALT': 'alt',
@@ -929,196 +929,196 @@ disambiguation = {
 ot.inherit_from_macrolanguages ()
 bcp_47.remove_extra_macrolanguages ()
 ot.inherit_from_macrolanguages ()
-ot.names[DEFAULT_LANGUAGE_SYSTEM] = ''
-ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.values ()) + 1
-for tricky_ot_tag in filter (lambda tag: re.match ('[A-Z]{3}$', tag), ot.names):
-	possible_bcp_47_tag = tricky_ot_tag.lower ()
-	if possible_bcp_47_tag in bcp_47.names and not ot.from_bcp_47[possible_bcp_47_tag]:
-		ot.add_language (possible_bcp_47_tag, DEFAULT_LANGUAGE_SYSTEM)
-		bcp_47.macrolanguages[possible_bcp_47_tag] = set ()
-ot.sort_languages ()
+ot.نامها[DEFAULT_LANGUAGE_SYSTEM] = ''
+ot.ranks[DEFAULT_LANGUAGE_SYSTEM] = max (ot.ranks.مقادیر ()) + 1
+لكل tricky_ot_برچسب في filter (مجهول برچسب_2: re.تطابق ('[A-Z]{3}$', برچسب_2), ot.نامها):
+	possible_bcp_47_برچسب = tricky_ot_برچسب.پایینی ()
+	إذا possible_bcp_47_برچسب في bcp_47.نامها و ليس ot.from_bcp_47[possible_bcp_47_برچسب]:
+		ot.جمع_کن_language (possible_bcp_47_برچسب, DEFAULT_LANGUAGE_SYSTEM)
+		bcp_47.macrolanguages[possible_bcp_47_برچسب] = مجموعه ()
+ot.مرتب_سازی_languages ()
 
-if output_rust:
-	def hb_tag_rust (tag):
-		if tag == DEFAULT_LANGUAGE_SYSTEM:
-			return 'Tag::new(&[0; 4])'
-		sanitize_tag (tag)
-		return 'Tag::new(b"%s%s%s%s")' % tuple (('%-4s' % tag)[:4])
+إذا output_rust:
+	تعریف hb_برچسب_rust (برچسب_2):
+		إذا برچسب_2 == DEFAULT_LANGUAGE_SYSTEM:
+			أرجع 'Tag::new(&[0; 4])'
+		sanitize_برچسب (برچسب_2)
+		أرجع 'Tag::new(b"%s%s%s%s")' % tuple (('%-4s' % برچسب_2)[:4])
 
-	def get_variant_set_rust (name):
-		return set (unicodedata.normalize (
+	تعریف get_variant_مجموعه_rust (name):
+		أرجع مجموعه (unicodedata.normalize (
 					'NFD',
 					n.replace ('\u02BC', "'").replace ('\u2019', "'"),
 				)
 				.encode ('ASCII', 'ignore')
 				.strip ()
-				for n in re.split ('[\n(),]', name) if n)
+				لكل n في re.تقسیم ('[\n(),]', name) إذا n)
 
-	def language_name_intersection_rust (a, b):
-		return get_variant_set_rust (a).intersection (get_variant_set_rust (b))
+	تعریف language_name_intersection_rust (a, b):
+		أرجع get_variant_مجموعه_rust (a).intersection (get_variant_مجموعه_rust (b))
 
-	def get_matching_language_name_rust (intersection, candidates):
-		return next (iter (c for c in candidates if not intersection.isdisjoint (get_variant_set_rust (c))))
+	تعریف get_matching_language_name_rust (intersection, candidates):
+		أرجع بعدی (iter (c لكل c في candidates إذا ليس intersection.isdisjoint (get_variant_مجموعه_rust (c))))
 
-	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-tag-table.py --rust')
-	print ()
-	print ('use read_fonts::types::Tag;')
-	print ()
-	print ('pub(crate) struct LangTag {')
-	print ('    pub language: [u8; 4],')
-	print ('    pub tag: Tag,')
-	print ('}')
-	print ()
-	print ('const fn lang(language: &[u8]) -> [u8; 4] {')
-	print ('    let mut bytes = [0; 4];')
-	print ('    let mut i = 0;')
-	print ()
-	print ('    while i < language.len() {')
-	print ('        bytes[i] = language[i];')
-	print ('        i += 1;')
-	print ('    }')
-	print ()
-	print ('    bytes')
-	print ('}')
-	print ()
-	print ('use super::tag::{lang_matches, strncmp, subtag_matches};')
-	print ()
-	print ('#[rustfmt::skip]')
-	print ('pub(crate) static OPEN_TYPE_LANGUAGES: &[LangTag] = &[')
+	چاپ ('// WARNING: this file was generated by ../../harfbuzz/src/gen-tag-table.py --rust')
+	چاپ ()
+	چاپ ('use read_fonts::types::Tag;')
+	چاپ ()
+	چاپ ('pub(crate) struct LangTag {')
+	چاپ ('    pub language: [u8; 4],')
+	چاپ ('    pub tag: Tag,')
+	چاپ ('}')
+	چاپ ()
+	چاپ ('const fn lang(language: &[u8]) -> [u8; 4] {')
+	چاپ ('    let mut bytes = [0; 4];')
+	چاپ ('    let mut i = 0;')
+	چاپ ()
+	چاپ ('    while i < language.len() {')
+	چاپ ('        bytes[i] = language[i];')
+	چاپ ('        i += 1;')
+	چاپ ('    }')
+	چاپ ()
+	چاپ ('    bytes')
+	چاپ ('}')
+	چاپ ()
+	چاپ ('use super::tag::{lang_matches, strncmp, subtag_matches};')
+	چاپ ()
+	چاپ ('#[rustfmt::skip]')
+	چاپ ('pub(crate) static OPEN_TYPE_LANGUAGES: &[LangTag] = &[')
 
-	for language, tags in sorted (ot.from_bcp_47.items ()):
-		if language == '' or '-' in language:
-			continue
-		commented_out = len (language) == 3 and len (tags) == 1 and language == tags[0].lower ()
-		for tag in tags:
-			print ('%sLangTag { language: lang(b"%s"), \ttag: %s },' % ('//  ' if commented_out else '    ', sanitize_bcp47_tag (language), hb_tag_rust (tag)), end='')
-			print (' // ', end='')
-			bcp_47_name = bcp_47.names.get (language, '')
-			bcp_47_name_candidates = bcp_47_name.split ('\n')
-			ot_name = ot.names[tag]
+	لكل language, برچسبها في sorted (ot.from_bcp_47.اقلام ()):
+		إذا language == '' أو '-' في language:
+			استمر
+		commented_بیرون = طول (language) == 3 و طول (برچسبها) == 1 و language == برچسبها[0].پایینی ()
+		لكل برچسب_2 في برچسبها:
+			چاپ ('%sLangTag { language: lang(b"%s"), \ttag: %s },' % ('//  ' إذا commented_بیرون وإلا '    ', sanitize_bcp47_برچسب (language), hb_برچسب_rust (برچسب_2)), انتها='')
+			چاپ (' // ', انتها='')
+			bcp_47_name = bcp_47.نامها.get (language, '')
+			bcp_47_name_candidates = bcp_47_name.تقسیم ('\n')
+			ot_name = ot.نامها[برچسب_2]
 			scope = bcp_47.scopes.get (language, '')
-			if tag == DEFAULT_LANGUAGE_SYSTEM:
+			إذا برچسب_2 == DEFAULT_LANGUAGE_SYSTEM:
 				comment = f'{bcp_47_name_candidates[0]}{scope} != {ot.names[language.upper ()]}'
-			else:
+			وإلا:
 				intersection = language_name_intersection_rust (bcp_47_name, ot_name)
-				if not intersection:
+				إذا ليس intersection:
 					comment = '%s%s -> %s' % (bcp_47_name_candidates[0], scope, ot_name)
-				else:
+				وإلا:
 					name = get_matching_language_name_rust (intersection, bcp_47_name_candidates)
-					bcp_47.names[language] = name
-					comment = '%s%s' % (name if len (name) > len (ot_name) else ot_name, scope)
-			print (sanitize_comment (comment))
+					bcp_47.نامها[language] = name
+					comment = '%s%s' % (name إذا طول (name) > طول (ot_name) وإلا ot_name, scope)
+			چاپ (sanitize_comment (comment))
 
-	print ('];')
-	print ()
-	print ('/// Converts a multi-subtag BCP 47 language tag to language tags.')
-	print ('pub fn tags_from_complex_language(language: &str, tags: &mut smallvec::SmallVec<[Tag; 3]>) -> bool {')
+	چاپ ('];')
+	چاپ ()
+	چاپ ('/// Converts a multi-subtag BCP 47 language tag to language tags.')
+	چاپ ('pub fn tags_from_complex_language(language: &str, tags: &mut smallvec::SmallVec<[Tag; 3]>) -> bool {')
 
-	def print_subtag_matches_rust (subtag, new_line):
-		if subtag:
-			if new_line:
-				print (' && ', end='')
-			print ('subtag_matches(language, "-%s")' % sanitize_bcp47_tag (subtag), end='')
+	تعریف print_subtag_matches_rust (subtag, new_سطر):
+		إذا subtag:
+			إذا new_سطر:
+				چاپ (' && ', انتها='')
+			چاپ ('subtag_matches(language, "-%s")' % sanitize_bcp47_برچسب (subtag), انتها='')
 
-	complex_tags = collections.defaultdict (list)
-	for initial, group in itertools.groupby ((lt_tags for lt_tags in [
-				(LanguageTag (language), tags)
-				for language, tags in sorted (ot.from_bcp_47.items (),
-					key=lambda i: (-len (i[0]), i[0]))
-			] if lt_tags[0].is_complex ()),
-			key=lambda lt_tags: lt_tags[0].get_group ()):
-		complex_tags[initial] += group
+	complex_برچسبها = collections.defaultdict (list)
+	لكل initial, گروه في itertools.groupby ((lt_برچسبها لكل lt_برچسبها في [
+				(Language_برچسب (language), برچسبها)
+				لكل language, برچسبها في sorted (ot.from_bcp_47.اقلام (),
+					کلید_2=مجهول i: (-طول (i[0]), i[0]))
+			] إذا lt_برچسبها[0].is_complex ()),
+			کلید_2=مجهول lt_برچسبها: lt_برچسبها[0].get_گروه ()):
+		complex_برچسبها[initial] += گروه
 
-	for initial, items in sorted (complex_tags.items ()):
-		if initial != 'und':
-			continue
-		for lt, tags in items:
-			if not tags:
-				continue
-			if lt.variant in bcp_47.prefixes:
-				expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
+	لكل initial, اقلام في sorted (complex_برچسبها.اقلام ()):
+		إذا initial != 'und':
+			استمر
+		لكل lt, برچسبها في اقلام:
+			إذا ليس برچسبها:
+				استمر
+			إذا lt.variant في bcp_47.prefixes:
+				expect (بعدی (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 						'%s is not a valid prefix of %s' % (lt.language, lt.variant))
-			print ('    if ', end='')
-			print_subtag_matches_rust (lt.script, False)
-			print_subtag_matches_rust (lt.region, False)
-			print_subtag_matches_rust (lt.variant, False)
-			print (' {')
-			print ('        // %s' % sanitize_comment (bcp_47.get_name (lt)))
-			if len (tags) == 1:
-				print ('        tags.push(%s); // %s' % (hb_tag_rust (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			else:
-				print ('        let possible_tags = &[')
-				for tag in tags:
-					print ('            %s, // %s' % (hb_tag_rust (tag), sanitize_comment (ot.names[tag])))
-				print ('        ];')
-				print ('        tags.extend_from_slice(possible_tags);')
-			print ('        return true;')
-			print ('    }')
+			چاپ ('    if ', انتها='')
+			print_subtag_matches_rust (lt.script, خطأ)
+			print_subtag_matches_rust (lt.region, خطأ)
+			print_subtag_matches_rust (lt.variant, خطأ)
+			چاپ (' {')
+			چاپ ('        // %s' % sanitize_comment (bcp_47.get_name (lt)))
+			إذا طول (برچسبها) == 1:
+				چاپ ('        tags.push(%s); // %s' % (hb_برچسب_rust (برچسبها[0]), sanitize_comment (ot.نامها[برچسبها[0]])))
+			وإلا:
+				چاپ ('        let possible_tags = &[')
+				لكل برچسب_2 في برچسبها:
+					چاپ ('            %s, // %s' % (hb_برچسب_rust (برچسب_2), sanitize_comment (ot.نامها[برچسب_2])))
+				چاپ ('        ];')
+				چاپ ('        tags.extend_from_slice(possible_tags);')
+			چاپ ('        return true;')
+			چاپ ('    }')
 
-	print ('    match language.as_bytes()[0] {')
-	for initial, items in sorted (complex_tags.items ()):
-		if initial == 'und':
-			continue
-		print ("        b'%s' => {" % sanitize_bcp47_tag (initial))
-		for lt, tags in items:
-			if not tags:
-				continue
-			print ('            if ', end='')
+	چاپ ('    match language.as_bytes()[0] {')
+	لكل initial, اقلام في sorted (complex_برچسبها.اقلام ()):
+		إذا initial == 'und':
+			استمر
+		چاپ ("        b'%s' => {" % sanitize_bcp47_برچسب (initial))
+		لكل lt, برچسبها في اقلام:
+			إذا ليس برچسبها:
+				استمر
+			چاپ ('            if ', انتها='')
 			script = lt.script
 			region = lt.region
-			if lt.grandfathered:
-				print ('&language[1..] == "%s"' % sanitize_bcp47_tag (lt.language[1:]), end='')
-			else:
+			إذا lt.grandfathered:
+				چاپ ('&language[1..] == "%s"' % sanitize_bcp47_برچسب (lt.language[1:]), انتها='')
+			وإلا:
 				string_literal = lt.language[1:] + '-'
-				if script:
+				إذا script:
 					string_literal += script
-					script = None
-					if region:
+					script = هیچ
+					إذا region:
 						string_literal += '-' + region
-						region = None
-				if string_literal[-1] == '-':
-					print ('strncmp(&language[1..], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-				else:
-					print ('lang_matches(&language[1..], "%s")' % sanitize_bcp47_tag (string_literal), end='')
-			print_subtag_matches_rust (script, True)
-			print_subtag_matches_rust (region, True)
-			print_subtag_matches_rust (lt.variant, True)
-			print (' {')
-			print ('                // %s' % sanitize_comment (bcp_47.get_name (lt)))
-			if len (tags) == 1:
-				print ('                tags.push(%s); // %s' % (hb_tag_rust (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			else:
-				print ('                let possible_tags = &[')
-				for tag in tags:
-					print ('                    %s, // %s' % (hb_tag_rust (tag), sanitize_comment (ot.names[tag])))
-				print ('                ];')
-				print ('                tags.extend_from_slice(possible_tags);')
-			print ('                return true;')
-			print ('            }')
-		print ('        }')
-	print ('        _ => {}')
-	print ('    }')
-	print ('    false')
-	print ('}')
+						region = هیچ
+				إذا string_literal[-1] == '-':
+					چاپ ('strncmp(&language[1..], "%s", %i)' % (sanitize_bcp47_برچسب (string_literal), طول (string_literal)), انتها='')
+				وإلا:
+					چاپ ('lang_matches(&language[1..], "%s")' % sanitize_bcp47_برچسب (string_literal), انتها='')
+			print_subtag_matches_rust (script, درست)
+			print_subtag_matches_rust (region, درست)
+			print_subtag_matches_rust (lt.variant, درست)
+			چاپ (' {')
+			چاپ ('                // %s' % sanitize_comment (bcp_47.get_name (lt)))
+			إذا طول (برچسبها) == 1:
+				چاپ ('                tags.push(%s); // %s' % (hb_برچسب_rust (برچسبها[0]), sanitize_comment (ot.نامها[برچسبها[0]])))
+			وإلا:
+				چاپ ('                let possible_tags = &[')
+				لكل برچسب_2 في برچسبها:
+					چاپ ('                    %s, // %s' % (hb_برچسب_rust (برچسب_2), sanitize_comment (ot.نامها[برچسب_2])))
+				چاپ ('                ];')
+				چاپ ('                tags.extend_from_slice(possible_tags);')
+			چاپ ('                return true;')
+			چاپ ('            }')
+		چاپ ('        }')
+	چاپ ('        _ => {}')
+	چاپ ('    }')
+	چاپ ('    false')
+	چاپ ('}')
 	sys.exit (0)
 
-print ('/* == Start of generated table == */')
-print ('/*')
-print (' * The following table is generated by running:')
-print (' *')
-print (' *   %s languagetags language-subtag-registry' % os.path.basename (sys.argv[0]))
-print (' *')
-print (' * on files with these headers:')
-print (' *')
-print (' * %s' % sanitize_header (ot.header))
-print (' * %s' % sanitize_header (bcp_47.header))
-print (' */')
-print ()
-print ('#ifndef HB_OT_TAG_TABLE_HH')
-print ('#define HB_OT_TAG_TABLE_HH')
-print ()
+چاپ ('/* == Start of generated table == */')
+چاپ ('/*')
+چاپ (' * The following table is generated by running:')
+چاپ (' *')
+چاپ (' *   %s languagetags language-subtag-registry' % os.مسیر.basename (sys.argv[0]))
+چاپ (' *')
+چاپ (' * on files with these headers:')
+چاپ (' *')
+چاپ (' * %s' % sanitize_سرآیند (ot.سرآیند))
+چاپ (' * %s' % sanitize_سرآیند (bcp_47.سرآیند))
+چاپ (' */')
+چاپ ()
+چاپ ('#ifndef HB_OT_TAG_TABLE_HH')
+چاپ ('#define HB_OT_TAG_TABLE_HH')
+چاپ ()
 
-def hb_tag (tag):
+تعریف hb_برچسب (برچسب_2):
 	"""Convert a tag to ``HB_TAG`` form.
 
 	Args:
@@ -1127,12 +1127,12 @@ def hb_tag (tag):
 	Returns:
 		A snippet of C++ representing ``tag``.
 	"""
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
-		return 'HB_TAG_NONE\t       '
-	sanitize_tag (tag)
-	return "HB_TAG('%s','%s','%s','%s')" % tuple (('%-4s' % tag)[:4])
+	إذا برچسب_2 == DEFAULT_LANGUAGE_SYSTEM:
+		أرجع 'HB_TAG_NONE\t       '
+	sanitize_برچسب (برچسب_2)
+	أرجع "HB_TAG('%s','%s','%s','%s')" % tuple (('%-4s' % برچسب_2)[:4])
 
-def get_variant_set (name):
+تعریف get_variant_مجموعه (name):
 	"""Return a set of variant language names from a name.
 
 	Args:
@@ -1142,15 +1142,15 @@ def get_variant_set (name):
 	Returns:
 		A set of normalized language names.
 	"""
-	return set (unicodedata.normalize (
+	أرجع مجموعه (unicodedata.normalize (
 				'NFD',
 				n.replace ('\u02BC', "'").replace ('\u2019', "'"),
 			)
 			.encode ('ASCII', 'ignore')
 			.strip ()
-			for n in re.split ('[\n(),]', name) if n)
+			لكل n في re.تقسیم ('[\n(),]', name) إذا n)
 
-def language_name_intersection (a, b):
+تعریف language_name_intersection (a, b):
 	"""Return the names in common between two language names.
 
 	Args:
@@ -1162,261 +1162,261 @@ def language_name_intersection (a, b):
 	Returns:
 		The normalized language names shared by ``a`` and ``b``.
 	"""
-	return get_variant_set (a).intersection (get_variant_set (b))
+	أرجع get_variant_مجموعه (a).intersection (get_variant_مجموعه (b))
 
-def get_matching_language_name (intersection, candidates):
-	return next (iter (c for c in candidates if not intersection.isdisjoint (get_variant_set (c))))
+تعریف get_matching_language_name (intersection, candidates):
+	أرجع بعدی (iter (c لكل c في candidates إذا ليس intersection.isdisjoint (get_variant_مجموعه (c))))
 
-def same_tag (bcp_47_tag, ot_tags):
-	return len (bcp_47_tag) == 3 and len (ot_tags) == 1 and bcp_47_tag == ot_tags[0].lower ()
+تعریف same_برچسب (bcp_47_برچسب, ot_برچسبها):
+	أرجع طول (bcp_47_برچسب) == 3 و طول (ot_برچسبها) == 1 و bcp_47_برچسب == ot_برچسبها[0].پایینی ()
 
-def format_language_comment (language, tag):
-	bcp_47_name = bcp_47.names.get (language, '')
-	bcp_47_name_candidates = bcp_47_name.split ('\n')
-	ot_name = ot.names[tag]
+تعریف format_language_comment (language, برچسب_2):
+	bcp_47_name = bcp_47.نامها.get (language, '')
+	bcp_47_name_candidates = bcp_47_name.تقسیم ('\n')
+	ot_name = ot.نامها[برچسب_2]
 	scope = bcp_47.scopes.get (language, '')
-	if tag == DEFAULT_LANGUAGE_SYSTEM:
+	إذا برچسب_2 == DEFAULT_LANGUAGE_SYSTEM:
 		comment = f'{bcp_47_name_candidates[0]}{scope} != {ot.names[language.upper ()]}'
-	else:
+	وإلا:
 		intersection = language_name_intersection (bcp_47_name, ot_name)
-		if not intersection:
+		إذا ليس intersection:
 			comment = '%s%s -> %s' % (bcp_47_name_candidates[0], scope, ot_name)
-		else:
+		وإلا:
 			name = get_matching_language_name (intersection, bcp_47_name_candidates)
-			bcp_47.names[language] = name
-			comment = '%s%s' % (name if len (name) > len (ot_name) else ot_name, scope)
-	return sanitize_comment (comment)
+			bcp_47.نامها[language] = name
+			comment = '%s%s' % (name إذا طول (name) > طول (ot_name) وإلا ot_name, scope)
+	أرجع sanitize_comment (comment)
 
-print ('static const LangTag ot_languages2[] = {')
-for language, tags in sorted (ot.from_bcp_47.items ()):
-	if language == '' or '-' in language or len (language) != 2:
-		continue
-	for tag in tags:
-		print ('  {%s,\t%s},\t/* %s */' % (
-			hb_tag (language),
-			hb_tag (tag),
-			format_language_comment (language, tag)))
-print ('};')
-print ()
+چاپ ('static const LangTag ot_languages2[] = {')
+لكل language, برچسبها في sorted (ot.from_bcp_47.اقلام ()):
+	إذا language == '' أو '-' في language أو طول (language) != 2:
+		استمر
+	لكل برچسب_2 في برچسبها:
+		چاپ ('  {%s,\t%s},\t/* %s */' % (
+			hb_برچسب (language),
+			hb_برچسب (برچسب_2),
+			format_language_comment (language, برچسب_2)))
+چاپ ('};')
+چاپ ()
 
-print ('#ifndef HB_NO_LANGUAGE_LONG')
+چاپ ('#ifndef HB_NO_LANGUAGE_LONG')
 
 languages3_blocked = []
 languages3_singles = []
 languages3_multi_ranges = []
-languages3_multi_values = []
-for language, tags in sorted (ot.from_bcp_47.items ()):
-	if language == '' or '-' in language or len (language) != 3:
-		continue
-	if same_tag (language, tags):
-		continue
-	if tags == [DEFAULT_LANGUAGE_SYSTEM]:
-		languages3_blocked.append ((language, tags[0]))
-		continue
-	if len (tags) == 1:
-		languages3_singles.append ((language, tags[0]))
-		continue
-	offset = len (languages3_multi_values)
-	languages3_multi_values.extend ((language, tag) for tag in tags)
-	languages3_multi_ranges.append ((language, offset, len (tags), tags[0]))
+languages3_multi_مقادیر = []
+لكل language, برچسبها في sorted (ot.from_bcp_47.اقلام ()):
+	إذا language == '' أو '-' في language أو طول (language) != 3:
+		استمر
+	إذا same_برچسب (language, برچسبها):
+		استمر
+	إذا برچسبها == [DEFAULT_LANGUAGE_SYSTEM]:
+		languages3_blocked.append ((language, برچسبها[0]))
+		استمر
+	إذا طول (برچسبها) == 1:
+		languages3_singles.append ((language, برچسبها[0]))
+		استمر
+	جابه_جایی = طول (languages3_multi_مقادیر)
+	languages3_multi_مقادیر.extend ((language, برچسب_2) لكل برچسب_2 في برچسبها)
+	languages3_multi_ranges.append ((language, جابه_جایی, طول (برچسبها), برچسبها[0]))
 
-print ('static const hb_tag_t ot_languages3_blocked[] = {')
-for language, tag in languages3_blocked:
-	print ('  %s,\t/* %s */' % (hb_tag (language), format_language_comment (language, tag)))
-print ('};')
-print ()
+چاپ ('static const hb_tag_t ot_languages3_blocked[] = {')
+لكل language, برچسب_2 في languages3_blocked:
+	چاپ ('  %s,\t/* %s */' % (hb_برچسب (language), format_language_comment (language, برچسب_2)))
+چاپ ('};')
+چاپ ()
 
-print ('static const LangTag ot_languages3[] = {')
-for language, tag in languages3_singles:
-	print ('  {%s,\t%s},\t/* %s */' % (
-		hb_tag (language),
-		hb_tag (tag),
-		format_language_comment (language, tag)))
-print ('};')
-print ()
+چاپ ('static const LangTag ot_languages3[] = {')
+لكل language, برچسب_2 في languages3_singles:
+	چاپ ('  {%s,\t%s},\t/* %s */' % (
+		hb_برچسب (language),
+		hb_برچسب (برچسب_2),
+		format_language_comment (language, برچسب_2)))
+چاپ ('};')
+چاپ ()
 
-print ('static const hb_tag_t ot_languages3_multi_values[] = {')
-for language, tag in languages3_multi_values:
-	print ('  %s,\t/* %s */' % (hb_tag (tag), format_language_comment (language, tag)))
-print ('};')
-print ()
+چاپ ('static const hb_tag_t ot_languages3_multi_values[] = {')
+لكل language, برچسب_2 في languages3_multi_مقادیر:
+	چاپ ('  %s,\t/* %s */' % (hb_برچسب (برچسب_2), format_language_comment (language, برچسب_2)))
+چاپ ('};')
+چاپ ()
 
-print ('static const LangTagRange ot_languages3_multi[] = {')
-for language, offset, count, first_tag in languages3_multi_ranges:
-	print ('  {%s,\t%u,\t%u},\t/* %s */' % (
-		hb_tag (language),
-		int(offset),
-		int(count),
-		format_language_comment (language, first_tag)))
-print ('};')
-print ('#endif')
-print ()
+چاپ ('static const LangTagRange ot_languages3_multi[] = {')
+لكل language, جابه_جایی, شمار, اولی_برچسب في languages3_multi_ranges:
+	چاپ ('  {%s,\t%u,\t%u},\t/* %s */' % (
+		hb_برچسب (language),
+		صحيح(جابه_جایی),
+		صحيح(شمار),
+		format_language_comment (language, اولی_برچسب)))
+چاپ ('};')
+چاپ ('#endif')
+چاپ ()
 
-print ('/**')
-print (' * hb_ot_tags_from_complex_language:')
-print (' * @lang_str: a BCP 47 language tag to convert.')
-print (' * @limit: a pointer to the end of the substring of @lang_str to consider for')
-print (' * conversion.')
-print (' * @count: maximum number of language tags to retrieve (IN) and actual number of')
-print (' * language tags retrieved (OUT). If no tags are retrieved, it is not modified.')
-print (' * @tags: array of size at least @language_count to store the language tag')
-print (' * results')
-print (' *')
-print (' * Converts a multi-subtag BCP 47 language tag to language tags.')
-print (' *')
-print (' * Return value: Whether any language systems were retrieved.')
-print (' **/')
-print ('static inline bool')
-print ('hb_ot_tags_from_complex_language (const char   *lang_str,')
-print ('\t\t\t\t  const char   *limit,')
-print ('\t\t\t\t  unsigned int *count /* IN/OUT */,')
-print ('\t\t\t\t  hb_tag_t     *tags /* OUT */)')
-print ('{')
+چاپ ('/**')
+چاپ (' * hb_ot_tags_from_complex_language:')
+چاپ (' * @lang_str: a BCP 47 language tag to convert.')
+چاپ (' * @limit: a pointer to the end of the substring of @lang_str to consider for')
+چاپ (' * conversion.')
+چاپ (' * @count: maximum number of language tags to retrieve (IN) and actual number of')
+چاپ (' * language tags retrieved (OUT). If no tags are retrieved, it is not modified.')
+چاپ (' * @tags: array of size at least @language_count to store the language tag')
+چاپ (' * results')
+چاپ (' *')
+چاپ (' * Converts a multi-subtag BCP 47 language tag to language tags.')
+چاپ (' *')
+چاپ (' * Return value: Whether any language systems were retrieved.')
+چاپ (' **/')
+چاپ ('static inline bool')
+چاپ ('hb_ot_tags_from_complex_language (const char   *lang_str,')
+چاپ ('\t\t\t\t  const char   *limit,')
+چاپ ('\t\t\t\t  unsigned int *count /* IN/OUT */,')
+چاپ ('\t\t\t\t  hb_tag_t     *tags /* OUT */)')
+چاپ ('{')
 
-def print_subtag_matches (subtag, string, new_line):
-	if subtag:
-		if new_line:
-			print ()
-			print ('\t&& ', end='')
-		print ('subtag_matches (%s, limit, "-%s", %i)' % (string, sanitize_bcp47_tag (subtag), 1 + len (subtag)), end='')
+تعریف print_subtag_matches (subtag, string, new_سطر):
+	إذا subtag:
+		إذا new_سطر:
+			چاپ ()
+			چاپ ('\t&& ', انتها='')
+		چاپ ('subtag_matches (%s, limit, "-%s", %i)' % (string, sanitize_bcp47_برچسب (subtag), 1 + طول (subtag)), انتها='')
 
-complex_tags = collections.defaultdict (list)
-for initial, group in itertools.groupby ((lt_tags for lt_tags in [
-			(LanguageTag (language), tags)
-			for language, tags in sorted (ot.from_bcp_47.items (),
-				key=lambda i: (-len (i[0]), i[0]))
-		] if lt_tags[0].is_complex ()),
-		key=lambda lt_tags: lt_tags[0].get_group ()):
-	complex_tags[initial] += group
+complex_برچسبها = collections.defaultdict (list)
+لكل initial, گروه في itertools.groupby ((lt_برچسبها لكل lt_برچسبها في [
+			(Language_برچسب (language), برچسبها)
+			لكل language, برچسبها في sorted (ot.from_bcp_47.اقلام (),
+				کلید_2=مجهول i: (-طول (i[0]), i[0]))
+		] إذا lt_برچسبها[0].is_complex ()),
+		کلید_2=مجهول lt_برچسبها: lt_برچسبها[0].get_گروه ()):
+	complex_برچسبها[initial] += گروه
 
 # Calculate the min length of the subtags outside the switch
 min_subtag_len = 100
-for initial, items in sorted (complex_tags.items ()):
-	if initial != 'und':
-		continue
-	for lt, tags in items:
-		if not tags:
-			continue
+لكل initial, اقلام في sorted (complex_برچسبها.اقلام ()):
+	إذا initial != 'und':
+		استمر
+	لكل lt, برچسبها في اقلام:
+		إذا ليس برچسبها:
+			استمر
 		subtag_len = 0
-		subtag_len += 1 + len (lt.script) if lt.script is not None else 0
-		subtag_len += 1 + len (lt.region) if lt.region is not None else 0
-		subtag_len += 1 + len (lt.variant) if lt.variant is not None else 0
+		subtag_len += 1 + طول (lt.script) إذا lt.script است ليس هیچ وإلا 0
+		subtag_len += 1 + طول (lt.region) إذا lt.region است ليس هیچ وإلا 0
+		subtag_len += 1 + طول (lt.variant) إذا lt.variant است ليس هیچ وإلا 0
 		min_subtag_len = min(subtag_len, min_subtag_len)
 
-print ('  if (limit - lang_str >= %d)' % (min_subtag_len + 2))
-print ('  {')
-print ("    const char *p = strchr (lang_str, '-');")
-print ("    if (!p || p >= limit || limit - p < %i) goto out;" % min_subtag_len)
-for initial, items in sorted (complex_tags.items ()):
-	if initial != 'und':
-		continue
-	for lt, tags in items:
-		if not tags:
-			continue
-		if lt.variant in bcp_47.prefixes:
-			expect (next (iter (bcp_47.prefixes[lt.variant])) == lt.language,
+چاپ ('  if (limit - lang_str >= %d)' % (min_subtag_len + 2))
+چاپ ('  {')
+چاپ ("    const char *p = strchr (lang_str, '-');")
+چاپ ("    if (!p || p >= limit || limit - p < %i) goto out;" % min_subtag_len)
+لكل initial, اقلام في sorted (complex_برچسبها.اقلام ()):
+	إذا initial != 'und':
+		استمر
+	لكل lt, برچسبها في اقلام:
+		إذا ليس برچسبها:
+			استمر
+		إذا lt.variant في bcp_47.prefixes:
+			expect (بعدی (iter (bcp_47.prefixes[lt.variant])) == lt.language,
 					'%s is not a valid prefix of %s' % (lt.language, lt.variant))
-		print ('    if (', end='')
-		print_subtag_matches (lt.script, 'p', False)
-		print_subtag_matches (lt.region, 'p', False)
-		print_subtag_matches (lt.variant, 'p', False)
-		print (')')
-		print ('    {')
-		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
-		print ()
-		if len (tags) == 1:
-			write ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			print ()
-			print ('      *count = 1;')
-		else:
-			print ('    hb_tag_t possible_tags[] = {')
-			for tag in tags:
-				write ('      %s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
-				print ()
-			print ('      };')
-			print ('      for (i = 0; i < %s && i < *count; i++)' % len (tags))
-			print ('\ttags[i] = possible_tags[i];')
-			print ('      *count = i;')
-		print ('      return true;')
-		print ('    }')
-print ('  }')
-print ('out:')
+		چاپ ('    if (', انتها='')
+		print_subtag_matches (lt.script, 'p', خطأ)
+		print_subtag_matches (lt.region, 'p', خطأ)
+		print_subtag_matches (lt.variant, 'p', خطأ)
+		چاپ (')')
+		چاپ ('    {')
+		اكتب ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
+		چاپ ()
+		إذا طول (برچسبها) == 1:
+			اكتب ('      tags[0] = %s;  /* %s */' % (hb_برچسب (برچسبها[0]), sanitize_comment (ot.نامها[برچسبها[0]])))
+			چاپ ()
+			چاپ ('      *count = 1;')
+		وإلا:
+			چاپ ('    hb_tag_t possible_tags[] = {')
+			لكل برچسب_2 في برچسبها:
+				اكتب ('      %s,  /* %s */' % (hb_برچسب (برچسب_2), sanitize_comment (ot.نامها[برچسب_2])))
+				چاپ ()
+			چاپ ('      };')
+			چاپ ('      for (i = 0; i < %s && i < *count; i++)' % طول (برچسبها))
+			چاپ ('\ttags[i] = possible_tags[i];')
+			چاپ ('      *count = i;')
+		چاپ ('      return true;')
+		چاپ ('    }')
+چاپ ('  }')
+چاپ ('out:')
 
-print ('  switch (lang_str[0])')
-print ('  {')
-for initial, items in sorted (complex_tags.items ()):
-	if initial == 'und':
-		continue
-	print ("  case '%s':" % sanitize_bcp47_tag (initial))
-	for lt, tags in items:
-		if not tags:
-			continue
-		print ('    if (', end='')
+چاپ ('  switch (lang_str[0])')
+چاپ ('  {')
+لكل initial, اقلام في sorted (complex_برچسبها.اقلام ()):
+	إذا initial == 'und':
+		استمر
+	چاپ ("  case '%s':" % sanitize_bcp47_برچسب (initial))
+	لكل lt, برچسبها في اقلام:
+		إذا ليس برچسبها:
+			استمر
+		چاپ ('    if (', انتها='')
 		script = lt.script
 		region = lt.region
-		if lt.grandfathered:
-			print ('0 == strcmp (&lang_str[1], "%s")' % sanitize_bcp47_tag (lt.language[1:]), end='')
-		else:
+		إذا lt.grandfathered:
+			چاپ ('0 == strcmp (&lang_str[1], "%s")' % sanitize_bcp47_برچسب (lt.language[1:]), انتها='')
+		وإلا:
 			string_literal = lt.language[1:] + '-'
-			if script:
+			إذا script:
 				string_literal += script
-				script = None
-				if region:
+				script = هیچ
+				إذا region:
 					string_literal += '-' + region
-					region = None
-			if string_literal[-1] == '-':
-				print ('0 == strncmp (&lang_str[1], "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-			else:
-				print ('lang_matches (&lang_str[1], limit, "%s", %i)' % (sanitize_bcp47_tag (string_literal), len (string_literal)), end='')
-		print_subtag_matches (script, 'lang_str', True)
-		print_subtag_matches (region, 'lang_str', True)
-		print_subtag_matches (lt.variant, 'lang_str', True)
-		print (')')
-		print ('    {')
-		write ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
-		print ()
-		if len (tags) == 1:
-			write ('      tags[0] = %s;  /* %s */' % (hb_tag (tags[0]), sanitize_comment (ot.names[tags[0]])))
-			print ()
-			print ('      *count = 1;')
-		else:
-			print ('      unsigned int i;')
-			print ('      hb_tag_t possible_tags[] = {')
-			for tag in tags:
-				write ('\t%s,  /* %s */' % (hb_tag (tag), sanitize_comment (ot.names[tag])))
-				print ()
-			print ('      };')
-			print ('      for (i = 0; i < %s && i < *count; i++)' % len (tags))
-			print ('\ttags[i] = possible_tags[i];')
-			print ('      *count = i;')
-		print ('      return true;')
-		print ('    }')
-	print ('    break;')
+					region = هیچ
+			إذا string_literal[-1] == '-':
+				چاپ ('0 == strncmp (&lang_str[1], "%s", %i)' % (sanitize_bcp47_برچسب (string_literal), طول (string_literal)), انتها='')
+			وإلا:
+				چاپ ('lang_matches (&lang_str[1], limit, "%s", %i)' % (sanitize_bcp47_برچسب (string_literal), طول (string_literal)), انتها='')
+		print_subtag_matches (script, 'lang_str', درست)
+		print_subtag_matches (region, 'lang_str', درست)
+		print_subtag_matches (lt.variant, 'lang_str', درست)
+		چاپ (')')
+		چاپ ('    {')
+		اكتب ('      /* %s */' % sanitize_comment (bcp_47.get_name (lt)))
+		چاپ ()
+		إذا طول (برچسبها) == 1:
+			اكتب ('      tags[0] = %s;  /* %s */' % (hb_برچسب (برچسبها[0]), sanitize_comment (ot.نامها[برچسبها[0]])))
+			چاپ ()
+			چاپ ('      *count = 1;')
+		وإلا:
+			چاپ ('      unsigned int i;')
+			چاپ ('      hb_tag_t possible_tags[] = {')
+			لكل برچسب_2 في برچسبها:
+				اكتب ('\t%s,  /* %s */' % (hb_برچسب (برچسب_2), sanitize_comment (ot.نامها[برچسب_2])))
+				چاپ ()
+			چاپ ('      };')
+			چاپ ('      for (i = 0; i < %s && i < *count; i++)' % طول (برچسبها))
+			چاپ ('\ttags[i] = possible_tags[i];')
+			چاپ ('      *count = i;')
+		چاپ ('      return true;')
+		چاپ ('    }')
+	چاپ ('    break;')
 
-print ('  }')
-print ('  return false;')
-print ('}')
-print ()
-print ('/**')
-print (' * hb_ot_ambiguous_tag_to_language')
-print (' * @tag: A language tag.')
-print (' *')
-print (' * Converts @tag to a BCP 47 language tag if it is ambiguous (it corresponds to')
-print (' * many language tags) and the best tag is not the first (sorted alphabetically,')
-print (' * with two-letter tags having priority over all three-letter tags), or if the')
-print (' * best tag consists of multiple subtags, or if the best tag does not appear in')
-print (' * #ot_languages2 or #ot_languages3.')
-print (' *')
-print (' * Return value: The #hb_language_t corresponding to the BCP 47 language tag,')
-print (' * or #HB_LANGUAGE_INVALID if @tag is not ambiguous.')
-print (' **/')
-print ('static inline hb_language_t')
-print ('hb_ot_ambiguous_tag_to_language (hb_tag_t tag)')
-print ('{')
-print ('  switch (tag)')
-print ('  {')
+چاپ ('  }')
+چاپ ('  return false;')
+چاپ ('}')
+چاپ ()
+چاپ ('/**')
+چاپ (' * hb_ot_ambiguous_tag_to_language')
+چاپ (' * @tag: A language tag.')
+چاپ (' *')
+چاپ (' * Converts @tag to a BCP 47 language tag if it is ambiguous (it corresponds to')
+چاپ (' * many language tags) and the best tag is not the first (sorted alphabetically,')
+چاپ (' * with two-letter tags having priority over all three-letter tags), or if the')
+چاپ (' * best tag consists of multiple subtags, or if the best tag does not appear in')
+چاپ (' * #ot_languages2 or #ot_languages3.')
+چاپ (' *')
+چاپ (' * Return value: The #hb_language_t corresponding to the BCP 47 language tag,')
+چاپ (' * or #HB_LANGUAGE_INVALID if @tag is not ambiguous.')
+چاپ (' **/')
+چاپ ('static inline hb_language_t')
+چاپ ('hb_ot_ambiguous_tag_to_language (hb_tag_t tag)')
+چاپ ('{')
+چاپ ('  switch (tag)')
+چاپ ('  {')
 
-def verify_disambiguation_dict ():
+تعریف verify_disambiguation_dict ():
 	"""Verify and normalize ``disambiguation``.
 
 	``disambiguation`` is a map of ambiguous OpenType language system
@@ -1433,66 +1433,66 @@ def verify_disambiguation_dict ():
 	Raises:
 		AssertionError: Verification failed.
 	"""
-	global bcp_47
-	global disambiguation
-	global ot
-	for ot_tag, bcp_47_tags in ot.to_bcp_47.items ():
-		if ot_tag == DEFAULT_LANGUAGE_SYSTEM:
-			primary_tags = []
-		else:
-			primary_tags = list (t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot.from_bcp_47.get (t)[0] == ot_tag)
-		if len (primary_tags) == 1:
-			expect (ot_tag not in disambiguation, 'unnecessary disambiguation for OT tag: %s' % ot_tag)
-			if '-' in primary_tags[0]:
-				disambiguation[ot_tag] = primary_tags[0]
-			else:
-				first_tag = sorted ((t for t in bcp_47_tags if t not in bcp_47.grandfathered and ot_tag in ot.from_bcp_47.get (t)),
-						key=lambda t: (len (t), t))[0]
-				if primary_tags[0] != first_tag:
-					disambiguation[ot_tag] = primary_tags[0]
-		elif len (primary_tags) == 0:
-			expect (ot_tag not in disambiguation, 'There is no possible valid disambiguation for %s' % ot_tag)
-		else:
-			original_languages = [t for t in primary_tags if t in ot.from_bcp_47_uninherited and 'retired code' not in bcp_47.scopes.get (t, '')]
-			if len (original_languages) == 1:
+	عام bcp_47
+	عام disambiguation
+	عام ot
+	لكل ot_برچسب, bcp_47_برچسبها في ot.مقصد_bcp_47.اقلام ():
+		إذا ot_برچسب == DEFAULT_LANGUAGE_SYSTEM:
+			primary_برچسبها = []
+		وإلا:
+			primary_برچسبها = list (t لكل t في bcp_47_برچسبها إذا t ليس في bcp_47.grandfathered و ot.from_bcp_47.get (t)[0] == ot_برچسب)
+		إذا طول (primary_برچسبها) == 1:
+			expect (ot_برچسب ليس في disambiguation, 'unnecessary disambiguation for OT tag: %s' % ot_برچسب)
+			إذا '-' في primary_برچسبها[0]:
+				disambiguation[ot_برچسب] = primary_برچسبها[0]
+			وإلا:
+				اولی_برچسب = sorted ((t لكل t في bcp_47_برچسبها إذا t ليس في bcp_47.grandfathered و ot_برچسب في ot.from_bcp_47.get (t)),
+						کلید_2=مجهول t: (طول (t), t))[0]
+				إذا primary_برچسبها[0] != اولی_برچسب:
+					disambiguation[ot_برچسب] = primary_برچسبها[0]
+		وإلاإذا طول (primary_برچسبها) == 0:
+			expect (ot_برچسب ليس في disambiguation, 'There is no possible valid disambiguation for %s' % ot_برچسب)
+		وإلا:
+			original_languages = [t لكل t في primary_برچسبها إذا t في ot.from_bcp_47_uninherited و 'retired code' ليس في bcp_47.scopes.get (t, '')]
+			إذا طول (original_languages) == 1:
 				macrolanguages = original_languages
-			else:
-				macrolanguages = [t for t in primary_tags if bcp_47.scopes.get (t) == ' [macrolanguage]']
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if bcp_47.scopes.get (t) == ' [collection]')
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if 'retired code' not in bcp_47.scopes.get (t, ''))
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if t.lower () == ISO_639_3_TO_1.get (ot_tag.lower (), ot_tag.lower ()))
-			if len (macrolanguages) != 1:
-				macrolanguages = list (t for t in primary_tags if '-' not in t)
-			if len (macrolanguages) != 1:
-				expect (ot_tag in disambiguation, 'ambiguous OT tag: %s %s' % (ot_tag, sorted (primary_tags)))
-				expect (disambiguation[ot_tag] in bcp_47_tags,
-						'%s is not a valid disambiguation for %s' % (disambiguation[ot_tag], ot_tag))
-			elif ot_tag not in disambiguation:
-				disambiguation[ot_tag] = macrolanguages[0]
-			if '-' not in disambiguation[ot_tag]:
-				different_bcp_47_tags = sorted ((t for t in bcp_47_tags if not same_tag (t, ot.from_bcp_47.get (t))),
-						key=lambda t: (len (t), t))
-				if different_bcp_47_tags and disambiguation[ot_tag] == different_bcp_47_tags[0]:
-					del disambiguation[ot_tag]
-	for ot_tag in disambiguation.keys ():
-		expect (ot_tag in ot.to_bcp_47, 'unknown OT tag: %s' % ot_tag)
+			وإلا:
+				macrolanguages = [t لكل t في primary_برچسبها إذا bcp_47.scopes.get (t) == ' [macrolanguage]']
+			إذا طول (macrolanguages) != 1:
+				macrolanguages = list (t لكل t في primary_برچسبها إذا bcp_47.scopes.get (t) == ' [collection]')
+			إذا طول (macrolanguages) != 1:
+				macrolanguages = list (t لكل t في primary_برچسبها إذا 'retired code' ليس في bcp_47.scopes.get (t, ''))
+			إذا طول (macrolanguages) != 1:
+				macrolanguages = list (t لكل t في primary_برچسبها إذا t.پایینی () == ISO_639_3_مقصد_1.get (ot_برچسب.پایینی (), ot_برچسب.پایینی ()))
+			إذا طول (macrolanguages) != 1:
+				macrolanguages = list (t لكل t في primary_برچسبها إذا '-' ليس في t)
+			إذا طول (macrolanguages) != 1:
+				expect (ot_برچسب في disambiguation, 'ambiguous OT tag: %s %s' % (ot_برچسب, sorted (primary_برچسبها)))
+				expect (disambiguation[ot_برچسب] في bcp_47_برچسبها,
+						'%s is not a valid disambiguation for %s' % (disambiguation[ot_برچسب], ot_برچسب))
+			وإلاإذا ot_برچسب ليس في disambiguation:
+				disambiguation[ot_برچسب] = macrolanguages[0]
+			إذا '-' ليس في disambiguation[ot_برچسب]:
+				different_bcp_47_برچسبها = sorted ((t لكل t في bcp_47_برچسبها إذا ليس same_برچسب (t, ot.from_bcp_47.get (t))),
+						کلید_2=مجهول t: (طول (t), t))
+				إذا different_bcp_47_برچسبها و disambiguation[ot_برچسب] == different_bcp_47_برچسبها[0]:
+					پاک disambiguation[ot_برچسب]
+	لكل ot_برچسب في disambiguation.کلیدها ():
+		expect (ot_برچسب في ot.مقصد_bcp_47, 'unknown OT tag: %s' % ot_برچسب)
 
 verify_disambiguation_dict ()
-for ot_tag, bcp_47_tag in sorted (disambiguation.items ()):
-	write ('  case %s:  /* %s */' % (hb_tag (ot_tag), sanitize_comment (ot.names[ot_tag])))
-	print ()
-	write ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_tag (bcp_47_tag), sanitize_comment (bcp_47.get_name (LanguageTag (bcp_47_tag)))))
-	print ()
+لكل ot_برچسب, bcp_47_برچسب في sorted (disambiguation.اقلام ()):
+	اكتب ('  case %s:  /* %s */' % (hb_برچسب (ot_برچسب), sanitize_comment (ot.نامها[ot_برچسب])))
+	چاپ ()
+	اكتب ('    return hb_language_from_string (\"%s\", -1);  /* %s */' % (sanitize_bcp47_برچسب (bcp_47_برچسب), sanitize_comment (bcp_47.get_name (Language_برچسب (bcp_47_برچسب)))))
+	چاپ ()
 
-print ('  default:')
-print ('    return HB_LANGUAGE_INVALID;')
-print ('  }')
-print ('}')
+چاپ ('  default:')
+چاپ ('    return HB_LANGUAGE_INVALID;')
+چاپ ('  }')
+چاپ ('}')
 
-print ()
-print ('#endif /* HB_OT_TAG_TABLE_HH */')
-print ()
-print ('/* == End of generated table == */')
+چاپ ()
+چاپ ('#endif /* HB_OT_TAG_TABLE_HH */')
+چاپ ()
+چاپ ('/* == End of generated table == */')

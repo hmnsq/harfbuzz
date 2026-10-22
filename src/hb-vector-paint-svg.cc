@@ -24,36 +24,36 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-vector-paint.hh"
-#include "hb-paint.hh"
-#include "hb-vector-path.hh"
+#ضمن "hb-vector-paint.hh"
+#ضمن "hb-paint.hh"
+#ضمن "hb-vector-path.hh"
 
-#include <math.h>
+#ضمن <math.h>
 
-static const char *
-hb_vector_svg_extend_mode_str (hb_paint_extend_t ext)
+ساكن ثابت حرف *
+hb_وکتور_svg_extend_نما_str (hb_paint_extend_t ext)
 {
-  switch (ext)
+  بدل (ext)
   {
-    case HB_PAINT_EXTEND_PAD: return "pad";
-    case HB_PAINT_EXTEND_REPEAT: return "repeat";
-    case HB_PAINT_EXTEND_REFLECT: return "reflect";
-    default: return "pad";
+    حالة HB_PAINT_EXTEND_PAD: أرجع "pad";
+    حالة HB_PAINT_EXTEND_REPEAT: أرجع "repeat";
+    حالة HB_PAINT_EXTEND_REFLECT: أرجع "reflect";
+    افتراضي: أرجع "pad";
   }
 }
 
-static void
-hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
-				hb_vector_buf_t *buf,
-				hb_vector_t<hb_color_stop_t> *stops)
+ساكن فراغ
+hb_وکتور_svg_emit_color_stops (hb_وکتور_paint_t *paint,
+				hb_وکتور_buf_t *buf,
+				hb_وکتور_t<hb_color_stop_t> *stops)
 {
-  for (unsigned i = 0; i < stops->length; i++)
+  لكل (بیعلامت i = 0; i < stops->درازی; i++)
   {
     hb_color_t c = stops->arrayZ[i].color;
     buf->append_str ("<stop offset=\"");
-    buf->append_num (stops->arrayZ[i].offset, 4);
+    buf->append_رقم (stops->arrayZ[i].جابه_جایی, 4);
     buf->append_str ("\" stop-color=\"rgb(");
     buf->append_unsigned (hb_color_get_red (c));
     buf->append_c (',');
@@ -61,181 +61,181 @@ hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
     buf->append_c (',');
     buf->append_unsigned (hb_color_get_blue (c));
     buf->append_str (")\"");
-    if (hb_color_get_alpha (c) != 255)
+    إذا (hb_color_get_alpha (c) != 255)
     {
       buf->append_str (" stop-opacity=\"");
-      buf->append_num (hb_color_get_alpha (c) / 255.f, 4);
+      buf->append_رقم (hb_color_get_alpha (c) / 255.f, 4);
       buf->append_c ('"');
     }
     buf->append_str ("/>\n");
   }
 }
 
-static const char *
-hb_vector_svg_composite_mode_str (hb_paint_composite_mode_t mode)
+ساكن ثابت حرف *
+hb_وکتور_svg_مرکب_نما_str (hb_paint_مرکب_نما_t نما)
 {
-  switch (mode)
+  بدل (نما)
   {
     /* Porter-Duff modes have no SVG mix-blend-mode equivalent;
      * approximate the two that have a plausible color-blend analog,
      * and let the rest fall through to normal (SRC_OVER). */
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_XOR: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_CLEAR:
-    case HB_PAINT_COMPOSITE_MODE_SRC:
-    case HB_PAINT_COMPOSITE_MODE_DEST:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      return nullptr;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return "normal";
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return "overlay";
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return "darken";
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return "lighten";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return "color-dodge";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return "color-burn";
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return "hard-light";
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return "soft-light";
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return "exclusion";
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return "multiply";
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return "hue";
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "saturation";
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return "color";
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "luminosity";
-    default: return nullptr;
+    حالة HB_PAINT_مرکب_نما_PLUS: أرجع "screen";
+    حالة HB_PAINT_مرکب_نما_XOR: أرجع "difference";
+    حالة HB_PAINT_مرکب_نما_CLEAR:
+    حالة HB_PAINT_مرکب_نما_SRC:
+    حالة HB_PAINT_مرکب_نما_DEST:
+    حالة HB_PAINT_مرکب_نما_DEST_OVER:
+    حالة HB_PAINT_مرکب_نما_SRC_درون:
+    حالة HB_PAINT_مرکب_نما_DEST_درون:
+    حالة HB_PAINT_مرکب_نما_SRC_بیرون:
+    حالة HB_PAINT_مرکب_نما_DEST_بیرون:
+    حالة HB_PAINT_مرکب_نما_SRC_ATOP:
+    حالة HB_PAINT_مرکب_نما_DEST_ATOP:
+      أرجع اشاره_تهی;
+    حالة HB_PAINT_مرکب_نما_SRC_OVER: أرجع "normal";
+    حالة HB_PAINT_مرکب_نما_SCREEN: أرجع "screen";
+    حالة HB_PAINT_مرکب_نما_OVERLAY: أرجع "overlay";
+    حالة HB_PAINT_مرکب_نما_DARKEN: أرجع "darken";
+    حالة HB_PAINT_مرکب_نما_LIGHTEN: أرجع "lighten";
+    حالة HB_PAINT_مرکب_نما_COLOR_DODGE: أرجع "color-dodge";
+    حالة HB_PAINT_مرکب_نما_COLOR_BURN: أرجع "color-burn";
+    حالة HB_PAINT_مرکب_نما_HARD_LIGHT: أرجع "hard-light";
+    حالة HB_PAINT_مرکب_نما_SOFT_LIGHT: أرجع "soft-light";
+    حالة HB_PAINT_مرکب_نما_DIFFERENCE: أرجع "difference";
+    حالة HB_PAINT_مرکب_نما_EXCLUSION: أرجع "exclusion";
+    حالة HB_PAINT_مرکب_نما_MULTIPLY: أرجع "multiply";
+    حالة HB_PAINT_مرکب_نما_HSL_HUE: أرجع "hue";
+    حالة HB_PAINT_مرکب_نما_HSL_SATURATION: أرجع "saturation";
+    حالة HB_PAINT_مرکب_نما_HSL_COLOR: أرجع "color";
+    حالة HB_PAINT_مرکب_نما_HSL_LUMINOSITY: أرجع "luminosity";
+    افتراضي: أرجع اشاره_تهی;
   }
 }
 
-struct hb_vector_svg_point_t { float x, y; };
-struct hb_vector_svg_rgba_t { float r, g, b, a; };
+بنية hb_وکتور_svg_نقطه_t { عائم x, y; };
+بنية hb_وکتور_svg_rgba_t { عائم r, g, b, a; };
 
-static inline float
-hb_vector_svg_lerp (float a, float b, float t)
-{ return a + (b - a) * t; }
+ساكن مضمن عائم
+hb_وکتور_svg_lerp (عائم a, عائم b, عائم t)
+{ أرجع a + (b - a) * t; }
 
-static inline float
-hb_vector_svg_clamp01 (float v)
+ساكن مضمن عائم
+hb_وکتور_svg_clamp01 (عائم v)
 {
-  if (v < 0.f) return 0.f;
-  if (v > 1.f) return 1.f;
-  return v;
+  إذا (v < 0.f) أرجع 0.f;
+  إذا (v > 1.f) أرجع 1.f;
+  أرجع v;
 }
 
-static inline hb_vector_svg_rgba_t
-hb_vector_svg_rgba_from_hb_color (hb_color_t c)
+ساكن مضمن hb_وکتور_svg_rgba_t
+hb_وکتور_svg_rgba_from_hb_color (hb_color_t c)
 {
-  return {(float) hb_color_get_red (c) / 255.f,
-          (float) hb_color_get_green (c) / 255.f,
-          (float) hb_color_get_blue (c) / 255.f,
-          (float) hb_color_get_alpha (c) / 255.f};
+  أرجع {(عائم) hb_color_get_red (c) / 255.f,
+          (عائم) hb_color_get_green (c) / 255.f,
+          (عائم) hb_color_get_blue (c) / 255.f,
+          (عائم) hb_color_get_alpha (c) / 255.f};
 }
 
-static inline hb_color_t
-hb_vector_svg_hb_color_from_rgba (const hb_vector_svg_rgba_t &c)
+ساكن مضمن hb_color_t
+hb_وکتور_svg_hb_color_from_rgba (ثابت hb_وکتور_svg_rgba_t &c)
 {
-  unsigned r = (unsigned) roundf (hb_vector_svg_clamp01 (c.r) * 255.f);
-  unsigned g = (unsigned) roundf (hb_vector_svg_clamp01 (c.g) * 255.f);
-  unsigned b = (unsigned) roundf (hb_vector_svg_clamp01 (c.b) * 255.f);
-  unsigned a = (unsigned) roundf (hb_vector_svg_clamp01 (c.a) * 255.f);
-  return HB_COLOR (b, g, r, a);
+  بیعلامت r = (بیعلامت) roundf (hb_وکتور_svg_clamp01 (c.r) * 255.f);
+  بیعلامت g = (بیعلامت) roundf (hb_وکتور_svg_clamp01 (c.g) * 255.f);
+  بیعلامت b = (بیعلامت) roundf (hb_وکتور_svg_clamp01 (c.b) * 255.f);
+  بیعلامت a = (بیعلامت) roundf (hb_وکتور_svg_clamp01 (c.a) * 255.f);
+  أرجع HB_COLOR (b, g, r, a);
 }
 
-static inline hb_vector_svg_rgba_t
-hb_vector_svg_lerp_rgba (const hb_vector_svg_rgba_t &c0,
-			 const hb_vector_svg_rgba_t &c1,
-			 float t)
+ساكن مضمن hb_وکتور_svg_rgba_t
+hb_وکتور_svg_lerp_rgba (ثابت hb_وکتور_svg_rgba_t &c0,
+			 ثابت hb_وکتور_svg_rgba_t &c1,
+			 عائم t)
 {
-  return {hb_vector_svg_lerp (c0.r, c1.r, t),
-          hb_vector_svg_lerp (c0.g, c1.g, t),
-          hb_vector_svg_lerp (c0.b, c1.b, t),
-          hb_vector_svg_lerp (c0.a, c1.a, t)};
+  أرجع {hb_وکتور_svg_lerp (c0.r, c1.r, t),
+          hb_وکتور_svg_lerp (c0.g, c1.g, t),
+          hb_وکتور_svg_lerp (c0.b, c1.b, t),
+          hb_وکتور_svg_lerp (c0.a, c1.a, t)};
 }
 
-static inline float hb_vector_svg_dot (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return p.x * q.x + p.y * q.y; }
-static inline hb_vector_svg_point_t hb_vector_svg_add (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x + q.x, p.y + q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_sub (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x - q.x, p.y - q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_scale (const hb_vector_svg_point_t &p, float f) { return {p.x * f, p.y * f}; }
+ساكن مضمن عائم hb_وکتور_svg_dot (ثابت hb_وکتور_svg_نقطه_t &p, ثابت hb_وکتور_svg_نقطه_t &q) { أرجع p.x * q.x + p.y * q.y; }
+ساكن مضمن hb_وکتور_svg_نقطه_t hb_وکتور_svg_جمع_کن (ثابت hb_وکتور_svg_نقطه_t &p, ثابت hb_وکتور_svg_نقطه_t &q) { أرجع {p.x + q.x, p.y + q.y}; }
+ساكن مضمن hb_وکتور_svg_نقطه_t hb_وکتور_svg_sub (ثابت hb_وکتور_svg_نقطه_t &p, ثابت hb_وکتور_svg_نقطه_t &q) { أرجع {p.x - q.x, p.y - q.y}; }
+ساكن مضمن hb_وکتور_svg_نقطه_t hb_وکتور_svg_scale (ثابت hb_وکتور_svg_نقطه_t &p, عائم f) { أرجع {p.x * f, p.y * f}; }
 
-static inline hb_vector_svg_point_t
-hb_vector_svg_normalize (const hb_vector_svg_point_t &p)
+ساكن مضمن hb_وکتور_svg_نقطه_t
+hb_وکتور_svg_normalize (ثابت hb_وکتور_svg_نقطه_t &p)
 {
-  float len = sqrtf (hb_vector_svg_dot (p, p));
-  if (len == 0.f) return {0.f, 0.f};
-  return hb_vector_svg_scale (p, 1.f / len);
+  عائم len = sqrtf (hb_وکتور_svg_dot (p, p));
+  إذا (len == 0.f) أرجع {0.f, 0.f};
+  أرجع hb_وکتور_svg_scale (p, 1.f / len);
 }
 
-static void
-hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
-			       unsigned precision,
-			       float cx, float cy, float radius,
-			       float a0, const hb_vector_svg_rgba_t &c0_in,
-			       float a1, const hb_vector_svg_rgba_t &c1_in)
+ساكن فراغ
+hb_وکتور_svg_جمع_کن_sweep_patch (hb_وکتور_buf_t *body,
+			       بیعلامت precision,
+			       عائم cx, عائم cy, عائم radius,
+			       عائم a0, ثابت hb_وکتور_svg_rgba_t &c0_درون,
+			       عائم a1, ثابت hb_وکتور_svg_rgba_t &c1_درون)
 {
-  static const float max_angle = HB_PI / 16.f;
-  hb_vector_svg_point_t center = {cx, cy};
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / max_angle);
-  if (num_splits < 1) num_splits = 1;
+  ساكن ثابت عائم max_angle = HB_PI / 16.f;
+  hb_وکتور_svg_نقطه_t center = {cx, cy};
+  صحيح رقم_splits = (صحيح) ceilf (fabsf (a1 - a0) / max_angle);
+  إذا (رقم_splits < 1) رقم_splits = 1;
 
-  hb_vector_svg_point_t p0 = {cosf (a0), sinf (a0)};
-  hb_vector_svg_rgba_t color0 = c0_in;
+  hb_وکتور_svg_نقطه_t p0 = {cosf (a0), sinf (a0)};
+  hb_وکتور_svg_rgba_t color0 = c0_درون;
 
-  for (int a = 0; a < num_splits; a++)
+  لكل (صحيح a = 0; a < رقم_splits; a++)
   {
-    float k = (a + 1.f) / num_splits;
-    float angle1 = hb_vector_svg_lerp (a0, a1, k);
-    hb_vector_svg_rgba_t color1 = hb_vector_svg_lerp_rgba (c0_in, c1_in, k);
+    عائم k = (a + 1.f) / رقم_splits;
+    عائم angle1 = hb_وکتور_svg_lerp (a0, a1, k);
+    hb_وکتور_svg_rgba_t color1 = hb_وکتور_svg_lerp_rgba (c0_درون, c1_درون, k);
 
-    hb_vector_svg_point_t p1 = {cosf (angle1), sinf (angle1)};
-    hb_vector_svg_point_t sp0 = hb_vector_svg_add (center, hb_vector_svg_scale (p0, radius));
-    hb_vector_svg_point_t sp1 = hb_vector_svg_add (center, hb_vector_svg_scale (p1, radius));
+    hb_وکتور_svg_نقطه_t p1 = {cosf (angle1), sinf (angle1)};
+    hb_وکتور_svg_نقطه_t sp0 = hb_وکتور_svg_جمع_کن (center, hb_وکتور_svg_scale (p0, radius));
+    hb_وکتور_svg_نقطه_t sp1 = hb_وکتور_svg_جمع_کن (center, hb_وکتور_svg_scale (p1, radius));
 
-    hb_vector_svg_point_t A = hb_vector_svg_normalize (hb_vector_svg_add (p0, p1));
-    hb_vector_svg_point_t U = {-A.y, A.x};
-    float up0 = hb_vector_svg_dot (U, p0);
-    float up1 = hb_vector_svg_dot (U, p1);
-    if (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
+    hb_وکتور_svg_نقطه_t A = hb_وکتور_svg_normalize (hb_وکتور_svg_جمع_کن (p0, p1));
+    hb_وکتور_svg_نقطه_t U = {-A.y, A.x};
+    عائم up0 = hb_وکتور_svg_dot (U, p0);
+    عائم up1 = hb_وکتور_svg_dot (U, p1);
+    إذا (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
     {
       p0 = p1;
       color0 = color1;
-      continue;
+      استمر;
     }
-    hb_vector_svg_point_t C0 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p0, A), p0) / up0));
-    hb_vector_svg_point_t C1 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p1, A), p1) / up1));
+    hb_وکتور_svg_نقطه_t C0 = hb_وکتور_svg_جمع_کن (A, hb_وکتور_svg_scale (U, hb_وکتور_svg_dot (hb_وکتور_svg_sub (p0, A), p0) / up0));
+    hb_وکتور_svg_نقطه_t C1 = hb_وکتور_svg_جمع_کن (A, hb_وکتور_svg_scale (U, hb_وکتور_svg_dot (hb_وکتور_svg_sub (p1, A), p1) / up1));
 
-    hb_vector_svg_point_t sc0 = hb_vector_svg_add (center, hb_vector_svg_scale (hb_vector_svg_add (C0, hb_vector_svg_scale (hb_vector_svg_sub (C0, p0), 0.33333f)), radius));
-    hb_vector_svg_point_t sc1 = hb_vector_svg_add (center, hb_vector_svg_scale (hb_vector_svg_add (C1, hb_vector_svg_scale (hb_vector_svg_sub (C1, p1), 0.33333f)), radius));
+    hb_وکتور_svg_نقطه_t sc0 = hb_وکتور_svg_جمع_کن (center, hb_وکتور_svg_scale (hb_وکتور_svg_جمع_کن (C0, hb_وکتور_svg_scale (hb_وکتور_svg_sub (C0, p0), 0.33333f)), radius));
+    hb_وکتور_svg_نقطه_t sc1 = hb_وکتور_svg_جمع_کن (center, hb_وکتور_svg_scale (hb_وکتور_svg_جمع_کن (C1, hb_وکتور_svg_scale (hb_وکتور_svg_sub (C1, p1), 0.33333f)), radius));
 
-    hb_vector_svg_rgba_t mid_color = hb_vector_svg_lerp_rgba (color0, color1, 0.5f);
-    hb_color_t mid = hb_vector_svg_hb_color_from_rgba (mid_color);
+    hb_وکتور_svg_rgba_t mid_color = hb_وکتور_svg_lerp_rgba (color0, color1, 0.5f);
+    hb_color_t mid = hb_وکتور_svg_hb_color_from_rgba (mid_color);
 
     body->append_str ("<path d=\"M");
-    body->append_num (center.x, precision);
+    body->append_رقم (center.x, precision);
     body->append_c (',');
-    body->append_num (center.y, precision);
+    body->append_رقم (center.y, precision);
     body->append_str ("L");
-    body->append_num (sp0.x, precision);
+    body->append_رقم (sp0.x, precision);
     body->append_c (',');
-    body->append_num (sp0.y, precision);
+    body->append_رقم (sp0.y, precision);
     body->append_str ("C");
-    body->append_num (sc0.x, precision);
+    body->append_رقم (sc0.x, precision);
     body->append_c (',');
-    body->append_num (sc0.y, precision);
+    body->append_رقم (sc0.y, precision);
     body->append_c (' ');
-    body->append_num (sc1.x, precision);
+    body->append_رقم (sc1.x, precision);
     body->append_c (',');
-    body->append_num (sc1.y, precision);
+    body->append_رقم (sc1.y, precision);
     body->append_c (' ');
-    body->append_num (sp1.x, precision);
+    body->append_رقم (sp1.x, precision);
     body->append_c (',');
-    body->append_num (sp1.y, precision);
+    body->append_رقم (sp1.y, precision);
     body->append_str ("Z\" fill=\"");
-    body->append_svg_color (mid, true);
+    body->append_svg_color (mid, درست);
     body->append_str ("\"/>\n");
 
     p0 = p1;
@@ -244,250 +244,250 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 }
 
 /* Callback context + trampoline for hb_paint_sweep_gradient_tiles. */
-struct hb_vector_svg_sweep_ctx_t
+بنية hb_وکتور_svg_sweep_ctx_t
 {
-  hb_vector_buf_t *body;
-  unsigned precision;
-  float cx, cy, radius;
+  hb_وکتور_buf_t *body;
+  بیعلامت precision;
+  عائم cx, cy, radius;
 };
 
-static void
-hb_vector_svg_sweep_emit_patch (float a0, hb_color_t c0,
-				float a1, hb_color_t c1,
-				void *user_data)
+ساكن فراغ
+hb_وکتور_svg_sweep_emit_patch (عائم a0, hb_color_t c0,
+				عائم a1, hb_color_t c1,
+				فراغ *user_داده)
 {
-  auto *ctx = (hb_vector_svg_sweep_ctx_t *) user_data;
+  خودکار *ctx = (hb_وکتور_svg_sweep_ctx_t *) user_داده;
   /* Sweep-gradient meshes are not outline-derived, so they are bounded by
    * the output document-size cap, not the outline work budget: stop once
    * the buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->body->in_error ()))
-    return;
-  hb_vector_svg_add_sweep_patch (ctx->body, ctx->precision,
+  إذا (unlikely (ctx->body->درون_error ()))
+    أرجع;
+  hb_وکتور_svg_جمع_کن_sweep_patch (ctx->body, ctx->precision,
 				 ctx->cx, ctx->cy, ctx->radius,
-				 a0, hb_vector_svg_rgba_from_hb_color (c0),
-				 a1, hb_vector_svg_rgba_from_hb_color (c1));
+				 a0, hb_وکتور_svg_rgba_from_hb_color (c0),
+				 a1, hb_وکتور_svg_rgba_from_hb_color (c1));
 }
 
 
-static void hb_vector_paint_push_transform (hb_paint_funcs_t *, void *,
-                                            float, float, float, float, float, float,
-                                            void *);
-static void hb_vector_paint_pop_transform (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_fill_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, void *);
-static void hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static void hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *, void *, float, float, float, float, void *);
-static hb_draw_funcs_t * hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *, void *, void **, void *);
-static void hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_clip (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_color (hb_paint_funcs_t *, void *, hb_bool_t, hb_color_t, void *);
-static hb_bool_t hb_vector_paint_image (hb_paint_funcs_t *, void *, hb_blob_t *, unsigned, unsigned, hb_tag_t, float, hb_glyph_extents_t *, void *);
-static void hb_vector_paint_linear_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_radial_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_sweep_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, void *);
-static void hb_vector_paint_push_group (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_group (hb_paint_funcs_t *, void *, hb_paint_composite_mode_t, void *);
-static hb_bool_t hb_vector_paint_color_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static hb_bool_t
-hb_vector_paint_custom_palette_color (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				      void *paint_data,
-				      unsigned color_index,
+ساكن فراغ hb_وکتور_paint_افزودن_transform (hb_paint_funcs_t *, فراغ *,
+                                            عائم, عائم, عائم, عائم, عائم, عائم,
+                                            فراغ *);
+ساكن فراغ hb_وکتور_paint_برداشت_transform (hb_paint_funcs_t *, فراغ *, فراغ *);
+ساكن فراغ hb_وکتور_paint_fill_glyph (hb_paint_funcs_t *, فراغ *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, فراغ *);
+ساكن فراغ hb_وکتور_paint_افزودن_clip_glyph (hb_paint_funcs_t *, فراغ *, hb_codepoint_t, hb_font_t *, فراغ *);
+ساكن فراغ hb_وکتور_paint_افزودن_clip_rectangle (hb_paint_funcs_t *, فراغ *, عائم, عائم, عائم, عائم, فراغ *);
+ساكن hb_draw_funcs_t * hb_وکتور_paint_افزودن_clip_مسیر_شروع (hb_paint_funcs_t *, فراغ *, فراغ **, فراغ *);
+ساكن فراغ hb_وکتور_paint_افزودن_clip_مسیر_انتها (hb_paint_funcs_t *, فراغ *, فراغ *);
+ساكن فراغ hb_وکتور_paint_برداشت_clip (hb_paint_funcs_t *, فراغ *, فراغ *);
+ساكن فراغ hb_وکتور_paint_color (hb_paint_funcs_t *, فراغ *, hb_bool_t, hb_color_t, فراغ *);
+ساكن hb_bool_t hb_وکتور_paint_image (hb_paint_funcs_t *, فراغ *, hb_blob_t *, بیعلامت, بیعلامت, hb_برچسب_t, عائم, hb_glyph_extents_t *, فراغ *);
+ساكن فراغ hb_وکتور_paint_خطی_gradient (hb_paint_funcs_t *, فراغ *, hb_color_سطر_t *, عائم, عائم, عائم, عائم, عائم, عائم, فراغ *);
+ساكن فراغ hb_وکتور_paint_radial_gradient (hb_paint_funcs_t *, فراغ *, hb_color_سطر_t *, عائم, عائم, عائم, عائم, عائم, عائم, فراغ *);
+ساكن فراغ hb_وکتور_paint_sweep_gradient (hb_paint_funcs_t *, فراغ *, hb_color_سطر_t *, عائم, عائم, عائم, عائم, فراغ *);
+ساكن فراغ hb_وکتور_paint_افزودن_گروه (hb_paint_funcs_t *, فراغ *, فراغ *);
+ساكن فراغ hb_وکتور_paint_برداشت_گروه (hb_paint_funcs_t *, فراغ *, hb_paint_مرکب_نما_t, فراغ *);
+ساكن hb_bool_t hb_وکتور_paint_color_glyph (hb_paint_funcs_t *, فراغ *, hb_codepoint_t, hb_font_t *, فراغ *);
+ساكن hb_bool_t
+hb_وکتور_paint_custom_palette_color (hb_paint_funcs_t *pfuncs HB_استفادهنشده,
+				      فراغ *paint_داده,
+				      بیعلامت color_شاخص,
 				      hb_color_t *color,
-				      void *user_data HB_UNUSED)
+				      فراغ *user_داده HB_استفادهنشده)
 {
-  hb_vector_paint_t *paint = (hb_vector_paint_t *) paint_data;
-  if (!color)
-    return false;
+  hb_وکتور_paint_t *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (!color)
+    أرجع خطأ;
 
-  hb_color_t *value = nullptr;
-  if (!paint->custom_palette_colors.has (color_index, &value) || !value)
-    return false;
+  hb_color_t *value = اشاره_تهی;
+  إذا (!paint->custom_palette_colors.has (color_شاخص, &value) || !value)
+    أرجع خطأ;
   *color = *value;
-  return true;
+  أرجع درست;
 }
 
-static inline void free_static_vector_paint_funcs ();
-static struct hb_vector_paint_funcs_lazy_loader_t
-  : hb_paint_funcs_lazy_loader_t<hb_vector_paint_funcs_lazy_loader_t>
+ساكن مضمن فراغ free_static_وکتور_paint_funcs ();
+ساكن بنية hb_وکتور_paint_funcs_lazy_loader_t
+  : hb_paint_funcs_lazy_loader_t<hb_وکتور_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  ساكن hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
-    hb_paint_funcs_set_push_transform_func (funcs, (hb_paint_push_transform_func_t) hb_vector_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, (hb_paint_pop_transform_func_t) hb_vector_paint_pop_transform, nullptr, nullptr);
-    hb_paint_funcs_set_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_vector_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, (hb_paint_push_clip_glyph_func_t) hb_vector_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, (hb_paint_push_clip_rectangle_func_t) hb_vector_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, (hb_paint_push_clip_path_start_func_t) hb_vector_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, (hb_paint_push_clip_path_end_func_t) hb_vector_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, (hb_paint_pop_clip_func_t) hb_vector_paint_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, (hb_paint_color_func_t) hb_vector_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, (hb_paint_image_func_t) hb_vector_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, (hb_paint_linear_gradient_func_t) hb_vector_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_vector_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_vector_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, (hb_paint_push_group_func_t) hb_vector_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, (hb_paint_pop_group_func_t) hb_vector_paint_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_glyph_func (funcs, (hb_paint_color_glyph_func_t) hb_vector_paint_color_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_custom_palette_color_func (funcs, (hb_paint_custom_palette_color_func_t) hb_vector_paint_custom_palette_color, nullptr, nullptr);
-    hb_paint_funcs_set_set_budget_func (funcs, hb_vector_paint_set_budget_callback, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_func (funcs, hb_vector_paint_get_budget_callback, nullptr, nullptr);
-    hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
+    hb_paint_funcs_مجموعه_افزودن_transform_func (funcs, (hb_paint_افزودن_transform_func_t) hb_وکتور_paint_افزودن_transform, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_برداشت_transform_func (funcs, (hb_paint_برداشت_transform_func_t) hb_وکتور_paint_برداشت_transform, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_وکتور_paint_fill_glyph, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_افزودن_clip_glyph_func (funcs, (hb_paint_افزودن_clip_glyph_func_t) hb_وکتور_paint_افزودن_clip_glyph, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_افزودن_clip_rectangle_func (funcs, (hb_paint_افزودن_clip_rectangle_func_t) hb_وکتور_paint_افزودن_clip_rectangle, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_افزودن_clip_مسیر_شروع_func (funcs, (hb_paint_افزودن_clip_مسیر_شروع_func_t) hb_وکتور_paint_افزودن_clip_مسیر_شروع, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_افزودن_clip_مسیر_انتها_func (funcs, (hb_paint_افزودن_clip_مسیر_انتها_func_t) hb_وکتور_paint_افزودن_clip_مسیر_انتها, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_برداشت_clip_func (funcs, (hb_paint_برداشت_clip_func_t) hb_وکتور_paint_برداشت_clip, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_color_func (funcs, (hb_paint_color_func_t) hb_وکتور_paint_color, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_image_func (funcs, (hb_paint_image_func_t) hb_وکتور_paint_image, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_خطی_gradient_func (funcs, (hb_paint_خطی_gradient_func_t) hb_وکتور_paint_خطی_gradient, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_وکتور_paint_radial_gradient, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_وکتور_paint_sweep_gradient, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_افزودن_گروه_func (funcs, (hb_paint_افزودن_گروه_func_t) hb_وکتور_paint_افزودن_گروه, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_برداشت_گروه_func (funcs, (hb_paint_برداشت_گروه_func_t) hb_وکتور_paint_برداشت_گروه, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_color_glyph_func (funcs, (hb_paint_color_glyph_func_t) hb_وکتور_paint_color_glyph, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_custom_palette_color_func (funcs, (hb_paint_custom_palette_color_func_t) hb_وکتور_paint_custom_palette_color, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_مجموعه_budget_func (funcs, hb_وکتور_paint_مجموعه_budget_callback, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_get_budget_func (funcs, hb_وکتور_paint_get_budget_callback, اشاره_تهی, اشاره_تهی);
+    hb_paint_funcs_مجموعه_get_budget_مانده_func (funcs, hb_وکتور_paint_get_budget_مانده_callback, اشاره_تهی, اشاره_تهی);
     hb_paint_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_paint_funcs);
-    return funcs;
+    hb_atexit (free_static_وکتور_paint_funcs);
+    أرجع funcs;
   }
-} static_vector_paint_funcs;
+} static_وکتور_paint_funcs;
 
-static inline void
-free_static_vector_paint_funcs ()
+ساكن مضمن فراغ
+free_static_وکتور_paint_funcs ()
 {
-  static_vector_paint_funcs.free_instance ();
+  static_وکتور_paint_funcs.free_instance ();
 }
 
 hb_paint_funcs_t *
-hb_vector_paint_svg_funcs_get ()
+hb_وکتور_paint_svg_funcs_get ()
 {
-  return static_vector_paint_funcs.get_unconst ();
+  أرجع static_وکتور_paint_funcs.get_unconst ();
 }
 
 
-static void
-hb_vector_paint_push_transform (hb_paint_funcs_t *,
-                                void *paint_data,
-                                float xx, float yx,
-                                float xy, float yy,
-                                float dx, float dy,
-                                void *)
+ساكن فراغ
+hb_وکتور_paint_افزودن_transform (hb_paint_funcs_t *,
+                                فراغ *paint_داده,
+                                عائم xx, عائم yx,
+                                عائم xy, عائم yy,
+                                عائم dx, عائم dy,
+                                فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  if (unlikely (paint->transform_group_overflow_depth))
+  إذا (unlikely (paint->transform_گروه_سرریز_عمق))
   {
-    paint->transform_group_overflow_depth++;
-    return;
+    paint->transform_گروه_سرریز_عمق++;
+    أرجع;
   }
-  if (unlikely (paint->transform_group_depth >= 64))
+  إذا (unlikely (paint->transform_گروه_عمق >= 64))
   {
-    paint->transform_group_overflow_depth = 1;
-    return;
+    paint->transform_گروه_سرریز_عمق = 1;
+    أرجع;
   }
 
   hb_bool_t opened =
     !(fabsf (xx - 1.f) < 1e-6f && fabsf (yx) < 1e-6f &&
       fabsf (xy) < 1e-6f && fabsf (yy - 1.f) < 1e-6f &&
       fabsf (paint->sx (dx)) < 1e-6f && fabsf (paint->sy (dy)) < 1e-6f);
-  paint->transform_group_open_mask = (paint->transform_group_open_mask << 1) | (opened ? 1ull : 0ull);
-  paint->transform_group_depth++;
+  paint->transform_گروه_open_ماسک = (paint->transform_گروه_open_ماسک << 1) | (opened ? 1ull : 0ull);
+  paint->transform_گروه_عمق++;
 
-  if (!opened)
-    return;
+  إذا (!opened)
+    أرجع;
 
-  auto &body = paint->current_body ();
-  unsigned sprec = paint->defs.scale_precision ();
+  خودکار &body = paint->current_body ();
+  بیعلامت sprec = paint->defs.scale_precision ();
   body.append_str ("<g transform=\"matrix(");
-  body.append_num (xx, sprec);
+  body.append_رقم (xx, sprec);
   body.append_c (',');
-  body.append_num (yx, sprec);
+  body.append_رقم (yx, sprec);
   body.append_c (',');
-  body.append_num (xy, sprec);
+  body.append_رقم (xy, sprec);
   body.append_c (',');
-  body.append_num (yy, sprec);
+  body.append_رقم (yy, sprec);
   body.append_c (',');
-  body.append_num (paint->sx (dx));
+  body.append_رقم (paint->sx (dx));
   body.append_c (',');
-  body.append_num (paint->sy (dy));
+  body.append_رقم (paint->sy (dy));
   body.append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_transform (hb_paint_funcs_t *,
-                               void *paint_data,
-                               void *)
+ساكن فراغ
+hb_وکتور_paint_برداشت_transform (hb_paint_funcs_t *,
+                               فراغ *paint_داده,
+                               فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (paint->transform_group_overflow_depth))
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
+  إذا (unlikely (paint->transform_گروه_سرریز_عمق))
   {
-    paint->transform_group_overflow_depth--;
-    return;
+    paint->transform_گروه_سرریز_عمق--;
+    أرجع;
   }
-  if (!paint->transform_group_depth)
-    return;
-  paint->transform_group_depth--;
-  hb_bool_t opened = !!(paint->transform_group_open_mask & 1ull);
-  paint->transform_group_open_mask >>= 1;
-  if (opened)
+  إذا (!paint->transform_گروه_عمق)
+    أرجع;
+  paint->transform_گروه_عمق--;
+  hb_bool_t opened = !!(paint->transform_گروه_open_ماسک & 1ull);
+  paint->transform_گروه_open_ماسک >>= 1;
+  إذا (opened)
     paint->current_body ().append_str ("</g>\n");
 }
 
-static void
-hb_vector_paint_fill_glyph (hb_paint_funcs_t *,
-                            void *paint_data,
+ساكن فراغ
+hb_وکتور_paint_fill_glyph (hb_paint_funcs_t *,
+                            فراغ *paint_داده,
                             hb_codepoint_t glyph,
                             hb_font_t *font,
                             hb_bool_t,
                             hb_color_t color,
-                            void *)
+                            فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  paint->path.clear ();
+  paint->مسیر.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  إذا (likely (paint->budget_مانده >= 0))
   {
-    hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
-				 paint->x_scale_factor, paint->y_scale_factor,
-				 &paint->budget_remaining};
-    hb_font_draw_glyph (font, glyph, hb_vector_svg_path_draw_funcs_get (), &sink);
+    hb_وکتور_مسیر_sink_t sink = {&paint->مسیر, paint->get_precision (),
+				 paint->x_scale_ضریب, paint->y_scale_ضریب,
+				 &paint->budget_مانده};
+    hb_font_draw_glyph (font, glyph, hb_وکتور_svg_مسیر_draw_funcs_get (), &sink);
   }
 
-  auto &body = paint->current_body ();
+  خودکار &body = paint->current_body ();
   body.append_str ("<path d=\"");
-  body.append_len (paint->path.arrayZ, paint->path.length);
+  body.append_len (paint->مسیر.arrayZ, paint->مسیر.درازی);
   body.append_str ("\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, درست);
   body.append_str ("\"/>\n");
 }
 
-static void
-hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
-                                 void *paint_data,
+ساكن فراغ
+hb_وکتور_paint_افزودن_clip_glyph (hb_paint_funcs_t *,
+                                 فراغ *paint_داده,
                                  hb_codepoint_t glyph,
                                  hb_font_t *font,
-                                 void *)
+                                 فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
+  ثابت حرف *pfx = paint->id_پیشوند;
+  بیعلامت pfx_len = paint->id_پیشوند_درازی;
 
-  paint->path.clear ();
+  paint->مسیر.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty clip path clips everything out. */
-  if (likely (paint->budget_remaining >= 0))
+  إذا (likely (paint->budget_مانده >= 0))
   {
-    hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
-				 paint->x_scale_factor, paint->y_scale_factor,
-				 &paint->budget_remaining};
-    hb_font_draw_glyph (font, glyph, hb_vector_svg_path_draw_funcs_get (), &sink);
+    hb_وکتور_مسیر_sink_t sink = {&paint->مسیر, paint->get_precision (),
+				 paint->x_scale_ضریب, paint->y_scale_ضریب,
+				 &paint->budget_مانده};
+    hb_font_draw_glyph (font, glyph, hb_وکتور_svg_مسیر_draw_funcs_get (), &sink);
   }
 
-  unsigned def_id = paint->path_def_count++;
+  بیعلامت def_id = paint->مسیر_def_شمار++;
   paint->defs.append_str ("<path id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_c ('p');
   paint->defs.append_unsigned (def_id);
   paint->defs.append_str ("\" d=\"");
-  paint->defs.append_len (paint->path.arrayZ, paint->path.length);
+  paint->defs.append_len (paint->مسیر.arrayZ, paint->مسیر.درازی);
   paint->defs.append_str ("\"/>\n");
   paint->defs.append_str ("<clipPath id=\"");
   paint->defs.append_len (pfx, pfx_len);
@@ -506,32 +506,32 @@ hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
-                                     void *paint_data,
-                                     float xmin, float ymin,
-                                     float xmax, float ymax,
-                                     void *)
+ساكن فراغ
+hb_وکتور_paint_افزودن_clip_rectangle (hb_paint_funcs_t *,
+                                     فراغ *paint_داده,
+                                     عائم xmin, عائم ymin,
+                                     عائم xmax, عائم ymax,
+                                     فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned clip_id = paint->clip_rect_counter++;
+  ثابت حرف *pfx = paint->id_پیشوند;
+  بیعلامت pfx_len = paint->id_پیشوند_درازی;
+  بیعلامت clip_id = paint->clip_rect_counter++;
   paint->defs.append_str ("<clipPath id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_c ('c');
   paint->defs.append_unsigned (clip_id);
   paint->defs.append_str ("\"><rect x=\"");
-  paint->defs.append_num (paint->sx (xmin));
+  paint->defs.append_رقم (paint->sx (xmin));
   paint->defs.append_str ("\" y=\"");
-  paint->defs.append_num (paint->sy (ymin));
+  paint->defs.append_رقم (paint->sy (ymin));
   paint->defs.append_str ("\" width=\"");
-  paint->defs.append_num (paint->sx (xmax - xmin));
+  paint->defs.append_رقم (paint->sx (xmax - xmin));
   paint->defs.append_str ("\" height=\"");
-  paint->defs.append_num (paint->sy (ymax - ymin));
+  paint->defs.append_رقم (paint->sy (ymax - ymin));
   paint->defs.append_str ("\"/></clipPath>\n");
 
   paint->current_body ().append_str ("<g clip-path=\"url(#");
@@ -541,40 +541,40 @@ hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static hb_draw_funcs_t *
-hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *,
-                                      void *paint_data,
-                                      void **draw_data,
-                                      void *)
+ساكن hb_draw_funcs_t *
+hb_وکتور_paint_افزودن_clip_مسیر_شروع (hb_paint_funcs_t *,
+                                      فراغ *paint_داده,
+                                      فراغ **draw_داده,
+                                      فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
   {
-    *draw_data = nullptr;
-    return nullptr;
+    *draw_داده = اشاره_تهی;
+    أرجع اشاره_تهی;
   }
 
-  paint->path.clear ();
-  paint->clip_path_sink = {&paint->path, paint->get_precision (),
-			   paint->x_scale_factor,
-			   paint->y_scale_factor,
-			   &paint->budget_remaining};
-  *draw_data = &paint->clip_path_sink;
-  return hb_vector_svg_path_draw_funcs_get ();
+  paint->مسیر.clear ();
+  paint->clip_مسیر_sink = {&paint->مسیر, paint->get_precision (),
+			   paint->x_scale_ضریب,
+			   paint->y_scale_ضریب,
+			   &paint->budget_مانده};
+  *draw_داده = &paint->clip_مسیر_sink;
+  أرجع hb_وکتور_svg_مسیر_draw_funcs_get ();
 }
 
-static void
-hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
-                                    void *paint_data,
-                                    void *)
+ساكن فراغ
+hb_وکتور_paint_افزودن_clip_مسیر_انتها (hb_paint_funcs_t *,
+                                    فراغ *paint_داده,
+                                    فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned clip_id = paint->clip_path_counter++;
+  ثابت حرف *pfx = paint->id_پیشوند;
+  بیعلامت pfx_len = paint->id_پیشوند_درازی;
+  بیعلامت clip_id = paint->clip_مسیر_counter++;
 
   /* The accumulated path is in font Y-up coords (the
    * convention used inside per-glyph <use scale(_,-sy)>
@@ -587,7 +587,7 @@ hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
   paint->defs.append_str ("cp");
   paint->defs.append_unsigned (clip_id);
   paint->defs.append_str ("\"><path transform=\"scale(1,-1)\" d=\"");
-  paint->defs.append_len (paint->path.arrayZ, paint->path.length);
+  paint->defs.append_len (paint->مسیر.arrayZ, paint->مسیر.درازی);
   paint->defs.append_str ("\"/></clipPath>\n");
 
   paint->current_body ().append_str ("<g clip-path=\"url(#");
@@ -597,138 +597,138 @@ hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_clip (hb_paint_funcs_t *,
-                          void *paint_data,
-                          void *)
+ساكن فراغ
+hb_وکتور_paint_برداشت_clip (hb_paint_funcs_t *,
+                          فراغ *paint_داده,
+                          فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
   paint->current_body ().append_str ("</g>\n");
 }
 
-static void
-hb_vector_paint_color (hb_paint_funcs_t *,
-                       void *paint_data,
+ساكن فراغ
+hb_وکتور_paint_color (hb_paint_funcs_t *,
+                       فراغ *paint_داده,
                        hb_bool_t,
                        hb_color_t color,
-                       void *)
+                       فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  auto &body = paint->current_body ();
+  خودکار &body = paint->current_body ();
   body.append_str ("<rect x=\"-32767\" y=\"-32767\" width=\"65534\" height=\"65534\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, درست);
   body.append_str ("\"/>\n");
 }
 
-static hb_bool_t
-hb_vector_paint_image (hb_paint_funcs_t *,
-                       void *paint_data,
+ساكن hb_bool_t
+hb_وکتور_paint_image (hb_paint_funcs_t *,
+                       فراغ *paint_داده,
                        hb_blob_t *image,
-                       unsigned width,
-                       unsigned height,
-                       hb_tag_t format,
-                       float slant HB_UNUSED,
+                       بیعلامت عرض,
+                       بیعلامت ارتفاع,
+                       hb_برچسب_t format,
+                       عائم slant HB_استفادهنشده,
                        hb_glyph_extents_t *extents,
-                       void *)
+                       فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع خطأ;
 
-  auto &body = paint->current_body ();
-  if (format == HB_TAG ('p','n','g',' '))
+  خودکار &body = paint->current_body ();
+  إذا (format == HB_برچسب ('p','n','g',' '))
   {
-    if (!extents || !width || !height)
-      return false;
+    إذا (!extents || !عرض || !ارتفاع)
+      أرجع خطأ;
 
-    unsigned len = 0;
-    const char *png_data = hb_blob_get_data (image, &len);
-    if (!png_data || !len)
-      return false;
+    بیعلامت len = 0;
+    ثابت حرف *png_داده = hb_blob_get_داده (image, &len);
+    إذا (!png_داده || !len)
+      أرجع خطأ;
 
     body.append_str ("<g transform=\"translate(");
-    body.append_num (paint->sx ((float) extents->x_bearing));
+    body.append_رقم (paint->sx ((عائم) extents->x_bearing));
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->y_bearing));
+    body.append_رقم (paint->sy ((عائم) extents->y_bearing));
     body.append_str (") scale(");
-    body.append_num (paint->sx ((float) extents->width) / width);
+    body.append_رقم (paint->sx ((عائم) extents->عرض) / عرض);
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->height) / height);
+    body.append_رقم (paint->sy ((عائم) extents->ارتفاع) / ارتفاع);
     body.append_str (")\">\n");
 
     body.append_str ("<image href=\"data:image/png;base64,");
-    body.append_base64 ((const uint8_t *) png_data, len);
+    body.append_base64 ((ثابت uint8_t *) png_داده, len);
     body.append_str ("\" width=\"");
-    body.append_num ((float) width);
+    body.append_رقم ((عائم) عرض);
     body.append_str ("\" height=\"");
-    body.append_num ((float) height);
+    body.append_رقم ((عائم) ارتفاع);
     body.append_str ("\"/>\n</g>\n");
 
-    return true;
+    أرجع درست;
   }
 
-  return false;
+  أرجع خطأ;
 }
 
-static void
-hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0,
-                                 float x1, float y1,
-                                 float x2, float y2,
-                                 void *)
+ساكن فراغ
+hb_وکتور_paint_خطی_gradient (hb_paint_funcs_t *,
+                                 فراغ *paint_داده,
+                                 hb_color_سطر_t *color_سطر,
+                                 عائم x0, عائم y0,
+                                 عائم x1, عائم y1,
+                                 عائم x2, عائم y2,
+                                 فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  إذا (!paint->fetch_color_stops (color_سطر))
+    أرجع;
+  hb_وکتور_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
   /* Sort + rescale stops to [0, 1]; shift the gradient axis
    * by the original (mn, mx) so the visible gradient stays
    * put.  SVG <stop offset="..."> requires offsets in [0,1];
    * out-of-range stops would otherwise be silently clamped. */
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  عائم mn, mx;
+  hb_paint_normalize_color_سطر (stops.arrayZ, stops.درازی, &mn, &mx);
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned grad_id = paint->gradient_counter++;
+  ثابت حرف *pfx = paint->id_پیشوند;
+  بیعلامت pfx_len = paint->id_پیشوند_درازی;
+  بیعلامت grad_id = paint->gradient_counter++;
 
   /* Reduce COLR's 3-anchor (P0, P1, P2) to SVG's 2-point
    * (start, end) gradient. */
-  float lx0, ly0, lx1, ly1;
-  hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2,
+  عائم lx0, ly0, lx1, ly1;
+  hb_paint_reduce_خطی_anchors (x0, y0, x1, y1, x2, y2,
 				  &lx0, &ly0, &lx1, &ly1);
-  float gx0 = lx0 + mn * (lx1 - lx0);
-  float gy0 = ly0 + mn * (ly1 - ly0);
-  float gx1 = lx0 + mx * (lx1 - lx0);
-  float gy1 = ly0 + mx * (ly1 - ly0);
+  عائم gx0 = lx0 + mn * (lx1 - lx0);
+  عائم gy0 = ly0 + mn * (ly1 - ly0);
+  عائم gx1 = lx0 + mx * (lx1 - lx0);
+  عائم gy1 = ly0 + mx * (ly1 - ly0);
 
   paint->defs.append_str ("<linearGradient id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" x1=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_رقم (paint->sx (gx0));
   paint->defs.append_str ("\" y1=\"");
-  paint->defs.append_num (paint->sy (gy0));
+  paint->defs.append_رقم (paint->sy (gy0));
   paint->defs.append_str ("\" x2=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_رقم (paint->sx (gx1));
   paint->defs.append_str ("\" y2=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_رقم (paint->sy (gy1));
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_وکتور_svg_extend_نما_str (hb_color_سطر_get_extend (color_سطر)));
   paint->defs.append_str ("\">\n");
-  hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
+  hb_وکتور_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</linearGradient>\n");
 
   paint->current_body ().append_str (
@@ -739,61 +739,61 @@ hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
-hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0, float r0,
-                                 float x1, float y1, float r1,
-                                 void *)
+ساكن فراغ
+hb_وکتور_paint_radial_gradient (hb_paint_funcs_t *,
+                                 فراغ *paint_داده,
+                                 hb_color_سطر_t *color_سطر,
+                                 عائم x0, عائم y0, عائم r0,
+                                 عائم x1, عائم y1, عائم r1,
+                                 فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  إذا (!paint->fetch_color_stops (color_سطر))
+    أرجع;
+  hb_وکتور_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  عائم mn, mx;
+  hb_paint_normalize_color_سطر (stops.arrayZ, stops.درازی, &mn, &mx);
 
   /* Shift centers + radii by (mn, mx) along the gradient axis
    * to compensate for rescaling stops to [0, 1]. */
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gr0 = r0 + mn * (r1 - r0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
-  float gr1 = r0 + mx * (r1 - r0);
+  عائم gx0 = x0 + mn * (x1 - x0);
+  عائم gy0 = y0 + mn * (y1 - y0);
+  عائم gr0 = r0 + mn * (r1 - r0);
+  عائم gx1 = x0 + mx * (x1 - x0);
+  عائم gy1 = y0 + mx * (y1 - y0);
+  عائم gr1 = r0 + mx * (r1 - r0);
 
-  const char *pfx = paint->id_prefix;
-  unsigned pfx_len = paint->id_prefix_length;
-  unsigned grad_id = paint->gradient_counter++;
+  ثابت حرف *pfx = paint->id_پیشوند;
+  بیعلامت pfx_len = paint->id_پیشوند_درازی;
+  بیعلامت grad_id = paint->gradient_counter++;
 
   paint->defs.append_str ("<radialGradient id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" cx=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_رقم (paint->sx (gx1));
   paint->defs.append_str ("\" cy=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_رقم (paint->sy (gy1));
   paint->defs.append_str ("\" r=\"");
-  paint->defs.append_num (paint->sx (gr1));
+  paint->defs.append_رقم (paint->sx (gr1));
   paint->defs.append_str ("\" fx=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_رقم (paint->sx (gx0));
   paint->defs.append_str ("\" fy=\"");
-  paint->defs.append_num (paint->sy (gy0));
-  if (gr0 > 0)
+  paint->defs.append_رقم (paint->sy (gy0));
+  إذا (gr0 > 0)
   {
     paint->defs.append_str ("\" fr=\"");
-    paint->defs.append_num (paint->sx (gr0));
+    paint->defs.append_رقم (paint->sx (gr0));
   }
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_وکتور_svg_extend_نما_str (hb_color_سطر_get_extend (color_سطر)));
   paint->defs.append_str ("\">\n");
-  hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
+  hb_وکتور_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</radialGradient>\n");
 
   paint->current_body ().append_str (
@@ -804,184 +804,184 @@ hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
-hb_vector_paint_sweep_gradient (hb_paint_funcs_t *,
-                                void *paint_data,
-                                hb_color_line_t *color_line,
-                                float cx, float cy,
-                                float start_angle, float end_angle,
-                                void *)
+ساكن فراغ
+hb_وکتور_paint_sweep_gradient (hb_paint_funcs_t *,
+                                فراغ *paint_داده,
+                                hb_color_سطر_t *color_سطر,
+                                عائم cx, عائم cy,
+                                عائم شروع_angle, عائم انتها_angle,
+                                فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
-  hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
+  إذا (!paint->fetch_color_stops (color_سطر))
+    أرجع;
+  hb_وکتور_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  عائم mn, mx;
+  hb_paint_normalize_color_سطر (stops.arrayZ, stops.درازی, &mn, &mx);
 
   /* Shift the angle range to compensate for rescaling stops
    * to [0, 1]. */
-  float ga0 = start_angle + mn * (end_angle - start_angle);
-  float ga1 = start_angle + mx * (end_angle - start_angle);
+  عائم ga0 = شروع_angle + mn * (انتها_angle - شروع_angle);
+  عائم ga1 = شروع_angle + mx * (انتها_angle - شروع_angle);
 
-  hb_vector_svg_sweep_ctx_t ctx {
+  hb_وکتور_svg_sweep_ctx_t ctx {
     &paint->current_body (), paint->get_precision (), paint->sx (cx), paint->sy (cy), 32767.f
   };
-  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.length,
-				 hb_color_line_get_extend (color_line),
+  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.درازی,
+				 hb_color_سطر_get_extend (color_سطر),
 				 ga0, ga1,
-				 hb_vector_svg_sweep_emit_patch,
+				 hb_وکتور_svg_sweep_emit_patch,
 				 &ctx);
 }
 
-static void
-hb_vector_paint_push_group (hb_paint_funcs_t *,
-                            void *paint_data,
-                            void *)
+ساكن فراغ
+hb_وکتور_paint_افزودن_گروه (hb_paint_funcs_t *,
+                            فراغ *paint_داده,
+                            فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (!paint->group_stack.push_or_fail (hb_vector_buf_t {})))
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
+  إذا (unlikely (!paint->گروه_پشته.افزودن_or_fail (hb_وکتور_buf_t {})))
+    أرجع;
 }
 
-static void
-hb_vector_paint_pop_group (hb_paint_funcs_t *,
-                           void *paint_data,
-                           hb_paint_composite_mode_t mode,
-                           void *)
+ساكن فراغ
+hb_وکتور_paint_برداشت_گروه (hb_paint_funcs_t *,
+                           فراغ *paint_داده,
+                           hb_paint_مرکب_نما_t نما,
+                           فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (paint->group_stack.length < 2)
-    return;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع;
+  إذا (paint->گروه_پشته.درازی < 2)
+    أرجع;
 
-  hb_vector_buf_t group = paint->group_stack.pop ();
-  auto &body = paint->current_body ();
+  hb_وکتور_buf_t گروه = paint->گروه_پشته.برداشت ();
+  خودکار &body = paint->current_body ();
 
-  const char *blend = hb_vector_svg_composite_mode_str (mode);
-  if (blend)
+  ثابت حرف *blend = hb_وکتور_svg_مرکب_نما_str (نما);
+  إذا (blend)
   {
     body.append_str ("<g style=\"mix-blend-mode:");
     body.append_str (blend);
     body.append_str ("\">\n");
-    body.append_len (group.arrayZ, group.length);
+    body.append_len (گروه.arrayZ, گروه.درازی);
     body.append_str ("</g>\n");
   }
-  else
-    body.append_len (group.arrayZ, group.length);
+  وإلا
+    body.append_len (گروه.arrayZ, گروه.درازی);
 }
 
-static hb_bool_t
-hb_vector_paint_color_glyph (hb_paint_funcs_t *,
-                             void *paint_data,
+ساكن hb_bool_t
+hb_وکتور_paint_color_glyph (hb_paint_funcs_t *,
+                             فراغ *paint_داده,
                              hb_codepoint_t glyph,
                              hb_font_t *font,
-                             void *)
+                             فراغ *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
-  if (unlikely (paint->color_glyph_depth >= HB_MAX_NESTING_LEVEL))
-    return false;
-  if (unlikely (hb_set_has (paint->active_color_glyphs, glyph)))
-    return false;
+  خودکار *paint = (hb_وکتور_paint_t *) paint_داده;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع خطأ;
+  إذا (unlikely (paint->color_glyph_عمق >= HB_MAX_NESTING_LEVEL))
+    أرجع خطأ;
+  إذا (unlikely (hb_مجموعه_has (paint->فعال_color_glyphs, glyph)))
+    أرجع خطأ;
 
-  paint->color_glyph_depth++;
-  hb_set_add (paint->active_color_glyphs, glyph);
+  paint->color_glyph_عمق++;
+  hb_مجموعه_جمع_کن (paint->فعال_color_glyphs, glyph);
 
   hb_font_paint_glyph (font, glyph,
-		       hb_vector_paint_svg_funcs_get (),
+		       hb_وکتور_paint_svg_funcs_get (),
 		       paint,
 		       paint->palette,
 		       paint->foreground);
-  hb_set_del (paint->active_color_glyphs, glyph);
-  paint->color_glyph_depth--;
-  return true;
+  hb_مجموعه_del (paint->فعال_color_glyphs, glyph);
+  paint->color_glyph_عمق--;
+  أرجع درست;
 }
 
 
 
 
 hb_blob_t *
-hb_vector_paint_render_svg (hb_vector_paint_t *paint)
+hb_وکتور_paint_render_svg (hb_وکتور_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
+  إذا (!paint->has_extents)
+    أرجع اشاره_تهی;
 
-  if (unlikely (!paint->ensure_initialized ()))
-    return nullptr;
+  إذا (unlikely (!paint->ensure_initialized ()))
+    أرجع اشاره_تهی;
 
-  hb_vector_buf_t out;
-  hb_buf_recover_recycled (paint->recycled_blob, &out);
-  unsigned estimated = paint->defs.length +
-		       paint->group_stack.arrayZ[0].length +
+  hb_وکتور_buf_t بیرون;
+  hb_buf_recover_recycled (paint->recycled_blob, &بیرون);
+  بیعلامت estimated = paint->defs.درازی +
+		       paint->گروه_پشته.arrayZ[0].درازی +
 		       320;
-  out.alloc (estimated);
-  float vb_x = paint->extents.x;
-  float vb_y = -(paint->extents.y + paint->extents.height);
-  float vb_w = paint->extents.width;
-  float vb_h = paint->extents.height;
-  out.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"");
-  out.append_num (vb_x);
-  out.append_c (' ');
-  out.append_num (vb_y);
-  out.append_c (' ');
-  out.append_num (vb_w);
-  out.append_c (' ');
-  out.append_num (vb_h);
-  out.append_str ("\" width=\"");
-  out.append_num (vb_w);
-  out.append_str ("\" height=\"");
-  out.append_num (vb_h);
-  out.append_str ("\">\n");
+  بیرون.alloc (estimated);
+  عائم vb_x = paint->extents.x;
+  عائم vb_y = -(paint->extents.y + paint->extents.ارتفاع);
+  عائم vb_w = paint->extents.عرض;
+  عائم vb_h = paint->extents.ارتفاع;
+  بیرون.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"");
+  بیرون.append_رقم (vb_x);
+  بیرون.append_c (' ');
+  بیرون.append_رقم (vb_y);
+  بیرون.append_c (' ');
+  بیرون.append_رقم (vb_w);
+  بیرون.append_c (' ');
+  بیرون.append_رقم (vb_h);
+  بیرون.append_str ("\" width=\"");
+  بیرون.append_رقم (vb_w);
+  بیرون.append_str ("\" height=\"");
+  بیرون.append_رقم (vb_h);
+  بیرون.append_str ("\">\n");
 
-  if (paint->defs.length)
+  إذا (paint->defs.درازی)
   {
-    out.append_str ("<defs>\n");
-    out.append_len (paint->defs.arrayZ, paint->defs.length);
-    out.append_str ("</defs>\n");
+    بیرون.append_str ("<defs>\n");
+    بیرون.append_len (paint->defs.arrayZ, paint->defs.درازی);
+    بیرون.append_str ("</defs>\n");
   }
 
-  if (hb_color_get_alpha (paint->background))
+  إذا (hb_color_get_alpha (paint->background))
   {
-    out.append_str ("<rect x=\"");
-    out.append_num (vb_x);
-    out.append_str ("\" y=\"");
-    out.append_num (vb_y);
-    out.append_str ("\" width=\"");
-    out.append_num (vb_w);
-    out.append_str ("\" height=\"");
-    out.append_num (vb_h);
-    out.append_str ("\" fill=\"rgb(");
-    out.append_unsigned (hb_color_get_red (paint->background));
-    out.append_c (',');
-    out.append_unsigned (hb_color_get_green (paint->background));
-    out.append_c (',');
-    out.append_unsigned (hb_color_get_blue (paint->background));
-    out.append_str (")\"");
-    if (hb_color_get_alpha (paint->background) < 255)
+    بیرون.append_str ("<rect x=\"");
+    بیرون.append_رقم (vb_x);
+    بیرون.append_str ("\" y=\"");
+    بیرون.append_رقم (vb_y);
+    بیرون.append_str ("\" width=\"");
+    بیرون.append_رقم (vb_w);
+    بیرون.append_str ("\" height=\"");
+    بیرون.append_رقم (vb_h);
+    بیرون.append_str ("\" fill=\"rgb(");
+    بیرون.append_unsigned (hb_color_get_red (paint->background));
+    بیرون.append_c (',');
+    بیرون.append_unsigned (hb_color_get_green (paint->background));
+    بیرون.append_c (',');
+    بیرون.append_unsigned (hb_color_get_blue (paint->background));
+    بیرون.append_str (")\"");
+    إذا (hb_color_get_alpha (paint->background) < 255)
     {
-      out.append_str (" fill-opacity=\"");
-      out.append_num (hb_color_get_alpha (paint->background) / 255.f, 4);
-      out.append_c ('"');
+      بیرون.append_str (" fill-opacity=\"");
+      بیرون.append_رقم (hb_color_get_alpha (paint->background) / 255.f, 4);
+      بیرون.append_c ('"');
     }
-    out.append_str ("/>\n");
+    بیرون.append_str ("/>\n");
   }
 
-  out.append_str ("<g transform=\"scale(1,-1)\">\n");
-  out.append_len (paint->group_stack.arrayZ[0].arrayZ, paint->group_stack.arrayZ[0].length);
-  out.append_str ("</g>\n");
+  بیرون.append_str ("<g transform=\"scale(1,-1)\">\n");
+  بیرون.append_len (paint->گروه_پشته.arrayZ[0].arrayZ, paint->گروه_پشته.arrayZ[0].درازی);
+  بیرون.append_str ("</g>\n");
 
-  out.append_str ("</svg>\n");
+  بیرون.append_str ("</svg>\n");
 
-  hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
+  hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &بیرون);
 
-  return blob;
+  أرجع blob;
 }

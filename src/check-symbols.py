@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-import difflib
-import os
-import re
-import shutil
-import subprocess
-import sys
+استورد difflib
+استورد os
+استورد re
+استورد shutil
+استورد subprocess
+استورد sys
 
-from check_helpers import CHECK_SYMBOL_LIBS
+من check_helpers استورد CHECK_نماد_LIBS
 
 os.environ["LC_ALL"] = "C"  # otherwise 'nm' prints in wrong order
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+پایه_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 IGNORED_SYMBOLS = [
@@ -51,76 +51,76 @@ IGNORED_SYMBOLS += [
 IGNORED_SYMBOLS = "|".join(IGNORED_SYMBOLS)
 
 nm = os.getenv("NM", shutil.which("nm"))
-if not nm:
-    print("check-symbols.py: 'nm' not found; skipping test")
+إذا ليس nm:
+    چاپ("check-symbols.py: 'nm' not found; skipping test")
     sys.exit(77)
 
-tested = False
+tested = خطأ
 stat = 0
 
-for soname in CHECK_SYMBOL_LIBS:
-    for suffix in ["so", "dylib"]:
-        so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
-            continue
+لكل soname في CHECK_نماد_LIBS:
+    لكل suffix في ["so", "dylib"]:
+        so = os.مسیر.join(builddir, "lib%s.%s" % (soname, suffix))
+        إذا ليس os.مسیر.exists(so):
+            استمر
 
         # On macOS, C symbols are prefixed with _
-        symprefix = "_" if suffix == "dylib" else ""
+        symprefix = "_" إذا suffix == "dylib" وإلا ""
 
         EXPORTED_SYMBOLS = [
-            s.split()[2]
-            for s in re.findall(
+            s.تقسیم()[2]
+            لكل s في re.findall(
                 r"^.+ [BCDGIRSTWu] .+$",
-                subprocess.check_output(nm.split() + [so]).decode("utf-8"),
+                subprocess.check_output(nm.تقسیم() + [so]).decode("utf-8"),
                 re.MULTILINE,
             )
-            if not re.match(r".* %s(%s)\b" % (symprefix, IGNORED_SYMBOLS), s)
+            إذا ليس re.تطابق(r".* %s(%s)\b" % (symprefix, IGNORED_SYMBOLS), s)
         ]
 
-        prefix = (
-            (symprefix + os.path.basename(so))
+        پیشوند = (
+            (symprefix + os.مسیر.basename(so))
             .replace("libharfbuzz", "hb")
             .replace("-", "_")
-            .split(".")[0]
+            .تقسیم(".")[0]
         )
 
-        print("Checking that %s does not expose internal symbols" % so)
+        چاپ("Checking that %s does not expose internal symbols" % so)
         suspicious_symbols = [
-            x for x in EXPORTED_SYMBOLS if not re.match(r"^%s(_|$)" % prefix, x)
+            x لكل x في EXPORTED_SYMBOLS إذا ليس re.تطابق(r"^%s(_|$)" % پیشوند, x)
         ]
         # libharfbuzz-subset also exports hb_subset_depend_* when depend_api is enabled
-        if soname == "harfbuzz-subset":
-            suspicious_symbols = [x for x in suspicious_symbols if not re.match(r"^%shb_subset_depend_" % symprefix, x)]
-        if suspicious_symbols:
-            print("Ouch, internal symbols exposed:", suspicious_symbols)
+        إذا soname == "harfbuzz-subset":
+            suspicious_symbols = [x لكل x في suspicious_symbols إذا ليس re.تطابق(r"^%shb_subset_depend_" % symprefix, x)]
+        إذا suspicious_symbols:
+            چاپ("Ouch, internal symbols exposed:", suspicious_symbols)
             stat = 1
 
-        def_path = os.path.join(builddir, soname + ".def")
-        if not os.path.exists(def_path):
-            print("'%s' not found; skipping" % def_path)
-        else:
-            print("Checking that %s has the same symbol list as %s" % (so, def_path))
-            with open(def_path, "r", encoding="utf-8") as f:
-                def_file = f.read()
-            diff_result = list(
+        def_مسیر = os.مسیر.join(builddir, soname + ".def")
+        إذا ليس os.مسیر.exists(def_مسیر):
+            چاپ("'%s' not found; skipping" % def_مسیر)
+        وإلا:
+            چاپ("Checking that %s has the same symbol list as %s" % (so, def_مسیر))
+            با open(def_مسیر, "r", encoding="utf-8") كـ f:
+                def_file = f.اقرأ()
+            diff_نتیجه = list(
                 difflib.context_diff(
                     def_file.splitlines(),
                     ["EXPORTS"]
-                    + [re.sub("^%shb" % symprefix, "hb", x) for x in EXPORTED_SYMBOLS]
+                    + [re.sub("^%shb" % symprefix, "hb", x) لكل x في EXPORTED_SYMBOLS]
                     +
                     # cheat: copy the last line from the def file!
                     [def_file.splitlines()[-1]],
                 )
             )
 
-            if diff_result:
-                print("\n".join(diff_result))
+            إذا diff_نتیجه:
+                چاپ("\n".join(diff_نتیجه))
                 stat = 1
 
-            tested = True
+            tested = درست
 
-if not tested:
-    print("check-symbols.py: no shared libraries found; skipping test")
+إذا ليس tested:
+    چاپ("check-symbols.py: no shared libraries found; skipping test")
     sys.exit(77)
 
 sys.exit(stat)

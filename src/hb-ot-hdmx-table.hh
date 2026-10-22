@@ -24,154 +24,154 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_OT_HDMX_TABLE_HH
-#define HB_OT_HDMX_TABLE_HH
+#اگر_تعریف_نشده HB_OT_HDMX_جدول_HH
+#تعریف_کن HB_OT_HDMX_جدول_HH
 
-#include "hb-open-type.hh"
+#ضمن "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/hdmx
  */
-#define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
+#تعریف_کن HB_OT_برچسب_hdmx HB_برچسب('h','d','m','x')
 
 
-namespace OT {
+نطاق OT {
 
 
-struct DeviceRecord
+بنية Device_رکورد
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  ساكن size_t get_اندازه (بیعلامت شمار)
+  { أرجع hb_ceil_مقصد_4 (hb_unsigned_mul_جمع_کن_saturate (شمار, HBUINT8::static_اندازه, min_اندازه)); }
 
-  template<typename Iterator,
+  قالب<نام_نوع Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned pixelSize,
+  منطقي serialize (hb_serialize_context_t *c,
+		  بیعلامت pixel_اندازه,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  ثابت hb_وکتور_t<hb_codepoint_pair_t> new_مقصد_old_gid_list,
+		  بیعلامت رقم_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    إذا (unlikely (!c->extend (هذا, رقم_glyphs)))  return_trace (خطأ);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    هذا->pixel_اندازه = pixel_اندازه;
+    هذا->max_عرض =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
-      widthsZ[_.first] = *it++;
+    لكل (خودکار &_ : new_مقصد_old_gid_list)
+      widthsZ[_.اولی] = *it++;
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  منطقي sanitize (hb_sanitize_context_t *c, بیعلامت اندازه_Device_رکورد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (likely (c->check_struct (هذا) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (هذا, اندازه_Device_رکورد)));
   }
 
-  HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
-  HBUINT8			maxWidth;	/* Maximum width. */
-  UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
-  DEFINE_SIZE_UNBOUNDED (2);
+  HBUINT8			pixel_اندازه;	/* Pixel size for following widths (as ppem). */
+  HBUINT8			max_عرض;	/* Maximum width. */
+  Unsized_Array_از<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
+  عام:
+  DEFINE_اندازه_UNBOUNDED (2);
 };
 
 
-struct hdmx
+بنية hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  ساكن constexpr hb_برچسب_t جدول_برچسب = HB_OT_برچسب_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_اندازه () ثابت
+  { أرجع hb_unsigned_mul_جمع_کن_saturate (رقم_رکوردها_2, اندازه_Device_رکورد, min_اندازه); }
 
-  template<typename Iterator,
+  قالب<نام_نوع Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned version,
+  منطقي serialize (hb_serialize_context_t *c,
+		  بیعلامت نسخه,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<ثابت hb_codepoint_pair_t> new_مقصد_old_gid_list,
+		  بیعلامت رقم_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (هذا);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    إذا (unlikely (!c->extend_min ((*هذا))))  return_trace (خطأ);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    هذا->نسخه = نسخه;
+    هذا->رقم_رکوردها_2 = it.len ();
+    هذا->اندازه_Device_رکورد = Device_رکورد::get_اندازه (رقم_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    لكل (ثابت hb_قلم_type<Iterator>& _ : +it)
+      c->شروع_embed<Device_رکورد> ()->serialize (c, _.اولی, _.second, new_مقصد_old_gid_list, رقم_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    خودکار *hdmx_اول = c->serializer->شروع_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
-    auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    بیعلامت رقم_درون_داد_glyphs = get_رقم_glyphs ();
+    خودکار it =
+    + hb_range ((بیعلامت) رقم_رکوردها_2)
+    | hb_map ([c, رقم_درون_داد_glyphs, هذا] (بیعلامت _)
 	{
-	  const DeviceRecord *device_record =
-	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
-					   _ * sizeDeviceRecord);
-	  auto row =
-	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	  ثابت Device_رکورد *device_رکورد =
+	    &Struct_At_جابه_جایی<Device_رکورد> (&اولی_Device_رکورد,
+					   _ * اندازه_Device_رکورد);
+	  خودکار ردیف =
+	    + hb_iter (c->plan->new_مقصد_old_gid_list)
+	    | hb_map ([رقم_درون_داد_glyphs, device_رکورد] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			أرجع device_رکورد->widthsZ.as_array (رقم_درون_داد_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  أرجع hb_pair ((بیعلامت) device_رکورد->pixel_اندازه, +ردیف);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
-			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+    hdmx_اول->serialize (c->serializer, نسخه, it,
+			   c->plan->new_مقصد_old_gid_list,
+			   c->plan->رقم_output_glyphs ());
+    return_trace (درست);
   }
 
-  unsigned get_num_glyphs () const
+  بیعلامت get_رقم_glyphs () ثابت
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    أرجع اندازه_Device_رکورد - Device_رکورد::min_اندازه;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
-		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  !hb_unsigned_mul_overflows (رقم_رکوردها_2, اندازه_Device_رکورد) &&
+                  min_اندازه + رقم_رکوردها_2 * اندازه_Device_رکورد > رقم_رکوردها_2 * اندازه_Device_رکورد &&
+		  اندازه_Device_رکورد >= Device_رکورد::min_اندازه &&
+		  c->check_range (هذا, get_اندازه ()));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
-  HBUINT32	sizeDeviceRecord;
+  محمي:
+  HBUINT16	نسخه;	/* Table version number (0) */
+  HBUINT16	رقم_رکوردها_2;	/* Number of device records. */
+  HBUINT32	اندازه_Device_رکورد;
 				/* Size of a device record, 32-bit aligned. */
-  DeviceRecord	firstDeviceRecord;
+  Device_رکورد	اولی_Device_رکورد;
 				/* Array of device records. */
-  public:
-  DEFINE_SIZE_MIN (8);
+  عام:
+  DEFINE_اندازه_MIN (8);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HDMX_TABLE_HH */
+#پایان_اگر /* HB_OT_HDMX_TABLE_HH */

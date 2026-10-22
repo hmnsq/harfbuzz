@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_METRICS_HH
-#define HB_OT_METRICS_HH
+#اگر_تعریف_نشده HB_OT_METRICS_HH
+#تعریف_کن HB_OT_METRICS_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-HB_INTERNAL bool
+HB_داخلی منطقي
 _hb_ot_metrics_get_position_common (hb_font_t           *font,
-				    hb_ot_metrics_tag_t  metrics_tag,
+				    hb_ot_metrics_برچسب_t  metrics_برچسب,
 				    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-#endif /* HB_OT_METRICS_HH */
+#پایان_اگر /* HB_OT_METRICS_HH */

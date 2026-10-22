@@ -24,190 +24,190 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_BUFFER_VERIFY
+#اگر_تعریف_نشده HB_NO_میانگیر_VERIFY
 
-#include "hb-buffer.hh"
+#ضمن "hb-buffer.hh"
 
 
-#define BUFFER_VERIFY_ERROR "buffer verify error: "
-static inline void
-buffer_verify_error (hb_buffer_t *buffer,
+#تعریف_کن میانگیر_VERIFY_ERROR "buffer verify error: "
+ساكن مضمن فراغ
+میانگیر_verify_error (hb_میانگیر_t *میانگیر,
 		     hb_font_t *font,
-		     const char *fmt,
+		     ثابت حرف *fmt,
 		     ...) HB_PRINTF_FUNC(3, 4);
 
-static inline void
-buffer_verify_error (hb_buffer_t *buffer,
+ساكن مضمن فراغ
+میانگیر_verify_error (hb_میانگیر_t *میانگیر,
 		     hb_font_t *font,
-		     const char *fmt,
+		     ثابت حرف *fmt,
 		     ...)
 {
   va_list ap;
-  va_start (ap, fmt);
-  if (buffer->messaging ())
+  va_شروع (ap, fmt);
+  إذا (میانگیر->messaging ())
   {
-    buffer->message_impl (font, fmt, ap);
+    میانگیر->پیام_impl (font, fmt, ap);
   }
-  else
+  وإلا
   {
     fprintf (stderr, "harfbuzz ");
     vfprintf (stderr, fmt, ap);
     fprintf (stderr, "\n");
   }
-  va_end (ap);
+  va_انتها (ap);
 }
 
-static bool
-buffer_verify_monotone (hb_buffer_t *buffer,
+ساكن منطقي
+میانگیر_verify_monotone (hb_میانگیر_t *میانگیر,
 			hb_font_t   *font)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  إذا (!HB_میانگیر_CLUSTER_LEVEL_IS_MONOTONE (میانگیر->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    أرجع درست;
   }
 
-  bool is_forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  منطقي is_forward = HB_DIRECTION_IS_FORWARD (hb_میانگیر_get_direction (میانگیر));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  بیعلامت صحيح رقم_glyphs;
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, &رقم_glyphs);
 
-  for (unsigned int i = 1; i < num_glyphs; i++)
-    if (info[i-1].cluster != info[i].cluster &&
+  لكل (بیعلامت صحيح i = 1; i < رقم_glyphs; i++)
+    إذا (info[i-1].cluster != info[i].cluster &&
 	(info[i-1].cluster < info[i].cluster) != is_forward)
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "clusters are not monotone.");
-      return false;
+      میانگیر_verify_error (میانگیر, font, میانگیر_VERIFY_ERROR "clusters are not monotone.");
+      أرجع خطأ;
     }
 
-  return true;
+  أرجع درست;
 }
 
-static bool
-buffer_verify_unsafe_to_break (hb_buffer_t  *buffer,
-			       hb_buffer_t  *text_buffer,
+ساكن منطقي
+میانگیر_verify_unsafe_مقصد_break (hb_میانگیر_t  *میانگیر,
+			       hb_میانگیر_t  *متن_میانگیر,
 			       hb_font_t          *font,
-			       const hb_feature_t *features,
-			       unsigned int        num_features,
-			       const char * const *shapers)
+			       ثابت hb_feature_t *features,
+			       بیعلامت صحيح        رقم_features,
+			       ثابت حرف * ثابت *shapers)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  إذا (!HB_میانگیر_CLUSTER_LEVEL_IS_MONOTONE (میانگیر->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    أرجع درست;
   }
 
   /* Check that breaking up shaping at safe-to-break is indeed safe. */
 
-  hb_unique_ptr_t<hb_buffer_t> fragment (hb_buffer_create_similar (buffer));
-  hb_buffer_set_flags (fragment, (hb_buffer_flags_t (hb_buffer_get_flags (fragment) & ~HB_BUFFER_FLAG_VERIFY)));
-  hb_unique_ptr_t<hb_buffer_t> reconstruction (hb_buffer_create_similar (buffer));
-  hb_buffer_set_flags (reconstruction, (hb_buffer_flags_t (hb_buffer_get_flags (reconstruction) & ~HB_BUFFER_FLAG_VERIFY)));
+  hb_unique_ptr_t<hb_میانگیر_t> fragment (hb_میانگیر_create_similar (میانگیر));
+  hb_میانگیر_مجموعه_flags (fragment, (hb_میانگیر_flags_t (hb_میانگیر_get_flags (fragment) & ~HB_میانگیر_FLAG_VERIFY)));
+  hb_unique_ptr_t<hb_میانگیر_t> reconstruction (hb_میانگیر_create_similar (میانگیر));
+  hb_میانگیر_مجموعه_flags (reconstruction, (hb_میانگیر_flags_t (hb_میانگیر_get_flags (reconstruction) & ~HB_میانگیر_FLAG_VERIFY)));
 
-  unsigned int num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  بیعلامت صحيح رقم_glyphs;
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, &رقم_glyphs);
 
-  unsigned int num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  بیعلامت صحيح رقم_chars;
+  hb_glyph_info_t *متن = hb_میانگیر_get_glyph_infos (متن_میانگیر, &رقم_chars);
 
   /* Chop text and shape fragments. */
-  bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
-  unsigned int start = 0;
-  unsigned int text_start = forward ? 0 : num_chars;
-  unsigned int text_end = text_start;
-  for (unsigned int end = 1; end < num_glyphs + 1; end++)
+  منطقي forward = HB_DIRECTION_IS_FORWARD (hb_میانگیر_get_direction (میانگیر));
+  بیعلامت صحيح شروع = 0;
+  بیعلامت صحيح متن_شروع = forward ? 0 : رقم_chars;
+  بیعلامت صحيح متن_انتها = متن_شروع;
+  لكل (بیعلامت صحيح انتها = 1; انتها < رقم_glyphs + 1; انتها++)
   {
-    if (end < num_glyphs &&
-	(info[end].cluster == info[end-1].cluster ||
-	 info[end-(forward?0:1)].mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK))
-	continue;
+    إذا (انتها < رقم_glyphs &&
+	(info[انتها].cluster == info[انتها-1].cluster ||
+	 info[انتها-(forward?0:1)].ماسک & HB_GLYPH_FLAG_UNSAFE_مقصد_BREAK))
+	استمر;
 
     /* Shape segment corresponding to glyphs start..end. */
-    if (end == num_glyphs)
+    إذا (انتها == رقم_glyphs)
     {
-      if (forward)
-	text_end = num_chars;
-      else
-	text_start = 0;
+      إذا (forward)
+	متن_انتها = رقم_chars;
+      وإلا
+	متن_شروع = 0;
     }
-    else
+    وإلا
     {
-      if (forward)
+      إذا (forward)
       {
-	unsigned int cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
-	  text_end++;
+	بیعلامت صحيح cluster = info[انتها].cluster;
+	طالما (متن_انتها < رقم_chars && متن[متن_انتها].cluster < cluster)
+	  متن_انتها++;
       }
-      else
+      وإلا
       {
-	unsigned int cluster = info[end - 1].cluster;
-	while (text_start && text[text_start - 1].cluster >= cluster)
-	  text_start--;
+	بیعلامت صحيح cluster = info[انتها - 1].cluster;
+	طالما (متن_شروع && متن[متن_شروع - 1].cluster >= cluster)
+	  متن_شروع--;
       }
     }
-    if (unlikely (text_start >= text_end))
+    إذا (unlikely (متن_شروع >= متن_انتها))
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-break text range is invalid.");
-      return false;
+      میانگیر_verify_error (میانگیر, font, میانگیر_VERIFY_ERROR "unsafe-to-break text range is invalid.");
+      أرجع خطأ;
     }
 
-    if (false)
-      printf("start %u end %u text start %u end %u\n", start, end, text_start, text_end);
+    إذا (خطأ)
+      چاپ_کن("start %u end %u text start %u end %u\n", شروع, انتها, متن_شروع, متن_انتها);
 
-    hb_buffer_clear_contents (fragment);
+    hb_میانگیر_clear_contents (fragment);
 
-    hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
-    if (0 < text_start)
-      flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-    if (text_end < num_chars)
-      flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
-    hb_buffer_set_flags (fragment, flags);
+    hb_میانگیر_flags_t flags = hb_میانگیر_get_flags (fragment);
+    إذا (0 < متن_شروع)
+      flags = (hb_میانگیر_flags_t) (flags & ~HB_میانگیر_FLAG_BOT);
+    إذا (متن_انتها < رقم_chars)
+      flags = (hb_میانگیر_flags_t) (flags & ~HB_میانگیر_FLAG_EOT);
+    hb_میانگیر_مجموعه_flags (fragment, flags);
 
-    hb_buffer_append (fragment, text_buffer, text_start, text_end);
-    if (!hb_shape_full (font, fragment, features, num_features, shapers) ||
+    hb_میانگیر_append (fragment, متن_میانگیر, متن_شروع, متن_انتها);
+    إذا (!hb_shape_پر (font, fragment, features, رقم_features, shapers) ||
 	!fragment->successful)
-      return true;
-    hb_buffer_append (reconstruction, fragment, 0, -1);
+      أرجع درست;
+    hb_میانگیر_append (reconstruction, fragment, 0, -1);
 
-    start = end;
-    if (forward)
-      text_start = text_end;
-    else
-      text_end = text_start;
+    شروع = انتها;
+    إذا (forward)
+      متن_شروع = متن_انتها;
+    وإلا
+      متن_انتها = متن_شروع;
   }
 
-  bool ret = true;
-  if (likely (reconstruction->successful))
+  منطقي ret = درست;
+  إذا (likely (reconstruction->successful))
   {
-    hb_buffer_diff_flags_t diff = hb_buffer_diff (reconstruction, buffer, (hb_codepoint_t) -1, 0);
-    if (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
+    hb_میانگیر_diff_flags_t diff = hb_میانگیر_diff (reconstruction, میانگیر, (hb_codepoint_t) -1, 0);
+    إذا (diff & ~HB_میانگیر_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-break test failed.");
-      ret = false;
+      میانگیر_verify_error (میانگیر, font, میانگیر_VERIFY_ERROR "unsafe-to-break test failed.");
+      ret = خطأ;
 
       /* Return the reconstructed result instead so it can be inspected. */
-      hb_buffer_set_length (buffer, 0);
-      hb_buffer_append (buffer, reconstruction, 0, -1);
+      hb_میانگیر_مجموعه_درازی (میانگیر, 0);
+      hb_میانگیر_append (میانگیر, reconstruction, 0, -1);
     }
   }
 
-  return ret;
+  أرجع ret;
 }
 
-static bool
-buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
-				hb_buffer_t        *text_buffer,
+ساكن منطقي
+میانگیر_verify_unsafe_مقصد_concat (hb_میانگیر_t        *میانگیر,
+				hb_میانگیر_t        *متن_میانگیر,
 				hb_font_t          *font,
-				const hb_feature_t *features,
-				unsigned int        num_features,
-				const char * const *shapers)
+				ثابت hb_feature_t *features,
+				بیعلامت صحيح        رقم_features,
+				ثابت حرف * ثابت *shapers)
 {
-  if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
+  إذا (!HB_میانگیر_CLUSTER_LEVEL_IS_MONOTONE (میانگیر->cluster_level))
   {
     /* Cannot perform this check without monotone clusters. */
-    return true;
+    أرجع درست;
   }
 
   /* Check that shuffling up text before shaping at safe-to-concat points
@@ -235,184 +235,184 @@ buffer_verify_unsafe_to_concat (hb_buffer_t        *buffer,
    *    the one from original buffer in step 1.
    */
 
-  hb_unique_ptr_t<hb_buffer_t> fragments[2] {
-    hb_unique_ptr_t<hb_buffer_t> (hb_buffer_create_similar (buffer)),
-    hb_unique_ptr_t<hb_buffer_t> (hb_buffer_create_similar (buffer)),
+  hb_unique_ptr_t<hb_میانگیر_t> fragments[2] {
+    hb_unique_ptr_t<hb_میانگیر_t> (hb_میانگیر_create_similar (میانگیر)),
+    hb_unique_ptr_t<hb_میانگیر_t> (hb_میانگیر_create_similar (میانگیر)),
   };
-  hb_buffer_set_flags (fragments[0], (hb_buffer_flags_t (hb_buffer_get_flags (fragments[0]) & ~HB_BUFFER_FLAG_VERIFY)));
-  hb_buffer_set_flags (fragments[1], (hb_buffer_flags_t (hb_buffer_get_flags (fragments[1]) & ~HB_BUFFER_FLAG_VERIFY)));
-  hb_unique_ptr_t<hb_buffer_t> reconstruction (hb_buffer_create_similar (buffer));
-  hb_buffer_set_flags (reconstruction, (hb_buffer_flags_t (hb_buffer_get_flags (reconstruction) & ~HB_BUFFER_FLAG_VERIFY)));
+  hb_میانگیر_مجموعه_flags (fragments[0], (hb_میانگیر_flags_t (hb_میانگیر_get_flags (fragments[0]) & ~HB_میانگیر_FLAG_VERIFY)));
+  hb_میانگیر_مجموعه_flags (fragments[1], (hb_میانگیر_flags_t (hb_میانگیر_get_flags (fragments[1]) & ~HB_میانگیر_FLAG_VERIFY)));
+  hb_unique_ptr_t<hb_میانگیر_t> reconstruction (hb_میانگیر_create_similar (میانگیر));
+  hb_میانگیر_مجموعه_flags (reconstruction, (hb_میانگیر_flags_t (hb_میانگیر_get_flags (reconstruction) & ~HB_میانگیر_FLAG_VERIFY)));
   hb_segment_properties_t props;
-  hb_buffer_get_segment_properties (buffer, &props);
-  hb_buffer_set_segment_properties (fragments[0], &props);
-  hb_buffer_set_segment_properties (fragments[1], &props);
-  hb_buffer_set_segment_properties (reconstruction, &props);
+  hb_میانگیر_get_segment_properties (میانگیر, &props);
+  hb_میانگیر_مجموعه_segment_properties (fragments[0], &props);
+  hb_میانگیر_مجموعه_segment_properties (fragments[1], &props);
+  hb_میانگیر_مجموعه_segment_properties (reconstruction, &props);
 
-  unsigned num_glyphs;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &num_glyphs);
+  بیعلامت رقم_glyphs;
+  hb_glyph_info_t *info = hb_میانگیر_get_glyph_infos (میانگیر, &رقم_glyphs);
 
-  unsigned num_chars;
-  hb_glyph_info_t *text = hb_buffer_get_glyph_infos (text_buffer, &num_chars);
+  بیعلامت رقم_chars;
+  hb_glyph_info_t *متن = hb_میانگیر_get_glyph_infos (متن_میانگیر, &رقم_chars);
 
-  bool forward = HB_DIRECTION_IS_FORWARD (hb_buffer_get_direction (buffer));
+  منطقي forward = HB_DIRECTION_IS_FORWARD (hb_میانگیر_get_direction (میانگیر));
 
-  if (!forward)
-    hb_buffer_reverse (buffer);
+  إذا (!forward)
+    hb_میانگیر_معکوس (میانگیر);
 
   /*
    * Split text into segments and collect into to fragment streams.
    */
   {
-    unsigned fragment_idx = 0;
-    unsigned start = 0;
-    unsigned text_start = 0;
-    unsigned text_end = 0;
-    for (unsigned end = 1; end < num_glyphs + 1; end++)
+    بیعلامت fragment_idx = 0;
+    بیعلامت شروع = 0;
+    بیعلامت متن_شروع = 0;
+    بیعلامت متن_انتها = 0;
+    لكل (بیعلامت انتها = 1; انتها < رقم_glyphs + 1; انتها++)
     {
-      if (end < num_glyphs &&
-	  (info[end].cluster == info[end-1].cluster ||
-	   info[end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
-	  continue;
+      إذا (انتها < رقم_glyphs &&
+	  (info[انتها].cluster == info[انتها-1].cluster ||
+	   info[انتها].ماسک & HB_GLYPH_FLAG_UNSAFE_مقصد_CONCAT))
+	  استمر;
 
       /* Accumulate segment corresponding to glyphs start..end. */
-      if (end == num_glyphs)
-	text_end = num_chars;
-      else
+      إذا (انتها == رقم_glyphs)
+	متن_انتها = رقم_chars;
+      وإلا
       {
-	unsigned cluster = info[end].cluster;
-	while (text_end < num_chars && text[text_end].cluster < cluster)
-	  text_end++;
+	بیعلامت cluster = info[انتها].cluster;
+	طالما (متن_انتها < رقم_chars && متن[متن_انتها].cluster < cluster)
+	  متن_انتها++;
       }
-      assert (text_start < text_end);
+      أكد (متن_شروع < متن_انتها);
 
-      if (false)
-	printf("start %u end %u text start %u end %u\n", start, end, text_start, text_end);
+      إذا (خطأ)
+	چاپ_کن("start %u end %u text start %u end %u\n", شروع, انتها, متن_شروع, متن_انتها);
 
-#if 0
-      hb_buffer_flags_t flags = hb_buffer_get_flags (fragment);
-      if (0 < text_start)
-	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_BOT);
-      if (text_end < num_chars)
-	flags = (hb_buffer_flags_t) (flags & ~HB_BUFFER_FLAG_EOT);
-      hb_buffer_set_flags (fragment, flags);
-#endif
+#إذا 0
+      hb_میانگیر_flags_t flags = hb_میانگیر_get_flags (fragment);
+      إذا (0 < متن_شروع)
+	flags = (hb_میانگیر_flags_t) (flags & ~HB_میانگیر_FLAG_BOT);
+      إذا (متن_انتها < رقم_chars)
+	flags = (hb_میانگیر_flags_t) (flags & ~HB_میانگیر_FLAG_EOT);
+      hb_میانگیر_مجموعه_flags (fragment, flags);
+#پایان_اگر
 
-      hb_buffer_append (fragments[fragment_idx], text_buffer, text_start, text_end);
+      hb_میانگیر_append (fragments[fragment_idx], متن_میانگیر, متن_شروع, متن_انتها);
 
-      start = end;
-      text_start = text_end;
+      شروع = انتها;
+      متن_شروع = متن_انتها;
       fragment_idx = 1 - fragment_idx;
     }
   }
 
-  bool ret = true;
+  منطقي ret = درست;
   /*
    * Shape the two fragment streams.
    */
-  if (!hb_shape_full (font, fragments[0], features, num_features, shapers) ||
+  إذا (!hb_shape_پر (font, fragments[0], features, رقم_features, shapers) ||
       !fragments[0]->successful)
-    return ret;
+    أرجع ret;
 
-  if (!hb_shape_full (font, fragments[1], features, num_features, shapers) ||
+  إذا (!hb_shape_پر (font, fragments[1], features, رقم_features, shapers) ||
       !fragments[1]->successful)
-    return ret;
+    أرجع ret;
 
-  if (!forward)
+  إذا (!forward)
   {
-    hb_buffer_reverse (fragments[0]);
-    hb_buffer_reverse (fragments[1]);
+    hb_میانگیر_معکوس (fragments[0]);
+    hb_میانگیر_معکوس (fragments[1]);
   }
 
   /*
    * Reconstruct results.
    */
   {
-    unsigned fragment_idx = 0;
-    unsigned fragment_start[2] {0, 0};
-    unsigned fragment_num_glyphs[2];
+    بیعلامت fragment_idx = 0;
+    بیعلامت fragment_شروع[2] {0, 0};
+    بیعلامت fragment_رقم_glyphs[2];
     hb_glyph_info_t *fragment_info[2];
-    for (unsigned i = 0; i < 2; i++)
-      fragment_info[i] = hb_buffer_get_glyph_infos (fragments[i], &fragment_num_glyphs[i]);
-    while (fragment_start[0] < fragment_num_glyphs[0] ||
-	   fragment_start[1] < fragment_num_glyphs[1])
+    لكل (بیعلامت i = 0; i < 2; i++)
+      fragment_info[i] = hb_میانگیر_get_glyph_infos (fragments[i], &fragment_رقم_glyphs[i]);
+    طالما (fragment_شروع[0] < fragment_رقم_glyphs[0] ||
+	   fragment_شروع[1] < fragment_رقم_glyphs[1])
     {
-      unsigned fragment_end = fragment_start[fragment_idx] + 1;
-      while (fragment_end < fragment_num_glyphs[fragment_idx] &&
-	     (fragment_info[fragment_idx][fragment_end].cluster == fragment_info[fragment_idx][fragment_end - 1].cluster ||
-	      fragment_info[fragment_idx][fragment_end].mask & HB_GLYPH_FLAG_UNSAFE_TO_CONCAT))
-	fragment_end++;
+      بیعلامت fragment_انتها = fragment_شروع[fragment_idx] + 1;
+      طالما (fragment_انتها < fragment_رقم_glyphs[fragment_idx] &&
+	     (fragment_info[fragment_idx][fragment_انتها].cluster == fragment_info[fragment_idx][fragment_انتها - 1].cluster ||
+	      fragment_info[fragment_idx][fragment_انتها].ماسک & HB_GLYPH_FLAG_UNSAFE_مقصد_CONCAT))
+	fragment_انتها++;
 
-      hb_buffer_append (reconstruction, fragments[fragment_idx], fragment_start[fragment_idx], fragment_end);
+      hb_میانگیر_append (reconstruction, fragments[fragment_idx], fragment_شروع[fragment_idx], fragment_انتها);
 
-      fragment_start[fragment_idx] = fragment_end;
+      fragment_شروع[fragment_idx] = fragment_انتها;
       fragment_idx = 1 - fragment_idx;
     }
   }
 
-  if (!forward)
+  إذا (!forward)
   {
-    hb_buffer_reverse (buffer);
-    hb_buffer_reverse (reconstruction);
+    hb_میانگیر_معکوس (میانگیر);
+    hb_میانگیر_معکوس (reconstruction);
   }
 
-  if (likely (reconstruction->successful))
+  إذا (likely (reconstruction->successful))
   {
     /*
      * Diff results.
      */
-    hb_buffer_diff_flags_t diff = hb_buffer_diff (reconstruction, buffer, (hb_codepoint_t) -1, 0);
-    if (diff & ~HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
+    hb_میانگیر_diff_flags_t diff = hb_میانگیر_diff (reconstruction, میانگیر, (hb_codepoint_t) -1, 0);
+    إذا (diff & ~HB_میانگیر_DIFF_FLAG_GLYPH_FLAGS_MISMATCH)
     {
-      buffer_verify_error (buffer, font, BUFFER_VERIFY_ERROR "unsafe-to-concat test failed.");
-      ret = false;
+      میانگیر_verify_error (میانگیر, font, میانگیر_VERIFY_ERROR "unsafe-to-concat test failed.");
+      ret = خطأ;
 
       /* Return the reconstructed result instead so it can be inspected. */
-      hb_buffer_set_length (buffer, 0);
-      hb_buffer_append (buffer, reconstruction, 0, -1);
+      hb_میانگیر_مجموعه_درازی (میانگیر, 0);
+      hb_میانگیر_append (میانگیر, reconstruction, 0, -1);
     }
   }
 
-  return ret;
+  أرجع ret;
 }
 
-bool
-hb_buffer_t::verify (hb_buffer_t        *text_buffer,
+منطقي
+hb_میانگیر_t::verify (hb_میانگیر_t        *متن_میانگیر,
 		     hb_font_t          *font,
-		     const hb_feature_t *features,
-		     unsigned int        num_features,
-		     const char * const *shapers)
+		     ثابت hb_feature_t *features,
+		     بیعلامت صحيح        رقم_features,
+		     ثابت حرف * ثابت *shapers)
 {
-  bool ret = true;
-  bool monotone = buffer_verify_monotone (this, font);
-  if (!monotone)
-    ret = false;
-  if (monotone &&
-      !buffer_verify_unsafe_to_break (this, text_buffer, font, features, num_features, shapers))
-    ret = false;
-  if (monotone &&
-      (flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) != 0 &&
-      !buffer_verify_unsafe_to_concat (this, text_buffer, font, features, num_features, shapers))
-    ret = false;
-  if (!ret)
+  منطقي ret = درست;
+  منطقي monotone = میانگیر_verify_monotone (هذا, font);
+  إذا (!monotone)
+    ret = خطأ;
+  إذا (monotone &&
+      !میانگیر_verify_unsafe_مقصد_break (هذا, متن_میانگیر, font, features, رقم_features, shapers))
+    ret = خطأ;
+  إذا (monotone &&
+      (flags & HB_میانگیر_FLAG_PRODUCE_UNSAFE_مقصد_CONCAT) != 0 &&
+      !میانگیر_verify_unsafe_مقصد_concat (هذا, متن_میانگیر, font, features, رقم_features, shapers))
+    ret = خطأ;
+  إذا (!ret)
   {
-#ifndef HB_NO_BUFFER_SERIALIZE
-    unsigned len = text_buffer->len;
-    hb_vector_t<char> bytes;
-    if (likely (bytes.resize (len * 10 + 16)))
+#اگر_تعریف_نشده HB_NO_میانگیر_SERIALIZE
+    بیعلامت len = متن_میانگیر->len;
+    hb_وکتور_t<حرف> بایتها;
+    إذا (likely (بایتها.resize (len * 10 + 16)))
     {
-      hb_buffer_serialize_unicode (text_buffer,
+      hb_میانگیر_serialize_unicode (متن_میانگیر,
 				   0, len,
-				   bytes.arrayZ, bytes.length,
+				   بایتها.arrayZ, بایتها.درازی,
 				   &len,
-				   HB_BUFFER_SERIALIZE_FORMAT_TEXT,
-				   HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS);
-      buffer_verify_error (this, font, BUFFER_VERIFY_ERROR "text was: %s.", bytes.arrayZ ? bytes.arrayZ : "");
+				   HB_میانگیر_SERIALIZE_FORMAT_متن,
+				   HB_میانگیر_SERIALIZE_FLAG_NO_CLUSTERS);
+      میانگیر_verify_error (هذا, font, میانگیر_VERIFY_ERROR "text was: %s.", بایتها.arrayZ ? بایتها.arrayZ : "");
     }
-#endif
+#پایان_اگر
   }
-  return ret;
+  أرجع ret;
 }
 
 
-#endif
+#پایان_اگر

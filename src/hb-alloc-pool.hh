@@ -22,10 +22,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ALLOC_POOL_HH
-#define HB_ALLOC_POOL_HH
+#اگر_تعریف_نشده HB_ALLOC_POOL_HH
+#تعریف_کن HB_ALLOC_POOL_HH
 
-#include "hb-vector.hh"
+#ضمن "hb-vector.hh"
 
 /* Memory pool for persistent small- to medium-sized allocations.
  *
@@ -38,68 +38,68 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-struct hb_alloc_pool_t
+بنية hb_alloc_pool_t
 {
-  unsigned ChunkSize = 65536 - 2 * sizeof (void *);
+  بیعلامت Chunk_اندازه = 65536 - 2 * حجم (فراغ *);
 
-  void *alloc (size_t size, unsigned alignment = 2 * sizeof (void *))
+  فراغ *alloc (size_t اندازه, بیعلامت alignment = 2 * حجم (فراغ *))
   {
-    if (unlikely (chunks.in_error ())) return nullptr;
+    إذا (unlikely (chunks.درون_error ())) أرجع اشاره_تهی;
 
-    assert (alignment > 0);
-    assert (alignment <= 2 * sizeof (void *));
-    assert ((alignment & (alignment - 1)) == 0); /* power of two */
+    أكد (alignment > 0);
+    أكد (alignment <= 2 * حجم (فراغ *));
+    أكد ((alignment & (alignment - 1)) == 0); /* power of two */
 
-    if (size > (ChunkSize) / 4)
+    إذا (اندازه > (Chunk_اندازه) / 4)
     {
       /* Big chunk, allocate separately.  */
-      hb_vector_t<char> chunk;
-      if (unlikely (!chunk.resize (size))) return nullptr;
-      void *ret = chunk.arrayZ;
+      hb_وکتور_t<حرف> chunk;
+      إذا (unlikely (!chunk.resize (اندازه))) أرجع اشاره_تهی;
+      فراغ *ret = chunk.arrayZ;
       chunks.push (std::move (chunk));
-      if (chunks.in_error ()) return nullptr;
-      if (chunks.length > 1)
+      إذا (chunks.درون_error ()) أرجع اشاره_تهی;
+      إذا (chunks.درازی > 1)
       {
         // Bring back the previous last chunk to the end, so that
 	// we can continue to allocate from it.
-	hb_swap (chunks.arrayZ[chunks.length - 1], chunks.arrayZ[chunks.length - 2]);
+	hb_جابجا (chunks.arrayZ[chunks.درازی - 1], chunks.arrayZ[chunks.درازی - 2]);
       }
-      return ret;
+      أرجع ret;
     }
 
-    unsigned pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
+    بیعلامت pad = (بیعلامت) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
 
     // Small chunk, allocate from the last chunk.
-    if (current_chunk.length < pad + size)
+    إذا (current_chunk.درازی < pad + اندازه)
     {
       chunks.push ();
-      if (unlikely (chunks.in_error ())) return nullptr;
-      hb_vector_t<char> &chunk = chunks.arrayZ[chunks.length - 1];
-      if (unlikely (!chunk.resize (ChunkSize))) return nullptr;
+      إذا (unlikely (chunks.درون_error ())) أرجع اشاره_تهی;
+      hb_وکتور_t<حرف> &chunk = chunks.arrayZ[chunks.درازی - 1];
+      إذا (unlikely (!chunk.resize (Chunk_اندازه))) أرجع اشاره_تهی;
       current_chunk = chunk;
-      pad = (unsigned) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
+      pad = (بیعلامت) ((alignment - ((uintptr_t) current_chunk.arrayZ & (alignment - 1))) & (alignment - 1));
     }
 
     current_chunk += pad;
 
-    assert (current_chunk.length >= size);
-    void *ret = current_chunk.arrayZ;
-    current_chunk += size;
-    return ret;
+    أكد (current_chunk.درازی >= اندازه);
+    فراغ *ret = current_chunk.arrayZ;
+    current_chunk += اندازه;
+    أرجع ret;
   }
 
-  void discard (void *p_, size_t size)
+  فراغ discard (فراغ *p_, size_t اندازه)
   {
     // Reclaim memory if we can.
-    char *p = (char *) p_;
-    if (current_chunk.arrayZ == p + size && current_chunk.backwards_length >= size)
-      current_chunk -= size;
+    حرف *p = (حرف *) p_;
+    إذا (current_chunk.arrayZ == p + اندازه && current_chunk.backwards_درازی >= اندازه)
+      current_chunk -= اندازه;
   }
 
-  private:
-  hb_vector_t<hb_vector_t<char>> chunks;
-  hb_array_t<char> current_chunk;
+  خاص:
+  hb_وکتور_t<hb_وکتور_t<حرف>> chunks;
+  hb_array_t<حرف> current_chunk;
 };
 
 
-#endif /* HB_ALLOC_POOL_HH */
+#پایان_اگر /* HB_ALLOC_POOL_HH */

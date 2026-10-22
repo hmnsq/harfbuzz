@@ -24,190 +24,190 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CONFIG_HH
-#define HB_CONFIG_HH
+#اگر_تعریف_نشده HB_CONFIG_HH
+#تعریف_کن HB_CONFIG_HH
 
-#if 0 /* Make test happy. */
-#include "hb.hh"
-#endif
+#إذا 0 /* Make test happy. */
+#ضمن "hb.hh"
+#پایان_اگر
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#اگر_تعریف_شده HAVE_CONFIG_H
+#ضمن "config.h"
+#پایان_اگر
 
-#ifndef HB_EXPERIMENTAL_API
-#define HB_NO_BEYOND_64K
-#define HB_NO_CUBIC_GLYF
-#define HB_NO_SUBSET_DEPEND
-#endif
+#اگر_تعریف_نشده HB_EXPERIMENTAL_API
+#تعریف_کن HB_NO_BEYOND_64K
+#تعریف_کن HB_NO_CUBIC_GLYF
+#تعریف_کن HB_NO_SUBSET_DEPEND
+#پایان_اگر
 
-#ifdef HB_TINY
-#define HB_LEAN
-#define HB_MINI
-#define HB_NO_SVG
-#define HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_MORE
-#define HB_MINIMIZE_MEMORY_USAGE
-#define HB_NO_MT
-#define HB_NO_UCD_UNASSIGNED
-#ifndef NDEBUG
-#define NDEBUG
-#endif
-#endif
+#اگر_تعریف_شده HB_TINY
+#تعریف_کن HB_LEAN
+#تعریف_کن HB_MINI
+#تعریف_کن HB_NO_SVG
+#تعریف_کن HB_OPTIMIZE_اندازه
+#تعریف_کن HB_OPTIMIZE_اندازه_بیشتر
+#تعریف_کن HB_MINIMIZE_حافظه_USAGE
+#تعریف_کن HB_NO_MT
+#تعریف_کن HB_NO_UCD_UNASSIGNED
+#اگر_تعریف_نشده NDEBUG
+#تعریف_کن NDEBUG
+#پایان_اگر
+#پایان_اگر
 
-#ifdef HB_LEAN
-#define HB_DISABLE_DEPRECATED
-#define HB_NO_ATEXIT
-#define HB_NO_BUFFER_MESSAGE
-#define HB_NO_BUFFER_SERIALIZE
-#define HB_NO_BUFFER_VERIFY
-#define HB_NO_BITMAP
-#define HB_NO_ERRNO
-#define HB_NO_FACE_COLLECT_UNICODES
-#define HB_NO_GETENV
-#define HB_NO_HINTING
-#define HB_NO_LAYOUT_FEATURE_PARAMS
-#define HB_NO_LAYOUT_COLLECT_GLYPHS
-#define HB_NO_LAYOUT_RARELY_USED
-#define HB_NO_LAYOUT_UNUSED
-#define HB_NO_MATH
-#define HB_NO_META
-#define HB_NO_METRICS
-#define HB_NO_MMAP
-#define HB_NO_NAME
-#define HB_NO_OPEN
-#define HB_NO_OT_FETCH
-#define HB_NO_OT_FONT_GLYPH_NAMES
-#define HB_NO_SETLOCALE
-#define HB_NO_STYLE
-#define HB_NO_SUBSET_DEPEND
-#define HB_NO_VERTICAL
-#define HB_NO_VAR
+#اگر_تعریف_شده HB_LEAN
+#تعریف_کن HB_DISABLE_DEPRECATED
+#تعریف_کن HB_NO_ATEXIT
+#تعریف_کن HB_NO_میانگیر_پیام
+#تعریف_کن HB_NO_میانگیر_SERIALIZE
+#تعریف_کن HB_NO_میانگیر_VERIFY
+#تعریف_کن HB_NO_BITMAP
+#تعریف_کن HB_NO_ERRNO
+#تعریف_کن HB_NO_FACE_COLLECT_UNICODES
+#تعریف_کن HB_NO_GETENV
+#تعریف_کن HB_NO_HINTING
+#تعریف_کن HB_NO_LAYOUT_FEATURE_PARAMS
+#تعریف_کن HB_NO_LAYOUT_COLLECT_GLYPHS
+#تعریف_کن HB_NO_LAYOUT_RARELY_استفاده_شده
+#تعریف_کن HB_NO_LAYOUT_استفادهنشده
+#تعریف_کن HB_NO_MATH
+#تعریف_کن HB_NO_META
+#تعریف_کن HB_NO_METRICS
+#تعریف_کن HB_NO_MMAP
+#تعریف_کن HB_NO_NAME
+#تعریف_کن HB_NO_OPEN
+#تعریف_کن HB_NO_OT_FETCH
+#تعریف_کن HB_NO_OT_FONT_GLYPH_نامها
+#تعریف_کن HB_NO_SETLOCALE
+#تعریف_کن HB_NO_STYLE
+#تعریف_کن HB_NO_SUBSET_DEPEND
+#تعریف_کن HB_NO_VERTICAL
+#تعریف_کن HB_NO_VAR
 
-#if !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
-#define HB_NO_COLOR
-#define HB_NO_DRAW
-#define HB_NO_PAINT
-#endif
+#إذا !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_وکتور) || defined(HB_HAS_GPU))
+#تعریف_کن HB_NO_COLOR
+#تعریف_کن HB_NO_DRAW
+#تعریف_کن HB_NO_PAINT
+#پایان_اگر
 
-#endif
+#پایان_اگر
 
-#ifdef HB_MINI
-#define HB_NO_AAT
-#define HB_NO_LEGACY
-#define HB_NO_BEYOND_64K
-#define HB_NO_CUBIC_GLYF
-#endif
+#اگر_تعریف_شده HB_MINI
+#تعریف_کن HB_NO_AAT
+#تعریف_کن HB_NO_LEGACY
+#تعریف_کن HB_NO_BEYOND_64K
+#تعریف_کن HB_NO_CUBIC_GLYF
+#پایان_اگر
 
-#ifdef __OPTIMIZE_SIZE__
-#ifndef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE
-#endif
-#endif
+#اگر_تعریف_شده __OPTIMIZE_SIZE__
+#اگر_تعریف_نشده HB_OPTIMIZE_اندازه
+#تعریف_کن HB_OPTIMIZE_اندازه
+#پایان_اگر
+#پایان_اگر
 
-#if defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
-#ifndef HB_CONFIG_OVERRIDE_H
-#define HB_CONFIG_OVERRIDE_H "config-override.h"
-#endif
-#include HB_CONFIG_OVERRIDE_H
-#endif
+#إذا defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
+#اگر_تعریف_نشده HB_CONFIG_OVERRIDE_H
+#تعریف_کن HB_CONFIG_OVERRIDE_H "config-override.h"
+#پایان_اگر
+#ضمن HB_CONFIG_OVERRIDE_H
+#پایان_اگر
 
 /* Closure of options. */
 
-#ifdef HB_NO_VAR
-#define HB_NO_VAR_COMPOSITES
-#endif
+#اگر_تعریف_شده HB_NO_VAR
+#تعریف_کن HB_NO_VAR_COMPOSITES
+#پایان_اگر
 
-#ifdef HB_DISABLE_DEPRECATED
-#define HB_IF_NOT_DEPRECATED(x)
-#else
-#define HB_IF_NOT_DEPRECATED(x) x
-#endif
+#اگر_تعریف_شده HB_DISABLE_DEPRECATED
+#تعریف_کن HB_IF_NOT_DEPRECATED(x)
+#وإلا
+#تعریف_کن HB_IF_NOT_DEPRECATED(x) x
+#پایان_اگر
 
-#ifdef HB_NO_SHAPER
-#define HB_NO_OT_SHAPE
-#define HB_NO_AAT_SHAPE
-#endif
+#اگر_تعریف_شده HB_NO_SHAPER
+#تعریف_کن HB_NO_OT_SHAPE
+#تعریف_کن HB_NO_AAT_SHAPE
+#پایان_اگر
 
-#ifdef HB_NO_AAT
-#define HB_NO_OT_NAME_LANGUAGE_AAT
-#define HB_NO_AAT_SHAPE
-#endif
+#اگر_تعریف_شده HB_NO_AAT
+#تعریف_کن HB_NO_OT_NAME_LANGUAGE_AAT
+#تعریف_کن HB_NO_AAT_SHAPE
+#پایان_اگر
 
-#ifdef HB_NO_BITMAP
-#define HB_NO_OT_FONT_BITMAP
-#endif
+#اگر_تعریف_شده HB_NO_BITMAP
+#تعریف_کن HB_NO_OT_FONT_BITMAP
+#پایان_اگر
 
-#ifdef HB_NO_DRAW
-#define HB_NO_OT_FONT_CFF
-#define HB_NO_OUTLINE
-#define HB_NO_PAINT
-#endif
+#اگر_تعریف_شده HB_NO_DRAW
+#تعریف_کن HB_NO_OT_FONT_CFF
+#تعریف_کن HB_NO_OUTLINE
+#تعریف_کن HB_NO_PAINT
+#پایان_اگر
 
-#ifdef HB_NO_CFF
-#define HB_NO_OT_FONT_CFF
-#define HB_NO_SUBSET_CFF
-#endif
+#اگر_تعریف_شده HB_NO_CFF
+#تعریف_کن HB_NO_OT_FONT_CFF
+#تعریف_کن HB_NO_SUBSET_CFF
+#پایان_اگر
 
-#ifdef HB_NO_LEGACY
-#define HB_NO_CMAP_LEGACY_SUBTABLES
-#define HB_NO_FALLBACK_SHAPE
-#define HB_NO_OT_KERN
-#define HB_NO_OT_LAYOUT_BLOCKLIST
-#define HB_NO_AAT_LAYOUT_BLOCKLIST
-#define HB_NO_OT_SHAPE_FALLBACK
-#endif
+#اگر_تعریف_شده HB_NO_LEGACY
+#تعریف_کن HB_NO_CMAP_LEGACY_SUBTABLES
+#تعریف_کن HB_NO_FALLBACK_SHAPE
+#تعریف_کن HB_NO_OT_KERN
+#تعریف_کن HB_NO_OT_LAYOUT_BLOCKLIST
+#تعریف_کن HB_NO_AAT_LAYOUT_BLOCKLIST
+#تعریف_کن HB_NO_OT_SHAPE_FALLBACK
+#پایان_اگر
 
-#ifdef HB_NO_NAME
-#define HB_NO_OT_NAME_LANGUAGE
-#endif
+#اگر_تعریف_شده HB_NO_NAME
+#تعریف_کن HB_NO_OT_NAME_LANGUAGE
+#پایان_اگر
 
-#ifdef HB_NO_OT
-#define HB_NO_OT_FONT
-#define HB_NO_OT_LAYOUT
-#define HB_NO_OT_TAG
-#define HB_NO_OT_SHAPE
-#endif
+#اگر_تعریف_شده HB_NO_OT
+#تعریف_کن HB_NO_OT_FONT
+#تعریف_کن HB_NO_OT_LAYOUT
+#تعریف_کن HB_NO_OT_برچسب
+#تعریف_کن HB_NO_OT_SHAPE
+#پایان_اگر
 
-#ifdef HB_NO_OT_SHAPE
-#define HB_NO_AAT_SHAPE
-#endif
+#اگر_تعریف_شده HB_NO_OT_SHAPE
+#تعریف_کن HB_NO_AAT_SHAPE
+#پایان_اگر
 
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-#define HB_NO_OT_SHAPER_ARABIC_FALLBACK
-#define HB_NO_OT_SHAPER_HEBREW_FALLBACK
-#define HB_NO_OT_SHAPER_THAI_FALLBACK
-#define HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-#define HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
-#endif
+#اگر_تعریف_شده HB_NO_OT_SHAPE_FALLBACK
+#تعریف_کن HB_NO_OT_SHAPER_ARABIC_FALLBACK
+#تعریف_کن HB_NO_OT_SHAPER_HEBREW_FALLBACK
+#تعریف_کن HB_NO_OT_SHAPER_THAI_FALLBACK
+#تعریف_کن HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
+#تعریف_کن HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
+#پایان_اگر
 
-#ifdef HB_OPTIMIZE_SIZE_MORE
-#define HB_NO_OT_RULESETS_FAST_PATH
-#endif
+#اگر_تعریف_شده HB_OPTIMIZE_اندازه_بیشتر
+#تعریف_کن HB_NO_OT_RULESETS_FAST_مسیر
+#پایان_اگر
 
-#ifdef HB_MINIMIZE_MEMORY_USAGE
-#define HB_NO_GDEF_CACHE
-#define HB_NO_OT_LAYOUT_LOOKUP_CACHE
-#define HB_NO_OT_FONT_CMAP_CACHE
-#endif
+#اگر_تعریف_شده HB_MINIMIZE_حافظه_USAGE
+#تعریف_کن HB_NO_GDEF_CACHE
+#تعریف_کن HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#تعریف_کن HB_NO_OT_FONT_CMAP_CACHE
+#پایان_اگر
 
-#if defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
-#ifndef HB_CONFIG_OVERRIDE_LAST_H
-#define HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
-#endif
-#include HB_CONFIG_OVERRIDE_LAST_H
-#endif
+#إذا defined(HAVE_CONFIG_OVERRIDE_آخرین_H) || defined(HB_CONFIG_OVERRIDE_آخرین_H)
+#اگر_تعریف_نشده HB_CONFIG_OVERRIDE_آخرین_H
+#تعریف_کن HB_CONFIG_OVERRIDE_آخرین_H "config-override-last.h"
+#پایان_اگر
+#ضمن HB_CONFIG_OVERRIDE_آخرین_H
+#پایان_اگر
 
-#ifdef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_VAL 1
-#else
-#define HB_OPTIMIZE_SIZE_VAL 0
-#endif
+#اگر_تعریف_شده HB_OPTIMIZE_اندازه
+#تعریف_کن HB_OPTIMIZE_اندازه_VAL 1
+#وإلا
+#تعریف_کن HB_OPTIMIZE_اندازه_VAL 0
+#پایان_اگر
 
-#ifdef HB_MINIMIZE_MEMORY_USAGE
-#define HB_MINIMIZE_MEMORY_USAGE_VAL 1
-#else
-#define HB_MINIMIZE_MEMORY_USAGE_VAL 0
-#endif
+#اگر_تعریف_شده HB_MINIMIZE_حافظه_USAGE
+#تعریف_کن HB_MINIMIZE_حافظه_USAGE_VAL 1
+#وإلا
+#تعریف_کن HB_MINIMIZE_حافظه_USAGE_VAL 0
+#پایان_اگر
 
-#endif /* HB_CONFIG_HH */
+#پایان_اگر /* HB_CONFIG_HH */

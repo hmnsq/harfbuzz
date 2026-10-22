@@ -24,24 +24,24 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#اگر_تعریف_نشده HB_NO_FALLBACK_SHAPE
 
 /*
  * shaper face data
  */
 
-struct hb_fallback_face_data_t {};
+بنية hb_fallback_face_داده_t {};
 
-hb_fallback_face_data_t *
-_hb_fallback_shaper_face_data_create (hb_face_t *face HB_UNUSED)
+hb_fallback_face_داده_t *
+hb_fallback_shaper_face_داده_create (hb_face_t *face HB_استفادهنشده)
 {
-  return (hb_fallback_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  أرجع (hb_fallback_face_داده_t *) HB_SHAPER_داده_SUCCEEDED;
 }
 
-void
-_hb_fallback_shaper_face_data_destroy (hb_fallback_face_data_t *data HB_UNUSED)
+فراغ
+hb_fallback_shaper_face_داده_destroy (hb_fallback_face_داده_t *داده HB_استفادهنشده)
 {
 }
 
@@ -50,16 +50,16 @@ _hb_fallback_shaper_face_data_destroy (hb_fallback_face_data_t *data HB_UNUSED)
  * shaper font data
  */
 
-struct hb_fallback_font_data_t {};
+بنية hb_fallback_font_داده_t {};
 
-hb_fallback_font_data_t *
-_hb_fallback_shaper_font_data_create (hb_font_t *font HB_UNUSED)
+hb_fallback_font_داده_t *
+hb_fallback_shaper_font_داده_create (hb_font_t *font HB_استفادهنشده)
 {
-  return (hb_fallback_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  أرجع (hb_fallback_font_داده_t *) HB_SHAPER_داده_SUCCEEDED;
 }
 
-void
-_hb_fallback_shaper_font_data_destroy (hb_fallback_font_data_t *data HB_UNUSED)
+فراغ
+hb_fallback_shaper_font_داده_destroy (hb_fallback_font_داده_t *داده HB_استفادهنشده)
 {
 }
 
@@ -69,47 +69,47 @@ _hb_fallback_shaper_font_data_destroy (hb_fallback_font_data_t *data HB_UNUSED)
  */
 
 hb_bool_t
-_hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
+_hb_fallback_shape (hb_shape_plan_t    *shape_plan HB_استفادهنشده,
 		    hb_font_t          *font,
-		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features HB_UNUSED,
-		    unsigned int        num_features HB_UNUSED)
+		    hb_میانگیر_t        *میانگیر,
+		    ثابت hb_feature_t *features HB_استفادهنشده,
+		    بیعلامت صحيح        رقم_features HB_استفادهنشده)
 {
   hb_codepoint_t space;
-  bool has_space = (bool) font->get_nominal_glyph (' ', &space);
+  منطقي has_space = (منطقي) font->get_nominal_glyph (' ', &space);
 
-  buffer->clear_positions ();
+  میانگیر->clear_positions ();
 
-  hb_direction_t direction = buffer->props.direction;
-  hb_unicode_funcs_t *unicode = buffer->unicode;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  hb_glyph_position_t *pos = buffer->pos;
-  for (unsigned int i = 0; i < count; i++)
+  hb_direction_t direction = میانگیر->props.direction;
+  hb_unicode_funcs_t *unicode = میانگیر->unicode;
+  بیعلامت صحيح شمار = میانگیر->len;
+  hb_glyph_info_t *info = میانگیر->info;
+  hb_glyph_position_t *pos = میانگیر->pos;
+  لكل (بیعلامت صحيح i = 0; i < شمار; i++)
   {
-    if (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
+    إذا (has_space && unicode->is_default_ignorable (info[i].codepoint)) {
       info[i].codepoint = space;
       pos[i].x_advance = 0;
       pos[i].y_advance = 0;
-      continue;
+      استمر;
     }
-    (void) font->get_nominal_glyph (info[i].codepoint, &info[i].codepoint);
+    (فراغ) font->get_nominal_glyph (info[i].codepoint, &info[i].codepoint);
     font->get_glyph_advance_for_direction (info[i].codepoint,
 					   direction,
 					   &pos[i].x_advance,
 					   &pos[i].y_advance);
-    font->subtract_glyph_origin_for_direction (info[i].codepoint,
+    font->تفریق_glyph_origin_for_direction (info[i].codepoint,
 					       direction,
-					       &pos[i].x_offset,
-					       &pos[i].y_offset);
+					       &pos[i].x_جابه_جایی_2,
+					       &pos[i].y_جابه_جایی_2);
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
-    hb_buffer_reverse (buffer);
+  إذا (HB_DIRECTION_IS_BACKWARD (direction))
+    hb_میانگیر_معکوس (میانگیر);
 
-  buffer->clear_glyph_flags ();
+  میانگیر->clear_glyph_flags ();
 
-  return true;
+  أرجع درست;
 }
 
-#endif
+#پایان_اگر

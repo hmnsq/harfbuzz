@@ -1,188 +1,188 @@
-#ifdef HB_FEATURES_H
-#include HB_FEATURES_H
-#endif
+#اگر_تعریف_شده HB_FEATURES_H
+#ضمن HB_FEATURES_H
+#پایان_اگر
 
-#ifdef HB_HAS_CORETEXT
-#define HAVE_CORETEXT 1
-#endif
-#ifdef HB_HAS_DIRECTWRITE
-#define HAVE_DIRECTWRITE 1
-#endif
-#ifdef HB_HAS_FREETYPE
-#define HAVE_FREETYPE 1
-#endif
-#ifdef HB_HAS_GDI
-#define HAVE_GDI 1
-#endif
-#ifdef HB_HAS_GLIB
-#define HAVE_GLIB 1
-#endif
-#ifdef HB_HAS_GRAPHITE
-#define HAVE_GRAPHITE 1
-#endif
-#ifdef HB_HAS_UNISCRIBE
-#define HAVE_UNISCRIBE 1
-#define HAVE_GDI 1
-#endif
-#ifdef HB_HAS_WASM
-#define HAVE_WASM 1
-#endif
+#اگر_تعریف_شده HB_HAS_CORETEXT
+#تعریف_کن HAVE_CORETEXT 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_DIRECTWRITE
+#تعریف_کن HAVE_DIRECTWRITE 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_FREETYPE
+#تعریف_کن HAVE_FREETYPE 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_GDI
+#تعریف_کن HAVE_GDI 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_GLIB
+#تعریف_کن HAVE_GLIB 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_GRAPHITE
+#تعریف_کن HAVE_GRAPHITE 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_UNISCRIBE
+#تعریف_کن HAVE_UNISCRIBE 1
+#تعریف_کن HAVE_GDI 1
+#پایان_اگر
+#اگر_تعریف_شده HB_HAS_WASM
+#تعریف_کن HAVE_WASM 1
+#پایان_اگر
 
 
 /* Core library. */
-#include "OT/Var/VARC/VARC.cc"
-#include "hb-aat-layout.cc"
-#include "hb-aat-map.cc"
-#include "hb-blob.cc"
-#include "hb-buffer-serialize.cc"
-#include "hb-buffer-verify.cc"
-#include "hb-buffer.cc"
-#include "hb-common.cc"
-#include "hb-draw.cc"
-#include "hb-face-builder.cc"
-#include "hb-face.cc"
-#include "hb-fallback-shape.cc"
-#include "hb-font.cc"
-#include "hb-map.cc"
-#include "hb-number.cc"
-#include "hb-ot-cff1-table.cc"
-#include "hb-ot-cff2-table.cc"
-#include "hb-ot-color.cc"
-#include "hb-ot-face.cc"
-#include "hb-ot-fetch.cc"
-#include "hb-ot-font.cc"
-#include "hb-ot-layout.cc"
-#include "hb-ot-map.cc"
-#include "hb-ot-math.cc"
-#include "hb-ot-meta.cc"
-#include "hb-ot-metrics.cc"
-#include "hb-ot-name.cc"
-#include "hb-ot-shape-fallback.cc"
-#include "hb-ot-shape-normalize.cc"
-#include "hb-ot-shape.cc"
-#include "hb-ot-shaper-arabic.cc"
-#include "hb-ot-shaper-default.cc"
-#include "hb-ot-shaper-hangul.cc"
-#include "hb-ot-shaper-hebrew.cc"
-#include "hb-ot-shaper-indic-table.cc"
-#include "hb-ot-shaper-indic.cc"
-#include "hb-ot-shaper-khmer.cc"
-#include "hb-ot-shaper-myanmar.cc"
-#include "hb-ot-shaper-syllabic.cc"
-#include "hb-ot-shaper-thai.cc"
-#include "hb-ot-shaper-use.cc"
-#include "hb-ot-shaper-vowel-constraints.cc"
-#include "hb-ot-tag.cc"
-#include "hb-ot-var.cc"
-#include "hb-outline.cc"
-#include "hb-paint-bounded.cc"
-#include "hb-paint-extents.cc"
-#include "hb-paint.cc"
-#include "hb-set.cc"
-#include "hb-shape-plan.cc"
-#include "hb-shape.cc"
-#include "hb-shaper.cc"
-#include "hb-static.cc"
-#include "hb-style.cc"
-#include "hb-ucd.cc"
-#include "hb-unicode.cc"
+#ضمن "OT/Var/VARC/VARC.cc"
+#ضمن "hb-aat-layout.cc"
+#ضمن "hb-aat-map.cc"
+#ضمن "hb-blob.cc"
+#ضمن "hb-buffer-serialize.cc"
+#ضمن "hb-buffer-verify.cc"
+#ضمن "hb-buffer.cc"
+#ضمن "hb-common.cc"
+#ضمن "hb-draw.cc"
+#ضمن "hb-face-builder.cc"
+#ضمن "hb-face.cc"
+#ضمن "hb-fallback-shape.cc"
+#ضمن "hb-font.cc"
+#ضمن "hb-map.cc"
+#ضمن "hb-number.cc"
+#ضمن "hb-ot-cff1-table.cc"
+#ضمن "hb-ot-cff2-table.cc"
+#ضمن "hb-ot-color.cc"
+#ضمن "hb-ot-face.cc"
+#ضمن "hb-ot-fetch.cc"
+#ضمن "hb-ot-font.cc"
+#ضمن "hb-ot-layout.cc"
+#ضمن "hb-ot-map.cc"
+#ضمن "hb-ot-math.cc"
+#ضمن "hb-ot-meta.cc"
+#ضمن "hb-ot-metrics.cc"
+#ضمن "hb-ot-name.cc"
+#ضمن "hb-ot-shape-fallback.cc"
+#ضمن "hb-ot-shape-normalize.cc"
+#ضمن "hb-ot-shape.cc"
+#ضمن "hb-ot-shaper-arabic.cc"
+#ضمن "hb-ot-shaper-default.cc"
+#ضمن "hb-ot-shaper-hangul.cc"
+#ضمن "hb-ot-shaper-hebrew.cc"
+#ضمن "hb-ot-shaper-indic-table.cc"
+#ضمن "hb-ot-shaper-indic.cc"
+#ضمن "hb-ot-shaper-khmer.cc"
+#ضمن "hb-ot-shaper-myanmar.cc"
+#ضمن "hb-ot-shaper-syllabic.cc"
+#ضمن "hb-ot-shaper-thai.cc"
+#ضمن "hb-ot-shaper-use.cc"
+#ضمن "hb-ot-shaper-vowel-constraints.cc"
+#ضمن "hb-ot-tag.cc"
+#ضمن "hb-ot-var.cc"
+#ضمن "hb-outline.cc"
+#ضمن "hb-paint-bounded.cc"
+#ضمن "hb-paint-extents.cc"
+#ضمن "hb-paint.cc"
+#ضمن "hb-set.cc"
+#ضمن "hb-shape-plan.cc"
+#ضمن "hb-shape.cc"
+#ضمن "hb-shaper.cc"
+#ضمن "hb-static.cc"
+#ضمن "hb-style.cc"
+#ضمن "hb-ucd.cc"
+#ضمن "hb-unicode.cc"
 
-#ifdef HB_HAS_CAIRO
-#include "hb-cairo-utils.cc"
-#include "hb-cairo.cc"
-#include "hb-static.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_CAIRO
+#ضمن "hb-cairo-utils.cc"
+#ضمن "hb-cairo.cc"
+#ضمن "hb-static.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_CORETEXT
-#include "hb-coretext-font.cc"
-#include "hb-coretext-shape.cc"
-#include "hb-coretext.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_CORETEXT
+#ضمن "hb-coretext-font.cc"
+#ضمن "hb-coretext-shape.cc"
+#ضمن "hb-coretext.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_DIRECTWRITE
-#include "hb-directwrite-font.cc"
-#include "hb-directwrite-shape.cc"
-#include "hb-directwrite.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_DIRECTWRITE
+#ضمن "hb-directwrite-font.cc"
+#ضمن "hb-directwrite-shape.cc"
+#ضمن "hb-directwrite.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_FREETYPE
-#include "hb-ft.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_FREETYPE
+#ضمن "hb-ft.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_GDI
-#ifndef HAVE_GDI
-#include "hb-gdi.cc"
-#endif
-#endif
+#اگر_تعریف_شده HB_HAS_GDI
+#اگر_تعریف_نشده HAVE_GDI
+#ضمن "hb-gdi.cc"
+#پایان_اگر
+#پایان_اگر
 
-#ifdef HB_HAS_GLIB
-#include "hb-glib.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_GLIB
+#ضمن "hb-glib.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_GRAPHITE
-#include "hb-graphite2.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_GRAPHITE
+#ضمن "hb-graphite2.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_GPU
-#include "hb-gpu-draw.cc"
-#include "hb-gpu-paint.cc"
-#include "hb-gpu.cc"
-#include "hb-static.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_GPU
+#ضمن "hb-gpu-draw.cc"
+#ضمن "hb-gpu-paint.cc"
+#ضمن "hb-gpu.cc"
+#ضمن "hb-static.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_ICU
-#include "hb-icu.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_ICU
+#ضمن "hb-icu.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_RASTER
-#include "hb-raster-draw.cc"
-#include "hb-raster-image.cc"
-#include "hb-raster-paint.cc"
-#include "hb-static.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_RASTER
+#ضمن "hb-raster-draw.cc"
+#ضمن "hb-raster-image.cc"
+#ضمن "hb-raster-paint.cc"
+#ضمن "hb-static.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_SUBSET
-#include "OT/Var/VARC/VARC.cc"
-#include "graph/gsubgpos-context.cc"
-#include "hb-depend.cc"
-#include "hb-number.cc"
-#include "hb-ot-cff1-table.cc"
-#include "hb-ot-cff2-table.cc"
-#include "hb-static.cc"
-#include "hb-subset-cff-common.cc"
-#include "hb-subset-cff1.cc"
-#include "hb-subset-cff2.cc"
-#include "hb-subset-input.cc"
-#include "hb-subset-instancer-iup.cc"
-#include "hb-subset-instancer-solver.cc"
-#include "hb-subset-plan-layout.cc"
-#include "hb-subset-plan-var.cc"
-#include "hb-subset-plan.cc"
-#include "hb-subset-serialize.cc"
-#include "hb-subset-table-cff.cc"
-#include "hb-subset-table-color.cc"
-#include "hb-subset-table-layout.cc"
-#include "hb-subset-table-other.cc"
-#include "hb-subset-table-var.cc"
-#include "hb-subset.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_SUBSET
+#ضمن "OT/Var/VARC/VARC.cc"
+#ضمن "graph/gsubgpos-context.cc"
+#ضمن "hb-depend.cc"
+#ضمن "hb-number.cc"
+#ضمن "hb-ot-cff1-table.cc"
+#ضمن "hb-ot-cff2-table.cc"
+#ضمن "hb-static.cc"
+#ضمن "hb-subset-cff-common.cc"
+#ضمن "hb-subset-cff1.cc"
+#ضمن "hb-subset-cff2.cc"
+#ضمن "hb-subset-input.cc"
+#ضمن "hb-subset-instancer-iup.cc"
+#ضمن "hb-subset-instancer-solver.cc"
+#ضمن "hb-subset-plan-layout.cc"
+#ضمن "hb-subset-plan-var.cc"
+#ضمن "hb-subset-plan.cc"
+#ضمن "hb-subset-serialize.cc"
+#ضمن "hb-subset-table-cff.cc"
+#ضمن "hb-subset-table-color.cc"
+#ضمن "hb-subset-table-layout.cc"
+#ضمن "hb-subset-table-other.cc"
+#ضمن "hb-subset-table-var.cc"
+#ضمن "hb-subset.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_UNISCRIBE
-#include "hb-uniscribe.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_UNISCRIBE
+#ضمن "hb-uniscribe.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_VECTOR
-#include "hb-static.cc"
-#include "hb-vector-draw.cc"
-#include "hb-vector-paint-pdf.cc"
-#include "hb-vector-paint-svg.cc"
-#include "hb-vector-paint.cc"
-#include "hb-vector-path.cc"
-#include "hb-vector.cc"
-#include "hb-zlib.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_وکتور
+#ضمن "hb-static.cc"
+#ضمن "hb-vector-draw.cc"
+#ضمن "hb-vector-paint-pdf.cc"
+#ضمن "hb-vector-paint-svg.cc"
+#ضمن "hb-vector-paint.cc"
+#ضمن "hb-vector-path.cc"
+#ضمن "hb-vector.cc"
+#ضمن "hb-zlib.cc"
+#پایان_اگر
 
-#ifdef HB_HAS_WASM
-#include "hb-wasm-api.cc"
-#include "hb-wasm-shape.cc"
-#endif
+#اگر_تعریف_شده HB_HAS_WASM
+#ضمن "hb-wasm-api.cc"
+#ضمن "hb-wasm-shape.cc"
+#پایان_اگر

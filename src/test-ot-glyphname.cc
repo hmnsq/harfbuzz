@@ -24,19 +24,19 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#ضمن "hb.hh"
+#ضمن "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#اگر_تعریف_شده HB_NO_OPEN
+#تعریف_کن hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی ()
+#پایان_اگر
 
-int
-main (int argc, char **argv)
+صحيح
+اصلی (صحيح argc, حرف **argv)
 {
-  if (argc != 2) {
+  إذا (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    خروج (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
@@ -44,46 +44,46 @@ main (int argc, char **argv)
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_font_t *font = hb_font_create (face);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = اشاره_تهی;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  ثابت بیعلامت صحيح رقم_glyphs = hb_face_get_glyph_شمار (face);
+  صحيح	نتیجه = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  لكل (hb_codepoint_t gid = 0; gid < رقم_glyphs; gid++)
   {
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    حرف buf[64];
+    بیعلامت صحيح buf_اندازه = حجم (buf);
+    إذا (hb_font_get_glyph_name (font, gid, buf, buf_اندازه))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      إذا (hb_font_get_glyph_from_name(font, buf, طول_رشته (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	إذا (gid == gid_inv)
 	{
-	  printf ("%u <-> %s\n", gid, buf);
+	  چاپ_کن ("%u <-> %s\n", gid, buf);
 	}
-	else
+	وإلا
 	{
-	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
-	  result = 0;
+	  چاپ_کن ("%u -> %s -> %u\n", gid, buf, gid_inv);
+	  نتیجه = 0;
 	}
       }
-      else
+      وإلا
       {
-	printf ("%u -> %s -> ?\n", gid, buf);
-	result = 0;
+	چاپ_کن ("%u -> %s -> ?\n", gid, buf);
+	نتیجه = 0;
       }
     }
-    else
+    وإلا
     {
-      printf ("%u -> ?\n", gid);
-      result = 0;
+      چاپ_کن ("%u -> ?\n", gid);
+      نتیجه = 0;
     }
   }
 
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  أرجع !نتیجه;
 }

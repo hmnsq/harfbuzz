@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_تعریف_نشده HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-layout.hh"
+#ضمن "hb-ot-shaper-khmer-machine.hh"
+#ضمن "hb-ot-shaper-indic.hh"
+#ضمن "hb-ot-layout.hh"
 
 
 /*
@@ -38,7 +38,7 @@
  */
 
 
-static const hb_ot_map_feature_t
+ساكن ثابت hb_ot_map_feature_t
 khmer_features[] =
 {
   /*
@@ -46,25 +46,25 @@ khmer_features[] =
    * These features are applied all at once, before reordering, constrained
    * to the syllable.
    */
-  {HB_TAG('p','r','e','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('b','l','w','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('a','b','v','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('p','s','t','f'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('c','f','a','r'), F_MANUAL_JOINERS | F_PER_SYLLABLE},
+  {HB_برچسب('p','r','e','f'), F_MANUAL_JOINERS | F_در_هر_SYLLABLE},
+  {HB_برچسب('b','l','w','f'), F_MANUAL_JOINERS | F_در_هر_SYLLABLE},
+  {HB_برچسب('a','b','v','f'), F_MANUAL_JOINERS | F_در_هر_SYLLABLE},
+  {HB_برچسب('p','s','t','f'), F_MANUAL_JOINERS | F_در_هر_SYLLABLE},
+  {HB_برچسب('c','f','a','r'), F_MANUAL_JOINERS | F_در_هر_SYLLABLE},
   /*
    * Other features.
    * These features are applied all at once after clearing syllables.
    */
-  {HB_TAG('p','r','e','s'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('a','b','v','s'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('b','l','w','s'), F_GLOBAL_MANUAL_JOINERS},
-  {HB_TAG('p','s','t','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_برچسب('p','r','e','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_برچسب('a','b','v','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_برچسب('b','l','w','s'), F_GLOBAL_MANUAL_JOINERS},
+  {HB_برچسب('p','s','t','s'), F_GLOBAL_MANUAL_JOINERS},
 };
 
 /*
  * Must be in the same order as the khmer_features array.
  */
-enum {
+تعداد {
   KHMER_PREF,
   KHMER_BLWF,
   KHMER_ABVF,
@@ -76,36 +76,36 @@ enum {
   _KHMER_BLWS,
   _KHMER_PSTS,
 
-  KHMER_NUM_FEATURES,
+  KHMER_رقم_FEATURES,
   KHMER_BASIC_FEATURES = _KHMER_PRES, /* Don't forget to update this! */
 };
 
-static inline void
-set_khmer_properties (hb_glyph_info_t &info)
+ساكن مضمن فراغ
+مجموعه_khmer_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  بیعلامت صحيح type = hb_indic_get_categories (u);
 
   info.khmer_category() = (khmer_category_t) (type & 0xFFu);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan,
+ساكن منطقي
+راهاندازی_syllables_khmer (ثابت hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+		       hb_میانگیر_t *میانگیر);
+ساكن منطقي
+reorder_khmer (ثابت hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
-	       hb_buffer_t *buffer);
+	       hb_میانگیر_t *میانگیر);
 
-static void
+ساكن فراغ
 collect_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
   /* Do this before any lookups have been applied. */
-  map->add_gsub_pause (setup_syllables_khmer);
-  map->add_gsub_pause (reorder_khmer);
+  map->جمع_کن_gsub_pause (راهاندازی_syllables_khmer);
+  map->جمع_کن_gsub_pause (reorder_khmer);
 
   /* Testing suggests that Uniscribe does NOT pause between basic
    * features.  Test with KhmerUI.ttf and the following three
@@ -117,21 +117,21 @@ collect_features_khmer (hb_ot_shape_planner_t *plan)
    *
    * https://github.com/harfbuzz/harfbuzz/issues/974
    */
-  map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
-  map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
+  map->enable_feature (HB_برچسب('l','o','c','l'), F_در_هر_SYLLABLE);
+  map->enable_feature (HB_برچسب('c','c','m','p'), F_در_هر_SYLLABLE);
 
-  unsigned int i = 0;
-  for (; i < KHMER_BASIC_FEATURES; i++)
-    map->add_feature (khmer_features[i]);
+  بیعلامت صحيح i = 0;
+  لكل (; i < KHMER_BASIC_FEATURES; i++)
+    map->جمع_کن_feature (khmer_features[i]);
 
   /* https://github.com/harfbuzz/harfbuzz/issues/3531 */
-  map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
+  map->جمع_کن_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (; i < KHMER_NUM_FEATURES; i++)
-    map->add_feature (khmer_features[i]);
+  لكل (; i < KHMER_رقم_FEATURES; i++)
+    map->جمع_کن_feature (khmer_features[i]);
 }
 
-static void
+ساكن فراغ
 override_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -139,90 +139,90 @@ override_features_khmer (hb_ot_shape_planner_t *plan)
   /* Khmer spec has 'clig' as part of required shaping features:
    * "Apply feature 'clig' to form ligatures that are desired for
    * typographical correctness.", hence in overrides... */
-  map->enable_feature (HB_TAG('c','l','i','g'));
+  map->enable_feature (HB_برچسب('c','l','i','g'));
 
-  map->disable_feature (HB_TAG('l','i','g','a'));
+  map->disable_feature (HB_برچسب('l','i','g','a'));
 }
 
 
-struct khmer_shape_plan_t
+بنية khmer_shape_plan_t
 {
-  hb_mask_t mask_array[KHMER_NUM_FEATURES];
+  hb_ماسک_t ماسک_array[KHMER_رقم_FEATURES];
 };
 
-static void *
-data_create_khmer (const hb_ot_shape_plan_t *plan)
+ساكن فراغ *
+داده_create_khmer (ثابت hb_ot_shape_plan_t *plan)
 {
-  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, sizeof (khmer_shape_plan_t));
-  if (unlikely (!khmer_plan))
-    return nullptr;
+  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, حجم (khmer_shape_plan_t));
+  إذا (unlikely (!khmer_plan))
+    أرجع اشاره_تهی;
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
-    khmer_plan->mask_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
-				 0 : plan->map.get_1_mask (khmer_features[i].tag);
+  لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (khmer_plan->ماسک_array); i++)
+    khmer_plan->ماسک_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
+				 0 : plan->map.get_1_ماسک (khmer_features[i].برچسب_2);
 
-  return khmer_plan;
+  أرجع khmer_plan;
 }
 
-static void
-data_destroy_khmer (void *data)
+ساكن فراغ
+داده_destroy_khmer (فراغ *داده)
 {
-  hb_free (data);
+  hb_free (داده);
 }
 
-static void
-setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		   hb_buffer_t              *buffer,
-		   hb_font_t                *font HB_UNUSED)
+ساكن فراغ
+راهاندازی_masks_khmer (ثابت hb_ot_shape_plan_t *plan HB_استفادهنشده,
+		   hb_میانگیر_t              *میانگیر,
+		   hb_font_t                *font HB_استفادهنشده)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, khmer_category);
+  HB_میانگیر_ALLOCATE_VAR (میانگیر, khmer_category);
 
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    set_khmer_properties (info[i]);
+  بیعلامت صحيح شمار = میانگیر->len;
+  hb_glyph_info_t *info = میانگیر->info;
+  لكل (بیعلامت صحيح i = 0; i < شمار; i++)
+    مجموعه_khmer_properties (info[i]);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		       hb_font_t *font HB_UNUSED,
-		       hb_buffer_t *buffer)
+ساكن منطقي
+راهاندازی_syllables_khmer (ثابت hb_ot_shape_plan_t *plan HB_استفادهنشده,
+		       hb_font_t *font HB_استفادهنشده,
+		       hb_میانگیر_t *میانگیر)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_khmer (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  return false;
+  HB_میانگیر_ALLOCATE_VAR (میانگیر, syllable);
+  پیدا_کن_syllables_khmer (میانگیر);
+  foreach_syllable (میانگیر, شروع, انتها)
+    میانگیر->unsafe_مقصد_break (شروع, انتها);
+  أرجع خطأ;
 }
 
 
 /* Rules from:
  * https://docs.microsoft.com/en-us/typography/script-development/devanagari */
 
-static void
-reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
-			    hb_face_t *face HB_UNUSED,
-			    hb_buffer_t *buffer,
-			    unsigned int start, unsigned int end)
+ساكن فراغ
+reorder_consonant_syllable (ثابت hb_ot_shape_plan_t *plan,
+			    hb_face_t *face HB_استفادهنشده,
+			    hb_میانگیر_t *میانگیر,
+			    بیعلامت صحيح شروع, بیعلامت صحيح انتها)
 {
-  const khmer_shape_plan_t *khmer_plan = (const khmer_shape_plan_t *) plan->data;
-  hb_glyph_info_t *info = buffer->info;
+  ثابت khmer_shape_plan_t *khmer_plan = (ثابت khmer_shape_plan_t *) plan->داده;
+  hb_glyph_info_t *info = میانگیر->info;
 
   /* Setup masks. */
   {
     /* Post-base */
-    hb_mask_t mask = khmer_plan->mask_array[KHMER_BLWF] |
-		     khmer_plan->mask_array[KHMER_ABVF] |
-		     khmer_plan->mask_array[KHMER_PSTF];
-    for (unsigned int i = start + 1; i < end; i++)
-      info[i].mask  |= mask;
+    hb_ماسک_t ماسک = khmer_plan->ماسک_array[KHMER_BLWF] |
+		     khmer_plan->ماسک_array[KHMER_ABVF] |
+		     khmer_plan->ماسک_array[KHMER_PSTF];
+    لكل (بیعلامت صحيح i = شروع + 1; i < انتها; i++)
+      info[i].ماسک  |= ماسک;
   }
 
-  unsigned int num_coengs = 0;
-  for (unsigned int i = start + 1; i < end; i++)
+  بیعلامت صحيح رقم_coengs = 0;
+  لكل (بیعلامت صحيح i = شروع + 1; i < انتها; i++)
   {
     /* """
      * When a COENG + (Cons | IndV) combination are found (and subscript count
@@ -236,22 +236,22 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * the 'pref' OpenType feature applied to them.
      * """
      */
-    if (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
+    إذا (info[i].khmer_category() == K_Cat(H) && رقم_coengs <= 2 && i + 1 < انتها)
     {
-      num_coengs++;
+      رقم_coengs++;
 
-      if (info[i + 1].khmer_category() == K_Cat(Ra))
+      إذا (info[i + 1].khmer_category() == K_Cat(Ra))
       {
-	for (unsigned int j = 0; j < 2; j++)
-	  info[i + j].mask |= khmer_plan->mask_array[KHMER_PREF];
+	لكل (بیعلامت صحيح j = 0; j < 2; j++)
+	  info[i + j].ماسک |= khmer_plan->ماسک_array[KHMER_PREF];
 
 	/* Move the Coeng,Ro sequence to the start. */
-	buffer->merge_clusters (start, i + 2);
+	میانگیر->ادغام_clusters (شروع, i + 2);
 	hb_glyph_info_t t0 = info[i];
 	hb_glyph_info_t t1 = info[i + 1];
-	memmove (&info[start + 2], &info[start], (i - start) * sizeof (info[0]));
-	info[start] = t0;
-	info[start + 1] = t1;
+	memmove (&info[شروع + 2], &info[شروع], (i - شروع) * حجم (info[0]));
+	info[شروع] = t0;
+	info[شروع + 1] = t1;
 
 	/* Mark the subsequent stuff with 'cfar'.  Used in Khmer.
 	 * Read the feature spec.
@@ -259,123 +259,123 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	 * U+1784,U+17D2,U+179A,U+17D2,U+1782
 	 * U+1784,U+17D2,U+1782,U+17D2,U+179A
 	 */
-	if (khmer_plan->mask_array[KHMER_CFAR])
-	  for (unsigned int j = i + 2; j < end; j++)
-	    info[j].mask |= khmer_plan->mask_array[KHMER_CFAR];
+	إذا (khmer_plan->ماسک_array[KHMER_CFAR])
+	  لكل (بیعلامت صحيح j = i + 2; j < انتها; j++)
+	    info[j].ماسک |= khmer_plan->ماسک_array[KHMER_CFAR];
 
-	num_coengs = 2; /* Done. */
+	رقم_coengs = 2; /* Done. */
       }
     }
 
     /* Reorder left matra piece. */
-    else if (info[i].khmer_category() == K_Cat(VPre))
+    وإلا إذا (info[i].khmer_category() == K_Cat(VPre))
     {
       /* Move to the start. */
-      buffer->merge_clusters (start, i + 1);
+      میانگیر->ادغام_clusters (شروع, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[start + 1], &info[start], (i - start) * sizeof (info[0]));
-      info[start] = t;
+      memmove (&info[شروع + 1], &info[شروع], (i - شروع) * حجم (info[0]));
+      info[شروع] = t;
     }
   }
 }
 
-static void
-reorder_syllable_khmer (const hb_ot_shape_plan_t *plan,
+ساكن فراغ
+reorder_syllable_khmer (ثابت hb_ot_shape_plan_t *plan,
 			hb_face_t *face,
-			hb_buffer_t *buffer,
-			unsigned int start, unsigned int end)
+			hb_میانگیر_t *میانگیر,
+			بیعلامت صحيح شروع, بیعلامت صحيح انتها)
 {
-  khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type)
+  khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (میانگیر->info[شروع].syllable() & 0x0F);
+  بدل (syllable_type)
   {
-    case khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case khmer_consonant_syllable:
-     reorder_consonant_syllable (plan, face, buffer, start, end);
-     break;
+    حالة khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    حالة khmer_consonant_syllable:
+     reorder_consonant_syllable (plan, face, میانگیر, شروع, انتها);
+     اكسر;
 
-    case khmer_non_khmer_cluster:
-      break;
+    حالة khmer_non_khmer_cluster:
+      اكسر;
   }
 }
 
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+ساكن منطقي
+reorder_khmer (ثابت hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
-	       hb_buffer_t *buffer)
+	       hb_میانگیر_t *میانگیر)
 {
-  bool ret = false;
-  if (buffer->message (font, "start reordering khmer"))
+  منطقي ret = خطأ;
+  إذا (میانگیر->پیام (font, "start reordering khmer"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    إذا (hb_syllabic_درج_dotted_circles (font, میانگیر,
 					   khmer_broken_cluster,
 					   K_Cat(DOTTEDCIRCLE),
-					   (unsigned) -1))
-      ret = true;
+					   (بیعلامت) -1))
+      ret = درست;
 
-    foreach_syllable (buffer, start, end)
-      reorder_syllable_khmer (plan, font->face, buffer, start, end);
-    (void) buffer->message (font, "end reordering khmer");
+    foreach_syllable (میانگیر, شروع, انتها)
+      reorder_syllable_khmer (plan, font->face, میانگیر, شروع, انتها);
+    (فراغ) میانگیر->پیام (font, "end reordering khmer");
   }
-  HB_BUFFER_DEALLOCATE_VAR (buffer, khmer_category);
+  HB_میانگیر_DEALLOCATE_VAR (میانگیر, khmer_category);
 
-  return ret;
+  أرجع ret;
 }
 
 
-static bool
-decompose_khmer (const hb_ot_shape_normalize_context_t *c,
+ساكن منطقي
+decompose_khmer (ثابت hb_ot_shape_normalize_context_t *c,
 		 hb_codepoint_t  ab,
 		 hb_codepoint_t *a,
 		 hb_codepoint_t *b)
 {
-  switch (ab)
+  بدل (ab)
   {
     /*
      * Decompose split matras that don't have Unicode decompositions.
      */
 
     /* Khmer */
-    case 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; return true;
-    case 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; return true;
-    case 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; return true;
-    case 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; return true;
-    case 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; return true;
+    حالة 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; أرجع درست;
+    حالة 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; أرجع درست;
+    حالة 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; أرجع درست;
+    حالة 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; أرجع درست;
+    حالة 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; أرجع درست;
   }
 
-  return (bool) c->unicode->decompose (ab, a, b);
+  أرجع (منطقي) c->unicode->decompose (ab, a, b);
 }
 
-static bool
-compose_khmer (const hb_ot_shape_normalize_context_t *c,
+ساكن منطقي
+compose_khmer (ثابت hb_ot_shape_normalize_context_t *c,
 	       hb_codepoint_t  a,
 	       hb_codepoint_t  b,
 	       hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  إذا (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    أرجع خطأ;
 
-  return (bool) c->unicode->compose (a, b, ab);
+  أرجع (منطقي) c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_khmer =
+ثابت hb_ot_shaper_t _hb_ot_shaper_khmer =
 {
   collect_features_khmer,
   override_features_khmer,
-  data_create_khmer,
-  data_destroy_khmer,
-  nullptr, /* preprocess_text */
-  nullptr, /* postprocess_glyphs */
+  داده_create_khmer,
+  داده_destroy_khmer,
+  اشاره_تهی, /* preprocess_text */
+  اشاره_تهی, /* postprocess_glyphs */
   decompose_khmer,
   compose_khmer,
-  setup_masks_khmer,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  راهاندازی_masks_khmer,
+  اشاره_تهی, /* reorder_marks */
+  HB_برچسب_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_نما_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
+  HB_OT_SHAPE_ZERO_عرض_MARKS_NONE,
+  خطأ, /* fallback_position */
 };
 
 
-#endif
+#پایان_اگر

@@ -25,10 +25,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_PAGE_HH
-#define HB_BIT_PAGE_HH
+#اگر_تعریف_نشده HB_بیت_صفحه_HH
+#تعریف_کن HB_بیت_صفحه_HH
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 
 /* Compiler-assisted vectorization. */
@@ -36,182 +36,182 @@
 /* Type behaving similar to vectorized vars defined using __attribute__((vector_size(...))),
  * basically a fixed-size bitset. We can't use the compiler type because hb_vector_t cannot
  * guarantee alignment requirements. */
-template <typename elt_t, unsigned int byte_size>
-struct hb_vector_size_t
+قالب <نام_نوع elt_t, بیعلامت صحيح byte_اندازه>
+بنية hb_وکتور_اندازه_t
 {
-  elt_t& operator [] (unsigned int i) { return v[i]; }
-  const elt_t& operator [] (unsigned int i) const { return v[i]; }
+  elt_t& عملگر [] (بیعلامت صحيح i) { أرجع v[i]; }
+  ثابت elt_t& عملگر [] (بیعلامت صحيح i) ثابت { أرجع v[i]; }
 
-  void init0 ()
+  فراغ init0 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
       v[i] = 0;
   }
-  void init1 ()
+  فراغ init1 ()
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
       v[i] = (elt_t) -1;
   }
 
-  template <typename Op>
-  hb_vector_size_t process (const Op& op) const
+  قالب <نام_نوع Op>
+  hb_وکتور_اندازه_t process (ثابت Op& op) ثابت
   {
-    hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    hb_وکتور_اندازه_t r;
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
       r.v[i] = op (v[i]);
-    return r;
+    أرجع r;
   }
-  template <typename Op>
-  hb_vector_size_t process (const Op& op, const hb_vector_size_t &o) const
+  قالب <نام_نوع Op>
+  hb_وکتور_اندازه_t process (ثابت Op& op, ثابت hb_وکتور_اندازه_t &o) ثابت
   {
-    hb_vector_size_t r;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    hb_وکتور_اندازه_t r;
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
       r.v[i] = op (v[i], o.v[i]);
-    return r;
+    أرجع r;
   }
-  hb_vector_size_t operator | (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_or, o); }
-  hb_vector_size_t operator & (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_and, o); }
-  hb_vector_size_t operator ^ (const hb_vector_size_t &o) const
-  { return process (hb_bitwise_xor, o); }
-  hb_vector_size_t operator ~ () const
-  { return process (hb_bitwise_neg); }
+  hb_وکتور_اندازه_t عملگر | (ثابت hb_وکتور_اندازه_t &o) ثابت
+  { أرجع process (hb_bitwise_or, o); }
+  hb_وکتور_اندازه_t عملگر & (ثابت hb_وکتور_اندازه_t &o) ثابت
+  { أرجع process (hb_bitwise_and, o); }
+  hb_وکتور_اندازه_t عملگر ^ (ثابت hb_وکتور_اندازه_t &o) ثابت
+  { أرجع process (hb_bitwise_xor, o); }
+  hb_وکتور_اندازه_t عملگر ~ () ثابت
+  { أرجع process (hb_bitwise_neg); }
 
-  operator bool () const
+  عملگر منطقي () ثابت
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i])
-	return true;
-    return false;
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
+      إذا (v[i])
+	أرجع درست;
+    أرجع خطأ;
   }
-  operator unsigned int () const
+  عملگر بیعلامت صحيح () ثابت
   {
-    unsigned int r = 0;
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
+    بیعلامت صحيح r = 0;
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
       r += hb_popcount (v[i]);
-    return r;
+    أرجع r;
   }
-  bool operator == (const hb_vector_size_t &o) const
+  منطقي عملگر == (ثابت hb_وکتور_اندازه_t &o) ثابت
   {
-    for (unsigned int i = 0; i < ARRAY_LENGTH (v); i++)
-      if (v[i] != o.v[i])
-	return false;
-    return true;
+    لكل (بیعلامت صحيح i = 0; i < ARRAY_درازی (v); i++)
+      إذا (v[i] != o.v[i])
+	أرجع خطأ;
+    أرجع درست;
   }
 
-  hb_array_t<const elt_t> iter () const
-  { return hb_array (v); }
+  hb_array_t<ثابت elt_t> iter () ثابت
+  { أرجع hb_array (v); }
 
-  private:
-  static_assert (0 == byte_size % sizeof (elt_t), "");
-  elt_t v[byte_size / sizeof (elt_t)];
+  خاص:
+  static_assert (0 == byte_اندازه % حجم (elt_t), "");
+  elt_t v[byte_اندازه / حجم (elt_t)];
 };
 
 
-struct hb_bit_page_t
+بنية hb_بیت_صفحه_t
 {
-  hb_bit_page_t () { init0 (); }
+  hb_بیت_صفحه_t () { init0 (); }
 
-  void init0 () { v.init0 (); population = 0; }
-  void init1 () { v.init1 (); population = PAGE_BITS; }
+  فراغ init0 () { v.init0 (); population = 0; }
+  فراغ init1 () { v.init1 (); population = صفحه_بیتها; }
 
-  void dirty () { population = UINT_MAX; }
+  فراغ dirty () { population = UINT_MAX; }
 
-  static inline constexpr unsigned len ()
-  { return ARRAY_LENGTH_CONST (v); }
+  ساكن مضمن constexpr بیعلامت len ()
+  { أرجع ARRAY_درازی_CONST (v); }
 
-  operator bool () const { return !is_empty (); }
-  bool is_empty () const
+  عملگر منطقي () ثابت { أرجع !is_empty (); }
+  منطقي is_empty () ثابت
   {
-    if (has_population ()) return !population;
-    bool empty = !v;
-    if (empty) population = 0;
-    return empty;
+    إذا (has_population ()) أرجع !population;
+    منطقي خالی_2 = !v;
+    إذا (خالی_2) population = 0;
+    أرجع خالی_2;
   }
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
-    return hb_bytes_t ((const char *) &v, sizeof (v)).hash ();
+    أرجع hb_بایتها_t ((ثابت حرف *) &v, حجم (v)).hash ();
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); dirty (); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { elt (g) |= bits; dirty (); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); dirty (); }
-  void del_bits (hb_codepoint_t g, uint64_t bits) { elt (g) &= ~bits; dirty (); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  فراغ جمع_کن (hb_codepoint_t g) { elt (g) |= ماسک (g); dirty (); }
+  فراغ جمع_کن_بیتها (hb_codepoint_t g, uint64_t بیتها) { elt (g) |= بیتها; dirty (); }
+  فراغ del (hb_codepoint_t g) { elt (g) &= ~ماسک (g); dirty (); }
+  فراغ del_بیتها (hb_codepoint_t g, uint64_t بیتها) { elt (g) &= ~بیتها; dirty (); }
+  فراغ مجموعه (hb_codepoint_t g, منطقي value) { إذا (value) جمع_کن (g); وإلا del (g); }
+  منطقي get (hb_codepoint_t g) ثابت { أرجع elt (g) & ماسک (g); }
+  منطقي may_have (hb_codepoint_t g) ثابت { أرجع get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
+  منطقي عملگر [] (hb_codepoint_t g) ثابت { أرجع get (g); }
+  منطقي عملگر () (hb_codepoint_t g) ثابت { أرجع get (g); }
+  منطقي has (hb_codepoint_t g) ثابت { أرجع get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
-  {
-    elt_t *la = &elt (a);
-    elt_t *lb = &elt (b);
-    if (la == lb)
-      *la |= (mask (b) << 1) - mask(a);
-    else if (likely (la < lb))
-    {
-      *la |= ~(mask (a) - 1llu);
-      la++;
-
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
-
-      *lb |= ((mask (b) << 1) - 1llu);
-    }
-    else
-      return;
-    dirty ();
-  }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  فراغ جمع_کن_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
-      *la &= ~((mask (b) << 1llu) - mask(a));
-    else if (likely (la < lb))
+    إذا (la == lb)
+      *la |= (ماسک (b) << 1) - ماسک(a);
+    وإلا إذا (likely (la < lb))
     {
-      *la &= mask (a) - 1;
+      *la |= ~(ماسک (a) - 1llu);
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (حرف *) lb - (حرف *) la);
 
-      *lb &= ~((mask (b) << 1) - 1llu);
+      *lb |= ((ماسک (b) << 1) - 1llu);
     }
-    else
-      return;
+    وإلا
+      أرجع;
     dirty ();
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  فراغ del_range (hb_codepoint_t a, hb_codepoint_t b)
+  {
+    elt_t *la = &elt (a);
+    elt_t *lb = &elt (b);
+    إذا (la == lb)
+      *la &= ~((ماسک (b) << 1llu) - ماسک(a));
+    وإلا إذا (likely (la < lb))
+    {
+      *la &= ماسک (a) - 1;
+      la++;
+
+      hb_memset (la, 0, (حرف *) lb - (حرف *) la);
+
+      *lb &= ~((ماسک (b) << 1) - 1llu);
+    }
+    وإلا
+      أرجع;
+    dirty ();
+  }
+  فراغ مجموعه_range (hb_codepoint_t a, hb_codepoint_t b, منطقي v)
+  { إذا (v) جمع_کن_range (a, b); وإلا del_range (a, b); }
 
 
   // Writes out page values to the array p. Returns the number of values
   // written. At most size codepoints will be written.
-  unsigned int write (uint32_t        base,
-		      unsigned int    start_value,
+  بیعلامت صحيح اكتب (uint32_t        پایه,
+		      بیعلامت صحيح    شروع_مقدار,
 		      hb_codepoint_t *p,
-		      unsigned int    size) const
+		      بیعلامت صحيح    اندازه) ثابت
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    بیعلامت صحيح شروع_v = شروع_مقدار / ELT_بیتها;
+    بیعلامت صحيح شروع_بیت = شروع_مقدار & ELT_ماسک;
+    بیعلامت صحيح شمار = 0;
+    لكل (بیعلامت i = شروع_v; i < len () && شمار < اندازه; i++)
     {
-      elt_t bits = v[i];
-      uint32_t v_base = base | (i * ELT_BITS);
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      elt_t بیتها = v[i];
+      uint32_t v_پایه = پایه | (i * ELT_بیتها);
+      لكل (بیعلامت صحيح j = شروع_بیت; j < ELT_بیتها && شمار < اندازه; j++)
       {
-	if ((elt_t(1) << j) & bits) {
-	  *p++ = v_base | j;
-	  count++;
+	إذا ((elt_t(1) << j) & بیتها) {
+	  *p++ = v_پایه | j;
+	  شمار++;
 	}
       }
-      start_bit = 0;
+      شروع_بیت = 0;
     }
-    return count;
+    أرجع شمار;
   }
 
   // Writes out the values NOT in this page to the array p. Returns the
@@ -220,197 +220,197 @@ struct hb_bit_page_t
   // that should be written (if not present in this page). This is used to fill
   // any missing value gaps between this page and the previous page, if any.
   // next_value is updated to one more than the last value present in this page.
-  unsigned int write_inverted (uint32_t        base,
-			       unsigned int    start_value,
+  بیعلامت صحيح write_inverted (uint32_t        پایه,
+			       بیعلامت صحيح    شروع_مقدار,
 			       hb_codepoint_t *p,
-			       unsigned int    size,
-			       hb_codepoint_t *next_value) const
+			       بیعلامت صحيح    اندازه,
+			       hb_codepoint_t *بعدی_مقدار) ثابت
   {
-    unsigned int start_v = start_value / ELT_BITS;
-    unsigned int start_bit = start_value & ELT_MASK;
-    unsigned int count = 0;
-    for (unsigned i = start_v; i < len () && count < size; i++)
+    بیعلامت صحيح شروع_v = شروع_مقدار / ELT_بیتها;
+    بیعلامت صحيح شروع_بیت = شروع_مقدار & ELT_ماسک;
+    بیعلامت صحيح شمار = 0;
+    لكل (بیعلامت i = شروع_v; i < len () && شمار < اندازه; i++)
     {
-      elt_t bits = v[i];
-      uint32_t v_offset = i * ELT_BITS;
-      for (unsigned int j = start_bit; j < ELT_BITS && count < size; j++)
+      elt_t بیتها = v[i];
+      uint32_t v_جابه_جایی = i * ELT_بیتها;
+      لكل (بیعلامت صحيح j = شروع_بیت; j < ELT_بیتها && شمار < اندازه; j++)
       {
-	if ((elt_t(1) << j) & bits)
+	إذا ((elt_t(1) << j) & بیتها)
 	{
-	  hb_codepoint_t value = base | v_offset | j;
+	  hb_codepoint_t value = پایه | v_جابه_جایی | j;
 	  // Emit all the missing values from next_value up to value - 1.
-	  for (hb_codepoint_t k = *next_value; k < value && count < size; k++)
+	  لكل (hb_codepoint_t k = *بعدی_مقدار; k < value && شمار < اندازه; k++)
 	  {
 	    *p++ = k;
-	    count++;
+	    شمار++;
 	  }
 	  // Skip over this value;
-	  *next_value = value + 1;
+	  *بعدی_مقدار = value + 1;
 	}
       }
-      start_bit = 0;
+      شروع_بیت = 0;
     }
-    return count;
+    أرجع شمار;
   }
 
-  bool operator == (const hb_bit_page_t &other) const { return is_equal (other); }
-  bool is_equal (const hb_bit_page_t &other) const { return v == other.v; }
-  bool intersects (const hb_bit_page_t &other) const
+  منطقي عملگر == (ثابت hb_بیت_صفحه_t &other) ثابت { أرجع is_equal (other); }
+  منطقي is_equal (ثابت hb_بیت_صفحه_t &other) ثابت { أرجع v == other.v; }
+  منطقي intersects (ثابت hb_بیت_صفحه_t &other) ثابت
   {
-    for (unsigned i = 0; i < len (); i++)
-      if (v[i] & other.v[i])
-	return true;
-    return false;
+    لكل (بیعلامت i = 0; i < len (); i++)
+      إذا (v[i] & other.v[i])
+	أرجع درست;
+    أرجع خطأ;
   }
-  bool may_intersect (const hb_bit_page_t &other) const
-  { return intersects (other); }
+  منطقي may_intersect (ثابت hb_بیت_صفحه_t &other) ثابت
+  { أرجع intersects (other); }
 
-  bool operator <= (const hb_bit_page_t &larger_page) const { return is_subset (larger_page); }
-  bool is_subset (const hb_bit_page_t &larger_page) const
+  منطقي عملگر <= (ثابت hb_بیت_صفحه_t &larger_صفحه) ثابت { أرجع is_subset (larger_صفحه); }
+  منطقي is_subset (ثابت hb_بیت_صفحه_t &larger_صفحه) ثابت
   {
-    if (has_population () && larger_page.has_population () &&
-	population > larger_page.population)
-      return false;
+    إذا (has_population () && larger_صفحه.has_population () &&
+	population > larger_صفحه.population)
+      أرجع خطأ;
 
-    for (unsigned i = 0; i < len (); i++)
-      if (~larger_page.v[i] & v[i])
-	return false;
-    return true;
-  }
-
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned get_population () const
-  {
-    if (has_population ()) return population;
-    return population = v;
+    لكل (بیعلامت i = 0; i < len (); i++)
+      إذا (~larger_صفحه.v[i] & v[i])
+	أرجع خطأ;
+    أرجع درست;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  منطقي has_population () ثابت { أرجع population != UINT_MAX; }
+  بیعلامت get_population () ثابت
   {
-    unsigned int m = (*codepoint + 1) & MASK;
-    if (!m)
+    إذا (has_population ()) أرجع population;
+    أرجع population = v;
+  }
+
+  منطقي next (hb_codepoint_t *codepoint) ثابت
+  {
+    بیعلامت صحيح m = (*codepoint + 1) & ماسک_2;
+    إذا (!m)
     {
       *codepoint = INVALID;
-      return false;
+      أرجع خطأ;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    بیعلامت صحيح i = m / ELT_بیتها;
+    بیعلامت صحيح j = m & ELT_ماسک;
 
-    const elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
-    for (const elt_t *p = &vv; i < len (); p = ((const elt_t *) &v[0]) + (++i))
-      if (*p)
+    ثابت elt_t vv = v[i] & ~((elt_t (1) << j) - 1);
+    لكل (ثابت elt_t *p = &vv; i < len (); p = ((ثابت elt_t *) &v[0]) + (++i))
+      إذا (*p)
       {
-	*codepoint = i * ELT_BITS + elt_get_min (*p);
-	return true;
+	*codepoint = i * ELT_بیتها + elt_get_min (*p);
+	أرجع درست;
       }
 
     *codepoint = INVALID;
-    return false;
+    أرجع خطأ;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  منطقي قبلی (hb_codepoint_t *codepoint) ثابت
   {
-    unsigned int m = (*codepoint - 1) & MASK;
-    if (m == MASK)
+    بیعلامت صحيح m = (*codepoint - 1) & ماسک_2;
+    إذا (m == ماسک_2)
     {
       *codepoint = INVALID;
-      return false;
+      أرجع خطأ;
     }
-    unsigned int i = m / ELT_BITS;
-    unsigned int j = m & ELT_MASK;
+    بیعلامت صحيح i = m / ELT_بیتها;
+    بیعلامت صحيح j = m & ELT_ماسک;
 
     /* Fancy mask to avoid shifting by elt_t bitsize, which is undefined. */
-    const elt_t mask = j < 8 * sizeof (elt_t) - 1 ?
+    ثابت elt_t ماسک = j < 8 * حجم (elt_t) - 1 ?
 		       ((elt_t (1) << (j + 1)) - 1) :
 		       (elt_t) -1;
-    const elt_t vv = v[i] & mask;
-    const elt_t *p = &vv;
-    while (true)
+    ثابت elt_t vv = v[i] & ماسک;
+    ثابت elt_t *p = &vv;
+    طالما (درست)
     {
-      if (*p)
+      إذا (*p)
       {
-	*codepoint = i * ELT_BITS + elt_get_max (*p);
-	return true;
+	*codepoint = i * ELT_بیتها + elt_get_max (*p);
+	أرجع درست;
       }
-      if ((int) i <= 0) break;
+      إذا ((صحيح) i <= 0) اكسر;
       p = &v[--i];
     }
 
     *codepoint = INVALID;
-    return false;
+    أرجع خطأ;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ثابت
   {
-    for (unsigned int i = 0; i < len (); i++)
-      if (v[i])
-	return i * ELT_BITS + elt_get_min (v[i]);
-    return INVALID;
+    لكل (بیعلامت صحيح i = 0; i < len (); i++)
+      إذا (v[i])
+	أرجع i * ELT_بیتها + elt_get_min (v[i]);
+    أرجع INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ثابت
   {
-    for (int i = len () - 1; i >= 0; i--)
-      if (v[i])
-	return i * ELT_BITS + elt_get_max (v[i]);
-    return INVALID;
+    لكل (صحيح i = len () - 1; i >= 0; i--)
+      إذا (v[i])
+	أرجع i * ELT_بیتها + elt_get_max (v[i]);
+    أرجع INVALID;
   }
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  بنية iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const hb_bit_page_t &s_ = Null (hb_bit_page_t), bool init = true) : s (&s_), v (INVALID)
+    ساكن constexpr منطقي is_sorted_iterator = درست;
+    iter_t (ثابت hb_بیت_صفحه_t &s_ = Null (hb_بیت_صفحه_t), منطقي init = درست) : s (&s_), v (INVALID)
     {
-      if (init)
+      إذا (init)
 	v = s->get_min ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () {
+    تعريفنوع hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ثابت { أرجع v; }
+    منطقي __more__ () ثابت { أرجع v != INVALID; }
+    فراغ __next__ () {
        s->next (&v);
     }
-    void __prev__ () { s->previous (&v); }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    فراغ __prev__ () { s->قبلی (&v); }
+    iter_t انتها () ثابت { أرجع iter_t (*s, خطأ); }
+    منطقي عملگر != (ثابت iter_t& o) ثابت
+    { أرجع v != o.v; }
 
-    protected:
-    const hb_bit_page_t *s;
+    محمي:
+    ثابت hb_بیت_صفحه_t *s;
     hb_codepoint_t v;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ثابت { أرجع iter_t (*هذا); }
+  عملگر iter_t () ثابت { أرجع iter (); }
 
-  static constexpr hb_codepoint_t INVALID = HB_SET_VALUE_INVALID;
+  ساكن constexpr hb_codepoint_t INVALID = HB_مجموعه_مقدار_INVALID;
 
-  typedef unsigned long long elt_t;
-  static constexpr unsigned PAGE_BITS_LOG_2 = 9; // 512 bits
-  static constexpr unsigned PAGE_BITS = 1 << PAGE_BITS_LOG_2;
-  static_assert (1 << PAGE_BITS_LOG_2 == PAGE_BITS, "");
-  static_assert ((PAGE_BITS & ((PAGE_BITS) - 1)) == 0, "");
-  static constexpr unsigned PAGE_BITMASK = PAGE_BITS - 1;
+  تعريفنوع بیعلامت دراز دراز elt_t;
+  ساكن constexpr بیعلامت صفحه_بیتها_LOG_2 = 9; // 512 bits
+  ساكن constexpr بیعلامت صفحه_بیتها = 1 << صفحه_بیتها_LOG_2;
+  static_assert (1 << صفحه_بیتها_LOG_2 == صفحه_بیتها, "");
+  static_assert ((صفحه_بیتها & ((صفحه_بیتها) - 1)) == 0, "");
+  ساكن constexpr بیعلامت صفحه_BITMASK = صفحه_بیتها - 1;
 
-  static unsigned int elt_get_min (const elt_t &elt) { return hb_ctz (elt); }
-  static unsigned int elt_get_max (const elt_t &elt) { return hb_bit_storage (elt) - 1; }
+  ساكن بیعلامت صحيح elt_get_min (ثابت elt_t &elt) { أرجع hb_ctz (elt); }
+  ساكن بیعلامت صحيح elt_get_max (ثابت elt_t &elt) { أرجع hb_بیت_storage (elt) - 1; }
 
-  typedef hb_vector_size_t<elt_t, PAGE_BITS / 8> vector_t;
+  تعريفنوع hb_وکتور_اندازه_t<elt_t, صفحه_بیتها / 8> وکتور_t;
 
-  static constexpr unsigned ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  ساكن constexpr بیعلامت ELT_بیتها = حجم (elt_t) * 8;
+  ساكن constexpr بیعلامت ELT_ماسک = ELT_بیتها - 1;
 
-  static constexpr unsigned BITS = sizeof (vector_t) * 8;
-  static constexpr unsigned MASK = BITS - 1;
-  static_assert ((unsigned) PAGE_BITS == (unsigned) BITS, "");
+  ساكن constexpr بیعلامت بیتها_2 = حجم (وکتور_t) * 8;
+  ساكن constexpr بیعلامت ماسک_2 = بیتها_2 - 1;
+  static_assert ((بیعلامت) صفحه_بیتها == (بیعلامت) بیتها_2, "");
 
-  elt_t &elt (hb_codepoint_t g) { return v[(g & MASK) / ELT_BITS]; }
-  const elt_t& elt (hb_codepoint_t g) const { return v[(g & MASK) / ELT_BITS]; }
-  static constexpr elt_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  elt_t &elt (hb_codepoint_t g) { أرجع v[(g & ماسک_2) / ELT_بیتها]; }
+  ثابت elt_t& elt (hb_codepoint_t g) ثابت { أرجع v[(g & ماسک_2) / ELT_بیتها]; }
+  ساكن constexpr elt_t ماسک (hb_codepoint_t g) { أرجع elt_t (1) << (g & ELT_ماسک); }
 
-  mutable unsigned population;
-  vector_t v;
+  تغییرپذیر بیعلامت population;
+  وکتور_t v;
 };
 
 
-#endif /* HB_BIT_PAGE_HH */
+#پایان_اگر /* HB_BIT_PAGE_HH */

@@ -24,632 +24,632 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_PAIRPOS_GRAPH_HH
-#define GRAPH_PAIRPOS_GRAPH_HH
+#اگر_تعریف_نشده گراف_PAIRPOS_گراف_HH
+#تعریف_کن گراف_PAIRPOS_گراف_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "classdef-graph.hh"
-#include "../OT/Layout/GPOS/PairPos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#ضمن "split-helpers.hh"
+#ضمن "coverage-graph.hh"
+#ضمن "classdef-graph.hh"
+#ضمن "../OT/Layout/GPOS/PairPos.hh"
+#ضمن "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+نطاق گراف {
 
-struct PairPosFormat1 : public OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
+بنية PairPosFormat1 : عام OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجه_t<فراغ> sanitize (ثابت گراف_t::رأس_t& رأس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t رأس_len = رأس.جدول_اندازه ();
+    بیعلامت min_اندازه = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_اندازه;
+    إذا (unlikely (رأس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < min_size + pairSet.get_size () - pairSet.len.get_size()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    إذا (unlikely (رأس_len < min_اندازه + pair_مجموعه.get_اندازه () - pair_مجموعه.len.get_اندازه()))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  گراف_نتیجه_t<hb_وکتور_t<بیعلامت>> تقسیم_subtables (gsubgpos_گراف_context_t& c,
+                                                         بیعلامت this_شاخص)
   {
-    hb_set_t visited;
+    hb_مجموعه_t دیدهشده;
 
-    TRY_ASSIGN (const unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    const unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size;
+    TRY_تخصیص_بده (ثابت بیعلامت coverage_id, c.گراف.شاخص_for_جابه_جایی (this_شاخص, &coverage));
+    ثابت بیعلامت coverage_اندازه = c.گراف.vertices_[coverage_id].جدول_اندازه ();
+    ثابت بیعلامت پایه_اندازه = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_اندازه;
 
-    unsigned partial_coverage_size = 4;
-    unsigned accumulated = base_size;
-    hb_vector_t<unsigned> split_points;
-    for (unsigned i = 0; i < pairSet.len; i++)
+    بیعلامت partial_coverage_اندازه = 4;
+    بیعلامت accumulated = پایه_اندازه;
+    hb_وکتور_t<بیعلامت> تقسیم_points;
+    لكل (بیعلامت i = 0; i < pair_مجموعه.len; i++)
     {
-      TRY_ASSIGN (unsigned pair_set_index, pair_set_graph_index (c, this_index, i));
-      unsigned accumulated_delta =
-          c.graph.find_subgraph_size (pair_set_index, visited).value_or (0) +
-          SmallTypes::size; // for PairSet offset.
-      partial_coverage_size += OT::HBUINT16::static_size;
+      TRY_تخصیص_بده (بیعلامت pair_مجموعه_شاخص, pair_مجموعه_گراف_شاخص (c, this_شاخص, i));
+      بیعلامت accumulated_delta =
+          c.گراف.پیدا_کن_subgraph_اندازه (pair_مجموعه_شاخص, دیدهشده).مقدار_or (0) +
+          SmallTypes::اندازه; // for PairSet offset.
+      partial_coverage_اندازه += OT::HBUINT16::static_اندازه;
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated + hb_min (partial_coverage_size, coverage_size);
+      بیعلامت مجموع = accumulated + hb_min (partial_coverage_اندازه, coverage_اندازه);
 
-      if (total >= (1 << 16))
+      إذا (مجموع >= (1 << 16))
       {
-        split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
-        accumulated = base_size + accumulated_delta;
-        partial_coverage_size = 6;
-        visited.clear (); // node sharing isn't allowed between splits.
+        تقسیم_points.push (i);
+        TRY (گراف_نتیجه_t<فراغ>::from (تقسیم_points, تخصیص_FAILURE));
+        accumulated = پایه_اندازه + accumulated_delta;
+        partial_coverage_اندازه = 6;
+        دیدهشده.clear (); // node sharing isn't allowed between splits.
       }
     }
 
-    split_context_t split_context {
+    تقسیم_context_t تقسیم_context {
       c,
-      this,
-      this_index,
+      هذا,
+      this_شاخص,
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    أرجع actuate_subtable_تقسیم<تقسیم_context_t> (تقسیم_context, تقسیم_points);
   }
 
- private:
+ خاص:
 
-  struct split_context_t {
-    gsubgpos_graph_context_t& c;
+  بنية تقسیم_context_t {
+    gsubgpos_گراف_context_t& c;
     PairPosFormat1* thiz;
-    unsigned this_index;
+    بیعلامت this_شاخص;
 
-    unsigned original_count ()
+    بیعلامت original_شمار_2 ()
     {
-      return thiz->pairSet.len;
+      أرجع thiz->pair_مجموعه.len;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    گراف_نتیجه_t<بیعلامت> clone_range (بیعلامت شروع, بیعلامت انتها)
     {
-      return thiz->clone_range (this->c, this->this_index, start, end);
+      أرجع thiz->clone_range (هذا->c, هذا->this_شاخص, شروع, انتها);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    گراف_نتیجه_t<فراغ> shrink (بیعلامت شمار)
     {
-      return thiz->shrink (this->c, this->this_index, count);
+      أرجع thiz->shrink (هذا->c, هذا->this_شاخص, شمار);
     }
   };
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               unsigned this_index,
-                               unsigned count)
+  گراف_نتیجه_t<فراغ> shrink (gsubgpos_گراف_context_t& c,
+                               بیعلامت this_شاخص,
+                               بیعلامت شمار)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
                "  Shrinking PairPosFormat1 (%u) to [0, %u).",
-               this_index,
-               count);
-    unsigned old_count = pairSet.len;
-    if (count >= old_count)
-      return Ok();
+               this_شاخص,
+               شمار);
+    بیعلامت old_شمار = pair_مجموعه.len;
+    إذا (شمار >= old_شمار)
+      أرجع Ok();
 
-    pairSet.len = count;
-    c.graph.vertices_[this_index].shrink_buffer ((old_count - count) * SmallTypes::size);
+    pair_مجموعه.len = شمار;
+    c.گراف.vertices_[this_شاخص].shrink_میانگیر ((old_شمار - شمار) * SmallTypes::اندازه);
 
-    TRY_ASSIGN (auto coverage, c.graph.as_mutable_table<Coverage> (this_index, &this->coverage));
+    TRY_تخصیص_بده (خودکار coverage, c.گراف.as_mutable_جدول<Coverage> (this_شاخص, &هذا->coverage));
 
-    unsigned coverage_size = coverage.vertex->table_size ();
-    auto new_coverage =
-        + hb_zip (coverage.table->iter (), hb_range ())
-        | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second < count;
+    بیعلامت coverage_اندازه = coverage.رأس->جدول_اندازه ();
+    خودکار new_coverage =
+        + hb_zip (coverage.جدول->iter (), hb_range ())
+        | hb_filter ([&] (hb_pair_t<بیعلامت, بیعلامت> p) {
+          أرجع p.second < شمار;
         })
-        | hb_map_retains_sorting (hb_first)
+        | hb_map_retains_ترتیبدهی (hb_اولی)
         ;
 
-    return Coverage::make_coverage (c, new_coverage, coverage.index, coverage_size);
+    أرجع Coverage::make_coverage (c, new_coverage, coverage.شاخص_2, coverage_اندازه);
   }
 
   // Create a new PairPos including PairSet's from start (inclusive) to end (exclusive).
   // Returns object id of the new object.
-  graph_result_t<unsigned> clone_range (gsubgpos_graph_context_t& c,
-                                        unsigned this_index,
-                                        unsigned start, unsigned end) const
+  گراف_نتیجه_t<بیعلامت> clone_range (gsubgpos_گراف_context_t& c,
+                                        بیعلامت this_شاخص,
+                                        بیعلامت شروع, بیعلامت انتها) ثابت
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_index, start, end);
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
+               "  Cloning PairPosFormat1 (%u) range [%u, %u).", this_شاخص, شروع, انتها);
 
-    unsigned num_pair_sets = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_size
-                          + num_pair_sets * SmallTypes::size;
+    بیعلامت رقم_pair_sets = انتها - شروع;
+    بیعلامت اول_اندازه = OT::Layout::GPOS_impl::PairPosFormat1_3<SmallTypes>::min_اندازه
+                          + رقم_pair_sets * SmallTypes::اندازه;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, c.create_node (prime_size));
+    TRY_تخصیص_بده (بیعلامت pair_pos_اول_id, c.create_گره (اول_اندازه));
 
-    PairPosFormat1* pair_pos_prime = (PairPosFormat1*) c.graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat[0] = this->valueFormat[0];
-    pair_pos_prime->valueFormat[1] = this->valueFormat[1];
-    pair_pos_prime->pairSet.len = num_pair_sets;
+    PairPosFormat1* pair_pos_اول = (PairPosFormat1*) c.گراف.object (pair_pos_اول_id).سر_2;
+    pair_pos_اول->format = هذا->format;
+    pair_pos_اول->مقدار_Format_2[0] = هذا->مقدار_Format_2[0];
+    pair_pos_اول->مقدار_Format_2[1] = هذا->مقدار_Format_2[1];
+    pair_pos_اول->pair_مجموعه.len = رقم_pair_sets;
 
-    for (unsigned i = start; i < end; i++)
+    لكل (بیعلامت i = شروع; i < انتها; i++)
     {
-      TRY (c.graph.move_child<> (this_index,
-                                 &pairSet[i],
-                                 pair_pos_prime_id,
-                                 &pair_pos_prime->pairSet[i - start]));
+      TRY (c.گراف.move_فرزند<> (this_شاخص,
+                                 &pair_مجموعه[i],
+                                 pair_pos_اول_id,
+                                 &pair_pos_اول->pair_مجموعه[i - شروع]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    c.graph.vertices_[this_index].sort_real_links ();
+    c.گراف.vertices_[this_شاخص].مرتب_سازی_real_links ();
 
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
+    TRY_تخصیص_بده (بیعلامت coverage_id, c.گراف.شاخص_for_جابه_جایی (this_شاخص, &coverage));
     TRY (Coverage::clone_coverage (c,
                                    coverage_id,
-                                   pair_pos_prime_id,
+                                   pair_pos_اول_id,
                                    2,
-                                   start, end));
+                                   شروع, انتها));
 
-    return Ok(pair_pos_prime_id);
+    أرجع Ok(pair_pos_اول_id);
   }
 
 
 
-  graph_result_t<unsigned> pair_set_graph_index (gsubgpos_graph_context_t& c, unsigned this_index, unsigned i) const
+  گراف_نتیجه_t<بیعلامت> pair_مجموعه_گراف_شاخص (gsubgpos_گراف_context_t& c, بیعلامت this_شاخص, بیعلامت i) ثابت
   {
-    return c.graph.index_for_offset (this_index, &pairSet[i]);
+    أرجع c.گراف.شاخص_for_جابه_جایی (this_شاخص, &pair_مجموعه[i]);
   }
 };
 
-struct PairPosFormat2 : public OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
+بنية PairPosFormat2 : عام OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجه_t<فراغ> sanitize (ثابت گراف_t::رأس_t& رأس) ثابت
   {
-    size_t vertex_len = vertex.table_size ();
-    unsigned min_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    size_t رأس_len = رأس.جدول_اندازه ();
+    بیعلامت min_اندازه = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_اندازه;
+    إذا (unlikely (رأس_len < min_اندازه)) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    const unsigned class1_count = class1Count;
-    if (unlikely (vertex_len < min_size + class1_count * get_class1_record_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ثابت بیعلامت class1_شمار = class1_شمار_2;
+    إذا (unlikely (رأس_len < min_اندازه + class1_شمار * get_class1_رکورد_اندازه ()))
+      أرجع Err(SANITIZE_FAILURE);
+    أرجع Ok();
   }
 
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  گراف_نتیجه_t<hb_وکتور_t<بیعلامت>> تقسیم_subtables (gsubgpos_گراف_context_t& c,
+                                                         بیعلامت this_شاخص)
   {
-    const unsigned base_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size;
-    TRY_ASSIGN (const unsigned class_def_2_size, size_of (c, this_index, &classDef2));
-    TRY_ASSIGN (const Coverage* coverage, get_coverage (c, this_index));
-    TRY_ASSIGN (const ClassDef* class_def_1, get_class_def_1 (c, this_index));
-    auto gid_and_class =
+    ثابت بیعلامت پایه_اندازه = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_اندازه;
+    TRY_تخصیص_بده (ثابت بیعلامت class_def_2_اندازه, اندازه_از (c, this_شاخص, &classDef2));
+    TRY_تخصیص_بده (ثابت Coverage* coverage, get_coverage (c, this_شاخص));
+    TRY_تخصیص_بده (ثابت ClassDef* class_def_1, get_class_def_1 (c, this_شاخص));
+    خودکار gid_and_class =
         + coverage->iter ()
-        | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-          return hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
+        | hb_map_retains_ترتیبدهی ([&] (hb_codepoint_t gid) {
+          أرجع hb_codepoint_pair_t (gid, class_def_1->get_class (gid));
         })
         ;
-    TRY_ASSIGN (class_def_size_estimator_t estimator, class_def_size_estimator_t::create (gid_and_class));
+    TRY_تخصیص_بده (class_def_اندازه_estimator_t estimator, class_def_اندازه_estimator_t::create (gid_and_class));
 
-    const unsigned class1_count = class1Count;
-    const unsigned class2_count = class2Count;
-    const unsigned class1_record_size = get_class1_record_size ();
+    ثابت بیعلامت class1_شمار = class1_شمار_2;
+    ثابت بیعلامت class2_شمار = class2_شمار_2;
+    ثابت بیعلامت class1_رکورد_اندازه = get_class1_رکورد_اندازه ();
 
-    const unsigned value_1_len = valueFormat1.get_len ();
-    const unsigned value_2_len = valueFormat2.get_len ();
-    const unsigned total_value_len = value_1_len + value_2_len;
+    ثابت بیعلامت مقدار_1_len = مقدار_Format1.get_len ();
+    ثابت بیعلامت مقدار_2_len = مقدار_Format2.get_len ();
+    ثابت بیعلامت مجموع_مقدار_len = مقدار_1_len + مقدار_2_len;
 
-    unsigned accumulated = base_size;
-    unsigned coverage_size = 4;
-    unsigned class_def_1_size = 4;
-    unsigned max_coverage_size = coverage_size;
-    unsigned max_class_def_1_size = class_def_1_size;
+    بیعلامت accumulated = پایه_اندازه;
+    بیعلامت coverage_اندازه = 4;
+    بیعلامت class_def_1_اندازه = 4;
+    بیعلامت max_coverage_اندازه = coverage_اندازه;
+    بیعلامت max_class_def_1_اندازه = class_def_1_اندازه;
 
-    hb_vector_t<unsigned> split_points;
+    hb_وکتور_t<بیعلامت> تقسیم_points;
 
-    TRY_ASSIGN (auto device_tables, get_all_device_tables (c, this_index));
-    hb_vector_t<unsigned> format1_device_table_indices = valueFormat1.get_device_table_indices ();
-    hb_vector_t<unsigned> format2_device_table_indices = valueFormat2.get_device_table_indices ();
-    bool has_device_tables = bool(format1_device_table_indices) || bool(format2_device_table_indices);
+    TRY_تخصیص_بده (خودکار device_tables, get_all_device_tables (c, this_شاخص));
+    hb_وکتور_t<بیعلامت> format1_device_جدول_indices = مقدار_Format1.get_device_جدول_indices ();
+    hb_وکتور_t<بیعلامت> format2_device_جدول_indices = مقدار_Format2.get_device_جدول_indices ();
+    منطقي has_device_tables = منطقي(format1_device_جدول_indices) || منطقي(format2_device_جدول_indices);
 
-    hb_set_t visited;
-    for (unsigned i = 0; i < class1_count; i++)
+    hb_مجموعه_t دیدهشده;
+    لكل (بیعلامت i = 0; i < class1_شمار; i++)
     {
-      unsigned accumulated_delta = class1_record_size;
-      class_def_1_size = estimator.add_class_def_size (i);
-      coverage_size = estimator.coverage_size ();
-      max_coverage_size = hb_max (max_coverage_size, coverage_size);
-      max_class_def_1_size = hb_max (max_class_def_1_size, class_def_1_size);
+      بیعلامت accumulated_delta = class1_رکورد_اندازه;
+      class_def_1_اندازه = estimator.جمع_کن_class_def_اندازه (i);
+      coverage_اندازه = estimator.coverage_اندازه ();
+      max_coverage_اندازه = hb_max (max_coverage_اندازه, coverage_اندازه);
+      max_class_def_1_اندازه = hb_max (max_class_def_1_اندازه, class_def_1_اندازه);
 
-      if (has_device_tables) {
-        for (unsigned j = 0; j < class2_count; j++)
+      إذا (has_device_tables) {
+        لكل (بیعلامت j = 0; j < class2_شمار; j++)
         {
-          unsigned value1_index = total_value_len * (class2_count * i + j);
-          unsigned value2_index = value1_index + value_1_len;
-          accumulated_delta += size_of_value_record_children (c,
+          بیعلامت value1_شاخص = مجموع_مقدار_len * (class2_شمار * i + j);
+          بیعلامت value2_شاخص = value1_شاخص + مقدار_1_len;
+          accumulated_delta += اندازه_از_مقدار_رکورد_children (c,
                                                         device_tables,
-                                                        format1_device_table_indices,
-                                                        value1_index,
-                                                        visited);
-          accumulated_delta += size_of_value_record_children (c,
+                                                        format1_device_جدول_indices,
+                                                        value1_شاخص,
+                                                        دیدهشده);
+          accumulated_delta += اندازه_از_مقدار_رکورد_children (c,
                                                         device_tables,
-                                                        format2_device_table_indices,
-                                                        value2_index,
-                                                        visited);
+                                                        format2_device_جدول_indices,
+                                                        value2_شاخص,
+                                                        دیدهشده);
         }
       }
 
       accumulated += accumulated_delta;
-      unsigned total = accumulated
-                       + coverage_size + class_def_1_size + class_def_2_size
+      بیعلامت مجموع = accumulated
+                       + coverage_اندازه + class_def_1_اندازه + class_def_2_اندازه
                        // The largest object will pack last and can exceed the size limit.
-                       - hb_max (hb_max (coverage_size, class_def_1_size), class_def_2_size);
-      if (total >= (1 << 16))
+                       - hb_max (hb_max (coverage_اندازه, class_def_1_اندازه), class_def_2_اندازه);
+      إذا (مجموع >= (1 << 16))
       {
-        split_points.push (i);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        تقسیم_points.push (i);
+        TRY (گراف_نتیجه_t<فراغ>::from (تقسیم_points, تخصیص_FAILURE));
         // split does not include i, so add the size for i when we reset the size counters.
-        accumulated = base_size + accumulated_delta;
+        accumulated = پایه_اندازه + accumulated_delta;
 
         estimator.reset();
-        class_def_1_size = estimator.add_class_def_size(i);
-        coverage_size = estimator.coverage_size();
-        visited.clear (); // node sharing isn't allowed between splits.
+        class_def_1_اندازه = estimator.جمع_کن_class_def_اندازه(i);
+        coverage_اندازه = estimator.coverage_اندازه();
+        دیدهشده.clear (); // node sharing isn't allowed between splits.
       }
     }
 
-    split_context_t split_context {
+    تقسیم_context_t تقسیم_context {
       c,
-      this,
-      this_index,
-      class1_record_size,
-      total_value_len,
-      value_1_len,
-      value_2_len,
-      max_coverage_size,
-      max_class_def_1_size,
+      هذا,
+      this_شاخص,
+      class1_رکورد_اندازه,
+      مجموع_مقدار_len,
+      مقدار_1_len,
+      مقدار_2_len,
+      max_coverage_اندازه,
+      max_class_def_1_اندازه,
       device_tables,
-      format1_device_table_indices,
-      format2_device_table_indices
+      format1_device_جدول_indices,
+      format2_device_جدول_indices
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    أرجع actuate_subtable_تقسیم<تقسیم_context_t> (تقسیم_context, تقسیم_points);
   }
- private:
+ خاص:
 
-  struct split_context_t
+  بنية تقسیم_context_t
   {
-    gsubgpos_graph_context_t& c;
+    gsubgpos_گراف_context_t& c;
     PairPosFormat2* thiz;
-    unsigned this_index;
-    unsigned class1_record_size;
-    unsigned value_record_len;
-    unsigned value1_record_len;
-    unsigned value2_record_len;
-    unsigned max_coverage_size;
-    unsigned max_class_def_size;
+    بیعلامت this_شاخص;
+    بیعلامت class1_رکورد_اندازه;
+    بیعلامت مقدار_رکورد_len;
+    بیعلامت value1_رکورد_len;
+    بیعلامت value2_رکورد_len;
+    بیعلامت max_coverage_اندازه;
+    بیعلامت max_class_def_اندازه;
 
-    const hb_hashmap_t<unsigned, unsigned>& device_tables;
-    const hb_vector_t<unsigned>& format1_device_table_indices;
-    const hb_vector_t<unsigned>& format2_device_table_indices;
+    ثابت hb_hashmap_t<بیعلامت, بیعلامت>& device_tables;
+    ثابت hb_وکتور_t<بیعلامت>& format1_device_جدول_indices;
+    ثابت hb_وکتور_t<بیعلامت>& format2_device_جدول_indices;
 
-    unsigned original_count ()
+    بیعلامت original_شمار_2 ()
     {
-      return thiz->class1Count;
+      أرجع thiz->class1_شمار_2;
     }
 
-    graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
+    گراف_نتیجه_t<بیعلامت> clone_range (بیعلامت شروع, بیعلامت انتها)
     {
-      return thiz->clone_range (*this, start, end);
+      أرجع thiz->clone_range (*هذا, شروع, انتها);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    گراف_نتیجه_t<فراغ> shrink (بیعلامت شمار)
     {
-      return thiz->shrink (*this, count);
+      أرجع thiz->shrink (*هذا, شمار);
     }
   };
 
-  size_t get_class1_record_size () const
+  size_t get_class1_رکورد_اندازه () ثابت
   {
-    const size_t class2_count = class2Count;
-    return
-        class2_count * (valueFormat1.get_size () + valueFormat2.get_size ());
+    ثابت size_t class2_شمار = class2_شمار_2;
+    أرجع
+        class2_شمار * (مقدار_Format1.get_اندازه () + مقدار_Format2.get_اندازه ());
   }
 
-  graph_result_t<unsigned> clone_range (split_context_t& split_context,
-                                        unsigned start, unsigned end) const
+  گراف_نتیجه_t<بیعلامت> clone_range (تقسیم_context_t& تقسیم_context,
+                                        بیعلامت شروع, بیعلامت انتها) ثابت
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "  Cloning PairPosFormat2 (%u) range [%u, %u).", split_context.this_index, start, end);
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
+               "  Cloning PairPosFormat2 (%u) range [%u, %u).", تقسیم_context.this_شاخص, شروع, انتها);
 
-    graph_t& graph = split_context.c.graph;
+    گراف_t& گراف = تقسیم_context.c.گراف;
 
-    unsigned num_records = end - start;
-    unsigned prime_size = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_size
-                          + num_records * split_context.class1_record_size;
+    بیعلامت رقم_رکوردها = انتها - شروع;
+    بیعلامت اول_اندازه = OT::Layout::GPOS_impl::PairPosFormat2_4<SmallTypes>::min_اندازه
+                          + رقم_رکوردها * تقسیم_context.class1_رکورد_اندازه;
 
-    TRY_ASSIGN (unsigned pair_pos_prime_id, split_context.c.create_node (prime_size));
+    TRY_تخصیص_بده (بیعلامت pair_pos_اول_id, تقسیم_context.c.create_گره (اول_اندازه));
 
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) graph.object (pair_pos_prime_id).head;
-    pair_pos_prime->format = this->format;
-    pair_pos_prime->valueFormat1 = this->valueFormat1;
-    pair_pos_prime->valueFormat2 = this->valueFormat2;
-    pair_pos_prime->class1Count = num_records;
-    pair_pos_prime->class2Count = this->class2Count;
-    TRY (clone_class1_records (split_context,
-                               pair_pos_prime_id,
-                               start,
-                               end));
+    PairPosFormat2* pair_pos_اول =
+        (PairPosFormat2*) گراف.object (pair_pos_اول_id).سر_2;
+    pair_pos_اول->format = هذا->format;
+    pair_pos_اول->مقدار_Format1 = هذا->مقدار_Format1;
+    pair_pos_اول->مقدار_Format2 = هذا->مقدار_Format2;
+    pair_pos_اول->class1_شمار_2 = رقم_رکوردها;
+    pair_pos_اول->class2_شمار_2 = هذا->class2_شمار_2;
+    TRY (clone_class1_رکوردها (تقسیم_context,
+                               pair_pos_اول_id,
+                               شروع,
+                               انتها));
 
-    TRY_ASSIGN (unsigned coverage_id,
-         graph.index_for_offset (split_context.this_index, &coverage));
-    TRY_ASSIGN (unsigned class_def_1_id,
-         graph.index_for_offset (split_context.this_index, &classDef1));
+    TRY_تخصیص_بده (بیعلامت coverage_id,
+         گراف.شاخص_for_جابه_جایی (تقسیم_context.this_شاخص, &coverage));
+    TRY_تخصیص_بده (بیعلامت class_def_1_id,
+         گراف.شاخص_for_جابه_جایی (تقسیم_context.this_شاخص, &classDef1));
 
-    auto& coverage_v = graph.vertices_[coverage_id];
-    auto& class_def_1_v = graph.vertices_[class_def_1_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!coverage_table || !class_def_1_table))
-      return Err(INVALID_ARGUMENT);
-    TRY (coverage_table->sanitize (coverage_v));
-    TRY (class_def_1_table->sanitize (class_def_1_v));
+    خودکار& coverage_v = گراف.vertices_[coverage_id];
+    خودکار& class_def_1_v = گراف.vertices_[class_def_1_id];
+    ثابت Coverage* coverage_جدول = (ثابت Coverage*) coverage_v.obj().سر_2;
+    ثابت ClassDef* class_def_1_جدول = (ثابت ClassDef*) class_def_1_v.obj().سر_2;
+    إذا (unlikely (!coverage_جدول || !class_def_1_جدول))
+      أرجع Err(INVALID_آرگومان);
+    TRY (coverage_جدول->sanitize (coverage_v));
+    TRY (class_def_1_جدول->sanitize (class_def_1_v));
 
-    auto klass_map =
-    + coverage_table->iter ()
-    | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1_table->get_class (gid));
+    خودکار klass_map =
+    + coverage_جدول->iter ()
+    | hb_map_retains_ترتیبدهی ([&] (hb_codepoint_t gid) {
+      أرجع hb_codepoint_pair_t (gid, class_def_1_جدول->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass >= start && klass < end;
-    }, hb_second)
-    | hb_map_retains_sorting ([&] (hb_codepoint_pair_t gid_and_class) {
+      أرجع klass >= شروع && klass < انتها;
+    }, hb_دومی)
+    | hb_map_retains_ترتیبدهی ([&] (hb_codepoint_pair_t gid_and_class) {
       // Classes must be from 0...N so subtract start
-      return hb_codepoint_pair_t (gid_and_class.first, gid_and_class.second - start);
+      أرجع hb_codepoint_pair_t (gid_and_class.اولی, gid_and_class.second - شروع);
     })
     ;
 
-    TRY (Coverage::add_coverage (split_context.c,
-                                 pair_pos_prime_id,
+    TRY (Coverage::جمع_کن_coverage (تقسیم_context.c,
+                                 pair_pos_اول_id,
                                  2,
-                                 + klass_map | hb_map_retains_sorting (hb_first),
-                                 split_context.max_coverage_size));
+                                 + klass_map | hb_map_retains_ترتیبدهی (hb_اولی),
+                                 تقسیم_context.max_coverage_اندازه));
 
     // classDef1
-    TRY (ClassDef::add_class_def (split_context.c,
-                                  pair_pos_prime_id,
+    TRY (ClassDef::جمع_کن_class_def (تقسیم_context.c,
+                                  pair_pos_اول_id,
                                   8,
                                   + klass_map,
-                                  split_context.max_class_def_size));
+                                  تقسیم_context.max_class_def_اندازه));
 
     // classDef2
-    TRY_ASSIGN (unsigned class_def_2_id,
-         graph.index_for_offset (split_context.this_index, &classDef2));
+    TRY_تخصیص_بده (بیعلامت class_def_2_id,
+         گراف.شاخص_for_جابه_جایی (تقسیم_context.this_شاخص, &classDef2));
 
-    TRY(graph.vertices_[pair_pos_prime_id].add_real_link (SmallTypes::size, class_def_2_id, 10));
-    TRY(graph.vertices_[class_def_2_id].add_parent (pair_pos_prime_id, false));
+    TRY(گراف.vertices_[pair_pos_اول_id].جمع_کن_real_link (SmallTypes::اندازه, class_def_2_id, 10));
+    TRY(گراف.vertices_[class_def_2_id].جمع_کن_والد (pair_pos_اول_id, خطأ));
 
-    return Ok(pair_pos_prime_id);
+    أرجع Ok(pair_pos_اول_id);
   }
 
-  graph_result_t<void> clone_class1_records (split_context_t& split_context,
-                                             unsigned pair_pos_prime_id,
-                                             unsigned start, unsigned end) const
+  گراف_نتیجه_t<فراغ> clone_class1_رکوردها (تقسیم_context_t& تقسیم_context,
+                                             بیعلامت pair_pos_اول_id,
+                                             بیعلامت شروع, بیعلامت انتها) ثابت
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_اول =
+        (PairPosFormat2*) تقسیم_context.c.گراف.object (pair_pos_اول_id).سر_2;
 
-    char* start_addr = ((char*)&values[0]) + start * split_context.class1_record_size;
-    unsigned num_records = end - start;
-    hb_memcpy (&pair_pos_prime->values[0],
-            start_addr,
-            num_records * split_context.class1_record_size);
+    حرف* شروع_addr = ((حرف*)&values[0]) + شروع * تقسیم_context.class1_رکورد_اندازه;
+    بیعلامت رقم_رکوردها = انتها - شروع;
+    hb_memcpy (&pair_pos_اول->values[0],
+            شروع_addr,
+            رقم_رکوردها * تقسیم_context.class1_رکورد_اندازه);
 
-    if (!split_context.format1_device_table_indices
-        && !split_context.format2_device_table_indices)
+    إذا (!تقسیم_context.format1_device_جدول_indices
+        && !تقسیم_context.format2_device_جدول_indices)
       // No device tables to move over.
-      return Ok();
+      أرجع Ok();
 
-    unsigned class2_count = class2Count;
-    for (unsigned i = start; i < end; i++)
+    بیعلامت class2_شمار = class2_شمار_2;
+    لكل (بیعلامت i = شروع; i < انتها; i++)
     {
-      for (unsigned j = 0; j < class2_count; j++)
+      لكل (بیعلامت j = 0; j < class2_شمار; j++)
       {
-        unsigned value1_index = split_context.value_record_len * (class2_count * i + j);
-        unsigned value2_index = value1_index + split_context.value1_record_len;
+        بیعلامت value1_شاخص = تقسیم_context.مقدار_رکورد_len * (class2_شمار * i + j);
+        بیعلامت value2_شاخص = value1_شاخص + تقسیم_context.value1_رکورد_len;
 
-        unsigned new_value1_index = split_context.value_record_len * (class2_count * (i - start) + j);
-        unsigned new_value2_index = new_value1_index + split_context.value1_record_len;
+        بیعلامت new_value1_شاخص = تقسیم_context.مقدار_رکورد_len * (class2_شمار * (i - شروع) + j);
+        بیعلامت new_value2_شاخص = new_value1_شاخص + تقسیم_context.value1_رکورد_len;
 
-        TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
-                                     split_context.format1_device_table_indices,
-                                     value1_index,
-                                     new_value1_index));
+        TRY (transfer_device_tables (تقسیم_context,
+                                     pair_pos_اول_id,
+                                     تقسیم_context.format1_device_جدول_indices,
+                                     value1_شاخص,
+                                     new_value1_شاخص));
 
-        TRY (transfer_device_tables (split_context,
-                                     pair_pos_prime_id,
-                                     split_context.format2_device_table_indices,
-                                     value2_index,
-                                     new_value2_index));
+        TRY (transfer_device_tables (تقسیم_context,
+                                     pair_pos_اول_id,
+                                     تقسیم_context.format2_device_جدول_indices,
+                                     value2_شاخص,
+                                     new_value2_شاخص));
       }
     }
-    return Ok();
+    أرجع Ok();
   }
 
-  graph_result_t<void> transfer_device_tables (split_context_t& split_context,
-                                               unsigned pair_pos_prime_id,
-                                               const hb_vector_t<unsigned>& device_table_indices,
-                                               unsigned old_value_record_index,
-                                               unsigned new_value_record_index) const
+  گراف_نتیجه_t<فراغ> transfer_device_tables (تقسیم_context_t& تقسیم_context,
+                                               بیعلامت pair_pos_اول_id,
+                                               ثابت hb_وکتور_t<بیعلامت>& device_جدول_indices,
+                                               بیعلامت old_مقدار_رکورد_شاخص,
+                                               بیعلامت new_مقدار_رکورد_شاخص) ثابت
   {
-    PairPosFormat2* pair_pos_prime =
-        (PairPosFormat2*) split_context.c.graph.object (pair_pos_prime_id).head;
+    PairPosFormat2* pair_pos_اول =
+        (PairPosFormat2*) تقسیم_context.c.گراف.object (pair_pos_اول_id).سر_2;
 
-    for (unsigned i : device_table_indices)
+    لكل (بیعلامت i : device_جدول_indices)
     {
-      OT::Offset16* record = (OT::Offset16*) &values[old_value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      if (!split_context.device_tables.has (record_position)) continue;
+      OT::Offset16* رکورد = (OT::Offset16*) &values[old_مقدار_رکورد_شاخص + i];
+      بیعلامت رکورد_position = ((حرف*) رکورد) - ((حرف*) هذا);
+      إذا (!تقسیم_context.device_tables.has (رکورد_position)) استمر;
 
-      TRY (split_context.c.graph.move_child (
-          split_context.this_index,
-          record,
-          pair_pos_prime_id,
-          (OT::Offset16*) &pair_pos_prime->values[new_value_record_index + i]));
+      TRY (تقسیم_context.c.گراف.move_فرزند (
+          تقسیم_context.this_شاخص,
+          رکورد,
+          pair_pos_اول_id,
+          (OT::Offset16*) &pair_pos_اول->values[new_مقدار_رکورد_شاخص + i]));
     }
 
     // Restore correct ordering of the vertex links which are disturbed by move_child.
-    split_context.c.graph.vertices_[split_context.this_index].sort_real_links ();
+    تقسیم_context.c.گراف.vertices_[تقسیم_context.this_شاخص].مرتب_سازی_real_links ();
 
-    return Ok();
+    أرجع Ok();
   }
 
-  graph_result_t<void> shrink (split_context_t& split_context,
-                               unsigned count)
+  گراف_نتیجه_t<فراغ> shrink (تقسیم_context_t& تقسیم_context,
+                               بیعلامت شمار)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
                "  Shrinking PairPosFormat2 (%u) to [0, %u).",
-               split_context.this_index,
-               count);
-    unsigned old_count = class1Count;
-    if (count >= old_count)
-      return Ok();
+               تقسیم_context.this_شاخص,
+               شمار);
+    بیعلامت old_شمار = class1_شمار_2;
+    إذا (شمار >= old_شمار)
+      أرجع Ok();
 
-    graph_t& graph = split_context.c.graph;
-    class1Count = count;
-    graph.vertices_[split_context.this_index].shrink_buffer(
-        (old_count - count) * split_context.class1_record_size);
+    گراف_t& گراف = تقسیم_context.c.گراف;
+    class1_شمار_2 = شمار;
+    گراف.vertices_[تقسیم_context.this_شاخص].shrink_میانگیر(
+        (old_شمار - شمار) * تقسیم_context.class1_رکورد_اندازه);
 
-    TRY_ASSIGN (auto coverage,
-         graph.as_mutable_table<Coverage> (split_context.this_index, &this->coverage));
+    TRY_تخصیص_بده (خودکار coverage,
+         گراف.as_mutable_جدول<Coverage> (تقسیم_context.this_شاخص, &هذا->coverage));
 
-    TRY_ASSIGN (auto class_def_1,
-         graph.as_mutable_table<ClassDef> (split_context.this_index, &classDef1));
+    TRY_تخصیص_بده (خودکار class_def_1,
+         گراف.as_mutable_جدول<ClassDef> (تقسیم_context.this_شاخص, &classDef1));
 
-    auto klass_map =
-    + coverage.table->iter ()
-    | hb_map_retains_sorting ([&] (hb_codepoint_t gid) {
-      return hb_codepoint_pair_t (gid, class_def_1.table->get_class (gid));
+    خودکار klass_map =
+    + coverage.جدول->iter ()
+    | hb_map_retains_ترتیبدهی ([&] (hb_codepoint_t gid) {
+      أرجع hb_codepoint_pair_t (gid, class_def_1.جدول->get_class (gid));
     })
     | hb_filter ([&] (hb_codepoint_t klass) {
-      return klass < count;
-    }, hb_second)
+      أرجع klass < شمار;
+    }, hb_دومی)
     ;
 
-    auto new_coverage = + klass_map | hb_map_retains_sorting (hb_first);
-    TRY (Coverage::make_coverage (split_context.c,
+    خودکار new_coverage = + klass_map | hb_map_retains_ترتیبدهی (hb_اولی);
+    TRY (Coverage::make_coverage (تقسیم_context.c,
                                   + new_coverage,
-                                  coverage.index,
+                                  coverage.شاخص_2,
                                   // existing ranges my not be kept, worst case size is a format 1
                                   // coverage table.
                                   4 + new_coverage.len() * 2));
 
-    return ClassDef::make_class_def (split_context.c,
+    أرجع ClassDef::make_class_def (تقسیم_context.c,
                                      + klass_map,
-                                     class_def_1.index,
-                                     class_def_1.vertex->table_size ());
+                                     class_def_1.شاخص_2,
+                                     class_def_1.رأس->جدول_اندازه ());
   }
 
-  graph_result_t<hb_hashmap_t<unsigned, unsigned>>
-  get_all_device_tables (gsubgpos_graph_context_t& c,
-                         unsigned this_index) const
+  گراف_نتیجه_t<hb_hashmap_t<بیعلامت, بیعلامت>>
+  get_all_device_tables (gsubgpos_گراف_context_t& c,
+                         بیعلامت this_شاخص) ثابت
   {
-    const auto& v = c.graph.vertices_[this_index];
-    return v.position_to_index_map ();
+    ثابت خودکار& v = c.گراف.vertices_[this_شاخص];
+    أرجع v.position_مقصد_شاخص_map ();
   }
 
-  graph_result_t<const Coverage*> get_coverage (gsubgpos_graph_context_t& c,
-                                                unsigned this_index) const
+  گراف_نتیجه_t<ثابت Coverage*> get_coverage (gsubgpos_گراف_context_t& c,
+                                                بیعلامت this_شاخص) ثابت
   {
-    TRY_ASSIGN (unsigned coverage_id, c.graph.index_for_offset (this_index, &coverage));
-    auto& coverage_v = c.graph.vertices_[coverage_id];
+    TRY_تخصیص_بده (بیعلامت coverage_id, c.گراف.شاخص_for_جابه_جایی (this_شاخص, &coverage));
+    خودکار& coverage_v = c.گراف.vertices_[coverage_id];
 
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table)) return Err(INVALID_ARGUMENT);
-    TRY(coverage_table->sanitize (coverage_v));
+    ثابت Coverage* coverage_جدول = (ثابت Coverage*) coverage_v.obj().سر_2;
+    إذا (unlikely (!coverage_جدول)) أرجع Err(INVALID_آرگومان);
+    TRY(coverage_جدول->sanitize (coverage_v));
 
-    return coverage_table;
+    أرجع coverage_جدول;
   }
 
-  graph_result_t<const ClassDef*> get_class_def_1 (gsubgpos_graph_context_t& c,
-                                                   unsigned this_index) const
+  گراف_نتیجه_t<ثابت ClassDef*> get_class_def_1 (gsubgpos_گراف_context_t& c,
+                                                   بیعلامت this_شاخص) ثابت
   {
-    TRY_ASSIGN (unsigned class_def_1_id, c.graph.index_for_offset (this_index, &classDef1));
-    auto& class_def_1_v = c.graph.vertices_[class_def_1_id];
+    TRY_تخصیص_بده (بیعلامت class_def_1_id, c.گراف.شاخص_for_جابه_جایی (this_شاخص, &classDef1));
+    خودکار& class_def_1_v = c.گراف.vertices_[class_def_1_id];
 
-    const ClassDef* class_def_1_table = (const ClassDef*) class_def_1_v.obj().head;
-    if (unlikely (!class_def_1_table)) return Err(INVALID_ARGUMENT);
-    TRY(class_def_1_table->sanitize (class_def_1_v));
-    return class_def_1_table;
+    ثابت ClassDef* class_def_1_جدول = (ثابت ClassDef*) class_def_1_v.obj().سر_2;
+    إذا (unlikely (!class_def_1_جدول)) أرجع Err(INVALID_آرگومان);
+    TRY(class_def_1_جدول->sanitize (class_def_1_v));
+    أرجع class_def_1_جدول;
   }
 
-  unsigned size_of_value_record_children (gsubgpos_graph_context_t& c,
-                                          const hb_hashmap_t<unsigned, unsigned>& device_tables,
-                                          const hb_vector_t<unsigned> device_table_indices,
-                                          unsigned value_record_index,
-                                          hb_set_t& visited)
+  بیعلامت اندازه_از_مقدار_رکورد_children (gsubgpos_گراف_context_t& c,
+                                          ثابت hb_hashmap_t<بیعلامت, بیعلامت>& device_tables,
+                                          ثابت hb_وکتور_t<بیعلامت> device_جدول_indices,
+                                          بیعلامت مقدار_رکورد_شاخص,
+                                          hb_مجموعه_t& دیدهشده)
   {
-    unsigned size = 0;
-    for (unsigned i : device_table_indices)
+    بیعلامت اندازه = 0;
+    لكل (بیعلامت i : device_جدول_indices)
     {
-      OT::Layout::GPOS_impl::Value* record = &values[value_record_index + i];
-      unsigned record_position = ((char*) record) - ((char*) this);
-      unsigned* obj_idx;
-      if (!device_tables.has (record_position, &obj_idx)) continue;
-      size += c.graph.find_subgraph_size (*obj_idx, visited).value_or (0);
+      OT::Layout::GPOS_impl::مقدار* رکورد = &values[مقدار_رکورد_شاخص + i];
+      بیعلامت رکورد_position = ((حرف*) رکورد) - ((حرف*) هذا);
+      بیعلامت* obj_idx;
+      إذا (!device_tables.has (رکورد_position, &obj_idx)) استمر;
+      اندازه += c.گراف.پیدا_کن_subgraph_اندازه (*obj_idx, دیدهشده).مقدار_or (0);
     }
-    return size;
+    أرجع اندازه;
   }
 
-  graph_result_t<unsigned> size_of (gsubgpos_graph_context_t& c,
-                                    unsigned this_index,
-                                    const void* offset) const
+  گراف_نتیجه_t<بیعلامت> اندازه_از (gsubgpos_گراف_context_t& c,
+                                    بیعلامت this_شاخص,
+                                    ثابت فراغ* جابه_جایی) ثابت
   {
-    TRY_ASSIGN (const unsigned id, c.graph.index_for_offset (this_index, offset));
-    return Ok(c.graph.vertices_[id].table_size ());
+    TRY_تخصیص_بده (ثابت بیعلامت id, c.گراف.شاخص_for_جابه_جایی (this_شاخص, جابه_جایی));
+    أرجع Ok(c.گراف.vertices_[id].جدول_اندازه ());
   }
 };
 
-struct PairPos : public OT::Layout::GPOS_impl::PairPos
+بنية PairPos : عام OT::Layout::GPOS_impl::PairPos
 {
-  graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
-                                                         unsigned this_index)
+  گراف_نتیجه_t<hb_وکتور_t<بیعلامت>> تقسیم_subtables (gsubgpos_گراف_context_t& c,
+                                                         بیعلامت this_شاخص)
   {
-    switch (u.format.v) {
-    case 1:
+    بدل (u.format.v) {
+    حالة 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->split_subtables (c, this_index);
-    case 2:
+      أرجع ((PairPosFormat1*)(&u.format1))->تقسیم_subtables (c, this_شاخص);
+    حالة 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->split_subtables (c, this_index);
-#ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
+      أرجع ((PairPosFormat2*)(&u.format2))->تقسیم_subtables (c, this_شاخص);
+#اگر_تعریف_نشده HB_NO_BEYOND_64K
+    حالة 3: HB_FALLTHROUGH;
+    حالة 4: HB_FALLTHROUGH;
       // 24-bit PairPos formats already have widened offsets; leave them unsplit.
-#endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+#پایان_اگر
+    افتراضي:
+      أرجع Ok(hb_وکتور_t<بیعلامت> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  گراف_نتیجه_t<فراغ> sanitize (ثابت گراف_t::رأس_t& رأس) ثابت
   {
-    size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    size_t رأس_len = رأس.جدول_اندازه();
+    إذا (unlikely (رأس_len < u.format.v.get_اندازه ())) أرجع Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    بدل (u.format.v) {
+    حالة 1:
       hb_barrier ();
-      return ((PairPosFormat1*)(&u.format1))->sanitize (vertex);
-    case 2:
+      أرجع ((PairPosFormat1*)(&u.format1))->sanitize (رأس);
+    حالة 2:
       hb_barrier ();
-      return ((PairPosFormat2*)(&u.format2))->sanitize (vertex);
-#ifndef HB_NO_BEYOND_64K
-    case 3: HB_FALLTHROUGH;
-    case 4: HB_FALLTHROUGH;
-#endif
-    default:
+      أرجع ((PairPosFormat2*)(&u.format2))->sanitize (رأس);
+#اگر_تعریف_نشده HB_NO_BEYOND_64K
+    حالة 3: HB_FALLTHROUGH;
+    حالة 4: HB_FALLTHROUGH;
+#پایان_اگر
+    افتراضي:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      أرجع Err(SANITIZE_FAILURE);
     }
   }
 };
 
 }
 
-#endif  // GRAPH_PAIRPOS_GRAPH_HH
+#پایان_اگر  // GRAPH_PAIRPOS_GRAPH_HH

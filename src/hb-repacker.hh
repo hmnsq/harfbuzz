@@ -24,53 +24,53 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_REPACKER_HH
-#define HB_REPACKER_HH
+#اگر_تعریف_نشده HB_REPACKER_HH
+#تعریف_کن HB_REPACKER_HH
 
-#include "hb-open-type.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
-#include "graph/graph.hh"
-#include "graph/gsubgpos-graph.hh"
-#include "graph/serialize.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-map.hh"
+#ضمن "hb-vector.hh"
+#ضمن "graph/graph.hh"
+#ضمن "graph/gsubgpos-graph.hh"
+#ضمن "graph/serialize.hh"
 
-using graph::graph_t;
-using graph::graph_result_t;
+استفاده گراف::گراف_t;
+استفاده گراف::گراف_نتیجه_t;
 
 /*
  * For a detailed writeup on the overflow resolution algorithm see:
  * docs/repacker.md
  */
 
-struct lookup_size_t
+بنية lookup_اندازه_t
 {
-  unsigned lookup_index;
-  size_t size;
-  unsigned num_subtables;
+  بیعلامت lookup_شاخص;
+  size_t اندازه;
+  بیعلامت رقم_subtables;
 
-  static int cmp (const void* a, const void* b)
+  ساكن صحيح cmp (ثابت فراغ* a, ثابت فراغ* b)
   {
-    return cmp ((const lookup_size_t*) a,
-                (const lookup_size_t*) b);
+    أرجع cmp ((ثابت lookup_اندازه_t*) a,
+                (ثابت lookup_اندازه_t*) b);
   }
 
-  static int cmp (const lookup_size_t* a, const lookup_size_t* b)
+  ساكن صحيح cmp (ثابت lookup_اندازه_t* a, ثابت lookup_اندازه_t* b)
   {
-    double subtables_per_byte_a = (double) a->num_subtables / (double) a->size;
-    double subtables_per_byte_b = (double) b->num_subtables / (double) b->size;
-    if (subtables_per_byte_a == subtables_per_byte_b) {
-      return b->lookup_index - a->lookup_index;
+    مزدوج subtables_در_هر_byte_a = (مزدوج) a->رقم_subtables / (مزدوج) a->اندازه;
+    مزدوج subtables_در_هر_byte_b = (مزدوج) b->رقم_subtables / (مزدوج) b->اندازه;
+    إذا (subtables_در_هر_byte_a == subtables_در_هر_byte_b) {
+      أرجع b->lookup_شاخص - a->lookup_شاخص;
     }
 
-    double cmp = subtables_per_byte_b - subtables_per_byte_a;
-    if (cmp < 0) return -1;
-    if (cmp > 0) return 1;
-    return 0;
+    مزدوج cmp = subtables_در_هر_byte_b - subtables_در_هر_byte_a;
+    إذا (cmp < 0) أرجع -1;
+    إذا (cmp > 0) أرجع 1;
+    أرجع 0;
   }
 };
 
-static inline
-graph_result_t<void> _presplit_subtables_if_needed (graph::gsubgpos_graph_context_t& ext_context)
+ساكن مضمن
+گراف_نتیجه_t<فراغ> _presplit_subtables_if_needed (گراف::gsubgpos_گراف_context_t& ext_context)
 {
   // For each lookup this will check the size of subtables and split them as needed
   // so that no subtable is at risk of overflowing. (where we support splitting for
@@ -84,22 +84,22 @@ graph_result_t<void> _presplit_subtables_if_needed (graph::gsubgpos_graph_contex
   // The loop below can modify the contents of ext_context.lookups if new subtables are added
   // to a lookup during a split. So save the initial set of lookup indices so the iteration doesn't
   // risk access free'd memory if ext_context.lookups gets resized.
-  hb_set_t lookup_indices(ext_context.lookups.keys ());
-  for (unsigned lookup_index : lookup_indices)
+  hb_مجموعه_t lookup_indices(ext_context.lookups.کلیدها ());
+  لكل (بیعلامت lookup_شاخص : lookup_indices)
   {
-    graph::Lookup* lookup = ext_context.lookups.get(lookup_index);
-    TRY (lookup->split_subtables_if_needed (ext_context, lookup_index));
+    گراف::Lookup* lookup = ext_context.lookups.get(lookup_شاخص);
+    TRY (lookup->تقسیم_subtables_if_needed (ext_context, lookup_شاخص));
   }
 
-  return Ok();
+  أرجع Ok();
 }
 
 /*
  * Analyze the lookups in a GSUB/GPOS table and decide if any should be promoted
  * to extension lookups.
  */
-static inline
-graph_result_t<void> _promote_extensions_if_needed (graph::gsubgpos_graph_context_t& ext_context)
+ساكن مضمن
+گراف_نتیجه_t<فراغ> _promote_extensions_if_needed (گراف::gsubgpos_گراف_context_t& ext_context)
 {
   // Simple Algorithm (v1, current):
   // 1. Calculate how many bytes each non-extension lookup consumes.
@@ -117,162 +117,162 @@ graph_result_t<void> _promote_extensions_if_needed (graph::gsubgpos_graph_contex
   // TODO(garretrieger): also support extension promotion during iterative resolution phase, then
   //                     we can use a less conservative threshold here.
   // TODO(grieger): skip this for the 24 bit case.
-  if (!ext_context.lookups) return Ok();
+  إذا (!ext_context.lookups) أرجع Ok();
 
-  unsigned total_lookup_table_sizes = 0;
-  hb_vector_t<lookup_size_t> lookup_sizes;
-  lookup_sizes.alloc (ext_context.lookups.get_population (), true);
+  بیعلامت مجموع_lookup_جدول_sizes = 0;
+  hb_وکتور_t<lookup_اندازه_t> lookup_sizes;
+  lookup_sizes.alloc (ext_context.lookups.get_population (), درست);
 
-  for (unsigned lookup_index : ext_context.lookups.keys ())
+  لكل (بیعلامت lookup_شاخص : ext_context.lookups.کلیدها ())
   {
-    const auto& lookup_v = ext_context.graph.vertices_[lookup_index];
-    total_lookup_table_sizes += lookup_v.table_size ();
+    ثابت خودکار& lookup_v = ext_context.گراف.vertices_[lookup_شاخص];
+    مجموع_lookup_جدول_sizes += lookup_v.جدول_اندازه ();
 
-    const graph::Lookup* lookup = ext_context.lookups.get(lookup_index);
-    hb_set_t visited;
-    lookup_sizes.push (lookup_size_t {
-        lookup_index,
-        ext_context.graph.find_subgraph_size (lookup_index, visited).value_or (0),
-        lookup->number_of_subtables (),
+    ثابت گراف::Lookup* lookup = ext_context.lookups.get(lookup_شاخص);
+    hb_مجموعه_t دیدهشده;
+    lookup_sizes.push (lookup_اندازه_t {
+        lookup_شاخص,
+        ext_context.گراف.پیدا_کن_subgraph_اندازه (lookup_شاخص, دیدهشده).مقدار_or (0),
+        lookup->عدد_از_subtables (),
       });
   }
 
   lookup_sizes.qsort ();
 
-  size_t lookup_list_size = ext_context.graph.vertices_[ext_context.lookup_list_index].table_size ();
-  size_t l2_l3_size = lookup_list_size + total_lookup_table_sizes; // Lookup List + Lookups
-  size_t l3_l4_size = total_lookup_table_sizes; // Lookups + SubTables
-  size_t l4_plus_size = 0; // SubTables + their descendants
+  size_t lookup_list_اندازه = ext_context.گراف.vertices_[ext_context.lookup_list_شاخص].جدول_اندازه ();
+  size_t l2_l3_اندازه = lookup_list_اندازه + مجموع_lookup_جدول_sizes; // Lookup List + Lookups
+  size_t l3_l4_اندازه = مجموع_lookup_جدول_sizes; // Lookups + SubTables
+  size_t l4_plus_اندازه = 0; // SubTables + their descendants
 
   // Start by assuming all lookups are using extension subtables, this size will be removed later
   // if it's decided to not make a lookup extension.
-  for (auto p : lookup_sizes)
+  لكل (خودکار p : lookup_sizes)
   {
     // TODO(garretrieger): this overestimates the extension subtables size because some extension subtables may be
     //                     reused. However, we can't correct this until we have connected component analysis in place.
-    unsigned subtables_size = p.num_subtables * 8;
-    l3_l4_size += subtables_size;
-    l4_plus_size += subtables_size;
+    بیعلامت subtables_اندازه = p.رقم_subtables * 8;
+    l3_l4_اندازه += subtables_اندازه;
+    l4_plus_اندازه += subtables_اندازه;
   }
 
-  bool layers_full = false;
-  for (auto p : lookup_sizes)
+  منطقي layers_پر = خطأ;
+  لكل (خودکار p : lookup_sizes)
   {
-    const graph::Lookup* lookup = ext_context.lookups.get(p.lookup_index);
-    if (lookup->is_extension (ext_context.table_tag))
+    ثابت گراف::Lookup* lookup = ext_context.lookups.get(p.lookup_شاخص);
+    إذا (lookup->is_extension (ext_context.جدول_برچسب_2))
       // already an extension so size is counted by the loop above.
-      continue;
+      استمر;
 
-    if (!layers_full)
+    إذا (!layers_پر)
     {
-      size_t lookup_size = ext_context.graph.vertices_[p.lookup_index].table_size ();
-      hb_set_t visited;
-      size_t subtables_size = ext_context.graph.find_subgraph_size (p.lookup_index, visited, 1).value_or (0) - lookup_size;
-      size_t remaining_size = p.size - subtables_size - lookup_size;
+      size_t lookup_اندازه = ext_context.گراف.vertices_[p.lookup_شاخص].جدول_اندازه ();
+      hb_مجموعه_t دیدهشده;
+      size_t subtables_اندازه = ext_context.گراف.پیدا_کن_subgraph_اندازه (p.lookup_شاخص, دیدهشده, 1).مقدار_or (0) - lookup_اندازه;
+      size_t مانده_اندازه = p.اندازه - subtables_اندازه - lookup_اندازه;
 
-      l3_l4_size   += subtables_size;
-      l3_l4_size   -= p.num_subtables * 8;
-      l4_plus_size += subtables_size + remaining_size;
+      l3_l4_اندازه   += subtables_اندازه;
+      l3_l4_اندازه   -= p.رقم_subtables * 8;
+      l4_plus_اندازه += subtables_اندازه + مانده_اندازه;
 
-      if (l2_l3_size < (1 << 16)
-          && l3_l4_size < (1 << 16)
-          && l4_plus_size < (1 << 16)) continue; // this lookup fits within all layers groups
+      إذا (l2_l3_اندازه < (1 << 16)
+          && l3_l4_اندازه < (1 << 16)
+          && l4_plus_اندازه < (1 << 16)) استمر; // this lookup fits within all layers groups
 
-      layers_full = true;
+      layers_پر = درست;
     }
 
-    TRY (ext_context.lookups.get(p.lookup_index)->make_extension (ext_context, p.lookup_index));
+    TRY (ext_context.lookups.get(p.lookup_شاخص)->make_extension (ext_context, p.lookup_شاخص));
   }
 
-  return Ok();
+  أرجع Ok();
 }
 
-static inline
-graph_result_t<bool> _try_isolating_subgraphs (const hb_vector_t<graph::overflow_record_t>& overflows,
-                                               graph_t& sorted_graph)
+ساكن مضمن
+گراف_نتیجه_t<منطقي> _try_isolating_subgraphs (ثابت hb_وکتور_t<گراف::سرریز_رکورد_t>& overflows,
+                                               گراف_t& sorted_گراف)
 {
-  unsigned space = 0;
-  hb_set_t roots_to_isolate;
+  بیعلامت space = 0;
+  hb_مجموعه_t roots_مقصد_isolate;
 
-  for (int i = overflows.length - 1; i >= 0; i--)
+  لكل (صحيح i = overflows.درازی - 1; i >= 0; i--)
   {
-    const graph::overflow_record_t& r = overflows[i];
+    ثابت گراف::سرریز_رکورد_t& r = overflows[i];
 
-    unsigned root;
-    unsigned overflow_space = sorted_graph.space_for (r.parent, &root);
-    if (!overflow_space) continue;
-    if (sorted_graph.num_roots_for_space (overflow_space) <= 1) continue;
+    بیعلامت ریشه;
+    بیعلامت سرریز_space = sorted_گراف.space_for (r.والد, &ریشه);
+    إذا (!سرریز_space) استمر;
+    إذا (sorted_گراف.رقم_roots_for_space_2 (سرریز_space) <= 1) استمر;
 
-    if (!space) {
-      space = overflow_space;
+    إذا (!space) {
+      space = سرریز_space;
     }
 
-    if (space == overflow_space)
-      roots_to_isolate.add(root);
+    إذا (space == سرریز_space)
+      roots_مقصد_isolate.جمع_کن(ریشه);
   }
 
-  if (!roots_to_isolate) return Ok(false);
+  إذا (!roots_مقصد_isolate) أرجع Ok(خطأ);
 
-  unsigned maximum_to_move = hb_max ((sorted_graph.num_roots_for_space (space) / 2u), 1u);
-  if (roots_to_isolate.get_population () > maximum_to_move) {
+  بیعلامت بیشینه_مقصد_move = hb_max ((sorted_گراف.رقم_roots_for_space_2 (space) / 2u), 1u);
+  إذا (roots_مقصد_isolate.get_population () > بیشینه_مقصد_move) {
     // Only move at most half of the roots in a space at a time.
     //
     // Note: this was ported from non-stable ids to stable ids. So to retain the same behaviour
     // with regards to which roots are removed from the set we need to remove them in the topological
     // order, not the object id order.
-    int extra = roots_to_isolate.get_population () - maximum_to_move;
-    for (unsigned id : sorted_graph.ordering_) {
-      if (!extra) break;
-      if (roots_to_isolate.has(id)) {
-        roots_to_isolate.del(id);
+    صحيح extra = roots_مقصد_isolate.get_population () - بیشینه_مقصد_move;
+    لكل (بیعلامت id : sorted_گراف.ordering_) {
+      إذا (!extra) اكسر;
+      إذا (roots_مقصد_isolate.has(id)) {
+        roots_مقصد_isolate.del(id);
         extra--;
       }
     }
   }
 
-  DEBUG_MSG (SUBSET_REPACK, nullptr,
+  DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
              "Overflow in space %u (%u roots). Moving %u roots to space %u.",
              space,
-             sorted_graph.num_roots_for_space (space),
-             roots_to_isolate.get_population (),
-             sorted_graph.next_space ());
-  TRY (sorted_graph.isolate_subgraph (roots_to_isolate));
-  TRY (sorted_graph.move_to_new_space (roots_to_isolate));
+             sorted_گراف.رقم_roots_for_space_2 (space),
+             roots_مقصد_isolate.get_population (),
+             sorted_گراف.بعدی_space ());
+  TRY (sorted_گراف.isolate_subgraph (roots_مقصد_isolate));
+  TRY (sorted_گراف.move_مقصد_new_space (roots_مقصد_isolate));
 
-  return Ok(true);
+  أرجع Ok(درست);
 }
 
-static inline
-graph_result_t<bool> _resolve_shared_overflow(const hb_vector_t<graph::overflow_record_t>& overflows,
-                                              int overflow_index,
-                                              graph_t& sorted_graph)
+ساكن مضمن
+گراف_نتیجه_t<منطقي> resolve_shared_سرریز(ثابت hb_وکتور_t<گراف::سرریز_رکورد_t>& overflows,
+                                              صحيح سرریز_شاخص,
+                                              گراف_t& sorted_گراف)
 {
-  const graph::overflow_record_t& r = overflows[overflow_index];
+  ثابت گراف::سرریز_رکورد_t& r = overflows[سرریز_شاخص];
 
   // Find all of the parents in overflowing links that link to this
   // same child node. We will then try duplicating the child node and
   // re-assigning all of these parents to the duplicate.
-  hb_set_t parents;
-  parents.add(r.parent);
-  for (int i = overflow_index - 1; i >= 0; i--) {
-    const graph::overflow_record_t& r2 = overflows[i];
-    if (r2.child == r.child) {
-      parents.add(r2.parent);
+  hb_مجموعه_t parents;
+  parents.جمع_کن(r.والد);
+  لكل (صحيح i = سرریز_شاخص - 1; i >= 0; i--) {
+    ثابت گراف::سرریز_رکورد_t& r2 = overflows[i];
+    إذا (r2.فرزند == r.فرزند) {
+      parents.جمع_کن(r2.والد);
     }
   }
 
-  auto result = sorted_graph.duplicate(&parents, r.child);
-  if (!result.is_ok () && parents.get_population() > 2) {
+  خودکار نتیجه = sorted_گراف.duplicate(&parents, r.فرزند);
+  إذا (!نتیجه.is_ok () && parents.get_population() > 2) {
     // All links to the child are overflowing, so we can't include all
     // in the duplication. Remove one parent from the duplication.
     // Remove the lowest index parent, which will be the closest to the child.
     parents.del(parents.get_min());
-    result = sorted_graph.duplicate(&parents, r.child);
+    نتیجه = sorted_گراف.duplicate(&parents, r.فرزند);
   }
 
-  if (!result.is_ok ()) return Ok(false);
+  إذا (!نتیجه.is_ok ()) أرجع Ok(خطأ);
 
-  if (parents.get_population() > 1) {
+  إذا (parents.get_population() > 1) {
     // If the duplicated node has more than one parent pre-emptively raise it's priority to the maximum.
     // This will place it close to the parents. Node's with only one parent, don't need this as normal overflow
     // resolution will raise priority if needed.
@@ -284,36 +284,36 @@ graph_result_t<bool> _resolve_shared_overflow(const hb_vector_t<graph::overflow_
     // to move nodes closer, but only for non-shared nodes. Since this node is shared, it will simply be given
     // further duplication which defeats the attempt to duplicate with multiple parents. To fix this we
     // pre-emptively raise priority now which allows the duplicated node to pack into the same layer as it's parents.
-    sorted_graph.vertices_[*result].give_max_priority();
+    sorted_گراف.vertices_[*نتیجه].give_max_اولویت();
   }
 
-  return Ok(true);
+  أرجع Ok(درست);
 }
 
-static inline
-graph_result_t<bool> _process_overflows (const hb_vector_t<graph::overflow_record_t>& overflows,
-                                         hb_set_t& priority_bumped_parents,
-                                         graph_t& sorted_graph)
+ساكن مضمن
+گراف_نتیجه_t<منطقي> _process_overflows (ثابت hb_وکتور_t<گراف::سرریز_رکورد_t>& overflows,
+                                         hb_مجموعه_t& اولویت_bumped_parents,
+                                         گراف_t& sorted_گراف)
 {
-  bool resolution_attempted = false;
+  منطقي resolution_attempted = خطأ;
 
   // Try resolving the furthest overflows first.
-  for (int i = overflows.length - 1; i >= 0; i--)
+  لكل (صحيح i = overflows.درازی - 1; i >= 0; i--)
   {
-    const graph::overflow_record_t& r = overflows[i];
-    if (sorted_graph.vertices_[r.child].is_shared ())
+    ثابت گراف::سرریز_رکورد_t& r = overflows[i];
+    إذا (sorted_گراف.vertices_[r.فرزند].is_shared ())
     {
       // The child object is shared, we may be able to eliminate the overflow
       // by duplicating it.
-      TRY_ASSIGN (bool resolved, _resolve_shared_overflow(overflows, i, sorted_graph));
-      if (resolved)
-        return Ok(true);
+      TRY_تخصیص_بده (منطقي resolved, resolve_shared_سرریز(overflows, i, sorted_گراف));
+      إذا (resolved)
+        أرجع Ok(درست);
 
       // Sometimes we can't duplicate a node which looks shared because it's not actually shared
       // (eg. all links from the same parent) in this case continue on to other resolution options.
     }
 
-    if (sorted_graph.vertices_[r.child].is_leaf () && !priority_bumped_parents.has (r.parent))
+    إذا (sorted_گراف.vertices_[r.فرزند].is_برگ () && !اولویت_bumped_parents.has (r.والد))
     {
       // This object is too far from it's parent, attempt to move it closer.
       //
@@ -326,12 +326,12 @@ graph_result_t<bool> _process_overflows (const hb_vector_t<graph::overflow_recor
       //                     is < then the total size of the children (and the parent can be moved).
       //                     Since in that case moving the parent will cause a smaller increase in
       //                     the length of other offsets.
-      TRY_ASSIGN (bool raised, sorted_graph.raise_childrens_priority (r.parent));
-      if (raised) {
-        priority_bumped_parents.add (r.parent);
-        resolution_attempted = true;
+      TRY_تخصیص_بده (منطقي raised, sorted_گراف.raise_childrens_اولویت (r.والد));
+      إذا (raised) {
+        اولویت_bumped_parents.جمع_کن (r.والد);
+        resolution_attempted = درست;
       }
-      continue;
+      استمر;
     }
 
     // TODO(garretrieger): add additional offset resolution strategies
@@ -339,119 +339,119 @@ graph_result_t<bool> _process_overflows (const hb_vector_t<graph::overflow_recor
     // - Table splitting.
   }
 
-  return Ok(resolution_attempted);
+  أرجع Ok(resolution_attempted);
 }
 
-inline graph_result_t<void>
-_assign_spaces_and_sort (graph_t& sorted_graph /* IN/OUT */)
+مضمن گراف_نتیجه_t<فراغ>
+تخصیص_بده_spaces_and_مرتب_سازی (گراف_t& sorted_گراف /* IN/OUT */)
 {
-  DEBUG_MSG (SUBSET_REPACK, nullptr, "Assigning spaces to 32 bit subgraphs.");
-  TRY_ASSIGN (bool assigned, sorted_graph.assign_spaces ());
-  if (assigned)
-    return sorted_graph.sort_shortest_distance ();
-  else
-    return sorted_graph.sort_shortest_distance_if_needed ();
+  DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Assigning spaces to 32 bit subgraphs.");
+  TRY_تخصیص_بده (منطقي assigned, sorted_گراف.تخصیص_بده_spaces ());
+  إذا (assigned)
+    أرجع sorted_گراف.مرتب_سازی_کوتاهترین_فاصله ();
+  وإلا
+    أرجع sorted_گراف.مرتب_سازی_کوتاهترین_فاصله_if_needed ();
 }
 
-inline graph_result_t<void>
-_gsub_gpos_specialization (hb_tag_t table_tag,
-                           bool always_recalculate_extensions,
-                           graph_t& sorted_graph /* IN/OUT */)
+مضمن گراف_نتیجه_t<فراغ>
+_gsub_gpos_specialization (hb_برچسب_t جدول_برچسب_2,
+                           منطقي always_recalculate_extensions,
+                           گراف_t& sorted_گراف /* IN/OUT */)
 {
-  DEBUG_MSG (SUBSET_REPACK, nullptr, "Applying GSUB/GPOS repacking specializations.");
-  if (!always_recalculate_extensions) return _assign_spaces_and_sort (sorted_graph);
+  DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Applying GSUB/GPOS repacking specializations.");
+  إذا (!always_recalculate_extensions) أرجع تخصیص_بده_spaces_and_مرتب_سازی (sorted_گراف);
 
-  auto context_res = graph::gsubgpos_graph_context_t::create (table_tag, sorted_graph);
+  خودکار context_res = گراف::gsubgpos_گراف_context_t::create (جدول_برچسب_2, sorted_گراف);
 
-  if (unlikely (context_res.is_err())) {
-    if (context_res.error() == graph::SANITIZE_FAILURE)
+  إذا (unlikely (context_res.is_err())) {
+    إذا (context_res.error() == گراف::SANITIZE_FAILURE)
       // Sanitize failures are ignored, and we just skip splitting/extension promotion which needs a valid
       // GSUB/GPOS
-      return _assign_spaces_and_sort (sorted_graph);
-    else
+      أرجع تخصیص_بده_spaces_and_مرتب_سازی (sorted_گراف);
+    وإلا
       // All other errors are propagated.
-      return Err(context_res.error());
+      أرجع Err(context_res.error());
   }
 
   // Otherwise we have a valid GSUB/GPOS table and can try extension promotion and splitting
-  auto& ext_context = *context_res;
-  DEBUG_MSG (SUBSET_REPACK, nullptr, "Splitting subtables if needed.");
+  خودکار& ext_context = *context_res;
+  DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Splitting subtables if needed.");
   TRY (_presplit_subtables_if_needed (ext_context));
 
-  DEBUG_MSG (SUBSET_REPACK, nullptr, "Promoting lookups to extensions if needed.");
+  DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Promoting lookups to extensions if needed.");
   TRY (_promote_extensions_if_needed (ext_context));
 
   // an additional sorting is needed before assign_spaces () which requires
   // correct topological ordering to find space roots
-  TRY (sorted_graph.sort_shortest_distance_if_needed ());
+  TRY (sorted_گراف.مرتب_سازی_کوتاهترین_فاصله_if_needed ());
 
-  TRY_ASSIGN (bool will_overflow, graph::will_overflow (sorted_graph));
-  if (!will_overflow) return Ok();
-  return _assign_spaces_and_sort (sorted_graph);
+  TRY_تخصیص_بده (منطقي will_سرریز, گراف::will_سرریز (sorted_گراف));
+  إذا (!will_سرریز) أرجع Ok();
+  أرجع تخصیص_بده_spaces_and_مرتب_سازی (sorted_گراف);
 }
 
-inline graph_result_t<void>
-hb_resolve_graph_overflows (hb_tag_t table_tag,
-                            unsigned max_rounds ,
-                            bool always_recalculate_extensions,
-                            graph_t& sorted_graph /* IN/OUT */)
+مضمن گراف_نتیجه_t<فراغ>
+hb_resolve_گراف_overflows (hb_برچسب_t جدول_برچسب_2,
+                            بیعلامت max_دورها ,
+                            منطقي always_recalculate_extensions,
+                            گراف_t& sorted_گراف /* IN/OUT */)
 {
-  DEBUG_MSG (SUBSET_REPACK, nullptr, "Repacking %c%c%c%c.", HB_UNTAG(table_tag));
-  TRY (sorted_graph.sort_shortest_distance ());
+  DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Repacking %c%c%c%c.", HB_UNTAG(جدول_برچسب_2));
+  TRY (sorted_گراف.مرتب_سازی_کوتاهترین_فاصله ());
 
-  TRY_ASSIGN (bool will_overflow, graph::will_overflow (sorted_graph));
-  if (!will_overflow)
-    return Ok();
+  TRY_تخصیص_بده (منطقي will_سرریز, گراف::will_سرریز (sorted_گراف));
+  إذا (!will_سرریز)
+    أرجع Ok();
 
-  bool is_gsub_or_gpos = (table_tag == HB_OT_TAG_GPOS ||  table_tag == HB_OT_TAG_GSUB);
-  if (is_gsub_or_gpos)
-    TRY(_gsub_gpos_specialization (table_tag, always_recalculate_extensions, sorted_graph));
+  منطقي is_gsub_or_gpos = (جدول_برچسب_2 == HB_OT_برچسب_GPOS ||  جدول_برچسب_2 == HB_OT_برچسب_GSUB);
+  إذا (is_gsub_or_gpos)
+    TRY(_gsub_gpos_specialization (جدول_برچسب_2, always_recalculate_extensions, sorted_گراف));
 
-  unsigned round = 0;
-  unsigned total_iterations = 0;
-  hb_vector_t<graph::overflow_record_t> overflows;
+  بیعلامت round = 0;
+  بیعلامت مجموع_iterations = 0;
+  hb_وکتور_t<گراف::سرریز_رکورد_t> overflows;
   // TODO(garretrieger): select a good limit for max rounds.
-  while (round < max_rounds && total_iterations < HB_REPACKER_MAX_ITERATIONS) {
-    TRY_ASSIGN (bool overflows_exist, graph::will_overflow (sorted_graph, &overflows));
-    if (!overflows_exist)
-      break;
+  طالما (round < max_دورها && مجموع_iterations < HB_REPACKER_MAX_ITERATIONS) {
+    TRY_تخصیص_بده (منطقي overflows_exist, گراف::will_سرریز (sorted_گراف, &overflows));
+    إذا (!overflows_exist)
+      اكسر;
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "=== Overflow resolution round %u ===", round);
-    print_overflows (sorted_graph, overflows);
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "=== Overflow resolution round %u ===", round);
+    print_overflows (sorted_گراف, overflows);
 
-    total_iterations++;
-    hb_set_t priority_bumped_parents;
+    مجموع_iterations++;
+    hb_مجموعه_t اولویت_bumped_parents;
 
-    TRY_ASSIGN (bool isolated, _try_isolating_subgraphs (overflows, sorted_graph));
-    if (!isolated)
+    TRY_تخصیص_بده (منطقي isolated, _try_isolating_subgraphs (overflows, sorted_گراف));
+    إذا (!isolated)
     {
       round++;
-      TRY_ASSIGN (bool processed, _process_overflows (overflows, priority_bumped_parents, sorted_graph));
-      if (!processed)
+      TRY_تخصیص_بده (منطقي processed, _process_overflows (overflows, اولویت_bumped_parents, sorted_گراف));
+      إذا (!processed)
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "No resolution available :(");
-        break;
+        DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "No resolution available :(");
+        اكسر;
       }
     }
 
-    TRY (sorted_graph.sort_shortest_distance ());
+    TRY (sorted_گراف.مرتب_سازی_کوتاهترین_فاصله ());
   }
 
-  TRY_ASSIGN (bool has_overflow, graph::will_overflow (sorted_graph));
-  if (unlikely (has_overflow))
+  TRY_تخصیص_بده (منطقي has_سرریز, گراف::will_سرریز (sorted_گراف));
+  إذا (unlikely (has_سرریز))
   {
-    if (is_gsub_or_gpos && !always_recalculate_extensions) {
+    إذا (is_gsub_or_gpos && !always_recalculate_extensions) {
       // If this a GSUB/GPOS table and we didn't try to extension promotion and table splitting then
       // as a last ditch effort, re-run the repacker with it enabled.
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Failed to find a resolution. Re-running with extension promotion and table splitting enabled.");
-      return hb_resolve_graph_overflows (table_tag, max_rounds, true, sorted_graph);
+      DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Failed to find a resolution. Re-running with extension promotion and table splitting enabled.");
+      أرجع hb_resolve_گراف_overflows (جدول_برچسب_2, max_دورها, درست, sorted_گراف);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Offset overflow resolution failed.");
-    return Err(graph::OVERFLOW_RESOLUTION_FAILED);
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی, "Offset overflow resolution failed.");
+    أرجع Err(گراف::سرریز_RESOLUTION_FAILED);
   }
 
-  return Ok();
+  أرجع Ok();
 }
 
 /*
@@ -467,38 +467,38 @@ hb_resolve_graph_overflows (hb_tag_t table_tag,
  * For a detailed writeup describing how the algorithm operates see:
  * docs/repacker.md
  */
-template<typename T>
-inline hb_blob_t*
-hb_resolve_overflows (const T& packed,
-                      hb_tag_t table_tag,
-                      unsigned max_rounds = 32,
-                      bool recalculate_extensions = false) {
-  auto graph_res = graph_t::create (packed);
-  if (!graph_res.is_ok ())
+قالب<نام_نوع T>
+مضمن hb_blob_t*
+hb_resolve_overflows (ثابت T& packed,
+                      hb_برچسب_t جدول_برچسب_2,
+                      بیعلامت max_دورها = 32,
+                      منطقي recalculate_extensions = خطأ) {
+  خودکار گراف_res = گراف_t::create (packed);
+  إذا (!گراف_res.is_ok ())
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "Graph creation failed, cause: %s", graph::to_string(graph_res.error()));
-    return nullptr;
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
+               "Graph creation failed, cause: %s", گراف::to_string(گراف_res.error()));
+    أرجع اشاره_تهی;
   }
-  graph_t sorted_graph = std::move (*graph_res);
+  گراف_t sorted_گراف = std::move (*گراف_res);
 
-  auto resolve_res = hb_resolve_graph_overflows (table_tag, max_rounds, recalculate_extensions, sorted_graph);
-  if (resolve_res.is_err ())
+  خودکار resolve_res = hb_resolve_گراف_overflows (جدول_برچسب_2, max_دورها, recalculate_extensions, sorted_گراف);
+  إذا (resolve_res.is_err ())
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "Overflow resolution failed, cause: %s", graph::to_string(resolve_res.error()));
-    return nullptr;
-  }
-
-  auto serialize_res = graph::serialize (sorted_graph);
-  if (serialize_res.is_err ())
-  {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
-               "Serialization failed, cause: %s", graph::to_string(serialize_res.error()));
-    return nullptr;
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
+               "Overflow resolution failed, cause: %s", گراف::to_string(resolve_res.error()));
+    أرجع اشاره_تهی;
   }
 
-  return *serialize_res;
+  خودکار serialize_res = گراف::serialize (sorted_گراف);
+  إذا (serialize_res.is_err ())
+  {
+    DEBUG_پیام (SUBSET_REPACK, اشاره_تهی,
+               "Serialization failed, cause: %s", گراف::to_string(serialize_res.error()));
+    أرجع اشاره_تهی;
+  }
+
+  أرجع *serialize_res;
 }
 
-#endif /* HB_REPACKER_HH */
+#پایان_اگر /* HB_REPACKER_HH */

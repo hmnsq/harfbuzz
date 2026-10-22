@@ -1,266 +1,266 @@
-#ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
+#اگر_تعریف_نشده OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
+#تعریف_کن OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 
-#include "PairSet.hh"
+#ضمن "PairSet.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نطاق OT {
+نطاق Layout {
+نطاق GPOS_impl {
 
 
-template <typename Types>
-struct PairPosFormat1_3
+قالب <نام_نوع Types>
+بنية PairPosFormat1_3
 {
-  using PairSet = GPOS_impl::PairSet<Types>;
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  استفاده Pair_مجموعه = GPOS_impl::Pair_مجموعه<Types>;
+  استفاده Pair_مقدار_رکورد = GPOS_impl::Pair_مقدار_رکورد<Types>;
 
-  protected:
+  محمي:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  نام_نوع Types::قالب LOffset_مقصد<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat[2];         /* [0] Defines the types of data in
+  مقدار_Format   مقدار_Format_2[2];         /* [0] Defines the types of data in
                                          * ValueRecord1--for the first glyph
                                          * in the pair--may be zero (0) */
                                         /* [1] Defines the types of data in
                                          * ValueRecord2--for the second glyph
                                          * in the pair--may be zero (0) */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<PairSet>>
-                pairSet;                /* Array of PairSet tables ordered by
+  نام_نوع Types::قالب Array_از<نام_نوع Types::قالب جابه_جایی_مقصد<Pair_مجموعه>>
+                pair_مجموعه;                /* Array of PairSet tables ordered by
                                          * Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * ValueFormat::static_size + Types::HBUINT::static_size, pairSet);
+  عام:
+  DEFINE_اندازه_ARRAY (2 + Types::LOffset::static_اندازه + 2 * مقدار_Format::static_اندازه + Types::HBUINT::static_اندازه, pair_مجموعه);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
 
-    if (!c->check_struct (this)) return_trace (false);
+    إذا (!c->check_struct (هذا)) return_trace (خطأ);
     hb_barrier ();
 
-    unsigned int len1 = valueFormat[0].get_len ();
-    unsigned int len2 = valueFormat[1].get_len ();
-    typename PairSet::sanitize_closure_t closure =
+    بیعلامت صحيح len1 = مقدار_Format_2[0].get_len ();
+    بیعلامت صحيح len2 = مقدار_Format_2[1].get_len ();
+    نام_نوع Pair_مجموعه::sanitize_بستگی_t بستگی =
     {
-      valueFormat,
+      مقدار_Format_2,
       len1,
-      PairSet::get_size (len1, len2)
+      Pair_مجموعه::get_اندازه (len1, len2)
     };
 
-    return_trace (coverage.sanitize (c, this) && pairSet.sanitize (c, this, &closure));
+    return_trace (coverage.sanitize (c, هذا) && pair_مجموعه.sanitize (c, هذا, &بستگی));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقي intersects (ثابت hb_مجموعه_t *glyphs) ثابت
   {
-    auto &cov = this+coverage;
+    خودکار &cov = هذا+coverage;
 
-    if (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
+    إذا (pair_مجموعه.len > glyphs->get_population () * hb_بیت_storage ((بیعلامت) pair_مجموعه.len))
     {
-      for (hb_codepoint_t g : glyphs->iter ())
+      لكل (hb_codepoint_t g : glyphs->iter ())
       {
-	unsigned i = cov.get_coverage (g);
-	if ((this+pairSet[i]).intersects (glyphs, valueFormat))
-	  return true;
+	بیعلامت i = cov.get_coverage (g);
+	إذا ((هذا+pair_مجموعه[i]).intersects (glyphs, مقدار_Format_2))
+	  أرجع درست;
       }
-      return false;
+      أرجع خطأ;
     }
 
-    return
-    + hb_zip (cov, pairSet)
-    | hb_filter (*glyphs, hb_first)
-    | hb_map (hb_second)
-    | hb_map ([glyphs, this] (const typename Types::template OffsetTo<PairSet> &_)
-              { return (this+_).intersects (glyphs, valueFormat); })
+    أرجع
+    + hb_zip (cov, pair_مجموعه)
+    | hb_filter (*glyphs, hb_اولی)
+    | hb_map (hb_دومی)
+    | hb_map ([glyphs, هذا] (ثابت نام_نوع Types::قالب جابه_جایی_مقصد<Pair_مجموعه> &_)
+              { أرجع (هذا+_).intersects (glyphs, مقدار_Format_2); })
     | hb_any
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  فراغ بستگی_lookups (hb_بستگی_lookups_context_t *c) ثابت {}
+  فراغ collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    if ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) return;
+    إذا ((!مقدار_Format_2[0].has_device ()) && (!مقدار_Format_2[1].has_device ())) أرجع;
 
-    auto it =
-    + hb_zip (this+coverage, pairSet)
-    | hb_filter (c->glyph_set, hb_first)
-    | hb_map (hb_second)
+    خودکار it =
+    + hb_zip (هذا+coverage, pair_مجموعه)
+    | hb_filter (c->glyph_مجموعه, hb_اولی)
+    | hb_map (hb_دومی)
     ;
 
-    if (!it) return;
+    إذا (!it) أرجع;
     + it
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, valueFormat); })
+    | hb_map (hb_جمع_کن (هذا))
+    | hb_apply ([&] (ثابت Pair_مجموعه& _) { _.collect_variation_indices (c, مقدار_Format_2); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  فراغ collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    unsigned int count = pairSet.len;
-    for (unsigned int i = 0; i < count; i++)
-      (this+pairSet[i]).collect_glyphs (c, valueFormat);
+    إذا (unlikely (!(هذا+coverage).collect_coverage (c->درون_داد))) أرجع;
+    بیعلامت صحيح شمار = pair_مجموعه.len;
+    لكل (بیعلامت صحيح i = 0; i < شمار; i++)
+      (هذا+pair_مجموعه[i]).collect_glyphs (c, مقدار_Format_2);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  فراغ collect_دومی_glyphs (hb_مجموعه_digest_t *digest) ثابت
   {
-    unsigned count = pairSet.len;
-    for (unsigned i = 0; i < count; i++)
-      (this+pairSet[i]).collect_second_glyphs (digest, valueFormat);
+    بیعلامت شمار = pair_مجموعه.len;
+    لكل (بیعلامت i = 0; i < شمار; i++)
+      (هذا+pair_مجموعه[i]).collect_دومی_glyphs (digest, مقدار_Format_2);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { أرجع هذا+coverage; }
 
-  struct external_cache_t
+  بنية external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
-    hb_set_digest_t pair_sets[HB_VAR_ARRAY];
+    hb_مجموعه_digest_t pair_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  فراغ *external_cache_create () ثابت
   {
-    unsigned count = pairSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_set_digest_t) +
-		    count * sizeof (hb_set_digest_t);
-    external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    بیعلامت شمار = pair_مجموعه.len;
+    بیعلامت اندازه = حجم (external_cache_t) -
+		    HB_VAR_ARRAY * حجم (hb_مجموعه_digest_t) +
+		    شمار * حجم (hb_مجموعه_digest_t);
+    external_cache_t *cache = (external_cache_t *) hb_malloc (اندازه);
+    إذا (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
+      لكل (بیعلامت i = 0; i < شمار; i++)
       {
 	cache->pair_sets[i].init ();
-	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
+	(هذا+pair_مجموعه[i]).collect_دومی_glyphs (&cache->pair_sets[i], مقدار_Format_2);
       }
     }
-    return cache;
+    أرجع cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  منطقي apply (hb_ot_apply_context_t *c, فراغ *external_cache) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (هذا);
 
-    hb_buffer_t *buffer = c->buffer;
+    hb_میانگیر_t *میانگیر = c->میانگیر;
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#اگر_تعریف_نشده HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-#endif
-    if (index == NOT_COVERED) return_trace (false);
+    بیعلامت صحيح شاخص_2 = (هذا+coverage).get_coverage  (میانگیر->cur().codepoint, cache ? &cache->coverage : اشاره_تهی);
+#وإلا
+    بیعلامت صحيح شاخص_2 = (هذا+coverage).get_coverage  (میانگیر->cur().codepoint);
+#پایان_اگر
+    إذا (شاخص_2 == NOT_COVERED) return_trace (خطأ);
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
-    unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    خودکار &skippy_iter = c->iter_درون_داد;
+    skippy_iter.reset_fast (میانگیر->idx);
+    بیعلامت unsafe_مقصد;
+    إذا (unlikely (!skippy_iter.next (&unsafe_مقصد)))
     {
-      buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      میانگیر->unsafe_مقصد_concat (میانگیر->idx, unsafe_مقصد);
+      return_trace (خطأ);
     }
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (cache &&
-	index < pairSet.len &&
-	!cache->pair_sets[index].may_have (buffer->info[skippy_iter.idx].codepoint))
+#اگر_تعریف_نشده HB_NO_OT_LAYOUT_LOOKUP_CACHE
+    إذا (cache &&
+	شاخص_2 < pair_مجموعه.len &&
+	!cache->pair_sets[شاخص_2].may_have (میانگیر->info[skippy_iter.idx].codepoint))
     {
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      میانگیر->unsafe_مقصد_concat (میانگیر->idx, skippy_iter.idx + 1);
+      return_trace (خطأ);
     }
-#endif
+#پایان_اگر
 
-    return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
+    return_trace ((هذا+pair_مجموعه[شاخص_2]).apply (c, مقدار_Format_2, skippy_iter.idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقي subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (هذا);
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_مجموعه_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    خودکار *بیرون = c->serializer->شروع_embed (*هذا);
+    إذا (unlikely (!c->serializer->extend_min (بیرون))) return_trace (خطأ);
+    بیرون->format = format;
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat[0], valueFormat[1]);
+    hb_pair_t<بیعلامت, بیعلامت> newFormats = hb_pair (مقدار_Format_2[0], مقدار_Format_2[1]);
 
-    if (c->plan->normalized_coords)
+    إذا (c->plan->normalized_coords)
     {
       /* all device flags will be dropped when full instancing, no need to strip
        * hints, also do not strip emtpy cause we don't compute the new default
        * value during stripping */
-      newFormats = compute_effective_value_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = compute_effective_مقدار_formats (glyphset, خطأ, خطأ, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    وإلا إذا (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
-      hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      hb_blob_t* blob = hb_face_reference_جدول (c->plan->منبع, HB_برچسب ('f','v','a','r'));
+      منطقي has_fvar = (blob != hb_blob_get_خالی ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      منطقي strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = compute_effective_value_formats (glyphset, strip, true);
+      إذا (has_fvar && !c->plan->has_gdef_varstore)
+        strip = درست;
+      newFormats = compute_effective_مقدار_formats (glyphset, strip, درست);
     }
 
-    out->valueFormat[0] = newFormats.first;
-    out->valueFormat[1] = newFormats.second;
+    بیرون->مقدار_Format_2[0] = newFormats.اولی;
+    بیرون->مقدار_Format_2[1] = newFormats.second;
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
+    hb_sorted_وکتور_t<hb_codepoint_t> new_coverage;
 
-    + hb_zip (this+coverage, pairSet)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter ([this, c, out] (const typename Types::template OffsetTo<PairSet>& _)
+    + hb_zip (هذا+coverage, pair_مجموعه)
+    | hb_filter (glyphset, hb_اولی)
+    | hb_filter ([هذا, c, بیرون] (ثابت نام_نوع Types::قالب جابه_جایی_مقصد<Pair_مجموعه>& _)
                  {
-                   auto snap = c->serializer->snapshot ();
-                   auto *o = out->pairSet.serialize_append (c->serializer);
-                   if (unlikely (!o)) return false;
-                   bool ret = o->serialize_subset (c, _, this, valueFormat, out->valueFormat);
-                   if (!ret)
+                   خودکار snap = c->serializer->snapshot ();
+                   خودکار *o = بیرون->pair_مجموعه.serialize_append (c->serializer);
+                   إذا (unlikely (!o)) أرجع خطأ;
+                   منطقي ret = o->serialize_subset (c, _, هذا, مقدار_Format_2, بیرون->مقدار_Format_2);
+                   إذا (!ret)
                    {
-                     out->pairSet.pop ();
+                     بیرون->pair_مجموعه.برداشت ();
                      c->serializer->revert (snap);
                    }
-                   return ret;
+                   أرجع ret;
                  },
-                 hb_second)
-    | hb_map (hb_first)
+                 hb_دومی)
+    | hb_map (hb_اولی)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    بیرون->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
 
-    return_trace (bool (new_coverage));
+    return_trace (منطقي (new_coverage));
   }
 
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_set_t& glyphset,
-                                                                 bool strip_hints, bool strip_empty,
-                                                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<بیعلامت, بیعلامت> compute_effective_مقدار_formats (ثابت hb_مجموعه_t& glyphset,
+                                                                 منطقي strip_hints, منطقي strip_خالی,
+                                                                 ثابت hb_hashmap_t<بیعلامت, hb_pair_t<بیعلامت, صحيح>> *varidx_delta_map = اشاره_تهی) ثابت
   {
-    unsigned format1 = 0;
-    unsigned format2 = 0;
-    for (const auto & _ :
-	  + hb_zip (this+coverage, pairSet)
-	  | hb_filter (glyphset, hb_first)
-	  | hb_map (hb_second)
+    بیعلامت format1 = 0;
+    بیعلامت format2 = 0;
+    لكل (ثابت خودکار & _ :
+	  + hb_zip (هذا+coverage, pair_مجموعه)
+	  | hb_filter (glyphset, hb_اولی)
+	  | hb_map (hb_دومی)
 	)
     {
-      const PairSet& set = (this + _);
-      auto formats = set.get_values_view (valueFormat).compute_effective_value_formats (
-          glyphset, valueFormat, strip_hints, strip_empty, varidx_delta_map);
-      format1 |= formats.first;
+      ثابت Pair_مجموعه& مجموعه = (هذا + _);
+      خودکار formats = مجموعه.get_مقادیر_view (مقدار_Format_2).compute_effective_مقدار_formats (
+          glyphset, مقدار_Format_2, strip_hints, strip_خالی, varidx_delta_map);
+      format1 |= formats.اولی;
       format2 |= formats.second;
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat[0] && format2 == valueFormat[1])
-        break;
+      إذا (!varidx_delta_map &&
+          format1 == مقدار_Format_2[0] && format2 == مقدار_Format_2[1])
+        اكسر;
     }
 
-    return hb_pair (format1, format2);
+    أرجع hb_pair (format1, format2);
   }
 };
 
@@ -269,4 +269,4 @@ struct PairPosFormat1_3
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
+#پایان_اگر  // OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH

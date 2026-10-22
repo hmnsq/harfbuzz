@@ -22,91 +22,91 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_تعریف_نشده HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#ضمن "hb-ot-shaper-syllabic.hh"
 
 
-bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
-				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+منطقي
+hb_syllabic_درج_dotted_circles (hb_font_t *font,
+				   hb_میانگیر_t *میانگیر,
+				   بیعلامت صحيح broken_syllable_type,
+				   بیعلامت صحيح dottedcircle_category,
+				   صحيح repha_category,
+				   صحيح dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  إذا (unlikely (میانگیر->flags & HB_میانگیر_FLAG_DO_NOT_درج_DOTTED_CIRCLE))
+    أرجع خطأ;
+  إذا (likely (!(میانگیر->scratch_flags & HB_میانگیر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    إذا (میانگیر->messaging ())
+      (فراغ) میانگیر->پیام (font, "skipped inserting dotted-circles because there is no broken syllables");
+    أرجع خطأ;
   }
 
-  if (buffer->messaging () &&
-      !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+  إذا (میانگیر->messaging () &&
+      !میانگیر->پیام (font, "start inserting dotted-circles"))
+    أرجع خطأ;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  إذا (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    أرجع خطأ;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  إذا (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
-  buffer->clear_output ();
+  میانگیر->clear_output ();
 
-  buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  میانگیر->idx = 0;
+  بیعلامت صحيح آخرین_syllable = 0;
+  طالما (میانگیر->idx < میانگیر->len && میانگیر->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    بیعلامت صحيح syllable = میانگیر->cur().syllable();
+    إذا (unlikely (آخرین_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
-      last_syllable = syllable;
+      آخرین_syllable = syllable;
 
       hb_glyph_info_t ginfo = dottedcircle;
-      ginfo.cluster = buffer->cur().cluster;
-      ginfo.mask = buffer->cur().mask;
-      ginfo.syllable() = buffer->cur().syllable();
+      ginfo.cluster = میانگیر->cur().cluster;
+      ginfo.ماسک = میانگیر->cur().ماسک;
+      ginfo.syllable() = میانگیر->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      إذا (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
-	       last_syllable == buffer->cur().syllable() &&
-	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	طالما (میانگیر->idx < میانگیر->len && میانگیر->successful &&
+	       آخرین_syllable == میانگیر->cur().syllable() &&
+	       میانگیر->cur().ot_shaper_var_u8_category() == (بیعلامت) repha_category)
+	  (فراغ) میانگیر->بعدی_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (فراغ) میانگیر->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    وإلا
+      (فراغ) میانگیر->بعدی_glyph ();
   }
-  buffer->sync ();
+  میانگیر->متزامن ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  إذا (میانگیر->messaging ())
+    (فراغ) میانگیر->پیام (font, "end inserting dotted-circles");
 
-  return true;
+  أرجع درست;
 }
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_داخلی منطقي
+hb_syllabic_clear_var (ثابت hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer)
+		       hb_میانگیر_t *میانگیر)
 {
-  HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  HB_میانگیر_DEALLOCATE_VAR (میانگیر, syllable);
+  أرجع خطأ;
 }
 
 
-#endif
+#پایان_اگر
