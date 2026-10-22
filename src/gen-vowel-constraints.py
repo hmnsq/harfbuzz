@@ -20,36 +20,36 @@ def write (s):
 	sys.stdout.buffer.write (s.encode ('utf-8'))
 import sys
 
-if len (sys.argv) > 1 and sys.argv[1] == '--rust':
+ប្រសិនបើ len (sys.argv) > 1 ca sys.argv[1] == '--rust':
 	del sys.argv[1]
 	output_rust = True
-else:
+បើមិនដូច្នេះ:
 	output_rust = False
 
-if len (sys.argv) != 3:
+ប្រសិនបើ len (sys.argv) != 3:
 	sys.exit (__doc__)
 
 with open (sys.argv[2], encoding='utf-8') as f:
-	scripts_header = [f.readline () for i in range (2)]
+	scripts_header = [f.readline () សម្រាប់ i anta_h range (2)]
 	scripts = {}
 	script_order = {}
-	for line in f:
+	សម្រាប់ line anta_h f:
 		j = line.find ('#')
-		if j >= 0:
+		ប្រសិនបើ j >= 0:
 			line = line[:j]
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
+		fields = [x.strip () សម្រាប់ x anta_h line.split (';')]
+		ប្រសិនបើ len (fields) == 1:
 			continue
 		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
+		start = ចំនួនគត់ (uu[0], 16)
+		ប្រសិនបើ len (uu) == 1:
 			end = start
-		else:
-			end = int (uu[1], 16)
+		បើមិនដូច្នេះ:
+			end = ចំនួនគត់ (uu[1], 16)
 		script = fields[1]
-		for u in range (start, end + 1):
+		សម្រាប់ u anta_h range (start, end + 1):
 			scripts[u] = script
-		if script not in script_order:
+		ប្រសិនបើ script na anta_h script_order:
 			script_order[script] = start
 
 class ConstraintSet (object):
@@ -70,131 +70,131 @@ class ConstraintSet (object):
 
 	def add (self, constraint):
 		"""Add a constraint to this set."""
-		if not constraint:
-			return
+		ប្រសិនបើ na constraint:
+			ត្រឡប់
 		first = constraint[0]
 		rest = constraint[1:]
-		if isinstance (self._c, list):
-			if constraint == self._c[:len (constraint)]:
+		ប្រសិនបើ isinstance (self._c, list):
+			ប្រសិនបើ constraint == self._c[:len (constraint)]:
 				self._c = constraint
 			elif self._c != constraint[:len (self._c)]:
 				self._c = {self._c[0]: ConstraintSet (self._c[1:])}
-		if isinstance (self._c, dict):
-			if first in self._c:
+		ប្រសិនបើ isinstance (self._c, dict):
+			ប្រសិនបើ first anta_h self._c:
 				self._c[first].add (rest)
-			else:
+			បើមិនដូច្នេះ:
 				self._c[first] = ConstraintSet (rest)
 
 	@staticmethod
 	def _indent (depth):
-		return ('  ' * depth).replace ('        ', '\t')
+		ត្រឡប់ ('  ' * depth).replace ('        ', '\t')
 
 	def __str__ (self, index=0, depth=4):
 		s = []
 		indent = self._indent (depth)
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
+		ប្រសិនបើ isinstance (self._c, list):
+			ប្រសិនបើ len (self._c) == 0:
 				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = true;\n'.format (indent))
 			elif len (self._c) == 1:
 				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('{}matched = 0x{:04X}u == buffer->cur ({}).codepoint;\n'.format (indent, next (iter (self._c)), index or ''))
-			else:
+			បើមិនដូច្នេះ:
 				s.append ('{}if (0x{:04X}u == buffer->cur ({}).codepoint &&\n'.format (indent, self._c[0], index or ''))
-				if index:
+				ប្រសិនបើ index:
 					s.append ('{}buffer->idx + {} < count &&\n'.format (self._indent (depth + 2), index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+				សម្រាប់ i, cp anta_h enumerate (self._c[1:], start=1):
 					s.append ('{}0x{:04X}u == buffer->cur ({}).codepoint{}\n'.format (
-						self._indent (depth + 2), cp, index + i, ')' if i == len (self._c) - 1 else ' &&'))
+						self._indent (depth + 2), cp, index + i, ')' ប្រសិនបើ i == len (self._c) - 1 បើមិនដូច្នេះ ' &&'))
 				s.append ('{}{{\n'.format (indent))
-				for i in range (index):
+				សម្រាប់ i anta_h range (index):
 					s.append ('{}(void) buffer->next_glyph ();\n'.format (self._indent (depth + 1)))
 				s.append ('{}matched = true;\n'.format (self._indent (depth + 1)))
 				s.append ('{}}}\n'.format (indent))
-		else:
+		បើមិនដូច្នេះ:
 			s.append ('{}switch (buffer->cur ({}).codepoint)\n'.format(indent, index or ''))
 			s.append ('{}{{\n'.format (indent))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			សម្រាប់ first, rest anta_h sorted (self._c.items ()):
 				cases[rest.__str__ (index + 1, depth + 2)].add (first)
-			for body, labels in sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
-				for i, cp in enumerate (sorted (labels)):
-					if i % 4 == 0:
+			សម្រាប់ body, labels anta_h sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0]):
+				សម្រាប់ i, cp anta_h enumerate (sorted (labels)):
+					ប្រសិនបើ i % 4 == 0:
 						s.append (self._indent (depth + 1))
-					else:
+					បើមិនដូច្នេះ:
 						s.append (' ')
-					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' if i % 4 == 3 else ''))
-				if len (labels) % 4 != 0:
+					s.append ('case 0x{:04X}u:{}'.format (cp, '\n' ប្រសិនបើ i % 4 == 3 បើមិនដូច្នេះ ''))
+				ប្រសិនបើ len (labels) % 4 != 0:
 					s.append ('\n')
 				s.append (body)
 				s.append ('{}break;\n'.format (self._indent (depth + 2)))
 			s.append ('{}}}\n'.format (indent))
-		return ''.join (s)
+		ត្រឡប់ ''.join (s)
 
 	def rust_str (self, index=0):
 		s = []
-		if isinstance (self._c, list):
-			if len (self._c) == 0:
+		ប្រសិនបើ isinstance (self._c, list):
+			ប្រសិនបើ len (self._c) == 0:
 				assert index == 2, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = true;\n')
 			elif len (self._c) == 1:
 				assert index == 1, 'Cannot use `matched` for this constraint; the general case has not been implemented'
 				s.append ('matched = 0x{:04X} == buffer.cur({}).glyph_id;\n'.format (next (iter (self._c)), index))
-			else:
+			បើមិនដូច្នេះ:
 				s.append ('if 0x{:04X} == buffer.cur({}).glyph_id &&\n'.format (self._c[0], index))
-				if index:
+				ប្រសិនបើ index:
 					s.append ('buffer.idx + {} < buffer.len &&\n'.format (index + 1))
-				for i, cp in enumerate (self._c[1:], start=1):
+				សម្រាប់ i, cp anta_h enumerate (self._c[1:], start=1):
 					s.append ('0x{:04X} == buffer.cur({}).glyph_id{}\n'.format (
-						cp, index + i, '' if i == len (self._c) - 1 else ' &&'))
+						cp, index + i, '' ប្រសិនបើ i == len (self._c) - 1 បើមិនដូច្នេះ ' &&'))
 				s.append ('{\n')
-				for i in range (index + 1):
+				សម្រាប់ i anta_h range (index + 1):
 					s.append ('buffer.next_glyph();\n')
 				s.append ('output_dotted_circle(buffer);\n')
 				s.append ('}\n')
-		else:
+		បើមិនដូច្នេះ:
 			s.append ('match buffer.cur({}).glyph_id {{\n'.format (index))
 			cases = collections.defaultdict (set)
-			for first, rest in sorted (self._c.items ()):
+			សម្រាប់ first, rest anta_h sorted (self._c.items ()):
 				cases[rest.rust_str (index + 1)].add (first)
 			items = sorted (cases.items (), key=lambda b_ls: sorted (b_ls[1])[0])
-			for ii, (body, labels) in enumerate (items):
-				for i, cp in enumerate (sorted (labels)):
-					if i == len (labels) - 1:
-						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' if i % 4 == 3 else ''))
-					else:
-						s.append (' 0x{:04X} | {}'.format (cp, '\n' if i % 4 == 3 else ''))
+			សម្រាប់ ii, (body, labels) anta_h enumerate (items):
+				សម្រាប់ i, cp anta_h enumerate (sorted (labels)):
+					ប្រសិនបើ i == len (labels) - 1:
+						s.append (' 0x{:04X} => {{ {}'.format (cp, '\n' ប្រសិនបើ i % 4 == 3 បើមិនដូច្នេះ ''))
+					បើមិនដូច្នេះ:
+						s.append (' 0x{:04X} | {}'.format (cp, '\n' ប្រសិនបើ i % 4 == 3 បើមិនដូច្នេះ ''))
 				s.append (body)
 				s.append ('}')
-				if ii == len (items) - 1:
+				ប្រសិនបើ ii == len (items) - 1:
 					s.append ('_ => {}')
 			s.append ('}\n')
-		return ''.join (s)
+		ត្រឡប់ ''.join (s)
 
 constraints = {}
 with open (sys.argv[1], encoding='utf-8') as f:
 	constraints_header = []
-	while True:
+	ខណៈពេល True:
 		line = f.readline ().strip ()
-		if line == '#':
-			break
+		ប្រសិនបើ line == '#':
+			bha_nga
 		constraints_header.append(line)
-	for line in f:
+	សម្រាប់ line anta_h f:
 		j = line.find ('#')
-		if j >= 0:
+		ប្រសិនបើ j >= 0:
 			line = line[:j]
-		constraint = [int (cp, 16) for cp in line.split (';')[0].split ()]
-		if not constraint: continue
+		constraint = [ចំនួនគត់ (cp, 16) សម្រាប់ cp anta_h line.split (';')[0].split ()]
+		ប្រសិនបើ na constraint: continue
 		assert 2 <= len (constraint), 'Prohibited sequence is too short: {}'.format (constraint)
 		script = scripts[constraint[0]]
-		if script in constraints:
+		ប្រសិនបើ script anta_h constraints:
 			constraints[script].add (constraint)
-		else:
+		បើមិនដូច្នេះ:
 			constraints[script] = ConstraintSet (constraint)
 		assert constraints, 'No constraints found'
 
 print ('/* == Start of generated functions == */')
-if output_rust:
+ប្រសិនបើ output_rust:
 	print ('// WARNING: this file was generated by ../../harfbuzz/src/gen-vowel-constraints.py --rust')
 	print ()
 	print ('#![allow(clippy::single_match)]')
@@ -229,7 +229,7 @@ if output_rust:
 	print ('    buffer.clear_output();')
 	print ('    match buffer.script {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	សម្រាប់ script, constraints anta_h sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
 		print ('        Some(script::{}) => {{'.format (script.upper ()))
 		print ('            buffer.idx = 0;')
 		print ('            while buffer.idx + 1 < buffer.len {')
@@ -246,7 +246,7 @@ if output_rust:
 	print ('    }')
 	print ('    buffer.sync();')
 	print ('}')
-else:
+បើមិនដូច្នេះ:
 	print ('/*')
 	print (' * The following functions are generated by running:')
 	print (' *')
@@ -254,10 +254,10 @@ else:
 	print (' *')
 	print (' * on files with these headers:')
 	print (' *')
-	for line in constraints_header:
+	សម្រាប់ line anta_h constraints_header:
 		print (' * %s' % line.strip ())
 	print (' *')
-	for line in scripts_header:
+	សម្រាប់ line anta_h scripts_header:
 		print (' * %s' % line.strip ())
 	print (' */')
 	print ()
@@ -303,7 +303,7 @@ else:
 	print ('  switch ((unsigned) buffer->props.script)')
 	print ('  {')
 
-	for script, constraints in sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
+	សម្រាប់ script, constraints anta_h sorted (constraints.items (), key=lambda s_c: script_order[s_c[0]]):
 		print ('    case HB_SCRIPT_{}:'.format (script.upper ()))
 		print ('      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)')
 		print ('      {')

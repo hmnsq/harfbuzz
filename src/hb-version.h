@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ប្រសិនបើ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -77,17 +77,17 @@ HB_BEGIN_DECLS
 
 
 HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+hb_version (unsigned ចំនួនគត់ *major,
+	    unsigned ចំនួនគត់ *minor,
+	    unsigned ចំនួនគត់ *micro);
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_version_string (void);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_version_atleast (unsigned ចំនួនគត់ major,
+		    unsigned ចំនួនគត់ minor,
+		    unsigned ចំនួនគត់ micro);
 
 
 HB_END_DECLS

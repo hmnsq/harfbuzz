@@ -37,11 +37,11 @@
 #include "hb-subset-input.hh"
 #include "hb-subset-plan.hh"
 
-struct hb_subset_context_t :
+sa_nracanaa hb_subset_context_t :
        hb_dispatch_context_t<hb_subset_context_t, bool, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET"; }
-  static return_t default_return_value () { return true; }
+  const var_na *get_name () { ត្រឡប់ "SUBSET"; }
+  static return_t default_return_value () { ត្រឡប់ true; }
 
   private:
   template <typename T, typename ...Ts> auto

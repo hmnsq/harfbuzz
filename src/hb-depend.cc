@@ -63,9 +63,9 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
+  ប្រសិនបើ (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
     successful = false;
-    return;
+    ត្រឡប់;
   }
   successful = hb_depend_data_builder_t (data).compile (f);
 }
@@ -82,7 +82,7 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
+  ប្រសិនបើ (hb_ot_layout_has_substitution (face))
     face->table.GSUB.get_relaxed ()->depend (this, face);
 #ifndef HB_NO_MATH
   face->table.MATH->depend (this);
@@ -97,7 +97,7 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
 #ifndef HB_NO_VAR_COMPOSITES
   face->table.VARC->depend (this);
 #endif
-  return successful;
+  ត្រឡប់ successful;
 }
 
 
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  ប្រសិនបើ (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    ត្រឡប់ nullptr;
 
-  if (unlikely (depend->in_error ()))
+  ប្រសិនបើ (unlikely (depend->in_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    ត្រឡប់ nullptr;
   }
 
-  return depend;
+  ត្រឡប់ depend;
 }
 
 /**
@@ -173,19 +173,19 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+unsigned ចំនួនគត់
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
+                                unsigned ចំនួនគត់ start_offset,
+                                unsigned ចំនួនគត់ *entry_count,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  unsigned ចំនួនគត់ total = depend->data.get_glyph_entry_count (gid);
+  ប្រសិនបើ (entry_count)
   {
-    unsigned int count = hb_min (*entry_count,
+    unsigned ចំនួនគត់ count = hb_min (*entry_count,
                                   start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
     {
       uint8_t flags_byte = 0;
       depend->data.get_glyph_entry (gid, start_offset + i,
@@ -197,7 +197,7 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
     }
     *entry_count = count;
   }
-  return total;
+  ត្រឡប់ total;
 }
 
 /**
@@ -228,9 +228,9 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
                               hb_set_t *out)
 {
   const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
+  ប្រសិនបើ (!s) ត្រឡប់ false;
   out->set (*s);
-  return true;
+  ត្រឡប់ true;
 }
 
 /**
@@ -245,7 +245,7 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
 void
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  ប្រសិនបើ (!hb_object_destroy (depend)) ត្រឡប់;
 
   hb_free (depend);
 }

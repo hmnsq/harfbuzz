@@ -30,10 +30,10 @@
 #include "hb.h"
 
 #include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#ប្រសិនបើ TARGET_OS_IPHONE
 #  include <CoreText/CoreText.h>
 #  include <CoreGraphics/CoreGraphics.h>
-#else
+#បើមិនដូច្នេះ
 #  include <ApplicationServices/ApplicationServices.h>
 #endif
 
@@ -81,12 +81,12 @@ HB_EXTERN hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font);
 
 HB_EXTERN hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index);
+hb_coretext_face_create_from_file_or_fail (const var_na   *file_name,
+					   unsigned ចំនួនគត់  index);
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index);
+					   unsigned ចំនួនគត់  index);
 
 HB_EXTERN hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font);

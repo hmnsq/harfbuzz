@@ -93,8 +93,8 @@ hb_font_get_font_h_extents_nil (hb_font_t         *font HB_UNUSED,
 				hb_font_extents_t *extents,
 				void              *user_data HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, parimaa_na (*extents));
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -104,12 +104,12 @@ hb_font_get_font_h_extents_default (hb_font_t         *font,
 				    void              *user_data HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_font_h_extents (extents, false);
-  if (ret) {
+  ប្រសិនបើ (ret) {
     extents->ascender = font->parent_scale_y_distance (extents->ascender);
     extents->descender = font->parent_scale_y_distance (extents->descender);
     extents->line_gap = font->parent_scale_y_distance (extents->line_gap);
   }
-  return ret;
+  ត្រឡប់ ret;
 }
 
 static hb_bool_t
@@ -118,8 +118,8 @@ hb_font_get_font_v_extents_nil (hb_font_t         *font HB_UNUSED,
 				hb_font_extents_t *extents,
 				void              *user_data HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, parimaa_na (*extents));
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -129,12 +129,12 @@ hb_font_get_font_v_extents_default (hb_font_t         *font,
 				    void              *user_data HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_font_v_extents (extents, false);
-  if (ret) {
+  ប្រសិនបើ (ret) {
     extents->ascender = font->parent_scale_x_distance (extents->ascender);
     extents->descender = font->parent_scale_x_distance (extents->descender);
     extents->line_gap = font->parent_scale_x_distance (extents->line_gap);
   }
-  return ret;
+  ត្រឡប់ ret;
 }
 
 static hb_bool_t
@@ -145,7 +145,7 @@ hb_font_get_nominal_glyph_nil (hb_font_t      *font HB_UNUSED,
 			       void           *user_data HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -155,39 +155,39 @@ hb_font_get_nominal_glyph_default (hb_font_t      *font,
 				   hb_codepoint_t *glyph,
 				   void           *user_data HB_UNUSED)
 {
-  if (font->has_nominal_glyphs_func_set ())
+  ប្រសិនបើ (font->has_nominal_glyphs_func_set ())
   {
-    return font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
+    ត្រឡប់ font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
   }
-  return font->parent->get_nominal_glyph (unicode, glyph);
+  ត្រឡប់ font->parent->get_nominal_glyph (unicode, glyph);
 }
 
 #define hb_font_get_nominal_glyphs_nil hb_font_get_nominal_glyphs_default
 
-static unsigned int
+static unsigned ចំនួនគត់
 hb_font_get_nominal_glyphs_default (hb_font_t            *font,
 				    void                 *font_data HB_UNUSED,
-				    unsigned int          count,
+				    unsigned ចំនួនគត់          count,
 				    const hb_codepoint_t *first_unicode,
-				    unsigned int          unicode_stride,
+				    unsigned ចំនួនគត់          unicode_stride,
 				    hb_codepoint_t       *first_glyph,
-				    unsigned int          glyph_stride,
+				    unsigned ចំនួនគត់          glyph_stride,
 				    void                 *user_data HB_UNUSED)
 {
-  if (font->has_nominal_glyph_func_set ())
+  ប្រសិនបើ (font->has_nominal_glyph_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
     {
-      if (!font->get_nominal_glyph (*first_unicode, first_glyph))
-	return i;
+      ប្រសិនបើ (!font->get_nominal_glyph (*first_unicode, first_glyph))
+	ត្រឡប់ i;
 
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    ត្រឡប់ count;
   }
 
-  return font->parent->get_nominal_glyphs (count,
+  ត្រឡប់ font->parent->get_nominal_glyphs (count,
 					   first_unicode, unicode_stride,
 					   first_glyph, glyph_stride);
 }
@@ -201,7 +201,7 @@ hb_font_get_variation_glyph_nil (hb_font_t      *font HB_UNUSED,
 				 void           *user_data HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -212,7 +212,7 @@ hb_font_get_variation_glyph_default (hb_font_t      *font,
 				     hb_codepoint_t *glyph,
 				     void           *user_data HB_UNUSED)
 {
-  return font->parent->get_variation_glyph (unicode, variation_selector, glyph);
+  ត្រឡប់ font->parent->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 
@@ -222,7 +222,7 @@ hb_font_get_glyph_h_advance_nil (hb_font_t      *font,
 				 hb_codepoint_t  glyph HB_UNUSED,
 				 void           *user_data HB_UNUSED)
 {
-  return font->x_scale;
+  ត្រឡប់ font->x_scale;
 }
 
 static hb_position_t
@@ -231,13 +231,13 @@ hb_font_get_glyph_h_advance_default (hb_font_t      *font,
 				     hb_codepoint_t  glyph,
 				     void           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_advances_func_set ())
+  ប្រសិនបើ (font->has_glyph_h_advances_func_set ())
   {
     hb_position_t ret;
     font->get_glyph_h_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    ត្រឡប់ ret;
   }
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, false));
+  ត្រឡប់ font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, false));
 }
 
 static hb_position_t
@@ -246,7 +246,7 @@ hb_font_get_glyph_v_advance_nil (hb_font_t      *font,
 				 hb_codepoint_t  glyph HB_UNUSED,
 				 void           *user_data HB_UNUSED)
 {
-  return -font->y_scale;
+  ត្រឡប់ -font->y_scale;
 }
 
 static hb_position_t
@@ -255,13 +255,13 @@ hb_font_get_glyph_v_advance_default (hb_font_t      *font,
 				     hb_codepoint_t  glyph,
 				     void           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_advances_func_set ())
+  ប្រសិនបើ (font->has_glyph_v_advances_func_set ())
   {
     hb_position_t ret;
     font->get_glyph_v_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    ត្រឡប់ ret;
   }
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, false));
+  ត្រឡប់ font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, false));
 }
 
 #define hb_font_get_glyph_h_advances_nil hb_font_get_glyph_h_advances_default
@@ -269,29 +269,29 @@ hb_font_get_glyph_v_advance_default (hb_font_t      *font,
 static void
 hb_font_get_glyph_h_advances_default (hb_font_t*            font,
 				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
+				      unsigned ចំនួនគត់          count,
 				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
+				      unsigned ចំនួនគត់          glyph_stride,
 				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
+				      unsigned ចំនួនគត់          advance_stride,
 				      void                 *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_advance_func_set ())
+  ប្រសិនបើ (font->has_glyph_h_advance_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
     {
       *first_advance = font->get_glyph_h_advance (*first_glyph, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
     }
-    return;
+    ត្រឡប់;
   }
 
   font->parent->get_glyph_h_advances (count,
 				      first_glyph, glyph_stride,
 				      first_advance, advance_stride,
 				      false);
-  for (unsigned int i = 0; i < count; i++)
+  សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
   {
     *first_advance = font->parent_scale_x_distance (*first_advance);
     first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -302,29 +302,29 @@ hb_font_get_glyph_h_advances_default (hb_font_t*            font,
 static void
 hb_font_get_glyph_v_advances_default (hb_font_t*            font,
 				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
+				      unsigned ចំនួនគត់          count,
 				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
+				      unsigned ចំនួនគត់          glyph_stride,
 				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
+				      unsigned ចំនួនគត់          advance_stride,
 				      void                 *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_advance_func_set ())
+  ប្រសិនបើ (font->has_glyph_v_advance_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
     {
       *first_advance = font->get_glyph_v_advance (*first_glyph, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
     }
-    return;
+    ត្រឡប់;
   }
 
   font->parent->get_glyph_v_advances (count,
 				      first_glyph, glyph_stride,
 				      first_advance, advance_stride,
 				      false);
-  for (unsigned int i = 0; i < count; i++)
+  សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
   {
     *first_advance = font->parent_scale_y_distance (*first_advance);
     first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -340,7 +340,7 @@ hb_font_get_glyph_h_origin_nil (hb_font_t      *font HB_UNUSED,
 				void           *user_data HB_UNUSED)
 {
   *x = *y = 0;
-  return true;
+  ត្រឡប់ true;
 }
 
 static hb_bool_t
@@ -351,14 +351,14 @@ hb_font_get_glyph_h_origin_default (hb_font_t      *font,
 				    hb_position_t  *y,
 				    void           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_origins_func_set ())
+  ប្រសិនបើ (font->has_glyph_h_origins_func_set ())
   {
-    return font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, false);
+    ត្រឡប់ font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, false);
   }
   hb_bool_t ret = font->parent->get_glyph_h_origin (glyph, x, y);
-  if (ret)
+  ប្រសិនបើ (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  ត្រឡប់ ret;
 }
 
 static hb_bool_t
@@ -369,7 +369,7 @@ hb_font_get_glyph_v_origin_nil (hb_font_t      *font HB_UNUSED,
 				hb_position_t  *y,
 				void           *user_data HB_UNUSED)
 {
-  return false;
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -380,14 +380,14 @@ hb_font_get_glyph_v_origin_default (hb_font_t      *font,
 				    hb_position_t  *y,
 				    void           *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_origins_func_set ())
+  ប្រសិនបើ (font->has_glyph_v_origins_func_set ())
   {
-    return font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, false);
+    ត្រឡប់ font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, false);
   }
   hb_bool_t ret = font->parent->get_glyph_v_origin (glyph, x, y);
-  if (ret)
+  ប្រសិនបើ (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  ត្រឡប់ ret;
 }
 
 #define hb_font_get_glyph_h_origins_nil hb_font_get_glyph_h_origins_default
@@ -395,7 +395,7 @@ hb_font_get_glyph_v_origin_default (hb_font_t      *font,
 static hb_bool_t
 hb_font_get_glyph_h_origins_default (hb_font_t *font HB_UNUSED,
 				     void *font_data HB_UNUSED,
-				     unsigned int count,
+				     unsigned ចំនួនគត់ count,
 				     const hb_codepoint_t *first_glyph HB_UNUSED,
 				     unsigned glyph_stride HB_UNUSED,
 				     hb_position_t *first_x,
@@ -404,33 +404,33 @@ hb_font_get_glyph_h_origins_default (hb_font_t *font HB_UNUSED,
 				     unsigned y_stride,
 				     void *user_data HB_UNUSED)
 {
-  if (font->has_glyph_h_origin_func_set ())
+  ប្រសិនបើ (font->has_glyph_h_origin_func_set ())
   {
     hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
     {
       ret &= font->get_glyph_h_origin (*first_glyph, first_x, first_y, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
-    return ret;
+    ត្រឡប់ ret;
   }
 
   hb_bool_t ret = font->parent->get_glyph_h_origins (count,
 						     first_glyph, glyph_stride,
 						     first_x, x_stride,
 						     first_y, y_stride);
-  if (ret)
+  ប្រសិនបើ (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    សម្រាប់ (unsigned i = 0; i < count; i++)
     {
       font->parent_scale_position (first_x, first_y);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
   }
-  return ret;
+  ត្រឡប់ ret;
 }
 
 #define hb_font_get_glyph_v_origins_nil hb_font_get_glyph_v_origins_default
@@ -438,7 +438,7 @@ hb_font_get_glyph_h_origins_default (hb_font_t *font HB_UNUSED,
 static hb_bool_t
 hb_font_get_glyph_v_origins_default (hb_font_t *font HB_UNUSED,
 				     void *font_data HB_UNUSED,
-				     unsigned int count,
+				     unsigned ចំនួនគត់ count,
 				     const hb_codepoint_t *first_glyph HB_UNUSED,
 				     unsigned glyph_stride HB_UNUSED,
 				     hb_position_t *first_x,
@@ -447,33 +447,33 @@ hb_font_get_glyph_v_origins_default (hb_font_t *font HB_UNUSED,
 				     unsigned y_stride,
 				     void *user_data HB_UNUSED)
 {
-  if (font->has_glyph_v_origin_func_set ())
+  ប្រសិនបើ (font->has_glyph_v_origin_func_set ())
   {
     hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < count; i++)
     {
       ret &= font->get_glyph_v_origin (*first_glyph, first_x, first_y, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
-    return ret;
+    ត្រឡប់ ret;
   }
 
   hb_bool_t ret = font->parent->get_glyph_v_origins (count,
 						     first_glyph, glyph_stride,
 						     first_x, x_stride,
 						     first_y, y_stride);
-  if (ret)
+  ប្រសិនបើ (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    សម្រាប់ (unsigned i = 0; i < count; i++)
     {
       font->parent_scale_position (first_x, first_y);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
   }
-  return ret;
+  ត្រឡប់ ret;
 }
 
 static hb_position_t
@@ -483,7 +483,7 @@ hb_font_get_glyph_h_kerning_nil (hb_font_t      *font HB_UNUSED,
 				 hb_codepoint_t  right_glyph HB_UNUSED,
 				 void           *user_data HB_UNUSED)
 {
-  return 0;
+  ត្រឡប់ 0;
 }
 
 static hb_position_t
@@ -493,7 +493,7 @@ hb_font_get_glyph_h_kerning_default (hb_font_t      *font,
 				     hb_codepoint_t  right_glyph,
 				     void           *user_data HB_UNUSED)
 {
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (left_glyph, right_glyph));
+  ត្រឡប់ font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (left_glyph, right_glyph));
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -504,7 +504,7 @@ hb_font_get_glyph_v_kerning_nil (hb_font_t      *font HB_UNUSED,
 				 hb_codepoint_t  bottom_glyph HB_UNUSED,
 				 void           *user_data HB_UNUSED)
 {
-  return 0;
+  ត្រឡប់ 0;
 }
 
 static hb_position_t
@@ -514,7 +514,7 @@ hb_font_get_glyph_v_kerning_default (hb_font_t      *font,
 				     hb_codepoint_t  bottom_glyph,
 				     void           *user_data HB_UNUSED)
 {
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (top_glyph, bottom_glyph));
+  ត្រឡប់ font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (top_glyph, bottom_glyph));
 }
 #endif
 
@@ -525,8 +525,8 @@ hb_font_get_glyph_extents_nil (hb_font_t          *font HB_UNUSED,
 			       hb_glyph_extents_t *extents,
 			       void               *user_data HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, parimaa_na (*extents));
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -537,85 +537,85 @@ hb_font_get_glyph_extents_default (hb_font_t          *font,
 				   void               *user_data HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_glyph_extents (glyph, extents, false);
-  if (ret) {
+  ប្រសិនបើ (ret) {
     font->parent_scale_position (&extents->x_bearing, &extents->y_bearing);
     font->parent_scale_distance (&extents->width, &extents->height);
   }
-  return ret;
+  ត្រឡប់ ret;
 }
 
 static hb_bool_t
 hb_font_get_glyph_contour_point_nil (hb_font_t      *font HB_UNUSED,
 				     void           *font_data HB_UNUSED,
 				     hb_codepoint_t  glyph HB_UNUSED,
-				     unsigned int    point_index HB_UNUSED,
+				     unsigned ចំនួនគត់    point_index HB_UNUSED,
 				     hb_position_t  *x,
 				     hb_position_t  *y,
 				     void           *user_data HB_UNUSED)
 {
   *x = *y = 0;
-  return false;
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
 hb_font_get_glyph_contour_point_default (hb_font_t      *font,
 					 void           *font_data HB_UNUSED,
 					 hb_codepoint_t  glyph,
-					 unsigned int    point_index,
+					 unsigned ចំនួនគត់    point_index,
 					 hb_position_t  *x,
 					 hb_position_t  *y,
 					 void           *user_data HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_glyph_contour_point (glyph, point_index, x, y, false);
-  if (ret)
+  ប្រសិនបើ (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  ត្រឡប់ ret;
 }
 
 static hb_bool_t
 hb_font_get_glyph_name_nil (hb_font_t      *font HB_UNUSED,
 			    void           *font_data HB_UNUSED,
 			    hb_codepoint_t  glyph HB_UNUSED,
-			    char           *name,
-			    unsigned int    size,
+			    var_na           *name,
+			    unsigned ចំនួនគត់    size,
 			    void           *user_data HB_UNUSED)
 {
-  if (size) *name = '\0';
-  return false;
+  ប្រសិនបើ (size) *name = '\0';
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
 hb_font_get_glyph_name_default (hb_font_t      *font,
 				void           *font_data HB_UNUSED,
 				hb_codepoint_t  glyph,
-				char           *name,
-				unsigned int    size,
+				var_na           *name,
+				unsigned ចំនួនគត់    size,
 				void           *user_data HB_UNUSED)
 {
-  return font->parent->get_glyph_name (glyph, name, size);
+  ត្រឡប់ font->parent->get_glyph_name (glyph, name, size);
 }
 
 static hb_bool_t
 hb_font_get_glyph_from_name_nil (hb_font_t      *font HB_UNUSED,
 				 void           *font_data HB_UNUSED,
-				 const char     *name HB_UNUSED,
-				 int             len HB_UNUSED, /* -1 means nul-terminated */
+				 const var_na     *name HB_UNUSED,
+				 ចំនួនគត់             len HB_UNUSED, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph,
 				 void           *user_data HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
 hb_font_get_glyph_from_name_default (hb_font_t      *font,
 				     void           *font_data HB_UNUSED,
-				     const char     *name,
-				     int             len, /* -1 means nul-terminated */
+				     const var_na     *name,
+				     ចំនួនគត់             len, /* -1 means nul-terminated */
 				     hb_codepoint_t *glyph,
 				     void           *user_data HB_UNUSED)
 {
-  return font->parent->get_glyph_from_name (name, len, glyph);
+  ត្រឡប់ font->parent->get_glyph_from_name (name, len, glyph);
 }
 
 static hb_bool_t
@@ -626,7 +626,7 @@ hb_font_draw_glyph_or_fail_nil (hb_font_t       *font HB_UNUSED,
 				void            *draw_data,
 				void            *user_data HB_UNUSED)
 {
-  return false;
+  ត្រឡប់ false;
 }
 
 static hb_bool_t
@@ -635,14 +635,14 @@ hb_font_paint_glyph_or_fail_nil (hb_font_t *font HB_UNUSED,
 				 hb_codepoint_t glyph HB_UNUSED,
 				 hb_paint_funcs_t *paint_funcs HB_UNUSED,
 				 void *paint_data HB_UNUSED,
-				 unsigned int palette HB_UNUSED,
+				 unsigned ចំនួនគត់ palette HB_UNUSED,
 				 hb_color_t foreground HB_UNUSED,
 				 void *user_data HB_UNUSED)
 {
-  return false;
+  ត្រឡប់ false;
 }
 
-typedef struct hb_font_draw_glyph_default_adaptor_t {
+typedef sa_nracanaa hb_font_draw_glyph_default_adaptor_t {
   hb_draw_funcs_t *draw_funcs;
   void		  *draw_data;
   float		   x_scale;
@@ -737,7 +737,7 @@ hb_draw_set_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
 			    void *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->set_budget (adaptor->draw_data, budget);
+  ត្រឡប់ adaptor->draw_funcs->set_budget (adaptor->draw_data, budget);
 }
 
 static int64_t
@@ -745,7 +745,7 @@ hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
 			    void *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget (adaptor->draw_data);
+  ត្រឡប់ adaptor->draw_funcs->get_budget (adaptor->draw_data);
 }
 
 static int64_t *
@@ -753,7 +753,7 @@ hb_draw_get_budget_remaining_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *d
 				      void *user_data HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_data);
+  ត្រឡប់ adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_data);
 }
 
 static const hb_draw_funcs_t _hb_draw_funcs_default = {
@@ -781,7 +781,7 @@ hb_font_draw_glyph_or_fail_default (hb_font_t       *font,
     font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0.f
   };
 
-  return font->parent->draw_glyph_or_fail (glyph,
+  ត្រឡប់ font->parent->draw_glyph_or_fail (glyph,
 					   const_cast<hb_draw_funcs_t *> (&_hb_draw_funcs_default),
 					   &adaptor,
 					   false);
@@ -793,7 +793,7 @@ hb_font_paint_glyph_or_fail_default (hb_font_t *font,
 				     hb_codepoint_t glyph,
 				     hb_paint_funcs_t *paint_funcs,
 				     void *paint_data,
-				     unsigned int palette,
+				     unsigned ចំនួនគត់ palette,
 				     hb_color_t foreground,
 				     void *user_data)
 {
@@ -806,7 +806,7 @@ hb_font_paint_glyph_or_fail_default (hb_font_t *font,
 
   paint_funcs->pop_transform (paint_data);
 
-  return ret;
+  ត្រឡប់ ret;
 }
 
 DEFINE_NULL_INSTANCE (hb_font_funcs_t) =
@@ -853,12 +853,12 @@ hb_font_funcs_create ()
 {
   hb_font_funcs_t *ffuncs;
 
-  if (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
-    return hb_font_funcs_get_empty ();
+  ប្រសិនបើ (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
+    ត្រឡប់ hb_font_funcs_get_empty ();
 
   ffuncs->get = _hb_font_funcs_default.get;
 
-  return ffuncs;
+  ត្រឡប់ ffuncs;
 }
 
 /**
@@ -873,7 +873,7 @@ hb_font_funcs_create ()
 hb_font_funcs_t *
 hb_font_funcs_get_empty ()
 {
-  return const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
+  ត្រឡប់ const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
 }
 
 /**
@@ -889,7 +889,7 @@ hb_font_funcs_get_empty ()
 hb_font_funcs_t *
 hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_reference (ffuncs);
+  ត្រឡប់ hb_object_reference (ffuncs);
 }
 
 /**
@@ -905,11 +905,11 @@ hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
 void
 hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
 {
-  if (!hb_object_destroy (ffuncs)) return;
+  ប្រសិនបើ (!hb_object_destroy (ffuncs)) ត្រឡប់;
 
-  if (ffuncs->destroy)
+  ប្រសិនបើ (ffuncs->destroy)
   {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) if (ffuncs->destroy->name) \
+#define HB_FONT_FUNC_IMPLEMENT(get_,name) ប្រសិនបើ (ffuncs->destroy->name) \
     ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name);
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
@@ -942,7 +942,7 @@ hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
 			     hb_destroy_func_t   destroy /* May be NULL. */,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (ffuncs, key, data, destroy, replace);
+  ត្រឡប់ hb_object_set_user_data (ffuncs, key, data, destroy, replace);
 }
 
 /**
@@ -961,7 +961,7 @@ void *
 hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
 			     hb_user_data_key_t    *key)
 {
-  return hb_object_get_user_data (ffuncs, key);
+  ត្រឡប់ hb_object_get_user_data (ffuncs, key);
 }
 
 
@@ -976,8 +976,8 @@ hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
 void
 hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 {
-  if (hb_object_is_immutable (ffuncs))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (ffuncs))
+    ត្រឡប់;
 
   hb_object_make_immutable (ffuncs);
 }
@@ -995,7 +995,7 @@ hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 hb_bool_t
 hb_font_funcs_is_immutable (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_is_immutable (ffuncs);
+  ត្រឡប់ hb_object_is_immutable (ffuncs);
 }
 
 
@@ -1005,22 +1005,22 @@ _hb_font_funcs_set_preamble (hb_font_funcs_t    *ffuncs,
 			     void              **user_data,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ប្រសិនបើ (hb_object_is_immutable (ffuncs))
   {
-    if (*destroy)
+    ប្រសិនបើ (*destroy)
       (*destroy) (*user_data);
-    return false;
+    ត្រឡប់ false;
   }
 
-  if (func_is_null)
+  ប្រសិនបើ (func_is_null)
   {
-    if (*destroy)
+    ប្រសិនបើ (*destroy)
       (*destroy) (*user_data);
     *destroy = nullptr;
     *user_data = nullptr;
   }
 
-  return true;
+  ត្រឡប់ true;
 }
 
 static bool
@@ -1029,24 +1029,24 @@ _hb_font_funcs_set_middle (hb_font_funcs_t   *ffuncs,
 			   hb_destroy_func_t  destroy)
 {
   auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+    ប្រសិនបើ (destroy) destroy (user_data);
   });
 
-  if (user_data && !ffuncs->user_data)
+  ប្រសិនបើ (user_data && !ffuncs->user_data)
   {
-    ffuncs->user_data = (decltype (ffuncs->user_data)) hb_calloc (1, sizeof (*ffuncs->user_data));
-    if (unlikely (!ffuncs->user_data))
-      return false;
+    ffuncs->user_data = (decltype (ffuncs->user_data)) hb_calloc (1, parimaa_na (*ffuncs->user_data));
+    ប្រសិនបើ (unlikely (!ffuncs->user_data))
+      ត្រឡប់ false;
   }
-  if (destroy && !ffuncs->destroy)
+  ប្រសិនបើ (destroy && !ffuncs->destroy)
   {
-    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, sizeof (*ffuncs->destroy));
-    if (unlikely (!ffuncs->destroy))
-      return false;
+    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, parimaa_na (*ffuncs->destroy));
+    ប្រសិនបើ (unlikely (!ffuncs->destroy))
+      ត្រឡប់ false;
   }
 
   destroy_guard.release ();
-  return true;
+  ត្រឡប់ true;
 }
 
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) \
@@ -1057,23 +1057,23 @@ hb_font_funcs_set_##name##_func (hb_font_funcs_t             *ffuncs,    \
 				 void                        *user_data, \
 				 hb_destroy_func_t            destroy)   \
 {                                                                        \
-  if (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  ប្រសិនបើ (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_data, &destroy))\
+      ត្រឡប់;                                                            \
 									 \
-  if (ffuncs->destroy && ffuncs->destroy->name)                          \
+  ប្រសិនបើ (ffuncs->destroy && ffuncs->destroy->name)                          \
     ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name); \
                                                                          \
-  if (!_hb_font_funcs_set_middle (ffuncs, user_data, destroy))           \
-      return;                                                            \
+  ប្រសិនបើ (!_hb_font_funcs_set_middle (ffuncs, user_data, destroy))           \
+      ត្រឡប់;                                                            \
 									 \
-  if (func)                                                              \
+  ប្រសិនបើ (func)                                                              \
     ffuncs->get.f.name = func;                                           \
-  else                                                                   \
+  បើមិនដូច្នេះ                                                                   \
     ffuncs->get.f.name = hb_font_##get_##name##_default;                   \
 									 \
-  if (ffuncs->user_data)                                                 \
+  ប្រសិនបើ (ffuncs->user_data)                                                 \
     ffuncs->user_data->name = user_data;                                 \
-  if (ffuncs->destroy)                                                   \
+  ប្រសិនបើ (ffuncs->destroy)                                                   \
     ffuncs->destroy->name = destroy;                                     \
 }
 
@@ -1081,15 +1081,15 @@ HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
 
 bool
-hb_font_t::has_func_set (unsigned int i)
+hb_font_t::has_func_set (unsigned ចំនួនគត់ i)
 {
-  return this->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
+  ត្រឡប់ this->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
 }
 
 bool
-hb_font_t::has_func (unsigned int i)
+hb_font_t::has_func (unsigned ចំនួនគត់ i)
 {
-  return has_func_set (i) ||
+  ត្រឡប់ has_func_set (i) ||
 	 (parent && parent != &_hb_Null_hb_font_t && parent->has_func (i));
 }
 
@@ -1111,7 +1111,7 @@ hb_bool_t
 hb_font_get_h_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_h_extents (extents);
+  ត្រឡប់ font->get_font_h_extents (extents);
 }
 
 /**
@@ -1130,7 +1130,7 @@ hb_bool_t
 hb_font_get_v_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_v_extents (extents);
+  ត្រឡប់ font->get_font_v_extents (extents);
 }
 
 /**
@@ -1156,9 +1156,9 @@ hb_font_get_glyph (hb_font_t      *font,
 		   hb_codepoint_t  variation_selector,
 		   hb_codepoint_t *glyph)
 {
-  if (unlikely (variation_selector))
-    return font->get_variation_glyph (unicode, variation_selector, glyph);
-  return font->get_nominal_glyph (unicode, glyph);
+  ប្រសិនបើ (unlikely (variation_selector))
+    ត្រឡប់ font->get_variation_glyph (unicode, variation_selector, glyph);
+  ត្រឡប់ font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1183,7 +1183,7 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
 			   hb_codepoint_t  unicode,
 			   hb_codepoint_t *glyph)
 {
-  return font->get_nominal_glyph (unicode, glyph);
+  ត្រឡប់ font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1203,15 +1203,15 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
  *
  * Since: 2.6.3
  **/
-unsigned int
+unsigned ចំនួនគត់
 hb_font_get_nominal_glyphs (hb_font_t *font,
-			    unsigned int count,
+			    unsigned ចំនួនគត់ count,
 			    const hb_codepoint_t *first_unicode,
-			    unsigned int unicode_stride,
+			    unsigned ចំនួនគត់ unicode_stride,
 			    hb_codepoint_t *first_glyph,
-			    unsigned int glyph_stride)
+			    unsigned ចំនួនគត់ glyph_stride)
 {
-  return font->get_nominal_glyphs (count,
+  ត្រឡប់ font->get_nominal_glyphs (count,
 				   first_unicode, unicode_stride,
 				   first_glyph, glyph_stride);
 }
@@ -1237,7 +1237,7 @@ hb_font_get_variation_glyph (hb_font_t      *font,
 			     hb_codepoint_t  variation_selector,
 			     hb_codepoint_t *glyph)
 {
-  return font->get_variation_glyph (unicode, variation_selector, glyph);
+  ត្រឡប់ font->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 /**
@@ -1256,7 +1256,7 @@ hb_position_t
 hb_font_get_glyph_h_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_h_advance (glyph);
+  ត្រឡប់ font->get_glyph_h_advance (glyph);
 }
 
 /**
@@ -1275,7 +1275,7 @@ hb_position_t
 hb_font_get_glyph_v_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_v_advance (glyph);
+  ត្រឡប់ font->get_glyph_v_advance (glyph);
 }
 
 /**
@@ -1294,7 +1294,7 @@ hb_font_get_glyph_v_advance (hb_font_t      *font,
  **/
 void
 hb_font_get_glyph_h_advances (hb_font_t*            font,
-			      unsigned int          count,
+			      unsigned ចំនួនគត់          count,
 			      const hb_codepoint_t *first_glyph,
 			      unsigned              glyph_stride,
 			      hb_position_t        *first_advance,
@@ -1318,7 +1318,7 @@ hb_font_get_glyph_h_advances (hb_font_t*            font,
  **/
 void
 hb_font_get_glyph_v_advances (hb_font_t*            font,
-			      unsigned int          count,
+			      unsigned ចំនួនគត់          count,
 			      const hb_codepoint_t *first_glyph,
 			      unsigned              glyph_stride,
 			      hb_position_t        *first_advance,
@@ -1347,7 +1347,7 @@ hb_font_get_glyph_h_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_h_origin (glyph, x, y);
+  ត្រឡប់ font->get_glyph_h_origin (glyph, x, y);
 }
 
 /**
@@ -1370,7 +1370,7 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_v_origin (glyph, x, y);
+  ត្រឡប់ font->get_glyph_v_origin (glyph, x, y);
 }
 
 /**
@@ -1393,16 +1393,16 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_h_origins (hb_font_t      *font,
-			     unsigned int    count,
+			     unsigned ចំនួនគត់    count,
 			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
+			     unsigned ចំនួនគត់    glyph_stride,
 			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
+			     unsigned ចំនួនគត់    x_stride,
 			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     unsigned ចំនួនគត់    y_stride)
 
 {
-  return font->get_glyph_h_origins (count,
+  ត្រឡប់ font->get_glyph_h_origins (count,
 				    first_glyph, glyph_stride,
 				    first_x, x_stride,
 				    first_y, y_stride);
@@ -1428,16 +1428,16 @@ hb_font_get_glyph_h_origins (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_v_origins (hb_font_t      *font,
-			     unsigned int    count,
+			     unsigned ចំនួនគត់    count,
 			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
+			     unsigned ចំនួនគត់    glyph_stride,
 			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
+			     unsigned ចំនួនគត់    x_stride,
 			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     unsigned ចំនួនគត់    y_stride)
 
 {
-  return font->get_glyph_v_origins (count,
+  ត្រឡប់ font->get_glyph_v_origins (count,
 				    first_glyph, glyph_stride,
 				    first_x, x_stride,
 				    first_y, y_stride);
@@ -1465,7 +1465,7 @@ hb_font_get_glyph_h_kerning (hb_font_t      *font,
 			     hb_codepoint_t  left_glyph,
 			     hb_codepoint_t  right_glyph)
 {
-  return font->get_glyph_h_kerning (left_glyph, right_glyph);
+  ត្រឡប់ font->get_glyph_h_kerning (left_glyph, right_glyph);
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -1491,7 +1491,7 @@ hb_font_get_glyph_v_kerning (hb_font_t      *font,
 			     hb_codepoint_t  top_glyph,
 			     hb_codepoint_t  bottom_glyph)
 {
-  return font->get_glyph_v_kerning (top_glyph, bottom_glyph);
+  ត្រឡប់ font->get_glyph_v_kerning (top_glyph, bottom_glyph);
 }
 #endif
 
@@ -1513,7 +1513,7 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 			   hb_codepoint_t      glyph,
 			   hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents (glyph, extents);
+  ត្រឡប់ font->get_glyph_extents (glyph, extents);
 }
 
 /**
@@ -1534,11 +1534,11 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 hb_bool_t
 hb_font_get_glyph_contour_point (hb_font_t      *font,
 				 hb_codepoint_t  glyph,
-				 unsigned int    point_index,
+				 unsigned ចំនួនគត់    point_index,
 				 hb_position_t  *x,
 				 hb_position_t  *y)
 {
-  return font->get_glyph_contour_point (glyph, point_index, x, y);
+  ត្រឡប់ font->get_glyph_contour_point (glyph, point_index, x, y);
 }
 
 /**
@@ -1560,10 +1560,10 @@ hb_font_get_glyph_contour_point (hb_font_t      *font,
 hb_bool_t
 hb_font_get_glyph_name (hb_font_t      *font,
 			hb_codepoint_t  glyph,
-			char           *name,
-			unsigned int    size)
+			var_na           *name,
+			unsigned ចំនួនគត់    size)
 {
-  return font->get_glyph_name (glyph, name, size);
+  ត្រឡប់ font->get_glyph_name (glyph, name, size);
 }
 
 /**
@@ -1583,11 +1583,11 @@ hb_font_get_glyph_name (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_from_name (hb_font_t      *font,
-			     const char     *name,
-			     int             len, /* -1 means nul-terminated */
+			     const var_na     *name,
+			     ចំនួនគត់             len, /* -1 means nul-terminated */
 			     hb_codepoint_t *glyph)
 {
-  return font->get_glyph_from_name (name, len, glyph);
+  ត្រឡប់ font->get_glyph_from_name (name, len, glyph);
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -1638,7 +1638,7 @@ hb_font_draw_glyph_or_fail (hb_font_t *font,
 			    hb_codepoint_t glyph,
 			    hb_draw_funcs_t *dfuncs, void *draw_data)
 {
-  return font->draw_glyph_or_fail (glyph, dfuncs, draw_data);
+  ត្រឡប់ font->draw_glyph_or_fail (glyph, dfuncs, draw_data);
 }
 
 /**
@@ -1675,10 +1675,10 @@ hb_bool_t
 hb_font_paint_glyph_or_fail (hb_font_t *font,
 			     hb_codepoint_t glyph,
 			     hb_paint_funcs_t *pfuncs, void *paint_data,
-			     unsigned int palette_index,
+			     unsigned ចំនួនគត់ palette_index,
 			     hb_color_t foreground)
 {
-  return font->paint_glyph_or_fail (glyph, pfuncs, paint_data, palette_index, foreground);
+  ត្រឡប់ font->paint_glyph_or_fail (glyph, pfuncs, paint_data, palette_index, foreground);
 }
 
 /* A bit higher-level, and with fallback */
@@ -1686,13 +1686,13 @@ hb_font_paint_glyph_or_fail (hb_font_t *font,
 void
 hb_font_t::paint_glyph (hb_codepoint_t glyph,
 			hb_paint_funcs_t *paint_funcs, void *paint_data,
-			unsigned int palette,
+			unsigned ចំនួនគត់ palette,
 			hb_color_t foreground)
 {
-  if (paint_glyph_or_fail (glyph,
+  ប្រសិនបើ (paint_glyph_or_fail (glyph,
 			   paint_funcs, paint_data,
 			   palette, foreground))
-    return;
+    ត្រឡប់;
 
   /* Fallback for outline glyph. */
   paint_funcs->fill_glyph (paint_data, glyph, this, true, foreground);
@@ -1752,7 +1752,7 @@ void
 hb_font_paint_glyph (hb_font_t *font,
                      hb_codepoint_t glyph,
                      hb_paint_funcs_t *pfuncs, void *paint_data,
-                     unsigned int palette_index,
+                     unsigned ចំនួនគត់ palette_index,
                      hb_color_t foreground)
 {
   font->paint_glyph (glyph, pfuncs, paint_data, palette_index, foreground);
@@ -1825,7 +1825,7 @@ hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
 HB_EXTERN void
 hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
 					  hb_direction_t        direction,
-					  unsigned int          count,
+					  unsigned ចំនួនគត់          count,
 					  const hb_codepoint_t *first_glyph,
 					  unsigned              glyph_stride,
 					  hb_position_t        *first_advance,
@@ -1857,7 +1857,7 @@ hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->get_glyph_origin_for_direction (glyph, direction, x, y);
+  ត្រឡប់ font->get_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1885,7 +1885,7 @@ hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->add_glyph_origin_for_direction (glyph, direction, x, y);
+  ត្រឡប់ font->add_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1913,7 +1913,7 @@ hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
 					     hb_position_t  *x,
 					     hb_position_t  *y)
 {
-  return font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
+  ត្រឡប់ font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1940,7 +1940,7 @@ hb_font_get_glyph_kerning_for_direction (hb_font_t      *font,
 					 hb_position_t  *x,
 					 hb_position_t  *y)
 {
-  return font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
+  ត្រឡប់ font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
 }
 
 /**
@@ -1967,7 +1967,7 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 				      hb_direction_t      direction,
 				      hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents_for_origin (glyph, direction, extents);
+  ត្រឡប់ font->get_glyph_extents_for_origin (glyph, direction, extents);
 }
 
 /**
@@ -1993,12 +1993,12 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 hb_bool_t
 hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
 					    hb_codepoint_t  glyph,
-					    unsigned int    point_index,
+					    unsigned ចំនួនគត់    point_index,
 					    hb_direction_t  direction,
 					    hb_position_t  *x,
 					    hb_position_t  *y)
 {
-  return font->get_glyph_contour_point_for_origin (glyph, point_index, direction, x, y);
+  ត្រឡប់ font->get_glyph_contour_point_for_origin (glyph, point_index, direction, x, y);
 }
 
 /**
@@ -2022,8 +2022,8 @@ hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
 void
 hb_font_glyph_to_string (hb_font_t      *font,
 			 hb_codepoint_t  glyph,
-			 char           *s,
-			 unsigned int    size)
+			 var_na           *s,
+			 unsigned ចំនួនគត់    size)
 {
   font->glyph_to_string (glyph, s, size);
 }
@@ -2046,11 +2046,11 @@ hb_font_glyph_to_string (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_glyph_from_string (hb_font_t      *font,
-			   const char     *s,
-			   int             len,
+			   const var_na     *s,
+			   ចំនួនគត់             len,
 			   hb_codepoint_t *glyph)
 {
-  return font->glyph_from_string (s, len, glyph);
+  ត្រឡប់ font->glyph_from_string (s, len, glyph);
 }
 
 
@@ -2104,11 +2104,11 @@ _hb_font_create (hb_face_t *face)
 {
   hb_font_t *font;
 
-  if (unlikely (!face))
+  ប្រសិនបើ (unlikely (!face))
     face = hb_face_get_empty ();
 
-  if (!(font = hb_object_create<hb_font_t> ()))
-    return hb_font_get_empty ();
+  ប្រសិនបើ (!(font = hb_object_create<hb_font_t> ()))
+    ត្រឡប់ hb_font_get_empty ();
 
   hb_face_make_immutable (face);
   font->parent = hb_font_get_empty ();
@@ -2121,7 +2121,7 @@ _hb_font_create (hb_face_t *face)
   font->x_mult = font->y_mult = 1 << 16;
   font->instance_index = HB_FONT_NO_VAR_NAMED_INSTANCE;
 
-  return font;
+  ត្រឡប់ font;
 }
 
 /**
@@ -2150,23 +2150,23 @@ hb_font_create (hb_face_t *face)
 
 #ifndef HB_NO_VAR
   // Initialize variations.
-  if (likely (face))
+  ប្រសិនបើ (likely (face))
   {
-    if (face->index >> 16)
+    ប្រសិនបើ (face->index >> 16)
       hb_font_set_var_named_instance (font, (face->index >> 16) - 1);
-    else
+    បើមិនដូច្នេះ
       hb_font_set_variations (font, nullptr, 0);
   }
 #endif
 
-  return font;
+  ត្រឡប់ font;
 }
 
 static void
 _hb_font_adopt_var_coords (hb_font_t *font,
-			   int *coords, /* 2.14 normalized */
+			   ចំនួនគត់ *coords, /* 2.14 normalized */
 			   float *design_coords,
-			   unsigned int coords_length)
+			   unsigned ចំនួនគត់ coords_length)
 {
   hb_free (font->coords);
   hb_free (font->design_coords);
@@ -2194,13 +2194,13 @@ _hb_font_adopt_var_coords (hb_font_t *font,
 hb_font_t *
 hb_font_create_sub_font (hb_font_t *parent)
 {
-  if (unlikely (!parent))
+  ប្រសិនបើ (unlikely (!parent))
     parent = hb_font_get_empty ();
 
   hb_font_t *font = _hb_font_create (parent->face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  ប្រសិនបើ (unlikely (hb_object_is_immutable (font)))
+    ត្រឡប់ font;
 
   font->parent = hb_font_reference (parent);
 
@@ -2214,18 +2214,18 @@ hb_font_create_sub_font (hb_font_t *parent)
   font->y_ppem = parent->y_ppem;
   font->ptem = parent->ptem;
 
-  unsigned int num_coords = parent->num_coords;
-  if (num_coords)
+  unsigned ចំនួនគត់ num_coords = parent->num_coords;
+  ប្រសិនបើ (num_coords)
   {
-    int *coords = (int *) hb_calloc (num_coords, sizeof (parent->coords[0]));
-    float *design_coords = (float *) hb_calloc (num_coords, sizeof (parent->design_coords[0]));
-    if (likely (coords && design_coords))
+    ចំនួនគត់ *coords = (ចំនួនគត់ *) hb_calloc (num_coords, parimaa_na (parent->coords[0]));
+    float *design_coords = (float *) hb_calloc (num_coords, parimaa_na (parent->design_coords[0]));
+    ប្រសិនបើ (likely (coords && design_coords))
     {
-      hb_memcpy (coords, parent->coords, num_coords * sizeof (parent->coords[0]));
-      hb_memcpy (design_coords, parent->design_coords, num_coords * sizeof (parent->design_coords[0]));
+      hb_memcpy (coords, parent->coords, num_coords * parimaa_na (parent->coords[0]));
+      hb_memcpy (design_coords, parent->design_coords, num_coords * parimaa_na (parent->design_coords[0]));
       _hb_font_adopt_var_coords (font, coords, design_coords, num_coords);
     }
-    else
+    បើមិនដូច្នេះ
     {
       hb_free (coords);
       hb_free (design_coords);
@@ -2235,7 +2235,7 @@ hb_font_create_sub_font (hb_font_t *parent)
   font->changed ();
   font->serial_coords = font->serial;
 
-  return font;
+  ត្រឡប់ font;
 }
 
 /**
@@ -2250,7 +2250,7 @@ hb_font_create_sub_font (hb_font_t *parent)
 hb_font_t *
 hb_font_get_empty ()
 {
-  return const_cast<hb_font_t *> (&Null (hb_font_t));
+  ត្រឡប់ const_cast<hb_font_t *> (&Null (hb_font_t));
 }
 
 /**
@@ -2266,7 +2266,7 @@ hb_font_get_empty ()
 hb_font_t *
 hb_font_reference (hb_font_t *font)
 {
-  return hb_object_reference (font);
+  ត្រឡប់ hb_object_reference (font);
 }
 
 /**
@@ -2282,11 +2282,11 @@ hb_font_reference (hb_font_t *font)
 void
 hb_font_destroy (hb_font_t *font)
 {
-  if (!hb_object_destroy (font)) return;
+  ប្រសិនបើ (!hb_object_destroy (font)) ត្រឡប់;
 
   font->data.fini ();
 
-  if (font->destroy)
+  ប្រសិនបើ (font->destroy)
     font->destroy (font->user_data);
 
   hb_font_destroy (font->parent);
@@ -2320,10 +2320,10 @@ hb_font_set_user_data (hb_font_t          *font,
 		       hb_destroy_func_t   destroy /* May be NULL. */,
 		       hb_bool_t           replace)
 {
-  if (!hb_object_is_immutable (font))
+  ប្រសិនបើ (!hb_object_is_immutable (font))
     font->changed ();
 
-  return hb_object_set_user_data (font, key, data, destroy, replace);
+  ត្រឡប់ hb_object_set_user_data (font, key, data, destroy, replace);
 }
 
 /**
@@ -2342,7 +2342,7 @@ void *
 hb_font_get_user_data (const hb_font_t    *font,
 		       hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (font, key);
+  ត្រឡប់ hb_object_get_user_data (font, key);
 }
 
 /**
@@ -2356,10 +2356,10 @@ hb_font_get_user_data (const hb_font_t    *font,
 void
 hb_font_make_immutable (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->parent)
+  ប្រសិនបើ (font->parent)
     hb_font_make_immutable (font->parent);
 
   hb_object_make_immutable (font);
@@ -2378,7 +2378,7 @@ hb_font_make_immutable (hb_font_t *font)
 hb_bool_t
 hb_font_is_immutable (hb_font_t *font)
 {
-  return hb_object_is_immutable (font);
+  ត្រឡប់ hb_object_is_immutable (font);
 }
 
 /**
@@ -2393,10 +2393,10 @@ hb_font_is_immutable (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-unsigned int
+unsigned ចំនួនគត់
 hb_font_get_serial (hb_font_t *font)
 {
-  return font->serial.get_acquire ();
+  ត្រឡប់ font->serial.get_acquire ();
 }
 
 /**
@@ -2412,8 +2412,8 @@ hb_font_get_serial (hb_font_t *font)
 void
 hb_font_changed (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
   font->changed ();
 }
@@ -2431,18 +2431,18 @@ void
 hb_font_set_parent (hb_font_t *font,
 		    hb_font_t *parent)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (parent == font->parent)
-    return;
+  ប្រសិនបើ (parent == font->parent)
+    ត្រឡប់;
 
-  if (!parent)
+  ប្រសិនបើ (!parent)
     parent = hb_font_get_empty ();
 
-  for (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
-    if (p == font)
-      return; /* Would create a cycle - reject */
+  សម្រាប់ (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
+    ប្រសិនបើ (p == font)
+      ត្រឡប់; /* Would create a cycle - reject */
 
   hb_font_t *old = font->parent;
 
@@ -2466,7 +2466,7 @@ hb_font_set_parent (hb_font_t *font,
 hb_font_t *
 hb_font_get_parent (hb_font_t *font)
 {
-  return font->parent;
+  ត្រឡប់ font->parent;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -2489,13 +2489,13 @@ void
 hb_font_set_face (hb_font_t *font,
 		  hb_face_t *face)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (face == font->face)
-    return;
+  ប្រសិនបើ (face == font->face)
+    ត្រឡប់;
 
-  if (unlikely (!face))
+  ប្រសិនបើ (unlikely (!face))
     face = hb_face_get_empty ();
 
   hb_face_t *old = font->face;
@@ -2528,7 +2528,7 @@ hb_font_set_face (hb_font_t *font,
 hb_face_t *
 hb_font_get_face (hb_font_t *font)
 {
-  return font->face;
+  ត្រឡប់ font->face;
 }
 
 
@@ -2550,17 +2550,17 @@ hb_font_set_funcs (hb_font_t         *font,
 		   void              *font_data,
 		   hb_destroy_func_t  destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (font))
+  ប្រសិនបើ (hb_object_is_immutable (font))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (font_data);
-    return;
+    ត្រឡប់;
   }
 
-  if (font->destroy)
+  ប្រសិនបើ (font->destroy)
     font->destroy (font->user_data);
 
-  if (!klass)
+  ប្រសិនបើ (!klass)
     klass = hb_font_funcs_get_empty ();
 
   hb_font_funcs_reference (klass);
@@ -2589,14 +2589,14 @@ hb_font_set_funcs_data (hb_font_t         *font,
 		        hb_destroy_func_t  destroy /* May be NULL. */)
 {
   /* Destroy user_data? */
-  if (hb_object_is_immutable (font))
+  ប្រសិនបើ (hb_object_is_immutable (font))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (font_data);
-    return;
+    ត្រឡប់;
   }
 
-  if (font->destroy)
+  ប្រសិនបើ (font->destroy)
     font->destroy (font->user_data);
 
   font->user_data = font_data;
@@ -2605,8 +2605,8 @@ hb_font_set_funcs_data (hb_font_t         *font,
   font->changed ();
 }
 
-static const struct supported_font_funcs_t {
-	char name[16];
+static const sa_nracanaa supported_font_funcs_t {
+	var_na name[16];
 	void (*func) (hb_font_t *);
 } supported_font_funcs[] =
 {
@@ -2627,19 +2627,19 @@ static const struct supported_font_funcs_t {
 #endif
 };
 
-static const char *get_default_funcs_name ()
+static const var_na *get_default_funcs_name ()
 {
-  static hb_atomic_t<const char *> static_funcs_name;
-  const char *name = static_funcs_name.get_acquire ();
-  if (!name)
+  static hb_atomic_t<const var_na *> static_funcs_name;
+  const var_na *name = static_funcs_name.get_acquire ();
+  ប្រសិនបើ (!name)
   {
     name = getenv ("HB_FONT_FUNCS");
-    if (!name)
+    ប្រសិនបើ (!name)
       name = "";
-    if (!static_funcs_name.cmpexch (nullptr, name))
+    ប្រសិនបើ (!static_funcs_name.cmpexch (nullptr, name))
       name = static_funcs_name.get_acquire ();
   }
-  return name;
+  ត្រឡប់ name;
 }
 
 /**
@@ -2660,68 +2660,68 @@ static const char *get_default_funcs_name ()
  **/
 hb_bool_t
 hb_font_set_funcs_using (hb_font_t  *font,
-			 const char *name)
+			 const var_na *name)
 {
-  if (unlikely (hb_object_is_immutable (font)))
-    return false;
+  ប្រសិនបើ (unlikely (hb_object_is_immutable (font)))
+    ត្រឡប់ false;
 
   bool retry = false;
 
-  if (!name || !*name)
+  ប្រសិនបើ (!name || !*name)
   {
     name = get_default_funcs_name ();
     retry = true;
   }
-  if (name && !*name) name = nullptr;
+  ប្រសិនបើ (name && !*name) name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
-    if (!name || strcmp (supported_font_funcs[i].name, name) == 0)
+  សម្រាប់ (unsigned i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
+    ប្រសិនបើ (!name || strcmp (supported_font_funcs[i].name, name) == 0)
     {
       supported_font_funcs[i].func (font);
-      if (name || font->klass != hb_font_funcs_get_empty ())
-	return true;
+      ប្រសិនបើ (name || font->klass != hb_font_funcs_get_empty ())
+	ត្រឡប់ true;
     }
 
-  if (retry)
+  ប្រសិនបើ (retry)
   {
     retry = false;
     name = nullptr;
     goto retry;
   }
 
-  return false;
+  ត្រឡប់ false;
 }
 
-static inline void free_static_font_funcs_list ();
+static anta_hstha void free_static_font_funcs_list ();
 
-static const char * const nil_font_funcs_list[] = {nullptr};
+static const var_na * const nil_font_funcs_list[] = {nullptr};
 
-static struct hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+static sa_nracanaa hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<const var_na *,
 								  hb_font_funcs_list_lazy_loader_t>
 {
-  static const char ** create ()
+  static const var_na ** create ()
   {
-    const char **font_funcs_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_font_funcs), sizeof (const char *));
-    if (unlikely (!font_funcs_list))
-      return nullptr;
+    const var_na **font_funcs_list = (const var_na **) hb_calloc (1 + ARRAY_LENGTH (supported_font_funcs), parimaa_na (const var_na *));
+    ប្រសិនបើ (unlikely (!font_funcs_list))
+      ត្រឡប់ nullptr;
 
     unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
+    សម្រាប់ (i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
       font_funcs_list[i] = supported_font_funcs[i].name;
     font_funcs_list[i] = nullptr;
 
     hb_atexit (free_static_font_funcs_list);
 
-    return font_funcs_list;
+    ត្រឡប់ font_funcs_list;
   }
-  static void destroy (const char **l)
+  static void destroy (const var_na **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_font_funcs_list; }
+  static const var_na * const * get_null ()
+  { ត្រឡប់ nil_font_funcs_list; }
 } static_font_funcs_list;
 
-static inline
+static anta_hstha
 void free_static_font_funcs_list ()
 {
   static_font_funcs_list.free_instance ();
@@ -2739,10 +2739,10 @@ void free_static_font_funcs_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+const var_na **
 hb_font_list_funcs ()
 {
-  return static_font_funcs_list.get_unconst ();
+  ត្រឡប់ static_font_funcs_list.get_unconst ();
 }
 
 /**
@@ -2782,14 +2782,14 @@ hb_font_list_funcs ()
  **/
 void
 hb_font_set_scale (hb_font_t *font,
-		   int        x_scale,
-		   int        y_scale)
+		   ចំនួនគត់        x_scale,
+		   ចំនួនគត់        y_scale)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->x_scale == x_scale && font->y_scale == y_scale)
-    return;
+  ប្រសិនបើ (font->x_scale == x_scale && font->y_scale == y_scale)
+    ត្រឡប់;
 
   font->x_scale = x_scale;
   font->y_scale = y_scale;
@@ -2809,11 +2809,11 @@ hb_font_set_scale (hb_font_t *font,
  **/
 void
 hb_font_get_scale (hb_font_t *font,
-		   int       *x_scale,
-		   int       *y_scale)
+		   ចំនួនគត់       *x_scale,
+		   ចំនួនគត់       *y_scale)
 {
-  if (x_scale) *x_scale = font->x_scale;
-  if (y_scale) *y_scale = font->y_scale;
+  ប្រសិនបើ (x_scale) *x_scale = font->x_scale;
+  ប្រសិនបើ (y_scale) *y_scale = font->y_scale;
 }
 
 /**
@@ -2832,14 +2832,14 @@ hb_font_get_scale (hb_font_t *font,
  **/
 void
 hb_font_set_ppem (hb_font_t    *font,
-		  unsigned int  x_ppem,
-		  unsigned int  y_ppem)
+		  unsigned ចំនួនគត់  x_ppem,
+		  unsigned ចំនួនគត់  y_ppem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
-    return;
+  ប្រសិនបើ (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
+    ត្រឡប់;
 
   font->x_ppem = x_ppem;
   font->y_ppem = y_ppem;
@@ -2859,11 +2859,11 @@ hb_font_set_ppem (hb_font_t    *font,
  **/
 void
 hb_font_get_ppem (hb_font_t    *font,
-		  unsigned int *x_ppem,
-		  unsigned int *y_ppem)
+		  unsigned ចំនួនគត់ *x_ppem,
+		  unsigned ចំនួនគត់ *y_ppem)
 {
-  if (x_ppem) *x_ppem = font->x_ppem;
-  if (y_ppem) *y_ppem = font->y_ppem;
+  ប្រសិនបើ (x_ppem) *x_ppem = font->x_ppem;
+  ប្រសិនបើ (y_ppem) *y_ppem = font->y_ppem;
 }
 
 /**
@@ -2882,11 +2882,11 @@ void
 hb_font_set_ptem (hb_font_t *font,
 		  float      ptem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->ptem == ptem)
-    return;
+  ប្រសិនបើ (font->ptem == ptem)
+    ត្រឡប់;
 
   font->ptem = ptem;
 
@@ -2907,7 +2907,7 @@ hb_font_set_ptem (hb_font_t *font,
 float
 hb_font_get_ptem (hb_font_t *font)
 {
-  return font->ptem;
+  ត្រឡប់ font->ptem;
 }
 
 /**
@@ -2924,7 +2924,7 @@ hb_font_get_ptem (hb_font_t *font)
 hb_bool_t
 hb_font_is_synthetic (hb_font_t *font)
 {
-  return font->is_synthetic;
+  ត្រឡប់ font->is_synthetic;
 }
 
 /**
@@ -2959,13 +2959,13 @@ hb_font_set_synthetic_bold (hb_font_t *font,
 			    float y_embolden,
 			    hb_bool_t in_place)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->x_embolden == x_embolden &&
+  ប្រសិនបើ (font->x_embolden == x_embolden &&
       font->y_embolden == y_embolden &&
       font->embolden_in_place == (bool) in_place)
-    return;
+    ត្រឡប់;
 
   font->x_embolden = x_embolden;
   font->y_embolden = y_embolden;
@@ -2991,9 +2991,9 @@ hb_font_get_synthetic_bold (hb_font_t *font,
 			    float *y_embolden,
 			    hb_bool_t *in_place)
 {
-  if (x_embolden) *x_embolden = font->x_embolden;
-  if (y_embolden) *y_embolden = font->y_embolden;
-  if (in_place) *in_place = font->embolden_in_place;
+  ប្រសិនបើ (x_embolden) *x_embolden = font->x_embolden;
+  ប្រសិនបើ (y_embolden) *y_embolden = font->y_embolden;
+  ប្រសិនបើ (in_place) *in_place = font->embolden_in_place;
 }
 
 /**
@@ -3019,11 +3019,11 @@ hb_font_get_synthetic_bold (hb_font_t *font,
 HB_EXTERN void
 hb_font_set_synthetic_slant (hb_font_t *font, float slant)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->slant == slant)
-    return;
+  ប្រសិនបើ (font->slant == slant)
+    ត្រឡប់;
 
   font->slant = slant;
 
@@ -3043,7 +3043,7 @@ hb_font_set_synthetic_slant (hb_font_t *font, float slant)
 HB_EXTERN float
 hb_font_get_synthetic_slant (hb_font_t *font)
 {
-  return font->slant;
+  ត្រឡប់ font->slant;
 }
 
 #ifndef HB_NO_VAR
@@ -3068,29 +3068,29 @@ hb_font_get_synthetic_slant (hb_font_t *font)
 void
 hb_font_set_variations (hb_font_t            *font,
 			const hb_variation_t *variations,
-			unsigned int          variations_length)
+			unsigned ចំនួនគត់          variations_length)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
   const OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
   const unsigned coords_length = axes.length;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  ចំនួនគត់ *normalized = coords_length ? (ចំនួនគត់ *) hb_calloc (coords_length, parimaa_na (ចំនួនគត់)) : nullptr;
+  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, parimaa_na (float)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  ប្រសិនបើ (unlikely (coords_length && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    ត្រឡប់;
   }
 
   /* Initialize design coords. */
-  for (unsigned int i = 0; i < coords_length; i++)
+  សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < coords_length; i++)
     design_coords[i] = axes[i].get_default ();
-  if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+  ប្រសិនបើ (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
   {
     unsigned count = coords_length;
     /* This may fail if index is out-of-range;
@@ -3100,12 +3100,12 @@ hb_font_set_variations (hb_font_t            *font,
 						&count, design_coords);
   }
 
-  for (unsigned int i = 0; i < variations_length; i++)
+  សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < variations_length; i++)
   {
     const auto tag = variations[i].tag;
     const auto v = variations[i].value;
-    for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-      if (axes[axis_index].axisTag == tag)
+    សម្រាប់ (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
+      ប្រសិនបើ (axes[axis_index].axisTag == tag)
 	design_coords[axis_index] = v;
   }
 
@@ -3132,8 +3132,8 @@ hb_font_set_variation (hb_font_t *font,
 		       hb_tag_t tag,
 		       float    value)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
   // TODO Share some of this code with set_variations()
 
@@ -3141,28 +3141,28 @@ hb_font_set_variation (hb_font_t *font,
   auto axes = fvar.get_axes ();
   const unsigned coords_length = axes.length;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  ចំនួនគត់ *normalized = coords_length ? (ចំនួនគត់ *) hb_calloc (coords_length, parimaa_na (ចំនួនគត់)) : nullptr;
+  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, parimaa_na (float)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  ប្រសិនបើ (unlikely (coords_length && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    ត្រឡប់;
   }
 
   /* Initialize design coords.
    * The font's coords may belong to another face after hb_font_set_face(). */
-  if (font->design_coords && font->num_coords == coords_length)
+  ប្រសិនបើ (font->design_coords && font->num_coords == coords_length)
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < coords_length; i++)
       design_coords[i] = font->design_coords[i];
   }
-  else
+  បើមិនដូច្នេះ
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < coords_length; i++)
       design_coords[i] = axes[i].get_default ();
-    if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+    ប្រសិនបើ (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
     {
       unsigned count = coords_length;
       /* This may fail if index is out-of-range;
@@ -3173,8 +3173,8 @@ hb_font_set_variation (hb_font_t *font,
     }
   }
 
-  for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-    if (axes[axis_index].axisTag == tag)
+  សម្រាប់ (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
+    ប្រសិនបើ (axes[axis_index].axisTag == tag)
       design_coords[axis_index] = value;
 
   hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
@@ -3199,30 +3199,30 @@ hb_font_set_variation (hb_font_t *font,
 void
 hb_font_set_var_coords_design (hb_font_t    *font,
 			       const float  *coords,
-			       unsigned int  input_coords_length)
+			       unsigned ចំនួនគត់  input_coords_length)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
   const OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
   const unsigned coords_length = axes.length;
 
   input_coords_length = hb_min (input_coords_length, coords_length);
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  ចំនួនគត់ *normalized = coords_length ? (ចំនួនគត់ *) hb_calloc (coords_length, parimaa_na (ចំនួនគត់)) : nullptr;
+  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, parimaa_na (float)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  ប្រសិនបើ (unlikely (coords_length && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    ត្រឡប់;
   }
 
-  if (input_coords_length)
-    hb_memcpy (design_coords, coords, input_coords_length * sizeof (font->design_coords[0]));
+  ប្រសិនបើ (input_coords_length)
+    hb_memcpy (design_coords, coords, input_coords_length * parimaa_na (font->design_coords[0]));
   // Fill in the rest with default values
-  for (unsigned int i = input_coords_length; i < coords_length; i++)
+  សម្រាប់ (unsigned ចំនួនគត់ i = input_coords_length; i < coords_length; i++)
     design_coords[i] = axes[i].get_default ();
 
   hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
@@ -3240,13 +3240,13 @@ hb_font_set_var_coords_design (hb_font_t    *font,
  */
 void
 hb_font_set_var_named_instance (hb_font_t *font,
-				unsigned int instance_index)
+				unsigned ចំនួនគត់ instance_index)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
-  if (font->instance_index == instance_index)
-    return;
+  ប្រសិនបើ (font->instance_index == instance_index)
+    ត្រឡប់;
 
   font->instance_index = instance_index;
   hb_font_set_variations (font, nullptr, 0);
@@ -3262,10 +3262,10 @@ hb_font_set_var_named_instance (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-unsigned int
+unsigned ចំនួនគត់
 hb_font_get_var_named_instance (hb_font_t *font)
 {
-  return font->instance_index;
+  ត្រឡប់ font->instance_index;
 }
 
 /**
@@ -3287,31 +3287,31 @@ hb_font_get_var_named_instance (hb_font_t *font)
  */
 void
 hb_font_set_var_coords_normalized (hb_font_t    *font,
-				   const int    *coords, /* 2.14 normalized */
-				   unsigned int  input_coords_length)
+				   const ចំនួនគត់    *coords, /* 2.14 normalized */
+				   unsigned ចំនួនគត់  input_coords_length)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  ប្រសិនបើ (hb_object_is_immutable (font))
+    ត្រឡប់;
 
   const OT::fvar &fvar = *font->face->table.fvar;
   auto axes = fvar.get_axes ();
   unsigned coords_length = axes.length;
 
   input_coords_length = hb_min (input_coords_length, coords_length);
-  int *copy = coords_length ? (int *) hb_calloc (coords_length, sizeof (coords[0])) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (design_coords[0])) : nullptr;
+  ចំនួនគត់ *copy = coords_length ? (ចំនួនគត់ *) hb_calloc (coords_length, parimaa_na (coords[0])) : nullptr;
+  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, parimaa_na (design_coords[0])) : nullptr;
 
-  if (unlikely (coords_length && !(copy && design_coords)))
+  ប្រសិនបើ (unlikely (coords_length && !(copy && design_coords)))
   {
     hb_free (copy);
     hb_free (design_coords);
-    return;
+    ត្រឡប់;
   }
 
-  if (input_coords_length)
-    hb_memcpy (copy, coords, input_coords_length * sizeof (coords[0]));
+  ប្រសិនបើ (input_coords_length)
+    hb_memcpy (copy, coords, input_coords_length * parimaa_na (coords[0]));
 
-  for (unsigned int i = 0; i < coords_length; ++i)
+  សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < coords_length; ++i)
     design_coords[i] = NAN;
 
   _hb_font_adopt_var_coords (font, copy, design_coords, coords_length);
@@ -3335,14 +3335,14 @@ hb_font_set_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 1.4.2
  */
-const int *
+const ចំនួនគត់ *
 hb_font_get_var_coords_normalized (hb_font_t    *font,
-				   unsigned int *length)
+				   unsigned ចំនួនគត់ *length)
 {
-  if (length)
+  ប្រសិនបើ (length)
     *length = font->num_coords;
 
-  return font->coords;
+  ត្រឡប់ font->coords;
 }
 
 /**
@@ -3369,12 +3369,12 @@ hb_font_get_var_coords_normalized (hb_font_t    *font,
  */
 const float *
 hb_font_get_var_coords_design (hb_font_t *font,
-			       unsigned int *length)
+			       unsigned ចំនួនគត់ *length)
 {
-  if (length)
+  ប្រសិនបើ (length)
     *length = font->num_coords;
 
-  return font->design_coords;
+  ត្រឡប់ font->design_coords;
 }
 #endif
 
@@ -3383,15 +3383,15 @@ hb_font_get_var_coords_design (hb_font_t *font,
  * Deprecated get_glyph_func():
  */
 
-struct hb_trampoline_closure_t
+sa_nracanaa hb_trampoline_closure_t
 {
   void *user_data;
   hb_destroy_func_t destroy;
-  unsigned int ref_count;
+  unsigned ចំនួនគត់ ref_count;
 };
 
 template <typename FuncType>
-struct hb_trampoline_t
+sa_nracanaa hb_trampoline_t
 {
   hb_trampoline_closure_t closure; /* Must be first. */
   FuncType func;
@@ -3405,17 +3405,17 @@ trampoline_create (FuncType           func,
 {
   typedef hb_trampoline_t<FuncType> trampoline_t;
 
-  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, sizeof (trampoline_t));
+  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, parimaa_na (trampoline_t));
 
-  if (unlikely (!trampoline))
-    return nullptr;
+  ប្រសិនបើ (unlikely (!trampoline))
+    ត្រឡប់ nullptr;
 
   trampoline->closure.user_data = user_data;
   trampoline->closure.destroy = destroy;
   trampoline->closure.ref_count = 1;
   trampoline->func = func;
 
-  return trampoline;
+  ត្រឡប់ trampoline;
 }
 
 static void
@@ -3429,10 +3429,10 @@ trampoline_destroy (void *user_data)
 {
   hb_trampoline_closure_t *closure = (hb_trampoline_closure_t *) user_data;
 
-  if (--closure->ref_count)
-    return;
+  ប្រសិនបើ (--closure->ref_count)
+    ត្រឡប់;
 
-  if (closure->destroy)
+  ប្រសិនបើ (closure->destroy)
     closure->destroy (closure->user_data);
   hb_free (closure);
 }
@@ -3447,7 +3447,7 @@ hb_font_get_nominal_glyph_trampoline (hb_font_t      *font,
 				      void           *user_data)
 {
   hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, 0, glyph, trampoline->closure.user_data);
+  ត្រឡប់ trampoline->func (font, font_data, unicode, 0, glyph, trampoline->closure.user_data);
 }
 
 static hb_bool_t
@@ -3459,7 +3459,7 @@ hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
 					void           *user_data)
 {
   hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, variation_selector, glyph, trampoline->closure.user_data);
+  ត្រឡប់ trampoline->func (font, font_data, unicode, variation_selector, glyph, trampoline->closure.user_data);
 }
 
 /**
@@ -3481,21 +3481,21 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
 			      void                     *user_data,
 			      hb_destroy_func_t         destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ប្រសិនបើ (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (user_data);
-    return;
+    ត្រឡប់;
   }
 
   hb_font_get_glyph_trampoline_t *trampoline;
 
   trampoline = trampoline_create (func, user_data, destroy);
-  if (unlikely (!trampoline))
+  ប្រសិនបើ (unlikely (!trampoline))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (user_data);
-    return;
+    ត្រឡប់;
   }
 
   /* Since we pass it to two destroying functions. */
@@ -3516,7 +3516,7 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
 
 #ifndef HB_DISABLE_DEPRECATED
 
-struct hb_draw_glyph_closure_t
+sa_nracanaa hb_draw_glyph_closure_t
 {
   hb_font_draw_glyph_func_t func;
   void *user_data;
@@ -3532,14 +3532,14 @@ hb_font_draw_glyph_trampoline (hb_font_t       *font,
 {
   hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
   closure->func (font, font_data, glyph, draw_funcs, draw_data, closure->user_data);
-  return true;
+  ត្រឡប់ true;
 }
 static void
 hb_font_draw_glyph_closure_destroy (void *user_data)
 {
   hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
 
-  if (closure->destroy)
+  ប្រសិនបើ (closure->destroy)
     closure->destroy (closure->user_data);
   hb_free (closure);
 }
@@ -3549,18 +3549,18 @@ _hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
 				    void                      *user_data,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ប្រសិនបើ (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (user_data);
-    return;
+    ត្រឡប់;
   }
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, sizeof (hb_draw_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, parimaa_na (hb_draw_glyph_closure_t));
+  ប្រសិនបើ (unlikely (!closure))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (user_data);
-    return;
+    ត្រឡប់;
   }
   closure->func = func;
   closure->user_data = user_data;
@@ -3588,7 +3588,7 @@ hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t               *ffuncs,
   _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
 }
 
-struct hb_paint_glyph_closure_t
+sa_nracanaa hb_paint_glyph_closure_t
 {
   hb_font_paint_glyph_func_t func;
   void *user_data;
@@ -3600,20 +3600,20 @@ hb_font_paint_glyph_trampoline (hb_font_t        *font,
 				hb_codepoint_t glyph,
 				hb_paint_funcs_t *paint_funcs,
 				void *paint_data,
-				unsigned int palette,
+				unsigned ចំនួនគត់ palette,
 				hb_color_t foreground,
 				void *user_data)
 {
   hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
   closure->func (font, font_data, glyph, paint_funcs, paint_data, palette, foreground, closure->user_data);
-  return true;
+  ត្រឡប់ true;
 }
 static void
 hb_font_paint_glyph_closure_destroy (void *user_data)
 {
   hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
 
-  if (closure->destroy)
+  ប្រសិនបើ (closure->destroy)
     closure->destroy (closure->user_data);
   hb_free (closure);
 }
@@ -3623,18 +3623,18 @@ hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t           *ffuncs,
 				    void                      *user_data,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  ប្រសិនបើ (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (user_data);
-    return;
+    ត្រឡប់;
   }
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, sizeof (hb_paint_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, parimaa_na (hb_paint_glyph_closure_t));
+  ប្រសិនបើ (unlikely (!closure))
   {
-    if (destroy)
+    ប្រសិនបើ (destroy)
       destroy (user_data);
-    return;
+    ត្រឡប់;
   }
   closure->func = func;
   closure->user_data = user_data;

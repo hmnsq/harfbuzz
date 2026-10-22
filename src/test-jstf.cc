@@ -26,20 +26,20 @@
 #include "hb-ot-layout-jstf-table.hh"
 
 static hb_face_t *
-create_face (const char *data, unsigned length)
+create_face (const var_na *data, unsigned length)
 {
   hb_face_t *face = hb_face_builder_create ();
   hb_blob_t *blob = hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
 				    nullptr, nullptr);
   hb_always_assert (hb_face_builder_add_table (face, HB_OT_TAG_JSTF, blob));
   hb_blob_destroy (blob);
-  return face;
+  ត្រឡប់ face;
 }
 
-int
-main (int argc, char **argv)
+ចំនួនគត់
+main (ចំនួនគត់ argc, var_na **argv)
 {
-  static const char data[] = {
+  static const var_na data[] = {
     0, 1, 0, 1,				/* version 1.1 */
     0, 0,				/* JstfScriptRecord count */
     0, 1,				/* JstfScriptRecord2 count */
@@ -50,7 +50,7 @@ main (int argc, char **argv)
     0, 1, 1, 0, 1,			/* ExtenderGlyph2 */
   };
 
-  hb_face_t *face = create_face (data, sizeof (data));
+  hb_face_t *face = create_face (data, parimaa_na (data));
   hb_blob_ptr_t<OT::JSTF> jstf =
       hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
 #ifndef HB_NO_BEYOND_64K
@@ -61,7 +61,7 @@ main (int argc, char **argv)
   hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
   hb_always_assert (index == 0);
   hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
-#else
+#បើមិនដូច្នេះ
   hb_always_assert (jstf.get_length ());
   hb_always_assert (!jstf->get_script_count ());
 #endif
@@ -69,12 +69,12 @@ main (int argc, char **argv)
   hb_face_destroy (face);
 
 #ifndef HB_NO_BEYOND_64K
-  face = create_face (data, sizeof (data) - 1);
+  face = create_face (data, parimaa_na (data) - 1);
   jstf = hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
   hb_always_assert (!jstf.get_length ());
   jstf.destroy ();
   hb_face_destroy (face);
 #endif
 
-  return 0;
+  ត្រឡប់ 0;
 }

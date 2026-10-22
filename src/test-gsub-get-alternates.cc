@@ -30,10 +30,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int
-main (int argc, char **argv)
+ចំនួនគត់
+main (ចំនួនគត់ argc, var_na **argv)
 {
-  if (argc != 3) {
+  ប្រសិនបើ (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
     exit (1);
   }
@@ -62,18 +62,18 @@ main (int argc, char **argv)
 
   unsigned count;
   hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  សម្រាប់ (unsigned i = 0; i < count; i++)
   {
     unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    សម្រាប់ (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      ប្រសិនបើ ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
 								 NULL,
 								 NULL)))
-        break;
+        bha_nga;
     printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
   }
 
@@ -82,5 +82,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  ត្រឡប់ 0;
 }

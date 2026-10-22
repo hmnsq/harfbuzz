@@ -35,15 +35,15 @@
 #include "hb-set-digest.hh"
 
 
-static_assert ((sizeof (hb_glyph_info_t) == 20), "");
-static_assert ((sizeof (hb_glyph_info_t) == sizeof (hb_glyph_position_t)), "");
+static_assert ((parimaa_na (hb_glyph_info_t) == 20), "");
+static_assert ((parimaa_na (hb_glyph_info_t) == parimaa_na (hb_glyph_position_t)), "");
 
 HB_MARK_AS_FLAG_T (hb_glyph_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_serialize_flags_t);
 HB_MARK_AS_FLAG_T (hb_buffer_diff_flags_t);
 
-enum hb_buffer_scratch_flags_t {
+ga_nanaa hb_buffer_scratch_flags_t {
   HB_BUFFER_SCRATCH_FLAG_DEFAULT			= 0x00000000u,
   HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH		= 0x00000001u,
   HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES		= 0x00000002u,
@@ -67,7 +67,7 @@ HB_MARK_AS_FLAG_T (hb_buffer_scratch_flags_t);
  * hb_buffer_t
  */
 
-struct hb_buffer_t
+sa_nracanaa hb_buffer_t
 {
   hb_object_header_t header;
 
@@ -94,11 +94,11 @@ struct hb_buffer_t
   bool have_output; /* Whether we have an output buffer going on */
   bool have_positions; /* Whether we have positions */
 
-  unsigned int idx; /* Cursor into ->info and ->pos arrays */
-  unsigned int len; /* Length of ->info and ->pos arrays */
-  unsigned int out_len; /* Length of ->out_info array if have_output */
+  unsigned ចំនួនគត់ idx; /* Cursor into ->info and ->pos arrays */
+  unsigned ចំនួនគត់ len; /* Length of ->info and ->pos arrays */
+  unsigned ចំនួនគត់ out_len; /* Length of ->out_info array if have_output */
 
-  unsigned int allocated; /* Length of allocated arrays */
+  unsigned ចំនួនគត់ allocated; /* Length of allocated arrays */
   hb_glyph_info_t     *info;
   hb_glyph_info_t     *out_info;
   hb_glyph_position_t *pos;
@@ -108,7 +108,7 @@ struct hb_buffer_t
    * Index 0 is for "pre-context", 1 for "post-context". */
   static constexpr unsigned CONTEXT_LENGTH = 5u;
   hb_codepoint_t context[2][CONTEXT_LENGTH];
-  unsigned int context_len[2];
+  unsigned ចំនួនគត់ context_len[2];
 
   hb_set_digest_t digest; /* Manually updated sometimes */
 
@@ -120,8 +120,8 @@ struct hb_buffer_t
   uint8_t serial;
   uint32_t random_state;
   hb_buffer_scratch_flags_t scratch_flags; /* Have space-fallback, etc. */
-  unsigned int max_len; /* Maximum allowed len. */
-  int max_ops; /* Maximum allowed operations. */
+  unsigned ចំនួនគត់ max_len; /* Maximum allowed len. */
+  ចំនួនគត់ max_ops; /* Maximum allowed operations. */
   /* The bits here reflect current allocations of the bytes in glyph_info_t's var1 and var2. */
 
 
@@ -138,7 +138,7 @@ struct hb_buffer_t
   changed_func_t changed_func;
   void *changed_data;
   unsigned message_depth; /* How deeply are we inside a message callback? */
-#else
+#បើមិនដូច្នេះ
   static constexpr unsigned message_depth = 0u;
 #endif
 
@@ -146,39 +146,39 @@ struct hb_buffer_t
 
   /* Methods */
 
-  HB_NODISCARD bool in_error () const { return !successful; }
+  HB_NODISCARD bool in_error () const { ត្រឡប់ !successful; }
 
-  void allocate_var (unsigned int start, unsigned int count)
+  void allocate_var (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ count)
   {
-    unsigned int end = start + count;
+    unsigned ចំនួនគត់ end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
+    unsigned ចំនួនគត់ bits = (1u<<end) - (1u<<start);
     assert (0 == (allocated_var_bits & bits));
     allocated_var_bits |= bits;
   }
-  bool try_allocate_var (unsigned int start, unsigned int count)
+  bool try_allocate_var (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ count)
   {
-    unsigned int end = start + count;
+    unsigned ចំនួនគត់ end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
-    if (allocated_var_bits & bits)
-      return false;
+    unsigned ចំនួនគត់ bits = (1u<<end) - (1u<<start);
+    ប្រសិនបើ (allocated_var_bits & bits)
+      ត្រឡប់ false;
     allocated_var_bits |= bits;
-    return true;
+    ត្រឡប់ true;
   }
-  void deallocate_var (unsigned int start, unsigned int count)
+  void deallocate_var (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ count)
   {
-    unsigned int end = start + count;
+    unsigned ចំនួនគត់ end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
+    unsigned ចំនួនគត់ bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
     allocated_var_bits &= ~bits;
   }
-  void assert_var (unsigned int start, unsigned int count)
+  void assert_var (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ count)
   {
-    unsigned int end = start + count;
+    unsigned ចំនួនគត់ end = start + count;
     assert (end <= 8);
-    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
+    HB_UNUSED unsigned ចំនួនគត់ bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
   }
   void deallocate_var_all ()
@@ -187,23 +187,23 @@ struct hb_buffer_t
   }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &cur (unsigned int i = 0) { return info[idx + i]; }
+  hb_glyph_info_t &cur (unsigned ចំនួនគត់ i = 0) { ត្រឡប់ info[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t cur (unsigned int i = 0) const { return info[idx + i]; }
+  hb_glyph_info_t cur (unsigned ចំនួនគត់ i = 0) const { ត្រឡប់ info[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_position_t &cur_pos (unsigned int i = 0) { return pos[idx + i]; }
+  hb_glyph_position_t &cur_pos (unsigned ចំនួនគត់ i = 0) { ត្រឡប់ pos[idx + i]; }
   HB_ALWAYS_INLINE
-  hb_glyph_position_t cur_pos (unsigned int i = 0) const { return pos[idx + i]; }
+  hb_glyph_position_t cur_pos (unsigned ចំនួនគត់ i = 0) const { ត្រឡប់ pos[idx + i]; }
 
   HB_ALWAYS_INLINE
-  hb_glyph_info_t &prev ()      { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t &prev ()      { ត្រឡប់ out_info[out_len ? out_len - 1 : 0]; }
   HB_ALWAYS_INLINE
-  hb_glyph_info_t prev () const { return out_info[out_len ? out_len - 1 : 0]; }
+  hb_glyph_info_t prev () const { ត្រឡប់ out_info[out_len ? out_len - 1 : 0]; }
 
   template <typename set_t>
   void collect_codepoints (set_t &d) const
-  { d.clear (); d.add_array (&info[0].codepoint, len, sizeof (info[0])); }
+  { d.clear (); d.add_array (&info[0].codepoint, len, parimaa_na (info[0])); }
 
   void update_digest ()
   {
@@ -225,20 +225,20 @@ struct hb_buffer_t
   bool verify (hb_buffer_t        *text_buffer,
 	       hb_font_t          *font,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shapers)
+	       unsigned ចំនួនគត់        num_features,
+	       const var_na * const *shapers)
 #ifndef HB_NO_BUFFER_VERIFY
   ;
-#else
-  { return true; }
+#បើមិនដូច្នេះ
+  { ត្រឡប់ true; }
 #endif
 
-  unsigned int backtrack_len () const { return have_output ? out_len : idx; }
-  unsigned int lookahead_len () const { return len - idx; }
-  uint8_t next_serial () { return ++serial ? serial : ++serial; }
+  unsigned ចំនួនគត់ backtrack_len () const { ត្រឡប់ have_output ? out_len : idx; }
+  unsigned ចំនួនគត់ lookahead_len () const { ត្រឡប់ len - idx; }
+  uint8_t next_serial () { ត្រឡប់ ++serial ? serial : ++serial; }
 
   HB_INTERNAL void add (hb_codepoint_t  codepoint,
-			unsigned int    cluster);
+			unsigned ចំនួនគត់    cluster);
   HB_INTERNAL void add_info (const hb_glyph_info_t &glyph_info);
   HB_INTERNAL void add_info_and_pos (const hb_glyph_info_t &glyph_info,
 				     const hb_glyph_position_t &glyph_pos);
@@ -246,7 +246,7 @@ struct hb_buffer_t
   void reverse_range (unsigned start, unsigned end)
   {
     hb_array_t<hb_glyph_info_t> (info, len).reverse (start, end);
-    if (have_positions)
+    ប្រសិនបើ (have_positions)
       hb_array_t<hb_glyph_position_t> (pos, len).reverse (start, end);
   }
   void reverse () { reverse_range (0, len); }
@@ -255,22 +255,22 @@ struct hb_buffer_t
   void reverse_groups (const FuncType& group,
 		       bool merge_clusters = false)
   {
-    if (unlikely (!len))
-      return;
+    ប្រសិនបើ (unlikely (!len))
+      ត្រឡប់;
 
     unsigned start = 0;
     unsigned i;
-    for (i = 1; i < len; i++)
+    សម្រាប់ (i = 1; i < len; i++)
     {
-      if (!group (info[i - 1], info[i]))
+      ប្រសិនបើ (!group (info[i - 1], info[i]))
       {
-	if (merge_clusters)
+	ប្រសិនបើ (merge_clusters)
 	  this->merge_clusters (start, i);
 	reverse_range (start, i);
 	start = i;
       }
     }
-    if (merge_clusters)
+    ប្រសិនបើ (merge_clusters)
       this->merge_clusters (start, i);
     reverse_range (start, i);
 
@@ -280,31 +280,31 @@ struct hb_buffer_t
   template <typename FuncType>
   unsigned group_end (unsigned start, const FuncType& group) const
   {
-    while (++start < len && group (info[start - 1], info[start]))
+    ខណៈពេល (++start < len && group (info[start - 1], info[start]))
       ;
 
-    return start;
+    ត្រឡប់ start;
   }
 
   static bool _cluster_group_func (const hb_glyph_info_t& a,
 				   const hb_glyph_info_t& b)
-  { return a.cluster == b.cluster; }
+  { ត្រឡប់ a.cluster == b.cluster; }
 
   void reverse_clusters () { reverse_groups (_cluster_group_func); }
 
   HB_INTERNAL void guess_segment_properties ();
 
   HB_INTERNAL bool sync ();
-  HB_INTERNAL int sync_so_far ();
+  HB_INTERNAL ចំនួនគត់ sync_so_far ();
   HB_INTERNAL void clear_output ();
   HB_INTERNAL void clear_positions ();
 
   template <typename T>
-  HB_NODISCARD bool replace_glyphs (unsigned int num_in,
-				    unsigned int num_out,
+  HB_NODISCARD bool replace_glyphs (unsigned ចំនួនគត់ num_in,
+				    unsigned ចំនួនគត់ num_out,
 				    const T *glyph_data)
   {
-    if (unlikely (!make_room_for (num_in, num_out))) return false;
+    ប្រសិនបើ (unlikely (!make_room_for (num_in, num_out))) ត្រឡប់ false;
 
     assert (idx + num_in <= len);
 
@@ -313,7 +313,7 @@ struct hb_buffer_t
     hb_glyph_info_t &orig_info = idx < len ? cur() : prev();
 
     hb_glyph_info_t *pinfo = &out_info[out_len];
-    for (unsigned int i = 0; i < num_out; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < num_out; i++)
     {
       *pinfo = orig_info;
       pinfo->codepoint = glyph_data[i];
@@ -322,117 +322,117 @@ struct hb_buffer_t
 
     idx  += num_in;
     out_len += num_out;
-    return true;
+    ត្រឡប់ true;
   }
 
   HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (1, 1, &glyph_index); }
+  { ត្រឡប់ replace_glyphs (1, 1, &glyph_index); }
 
   /* Makes a copy of the glyph at idx to output and replace glyph_index */
   HB_NODISCARD bool output_glyph (hb_codepoint_t glyph_index)
-  { return replace_glyphs (0, 1, &glyph_index); }
+  { ត្រឡប់ replace_glyphs (0, 1, &glyph_index); }
 
   HB_NODISCARD bool output_info (const hb_glyph_info_t &glyph_info)
   {
-    if (unlikely (!make_room_for (0, 1))) return false;
+    ប្រសិនបើ (unlikely (!make_room_for (0, 1))) ត្រឡប់ false;
 
     out_info[out_len] = glyph_info;
 
     out_len++;
-    return true;
+    ត្រឡប់ true;
   }
   /* Copies glyph at idx to output but doesn't advance idx */
   HB_NODISCARD bool copy_glyph ()
   {
     /* Extra copy because cur()'s return can be freed within
      * output_info() call if buffer reallocates. */
-    return output_info (hb_glyph_info_t (cur()));
+    ត្រឡប់ output_info (hb_glyph_info_t (cur()));
   }
 
   /* Copies glyph at idx to output and advance idx.
    * If there's no output, just advance idx. */
   HB_NODISCARD bool next_glyph ()
   {
-    if (have_output)
+    ប្រសិនបើ (have_output)
     {
-      if (out_info != info || out_len != idx)
+      ប្រសិនបើ (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + 1))) return false;
+	ប្រសិនបើ (unlikely (!ensure (out_len + 1))) ត្រឡប់ false;
 	out_info[out_len] = info[idx];
       }
       out_len++;
     }
 
     idx++;
-    return true;
+    ត្រឡប់ true;
   }
   /* Copies n glyphs at idx to output and advance idx.
    * If there's no output, just advance idx. */
-  HB_NODISCARD bool next_glyphs (unsigned int n)
+  HB_NODISCARD bool next_glyphs (unsigned ចំនួនគត់ n)
   {
-    if (have_output)
+    ប្រសិនបើ (have_output)
     {
-      if (out_info != info || out_len != idx)
+      ប្រសិនបើ (out_info != info || out_len != idx)
       {
-	if (unlikely (!ensure (out_len + n))) return false;
-	memmove (out_info + out_len, info + idx, n * sizeof (out_info[0]));
+	ប្រសិនបើ (unlikely (!ensure (out_len + n))) ត្រឡប់ false;
+	memmove (out_info + out_len, info + idx, n * parimaa_na (out_info[0]));
       }
       out_len += n;
     }
 
     idx += n;
-    return true;
+    ត្រឡប់ true;
   }
   /* Advance idx without copying to output. */
   void skip_glyph () { idx++; }
   void add_masks (hb_mask_t mask)
   {
-    for (unsigned int j = 0; j < len; j++)
+    សម្រាប់ (unsigned ចំនួនគត់ j = 0; j < len; j++)
       info[j].mask |= mask;
   }
   HB_INTERNAL void set_masks (hb_mask_t value, hb_mask_t mask,
-			      unsigned int cluster_start, unsigned int cluster_end);
+			      unsigned ចំនួនគត់ cluster_start, unsigned ចំនួនគត់ cluster_end);
 
-  void merge_clusters (unsigned int start, unsigned int end)
+  void merge_clusters (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+    ប្រសិនបើ (end - start < 2)
+      ត្រឡប់;
+    ប្រសិនបើ (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      ត្រឡប់;
     }
     merge_clusters_impl (start, end);
   }
-  void merge_grapheme_clusters (unsigned int start, unsigned int end)
+  void merge_grapheme_clusters (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+    ប្រសិនបើ (end - start < 2)
+      ត្រឡប់;
+    ប្រសិនបើ (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
     {
       unsafe_to_break (start, end);
-      return;
+      ត្រឡប់;
     }
     merge_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_clusters_impl (unsigned int start, unsigned int end);
-  void merge_out_clusters (unsigned int start, unsigned int end)
+  HB_INTERNAL void merge_clusters_impl (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end);
+  void merge_out_clusters (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
-      return;
+    ប្រសិនបើ (end - start < 2)
+      ត្រឡប់;
+    ប្រសិនបើ (!HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (cluster_level))
+      ត្រឡប់;
     merge_out_clusters_impl (start, end);
   }
-  void merge_out_grapheme_clusters (unsigned int start, unsigned int end)
+  void merge_out_grapheme_clusters (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end)
   {
-    if (end - start < 2)
-      return;
-    if (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
-      return;
+    ប្រសិនបើ (end - start < 2)
+      ត្រឡប់;
+    ប្រសិនបើ (!HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (cluster_level))
+      ត្រឡប់;
     merge_out_clusters_impl (start, end);
   }
-  HB_INTERNAL void merge_out_clusters_impl (unsigned int start, unsigned int end);
+  HB_INTERNAL void merge_out_clusters_impl (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end);
   /* Merge clusters for deleting current glyph, and skip it. */
   HB_INTERNAL void delete_glyph ();
   HB_INTERNAL void delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info));
@@ -448,32 +448,32 @@ struct hb_buffer_t
 			      bool interior,
 			      bool from_out_buffer)
   {
-    if (!from_out_buffer || !have_output)
+    ប្រសិនបើ (!from_out_buffer || !have_output)
     {
-      if (!interior)
+      ប្រសិនបើ (!interior)
       {
-	for (unsigned i = start; i < end; i++)
+	សម្រាប់ (unsigned i = start; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      បើមិនដូច្នេះ
       {
 	unsigned cluster = _infos_find_min_cluster (info, start, end);
 	_infos_set_glyph_flags (info, start, end, cluster, mask);
       }
     }
-    else
+    បើមិនដូច្នេះ
     {
       assert (start <= out_len);
       assert (idx <= end);
 
-      if (!interior)
+      ប្រសិនបើ (!interior)
       {
-	for (unsigned i = start; i < out_len; i++)
+	សម្រាប់ (unsigned i = start; i < out_len; i++)
 	  out_info[i].mask |= mask;
-	for (unsigned i = idx; i < end; i++)
+	សម្រាប់ (unsigned i = idx; i < end; i++)
 	  info[i].mask |= mask;
       }
-      else
+      បើមិនដូច្នេះ
       {
 	unsigned cluster = _infos_find_min_cluster (info, idx, end);
 	cluster = _infos_find_min_cluster (out_info, start, out_len, cluster);
@@ -491,30 +491,30 @@ struct hb_buffer_t
 			 bool interior = false,
 			 bool from_out_buffer = false)
   {
-    if (unlikely (end != (unsigned) -1 && end - start > 255))
-      return;
+    ប្រសិនបើ (unlikely (end != (unsigned) -1 && end - start > 255))
+      ត្រឡប់;
 
     end = hb_min (end, len);
 
-    if (interior && !from_out_buffer && end - start < 2)
-      return;
+    ប្រសិនបើ (interior && !from_out_buffer && end - start < 2)
+      ត្រឡប់;
 
     _set_glyph_flags_impl (mask, start, end, interior, from_out_buffer);
   }
 
 
-  void unsafe_to_break (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_break (unsigned ចំនួនគត់ start = 0, unsigned ចំនួនគត់ end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
 		      true);
   }
-  void safe_to_insert_tatweel (unsigned int start = 0, unsigned int end = -1)
+  void safe_to_insert_tatweel (unsigned ចំនួនគត់ start = 0, unsigned ចំនួនគត់ end = -1)
   {
-    if ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+    ប្រសិនបើ ((flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
     {
       unsafe_to_break (start, end);
-      return;
+      ត្រឡប់;
     }
     _set_glyph_flags (HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL,
 		      start, end,
@@ -523,15 +523,15 @@ struct hb_buffer_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_concat (unsigned ចំនួនគត់ start = 0, unsigned ចំនួនគត់ end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    ប្រសិនបើ (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      ត្រឡប់;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
 		      false);
   }
-  void unsafe_to_break_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_break_from_outbuffer (unsigned ចំនួនគត់ start = 0, unsigned ចំនួនគត់ end = -1)
   {
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
@@ -540,10 +540,10 @@ struct hb_buffer_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void unsafe_to_concat_from_outbuffer (unsigned int start = 0, unsigned int end = -1)
+  void unsafe_to_concat_from_outbuffer (unsigned ចំនួនគត់ start = 0, unsigned ចំនួនគត់ end = -1)
   {
-    if (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
-      return;
+    ប្រសិនបើ (likely ((flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0))
+      ត្រឡប់;
     _set_glyph_flags (HB_GLYPH_FLAG_UNSAFE_TO_CONCAT,
 		      start, end,
 		      false, true);
@@ -551,22 +551,22 @@ struct hb_buffer_t
 
 
   /* Internal methods */
-  HB_NODISCARD HB_INTERNAL bool move_to (unsigned int i); /* i is output-buffer index. */
+  HB_NODISCARD HB_INTERNAL bool move_to (unsigned ចំនួនគត់ i); /* i is output-buffer index. */
 
-  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned int size);
+  HB_NODISCARD HB_INTERNAL bool enlarge (unsigned ចំនួនគត់ size);
 
   HB_NODISCARD bool resize (unsigned length)
   {
     assert (!have_output);
-    if (unlikely (!ensure (length))) return false;
+    ប្រសិនបើ (unlikely (!ensure (length))) ត្រឡប់ false;
     len = length;
-    return true;
+    ត្រឡប់ true;
   }
-  HB_NODISCARD bool ensure (unsigned int size)
-  { return likely (!size || size < allocated) ? true : enlarge (size); }
+  HB_NODISCARD bool ensure (unsigned ចំនួនគត់ size)
+  { ត្រឡប់ likely (!size || size < allocated) ? true : enlarge (size); }
 
-  HB_NODISCARD bool ensure_inplace (unsigned int size)
-  { return likely (!size || size < allocated); }
+  HB_NODISCARD bool ensure_inplace (unsigned ចំនួនគត់ size)
+  { ត្រឡប់ likely (!size || size < allocated); }
 
   void assert_glyphs ()
   {
@@ -580,106 +580,106 @@ struct hb_buffer_t
   }
   HB_NODISCARD bool ensure_glyphs ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
+    ប្រសិនបើ (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_GLYPHS))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
+      ប្រសិនបើ (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	ត្រឡប់ false;
       assert (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
     }
-    return true;
+    ត្រឡប់ true;
   }
   HB_NODISCARD bool ensure_unicode ()
   {
-    if (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
+    ប្រសិនបើ (unlikely (content_type != HB_BUFFER_CONTENT_TYPE_UNICODE))
     {
-      if (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
-	return false;
+      ប្រសិនបើ (content_type != HB_BUFFER_CONTENT_TYPE_INVALID)
+	ត្រឡប់ false;
       assert (len == 0);
       content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
     }
-    return true;
+    ត្រឡប់ true;
   }
 
-  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned int num_in, unsigned int num_out);
-  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned int count);
+  HB_NODISCARD HB_INTERNAL bool make_room_for (unsigned ចំនួនគត់ num_in, unsigned ចំនួនគត់ num_out);
+  HB_NODISCARD HB_INTERNAL bool shift_forward (unsigned ចំនួនគត់ count);
 
   typedef long scratch_buffer_t;
-  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned int *size);
+  HB_INTERNAL scratch_buffer_t *get_scratch_buffer (unsigned ចំនួនគត់ *size);
 
-  void clear_context (unsigned int side) { context_len[side] = 0; }
+  void clear_context (unsigned ចំនួនគត់ side) { context_len[side] = 0; }
 
-  HB_INTERNAL void sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
+  HB_INTERNAL void sort (unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end, ចំនួនគត់(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *));
 
   bool messaging ()
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return false;
-#else
-    return unlikely (message_func);
+    ត្រឡប់ false;
+#បើមិនដូច្នេះ
+    ត្រឡប់ unlikely (message_func);
 #endif
   }
-  bool message (hb_font_t *font, const char *fmt, ...) HB_PRINTF_FUNC(3, 4)
+  bool message (hb_font_t *font, const var_na *fmt, ...) HB_PRINTF_FUNC(3, 4)
   {
 #ifdef HB_NO_BUFFER_MESSAGE
-    return true;
-#else
-    if (likely (!messaging ()))
-      return true;
+    ត្រឡប់ true;
+#បើមិនដូច្នេះ
+    ប្រសិនបើ (likely (!messaging ()))
+      ត្រឡប់ true;
 
     va_list ap;
     va_start (ap, fmt);
     bool ret = message_impl (font, fmt, ap);
     va_end (ap);
 
-    return ret;
+    ត្រឡប់ ret;
 #endif
   }
-  HB_INTERNAL bool message_impl (hb_font_t *font, const char *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
+  HB_INTERNAL bool message_impl (hb_font_t *font, const var_na *fmt, va_list ap) HB_PRINTF_FUNC(3, 0);
   HB_INTERNAL void changed ();
 
   static void
-  set_cluster (hb_glyph_info_t &inf, unsigned int cluster, unsigned int mask = 0)
+  set_cluster (hb_glyph_info_t &inf, unsigned ចំនួនគត់ cluster, unsigned ចំនួនគត់ mask = 0)
   {
-    if (inf.cluster != cluster)
+    ប្រសិនបើ (inf.cluster != cluster)
       inf.mask = (inf.mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
     inf.cluster = cluster;
   }
   void
   _infos_set_glyph_flags (hb_glyph_info_t *infos,
-			  unsigned int start, unsigned int end,
-			  unsigned int cluster,
+			  unsigned ចំនួនគត់ start, unsigned ចំនួនគត់ end,
+			  unsigned ចំនួនគត់ cluster,
 			  hb_mask_t mask)
   {
-    if (unlikely (start == end))
-      return;
+    ប្រសិនបើ (unlikely (start == end))
+      ត្រឡប់;
 
     max_ops -= end - start;
-    if (unlikely (max_ops < 0))
+    ប្រសិនបើ (unlikely (max_ops < 0))
       successful = false;
 
     unsigned cluster_first = infos[start].cluster;
     unsigned cluster_last = infos[end - 1].cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
+    ប្រសិនបើ (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS ||
 	(cluster != cluster_first && cluster != cluster_last))
     {
-      for (unsigned int i = start; i < end; i++)
-	if (cluster != infos[i].cluster)
+      សម្រាប់ (unsigned ចំនួនគត់ i = start; i < end; i++)
+	ប្រសិនបើ (cluster != infos[i].cluster)
 	  infos[i].mask |= mask;
-      return;
+      ត្រឡប់;
     }
 
     /* Monotone clusters */
 
-    if (cluster == cluster_first)
+    ប្រសិនបើ (cluster == cluster_first)
     {
-      for (unsigned int i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
+      សម្រាប់ (unsigned ចំនួនគត់ i = end; start < i && infos[i - 1].cluster != cluster_first; i--)
 	infos[i - 1].mask |= mask;
     }
-    else /* cluster == cluster_last */
+    បើមិនដូច្នេះ /* cluster == cluster_last */
     {
-      for (unsigned int i = start; i < end && infos[i].cluster != cluster_last; i++)
+      សម្រាប់ (unsigned ចំនួនគត់ i = start; i < end && infos[i].cluster != cluster_last; i++)
 	infos[i].mask |= mask;
     }
   }
@@ -688,22 +688,22 @@ struct hb_buffer_t
 			   unsigned start, unsigned end,
 			   unsigned cluster = UINT_MAX)
   {
-    if (unlikely (start == end))
-      return cluster;
+    ប្រសិនបើ (unlikely (start == end))
+      ត្រឡប់ cluster;
 
-    if (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
+    ប្រសិនបើ (cluster_level == HB_BUFFER_CLUSTER_LEVEL_CHARACTERS)
     {
-      for (unsigned int i = start; i < end; i++)
+      សម្រាប់ (unsigned ចំនួនគត់ i = start; i < end; i++)
 	cluster = hb_min (cluster, infos[i].cluster);
-      return cluster;
+      ត្រឡប់ cluster;
     }
 
-    return hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
+    ត្រឡប់ hb_min (cluster, hb_min (infos[start].cluster, infos[end - 1].cluster));
   }
 
   void clear_glyph_flags (hb_mask_t mask = 0)
   {
-    for (unsigned int i = 0; i < len; i++)
+    សម្រាប់ (unsigned ចំនួនគត់ i = 0; i < len; i++)
       info[i].mask = (info[i].mask & ~HB_GLYPH_FLAG_DEFINED) | (mask & HB_GLYPH_FLAG_DEFINED);
   }
 };
@@ -711,7 +711,7 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 
 #define foreach_group(buffer, start, end, group_func) \
-  for (unsigned int \
+  សម្រាប់ (unsigned ចំនួនគត់ \
        _count = buffer->len, \
        start = 0, end = _count ? buffer->group_end (0, group_func) : 0; \
        start < _count; \
@@ -723,7 +723,7 @@ DECLARE_NULL_INSTANCE (hb_buffer_t);
 
 #define HB_BUFFER_XALLOCATE_VAR(b, func, var) \
   b->func (offsetof (hb_glyph_info_t, var) - offsetof(hb_glyph_info_t, var1), \
-	   sizeof (b->info[0].var))
+	   parimaa_na (b->info[0].var))
 #define HB_BUFFER_ALLOCATE_VAR(b, var)		HB_BUFFER_XALLOCATE_VAR (b, allocate_var,     var ())
 #define HB_BUFFER_TRY_ALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, try_allocate_var, var ())
 #define HB_BUFFER_DEALLOCATE_VAR(b, var)	HB_BUFFER_XALLOCATE_VAR (b, deallocate_var,   var ())

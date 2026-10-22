@@ -33,7 +33,7 @@
 namespace OT {
 
 
-struct VariationValueRecord
+sa_nracanaa VariationValueRecord
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -46,7 +46,7 @@ struct VariationValueRecord
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    ប្រសិនបើ (unlikely (!out)) return_trace (false);
 
     hb_codepoint_t *new_idx;
     return_trace (c->serializer->check_assign (out->varIdx,
@@ -69,7 +69,7 @@ struct VariationValueRecord
  */
 #define HB_OT_TAG_MVAR HB_TAG('M','V','A','R')
 
-struct MVAR
+sa_nracanaa MVAR
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
 
@@ -95,11 +95,11 @@ struct MVAR
     return_trace (false);
 #endif
 
-    if (c->plan->all_axes_pinned)
+    ប្រសិនបើ (c->plan->all_axes_pinned)
       return_trace (false);
 
     MVAR *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ប្រសិនបើ (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->version = version;
     out->reserved = reserved;
     out->valueRecordSize = valueRecordSize;
@@ -108,11 +108,11 @@ struct MVAR
     item_variations_t item_vars;
     const ItemVariationStore& src_var_store = this+varStore;
 
-    if (!item_vars.instantiate (src_var_store, c->plan))
+    ប្រសិនបើ (!item_vars.instantiate (src_var_store, c->plan))
       return_trace (false);
 
     /* serialize varstore */
-    if (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
+    ប្រសិនបើ (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
                                             item_vars.get_vardata_encodings ()))
@@ -121,16 +121,16 @@ struct MVAR
     /* serialize value records array */
     unsigned value_rec_count = valueRecordCount;
     const VariationValueRecord *record = reinterpret_cast<const VariationValueRecord*> (valuesZ.arrayZ);
-    for (unsigned i = 0; i < value_rec_count; i++)
+    សម្រាប់ (unsigned i = 0; i < value_rec_count; i++)
     {
-      if (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
+      ប្រសិនបើ (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
       record++;
     }
     return_trace (true);
   }
 
   float get_var (hb_tag_t tag,
-		 const int *coords, unsigned int coord_count) const
+		 const ចំនួនគត់ *coords, unsigned ចំនួនគត់ coord_count) const
   {
     const VariationValueRecord *record;
     record = (VariationValueRecord *) hb_bsearch (tag,
@@ -138,21 +138,21 @@ struct MVAR
 						    (const HBUINT8 *) valuesZ,
 						  valueRecordCount, valueRecordSize,
 						  tag_compare);
-    if (!record)
-      return 0.;
+    ប្រសិនបើ (!record)
+      ត្រឡប់ 0.;
 
-    return (this+varStore).get_delta (record->varIdx, coords, coord_count);
+    ត្រឡប់ (this+varStore).get_delta (record->varIdx, coords, coord_count);
   }
 
-protected:
-  static int tag_compare (const void *pa, const void *pb)
+rak_sita:
+  static ចំនួនគត់ tag_compare (const void *pa, const void *pb)
   {
     const hb_tag_t *a = (const hb_tag_t *) pa;
     const Tag *b = (const Tag *) pb;
-    return b->cmp (*a);
+    ត្រឡប់ b->cmp (*a);
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* Not used; set to 0. */

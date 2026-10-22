@@ -9,9 +9,9 @@ namespace Layout {
 namespace GPOS_impl {
 
 template <typename Types>
-struct SinglePosFormat1_3 : ValueBase
+sa_nracanaa SinglePosFormat1_3 : ValueBase
 {
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -42,35 +42,35 @@ struct SinglePosFormat1_3 : ValueBase
   }
 
   bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  { ត្រឡប់ (this+coverage).intersects (glyphs); }
 
   void closure_lookups (hb_closure_lookups_context_t *c) const {}
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    if (!valueFormat.has_device ()) return;
+    ប្រសិនបើ (!valueFormat.has_device ()) ត្រឡប់;
 
     hb_set_t intersection;
     (this+coverage).intersect_set (*c->glyph_set, intersection);
-    if (!intersection) return;
+    ប្រសិនបើ (!intersection) ត្រឡប់;
 
     valueFormat.collect_variation_indices (c, this, values.as_array (valueFormat.get_len ()));
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  { ប្រសិនបើ (unlikely (!(this+coverage).collect_coverage (c->input))) ត្រឡប់; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  const Coverage &get_coverage () const { ត្រឡប់ this+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  ValueFormat get_value_format () const { ត្រឡប់ valueFormat; }
 
   bool apply (hb_ot_apply_context_t *c) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned ចំនួនគត់ index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    ប្រសិនបើ (index == NOT_COVERED) return_trace (false);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ប្រសិនបើ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioning glyph at %u",
@@ -79,7 +79,7 @@ struct SinglePosFormat1_3 : ValueBase
 
     valueFormat.apply_value (c, this, values, buffer->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    ប្រសិនបើ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioned glyph at %u",
@@ -97,12 +97,12 @@ struct SinglePosFormat1_3 : ValueBase
 		   hb_codepoint_t       gid,
 		   hb_glyph_position_t &pos) const
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
+    unsigned ចំនួនគត់ index = (this+coverage).get_coverage  (gid);
+    ប្រសិនបើ (likely (index == NOT_COVERED)) ត្រឡប់ false;
 
     valueFormat.position_single (font, table_blob, direction, this,
                                  values, pos);
-    return true;
+    ត្រឡប់ true;
   }
 
   template<typename Iterator,
@@ -112,19 +112,19 @@ struct SinglePosFormat1_3 : ValueBase
                   ValueFormat src_format,
                   Iterator it,
                   ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, ចំនួនគត់>> *layout_variation_idx_delta_map)
   {
-    if (unlikely (!c->extend_min (this))) return;
-    if (unlikely (!c->check_assign (valueFormat,
+    ប្រសិនបើ (unlikely (!c->extend_min (this))) ត្រឡប់;
+    ប្រសិនបើ (unlikely (!c->check_assign (valueFormat,
                                     newFormat,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
+                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) ត្រឡប់;
 
-    for (const hb_array_t<const Value>& _ : + it | hb_map (hb_second))
+    សម្រាប់ (const hb_array_t<const Value>& _ : + it | hb_map (hb_second))
     {
       src_format.copy_values (c, newFormat, src,  &_, layout_variation_idx_delta_map);
       // Only serialize the first entry in the iterator, the rest are assumed to
       // be the same.
-      break;
+      bha_nga;
     }
 
     auto glyphs =
@@ -146,12 +146,12 @@ struct SinglePosFormat1_3 : ValueBase
 
     unsigned new_format = valueFormat;
 
-    if (c->plan->normalized_coords)
+    ប្រសិនបើ (c->plan->normalized_coords)
     {
       new_format = valueFormat.get_effective_format (values.arrayZ, false, false, this, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    បើមិនដូច្នេះ ប្រសិនបើ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
       bool has_fvar = (blob != hb_blob_get_empty ());
@@ -160,7 +160,7 @@ struct SinglePosFormat1_3 : ValueBase
       bool strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
+      ប្រសិនបើ (has_fvar && !c->plan->has_gdef_varstore)
         strip = true;
       new_format = valueFormat.get_effective_format (values.arrayZ,
                                                      strip, /* strip hints */

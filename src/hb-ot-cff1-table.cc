@@ -39,15 +39,15 @@
 
 using namespace CFF;
 
-struct sid_to_gid_t
+sa_nracanaa sid_to_gid_t
 {
   uint16_t  sid;
   uint8_t   gid;
 
-  int cmp (uint16_t a) const
+  ចំនួនគត់ cmp (uint16_t a) const
   {
-    if (a == sid) return 0;
-    return (a < sid) ? -1 : 1;
+    ប្រសិនបើ (a == sid) ត្រឡប់ 0;
+    ត្រឡប់ (a < sid) ? -1 : 1;
   }
 };
 
@@ -219,57 +219,57 @@ static const uint8_t standard_encoding_to_sid [] =
 
 hb_codepoint_t OT::cff1::lookup_standard_encoding_for_code (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (standard_encoding_to_code))
-    return (hb_codepoint_t)standard_encoding_to_code[sid];
-  else
-    return 0;
+  ប្រសិនបើ (sid < ARRAY_LENGTH (standard_encoding_to_code))
+    ត្រឡប់ (hb_codepoint_t)standard_encoding_to_code[sid];
+  បើមិនដូច្នេះ
+    ត្រឡប់ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_encoding_for_code (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (expert_encoding_to_code))
-    return (hb_codepoint_t)expert_encoding_to_code[sid];
-  else
-    return 0;
+  ប្រសិនបើ (sid < ARRAY_LENGTH (expert_encoding_to_code))
+    ត្រឡប់ (hb_codepoint_t)expert_encoding_to_code[sid];
+  បើមិនដូច្នេះ
+    ត្រឡប់ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_charset_to_sid))
-    return (hb_codepoint_t)expert_charset_to_sid[glyph];
-  else
-    return 0;
+  ប្រសិនបើ (glyph < ARRAY_LENGTH (expert_charset_to_sid))
+    ត្រឡប់ (hb_codepoint_t)expert_charset_to_sid[glyph];
+  បើមិនដូច្នេះ
+    ត្រឡប់ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_subset_charset_to_sid))
-    return (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
-  else
-    return 0;
+  ប្រសិនបើ (glyph < ARRAY_LENGTH (expert_subset_charset_to_sid))
+    ត្រឡប់ (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
+  បើមិនដូច្នេះ
+    ត្រឡប់ 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_glyph (hb_codepoint_t sid)
 {
   const auto *pair = hb_sorted_array (expert_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  ត្រឡប់ pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid)
 {
   const auto *pair = hb_sorted_array (expert_subset_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  ត្រឡប់ pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_standard_encoding_for_sid (hb_codepoint_t code)
 {
-  if (code < ARRAY_LENGTH (standard_encoding_to_sid))
-    return (hb_codepoint_t)standard_encoding_to_sid[code];
-  else
-    return CFF_UNDEF_SID;
+  ប្រសិនបើ (code < ARRAY_LENGTH (standard_encoding_to_sid))
+    ត្រឡប់ (hb_codepoint_t)standard_encoding_to_sid[code];
+  បើមិនដូច្នេះ
+    ត្រឡប់ CFF_UNDEF_SID;
 }
 
-struct bounds_t
+sa_nracanaa bounds_t
 {
   void init ()
   {
@@ -279,41 +279,41 @@ struct bounds_t
 
   void update (const point_t &pt)
   {
-    if (pt.x < min.x) min.x = pt.x;
-    if (pt.x > max.x) max.x = pt.x;
-    if (pt.y < min.y) min.y = pt.y;
-    if (pt.y > max.y) max.y = pt.y;
+    ប្រសិនបើ (pt.x < min.x) min.x = pt.x;
+    ប្រសិនបើ (pt.x > max.x) max.x = pt.x;
+    ប្រសិនបើ (pt.y < min.y) min.y = pt.y;
+    ប្រសិនបើ (pt.y > max.y) max.y = pt.y;
   }
 
   void merge (const bounds_t &b)
   {
-    if (empty ())
+    ប្រសិនបើ (empty ())
       *this = b;
-    else if (!b.empty ())
+    បើមិនដូច្នេះ ប្រសិនបើ (!b.empty ())
     {
-      if (b.min.x < min.x) min.x = b.min.x;
-      if (b.max.x > max.x) max.x = b.max.x;
-      if (b.min.y < min.y) min.y = b.min.y;
-      if (b.max.y > max.y) max.y = b.max.y;
+      ប្រសិនបើ (b.min.x < min.x) min.x = b.min.x;
+      ប្រសិនបើ (b.max.x > max.x) max.x = b.max.x;
+      ប្រសិនបើ (b.min.y < min.y) min.y = b.min.y;
+      ប្រសិនបើ (b.max.y > max.y) max.y = b.max.y;
     }
   }
 
   void offset (const point_t &delta)
   {
-    if (!empty ())
+    ប្រសិនបើ (!empty ())
     {
       min.move (delta);
       max.move (delta);
     }
   }
 
-  bool empty () const { return (min.x >= max.x) || (min.y >= max.y); }
+  bool empty () const { ត្រឡប់ (min.x >= max.x) || (min.y >= max.y); }
 
   point_t min;
   point_t max;
 };
 
-struct cff1_extents_param_t
+sa_nracanaa cff1_extents_param_t
 {
   cff1_extents_param_t (const OT::cff1::accelerator_t *_cff) : cff (_cff)
   {
@@ -322,7 +322,7 @@ struct cff1_extents_param_t
 
   void start_path   ()       { path_open = true; }
   void end_path     ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  bool is_path_open () const { ត្រឡប់ path_open; }
 
   bool path_open = false;
   bounds_t bounds;
@@ -330,7 +330,7 @@ struct cff1_extents_param_t
   const OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
+sa_nracanaa cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
 {
   static void moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt)
   {
@@ -340,7 +340,7 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
 
   static void line (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1)
   {
-    if (!param.is_path_open ())
+    ប្រសិនបើ (!param.is_path_open ())
     {
       param.start_path ();
       param.bounds.update (env.get_pt ());
@@ -351,7 +351,7 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
 
   static void curve (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
   {
-    if (!param.is_path_open ())
+    ប្រសិនបើ (!param.is_path_open ())
     {
       param.start_path ();
       param.bounds.update (env.get_pt ());
@@ -366,11 +366,11 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
 
 static bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac=false, int64_t *budget = nullptr);
 
-struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
+sa_nracanaa cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
 {
   static void process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
+    unsigned ចំនួនគត់  n = env.argStack.get_count ();
     point_t delta;
     delta.x = env.argStack[n-4];
     delta.y = env.argStack[n-3];
@@ -378,7 +378,7 @@ struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_e
     hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
 
     bounds_t  base_bounds, accent_bounds;
-    if (likely (!env.in_seac && base && accent
+    ប្រសិនបើ (likely (!env.in_seac && base && accent
 	       && _get_bounds (param.cff, base, base_bounds, true, env.get_budget ())
 	       && _get_bounds (param.cff, accent, accent_bounds, true, env.get_budget ())))
     {
@@ -386,7 +386,7 @@ struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_e
       accent_bounds.offset (delta);
       param.bounds.merge (accent_bounds);
     }
-    else
+    បើមិនដូច្នេះ
       env.set_error ();
   }
 };
@@ -394,63 +394,63 @@ struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_e
 bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac, int64_t *budget)
 {
   bounds.init ();
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  ប្រសិនបើ (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) ត្រឡប់ false;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
+  unsigned ចំនួនគត់ fd = cff->fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*cff->charStrings)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
   env.set_in_seac (in_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_extents_t, cff1_extents_param_t> interp (env);
   cff1_extents_param_t param (cff);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ប្រសិនបើ (unlikely (!interp.interpret (param, budget))) ត្រឡប់ false;
   bounds = param.bounds;
-  return true;
+  ត្រឡប់ true;
 }
 
 bool OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) const
 {
 #ifdef HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
+  ត្រឡប់ true;
 #endif
 
   bounds_t bounds;
 
   int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  ប្រសិនបើ (!budget) budget = &stack_budget;
 
-  if (!_get_bounds (this, glyph, bounds, false, budget))
-    return false;
+  ប្រសិនបើ (!_get_bounds (this, glyph, bounds, false, budget))
+    ត្រឡប់ false;
 
-  if (bounds.min.x >= bounds.max.x)
+  ប្រសិនបើ (bounds.min.x >= bounds.max.x)
   {
     extents->width = 0;
     extents->x_bearing = 0;
   }
-  else
+  បើមិនដូច្នេះ
   {
-    double x_bearing = roundf (bounds.min.x.to_real ());
+    dviguu_na x_bearing = roundf (bounds.min.x.to_real ());
     extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (bounds.max.x.to_real ()) - x_bearing);
+    extents->width = hb_clamp_to<hb_position_t> ((dviguu_na) roundf (bounds.max.x.to_real ()) - x_bearing);
   }
-  if (bounds.min.y >= bounds.max.y)
+  ប្រសិនបើ (bounds.min.y >= bounds.max.y)
   {
     extents->height = 0;
     extents->y_bearing = 0;
   }
-  else
+  បើមិនដូច្នេះ
   {
-    double y_bearing = roundf (bounds.max.y.to_real ());
+    dviguu_na y_bearing = roundf (bounds.max.y.to_real ());
     extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (bounds.min.y.to_real ()) - y_bearing);
+    extents->height = hb_clamp_to<hb_position_t> ((dviguu_na) roundf (bounds.min.y.to_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  ត្រឡប់ true;
 }
 
-struct cff1_path_param_t
+sa_nracanaa cff1_path_param_t
 {
   cff1_path_param_t (const OT::cff1::accelerator_t *cff_, hb_font_t *font_,
 		     hb_draw_session_t &draw_session_, point_t *delta_)
@@ -464,21 +464,21 @@ struct cff1_path_param_t
   void move_to (const point_t &p)
   {
     point_t point = p;
-    if (delta) point.move (*delta);
+    ប្រសិនបើ (delta) point.move (*delta);
     draw_session->move_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
   void line_to (const point_t &p)
   {
     point_t point = p;
-    if (delta) point.move (*delta);
+    ប្រសិនបើ (delta) point.move (*delta);
     draw_session->line_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
   void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
   {
     point_t point1 = p1, point2 = p2, point3 = p3;
-    if (delta)
+    ប្រសិនបើ (delta)
     {
       point1.move (*delta);
       point2.move (*delta);
@@ -498,7 +498,7 @@ struct cff1_path_param_t
   const OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
+sa_nracanaa cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
 {
   static void moveto (cff1_cs_interp_env_t &env, cff1_path_param_t& param, const point_t &pt)
   {
@@ -523,21 +523,21 @@ static bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_c
 		       hb_draw_session_t &draw_session, bool in_seac = false, point_t *delta = nullptr,
 		       int64_t *budget = nullptr);
 
-struct cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
+sa_nracanaa cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
 {
   static void process_seac (cff1_cs_interp_env_t &env, cff1_path_param_t& param)
   {
     /* End previous path */
     param.end_path ();
 
-    unsigned int n = env.argStack.get_count ();
+    unsigned ចំនួនគត់ n = env.argStack.get_count ();
     point_t delta;
     delta.x = env.argStack[n-4];
     delta.y = env.argStack[n-3];
     hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
     hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
 
-    if (unlikely (!(!env.in_seac && base && accent
+    ប្រសិនបើ (unlikely (!(!env.in_seac && base && accent
 		    && _get_path (param.cff, param.font, base, *param.draw_session, true, nullptr, env.get_budget ())
 		    && _get_path (param.cff, param.font, accent, *param.draw_session, true, &delta, env.get_budget ()))))
       env.set_error ();
@@ -548,51 +548,51 @@ bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoin
 		hb_draw_session_t &draw_session, bool in_seac, point_t *delta,
 		int64_t *budget)
 {
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  ប្រសិនបើ (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) ត្រឡប់ false;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
+  unsigned ចំនួនគត់ fd = cff->fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*cff->charStrings)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
   env.set_in_seac (in_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_path_t, cff1_path_param_t> interp (env);
   cff1_path_param_t param (cff, font, draw_session, delta);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  ប្រសិនបើ (unlikely (!interp.interpret (param, budget))) ត្រឡប់ false;
 
   /* Let's end the path specially since it is called inside seac also */
   param.end_path ();
 
-  return true;
+  ត្រឡប់ true;
 }
 
 bool OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) const
 {
 #ifdef HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
+  ត្រឡប់ true;
 #endif
 
   int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  ប្រសិនបើ (!budget) budget = &stack_budget;
 
-  return _get_path (this, font, glyph, draw_session, false, nullptr, budget);
+  ត្រឡប់ _get_path (this, font, glyph, draw_session, false, nullptr, budget);
 }
 
-struct get_seac_param_t
+sa_nracanaa get_seac_param_t
 {
   get_seac_param_t (const OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
 
-  bool has_seac () const { return base && accent; }
+  bool has_seac () const { ត្រឡប់ base && accent; }
 
   const OT::cff1::accelerator_subset_t *cff;
   hb_codepoint_t  base = 0;
   hb_codepoint_t  accent = 0;
 };
 
-struct cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
+sa_nracanaa cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
 {
   static void process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
+    unsigned ចំនួនគត់  n = env.argStack.get_count ();
     hb_codepoint_t  base_char = (hb_codepoint_t)env.argStack[n-2].to_int ();
     hb_codepoint_t  accent_char = (hb_codepoint_t)env.argStack[n-1].to_int ();
 
@@ -604,50 +604,50 @@ struct cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_par
 static bool
 _cff1_charstring_may_end_in_seac (const hb_ubytes_t &str)
 {
-  if (unlikely (!str.length || str[str.length - 1] != OpCode_endchar))
-    return false;
+  ប្រសិនបើ (unlikely (!str.length || str[str.length - 1] != OpCode_endchar))
+    ត្រឡប់ false;
 
-  unsigned int end = str.length - 1;
-  if (!end) return false;
+  unsigned ចំនួនគត់ end = str.length - 1;
+  ប្រសិនបើ (!end) ត្រឡប់ false;
 
-  unsigned int last = str[end - 1];
+  unsigned ចំនួនគត់ last = str[end - 1];
 
   /* Type 2 numbers are not self-synchronizing when read backwards.
    * Keep interpreting if any number encoding could end at endchar. */
-  if (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
-    return true;
-  if (end >= 2 &&
+  ប្រសិនបើ (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
+    ត្រឡប់ true;
+  ប្រសិនបើ (end >= 2 &&
       OpCode_TwoBytePosInt0 <= str[end - 2] &&
       str[end - 2] <= OpCode_TwoByteNegInt3)
-    return true;
-  if (end >= 3 && str[end - 3] == OpCode_shortint)
-    return true;
-  if (end >= 5 && str[end - 5] == OpCode_fixedcs)
-    return true;
+    ត្រឡប់ true;
+  ប្រសិនបើ (end >= 3 && str[end - 3] == OpCode_shortint)
+    ត្រឡប់ true;
+  ប្រសិនបើ (end >= 5 && str[end - 5] == OpCode_fixedcs)
+    ត្រឡប់ true;
 
   /* A subroutine can leave the seac operands on the shared stack. */
-  return last == OpCode_callsubr || last == OpCode_callgsubr;
+  ត្រឡប់ last == OpCode_callsubr || last == OpCode_callgsubr;
 }
 
 bool OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const
 {
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  ប្រសិនបើ (unlikely (!is_valid () || (glyph >= num_glyphs))) ត្រឡប់ false;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
+  unsigned ចំនួនគត់ fd = fdSelect->get_fd (glyph);
   const hb_ubytes_t str = (*charStrings)[glyph];
-  if (unlikely (!_cff1_charstring_may_end_in_seac (str))) return false;
+  ប្រសិនបើ (unlikely (!_cff1_charstring_may_end_in_seac (str))) ត្រឡប់ false;
   cff1_cs_interp_env_t env (str, *this, fd);
   cff1_cs_interpreter_t<cff1_cs_opset_seac_t, get_seac_param_t> interp (env);
   get_seac_param_t  param (this);
-  if (unlikely (!interp.interpret (param))) return false;
+  ប្រសិនបើ (unlikely (!interp.interpret (param))) ត្រឡប់ false;
 
-  if (param.has_seac ())
+  ប្រសិនបើ (param.has_seac ())
   {
     *base = param.base;
     *accent = param.accent;
-    return true;
+    ត្រឡប់ true;
   }
-  return false;
+  ត្រឡប់ false;
 }
 
 

@@ -34,7 +34,7 @@ namespace wasm {
 HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 							    script_t script)
 {
-  return (direction_t)
+  ត្រឡប់ (direction_t)
 	 hb_script_get_horizontal_direction (hb_script_from_iso15924_tag (script));
 }
 

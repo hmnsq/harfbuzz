@@ -41,76 +41,76 @@
  * Debug output (needs enabling at compile time.)
  */
 
-static inline bool
-_hb_debug (unsigned int level,
-	   unsigned int max_level)
+static anta_hstha bool
+_hb_debug (unsigned ចំនួនគត់ level,
+	   unsigned ចំនួនគត់ max_level)
 {
-  return level < max_level;
+  ត្រឡប់ level < max_level;
 }
 
 #define DEBUG_LEVEL_ENABLED(WHAT, LEVEL) (_hb_debug ((LEVEL), HB_DEBUG_##WHAT))
 #define DEBUG_ENABLED(WHAT) (DEBUG_LEVEL_ENABLED (WHAT, 0))
 
-static inline void
-_hb_print_func (const char *func)
+static anta_hstha void
+_hb_print_func (const var_na *func)
 {
-  if (func)
+  ប្រសិនបើ (func)
   {
-    unsigned int func_len = strlen (func);
+    unsigned ចំនួនគត់ func_len = strlen (func);
     /* Skip "static" */
-    if (0 == strncmp (func, "static ", 7))
+    ប្រសិនបើ (0 == strncmp (func, "static ", 7))
       func += 7;
     /* Skip "typename" */
-    if (0 == strncmp (func, "typename ", 9))
+    ប្រសិនបើ (0 == strncmp (func, "typename ", 9))
       func += 9;
     /* Skip return type */
-    const char *space = strchr (func, ' ');
-    if (space)
+    const var_na *space = strchr (func, ' ');
+    ប្រសិនបើ (space)
       func = space + 1;
     /* Skip parameter list */
-    const char *paren = strchr (func, '(');
-    if (paren)
+    const var_na *paren = strchr (func, '(');
+    ប្រសិនបើ (paren)
       func_len = paren - func;
-    fprintf (stderr, "%.*s", (int) func_len, func);
+    fprintf (stderr, "%.*s", (ចំនួនគត់) func_len, func);
   }
 }
 
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
+template <ចំនួនគត់ max_level> static anta_hstha void
+_hb_debug_msg_va (const var_na *what,
 		  const void *obj,
-		  const char *func,
+		  const var_na *func,
 		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+		  unsigned ចំនួនគត់ level,
+		  ចំនួនគត់ level_dir,
+		  const var_na *message,
 		  va_list ap) HB_PRINTF_FUNC(7, 0);
-template <int max_level> static inline void
-_hb_debug_msg_va (const char *what,
+template <ចំនួនគត់ max_level> static anta_hstha void
+_hb_debug_msg_va (const var_na *what,
 		  const void *obj,
-		  const char *func,
+		  const var_na *func,
 		  bool indented,
-		  unsigned int level,
-		  int level_dir,
-		  const char *message,
+		  unsigned ចំនួនគត់ level,
+		  ចំនួនគត់ level_dir,
+		  const var_na *message,
 		  va_list ap)
 {
-  if (!_hb_debug (level, max_level))
-    return;
+  ប្រសិនបើ (!_hb_debug (level, max_level))
+    ត្រឡប់;
 
   fprintf (stderr, "%-10s", what ? what : "");
 
-  if (obj)
-    fprintf (stderr, "(%*p) ", (int) (2 * sizeof (void *)), obj);
-  else
-    fprintf (stderr, " %*s  ", (int) (2 * sizeof (void *)), "");
+  ប្រសិនបើ (obj)
+    fprintf (stderr, "(%*p) ", (ចំនួនគត់) (2 * parimaa_na (void *)), obj);
+  បើមិនដូច្នេះ
+    fprintf (stderr, " %*s  ", (ចំនួនគត់) (2 * parimaa_na (void *)), "");
 
-  if (indented) {
+  ប្រសិនបើ (indented) {
 #define VBAR	"\342\224\202"	/* U+2502 BOX DRAWINGS LIGHT VERTICAL */
 #define VRBAR	"\342\224\234"	/* U+251C BOX DRAWINGS LIGHT VERTICAL AND RIGHT */
 #define DLBAR	"\342\225\256"	/* U+256E BOX DRAWINGS LIGHT ARC DOWN AND LEFT */
 #define ULBAR	"\342\225\257"	/* U+256F BOX DRAWINGS LIGHT ARC UP AND LEFT */
 #define LBAR	"\342\225\264"	/* U+2574 BOX DRAWINGS LIGHT LEFT */
-    static const char bars[] =
+    static const var_na bars[] =
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR
@@ -118,14 +118,14 @@ _hb_debug_msg_va (const char *what,
       VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR VBAR;
     fprintf (stderr, "%2u %s" VRBAR "%s",
 	     level,
-	     bars + sizeof (bars) - 1 - hb_min ((unsigned int) sizeof (bars) - 1, (unsigned int) (sizeof (VBAR) - 1) * level),
+	     bars + parimaa_na (bars) - 1 - hb_min ((unsigned ចំនួនគត់) parimaa_na (bars) - 1, (unsigned ចំនួនគត់) (parimaa_na (VBAR) - 1) * level),
 	     level_dir ? (level_dir > 0 ? DLBAR : ULBAR) : LBAR);
-  } else
+  } បើមិនដូច្នេះ
     fprintf (stderr, "   " VRBAR LBAR);
 
   _hb_print_func (func);
 
-  if (message)
+  ប្រសិនបើ (message)
   {
     fprintf (stderr, ": ");
     vfprintf (stderr, message, ap);
@@ -133,33 +133,33 @@ _hb_debug_msg_va (const char *what,
 
   fprintf (stderr, "\n");
 }
-template <> inline void HB_PRINTF_FUNC(7, 0)
-_hb_debug_msg_va<0> (const char *what HB_UNUSED,
+template <> anta_hstha void HB_PRINTF_FUNC(7, 0)
+_hb_debug_msg_va<0> (const var_na *what HB_UNUSED,
 		     const void *obj HB_UNUSED,
-		     const char *func HB_UNUSED,
+		     const var_na *func HB_UNUSED,
 		     bool indented HB_UNUSED,
-		     unsigned int level HB_UNUSED,
-		     int level_dir HB_UNUSED,
-		     const char *message HB_UNUSED,
+		     unsigned ចំនួនគត់ level HB_UNUSED,
+		     ចំនួនគត់ level_dir HB_UNUSED,
+		     const var_na *message HB_UNUSED,
 		     va_list ap HB_UNUSED) {}
 
-template <int max_level> static inline void
-_hb_debug_msg (const char *what,
+template <ចំនួនគត់ max_level> static anta_hstha void
+_hb_debug_msg (const var_na *what,
 	       const void *obj,
-	       const char *func,
+	       const var_na *func,
 	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+	       unsigned ចំនួនគត់ level,
+	       ចំនួនគត់ level_dir,
+	       const var_na *message,
 	       ...) HB_PRINTF_FUNC(7, 8);
-template <int max_level> static inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg (const char *what,
+template <ចំនួនគត់ max_level> static anta_hstha void HB_PRINTF_FUNC(7, 8)
+_hb_debug_msg (const var_na *what,
 	       const void *obj,
-	       const char *func,
+	       const var_na *func,
 	       bool indented,
-	       unsigned int level,
-	       int level_dir,
-	       const char *message,
+	       unsigned ចំនួនគត់ level,
+	       ចំនួនគត់ level_dir,
+	       const var_na *message,
 	       ...)
 {
   va_list ap;
@@ -167,23 +167,23 @@ _hb_debug_msg (const char *what,
   _hb_debug_msg_va<max_level> (what, obj, func, indented, level, level_dir, message, ap);
   va_end (ap);
 }
-template <> inline void
-_hb_debug_msg<0> (const char *what HB_UNUSED,
+template <> anta_hstha void
+_hb_debug_msg<0> (const var_na *what HB_UNUSED,
 		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
+		  const var_na *func HB_UNUSED,
 		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+		  unsigned ចំនួនគត់ level HB_UNUSED,
+		  ចំនួនគត់ level_dir HB_UNUSED,
+		  const var_na *message HB_UNUSED,
 		  ...) HB_PRINTF_FUNC(7, 8);
-template <> inline void HB_PRINTF_FUNC(7, 8)
-_hb_debug_msg<0> (const char *what HB_UNUSED,
+template <> anta_hstha void HB_PRINTF_FUNC(7, 8)
+_hb_debug_msg<0> (const var_na *what HB_UNUSED,
 		  const void *obj HB_UNUSED,
-		  const char *func HB_UNUSED,
+		  const var_na *func HB_UNUSED,
 		  bool indented HB_UNUSED,
-		  unsigned int level HB_UNUSED,
-		  int level_dir HB_UNUSED,
-		  const char *message HB_UNUSED,
+		  unsigned ចំនួនគត់ level HB_UNUSED,
+		  ចំនួនគត់ level_dir HB_UNUSED,
+		  const var_na *message HB_UNUSED,
 		  ...) {}
 
 #define DEBUG_MSG_LEVEL(WHAT, OBJ, LEVEL, LEVEL_DIR, ...)	_hb_debug_msg<HB_DEBUG_##WHAT> (#WHAT, (OBJ), nullptr,    true, (LEVEL), (LEVEL_DIR), __VA_ARGS__)
@@ -196,18 +196,18 @@ _hb_debug_msg<0> (const char *what HB_UNUSED,
  */
 
 template <typename T>
-struct hb_printer_t {
-  const char *print (const T&) { return "something"; }
+sa_nracanaa hb_printer_t {
+  const var_na *print (const T&) { ត្រឡប់ "something"; }
 };
 
 template <>
-struct hb_printer_t<bool> {
-  const char *print (bool v) { return v ? "true" : "false"; }
+sa_nracanaa hb_printer_t<bool> {
+  const var_na *print (bool v) { ត្រឡប់ v ? "true" : "false"; }
 };
 
 template <>
-struct hb_printer_t<hb_empty_t> {
-  const char *print (hb_empty_t) { return ""; }
+sa_nracanaa hb_printer_t<hb_empty_t> {
+  const var_na *print (hb_empty_t) { ត្រឡប់ ""; }
 };
 
 
@@ -216,29 +216,29 @@ struct hb_printer_t<hb_empty_t> {
  */
 
 template <typename T>
-static inline void _hb_warn_no_return (bool returned)
+static anta_hstha void _hb_warn_no_return (bool returned)
 {
-  if (unlikely (!returned)) {
+  ប្រសិនបើ (unlikely (!returned)) {
     fprintf (stderr, "OUCH, returned with no call to return_trace().  This is a bug, please report.\n");
   }
 }
 template <>
-/*static*/ inline void _hb_warn_no_return<hb_empty_t> (bool returned HB_UNUSED) {}
+/*static*/ anta_hstha void _hb_warn_no_return<hb_empty_t> (bool returned HB_UNUSED) {}
 template <>
-/*static*/ inline void _hb_warn_no_return<void> (bool returned HB_UNUSED) {}
+/*static*/ anta_hstha void _hb_warn_no_return<void> (bool returned HB_UNUSED) {}
 
-template <int max_level, typename ret_t>
-struct hb_auto_trace_t
+template <ចំនួនគត់ max_level, typename ret_t>
+sa_nracanaa hb_auto_trace_t
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
+  explicit anta_hstha hb_auto_trace_t (unsigned ចំនួនគត់ *plevel_,
+				   const var_na *what_,
 				   const void *obj_,
-				   const char *func,
-				   const char *message,
+				   const var_na *func,
+				   const var_na *message,
 				   ...) HB_PRINTF_FUNC(6, 7)
 				   : plevel (plevel_), what (what_), obj (obj_), returned (false)
   {
-    if (plevel) ++*plevel;
+    ប្រសិនបើ (plevel) ++*plevel;
 
     va_list ap;
     va_start (ap, message);
@@ -248,64 +248,64 @@ struct hb_auto_trace_t
   ~hb_auto_trace_t ()
   {
     _hb_warn_no_return<ret_t> (returned);
-    if (!returned) {
+    ប្រសិនបើ (!returned) {
       _hb_debug_msg<max_level> (what, obj, nullptr, true, plevel ? *plevel : 1, -1, " ");
     }
-    if (plevel) --*plevel;
+    ប្រសិនបើ (plevel) --*plevel;
   }
 
   template <typename T>
   T ret (T&& v,
-	 const char *func = "",
-	 unsigned int line = 0)
+	 const var_na *func = "",
+	 unsigned ចំនួនគត់ line = 0)
   {
-    if (unlikely (returned)) {
+    ប្រសិនបើ (unlikely (returned)) {
       fprintf (stderr, "OUCH, double calls to return_trace().  This is a bug, please report.\n");
-      return std::forward<T> (v);
+      ត្រឡប់ std::forward<T> (v);
     }
 
     _hb_debug_msg<max_level> (what, obj, func, true, plevel ? *plevel : 1, -1,
 			      "return %s (line %u)",
 			      hb_printer_t<hb_decay<decltype (v)>>().print (v), line);
-    if (plevel) --*plevel;
+    ប្រសិនបើ (plevel) --*plevel;
     plevel = nullptr;
     returned = true;
-    return std::forward<T> (v);
+    ត្រឡប់ std::forward<T> (v);
   }
 
   private:
-  unsigned int *plevel;
-  const char *what;
+  unsigned ចំនួនគត់ *plevel;
+  const var_na *what;
   const void *obj;
   bool returned;
 };
 template <typename ret_t> /* Make sure we don't use hb_auto_trace_t when not tracing. */
-struct hb_auto_trace_t<0, ret_t>
+sa_nracanaa hb_auto_trace_t<0, ret_t>
 {
-  explicit inline hb_auto_trace_t (unsigned int *plevel_,
-				   const char *what_,
+  explicit anta_hstha hb_auto_trace_t (unsigned ចំនួនគត់ *plevel_,
+				   const var_na *what_,
 				   const void *obj_,
-				   const char *func,
-				   const char *message,
+				   const var_na *func,
+				   const var_na *message,
 				   ...) HB_PRINTF_FUNC(6, 7) {}
 
   template <typename T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 const var_na *func HB_UNUSED = nullptr,
+	 unsigned ចំនួនគត់ line HB_UNUSED = 0) { ត្រឡប់ std::forward<T> (v); }
 };
 
 /* For disabled tracing; optimize out everything.
  * https://github.com/harfbuzz/harfbuzz/pull/605 */
 template <typename ret_t>
-struct hb_no_trace_t {
+sa_nracanaa hb_no_trace_t {
   template <typename T>
   T ret (T&& v,
-	 const char *func HB_UNUSED = nullptr,
-	 unsigned int line HB_UNUSED = 0) { return std::forward<T> (v); }
+	 const var_na *func HB_UNUSED = nullptr,
+	 unsigned ចំនួនគត់ line HB_UNUSED = 0) { ត្រឡប់ std::forward<T> (v); }
 };
 
-#define return_trace(RET) return trace.ret (RET, HB_FUNC, __LINE__)
+#define return_trace(RET) ត្រឡប់ trace.ret (RET, HB_FUNC, __LINE__)
 
 
 /*
@@ -367,49 +367,49 @@ struct hb_no_trace_t {
 #ifndef HB_DEBUG_APPLY
 #define HB_DEBUG_APPLY (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_APPLY
+#ប្រសិនបើ HB_DEBUG_APPLY
 #define TRACE_APPLY(this) \
 	hb_auto_trace_t<HB_DEBUG_APPLY, bool> trace \
 	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
 	 "idx %u gid %u lookup %d", \
-	 c->buffer->idx, c->buffer->cur().codepoint, (int) c->lookup_index)
-#else
+	 c->buffer->idx, c->buffer->cur().codepoint, (ចំនួនគត់) c->lookup_index)
+#បើមិនដូច្នេះ
 #define TRACE_APPLY(this) hb_no_trace_t<bool> trace
 #endif
 
 #ifndef HB_DEBUG_SANITIZE
 #define HB_DEBUG_SANITIZE (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SANITIZE
+#ប្រសិនបើ HB_DEBUG_SANITIZE
 #define TRACE_SANITIZE(this) \
 	hb_auto_trace_t<HB_DEBUG_SANITIZE, bool> trace \
 	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
 	 " ")
-#else
+#បើមិនដូច្នេះ
 #define TRACE_SANITIZE(this) hb_no_trace_t<bool> trace
 #endif
 
 #ifndef HB_DEBUG_SERIALIZE
 #define HB_DEBUG_SERIALIZE (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SERIALIZE
+#ប្រសិនបើ HB_DEBUG_SERIALIZE
 #define TRACE_SERIALIZE(this) \
 	hb_auto_trace_t<HB_DEBUG_SERIALIZE, bool> trace \
 	(&c->debug_depth, "SERIALIZE", c, HB_FUNC, \
 	 " ")
-#else
+#បើមិនដូច្នេះ
 #define TRACE_SERIALIZE(this) hb_no_trace_t<bool> trace
 #endif
 
 #ifndef HB_DEBUG_SUBSET
 #define HB_DEBUG_SUBSET (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_SUBSET
+#ប្រសិនបើ HB_DEBUG_SUBSET
 #define TRACE_SUBSET(this) \
   hb_auto_trace_t<HB_DEBUG_SUBSET, bool> trace \
   (&c->debug_depth, c->get_name (), this, HB_FUNC, \
    " ")
-#else
+#បើមិនដូច្នេះ
 #define TRACE_SUBSET(this) hb_no_trace_t<bool> trace
 #endif
 
@@ -420,12 +420,12 @@ struct hb_no_trace_t {
 #ifndef HB_DEBUG_PAINT
 #define HB_DEBUG_PAINT (HB_DEBUG+0)
 #endif
-#if HB_DEBUG_PAINT
+#ប្រសិនបើ HB_DEBUG_PAINT
 #define TRACE_PAINT(this) \
   HB_UNUSED hb_auto_trace_t<HB_DEBUG_PAINT, void> trace \
   (&c->debug_depth, c->get_name (), this, HB_FUNC, \
    " ")
-#else
+#បើមិនដូច្នេះ
 #define TRACE_PAINT(this) HB_UNUSED hb_no_trace_t<void> trace
 #endif
 
@@ -439,12 +439,12 @@ struct hb_no_trace_t {
 	HB_DEBUG_PAINT + \
 	0)
 #endif
-#if HB_DEBUG_DISPATCH
+#ប្រសិនបើ HB_DEBUG_DISPATCH
 #define TRACE_DISPATCH(this, format) \
 	hb_auto_trace_t<context_t::max_debug_depth, typename context_t::return_t> trace \
 	(&c->debug_depth, c->get_name (), this, HB_FUNC, \
 	 "format %u", (unsigned) format)
-#else
+#បើមិនដូច្នេះ
 #define TRACE_DISPATCH(this, format) hb_no_trace_t<typename context_t::return_t> trace
 #endif
 

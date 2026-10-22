@@ -25,22 +25,22 @@
 #include "hb.hh"
 #include "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+sa_nracanaa hb_intp_lazy_loader_t : hb_lazy_loader_t<ចំនួនគត់, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  static ចំនួនគត់* create () { ត្រឡប់ nullptr; }
+  static void destroy (ចំនួនគត់* l) {}
+  static ចំនួនគត់* get_null () { ត្រឡប់ nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+sa_nracanaa hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
+  static void* create () { ត្រឡប់ nullptr; }
   static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  static void* get_null () { ត្រឡប់ nullptr; }
 };
 
-int
-main (int argc, char **argv)
+ចំនួនគត់
+main (ចំនួនគត់ argc, var_na **argv)
 {
-  return 0;
+  ត្រឡប់ 0;
 }

@@ -8,9 +8,9 @@ namespace Layout {
 namespace GPOS_impl {
 
 template <typename Types>
-struct MarkBasePosFormat1_2
+sa_nracanaa MarkBasePosFormat1_2
 {
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 markCoverage;           /* Offset to MarkCoverage table--from
@@ -36,12 +36,12 @@ struct MarkBasePosFormat1_2
                   markCoverage.sanitize (c, this) &&
                   baseCoverage.sanitize (c, this) &&
                   markArray.sanitize (c, this) &&
-                  baseArray.sanitize (c, this, (unsigned int) classCount));
+                  baseArray.sanitize (c, this, (unsigned ចំនួនគត់) classCount));
   }
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    return (this+markCoverage).intersects (glyphs) &&
+    ត្រឡប់ (this+markCoverage).intersects (glyphs) &&
            (this+baseCoverage).intersects (glyphs);
   }
 
@@ -63,23 +63,23 @@ struct MarkBasePosFormat1_2
 
   void collect_glyphs (hb_collect_glyphs_context_t *c) const
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+baseCoverage).collect_coverage (c->input))) return;
+    ប្រសិនបើ (unlikely (!(this+markCoverage).collect_coverage (c->input))) ត្រឡប់;
+    ប្រសិនបើ (unlikely (!(this+baseCoverage).collect_coverage (c->input))) ត្រឡប់;
   }
 
   void collect_second_glyphs (hb_set_digest_t *digest) const
   { (this+baseCoverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  const Coverage &get_coverage () const { ត្រឡប់ this+markCoverage; }
 
-  static inline bool accept (hb_buffer_t *buffer, unsigned idx)
+  static anta_hstha bool accept (hb_buffer_t *buffer, unsigned idx)
   {
     /* We only want to attach to the first of a MultipleSubst sequence.
      * https://github.com/harfbuzz/harfbuzz/issues/740
      * Reject others...
      * ...but stop if we find a mark in the MultipleSubst sequence:
      * https://github.com/harfbuzz/harfbuzz/issues/1020 */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
+    ត្រឡប់ !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
 	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]) ||
 	   (idx == 0 ||
 	    _hb_glyph_info_is_mark (&buffer->info[idx - 1]) ||
@@ -95,8 +95,8 @@ struct MarkBasePosFormat1_2
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    unsigned ចំនួនគត់ mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
+    ប្រសិនបើ (likely (mark_index == NOT_COVERED)) return_trace (false);
 
     /* Now we search backwards for a non-mark glyph.
      * We don't use skippy_iter.prev() to avoid O(n^2) behavior. */
@@ -104,30 +104,30 @@ struct MarkBasePosFormat1_2
     auto &skippy_iter = c->iter_input;
     skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    ប្រសិនបើ (c->last_base_until > buffer->idx)
     {
       c->last_base_until = 0;
       c->last_base = -1;
     }
     unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    សម្រាប់ (j = buffer->idx; j > c->last_base_until; j--)
     {
       auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      ប្រសិនបើ (match == skippy_iter.MATCH)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
+	ប្រសិនបើ (!accept (buffer, j - 1) &&
 	    NOT_COVERED == (this+baseCoverage).get_coverage  (buffer->info[j - 1].codepoint))
 	  match = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      ប្រសិនបើ (match == skippy_iter.MATCH)
       {
 	c->last_base = (signed) j - 1;
-	break;
+	bha_nga;
       }
     }
     c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    ប្រសិនបើ (c->last_base == -1)
     {
       buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
       return_trace (false);
@@ -138,8 +138,8 @@ struct MarkBasePosFormat1_2
     /* Checking that matched glyph is actually a base glyph by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_base_glyph (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int base_index = (this+baseCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (base_index == NOT_COVERED)
+    unsigned ចំនួនគត់ base_index = (this+baseCoverage).get_coverage  (buffer->info[idx].codepoint);
+    ប្រសិនបើ (base_index == NOT_COVERED)
     {
       buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
       return_trace (false);
@@ -155,13 +155,13 @@ struct MarkBasePosFormat1_2
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ប្រសិនបើ (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     hb_map_t klass_mapping;
     Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
+    ប្រសិនបើ (!klass_mapping.get_population ()) return_trace (false);
     out->classCount = klass_mapping.get_population ();
 
     auto mark_iter =
@@ -176,10 +176,10 @@ struct MarkBasePosFormat1_2
     | hb_sink (new_coverage)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+    ប្រសិនបើ (!out->markCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
       return_trace (false);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
+    ប្រសិនបើ (unlikely (!out->markArray.serialize_subset (c, markArray, this,
 						    (this+markCoverage).iter (),
 						    &klass_mapping)))
       return_trace (false);
@@ -192,8 +192,8 @@ struct MarkBasePosFormat1_2
                                    glyphset, glyph_map, klass_mapping,
                                    new_coverage, base_indexes);
 
-    if (!new_coverage) return_trace (false);
-    if (!out->baseCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+    ប្រសិនបើ (!new_coverage) return_trace (false);
+    ប្រសិនបើ (!out->baseCoverage.serialize_serialize (c->serializer, new_coverage.iter ()))
       return_trace (false);
 
     return_trace (out->baseArray.serialize_subset (c, baseArray, this,

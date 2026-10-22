@@ -33,7 +33,7 @@ namespace CFF {
 using namespace OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+sa_nracanaa dict_val_t : op_str_t
 {
   void init () {}
   void fini () {}
@@ -41,10 +41,10 @@ struct dict_val_t : op_str_t
 
 typedef dict_val_t num_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> sa_nracanaa dict_values_t : parsed_values_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+sa_nracanaa top_dict_values_t : dict_values_t<OPSTR>
 {
   void init ()
   {
@@ -54,142 +54,142 @@ struct top_dict_values_t : dict_values_t<OPSTR>
   }
   void fini () { dict_values_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  ចំនួនគត់  charStringsOffset;
+  ចំនួនគត់  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+sa_nracanaa dict_opset_t : opset_t<number_t>
 {
   static void process_op (op_code_t op, interp_env_t<number_t>& env)
   {
     switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
+      pak_sa OpCode_longintdict:  /* 5-byte integer */
 	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+	bha_nga;
 
-      case OpCode_BCD:  /* real number */
+      pak_sa OpCode_BCD:  /* real number */
 	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+	bha_nga;
 
       default:
 	opset_t<number_t>::process_op (op, env);
-	break;
+	bha_nga;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  static dviguu_na parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    ប្រសិនបើ (unlikely (str_ref.in_error ())) ត្រឡប់ .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    ga_nanaa Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    var_na buf[32] = {0};
+    unsigned var_na byte = 0;
+    សម្រាប់ (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
     {
       unsigned nibble;
-      if (!(i & 1))
+      ប្រសិនបើ (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	ប្រសិនបើ (unlikely (!str_ref.avail ())) bha_nga;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      បើមិនដូច្នេះ
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      ប្រសិនបើ (unlikely (nibble == RESERVED)) bha_nga;
+      បើមិនដូច្នេះ ប្រសិនបើ (nibble == END)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	const var_na *p = buf;
+	dviguu_na pv;
+	ប្រសិនបើ (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
+	  bha_nga;
+	ត្រឡប់ pv;
       }
-      else
+      បើមិនដូច្នេះ
       {
 	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	ប្រសិនបើ (nibble == EXP_NEG)
 	{
 	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
+	  ប្រសិនបើ (unlikely (count == ARRAY_LENGTH (buf))) bha_nga;
 	  buf[count] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    ត្រឡប់ .0;
   }
 
   static bool is_hint_op (op_code_t op)
   {
     switch (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
+      pak_sa OpCode_BlueValues:
+      pak_sa OpCode_OtherBlues:
+      pak_sa OpCode_FamilyBlues:
+      pak_sa OpCode_FamilyOtherBlues:
+      pak_sa OpCode_StemSnapH:
+      pak_sa OpCode_StemSnapV:
+      pak_sa OpCode_StdHW:
+      pak_sa OpCode_StdVW:
+      pak_sa OpCode_BlueScale:
+      pak_sa OpCode_BlueShift:
+      pak_sa OpCode_BlueFuzz:
+      pak_sa OpCode_ForceBold:
+      pak_sa OpCode_LanguageGroup:
+      pak_sa OpCode_ExpansionFactor:
+	ត្រឡប់ true;
       default:
-	return false;
+	ត្រឡប់ false;
     }
   }
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+sa_nracanaa top_dict_opset_t : dict_opset_t
 {
   static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
   {
     switch (op) {
-      case OpCode_CharStrings:
+      pak_sa OpCode_CharStrings:
 	dictval.charStringsOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDArray:
+	bha_nga;
+      pak_sa OpCode_FDArray:
 	dictval.FDArrayOffset = env.argStack.pop_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
+	bha_nga;
+      pak_sa OpCode_FontMatrix:
 	env.clear_args ();
-	break;
+	bha_nga;
       default:
 	dict_opset_t::process_op (op, env);
-	break;
+	bha_nga;
     }
   }
 };
 
 template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+sa_nracanaa dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
   bool interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    ខណៈពេល (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      ប្រសិនបើ (unlikely (SUPER::env.in_error ()))
+	ត្រឡប់ false;
     }
 
-    return true;
+    ត្រឡប់ true;
   }
 
   private:

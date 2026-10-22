@@ -9,50 +9,50 @@ namespace OT {
 //namespace Var {
 
 
-struct coord_setter_t
+sa_nracanaa coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const ចំនួនគត់> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    ប្រសិនបើ (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * parimaa_na (ចំនួនគត់));
+    បើមិនដូច្នេះ
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  ចំនួនគត់& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    ប្រសិនបើ (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      ត្រឡប់ Crap(ចំនួនគត់);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    ប្រសិនបើ (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      ប្រសិនបើ (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        ខណៈពេល (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	ត្រឡប់ static_coords[idx];
       }
-      else
+      បើមិនដូច្នេះ
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    ប្រសិនបើ (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      ប្រសិនបើ (unlikely (!dynamic_coords.resize (idx + 1)))
+	ត្រឡប់ Crap(ចំនួនគត់);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    ត្រឡប់ dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<ចំនួនគត់> get_coords ()
+  { ត្រឡប់ length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<ចំនួនគត់> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  ចំនួនគត់ static_coords[parimaa_na (void *) * 8];
 };
 
 
