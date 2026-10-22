@@ -1,120 +1,120 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURE_HH
 #define OT_LAYOUT_GSUB_LIGATURE_HH
 
-#include "Common.hh"
+#अन्तर्भाव "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GSUB_impl {
 
-template <typename Types>
-struct Ligature
+ढाँचा <typename Types>
+संरचना Ligature
 {
-  public:
+  सार्वजनिक:
   typename Types::HBGlyphID
 		ligGlyph;               /* GlyphID of ligature to substitute */
   HeadlessArray16Of<typename Types::HBGlyphID>
 		component;              /* Array of component GlyphIDs--start
                                          * with the second  component--ordered
                                          * in writing direction */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (Types::size + 2, component);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
     return_trace (ligGlyph.sanitize (c) && component.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  तार्किक intersects (ध्रुव hb_set_t *glyphs) ध्रुव
+  { प्रत्यागम hb_all (component, glyphs); }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  तार्किक intersects_lig_glyph (ध्रुव hb_set_t *glyphs) ध्रुव
+  { प्रत्यागम glyphs->has(ligGlyph); }
 
-  void closure (hb_closure_context_t *c) const
+  शून्य closure (hb_closure_context_t *c) ध्रुव
   {
-    if (!intersects (c->glyphs)) return;
+    यदि (!intersects (c->glyphs)) प्रत्यागम;
     c->output->add (ligGlyph);
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  शून्य depend (hb_depend_context_t *c, hb_codepoint_t first) ध्रुव
   {
     // Build the complete ligature set upfront before adding any edges
     hb_set_t complete_ligset;
     complete_ligset.add (first);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    यदि (unlikely (complete_ligset.in_error ()))
     {
       c->depend_data->fail ();
-      return;
+      प्रत्यागम;
     }
 
-    bool ligset_created;
+    तार्किक ligset_created;
     hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    यदि (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      प्रत्यागम;
 
     // Track whether any edge using this ligset_idx was actually added
-    bool any_added = false;
+    तार्किक any_added = असत्य;
 
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
-          any_added = true;
+        यदि (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
+          any_added = सत्य;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
+    यदि (!any_added && ligset_created)
       c->depend_data->discard_set (ligset_idx);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  शून्य collect_glyphs (hb_collect_glyphs_context_t *c) ध्रुव
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
+    c->निवेश->add_array (component.arrayZ, component.get_length ());
     c->output->add (ligGlyph);
   }
 
-  template <typename set_t>
-  void collect_second (set_t &s) const
+  ढाँचा <typename set_t>
+  शून्य collect_second (set_t &s) ध्रुव
   {
-    if (unlikely (!component.get_length ()))
+    यदि (unlikely (!component.get_length ()))
     {
       // A ligature without any components. Anything matches.
       s = set_t::full ();
-      return;
+      प्रत्यागम;
     }
     s.add (component.arrayZ[0]);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  तार्किक would_apply (hb_would_apply_context_t *c) ध्रुव
   {
-    if (c->len != component.lenP1)
-      return false;
+    यदि (c->len != component.lenP1)
+      प्रत्यागम असत्य;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    प्रति (अचिन्हित पूर्णाङ्क i = 1; i < c->len; i++)
+      यदि (likely (c->glyphs[i] != component[i]))
+        प्रत्यागम असत्य;
 
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  तार्किक apply (hb_ot_apply_context_t *c) ध्रुव
   {
-    TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    TRACE_APPLY (एतत्);
+    अचिन्हित पूर्णाङ्क गिनती = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    यदि (unlikely (!गिनती)) return_trace (असत्य);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    यदि (unlikely (गिनती == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -124,50 +124,50 @@ struct Ligature
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (ligature substitution)",
 			    c->buffer->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (सत्य);
     }
 
-    unsigned int total_component_count = 0;
+    अचिन्हित पूर्णाङ्क total_component_गिनती = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    यदि (unlikely (गिनती > HB_MAX_CONTEXT_LENGTH)) प्रत्यागम असत्य;
+    अचिन्हित पूर्णाङ्क match_end = 0;
 
-    if (likely (!match_input (c, count,
+    यदि (likely (!match_निवेश (c, गिनती,
                               &component[1],
                               match_glyph,
                               nullptr,
                               &match_end,
-                              &total_component_count)))
+                              &total_component_गिनती)))
     {
       c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-      return_trace (false);
+      return_trace (असत्य);
     }
 
-    unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    अचिन्हित pos = 0;
+    यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
-      unsigned delta = c->buffer->sync_so_far ();
+      अचिन्हित delta = c->buffer->sync_so_far ();
 
       pos = c->buffer->idx;
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      वर्ण buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
+      वर्ण *p = buf;
 
       match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      प्रति (अचिन्हित i = 0; i < गिनती; i++)
       {
 	c->match_positions[i] += delta;
-	if (i)
+	यदि (i)
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
-	p += strlen(p);
+	snprintf (p, परिमाण(buf) - (p - buf), "%u", c->match_positions[i]);
+	p += म_माप(p);
       }
 
       c->buffer->message (c->font,
@@ -175,13 +175,13 @@ struct Ligature
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
+    ligate_निवेश (c,
+                  गिनती,
                   match_end,
                   ligGlyph,
-                  total_component_count);
+                  total_component_गिनती);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    यदि (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -189,38 +189,38 @@ struct Ligature
 			  pos);
     }
 
-    return_trace (true);
+    return_trace (सत्य);
   }
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
             hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  तार्किक serialize (hb_serialize_context_t *c,
                   hb_codepoint_t ligature,
                   Iterator components /* Starting from second */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (एतत्);
+    यदि (unlikely (!c->extend_min (एतत्))) return_trace (असत्य);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
-    return_trace (true);
+    यदि (unlikely (!component.serialize (c, components))) return_trace (असत्य);
+    return_trace (सत्य);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  तार्किक subset (hb_subset_context_t *c, अचिन्हित coverage_idx) ध्रुव
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    ध्रुव hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    यदि (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (असत्य);
     // Ensure Coverage table is always packed after this.
     c->serializer->add_virtual_link (coverage_idx);
 
-    auto it =
+    स्वतः it =
       + hb_iter (component)
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
+    स्वतः *out = c->serializer->start_embed (*एतत्);
     return_trace (out->serialize (c->serializer,
                                   glyph_map[ligGlyph],
                                   it));  }

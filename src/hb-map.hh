@@ -27,82 +27,82 @@
 #ifndef HB_MAP_HH
 #define HB_MAP_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-set.hh"
+#अन्तर्भाव "hb-set.hh"
 
 
 /*
  * hb_hashmap_t
  */
 
-extern HB_INTERNAL const hb_codepoint_t minus_1;
+बाह्य HB_INTERNAL ध्रुव hb_codepoint_t minus_1;
 
-template <typename K, typename V,
-	  bool minus_one = false>
-struct hb_hashmap_t
+ढाँचा <typename K, typename V,
+	  तार्किक minus_one = असत्य>
+संरचना hb_hashmap_t
 {
-  static constexpr bool realloc_move = true;
+  स्थिर constexpr तार्किक realloc_move = सत्य;
 
   hb_hashmap_t ()  { init (); }
   ~hb_hashmap_t () { fini (); }
 
-  void _copy (const hb_hashmap_t& o)
+  शून्य _copy (ध्रुव hb_hashmap_t& o)
   {
-    if (unlikely (!o.successful))
+    यदि (unlikely (!o.successful))
     {
-      successful = false;
-      return;
+      successful = असत्य;
+      प्रत्यागम;
     }
-    if (unlikely (!o.mask)) return;
+    यदि (unlikely (!o.mask)) प्रत्यागम;
 
-    if (hb_is_trivially_copy_assignable (item_t))
+    यदि (hb_is_trivially_copy_assignable (item_t))
     {
-      items = (item_t *) hb_malloc2 ((o.mask + 1), sizeof (item_t));
-      if (unlikely (!items))
+      वस्तुएँ = (item_t *) hb_malloc2 ((o.mask + 1), परिमाण (item_t));
+      यदि (unlikely (!वस्तुएँ))
       {
-	successful = false;
-	return;
+	successful = असत्य;
+	प्रत्यागम;
       }
       population = o.population;
       occupancy = o.occupancy;
       mask = o.mask;
-      prime = o.prime;
+      अभाज्य = o.अभाज्य;
       max_chain_length = o.max_chain_length;
-      memcpy (items, o.items, sizeof (item_t) * (mask + 1));
-      return;
+      स_नकल (वस्तुएँ, o.वस्तुएँ, परिमाण (item_t) * (mask + 1));
+      प्रत्यागम;
     }
 
-    alloc (o.population); hb_copy (o, *this);
+    alloc (o.population); hb_copy (o, *एतत्);
   }
 
-  hb_hashmap_t (const hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
-  hb_hashmap_t& operator= (const hb_hashmap_t& o)
+  hb_hashmap_t (ध्रुव hb_hashmap_t& o) : hb_hashmap_t () { _copy (o); }
+  hb_hashmap_t& चालक= (ध्रुव hb_hashmap_t& o)
   {
     reset ();
-    if (!items) { _copy (o); return *this; }
-    alloc (o.population); hb_copy (o, *this); return *this;
+    यदि (!वस्तुएँ) { _copy (o); प्रत्यागम *एतत्; }
+    alloc (o.population); hb_copy (o, *एतत्); प्रत्यागम *एतत्;
   }
 
-  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*this, o); }
-  hb_hashmap_t& operator= (hb_hashmap_t&& o)   noexcept { hb_swap (*this, o); return *this; }
+  hb_hashmap_t (hb_hashmap_t&& o)  noexcept : hb_hashmap_t () { hb_swap (*एतत्, o); }
+  hb_hashmap_t& चालक= (hb_hashmap_t&& o)   noexcept { hb_swap (*एतत्, o); प्रत्यागम *एतत्; }
 
   hb_hashmap_t (std::initializer_list<hb_pair_t<K, V>> lst) : hb_hashmap_t ()
   {
-    for (auto&& item : lst)
+    प्रति (स्वतः&& item : lst)
       set (item.first, item.second);
   }
-  template <typename Iterable,
+  ढाँचा <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_hashmap_t (const Iterable &o) : hb_hashmap_t ()
+  hb_hashmap_t (ध्रुव Iterable &o) : hb_hashmap_t ()
   {
-    auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    स्वतः iter = hb_iter (o);
+    यदि (iter.is_random_access_iterator || iter.has_fast_len)
       alloc (hb_len (iter));
-    hb_copy (iter, *this);
+    hb_copy (iter, *एतत्);
   }
 
-  struct item_t
+  संरचना item_t
   {
     K key;
     uint32_t is_real_ : 1;
@@ -111,203 +111,203 @@ struct hb_hashmap_t
     V value;
 
     item_t () : key (),
-		is_real_ (false), is_used_ (false),
+		is_real_ (असत्य), is_used_ (असत्य),
 		hash (0),
 		value () {}
 
     // Needed for https://github.com/harfbuzz/harfbuzz/issues/4138
-    K& get_key () { return key; }
-    V& get_value () { return value; }
+    K& get_कुंजी () { प्रत्यागम key; }
+    V& get_मूल्य () { प्रत्यागम value; }
 
-    bool is_used () const { return is_used_; }
-    void set_used (bool is_used) { is_used_ = is_used; }
-    void set_real (bool is_real) { is_real_ = is_real; }
-    bool is_real () const { return is_real_; }
+    तार्किक is_used () ध्रुव { प्रत्यागम is_used_; }
+    शून्य set_used (तार्किक is_used) { is_used_ = is_used; }
+    शून्य set_real (तार्किक is_real) { is_real_ = is_real; }
+    तार्किक is_real () ध्रुव { प्रत्यागम is_real_; }
 
-    template <bool v = minus_one,
-	      hb_enable_if (v == false)>
-    static inline const V& default_value () { return Null(V); };
-    template <bool v = minus_one,
-	      hb_enable_if (v == true)>
-    static inline const V& default_value ()
+    ढाँचा <तार्किक v = minus_one,
+	      hb_enable_if (v == असत्य)>
+    स्थिर अन्तःस्थ ध्रुव V& default_मूल्य () { प्रत्यागम Null(V); };
+    ढाँचा <तार्किक v = minus_one,
+	      hb_enable_if (v == सत्य)>
+    स्थिर अन्तःस्थ ध्रुव V& default_मूल्य ()
     {
       static_assert (hb_is_same (V, hb_codepoint_t), "");
-      return minus_1;
+      प्रत्यागम minus_1;
     };
 
-    bool operator == (const K &o) const { return hb_deref (key) == hb_deref (o); }
-    bool operator == (const item_t &o) const { return *this == o.key; }
-    hb_pair_t<K, V> get_pair() const { return hb_pair_t<K, V> (key, value); }
-    hb_pair_t<const K &, V &> get_pair_ref() { return hb_pair_t<const K &, V &> (key, value); }
+    तार्किक चालक == (ध्रुव K &o) ध्रुव { प्रत्यागम hb_deref (key) == hb_deref (o); }
+    तार्किक चालक == (ध्रुव item_t &o) ध्रुव { प्रत्यागम *एतत् == o.key; }
+    hb_pair_t<K, V> get_pair() ध्रुव { प्रत्यागम hb_pair_t<K, V> (key, value); }
+    hb_pair_t<ध्रुव K &, V &> get_pair_ref() { प्रत्यागम hb_pair_t<ध्रुव K &, V &> (key, value); }
 
-    uint32_t total_hash () const
-    { return (hash * 31u) + hb_hash (value); }
+    uint32_t total_hash () ध्रुव
+    { प्रत्यागम (hash * 31u) + hb_hash (value); }
 
-    static constexpr bool is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
+    स्थिर constexpr तार्किक is_trivially_constructible = (hb_is_trivially_constructible(K) && hb_is_trivially_constructible(V));
   };
 
   hb_object_header_t header;
-  bool successful; /* Allocations successful */
-  unsigned short max_chain_length;
-  unsigned int population; /* Not including tombstones. */
-  unsigned int occupancy; /* Including tombstones. */
-  unsigned int mask;
-  unsigned int prime;
-  item_t *items;
+  तार्किक successful; /* Allocations successful */
+  अचिन्हित लघु max_chain_length;
+  अचिन्हित पूर्णाङ्क population; /* Not including tombstones. */
+  अचिन्हित पूर्णाङ्क occupancy; /* Including tombstones. */
+  अचिन्हित पूर्णाङ्क mask;
+  अचिन्हित पूर्णाङ्क अभाज्य;
+  item_t *वस्तुएँ;
 
-  friend void swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
+  मित्र शून्य swap (hb_hashmap_t& a, hb_hashmap_t& b) noexcept
   {
-    if (unlikely (!a.successful || !b.successful))
-      return;
+    यदि (unlikely (!a.successful || !b.successful))
+      प्रत्यागम;
     hb_swap (a.max_chain_length, b.max_chain_length);
     hb_swap (a.population, b.population);
     hb_swap (a.occupancy, b.occupancy);
     hb_swap (a.mask, b.mask);
-    hb_swap (a.prime, b.prime);
-    hb_swap (a.items, b.items);
+    hb_swap (a.अभाज्य, b.अभाज्य);
+    hb_swap (a.वस्तुएँ, b.वस्तुएँ);
   }
-  void init ()
+  शून्य init ()
   {
-    hb_object_init (this);
+    hb_object_init (एतत्);
 
-    successful = true;
+    successful = सत्य;
     max_chain_length = 0;
     population = occupancy = 0;
     mask = 0;
-    prime = 0;
-    items = nullptr;
+    अभाज्य = 0;
+    वस्तुएँ = nullptr;
   }
-  void fini ()
+  शून्य fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (एतत्);
 
-    if (likely (items))
+    यदि (likely (वस्तुएँ))
     {
-      unsigned size = mask + 1;
-      for (unsigned i = 0; i < size; i++)
-	items[i].~item_t ();
-      hb_free (items);
-      items = nullptr;
+      अचिन्हित size = mask + 1;
+      प्रति (अचिन्हित i = 0; i < size; i++)
+	वस्तुएँ[i].~item_t ();
+      hb_free (वस्तुएँ);
+      वस्तुएँ = nullptr;
     }
     population = occupancy = 0;
   }
 
   hb_hashmap_t& reset ()
   {
-    successful = true;
+    successful = सत्य;
     clear ();
-    return *this;
+    प्रत्यागम *एतत्;
   }
 
-  bool in_error () const { return !successful; }
+  तार्किक in_error () ध्रुव { प्रत्यागम !successful; }
 
-  bool alloc (unsigned new_population = 0)
+  तार्किक alloc (अचिन्हित new_population = 0)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
+    यदि (unlikely (!successful)) प्रत्यागम असत्य;
+    यदि (unlikely (population > 0x3FFFFFFFu || new_population > 0x3FFFFFFFu))
     {
       // Population sizes >0x3FFFFFFF will result in power
       // being larger than 31, which in turn leads to a new size
       // that overflows u32.
-      successful = false;
-      return false;
+      successful = असत्य;
+      प्रत्यागम असत्य;
     }
 
-    if (new_population != 0 && (new_population + new_population / 2) < mask) return true;
+    यदि (new_population != 0 && (new_population + new_population / 2) < mask) प्रत्यागम सत्य;
 
-    unsigned int power = hb_bit_storage (hb_max (hb_max ((unsigned) population, new_population) * 2, 4u));
-    unsigned int new_size = 1u << power;
-    item_t *new_items = (item_t *) hb_malloc2 ((size_t) new_size, sizeof (item_t));
-    if (unlikely (!new_items))
+    अचिन्हित पूर्णाङ्क power = hb_bit_storage (hb_max (hb_max ((अचिन्हित) population, new_population) * 2, 4u));
+    अचिन्हित पूर्णाङ्क new_size = 1u << power;
+    item_t *new_वस्तुएँ = (item_t *) hb_malloc2 ((माप_प्रकार) new_size, परिमाण (item_t));
+    यदि (unlikely (!new_वस्तुएँ))
     {
-      successful = false;
-      return false;
+      successful = असत्य;
+      प्रत्यागम असत्य;
     }
-    if (!item_t::is_trivially_constructible)
-      for (auto &_ : hb_iter (new_items, new_size))
-	new (&_) item_t ();
-    else
-      hb_memset (new_items, 0, (size_t) new_size * sizeof (item_t));
+    यदि (!item_t::is_trivially_constructible)
+      प्रति (स्वतः &_ : hb_iter (new_वस्तुएँ, new_size))
+	नूतन (&_) item_t ();
+    अन्यथा
+      hb_memset (new_वस्तुएँ, 0, (माप_प्रकार) new_size * परिमाण (item_t));
 
-    unsigned int old_size = size ();
-    item_t *old_items = items;
+    अचिन्हित पूर्णाङ्क old_size = size ();
+    item_t *old_वस्तुएँ = वस्तुएँ;
 
     /* Switch to new, empty, array. */
     population = occupancy = 0;
     mask = new_size - 1;
-    prime = prime_for (power);
+    अभाज्य = अभाज्य_for (power);
     max_chain_length = power * 2;
-    items = new_items;
+    वस्तुएँ = new_वस्तुएँ;
 
     /* Insert back old items. */
-    for (unsigned int i = 0; i < old_size; i++)
+    प्रति (अचिन्हित पूर्णाङ्क i = 0; i < old_size; i++)
     {
-      if (old_items[i].is_real ())
+      यदि (old_वस्तुएँ[i].is_real ())
       {
-	set_with_hash (std::move (old_items[i].key),
-		       old_items[i].hash,
-		       std::move (old_items[i].value));
+	set_with_hash (std::move (old_वस्तुएँ[i].key),
+		       old_वस्तुएँ[i].hash,
+		       std::move (old_वस्तुएँ[i].value));
       }
     }
-    for (unsigned int i = 0; i < old_size; i++)
-      old_items[i].~item_t ();
+    प्रति (अचिन्हित पूर्णाङ्क i = 0; i < old_size; i++)
+      old_वस्तुएँ[i].~item_t ();
 
-    hb_free (old_items);
+    hb_free (old_वस्तुएँ);
 
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  template <typename T>
-  bool in_storage (const T &v) const
+  ढाँचा <typename T>
+  तार्किक in_storage (ध्रुव T &v) ध्रुव
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return items &&
-	   (uintptr_t) items <= p && p < (uintptr_t) (items + size ());
+    प्रत्यागम वस्तुएँ &&
+	   (uintptr_t) वस्तुएँ <= p && p < (uintptr_t) (वस्तुएँ + size ());
   }
 
-  template <typename KK, typename VV>
-  bool set_with_hash (KK&& key, uint32_t hash, VV&& value, bool overwrite = true)
+  ढाँचा <typename KK, typename VV>
+  तार्किक set_with_hash (KK&& key, uint32_t hash, VV&& value, तार्किक overwrite = सत्य)
   {
-    if (unlikely (!successful)) return false;
-    if (unlikely ((occupancy + occupancy / 2) >= mask))
+    यदि (unlikely (!successful)) प्रत्यागम असत्य;
+    यदि (unlikely ((occupancy + occupancy / 2) >= mask))
     {
       /* key or value may live in our own storage, eg. m.set (k, m.get (j)).
        * alloc() frees that storage, so copy them out first. */
-      if (unlikely (in_storage (key) || in_storage (value)))
+      यदि (unlikely (in_storage (key) || in_storage (value)))
       {
-	K key_copy;
-	key_copy = std::forward<KK> (key);
-	V value_copy;
-	value_copy = std::forward<VV> (value);
-	return set_with_hash (std::move (key_copy), hash, std::move (value_copy), overwrite);
+	K कुंजी_copy;
+	कुंजी_copy = std::forward<KK> (key);
+	V मूल्य_copy;
+	मूल्य_copy = std::forward<VV> (value);
+	प्रत्यागम set_with_hash (std::move (कुंजी_copy), hash, std::move (मूल्य_copy), overwrite);
       }
-      if (unlikely (!alloc ())) return false;
+      यदि (unlikely (!alloc ())) प्रत्यागम असत्य;
     }
 
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int tombstone = (unsigned int) -1;
-    unsigned int i = hash % prime;
-    unsigned length = 0;
-    unsigned step = 0;
-    while (items[i].is_used ())
+    अचिन्हित पूर्णाङ्क tombstone = (अचिन्हित पूर्णाङ्क) -1;
+    अचिन्हित पूर्णाङ्क i = hash % अभाज्य;
+    अचिन्हित length = 0;
+    अचिन्हित step = 0;
+    यावत् (वस्तुएँ[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      यदि ((std::is_integral<K>::value || वस्तुएँ[i].hash == hash) &&
+	  वस्तुएँ[i] == key)
       {
-        if (!overwrite)
-	  return false;
-        else
-	  break;
+        यदि (!overwrite)
+	  प्रत्यागम असत्य;
+        अन्यथा
+	  भङ्ग;
       }
-      if (!items[i].is_real () && tombstone == (unsigned) -1)
+      यदि (!वस्तुएँ[i].is_real () && tombstone == (अचिन्हित) -1)
         tombstone = i;
       i = (i + ++step) & mask;
       length++;
     }
 
-    item_t &item = items[tombstone == (unsigned) -1 ? i : tombstone];
+    item_t &item = वस्तुएँ[tombstone == (अचिन्हित) -1 ? i : tombstone];
 
-    if (item.is_used ())
+    यदि (item.is_used ())
     {
       occupancy--;
       population -= item.is_real ();
@@ -316,234 +316,234 @@ struct hb_hashmap_t
     item.key = std::forward<KK> (key);
     item.value = std::forward<VV> (value);
     item.hash = hash;
-    item.set_used (true);
-    item.set_real (true);
+    item.set_used (सत्य);
+    item.set_real (सत्य);
 
     occupancy++;
     population++;
 
-    if (unlikely (length > max_chain_length) && occupancy > mask / 8)
+    यदि (unlikely (length > max_chain_length) && occupancy > mask / 8)
       alloc (mask - 8); // This ensures we jump to next larger size
 
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  template <typename VV>
-  bool set (const K &key, VV&& value, bool overwrite = true) { return set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
-  template <typename VV>
-  bool set (K &&key, VV&& value, bool overwrite = true)
+  ढाँचा <typename VV>
+  तार्किक set (ध्रुव K &key, VV&& value, तार्किक overwrite = सत्य) { प्रत्यागम set_with_hash (key, hb_hash (key), std::forward<VV> (value), overwrite); }
+  ढाँचा <typename VV>
+  तार्किक set (K &&key, VV&& value, तार्किक overwrite = सत्य)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
+    प्रत्यागम set_with_hash (std::move (key), hash, std::forward<VV> (value), overwrite);
   }
-  bool add (const K &key)
+  तार्किक add (ध्रुव K &key)
   {
     uint32_t hash = hb_hash (key);
-    return set_with_hash (key, hash, item_t::default_value ());
+    प्रत्यागम set_with_hash (key, hash, item_t::default_मूल्य ());
   }
 
-  const V& get_with_hash (const K &key, uint32_t hash) const
+  ध्रुव V& get_with_hash (ध्रुव K &key, uint32_t hash) ध्रुव
   {
-    if (!items) return item_t::default_value ();
-    auto *item = fetch_item (key, hash);
-    if (item)
-      return item->value;
-    return item_t::default_value ();
+    यदि (!वस्तुएँ) प्रत्यागम item_t::default_मूल्य ();
+    स्वतः *item = fetch_item (key, hash);
+    यदि (item)
+      प्रत्यागम item->value;
+    प्रत्यागम item_t::default_मूल्य ();
   }
-  const V& get (const K &key) const
+  ध्रुव V& get (ध्रुव K &key) ध्रुव
   {
-    if (!items) return item_t::default_value ();
-    return get_with_hash (key, hb_hash (key));
+    यदि (!वस्तुएँ) प्रत्यागम item_t::default_मूल्य ();
+    प्रत्यागम get_with_hash (key, hb_hash (key));
   }
 
-  void del (const K &key)
+  शून्य del (ध्रुव K &key)
   {
-    if (!items) return;
-    auto *item = fetch_item (key, hb_hash (key));
-    if (item)
+    यदि (!वस्तुएँ) प्रत्यागम;
+    स्वतः *item = fetch_item (key, hb_hash (key));
+    यदि (item)
     {
-      item->set_real (false);
+      item->set_real (असत्य);
       population--;
     }
   }
 
   /* Has interface. */
-  const V& operator [] (K k) const { return get (k); }
-  template <typename VV=V>
-  bool has (const K &key, VV **vp = nullptr) const
+  ध्रुव V& चालक [] (K k) ध्रुव { प्रत्यागम get (k); }
+  ढाँचा <typename VV=V>
+  तार्किक has (ध्रुव K &key, VV **vp = nullptr) ध्रुव
   {
-    if (!items) return false;
-    return has_with_hash (key, hb_hash (key), vp);
+    यदि (!वस्तुएँ) प्रत्यागम असत्य;
+    प्रत्यागम has_with_hash (key, hb_hash (key), vp);
   }
-  template <typename VV=V>
-  bool has_with_hash (const K &key, uint32_t hash, VV **vp = nullptr) const
+  ढाँचा <typename VV=V>
+  तार्किक has_with_hash (ध्रुव K &key, uint32_t hash, VV **vp = nullptr) ध्रुव
   {
-    if (!items) return false;
-    auto *item = fetch_item (key, hash);
-    if (item)
+    यदि (!वस्तुएँ) प्रत्यागम असत्य;
+    स्वतः *item = fetch_item (key, hash);
+    यदि (item)
     {
-      if (vp) *vp = std::addressof (item->value);
-      return true;
+      यदि (vp) *vp = std::addressof (item->value);
+      प्रत्यागम सत्य;
     }
-    return false;
+    प्रत्यागम असत्य;
   }
-  item_t *fetch_item (const K &key, uint32_t hash) const
+  item_t *fetch_item (ध्रुव K &key, uint32_t hash) ध्रुव
   {
     hash &= 0x3FFFFFFF; // We only store lower 30bit of hash
-    unsigned int i = hash % prime;
-    unsigned step = 0;
-    while (items[i].is_used ())
+    अचिन्हित पूर्णाङ्क i = hash % अभाज्य;
+    अचिन्हित step = 0;
+    यावत् (वस्तुएँ[i].is_used ())
     {
-      if ((std::is_integral<K>::value || items[i].hash == hash) &&
-	  items[i] == key)
+      यदि ((std::is_integral<K>::value || वस्तुएँ[i].hash == hash) &&
+	  वस्तुएँ[i] == key)
       {
-	if (items[i].is_real ())
-	  return &items[i];
-	else
-	  return nullptr;
+	यदि (वस्तुएँ[i].is_real ())
+	  प्रत्यागम &वस्तुएँ[i];
+	अन्यथा
+	  प्रत्यागम nullptr;
       }
       i = (i + ++step) & mask;
     }
-    return nullptr;
+    प्रत्यागम nullptr;
   }
   /* Projection. */
-  const V& operator () (K k) const { return get (k); }
+  ध्रुव V& चालक () (K k) ध्रुव { प्रत्यागम get (k); }
 
-  unsigned size () const { return mask ? mask + 1 : 0; }
+  अचिन्हित size () ध्रुव { प्रत्यागम mask ? mask + 1 : 0; }
 
-  void clear ()
+  शून्य clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (zero-initialized) from any writes.  Any non-empty hashmap
      * is a real heap instance with writable items, so clearing
      * under !successful is safe. */
-    if (!population && !occupancy) return;
+    यदि (!population && !occupancy) प्रत्यागम;
 
-    for (auto &_ : hb_iter (items, size ()))
+    प्रति (स्वतः &_ : hb_iter (वस्तुएँ, size ()))
     {
       /* Reconstruct items. */
       _.~item_t ();
-      new (&_) item_t ();
+      नूतन (&_) item_t ();
     }
 
     population = occupancy = 0;
   }
 
-  bool is_empty () const { return population == 0; }
-  explicit operator bool () const { return !is_empty (); }
+  तार्किक is_empty () ध्रुव { प्रत्यागम population == 0; }
+  explicit चालक तार्किक () ध्रुव { प्रत्यागम !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () ध्रुव
   {
-    return
-    + iter_items ()
-    | hb_reduce ([] (uint32_t h, const item_t &_) { return h ^ _.total_hash (); }, (uint32_t) 0u)
+    प्रत्यागम
+    + iter_वस्तुएँ ()
+    | hb_reduce ([] (uint32_t h, ध्रुव item_t &_) { प्रत्यागम h ^ _.total_hash (); }, (uint32_t) 0u)
     ;
   }
 
-  bool is_equal (const hb_hashmap_t &other) const
+  तार्किक is_equal (ध्रुव hb_hashmap_t &other) ध्रुव
   {
-    if (population != other.population) return false;
+    यदि (population != other.population) प्रत्यागम असत्य;
 
-    for (auto pair : iter ())
-      if (other.get (pair.first) != pair.second)
-        return false;
+    प्रति (स्वतः pair : iter ())
+      यदि (other.get (pair.first) != pair.second)
+        प्रत्यागम असत्य;
 
-    return true;
+    प्रत्यागम सत्य;
   }
-  bool operator == (const hb_hashmap_t &other) const { return is_equal (other); }
-  bool operator != (const hb_hashmap_t &other) const { return !is_equal (other); }
+  तार्किक चालक == (ध्रुव hb_hashmap_t &other) ध्रुव { प्रत्यागम is_equal (other); }
+  तार्किक चालक != (ध्रुव hb_hashmap_t &other) ध्रुव { प्रत्यागम !is_equal (other); }
 
-  unsigned int get_population () const { return population; }
+  अचिन्हित पूर्णाङ्क get_population () ध्रुव { प्रत्यागम population; }
 
-  void update (const hb_hashmap_t &other)
+  शून्य update (ध्रुव hb_hashmap_t &other)
   {
-    if (unlikely (!successful)) return;
+    यदि (unlikely (!successful)) प्रत्यागम;
 
-    hb_copy (other, *this);
+    hb_copy (other, *एतत्);
   }
 
   /*
    * Iterator
    */
 
-  auto iter_items () const HB_AUTO_RETURN
+  स्वतः iter_वस्तुएँ () ध्रुव HB_AUTO_RETURN
   (
-    + hb_iter (items, this->size ())
+    + hb_iter (वस्तुएँ, एतत्->size ())
     | hb_filter (&item_t::is_real)
   )
-  auto iter_ref () const HB_AUTO_RETURN
+  स्वतः iter_ref () ध्रुव HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + एतत्->iter_वस्तुएँ ()
     | hb_map (&item_t::get_pair_ref)
   )
-  auto iter () const HB_AUTO_RETURN
+  स्वतः iter () ध्रुव HB_AUTO_RETURN
   (
-    + this->iter_items ()
+    + एतत्->iter_वस्तुएँ ()
     | hb_map (&item_t::get_pair)
   )
-  auto keys_ref () const HB_AUTO_RETURN
+  स्वतः कुंजियाँ_ref () ध्रुव HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_key)
+    + एतत्->iter_वस्तुएँ ()
+    | hb_map (&item_t::get_कुंजी)
   )
-  auto keys () const HB_AUTO_RETURN
+  स्वतः कुंजियाँ () ध्रुव HB_AUTO_RETURN
   (
-    + this->keys_ref ()
+    + एतत्->कुंजियाँ_ref ()
     | hb_map (hb_ridentity)
   )
-  auto values_ref () const HB_AUTO_RETURN
+  स्वतः मूल्यावली_ref () ध्रुव HB_AUTO_RETURN
   (
-    + this->iter_items ()
-    | hb_map (&item_t::get_value)
+    + एतत्->iter_वस्तुएँ ()
+    | hb_map (&item_t::get_मूल्य)
   )
-  auto values () const HB_AUTO_RETURN
+  स्वतः values () ध्रुव HB_AUTO_RETURN
   (
-    + this->values_ref ()
+    + एतत्->मूल्यावली_ref ()
     | hb_map (hb_ridentity)
   )
 
   /* C iterator. */
-  bool next (int *idx,
+  तार्किक next (पूर्णाङ्क *idx,
 	     K *key,
-	     V *value) const
+	     V *value) ध्रुव
   {
-    unsigned i = (unsigned) (*idx + 1);
+    अचिन्हित i = (अचिन्हित) (*idx + 1);
 
-    unsigned count = size ();
-    while (i < count && !items[i].is_real ())
+    अचिन्हित गिनती = size ();
+    यावत् (i < गिनती && !वस्तुएँ[i].is_real ())
       i++;
 
-    if (i >= count)
+    यदि (i >= गिनती)
     {
       *idx = -1;
-      return false;
+      प्रत्यागम असत्य;
     }
 
-    *key = items[i].key;
-    *value = items[i].value;
+    *key = वस्तुएँ[i].key;
+    *value = वस्तुएँ[i].value;
 
-    *idx = (signed) i;
-    return true;
+    *idx = (चिन्हित) i;
+    प्रत्यागम सत्य;
   }
 
   /* Sink interface. */
-  hb_hashmap_t& operator << (const hb_pair_t<K, V>& v)
-  { set (v.first, v.second); return *this; }
-  template <typename V2 = V,
+  hb_hashmap_t& चालक << (ध्रुव hb_pair_t<K, V>& v)
+  { set (v.first, v.second); प्रत्यागम *एतत्; }
+  ढाँचा <typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K, V&&>& v)
-  { set (v.first, std::move (v.second)); return *this; }
-  template <typename K2 = K,
+  hb_hashmap_t& चालक << (ध्रुव hb_pair_t<K, V&&>& v)
+  { set (v.first, std::move (v.second)); प्रत्यागम *एतत्; }
+  ढाँचा <typename K2 = K,
 	    hb_enable_if (!hb_is_trivially_copyable (K2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V>& v)
-  { set (std::move (v.first), v.second); return *this; }
-  template <typename K2 = K, typename V2 = V,
+  hb_hashmap_t& चालक << (ध्रुव hb_pair_t<K&&, V>& v)
+  { set (std::move (v.first), v.second); प्रत्यागम *एतत्; }
+  ढाँचा <typename K2 = K, typename V2 = V,
 	    hb_enable_if (!hb_is_trivially_copyable (K2) &&
 			  !hb_is_trivially_copyable (V2))>
-  hb_hashmap_t& operator << (const hb_pair_t<K&&, V&&>& v)
-  { set (std::move (v.first), std::move (v.second)); return *this; }
+  hb_hashmap_t& चालक << (ध्रुव hb_pair_t<K&&, V&&>& v)
+  { set (std::move (v.first), std::move (v.second)); प्रत्यागम *एतत्; }
 
-  static unsigned int prime_for (unsigned int shift)
+  स्थिर अचिन्हित पूर्णाङ्क अभाज्य_for (अचिन्हित पूर्णाङ्क shift)
   {
     /* Following comment and table copied from glib. */
     /* Each table size has an associated prime modulo (the first prime
@@ -552,7 +552,7 @@ struct hb_hashmap_t
      * good distribution with poor hash functions.
      */
     /* Not declaring static to make all kinds of compilers happy... */
-    /*static*/ const unsigned int prime_mod [32] =
+    /*static*/ ध्रुव अचिन्हित पूर्णाङ्क अभाज्य_mod [32] =
     {
       1,          /* For 1 << 0 */
       2,
@@ -588,10 +588,10 @@ struct hb_hashmap_t
       2147483647  /* For 1 << 31 */
     };
 
-    if (unlikely (shift >= ARRAY_LENGTH (prime_mod)))
-      return prime_mod[ARRAY_LENGTH (prime_mod) - 1];
+    यदि (unlikely (shift >= ARRAY_LENGTH (अभाज्य_mod)))
+      प्रत्यागम अभाज्य_mod[ARRAY_LENGTH (अभाज्य_mod) - 1];
 
-    return prime_mod[shift];
+    प्रत्यागम अभाज्य_mod[shift];
   }
 };
 
@@ -599,24 +599,24 @@ struct hb_hashmap_t
  * hb_map_t
  */
 
-struct hb_map_t : hb_hashmap_t<hb_codepoint_t,
+संरचना hb_map_t : hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
-			       true>
+			       सत्य>
 {
   using hashmap = hb_hashmap_t<hb_codepoint_t,
 			       hb_codepoint_t,
-			       true>;
+			       सत्य>;
 
-  ~hb_map_t () = default;
+  ~hb_map_t () = स्वभाव;
   hb_map_t () : hashmap () {}
-  hb_map_t (const hb_map_t &o) : hashmap ((hashmap &) o) {}
+  hb_map_t (ध्रुव hb_map_t &o) : hashmap ((hashmap &) o) {}
   hb_map_t (hb_map_t &&o)  noexcept : hashmap (std::move ((hashmap &) o)) {}
-  hb_map_t& operator= (const hb_map_t&) = default;
-  hb_map_t& operator= (hb_map_t&&) = default;
+  hb_map_t& चालक= (ध्रुव hb_map_t&) = स्वभाव;
+  hb_map_t& चालक= (hb_map_t&&) = स्वभाव;
   hb_map_t (std::initializer_list<hb_codepoint_pair_t> lst) : hashmap (lst) {}
-  template <typename Iterable,
+  ढाँचा <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_map_t (const Iterable &o) : hashmap (o) {}
+  hb_map_t (ध्रुव Iterable &o) : hashmap (o) {}
 };
 
 

@@ -22,42 +22,42 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifdef HAVE_HARFRUST
 
-#include "hb-shaper-impl.hh"
+#अन्तर्भाव "hb-shaper-impl.hh"
 
-#include "hb-utf.hh"
+#अन्तर्भाव "hb-utf.hh"
 
 
 /*
  * buffer
  */
-extern "C" void *
-_hb_harfrust_buffer_create_rs (void);
+बाह्य "C" शून्य *
+_hb_harfrust_buffer_create_rs (शून्य);
 
-extern "C" void
-_hb_harfrust_buffer_destroy_rs (void *data);
+बाह्य "C" शून्य
+_hb_harfrust_buffer_destroy_rs (शून्य *data);
 
 
 /*
  * shaper face data
  */
 
-extern "C" void *
+बाह्य "C" शून्य *
 _hb_harfrust_shaper_face_data_create_rs (hb_face_t *face);
 
 hb_harfrust_face_data_t *
 _hb_harfrust_shaper_face_data_create (hb_face_t *face)
 {
-  return (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
+  प्रत्यागम (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
 }
 
-extern "C" void
-_hb_harfrust_shaper_face_data_destroy_rs (void *data);
+बाह्य "C" शून्य
+_hb_harfrust_shaper_face_data_destroy_rs (शून्य *data);
 
-void
+शून्य
 _hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
 {
   _hb_harfrust_shaper_face_data_destroy_rs (data);
@@ -68,20 +68,20 @@ _hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
  * shaper font data
  */
 
-extern "C" void *
-_hb_harfrust_shaper_font_data_create_rs (hb_font_t *font, const void *face_data);
+बाह्य "C" शून्य *
+_hb_harfrust_shaper_font_data_create_rs (hb_font_t *font, ध्रुव शून्य *face_data);
 
 hb_harfrust_font_data_t *
 _hb_harfrust_shaper_font_data_create (hb_font_t *font)
 {
-  const hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
-  return (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
+  ध्रुव hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
+  प्रत्यागम (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
 }
 
-extern "C" void
-_hb_harfrust_shaper_font_data_destroy_rs (void *data);
+बाह्य "C" शून्य
+_hb_harfrust_shaper_font_data_destroy_rs (शून्य *data);
 
-void
+शून्य
 _hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
 {
   _hb_harfrust_shaper_font_data_destroy_rs (data);
@@ -92,85 +92,85 @@ _hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
  * shape plan
  */
 
-extern "C" void *
-_hb_harfrust_shape_plan_create_rs (const void *font_data,
+बाह्य "C" शून्य *
+_hb_harfrust_shape_plan_create_rs (ध्रुव शून्य *font_data,
 				   hb_script_t script,
 				   hb_language_t language,
 				   hb_direction_t direction,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   ध्रुव hb_feature_t *features,
+				   अचिन्हित पूर्णाङ्क        अंक_features);
 
-extern "C" void
-_hb_harfrust_shape_plan_destroy_rs (void *data);
+बाह्य "C" शून्य
+_hb_harfrust_shape_plan_destroy_rs (शून्य *data);
 
 
 /*
  * shaper
  */
 
-extern "C" hb_bool_t
-_hb_harfrust_shape_rs (const void         *font_data,
-		       const void         *rs_shape_plan,
-		       const void         *rs_buffer,
+बाह्य "C" hb_bool_t
+_hb_harfrust_shape_rs (ध्रुव शून्य         *font_data,
+		       ध्रुव शून्य         *rs_shape_plan,
+		       ध्रुव शून्य         *rs_buffer,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
-		       const hb_codepoint_t *pre_context,
+		       ध्रुव hb_codepoint_t *pre_context,
 		       uint32_t            pre_context_len,
-		       const hb_codepoint_t *post_context,
+		       ध्रुव hb_codepoint_t *post_context,
 		       uint32_t            post_context_len,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       ध्रुव hb_feature_t *features,
+		       अचिन्हित पूर्णाङ्क        अंक_features);
 
-static hb_user_data_key_t hb_buffer_key = {0};
+स्थिर hb_user_data_कुंजी_t hb_buffer_कुंजी = {0};
 
 hb_bool_t
 _hb_harfrust_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    ध्रुव hb_feature_t *features,
+		    अचिन्हित पूर्णाङ्क        अंक_features)
 {
-  const hb_harfrust_font_data_t *font_data = font->data.harfrust;
+  ध्रुव hb_harfrust_font_data_t *font_data = font->data.harfrust;
 
 retry_buffer:
-  void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_key);
-  if (unlikely (!hr_buffer))
+  शून्य *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_कुंजी);
+  यदि (unlikely (!hr_buffer))
   {
     hr_buffer = _hb_harfrust_buffer_create_rs ();
-    if (unlikely (!hr_buffer))
-      return false;
+    यदि (unlikely (!hr_buffer))
+      प्रत्यागम असत्य;
 
-    if (!hb_buffer_set_user_data (buffer,
-				  &hb_buffer_key,
+    यदि (!hb_buffer_set_user_data (buffer,
+				  &hb_buffer_कुंजी,
 				  hr_buffer,
 				  _hb_harfrust_buffer_destroy_rs,
-				  false))
+				  असत्य))
     {
       _hb_harfrust_buffer_destroy_rs (hr_buffer);
-      goto retry_buffer;
+      गच्छ retry_buffer;
     }
   }
 
-  void *hr_shape_plan = nullptr;
+  शून्य *hr_shape_plan = nullptr;
 
 retry_shape_plan:
   hr_shape_plan = shape_plan->harfrust_data.get_acquire ();
-  if (unlikely (!hr_shape_plan))
+  यदि (unlikely (!hr_shape_plan))
   {
     hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_data,
 						       shape_plan->key.props.script,
 						       shape_plan->key.props.language,
 						       shape_plan->key.props.direction,
-						       features, num_features);
-    if (hr_shape_plan &&
+						       features, अंक_features);
+    यदि (hr_shape_plan &&
 	!shape_plan->harfrust_data.cmpexch (nullptr, hr_shape_plan))
     {
       _hb_harfrust_shape_plan_destroy_rs (hr_shape_plan);
-      goto retry_shape_plan;
+      गच्छ retry_shape_plan;
     }
   }
 
-  return _hb_harfrust_shape_rs (font_data,
+  प्रत्यागम _hb_harfrust_shape_rs (font_data,
 				hr_shape_plan,
 				hr_buffer,
 				font,
@@ -180,7 +180,7 @@ retry_shape_plan:
 				buffer->context[1],
 				buffer->context_len[1],
 				features,
-				num_features);
+				अंक_features);
 }
 
 

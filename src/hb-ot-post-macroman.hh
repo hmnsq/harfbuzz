@@ -25,9 +25,9 @@
  */
 
 #ifndef HB_OT_POST_MACROMAN_HH
-#if 0 /* Make checks happy. */
+#यदि 0 /* Make checks happy. */
 #define HB_OT_POST_MACROMAN_HH
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 #endif
 
 

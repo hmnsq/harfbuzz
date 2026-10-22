@@ -24,25 +24,25 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#अन्तर्भाव "hb.h"
+#अन्तर्भाव "hb-ot.h"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#अन्तर्भाव "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+पूर्णाङ्क
+main (पूर्णाङ्क argc, वर्ण **argv)
 {
-  if (argc != 4 && argc != 5) {
-    fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
-    exit (1);
+  यदि (argc != 4 && argc != 5) {
+    ख_लिखो (मानक_त्रुटि, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
+    निकास (1);
   }
 
   /* Create the face */
@@ -57,11 +57,11 @@ main (int argc, char **argv)
   hb_ft_font_set_funcs (font);
 #endif
 
-  unsigned int len = argc - 3;
+  अचिन्हित पूर्णाङ्क len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  यदि (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    प्रत्यागम 2;
+  प्रत्यागम !hb_ot_layout_lookup_would_substitute (face, म_से_दीर्घ (argv[2], nullptr, 0), glyphs, len, असत्य);
 }

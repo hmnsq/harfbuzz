@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#यदि !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_VERSION_H
 #define HB_VERSION_H
 
-#include "hb-common.h"
+#अन्तर्भाव "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -76,18 +76,18 @@ HB_BEGIN_DECLS
 	 HB_VERSION_MAJOR*10000+HB_VERSION_MINOR*100+HB_VERSION_MICRO)
 
 
-HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+HB_EXTERN शून्य
+hb_version (अचिन्हित पूर्णाङ्क *major,
+	    अचिन्हित पूर्णाङ्क *minor,
+	    अचिन्हित पूर्णाङ्क *micro);
 
-HB_EXTERN const char *
-hb_version_string (void);
+HB_EXTERN ध्रुव वर्ण *
+hb_version_string (शून्य);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_version_atleast (अचिन्हित पूर्णाङ्क major,
+		    अचिन्हित पूर्णाङ्क minor,
+		    अचिन्हित पूर्णाङ्क micro);
 
 
 HB_END_DECLS

@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#अन्तर्भाव "hb-ot-shaper.hh"
 
 
 /* Thai / Lao shaper */
@@ -37,55 +37,55 @@
 /* PUA shaping */
 
 
-enum thai_consonant_type_t
+गणना thai_consonant_type_t
 {
   NC,
   AC,
   RC,
   DC,
   NOT_CONSONANT,
-  NUM_CONSONANT_TYPES = NOT_CONSONANT
+  अंक_CONSONANT_TYPES = NOT_CONSONANT
 };
 
-static thai_consonant_type_t
+स्थिर thai_consonant_type_t
 get_consonant_type (hb_codepoint_t u)
 {
-  if (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
-    return AC;
-  if (u == 0x0E0Du || u == 0x0E10u)
-    return RC;
-  if (u == 0x0E0Eu || u == 0x0E0Fu)
-    return DC;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
-    return NC;
-  return NOT_CONSONANT;
+  यदि (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
+    प्रत्यागम AC;
+  यदि (u == 0x0E0Du || u == 0x0E10u)
+    प्रत्यागम RC;
+  यदि (u == 0x0E0Eu || u == 0x0E0Fu)
+    प्रत्यागम DC;
+  यदि (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
+    प्रत्यागम NC;
+  प्रत्यागम NOT_CONSONANT;
 }
 
 
-enum thai_mark_type_t
+गणना thai_mark_type_t
 {
   AV,
   BV,
   T,
   NOT_MARK,
-  NUM_MARK_TYPES = NOT_MARK
+  अंक_MARK_TYPES = NOT_MARK
 };
 
-static thai_mark_type_t
+स्थिर thai_mark_type_t
 get_mark_type (hb_codepoint_t u)
 {
-  if (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
+  यदि (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
       u == 0x0E47u || hb_in_range<hb_codepoint_t> (u, 0x0E4Du, 0x0E4Eu))
-    return AV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
-    return BV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
-    return T;
-  return NOT_MARK;
+    प्रत्यागम AV;
+  यदि (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
+    प्रत्यागम BV;
+  यदि (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
+    प्रत्यागम T;
+  प्रत्यागम NOT_MARK;
 }
 
 
-enum thai_action_t
+गणना thai_action_t
 {
   NOP,
   SD,  /* Shift combining-mark down */
@@ -94,15 +94,15 @@ enum thai_action_t
   RD   /* Remove descender from base */
 };
 
-static hb_codepoint_t
+स्थिर hb_codepoint_t
 thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
 {
-  struct thai_pua_mapping_t {
+  संरचना thai_pua_mapping_t {
     uint16_t u;
     uint16_t win_pua;
     uint16_t mac_pua;
-  } const *pua_mappings = nullptr;
-  static const thai_pua_mapping_t SD_mappings[] = {
+  } ध्रुव *pua_mappings = nullptr;
+  स्थिर ध्रुव thai_pua_mapping_t SD_mappings[] = {
     {0x0E48u, 0xF70Au, 0xF88Bu}, /* MAI EK */
     {0x0E49u, 0xF70Bu, 0xF88Eu}, /* MAI THO */
     {0x0E4Au, 0xF70Cu, 0xF891u}, /* MAI TRI */
@@ -113,7 +113,7 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
     {0x0E3Au, 0xF71Au, 0xF89Du}, /* PHINTHU */
     {0x0000u, 0x0000u, 0x0000u}
   };
-  static const thai_pua_mapping_t SDL_mappings[] = {
+  स्थिर ध्रुव thai_pua_mapping_t SDL_mappings[] = {
     {0x0E48u, 0xF705u, 0xF88Cu}, /* MAI EK */
     {0x0E49u, 0xF706u, 0xF88Fu}, /* MAI THO */
     {0x0E4Au, 0xF707u, 0xF892u}, /* MAI TRI */
@@ -121,7 +121,7 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
     {0x0E4Cu, 0xF709u, 0xF898u}, /* THANTHAKHAT */
     {0x0000u, 0x0000u, 0x0000u}
   };
-  static const thai_pua_mapping_t SL_mappings[] = {
+  स्थिर ध्रुव thai_pua_mapping_t SL_mappings[] = {
     {0x0E48u, 0xF713u, 0xF88Au}, /* MAI EK */
     {0x0E49u, 0xF714u, 0xF88Du}, /* MAI THO */
     {0x0E4Au, 0xF715u, 0xF890u}, /* MAI TRI */
@@ -136,41 +136,41 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
     {0x0E4Du, 0xF711u, 0xF899u}, /* NIKHAHIT */
     {0x0000u, 0x0000u, 0x0000u}
   };
-  static const thai_pua_mapping_t RD_mappings[] = {
+  स्थिर ध्रुव thai_pua_mapping_t RD_mappings[] = {
     {0x0E0Du, 0xF70Fu, 0xF89Au}, /* YO YING */
     {0x0E10u, 0xF700u, 0xF89Eu}, /* THO THAN */
     {0x0000u, 0x0000u, 0x0000u}
   };
 
-  switch (action) {
-    case NOP: return u;
-    case SD:  pua_mappings = SD_mappings; break;
-    case SDL: pua_mappings = SDL_mappings; break;
-    case SL:  pua_mappings = SL_mappings; break;
-    case RD:  pua_mappings = RD_mappings; break;
+  विकल्प (action) {
+    पक्ष NOP: प्रत्यागम u;
+    पक्ष SD:  pua_mappings = SD_mappings; भङ्ग;
+    पक्ष SDL: pua_mappings = SDL_mappings; भङ्ग;
+    पक्ष SL:  pua_mappings = SL_mappings; भङ्ग;
+    पक्ष RD:  pua_mappings = RD_mappings; भङ्ग;
   }
-  for (; pua_mappings->u; pua_mappings++)
-    if (pua_mappings->u == u)
+  प्रति (; pua_mappings->u; pua_mappings++)
+    यदि (pua_mappings->u == u)
     {
       hb_codepoint_t glyph;
-      if (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
-	return pua_mappings->win_pua;
-      if (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
-	return pua_mappings->mac_pua;
-      break;
+      यदि (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
+	प्रत्यागम pua_mappings->win_pua;
+      यदि (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
+	प्रत्यागम pua_mappings->mac_pua;
+      भङ्ग;
     }
-  return u;
+  प्रत्यागम u;
 }
 
 
-static const enum thai_above_state_t
+स्थिर ध्रुव गणना thai_above_state_t
 {     /* Cluster above looks like: */
   T0, /*  ⣤                      */
   T1, /*     ⣼                   */
   T2, /*        ⣾                */
   T3, /*           ⣿             */
-  NUM_ABOVE_STATES
-} thai_above_start_state[NUM_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
+  अंक_ABOVE_STATES
+} thai_above_start_state[अंक_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
 {
   T0, /* NC */
   T1, /* AC */
@@ -179,10 +179,10 @@ static const enum thai_above_state_t
   T3, /* NOT_CONSONANT */
 };
 
-static const struct thai_above_state_machine_edge_t {
+स्थिर ध्रुव संरचना thai_above_state_machine_edge_t {
   thai_action_t action;
   thai_above_state_t next_state;
-} thai_above_state_machine[NUM_ABOVE_STATES][NUM_MARK_TYPES] =
+} thai_above_state_machine[अंक_ABOVE_STATES][अंक_MARK_TYPES] =
 {        /*AV*/    /*BV*/    /*T*/
 /*T0*/ {{NOP,T3}, {NOP,T0}, {SD, T3}},
 /*T1*/ {{SL, T2}, {NOP,T1}, {SDL,T2}},
@@ -191,13 +191,13 @@ static const struct thai_above_state_machine_edge_t {
 };
 
 
-static const enum thai_below_state_t
+स्थिर ध्रुव गणना thai_below_state_t
 {
   B0, /* No descender */
   B1, /* Removable descender */
   B2, /* Strict descender */
-  NUM_BELOW_STATES
-} thai_below_start_state[NUM_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
+  अंक_BELOW_STATES
+} thai_below_start_state[अंक_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
 {
   B0, /* NC */
   B0, /* AC */
@@ -206,10 +206,10 @@ static const enum thai_below_state_t
   B2, /* NOT_CONSONANT */
 };
 
-static const struct thai_below_state_machine_edge_t {
+स्थिर ध्रुव संरचना thai_below_state_machine_edge_t {
   thai_action_t action;
   thai_below_state_t next_state;
-} thai_below_state_machine[NUM_BELOW_STATES][NUM_MARK_TYPES] =
+} thai_below_state_machine[अंक_BELOW_STATES][अंक_MARK_TYPES] =
 {        /*AV*/    /*BV*/    /*T*/
 /*B0*/ {{NOP,B0}, {NOP,B2}, {NOP, B0}},
 /*B1*/ {{NOP,B1}, {RD, B2}, {NOP, B1}},
@@ -217,35 +217,35 @@ static const struct thai_below_state_machine_edge_t {
 };
 
 
-static void
-do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
+स्थिर शून्य
+do_thai_pua_shaping (ध्रुव hb_ot_shape_plan_t *plan HB_UNUSED,
 		     hb_buffer_t              *buffer,
 		     hb_font_t                *font)
 {
 #ifdef HB_NO_OT_SHAPER_THAI_FALLBACK
-  return;
+  प्रत्यागम;
 #endif
 
   thai_above_state_t above_state = thai_above_start_state[NOT_CONSONANT];
   thai_below_state_t below_state = thai_below_start_state[NOT_CONSONANT];
-  unsigned int base = 0;
+  अचिन्हित पूर्णाङ्क base = 0;
 
   hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  अचिन्हित पूर्णाङ्क गिनती = buffer->len;
+  प्रति (अचिन्हित पूर्णाङ्क i = 0; i < गिनती; i++)
   {
     thai_mark_type_t mt = get_mark_type (info[i].codepoint);
 
-    if (mt == NOT_MARK) {
+    यदि (mt == NOT_MARK) {
       thai_consonant_type_t ct = get_consonant_type (info[i].codepoint);
       above_state = thai_above_start_state[ct];
       below_state = thai_below_start_state[ct];
       base = i;
-      continue;
+      अनुवर्त;
     }
 
-    const thai_above_state_machine_edge_t &above_edge = thai_above_state_machine[above_state][mt];
-    const thai_below_state_machine_edge_t &below_edge = thai_below_state_machine[below_state][mt];
+    ध्रुव thai_above_state_machine_edge_t &above_edge = thai_above_state_machine[above_state][mt];
+    ध्रुव thai_below_state_machine_edge_t &below_edge = thai_below_state_machine[below_state][mt];
     above_state = above_edge.next_state;
     below_state = below_edge.next_state;
 
@@ -253,16 +253,16 @@ do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
     thai_action_t action = above_edge.action != NOP ? above_edge.action : below_edge.action;
 
     buffer->unsafe_to_break (base, i);
-    if (action == RD)
+    यदि (action == RD)
       info[base].codepoint = thai_pua_shape (info[base].codepoint, action, font);
-    else
+    अन्यथा
       info[i].codepoint = thai_pua_shape (info[i].codepoint, action, font);
   }
 }
 
 
-static void
-preprocess_text_thai (const hb_ot_shape_plan_t *plan,
+स्थिर शून्य
+preprocess_text_thai (ध्रुव hb_ot_shape_plan_t *plan,
 		      hb_buffer_t              *buffer,
 		      hb_font_t                *font)
 {
@@ -322,54 +322,54 @@ preprocess_text_thai (const hb_ot_shape_plan_t *plan,
 #define IS_ABOVE_BASE_MARK(x) (hb_in_ranges<hb_codepoint_t> ((x) & ~0x0080u, 0x0E34u, 0x0E37u, 0x0E47u, 0x0E4Eu, 0x0E31u, 0x0E31u, 0x0E3Bu, 0x0E3Bu))
 
   buffer->clear_output ();
-  unsigned int count = buffer->len;
-  for (buffer->idx = 0; buffer->idx < count /* No need for: && buffer->successful */;)
+  अचिन्हित पूर्णाङ्क गिनती = buffer->len;
+  प्रति (buffer->idx = 0; buffer->idx < गिनती /* No need for: && buffer->successful */;)
   {
     hb_codepoint_t u = buffer->cur().codepoint;
-    if (likely (!IS_SARA_AM (u)))
+    यदि (likely (!IS_SARA_AM (u)))
     {
-      if (unlikely (!buffer->next_glyph ())) break;
-      continue;
+      यदि (unlikely (!buffer->next_glyph ())) भङ्ग;
+      अनुवर्त;
     }
 
     /* Is SARA AM. Decompose and reorder. */
-    (void) buffer->output_glyph (NIKHAHIT_FROM_SARA_AM (u));
+    (शून्य) buffer->output_glyph (NIKHAHIT_FROM_SARA_AM (u));
     _hb_glyph_info_set_continuation (&buffer->prev(), buffer);
-    if (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) break;
+    यदि (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) भङ्ग;
 
     /* Make Nikhahit be recognized as a ccc=0 mark when zeroing widths. */
-    unsigned int end = buffer->out_len;
+    अचिन्हित पूर्णाङ्क end = buffer->out_len;
     _hb_glyph_info_set_general_category (&buffer->out_info[end - 2], HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK);
 
     /* Ok, let's see... */
-    unsigned int start = end - 2;
-    while (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
+    अचिन्हित पूर्णाङ्क start = end - 2;
+    यावत् (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
       start--;
 
-    if (start + 2 < end)
+    यदि (start + 2 < end)
     {
       /* Move Nikhahit (end-2) to the beginning */
       buffer->merge_out_clusters (start, end);
       hb_glyph_info_t t = buffer->out_info[end - 2];
-      memmove (buffer->out_info + start + 1,
+      स_हटाओ (buffer->out_info + start + 1,
 	       buffer->out_info + start,
-	       sizeof (buffer->out_info[0]) * (end - start - 2));
+	       परिमाण (buffer->out_info[0]) * (end - start - 2));
       buffer->out_info[start] = t;
     }
 
     /* Since we decomposed, and NIKHAHIT is combining, merge clusters with the
      * previous cluster. */
-    if (start)
+    यदि (start)
       buffer->merge_out_grapheme_clusters (start - 1, end);
   }
-  buffer->sync ();
+  buffer->समकाल ();
 
   /* If font has Thai GSUB, we are done. */
-  if (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
+  यदि (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
     do_thai_pua_shaping (plan, buffer, font);
 }
 
-const hb_ot_shaper_t _hb_ot_shaper_thai =
+ध्रुव hb_ot_shaper_t _hb_ot_shaper_thai =
 {
   nullptr, /* collect_features */
   nullptr, /* override_features */
@@ -384,7 +384,7 @@ const hb_ot_shaper_t _hb_ot_shaper_thai =
   HB_TAG_NONE, /* gpos_tag */
   HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE,
-  false,/* fallback_position */
+  असत्य,/* fallback_position */
 };
 
 

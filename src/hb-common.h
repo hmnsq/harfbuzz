@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#यदि !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -34,52 +34,52 @@
 #define HB_COMMON_H
 
 #ifndef HB_EXTERN
-#define HB_EXTERN extern
+#define HB_EXTERN बाह्य
 #endif
 
 #ifndef HB_BEGIN_DECLS
 # ifdef __cplusplus
-#  define HB_BEGIN_DECLS	extern "C" {
+#  define HB_BEGIN_DECLS	बाह्य "C" {
 #  define HB_END_DECLS		}
-# else /* !__cplusplus */
+# अन्यथा /* !__cplusplus */
 #  define HB_BEGIN_DECLS
 #  define HB_END_DECLS
 # endif /* !__cplusplus */
 #endif
 
-#if defined (_AIX)
+#यदि defined (_AIX)
 #  include <sys/inttypes.h>
-#elif defined (_MSC_VER) && _MSC_VER < 1600
+#नोचेद्यदि defined (_MSC_VER) && _MSC_VER < 1600
 /* VS 2010 (_MSC_VER 1600) has stdint.h   */
-typedef __int8 int8_t;
-typedef unsigned __int8 uint8_t;
-typedef __int16 int16_t;
-typedef unsigned __int16 uint16_t;
-typedef __int32 int32_t;
-typedef unsigned __int32 uint32_t;
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-#elif defined (_MSC_VER) && _MSC_VER < 1800
+प्रकारनिर्देश __int8 int8_t;
+प्रकारनिर्देश अचिन्हित __int8 uint8_t;
+प्रकारनिर्देश __int16 int16_t;
+प्रकारनिर्देश अचिन्हित __int16 uint16_t;
+प्रकारनिर्देश __int32 int32_t;
+प्रकारनिर्देश अचिन्हित __int32 uint32_t;
+प्रकारनिर्देश __int64 int64_t;
+प्रकारनिर्देश अचिन्हित __int64 uint64_t;
+#नोचेद्यदि defined (_MSC_VER) && _MSC_VER < 1800
 /* VS 2013 (_MSC_VER 1800) has inttypes.h */
 #  include <stdint.h>
-#else
+#अन्यथा
 #  include <inttypes.h>
 #endif
-#include <stddef.h>
+#अन्तर्भाव <stddef.h>
 
-#if defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+#यदि defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #define HB_DEPRECATED __attribute__((__deprecated__))
-#elif defined(_MSC_VER) && (_MSC_VER >= 1300)
+#नोचेद्यदि defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define HB_DEPRECATED __declspec(deprecated)
-#else
+#अन्यथा
 #define HB_DEPRECATED
 #endif
 
-#if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
+#यदि defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
 #define HB_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
-#elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
+#नोचेद्यदि defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
 #define HB_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
-#else
+#अन्यथा
 #define HB_DEPRECATED_FOR(f) HB_DEPRECATED
 #endif
 
@@ -92,7 +92,7 @@ HB_BEGIN_DECLS
  * Data type for booleans.
  *
  **/
-typedef int hb_bool_t;
+प्रकारनिर्देश पूर्णाङ्क hb_bool_t;
 
 /**
  * HB_BUDGET_DEFAULT:
@@ -120,7 +120,7 @@ typedef int hb_bool_t;
  * used to hold glyph IDs.
  *
  **/
-typedef uint32_t hb_codepoint_t;
+प्रकारनिर्देश uint32_t hb_codepoint_t;
 
 /**
  * HB_CODEPOINT_INVALID:
@@ -139,16 +139,16 @@ typedef uint32_t hb_codepoint_t;
  * stored as tuples of #hb_position_t's.
  *
  **/
-typedef int32_t hb_position_t;
+प्रकारनिर्देश int32_t hb_position_t;
 /**
  * hb_mask_t:
  * 
  * Data type for bitmasks.
  *
  **/
-typedef uint32_t hb_mask_t;
+प्रकारनिर्देश uint32_t hb_mask_t;
 
-typedef union _hb_var_int_t {
+प्रकारनिर्देश सङ्घ _hb_var_int_t {
   uint32_t u32;
   int32_t i32;
   uint16_t u16[2];
@@ -157,15 +157,15 @@ typedef union _hb_var_int_t {
   int8_t i8[4];
 } hb_var_int_t;
 
-typedef union _hb_var_num_t {
-  float f;
+प्रकारनिर्देश सङ्घ hb_var_अंक_t {
+  भिन्न f;
   uint32_t u32;
   int32_t i32;
   uint16_t u16[2];
   int16_t i16[2];
   uint8_t u8[4];
   int8_t i8[4];
-} hb_var_num_t;
+} hb_var_अंक_t_2;
 
 
 /* hb_tag_t */
@@ -181,7 +181,7 @@ typedef union _hb_var_num_t {
  * human-readable names.
  *
  **/
-typedef uint32_t hb_tag_t;
+प्रकारनिर्देश uint32_t hb_tag_t;
 
 /**
  * HB_TAG:
@@ -231,11 +231,11 @@ typedef uint32_t hb_tag_t;
 
 /* len=-1 means str is NUL-terminated. */
 HB_EXTERN hb_tag_t
-hb_tag_from_string (const char *str, int len);
+hb_tag_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len);
 
 /* buf should have 4 bytes. */
-HB_EXTERN void
-hb_tag_to_string (hb_tag_t tag, char *buf);
+HB_EXTERN शून्य
+hb_tag_to_string (hb_tag_t tag, वर्ण *buf);
 
 
 /**
@@ -253,7 +253,7 @@ hb_tag_to_string (hb_tag_t tag, char *buf);
  * HB_DIRECTION_IS_HORIZONTAL() or HB_DIRECTION_IS_VERTICAL().
  *
  */
-typedef enum {
+प्रकारनिर्देश गणना {
   HB_DIRECTION_INVALID = 0,
   HB_DIRECTION_LTR = 4,
   HB_DIRECTION_RTL,
@@ -263,9 +263,9 @@ typedef enum {
 
 /* len=-1 means str is NUL-terminated */
 HB_EXTERN hb_direction_t
-hb_direction_from_string (const char *str, int len);
+hb_direction_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len);
 
-HB_EXTERN const char *
+HB_EXTERN ध्रुव वर्ण *
 hb_direction_to_string (hb_direction_t direction);
 
 /**
@@ -275,7 +275,7 @@ hb_direction_to_string (hb_direction_t direction);
  * Tests whether a text direction is valid.
  *
  **/
-#define HB_DIRECTION_IS_VALID(dir)	((((unsigned int) (dir)) & ~3U) == 4)
+#define HB_DIRECTION_IS_VALID(dir)	((((अचिन्हित पूर्णाङ्क) (dir)) & ~3U) == 4)
 /* Direction must be valid for the following */
 /**
  * HB_DIRECTION_IS_HORIZONTAL:
@@ -285,7 +285,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
+#define HB_DIRECTION_IS_HORIZONTAL(dir)	((((अचिन्हित पूर्णाङ्क) (dir)) & ~1U) == 4)
 /**
  * HB_DIRECTION_IS_VERTICAL:
  * @dir: #hb_direction_t to test
@@ -294,7 +294,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
+#define HB_DIRECTION_IS_VERTICAL(dir)	((((अचिन्हित पूर्णाङ्क) (dir)) & ~1U) == 6)
 /**
  * HB_DIRECTION_IS_FORWARD:
  * @dir: #hb_direction_t to test
@@ -303,7 +303,7 @@ hb_direction_to_string (hb_direction_t direction);
  * top to bottom). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
+#define HB_DIRECTION_IS_FORWARD(dir)	((((अचिन्हित पूर्णाङ्क) (dir)) & ~2U) == 4)
 /**
  * HB_DIRECTION_IS_BACKWARD:
  * @dir: #hb_direction_t to test
@@ -312,7 +312,7 @@ hb_direction_to_string (hb_direction_t direction);
  * bottom to top). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
+#define HB_DIRECTION_IS_BACKWARD(dir)	((((अचिन्हित पूर्णाङ्क) (dir)) & ~2U) == 5)
 /**
  * HB_DIRECTION_REVERSE:
  * @dir: #hb_direction_t to reverse
@@ -321,7 +321,7 @@ hb_direction_to_string (hb_direction_t direction);
  * be valid.
  *
  **/
-#define HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((unsigned int) (dir)) ^ 1))
+#define HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((अचिन्हित पूर्णाङ्क) (dir)) ^ 1))
 
 
 /* hb_language_t */
@@ -333,12 +333,12 @@ hb_direction_to_string (hb_direction_t direction);
  * language tag.
  *
  */
-typedef const struct hb_language_impl_t *hb_language_t;
+प्रकारनिर्देश ध्रुव संरचना hb_language_impl_t *hb_language_t;
 
 HB_EXTERN hb_language_t
-hb_language_from_string (const char *str, int len);
+hb_language_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len);
 
-HB_EXTERN const char *
+HB_EXTERN ध्रुव वर्ण *
 hb_language_to_string (hb_language_t language);
 
 /**
@@ -351,13 +351,13 @@ hb_language_to_string (hb_language_t language);
 #define HB_LANGUAGE_INVALID ((hb_language_t) 0)
 
 HB_EXTERN hb_language_t
-hb_language_get_default (void);
+hb_language_get_default (शून्य);
 
 HB_EXTERN hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific);
 
-#include "hb-script-list.h"
+#अन्तर्भाव "hb-script-list.h"
 
 /* Script functions */
 
@@ -365,7 +365,7 @@ HB_EXTERN hb_script_t
 hb_script_from_iso15924_tag (hb_tag_t tag);
 
 HB_EXTERN hb_script_t
-hb_script_from_string (const char *str, int len);
+hb_script_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len);
 
 HB_EXTERN hb_tag_t
 hb_script_to_iso15924_tag (hb_script_t script);
@@ -382,10 +382,10 @@ hb_script_get_horizontal_direction (hb_script_t script);
  * Data structure for holding user-data keys.
  *
  **/
-typedef struct hb_user_data_key_t {
+प्रकारनिर्देश संरचना hb_user_data_कुंजी_t {
   /*< private >*/
-  char unused;
-} hb_user_data_key_t;
+  वर्ण unused;
+} hb_user_data_कुंजी_t;
 
 /**
  * hb_destroy_func_t:
@@ -394,7 +394,7 @@ typedef struct hb_user_data_key_t {
  * A virtual method for destroy user-data callbacks.
  *
  */
-typedef void (*hb_destroy_func_t) (void *user_data);
+प्रकारनिर्देश शून्य (*hb_destroy_func_t) (शून्य *user_data);
 
 
 /* Font features and variations. */
@@ -417,7 +417,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  *
  * Since: 2.0.0
  */
-#define HB_FEATURE_GLOBAL_END	((unsigned int) -1)
+#define HB_FEATURE_GLOBAL_END	((अचिन्हित पूर्णाङ्क) -1)
 
 /**
  * hb_feature_t:
@@ -434,20 +434,20 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  * Setting start to #HB_FEATURE_GLOBAL_START and end to #HB_FEATURE_GLOBAL_END
  * specifies that the feature always applies to the entire buffer.
  */
-typedef struct hb_feature_t {
+प्रकारनिर्देश संरचना hb_feature_t {
   hb_tag_t      tag;
-  uint32_t      value;
-  unsigned int  start;
-  unsigned int  end;
+  uint32_t      मूल्य_2;
+  अचिन्हित पूर्णाङ्क  start;
+  अचिन्हित पूर्णाङ्क  end;
 } hb_feature_t;
 
 HB_EXTERN hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len,
 			hb_feature_t *feature);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size);
+		      वर्ण *buf, अचिन्हित पूर्णाङ्क size);
 
 /**
  * hb_variation_t:
@@ -460,18 +460,18 @@ hb_feature_to_string (hb_feature_t *feature,
  * 
  * Since: 1.4.2
  */
-typedef struct hb_variation_t {
+प्रकारनिर्देश संरचना hb_variation_t {
   hb_tag_t tag;
-  float    value;
+  भिन्न    मूल्य_2;
 } hb_variation_t;
 
 HB_EXTERN hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (ध्रुव वर्ण *str, पूर्णाङ्क len,
 			  hb_variation_t *variation);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size);
+			वर्ण *buf, अचिन्हित पूर्णाङ्क size);
 
 /**
  * hb_color_t:
@@ -481,7 +481,7 @@ hb_variation_to_string (hb_variation_t *variation,
  *
  * Since: 2.1.0
  */
-typedef uint32_t hb_color_t;
+प्रकारनिर्देश uint32_t hb_color_t;
 
 /**
  * HB_COLOR:
@@ -523,7 +523,7 @@ hb_color_get_blue (hb_color_t color);
  *
  * Note that @height is negative, in coordinate systems that grow up.
  **/
-typedef struct hb_glyph_extents_t {
+प्रकारनिर्देश संरचना hb_glyph_extents_t {
   hb_position_t x_bearing;
   hb_position_t y_bearing;
   hb_position_t width;
@@ -536,17 +536,17 @@ typedef struct hb_glyph_extents_t {
  * Data type for holding fonts.
  *
  */
-typedef struct hb_font_t hb_font_t;
+प्रकारनिर्देश संरचना hb_font_t hb_font_t;
 
 /* Not of much use to clients. */
-HB_EXTERN void*
-hb_malloc (size_t size);
-HB_EXTERN void*
-hb_calloc (size_t nmemb, size_t size);
-HB_EXTERN void*
-hb_realloc (void *ptr, size_t size);
-HB_EXTERN void
-hb_free (void *ptr);
+HB_EXTERN शून्य*
+hb_malloc (माप_प्रकार size);
+HB_EXTERN शून्य*
+hb_calloc (माप_प्रकार nmemb, माप_प्रकार size);
+HB_EXTERN शून्य*
+hb_realloc (शून्य *ptr, माप_प्रकार size);
+HB_EXTERN शून्य
+hb_free (शून्य *ptr);
 
 HB_END_DECLS
 

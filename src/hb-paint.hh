@@ -25,28 +25,28 @@
 #ifndef HB_PAINT_HH
 #define HB_PAINT_HH
 
-#include "hb.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-geometry.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-face.hh"
+#अन्तर्भाव "hb-font.hh"
+#अन्तर्भाव "hb-geometry.hh"
 
 #define HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_PAINT_FUNC_IMPLEMENT (push_transform) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (निकालो_transform) \
   HB_PAINT_FUNC_IMPLEMENT (color_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_rectangle) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_start) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_end) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_clip) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_clip_glyph) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_clip_rectangle) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_clip_path_start) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_clip_path_end) \
+  HB_PAINT_FUNC_IMPLEMENT (निकालो_clip) \
   HB_PAINT_FUNC_IMPLEMENT (color) \
   HB_PAINT_FUNC_IMPLEMENT (image) \
   HB_PAINT_FUNC_IMPLEMENT (linear_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (radial_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (sweep_gradient) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group_for) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_group) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_group) \
+  HB_PAINT_FUNC_IMPLEMENT (धकेलो_group_for) \
+  HB_PAINT_FUNC_IMPLEMENT (निकालो_group) \
   HB_PAINT_FUNC_IMPLEMENT (custom_palette_color) \
   HB_PAINT_FUNC_IMPLEMENT (fill_glyph) \
   HB_PAINT_FUNC_IMPLEMENT (set_budget) \
@@ -54,233 +54,233 @@
   HB_PAINT_FUNC_IMPLEMENT (get_budget_remaining) \
   /* ^--- Add new callbacks here */
 
-struct hb_paint_funcs_t
+संरचना hb_paint_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
+  संरचना {
 #define HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) void *name;
+  संरचना {
+#define HB_PAINT_FUNC_IMPLEMENT(name) शून्य *name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } *user_data;
 
-  struct {
+  संरचना {
 #define HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } *destroy;
 
-  void push_transform (void *paint_data,
-                       float xx, float yx,
-                       float xy, float yy,
-                       float dx, float dy)
+  शून्य धकेलो_transform (शून्य *paint_data,
+                       भिन्न xx, भिन्न yx,
+                       भिन्न xy, भिन्न yy,
+                       भिन्न dx, भिन्न dy)
   {
     // Handle -0.f to avoid -0.f == 0.f in the transform matrix.
-    if (dx == -0.f) dx = 0.f;
-    if (dy == -0.f) dy = 0.f;
-    func.push_transform (this, paint_data,
+    यदि (dx == -0.f) dx = 0.f;
+    यदि (dy == -0.f) dy = 0.f;
+    func.धकेलो_transform (एतत्, paint_data,
                          xx, yx, xy, yy, dx, dy,
-                         !user_data ? nullptr : user_data->push_transform); }
-  void pop_transform (void *paint_data)
-  { func.pop_transform (this, paint_data,
-                        !user_data ? nullptr : user_data->pop_transform); }
-  bool color_glyph (void *paint_data,
+                         !user_data ? nullptr : user_data->धकेलो_transform); }
+  शून्य निकालो_transform (शून्य *paint_data)
+  { func.निकालो_transform (एतत्, paint_data,
+                        !user_data ? nullptr : user_data->निकालो_transform); }
+  तार्किक color_glyph (शून्य *paint_data,
                     hb_codepoint_t glyph,
                     hb_font_t *font)
-  { return func.color_glyph (this, paint_data,
+  { प्रत्यागम func.color_glyph (एतत्, paint_data,
                              glyph,
                              font,
                              !user_data ? nullptr : user_data->color_glyph); }
-  void push_clip_glyph (void *paint_data,
+  शून्य धकेलो_clip_glyph (शून्य *paint_data,
                         hb_codepoint_t glyph,
                         hb_font_t *font)
-  { func.push_clip_glyph (this, paint_data,
+  { func.धकेलो_clip_glyph (एतत्, paint_data,
                           glyph,
                           font,
-                          !user_data ? nullptr : user_data->push_clip_glyph); }
-  void push_clip_rectangle (void *paint_data,
-                           float xmin, float ymin, float xmax, float ymax)
-  { func.push_clip_rectangle (this, paint_data,
+                          !user_data ? nullptr : user_data->धकेलो_clip_glyph); }
+  शून्य धकेलो_clip_rectangle (शून्य *paint_data,
+                           भिन्न xmin, भिन्न ymin, भिन्न xmax, भिन्न ymax)
+  { func.धकेलो_clip_rectangle (एतत्, paint_data,
                               xmin, ymin, xmax, ymax,
-                              !user_data ? nullptr : user_data->push_clip_rectangle); }
-  hb_draw_funcs_t *push_clip_path_start (void *paint_data,
-                                         void **draw_data)
-  { return func.push_clip_path_start (this, paint_data, draw_data,
-                                      !user_data ? nullptr : user_data->push_clip_path_start); }
-  void push_clip_path_end (void *paint_data)
-  { func.push_clip_path_end (this, paint_data,
-                             !user_data ? nullptr : user_data->push_clip_path_end); }
-  void pop_clip (void *paint_data)
-  { func.pop_clip (this, paint_data,
-                   !user_data ? nullptr : user_data->pop_clip); }
-  void color (void *paint_data,
+                              !user_data ? nullptr : user_data->धकेलो_clip_rectangle); }
+  hb_draw_funcs_t *धकेलो_clip_path_start (शून्य *paint_data,
+                                         शून्य **draw_data)
+  { प्रत्यागम func.धकेलो_clip_path_start (एतत्, paint_data, draw_data,
+                                      !user_data ? nullptr : user_data->धकेलो_clip_path_start); }
+  शून्य धकेलो_clip_path_end (शून्य *paint_data)
+  { func.धकेलो_clip_path_end (एतत्, paint_data,
+                             !user_data ? nullptr : user_data->धकेलो_clip_path_end); }
+  शून्य निकालो_clip (शून्य *paint_data)
+  { func.निकालो_clip (एतत्, paint_data,
+                   !user_data ? nullptr : user_data->निकालो_clip); }
+  शून्य color (शून्य *paint_data,
               hb_bool_t is_foreground,
               hb_color_t color)
-  { func.color (this, paint_data,
+  { func.color (एतत्, paint_data,
                 is_foreground, color,
                 !user_data ? nullptr : user_data->color); }
-  void fill_glyph (void *paint_data,
+  शून्य fill_glyph (शून्य *paint_data,
                    hb_codepoint_t glyph,
                    hb_font_t *font,
                    hb_bool_t is_foreground,
                    hb_color_t color)
-  { func.fill_glyph (this, paint_data,
+  { func.fill_glyph (एतत्, paint_data,
                      glyph, font,
                      is_foreground, color,
                      !user_data ? nullptr : user_data->fill_glyph); }
-  bool image (void *paint_data,
+  तार्किक image (शून्य *paint_data,
               hb_blob_t *image,
-              unsigned width, unsigned height,
+              अचिन्हित width, अचिन्हित height,
               hb_tag_t format,
-              float slant,
+              भिन्न slant,
               hb_glyph_extents_t *extents)
-  { return func.image (this, paint_data,
+  { प्रत्यागम func.image (एतत्, paint_data,
                        image, width, height, format, slant, extents,
                        !user_data ? nullptr : user_data->image); }
-  void linear_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0,
-                        float x1, float y1,
-                        float x2, float y2)
-  { func.linear_gradient (this, paint_data,
-                          color_line, x0, y0, x1, y1, x2, y2,
+  शून्य linear_gradient (शून्य *paint_data,
+                        hb_color_पंक्ति_t *color_पंक्ति,
+                        भिन्न x0, भिन्न y0,
+                        भिन्न x1, भिन्न y1,
+                        भिन्न x2, भिन्न y2)
+  { func.linear_gradient (एतत्, paint_data,
+                          color_पंक्ति, x0, y0, x1, y1, x2, y2,
                           !user_data ? nullptr : user_data->linear_gradient); }
-  void radial_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0, float r0,
-                        float x1, float y1, float r1)
-  { func.radial_gradient (this, paint_data,
-                          color_line, x0, y0, r0, x1, y1, r1,
+  शून्य radial_gradient (शून्य *paint_data,
+                        hb_color_पंक्ति_t *color_पंक्ति,
+                        भिन्न x0, भिन्न y0, भिन्न r0,
+                        भिन्न x1, भिन्न y1, भिन्न r1)
+  { func.radial_gradient (एतत्, paint_data,
+                          color_पंक्ति, x0, y0, r0, x1, y1, r1,
                           !user_data ? nullptr : user_data->radial_gradient); }
-  void sweep_gradient (void *paint_data,
-                       hb_color_line_t *color_line,
-                       float x0, float y0,
-                       float start_angle,
-                       float end_angle)
-  { func.sweep_gradient (this, paint_data,
-                         color_line, x0, y0, start_angle, end_angle,
+  शून्य sweep_gradient (शून्य *paint_data,
+                       hb_color_पंक्ति_t *color_पंक्ति,
+                       भिन्न x0, भिन्न y0,
+                       भिन्न start_angle,
+                       भिन्न end_angle)
+  { func.sweep_gradient (एतत्, paint_data,
+                         color_पंक्ति, x0, y0, start_angle, end_angle,
                          !user_data ? nullptr : user_data->sweep_gradient); }
-  void push_group (void *paint_data)
-  { func.push_group (this, paint_data,
-                     !user_data ? nullptr : user_data->push_group); }
-  void push_group_for (void *paint_data,
+  शून्य धकेलो_group (शून्य *paint_data)
+  { func.धकेलो_group (एतत्, paint_data,
+                     !user_data ? nullptr : user_data->धकेलो_group); }
+  शून्य धकेलो_group_for (शून्य *paint_data,
                        hb_paint_composite_mode_t mode)
-  { func.push_group_for (this, paint_data,
+  { func.धकेलो_group_for (एतत्, paint_data,
                          mode,
-                         !user_data ? nullptr : user_data->push_group_for); }
-  void pop_group (void *paint_data,
+                         !user_data ? nullptr : user_data->धकेलो_group_for); }
+  शून्य निकालो_group (शून्य *paint_data,
                   hb_paint_composite_mode_t mode)
-  { func.pop_group (this, paint_data,
+  { func.निकालो_group (एतत्, paint_data,
                     mode,
-                    !user_data ? nullptr : user_data->pop_group); }
-  bool custom_palette_color (void *paint_data,
-                             unsigned int color_index,
+                    !user_data ? nullptr : user_data->निकालो_group); }
+  तार्किक custom_palette_color (शून्य *paint_data,
+                             अचिन्हित पूर्णाङ्क color_index,
                              hb_color_t *color)
-  { return func.custom_palette_color (this, paint_data,
+  { प्रत्यागम func.custom_palette_color (एतत्, paint_data,
                                       color_index,
                                       color,
                                       !user_data ? nullptr : user_data->custom_palette_color); }
-  bool set_budget (void *paint_data, int64_t budget)
+  तार्किक set_budget (शून्य *paint_data, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    यदि (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, paint_data, budget,
+    प्रत्यागम func.set_budget (एतत्, paint_data, budget,
 			    !user_data ? nullptr : user_data->set_budget);
   }
-  int64_t get_budget (void *paint_data)
-  { return func.get_budget (this, paint_data,
+  int64_t get_budget (शून्य *paint_data)
+  { प्रत्यागम func.get_budget (एतत्, paint_data,
 			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *paint_data)
-  { return func.get_budget_remaining (this, paint_data,
+  int64_t *get_budget_remaining_ptr (शून्य *paint_data)
+  { प्रत्यागम func.get_budget_remaining (एतत्, paint_data,
 				      !user_data ? nullptr : user_data->get_budget_remaining); }
 
 
   /* Internal specializations. */
 
-  void push_font_transform (void *paint_data,
-                            const hb_font_t *font)
+  शून्य धकेलो_font_transform (शून्य *paint_data,
+                            ध्रुव hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale, yscale = font->y_scale;
+    भिन्न upem = font->face->get_upem ();
+    पूर्णाङ्क xscale = font->x_scale, yscale = font->y_scale;
 
-    push_transform (paint_data,
+    धकेलो_transform (paint_data,
 		    xscale/upem, 0,
 		    0, yscale/upem,
 		    0, 0);
   }
 
-  void push_inverse_font_transform (void *paint_data,
-                                    const hb_font_t *font)
+  शून्य धकेलो_inverse_font_transform (शून्य *paint_data,
+                                    ध्रुव hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale ? font->x_scale : upem;
-    int yscale = font->y_scale ? font->y_scale : upem;
+    भिन्न upem = font->face->get_upem ();
+    पूर्णाङ्क xscale = font->x_scale ? font->x_scale : upem;
+    पूर्णाङ्क yscale = font->y_scale ? font->y_scale : upem;
 
-    push_transform (paint_data,
+    धकेलो_transform (paint_data,
 		    upem/xscale, 0,
 		    0, upem/yscale,
 		    0, 0);
   }
 
-  void push_transform (void *paint_data, hb_transform_t<float> t)
+  शून्य धकेलो_transform (शून्य *paint_data, hb_transform_t<भिन्न> t)
   {
-    push_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+    धकेलो_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   }
 
-  void push_translate (void *paint_data,
-                       float dx, float dy)
+  शून्य धकेलो_translate (शून्य *paint_data,
+                       भिन्न dx, भिन्न dy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::translation (dx, dy));
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::translation (dx, dy));
   }
 
-  void push_scale (void *paint_data,
-                   float sx, float sy)
+  शून्य धकेलो_scale (शून्य *paint_data,
+                   भिन्न sx, भिन्न sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling (sx, sy));
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::scaling (sx, sy));
   }
-  void push_scale_around_center (void *paint_data,
-				 float sx, float sy,
-				 float cx, float cy)
+  शून्य धकेलो_scale_around_center (शून्य *paint_data,
+				 भिन्न sx, भिन्न sy,
+				 भिन्न cx, भिन्न cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling_around_center (sx, sy, cx, cy));
-  }
-
-  void push_rotate (void *paint_data,
-                    float a)
-  {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation (a * HB_PI));
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::scaling_around_center (sx, sy, cx, cy));
   }
 
-  void push_rotate_around_center (void *paint_data,
-				  float a,
-				  float cx, float cy)
+  शून्य धकेलो_rotate (शून्य *paint_data,
+                    भिन्न a)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation_around_center (a * HB_PI, cx, cy));
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::rotation (a * HB_PI));
   }
 
-  void push_skew (void *paint_data,
-                  float sx, float sy)
+  शून्य धकेलो_rotate_around_center (शून्य *paint_data,
+				  भिन्न a,
+				  भिन्न cx, भिन्न cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing (-sx * HB_PI, sy * HB_PI));
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::rotation_around_center (a * HB_PI, cx, cy));
   }
-  void push_skew_around_center (void *paint_data,
-				float sx, float sy,
-				float cx, float cy)
+
+  शून्य धकेलो_skew (शून्य *paint_data,
+                  भिन्न sx, भिन्न sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::skewing (-sx * HB_PI, sy * HB_PI));
+  }
+  शून्य धकेलो_skew_around_center (शून्य *paint_data,
+				भिन्न sx, भिन्न sy,
+				भिन्न cx, भिन्न cy)
+  {
+    धकेलो_transform (paint_data,
+		    hb_transform_t<भिन्न>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
   }
 };
 DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
@@ -288,20 +288,20 @@ DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
 
 /* Linearly interpolate between two hb_color_t values, component-wise,
  * in byte-channel space with rounding. */
-static inline hb_color_t
-hb_color_lerp (hb_color_t c0, hb_color_t c1, float t)
+स्थिर अन्तःस्थ hb_color_t
+hb_color_lerp (hb_color_t c0, hb_color_t c1, भिन्न t)
 {
-  auto lerp = [&] (unsigned shift) -> unsigned {
-    unsigned v0 = (c0 >> shift) & 0xFF;
-    unsigned v1 = (c1 >> shift) & 0xFF;
-    float v = v0 + t * ((float) v1 - (float) v0) + 0.5f;
+  स्वतः lerp = [&] (अचिन्हित shift) -> अचिन्हित {
+    अचिन्हित v0 = (c0 >> shift) & 0xFF;
+    अचिन्हित v1 = (c1 >> shift) & 0xFF;
+    भिन्न v = v0 + t * ((भिन्न) v1 - (भिन्न) v0) + 0.5f;
     /* t may be outside [0,1] (or NaN) for malformed gradients;
      * keep the float-to-unsigned conversion defined. */
-    if (!(v > 0.f)) return 0;
-    if (v > 255.f) return 255;
-    return (unsigned) v;
+    यदि (!(v > 0.f)) प्रत्यागम 0;
+    यदि (v > 255.f) प्रत्यागम 255;
+    प्रत्यागम (अचिन्हित) v;
   };
-  return HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
+  प्रत्यागम HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
 }
 
 #endif /* HB_PAINT_HH */

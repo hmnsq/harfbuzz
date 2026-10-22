@@ -29,52 +29,52 @@
 #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
 #define OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+ढाँचा <typename Types, typename मूल्य = HBUINT16>
+संरचना RangeRecord
 {
   typename Types::HBGlyphID     first;          /* First GlyphID in the range */
   typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  मूल्य                         value;          /*मूल्य*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_SIZE_STATIC (2 * Types::size + मूल्य::static_size);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  पूर्णाङ्क cmp (hb_codepoint_t g) ध्रुव
+  { प्रत्यागम g < first ? -1 : g <= last ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_INTERNAL स्थिर पूर्णाङ्क cmp_range (ध्रुव शून्य *pa, ध्रुव शून्य *pb) {
+    ध्रुव RangeRecord *a = (ध्रुव RangeRecord *) pa;
+    ध्रुव RangeRecord *b = (ध्रुव RangeRecord *) pb;
+    यदि (a->first < b->first) प्रत्यागम -1;
+    यदि (a->first > b->first) प्रत्यागम +1;
+    यदि (a->last < b->last) प्रत्यागम -1;
+    यदि (a->last > b->last) प्रत्यागम +1;
+    यदि (a->value < b->value) प्रत्यागम -1;
+    यदि (a->value > b->value) प्रत्यागम +1;
+    प्रत्यागम 0;
   }
 
-  unsigned get_population () const
+  अचिन्हित get_population () ध्रुव
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    यदि (unlikely (last < first)) प्रत्यागम 0;
+    प्रत्यागम (last - first + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  तार्किक intersects (ध्रुव hb_set_t &glyphs) ध्रुव
+  { प्रत्यागम glyphs.intersects (first, last); }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  ढाँचा <typename set_t>
+  तार्किक collect_coverage (set_t *glyphs) ध्रुव
+  { प्रत्यागम glyphs->add_range (first, last); }
 };
 
 }
@@ -85,11 +85,11 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+बाह्य HB_INTERNAL ध्रुव अचिन्हित वर्ण _hb_Null_OT_RangeRecord[9];
+ढाँचा <typename Spec, typename मूल्य>
+संरचना Null<OT::Layout::Common::RangeRecord<Spec, मूल्य>> {
+  स्थिर OT::Layout::Common::RangeRecord<Spec, मूल्य> ध्रुव & get_null () {
+    प्रत्यागम *reinterpret_cast<ध्रुव OT::Layout::Common::RangeRecord<Spec, मूल्य> *> (_hb_Null_OT_RangeRecord);
   }
 };
 
