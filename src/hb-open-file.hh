@@ -26,11 +26,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OPEN_FILE_HH
-#define HB_OPEN_FILE_HH
+#अगर_अघोषित HB_OPEN_FILE_HH
+#घोषणा HB_OPEN_FILE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-head-table.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-head-table.hh"
 
 
 namespace OT {
@@ -46,149 +46,149 @@ namespace OT {
  * Organization of an OpenType Font
  */
 
-struct OpenTypeFontFile;
-struct OpenTypeOffsetTable;
-struct TTCHeader;
+काष्ठा OpenTypeFontFile;
+काष्ठा OpenTypeOffsetTable;
+काष्ठा TTCHeader;
 
 
-typedef struct TableRecord
+प्रकार काष्ठा TableRecord
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  पूर्णांक cmp (Tag t) स्थिर { वापस -t.cmp (tag); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL अटल पूर्णांक cmp (स्थिर व्योम *pa, स्थिर व्योम *pb)
   {
-    const TableRecord *a = (const TableRecord *) pa;
-    const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    स्थिर TableRecord *a = (स्थिर TableRecord *) pa;
+    स्थिर TableRecord *b = (स्थिर TableRecord *) pb;
+    वापस b->cmp (a->tag);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह));
   }
 
   Tag		tag;		/* 4-byte identifier. */
-  CheckSum	checkSum;	/* CheckSum for this table. */
+  Check_योग	check_योग;	/* CheckSum for this table. */
   Offset32	offset;		/* Offset from beginning of TrueType font
 				 * file. */
-  HBUINT32	length;		/* Length of this table. */
-  public:
-  DEFINE_SIZE_STATIC (16);
+  HBUINT32	लंबाई;		/* Length of this table. */
+  खुला:
+  DEFINE_आकार_STATIC (16);
 } OpenTypeTable;
 
-typedef struct OpenTypeOffsetTable
+प्रकार काष्ठा OpenTypeOffsetTable
 {
-  friend struct OpenTypeFontFile;
+  मित्र काष्ठा OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
-			       hb_tag_t     *table_tags /* OUT */) const
+  अचिन्हित पूर्णांक get_table_गिनती () स्थिर { वापस tables.len; }
+  स्थिर TableRecord& get_table (अचिन्हित पूर्णांक i) स्थिर
+  { वापस tables[i]; }
+  अचिन्हित पूर्णांक get_table_tags (अचिन्हित पूर्णांक  start_offset,
+			       अचिन्हित पूर्णांक *table_गिनती_2, /* IN/OUT */
+			       hb_tag_t     *table_tags /* OUT */) स्थिर
   {
-    if (table_count && table_tags)
+    अगर (table_गिनती_2 && table_tags)
     {
-      + tables.as_array ().sub_array (start_offset, table_count)
+      + tables.as_array ().sub_array (start_offset, table_गिनती_2)
       | hb_map (&TableRecord::tag)
-      | hb_sink (hb_array (table_tags, *table_count))
+      | hb_sink (hb_array (table_tags, *table_गिनती_2))
       ;
     }
-    return tables.len;
+    वापस tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  bool find_table_सूचकांक (hb_tag_t tag, अचिन्हित पूर्णांक *table_सूचकांक) स्थिर
   {
     Tag t;
     t = tag;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    अगर (tables.len < 16)
+      वापस tables.lfind (t, table_सूचकांक, HB_NOT_FOUND_STORE, सूचकांक::NOT_FOUND_सूचकांक);
+    अन्यथा
+      वापस tables.bfind (t, table_सूचकांक, HB_NOT_FOUND_STORE, सूचकांक::NOT_FOUND_सूचकांक);
   }
-  const TableRecord& get_table_by_tag (hb_tag_t tag) const
+  स्थिर TableRecord& get_table_by_tag (hb_tag_t tag) स्थिर
   {
-    unsigned int table_index;
-    find_table_index (tag, &table_index);
-    return get_table (table_index);
+    अचिन्हित पूर्णांक table_सूचकांक;
+    find_table_सूचकांक (tag, &table_सूचकांक);
+    वापस get_table (table_सूचकांक);
   }
 
-  public:
+  खुला:
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
   bool serialize (hb_serialize_context_t *c,
 		  hb_tag_t sfnt_tag,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (यह);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    अगर (unlikely (!c->extend_min (यह))) return_trace (false);
     /* Write sfntVersion (bytes 0..3). */
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
-    unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    अचिन्हित अंक_वस्तुएँ = hb_len (it);
+    अगर (unlikely (!tables.serialize (c, अंक_वस्तुएँ))) return_trace (false);
 
-    const char *dir_end = (const char *) c->head;
+    स्थिर अक्षर *dir_end = (स्थिर अक्षर *) c->शीर्ष_2;
     HBUINT32 *checksum_adjustment = nullptr;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
-    unsigned i = 0;
-    for (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
+    अचिन्हित i = 0;
+    क्रम (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
     {
       hb_blob_t *blob = entry.second;
-      unsigned len = blob->length;
+      अचिन्हित len = blob->लंबाई;
 
       /* Allocate room for the table and copy it. */
-      char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      अक्षर *start = (अक्षर *) c->allocate_आकार<व्योम> (len, false);
+      अगर (unlikely (!start)) वापस false;
 
       TableRecord &rec = tables.arrayZ[i];
       rec.tag = entry.first;
-      rec.length = len;
+      rec.लंबाई = len;
       rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
-				      (unsigned) ((char *) start - (char *) this),
+      अगर (unlikely (!c->check_assign (rec.offset,
+				      (अचिन्हित) ((अक्षर *) start - (अक्षर *) यह),
 				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
         return_trace (false);
 
-      if (likely (len))
-	hb_memcpy (start, blob->data, len);
+      अगर (likely (len))
+	hb_memcpy (start, blob->तथ्य, len);
 
       /* 4-byte alignment. */
       c->align (4);
-      const char *end = (const char *) c->head;
+      स्थिर अक्षर *end = (स्थिर अक्षर *) c->शीर्ष_2;
 
-      if (entry.first == HB_OT_TAG_head &&
-	  (unsigned) (end - start) >= head::static_size)
+      अगर (entry.first == HB_OT_TAG_शीर्ष &&
+	  (अचिन्हित) (end - start) >= शीर्ष_2::static_आकार)
       {
-	head *h = (head *) start;
-	checksum_adjustment = &h->checkSumAdjustment;
+	शीर्ष_2 *h = (शीर्ष_2 *) start;
+	checksum_adjustment = &h->check_योग_Adjustment;
 	*checksum_adjustment = 0;
       }
 
-      rec.checkSum.set_for_data (start, end - start);
+      rec.check_योग.set_for_तथ्य (start, end - start);
       i++;
     }
 
-    tables.qsort ();
+    tables.क्विक ();
 
-    if (checksum_adjustment)
+    अगर (checksum_adjustment)
     {
-      CheckSum checksum;
+      Check_योग checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
-      checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      checksum.set_for_तथ्य (यह, dir_end - (स्थिर अक्षर *) यह);
+      क्रम (अचिन्हित पूर्णांक i = 0; i < अंक_वस्तुएँ; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
-	checksum = checksum + rec.checkSum;
+	checksum = checksum + rec.check_योग;
       }
 
       *checksum_adjustment = 0xB1B0AFBAu - checksum;
@@ -197,18 +197,18 @@ typedef struct OpenTypeOffsetTable
     return_trace (true);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && tables.sanitize (c));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) && tables.sanitize (c));
   }
 
-  protected:
+  रक्षित:
   Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
-  BinSearchArrayOf<TableRecord>
+  Bin_खोज_Array_Of<TableRecord>
 		tables;
-  public:
-  DEFINE_SIZE_ARRAY (12, tables);
+  खुला:
+  DEFINE_आकार_ARRAY (12, tables);
 } OpenTypeFontFace;
 
 
@@ -216,96 +216,96 @@ typedef struct OpenTypeOffsetTable
  * TrueType Collections
  */
 
-struct TTCHeaderVersion1
+काष्ठा TTCHeaderVersion1
 {
-  friend struct TTCHeader;
+  मित्र काष्ठा TTCHeader;
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  अचिन्हित पूर्णांक get_face_गिनती () स्थिर { वापस get_directory_list ().len; }
+  स्थिर OpenTypeFontFace& get_face (अचिन्हित पूर्णांक i) स्थिर
+  { वापस यह+get_directory_list ()[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-#ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    TRACE_SANITIZE (यह);
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (version.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
+      अगर (unlikely (!table.sanitize_shallow (c)))
 	return_trace (false);
-      unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
+      अचिन्हित extra_आकार = version.major == 2 ? 12 : 0;
+      अगर (unlikely (!c->check_range (&table, table.get_आकार () + extra_आकार)))
 	return_trace (false);
-      const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
-								   table.get_size () + extra_size);
-      return_trace (table2.sanitize (c, this));
+      स्थिर DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
+								   table.get_आकार () + extra_आकार);
+      return_trace (table2.sanitize (c, यह));
     }
-#endif
-    return_trace (table.sanitize (c, this));
+#पूर्ण_अगर
+    return_trace (table.sanitize (c, यह));
   }
 
-  private:
-  const DirectoryList& get_directory_list () const
+  निजी:
+  स्थिर DirectoryList& get_directory_list () स्थिर
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (version.minor >= 1)
     {
-      unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      अचिन्हित extra_आकार = version.major == 2 ? 12 : 0;
+      वापस StructAtOffset<DirectoryList> (&table, table.get_आकार () + extra_आकार);
     }
-#endif
-    return table;
+#पूर्ण_अगर
+    वापस table;
   }
 
-  protected:
+  रक्षित:
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header. */
   DirectoryList
 		table;		/* Array of offsets to the OffsetTable for each font
 				 * from the beginning of the file */
-  public:
-  DEFINE_SIZE_ARRAY (12, table);
+  खुला:
+  DEFINE_आकार_ARRAY (12, table);
 };
 
-struct TTCHeader
+काष्ठा TTCHeader
 {
-  friend struct OpenTypeFontFile;
+  मित्र काष्ठा OpenTypeFontFile;
 
-  private:
+  निजी:
 
-  unsigned int get_face_count () const
+  अचिन्हित पूर्णांक get_face_गिनती () स्थिर
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    चयन (u.header.version.major) {
+    हाल 2: /* version 2 is compatible with version 1 */
+    हाल 1: hb_barrier (); वापस u.version1.get_face_गिनती ();
+    शेष:वापस 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  स्थिर OpenTypeFontFace& get_face (अचिन्हित पूर्णांक i) स्थिर
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    चयन (u.header.version.major) {
+    हाल 2: /* version 2 is compatible with version 1 */
+    हाल 1: hb_barrier (); वापस u.version1.get_face (i);
+    शेष:वापस Null (OpenTypeFontFace);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!u.header.version.sanitize (c))) return_trace (false);
     hb_barrier ();
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-    default:return_trace (true);
+    चयन (u.header.version.major) {
+    हाल 2: /* version 2 is compatible with version 1 */
+    हाल 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    शेष:return_trace (true);
     }
   }
 
-  protected:
-  union {
-  struct {
+  रक्षित:
+  जोड़ {
+  काष्ठा {
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header (1.0 or 2.0),
 				 * 0x00010000u or 0x00020000u */
@@ -320,22 +320,22 @@ struct TTCHeader
  * http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/MoreToolbox/MoreToolbox-99.html
  */
 
-struct ResourceRecord
+काष्ठा ResourceRecord
 {
-  const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  स्थिर OpenTypeFontFace & get_face (स्थिर व्योम *तथ्य_base) स्थिर
+  { वापस * reinterpret_cast<स्थिर OpenTypeFontFace *> ((तथ्य_base+offset).arrayZ); }
 
   bool sanitize (hb_sanitize_context_t *c,
-		 const void *data_base) const
+		 स्थिर व्योम *तथ्य_base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  offset.sanitize (c, data_base) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
+		  offset.sanitize (c, तथ्य_base) &&
 		  hb_barrier () &&
-		  get_face (data_base).sanitize (c));
+		  get_face (तथ्य_base).sanitize (c));
   }
 
-  protected:
+  रक्षित:
   HBUINT16	id;		/* Resource ID. */
   HBINT16	nameOffset;	/* Offset from beginning of resource name list
 				 * to resource name, -1 means there is none. */
@@ -344,91 +344,91 @@ struct ResourceRecord
 		offset;		/* Offset from beginning of data block to
 				 * data for this resource */
   HBUINT32	reserved;	/* Reserved for handle to resource */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  खुला:
+  DEFINE_आकार_STATIC (12);
 };
 
-#define HB_TAG_sfnt HB_TAG ('s','f','n','t')
+#घोषणा HB_TAG_sfnt HB_TAG ('s','f','n','t')
 
-struct ResourceTypeRecord
+काष्ठा ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  अचिन्हित पूर्णांक get_resource_गिनती () स्थिर
+  { वापस tag == HB_TAG_sfnt ? res_गिनती_M1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  bool is_sfnt () स्थिर { वापस tag == HB_TAG_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
-					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  स्थिर ResourceRecord& get_resource_record (अचिन्हित पूर्णांक i,
+					     स्थिर व्योम *type_base) स्थिर
+  { वापस (type_base+resourcesZ).as_array (get_resource_गिनती ())[i]; }
 
   bool sanitize (hb_sanitize_context_t *c,
-		 const void *type_base,
-		 const void *data_base) const
+		 स्थिर व्योम *type_base,
+		 स्थिर व्योम *तथ्य_base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
 		  resourcesZ.sanitize (c, type_base,
-				       get_resource_count (),
-				       data_base));
+				       get_resource_गिनती (),
+				       तथ्य_base));
   }
 
-  protected:
+  रक्षित:
   Tag		tag;		/* Resource type. */
-  HBUINT16	resCountM1;	/* Number of resources minus 1. */
+  HBUINT16	res_गिनती_M1;	/* Number of resources minus 1. */
   NNOffset16To<UnsizedArrayOf<ResourceRecord>>
 		resourcesZ;	/* Offset from beginning of resource type list
 				 * to reference item list for this type. */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  खुला:
+  DEFINE_आकार_STATIC (8);
 };
 
-struct ResourceMap
+काष्ठा ResourceMap
 {
-  unsigned int get_face_count () const
+  अचिन्हित पूर्णांक get_face_गिनती () स्थिर
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    अचिन्हित पूर्णांक गिनती = get_type_गिनती ();
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      स्थिर ResourceTypeRecord& type = get_type_record (i);
+      अगर (type.is_sfnt ())
+	वापस type.get_resource_गिनती ();
     }
-    return 0;
+    वापस 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    const void *data_base) const
+  स्थिर OpenTypeFontFace& get_face (अचिन्हित पूर्णांक idx,
+				    स्थिर व्योम *तथ्य_base) स्थिर
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    अचिन्हित पूर्णांक गिनती = get_type_गिनती ();
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
+      स्थिर ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      अगर (type.is_sfnt () && idx < type.get_resource_गिनती ())
+	वापस type.get_resource_record (idx, &(यह+typeList)).get_face (तथ्य_base);
     }
-    return Null (OpenTypeFontFace);
+    वापस Null (OpenTypeFontFace);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
+  bool sanitize (hb_sanitize_context_t *c, स्थिर व्योम *तथ्य_base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
-		  typeList.sanitize (c, this,
-				     &(this+typeList),
-				     data_base));
+		  typeList.sanitize (c, यह,
+				     &(यह+typeList),
+				     तथ्य_base));
   }
 
-  private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  निजी:
+  अचिन्हित पूर्णांक get_type_गिनती () स्थिर { वापस (यह+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  स्थिर ResourceTypeRecord& get_type_record (अचिन्हित पूर्णांक i) स्थिर
+  { वापस (यह+typeList)[i]; }
 
-  protected:
+  रक्षित:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
   HBUINT32	reserved1;	/* Reserved for handle to next resource map */
   HBUINT16	resreved2;	/* Reserved for file reference number */
@@ -438,53 +438,53 @@ struct ResourceMap
 				 * resource type list */
   Offset16	nameList;	/* Offset from beginning of map to
 				 * resource name list */
-  public:
-  DEFINE_SIZE_STATIC (28);
+  खुला:
+  DEFINE_आकार_STATIC (28);
 };
 
-struct ResourceForkHeader
+काष्ठा ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  अचिन्हित पूर्णांक get_face_गिनती () स्थिर
+  { वापस (यह+map).get_face_गिनती (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  स्थिर OpenTypeFontFace& get_face (अचिन्हित पूर्णांक idx,
+				    अचिन्हित पूर्णांक *base_offset = nullptr) स्थिर
   {
-    const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
-      *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    स्थिर OpenTypeFontFace &face = (यह+map).get_face (idx, &(यह+तथ्य));
+    अगर (base_offset)
+      *base_offset = (स्थिर अक्षर *) &face - (स्थिर अक्षर *) यह;
+    वापस face;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
-		  data.sanitize (c, this, dataLen) &&
-		  map.sanitize (c, this, &(this+data)));
+		  तथ्य.sanitize (c, यह, तथ्य_Len) &&
+		  map.sanitize (c, यह, &(यह+तथ्य)));
   }
 
-  protected:
+  रक्षित:
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
-		data;		/* Offset from beginning of resource fork
+		तथ्य;		/* Offset from beginning of resource fork
 				 * to resource data */
   NNOffset32To<ResourceMap >
 		map;		/* Offset from beginning of resource fork
 				 * to resource map */
-  HBUINT32	dataLen;	/* Length of resource data */
+  HBUINT32	तथ्य_Len;	/* Length of resource data */
   HBUINT32	mapLen;		/* Length of resource map */
-  public:
-  DEFINE_SIZE_STATIC (16);
+  खुला:
+  DEFINE_आकार_STATIC (16);
 };
 
 /*
  * OpenType Font File
  */
 
-struct OpenTypeFontFile
+काष्ठा OpenTypeFontFile
 {
-  enum {
+  क्रमागत {
     CFFTag		= HB_TAG ('O','T','T','O'), /* OpenType with Postscript outlines */
     TrueTypeTag		= HB_TAG ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
     TTCTag		= HB_TAG ('t','t','c','f'), /* TrueType Collection */
@@ -493,79 +493,79 @@ struct OpenTypeFontFile
     Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_tag_t get_tag () स्थिर { वापस u.tag.v; }
 
-  unsigned int get_face_count () const
+  अचिन्हित पूर्णांक get_face_गिनती () स्थिर
   {
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    चयन (u.tag.v) {
+    हाल CFFTag:	/* All the non-collection tags */
+    हाल TrueTag:
+    हाल Typ1Tag:
+    हाल TrueTypeTag:	वापस 1;
+    हाल TTCTag:	hb_barrier (); वापस u.ttcHeader.get_face_गिनती ();
+    हाल DFontTag:	hb_barrier (); वापस u.rfHeader.get_face_गिनती ();
+    शेष:		वापस 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  स्थिर OpenTypeFontFace& get_face (अचिन्हित पूर्णांक i, अचिन्हित पूर्णांक *base_offset = nullptr) स्थिर
   {
-    if (base_offset)
+    अगर (base_offset)
       *base_offset = 0;
-    switch (u.tag.v) {
+    चयन (u.tag.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
      * Apple dfont container is a container of SFNT's.  So each SFNT is a
      * non-TTC, but the index is more than zero. */
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    हाल CFFTag:	/* All the non-collection tags */
+    हाल TrueTag:
+    हाल Typ1Tag:
+    हाल TrueTypeTag:	hb_barrier (); वापस u.fontFace;
+    हाल TTCTag:	hb_barrier (); वापस u.ttcHeader.get_face (i);
+    हाल DFontTag:	hb_barrier (); वापस u.rfHeader.get_face (i, base_offset);
+    शेष:		वापस Null (OpenTypeFontFace);
     }
   }
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
   bool serialize_single (hb_serialize_context_t *c,
 			 hb_tag_t sfnt_tag,
-			 Iterator items)
+			 Iterator वस्तुएँ)
   {
-    TRACE_SERIALIZE (this);
-    assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    return_trace (u.fontFace.serialize (c, sfnt_tag, items));
+    TRACE_SERIALIZE (यह);
+    निश्चित (sfnt_tag != TTCTag);
+    अगर (unlikely (!c->extend_min (यह))) return_trace (false);
+    return_trace (u.fontFace.serialize (c, sfnt_tag, वस्तुएँ));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
     hb_barrier ();
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
-    case TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
-    case DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
-    default:		return_trace (true);
+    चयन (u.tag.v) {
+    हाल CFFTag:	/* All the non-collection tags */
+    हाल TrueTag:
+    हाल Typ1Tag:
+    हाल TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
+    हाल TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
+    हाल DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
+    शेष:		return_trace (true);
     }
   }
 
-  protected:
-  union {
-  struct { Tag v; }	tag;		/* 4-byte identifier. */
+  रक्षित:
+  जोड़ {
+  काष्ठा { Tag v; }	tag;		/* 4-byte identifier. */
   OpenTypeFontFace	fontFace;
   TTCHeader		ttcHeader;
   ResourceForkHeader	rfHeader;
   } u;
-  public:
-  DEFINE_SIZE_UNION (4, tag.v);
+  खुला:
+  DEFINE_आकार_UNION (4, tag.v);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OPEN_FILE_HH */
+#पूर्ण_अगर /* HB_OPEN_FILE_HH */

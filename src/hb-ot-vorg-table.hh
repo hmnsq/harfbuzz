@@ -24,178 +24,178 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_VORG_TABLE_HH
-#define HB_OT_VORG_TABLE_HH
+#अगर_अघोषित HB_OT_VORG_TABLE_HH
+#घोषणा HB_OT_VORG_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-dual.hh"
 
 /*
  * VORG -- Vertical Origin Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/vorg
  */
-#define HB_OT_TAG_VORG HB_TAG('V','O','R','G')
+#घोषणा HB_OT_TAG_VORG HB_TAG('V','O','R','G')
 
 namespace OT {
 
-template <typename Types>
-struct VertOriginMetric
+ढाँचा <typename Types>
+काष्ठा VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  पूर्णांक cmp (hb_codepoint_t g) स्थिर { वापस glyph.cmp (g); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह));
   }
 
-  public:
+  खुला:
   typename Types::HBGlyphID
 		glyph;
   FWORD		vertOriginY;
 
-  public:
-  DEFINE_SIZE_STATIC (Types::HBGlyphID::static_size + FWORD::static_size);
+  खुला:
+  DEFINE_आकार_STATIC (Types::HBGlyphID::static_आकार + FWORD::static_आकार);
 };
 
-template <typename Types>
-struct VORGFormat1_2
+ढाँचा <typename Types>
+काष्ठा VORGFormat1_2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_तथ्य () स्थिर { वापस version.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  पूर्णांक get_y_origin (hb_codepoint_t glyph) स्थिर
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    अचिन्हित पूर्णांक i;
+    अगर (!vertYOrigins.bfind (glyph, &i))
+      वापस defaultVertOriginY;
+    वापस vertYOrigins[i].vertOriginY;
   }
 
-  template <typename Iterator,
+  ढाँचा <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  व्योम serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    अगर (unlikely (!c->extend_min ((*यह))))  वापस;
 
-    this->version.major = Types::size == 2 ? 1 : 2;
-    this->version.minor = 0;
+    यह->version.major = Types::आकार == 2 ? 1 : 2;
+    यह->version.minor = 0;
 
-    this->defaultVertOriginY = defaultVertOriginY;
-    this->vertYOrigins.len = it.len ();
+    यह->defaultVertOriginY = defaultVertOriginY;
+    यह->vertYOrigins.len = it.len ();
 
     c->copy_all (it);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
-    auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    TRACE_SUBSET (यह);
+    स्वतः *vorg_अभाज्य = c->serializer->start_embed<VORGFormat1_2> ();
+    अगर (unlikely (!c->serializer->check_success (vorg_अभाज्य))) return_trace (false);
 
-    auto it =
+    स्वतः it =
     + vertYOrigins.as_array ()
     | hb_filter (c->plan->glyphset (), &VertOriginMetric<Types>::glyph)
-    | hb_map ([&] (const VertOriginMetric<Types>& _)
+    | hb_map ([&] (स्थिर VertOriginMetric<Types>& _)
 	      {
-		hb_codepoint_t new_glyph = HB_SET_VALUE_INVALID;
+		hb_codepoint_t new_glyph = HB_SET_मूल्य_INVALID;
 		c->plan->new_gid_for_old_gid (_.glyph, &new_glyph);
 
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		वापस metric;
 	      })
     ;
 
     /* serialize the new table */
-    vorg_prime->serialize (c->serializer, it, defaultVertOriginY);
+    vorg_अभाज्य->serialize (c->serializer, it, defaultVertOriginY);
     return_trace (true);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
-		  version.major == (Types::size == 2 ? 1 : 2) &&
+		  version.major == (Types::आकार == 2 ? 1 : 2) &&
 		  vertYOrigins.sanitize (c));
   }
 
-  protected:
+  रक्षित:
   FixedVersion<>version;	/* Version of VORG table. */
   FWORD		defaultVertOriginY;
 				/* The default vertical origin. */
-  typename Types::template SortedArrayOf<VertOriginMetric<Types>>
+  typename Types::ढाँचा SortedArrayOf<VertOriginMetric<Types>>
 		vertYOrigins;	/* The array of vertical origins. */
 
-  public:
-  DEFINE_SIZE_ARRAY(6 + Types::HBUINT::static_size, vertYOrigins);
+  खुला:
+  DEFINE_आकार_ARRAY(6 + Types::HBUINT::static_आकार, vertYOrigins);
 };
 
-struct VORG
+काष्ठा VORG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  bool has_तथ्य () स्थिर { वापस u.version.v.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  पूर्णांक get_y_origin (hb_codepoint_t glyph) स्थिर
   {
-    switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
-#ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
-#endif
-    default: return 0;
+    चयन (u.version.v.major) {
+    हाल 1: वापस u.version1.get_y_origin (glyph);
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 2: वापस u.version2.get_y_origin (glyph);
+#पूर्ण_अगर
+    शेष: वापस 0;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
-    switch (u.version.v.major) {
-    case 1: return_trace (u.version1.subset (c));
-#ifndef HB_NO_BEYOND_64K
-    case 2: return_trace (u.version2.subset (c));
-#endif
-    default: return_trace (false);
+    TRACE_SUBSET (यह);
+    चयन (u.version.v.major) {
+    हाल 1: return_trace (u.version1.subset (c));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 2: return_trace (u.version2.subset (c));
+#पूर्ण_अगर
+    शेष: return_trace (false);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!u.version.v.sanitize (c))) return_trace (false);
     hb_barrier ();
-    switch (u.version.v.major) {
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (u.version2.sanitize (c));
-#endif
-    default: return_trace (false);
+    चयन (u.version.v.major) {
+    हाल 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 2: hb_barrier (); return_trace (u.version2.sanitize (c));
+#पूर्ण_अगर
+    शेष: return_trace (false);
     }
   }
 
-  protected:
-  union {
-  struct {
+  रक्षित:
+  जोड़ {
+  काष्ठा {
   FixedVersion<>v;		/* Version of VORG table. */
   }				version;
   VORGFormat1_2<Layout::SmallTypes>version1;
-#ifndef HB_NO_BEYOND_64K
+#अगर_अघोषित HB_NO_BEYOND_64K
   VORGFormat1_2<Layout::MediumTypes>version2;
-#endif
+#पूर्ण_अगर
   } u;
 
-  public:
-  DEFINE_SIZE_UNION (4, version.v);
+  खुला:
+  DEFINE_आकार_UNION (4, version.v);
 };
 } /* namespace OT */
 
-#endif /* HB_OT_VORG_TABLE_HH */
+#पूर्ण_अगर /* HB_OT_VORG_TABLE_HH */

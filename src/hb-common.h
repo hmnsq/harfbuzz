@@ -26,62 +26,62 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_COMMON_H
-#define HB_COMMON_H
+#अगर_अघोषित HB_COMMON_H
+#घोषणा HB_COMMON_H
 
-#ifndef HB_EXTERN
-#define HB_EXTERN extern
-#endif
+#अगर_अघोषित HB_EXTERN
+#घोषणा HB_EXTERN बाह्य
+#पूर्ण_अगर
 
-#ifndef HB_BEGIN_DECLS
+#अगर_अघोषित HB_BEGIN_DECLS
 # ifdef __cplusplus
-#  define HB_BEGIN_DECLS	extern "C" {
+#  define HB_BEGIN_DECLS	बाह्य "C" {
 #  define HB_END_DECLS		}
-# else /* !__cplusplus */
+# अन्यथा /* !__cplusplus */
 #  define HB_BEGIN_DECLS
 #  define HB_END_DECLS
 # endif /* !__cplusplus */
-#endif
+#पूर्ण_अगर
 
-#if defined (_AIX)
+#अगर defined (_AIX)
 #  include <sys/inttypes.h>
-#elif defined (_MSC_VER) && _MSC_VER < 1600
+#या_अगर defined (_MSC_VER) && _MSC_VER < 1600
 /* VS 2010 (_MSC_VER 1600) has stdint.h   */
-typedef __int8 int8_t;
-typedef unsigned __int8 uint8_t;
-typedef __int16 int16_t;
-typedef unsigned __int16 uint16_t;
-typedef __int32 int32_t;
-typedef unsigned __int32 uint32_t;
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-#elif defined (_MSC_VER) && _MSC_VER < 1800
+प्रकार __int8 int8_t;
+प्रकार अचिन्हित __int8 uint8_t;
+प्रकार __int16 int16_t;
+प्रकार अचिन्हित __int16 uint16_t;
+प्रकार __int32 int32_t;
+प्रकार अचिन्हित __int32 uint32_t;
+प्रकार __int64 int64_t;
+प्रकार अचिन्हित __int64 uint64_t;
+#या_अगर defined (_MSC_VER) && _MSC_VER < 1800
 /* VS 2013 (_MSC_VER 1800) has inttypes.h */
 #  include <stdint.h>
-#else
+#अन्यथा
 #  include <inttypes.h>
-#endif
-#include <stddef.h>
+#पूर्ण_अगर
+#समावेश <stddef.h>
 
-#if defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
-#define HB_DEPRECATED __attribute__((__deprecated__))
-#elif defined(_MSC_VER) && (_MSC_VER >= 1300)
-#define HB_DEPRECATED __declspec(deprecated)
-#else
-#define HB_DEPRECATED
-#endif
+#अगर defined(__GNUC__) && ((__GNUC__ > 3) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+#घोषणा HB_DEPRECATED __attribute__((__deprecated__))
+#या_अगर defined(_MSC_VER) && (_MSC_VER >= 1300)
+#घोषणा HB_DEPRECATED __declspec(deprecated)
+#अन्यथा
+#घोषणा HB_DEPRECATED
+#पूर्ण_अगर
 
-#if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
-#define HB_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
-#elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
-#define HB_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
-#else
-#define HB_DEPRECATED_FOR(f) HB_DEPRECATED
-#endif
+#अगर defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
+#घोषणा HB_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+#या_अगर defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
+#घोषणा HB_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
+#अन्यथा
+#घोषणा HB_DEPRECATED_FOR(f) HB_DEPRECATED
+#पूर्ण_अगर
 
 
 HB_BEGIN_DECLS
@@ -92,7 +92,7 @@ HB_BEGIN_DECLS
  * Data type for booleans.
  *
  **/
-typedef int hb_bool_t;
+प्रकार पूर्णांक hb_bool_t;
 
 /**
  * HB_BUDGET_DEFAULT:
@@ -101,7 +101,7 @@ typedef int hb_bool_t;
  *
  * Since: 14.5.0
  **/
-#define HB_BUDGET_DEFAULT ((int64_t) (-0x7FFFFFFFFFFFFFFF - 1))
+#घोषणा HB_BUDGET_DEFAULT ((int64_t) (-0x7FFFFFFFFFFFFFFF - 1))
 
 /**
  * HB_BUDGET_UNLIMITED:
@@ -111,7 +111,7 @@ typedef int hb_bool_t;
  *
  * Since: 14.5.0
  **/
-#define HB_BUDGET_UNLIMITED ((int64_t) 0x7FFFFFFFFFFFFFFF)
+#घोषणा HB_BUDGET_UNLIMITED ((int64_t) 0x7FFFFFFFFFFFFFFF)
 
 /**
  * hb_codepoint_t:
@@ -120,7 +120,7 @@ typedef int hb_bool_t;
  * used to hold glyph IDs.
  *
  **/
-typedef uint32_t hb_codepoint_t;
+प्रकार uint32_t hb_codepoint_t;
 
 /**
  * HB_CODEPOINT_INVALID:
@@ -129,7 +129,7 @@ typedef uint32_t hb_codepoint_t;
  *
  * Since: 8.0.0
  */
-#define HB_CODEPOINT_INVALID ((hb_codepoint_t) -1)
+#घोषणा HB_CODEPOINT_INVALID ((hb_codepoint_t) -1)
 
 /**
  * hb_position_t:
@@ -139,16 +139,16 @@ typedef uint32_t hb_codepoint_t;
  * stored as tuples of #hb_position_t's.
  *
  **/
-typedef int32_t hb_position_t;
+प्रकार int32_t hb_position_t;
 /**
  * hb_mask_t:
  * 
  * Data type for bitmasks.
  *
  **/
-typedef uint32_t hb_mask_t;
+प्रकार uint32_t hb_mask_t;
 
-typedef union _hb_var_int_t {
+प्रकार जोड़ _hb_var_int_t {
   uint32_t u32;
   int32_t i32;
   uint16_t u16[2];
@@ -157,15 +157,15 @@ typedef union _hb_var_int_t {
   int8_t i8[4];
 } hb_var_int_t;
 
-typedef union _hb_var_num_t {
-  float f;
+प्रकार जोड़ hb_var_अंक_t {
+  भग्न f;
   uint32_t u32;
   int32_t i32;
   uint16_t u16[2];
   int16_t i16[2];
   uint8_t u8[4];
   int8_t i8[4];
-} hb_var_num_t;
+} hb_var_अंक_t_2;
 
 
 /* hb_tag_t */
@@ -181,7 +181,7 @@ typedef union _hb_var_num_t {
  * human-readable names.
  *
  **/
-typedef uint32_t hb_tag_t;
+प्रकार uint32_t hb_tag_t;
 
 /**
  * HB_TAG:
@@ -193,7 +193,7 @@ typedef uint32_t hb_tag_t;
  * Constructs an #hb_tag_t from four character literals.
  *
  **/
-#define HB_TAG(c1,c2,c3,c4) ((hb_tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
+#घोषणा HB_TAG(c1,c2,c3,c4) ((hb_tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
 
 /**
  * HB_UNTAG:
@@ -204,14 +204,14 @@ typedef uint32_t hb_tag_t;
  * Since: 0.6.0
  *
  **/
-#define HB_UNTAG(tag)   (uint8_t)(((tag)>>24)&0xFF), (uint8_t)(((tag)>>16)&0xFF), (uint8_t)(((tag)>>8)&0xFF), (uint8_t)((tag)&0xFF)
+#घोषणा HB_UNTAG(tag)   (uint8_t)(((tag)>>24)&0xFF), (uint8_t)(((tag)>>16)&0xFF), (uint8_t)(((tag)>>8)&0xFF), (uint8_t)((tag)&0xFF)
 
 /**
  * HB_TAG_NONE:
  *
  * Unset #hb_tag_t.
  */
-#define HB_TAG_NONE HB_TAG(0,0,0,0)
+#घोषणा HB_TAG_NONE HB_TAG(0,0,0,0)
 /**
  * HB_TAG_MAX:
  *
@@ -219,7 +219,7 @@ typedef uint32_t hb_tag_t;
  *
  * Since: 0.9.26
  */
-#define HB_TAG_MAX HB_TAG(0xff,0xff,0xff,0xff)
+#घोषणा HB_TAG_MAX HB_TAG(0xff,0xff,0xff,0xff)
 /**
  * HB_TAG_MAX_SIGNED:
  *
@@ -227,15 +227,15 @@ typedef uint32_t hb_tag_t;
  *
  * Since: 0.9.33
  */
-#define HB_TAG_MAX_SIGNED HB_TAG(0x7f,0xff,0xff,0xff)
+#घोषणा HB_TAG_MAX_SIGNED HB_TAG(0x7f,0xff,0xff,0xff)
 
 /* len=-1 means str is NUL-terminated. */
 HB_EXTERN hb_tag_t
-hb_tag_from_string (const char *str, int len);
+hb_tag_from_string (स्थिर अक्षर *str, पूर्णांक len);
 
 /* buf should have 4 bytes. */
-HB_EXTERN void
-hb_tag_to_string (hb_tag_t tag, char *buf);
+HB_EXTERN व्योम
+hb_tag_to_string (hb_tag_t tag, अक्षर *buf);
 
 
 /**
@@ -253,7 +253,7 @@ hb_tag_to_string (hb_tag_t tag, char *buf);
  * HB_DIRECTION_IS_HORIZONTAL() or HB_DIRECTION_IS_VERTICAL().
  *
  */
-typedef enum {
+प्रकार क्रमागत {
   HB_DIRECTION_INVALID = 0,
   HB_DIRECTION_LTR = 4,
   HB_DIRECTION_RTL,
@@ -263,9 +263,9 @@ typedef enum {
 
 /* len=-1 means str is NUL-terminated */
 HB_EXTERN hb_direction_t
-hb_direction_from_string (const char *str, int len);
+hb_direction_from_string (स्थिर अक्षर *str, पूर्णांक len);
 
-HB_EXTERN const char *
+HB_EXTERN स्थिर अक्षर *
 hb_direction_to_string (hb_direction_t direction);
 
 /**
@@ -275,7 +275,7 @@ hb_direction_to_string (hb_direction_t direction);
  * Tests whether a text direction is valid.
  *
  **/
-#define HB_DIRECTION_IS_VALID(dir)	((((unsigned int) (dir)) & ~3U) == 4)
+#घोषणा HB_DIRECTION_IS_VALID(dir)	((((अचिन्हित पूर्णांक) (dir)) & ~3U) == 4)
 /* Direction must be valid for the following */
 /**
  * HB_DIRECTION_IS_HORIZONTAL:
@@ -285,7 +285,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
+#घोषणा HB_DIRECTION_IS_HORIZONTAL(dir)	((((अचिन्हित पूर्णांक) (dir)) & ~1U) == 4)
 /**
  * HB_DIRECTION_IS_VERTICAL:
  * @dir: #hb_direction_t to test
@@ -294,7 +294,7 @@ hb_direction_to_string (hb_direction_t direction);
  * that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
+#घोषणा HB_DIRECTION_IS_VERTICAL(dir)	((((अचिन्हित पूर्णांक) (dir)) & ~1U) == 6)
 /**
  * HB_DIRECTION_IS_FORWARD:
  * @dir: #hb_direction_t to test
@@ -303,7 +303,7 @@ hb_direction_to_string (hb_direction_t direction);
  * top to bottom). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
+#घोषणा HB_DIRECTION_IS_FORWARD(dir)	((((अचिन्हित पूर्णांक) (dir)) & ~2U) == 4)
 /**
  * HB_DIRECTION_IS_BACKWARD:
  * @dir: #hb_direction_t to test
@@ -312,7 +312,7 @@ hb_direction_to_string (hb_direction_t direction);
  * bottom to top). Requires that the direction be valid.
  *
  **/
-#define HB_DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
+#घोषणा HB_DIRECTION_IS_BACKWARD(dir)	((((अचिन्हित पूर्णांक) (dir)) & ~2U) == 5)
 /**
  * HB_DIRECTION_REVERSE:
  * @dir: #hb_direction_t to reverse
@@ -321,7 +321,7 @@ hb_direction_to_string (hb_direction_t direction);
  * be valid.
  *
  **/
-#define HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((unsigned int) (dir)) ^ 1))
+#घोषणा HB_DIRECTION_REVERSE(dir)	((hb_direction_t) (((अचिन्हित पूर्णांक) (dir)) ^ 1))
 
 
 /* hb_language_t */
@@ -333,12 +333,12 @@ hb_direction_to_string (hb_direction_t direction);
  * language tag.
  *
  */
-typedef const struct hb_language_impl_t *hb_language_t;
+प्रकार स्थिर काष्ठा hb_language_impl_t *hb_language_t;
 
 HB_EXTERN hb_language_t
-hb_language_from_string (const char *str, int len);
+hb_language_from_string (स्थिर अक्षर *str, पूर्णांक len);
 
-HB_EXTERN const char *
+HB_EXTERN स्थिर अक्षर *
 hb_language_to_string (hb_language_t language);
 
 /**
@@ -348,16 +348,16 @@ hb_language_to_string (hb_language_t language);
  *
  * Since: 0.6.0
  */
-#define HB_LANGUAGE_INVALID ((hb_language_t) 0)
+#घोषणा HB_LANGUAGE_INVALID ((hb_language_t) 0)
 
 HB_EXTERN hb_language_t
-hb_language_get_default (void);
+hb_language_get_default (व्योम);
 
 HB_EXTERN hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific);
 
-#include "hb-script-list.h"
+#समावेश "hb-script-list.h"
 
 /* Script functions */
 
@@ -365,7 +365,7 @@ HB_EXTERN hb_script_t
 hb_script_from_iso15924_tag (hb_tag_t tag);
 
 HB_EXTERN hb_script_t
-hb_script_from_string (const char *str, int len);
+hb_script_from_string (स्थिर अक्षर *str, पूर्णांक len);
 
 HB_EXTERN hb_tag_t
 hb_script_to_iso15924_tag (hb_script_t script);
@@ -382,10 +382,10 @@ hb_script_get_horizontal_direction (hb_script_t script);
  * Data structure for holding user-data keys.
  *
  **/
-typedef struct hb_user_data_key_t {
+प्रकार काष्ठा hb_user_तथ्य_कुंजी_t {
   /*< private >*/
-  char unused;
-} hb_user_data_key_t;
+  अक्षर unused;
+} hb_user_तथ्य_कुंजी_t;
 
 /**
  * hb_destroy_func_t:
@@ -394,7 +394,7 @@ typedef struct hb_user_data_key_t {
  * A virtual method for destroy user-data callbacks.
  *
  */
-typedef void (*hb_destroy_func_t) (void *user_data);
+प्रकार व्योम (*hb_destroy_func_t) (व्योम *user_तथ्य);
 
 
 /* Font features and variations. */
@@ -407,7 +407,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  *
  * Since: 2.0.0
  */
-#define HB_FEATURE_GLOBAL_START	0
+#घोषणा HB_FEATURE_GLOBAL_START	0
 
 /**
  * HB_FEATURE_GLOBAL_END:
@@ -417,7 +417,7 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  *
  * Since: 2.0.0
  */
-#define HB_FEATURE_GLOBAL_END	((unsigned int) -1)
+#घोषणा HB_FEATURE_GLOBAL_END	((अचिन्हित पूर्णांक) -1)
 
 /**
  * hb_feature_t:
@@ -434,20 +434,20 @@ typedef void (*hb_destroy_func_t) (void *user_data);
  * Setting start to #HB_FEATURE_GLOBAL_START and end to #HB_FEATURE_GLOBAL_END
  * specifies that the feature always applies to the entire buffer.
  */
-typedef struct hb_feature_t {
+प्रकार काष्ठा hb_feature_t {
   hb_tag_t      tag;
-  uint32_t      value;
-  unsigned int  start;
-  unsigned int  end;
+  uint32_t      मूल्य_2;
+  अचिन्हित पूर्णांक  start;
+  अचिन्हित पूर्णांक  end;
 } hb_feature_t;
 
 HB_EXTERN hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (स्थिर अक्षर *str, पूर्णांक len,
 			hb_feature_t *feature);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size);
+		      अक्षर *buf, अचिन्हित पूर्णांक आकार);
 
 /**
  * hb_variation_t:
@@ -460,18 +460,18 @@ hb_feature_to_string (hb_feature_t *feature,
  * 
  * Since: 1.4.2
  */
-typedef struct hb_variation_t {
+प्रकार काष्ठा hb_variation_t {
   hb_tag_t tag;
-  float    value;
+  भग्न    मूल्य_2;
 } hb_variation_t;
 
 HB_EXTERN hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (स्थिर अक्षर *str, पूर्णांक len,
 			  hb_variation_t *variation);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size);
+			अक्षर *buf, अचिन्हित पूर्णांक आकार);
 
 /**
  * hb_color_t:
@@ -481,7 +481,7 @@ hb_variation_to_string (hb_variation_t *variation,
  *
  * Since: 2.1.0
  */
-typedef uint32_t hb_color_t;
+प्रकार uint32_t hb_color_t;
 
 /**
  * HB_COLOR:
@@ -494,23 +494,23 @@ typedef uint32_t hb_color_t;
  *
  * Since: 2.1.0
  */
-#define HB_COLOR(b,g,r,a) ((hb_color_t) HB_TAG ((b),(g),(r),(a)))
+#घोषणा HB_COLOR(b,g,r,a) ((hb_color_t) HB_TAG ((b),(g),(r),(a)))
 
 HB_EXTERN uint8_t
 hb_color_get_alpha (hb_color_t color);
-#define hb_color_get_alpha(color)	((color) & 0xFF)
+#घोषणा hb_color_get_alpha(color)	((color) & 0xFF)
 
 HB_EXTERN uint8_t
 hb_color_get_red (hb_color_t color);
-#define hb_color_get_red(color)		(((color) >> 8) & 0xFF)
+#घोषणा hb_color_get_red(color)		(((color) >> 8) & 0xFF)
 
 HB_EXTERN uint8_t
 hb_color_get_green (hb_color_t color);
-#define hb_color_get_green(color)	(((color) >> 16) & 0xFF)
+#घोषणा hb_color_get_green(color)	(((color) >> 16) & 0xFF)
 
 HB_EXTERN uint8_t
 hb_color_get_blue (hb_color_t color);
-#define hb_color_get_blue(color)	(((color) >> 24) & 0xFF)
+#घोषणा hb_color_get_blue(color)	(((color) >> 24) & 0xFF)
 
 /**
  * hb_glyph_extents_t:
@@ -523,7 +523,7 @@ hb_color_get_blue (hb_color_t color);
  *
  * Note that @height is negative, in coordinate systems that grow up.
  **/
-typedef struct hb_glyph_extents_t {
+प्रकार काष्ठा hb_glyph_extents_t {
   hb_position_t x_bearing;
   hb_position_t y_bearing;
   hb_position_t width;
@@ -536,18 +536,18 @@ typedef struct hb_glyph_extents_t {
  * Data type for holding fonts.
  *
  */
-typedef struct hb_font_t hb_font_t;
+प्रकार काष्ठा hb_font_t hb_font_t;
 
 /* Not of much use to clients. */
-HB_EXTERN void*
-hb_malloc (size_t size);
-HB_EXTERN void*
-hb_calloc (size_t nmemb, size_t size);
-HB_EXTERN void*
-hb_realloc (void *ptr, size_t size);
-HB_EXTERN void
-hb_free (void *ptr);
+HB_EXTERN व्योम*
+hb_malloc (माप_प्रकार आकार);
+HB_EXTERN व्योम*
+hb_calloc (माप_प्रकार nmemb, माप_प्रकार आकार);
+HB_EXTERN व्योम*
+hb_realloc (व्योम *ptr, माप_प्रकार आकार);
+HB_EXTERN व्योम
+hb_free (व्योम *ptr);
 
 HB_END_DECLS
 
-#endif /* HB_COMMON_H */
+#पूर्ण_अगर /* HB_COMMON_H */

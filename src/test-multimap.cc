@@ -22,38 +22,38 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-multimap.hh"
+#समावेश "hb.hh"
+#समावेश "hb-multimap.hh"
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
   hb_multimap_t m;
 
-  hb_always_assert (m.get (10).length == 0);
+  hb_always_assert (m.लो (10).लंबाई == 0);
 
   m.add (10, 11);
-  hb_always_assert (m.get (10).length == 1);
+  hb_always_assert (m.लो (10).लंबाई == 1);
 
   m.add (10, 12);
-  hb_always_assert (m.get (10).length == 2);
+  hb_always_assert (m.लो (10).लंबाई == 2);
 
   m.add (10, 13);
-  hb_always_assert (m.get (10).length == 3);
-  hb_always_assert (m.get (10)[0] == 11);
-  hb_always_assert (m.get (10)[1] == 12);
-  hb_always_assert (m.get (10)[2] == 13);
+  hb_always_assert (m.लो (10).लंबाई == 3);
+  hb_always_assert (m.लो (10)[0] == 11);
+  hb_always_assert (m.लो (10)[1] == 12);
+  hb_always_assert (m.लो (10)[2] == 13);
 
-  hb_always_assert (m.get (11).length == 0);
+  hb_always_assert (m.लो (11).लंबाई == 0);
   m.add (11, 14);
-  hb_always_assert (m.get (10).length == 3);
-  hb_always_assert (m.get (11).length == 1);
-  hb_always_assert (m.get (12).length == 0);
-  hb_always_assert (m.get (10)[0] == 11);
-  hb_always_assert (m.get (10)[1] == 12);
-  hb_always_assert (m.get (10)[2] == 13);
-  hb_always_assert (m.get (11)[0] == 14);
-  hb_always_assert (m.get (12)[0] == 0); // Array fallback value
+  hb_always_assert (m.लो (10).लंबाई == 3);
+  hb_always_assert (m.लो (11).लंबाई == 1);
+  hb_always_assert (m.लो (12).लंबाई == 0);
+  hb_always_assert (m.लो (10)[0] == 11);
+  hb_always_assert (m.लो (10)[1] == 12);
+  hb_always_assert (m.लो (10)[2] == 13);
+  hb_always_assert (m.लो (11)[0] == 14);
+  hb_always_assert (m.लो (12)[0] == 0); // Array fallback value
 
-  return 0;
+  वापस 0;
 }

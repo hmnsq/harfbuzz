@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-import sys
-import array
-import gi
+आयात sys
+आयात array
+आयात gi
 gi.require_version('HarfBuzz', '0.0')
-from gi.repository import HarfBuzz as hb
-from gi.repository import GLib
+from gi.repository आयात HarfBuzz as hb
+from gi.repository आयात GLib
 
-fontdata = open (sys.argv[1], 'rb').read ()
+fontdata = open (sys.argv[1], 'rb').म_पढ़ो ()
 text = sys.argv[2]
 # Need to create GLib.Bytes explicitly until this bug is fixed:
 # https://bugzilla.gnome.org/show_bug.cgi?id=729541
-blob = hb.glib_blob_create (GLib.Bytes.new (fontdata))
+blob = hb.glib_blob_create (GLib.Bytes.नया (fontdata))
 face = hb.face_create (blob, 0)
 del blob
 font = hb.font_create (face)
@@ -21,13 +21,13 @@ hb.font_set_scale (font, upem, upem)
 #hb.ft_font_set_funcs (font)
 hb.ot_font_set_funcs (font)
 
-buf = hb.buffer_create ()
-class Debugger (object):
-	def message (self, buf, font, msg, data, _x_what_is_this):
-		print (msg)
-		return True
+buf = hb.बफर_create ()
+श्रेणी Debugger (object):
+	def message (self, buf, font, संदेश, तथ्य, _x_what_is_this):
+		print (संदेश)
+		वापस True
 debugger = Debugger ()
-hb.buffer_set_message_func (buf, debugger.message, 1, 0)
+hb.बफर_set_message_func (buf, debugger.message, 1, 0)
 
 ##
 ## Add text to buffer
@@ -41,21 +41,21 @@ hb.buffer_set_message_func (buf, debugger.message, 1, 0)
 # hb.buffer_add_utf8 (buf, text.encode('utf-8'), 0, -1)
 # Otherwise, then following handles both narrow and wide
 # Python builds (the first item in the array is BOM, so we skip it):
-if sys.maxunicode == 0x10FFFF:
-	hb.buffer_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
-else:
-	hb.buffer_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
+अगर sys.maxunicode == 0x10FFFF:
+	hb.बफर_add_utf32 (buf, array.array ('I', text.encode ('utf-32'))[1:], 0, -1)
+अन्यथा:
+	hb.बफर_add_utf16 (buf, array.array ('H', text.encode ('utf-16'))[1:], 0, -1)
 
 
-hb.buffer_guess_segment_properties (buf)
+hb.बफर_guess_segment_properties (buf)
 
 hb.shape (font, buf, [])
 del font
 
-infos = hb.buffer_get_glyph_infos (buf)
-positions = hb.buffer_get_glyph_positions (buf)
+infos = hb.बफर_get_glyph_infos (buf)
+positions = hb.बफर_get_glyph_positions (buf)
 
-for info, pos in zip (infos, positions):
+क्रम info, pos in zip (infos, positions):
 	gid = info.codepoint
 	cluster = info.cluster
 	x_advance = pos.x_advance

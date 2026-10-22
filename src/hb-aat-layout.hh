@@ -24,54 +24,54 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_HH
-#define HB_AAT_LAYOUT_HH
+#अगर_अघोषित HB_AAT_LAYOUT_HH
+#घोषणा HB_AAT_LAYOUT_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-aat-ltag-table.hh"
+#समावेश "hb-ot-shape.hh"
+#समावेश "hb-aat-ltag-table.hh"
 
 /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
-#define HB_CORETEXT_DEFAULT_FONT_SIZE 12.f
+#घोषणा HB_CORETEXT_DEFAULT_FONT_आकार 12.f
 
-struct hb_aat_feature_mapping_t
+काष्ठा hb_aat_feature_mapping_t
 {
   hb_tag_t otFeatureTag;
   hb_aat_layout_feature_type_t aatFeatureType;
   hb_aat_layout_feature_selector_t selectorToEnable;
   hb_aat_layout_feature_selector_t selectorToDisable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  पूर्णांक cmp (hb_tag_t key) स्थिर
+  { वापस key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
 };
 
-HB_INTERNAL const hb_aat_feature_mapping_t *
+HB_INTERNAL स्थिर hb_aat_feature_mapping_t *
 hb_aat_layout_find_feature_mapping (hb_tag_t tag);
 
-HB_INTERNAL void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+HB_INTERNAL व्योम
+hb_aat_layout_compile_map (स्थिर hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map);
 
-HB_INTERNAL void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम
+hb_aat_layout_substitute (स्थिर hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features);
+			  hb_बफर_t *बफर,
+			  स्थिर hb_feature_t *features,
+			  अचिन्हित अंक_features);
 
-HB_INTERNAL void
-hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer);
+HB_INTERNAL व्योम
+hb_aat_layout_remove_deleted_glyphs (hb_बफर_t *बफर);
 
-HB_INTERNAL void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम
+hb_aat_layout_position (स्थिर hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer);
+			hb_बफर_t *बफर);
 
-HB_INTERNAL void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम
+hb_aat_layout_track (स्थिर hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer);
+		     hb_बफर_t *बफर);
 
 
-#endif /* HB_AAT_LAYOUT_HH */
+#पूर्ण_अगर /* HB_AAT_LAYOUT_HH */

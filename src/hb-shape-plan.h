@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_SHAPE_PLAN_H
-#define HB_SHAPE_PLAN_H
+#अगर_अघोषित HB_SHAPE_PLAN_H
+#घोषणा HB_SHAPE_PLAN_H
 
-#include "hb-common.h"
-#include "hb-font.h"
+#समावेश "hb-common.h"
+#समावेश "hb-font.h"
 
 HB_BEGIN_DECLS
 
@@ -50,73 +50,73 @@ HB_BEGIN_DECLS
  * etc.).
  *
  **/
-typedef struct hb_shape_plan_t hb_shape_plan_t;
+प्रकार काष्ठा hb_shape_plan_t hb_shape_plan_t;
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list);
+		      स्थिर hb_segment_properties_t *props,
+		      स्थिर hb_feature_t            *user_features,
+		      अचिन्हित पूर्णांक                   अंक_user_features,
+		      स्थिर अक्षर * स्थिर            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list);
+			     स्थिर hb_segment_properties_t *props,
+			     स्थिर hb_feature_t            *user_features,
+			     अचिन्हित पूर्णांक                   अंक_user_features,
+			     स्थिर अक्षर * स्थिर            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list);
+		       स्थिर hb_segment_properties_t *props,
+		       स्थिर hb_feature_t            *user_features,
+		       अचिन्हित पूर्णांक                   अंक_user_features,
+		       स्थिर पूर्णांक                     *coords,
+		       अचिन्हित पूर्णांक                   अंक_coords,
+		       स्थिर अक्षर * स्थिर            *shaper_list);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list);
+			      स्थिर hb_segment_properties_t *props,
+			      स्थिर hb_feature_t            *user_features,
+			      अचिन्हित पूर्णांक                   अंक_user_features,
+			      स्थिर पूर्णांक                     *coords,
+			      अचिन्हित पूर्णांक                   अंक_coords,
+			      स्थिर अक्षर * स्थिर            *shaper_list);
 
 
 HB_EXTERN hb_shape_plan_t *
-hb_shape_plan_get_empty (void);
+hb_shape_plan_get_empty (व्योम);
 
 HB_EXTERN hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan);
 
 HB_EXTERN hb_bool_t
-hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_shape_plan_set_user_तथ्य (hb_shape_plan_t    *shape_plan,
+			     hb_user_तथ्य_कुंजी_t *कुंजी_2,
+			     व्योम *              तथ्य,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key);
+HB_EXTERN व्योम *
+hb_shape_plan_get_user_तथ्य (स्थिर hb_shape_plan_t *shape_plan,
+			     hb_user_तथ्य_कुंजी_t    *कुंजी_2);
 
 
 HB_EXTERN hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       hb_बफर_t        *बफर,
+		       स्थिर hb_feature_t *features,
+		       अचिन्हित पूर्णांक        अंक_features);
 
-HB_EXTERN const char *
+HB_EXTERN स्थिर अक्षर *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan);
 
 
 HB_END_DECLS
 
-#endif /* HB_SHAPE_PLAN_H */
+#पूर्ण_अगर /* HB_SHAPE_PLAN_H */

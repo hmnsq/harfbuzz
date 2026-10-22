@@ -24,27 +24,27 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_H
-#define HB_OT_H
-#define HB_OT_H_IN
+#अगर_अघोषित HB_OT_H
+#घोषणा HB_OT_H
+#घोषणा HB_OT_H_IN
 
-#include "hb.h"
+#समावेश "hb.h"
 
-#include "hb-ot-fetch.h"
-#include "hb-ot-color.h"
-#include "hb-ot-deprecated.h"
-#include "hb-ot-font.h"
-#include "hb-ot-layout.h"
-#include "hb-ot-math.h"
-#include "hb-ot-meta.h"
-#include "hb-ot-metrics.h"
-#include "hb-ot-name.h"
-#include "hb-ot-shape.h"
-#include "hb-ot-var.h"
+#समावेश "hb-ot-fetch.h"
+#समावेश "hb-ot-color.h"
+#समावेश "hb-ot-deprecated.h"
+#समावेश "hb-ot-font.h"
+#समावेश "hb-ot-layout.h"
+#समावेश "hb-ot-math.h"
+#समावेश "hb-ot-meta.h"
+#समावेश "hb-ot-metrics.h"
+#समावेश "hb-ot-name.h"
+#समावेश "hb-ot-shape.h"
+#समावेश "hb-ot-var.h"
 
 HB_BEGIN_DECLS
 
 HB_END_DECLS
 
-#undef HB_OT_H_IN
-#endif /* HB_OT_H */
+#अघोषित HB_OT_H_IN
+#पूर्ण_अगर /* HB_OT_H */

@@ -22,110 +22,110 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_META_TABLE_HH
-#define HB_OT_META_TABLE_HH
+#अगर_अघोषित HB_OT_META_TABLE_HH
+#घोषणा HB_OT_META_TABLE_HH
 
-#include "hb-open-type.hh"
+#समावेश "hb-open-type.hh"
 
 /*
  * meta -- Metadata Table
  * https://docs.microsoft.com/en-us/typography/opentype/spec/meta
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6meta.html
  */
-#define HB_OT_TAG_meta HB_TAG ('m','e','t','a')
+#घोषणा HB_OT_TAG_meta HB_TAG ('m','e','t','a')
 
 
 namespace OT {
 
 
-struct DataMap
+काष्ठा तथ्य_Map
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  पूर्णांक cmp (hb_tag_t a) स्थिर { वापस tag.cmp (a); }
 
-  hb_tag_t get_tag () const { return tag; }
+  hb_tag_t get_tag () स्थिर { वापस tag; }
 
-  hb_blob_t *reference_entry (hb_blob_t *meta_blob) const
-  { return hb_blob_create_sub_blob (meta_blob, dataZ, dataLength); }
+  hb_blob_t *reference_entry (hb_blob_t *meta_blob) स्थिर
+  { वापस hb_blob_create_sub_blob (meta_blob, तथ्य_Z, तथ्य_लंबाई_2); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  bool sanitize (hb_sanitize_context_t *c, स्थिर व्योम *base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (likely (c->check_struct (यह) &&
 			  hb_barrier () &&
-			  dataZ.sanitize (c, base, dataLength)));
+			  तथ्य_Z.sanitize (c, base, तथ्य_लंबाई_2)));
   }
 
-  protected:
+  रक्षित:
   Tag		tag;		/* A tag indicating the type of metadata. */
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
-		dataZ;		/* Offset in bytes from the beginning of the
+		तथ्य_Z;		/* Offset in bytes from the beginning of the
 				 * metadata table to the data for this tag. */
-  HBUINT32	dataLength;	/* Length of the data. The data is not required to
+  HBUINT32	तथ्य_लंबाई_2;	/* Length of the data. The data is not required to
 				 * be padded to any byte boundary. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  खुला:
+  DEFINE_आकार_STATIC (12);
 };
 
-struct meta
+काष्ठा meta
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_meta;
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_meta;
 
-  struct accelerator_t
+  काष्ठा accelerator_t
   {
     accelerator_t (hb_face_t *face)
     { table = hb_sanitize_context_t ().reference_table<meta> (face); }
     ~accelerator_t () { table.destroy (); }
 
-    hb_blob_t *reference_entry (hb_tag_t tag) const
-    { return table->dataMaps.lsearch (tag).reference_entry (table.get_blob ()); }
+    hb_blob_t *reference_entry (hb_tag_t tag) स्थिर
+    { वापस table->तथ्य_Maps.lsearch (tag).reference_entry (table.get_blob ()); }
 
-    unsigned int get_entries (unsigned int      start_offset,
-			      unsigned int     *count,
-			      hb_ot_meta_tag_t *entries) const
+    अचिन्हित पूर्णांक get_entries (अचिन्हित पूर्णांक      start_offset,
+			      अचिन्हित पूर्णांक     *गिनती,
+			      hb_ot_meta_tag_t *entries) स्थिर
     {
-      if (count && entries)
+      अगर (गिनती && entries)
       {
-	+ table->dataMaps.as_array ().sub_array (start_offset, count)
-	| hb_map (&DataMap::get_tag)
-	| hb_map ([](hb_tag_t tag) { return (hb_ot_meta_tag_t) tag; })
-	| hb_sink (hb_array (entries, *count))
+	+ table->तथ्य_Maps.as_array ().sub_array (start_offset, गिनती)
+	| hb_map (&तथ्य_Map::get_tag)
+	| hb_map ([](hb_tag_t tag) { वापस (hb_ot_meta_tag_t) tag; })
+	| hb_sink (hb_array (entries, *गिनती))
 	;
       }
-      return table->dataMaps.len;
+      वापस table->तथ्य_Maps.len;
     }
 
-    private:
+    निजी:
     hb_blob_ptr_t<meta> table;
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (likely (c->check_struct (यह) &&
 			  hb_barrier () &&
 			  version == 1 &&
-			  dataMaps.sanitize (c, this)));
+			  तथ्य_Maps.sanitize (c, यह)));
   }
 
-  protected:
+  रक्षित:
   HBUINT32	version;	/* Version number of the metadata table — set to 1. */
   HBUINT32	flags;		/* Flags — currently unused; set to 0. */
-  HBUINT32	dataOffset;
+  HBUINT32	तथ्य_Offset;
 				/* Per Apple specification:
 				 * Offset from the beginning of the table to the data.
 				 * Per OT specification:
 				 * Reserved. Not used; should be set to 0. */
-  Array32Of<DataMap>
-		dataMaps;/* Array of data map records. */
-  public:
-  DEFINE_SIZE_ARRAY (16, dataMaps);
+  Array32Of<तथ्य_Map>
+		तथ्य_Maps;/* Array of data map records. */
+  खुला:
+  DEFINE_आकार_ARRAY (16, तथ्य_Maps);
 };
 
-struct meta_accelerator_t : meta::accelerator_t {
+काष्ठा meta_accelerator_t : meta::accelerator_t {
   meta_accelerator_t (hb_face_t *face) : meta::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_META_TABLE_HH */
+#पूर्ण_अगर /* HB_OT_META_TABLE_HH */

@@ -24,35 +24,35 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF1_TABLE_CC
-#define HB_OT_CFF1_TABLE_CC
-#ifdef HB_OT_CFF1_TABLE_CC /* Pacify -Wunused-macros. */
+#अगर_अघोषित HB_OT_CFF1_TABLE_CC
+#घोषणा HB_OT_CFF1_TABLE_CC
+#अगर_घोषित HB_OT_CFF1_TABLE_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_CFF
+#अगर_अघोषित HB_NO_CFF
 
-#include "hb-draw.hh"
-#include "hb-algs.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-cff1-interp-cs.hh"
+#समावेश "hb-draw.hh"
+#समावेश "hb-algs.hh"
+#समावेश "hb-ot-cff1-table.hh"
+#समावेश "hb-cff1-interp-cs.hh"
 
 using namespace CFF;
 
-struct sid_to_gid_t
+काष्ठा sid_to_gid_t
 {
   uint16_t  sid;
   uint8_t   gid;
 
-  int cmp (uint16_t a) const
+  पूर्णांक cmp (uint16_t a) स्थिर
   {
-    if (a == sid) return 0;
-    return (a < sid) ? -1 : 1;
+    अगर (a == sid) वापस 0;
+    वापस (a < sid) ? -1 : 1;
   }
 };
 
 /* SID to code */
-static const uint8_t standard_encoding_to_code [] =
+अटल स्थिर uint8_t standard_encoding_to_code [] =
 {
     0,   32,   33,   34,   35,   36,   37,   38,  39,   40,   41,   42,   43,   44,   45,   46,
    47,   48,   49,   50,   51,   52,   53,   54,  55,   56,   57,   58,   59,   60,   61,   62,
@@ -67,7 +67,7 @@ static const uint8_t standard_encoding_to_code [] =
 };
 
 /* SID to code */
-static const uint8_t expert_encoding_to_code [] =
+अटल स्थिर uint8_t expert_encoding_to_code [] =
 {
     0,   32,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,   44,   45,   46,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,   58,   59,    0,    0,    0,
@@ -96,7 +96,7 @@ static const uint8_t expert_encoding_to_code [] =
 };
 
 /* glyph ID to SID */
-static const uint16_t expert_charset_to_sid [] =
+अटल स्थिर uint16_t expert_charset_to_sid [] =
 {
     0,    1,  229,  230,  231,  232,  233,  234,  235,  236,  237,  238,   13,   14,   15,   99,
   239,  240,  241,  242,  243,  244,  245,  246,  247,  248,   27,   28,  249,  250,  251,  252,
@@ -112,7 +112,7 @@ static const uint16_t expert_charset_to_sid [] =
 };
 
 /* glyph ID to SID */
-static const uint16_t expert_subset_charset_to_sid [] =
+अटल स्थिर uint16_t expert_subset_charset_to_sid [] =
 {
     0,    1,  231,  232,  235,  236,  237,  238,   13,   14,   15,   99,  239,  240,  241,  242,
   243,  244,  245,  246,  247,  248,   27,   28,  249,  250,  251,  253,  254,  255,  256,  257,
@@ -123,7 +123,7 @@ static const uint16_t expert_subset_charset_to_sid [] =
 };
 
 /* SID to glyph ID */
-static const sid_to_gid_t expert_charset_sid_to_gid [] =
+अटल स्थिर sid_to_gid_t expert_charset_sid_to_gid [] =
 {
     { 1, 1 },     { 13, 12 },   { 14, 13 },   { 15, 14 },
     { 27, 26 },   { 28, 27 },   { 99, 15 },   { 109, 46 },
@@ -170,7 +170,7 @@ static const sid_to_gid_t expert_charset_sid_to_gid [] =
 };
 
 /* SID to glyph ID */
-static const sid_to_gid_t expert_subset_charset_sid_to_gid [] =
+अटल स्थिर sid_to_gid_t expert_subset_charset_sid_to_gid [] =
 {
   { 1, 1 },       { 13, 8 },      { 14, 9 },      { 15, 10 },
   { 27, 22 },     { 28, 23 },     { 99, 11 },     { 109, 41 },
@@ -197,7 +197,7 @@ static const sid_to_gid_t expert_subset_charset_sid_to_gid [] =
 };
 
 /* code to SID */
-static const uint8_t standard_encoding_to_sid [] =
+अटल स्थिर uint8_t standard_encoding_to_sid [] =
 {
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -219,128 +219,128 @@ static const uint8_t standard_encoding_to_sid [] =
 
 hb_codepoint_t OT::cff1::lookup_standard_encoding_for_code (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (standard_encoding_to_code))
-    return (hb_codepoint_t)standard_encoding_to_code[sid];
-  else
-    return 0;
+  अगर (sid < ARRAY_लंबाई (standard_encoding_to_code))
+    वापस (hb_codepoint_t)standard_encoding_to_code[sid];
+  अन्यथा
+    वापस 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_encoding_for_code (hb_codepoint_t sid)
 {
-  if (sid < ARRAY_LENGTH (expert_encoding_to_code))
-    return (hb_codepoint_t)expert_encoding_to_code[sid];
-  else
-    return 0;
+  अगर (sid < ARRAY_लंबाई (expert_encoding_to_code))
+    वापस (hb_codepoint_t)expert_encoding_to_code[sid];
+  अन्यथा
+    वापस 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_charset_to_sid))
-    return (hb_codepoint_t)expert_charset_to_sid[glyph];
-  else
-    return 0;
+  अगर (glyph < ARRAY_लंबाई (expert_charset_to_sid))
+    वापस (hb_codepoint_t)expert_charset_to_sid[glyph];
+  अन्यथा
+    वापस 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph)
 {
-  if (glyph < ARRAY_LENGTH (expert_subset_charset_to_sid))
-    return (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
-  else
-    return 0;
+  अगर (glyph < ARRAY_लंबाई (expert_subset_charset_to_sid))
+    वापस (hb_codepoint_t)expert_subset_charset_to_sid[glyph];
+  अन्यथा
+    वापस 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_charset_for_glyph (hb_codepoint_t sid)
 {
-  const auto *pair = hb_sorted_array (expert_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  स्थिर स्वतः *pair = hb_sorted_array (expert_charset_sid_to_gid).द्वा_खोज (sid);
+  वापस pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid)
 {
-  const auto *pair = hb_sorted_array (expert_subset_charset_sid_to_gid).bsearch (sid);
-  return pair ? pair->gid : 0;
+  स्थिर स्वतः *pair = hb_sorted_array (expert_subset_charset_sid_to_gid).द्वा_खोज (sid);
+  वापस pair ? pair->gid : 0;
 }
 
 hb_codepoint_t OT::cff1::lookup_standard_encoding_for_sid (hb_codepoint_t code)
 {
-  if (code < ARRAY_LENGTH (standard_encoding_to_sid))
-    return (hb_codepoint_t)standard_encoding_to_sid[code];
-  else
-    return CFF_UNDEF_SID;
+  अगर (code < ARRAY_लंबाई (standard_encoding_to_sid))
+    वापस (hb_codepoint_t)standard_encoding_to_sid[code];
+  अन्यथा
+    वापस CFF_UNDEF_SID;
 }
 
-struct bounds_t
+काष्ठा bounds_t
 {
-  void init ()
+  व्योम init ()
   {
-    min.set_int (INT_MAX, INT_MAX);
-    max.set_int (INT_MIN, INT_MIN);
+    min.set_int (पूर्णांक_उच्च, पूर्णांक_उच्च);
+    max.set_int (पूर्णांक_न्यून, पूर्णांक_न्यून);
   }
 
-  void update (const point_t &pt)
+  व्योम update (स्थिर point_t &pt)
   {
-    if (pt.x < min.x) min.x = pt.x;
-    if (pt.x > max.x) max.x = pt.x;
-    if (pt.y < min.y) min.y = pt.y;
-    if (pt.y > max.y) max.y = pt.y;
+    अगर (pt.x < min.x) min.x = pt.x;
+    अगर (pt.x > max.x) max.x = pt.x;
+    अगर (pt.y < min.y) min.y = pt.y;
+    अगर (pt.y > max.y) max.y = pt.y;
   }
 
-  void merge (const bounds_t &b)
+  व्योम merge (स्थिर bounds_t &b)
   {
-    if (empty ())
-      *this = b;
-    else if (!b.empty ())
+    अगर (empty ())
+      *यह = b;
+    अन्यथा अगर (!b.empty ())
     {
-      if (b.min.x < min.x) min.x = b.min.x;
-      if (b.max.x > max.x) max.x = b.max.x;
-      if (b.min.y < min.y) min.y = b.min.y;
-      if (b.max.y > max.y) max.y = b.max.y;
+      अगर (b.min.x < min.x) min.x = b.min.x;
+      अगर (b.max.x > max.x) max.x = b.max.x;
+      अगर (b.min.y < min.y) min.y = b.min.y;
+      अगर (b.max.y > max.y) max.y = b.max.y;
     }
   }
 
-  void offset (const point_t &delta)
+  व्योम offset (स्थिर point_t &delta)
   {
-    if (!empty ())
+    अगर (!empty ())
     {
       min.move (delta);
       max.move (delta);
     }
   }
 
-  bool empty () const { return (min.x >= max.x) || (min.y >= max.y); }
+  bool empty () स्थिर { वापस (min.x >= max.x) || (min.y >= max.y); }
 
   point_t min;
   point_t max;
 };
 
-struct cff1_extents_param_t
+काष्ठा cff1_extents_param_t
 {
-  cff1_extents_param_t (const OT::cff1::accelerator_t *_cff) : cff (_cff)
+  cff1_extents_param_t (स्थिर OT::cff1::accelerator_t *_cff) : cff (_cff)
   {
     bounds.init ();
   }
 
-  void start_path   ()       { path_open = true; }
-  void end_path     ()       { path_open = false; }
-  bool is_path_open () const { return path_open; }
+  व्योम start_path   ()       { path_open = true; }
+  व्योम end_path     ()       { path_open = false; }
+  bool is_path_open () स्थिर { वापस path_open; }
 
   bool path_open = false;
   bounds_t bounds;
 
-  const OT::cff1::accelerator_t *cff;
+  स्थिर OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
+काष्ठा cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_cs_interp_env_t, cff1_extents_param_t>
 {
-  static void moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt)
+  अटल व्योम moveto (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, स्थिर point_t &pt)
   {
     param.end_path ();
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1)
+  अटल व्योम पंक्ति (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, स्थिर point_t &pt1)
   {
-    if (!param.is_path_open ())
+    अगर (!param.is_path_open ())
     {
       param.start_path ();
       param.bounds.update (env.get_pt ());
@@ -349,9 +349,9 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
     param.bounds.update (env.get_pt ());
   }
 
-  static void curve (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  अटल व्योम curve (cff1_cs_interp_env_t &env, cff1_extents_param_t& param, स्थिर point_t &pt1, स्थिर point_t &pt2, स्थिर point_t &pt3)
   {
-    if (!param.is_path_open ())
+    अगर (!param.is_path_open ())
     {
       param.start_path ();
       param.bounds.update (env.get_pt ());
@@ -364,21 +364,21 @@ struct cff1_path_procs_extents_t : path_procs_t<cff1_path_procs_extents_t, cff1_
   }
 };
 
-static bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac=false, int64_t *budget = nullptr);
+अटल bool _get_bounds (स्थिर OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac=false, int64_t *budget = nullptr);
 
-struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
+काष्ठा cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_extents_param_t, cff1_path_procs_extents_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
+  अटल व्योम process_seac (cff1_cs_interp_env_t &env, cff1_extents_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
+    अचिन्हित पूर्णांक  n = env.arg_ढेर.get_गिनती ();
     point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    delta.x = env.arg_ढेर[n-4];
+    delta.y = env.arg_ढेर[n-3];
+    hb_codepoint_t base = param.cff->std_code_to_glyph (env.arg_ढेर[n-2].to_int ());
+    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.arg_ढेर[n-1].to_int ());
 
     bounds_t  base_bounds, accent_bounds;
-    if (likely (!env.in_seac && base && accent
+    अगर (likely (!env.in_seac && base && accent
 	       && _get_bounds (param.cff, base, base_bounds, true, env.get_budget ())
 	       && _get_bounds (param.cff, accent, accent_bounds, true, env.get_budget ())))
     {
@@ -386,73 +386,73 @@ struct cff1_cs_opset_extents_t : cff1_cs_opset_t<cff1_cs_opset_extents_t, cff1_e
       accent_bounds.offset (delta);
       param.bounds.merge (accent_bounds);
     }
-    else
+    अन्यथा
       env.set_error ();
   }
 };
 
-bool _get_bounds (const OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac, int64_t *budget)
+bool _get_bounds (स्थिर OT::cff1::accelerator_t *cff, hb_codepoint_t glyph, bounds_t &bounds, bool in_seac, int64_t *budget)
 {
   bounds.init ();
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  अगर (unlikely (!cff->is_valid () || (glyph >= cff->अंक_glyphs))) वापस false;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*cff->charStrings)[glyph];
+  अचिन्हित पूर्णांक fd = cff->fdSelect->get_fd (glyph);
+  स्थिर hb_ubytes_t str = (*cff->charStrings)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
   env.set_in_seac (in_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_extents_t, cff1_extents_param_t> interp (env);
   cff1_extents_param_t param (cff);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  अगर (unlikely (!interp.interpret (param, budget))) वापस false;
   bounds = param.bounds;
-  return true;
+  वापस true;
 }
 
-bool OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) const
+bool OT::cff1::accelerator_t::get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget) स्थिर
 {
-#ifdef HB_NO_OT_FONT_CFF
+#अगर_घोषित HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  वापस true;
+#पूर्ण_अगर
 
   bounds_t bounds;
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ढेर_budget = HB_BUDGET_GLYPH;
+  अगर (!budget) budget = &ढेर_budget;
 
-  if (!_get_bounds (this, glyph, bounds, false, budget))
-    return false;
+  अगर (!_get_bounds (यह, glyph, bounds, false, budget))
+    वापस false;
 
-  if (bounds.min.x >= bounds.max.x)
+  अगर (bounds.min.x >= bounds.max.x)
   {
     extents->width = 0;
     extents->x_bearing = 0;
   }
-  else
+  अन्यथा
   {
-    double x_bearing = roundf (bounds.min.x.to_real ());
+    द्विगुन x_bearing = roundf (bounds.min.x.to_real ());
     extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-    extents->width = hb_clamp_to<hb_position_t> ((double) roundf (bounds.max.x.to_real ()) - x_bearing);
+    extents->width = hb_clamp_to<hb_position_t> ((द्विगुन) roundf (bounds.max.x.to_real ()) - x_bearing);
   }
-  if (bounds.min.y >= bounds.max.y)
+  अगर (bounds.min.y >= bounds.max.y)
   {
     extents->height = 0;
     extents->y_bearing = 0;
   }
-  else
+  अन्यथा
   {
-    double y_bearing = roundf (bounds.max.y.to_real ());
+    द्विगुन y_bearing = roundf (bounds.max.y.to_real ());
     extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-    extents->height = hb_clamp_to<hb_position_t> ((double) roundf (bounds.min.y.to_real ()) - y_bearing);
+    extents->height = hb_clamp_to<hb_position_t> ((द्विगुन) roundf (bounds.min.y.to_real ()) - y_bearing);
   }
 
   font->scale_glyph_extents (extents);
 
-  return true;
+  वापस true;
 }
 
-struct cff1_path_param_t
+काष्ठा cff1_path_param_t
 {
-  cff1_path_param_t (const OT::cff1::accelerator_t *cff_, hb_font_t *font_,
+  cff1_path_param_t (स्थिर OT::cff1::accelerator_t *cff_, hb_font_t *font_,
 		     hb_draw_session_t &draw_session_, point_t *delta_)
   {
     draw_session = &draw_session_;
@@ -461,24 +461,24 @@ struct cff1_path_param_t
     delta = delta_;
   }
 
-  void move_to (const point_t &p)
+  व्योम move_to (स्थिर point_t &p)
   {
     point_t point = p;
-    if (delta) point.move (*delta);
+    अगर (delta) point.move (*delta);
     draw_session->move_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
-  void line_to (const point_t &p)
+  व्योम पंक्ति_to (स्थिर point_t &p)
   {
     point_t point = p;
-    if (delta) point.move (*delta);
-    draw_session->line_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
+    अगर (delta) point.move (*delta);
+    draw_session->पंक्ति_to (font->em_fscalef_x (point.x.to_real ()), font->em_fscalef_y (point.y.to_real ()));
   }
 
-  void cubic_to (const point_t &p1, const point_t &p2, const point_t &p3)
+  व्योम cubic_to (स्थिर point_t &p1, स्थिर point_t &p2, स्थिर point_t &p3)
   {
     point_t point1 = p1, point2 = p2, point3 = p3;
-    if (delta)
+    अगर (delta)
     {
       point1.move (*delta);
       point2.move (*delta);
@@ -489,169 +489,169 @@ struct cff1_path_param_t
 			   font->em_fscalef_x (point3.x.to_real ()), font->em_fscalef_y (point3.y.to_real ()));
   }
 
-  void end_path () { draw_session->close_path (); }
+  व्योम end_path () { draw_session->close_path (); }
 
   hb_font_t *font;
   hb_draw_session_t *draw_session;
   point_t *delta;
 
-  const OT::cff1::accelerator_t *cff;
+  स्थिर OT::cff1::accelerator_t *cff;
 };
 
-struct cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
+काष्ठा cff1_path_procs_path_t : path_procs_t<cff1_path_procs_path_t, cff1_cs_interp_env_t, cff1_path_param_t>
 {
-  static void moveto (cff1_cs_interp_env_t &env, cff1_path_param_t& param, const point_t &pt)
+  अटल व्योम moveto (cff1_cs_interp_env_t &env, cff1_path_param_t& param, स्थिर point_t &pt)
   {
     param.move_to (pt);
     env.moveto (pt);
   }
 
-  static void line (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1)
+  अटल व्योम पंक्ति (cff1_cs_interp_env_t &env, cff1_path_param_t &param, स्थिर point_t &pt1)
   {
-    param.line_to (pt1);
+    param.पंक्ति_to (pt1);
     env.moveto (pt1);
   }
 
-  static void curve (cff1_cs_interp_env_t &env, cff1_path_param_t &param, const point_t &pt1, const point_t &pt2, const point_t &pt3)
+  अटल व्योम curve (cff1_cs_interp_env_t &env, cff1_path_param_t &param, स्थिर point_t &pt1, स्थिर point_t &pt2, स्थिर point_t &pt3)
   {
     param.cubic_to (pt1, pt2, pt3);
     env.moveto (pt3);
   }
 };
 
-static bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
+अटल bool _get_path (स्थिर OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
 		       hb_draw_session_t &draw_session, bool in_seac = false, point_t *delta = nullptr,
 		       int64_t *budget = nullptr);
 
-struct cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
+काष्ठा cff1_cs_opset_path_t : cff1_cs_opset_t<cff1_cs_opset_path_t, cff1_path_param_t, cff1_path_procs_path_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, cff1_path_param_t& param)
+  अटल व्योम process_seac (cff1_cs_interp_env_t &env, cff1_path_param_t& param)
   {
     /* End previous path */
     param.end_path ();
 
-    unsigned int n = env.argStack.get_count ();
+    अचिन्हित पूर्णांक n = env.arg_ढेर.get_गिनती ();
     point_t delta;
-    delta.x = env.argStack[n-4];
-    delta.y = env.argStack[n-3];
-    hb_codepoint_t base = param.cff->std_code_to_glyph (env.argStack[n-2].to_int ());
-    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.argStack[n-1].to_int ());
+    delta.x = env.arg_ढेर[n-4];
+    delta.y = env.arg_ढेर[n-3];
+    hb_codepoint_t base = param.cff->std_code_to_glyph (env.arg_ढेर[n-2].to_int ());
+    hb_codepoint_t accent = param.cff->std_code_to_glyph (env.arg_ढेर[n-1].to_int ());
 
-    if (unlikely (!(!env.in_seac && base && accent
+    अगर (unlikely (!(!env.in_seac && base && accent
 		    && _get_path (param.cff, param.font, base, *param.draw_session, true, nullptr, env.get_budget ())
 		    && _get_path (param.cff, param.font, accent, *param.draw_session, true, &delta, env.get_budget ()))))
       env.set_error ();
   }
 };
 
-bool _get_path (const OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
+bool _get_path (स्थिर OT::cff1::accelerator_t *cff, hb_font_t *font, hb_codepoint_t glyph,
 		hb_draw_session_t &draw_session, bool in_seac, point_t *delta,
 		int64_t *budget)
 {
-  if (unlikely (!cff->is_valid () || (glyph >= cff->num_glyphs))) return false;
+  अगर (unlikely (!cff->is_valid () || (glyph >= cff->अंक_glyphs))) वापस false;
 
-  unsigned int fd = cff->fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*cff->charStrings)[glyph];
+  अचिन्हित पूर्णांक fd = cff->fdSelect->get_fd (glyph);
+  स्थिर hb_ubytes_t str = (*cff->charStrings)[glyph];
   cff1_cs_interp_env_t env (str, *cff, fd);
   env.set_in_seac (in_seac);
   cff1_cs_interpreter_t<cff1_cs_opset_path_t, cff1_path_param_t> interp (env);
   cff1_path_param_t param (cff, font, draw_session, delta);
-  if (unlikely (!interp.interpret (param, budget))) return false;
+  अगर (unlikely (!interp.interpret (param, budget))) वापस false;
 
   /* Let's end the path specially since it is called inside seac also */
   param.end_path ();
 
-  return true;
+  वापस true;
 }
 
-bool OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) const
+bool OT::cff1::accelerator_t::get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget) स्थिर
 {
-#ifdef HB_NO_OT_FONT_CFF
+#अगर_घोषित HB_NO_OT_FONT_CFF
   /* XXX Remove check when this code moves to .hh file. */
-  return true;
-#endif
+  वापस true;
+#पूर्ण_अगर
 
-  int64_t stack_budget = HB_BUDGET_GLYPH;
-  if (!budget) budget = &stack_budget;
+  int64_t ढेर_budget = HB_BUDGET_GLYPH;
+  अगर (!budget) budget = &ढेर_budget;
 
-  return _get_path (this, font, glyph, draw_session, false, nullptr, budget);
+  वापस _get_path (यह, font, glyph, draw_session, false, nullptr, budget);
 }
 
-struct get_seac_param_t
+काष्ठा get_seac_param_t
 {
-  get_seac_param_t (const OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
+  get_seac_param_t (स्थिर OT::cff1::accelerator_subset_t *_cff) : cff (_cff) {}
 
-  bool has_seac () const { return base && accent; }
+  bool has_seac () स्थिर { वापस base && accent; }
 
-  const OT::cff1::accelerator_subset_t *cff;
+  स्थिर OT::cff1::accelerator_subset_t *cff;
   hb_codepoint_t  base = 0;
   hb_codepoint_t  accent = 0;
 };
 
-struct cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
+काष्ठा cff1_cs_opset_seac_t : cff1_cs_opset_t<cff1_cs_opset_seac_t, get_seac_param_t>
 {
-  static void process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
+  अटल व्योम process_seac (cff1_cs_interp_env_t &env, get_seac_param_t& param)
   {
-    unsigned int  n = env.argStack.get_count ();
-    hb_codepoint_t  base_char = (hb_codepoint_t)env.argStack[n-2].to_int ();
-    hb_codepoint_t  accent_char = (hb_codepoint_t)env.argStack[n-1].to_int ();
+    अचिन्हित पूर्णांक  n = env.arg_ढेर.get_गिनती ();
+    hb_codepoint_t  base_char = (hb_codepoint_t)env.arg_ढेर[n-2].to_int ();
+    hb_codepoint_t  accent_char = (hb_codepoint_t)env.arg_ढेर[n-1].to_int ();
 
     param.base = param.cff->std_code_to_glyph (base_char);
     param.accent = param.cff->std_code_to_glyph (accent_char);
   }
 };
 
-static bool
-_cff1_charstring_may_end_in_seac (const hb_ubytes_t &str)
+अटल bool
+_cff1_charstring_may_end_in_seac (स्थिर hb_ubytes_t &str)
 {
-  if (unlikely (!str.length || str[str.length - 1] != OpCode_endchar))
-    return false;
+  अगर (unlikely (!str.लंबाई || str[str.लंबाई - 1] != OpCode_endchar))
+    वापस false;
 
-  unsigned int end = str.length - 1;
-  if (!end) return false;
+  अचिन्हित पूर्णांक end = str.लंबाई - 1;
+  अगर (!end) वापस false;
 
-  unsigned int last = str[end - 1];
+  अचिन्हित पूर्णांक last = str[end - 1];
 
   /* Type 2 numbers are not self-synchronizing when read backwards.
    * Keep interpreting if any number encoding could end at endchar. */
-  if (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
-    return true;
-  if (end >= 2 &&
+  अगर (OpCode_OneByteIntFirst <= last && last <= OpCode_OneByteIntLast)
+    वापस true;
+  अगर (end >= 2 &&
       OpCode_TwoBytePosInt0 <= str[end - 2] &&
       str[end - 2] <= OpCode_TwoByteNegInt3)
-    return true;
-  if (end >= 3 && str[end - 3] == OpCode_shortint)
-    return true;
-  if (end >= 5 && str[end - 5] == OpCode_fixedcs)
-    return true;
+    वापस true;
+  अगर (end >= 3 && str[end - 3] == OpCode_shortint)
+    वापस true;
+  अगर (end >= 5 && str[end - 5] == OpCode_fixedcs)
+    वापस true;
 
   /* A subroutine can leave the seac operands on the shared stack. */
-  return last == OpCode_callsubr || last == OpCode_callgsubr;
+  वापस last == OpCode_callsubr || last == OpCode_callgsubr;
 }
 
-bool OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const
+bool OT::cff1::accelerator_subset_t::get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) स्थिर
 {
-  if (unlikely (!is_valid () || (glyph >= num_glyphs))) return false;
+  अगर (unlikely (!is_valid () || (glyph >= अंक_glyphs))) वापस false;
 
-  unsigned int fd = fdSelect->get_fd (glyph);
-  const hb_ubytes_t str = (*charStrings)[glyph];
-  if (unlikely (!_cff1_charstring_may_end_in_seac (str))) return false;
-  cff1_cs_interp_env_t env (str, *this, fd);
+  अचिन्हित पूर्णांक fd = fdSelect->get_fd (glyph);
+  स्थिर hb_ubytes_t str = (*charStrings)[glyph];
+  अगर (unlikely (!_cff1_charstring_may_end_in_seac (str))) वापस false;
+  cff1_cs_interp_env_t env (str, *यह, fd);
   cff1_cs_interpreter_t<cff1_cs_opset_seac_t, get_seac_param_t> interp (env);
-  get_seac_param_t  param (this);
-  if (unlikely (!interp.interpret (param))) return false;
+  get_seac_param_t  param (यह);
+  अगर (unlikely (!interp.interpret (param))) वापस false;
 
-  if (param.has_seac ())
+  अगर (param.has_seac ())
   {
     *base = param.base;
     *accent = param.accent;
-    return true;
+    वापस true;
   }
-  return false;
+  वापस false;
 }
 
 
-#endif
+#पूर्ण_अगर
 
-#endif /* HB_OT_CFF1_TABLE_CC pacify */
-#endif /* HB_OT_CFF1_TABLE_CC guard */
+#पूर्ण_अगर /* HB_OT_CFF1_TABLE_CC pacify */
+#पूर्ण_अगर /* HB_OT_CFF1_TABLE_CC guard */

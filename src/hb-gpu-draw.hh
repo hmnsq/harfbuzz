@@ -24,91 +24,91 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GPU_DRAW_HH
-#define HB_GPU_DRAW_HH
+#अगर_अघोषित HB_GPU_DRAW_HH
+#घोषणा HB_GPU_DRAW_HH
 
-#include "hb.hh"
-#include "hb-gpu.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#समावेश "hb.hh"
+#समावेश "hb-gpu.h"
+#समावेश "hb-object.hh"
+#समावेश "hb-vector.hh"
 
-#include <cmath>
-
-
-#define HB_GPU_UNITS_PER_EM 4
+#समावेश <cmath>
 
 
-struct hb_gpu_curve_t
+#घोषणा HB_GPU_UNITS_PER_EM 4
+
+
+काष्ठा hb_gpu_curve_t
 {
-  double p1x, p1y;
-  double p2x, p2y;
-  double p3x, p3y;
+  द्विगुन p1x, p1y;
+  द्विगुन p2x, p2y;
+  द्विगुन p3x, p3y;
   bool contour_start;
 };
 
-struct hb_gpu_encode_curve_info_t
+काष्ठा hb_gpu_encode_curve_info_t
 {
-  double min_x, max_x, min_y, max_y;
+  द्विगुन min_x, max_x, min_y, max_y;
   bool is_horizontal;
   bool is_vertical;
-  int hband_lo, hband_hi;
-  int vband_lo, vband_hi;
+  पूर्णांक hband_lo, hband_hi;
+  पूर्णांक vband_lo, vband_hi;
 };
 
-struct hb_gpu_encode_scratch_t
+काष्ठा hb_gpu_encode_scratch_t
 {
   hb_vector_t<hb_gpu_encode_curve_info_t> curve_infos;
-  hb_vector_t<unsigned> hband_curve_counts;
-  hb_vector_t<unsigned> vband_curve_counts;
-  hb_vector_t<unsigned> hband_offsets;
-  hb_vector_t<unsigned> vband_offsets;
-  hb_vector_t<unsigned> hband_curves;
-  hb_vector_t<unsigned> hband_curves_asc;
-  hb_vector_t<unsigned> vband_curves;
-  hb_vector_t<unsigned> vband_curves_asc;
-  hb_vector_t<unsigned> hband_cursors;
-  hb_vector_t<unsigned> vband_cursors;
-  hb_vector_t<unsigned> curve_texel_offset;
+  hb_vector_t<अचिन्हित> hband_curve_counts;
+  hb_vector_t<अचिन्हित> vband_curve_counts;
+  hb_vector_t<अचिन्हित> hband_offsets;
+  hb_vector_t<अचिन्हित> vband_offsets;
+  hb_vector_t<अचिन्हित> hband_curves;
+  hb_vector_t<अचिन्हित> hband_curves_asc;
+  hb_vector_t<अचिन्हित> vband_curves;
+  hb_vector_t<अचिन्हित> vband_curves_asc;
+  hb_vector_t<अचिन्हित> hband_cursors;
+  hb_vector_t<अचिन्हित> vband_cursors;
+  hb_vector_t<अचिन्हित> curve_texel_offset;
 
-  void clear ()
+  व्योम सफा ()
   {
-    curve_infos.clear ();
-    hband_curve_counts.clear ();
-    vband_curve_counts.clear ();
-    hband_offsets.clear ();
-    vband_offsets.clear ();
-    hband_curves.clear ();
-    hband_curves_asc.clear ();
-    vband_curves.clear ();
-    vband_curves_asc.clear ();
-    hband_cursors.clear ();
-    vband_cursors.clear ();
-    curve_texel_offset.clear ();
+    curve_infos.सफा ();
+    hband_curve_counts.सफा ();
+    vband_curve_counts.सफा ();
+    hband_offsets.सफा ();
+    vband_offsets.सफा ();
+    hband_curves.सफा ();
+    hband_curves_asc.सफा ();
+    vband_curves.सफा ();
+    vband_curves_asc.सफा ();
+    hband_cursors.सफा ();
+    vband_cursors.सफा ();
+    curve_texel_offset.सफा ();
   }
 };
 
-struct hb_gpu_draw_t
+काष्ठा hb_gpu_draw_t
 {
   hb_object_header_t header;
 
   /* Accumulator state */
-  double start_x = 0, start_y = 0;
-  double current_x = 0, current_y = 0;
+  द्विगुन start_x = 0, start_y = 0;
+  द्विगुन current_x = 0, current_y = 0;
   bool need_moveto = true;
-  unsigned num_curves = 0;
+  अचिन्हित अंक_curves = 0;
   bool success = true;
 
   hb_vector_t<hb_gpu_curve_t> curves;
 
   /* Extents tracking (updated during accumulation) */
-  double ext_min_x =  HUGE_VAL;
-  double ext_min_y =  HUGE_VAL;
-  double ext_max_x = -HUGE_VAL;
-  double ext_max_y = -HUGE_VAL;
+  द्विगुन ext_min_x =  विशाल_मान;
+  द्विगुन ext_min_y =  विशाल_मान;
+  द्विगुन ext_max_x = -विशाल_मान;
+  द्विगुन ext_max_y = -विशाल_मान;
 
   /* Font scale (set by hb_gpu_draw_set_scale or hb_gpu_draw_glyph). */
-  int x_scale = 0;
-  int y_scale = 0;
+  पूर्णांक x_scale = 0;
+  पूर्णांक y_scale = 0;
 
   /* Work budget for outline traversal and generated curves.  A paint
    * backend seeds this through the public draw-budget API before drawing
@@ -117,14 +117,14 @@ struct hb_gpu_draw_t
   int64_t  budget = HB_BUDGET_DEFAULT;
   int64_t  budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  व्योम recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { वापस &budget_remaining; }
 
   /* Encode scratch (reused across calls) */
   hb_gpu_encode_scratch_t scratch;
@@ -133,14 +133,14 @@ struct hb_gpu_draw_t
   hb_blob_t *recycled_blob = nullptr;
 
   /* Internal accumulation methods */
-  HB_INTERNAL void acc_move_to (double x, double y);
-  HB_INTERNAL void acc_line_to (double x, double y);
-  HB_INTERNAL void acc_conic_to (double cx, double cy, double x, double y);
-  HB_INTERNAL void acc_cubic_to (double c1x, double c1y,
-				 double c2x, double c2y,
-				 double x, double y);
-  HB_INTERNAL void acc_close_path ();
+  HB_INTERNAL व्योम acc_move_to (द्विगुन x, द्विगुन y);
+  HB_INTERNAL व्योम acc_पंक्ति_to (द्विगुन x, द्विगुन y);
+  HB_INTERNAL व्योम acc_conic_to (द्विगुन cx, द्विगुन cy, द्विगुन x, द्विगुन y);
+  HB_INTERNAL व्योम acc_cubic_to (द्विगुन c1x, द्विगुन c1y,
+				 द्विगुन c2x, द्विगुन c2y,
+				 द्विगुन x, द्विगुन y);
+  HB_INTERNAL व्योम acc_close_path ();
 };
 
 
-#endif /* HB_GPU_DRAW_HH */
+#पूर्ण_अगर /* HB_GPU_DRAW_HH */

@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-layout.hh"
+#समावेश "hb-ot-shaper-khmer-machine.hh"
+#समावेश "hb-ot-shaper-indic.hh"
+#समावेश "hb-ot-layout.hh"
 
 
 /*
@@ -38,7 +38,7 @@
  */
 
 
-static const hb_ot_map_feature_t
+अटल स्थिर hb_ot_map_feature_t
 khmer_features[] =
 {
   /*
@@ -64,7 +64,7 @@ khmer_features[] =
 /*
  * Must be in the same order as the khmer_features array.
  */
-enum {
+क्रमागत {
   KHMER_PREF,
   KHMER_BLWF,
   KHMER_ABVF,
@@ -76,29 +76,29 @@ enum {
   _KHMER_BLWS,
   _KHMER_PSTS,
 
-  KHMER_NUM_FEATURES,
+  KHMER_अंक_FEATURES,
   KHMER_BASIC_FEATURES = _KHMER_PRES, /* Don't forget to update this! */
 };
 
-static inline void
+अटल अंतरभूत व्योम
 set_khmer_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  अचिन्हित पूर्णांक type = hb_indic_get_categories (u);
 
   info.khmer_category() = (khmer_category_t) (type & 0xFFu);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan,
+अटल bool
+setup_syllables_khmer (स्थिर hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+		       hb_बफर_t *बफर);
+अटल bool
+reorder_khmer (स्थिर hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
-	       hb_buffer_t *buffer);
+	       hb_बफर_t *बफर);
 
-static void
+अटल व्योम
 collect_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -120,18 +120,18 @@ collect_features_khmer (hb_ot_shape_planner_t *plan)
   map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
   map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
 
-  unsigned int i = 0;
-  for (; i < KHMER_BASIC_FEATURES; i++)
+  अचिन्हित पूर्णांक i = 0;
+  क्रम (; i < KHMER_BASIC_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 
   /* https://github.com/harfbuzz/harfbuzz/issues/3531 */
   map->add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 
-  for (; i < KHMER_NUM_FEATURES; i++)
+  क्रम (; i < KHMER_अंक_FEATURES; i++)
     map->add_feature (khmer_features[i]);
 }
 
-static void
+अटल व्योम
 override_features_khmer (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
@@ -145,71 +145,71 @@ override_features_khmer (hb_ot_shape_planner_t *plan)
 }
 
 
-struct khmer_shape_plan_t
+काष्ठा khmer_shape_plan_t
 {
-  hb_mask_t mask_array[KHMER_NUM_FEATURES];
+  hb_mask_t mask_array[KHMER_अंक_FEATURES];
 };
 
-static void *
-data_create_khmer (const hb_ot_shape_plan_t *plan)
+अटल व्योम *
+तथ्य_create_khmer (स्थिर hb_ot_shape_plan_t *plan)
 {
-  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, sizeof (khmer_shape_plan_t));
-  if (unlikely (!khmer_plan))
-    return nullptr;
+  khmer_shape_plan_t *khmer_plan = (khmer_shape_plan_t *) hb_calloc (1, माप (khmer_shape_plan_t));
+  अगर (unlikely (!khmer_plan))
+    वापस nullptr;
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (khmer_plan->mask_array); i++)
+  क्रम (अचिन्हित पूर्णांक i = 0; i < ARRAY_लंबाई (khmer_plan->mask_array); i++)
     khmer_plan->mask_array[i] = (khmer_features[i].flags & F_GLOBAL) ?
 				 0 : plan->map.get_1_mask (khmer_features[i].tag);
 
-  return khmer_plan;
+  वापस khmer_plan;
 }
 
-static void
-data_destroy_khmer (void *data)
+अटल व्योम
+तथ्य_destroy_khmer (व्योम *तथ्य)
 {
-  hb_free (data);
+  hb_free (तथ्य);
 }
 
-static void
-setup_masks_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		   hb_buffer_t              *buffer,
+अटल व्योम
+setup_masks_khmer (स्थिर hb_ot_shape_plan_t *plan HB_UNUSED,
+		   hb_बफर_t              *बफर,
 		   hb_font_t                *font HB_UNUSED)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, khmer_category);
+  HB_बफर_ALLOCATE_VAR (बफर, khmer_category);
 
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  अचिन्हित पूर्णांक गिनती = बफर->len;
+  hb_glyph_info_t *info = बफर->info;
+  क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     set_khmer_properties (info[i]);
 }
 
-static bool
-setup_syllables_khmer (const hb_ot_shape_plan_t *plan HB_UNUSED,
+अटल bool
+setup_syllables_khmer (स्थिर hb_ot_shape_plan_t *plan HB_UNUSED,
 		       hb_font_t *font HB_UNUSED,
-		       hb_buffer_t *buffer)
+		       hb_बफर_t *बफर)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_khmer (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  return false;
+  HB_बफर_ALLOCATE_VAR (बफर, syllable);
+  find_syllables_khmer (बफर);
+  foreach_syllable (बफर, start, end)
+    बफर->unsafe_to_break (start, end);
+  वापस false;
 }
 
 
 /* Rules from:
  * https://docs.microsoft.com/en-us/typography/script-development/devanagari */
 
-static void
-reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
+अटल व्योम
+reorder_consonant_syllable (स्थिर hb_ot_shape_plan_t *plan,
 			    hb_face_t *face HB_UNUSED,
-			    hb_buffer_t *buffer,
-			    unsigned int start, unsigned int end)
+			    hb_बफर_t *बफर,
+			    अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end)
 {
-  const khmer_shape_plan_t *khmer_plan = (const khmer_shape_plan_t *) plan->data;
-  hb_glyph_info_t *info = buffer->info;
+  स्थिर khmer_shape_plan_t *khmer_plan = (स्थिर khmer_shape_plan_t *) plan->तथ्य;
+  hb_glyph_info_t *info = बफर->info;
 
   /* Setup masks. */
   {
@@ -217,12 +217,12 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
     hb_mask_t mask = khmer_plan->mask_array[KHMER_BLWF] |
 		     khmer_plan->mask_array[KHMER_ABVF] |
 		     khmer_plan->mask_array[KHMER_PSTF];
-    for (unsigned int i = start + 1; i < end; i++)
+    क्रम (अचिन्हित पूर्णांक i = start + 1; i < end; i++)
       info[i].mask  |= mask;
   }
 
-  unsigned int num_coengs = 0;
-  for (unsigned int i = start + 1; i < end; i++)
+  अचिन्हित पूर्णांक अंक_coengs = 0;
+  क्रम (अचिन्हित पूर्णांक i = start + 1; i < end; i++)
   {
     /* """
      * When a COENG + (Cons | IndV) combination are found (and subscript count
@@ -236,20 +236,20 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * the 'pref' OpenType feature applied to them.
      * """
      */
-    if (info[i].khmer_category() == K_Cat(H) && num_coengs <= 2 && i + 1 < end)
+    अगर (info[i].khmer_category() == K_Cat(H) && अंक_coengs <= 2 && i + 1 < end)
     {
-      num_coengs++;
+      अंक_coengs++;
 
-      if (info[i + 1].khmer_category() == K_Cat(Ra))
+      अगर (info[i + 1].khmer_category() == K_Cat(Ra))
       {
-	for (unsigned int j = 0; j < 2; j++)
+	क्रम (अचिन्हित पूर्णांक j = 0; j < 2; j++)
 	  info[i + j].mask |= khmer_plan->mask_array[KHMER_PREF];
 
 	/* Move the Coeng,Ro sequence to the start. */
-	buffer->merge_clusters (start, i + 2);
+	बफर->merge_clusters (start, i + 2);
 	hb_glyph_info_t t0 = info[i];
 	hb_glyph_info_t t1 = info[i + 1];
-	memmove (&info[start + 2], &info[start], (i - start) * sizeof (info[0]));
+	स_हटाओ (&info[start + 2], &info[start], (i - start) * माप (info[0]));
 	info[start] = t0;
 	info[start + 1] = t1;
 
@@ -259,112 +259,112 @@ reorder_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	 * U+1784,U+17D2,U+179A,U+17D2,U+1782
 	 * U+1784,U+17D2,U+1782,U+17D2,U+179A
 	 */
-	if (khmer_plan->mask_array[KHMER_CFAR])
-	  for (unsigned int j = i + 2; j < end; j++)
+	अगर (khmer_plan->mask_array[KHMER_CFAR])
+	  क्रम (अचिन्हित पूर्णांक j = i + 2; j < end; j++)
 	    info[j].mask |= khmer_plan->mask_array[KHMER_CFAR];
 
-	num_coengs = 2; /* Done. */
+	अंक_coengs = 2; /* Done. */
       }
     }
 
     /* Reorder left matra piece. */
-    else if (info[i].khmer_category() == K_Cat(VPre))
+    अन्यथा अगर (info[i].khmer_category() == K_Cat(VPre))
     {
       /* Move to the start. */
-      buffer->merge_clusters (start, i + 1);
+      बफर->merge_clusters (start, i + 1);
       hb_glyph_info_t t = info[i];
-      memmove (&info[start + 1], &info[start], (i - start) * sizeof (info[0]));
+      स_हटाओ (&info[start + 1], &info[start], (i - start) * माप (info[0]));
       info[start] = t;
     }
   }
 }
 
-static void
-reorder_syllable_khmer (const hb_ot_shape_plan_t *plan,
+अटल व्योम
+reorder_syllable_khmer (स्थिर hb_ot_shape_plan_t *plan,
 			hb_face_t *face,
-			hb_buffer_t *buffer,
-			unsigned int start, unsigned int end)
+			hb_बफर_t *बफर,
+			अचिन्हित पूर्णांक start, अचिन्हित पूर्णांक end)
 {
-  khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type)
+  khmer_syllable_type_t syllable_type = (khmer_syllable_type_t) (बफर->info[start].syllable() & 0x0F);
+  चयन (syllable_type)
   {
-    case khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
-    case khmer_consonant_syllable:
-     reorder_consonant_syllable (plan, face, buffer, start, end);
-     break;
+    हाल khmer_broken_cluster: /* We already inserted dotted-circles, so just call the consonant_syllable. */
+    हाल khmer_consonant_syllable:
+     reorder_consonant_syllable (plan, face, बफर, start, end);
+     अवरोध;
 
-    case khmer_non_khmer_cluster:
-      break;
+    हाल khmer_non_khmer_cluster:
+      अवरोध;
   }
 }
 
-static bool
-reorder_khmer (const hb_ot_shape_plan_t *plan,
+अटल bool
+reorder_khmer (स्थिर hb_ot_shape_plan_t *plan,
 	       hb_font_t *font,
-	       hb_buffer_t *buffer)
+	       hb_बफर_t *बफर)
 {
   bool ret = false;
-  if (buffer->message (font, "start reordering khmer"))
+  अगर (बफर->message (font, "start reordering khmer"))
   {
-    if (hb_syllabic_insert_dotted_circles (font, buffer,
+    अगर (hb_syllabic_जोड़ो_dotted_circles (font, बफर,
 					   khmer_broken_cluster,
 					   K_Cat(DOTTEDCIRCLE),
-					   (unsigned) -1))
+					   (अचिन्हित) -1))
       ret = true;
 
-    foreach_syllable (buffer, start, end)
-      reorder_syllable_khmer (plan, font->face, buffer, start, end);
-    (void) buffer->message (font, "end reordering khmer");
+    foreach_syllable (बफर, start, end)
+      reorder_syllable_khmer (plan, font->face, बफर, start, end);
+    (व्योम) बफर->message (font, "end reordering khmer");
   }
-  HB_BUFFER_DEALLOCATE_VAR (buffer, khmer_category);
+  HB_बफर_DEALLOCATE_VAR (बफर, khmer_category);
 
-  return ret;
+  वापस ret;
 }
 
 
-static bool
-decompose_khmer (const hb_ot_shape_normalize_context_t *c,
+अटल bool
+decompose_khmer (स्थिर hb_ot_shape_normalize_context_t *c,
 		 hb_codepoint_t  ab,
 		 hb_codepoint_t *a,
 		 hb_codepoint_t *b)
 {
-  switch (ab)
+  चयन (ab)
   {
     /*
      * Decompose split matras that don't have Unicode decompositions.
      */
 
     /* Khmer */
-    case 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; return true;
-    case 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; return true;
-    case 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; return true;
-    case 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; return true;
-    case 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; return true;
+    हाल 0x17BEu  : *a = 0x17C1u; *b= 0x17BEu; वापस true;
+    हाल 0x17BFu  : *a = 0x17C1u; *b= 0x17BFu; वापस true;
+    हाल 0x17C0u  : *a = 0x17C1u; *b= 0x17C0u; वापस true;
+    हाल 0x17C4u  : *a = 0x17C1u; *b= 0x17C4u; वापस true;
+    हाल 0x17C5u  : *a = 0x17C1u; *b= 0x17C5u; वापस true;
   }
 
-  return (bool) c->unicode->decompose (ab, a, b);
+  वापस (bool) c->unicode->decompose (ab, a, b);
 }
 
-static bool
-compose_khmer (const hb_ot_shape_normalize_context_t *c,
+अटल bool
+compose_khmer (स्थिर hb_ot_shape_normalize_context_t *c,
 	       hb_codepoint_t  a,
 	       hb_codepoint_t  b,
 	       hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  अगर (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    वापस false;
 
-  return (bool) c->unicode->compose (a, b, ab);
+  वापस (bool) c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_khmer =
+स्थिर hb_ot_shaper_t _hb_ot_shaper_khmer =
 {
   collect_features_khmer,
   override_features_khmer,
-  data_create_khmer,
-  data_destroy_khmer,
+  तथ्य_create_khmer,
+  तथ्य_destroy_khmer,
   nullptr, /* preprocess_text */
   nullptr, /* postprocess_glyphs */
   decompose_khmer,
@@ -378,4 +378,4 @@ const hb_ot_shaper_t _hb_ot_shaper_khmer =
 };
 
 
-#endif
+#पूर्ण_अगर

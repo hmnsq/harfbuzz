@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifdef HAVE_CORETEXT
+#अगर_घोषित HAVE_CORETEXT
 
-#include "hb-shaper-impl.hh"
+#समावेश "hb-shaper-impl.hh"
 
-#include "hb-coretext.hh"
+#समावेश "hb-coretext.hh"
 
 
 /**
@@ -44,241 +44,241 @@
  * Functions for using HarfBuzz with the CoreText fonts.
  **/
 
-static void
-release_table_data (void *user_data)
+अटल व्योम
+release_table_तथ्य (व्योम *user_तथ्य)
 {
-  CFDataRef cf_data = reinterpret_cast<CFDataRef> (user_data);
-  CFRelease(cf_data);
+  CFDataRef cf_तथ्य = reinterpret_cast<CFDataRef> (user_तथ्य);
+  CFRelease(cf_तथ्य);
 }
 
-static hb_blob_t *
-_hb_cg_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+अटल hb_blob_t *
+_hb_cg_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, व्योम *user_तथ्य)
 {
-  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
-  if (unlikely (!cg_font))
-    return nullptr;
+  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_तथ्य);
+  अगर (unlikely (!cg_font))
+    वापस nullptr;
 
-  hb_cf_ptr_t<CFDataRef> cf_data (CGFontCopyTableForTag (cg_font, tag));
-  if (unlikely (!cf_data))
-    return nullptr;
+  hb_cf_ptr_t<CFDataRef> cf_तथ्य (CGFontCopyTableForTag (cg_font, tag));
+  अगर (unlikely (!cf_तथ्य))
+    वापस nullptr;
 
-  const char *data = reinterpret_cast<const char*> (CFDataGetBytePtr (cf_data));
-  const size_t length = CFDataGetLength (cf_data);
-  if (!data || !length)
-    return nullptr;
+  स्थिर अक्षर *तथ्य = reinterpret_cast<स्थिर अक्षर*> (CFDataGetBytePtr (cf_तथ्य));
+  स्थिर माप_प्रकार लंबाई = CFData_Get_लंबाई (cf_तथ्य);
+  अगर (!तथ्य || !लंबाई)
+    वापस nullptr;
 
-  return hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
-			 reinterpret_cast<void *> (const_cast<__CFData *> (cf_data.release ())),
-			 release_table_data);
+  वापस hb_blob_create (तथ्य, लंबाई, HB_MEMORY_MODE_READONLY,
+			 reinterpret_cast<व्योम *> (const_cast<__CFData *> (cf_तथ्य.release ())),
+			 release_table_तथ्य);
 }
 
-static unsigned
-_hb_cg_get_table_tags (const hb_face_t *face HB_UNUSED,
-		       unsigned int start_offset,
-		       unsigned int *table_count,
+अटल अचिन्हित
+_hb_cg_get_table_tags (स्थिर hb_face_t *face HB_UNUSED,
+		       अचिन्हित पूर्णांक start_offset,
+		       अचिन्हित पूर्णांक *table_गिनती_2,
 		       hb_tag_t *table_tags,
-		       void *user_data)
+		       व्योम *user_तथ्य)
 {
-  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_data);
-  if (unlikely (!cg_font))
+  CGFontRef cg_font = reinterpret_cast<CGFontRef> (user_तथ्य);
+  अगर (unlikely (!cg_font))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    अगर (table_गिनती_2)
+      *table_गिनती_2 = 0;
+    वापस 0;
   }
 
-  hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_SIZE));
-  if (unlikely (!ct_font))
+  hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, (CGFloat) HB_CORETEXT_DEFAULT_FONT_आकार));
+  अगर (unlikely (!ct_font))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    अगर (table_गिनती_2)
+      *table_गिनती_2 = 0;
+    वापस 0;
   }
 
   hb_cf_ptr_t<CFArrayRef> arr (CTFontCopyAvailableTables (ct_font, kCTFontTableOptionNoOptions));
-  if (unlikely (!arr))
+  अगर (unlikely (!arr))
   {
-    if (table_count)
-      *table_count = 0;
-    return 0;
+    अगर (table_गिनती_2)
+      *table_गिनती_2 = 0;
+    वापस 0;
   }
 
-  unsigned population = (unsigned) CFArrayGetCount (arr);
+  अचिन्हित population = (अचिन्हित) CFArray_Get_गिनती (arr);
 
-  if (!table_count)
-    return population;
+  अगर (!table_गिनती_2)
+    वापस population;
 
-  if (unlikely (start_offset >= population))
+  अगर (unlikely (start_offset >= population))
   {
-    *table_count = 0;
-    return population;
+    *table_गिनती_2 = 0;
+    वापस population;
   }
 
-  unsigned end_offset = start_offset + *table_count;
-  if (unlikely (end_offset < start_offset))
+  अचिन्हित end_offset = start_offset + *table_गिनती_2;
+  अगर (unlikely (end_offset < start_offset))
   {
-    *table_count = 0;
-    return population;
+    *table_गिनती_2 = 0;
+    वापस population;
   }
-  end_offset = hb_min (end_offset, (unsigned) population);
+  end_offset = hb_min (end_offset, (अचिन्हित) population);
 
-  *table_count = end_offset - start_offset;
-  if (table_tags)
-    for (unsigned i = start_offset; i < end_offset; i++)
+  *table_गिनती_2 = end_offset - start_offset;
+  अगर (table_tags)
+    क्रम (अचिन्हित i = start_offset; i < end_offset; i++)
     {
-      CTFontTableTag tag = (CTFontTableTag)(uintptr_t) CFArrayGetValueAtIndex (arr, i);
+      CTFontTableTag tag = (CTFontTableTag)(uintptr_t) CFArray_Get_मूल्य_At_सूचकांक (arr, i);
       table_tags[i - start_offset] = tag;
     }
 
-  return population;
+  वापस population;
 }
 
-static void
-_hb_cg_font_release (void *data)
+अटल व्योम
+_hb_cg_font_release (व्योम *तथ्य)
 {
-  if (data)
-    CGFontRelease ((CGFontRef) data);
+  अगर (तथ्य)
+    CGFontRelease ((CGFontRef) तथ्य);
 }
 
 
-static CTFontDescriptorRef
+अटल CTFontDescriptorRef
 get_last_resort_font_desc ()
 {
-  hb_cf_ptr_t<CTFontDescriptorRef> last_resort (CTFontDescriptorCreateWithNameAndSize (CFSTR("LastResort"), 0));
-  if (unlikely (!last_resort))
-    return nullptr;
+  hb_cf_ptr_t<CTFontDescriptorRef> last_resort (CTFont_Descriptor_Create_With_Name_And_आकार (CFSTR("LastResort"), 0));
+  अगर (unlikely (!last_resort))
+    वापस nullptr;
 
-  const void *cascade_elements[] = { last_resort.get () };
+  स्थिर व्योम *cascade_elements[] = { last_resort.लो () };
   hb_cf_ptr_t<CFArrayRef> cascade_list (CFArrayCreate (kCFAllocatorDefault,
 						       cascade_elements,
 						       1,
 						       &kCFTypeArrayCallBacks));
-  if (unlikely (!cascade_list))
-    return nullptr;
+  अगर (unlikely (!cascade_list))
+    वापस nullptr;
 
-  const void *keys[] = { kCTFontCascadeListAttribute };
-  const void *values[] = { cascade_list.get () };
+  स्थिर व्योम *कुंजियाँ[] = { kCTFontCascadeListAttribute };
+  स्थिर व्योम *values[] = { cascade_list.लो () };
   hb_cf_ptr_t<CFDictionaryRef> attributes (CFDictionaryCreate (kCFAllocatorDefault,
-							       keys,
+							       कुंजियाँ,
 							       values,
 							       1,
-							       &kCFTypeDictionaryKeyCallBacks,
-							       &kCFTypeDictionaryValueCallBacks));
-  if (unlikely (!attributes))
-    return nullptr;
+							       &k_CFType_Dictionary_कुंजी_Call_Backs,
+							       &k_CFType_Dictionary_मूल्य_Call_Backs));
+  अगर (unlikely (!attributes))
+    वापस nullptr;
 
-  return CTFontDescriptorCreateWithAttributes (attributes);
+  वापस CTFontDescriptorCreateWithAttributes (attributes);
 }
 
-static void
-release_data (void *info, const void *data, size_t size)
+अटल व्योम
+release_तथ्य (व्योम *info, स्थिर व्योम *तथ्य, माप_प्रकार आकार)
 {
-  assert (hb_blob_get_length ((hb_blob_t *) info) == size &&
-	  hb_blob_get_data ((hb_blob_t *) info, nullptr) == data);
+  निश्चित (hb_blob_get_लंबाई ((hb_blob_t *) info) == आकार &&
+	  hb_blob_get_तथ्य ((hb_blob_t *) info, nullptr) == तथ्य);
 
   hb_blob_destroy ((hb_blob_t *) info);
 }
 
 CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int named_instance_index)
+create_cg_font (CFArrayRef ct_font_desc_array, अचिन्हित पूर्णांक named_instance_सूचकांक)
 {
   hb_cf_ptr_t<CFArrayRef> desc_array (ct_font_desc_array);
-  if (unlikely (!desc_array))
-    return nullptr;
+  अगर (unlikely (!desc_array))
+    वापस nullptr;
 
-  if (named_instance_index == 0)
+  अगर (named_instance_सूचकांक == 0)
   {
     // Default instance. We don't know which one is it. Return the first one.
     // We will set the correct variations on it later.
   }
-  else
-    named_instance_index--;
-  auto ct_font_desc = (CFArrayGetCount (desc_array) > (CFIndex) named_instance_index) ?
-		      (CTFontDescriptorRef) CFArrayGetValueAtIndex (desc_array, (CFIndex) named_instance_index) : nullptr;
-  if (unlikely (!ct_font_desc))
-    return nullptr;
+  अन्यथा
+    named_instance_सूचकांक--;
+  स्वतः ct_font_desc = (CFArray_Get_गिनती (desc_array) > (CFIndex) named_instance_सूचकांक) ?
+		      (CTFontDescriptorRef) CFArray_Get_मूल्य_At_सूचकांक (desc_array, (CFIndex) named_instance_सूचकांक) : nullptr;
+  अगर (unlikely (!ct_font_desc))
+    वापस nullptr;
 
   hb_cf_ptr_t<CTFontRef> ct_font (CTFontCreateWithFontDescriptor (ct_font_desc, 0, nullptr));
-  if (unlikely (!ct_font))
-    return nullptr;
+  अगर (unlikely (!ct_font))
+    वापस nullptr;
 
-  return CTFontCopyGraphicsFont (ct_font, nullptr);
+  वापस CTFontCopyGraphicsFont (ct_font, nullptr);
 }
 
 CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index)
+create_cg_font (hb_blob_t *blob, अचिन्हित पूर्णांक सूचकांक_2)
 {
   hb_blob_make_immutable (blob);
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
-    DEBUG_MSG (CORETEXT, blob, "Empty blob");
+  अचिन्हित पूर्णांक blob_लंबाई;
+  स्थिर अक्षर *blob_तथ्य = hb_blob_get_तथ्य (blob, &blob_लंबाई);
+  अगर (unlikely (!blob_लंबाई))
+    DEBUG_संदेश (CORETEXT, blob, "Empty blob");
 
-  unsigned ttc_index = index & 0xFFFF;
-  unsigned named_instance_index = index >> 16;
+  अचिन्हित ttc_सूचकांक = सूचकांक_2 & 0xFFFF;
+  अचिन्हित named_instance_सूचकांक = सूचकांक_2 >> 16;
 
-  if (ttc_index != 0)
+  अगर (ttc_सूचकांक != 0)
   {
-    DEBUG_MSG (CORETEXT, blob, "TTC index %u not supported", ttc_index);
-    return nullptr; // CoreText does not support TTCs
+    DEBUG_संदेश (CORETEXT, blob, "TTC index %u not supported", ttc_सूचकांक);
+    वापस nullptr; // CoreText does not support TTCs
   }
 
-  if (unlikely (named_instance_index != 0))
+  अगर (unlikely (named_instance_सूचकांक != 0))
   {
     // https://github.com/harfbuzz/harfbuzz/issues/5300
     // https://github.com/harfbuzz/harfbuzz/issues/5354
-#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000) || \
+#अगर (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000) || \
     (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101500) || \
     (defined(__TV_OS_VERSION_MIN_REQUIRED) && __TV_OS_VERSION_MIN_REQUIRED >= 110000) || \
     (defined(__WATCH_OS_VERSION_MIN_REQUIRED) && __WATCH_OS_VERSION_MIN_REQUIRED >= 40000) || \
     (defined(__MACCATALYST_VERSION_MIN_REQUIRED) && __MACCATALYST_VERSION_MIN_REQUIRED >= 130100) || \
     (defined(__VISION_OS_VERSION_MIN_REQUIRED) && __VISION_OS_VERSION_MIN_REQUIRED >= 10000)
-    hb_cf_ptr_t<CFDataRef> data (CFDataCreate (kCFAllocatorDefault, (const UInt8 *) blob_data, blob_length));
-    if (data)
+    hb_cf_ptr_t<CFDataRef> तथ्य (CFDataCreate (kCFAllocatorDefault, (स्थिर UInt8 *) blob_तथ्य, blob_लंबाई));
+    अगर (तथ्य)
     {
-      auto ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromData (data);
-      if (likely (ct_font_desc_array))
-	return create_cg_font (ct_font_desc_array, named_instance_index);
+      स्वतः ct_font_desc_array = CTFont_Manager_Create_Font_Descriptors_From_तथ्य (तथ्य);
+      अगर (likely (ct_font_desc_array))
+	वापस create_cg_font (ct_font_desc_array, named_instance_सूचकांक);
     }
-#endif
-    return nullptr;
+#पूर्ण_अगर
+    वापस nullptr;
   }
 
   hb_blob_reference (blob);
-  hb_cf_ptr_t<CGDataProviderRef> provider (CGDataProviderCreateWithData (blob, blob_data, blob_length, &release_data));
-  if (unlikely (!provider))
+  hb_cf_ptr_t<CGDataProviderRef> provider (CGData_Provider_Create_With_तथ्य (blob, blob_तथ्य, blob_लंबाई, &release_तथ्य));
+  अगर (unlikely (!provider))
   {
     hb_blob_destroy (blob);
-    return nullptr;
+    वापस nullptr;
   }
-  CGFontRef cg_font = CGFontCreateWithDataProvider (provider);
-  if (unlikely (!cg_font))
-    DEBUG_MSG (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
-  return cg_font;
+  CGFontRef cg_font = CGFont_Create_With_तथ्य_Provider (provider);
+  अगर (unlikely (!cg_font))
+    DEBUG_संदेश (CORETEXT, blob, "CGFontCreateWithDataProvider() failed");
+  वापस cg_font;
 }
 
 CGFontRef
 create_cg_font (hb_face_t *face)
 {
   CGFontRef cg_font = nullptr;
-  if (unlikely (!face))
-    return nullptr;
-  if (face->destroy == _hb_cg_font_release)
-    cg_font = face->user_data ? CGFontRetain ((CGFontRef) face->user_data) : nullptr;
-  else
+  अगर (unlikely (!face))
+    वापस nullptr;
+  अगर (face->destroy == _hb_cg_font_release)
+    cg_font = face->user_तथ्य ? CGFontRetain ((CGFontRef) face->user_तथ्य) : nullptr;
+  अन्यथा
   {
     hb_blob_t *blob = hb_face_reference_blob (face);
-    cg_font = create_cg_font (blob, face->index);
+    cg_font = create_cg_font (blob, face->सूचकांक_2);
     hb_blob_destroy (blob);
   }
-  return cg_font;
+  वापस cg_font;
 }
 
 CTFontRef
-create_ct_font (CGFontRef cg_font, CGFloat font_size)
+create_ct_font (CGFontRef cg_font, CGFloat font_आकार)
 {
-  if (unlikely (!cg_font))
-    return nullptr;
+  अगर (unlikely (!cg_font))
+    वापस nullptr;
 
   hb_cf_ptr_t<CTFontRef> ct_font;
 
@@ -286,35 +286,35 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
    * using CTFontCreateWithGraphicsFont. The only way of enabling tracking seems
    * to be through the CTFontCreateUIFontForLanguage call. */
   hb_cf_ptr_t<CFStringRef> cg_postscript_name (CGFontCopyPostScriptName (cg_font));
-  if (cg_postscript_name)
+  अगर (cg_postscript_name)
   {
-    if (CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSText")) ||
+    अगर (CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSText")) ||
 	CFStringHasPrefix (cg_postscript_name, CFSTR (".SFNSDisplay")))
     {
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1080
+#अगर !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1080
 # define kCTFontUIFontSystem kCTFontSystemFontType
 # define kCTFontUIFontEmphasizedSystem kCTFontEmphasizedSystemFontType
-#endif
+#पूर्ण_अगर
       CTFontUIFontType font_type = kCTFontUIFontSystem;
-      if (CFStringHasSuffix (cg_postscript_name, CFSTR ("-Bold")))
+      अगर (CFStringHasSuffix (cg_postscript_name, CFSTR ("-Bold")))
 	font_type = kCTFontUIFontEmphasizedSystem;
 
-      ct_font.reset (CTFontCreateUIFontForLanguage (font_type, font_size, nullptr));
-      if (ct_font)
+      ct_font.reset (CTFontCreateUIFontForLanguage (font_type, font_आकार, nullptr));
+      अगर (ct_font)
       {
-	hb_cf_ptr_t<CFStringRef> ct_result_name (CTFontCopyPostScriptName (ct_font));
-	if (!ct_result_name || CFStringCompare (ct_result_name, cg_postscript_name, 0) != kCFCompareEqualTo)
+	hb_cf_ptr_t<CFStringRef> ct_परिणाम_name (CTFontCopyPostScriptName (ct_font));
+	अगर (!ct_परिणाम_name || CFStringCompare (ct_परिणाम_name, cg_postscript_name, 0) != kCFCompareEqualTo)
 	  ct_font.reset ();
       }
     }
   }
 
-  if (!ct_font)
-    ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_size, nullptr, nullptr));
+  अगर (!ct_font)
+    ct_font.reset (CTFontCreateWithGraphicsFont (cg_font, font_आकार, nullptr, nullptr));
 
-  if (unlikely (!ct_font)) {
-    DEBUG_MSG (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
-    return nullptr;
+  अगर (unlikely (!ct_font)) {
+    DEBUG_संदेश (CORETEXT, cg_font, "Font CTFontCreateWithGraphicsFont() failed");
+    वापस nullptr;
   }
 
   /* crbug.com/576941 and crbug.com/625902 and the investigation in the latter
@@ -324,37 +324,37 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
    * reconfiguring the cascade list causes CoreText crashes. For details, see
    * crbug.com/549610 */
   // 0x00070000 stands for "kCTVersionNumber10_10", see CoreText.h
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  if (&CTGetCoreTextVersion != nullptr && CTGetCoreTextVersion() < 0x00070000) {
-#pragma GCC diagnostic pop
+#आशय GCC diagnostic push
+#आशय GCC diagnostic ignored "-Wdeprecated-declarations"
+  अगर (&CTGetCoreTextVersion != nullptr && CTGetCoreTextVersion() < 0x00070000) {
+#आशय GCC diagnostic निकालो
     hb_cf_ptr_t<CFStringRef> fontName (CTFontCopyPostScriptName (ct_font));
     bool isEmojiFont = fontName && CFStringCompare (fontName, CFSTR("AppleColorEmoji"), 0) == kCFCompareEqualTo;
-    if (!isEmojiFont)
-      return ct_font.release ();
+    अगर (!isEmojiFont)
+      वापस ct_font.release ();
   }
 
   hb_cf_ptr_t<CFURLRef> original_url;
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+#अगर !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
   ATSFontRef atsFont;
   FSRef fsref;
   OSStatus status;
-  atsFont = CTFontGetPlatformFont (ct_font, NULL);
+  atsFont = CTFontGetPlatformFont (ct_font, शून्य);
   status = ATSFontGetFileReference (atsFont, &fsref);
-  if (status == noErr)
-    original_url.reset (CFURLCreateFromFSRef (NULL, &fsref));
-#else
+  अगर (status == noErr)
+    original_url.reset (CFURLCreateFromFSRef (शून्य, &fsref));
+#अन्यथा
   original_url.reset ((CFURLRef) CTFontCopyAttribute (ct_font, kCTFontURLAttribute));
-#endif
+#पूर्ण_अगर
 
   /* Create font copy with cascade list that has LastResort first; this speeds up CoreText
    * font fallback which we don't need anyway. */
   {
     hb_cf_ptr_t<CTFontDescriptorRef> last_resort_font_desc (get_last_resort_font_desc ());
-    if (last_resort_font_desc)
+    अगर (last_resort_font_desc)
     {
       hb_cf_ptr_t<CTFontRef> new_ct_font (CTFontCreateCopyWithAttributes (ct_font, 0.0, nullptr, last_resort_font_desc));
-      if (new_ct_font)
+      अगर (new_ct_font)
       {
 	/* The CTFontCreateCopyWithAttributes call fails to stay on the same font
 	 * when reconfiguring the cascade list and may switch to a different font
@@ -366,30 +366,30 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 	 * process in Blink. This can be detected by the new file URL location
 	 * that the newly found font points to. */
 	hb_cf_ptr_t<CFURLRef> new_url;
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
-	atsFont = CTFontGetPlatformFont (new_ct_font, NULL);
+#अगर !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+	atsFont = CTFontGetPlatformFont (new_ct_font, शून्य);
 	status = ATSFontGetFileReference (atsFont, &fsref);
-	if (status == noErr)
-	  new_url.reset (CFURLCreateFromFSRef (NULL, &fsref));
-#else
+	अगर (status == noErr)
+	  new_url.reset (CFURLCreateFromFSRef (शून्य, &fsref));
+#अन्यथा
 	new_url.reset ((CFURLRef) CTFontCopyAttribute (new_ct_font, kCTFontURLAttribute));
-#endif
+#पूर्ण_अगर
 	// Keep reconfigured font if URL cannot be retrieved (seems to be the case
 	// on Mac OS 10.12 Sierra), speculative fix for crbug.com/625606
-	if (!original_url || !new_url || CFEqual (original_url, new_url)) {
+	अगर (!original_url || !new_url || CFEqual (original_url, new_url)) {
 	  ct_font = std::move (new_ct_font);
-	} else {
-	  DEBUG_MSG (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
+	} अन्यथा {
+	  DEBUG_संदेश (CORETEXT, ct_font, "Discarding reconfigured CTFont, location changed.");
 	}
       }
-      else
-	DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+      अन्यथा
+	DEBUG_संदेश (CORETEXT, ct_font, "Font copy with empty cascade list failed");
     }
-    else
-      DEBUG_MSG (CORETEXT, ct_font, "Font copy with empty cascade list failed");
+    अन्यथा
+      DEBUG_संदेश (CORETEXT, ct_font, "Font copy with empty cascade list failed");
   }
 
-  return ct_font.release ();
+  वापस ct_font.release ();
 }
 
 /**
@@ -406,12 +406,12 @@ create_ct_font (CGFontRef cg_font, CGFloat font_size)
 hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font)
 {
-  if (unlikely (!cg_font))
-    return hb_face_get_empty ();
+  अगर (unlikely (!cg_font))
+    वापस hb_face_get_empty ();
 
   hb_face_t *face = hb_face_create_for_tables (_hb_cg_reference_table, CGFontRetain (cg_font), _hb_cg_font_release);
   hb_face_set_get_table_tags_func (face, _hb_cg_get_table_tags, cg_font, nullptr);
-  return face;
+  वापस face;
 }
 
 /**
@@ -431,43 +431,43 @@ hb_coretext_face_create (CGFontRef cg_font)
  * Since: 10.1.0
  */
 hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index)
+hb_coretext_face_create_from_file_or_fail (स्थिर अक्षर   *file_name,
+					   अचिन्हित पूर्णांक  सूचकांक_2)
 {
-  unsigned ttc_index = index & 0xFFFF;
-  unsigned named_instance_index = index >> 16;
+  अचिन्हित ttc_सूचकांक = सूचकांक_2 & 0xFFFF;
+  अचिन्हित named_instance_सूचकांक = सूचकांक_2 >> 16;
 
-  if (ttc_index != 0)
+  अगर (ttc_सूचकांक != 0)
   {
-    DEBUG_MSG (CORETEXT, nullptr, "TTC index %u not supported", ttc_index);
-    return nullptr; // CoreText does not support TTCs
+    DEBUG_संदेश (CORETEXT, nullptr, "TTC index %u not supported", ttc_सूचकांक);
+    वापस nullptr; // CoreText does not support TTCs
   }
 
   hb_cf_ptr_t<CFURLRef> url (CFURLCreateFromFileSystemRepresentation (nullptr,
-								      (const UInt8 *) file_name,
-								      strlen (file_name),
+								      (स्थिर UInt8 *) file_name,
+								      म_माप (file_name),
 								      false));
-  if (unlikely (!url))
-    return nullptr;
+  अगर (unlikely (!url))
+    वापस nullptr;
 
-  auto ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromURL (url);
-  if (unlikely (!ct_font_desc_array))
-    return nullptr;
+  स्वतः ct_font_desc_array = CTFontManagerCreateFontDescriptorsFromURL (url);
+  अगर (unlikely (!ct_font_desc_array))
+    वापस nullptr;
 
-  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (ct_font_desc_array, named_instance_index));
-  if (unlikely (!cg_font))
-    return nullptr;
+  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (ct_font_desc_array, named_instance_सूचकांक));
+  अगर (unlikely (!cg_font))
+    वापस nullptr;
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
-  if (unlikely (hb_face_is_immutable (face)))
+  अगर (unlikely (hb_face_is_immutable (face)))
   {
     hb_face_destroy (face);
-    return nullptr;
+    वापस nullptr;
   }
 
-  hb_face_set_index (face, index);
+  hb_face_set_सूचकांक (face, सूचकांक_2);
 
-  return face;
+  वापस face;
 }
 
 /**
@@ -488,22 +488,22 @@ hb_coretext_face_create_from_file_or_fail (const char   *file_name,
  */
 hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index)
+					   अचिन्हित पूर्णांक  सूचकांक_2)
 {
-  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (blob, index));
-  if (unlikely (!cg_font))
-    return nullptr;
+  hb_cf_ptr_t<CGFontRef> cg_font (create_cg_font (blob, सूचकांक_2));
+  अगर (unlikely (!cg_font))
+    वापस nullptr;
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
-  if (unlikely (hb_face_is_immutable (face)))
+  अगर (unlikely (hb_face_is_immutable (face)))
   {
     hb_face_destroy (face);
-    return nullptr;
+    वापस nullptr;
   }
 
-  hb_face_set_index (face, index);
+  hb_face_set_सूचकांक (face, सूचकांक_2);
 
-  return face;
+  वापस face;
 }
 
 /**
@@ -520,7 +520,7 @@ hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
 CGFontRef
 hb_coretext_face_get_cg_font (hb_face_t *face)
 {
-  return face ? (CGFontRef) (const void *) face->data.coretext : nullptr;
+  वापस face ? (CGFontRef) (स्थिर व्योम *) face->तथ्य.coretext : nullptr;
 }
 
 /**
@@ -542,58 +542,58 @@ hb_coretext_face_get_cg_font (hb_face_t *face)
 hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font)
 {
-  if (unlikely (!ct_font))
-    return hb_font_get_empty ();
+  अगर (unlikely (!ct_font))
+    वापस hb_font_get_empty ();
 
   hb_cf_ptr_t<CGFontRef> cg_font (CTFontCopyGraphicsFont (ct_font, nullptr));
-  if (unlikely (!cg_font))
-    return hb_font_get_empty ();
+  अगर (unlikely (!cg_font))
+    वापस hb_font_get_empty ();
 
   hb_face_t *face = hb_coretext_face_create (cg_font);
   cg_font.reset ();
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  अगर (unlikely (hb_object_is_immutable (font)))
+    वापस font;
 
-  hb_font_set_ptem (font, CTFontGetSize (ct_font));
+  hb_font_set_ptem (font, CTFont_Get_आकार (ct_font));
 
   /* Copy font variations */
   hb_cf_ptr_t<CFDictionaryRef> variations (CTFontCopyVariation (ct_font));
-  if (variations)
+  अगर (variations)
   {
 
     hb_vector_t<hb_variation_t> vars;
-    hb_vector_t<CFTypeRef> keys;
+    hb_vector_t<CFTypeRef> कुंजियाँ;
     hb_vector_t<CFTypeRef> values;
 
-    CFIndex count = CFDictionaryGetCount (variations);
-    if (likely (vars.alloc_exact (count) && keys.resize_exact (count) && values.resize_exact (count)))
+    CFIndex गिनती = CFDictionary_Get_गिनती (variations);
+    अगर (likely (vars.alloc_exact (गिनती) && कुंजियाँ.resize_exact (गिनती) && values.resize_exact (गिनती)))
     {
       // Fetch them one by one and collect in a vector of our own.
-      CFDictionaryGetKeysAndValues (variations, keys.arrayZ, values.arrayZ);
-      for (CFIndex i = 0; i < count; i++)
+      CFDictionary_Get_कुंजियाँ_And_मूल्यावली (variations, कुंजियाँ.arrayZ, values.arrayZ);
+      क्रम (CFIndex i = 0; i < गिनती; i++)
       {
-	int tag;
-	float value;
-	CFNumberGetValue ((CFNumberRef) keys.arrayZ[i], kCFNumberIntType, &tag);
-	CFNumberGetValue ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
+	पूर्णांक tag;
+	भग्न value;
+	CFNumber_Get_मूल्य ((CFNumberRef) कुंजियाँ.arrayZ[i], kCFNumberIntType, &tag);
+	CFNumber_Get_मूल्य ((CFNumberRef) values.arrayZ[i], kCFNumberFloatType, &value);
 
 	hb_variation_t var = {(hb_tag_t) tag, value};
 	vars.push (var);
       }
-      hb_font_set_variations (font, vars.arrayZ, vars.length);
+      hb_font_set_variations (font, vars.arrayZ, vars.लंबाई);
     }
   }
 
   /* Let there be dragons here... */
-  font->data.coretext.cmpexch (nullptr, (hb_coretext_font_data_t *) CFRetain (ct_font));
+  font->तथ्य.coretext.cmpexch (nullptr, (hb_coretext_font_तथ्य_t *) CFRetain (ct_font));
 
   // https://github.com/harfbuzz/harfbuzz/pull/4895#issuecomment-2408471254
   //hb_coretext_font_set_funcs (font);
 
-  return font;
+  वापस font;
 }
 
 /**
@@ -610,8 +610,8 @@ hb_coretext_font_create (CTFontRef ct_font)
 CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font)
 {
-  return font ? (CTFontRef) (const void *) font->data.coretext : nullptr;
+  वापस font ? (CTFontRef) (स्थिर व्योम *) font->तथ्य.coretext : nullptr;
 }
 
 
-#endif
+#पूर्ण_अगर

@@ -24,78 +24,78 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-decycler.hh"
+#समावेश "hb.hh"
+#समावेश "hb-decycler.hh"
 
-static void
-tree_recurse_binary (unsigned value,
-		     unsigned max_value,
+अटल व्योम
+वृक्ष_recurse_द्विआधारी (अचिन्हित value,
+		     अचिन्हित max_मूल्य,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  अगर (value >= max_मूल्य)
+		वापस;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_गाँठ_t node (decycler);
 
   bool ret = node.visit (value);
   hb_always_assert (ret);
 
-  tree_recurse_binary (value * 2 + 1, max_value, decycler);
-  tree_recurse_binary (value * 2 + 2, max_value, decycler);
+  वृक्ष_recurse_द्विआधारी (value * 2 + 1, max_मूल्य, decycler);
+  वृक्ष_recurse_द्विआधारी (value * 2 + 2, max_मूल्य, decycler);
 }
 
-static void
-tree_recurse_tertiary (unsigned value,
-		       unsigned max_value,
+अटल व्योम
+वृक्ष_recurse_tertiary (अचिन्हित value,
+		       अचिन्हित max_मूल्य,
 		       hb_decycler_t &decycler)
 {
   /* This function implements an alternative way to use the
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  अगर (value >= max_मूल्य)
+    वापस;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_गाँठ_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  क्रम (अचिन्हित i = 1; i <= 3; i++)
   {
     bool ret = node.visit (value + i);
     hb_always_assert (ret);
 
-    tree_recurse_tertiary (value + i, max_value, decycler);
+    वृक्ष_recurse_tertiary (value + i, max_मूल्य, decycler);
   }
 }
 
-static void
-test_tree ()
+अटल व्योम
+test_वृक्ष ()
 {
   hb_decycler_t decycler;
-  tree_recurse_binary (0, 64, decycler);
-  tree_recurse_tertiary (0, 1000, decycler);
+  वृक्ष_recurse_द्विआधारी (0, 64, decycler);
+  वृक्ष_recurse_tertiary (0, 1000, decycler);
 }
 
-static void
-cycle_recurse (signed value,
-	       signed cycle_length,
+अटल व्योम
+cycle_recurse (चिन्हित value,
+	       चिन्हित cycle_लंबाई,
 	       hb_decycler_t &decycler)
 {
-  hb_always_assert (cycle_length > 0);
+  hb_always_assert (cycle_लंबाई > 0);
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_गाँठ_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  अगर (!node.visit (value))
+    वापस;
 
-  if (value >= cycle_length)
-    value = value % cycle_length;
+  अगर (value >= cycle_लंबाई)
+    value = value % cycle_लंबाई;
 
-  cycle_recurse (value + 1, cycle_length, decycler);
+  cycle_recurse (value + 1, cycle_लंबाई, decycler);
 }
 
-static void
+अटल व्योम
 test_cycle ()
 {
   hb_decycler_t decycler;
@@ -105,12 +105,12 @@ test_cycle ()
   cycle_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
-  test_tree ();
+  test_वृक्ष ();
   test_cycle ();
 
-  return 0;
+  वापस 0;
 }
 

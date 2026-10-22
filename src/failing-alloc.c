@@ -22,44 +22,44 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#समावेश <stdlib.h>
+#समावेश <stdio.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+बाह्य "C" {
+#पूर्ण_अगर
 
-int alloc_state = 0;
+पूर्णांक alloc_state = 0;
 
 __attribute__((no_sanitize("integer")))
-static int fastrand ()
+अटल पूर्णांक fastrand ()
 {
-  if (!alloc_state) return 1;
+  अगर (!alloc_state) वापस 1;
   /* Based on https://software.intel.com/content/www/us/en/develop/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor.html */
   alloc_state = (214013 * alloc_state + 2531011);
-  return (alloc_state >> 16) & 0x7FFF;
+  वापस (alloc_state >> 16) & 0x7FFF;
 }
 
-void* hb_malloc_impl (size_t size)
+व्योम* hb_malloc_impl (माप_प्रकार आकार)
 {
-  return (fastrand () % 16) ? malloc (size) : NULL;
+  वापस (fastrand () % 16) ? दो_स्मृति (आकार) : शून्य;
 }
 
-void* hb_calloc_impl (size_t nmemb, size_t size)
+व्योम* hb_calloc_impl (माप_प्रकार nmemb, माप_प्रकार आकार)
 {
-  return (fastrand () % 16) ? calloc (nmemb, size) : NULL;
+  वापस (fastrand () % 16) ? सुस्मृति (nmemb, आकार) : शून्य;
 }
 
-void* hb_realloc_impl (void *ptr, size_t size)
+व्योम* hb_realloc_impl (व्योम *ptr, माप_प्रकार आकार)
 {
-  return (fastrand () % 16) ? realloc (ptr, size) : NULL;
+  वापस (fastrand () % 16) ? पुनः_स्मृति (ptr, आकार) : शून्य;
 }
 
-void  hb_free_impl (void *ptr)
+व्योम  hb_free_impl (व्योम *ptr)
 {
-  return free (ptr);
+  वापस मुक्त (ptr);
 }
 
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
 }
-#endif
+#पूर्ण_अगर

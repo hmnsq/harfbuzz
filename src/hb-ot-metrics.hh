@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_METRICS_HH
-#define HB_OT_METRICS_HH
+#अगर_अघोषित HB_OT_METRICS_HH
+#घोषणा HB_OT_METRICS_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
 HB_INTERNAL bool
 _hb_ot_metrics_get_position_common (hb_font_t           *font,
 				    hb_ot_metrics_tag_t  metrics_tag,
 				    hb_position_t       *position     /* OUT.  May be NULL. */);
 
-#endif /* HB_OT_METRICS_HH */
+#पूर्ण_अगर /* HB_OT_METRICS_HH */

@@ -24,21 +24,21 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#समावेश "hb.h"
+#समावेश "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#अगर_घोषित HB_NO_OPEN
+#घोषणा hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
+#पूर्ण_अगर
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
-  if (argc != 2) {
-    fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+  अगर (argc != 2) {
+    ख_लिखो (मानक_त्रुटि, "usage: %s font-file\n", argv[0]);
+    निकास (1);
   }
 
   /* Create the face */
@@ -50,13 +50,13 @@ main (int argc, char **argv)
 
   bool ret = true;
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  unsigned int p[5];
-  ret = hb_ot_layout_get_size_params (face, p, p+1, (p+2), p+3, p+4);
-  printf ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
-#endif
+#अगर_अघोषित HB_NO_LAYOUT_FEATURE_PARAMS
+  अचिन्हित पूर्णांक p[5];
+  ret = hb_ot_layout_get_आकार_params (face, p, p+1, (p+2), p+3, p+4);
+  म_लिखो ("%g %u %u %g %g\n", p[0]/10., p[1], p[2], p[3]/10., p[4]/10.);
+#पूर्ण_अगर
 
   hb_face_destroy (face);
 
-  return !ret;
+  वापस !ret;
 }

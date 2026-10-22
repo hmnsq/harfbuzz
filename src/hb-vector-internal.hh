@@ -24,182 +24,182 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_INTERNAL_HH
-#define HB_VECTOR_INTERNAL_HH
+#अगर_अघोषित HB_VECTOR_INTERNAL_HH
+#घोषणा HB_VECTOR_INTERNAL_HH
 
-#include "hb-vector.h"
+#समावेश "hb-vector.h"
 
-struct hb_vector_blob_meta_t
+काष्ठा hb_vector_blob_meta_t
 {
-  char *data;
-  int allocated;
+  अक्षर *तथ्य;
+  पूर्णांक allocated;
   bool transferred;
   bool in_replace;
 };
 
-static hb_user_data_key_t hb_vector_blob_meta_user_data_key;
+अटल hb_user_तथ्य_कुंजी_t hb_vector_blob_meta_user_तथ्य_कुंजी;
 
-static inline void
-hb_vector_blob_meta_set_buffer (hb_vector_blob_meta_t *meta,
-				char *data,
-				int allocated)
+अटल अंतरभूत व्योम
+hb_vector_blob_meta_set_बफर (hb_vector_blob_meta_t *meta,
+				अक्षर *तथ्य,
+				पूर्णांक allocated)
 {
-  meta->data = data;
+  meta->तथ्य = तथ्य;
   meta->allocated = allocated;
   meta->transferred = false;
 }
 
-static inline void
-hb_vector_blob_meta_release_buffer (hb_vector_blob_meta_t *meta)
+अटल अंतरभूत व्योम
+hb_vector_blob_meta_release_बफर (hb_vector_blob_meta_t *meta)
 {
-  if (!meta)
-    return;
-  if (!meta->transferred && meta->data)
-    hb_free (meta->data);
-  meta->data = nullptr;
+  अगर (!meta)
+    वापस;
+  अगर (!meta->transferred && meta->तथ्य)
+    hb_free (meta->तथ्य);
+  meta->तथ्य = nullptr;
   meta->allocated = 0;
   meta->transferred = true;
 }
 
-static inline void
-hb_vector_blob_meta_destroy (void *data)
+अटल अंतरभूत व्योम
+hb_vector_blob_meta_destroy (व्योम *तथ्य)
 {
-  auto *meta = (hb_vector_blob_meta_t *) data;
-  hb_vector_blob_meta_release_buffer (meta);
-  if (meta->in_replace)
+  स्वतः *meta = (hb_vector_blob_meta_t *) तथ्य;
+  hb_vector_blob_meta_release_बफर (meta);
+  अगर (meta->in_replace)
   {
     meta->in_replace = false;
-    return;
+    वापस;
   }
   hb_free (meta);
 }
 
-static inline hb_blob_t *
+अटल अंतरभूत hb_blob_t *
 hb_buf_blob_from (hb_blob_t **recycled_blob,
 		  hb_vector_buf_t *buf)
 {
-  unsigned len = 0;
-  int allocated = 0;
-  char *data = buf->steal (&len, &allocated);
-  if (!data)
-    return nullptr;
+  अचिन्हित len = 0;
+  पूर्णांक allocated = 0;
+  अक्षर *तथ्य = buf->steal (&len, &allocated);
+  अगर (!तथ्य)
+    वापस nullptr;
 
   hb_blob_t *blob = nullptr;
-  if (*recycled_blob)
+  अगर (*recycled_blob)
     blob = *recycled_blob;
   bool reused_blob = blob && blob != hb_blob_get_empty ();
   bool new_meta = false;
-  auto *meta = reused_blob
-             ? (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key)
+  स्वतः *meta = reused_blob
+             ? (hb_vector_blob_meta_t *) hb_blob_get_user_तथ्य (blob, &hb_vector_blob_meta_user_तथ्य_कुंजी)
              : nullptr;
-  if (!meta)
+  अगर (!meta)
   {
-    meta = (hb_vector_blob_meta_t *) hb_malloc (sizeof (hb_vector_blob_meta_t));
-    if (!meta)
+    meta = (hb_vector_blob_meta_t *) hb_malloc (माप (hb_vector_blob_meta_t));
+    अगर (!meta)
     {
-      hb_free (data);
-      return nullptr;
+      hb_free (तथ्य);
+      वापस nullptr;
     }
-    meta->data = nullptr;
+    meta->तथ्य = nullptr;
     meta->allocated = 0;
     meta->transferred = true;
     meta->in_replace = false;
     new_meta = true;
   }
 
-  if (reused_blob)
+  अगर (reused_blob)
   {
     meta->in_replace = true;
-    blob->replace_buffer (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
+    blob->replace_बफर (तथ्य, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
+    hb_vector_blob_meta_set_बफर (meta, तथ्य, allocated);
   }
-  else
+  अन्यथा
   {
-    hb_vector_blob_meta_set_buffer (meta, data, allocated);
-    blob = hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
-    if (unlikely (!blob))
-      return nullptr;
+    hb_vector_blob_meta_set_बफर (meta, तथ्य, allocated);
+    blob = hb_blob_create_or_fail (तथ्य, len, HB_MEMORY_MODE_WRITABLE, meta, hb_vector_blob_meta_destroy);
+    अगर (unlikely (!blob))
+      वापस nullptr;
   }
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  अगर (unlikely (blob == hb_blob_get_empty ()))
   {
-    if (new_meta)
+    अगर (new_meta)
       hb_free (meta);
-    hb_free (data);
-    return nullptr;
+    hb_free (तथ्य);
+    वापस nullptr;
   }
 
-  if (new_meta &&
-      !hb_blob_set_user_data (blob,
-                              &hb_vector_blob_meta_user_data_key,
+  अगर (new_meta &&
+      !hb_blob_set_user_तथ्य (blob,
+                              &hb_vector_blob_meta_user_तथ्य_कुंजी,
                               meta,
                               nullptr,
                               true))
   {
-    if (!reused_blob)
+    अगर (!reused_blob)
       hb_blob_destroy (blob);
-    return nullptr;
+    वापस nullptr;
   }
 
-  if (*recycled_blob)
+  अगर (*recycled_blob)
     *recycled_blob = nullptr;
 
-  return blob;
+  वापस blob;
 }
 
-static inline void
+अटल अंतरभूत व्योम
 hb_buf_recover_recycled (hb_blob_t *blob,
 			 hb_vector_buf_t *buf)
 {
-  if (!blob)
-    return;
+  अगर (!blob)
+    वापस;
 
-  auto *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_data (blob, &hb_vector_blob_meta_user_data_key);
-  if (!meta || meta->transferred || !meta->data)
-    return;
+  स्वतः *meta = (hb_vector_blob_meta_t *) hb_blob_get_user_तथ्य (blob, &hb_vector_blob_meta_user_तथ्य_कुंजी);
+  अगर (!meta || meta->transferred || !meta->तथ्य)
+    वापस;
 
-  buf->recycle_buffer (meta->data, 0, meta->allocated);
-  meta->data = nullptr;
+  buf->recycle_बफर (meta->तथ्य, 0, meta->allocated);
+  meta->तथ्य = nullptr;
   meta->allocated = 0;
   meta->transferred = true;
 }
 
-static inline void
-hb_vector_transform_point (const hb_transform_t<> &t,
-			   float x_scale_factor,
-			   float y_scale_factor,
-			   float x, float y,
-			   float *tx, float *ty)
+अटल अंतरभूत व्योम
+hb_vector_transform_point (स्थिर hb_transform_t<> &t,
+			   भग्न x_scale_factor,
+			   भग्न y_scale_factor,
+			   भग्न x, भग्न y,
+			   भग्न *tx, भग्न *ty)
 {
-  float xx = x, yy = y;
+  भग्न xx = x, yy = y;
   t.transform_point (xx, yy);
   /* Setters force scale factors > 0; trust them here. */
   *tx = xx / x_scale_factor;
   *ty = yy / y_scale_factor;
 }
 
-static inline hb_bool_t
-hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
-				    float x_scale_factor,
-				    float y_scale_factor,
-				    const hb_glyph_extents_t *glyph_extents,
+अटल अंतरभूत hb_bool_t
+hb_vector_set_glyph_extents_common (स्थिर hb_transform_t<> &transform,
+				    भग्न x_scale_factor,
+				    भग्न y_scale_factor,
+				    स्थिर hb_glyph_extents_t *glyph_extents,
 				    hb_vector_extents_t *extents,
 				    hb_bool_t *has_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = x0 + glyph_extents->width;
-  float y1 = y0 + glyph_extents->height;
+  भग्न x0 = (भग्न) glyph_extents->x_bearing;
+  भग्न y0 = (भग्न) glyph_extents->y_bearing;
+  भग्न x1 = x0 + glyph_extents->width;
+  भग्न y1 = y0 + glyph_extents->height;
 
-  float px[4] = {x0, x0, x1, x1};
-  float py[4] = {y0, y1, y0, y1};
+  भग्न px[4] = {x0, x0, x1, x1};
+  भग्न py[4] = {y0, y1, y0, y1};
 
-  float tx, ty;
+  भग्न tx, ty;
   hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[0], py[0], &tx, &ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  भग्न tx_min = tx, tx_max = tx;
+  भग्न ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  क्रम (अचिन्हित i = 1; i < 4; i++)
   {
     hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, px[i], py[i], &tx, &ty);
     tx_min = hb_min (tx_min, tx);
@@ -208,59 +208,59 @@ hb_vector_set_glyph_extents_common (const hb_transform_t<> &transform,
     ty_max = hb_max (ty_max, ty);
   }
 
-  if (tx_max <= tx_min || ty_max <= ty_min)
-    return false;
+  अगर (tx_max <= tx_min || ty_max <= ty_min)
+    वापस false;
 
-  if (*has_extents)
+  अगर (*has_extents)
   {
-    float x0 = hb_min (extents->x, tx_min);
-    float y0 = hb_min (extents->y, ty_min);
-    float x1 = hb_max (extents->x + extents->width, tx_max);
-    float y1 = hb_max (extents->y + extents->height, ty_max);
+    भग्न x0 = hb_min (extents->x, tx_min);
+    भग्न y0 = hb_min (extents->y, ty_min);
+    भग्न x1 = hb_max (extents->x + extents->width, tx_max);
+    भग्न y1 = hb_max (extents->y + extents->height, ty_max);
     *extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  अन्यथा
   {
     *extents = {tx_min, ty_min, tx_max - tx_min, ty_max - ty_min};
     *has_extents = true;
   }
-  return true;
+  वापस true;
 }
 
-static inline void
+अटल अंतरभूत व्योम
 hb_vector_svg_append_instance_transform (hb_vector_buf_t *out,
-					 unsigned precision,
-					 float x_scale_factor,
-					 float y_scale_factor,
-					 float xx, float yx,
-					 float xy, float yy,
-					 float tx, float ty)
+					 अचिन्हित precision,
+					 भग्न x_scale_factor,
+					 भग्न y_scale_factor,
+					 भग्न xx, भग्न yx,
+					 भग्न xy, भग्न yy,
+					 भग्न tx, भग्न ty)
 {
-  if (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
+  अगर (xx == 1.f && yx == 0.f && xy == 0.f && yy == 1.f)
   {
     out->append_str ("translate(");
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_अंक (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_अंक (-ty / y_scale_factor, precision);
     out->append_str (") scale(1,-1)");
   }
-  else
+  अन्यथा
   {
-    unsigned sprec = out->scale_precision ();
+    अचिन्हित sprec = out->scale_precision ();
     out->append_str ("matrix(");
-    out->append_num (xx, sprec);
+    out->append_अंक (xx, sprec);
     out->append_c (',');
-    out->append_num (yx, sprec);
+    out->append_अंक (yx, sprec);
     out->append_c (',');
-    out->append_num (-xy, sprec);
+    out->append_अंक (-xy, sprec);
     out->append_c (',');
-    out->append_num (-yy, sprec);
+    out->append_अंक (-yy, sprec);
     out->append_c (',');
-    out->append_num (tx / x_scale_factor, precision);
+    out->append_अंक (tx / x_scale_factor, precision);
     out->append_c (',');
-    out->append_num (-ty / y_scale_factor, precision);
+    out->append_अंक (-ty / y_scale_factor, precision);
     out->append_c (')');
   }
 }
 
-#endif /* HB_VECTOR_INTERNAL_HH */
+#पूर्ण_अगर /* HB_VECTOR_INTERNAL_HH */

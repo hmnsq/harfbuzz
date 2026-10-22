@@ -22,60 +22,60 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OUTLINE_HH
-#define HB_OUTLINE_HH
+#अगर_अघोषित HB_OUTLINE_HH
+#घोषणा HB_OUTLINE_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-draw.hh"
+#समावेश "hb-draw.hh"
 
 
-struct hb_outline_point_t
+काष्ठा hb_outline_point_t
 {
-  enum class type_t
+  क्रमागत श्रेणी type_t
   {
     MOVE_TO,
-    LINE_TO,
+    पंक्ति_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (भग्न x, भग्न y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  भग्न x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+काष्ठा hb_outline_vector_t
 {
-  float normalize_len ()
+  भग्न normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    भग्न len = hypotf (x, y);
+    अगर (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    वापस len;
   }
 
-  float x, y;
+  भग्न x, y;
 };
 
-struct hb_outline_t
+काष्ठा hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  व्योम reset () { points.सफा (); contours.सफा (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL व्योम replay (hb_draw_funcs_t *pen, व्योम *pen_तथ्य) स्थिर;
+  HB_INTERNAL भग्न control_area () स्थिर;
+  HB_INTERNAL व्योम translate (भग्न dx, भग्न dy);
+  HB_INTERNAL व्योम slant (भग्न slant_xy);
+  HB_INTERNAL व्योम embolden (भग्न x_strength, भग्न y_strength,
+			     भग्न x_shift, भग्न y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
-  hb_vector_t<unsigned> contours;
+  hb_vector_t<अचिन्हित> contours;
   int64_t *budget_remaining = nullptr;
 };
 
@@ -83,4 +83,4 @@ HB_INTERNAL hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ();
 
 
-#endif /* HB_OUTLINE_HH */
+#पूर्ण_अगर /* HB_OUTLINE_HH */

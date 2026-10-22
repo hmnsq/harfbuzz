@@ -1,34 +1,34 @@
-#ifndef OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
+#घोषणा OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH
 
-#include "Common.hh"
-#include "ValueFormat.hh"
+#समावेश "Common.hh"
+#समावेश "ValueFormat.hh"
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-template <typename Types>
-struct SinglePosFormat1_3 : ValueBase
+ढाँचा <typename Types>
+काष्ठा SinglePosFormat1_3 : मूल्य_Base
 {
-  protected:
+  रक्षित:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  typename Types::ढाँचा LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat;            /* Defines the types of data in the
+  मूल्य_Format   मूल्य_Format_2;            /* Defines the types of data in the
                                          * ValueRecord */
-  ValueRecord   values;                 /* Defines positioning
+  मूल्य_Record   values;                 /* Defines positioning
                                          * value(s)--applied to all glyphs in
                                          * the Coverage table */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + ValueFormat::static_size, values);
+  खुला:
+  DEFINE_आकार_ARRAY (2 + Types::LOffset::static_आकार + मूल्य_Format::static_आकार, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  coverage.sanitize (c, this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
+                  coverage.sanitize (c, यह) &&
 		  hb_barrier () &&
                   /* The coverage  table may use a range to represent a set
                    * of glyphs, which means a small number of bytes can
@@ -36,57 +36,57 @@ struct SinglePosFormat1_3 : ValueBase
                    * sanitizer max ops to take this into account.
                    *
                    * Note: This check *must* be right after coverage sanitize. */
-                  c->check_ops ((this + coverage).get_population () >> 1) &&
-                  valueFormat.sanitize_value (c, this, values));
+                  c->check_ops ((यह + coverage).get_population () >> 1) &&
+                  मूल्य_Format_2.sanitize_मूल्य (c, यह, values));
 
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  bool intersects (स्थिर hb_set_t *glyphs) स्थिर
+  { वापस (यह+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  व्योम closure_lookups (hb_closure_lookups_context_t *c) स्थिर {}
+  व्योम collect_variation_indices (hb_collect_variation_indices_context_t *c) स्थिर
   {
-    if (!valueFormat.has_device ()) return;
+    अगर (!मूल्य_Format_2.has_device ()) वापस;
 
     hb_set_t intersection;
-    (this+coverage).intersect_set (*c->glyph_set, intersection);
-    if (!intersection) return;
+    (यह+coverage).intersect_set (*c->glyph_set, intersection);
+    अगर (!intersection) वापस;
 
-    valueFormat.collect_variation_indices (c, this, values.as_array (valueFormat.get_len ()));
+    मूल्य_Format_2.collect_variation_indices (c, यह, values.as_array (मूल्य_Format_2.get_len ()));
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  व्योम collect_glyphs (hb_collect_glyphs_context_t *c) स्थिर
+  { अगर (unlikely (!(यह+coverage).collect_coverage (c->निवेश))) वापस; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  स्थिर Coverage &get_coverage () स्थिर { वापस यह+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  मूल्य_Format get_मूल्य_format () स्थिर { वापस मूल्य_Format_2; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) स्थिर
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (यह);
+    hb_बफर_t *बफर = c->बफर;
+    अचिन्हित पूर्णांक सूचकांक_2 = (यह+coverage).get_coverage  (बफर->cur().codepoint);
+    अगर (सूचकांक_2 == NOT_COVERED) return_trace (false);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    अगर (HB_बफर_MESSAGE_MORE && c->बफर->messaging ())
     {
-      c->buffer->message (c->font,
+      c->बफर->message (c->font,
 			  "positioning glyph at %u",
-			  c->buffer->idx);
+			  c->बफर->idx);
     }
 
-    valueFormat.apply_value (c, this, values, buffer->cur_pos());
+    मूल्य_Format_2.apply_मूल्य (c, यह, values, बफर->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    अगर (HB_बफर_MESSAGE_MORE && c->बफर->messaging ())
     {
-      c->buffer->message (c->font,
+      c->बफर->message (c->font,
 			  "positioned glyph at %u",
-			  c->buffer->idx);
+			  c->बफर->idx);
     }
 
-    buffer->idx++;
+    बफर->idx++;
     return_trace (true);
   }
 
@@ -95,39 +95,39 @@ struct SinglePosFormat1_3 : ValueBase
 		   hb_blob_t           *table_blob,
 		   hb_direction_t       direction,
 		   hb_codepoint_t       gid,
-		   hb_glyph_position_t &pos) const
+		   hb_glyph_position_t &pos) स्थिर
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
+    अचिन्हित पूर्णांक सूचकांक_2 = (यह+coverage).get_coverage  (gid);
+    अगर (likely (सूचकांक_2 == NOT_COVERED)) वापस false;
 
-    valueFormat.position_single (font, table_blob, direction, this,
+    मूल्य_Format_2.position_single (font, table_blob, direction, यह,
                                  values, pos);
-    return true;
+    वापस true;
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase *src,
-                  ValueFormat src_format,
+  व्योम serialize (hb_serialize_context_t *c,
+                  स्थिर मूल्य_Base *src,
+                  मूल्य_Format src_format,
                   Iterator it,
-                  ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  मूल्य_Format newFormat,
+                  स्थिर hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *layout_variation_idx_delta_map)
   {
-    if (unlikely (!c->extend_min (this))) return;
-    if (unlikely (!c->check_assign (valueFormat,
+    अगर (unlikely (!c->extend_min (यह))) वापस;
+    अगर (unlikely (!c->check_assign (मूल्य_Format_2,
                                     newFormat,
-                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
+                                    HB_SERIALIZE_ERROR_INT_OVERFLOW))) वापस;
 
-    for (const hb_array_t<const Value>& _ : + it | hb_map (hb_second))
+    क्रम (स्थिर hb_array_t<स्थिर मूल्य>& _ : + it | hb_map (hb_second))
     {
-      src_format.copy_values (c, newFormat, src,  &_, layout_variation_idx_delta_map);
+      src_format.copy_मूल्यावली (c, newFormat, src,  &_, layout_variation_idx_delta_map);
       // Only serialize the first entry in the iterator, the rest are assumed to
       // be the same.
-      break;
+      अवरोध;
     }
 
-    auto glyphs =
+    स्वतः glyphs =
     + it
     | hb_map_retains_sorting (hb_first)
     ;
@@ -135,23 +135,23 @@ struct SinglePosFormat1_3 : ValueBase
     coverage.serialize_serialize (c, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (यह);
+    स्थिर hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    स्थिर hb_map_t &glyph_map = *c->plan->glyph_map;
 
     hb_set_t intersection;
-    (this+coverage).intersect_set (glyphset, intersection);
+    (यह+coverage).intersect_set (glyphset, intersection);
 
-    unsigned new_format = valueFormat;
+    अचिन्हित new_format = मूल्य_Format_2;
 
-    if (c->plan->normalized_coords)
+    अगर (c->plan->normalized_coords)
     {
-      new_format = valueFormat.get_effective_format (values.arrayZ, false, false, this, &c->plan->layout_variation_idx_delta_map);
+      new_format = मूल्य_Format_2.get_effective_format (values.arrayZ, false, false, यह, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    अन्यथा अगर (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
       bool has_fvar = (blob != hb_blob_get_empty ());
@@ -160,22 +160,22 @@ struct SinglePosFormat1_3 : ValueBase
       bool strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
+      अगर (has_fvar && !c->plan->has_gdef_varstore)
         strip = true;
-      new_format = valueFormat.get_effective_format (values.arrayZ,
+      new_format = मूल्य_Format_2.get_effective_format (values.arrayZ,
                                                      strip, /* strip hints */
                                                      true, /* strip empty */
-                                                     this, nullptr);
+                                                     यह, nullptr);
     }
 
-    auto it =
+    स्वतः it =
     + hb_iter (intersection)
     | hb_map_retains_sorting (glyph_map)
-    | hb_zip (hb_repeat (values.as_array (valueFormat.get_len ())))
+    | hb_zip (hb_repeat (values.as_array (मूल्य_Format_2.get_len ())))
     ;
 
     bool ret = bool (it);
-    SinglePos_serialize (c->serializer, this, valueFormat, it, &c->plan->layout_variation_idx_delta_map, new_format);
+    SinglePos_serialize (c->serializer, यह, मूल्य_Format_2, it, &c->plan->layout_variation_idx_delta_map, new_format);
     return_trace (ret);
   }
 };
@@ -184,4 +184,4 @@ struct SinglePosFormat1_3 : ValueBase
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_SINGLEPOSFORMAT1_HH */

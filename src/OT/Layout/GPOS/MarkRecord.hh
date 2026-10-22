@@ -1,46 +1,46 @@
-#ifndef OT_LAYOUT_GPOS_MARKRECORD_HH
-#define OT_LAYOUT_GPOS_MARKRECORD_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_MARKRECORD_HH
+#घोषणा OT_LAYOUT_GPOS_MARKRECORD_HH
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-template <typename Types> struct MarkArray;
+ढाँचा <typename Types> काष्ठा MarkArray;
 
-template <typename Types>
-struct MarkRecord
+ढाँचा <typename Types>
+काष्ठा MarkRecord
 {
-  friend struct MarkArray<Types>;
+  मित्र काष्ठा MarkArray<Types>;
 
-  public:
+  खुला:
   HBUINT16      klass;                  /* Class defined for this mark */
-  typename Types::template OffsetTo<Anchor, MarkArray<Types>>
+  typename Types::ढाँचा OffsetTo<Anchor, MarkArray<Types>>
                 markAnchor;             /* Offset to Anchor table--from
                                          * beginning of MarkArray table */
-  public:
-  DEFINE_SIZE_STATIC (2 + Types::size);
+  खुला:
+  DEFINE_आकार_STATIC (2 + Types::आकार);
 
-  unsigned get_class () const { return (unsigned) klass; }
-  bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
+  अचिन्हित get_class () स्थिर { वापस (अचिन्हित) klass; }
+  bool sanitize (hb_sanitize_context_t *c, स्थिर MarkArray<Types> *base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) && markAnchor.sanitize (c, base));
   }
 
   bool subset (hb_subset_context_t    *c,
-	       const MarkArray<Types> *src_base,
-	       const hb_map_t         *klass_mapping) const
+	       स्थिर MarkArray<Types> *src_base,
+	       स्थिर hb_map_t         *klass_mapping) स्थिर
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (यह);
+    स्वतः *out = c->serializer->embed (यह);
+    अगर (unlikely (!out)) return_trace (false);
 
-    out->klass = klass_mapping->get (klass);
+    out->klass = klass_mapping->लो (klass);
     return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const MarkArray<Types> *src_base) const
+  व्योम collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  स्थिर MarkArray<Types> *src_base) स्थिर
   {
     (src_base+markAnchor).collect_variation_indices (c);
   }
@@ -51,4 +51,4 @@ struct MarkRecord
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKRECORD_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_MARKRECORD_HH */

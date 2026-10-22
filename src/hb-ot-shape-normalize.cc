@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 
-#include "hb-ot-shape-normalize.hh"
-#include "hb-ot-shaper.hh"
-#include "hb-ot-shape.hh"
+#समावेश "hb-ot-shape-normalize.hh"
+#समावेश "hb-ot-shaper.hh"
+#समावेश "hb-ot-shape.hh"
 
 
 /*
@@ -75,232 +75,232 @@
  */
 
 
-static inline void
+अटल अंतरभूत व्योम
 set_glyph (hb_glyph_info_t &info, hb_font_t *font)
 {
-  (void) font->get_nominal_glyph (info.codepoint, &info.normalizer_glyph_index());
+  (व्योम) font->get_nominal_glyph (info.codepoint, &info.normalizer_glyph_सूचकांक());
 }
 
-static inline void
-output_char (hb_buffer_t *buffer, hb_codepoint_t unichar, hb_codepoint_t glyph)
+अटल अंतरभूत व्योम
+output_char (hb_बफर_t *बफर, hb_codepoint_t unichar, hb_codepoint_t glyph)
 {
   /* This is very confusing indeed. */
-  buffer->cur().normalizer_glyph_index() = glyph;
-  (void) buffer->output_glyph (unichar);
-  _hb_glyph_info_set_unicode_props (&buffer->prev(), buffer);
+  बफर->cur().normalizer_glyph_सूचकांक() = glyph;
+  (व्योम) बफर->output_glyph (unichar);
+  _hb_glyph_info_set_unicode_props (&बफर->prev(), बफर);
 }
 
-static inline void
-next_char (hb_buffer_t *buffer, hb_codepoint_t glyph)
+अटल अंतरभूत व्योम
+अग्र_char (hb_बफर_t *बफर, hb_codepoint_t glyph)
 {
-  buffer->cur().normalizer_glyph_index() = glyph;
-  (void) buffer->next_glyph ();
+  बफर->cur().normalizer_glyph_सूचकांक() = glyph;
+  (व्योम) बफर->अग्र_glyph ();
 }
 
-static inline void
-skip_char (hb_buffer_t *buffer)
+अटल अंतरभूत व्योम
+skip_char (hb_बफर_t *बफर)
 {
-  buffer->skip_glyph ();
+  बफर->skip_glyph ();
 }
 
 /* Returns 0 if didn't decompose, number of resulting characters otherwise. */
-static inline unsigned int
-decompose (const hb_ot_shape_normalize_context_t *c, bool shortest, hb_codepoint_t ab)
+अटल अंतरभूत अचिन्हित पूर्णांक
+decompose (स्थिर hb_ot_shape_normalize_context_t *c, bool shortest, hb_codepoint_t ab)
 {
   hb_codepoint_t a = 0, b = 0, a_glyph = 0, b_glyph = 0;
-  hb_buffer_t * const buffer = c->buffer;
-  hb_font_t * const font = c->font;
+  hb_बफर_t * स्थिर बफर = c->बफर;
+  hb_font_t * स्थिर font = c->font;
 
-  if (!c->decompose (c, ab, &a, &b) ||
+  अगर (!c->decompose (c, ab, &a, &b) ||
       (b && !font->get_nominal_glyph (b, &b_glyph)))
-    return 0;
+    वापस 0;
 
   bool has_a = (bool) font->get_nominal_glyph (a, &a_glyph);
-  if (shortest && has_a) {
+  अगर (shortest && has_a) {
     /* Output a and b */
-    output_char (buffer, a, a_glyph);
-    if (likely (b)) {
-      output_char (buffer, b, b_glyph);
-      return 2;
+    output_char (बफर, a, a_glyph);
+    अगर (likely (b)) {
+      output_char (बफर, b, b_glyph);
+      वापस 2;
     }
-    return 1;
+    वापस 1;
   }
 
-  if (unsigned ret = decompose (c, shortest, a)) {
-    if (b) {
-      output_char (buffer, b, b_glyph);
-      return ret + 1;
+  अगर (अचिन्हित ret = decompose (c, shortest, a)) {
+    अगर (b) {
+      output_char (बफर, b, b_glyph);
+      वापस ret + 1;
     }
-    return ret;
+    वापस ret;
   }
 
-  if (has_a) {
-    output_char (buffer, a, a_glyph);
-    if (likely (b)) {
-      output_char (buffer, b, b_glyph);
-      return 2;
+  अगर (has_a) {
+    output_char (बफर, a, a_glyph);
+    अगर (likely (b)) {
+      output_char (बफर, b, b_glyph);
+      वापस 2;
     }
-    return 1;
+    वापस 1;
   }
 
-  return 0;
+  वापस 0;
 }
 
-static inline void
-decompose_current_character (const hb_ot_shape_normalize_context_t *c, bool shortest)
+अटल अंतरभूत व्योम
+decompose_current_character (स्थिर hb_ot_shape_normalize_context_t *c, bool shortest)
 {
-  hb_buffer_t * const buffer = c->buffer;
-  hb_codepoint_t u = buffer->cur().codepoint;
+  hb_बफर_t * स्थिर बफर = c->बफर;
+  hb_codepoint_t u = बफर->cur().codepoint;
   hb_codepoint_t glyph = 0;
 
-  if (shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
+  अगर (shortest && c->font->get_nominal_glyph (u, &glyph, बफर->not_found))
   {
-    next_char (buffer, glyph);
-    return;
+    अग्र_char (बफर, glyph);
+    वापस;
   }
 
-  if (decompose (c, shortest, u))
+  अगर (decompose (c, shortest, u))
   {
-    skip_char (buffer);
-    return;
+    skip_char (बफर);
+    वापस;
   }
 
-  if (!shortest && c->font->get_nominal_glyph (u, &glyph, buffer->not_found))
+  अगर (!shortest && c->font->get_nominal_glyph (u, &glyph, बफर->not_found))
   {
-    next_char (buffer, glyph);
-    return;
+    अग्र_char (बफर, glyph);
+    वापस;
   }
 
-  if (_hb_glyph_info_is_unicode_space (&buffer->cur()))
+  अगर (_hb_glyph_info_is_unicode_space (&बफर->cur()))
   {
     hb_codepoint_t space_glyph;
-    hb_unicode_funcs_t::space_t space_type = buffer->unicode->space_fallback_type (u);
-    if (space_type != hb_unicode_funcs_t::NOT_SPACE &&
-	(c->font->get_nominal_glyph (0x0020, &space_glyph) || (space_glyph = buffer->invisible)))
+    hb_unicode_funcs_t::space_t space_type = बफर->unicode->space_fallback_type (u);
+    अगर (space_type != hb_unicode_funcs_t::NOT_SPACE &&
+	(c->font->get_nominal_glyph (0x0020, &space_glyph) || (space_glyph = बफर->invisible)))
     {
-      _hb_glyph_info_set_unicode_space_fallback_type (&buffer->cur(), space_type);
-      next_char (buffer, space_glyph);
-      buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK;
-      return;
+      _hb_glyph_info_set_unicode_space_fallback_type (&बफर->cur(), space_type);
+      अग्र_char (बफर, space_glyph);
+      बफर->scratch_flags |= HB_बफर_SCRATCH_FLAG_HAS_SPACE_FALLBACK;
+      वापस;
     }
   }
 
-  if (u == 0x2011u)
+  अगर (u == 0x2011u)
   {
     /* U+2011 is the only sensible character that is a no-break version of another character
      * and not a space.  The space ones are handled already.  Handle this lone one. */
     hb_codepoint_t other_glyph;
-    if (c->font->get_nominal_glyph (0x2010u, &other_glyph))
+    अगर (c->font->get_nominal_glyph (0x2010u, &other_glyph))
     {
-      next_char (buffer, other_glyph);
-      return;
+      अग्र_char (बफर, other_glyph);
+      वापस;
     }
   }
 
-  next_char (buffer, glyph); /* glyph is initialized in earlier branches. */
+  अग्र_char (बफर, glyph); /* glyph is initialized in earlier branches. */
 }
 
-static inline void
-handle_variation_selector_cluster (const hb_ot_shape_normalize_context_t *c,
-				   unsigned int end,
+अटल अंतरभूत व्योम
+handle_variation_selector_cluster (स्थिर hb_ot_shape_normalize_context_t *c,
+				   अचिन्हित पूर्णांक end,
 				   bool short_circuit HB_UNUSED)
 {
   /* Currently if there's a variation-selector we give-up on normalization, it's just too hard. */
-  hb_buffer_t * const buffer = c->buffer;
-  hb_font_t * const font = c->font;
-  for (; buffer->idx < end - 1 && buffer->successful;) {
-    if (unlikely (buffer->unicode->is_variation_selector (buffer->cur(+1).codepoint))) {
-      if (font->get_variation_glyph (buffer->cur().codepoint, buffer->cur(+1).codepoint, &buffer->cur().normalizer_glyph_index()))
+  hb_बफर_t * स्थिर बफर = c->बफर;
+  hb_font_t * स्थिर font = c->font;
+  क्रम (; बफर->idx < end - 1 && बफर->successful;) {
+    अगर (unlikely (बफर->unicode->is_variation_selector (बफर->cur(+1).codepoint))) {
+      अगर (font->get_variation_glyph (बफर->cur().codepoint, बफर->cur(+1).codepoint, &बफर->cur().normalizer_glyph_सूचकांक()))
       {
-	hb_codepoint_t unicode = buffer->cur().codepoint;
-	(void) buffer->replace_glyphs (2, 1, &unicode);
+	hb_codepoint_t unicode = बफर->cur().codepoint;
+	(व्योम) बफर->replace_glyphs (2, 1, &unicode);
       }
-      else
+      अन्यथा
       {
 	/* Just pass on the two characters separately, let GSUB do its magic. */
-	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	set_glyph (बफर->cur(), font);
+	(व्योम) बफर->अग्र_glyph ();
 
-        buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK;
-	_hb_glyph_info_set_variation_selector (&buffer->cur(), true);
-	if (buffer->not_found_variation_selector != HB_CODEPOINT_INVALID)
-	  _hb_glyph_info_clear_default_ignorable (&buffer->cur());
+        बफर->scratch_flags |= HB_बफर_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK;
+	_hb_glyph_info_set_variation_selector (&बफर->cur(), true);
+	अगर (बफर->not_found_variation_selector != HB_CODEPOINT_INVALID)
+	  _hb_glyph_info_clear_default_ignorable (&बफर->cur());
 
-	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	set_glyph (बफर->cur(), font);
+	(व्योम) बफर->अग्र_glyph ();
       }
       /* Skip any further variation selectors. */
-      while (buffer->idx < end &&
-	     buffer->successful &&
-	     unlikely (buffer->unicode->is_variation_selector (buffer->cur().codepoint)))
+      जबतक (बफर->idx < end &&
+	     बफर->successful &&
+	     unlikely (बफर->unicode->is_variation_selector (बफर->cur().codepoint)))
       {
-	set_glyph (buffer->cur(), font);
-	(void) buffer->next_glyph ();
+	set_glyph (बफर->cur(), font);
+	(व्योम) बफर->अग्र_glyph ();
       }
     }
-    else
+    अन्यथा
     {
-      set_glyph (buffer->cur(), font);
-      (void) buffer->next_glyph ();
+      set_glyph (बफर->cur(), font);
+      (व्योम) बफर->अग्र_glyph ();
     }
   }
-  if (likely (buffer->idx < end))
+  अगर (likely (बफर->idx < end))
   {
-    set_glyph (buffer->cur(), font);
-    (void) buffer->next_glyph ();
+    set_glyph (बफर->cur(), font);
+    (व्योम) बफर->अग्र_glyph ();
   }
 }
 
-static inline void
-decompose_multi_char_cluster (const hb_ot_shape_normalize_context_t *c, unsigned int end, bool short_circuit)
+अटल अंतरभूत व्योम
+decompose_multi_char_cluster (स्थिर hb_ot_shape_normalize_context_t *c, अचिन्हित पूर्णांक end, bool short_circuit)
 {
-  hb_buffer_t * const buffer = c->buffer;
-  for (unsigned int i = buffer->idx; i < end && buffer->successful; i++)
-    if (unlikely (buffer->unicode->is_variation_selector (buffer->info[i].codepoint))) {
+  hb_बफर_t * स्थिर बफर = c->बफर;
+  क्रम (अचिन्हित पूर्णांक i = बफर->idx; i < end && बफर->successful; i++)
+    अगर (unlikely (बफर->unicode->is_variation_selector (बफर->info[i].codepoint))) {
       handle_variation_selector_cluster (c, end, short_circuit);
-      return;
+      वापस;
     }
 
-  while (buffer->idx < end && buffer->successful)
+  जबतक (बफर->idx < end && बफर->successful)
     decompose_current_character (c, short_circuit);
 }
 
 
-static int
-compare_combining_class (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
+अटल पूर्णांक
+compare_combining_class (स्थिर hb_glyph_info_t *pa, स्थिर hb_glyph_info_t *pb)
 {
-  unsigned int a = _hb_glyph_info_get_modified_combining_class (pa);
-  unsigned int b = _hb_glyph_info_get_modified_combining_class (pb);
+  अचिन्हित पूर्णांक a = _hb_glyph_info_get_modified_combining_class (pa);
+  अचिन्हित पूर्णांक b = _hb_glyph_info_get_modified_combining_class (pb);
 
-  return a < b ? -1 : a == b ? 0 : +1;
+  वापस a < b ? -1 : a == b ? 0 : +1;
 }
 
 
-void
-_hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
-			hb_buffer_t *buffer,
+व्योम
+_hb_ot_shape_normalize (स्थिर hb_ot_shape_plan_t *plan,
+			hb_बफर_t *बफर,
 			hb_font_t *font)
 {
-  if (unlikely (!buffer->len)) return;
+  अगर (unlikely (!बफर->len)) वापस;
 
-  _hb_buffer_assert_unicode_vars (buffer);
+  hb_बफर_assert_unicode_vars (बफर);
 
   hb_ot_shape_normalization_mode_t mode = plan->shaper->normalization_preference;
-  if (mode == HB_OT_SHAPE_NORMALIZATION_MODE_AUTO)
+  अगर (mode == HB_OT_SHAPE_NORMALIZATION_MODE_AUTO)
   {
-    if (plan->has_gpos_mark)
+    अगर (plan->has_gpos_mark)
       // https://github.com/harfbuzz/harfbuzz/issues/653#issuecomment-423905920
       //mode = HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED;
       mode = HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS;
-    else
+    अन्यथा
       mode = HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS;
   }
 
   hb_ot_shape_normalize_context_t c = {
     plan,
-    buffer,
+    बफर,
     font,
-    buffer->unicode,
+    बफर->unicode,
     plan->shaper->decompose ? plan->shaper->decompose : hb_ot_shape_normalize_context_t::decompose_unicode,
     plan->shaper->compose   ? plan->shaper->compose   : hb_ot_shape_normalize_context_t::compose_unicode
   };
@@ -310,7 +310,7 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
   bool might_short_circuit = always_short_circuit ||
 			     (mode != HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED &&
 			      mode != HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT);
-  unsigned int count;
+  अचिन्हित पूर्णांक गिनती;
 
   /* We do a fairly straightforward yet custom normalization process in three
    * separate rounds: decompose, reorder, recompose (if desired).  Currently
@@ -322,94 +322,94 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
   /* First round, decompose */
 
   bool all_simple = true;
-  if (buffer->message (font, "start decompose"))
+  अगर (बफर->message (font, "start decompose"))
   {
-    buffer->clear_output ();
-    count = buffer->len;
-    buffer->idx = 0;
-    do
+    बफर->clear_output ();
+    गिनती = बफर->len;
+    बफर->idx = 0;
+    करो
     {
-      unsigned int end;
-      for (end = buffer->idx + 1; end < count; end++)
-	if (_hb_glyph_info_is_unicode_mark (&buffer->info[end]))
-	  break;
+      अचिन्हित पूर्णांक end;
+      क्रम (end = बफर->idx + 1; end < गिनती; end++)
+	अगर (_hb_glyph_info_is_unicode_mark (&बफर->info[end]))
+	  अवरोध;
 
-      if (end < count)
+      अगर (end < गिनती)
 	end--; /* Leave one base for the marks to cluster with. */
 
       /* From idx to end are simple clusters. */
-      if (might_short_circuit)
+      अगर (might_short_circuit)
       {
-	unsigned int done = font->get_nominal_glyphs (end - buffer->idx,
-						      &buffer->cur().codepoint,
-						      sizeof (buffer->info[0]),
-						      &buffer->cur().normalizer_glyph_index(),
-						      sizeof (buffer->info[0]));
-	if (unlikely (!buffer->next_glyphs (done))) break;
+	अचिन्हित पूर्णांक done = font->get_nominal_glyphs (end - बफर->idx,
+						      &बफर->cur().codepoint,
+						      माप (बफर->info[0]),
+						      &बफर->cur().normalizer_glyph_सूचकांक(),
+						      माप (बफर->info[0]));
+	अगर (unlikely (!बफर->अग्र_glyphs (done))) अवरोध;
       }
-      while (buffer->idx < end && buffer->successful)
+      जबतक (बफर->idx < end && बफर->successful)
 	decompose_current_character (&c, might_short_circuit);
 
-      if (buffer->idx == count || !buffer->successful)
-	break;
+      अगर (बफर->idx == गिनती || !बफर->successful)
+	अवरोध;
 
       all_simple = false;
 
       /* Find all the marks now. */
-      for (end = buffer->idx + 1; end < count; end++)
-	if (!_hb_glyph_info_is_unicode_mark(&buffer->info[end]))
-	  break;
+      क्रम (end = बफर->idx + 1; end < गिनती; end++)
+	अगर (!_hb_glyph_info_is_unicode_mark(&बफर->info[end]))
+	  अवरोध;
 
       /* idx to end is one non-simple cluster. */
       decompose_multi_char_cluster (&c, end, always_short_circuit);
     }
-    while (buffer->idx < count && buffer->successful);
-    buffer->sync ();
-    (void) buffer->message (font, "end decompose");
+    जबतक (बफर->idx < गिनती && बफर->successful);
+    बफर->sync ();
+    (व्योम) बफर->message (font, "end decompose");
   }
 
 
   /* Second round, reorder (inplace) */
 
-  if (!all_simple && buffer->message(font, "start reorder"))
+  अगर (!all_simple && बफर->message(font, "start reorder"))
   {
-    count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++)
+    गिनती = बफर->len;
+    hb_glyph_info_t *info = बफर->info;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
-      if (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
-	continue;
+      अगर (_hb_glyph_info_get_modified_combining_class (&info[i]) == 0)
+	जारी;
 
-      unsigned int end;
-      for (end = i + 1; end < count; end++)
-	if (_hb_glyph_info_get_modified_combining_class (&info[end]) == 0)
-	  break;
+      अचिन्हित पूर्णांक end;
+      क्रम (end = i + 1; end < गिनती; end++)
+	अगर (_hb_glyph_info_get_modified_combining_class (&info[end]) == 0)
+	  अवरोध;
 
       /* We are going to do a O(n^2).  Only do this if the sequence is short. */
-      if (end - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
+      अगर (end - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
 	i = end;
-	continue;
+	जारी;
       }
 
-      buffer->sort (i, end, compare_combining_class);
+      बफर->sort (i, end, compare_combining_class);
 
-      if (plan->shaper->reorder_marks)
-	plan->shaper->reorder_marks (plan, buffer, i, end);
+      अगर (plan->shaper->reorder_marks)
+	plan->shaper->reorder_marks (plan, बफर, i, end);
 
       i = end;
     }
-    (void) buffer->message(font, "end reorder");
+    (व्योम) बफर->message(font, "end reorder");
   }
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CGJ)
+  अगर (बफर->scratch_flags & HB_बफर_SCRATCH_FLAG_HAS_CGJ)
   {
     /* For all CGJ, check if it prevented any reordering at all.
      * If it did NOT, then make it skippable.
      * https://github.com/harfbuzz/harfbuzz/issues/554
      */
-    unsigned count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i + 1 < count; i++)
-      if (info[i].codepoint == 0x034Fu/*CGJ*/ &&
+    अचिन्हित गिनती = बफर->len;
+    hb_glyph_info_t *info = बफर->info;
+    क्रम (अचिन्हित पूर्णांक i = 1; i + 1 < गिनती; i++)
+      अगर (info[i].codepoint == 0x034Fu/*CGJ*/ &&
 	  (info_cc(info[i+1]) == 0 || info_cc(info[i-1]) <= info_cc(info[i+1])))
       {
 	_hb_glyph_info_unhide (&info[i]);
@@ -419,63 +419,63 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 
   /* Third round, recompose */
 
-  if (!all_simple &&
-      buffer->successful &&
+  अगर (!all_simple &&
+      बफर->successful &&
       (mode == HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS ||
        mode == HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT) &&
-      buffer->message (font, "start compose"))
+      बफर->message (font, "start compose"))
   {
     /* As noted in the comment earlier, we don't try to combine
      * ccc=0 chars with their previous Starter. */
 
-    buffer->clear_output ();
-    count = buffer->len;
-    unsigned int starter = 0;
-    (void) buffer->next_glyph ();
-    while (buffer->idx < count /* No need for: && buffer->successful */)
+    बफर->clear_output ();
+    गिनती = बफर->len;
+    अचिन्हित पूर्णांक starter = 0;
+    (व्योम) बफर->अग्र_glyph ();
+    जबतक (बफर->idx < गिनती /* No need for: && buffer->successful */)
     {
       hb_codepoint_t composed, glyph;
-      if (/* We don't try to compose a non-mark character with it's preceding starter.
+      अगर (/* We don't try to compose a non-mark character with it's preceding starter.
 	   * This is both an optimization to avoid trying to compose every two neighboring
 	   * glyphs in most scripts AND a desired feature for Hangul.  Apparently Hangul
 	   * fonts are not designed to mix-and-match pre-composed syllables and Jamo. */
-	  _hb_glyph_info_is_unicode_mark(&buffer->cur()))
+	  _hb_glyph_info_is_unicode_mark(&बफर->cur()))
       {
-	if (/* If there's anything between the starter and this char, they should have CCC
+	अगर (/* If there's anything between the starter and this char, they should have CCC
 	     * smaller than this character's. */
-	    (starter == buffer->out_len - 1 ||
-	     info_cc (buffer->prev()) < info_cc (buffer->cur())) &&
+	    (starter == बफर->out_len - 1 ||
+	     info_cc (बफर->prev()) < info_cc (बफर->cur())) &&
 	    /* And compose. */
 	    c.compose (&c,
-		       buffer->out_info[starter].codepoint,
-		       buffer->cur().codepoint,
+		       बफर->out_info[starter].codepoint,
+		       बफर->cur().codepoint,
 		       &composed) &&
 	    /* And the font has glyph for the composite. */
 	    font->get_nominal_glyph (composed, &glyph))
 	{
 	  /* Composes. */
-	  if (unlikely (!buffer->next_glyph ())) break; /* Copy to out-buffer. */
-	  buffer->merge_out_clusters (starter, buffer->out_len);
-	  buffer->out_len--; /* Remove the second composable. */
+	  अगर (unlikely (!बफर->अग्र_glyph ())) अवरोध; /* Copy to out-buffer. */
+	  बफर->merge_out_clusters (starter, बफर->out_len);
+	  बफर->out_len--; /* Remove the second composable. */
 	  /* Modify starter and carry on. */
-	  buffer->out_info[starter].codepoint = composed;
-	  buffer->out_info[starter].normalizer_glyph_index() = glyph;
-	  _hb_glyph_info_set_unicode_props (&buffer->out_info[starter], buffer);
+	  बफर->out_info[starter].codepoint = composed;
+	  बफर->out_info[starter].normalizer_glyph_सूचकांक() = glyph;
+	  _hb_glyph_info_set_unicode_props (&बफर->out_info[starter], बफर);
 
-	  continue;
+	  जारी;
 	}
       }
 
       /* Blocked, or doesn't compose. */
-      if (unlikely (!buffer->next_glyph ())) break;
+      अगर (unlikely (!बफर->अग्र_glyph ())) अवरोध;
 
-      if (info_cc (buffer->prev()) == 0)
-	starter = buffer->out_len - 1;
+      अगर (info_cc (बफर->prev()) == 0)
+	starter = बफर->out_len - 1;
     }
-    buffer->sync ();
-    (void) buffer->message (font, "end compose");
+    बफर->sync ();
+    (व्योम) बफर->message (font, "end compose");
   }
 }
 
 
-#endif
+#पूर्ण_अगर

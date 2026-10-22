@@ -28,9 +28,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-unicode.hh"
+#समावेश "hb-unicode.hh"
 
 
 /**
@@ -57,86 +57,86 @@
  * hb_unicode_funcs_t
  */
 
-static hb_unicode_combining_class_t
+अटल hb_unicode_combining_class_t
 hb_unicode_combining_class_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 				hb_codepoint_t      unicode   HB_UNUSED,
-				void               *user_data HB_UNUSED)
+				व्योम               *user_तथ्य HB_UNUSED)
 {
-  return HB_UNICODE_COMBINING_CLASS_NOT_REORDERED;
+  वापस HB_UNICODE_COMBINING_CLASS_NOT_REORDERED;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
-static unsigned int
+#अगर_अघोषित HB_DISABLE_DEPRECATED
+अटल अचिन्हित पूर्णांक
 hb_unicode_eastasian_width_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 				hb_codepoint_t      unicode   HB_UNUSED,
-				void               *user_data HB_UNUSED)
+				व्योम               *user_तथ्य HB_UNUSED)
 {
-  return 1;
+  वापस 1;
 }
-#endif
+#पूर्ण_अगर
 
-static hb_unicode_general_category_t
+अटल hb_unicode_general_category_t
 hb_unicode_general_category_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 				 hb_codepoint_t      unicode   HB_UNUSED,
-				 void               *user_data HB_UNUSED)
+				 व्योम               *user_तथ्य HB_UNUSED)
 {
-  return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  वापस HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 }
 
-static hb_codepoint_t
+अटल hb_codepoint_t
 hb_unicode_mirroring_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  व्योम               *user_तथ्य HB_UNUSED)
 {
-  return unicode;
+  वापस unicode;
 }
 
-static hb_script_t
+अटल hb_script_t
 hb_unicode_script_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 		       hb_codepoint_t      unicode   HB_UNUSED,
-		       void               *user_data HB_UNUSED)
+		       व्योम               *user_तथ्य HB_UNUSED)
 {
-  return HB_SCRIPT_UNKNOWN;
+  वापस HB_SCRIPT_UNKNOWN;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_unicode_compose_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 			hb_codepoint_t      a         HB_UNUSED,
 			hb_codepoint_t      b         HB_UNUSED,
 			hb_codepoint_t     *ab        HB_UNUSED,
-			void               *user_data HB_UNUSED)
+			व्योम               *user_तथ्य HB_UNUSED)
 {
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_unicode_decompose_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
 			  hb_codepoint_t      ab        HB_UNUSED,
 			  hb_codepoint_t     *a         HB_UNUSED,
 			  hb_codepoint_t     *b         HB_UNUSED,
-			  void               *user_data HB_UNUSED)
+			  व्योम               *user_तथ्य HB_UNUSED)
 {
-  return false;
+  वापस false;
 }
 
 
-#ifndef HB_DISABLE_DEPRECATED
-static unsigned int
+#अगर_अघोषित HB_DISABLE_DEPRECATED
+अटल अचिन्हित पूर्णांक
 hb_unicode_decompose_compatibility_nil (hb_unicode_funcs_t *ufuncs     HB_UNUSED,
 					hb_codepoint_t      u          HB_UNUSED,
 					hb_codepoint_t     *decomposed HB_UNUSED,
-					void               *user_data  HB_UNUSED)
+					व्योम               *user_तथ्य  HB_UNUSED)
 {
-  return 0;
+  वापस 0;
 }
-#endif
+#पूर्ण_अगर
 
-#if !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
-#include "hb-glib.h"
-#endif
-#if !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
-#include "hb-icu.h"
-#endif
+#अगर !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
+#समावेश "hb-glib.h"
+#पूर्ण_अगर
+#अगर !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
+#समावेश "hb-icu.h"
+#पूर्ण_अगर
 
 /**
  * hb_unicode_funcs_get_default:
@@ -151,22 +151,22 @@ hb_unicode_decompose_compatibility_nil (hb_unicode_funcs_t *ufuncs     HB_UNUSED
 hb_unicode_funcs_t *
 hb_unicode_funcs_get_default ()
 {
-#if !defined(HB_NO_UNICODE_FUNCS) && !defined(HB_NO_UCD)
-  return hb_ucd_get_unicode_funcs ();
-#elif !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
-  return hb_glib_get_unicode_funcs ();
-#elif !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
-  return hb_icu_get_unicode_funcs ();
-#else
-#define HB_UNICODE_FUNCS_NIL 1
-  return hb_unicode_funcs_get_empty ();
-#endif
+#अगर !defined(HB_NO_UNICODE_FUNCS) && !defined(HB_NO_UCD)
+  वापस hb_ucd_get_unicode_funcs ();
+#या_अगर !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
+  वापस hb_glib_get_unicode_funcs ();
+#या_अगर !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
+  वापस hb_icu_get_unicode_funcs ();
+#अन्यथा
+#घोषणा HB_UNICODE_FUNCS_NIL 1
+  वापस hb_unicode_funcs_get_empty ();
+#पूर्ण_अगर
 }
 
-#if !defined(HB_NO_UNICODE_FUNCS) && defined(HB_UNICODE_FUNCS_NIL)
-#error "Could not find any Unicode functions implementation, you have to provide your own"
-#error "Consider building hb-ucd.cc.  If you absolutely want to build without any, define HB_NO_UNICODE_FUNCS."
-#endif
+#अगर !defined(HB_NO_UNICODE_FUNCS) && defined(HB_UNICODE_FUNCS_NIL)
+#त्रुटि "Could not find any Unicode functions implementation, you have to provide your own"
+#त्रुटि "Consider building hb-ucd.cc.  If you absolutely want to build without any, define HB_NO_UNICODE_FUNCS."
+#पूर्ण_अगर
 
 /**
  * hb_unicode_funcs_create:
@@ -183,10 +183,10 @@ hb_unicode_funcs_create (hb_unicode_funcs_t *parent)
 {
   hb_unicode_funcs_t *ufuncs;
 
-  if (!(ufuncs = hb_object_create<hb_unicode_funcs_t> ()))
-    return hb_unicode_funcs_get_empty ();
+  अगर (!(ufuncs = hb_object_create<hb_unicode_funcs_t> ()))
+    वापस hb_unicode_funcs_get_empty ();
 
-  if (!parent)
+  अगर (!parent)
     parent = hb_unicode_funcs_get_empty ();
 
   hb_unicode_funcs_make_immutable (parent);
@@ -197,9 +197,9 @@ hb_unicode_funcs_create (hb_unicode_funcs_t *parent)
   /* We can safely copy user_data from parent since we hold a reference
    * onto it and it's immutable.  We should not copy the destroy notifiers
    * though. */
-  ufuncs->user_data = parent->user_data;
+  ufuncs->user_तथ्य = parent->user_तथ्य;
 
-  return ufuncs;
+  वापस ufuncs;
 }
 
 
@@ -209,9 +209,9 @@ DEFINE_NULL_INSTANCE (hb_unicode_funcs_t) =
 
   nullptr, /* parent */
   {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_nil,
+#घोषणा HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_nil,
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#अघोषित HB_UNICODE_FUNC_IMPLEMENT
   }
 };
 
@@ -227,7 +227,7 @@ DEFINE_NULL_INSTANCE (hb_unicode_funcs_t) =
 hb_unicode_funcs_t *
 hb_unicode_funcs_get_empty ()
 {
-  return const_cast<hb_unicode_funcs_t *> (&Null (hb_unicode_funcs_t));
+  वापस const_cast<hb_unicode_funcs_t *> (&Null (hb_unicode_funcs_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_unicode_funcs_get_empty ()
 hb_unicode_funcs_t *
 hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs)
 {
-  return hb_object_reference (ufuncs);
+  वापस hb_object_reference (ufuncs);
 }
 
 /**
@@ -256,15 +256,15 @@ hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs)
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs)
 {
-  if (!hb_object_destroy (ufuncs)) return;
+  अगर (!hb_object_destroy (ufuncs)) वापस;
 
-#define HB_UNICODE_FUNC_IMPLEMENT(name) \
-  if (ufuncs->destroy.name) ufuncs->destroy.name (ufuncs->user_data.name);
+#घोषणा HB_UNICODE_FUNC_IMPLEMENT(name) \
+  अगर (ufuncs->destroy.name) ufuncs->destroy.name (ufuncs->user_तथ्य.name);
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#अघोषित HB_UNICODE_FUNC_IMPLEMENT
 
   hb_unicode_funcs_destroy (ufuncs->parent);
 
@@ -286,13 +286,13 @@ hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t *key,
-				void *              data,
+hb_unicode_funcs_set_user_तथ्य (hb_unicode_funcs_t *ufuncs,
+				hb_user_तथ्य_कुंजी_t *key,
+				व्योम *              तथ्य,
 				hb_destroy_func_t   destroy,
 				hb_bool_t           replace)
 {
-  return hb_object_set_user_data (ufuncs, key, data, destroy, replace);
+  वापस hb_object_set_user_तथ्य (ufuncs, key, तथ्य, destroy, replace);
 }
 
 /**
@@ -307,11 +307,11 @@ hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-void *
-hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t       *key)
+व्योम *
+hb_unicode_funcs_get_user_तथ्य (स्थिर hb_unicode_funcs_t *ufuncs,
+				hb_user_तथ्य_कुंजी_t       *key)
 {
-  return hb_object_get_user_data (ufuncs, key);
+  वापस hb_object_get_user_तथ्य (ufuncs, key);
 }
 
 
@@ -324,11 +324,11 @@ hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs)
 {
-  if (hb_object_is_immutable (ufuncs))
-    return;
+  अगर (hb_object_is_immutable (ufuncs))
+    वापस;
 
   hb_object_make_immutable (ufuncs);
 }
@@ -347,7 +347,7 @@ hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs)
 hb_bool_t
 hb_unicode_funcs_is_immutable (hb_unicode_funcs_t *ufuncs)
 {
-  return hb_object_is_immutable (ufuncs);
+  वापस hb_object_is_immutable (ufuncs);
 }
 
 /**
@@ -364,59 +364,59 @@ hb_unicode_funcs_is_immutable (hb_unicode_funcs_t *ufuncs)
 hb_unicode_funcs_t *
 hb_unicode_funcs_get_parent (hb_unicode_funcs_t *ufuncs)
 {
-  return ufuncs->parent ? ufuncs->parent : hb_unicode_funcs_get_empty ();
+  वापस ufuncs->parent ? ufuncs->parent : hb_unicode_funcs_get_empty ();
 }
 
 
-#define HB_UNICODE_FUNC_IMPLEMENT(name)						\
+#घोषणा HB_UNICODE_FUNC_IMPLEMENT(name)						\
 										\
-void										\
+व्योम										\
 hb_unicode_funcs_set_##name##_func (hb_unicode_funcs_t		   *ufuncs,	\
 				    hb_unicode_##name##_func_t	    func,	\
-				    void			   *user_data,	\
+				    व्योम			   *user_तथ्य,	\
 				    hb_destroy_func_t		    destroy)	\
 {										\
-  auto destroy_guard = hb_make_scope_guard ([&]() {				\
-    if (destroy) destroy (user_data);						\
+  स्वतः destroy_guard = hb_make_scope_guard ([&]() {				\
+    अगर (destroy) destroy (user_तथ्य);						\
   });										\
 										\
-  if (hb_object_is_immutable (ufuncs))						\
-    return;									\
+  अगर (hb_object_is_immutable (ufuncs))						\
+    वापस;									\
 										\
-  if (!func)									\
+  अगर (!func)									\
   {										\
-    if (destroy)								\
-      destroy (user_data);							\
+    अगर (destroy)								\
+      destroy (user_तथ्य);							\
     destroy = nullptr;								\
-    user_data = ufuncs->parent->user_data.name;					\
+    user_तथ्य = ufuncs->parent->user_तथ्य.name;					\
   }										\
 										\
-  if (ufuncs->destroy.name)							\
-    ufuncs->destroy.name (ufuncs->user_data.name);				\
+  अगर (ufuncs->destroy.name)							\
+    ufuncs->destroy.name (ufuncs->user_तथ्य.name);				\
 										\
-  if (func)									\
+  अगर (func)									\
     ufuncs->func.name = func;							\
-  else										\
+  अन्यथा										\
     ufuncs->func.name = ufuncs->parent->func.name;				\
-  ufuncs->user_data.name = user_data;						\
+  ufuncs->user_तथ्य.name = user_तथ्य;						\
   ufuncs->destroy.name = destroy;						\
   destroy_guard.release ();							\
 }
 
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#अघोषित HB_UNICODE_FUNC_IMPLEMENT
 
 
-#define HB_UNICODE_FUNC_IMPLEMENT(return_type, name)				\
+#घोषणा HB_UNICODE_FUNC_IMPLEMENT(return_type, name)				\
 										\
 return_type									\
 hb_unicode_##name (hb_unicode_funcs_t *ufuncs,					\
 		   hb_codepoint_t      unicode)					\
 {										\
-  return ufuncs->name (unicode);						\
+  वापस ufuncs->name (unicode);						\
 }
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#अघोषित HB_UNICODE_FUNC_IMPLEMENT
 
 /**
  * hb_unicode_compose:
@@ -441,7 +441,7 @@ hb_unicode_compose (hb_unicode_funcs_t *ufuncs,
 		    hb_codepoint_t      b,
 		    hb_codepoint_t     *ab)
 {
-  return ufuncs->compose (a, b, ab);
+  वापस ufuncs->compose (a, b, ab);
 }
 
 /**
@@ -466,10 +466,10 @@ hb_unicode_decompose (hb_unicode_funcs_t *ufuncs,
 		      hb_codepoint_t     *a,
 		      hb_codepoint_t     *b)
 {
-  return ufuncs->decompose (ab, a, b);
+  वापस ufuncs->decompose (ab, a, b);
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_unicode_decompose_compatibility:
  * @ufuncs: The Unicode-functions structure
@@ -484,19 +484,19 @@ hb_unicode_decompose (hb_unicode_funcs_t *ufuncs,
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
 				    hb_codepoint_t      u,
 				    hb_codepoint_t     *decomposed)
 {
-  return ufuncs->decompose_compatibility (u, decomposed);
+  वापस ufuncs->decompose_compatibility (u, decomposed);
 }
-#endif
+#पूर्ण_अगर
 
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 /* See hb-unicode.hh for details. */
-const uint8_t
+स्थिर uint8_t
 _hb_modified_combining_class[256] =
 {
   0, /* HB_UNICODE_COMBINING_CLASS_NOT_REORDERED */
@@ -607,19 +607,19 @@ _hb_modified_combining_class[256] =
   241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254,
   255, /* HB_UNICODE_COMBINING_CLASS_INVALID */
 };
-#endif
+#पूर्ण_अगर
 
 
 /*
  * Emoji
  */
-#ifndef HB_NO_EMOJI_SEQUENCES
+#अगर_अघोषित HB_NO_EMOJI_SEQUENCES
 
-#include "hb-unicode-emoji-table.hh"
+#समावेश "hb-unicode-emoji-table.hh"
 
 bool
 _hb_unicode_is_emoji_Extended_Pictographic (hb_codepoint_t cp)
 {
-  return _hb_emoji_is_Extended_Pictographic (cp);
+  वापस _hb_emoji_is_Extended_Pictographic (cp);
 }
-#endif
+#पूर्ण_अगर

@@ -28,31 +28,31 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_LAYOUT
+#अगर_अघोषित HB_NO_OT_LAYOUT
 
-#ifdef HB_NO_OT_TAG
-#error "Cannot compile hb-ot-layout.cc with HB_NO_OT_TAG."
-#endif
+#अगर_घोषित HB_NO_OT_TAG
+#त्रुटि "Cannot compile hb-ot-layout.cc with HB_NO_OT_TAG."
+#पूर्ण_अगर
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-map.hh"
-#include "hb-map.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-layout.hh"
+#समावेश "hb-ot-face.hh"
+#समावेश "hb-ot-map.hh"
+#समावेश "hb-map.hh"
 
-#include "hb-ot-kern-table.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-layout-jstf-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-ot-name-table.hh"
-#include "hb-ot-os2-table.hh"
+#समावेश "hb-ot-kern-table.hh"
+#समावेश "hb-ot-layout-gdef-table.hh"
+#समावेश "hb-ot-layout-gsub-table.hh"
+#समावेश "hb-ot-layout-gpos-table.hh"
+#समावेश "hb-ot-layout-base-table.hh"
+#समावेश "hb-ot-layout-jstf-table.hh" // Just so we compile it; unused otherwise.
+#समावेश "hb-ot-name-table.hh"
+#समावेश "hb-ot-os2-table.hh"
 
-#include "hb-aat-layout-morx-table.hh"
-#include "hb-aat-layout-opbd-table.hh" // Just so we compile it; unused otherwise.
+#समावेश "hb-aat-layout-morx-table.hh"
+#समावेश "hb-aat-layout-opbd-table.hh" // Just so we compile it; unused otherwise.
 
 using OT::Layout::GSUB;
 using OT::Layout::GPOS;
@@ -73,7 +73,7 @@ using OT::Layout::GPOS;
  * kern
  */
 
-#ifndef HB_NO_OT_KERN
+#अगर_अघोषित HB_NO_OT_KERN
 /**
  * hb_ot_layout_has_kerning:
  * @face: The #hb_face_t to work on
@@ -87,7 +87,7 @@ using OT::Layout::GPOS;
 bool
 hb_ot_layout_has_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_data ();
+  वापस face->table.kern->table->has_तथ्य ();
 }
 
 /**
@@ -103,7 +103,7 @@ hb_ot_layout_has_kerning (hb_face_t *face)
 bool
 hb_ot_layout_has_machine_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_state_machine ();
+  वापस face->table.kern->table->has_state_machine ();
 }
 
 /**
@@ -123,26 +123,26 @@ hb_ot_layout_has_machine_kerning (hb_face_t *face)
 bool
 hb_ot_layout_has_cross_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_cross_stream ();
+  वापस face->table.kern->table->has_cross_stream ();
 }
 
-void
-hb_ot_layout_kern (const hb_ot_shape_plan_t *plan,
+व्योम
+hb_ot_layout_kern (स्थिर hb_ot_shape_plan_t *plan,
 		   hb_font_t *font,
-		   hb_buffer_t  *buffer)
+		   hb_बफर_t  *बफर)
 {
-  auto &accel = *font->face->table.kern;
+  स्वतः &accel = *font->face->table.kern;
   hb_blob_t *blob = accel.get_blob ();
 
-  AAT::hb_aat_apply_context_t c (plan, font, buffer, blob);
+  AAT::hb_aat_apply_context_t c (plan, font, बफर, blob);
 
-  if (!buffer->message (font, "start table kern")) return;
-  c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
+  अगर (!बफर->message (font, "start table kern")) वापस;
+  c.बफर_glyph_set = accel.scratch.create_बफर_glyph_set ();
   accel.apply (&c);
-  accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
-  (void) buffer->message (font, "end table kern");
+  accel.scratch.destroy_बफर_glyph_set (c.बफर_glyph_set);
+  (व्योम) बफर->message (font, "end table kern");
 }
-#endif
+#पूर्ण_अगर
 
 
 /*
@@ -151,11 +151,11 @@ hb_ot_layout_kern (const hb_ot_shape_plan_t *plan,
 
 bool
 OT::GDEF::is_blocklisted (hb_blob_t *blob,
-			  hb_face_t *face) const
+			  hb_face_t *face) स्थिर
 {
-#ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
-#endif
+#अगर_घोषित HB_NO_OT_LAYOUT_BLOCKLIST
+  वापस false;
+#पूर्ण_अगर
   /* The ugly business of blocklisting individual fonts' tables happen here!
    * See this thread for why we finally had to bend in and do this:
    * https://lists.freedesktop.org/archives/harfbuzz/2016-February/005489.html
@@ -173,112 +173,112 @@ OT::GDEF::is_blocklisted (hb_blob_t *blob,
    *     https://bugzilla.mozilla.org/show_bug.cgi?id=1279693
    *     https://bugzilla.mozilla.org/show_bug.cgi?id=1279875
    */
-  switch HB_CODEPOINT_ENCODE3(blob->length,
-			      face->table.GSUB->table.get_length (),
-			      face->table.GPOS->table.get_length ())
+  चयन HB_CODEPOINT_ENCODE3(blob->लंबाई,
+			      face->table.GSUB->table.get_लंबाई (),
+			      face->table.GPOS->table.get_लंबाई ())
   {
     /* sha1sum:c5ee92f0bca4bfb7d06c4d03e8cf9f9cf75d2e8a Windows 7? timesi.ttf */
-    case HB_CODEPOINT_ENCODE3 (442, 2874, 42038):
+    हाल HB_CODEPOINT_ENCODE3 (442, 2874, 42038):
     /* sha1sum:37fc8c16a0894ab7b749e35579856c73c840867b Windows 7? timesbi.ttf */
-    case HB_CODEPOINT_ENCODE3 (430, 2874, 40662):
+    हाल HB_CODEPOINT_ENCODE3 (430, 2874, 40662):
     /* sha1sum:19fc45110ea6cd3cdd0a5faca256a3797a069a80 Windows 7 timesi.ttf */
-    case HB_CODEPOINT_ENCODE3 (442, 2874, 39116):
+    हाल HB_CODEPOINT_ENCODE3 (442, 2874, 39116):
     /* sha1sum:6d2d3c9ed5b7de87bc84eae0df95ee5232ecde26 Windows 7 timesbi.ttf */
-    case HB_CODEPOINT_ENCODE3 (430, 2874, 39374):
+    हाल HB_CODEPOINT_ENCODE3 (430, 2874, 39374):
     /* sha1sum:8583225a8b49667c077b3525333f84af08c6bcd8 OS X 10.11.3 Times New Roman Italic.ttf */
-    case HB_CODEPOINT_ENCODE3 (490, 3046, 41638):
+    हाल HB_CODEPOINT_ENCODE3 (490, 3046, 41638):
     /* sha1sum:ec0f5a8751845355b7c3271d11f9918a966cb8c9 OS X 10.11.3 Times New Roman Bold Italic.ttf */
-    case HB_CODEPOINT_ENCODE3 (478, 3046, 41902):
+    हाल HB_CODEPOINT_ENCODE3 (478, 3046, 41902):
     /* sha1sum:96eda93f7d33e79962451c6c39a6b51ee893ce8c  tahoma.ttf from Windows 8 */
-    case HB_CODEPOINT_ENCODE3 (898, 12554, 46470):
+    हाल HB_CODEPOINT_ENCODE3 (898, 12554, 46470):
     /* sha1sum:20928dc06014e0cd120b6fc942d0c3b1a46ac2bc  tahomabd.ttf from Windows 8 */
-    case HB_CODEPOINT_ENCODE3 (910, 12566, 47732):
+    हाल HB_CODEPOINT_ENCODE3 (910, 12566, 47732):
     /* sha1sum:4f95b7e4878f60fa3a39ca269618dfde9721a79e  tahoma.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (928, 23298, 59332):
+    हाल HB_CODEPOINT_ENCODE3 (928, 23298, 59332):
     /* sha1sum:6d400781948517c3c0441ba42acb309584b73033  tahomabd.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (940, 23310, 60732):
+    हाल HB_CODEPOINT_ENCODE3 (940, 23310, 60732):
     /* tahoma.ttf v6.04 from Windows 8.1 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (964, 23836, 60072):
+    हाल HB_CODEPOINT_ENCODE3 (964, 23836, 60072):
     /* tahomabd.ttf v6.04 from Windows 8.1 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (976, 23832, 61456):
+    हाल HB_CODEPOINT_ENCODE3 (976, 23832, 61456):
     /* sha1sum:e55fa2dfe957a9f7ec26be516a0e30b0c925f846  tahoma.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (994, 24474, 60336):
+    हाल HB_CODEPOINT_ENCODE3 (994, 24474, 60336):
     /* sha1sum:7199385abb4c2cc81c83a151a7599b6368e92343  tahomabd.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (1006, 24470, 61740):
+    हाल HB_CODEPOINT_ENCODE3 (1006, 24470, 61740):
     /* tahoma.ttf v6.91 from Windows 10 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (1006, 24576, 61346):
+    हाल HB_CODEPOINT_ENCODE3 (1006, 24576, 61346):
     /* tahomabd.ttf v6.91 from Windows 10 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (1018, 24572, 62828):
+    हाल HB_CODEPOINT_ENCODE3 (1018, 24572, 62828):
     /* sha1sum:b9c84d820c49850d3d27ec498be93955b82772b5  tahoma.ttf from Windows 10 AU */
-    case HB_CODEPOINT_ENCODE3 (1006, 24576, 61352):
+    हाल HB_CODEPOINT_ENCODE3 (1006, 24576, 61352):
     /* sha1sum:2bdfaab28174bdadd2f3d4200a30a7ae31db79d2  tahomabd.ttf from Windows 10 AU */
-    case HB_CODEPOINT_ENCODE3 (1018, 24572, 62834):
+    हाल HB_CODEPOINT_ENCODE3 (1018, 24572, 62834):
     /* sha1sum:b0d36cf5a2fbe746a3dd277bffc6756a820807a7  Tahoma.ttf from Mac OS X 10.9 */
-    case HB_CODEPOINT_ENCODE3 (832, 7324, 47162):
+    हाल HB_CODEPOINT_ENCODE3 (832, 7324, 47162):
     /* sha1sum:12fc4538e84d461771b30c18b5eb6bd434e30fba  Tahoma Bold.ttf from Mac OS X 10.9 */
-    case HB_CODEPOINT_ENCODE3 (844, 7302, 45474):
+    हाल HB_CODEPOINT_ENCODE3 (844, 7302, 45474):
     /* sha1sum:eb8afadd28e9cf963e886b23a30b44ab4fd83acc  himalaya.ttf from Windows 7 */
-    case HB_CODEPOINT_ENCODE3 (180, 13054, 7254):
+    हाल HB_CODEPOINT_ENCODE3 (180, 13054, 7254):
     /* sha1sum:73da7f025b238a3f737aa1fde22577a6370f77b0  himalaya.ttf from Windows 8 */
-    case HB_CODEPOINT_ENCODE3 (192, 12638, 7254):
+    हाल HB_CODEPOINT_ENCODE3 (192, 12638, 7254):
     /* sha1sum:6e80fd1c0b059bbee49272401583160dc1e6a427  himalaya.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (192, 12690, 7254):
+    हाल HB_CODEPOINT_ENCODE3 (192, 12690, 7254):
     /* 8d9267aea9cd2c852ecfb9f12a6e834bfaeafe44  cantarell-fonts-0.0.21/otf/Cantarell-Regular.otf */
     /* 983988ff7b47439ab79aeaf9a45bd4a2c5b9d371  cantarell-fonts-0.0.21/otf/Cantarell-Oblique.otf */
-    case HB_CODEPOINT_ENCODE3 (188, 248, 3852):
+    हाल HB_CODEPOINT_ENCODE3 (188, 248, 3852):
     /* 2c0c90c6f6087ffbfea76589c93113a9cbb0e75f  cantarell-fonts-0.0.21/otf/Cantarell-Bold.otf */
     /* 55461f5b853c6da88069ffcdf7f4dd3f8d7e3e6b  cantarell-fonts-0.0.21/otf/Cantarell-Bold-Oblique.otf */
-    case HB_CODEPOINT_ENCODE3 (188, 264, 3426):
+    हाल HB_CODEPOINT_ENCODE3 (188, 264, 3426):
     /* d125afa82a77a6475ac0e74e7c207914af84b37a padauk-2.80/Padauk.ttf RHEL 7.2 */
-    case HB_CODEPOINT_ENCODE3 (1058, 47032, 11818):
+    हाल HB_CODEPOINT_ENCODE3 (1058, 47032, 11818):
     /* 0f7b80437227b90a577cc078c0216160ae61b031 padauk-2.80/Padauk-Bold.ttf RHEL 7.2*/
-    case HB_CODEPOINT_ENCODE3 (1046, 47030, 12600):
+    हाल HB_CODEPOINT_ENCODE3 (1046, 47030, 12600):
     /* d3dde9aa0a6b7f8f6a89ef1002e9aaa11b882290 padauk-2.80/Padauk.ttf Ubuntu 16.04 */
-    case HB_CODEPOINT_ENCODE3 (1058, 71796, 16770):
+    हाल HB_CODEPOINT_ENCODE3 (1058, 71796, 16770):
     /* 5f3c98ccccae8a953be2d122c1b3a77fd805093f padauk-2.80/Padauk-Bold.ttf Ubuntu 16.04 */
-    case HB_CODEPOINT_ENCODE3 (1046, 71790, 17862):
+    हाल HB_CODEPOINT_ENCODE3 (1046, 71790, 17862):
     /* 6c93b63b64e8b2c93f5e824e78caca555dc887c7 padauk-2.80/Padauk-book.ttf */
-    case HB_CODEPOINT_ENCODE3 (1046, 71788, 17112):
+    हाल HB_CODEPOINT_ENCODE3 (1046, 71788, 17112):
     /* d89b1664058359b8ec82e35d3531931125991fb9 padauk-2.80/Padauk-bookbold.ttf */
-    case HB_CODEPOINT_ENCODE3 (1058, 71794, 17514):
+    हाल HB_CODEPOINT_ENCODE3 (1058, 71794, 17514):
     /* 824cfd193aaf6234b2b4dc0cf3c6ef576c0d00ef padauk-3.0/Padauk-book.ttf */
-    case HB_CODEPOINT_ENCODE3 (1330, 109904, 57938):
+    हाल HB_CODEPOINT_ENCODE3 (1330, 109904, 57938):
     /* 91fcc10cf15e012d27571e075b3b4dfe31754a8a padauk-3.0/Padauk-bookbold.ttf */
-    case HB_CODEPOINT_ENCODE3 (1330, 109904, 58972):
+    हाल HB_CODEPOINT_ENCODE3 (1330, 109904, 58972):
     /* sha1sum: c26e41d567ed821bed997e937bc0c41435689e85  Padauk.ttf
      *  "Padauk Regular" "Version 2.5", see https://crbug.com/681813 */
-    case HB_CODEPOINT_ENCODE3 (1004, 59092, 14836):
+    हाल HB_CODEPOINT_ENCODE3 (1004, 59092, 14836):
     /* 88d2006ca084f04af2df1954ed714a8c71e8400f  Courier New.ttf from macOS 15 */
-    case HB_CODEPOINT_ENCODE3 (588, 5078, 14418):
+    हाल HB_CODEPOINT_ENCODE3 (588, 5078, 14418):
     /* 608e3ebb6dd1aee521cff08eb07d500a2c59df68  Courier New Bold.ttf from macOS 15 */
-    case HB_CODEPOINT_ENCODE3 (588, 5078, 14238):
+    हाल HB_CODEPOINT_ENCODE3 (588, 5078, 14238):
     /* d13221044ff054efd78f1cd8631b853c3ce85676  cour.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (894, 17162, 33960):
+    हाल HB_CODEPOINT_ENCODE3 (894, 17162, 33960):
     /* 68ed4a22d8067fcf1622ac6f6e2f4d3a2e3ec394  courbd.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (894, 17154, 34472):
+    हाल HB_CODEPOINT_ENCODE3 (894, 17154, 34472):
     /* 4cdb0259c96b7fd7c103821bb8f08f7cc6b211d7  cour.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (816, 7868, 17052):
+    हाल HB_CODEPOINT_ENCODE3 (816, 7868, 17052):
     /* 920483d8a8ed37f7f0afdabbe7f679aece7c75d8  courbd.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (816, 7868, 17138):
-      return true;
+    हाल HB_CODEPOINT_ENCODE3 (816, 7868, 17138):
+      वापस true;
   }
-  return false;
+  वापस false;
 }
 
-template <bool SetDigest>
-static void
+ढाँचा <bool SetDigest>
+अटल व्योम
 _hb_ot_layout_set_glyph_props (hb_font_t *font,
-			       hb_buffer_t *buffer)
+			       hb_बफर_t *बफर)
 {
-  _hb_buffer_assert_gsubgpos_vars (buffer);
+  hb_बफर_assert_gsubgpos_vars (बफर);
 
-  const auto &gdef = *font->face->table.GDEF;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  स्थिर स्वतः &gdef = *font->face->table.GDEF;
+  अचिन्हित पूर्णांक गिनती = बफर->len;
+  hb_glyph_info_t *info = बफर->info;
+  क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
   {
-    if (SetDigest)
-      buffer->digest.add (info[i].codepoint);
+    अगर (SetDigest)
+      बफर->digest.add (info[i].codepoint);
     _hb_glyph_info_set_glyph_props (&info[i], gdef.get_glyph_props (info[i].codepoint));
     _hb_glyph_info_clear_lig_props (&info[i]);
   }
@@ -298,7 +298,7 @@ _hb_ot_layout_set_glyph_props (hb_font_t *font,
 hb_bool_t
 hb_ot_layout_has_glyph_classes (hb_face_t *face)
 {
-  return face->table.GDEF->table->has_glyph_classes ();
+  वापस face->table.GDEF->table->has_glyph_classes ();
 }
 
 /**
@@ -317,7 +317,7 @@ hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph)
 {
-  return (hb_ot_layout_glyph_class_t) face->table.GDEF->table->get_glyph_class (glyph);
+  वापस (hb_ot_layout_glyph_class_t) face->table.GDEF->table->get_glyph_class (glyph);
 }
 
 /**
@@ -332,15 +332,15 @@ hb_ot_layout_get_glyph_class (hb_face_t      *face,
  *
  * Since: 0.9.7
  **/
-void
+व्योम
 hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
 				  hb_set_t                   *glyphs /* OUT */)
 {
-  return face->table.GDEF->table->get_glyphs_in_class (klass, glyphs);
+  वापस face->table.GDEF->table->get_glyphs_in_class (klass, glyphs);
 }
 
-#ifndef HB_NO_LAYOUT_UNUSED
+#अगर_अघोषित HB_NO_LAYOUT_UNUSED
 /**
  * hb_ot_layout_get_attach_points:
  * @face: The #hb_face_t to work on
@@ -358,16 +358,16 @@ hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
  * Return value: Total number of attachment points for @glyph.
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */)
+				अचिन्हित पूर्णांक    start_offset,
+				अचिन्हित पूर्णांक   *point_गिनती /* IN/OUT */,
+				अचिन्हित पूर्णांक   *point_array /* OUT */)
 {
-  return face->table.GDEF->table->get_attach_points (glyph,
+  वापस face->table.GDEF->table->get_attach_points (glyph,
 						     start_offset,
-						     point_count,
+						     point_गिनती,
 						     point_array);
 }
 /**
@@ -393,17 +393,17 @@ hb_ot_layout_get_attach_points (hb_face_t      *face,
  * Return value: Total number of ligature caret positions for @glyph.
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
+				  अचिन्हित पूर्णांक    start_offset,
+				  अचिन्हित पूर्णांक   *caret_गिनती /* IN/OUT */,
 				  hb_position_t  *caret_array /* OUT */)
 {
-  return font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_count, caret_array);
+  वापस font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_गिनती, caret_array);
 }
-#endif
+#पूर्ण_अगर
 
 
 /*
@@ -412,32 +412,32 @@ hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 
 bool
 GSUB::is_blocklisted (hb_blob_t *blob HB_UNUSED,
-			  hb_face_t *face) const
+			  hb_face_t *face) स्थिर
 {
-#ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
-#endif
-  return false;
+#अगर_घोषित HB_NO_OT_LAYOUT_BLOCKLIST
+  वापस false;
+#पूर्ण_अगर
+  वापस false;
 }
 
 bool
 GPOS::is_blocklisted (hb_blob_t *blob HB_UNUSED,
-			  hb_face_t *face HB_UNUSED) const
+			  hb_face_t *face HB_UNUSED) स्थिर
 {
-#ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
-#endif
-  return false;
+#अगर_घोषित HB_NO_OT_LAYOUT_BLOCKLIST
+  वापस false;
+#पूर्ण_अगर
+  वापस false;
 }
 
-static const OT::GSUBGPOS&
+अटल स्थिर OT::GSUBGPOS&
 get_gsubgpos_table (hb_face_t *face,
 		    hb_tag_t   table_tag)
 {
-  switch (table_tag) {
-    case HB_OT_TAG_GSUB: return *face->table.GSUB->table;
-    case HB_OT_TAG_GPOS: return *face->table.GPOS->table;
-    default:             return Null (OT::GSUBGPOS);
+  चयन (table_tag) {
+    हाल HB_OT_TAG_GSUB: वापस *face->table.GSUB->table;
+    हाल HB_OT_TAG_GPOS: वापस *face->table.GPOS->table;
+    शेष:             वापस Null (OT::GSUBGPOS);
   }
 }
 
@@ -457,19 +457,19 @@ get_gsubgpos_table (hb_face_t *face,
  * Return value: Total number of script tags.
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_table_get_script_tags (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
+				    अचिन्हित पूर्णांक  start_offset,
+				    अचिन्हित पूर्णांक *script_गिनती /* IN/OUT */,
 				    hb_tag_t     *script_tags  /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  return g.get_script_tags (start_offset, script_count, script_tags);
+  वापस g.get_script_tags (start_offset, script_गिनती, script_tags);
 }
 
-#define HB_OT_TAG_LATIN_SCRIPT		HB_TAG ('l', 'a', 't', 'n')
+#घोषणा HB_OT_TAG_LATIN_SCRIPT		HB_TAG ('l', 'a', 't', 'n')
 
 /**
  * hb_ot_layout_table_find_script:
@@ -488,33 +488,33 @@ hb_bool_t
 hb_ot_layout_table_find_script (hb_face_t    *face,
 				hb_tag_t      table_tag,
 				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */)
+				अचिन्हित पूर्णांक *script_सूचकांक /* OUT */)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_SCRIPT_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  static_assert ((OT::सूचकांक::NOT_FOUND_सूचकांक == HB_OT_LAYOUT_NO_SCRIPT_सूचकांक), "");
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  if (g.find_script_index (script_tag, script_index))
-    return true;
+  अगर (g.find_script_सूचकांक (script_tag, script_सूचकांक))
+    वापस true;
 
   /* try finding 'DFLT' */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index))
-    return false;
+  अगर (g.find_script_सूचकांक (HB_OT_TAG_DEFAULT_SCRIPT, script_सूचकांक))
+    वापस false;
 
   /* try with 'dflt'; MS site has had typos and many fonts use it now :(.
    * including many versions of DejaVu Sans Mono! */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index))
-    return false;
+  अगर (g.find_script_सूचकांक (HB_OT_TAG_DEFAULT_LANGUAGE, script_सूचकांक))
+    वापस false;
 
   /* try with 'latn'; some old fonts put their features there even though
      they're really trying to support Thai, for example :( */
-  if (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index))
-    return false;
+  अगर (g.find_script_सूचकांक (HB_OT_TAG_LATIN_SCRIPT, script_सूचकांक))
+    वापस false;
 
-  if (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
-  return false;
+  अगर (script_सूचकांक) *script_सूचकांक = HB_OT_LAYOUT_NO_SCRIPT_सूचकांक;
+  वापस false;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_ot_layout_table_choose_script:
  * @face: #hb_face_t to work upon
@@ -528,15 +528,15 @@ hb_ot_layout_table_find_script (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_table_choose_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index  /* OUT */,
+				  स्थिर hb_tag_t *script_tags,
+				  अचिन्हित पूर्णांक   *script_सूचकांक  /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */)
 {
-  const hb_tag_t *t;
-  for (t = script_tags; *t; t++);
-  return hb_ot_layout_table_select_script (face, table_tag, t - script_tags, script_tags, script_index, chosen_script);
+  स्थिर hb_tag_t *t;
+  क्रम (t = script_tags; *t; t++);
+  वापस hb_ot_layout_table_select_script (face, table_tag, t - script_tags, script_tags, script_सूचकांक, chosen_script);
 }
-#endif
+#पूर्ण_अगर
 
 /**
  * hb_ot_layout_table_select_script:
@@ -563,51 +563,51 @@ hb_ot_layout_table_choose_script (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_table_select_script (hb_face_t      *face,
 				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index  /* OUT */,
+				  अचिन्हित पूर्णांक    script_गिनती,
+				  स्थिर hb_tag_t *script_tags,
+				  अचिन्हित पूर्णांक   *script_सूचकांक  /* OUT */,
 				  hb_tag_t       *chosen_script /* OUT */)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_SCRIPT_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  unsigned int i;
+  static_assert ((OT::सूचकांक::NOT_FOUND_सूचकांक == HB_OT_LAYOUT_NO_SCRIPT_सूचकांक), "");
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  अचिन्हित पूर्णांक i;
 
-  for (i = 0; i < script_count; i++)
+  क्रम (i = 0; i < script_गिनती; i++)
   {
-    if (g.find_script_index (script_tags[i], script_index))
+    अगर (g.find_script_सूचकांक (script_tags[i], script_सूचकांक))
     {
-      if (chosen_script)
+      अगर (chosen_script)
 	*chosen_script = script_tags[i];
-      return true;
+      वापस true;
     }
   }
 
   /* try finding 'DFLT' */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index)) {
-    if (chosen_script)
+  अगर (g.find_script_सूचकांक (HB_OT_TAG_DEFAULT_SCRIPT, script_सूचकांक)) {
+    अगर (chosen_script)
       *chosen_script = HB_OT_TAG_DEFAULT_SCRIPT;
-    return false;
+    वापस false;
   }
 
   /* try with 'dflt'; MS site has had typos and many fonts use it now :( */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index)) {
-    if (chosen_script)
+  अगर (g.find_script_सूचकांक (HB_OT_TAG_DEFAULT_LANGUAGE, script_सूचकांक)) {
+    अगर (chosen_script)
       *chosen_script = HB_OT_TAG_DEFAULT_LANGUAGE;
-    return false;
+    वापस false;
   }
 
   /* try with 'latn'; some old fonts put their features there even though
      they're really trying to support Thai, for example :( */
-  if (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index)) {
-    if (chosen_script)
+  अगर (g.find_script_सूचकांक (HB_OT_TAG_LATIN_SCRIPT, script_सूचकांक)) {
+    अगर (chosen_script)
       *chosen_script = HB_OT_TAG_LATIN_SCRIPT;
-    return false;
+    वापस false;
   }
 
-  if (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
-  if (chosen_script)
+  अगर (script_सूचकांक) *script_सूचकांक = HB_OT_LAYOUT_NO_SCRIPT_सूचकांक;
+  अगर (chosen_script)
     *chosen_script = HB_TAG_NONE;
-  return false;
+  वापस false;
 }
 
 
@@ -629,16 +629,16 @@ hb_ot_layout_table_select_script (hb_face_t      *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
 				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
+				     अचिन्हित पूर्णांक  start_offset,
+				     अचिन्हित पूर्णांक *feature_गिनती_2 /* IN/OUT */,
 				     hb_tag_t     *feature_tags  /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  return g.get_feature_tags (start_offset, feature_count, feature_tags);
+  वापस g.get_feature_tags (start_offset, feature_गिनती_2, feature_tags);
 }
 
 
@@ -661,22 +661,22 @@ bool
 hb_ot_layout_table_find_feature (hb_face_t    *face,
 				 hb_tag_t      table_tag,
 				 hb_tag_t      feature_tag,
-				 unsigned int *feature_index /* OUT */)
+				 अचिन्हित पूर्णांक *feature_सूचकांक /* OUT */)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  static_assert ((OT::सूचकांक::NOT_FOUND_सूचकांक == HB_OT_LAYOUT_NO_FEATURE_सूचकांक), "");
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  unsigned int num_features = g.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  अचिन्हित पूर्णांक अंक_features = g.get_feature_गिनती ();
+  क्रम (अचिन्हित पूर्णांक i = 0; i < अंक_features; i++)
   {
-    if (feature_tag == g.get_feature_tag (i)) {
-      if (feature_index) *feature_index = i;
-      return true;
+    अगर (feature_tag == g.get_feature_tag (i)) {
+      अगर (feature_सूचकांक) *feature_सूचकांक = i;
+      वापस true;
     }
   }
 
-  if (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  return false;
+  अगर (feature_सूचकांक) *feature_सूचकांक = HB_OT_LAYOUT_NO_FEATURE_सूचकांक;
+  वापस false;
 }
 
 
@@ -698,21 +698,21 @@ hb_ot_layout_table_find_feature (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
+				       अचिन्हित पूर्णांक  script_सूचकांक,
+				       अचिन्हित पूर्णांक  start_offset,
+				       अचिन्हित पूर्णांक *language_गिनती /* IN/OUT */,
 				       hb_tag_t     *language_tags  /* OUT */)
 {
-  const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
+  स्थिर OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_सूचकांक);
 
-  return s.get_lang_sys_tags (start_offset, language_count, language_tags);
+  वापस s.get_lang_sys_tags (start_offset, language_गिनती, language_tags);
 }
 
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_ot_layout_script_find_language:
  * @face: #hb_face_t to work upon
@@ -732,18 +732,18 @@ hb_ot_layout_script_get_language_tags (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_script_find_language (hb_face_t    *face,
 				   hb_tag_t      table_tag,
-				   unsigned int  script_index,
+				   अचिन्हित पूर्णांक  script_सूचकांक,
 				   hb_tag_t      language_tag,
-				   unsigned int *language_index)
+				   अचिन्हित पूर्णांक *language_सूचकांक)
 {
-  return hb_ot_layout_script_select_language (face,
+  वापस hb_ot_layout_script_select_language (face,
 					      table_tag,
-					      script_index,
+					      script_सूचकांक,
 					      1,
 					      &language_tag,
-					      language_index);
+					      language_सूचकांक);
 }
-#endif
+#पूर्ण_अगर
 
 
 /**
@@ -771,39 +771,39 @@ hb_ot_layout_script_find_language (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
+				     अचिन्हित पूर्णांक    script_सूचकांक,
+				     अचिन्हित पूर्णांक    language_गिनती,
+				     स्थिर hb_tag_t *language_tags,
+				     अचिन्हित पूर्णांक   *language_सूचकांक /* OUT */,
 				     hb_tag_t       *chosen_language /* OUT */)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX), "");
-  const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
-  unsigned int i;
+  static_assert ((OT::सूचकांक::NOT_FOUND_सूचकांक == HB_OT_LAYOUT_DEFAULT_LANGUAGE_सूचकांक), "");
+  स्थिर OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_सूचकांक);
+  अचिन्हित पूर्णांक i;
 
-  for (i = 0; i < language_count; i++)
+  क्रम (i = 0; i < language_गिनती; i++)
   {
-    if (s.find_lang_sys_index (language_tags[i], language_index))
+    अगर (s.find_lang_sys_सूचकांक (language_tags[i], language_सूचकांक))
     {
-      if (chosen_language)
+      अगर (chosen_language)
         *chosen_language = language_tags[i];
-      return true;
+      वापस true;
     }
   }
 
   /* try finding 'dflt' */
-  if (s.find_lang_sys_index (HB_OT_TAG_DEFAULT_LANGUAGE, language_index))
+  अगर (s.find_lang_sys_सूचकांक (HB_OT_TAG_DEFAULT_LANGUAGE, language_सूचकांक))
   {
-    if (chosen_language)
+    अगर (chosen_language)
       *chosen_language = HB_OT_TAG_DEFAULT_LANGUAGE;
-    return false;
+    वापस false;
   }
 
-  if (language_index)
-    *language_index = HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX;
-  if (chosen_language)
+  अगर (language_सूचकांक)
+    *language_सूचकांक = HB_OT_LAYOUT_DEFAULT_LANGUAGE_सूचकांक;
+  अगर (chosen_language)
     *chosen_language = HB_TAG_NONE;
-  return false;
+  वापस false;
 }
 
 /**
@@ -829,15 +829,15 @@ hb_ot_layout_script_select_language2 (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */)
+				     अचिन्हित पूर्णांक    script_सूचकांक,
+				     अचिन्हित पूर्णांक    language_गिनती,
+				     स्थिर hb_tag_t *language_tags,
+				     अचिन्हित पूर्णांक   *language_सूचकांक /* OUT */)
 {
-  return hb_ot_layout_script_select_language2 (face, table_tag,
-					       script_index,
-					       language_count, language_tags,
-					       language_index, nullptr);
+  वापस hb_ot_layout_script_select_language2 (face, table_tag,
+					       script_सूचकांक,
+					       language_गिनती, language_tags,
+					       language_सूचकांक, nullptr);
 }
 
 /**
@@ -857,17 +857,17 @@ hb_ot_layout_script_select_language (hb_face_t      *face,
  *
  **/
 hb_bool_t
-hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
+hb_ot_layout_language_get_required_feature_सूचकांक (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */)
+						  अचिन्हित पूर्णांक  script_सूचकांक,
+						  अचिन्हित पूर्णांक  language_सूचकांक,
+						  अचिन्हित पूर्णांक *feature_सूचकांक /* OUT */)
 {
-  return hb_ot_layout_language_get_required_feature (face,
+  वापस hb_ot_layout_language_get_required_feature (face,
 						     table_tag,
-						     script_index,
-						     language_index,
-						     feature_index,
+						     script_सूचकांक,
+						     language_सूचकांक,
+						     feature_सूचकांक,
 						     nullptr);
 }
 
@@ -891,19 +891,19 @@ hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
+					    अचिन्हित पूर्णांक  script_सूचकांक,
+					    अचिन्हित पूर्णांक  language_सूचकांक,
+					    अचिन्हित पूर्णांक *feature_सूचकांक /* OUT */,
 					    hb_tag_t     *feature_tag   /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::LangSys &l = g.get_script (script_सूचकांक).get_lang_sys (language_सूचकांक);
 
-  unsigned int index = l.get_required_feature_index ();
-  if (feature_index) *feature_index = index;
-  if (feature_tag) *feature_tag = g.get_feature_tag (index);
+  अचिन्हित पूर्णांक सूचकांक_2 = l.get_required_feature_सूचकांक ();
+  अगर (feature_सूचकांक) *feature_सूचकांक = सूचकांक_2;
+  अगर (feature_tag) *feature_tag = g.get_feature_tag (सूचकांक_2);
 
-  return l.has_required_feature ();
+  वापस l.has_required_feature ();
 }
 
 
@@ -927,19 +927,19 @@ hb_ot_layout_language_get_required_feature (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
 					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count   /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */)
+					   अचिन्हित पूर्णांक  script_सूचकांक,
+					   अचिन्हित पूर्णांक  language_सूचकांक,
+					   अचिन्हित पूर्णांक  start_offset,
+					   अचिन्हित पूर्णांक *feature_गिनती_2   /* IN/OUT */,
+					   अचिन्हित पूर्णांक *feature_indexes /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::LangSys &l = g.get_script (script_सूचकांक).get_lang_sys (language_सूचकांक);
 
-  return l.get_feature_indexes (start_offset, feature_count, feature_indexes);
+  वापस l.get_feature_indexes (start_offset, feature_गिनती_2, feature_indexes);
 }
 
 
@@ -963,28 +963,28 @@ hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
+					अचिन्हित पूर्णांक  script_सूचकांक,
+					अचिन्हित पूर्णांक  language_सूचकांक,
+					अचिन्हित पूर्णांक  start_offset,
+					अचिन्हित पूर्णांक *feature_गिनती_2 /* IN/OUT */,
 					hb_tag_t     *feature_tags  /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::LangSys &l = g.get_script (script_सूचकांक).get_lang_sys (language_सूचकांक);
 
-  static_assert ((sizeof (unsigned int) == sizeof (hb_tag_t)), "");
-  unsigned int ret = l.get_feature_indexes (start_offset, feature_count, (unsigned int *) feature_tags);
+  static_assert ((माप (अचिन्हित पूर्णांक) == माप (hb_tag_t)), "");
+  अचिन्हित पूर्णांक ret = l.get_feature_indexes (start_offset, feature_गिनती_2, (अचिन्हित पूर्णांक *) feature_tags);
 
-  if (feature_count && feature_tags) {
-    unsigned int count = *feature_count;
-    for (unsigned int i = 0; i < count; i++)
-      feature_tags[i] = g.get_feature_tag ((unsigned int) feature_tags[i]);
+  अगर (feature_गिनती_2 && feature_tags) {
+    अचिन्हित पूर्णांक गिनती = *feature_गिनती_2;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      feature_tags[i] = g.get_feature_tag ((अचिन्हित पूर्णांक) feature_tags[i]);
   }
 
-  return ret;
+  वापस ret;
 }
 
 
@@ -1008,27 +1008,27 @@ hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_language_find_feature (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
+				    अचिन्हित पूर्णांक  script_सूचकांक,
+				    अचिन्हित पूर्णांक  language_सूचकांक,
 				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */)
+				    अचिन्हित पूर्णांक *feature_सूचकांक /* OUT */)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  static_assert ((OT::सूचकांक::NOT_FOUND_सूचकांक == HB_OT_LAYOUT_NO_FEATURE_सूचकांक), "");
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::LangSys &l = g.get_script (script_सूचकांक).get_lang_sys (language_सूचकांक);
 
-  unsigned int num_features = l.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++) {
-    unsigned int f_index = l.get_feature_index (i);
+  अचिन्हित पूर्णांक अंक_features = l.get_feature_गिनती ();
+  क्रम (अचिन्हित पूर्णांक i = 0; i < अंक_features; i++) {
+    अचिन्हित पूर्णांक f_सूचकांक = l.get_feature_सूचकांक (i);
 
-    if (feature_tag == g.get_feature_tag (f_index)) {
-      if (feature_index) *feature_index = f_index;
-      return true;
+    अगर (feature_tag == g.get_feature_tag (f_सूचकांक)) {
+      अगर (feature_सूचकांक) *feature_सूचकांक = f_सूचकांक;
+      वापस true;
     }
   }
 
-  if (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  return false;
+  अगर (feature_सूचकांक) *feature_सूचकांक = HB_OT_LAYOUT_NO_FEATURE_सूचकांक;
+  वापस false;
 }
 
 
@@ -1050,20 +1050,20 @@ hb_ot_layout_language_find_feature (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
 				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count   /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */)
+				  अचिन्हित पूर्णांक  feature_सूचकांक,
+				  अचिन्हित पूर्णांक  start_offset,
+				  अचिन्हित पूर्णांक *lookup_गिनती   /* IN/OUT */,
+				  अचिन्हित पूर्णांक *lookup_indexes /* OUT */)
 {
-  return hb_ot_layout_feature_with_variations_get_lookups (face,
+  वापस hb_ot_layout_feature_with_variations_get_lookups (face,
 							   table_tag,
-							   feature_index,
-							   HB_OT_LAYOUT_NO_VARIATIONS_INDEX,
+							   feature_सूचकांक,
+							   HB_OT_LAYOUT_NO_VARIATIONS_सूचकांक,
 							   start_offset,
-							   lookup_count,
+							   lookup_गिनती,
 							   lookup_indexes);
 }
 
@@ -1080,168 +1080,168 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
  *
  * Since: 0.9.22
  **/
-unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
+अचिन्हित पूर्णांक
+hb_ot_layout_table_get_lookup_गिनती (hb_face_t    *face,
 				     hb_tag_t      table_tag)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_count ();
+  वापस get_gsubgpos_table (face, table_tag).get_lookup_गिनती ();
 }
 
 
-struct hb_collect_features_context_t
+काष्ठा hb_collect_features_context_t
 {
   hb_collect_features_context_t (hb_face_t *face,
 				 hb_tag_t   table_tag,
 				 hb_set_t  *feature_indices_,
-				 const hb_tag_t *features)
+				 स्थिर hb_tag_t *features)
 
     : g (get_gsubgpos_table (face, table_tag)),
       feature_indices (feature_indices_),
       has_feature_filter (false),
-      script_count (0),langsys_count (0), feature_index_count (0)
+      script_गिनती (0),langsys_गिनती (0), feature_सूचकांक_गिनती (0)
   {
     compute_feature_filter (features);
   }
 
-  void compute_feature_filter (const hb_tag_t *features)
+  व्योम compute_feature_filter (स्थिर hb_tag_t *features)
   {
-    if (features == nullptr)
+    अगर (features == nullptr)
     {
       has_feature_filter = false;
-      return;
+      वापस;
     }
 
     has_feature_filter = true;
     hb_set_t features_set;
-    for (; *features; features++)
+    क्रम (; *features; features++)
       features_set.add (*features);
 
-    for (unsigned i = 0; i < g.get_feature_count (); i++)
+    क्रम (अचिन्हित i = 0; i < g.get_feature_गिनती (); i++)
     {
       hb_tag_t tag = g.get_feature_tag (i);
-      if (features_set.has (tag))
+      अगर (features_set.has (tag))
 	feature_indices_filter.add(i);
     }
   }
 
-  bool visited (const OT::Script &s)
+  bool visited (स्थिर OT::Script &s)
   {
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
-    if (unlikely (!s.has_default_lang_sys () &&
-		  !s.get_lang_sys_count ()))
-      return true;
+    अगर (unlikely (!s.has_default_lang_sys () &&
+		  !s.get_lang_sys_गिनती ()))
+      वापस true;
 
-    if (script_count++ > HB_MAX_SCRIPTS)
-      return true;
+    अगर (script_गिनती++ > HB_MAX_SCRIPTS)
+      वापस true;
 
-    return visited (s, visited_script);
+    वापस visited (s, visited_script);
   }
-  bool visited (const OT::LangSys &l)
+  bool visited (स्थिर OT::LangSys &l)
   {
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
-    if (unlikely (!l.has_required_feature () &&
-		  !l.get_feature_count ()))
-      return true;
+    अगर (unlikely (!l.has_required_feature () &&
+		  !l.get_feature_गिनती ()))
+      वापस true;
 
-    if (langsys_count++ > HB_MAX_LANGSYS)
-      return true;
+    अगर (langsys_गिनती++ > HB_MAX_LANGSYS)
+      वापस true;
 
-    return visited (l, visited_langsys);
+    वापस visited (l, visited_langsys);
   }
 
-  bool visited_feature_indices (unsigned count)
+  bool visited_feature_indices (अचिन्हित गिनती)
   {
-    feature_index_count += count;
-    return feature_index_count > HB_MAX_FEATURE_INDICES;
+    feature_सूचकांक_गिनती += गिनती;
+    वापस feature_सूचकांक_गिनती > HB_MAX_FEATURE_INDICES;
   }
 
-  private:
-  template <typename T>
-  bool visited (const T &p, hb_set_t &visited_set)
+  निजी:
+  ढाँचा <typename T>
+  bool visited (स्थिर T &p, hb_set_t &visited_set)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) &p - (uintptr_t) &g);
-     if (visited_set.has (delta))
-      return true;
+     अगर (visited_set.has (delta))
+      वापस true;
 
     visited_set.add (delta);
-    return false;
+    वापस false;
   }
 
-  public:
-  const OT::GSUBGPOS &g;
+  खुला:
+  स्थिर OT::GSUBGPOS &g;
   hb_set_t *feature_indices;
   hb_set_t  feature_indices_filter;
   bool has_feature_filter;
 
-  private:
+  निजी:
   hb_set_t visited_script;
   hb_set_t visited_langsys;
-  unsigned int script_count;
-  unsigned int langsys_count;
-  unsigned int feature_index_count;
+  अचिन्हित पूर्णांक script_गिनती;
+  अचिन्हित पूर्णांक langsys_गिनती;
+  अचिन्हित पूर्णांक feature_सूचकांक_गिनती;
 };
 
-static void
+अटल व्योम
 langsys_collect_features (hb_collect_features_context_t *c,
-			  const OT::LangSys  &l)
+			  स्थिर OT::LangSys  &l)
 {
-  if (c->visited (l)) return;
+  अगर (c->visited (l)) वापस;
 
-  if (!c->has_feature_filter)
+  अगर (!c->has_feature_filter)
   {
     /* All features. */
-    if (l.has_required_feature () && !c->visited_feature_indices (1))
-      c->feature_indices->add (l.get_required_feature_index ());
+    अगर (l.has_required_feature () && !c->visited_feature_indices (1))
+      c->feature_indices->add (l.get_required_feature_सूचकांक ());
 
     // TODO(garretrieger): filter out indices >= feature count?
-    if (!c->visited_feature_indices (l.featureIndex.len))
+    अगर (!c->visited_feature_indices (l.feature_सूचकांक_2.len))
       l.add_feature_indexes_to (c->feature_indices);
   }
-  else
+  अन्यथा
   {
-    if (c->feature_indices_filter.is_empty()) return;
-    unsigned int num_features = l.get_feature_count ();
-    for (unsigned int i = 0; i < num_features; i++)
+    अगर (c->feature_indices_filter.is_empty()) वापस;
+    अचिन्हित पूर्णांक अंक_features = l.get_feature_गिनती ();
+    क्रम (अचिन्हित पूर्णांक i = 0; i < अंक_features; i++)
     {
-      unsigned int feature_index = l.get_feature_index (i);
-      if (!c->feature_indices_filter.has (feature_index)) continue;
+      अचिन्हित पूर्णांक feature_सूचकांक = l.get_feature_सूचकांक (i);
+      अगर (!c->feature_indices_filter.has (feature_सूचकांक)) जारी;
 
-      c->feature_indices->add (feature_index);
-      c->feature_indices_filter.del (feature_index);
+      c->feature_indices->add (feature_सूचकांक);
+      c->feature_indices_filter.del (feature_सूचकांक);
     }
   }
 }
 
-static void
+अटल व्योम
 script_collect_features (hb_collect_features_context_t *c,
-			 const OT::Script   &s,
-			 const hb_tag_t *languages)
+			 स्थिर OT::Script   &s,
+			 स्थिर hb_tag_t *languages)
 {
-  if (c->visited (s)) return;
+  अगर (c->visited (s)) वापस;
 
-  if (!languages)
+  अगर (!languages)
   {
     /* All languages. */
-    if (s.has_default_lang_sys ())
+    अगर (s.has_default_lang_sys ())
       langsys_collect_features (c,
 				s.get_default_lang_sys ());
 
 
-    unsigned int count = s.get_lang_sys_count ();
-    for (unsigned int language_index = 0; language_index < count; language_index++)
+    अचिन्हित पूर्णांक गिनती = s.get_lang_sys_गिनती ();
+    क्रम (अचिन्हित पूर्णांक language_सूचकांक = 0; language_सूचकांक < गिनती; language_सूचकांक++)
       langsys_collect_features (c,
-				s.get_lang_sys (language_index));
+				s.get_lang_sys (language_सूचकांक));
   }
-  else
+  अन्यथा
   {
-    for (; *languages; languages++)
+    क्रम (; *languages; languages++)
     {
-      unsigned int language_index;
-      if (s.find_lang_sys_index (*languages, &language_index))
+      अचिन्हित पूर्णांक language_सूचकांक;
+      अगर (s.find_lang_sys_सूचकांक (*languages, &language_सूचकांक))
 	langsys_collect_features (c,
-				  s.get_lang_sys (language_index));
+				  s.get_lang_sys (language_सूचकांक));
 
     }
   }
@@ -1268,32 +1268,32 @@ script_collect_features (hb_collect_features_context_t *c,
  *
  * Since: 1.8.5
  **/
-void
+व्योम
 hb_ot_layout_collect_features (hb_face_t      *face,
 			       hb_tag_t        table_tag,
-			       const hb_tag_t *scripts,
-			       const hb_tag_t *languages,
-			       const hb_tag_t *features,
+			       स्थिर hb_tag_t *scripts,
+			       स्थिर hb_tag_t *languages,
+			       स्थिर hb_tag_t *features,
 			       hb_set_t       *feature_indexes /* OUT */)
 {
   hb_collect_features_context_t c (face, table_tag, feature_indexes, features);
-  if (!scripts)
+  अगर (!scripts)
   {
     /* All scripts. */
-    unsigned int count = c.g.get_script_count ();
-    for (unsigned int script_index = 0; script_index < count; script_index++)
+    अचिन्हित पूर्णांक गिनती = c.g.get_script_गिनती ();
+    क्रम (अचिन्हित पूर्णांक script_सूचकांक = 0; script_सूचकांक < गिनती; script_सूचकांक++)
       script_collect_features (&c,
-			       c.g.get_script (script_index),
+			       c.g.get_script (script_सूचकांक),
 			       languages);
   }
-  else
+  अन्यथा
   {
-    for (; *scripts; scripts++)
+    क्रम (; *scripts; scripts++)
     {
-      unsigned int script_index;
-      if (c.g.find_script_index (*scripts, &script_index))
+      अचिन्हित पूर्णांक script_सूचकांक;
+      अगर (c.g.find_script_सूचकांक (*scripts, &script_सूचकांक))
 	script_collect_features (&c,
-				 c.g.get_script (script_index),
+				 c.g.get_script (script_सूचकांक),
 				 languages);
     }
   }
@@ -1312,33 +1312,33 @@ hb_ot_layout_collect_features (hb_face_t      *face,
  *
  * Since: 8.1.0
  **/
-void
+व्योम
 hb_ot_layout_collect_features_map (hb_face_t      *face,
 				   hb_tag_t        table_tag,
-				   unsigned        script_index,
-				   unsigned        language_index,
+				   अचिन्हित        script_सूचकांक,
+				   अचिन्हित        language_सूचकांक,
 				   hb_map_t       *feature_map /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::LangSys &l = g.get_script (script_सूचकांक).get_lang_sys (language_सूचकांक);
 
-  unsigned int count = l.get_feature_indexes (0, nullptr, nullptr);
-  feature_map->alloc (count);
+  अचिन्हित पूर्णांक गिनती = l.get_feature_indexes (0, nullptr, nullptr);
+  feature_map->alloc (गिनती);
 
   /* Loop in reverse, such that earlier entries win. That emulates
    * a linear search, which seems to be what other implementations do.
    * We found that with arialuni_t.ttf, the "ur" language system has
    * duplicate features, and the earlier ones work but not later ones.
    */
-  for (unsigned int i = count; i; i--)
+  क्रम (अचिन्हित पूर्णांक i = गिनती; i; i--)
   {
-    unsigned feature_index = 0;
-    unsigned feature_count = 1;
-    l.get_feature_indexes (i - 1, &feature_count, &feature_index);
-    if (!feature_count)
-      break;
-    hb_tag_t feature_tag = g.get_feature_tag (feature_index);
-    feature_map->set (feature_tag, feature_index);
+    अचिन्हित feature_सूचकांक = 0;
+    अचिन्हित feature_गिनती_2 = 1;
+    l.get_feature_indexes (i - 1, &feature_गिनती_2, &feature_सूचकांक);
+    अगर (!feature_गिनती_2)
+      अवरोध;
+    hb_tag_t feature_tag = g.get_feature_tag (feature_सूचकांक);
+    feature_map->set (feature_tag, feature_सूचकांक);
   }
 }
 
@@ -1363,27 +1363,27 @@ hb_ot_layout_collect_features_map (hb_face_t      *face,
  *
  * Since: 0.9.8
  **/
-void
+व्योम
 hb_ot_layout_collect_lookups (hb_face_t      *face,
 			      hb_tag_t        table_tag,
-			      const hb_tag_t *scripts,
-			      const hb_tag_t *languages,
-			      const hb_tag_t *features,
+			      स्थिर hb_tag_t *scripts,
+			      स्थिर hb_tag_t *languages,
+			      स्थिर hb_tag_t *features,
 			      hb_set_t       *lookup_indexes /* OUT */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
   hb_set_t feature_indexes;
   hb_ot_layout_collect_features (face, table_tag, scripts, languages, features, &feature_indexes);
 
-  for (auto feature_index : feature_indexes)
-    g.get_feature (feature_index).add_lookup_indexes_to (lookup_indexes);
+  क्रम (स्वतः feature_सूचकांक : feature_indexes)
+    g.get_feature (feature_सूचकांक).add_lookup_indexes_to (lookup_indexes);
 
   g.feature_variation_collect_lookups (&feature_indexes, nullptr, lookup_indexes);
 }
 
 
-#ifndef HB_NO_LAYOUT_COLLECT_GLYPHS
+#अगर_अघोषित HB_NO_LAYOUT_COLLECT_GLYPHS
 /**
  * hb_ot_layout_lookup_collect_glyphs:
  * @face: #hb_face_t to work upon
@@ -1399,38 +1399,38 @@ hb_ot_layout_collect_lookups (hb_face_t      *face,
  *
  * Since: 0.9.7
  **/
-void
+व्योम
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
+				    अचिन्हित पूर्णांक  lookup_सूचकांक,
 				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
+				    hb_set_t     *glyphs_निवेश,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
 				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */)
 {
   OT::hb_collect_glyphs_context_t c (face,
 				     glyphs_before,
-				     glyphs_input,
+				     glyphs_निवेश,
 				     glyphs_after,
 				     glyphs_output);
 
-  switch (table_tag)
+  चयन (table_tag)
   {
-    case HB_OT_TAG_GSUB:
+    हाल HB_OT_TAG_GSUB:
     {
-      const OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_index);
+      स्थिर OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_सूचकांक);
       l.collect_glyphs (&c);
-      return;
+      वापस;
     }
-    case HB_OT_TAG_GPOS:
+    हाल HB_OT_TAG_GPOS:
     {
-      const OT::PosLookup& l = face->table.GPOS->table->get_lookup (lookup_index);
+      स्थिर OT::PosLookup& l = face->table.GPOS->table->get_lookup (lookup_सूचकांक);
       l.collect_glyphs (&c);
-      return;
+      वापस;
     }
   }
 }
-#endif
+#पूर्ण_अगर
 
 
 /* Variations support */
@@ -1438,20 +1438,20 @@ hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
 bool
 _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
-						   hb_vector_t<unsigned> *lookup_conditions)
+						   स्थिर पूर्णांक             *coords,
+						   अचिन्हित पूर्णांक           अंक_coords,
+						   अचिन्हित पूर्णांक          *variations_सूचकांक,
+						   hb_vector_t<अचिन्हित> *lookup_conditions)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::GDEF &gdef = *face->table.GDEF->table;
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::GDEF &gdef = *face->table.GDEF->table;
 
-  auto instancer = OT::ItemVarStoreInstancer (&gdef.get_var_store (), nullptr,
-					      hb_array (coords, num_coords));
+  स्वतः instancer = OT::ItemVarStoreInstancer (&gdef.get_var_store (), nullptr,
+					      hb_array (coords, अंक_coords));
 
-  return g.get_feature_variations_state (coords,
-					 num_coords,
-					 variations_index,
+  वापस g.get_feature_variations_state (coords,
+					 अंक_coords,
+					 variations_सूचकांक,
 					 &instancer,
 					 lookup_conditions);
 }
@@ -1459,13 +1459,13 @@ _hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
 bool
 _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
                                              hb_tag_t table_tag,
-                                             unsigned feature_index,
-                                             unsigned variations_index,
-                                             hb_sorted_array_t<const unsigned> conditions,
+                                             अचिन्हित feature_सूचकांक,
+                                             अचिन्हित variations_सूचकांक,
+                                             hb_sorted_array_t<स्थिर अचिन्हित> conditions,
                                              hb_set_t *lookup_indexes)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_variations (
-      feature_index, variations_index, conditions, lookup_indexes);
+  वापस get_gsubgpos_table (face, table_tag).get_lookup_variations (
+      feature_सूचकांक, variations_सूचकांक, conditions, lookup_indexes);
 }
 
 
@@ -1488,17 +1488,17 @@ _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
 hb_bool_t
 hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
 					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */)
+					    स्थिर पूर्णांक    *coords,
+					    अचिन्हित पूर्णांक  अंक_coords,
+					    अचिन्हित पूर्णांक *variations_सूचकांक /* out */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::GDEF &gdef = *face->table.GDEF->table;
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::GDEF &gdef = *face->table.GDEF->table;
 
-  auto instancer = OT::ItemVarStoreInstancer(&gdef.get_var_store(), nullptr,
-					     hb_array (coords, num_coords));
+  स्वतः instancer = OT::ItemVarStoreInstancer(&gdef.get_var_store(), nullptr,
+					     hb_array (coords, अंक_coords));
 
-  return g.find_variations_index (coords, num_coords, variations_index, &instancer);
+  वापस g.find_variations_सूचकांक (coords, अंक_coords, variations_सूचकांक, &instancer);
 }
 
 
@@ -1522,21 +1522,21 @@ hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
  * Since: 1.4.0
  *
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */)
+						  अचिन्हित पूर्णांक  feature_सूचकांक,
+						  अचिन्हित पूर्णांक  variations_सूचकांक,
+						  अचिन्हित पूर्णांक  start_offset,
+						  अचिन्हित पूर्णांक *lookup_गिनती /* IN/OUT */,
+						  अचिन्हित पूर्णांक *lookup_indexes /* OUT */)
 {
-  static_assert ((OT::FeatureVariations::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_VARIATIONS_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  static_assert ((OT::FeatureVariations::NOT_FOUND_सूचकांक == HB_OT_LAYOUT_NO_VARIATIONS_सूचकांक), "");
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  const OT::Feature &f = g.get_feature_variation (feature_index, variations_index);
+  स्थिर OT::Feature &f = g.get_feature_variation (feature_सूचकांक, variations_सूचकांक);
 
-  return f.get_lookup_indexes (start_offset, lookup_count, lookup_indexes);
+  वापस f.get_lookup_indexes (start_offset, lookup_गिनती, lookup_indexes);
 }
 
 
@@ -1559,7 +1559,7 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face)
 {
-  return face->table.GSUB->table->has_data ();
+  वापस face->table.GSUB->table->has_तथ्य ();
 }
 
 
@@ -1581,18 +1581,18 @@ hb_ot_layout_has_substitution (hb_face_t *face)
  **/
 hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
-				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      अचिन्हित पूर्णांक          lookup_सूचकांक,
+				      स्थिर hb_codepoint_t *glyphs,
+				      अचिन्हित पूर्णांक          glyphs_लंबाई,
 				      hb_bool_t             zero_context)
 {
-  auto &gsub = face->table.GSUB;
-  if (unlikely (lookup_index >= gsub->lookup_count)) return false;
-  OT::hb_would_apply_context_t c (face, glyphs, glyphs_length, (bool) zero_context);
+  स्वतः &gsub = face->table.GSUB;
+  अगर (unlikely (lookup_सूचकांक >= gsub->lookup_गिनती)) वापस false;
+  OT::hb_would_apply_context_t c (face, glyphs, glyphs_लंबाई, (bool) zero_context);
 
-  const OT::SubstLookup& l = gsub->table->get_lookup (lookup_index);
-  auto *accel = gsub->get_accel (lookup_index);
-  return accel && l.would_apply (&c, accel);
+  स्थिर OT::SubstLookup& l = gsub->table->get_lookup (lookup_सूचकांक);
+  स्वतः *accel = gsub->get_accel (lookup_सूचकांक);
+  वापस accel && l.would_apply (&c, accel);
 }
 
 
@@ -1605,19 +1605,19 @@ hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
  * class and other properties are set on the glyphs in the buffer.
  *
  **/
-void
+व्योम
 hb_ot_layout_substitute_start (hb_font_t    *font,
-			       hb_buffer_t  *buffer)
+			       hb_बफर_t  *बफर)
 {
-  _hb_ot_layout_set_glyph_props<false> (font, buffer);
+  _hb_ot_layout_set_glyph_props<false> (font, बफर);
 }
 
-void
+व्योम
 hb_ot_layout_substitute_start_with_digest (hb_font_t    *font,
-					   hb_buffer_t  *buffer)
+					   hb_बफर_t  *बफर)
 {
-  buffer->digest = hb_set_digest_t ();
-  _hb_ot_layout_set_glyph_props<true> (font, buffer);
+  बफर->digest = hb_set_digest_t ();
+  _hb_ot_layout_set_glyph_props<true> (font, बफर);
 }
 
 /**
@@ -1631,18 +1631,18 @@ hb_ot_layout_substitute_start_with_digest (hb_font_t    *font,
  *
  * Since: 0.9.7
  **/
-void
+व्योम
 hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
+					अचिन्हित पूर्णांक  lookup_सूचकांक,
 					hb_set_t     *glyphs /* OUT */)
 {
-  hb_map_t done_lookups_glyph_count;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
-  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
+  hb_map_t done_lookups_glyph_गिनती;
+  hb_hashmap_t<अचिन्हित, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
+  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_गिनती, &done_lookups_glyph_set);
 
-  const OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_index);
+  स्थिर OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_सूचकांक);
 
-  l.closure (&c, lookup_index);
+  l.closure (&c, lookup_सूचकांक);
 }
 
 /**
@@ -1656,34 +1656,34 @@ hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
  *
  * Since: 1.8.1
  **/
-void
+व्योम
 hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
-					 const hb_set_t *lookups,
+					 स्थिर hb_set_t *lookups,
 					 hb_set_t       *glyphs /* OUT */)
 {
-  hb_map_t done_lookups_glyph_count;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
-  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
-  const GSUB& gsub = *face->table.GSUB->table;
+  hb_map_t done_lookups_glyph_गिनती;
+  hb_hashmap_t<अचिन्हित, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
+  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_गिनती, &done_lookups_glyph_set);
+  स्थिर GSUB& gsub = *face->table.GSUB->table;
 
-  unsigned int iteration_count = 0;
-  unsigned int glyphs_length;
-  do
+  अचिन्हित पूर्णांक iteration_गिनती = 0;
+  अचिन्हित पूर्णांक glyphs_लंबाई;
+  करो
   {
-    c.reset_lookup_visit_count ();
-    glyphs_length = glyphs->get_population ();
-    if (lookups)
+    c.reset_lookup_visit_गिनती ();
+    glyphs_लंबाई = glyphs->get_population ();
+    अगर (lookups)
     {
-      for (auto lookup_index : *lookups)
-	gsub.get_lookup (lookup_index).closure (&c, lookup_index);
+      क्रम (स्वतः lookup_सूचकांक : *lookups)
+	gsub.get_lookup (lookup_सूचकांक).closure (&c, lookup_सूचकांक);
     }
-    else
+    अन्यथा
     {
-      for (unsigned int i = 0; i < gsub.get_lookup_count (); i++)
+      क्रम (अचिन्हित पूर्णांक i = 0; i < gsub.get_lookup_गिनती (); i++)
 	gsub.get_lookup (i).closure (&c, i);
     }
-  } while (iteration_count++ <= HB_CLOSURE_MAX_STAGES &&
-	   glyphs_length != glyphs->get_population ());
+  } जबतक (iteration_गिनती++ <= HB_CLOSURE_MAX_STAGES &&
+	   glyphs_लंबाई != glyphs->get_population ());
 }
 
 /*
@@ -1703,7 +1703,7 @@ hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_has_positioning (hb_face_t *face)
 {
-  return face->table.GPOS->table->has_data ();
+  वापस face->table.GPOS->table->has_तथ्य ();
 }
 
 /**
@@ -1715,10 +1715,10 @@ hb_ot_layout_has_positioning (hb_face_t *face)
  * attachment types and glyph-attachment chains are set for the glyphs in the buffer.
  *
  **/
-void
-hb_ot_layout_position_start (hb_font_t *font, hb_buffer_t *buffer)
+व्योम
+hb_ot_layout_position_start (hb_font_t *font, hb_बफर_t *बफर)
 {
-  GPOS::position_start (font, buffer);
+  GPOS::position_start (font, बफर);
 }
 
 
@@ -1730,10 +1730,10 @@ hb_ot_layout_position_start (hb_font_t *font, hb_buffer_t *buffer)
  * Called after positioning lookups are performed, to finish glyph advances.
  *
  **/
-void
-hb_ot_layout_position_finish_advances (hb_font_t *font, hb_buffer_t *buffer)
+व्योम
+hb_ot_layout_position_finish_advances (hb_font_t *font, hb_बफर_t *बफर)
 {
-  GPOS::position_finish_advances (font, buffer);
+  GPOS::position_finish_advances (font, बफर);
 }
 
 /**
@@ -1744,14 +1744,14 @@ hb_ot_layout_position_finish_advances (hb_font_t *font, hb_buffer_t *buffer)
  * Called after positioning lookups are performed, to finish glyph offsets.
  *
  **/
-void
-hb_ot_layout_position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
+व्योम
+hb_ot_layout_position_finish_offsets (hb_font_t *font, hb_बफर_t *बफर)
 {
-  GPOS::position_finish_offsets (font, buffer);
+  GPOS::position_finish_offsets (font, बफर);
 }
 
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
+#अगर_अघोषित HB_NO_LAYOUT_FEATURE_PARAMS
 /**
  * hb_ot_layout_get_size_params:
  * @face: #hb_face_t to work upon
@@ -1775,44 +1775,44 @@ hb_ot_layout_position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
  * Since: 0.9.10
  **/
 hb_bool_t
-hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+hb_ot_layout_get_आकार_params (hb_face_t       *face,
+			      अचिन्हित पूर्णांक    *design_आकार_2,       /* OUT.  May be NULL */
+			      अचिन्हित पूर्णांक    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */)
+			      अचिन्हित पूर्णांक    *range_start,       /* OUT.  May be NULL */
+			      अचिन्हित पूर्णांक    *range_end          /* OUT.  May be NULL */)
 {
-  const GPOS &gpos = *face->table.GPOS->table;
-  const hb_tag_t tag = HB_TAG ('s','i','z','e');
+  स्थिर GPOS &gpos = *face->table.GPOS->table;
+  स्थिर hb_tag_t tag = HB_TAG ('s','i','z','e');
 
-  unsigned int num_features = gpos.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  अचिन्हित पूर्णांक अंक_features = gpos.get_feature_गिनती ();
+  क्रम (अचिन्हित पूर्णांक i = 0; i < अंक_features; i++)
   {
-    if (tag == gpos.get_feature_tag (i))
+    अगर (tag == gpos.get_feature_tag (i))
     {
-      const OT::Feature &f = gpos.get_feature (i);
-      const OT::FeatureParamsSize &params = f.get_feature_params ().get_size_params (tag);
+      स्थिर OT::Feature &f = gpos.get_feature (i);
+      स्थिर OT::Feature_Params_आकार &params = f.get_feature_params ().get_आकार_params (tag);
 
-      if (params.designSize)
+      अगर (params.design_आकार)
       {
-	if (design_size) *design_size = params.designSize;
-	if (subfamily_id) *subfamily_id = params.subfamilyID;
-	if (subfamily_name_id) *subfamily_name_id = params.subfamilyNameID;
-	if (range_start) *range_start = params.rangeStart;
-	if (range_end) *range_end = params.rangeEnd;
+	अगर (design_आकार_2) *design_आकार_2 = params.design_आकार;
+	अगर (subfamily_id) *subfamily_id = params.subfamilyID;
+	अगर (subfamily_name_id) *subfamily_name_id = params.subfamilyNameID;
+	अगर (range_start) *range_start = params.rangeStart;
+	अगर (range_end) *range_end = params.rangeEnd;
 
-	return true;
+	वापस true;
       }
     }
   }
 
-  if (design_size) *design_size = 0;
-  if (subfamily_id) *subfamily_id = 0;
-  if (subfamily_name_id) *subfamily_name_id = HB_OT_NAME_ID_INVALID;
-  if (range_start) *range_start = 0;
-  if (range_end) *range_end = 0;
+  अगर (design_आकार_2) *design_आकार_2 = 0;
+  अगर (subfamily_id) *subfamily_id = 0;
+  अगर (subfamily_name_id) *subfamily_name_id = HB_OT_NAME_ID_INVALID;
+  अगर (range_start) *range_start = 0;
+  अगर (range_end) *range_end = 0;
 
-  return false;
+  वापस false;
 }
 
 
@@ -1843,52 +1843,52 @@ hb_ot_layout_get_size_params (hb_face_t       *face,
 hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
 				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   अचिन्हित पूर्णांक     feature_सूचकांक,
 				   hb_ot_name_id_t *label_id,             /* OUT.  May be NULL */
 				   hb_ot_name_id_t *tooltip_id,           /* OUT.  May be NULL */
 				   hb_ot_name_id_t *sample_id,            /* OUT.  May be NULL */
-				   unsigned int    *num_named_parameters, /* OUT.  May be NULL */
+				   अचिन्हित पूर्णांक    *अंक_named_parameters, /* OUT.  May be NULL */
 				   hb_ot_name_id_t *first_param_id        /* OUT.  May be NULL */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
 
-  hb_tag_t feature_tag = g.get_feature_tag (feature_index);
-  const OT::Feature &f = g.get_feature (feature_index);
+  hb_tag_t feature_tag = g.get_feature_tag (feature_सूचकांक);
+  स्थिर OT::Feature &f = g.get_feature (feature_सूचकांक);
 
-  const OT::FeatureParams &feature_params = f.get_feature_params ();
-  if (&feature_params != &Null (OT::FeatureParams))
+  स्थिर OT::FeatureParams &feature_params = f.get_feature_params ();
+  अगर (&feature_params != &Null (OT::FeatureParams))
   {
-    const OT::FeatureParamsStylisticSet& ss_params =
+    स्थिर OT::FeatureParamsStylisticSet& ss_params =
       feature_params.get_stylistic_set_params (feature_tag);
-    if (&ss_params != &Null (OT::FeatureParamsStylisticSet)) /* ssXX */
+    अगर (&ss_params != &Null (OT::FeatureParamsStylisticSet)) /* ssXX */
     {
-      if (label_id) *label_id = ss_params.uiNameID;
+      अगर (label_id) *label_id = ss_params.uiNameID;
       // ssXX features don't have the rest
-      if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
-      if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-      if (num_named_parameters) *num_named_parameters = 0;
-      if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
-      return true;
+      अगर (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
+      अगर (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
+      अगर (अंक_named_parameters) *अंक_named_parameters = 0;
+      अगर (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
+      वापस true;
     }
-    const OT::FeatureParamsCharacterVariants& cv_params =
+    स्थिर OT::FeatureParamsCharacterVariants& cv_params =
       feature_params.get_character_variants_params (feature_tag);
-    if (&cv_params != &Null (OT::FeatureParamsCharacterVariants)) /* cvXX */
+    अगर (&cv_params != &Null (OT::FeatureParamsCharacterVariants)) /* cvXX */
     {
-      if (label_id) *label_id = cv_params.featUILableNameID;
-      if (tooltip_id) *tooltip_id = cv_params.featUITooltipTextNameID;
-      if (sample_id) *sample_id = cv_params.sampleTextNameID;
-      if (num_named_parameters) *num_named_parameters = cv_params.numNamedParameters;
-      if (first_param_id) *first_param_id = cv_params.firstParamUILabelNameID;
-      return true;
+      अगर (label_id) *label_id = cv_params.featUILableNameID;
+      अगर (tooltip_id) *tooltip_id = cv_params.featUITooltipTextNameID;
+      अगर (sample_id) *sample_id = cv_params.sampleTextNameID;
+      अगर (अंक_named_parameters) *अंक_named_parameters = cv_params.अंक_Named_Parameters;
+      अगर (first_param_id) *first_param_id = cv_params.firstParamUILabelNameID;
+      वापस true;
     }
   }
 
-  if (label_id) *label_id = HB_OT_NAME_ID_INVALID;
-  if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
-  if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-  if (num_named_parameters) *num_named_parameters = 0;
-  if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
-  return false;
+  अगर (label_id) *label_id = HB_OT_NAME_ID_INVALID;
+  अगर (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
+  अगर (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
+  अगर (अंक_named_parameters) *अंक_named_parameters = 0;
+  अगर (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
+  वापस false;
 }
 /**
  * hb_ot_layout_feature_get_characters:
@@ -1909,21 +1909,21 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
  *
  * Since: 2.0.0
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
 				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count, /* IN/OUT.  May be NULL */
+				     अचिन्हित पूर्णांक    feature_सूचकांक,
+				     अचिन्हित पूर्णांक    start_offset,
+				     अचिन्हित पूर्णांक   *char_गिनती, /* IN/OUT.  May be NULL */
 				     hb_codepoint_t *characters  /* OUT.     May be NULL */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  return g.get_feature (feature_index)
+  स्थिर OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  वापस g.get_feature (feature_सूचकांक)
 	  .get_feature_params ()
-	  .get_character_variants_params(g.get_feature_tag (feature_index))
-	  .get_characters (start_offset, char_count, characters);
+	  .get_character_variants_params(g.get_feature_tag (feature_सूचकांक))
+	  .get_characters (start_offset, char_गिनती, characters);
 }
-#endif
+#पूर्ण_अगर
 
 
 /*
@@ -1932,160 +1932,160 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
  */
 
 
-struct GSUBProxy
+काष्ठा GSUBProxy
 {
-  static constexpr unsigned table_index = 0u;
-  static constexpr bool always_inplace = false;
-  typedef OT::SubstLookup Lookup;
+  अटल constexpr अचिन्हित table_सूचकांक = 0u;
+  अटल constexpr bool always_inplace = false;
+  प्रकार OT::SubstLookup Lookup;
 
   GSUBProxy (hb_face_t *face) :
     accel (*face->table.GSUB) {}
 
-  const GSUB::accelerator_t &accel;
+  स्थिर GSUB::accelerator_t &accel;
 };
 
-struct GPOSProxy
+काष्ठा GPOSProxy
 {
-  static constexpr unsigned table_index = 1u;
-  static constexpr bool always_inplace = true;
-  typedef OT::PosLookup Lookup;
+  अटल constexpr अचिन्हित table_सूचकांक = 1u;
+  अटल constexpr bool always_inplace = true;
+  प्रकार OT::PosLookup Lookup;
 
   GPOSProxy (hb_face_t *face) :
     accel (*face->table.GPOS) {}
 
-  const GPOS::accelerator_t &accel;
+  स्थिर GPOS::accelerator_t &accel;
 };
 
 
-static inline bool
+अटल अंतरभूत bool
 apply_forward (OT::hb_ot_apply_context_t *c,
-	       const OT::hb_ot_layout_lookup_accelerator_t &accel)
+	       स्थिर OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
   bool use_hot_subtable_cache = accel.cache_enter (c);
 
   bool ret = false;
-  hb_buffer_t *buffer = c->buffer;
-  while (buffer->successful)
+  hb_बफर_t *बफर = c->बफर;
+  जबतक (बफर->successful)
   {
-    hb_glyph_info_t *info = buffer->info;
-    unsigned j = buffer->idx;
-    while (j < buffer->len &&
+    hb_glyph_info_t *info = बफर->info;
+    अचिन्हित j = बफर->idx;
+    जबतक (j < बफर->len &&
 	   !(accel.digest.may_have (info[j].codepoint) &&
 	     (info[j].mask & c->lookup_mask) &&
 	     c->check_glyph_property (&info[j], c->lookup_props)))
       j++;
-    if (unlikely (j > buffer->idx && !buffer->next_glyphs (j - buffer->idx)))
-      break;
-    if (buffer->idx >= buffer->len)
-      break;
+    अगर (unlikely (j > बफर->idx && !बफर->अग्र_glyphs (j - बफर->idx)))
+      अवरोध;
+    अगर (बफर->idx >= बफर->len)
+      अवरोध;
 
-    if (accel.apply (c, use_hot_subtable_cache))
+    अगर (accel.apply (c, use_hot_subtable_cache))
       ret = true;
-    else
-      (void) buffer->next_glyph ();
+    अन्यथा
+      (व्योम) बफर->अग्र_glyph ();
   }
 
-  if (use_hot_subtable_cache)
+  अगर (use_hot_subtable_cache)
     accel.cache_leave (c);
 
-  return ret;
+  वापस ret;
 }
 
-static inline bool
+अटल अंतरभूत bool
 apply_backward (OT::hb_ot_apply_context_t *c,
-	       const OT::hb_ot_layout_lookup_accelerator_t &accel)
+	       स्थिर OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
   bool ret = false;
-  hb_buffer_t *buffer = c->buffer;
-  do
+  hb_बफर_t *बफर = c->बफर;
+  करो
   {
-    auto &cur = buffer->cur();
-    if (accel.digest.may_have (cur.codepoint) &&
+    स्वतः &cur = बफर->cur();
+    अगर (accel.digest.may_have (cur.codepoint) &&
 	(cur.mask & c->lookup_mask) &&
 	c->check_glyph_property (&cur, c->lookup_props))
       ret |= accel.apply (c, false);
 
     /* The reverse lookup doesn't "advance" cursor (for good reason). */
-    buffer->idx--;
+    बफर->idx--;
   }
-  while ((int) buffer->idx >= 0);
-  return ret;
+  जबतक ((पूर्णांक) बफर->idx >= 0);
+  वापस ret;
 }
 
-template <typename Proxy>
-static inline bool
+ढाँचा <typename Proxy>
+अटल अंतरभूत bool
 apply_string (OT::hb_ot_apply_context_t *c,
-	      const typename Proxy::Lookup &lookup,
-	      const OT::hb_ot_layout_lookup_accelerator_t &accel)
+	      स्थिर typename Proxy::Lookup &lookup,
+	      स्थिर OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
-  hb_buffer_t *buffer = c->buffer;
+  hb_बफर_t *बफर = c->बफर;
 
-  if (unlikely (!buffer->len || !c->lookup_mask))
-    return false;
+  अगर (unlikely (!बफर->len || !c->lookup_mask))
+    वापस false;
 
   bool ret = false;
 
   c->set_lookup_props (lookup.get_props ());
 
-  if (likely (!lookup.is_reverse ()))
+  अगर (likely (!lookup.is_reverse ()))
   {
     /* in/out forward substitution/positioning */
-    if (!Proxy::always_inplace)
-      buffer->clear_output ();
+    अगर (!Proxy::always_inplace)
+      बफर->clear_output ();
 
-    buffer->idx = 0;
+    बफर->idx = 0;
     ret = apply_forward (c, accel);
 
-    if (!Proxy::always_inplace)
-      buffer->sync ();
+    अगर (!Proxy::always_inplace)
+      बफर->sync ();
   }
-  else
+  अन्यथा
   {
     /* in-place backward substitution/positioning */
-    assert (!buffer->have_output);
-    buffer->idx = buffer->len - 1;
+    निश्चित (!बफर->have_output);
+    बफर->idx = बफर->len - 1;
     ret = apply_backward (c, accel);
   }
 
-  return ret;
+  वापस ret;
 }
 
-template <typename Proxy>
-inline void hb_ot_map_t::apply (const Proxy &proxy,
-				const hb_ot_shape_plan_t *plan,
+ढाँचा <typename Proxy>
+अंतरभूत व्योम hb_ot_map_t::apply (स्थिर Proxy &proxy,
+				स्थिर hb_ot_shape_plan_t *plan,
 				hb_font_t *font,
-				hb_buffer_t *buffer) const
+				hb_बफर_t *बफर) स्थिर
 {
-  const unsigned int table_index = proxy.table_index;
-  unsigned int i = 0;
+  स्थिर अचिन्हित पूर्णांक table_सूचकांक = proxy.table_सूचकांक;
+  अचिन्हित पूर्णांक i = 0;
 
-  auto *font_data = font->data.ot.get ();
-  auto *var_store_cache = (OT::hb_scalar_cache_t *) font_data;
+  स्वतः *font_तथ्य = font->तथ्य.ot.लो ();
+  स्वतः *var_store_cache = (OT::hb_scalar_cache_t *) font_तथ्य;
 
-  OT::hb_ot_apply_context_t c (table_index, font, buffer, proxy.accel.get_blob (), var_store_cache);
-  c.set_recurse_func (Proxy::Lookup::template dispatch_recurse_func<OT::hb_ot_apply_context_t>);
+  OT::hb_ot_apply_context_t c (table_सूचकांक, font, बफर, proxy.accel.get_blob (), var_store_cache);
+  c.set_recurse_func (Proxy::Lookup::ढाँचा dispatch_recurse_func<OT::hb_ot_apply_context_t>);
 
-  for (unsigned int stage_index = 0; stage_index < stages[table_index].length; stage_index++)
+  क्रम (अचिन्हित पूर्णांक stage_सूचकांक = 0; stage_सूचकांक < stages[table_सूचकांक].लंबाई; stage_सूचकांक++)
   {
-    const stage_map_t *stage = &stages[table_index][stage_index];
-    for (; i < stage->last_lookup; i++)
+    स्थिर stage_map_t *stage = &stages[table_सूचकांक][stage_सूचकांक];
+    क्रम (; i < stage->last_lookup; i++)
     {
-      auto &lookup = lookups[table_index][i];
+      स्वतः &lookup = lookups[table_सूचकांक][i];
 
-      unsigned int lookup_index = lookup.index;
+      अचिन्हित पूर्णांक lookup_सूचकांक = lookup.सूचकांक_2;
 
-      auto *accel = proxy.accel.get_accel (lookup_index);
-      if (unlikely (!accel)) continue;
+      स्वतः *accel = proxy.accel.get_accel (lookup_सूचकांक);
+      अगर (unlikely (!accel)) जारी;
 
-      if (buffer->messaging () &&
-	  !buffer->message (font, "start lookup %u feature '%c%c%c%c'", lookup_index, HB_UNTAG (lookup.feature_tag))) continue;
+      अगर (बफर->messaging () &&
+	  !बफर->message (font, "start lookup %u feature '%c%c%c%c'", lookup_सूचकांक, HB_UNTAG (lookup.feature_tag))) जारी;
 
       /* Only try applying the lookup if there is any overlap. */
-      if (accel->digest.may_intersect (buffer->digest) &&
-	  ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) ||
-	   accel->digest_second.may_intersect (buffer->digest)))
+      अगर (accel->digest.may_intersect (बफर->digest) &&
+	  ((बफर->flags & HB_बफर_FLAG_PRODUCE_UNSAFE_TO_CONCAT) ||
+	   accel->digest_second.may_intersect (बफर->digest)))
       {
-	c.set_lookup_index (lookup_index);
+	c.set_lookup_सूचकांक (lookup_सूचकांक);
 	c.set_lookup_mask (lookup.mask, false);
 	c.set_auto_zwj (lookup.auto_zwj, false);
 	c.set_auto_zwnj (lookup.auto_zwnj, false);
@@ -2094,79 +2094,79 @@ inline void hb_ot_map_t::apply (const Proxy &proxy,
 	/* apply_string's set_lookup_props initializes the iterators. */
 
 	apply_string<Proxy> (&c,
-			     proxy.accel.table->get_lookup (lookup_index),
+			     proxy.accel.table->get_lookup (lookup_सूचकांक),
 			     *accel);
       }
-      else if (buffer->messaging ())
-	(void) buffer->message (font, "skipped lookup %u feature '%c%c%c%c' because no glyph matches", lookup_index, HB_UNTAG (lookup.feature_tag));
+      अन्यथा अगर (बफर->messaging ())
+	(व्योम) बफर->message (font, "skipped lookup %u feature '%c%c%c%c' because no glyph matches", lookup_सूचकांक, HB_UNTAG (lookup.feature_tag));
 
-      if (buffer->messaging ())
-	(void) buffer->message (font, "end lookup %u feature '%c%c%c%c'", lookup_index, HB_UNTAG (lookup.feature_tag));
+      अगर (बफर->messaging ())
+	(व्योम) बफर->message (font, "end lookup %u feature '%c%c%c%c'", lookup_सूचकांक, HB_UNTAG (lookup.feature_tag));
     }
 
-    if (stage->pause_func)
+    अगर (stage->pause_func)
     {
-      if (stage->pause_func (plan, font, buffer))
+      अगर (stage->pause_func (plan, font, बफर))
       {
 	/* Refresh working buffer digest since buffer changed. */
-	buffer->update_digest ();
+	बफर->update_digest ();
       }
     }
   }
 }
 
-void hb_ot_map_t::substitute (const hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const
+व्योम hb_ot_map_t::substitute (स्थिर hb_ot_shape_plan_t *plan, hb_font_t *font, hb_बफर_t *बफर) स्थिर
 {
   GSUBProxy proxy (font->face);
-  char tag[5] = {0};
+  अक्षर tag[5] = {0};
   hb_tag_to_string (chosen_script[0], tag);
-  if (buffer->messaging () &&
-      !buffer->message (font, "start table GSUB script tag '%s'", tag)) return;
-  apply (proxy, plan, font, buffer);
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end table GSUB script tag '%s'", tag);
+  अगर (बफर->messaging () &&
+      !बफर->message (font, "start table GSUB script tag '%s'", tag)) वापस;
+  apply (proxy, plan, font, बफर);
+  अगर (बफर->messaging ())
+    (व्योम) बफर->message (font, "end table GSUB script tag '%s'", tag);
 }
 
-void hb_ot_map_t::position (const hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const
+व्योम hb_ot_map_t::position (स्थिर hb_ot_shape_plan_t *plan, hb_font_t *font, hb_बफर_t *बफर) स्थिर
 {
   GPOSProxy proxy (font->face);
-  char tag[5] = {0};
+  अक्षर tag[5] = {0};
   hb_tag_to_string (chosen_script[0], tag);
-  if (buffer->messaging () &&
-      !buffer->message (font, "start table GPOS script tag '%s'", tag)) return;
-  apply (proxy, plan, font, buffer);
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end table GPOS script tag '%s'", tag);
+  अगर (बफर->messaging () &&
+      !बफर->message (font, "start table GPOS script tag '%s'", tag)) वापस;
+  apply (proxy, plan, font, बफर);
+  अगर (बफर->messaging ())
+    (व्योम) बफर->message (font, "end table GPOS script tag '%s'", tag);
 }
 
-void
+व्योम
 hb_ot_layout_substitute_lookup (OT::hb_ot_apply_context_t *c,
-				const OT::SubstLookup &lookup,
-				const OT::hb_ot_layout_lookup_accelerator_t &accel)
+				स्थिर OT::SubstLookup &lookup,
+				स्थिर OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
   apply_string<GSUBProxy> (c, lookup, accel);
 }
 
-#ifndef HB_NO_BASE
+#अगर_अघोषित HB_NO_BASE
 
-static void
+अटल व्योम
 choose_base_tags (hb_script_t    script,
 		  hb_language_t  language,
 		  hb_tag_t      *script_tag,
 		  hb_tag_t      *language_tag)
 {
   hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
-  unsigned script_count = ARRAY_LENGTH (script_tags);
+  अचिन्हित script_गिनती = ARRAY_लंबाई (script_tags);
 
   hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
-  unsigned language_count = ARRAY_LENGTH (language_tags);
+  अचिन्हित language_गिनती = ARRAY_लंबाई (language_tags);
 
   hb_ot_tags_from_script_and_language (script, language,
-				       &script_count, script_tags,
-				       &language_count, language_tags);
+				       &script_गिनती, script_tags,
+				       &language_गिनती, language_tags);
 
-  *script_tag = script_count ? script_tags[script_count - 1] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *language_tag = language_count ? language_tags[language_count - 1] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  *script_tag = script_गिनती ? script_tags[script_गिनती - 1] : HB_OT_TAG_DEFAULT_SCRIPT;
+  *language_tag = language_गिनती ? language_tags[language_गिनती - 1] : HB_OT_TAG_DEFAULT_LANGUAGE;
 }
 
 /**
@@ -2198,20 +2198,20 @@ hb_ot_layout_get_font_extents (hb_font_t         *font,
 			       hb_font_extents_t *extents)
 {
   hb_position_t min = 0, max = 0;
-  if (font->face->table.BASE->get_min_max (font, direction, script_tag, language_tag, HB_TAG_NONE,
+  अगर (font->face->table.BASE->get_min_max (font, direction, script_tag, language_tag, HB_TAG_NONE,
 					   &min, &max))
   {
-    if (extents)
+    अगर (extents)
     {
       extents->ascender  = max;
       extents->descender = min;
-      extents->line_gap  = 0;
+      extents->पंक्ति_gap  = 0;
     }
-    return true;
+    वापस true;
   }
 
   hb_font_get_extents_for_direction (font, direction, extents);
-  return false;
+  वापस false;
 }
 
 /**
@@ -2247,7 +2247,7 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
 {
   hb_tag_t script_tag, language_tag;
   choose_base_tags (script, language, &script_tag, &language_tag);
-  return hb_ot_layout_get_font_extents (font,
+  वापस hb_ot_layout_get_font_extents (font,
 					direction,
 					script_tag,
 					language_tag,
@@ -2268,63 +2268,63 @@ hb_ot_layout_baseline_tag_t
 hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
 {
   /* Keep in sync with hb_ot_layout_get_baseline_with_fallback */
-  switch ((int) script)
+  चयन ((पूर्णांक) script)
   {
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_BENGALI:
-    case HB_SCRIPT_DEVANAGARI:
-    case HB_SCRIPT_GUJARATI:
-    case HB_SCRIPT_GURMUKHI:
+    हाल HB_SCRIPT_BENGALI:
+    हाल HB_SCRIPT_DEVANAGARI:
+    हाल HB_SCRIPT_GUJARATI:
+    हाल HB_SCRIPT_GURMUKHI:
     /* Unicode-2.0 additions */
-    case HB_SCRIPT_TIBETAN:
+    हाल HB_SCRIPT_TIBETAN:
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_LIMBU:
+    हाल HB_SCRIPT_LIMBU:
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_SYLOTI_NAGRI:
+    हाल HB_SCRIPT_SYLOTI_NAGRI:
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_PHAGS_PA:
+    हाल HB_SCRIPT_PHAGS_PA:
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_MEETEI_MAYEK:
+    हाल HB_SCRIPT_MEETEI_MAYEK:
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_SHARADA:
-    case HB_SCRIPT_TAKRI:
+    हाल HB_SCRIPT_SHARADA:
+    हाल HB_SCRIPT_TAKRI:
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_MODI:
-    case HB_SCRIPT_SIDDHAM:
-    case HB_SCRIPT_TIRHUTA:
+    हाल HB_SCRIPT_MODI:
+    हाल HB_SCRIPT_SIDDHAM:
+    हाल HB_SCRIPT_TIRHUTA:
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_MARCHEN:
-    case HB_SCRIPT_NEWA:
+    हाल HB_SCRIPT_MARCHEN:
+    हाल HB_SCRIPT_NEWA:
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_SOYOMBO:
-    case HB_SCRIPT_ZANABAZAR_SQUARE:
+    हाल HB_SCRIPT_SOYOMBO:
+    हाल HB_SCRIPT_ZANABAZAR_SQUARE:
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_DOGRA:
-    case HB_SCRIPT_GUNJALA_GONDI:
+    हाल HB_SCRIPT_DOGRA:
+    हाल HB_SCRIPT_GUNJALA_GONDI:
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_NANDINAGARI:
-      return HB_OT_LAYOUT_BASELINE_TAG_HANGING;
+    हाल HB_SCRIPT_NANDINAGARI:
+      वापस HB_OT_LAYOUT_BASELINE_TAG_HANGING;
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_HANGUL:
-    case HB_SCRIPT_HAN:
-    case HB_SCRIPT_HIRAGANA:
-    case HB_SCRIPT_KATAKANA:
+    हाल HB_SCRIPT_HANGUL:
+    हाल HB_SCRIPT_HAN:
+    हाल HB_SCRIPT_HIRAGANA:
+    हाल HB_SCRIPT_KATAKANA:
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_BOPOMOFO:
+    हाल HB_SCRIPT_BOPOMOFO:
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_TANGUT:
+    हाल HB_SCRIPT_TANGUT:
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_NUSHU:
+    हाल HB_SCRIPT_NUSHU:
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_KHITAN_SMALL_SCRIPT:
+    हाल HB_SCRIPT_KHITAN_SMALL_SCRIPT:
     /* Unicode-18.0 additions */
-    case HB_SCRIPT_JURCHEN:
-    case HB_SCRIPT_SEAL:
-      return HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT;
+    हाल HB_SCRIPT_JURCHEN:
+    हाल HB_SCRIPT_SEAL:
+      वापस HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_बायाँ;
 
-    default:
-      return HB_OT_LAYOUT_BASELINE_TAG_ROMAN;
+    शेष:
+      वापस HB_OT_LAYOUT_BASELINE_TAG_ROMAN;
   }
 }
 
@@ -2351,7 +2351,7 @@ hb_ot_layout_get_baseline (hb_font_t                   *font,
 			   hb_tag_t                     language_tag,
 			   hb_position_t               *coord        /* OUT.  May be NULL. */)
 {
-  return font->face->table.BASE->get_baseline (font, baseline_tag, direction, script_tag, language_tag, coord);
+  वापस font->face->table.BASE->get_baseline (font, baseline_tag, direction, script_tag, language_tag, coord);
 }
 
 /**
@@ -2382,7 +2382,7 @@ hb_ot_layout_get_baseline2 (hb_font_t                   *font,
 {
   hb_tag_t script_tag, language_tag;
   choose_base_tags (script, language, &script_tag, &language_tag);
-  return hb_ot_layout_get_baseline (font,
+  वापस hb_ot_layout_get_baseline (font,
 				    baseline_tag,
 				    direction,
 				    script_tag,
@@ -2404,7 +2404,7 @@ hb_ot_layout_get_baseline2 (hb_font_t                   *font,
  *
  * Since: 4.0.0
  **/
-void
+व्योम
 hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 					 hb_ot_layout_baseline_tag_t  baseline_tag,
 					 hb_direction_t               direction,
@@ -2412,207 +2412,207 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
 					 hb_tag_t                     language_tag,
 					 hb_position_t               *coord /* OUT */)
 {
-  if (hb_ot_layout_get_baseline (font,
+  अगर (hb_ot_layout_get_baseline (font,
 				 baseline_tag,
 				 direction,
 				 script_tag,
 				 language_tag,
 				 coord))
-    return;
+    वापस;
 
   /* Synthesize missing baselines.
    * See https://www.w3.org/TR/css-inline-3/#baseline-synthesis-fonts
    */
-  switch (baseline_tag)
+  चयन (baseline_tag)
   {
-  case HB_OT_LAYOUT_BASELINE_TAG_ROMAN:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_ROMAN:
     *coord = 0; // FIXME origin ?
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_MATH:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_MATH:
     {
       hb_codepoint_t glyph;
       hb_glyph_extents_t extents;
-      if (HB_DIRECTION_IS_HORIZONTAL (direction) &&
+      अगर (HB_DIRECTION_IS_HORIZONTAL (direction) &&
 	  (hb_font_get_nominal_glyph (font, 0x2212u, &glyph) ||
 	   hb_font_get_nominal_glyph (font, '-', &glyph)) &&
 	  hb_font_get_glyph_extents (font, glyph, &extents))
       {
 	*coord = hb_saturate_add (extents.y_bearing, extents.height / 2);
       }
-      else
+      अन्यथा
       {
 	hb_position_t x_height = font->y_scale / 2;
-#ifndef HB_NO_METRICS
+#अगर_अघोषित HB_NO_METRICS
 	hb_ot_metrics_get_position_with_fallback (font, HB_OT_METRICS_TAG_X_HEIGHT, &x_height);
-#endif
+#पूर्ण_अगर
 	*coord = x_height / 2;
       }
     }
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT:
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_शीर्ष_OR_दायाँ:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_बायाँ:
     {
-      hb_position_t embox_top, embox_bottom;
+      hb_position_t embox_शीर्ष, embox_bottom;
 
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_शीर्ष_OR_दायाँ,
 					       direction,
 					       script_tag,
 					       language_tag,
-					       &embox_top);
+					       &embox_शीर्ष);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_बायाँ,
 					       direction,
 					       script_tag,
 					       language_tag,
 					       &embox_bottom);
 
-      if (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT)
-	*coord = hb_saturate_add (embox_top,
-				  hb_clamp_to<hb_position_t> (((int64_t) embox_bottom - embox_top) / 10));
-      else
+      अगर (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_शीर्ष_OR_दायाँ)
+	*coord = hb_saturate_add (embox_शीर्ष,
+				  hb_clamp_to<hb_position_t> (((int64_t) embox_bottom - embox_शीर्ष) / 10));
+      अन्यथा
 	*coord = hb_saturate_add (embox_bottom,
-				  hb_clamp_to<hb_position_t> (((int64_t) embox_top - embox_bottom) / 10));
+				  hb_clamp_to<hb_position_t> (((int64_t) embox_शीर्ष - embox_bottom) / 10));
     }
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT:
-    if (hb_ot_layout_get_baseline (font,
-				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+  हाल HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_शीर्ष_OR_दायाँ:
+    अगर (hb_ot_layout_get_baseline (font,
+				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_बायाँ,
 				   direction,
 				   script_tag,
 				   language_tag,
 				   coord))
       *coord = hb_saturate_add (*coord,
 				HB_DIRECTION_IS_HORIZONTAL (direction) ? font->y_scale : font->x_scale);
-    else
+    अन्यथा
     {
       hb_font_extents_t font_extents;
       hb_font_get_extents_for_direction (font, direction, &font_extents);
       *coord = font_extents.ascender;
     }
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT:
-    if (hb_ot_layout_get_baseline (font,
-				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+  हाल HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_बायाँ:
+    अगर (hb_ot_layout_get_baseline (font,
+				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_शीर्ष_OR_दायाँ,
 				   direction,
 				   script_tag,
 				   language_tag,
 				   coord))
       *coord = hb_saturate_sub (*coord,
 				HB_DIRECTION_IS_HORIZONTAL (direction) ? font->y_scale : font->x_scale);
-    else
+    अन्यथा
     {
       hb_font_extents_t font_extents;
       hb_font_get_extents_for_direction (font, direction, &font_extents);
       *coord = font_extents.descender;
     }
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_HANGING:
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  हाल HB_OT_LAYOUT_BASELINE_TAG_HANGING:
+    अगर (HB_DIRECTION_IS_HORIZONTAL (direction))
     {
       hb_codepoint_t ch;
       hb_codepoint_t glyph;
       hb_glyph_extents_t extents;
 
       /* Keep in sync with hb_ot_layout_get_horizontal_baseline_for_script */
-      switch ((int) script_tag)
+      चयन ((पूर्णांक) script_tag)
       {
       /* Unicode-1.1 additions */
-      case HB_SCRIPT_BENGALI:          ch = 0x0995u; break;
-      case HB_SCRIPT_DEVANAGARI:       ch = 0x0915u; break;
-      case HB_SCRIPT_GUJARATI:         ch = 0x0a95u; break;
-      case HB_SCRIPT_GURMUKHI:         ch = 0x0a15u; break;
+      हाल HB_SCRIPT_BENGALI:          ch = 0x0995u; अवरोध;
+      हाल HB_SCRIPT_DEVANAGARI:       ch = 0x0915u; अवरोध;
+      हाल HB_SCRIPT_GUJARATI:         ch = 0x0a95u; अवरोध;
+      हाल HB_SCRIPT_GURMUKHI:         ch = 0x0a15u; अवरोध;
       /* Unicode-2.0 additions */
-      case HB_SCRIPT_TIBETAN:          ch = 0x0f40u; break;
+      हाल HB_SCRIPT_TIBETAN:          ch = 0x0f40u; अवरोध;
       /* Unicode-4.0 additions */
-      case HB_SCRIPT_LIMBU:            ch = 0x1901u; break;
+      हाल HB_SCRIPT_LIMBU:            ch = 0x1901u; अवरोध;
       /* Unicode-4.1 additions */
-      case HB_SCRIPT_SYLOTI_NAGRI:     ch = 0xa807u; break;
+      हाल HB_SCRIPT_SYLOTI_NAGRI:     ch = 0xa807u; अवरोध;
       /* Unicode-5.0 additions */
-      case HB_SCRIPT_PHAGS_PA:         ch = 0xa840u; break;
+      हाल HB_SCRIPT_PHAGS_PA:         ch = 0xa840u; अवरोध;
       /* Unicode-5.2 additions */
-      case HB_SCRIPT_MEETEI_MAYEK:     ch = 0xabc0u; break;
+      हाल HB_SCRIPT_MEETEI_MAYEK:     ch = 0xabc0u; अवरोध;
       /* Unicode-6.1 additions */
-      case HB_SCRIPT_SHARADA:          ch = 0x11191u; break;
-      case HB_SCRIPT_TAKRI:            ch = 0x1168cu; break;
+      हाल HB_SCRIPT_SHARADA:          ch = 0x11191u; अवरोध;
+      हाल HB_SCRIPT_TAKRI:            ch = 0x1168cu; अवरोध;
       /* Unicode-7.0 additions */
-      case HB_SCRIPT_MODI:             ch = 0x1160eu;break;
-      case HB_SCRIPT_SIDDHAM:          ch = 0x11590u; break;
-      case HB_SCRIPT_TIRHUTA:          ch = 0x1148fu; break;
+      हाल HB_SCRIPT_MODI:             ch = 0x1160eu;अवरोध;
+      हाल HB_SCRIPT_SIDDHAM:          ch = 0x11590u; अवरोध;
+      हाल HB_SCRIPT_TIRHUTA:          ch = 0x1148fu; अवरोध;
       /* Unicode-9.0 additions */
-      case HB_SCRIPT_MARCHEN:          ch = 0x11c72u; break;
-      case HB_SCRIPT_NEWA:             ch = 0x1140eu; break;
+      हाल HB_SCRIPT_MARCHEN:          ch = 0x11c72u; अवरोध;
+      हाल HB_SCRIPT_NEWA:             ch = 0x1140eu; अवरोध;
       /* Unicode-10.0 additions */
-      case HB_SCRIPT_SOYOMBO:          ch = 0x11a5cu; break;
-      case HB_SCRIPT_ZANABAZAR_SQUARE: ch = 0x11a0bu; break;
+      हाल HB_SCRIPT_SOYOMBO:          ch = 0x11a5cu; अवरोध;
+      हाल HB_SCRIPT_ZANABAZAR_SQUARE: ch = 0x11a0bu; अवरोध;
       /* Unicode-11.0 additions */
-      case HB_SCRIPT_DOGRA:            ch = 0x1180au; break;
-      case HB_SCRIPT_GUNJALA_GONDI:    ch = 0x11d6cu; break;
+      हाल HB_SCRIPT_DOGRA:            ch = 0x1180au; अवरोध;
+      हाल HB_SCRIPT_GUNJALA_GONDI:    ch = 0x11d6cu; अवरोध;
       /* Unicode-12.0 additions */
-      case HB_SCRIPT_NANDINAGARI:      ch = 0x119b0u; break;
-      default:                         ch = 0;        break;
+      हाल HB_SCRIPT_NANDINAGARI:      ch = 0x119b0u; अवरोध;
+      शेष:                         ch = 0;        अवरोध;
       }
 
-      if (ch &&
+      अगर (ch &&
 	  hb_font_get_nominal_glyph (font, ch, &glyph) &&
 	  hb_font_get_glyph_extents (font, glyph, &extents))
 	*coord = extents.y_bearing;
-      else
+      अन्यथा
 	*coord = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 6 / 10); // FIXME makes assumptions about origin
     }
-    else
+    अन्यथा
       *coord = hb_clamp_to<hb_position_t> ((int64_t) font->x_scale * 6 / 10); // FIXME makes assumptions about origin
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL:
     {
-      hb_position_t top, bottom;
+      hb_position_t शीर्ष_4, bottom;
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_शीर्ष_OR_दायाँ,
 					       direction,
 					       script_tag,
 					       language_tag,
-					       &top);
+					       &शीर्ष_4);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_बायाँ,
 					       direction,
 					       script_tag,
 					       language_tag,
 					       &bottom);
-      *coord = hb_clamp_to<hb_position_t> (((int64_t) top + bottom) / 2);
+      *coord = hb_clamp_to<hb_position_t> (((int64_t) शीर्ष_4 + bottom) / 2);
 
     }
-    break;
+    अवरोध;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL:
     {
-      hb_position_t top, bottom;
+      hb_position_t शीर्ष_4, bottom;
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_शीर्ष_OR_दायाँ,
 					       direction,
 					       script_tag,
 					       language_tag,
-					       &top);
+					       &शीर्ष_4);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_बायाँ,
 					       direction,
 					       script_tag,
 					       language_tag,
 					       &bottom);
-      *coord = hb_clamp_to<hb_position_t> (((int64_t) top + bottom) / 2);
+      *coord = hb_clamp_to<hb_position_t> (((int64_t) शीर्ष_4 + bottom) / 2);
 
     }
-    break;
+    अवरोध;
 
-  case _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE:
-  default:
+  हाल HB_OT_LAYOUT_BASELINE_TAG_MAX_मूल्य:
+  शेष:
     *coord = 0;
-    break;
+    अवरोध;
   }
 }
 
@@ -2633,7 +2633,7 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
  *
  * Since: 8.0.0
  **/
-void
+व्योम
 hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
 					  hb_ot_layout_baseline_tag_t  baseline_tag,
 					  hb_direction_t               direction,
@@ -2651,26 +2651,26 @@ hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
 					   coord);
 }
 
-#endif
+#पूर्ण_अगर
 
 
-#ifndef HB_NO_LAYOUT_RARELY_USED
-struct hb_get_glyph_alternates_dispatch_t :
-       hb_dispatch_context_t<hb_get_glyph_alternates_dispatch_t, unsigned>
+#अगर_अघोषित HB_NO_LAYOUT_RARELY_USED
+काष्ठा hb_get_glyph_alternates_dispatch_t :
+       hb_dispatch_context_t<hb_get_glyph_alternates_dispatch_t, अचिन्हित>
 {
-  static return_t default_return_value () { return 0; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  अटल return_t default_return_मूल्य () { वापस 0; }
+  bool stop_sublookup_iteration (return_t r) स्थिर { वापस r; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  निजी:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
   ( obj.get_glyph_alternates (std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( default_return_मूल्य () )
+  खुला:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  dispatch (स्थिर T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 };
 
@@ -2692,37 +2692,37 @@ struct hb_get_glyph_alternates_dispatch_t :
  *
  * Since: 2.6.8
  **/
-HB_EXTERN unsigned
+HB_EXTERN अचिन्हित
 hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
-					  unsigned        lookup_index,
+					  अचिन्हित        lookup_सूचकांक,
 					  hb_codepoint_t  glyph,
-					  unsigned        start_offset,
-					  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
+					  अचिन्हित        start_offset,
+					  अचिन्हित       *alternate_गिनती  /* IN/OUT.  May be NULL. */,
 					  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */)
 {
   hb_get_glyph_alternates_dispatch_t c;
-  const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  auto ret = lookup.dispatch (&c, glyph, start_offset, alternate_count, alternate_glyphs);
-  if (!ret && alternate_count) *alternate_count = 0;
-  return ret;
+  स्थिर OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_सूचकांक);
+  स्वतः ret = lookup.dispatch (&c, glyph, start_offset, alternate_गिनती, alternate_glyphs);
+  अगर (!ret && alternate_गिनती) *alternate_गिनती = 0;
+  वापस ret;
 }
 
-struct hb_collect_glyph_alternates_dispatch_t :
+काष्ठा hb_collect_glyph_alternates_dispatch_t :
        hb_dispatch_context_t<hb_collect_glyph_alternates_dispatch_t, bool>
 {
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  अटल return_t default_return_मूल्य () { वापस false; }
+  bool stop_sublookup_iteration (return_t r) स्थिर { वापस false; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  निजी:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
   ( (obj.collect_glyph_alternates (std::forward<Ts> (ds)...), true) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( default_return_मूल्य () )
+  खुला:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  dispatch (स्थिर T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 };
 
@@ -2757,31 +2757,31 @@ struct hb_collect_glyph_alternates_dispatch_t :
  */
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
-					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      अचिन्हित   lookup_सूचकांक,
+					      hb_map_t  *alternate_गिनती /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */)
 {
   hb_collect_glyph_alternates_dispatch_t c;
-  const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  return lookup.dispatch (&c, alternate_count, alternate_glyphs);
+  स्थिर OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_सूचकांक);
+  वापस lookup.dispatch (&c, alternate_गिनती, alternate_glyphs);
 }
 
-struct hb_position_single_dispatch_t :
+काष्ठा hb_position_single_dispatch_t :
        hb_dispatch_context_t<hb_position_single_dispatch_t, bool>
 {
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  अटल return_t default_return_मूल्य () { वापस false; }
+  bool stop_sublookup_iteration (return_t r) स्थिर { वापस r; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  निजी:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
   ( obj.position_single (std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( default_return_मूल्य () )
+  खुला:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  dispatch (स्थिर T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 };
 
@@ -2801,37 +2801,37 @@ struct hb_position_single_dispatch_t :
  **/
 hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
-				       unsigned        lookup_index,
+				       अचिन्हित        lookup_सूचकांक,
 				       hb_direction_t  direction,
 				       hb_codepoint_t  glyph)
 {
-  const OT::PosLookup &lookup = font->face->table.GPOS->table->get_lookup (lookup_index);
+  स्थिर OT::PosLookup &lookup = font->face->table.GPOS->table->get_lookup (lookup_सूचकांक);
   hb_blob_t *blob = font->face->table.GPOS->get_blob ();
   hb_glyph_position_t pos = {0};
   hb_position_single_dispatch_t c;
   lookup.dispatch (&c, font, blob, direction, glyph, pos);
   hb_position_t ret = 0;
-  switch (direction)
+  चयन (direction)
   {
-    case HB_DIRECTION_LTR:
+    हाल HB_DIRECTION_LTR:
       ret = pos.x_offset;
-      break;
-    case HB_DIRECTION_RTL:
+      अवरोध;
+    हाल HB_DIRECTION_RTL:
       ret = hb_saturate_sub (pos.x_advance, pos.x_offset);
-      break;
-    case HB_DIRECTION_TTB:
+      अवरोध;
+    हाल HB_DIRECTION_TTB:
       ret = pos.y_offset;
-      break;
-    case HB_DIRECTION_BTT:
+      अवरोध;
+    हाल HB_DIRECTION_BTT:
       ret = hb_saturate_sub (pos.y_advance, pos.y_offset);
-      break;
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+      अवरोध;
+    हाल HB_DIRECTION_INVALID:
+    शेष:
+      अवरोध;
   }
-  return ret;
+  वापस ret;
 }
-#endif
+#पूर्ण_अगर
 
 
-#endif
+#पूर्ण_अगर

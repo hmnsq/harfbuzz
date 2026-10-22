@@ -25,32 +25,32 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_HH
-#define HB_BIT_SET_HH
+#अगर_अघोषित HB_BIT_SET_HH
+#घोषणा HB_BIT_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#समावेश "hb.hh"
+#समावेश "hb-bit-page.hh"
 
-struct hb_bit_set_t
+काष्ठा hb_bit_set_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_bit_set_t () = शेष;
+  ~hb_bit_set_t () = शेष;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_bit_set_t (स्थिर hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
+  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*यह, other); }
+  hb_bit_set_t& चालक= (स्थिर hb_bit_set_t& other) { set (other); वापस *यह; }
+  hb_bit_set_t& चालक= (hb_bit_set_t&& other)  noexcept { hb_swap (*यह, other); वापस *यह; }
+  मित्र व्योम swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
+    अगर (likely (!a.successful || !b.successful))
+      वापस;
     hb_swap (a.population, b.population);
     hb_swap (a.last_page_lookup, b.last_page_lookup);
     hb_swap (a.page_map, b.page_map);
     hb_swap (a.pages, b.pages);
   }
 
-  void init ()
+  व्योम init ()
   {
     successful = true;
     population = 0;
@@ -58,49 +58,49 @@ struct hb_bit_set_t
     page_map.init ();
     pages.init ();
   }
-  void fini ()
+  व्योम fini ()
   {
     page_map.fini ();
     pages.fini ();
   }
 
   using page_t = hb_bit_page_t;
-  struct page_map_t
+  काष्ठा page_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    पूर्णांक cmp (स्थिर page_map_t &o) स्थिर { वापस cmp (o.major); }
+    पूर्णांक cmp (uint32_t o_major) स्थिर { वापस (पूर्णांक) o_major - (पूर्णांक) major; }
 
     uint32_t major;
-    uint32_t index;
+    uint32_t सूचकांक_2;
   };
 
   bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
-  mutable hb_atomic_t<unsigned> last_page_lookup = 0;
+  mutable अचिन्हित पूर्णांक population = 0;
+  mutable hb_atomic_t<अचिन्हित> last_page_lookup = 0;
   hb_sorted_vector_t<page_map_t> page_map;
   hb_vector_t<page_t> pages;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  व्योम err () { अगर (successful) successful = false; } /* TODO Remove */
+  bool in_error () स्थिर { वापस !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  bool resize (अचिन्हित पूर्णांक गिनती, bool सफा = true, bool exact_आकार = false)
   {
-    if (unlikely (!successful)) return false;
+    अगर (unlikely (!successful)) वापस false;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    अगर (pages.लंबाई < गिनती && (अचिन्हित) pages.allocated < गिनती && गिनती <= 2)
+      exact_आकार = true; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    अगर (unlikely (!pages.resize_full (गिनती, सफा, exact_आकार) ||
+	!page_map.resize_full (गिनती, सफा, false)))
     {
-      pages.resize_full (page_map.length, clear, exact_size);
+      pages.resize_full (page_map.लंबाई, सफा, exact_आकार);
       successful = false;
-      return false;
+      वापस false;
     }
-    return true;
+    वापस true;
   }
 
-  void alloc (unsigned sz)
+  व्योम alloc (अचिन्हित sz)
   {
     sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
     pages.alloc (sz);
@@ -110,1129 +110,1129 @@ struct hb_bit_set_t
   hb_bit_set_t& reset ()
   {
     successful = true;
-    clear ();
-    return *this;
+    सफा ();
+    वापस *यह;
   }
 
-  void clear ()
+  व्योम सफा ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
-    pages.clear ();
-    page_map.clear ();
+    अगर (!pages.लंबाई && !population) वापस;
+    pages.सफा ();
+    page_map.सफा ();
     population = 0;
   }
-  bool is_empty () const
+  bool is_empty () स्थिर
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    अचिन्हित पूर्णांक गिनती = pages.लंबाई;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      अगर (!pages[i].is_empty ())
+	वापस false;
+    वापस true;
   }
-  explicit operator bool () const { return !is_empty (); }
+  explicit चालक bool () स्थिर { वापस !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () स्थिर
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    क्रम (स्वतः &map : page_map)
     {
-      auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
+      स्वतः &page = pages.arrayZ[map.सूचकांक_2];
+      अगर (unlikely (page.is_empty ())) जारी;
       h = h * 31 + hb_hash (map.major) + hb_hash (page);
     }
-    return h;
+    वापस h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  निजी:
+  व्योम dirty () { population = अच_पूर्णांक_उच्च; }
+  खुला:
 
-  void add (hb_codepoint_t g)
+  व्योम add (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    अगर (unlikely (!successful)) वापस;
+    अगर (unlikely (g == INVALID)) वापस;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
+    page_t *page = page_for (g, true); अगर (unlikely (!page)) वापस;
     page->add (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  व्योम add_bits (hb_codepoint_t g, uint64_t bits)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    अगर (unlikely (!successful) || unlikely (!bits)) वापस;
+    निश्चित (!(g & (page_t::ELT_BITS - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
+    page_t *page = page_for (g, true); अगर (unlikely (!page)) वापस;
     page->add_bits (g, bits);
   }
   bool add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    अगर (unlikely (!successful)) वापस true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    अगर (unlikely (a > b || a == INVALID || b == INVALID)) वापस false;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    अचिन्हित पूर्णांक ma = get_major (a);
+    अचिन्हित पूर्णांक mb = get_major (b);
+    अगर (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
+      page_t *page = page_for (a, true); अगर (unlikely (!page)) वापस false;
       page->add_range (a, b);
     }
-    else
+    अन्यथा
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
+      page_t *page = page_for (a, true); अगर (unlikely (!page)) वापस false;
       page->add_range (a, major_start (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      क्रम (अचिन्हित पूर्णांक m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
+	page = page_for (major_start (m), true); अगर (unlikely (!page)) वापस false;
 	page->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
+      page = page_for (b, true); अगर (unlikely (!page)) वापस false;
       page->add_range (major_start (mb), b);
     }
-    return true;
+    वापस true;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
-  template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  ढाँचा<typename Type>
+  अटल अंतरभूत स्थिर Type& StructAtOffsetUnaligned(स्थिर व्योम *P, अचिन्हित पूर्णांक offset)
   {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+#आशय GCC diagnostic push
+#आशय GCC diagnostic ignored "-Wcast-align"
+    वापस * reinterpret_cast<स्थिर Type*> ((स्थिर अक्षर *) P + offset);
+#आशय GCC diagnostic निकालो
   }
 
-  template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ढाँचा <typename T>
+  व्योम set_array (bool v, स्थिर T *array, अचिन्हित पूर्णांक गिनती, अचिन्हित पूर्णांक stride=माप(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    अगर (unlikely (!successful)) वापस;
+    अगर (!गिनती) वापस;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    जबतक (गिनती)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      अचिन्हित पूर्णांक m = get_major (g);
+      page_t *page = page_for (g, v); अगर (unlikely (v && !page)) वापस;
+      अचिन्हित पूर्णांक start = major_start (m);
+      अचिन्हित पूर्णांक end = major_start (m + 1);
+      करो
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
+        अगर (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	गिनती--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      जबतक (गिनती && (g = *array, start <= g && g < end));
     }
   }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ढाँचा <typename T>
+  व्योम add_array (स्थिर T *array, अचिन्हित पूर्णांक गिनती, अचिन्हित पूर्णांक stride=माप(T))
+  { set_array (true, array, गिनती, stride); }
+  ढाँचा <typename T>
+  व्योम add_array (स्थिर hb_array_t<स्थिर T>& arr) { add_array (&arr, arr.len ()); }
 
-  template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
-  template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  ढाँचा <typename T>
+  व्योम del_array (स्थिर T *array, अचिन्हित पूर्णांक गिनती, अचिन्हित पूर्णांक stride=माप(T))
+  { set_array (false, array, गिनती, stride); }
+  ढाँचा <typename T>
+  व्योम del_array (स्थिर hb_array_t<स्थिर T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ढाँचा <typename T>
+  bool set_sorted_array (bool v, स्थिर T *array, अचिन्हित पूर्णांक गिनती, अचिन्हित पूर्णांक stride=माप(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    अगर (unlikely (!successful)) वापस true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    अगर (unlikely (!गिनती)) वापस true;
     dirty ();
     hb_codepoint_t g = *array;
     hb_codepoint_t last_g = g;
-    while (count)
+    जबतक (गिनती)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      अचिन्हित पूर्णांक m = get_major (g);
+      page_t *page = page_for (g, v); अगर (unlikely (v && !page)) वापस false;
+      अचिन्हित पूर्णांक end = major_start (m + 1);
+      करो
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
+	अगर (g < last_g) वापस false;
 	last_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
+        अगर (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	गिनती--;
       }
-      while (count && (g = *array, g < end));
+      जबतक (गिनती && (g = *array, g < end));
     }
-    return true;
+    वापस true;
   }
 
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  ढाँचा <typename T>
+  bool add_sorted_array (स्थिर T *array, अचिन्हित पूर्णांक गिनती, अचिन्हित पूर्णांक stride=माप(T))
+  { वापस set_sorted_array (true, array, गिनती, stride); }
+  ढाँचा <typename T>
+  bool add_sorted_array (स्थिर hb_sorted_array_t<स्थिर T>& arr) { वापस add_sorted_array (&arr, arr.len ()); }
 
-  template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
-  template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  ढाँचा <typename T>
+  bool del_sorted_array (स्थिर T *array, अचिन्हित पूर्णांक गिनती, अचिन्हित पूर्णांक stride=माप(T))
+  { वापस set_sorted_array (false, array, गिनती, stride); }
+  ढाँचा <typename T>
+  bool del_sorted_array (स्थिर hb_sorted_array_t<स्थिर T>& arr) { वापस del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  व्योम del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
+    अगर (unlikely (!successful)) वापस;
     page_t *page = page_for (g);
-    if (!page)
-      return;
+    अगर (!page)
+      वापस;
     dirty ();
     page->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  व्योम del_bits (hb_codepoint_t g, uint64_t bits)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    अगर (unlikely (!successful) || unlikely (!bits)) वापस;
+    निश्चित (!(g & (page_t::ELT_BITS - 1)));
     page_t *page = page_for (g);
-    if (!page)
-      return;
+    अगर (!page)
+      वापस;
     dirty ();
     page->del_bits (g, bits);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  निजी:
+  व्योम del_pages (पूर्णांक ds, पूर्णांक de)
   {
-    if (ds <= de)
+    अगर (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
-      hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      hb_vector_t<अचिन्हित> compact_workspace;
+      अगर (unlikely (!allocate_compact_workspace (compact_workspace))) वापस;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      अचिन्हित पूर्णांक write_सूचकांक = 0;
+      क्रम (अचिन्हित पूर्णांक i = 0; i < page_map.लंबाई; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
-	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
+	पूर्णांक m = (पूर्णांक) page_map.arrayZ[i].major;
+	अगर (m < ds || de < m)
+	  page_map.arrayZ[write_सूचकांक++] = page_map.arrayZ[i];
       }
-      compact (compact_workspace, write_index);
-      resize (write_index);
+      compact (compact_workspace, write_सूचकांक);
+      resize (write_सूचकांक);
     }
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  खुला:
+  व्योम del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    अगर (unlikely (!successful)) वापस;
+    अगर (unlikely (a > b || a == INVALID)) वापस;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    अचिन्हित पूर्णांक ma = get_major (a);
+    अचिन्हित पूर्णांक mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    पूर्णांक ds = (a == major_start (ma))? (पूर्णांक) ma: (पूर्णांक) (ma + 1);
+    पूर्णांक de = (b + 1 == major_start (mb + 1))? (पूर्णांक) mb: ((पूर्णांक) mb - 1);
+    अगर (ds > de || (पूर्णांक) ma < ds)
     {
       page_t *page = page_for (a);
-      if (page)
+      अगर (page)
       {
-	if (ma == mb)
+	अगर (ma == mb)
 	  page->del_range (a, b);
-	else
+	अन्यथा
 	  page->del_range (a, major_start (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    अगर (de < (पूर्णांक) mb && ma != mb)
     {
       page_t *page = page_for (b);
-      if (page)
+      अगर (page)
 	page->del_range (major_start (mb), b);
     }
     del_pages (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  bool लो (hb_codepoint_t g) स्थिर
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    स्थिर page_t *page = page_for (g);
+    अगर (!page)
+      वापस false;
+    वापस page->लो (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  bool may_have (hb_codepoint_t g) स्थिर { वापस लो (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  bool चालक [] (hb_codepoint_t k) स्थिर { वापस लो (k); }
+  bool has (hb_codepoint_t k) स्थिर { वापस (*यह)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  bool चालक () (hb_codepoint_t k) स्थिर { वापस has (k); }
 
   /* Sink interface. */
-  hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_bit_set_t& चालक << (hb_codepoint_t v)
+  { add (v); वापस *यह; }
+  hb_bit_set_t& चालक << (स्थिर hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); वापस *यह; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  bool intersects (स्थिर hb_bit_set_t &other) स्थिर
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    अचिन्हित पूर्णांक na = pages.लंबाई;
+    अचिन्हित पूर्णांक nb = other.pages.लंबाई;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    अचिन्हित पूर्णांक a = 0, b = 0;
+    क्रम (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      अगर (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	अगर (page_at (a).intersects (other.page_at (b)))
+	  वापस true;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      अन्यथा अगर (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
 	a++;
-      else
+      अन्यथा
 	b++;
     }
-    return false;
+    वापस false;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  bool may_intersect (स्थिर hb_bit_set_t &other) स्थिर
+  { वापस intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  bool intersects (hb_codepoint_t first, hb_codepoint_t last) स्थिर
   {
     hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    वापस next (&c) && c <= last;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  व्योम set (स्थिर hb_bit_set_t &other, bool exact_आकार = false)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    अगर (unlikely (!successful)) वापस;
+    अचिन्हित पूर्णांक गिनती = other.pages.लंबाई;
+    अगर (unlikely (!resize  (गिनती, false, exact_आकार)))
+      वापस;
     population = other.population;
 
     page_map = other.page_map;
     pages = other.pages;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  bool is_equal (स्थिर hb_bit_set_t &other) स्थिर
   {
-    if (has_population () && other.has_population () &&
+    अगर (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      वापस false;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    अचिन्हित पूर्णांक na = pages.लंबाई;
+    अचिन्हित पूर्णांक nb = other.pages.लंबाई;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    अचिन्हित पूर्णांक a = 0, b = 0;
+    क्रम (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
+      अगर (page_at (a).is_empty ()) { a++; जारी; }
+      अगर (other.page_at (b).is_empty ()) { b++; जारी; }
+      अगर (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
 	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+	वापस false;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    क्रम (; a < na; a++)
+      अगर (!page_at (a).is_empty ()) { वापस false; }
+    क्रम (; b < nb; b++)
+      अगर (!other.page_at (b).is_empty ()) { वापस false; }
 
-    return true;
+    वापस true;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  bool is_subset (स्थिर hb_bit_set_t &larger_set) स्थिर
   {
-    if (has_population () && larger_set.has_population () &&
+    अगर (has_population () && larger_set.has_population () &&
 	population > larger_set.population)
-      return false;
+      वापस false;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    जबतक (spi < page_map.लंबाई && lpi < larger_set.page_map.लंबाई)
     {
       uint32_t spm = page_map.arrayZ[spi].major;
       uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
-      auto sp = page_at (spi);
+      स्वतः sp = page_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      अगर (spm < lpm) {
+        अगर (!sp.is_empty ())
+          वापस false;
         spi++;
-        continue;
+        जारी;
       }
 
-      if (lpm < spm) {
+      अगर (lpm < spm) {
         lpi++;
-        continue;
+        जारी;
       }
 
-      auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      स्वतः lp = larger_set.page_at (lpi);
+      अगर (!sp.is_subset (lp))
+        वापस false;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    जबतक (spi < page_map.लंबाई)
+      अगर (!page_at (spi++).is_empty ())
+        वापस false;
 
-    return true;
+    वापस true;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  निजी:
+  bool allocate_compact_workspace (hb_vector_t<अचिन्हित>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    अगर (unlikely (!workspace.resize_exact (pages.लंबाई)))
     {
       successful = false;
-      return false;
+      वापस false;
     }
 
-    return true;
+    वापस true;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  व्योम compact (hb_vector_t<अचिन्हित>& workspace,
+                अचिन्हित पूर्णांक लंबाई)
   {
-    assert(workspace.length == pages.length);
-    hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
+    निश्चित(workspace.लंबाई == pages.लंबाई);
+    hb_vector_t<अचिन्हित>& old_सूचकांक_to_page_map_सूचकांक = workspace;
 
-    hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
-      old_index_to_page_map_index[page_map[i].index] =  i;
+    hb_fill (old_सूचकांक_to_page_map_सूचकांक.writer(), 0xFFFFFFFF);
+    क्रम (अचिन्हित i = 0; i < लंबाई; i++)
+      old_सूचकांक_to_page_map_सूचकांक[page_map[i].सूचकांक_2] =  i;
 
-    compact_pages (old_index_to_page_map_index);
+    compact_pages (old_सूचकांक_to_page_map_सूचकांक);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  व्योम compact_pages (स्थिर hb_vector_t<अचिन्हित>& old_सूचकांक_to_page_map_सूचकांक)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    अचिन्हित पूर्णांक write_सूचकांक = 0;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < pages.लंबाई; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      अगर (old_सूचकांक_to_page_map_सूचकांक[i] == 0xFFFFFFFF) जारी;
 
-      if (write_index < i)
-	pages[write_index] = pages[i];
+      अगर (write_सूचकांक < i)
+	pages[write_सूचकांक] = pages[i];
 
-      page_map[old_index_to_page_map_index[i]].index = write_index;
-      write_index++;
+      page_map[old_सूचकांक_to_page_map_सूचकांक[i]].सूचकांक_2 = write_सूचकांक;
+      write_सूचकांक++;
     }
   }
-  public:
+  खुला:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
-		 hb_vector_t<unsigned> *workspace = nullptr)
+  व्योम process_ (hb_bit_page_t::vector_t (*op) (स्थिर hb_bit_page_t::vector_t &, स्थिर hb_bit_page_t::vector_t &),
+		 bool passthru_बायाँ, bool passthru_दायाँ,
+		 स्थिर hb_bit_set_t &other,
+		 hb_vector_t<अचिन्हित> *workspace = nullptr)
   {
-    if (unlikely (!successful)) return;
+    अगर (unlikely (!successful)) वापस;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    अचिन्हित पूर्णांक na = pages.लंबाई;
+    अचिन्हित पूर्णांक nb = other.pages.लंबाई;
+    अचिन्हित पूर्णांक अग्र_page = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    अचिन्हित पूर्णांक गिनती = 0, new_गिनती = 0;
+    अचिन्हित पूर्णांक a = 0, b = 0;
+    अचिन्हित पूर्णांक write_सूचकांक = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
-    hb_vector_t<unsigned> local_workspace;
-    hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    hb_vector_t<अचिन्हित> local_workspace;
+    hb_vector_t<अचिन्हित> &compact_workspace = workspace ? *workspace : local_workspace;
+    अगर (!passthru_बायाँ)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      bool allocated = workspace ? compact_workspace.resize (pages.लंबाई)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      अगर (unlikely (!allocated))
       {
 	successful = false;
-	return;
+	वापस;
       }
     }
 
-    for (; a < na && b < nb; )
+    क्रम (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      अगर (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	अगर (!passthru_बायाँ)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
-	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
-	  write_index++;
+	  अगर (write_सूचकांक < a)
+	    page_map.arrayZ[write_सूचकांक] = page_map.arrayZ[a];
+	  write_सूचकांक++;
 	}
 
-	count++;
+	गिनती++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      अन्यथा अगर (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	अगर (passthru_बायाँ)
+	  गिनती++;
 	a++;
       }
-      else
+      अन्यथा
       {
-	if (passthru_right)
-	  count++;
+	अगर (passthru_दायाँ)
+	  गिनती++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    अगर (passthru_बायाँ)
+      गिनती += na - a;
+    अगर (passthru_दायाँ)
+      गिनती += nb - b;
 
-    if (!passthru_left)
+    अगर (!passthru_बायाँ)
     {
-      na  = write_index;
-      next_page = write_index;
-      compact (compact_workspace, write_index);
+      na  = write_सूचकांक;
+      अग्र_page = write_सूचकांक;
+      compact (compact_workspace, write_सूचकांक);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    अगर (unlikely (!resize (गिनती)))
+      वापस;
 
-    newCount = count;
+    new_गिनती = गिनती;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    क्रम (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      अगर (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	गिनती--;
+	page_map.arrayZ[गिनती] = page_map.arrayZ[a];
+	page_at (गिनती).v = op (page_at (a).v, other.page_at (b).v);
+	page_at (गिनती).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      अन्यथा अगर (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	अगर (passthru_बायाँ)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  गिनती--;
+	  page_map.arrayZ[गिनती] = page_map.arrayZ[a];
 	}
       }
-      else
+      अन्यथा
       {
 	b--;
-	if (passthru_right)
+	अगर (passthru_दायाँ)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  गिनती--;
+	  page_map.arrayZ[गिनती].major = other.page_map.arrayZ[b].major;
+	  page_map.arrayZ[गिनती].सूचकांक_2 = अग्र_page++;
+	  page_at (गिनती) = other.page_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    अगर (passthru_बायाँ)
+      जबतक (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	गिनती--;
+	page_map.arrayZ[गिनती] = page_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    अगर (passthru_दायाँ)
+      जबतक (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	गिनती--;
+	page_map.arrayZ[गिनती].major = other.page_map.arrayZ[b].major;
+	page_map.arrayZ[गिनती].सूचकांक_2 = अग्र_page++;
+	page_at (गिनती) = other.page_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    निश्चित (!गिनती);
+    resize (new_गिनती);
   }
-  template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  ढाँचा <typename Op>
+  अटल hb_bit_page_t::vector_t
+  op_ (स्थिर hb_bit_page_t::vector_t &a, स्थिर hb_bit_page_t::vector_t &b)
+  { वापस Op{} (a, b); }
+  ढाँचा <typename Op>
+  व्योम process (स्थिर Op& op,
+		स्थिर hb_bit_set_t &other,
+		hb_vector_t<अचिन्हित> *workspace = nullptr)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  व्योम union_ (स्थिर hb_bit_set_t &other) { process (hb_bitwise_or, other); }
+  व्योम intersect (स्थिर hb_bit_set_t &other,
+		  hb_vector_t<अचिन्हित> *workspace = nullptr)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  व्योम subtract (स्थिर hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
+  व्योम symmetric_difference (स्थिर hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  bool next (hb_codepoint_t *codepoint) स्थिर
   {
-    if (unlikely (*codepoint == INVALID)) {
+    अगर (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      वापस *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    स्थिर स्वतः* page_map_array = page_map.arrayZ;
+    अचिन्हित पूर्णांक major = get_major (*codepoint);
+    अचिन्हित पूर्णांक i = last_page_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    अगर (unlikely (i >= page_map.लंबाई || page_map_array[i].major != major))
     {
       page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      अगर (i >= page_map.लंबाई) {
         *codepoint = INVALID;
-        return false;
+        वापस false;
       }
       last_page_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    स्थिर स्वतः* pages_array = pages.arrayZ;
+    स्थिर page_map_t &current = page_map_array[i];
+    अगर (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      अगर (pages_array[current.सूचकांक_2].next (codepoint))
       {
         *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        वापस true;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    क्रम (; i < page_map.लंबाई; i++)
     {
-      const page_map_t &current = page_map_array[i];
-      hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      स्थिर page_map_t &current = page_map_array[i];
+      hb_codepoint_t m = pages_array[current.सूचकांक_2].get_min ();
+      अगर (m != INVALID)
       {
 	*codepoint = current.major * page_t::PAGE_BITS + m;
         last_page_lookup = i;
-	return true;
+	वापस true;
       }
     }
     *codepoint = INVALID;
-    return false;
+    वापस false;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  bool अग्र_bits (hb_codepoint_t *codepoint, uint64_t *bits) स्थिर
   {
     static_assert (page_t::ELT_BITS == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    अचिन्हित पूर्णांक i = 0;
+    अचिन्हित पूर्णांक elt = 0;
+    अगर (likely (*codepoint != INVALID))
     {
       hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
+      अगर (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
+        जाओ done;
       base += page_t::ELT_BITS;
 
-      unsigned int major = get_major (base);
+      अचिन्हित पूर्णांक major = get_major (base);
       i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      अगर (unlikely (i >= page_map.लंबाई || page_map.arrayZ[i].major != major))
       {
 	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	अगर (i >= page_map.लंबाई)
+	  जाओ done;
       }
-      if (page_map.arrayZ[i].major == major)
+      अगर (page_map.arrayZ[i].major == major)
 	elt = page_remainder (base) / page_t::ELT_BITS;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    क्रम (; i < page_map.लंबाई; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      स्थिर page_map_t &map = page_map.arrayZ[i];
+      स्थिर page_t &page = pages.arrayZ[map.सूचकांक_2];
+      क्रम (; elt < page_t::len (); elt++)
+	अगर (page.v[elt])
 	{
 	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
 	  *bits = page.v[elt];
 	  last_page_lookup = i;
-	  return true;
+	  वापस true;
 	}
     }
 
   done:
     *codepoint = INVALID;
     *bits = 0;
-    return false;
+    वापस false;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  bool previous (hb_codepoint_t *codepoint) स्थिर
   {
-    if (unlikely (*codepoint == INVALID)) {
+    अगर (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      वापस *codepoint != INVALID;
     }
 
     page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
+    अचिन्हित पूर्णांक i;
     page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    अगर (i < page_map.लंबाई && page_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      अगर (pages[page_map.arrayZ[i].सूचकांक_2].previous (codepoint))
       {
 	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	वापस true;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    क्रम (; (पूर्णांक) i >= 0; i--)
     {
-      hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].सूचकांक_2].get_max ();
+      अगर (m != INVALID)
       {
 	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	वापस true;
       }
     }
     *codepoint = INVALID;
-    return false;
+    वापस false;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  bool अग्र_range (hb_codepoint_t *first, hb_codepoint_t *last) स्थिर
   {
     hb_codepoint_t i;
 
     i = *last;
-    if (!next (&i))
+    अगर (!next (&i))
     {
       *last = *first = INVALID;
-      return false;
+      वापस false;
     }
 
     *last = *first = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    स्थिर स्वतः* page_map_array = page_map.arrayZ;
+    स्थिर स्वतः* pages_array = pages.arrayZ;
+    अचिन्हित पूर्णांक major = get_major (*last);
+    अचिन्हित पूर्णांक p_सूचकांक = last_page_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    अगर (unlikely (p_सूचकांक >= page_map.लंबाई || page_map_array[p_सूचकांक].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      page_map.bfind (major, &p_सूचकांक, HB_NOT_FOUND_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      निश्चित(p_सूचकांक < page_map.लंबाई && page_map_array[p_सूचकांक].major == major);
+      last_page_lookup = p_सूचकांक;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    अचिन्हित पूर्णांक rem = page_remainder (*last);
+    अचिन्हित पूर्णांक elt = rem / page_t::ELT_BITS;
+    अचिन्हित पूर्णांक bit = rem & page_t::ELT_MASK;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
+    स्थिर page_t *page = &pages_array[page_map_array[p_सूचकांक].सूचकांक_2];
+    अचिन्हित पूर्णांक run = hb_ctz (~(page->v[elt] >> bit));
     *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    अगर (run < page_t::ELT_BITS - bit)
+      वापस true;
 
     elt++;
 
-    while (true)
+    जबतक (true)
     {
-      for (; elt < page_t::len (); elt++)
+      क्रम (; elt < page_t::len (); elt++)
       {
         uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        अगर (w == (uint64_t) -1)
         {
           *last += page_t::ELT_BITS;
-          continue;
+          जारी;
         }
         uint64_t inv = ~w;
         *last += hb_ctz (inv);
-        return true;
+        वापस true;
       }
 
-      p_index++;
+      p_सूचकांक++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      अगर (p_सूचकांक >= page_map.लंबाई || page_map_array[p_सूचकांक].major != major + 1)
+        वापस true;
 
-      const auto& entry = page_map_array[p_index];
+      स्थिर स्वतः& entry = page_map_array[p_सूचकांक];
       major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
+      last_page_lookup = p_सूचकांक;
+      page = &pages_array[entry.सूचकांक_2];
       elt = 0;
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) स्थिर
   {
     hb_codepoint_t i;
 
     i = *first;
-    if (!previous (&i))
+    अगर (!previous (&i))
     {
       *last = *first = INVALID;
-      return false;
+      वापस false;
     }
 
     *last = *first = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    स्थिर स्वतः* page_map_array = page_map.arrayZ;
+    स्थिर स्वतः* pages_array = pages.arrayZ;
+    अचिन्हित पूर्णांक major = get_major (*first);
+    अचिन्हित पूर्णांक p_सूचकांक = last_page_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    अगर (unlikely (p_सूचकांक >= page_map.लंबाई || page_map_array[p_सूचकांक].major != major))
     {
-      page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
+      page_map.bfind (major, &p_सूचकांक, HB_NOT_FOUND_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
-      last_page_lookup = p_index;
+      निश्चित(p_सूचकांक < page_map.लंबाई && page_map_array[p_सूचकांक].major == major);
+      last_page_lookup = p_सूचकांक;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    अचिन्हित पूर्णांक rem = page_remainder (*first);
+    पूर्णांक elt = rem / page_t::ELT_BITS;
+    अचिन्हित पूर्णांक bit = rem & page_t::ELT_MASK;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
+    स्थिर page_t *page = &pages_array[page_map_array[p_सूचकांक].सूचकांक_2];
     uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
+    अचिन्हित पूर्णांक run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
     *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    अगर (run < bit + 1)
+      वापस true;
 
     elt--;
 
-    while (true)
+    जबतक (true)
     {
-      for (; elt >= 0; elt--)
+      क्रम (; elt >= 0; elt--)
       {
         uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        अगर (w == (uint64_t) -1)
         {
           *first -= page_t::ELT_BITS;
-          continue;
+          जारी;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
+        अचिन्हित पूर्णांक zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
         *first -= zeros;
-        return true;
+        वापस true;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      अगर (p_सूचकांक == 0 || page_map_array[p_सूचकांक - 1].major != major - 1)
+        वापस true;
 
-      p_index--;
-      const auto& entry = page_map_array[p_index];
+      p_सूचकांक--;
+      स्थिर स्वतः& entry = page_map_array[p_सूचकांक];
 
       major = entry.major;
-      last_page_lookup = p_index;
-      page = &pages_array[entry.index];
+      last_page_lookup = p_सूचकांक;
+      page = &pages_array[entry.सूचकांक_2];
       elt = page_t::len () - 1;
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
+  अचिन्हित पूर्णांक अग्र_many (hb_codepoint_t  codepoint,
 			  hb_codepoint_t *out,
-			  unsigned int    size) const
+			  अचिन्हित पूर्णांक    आकार) स्थिर
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    अचिन्हित पूर्णांक start_page = 0;
+    अचिन्हित पूर्णांक start_page_मूल्य = 0;
+    अगर (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      स्थिर स्वतः* page_map_array = page_map.arrayZ;
+      अचिन्हित पूर्णांक major = get_major (codepoint);
+      अचिन्हित पूर्णांक i = last_page_lookup;
+      अगर (unlikely (i >= page_map.लंबाई || page_map_array[i].major != major))
       {
 	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	अगर (i >= page_map.लंबाई)
+	  वापस 0;  // codepoint is greater than our max element.
       }
       start_page = i;
-      if (page_map_array[i].major == major)
+      अगर (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_मूल्य = page_remainder (codepoint + 1);
+        अगर (unlikely (start_page_मूल्य == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_मूल्य = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    अचिन्हित पूर्णांक initial_आकार = आकार;
+    क्रम (अचिन्हित पूर्णांक i = start_page; i < page_map.लंबाई && आकार; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
+      अचिन्हित पूर्णांक n = pages[page_map.arrayZ[i].सूचकांक_2].ग_लिखो (base, start_page_मूल्य, out, आकार);
       out += n;
-      size -= n;
-      start_page_value = 0;
+      आकार -= n;
+      start_page_मूल्य = 0;
     }
-    return initial_size - size;
+    वापस initial_आकार - आकार;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
+  अचिन्हित पूर्णांक अग्र_many_inverted (hb_codepoint_t  codepoint,
 				   hb_codepoint_t *out,
-				   unsigned int    size) const
+				   अचिन्हित पूर्णांक    आकार) स्थिर
   {
-    unsigned int initial_size = size;
+    अचिन्हित पूर्णांक initial_आकार = आकार;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    अचिन्हित पूर्णांक start_page = 0;
+    अचिन्हित पूर्णांक start_page_मूल्य = 0;
+    अगर (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      स्थिर स्वतः* page_map_array = page_map.arrayZ;
+      अचिन्हित पूर्णांक major = get_major (codepoint);
+      अचिन्हित पूर्णांक i = last_page_lookup;
+      अगर (unlikely (i >= page_map.लंबाई || page_map_array[i].major != major))
       {
         page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        अगर (unlikely (i >= page_map.लंबाई))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          जबतक (++codepoint != INVALID && आकार)
           {
             *out++ = codepoint;
-            size--;
+            आकार--;
           }
-          return initial_size - size;
+          वापस initial_आकार - आकार;
         }
       }
       start_page = i;
-      if (page_map_array[i].major == major)
+      अगर (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_मूल्य = page_remainder (codepoint + 1);
+        अगर (unlikely (start_page_मूल्य == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_मूल्य = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t अग्र_मूल्य = codepoint + 1;
+    क्रम (अचिन्हित पूर्णांक i=start_page; i<page_map.लंबाई && आकार; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
+      अचिन्हित पूर्णांक n = pages[page_map.arrayZ[i].सूचकांक_2].write_inverted (base, start_page_मूल्य, out, आकार, &अग्र_मूल्य);
       out += n;
-      size -= n;
-      start_page_value = 0;
+      आकार -= n;
+      start_page_मूल्य = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
-      size--;
+    जबतक (अग्र_मूल्य < HB_SET_मूल्य_INVALID && आकार) {
+      *out++ = अग्र_मूल्य++;
+      आकार--;
     }
-    return initial_size - size;
+    वापस initial_आकार - आकार;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  bool has_population () स्थिर { वापस population != अच_पूर्णांक_उच्च; }
+  अचिन्हित पूर्णांक get_population () स्थिर
   {
-    if (has_population ())
-      return population;
+    अगर (has_population ())
+      वापस population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    अचिन्हित पूर्णांक निकालो = 0;
+    अचिन्हित पूर्णांक गिनती = pages.लंबाई;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      निकालो += pages[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = निकालो;
+    वापस निकालो;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  bool get_singleton (hb_codepoint_t *codepoint) स्थिर
   {
-    if (has_population ())
+    अगर (has_population ())
     {
-      if (population != 1) return false;
+      अगर (population != 1) वापस false;
       *codepoint = get_min ();
-      return true;
+      वापस true;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    क्रम (स्थिर स्वतः &map : page_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      स्थिर स्वतः &page = pages.arrayZ[map.सूचकांक_2];
+      क्रम (अचिन्हित i = 0; i < page_t::len (); i++)
       {
 	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
+	अगर (!bits) जारी;
+	अगर (singleton != INVALID || (bits & (bits - 1)))
+	  वापस false;
 	singleton = map.major * page_t::PAGE_BITS +
 		    i * page_t::ELT_BITS + hb_ctz (bits);
       }
     }
 
-    if (singleton == INVALID)
+    अगर (singleton == INVALID)
     {
       population = 0;
-      return false;
+      वापस false;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    वापस true;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () स्थिर
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    अचिन्हित गिनती = pages.लंबाई;
+    क्रम (अचिन्हित i = 0; i < गिनती; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      स्थिर स्वतः& map = page_map.arrayZ[i];
+      स्थिर स्वतः& page = pages.arrayZ[map.सूचकांक_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      अगर (!page.is_empty ())
+	वापस map.major * page_t::PAGE_BITS + page.get_min ();
     }
-    return INVALID;
+    वापस INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () स्थिर
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    अचिन्हित गिनती = pages.लंबाई;
+    क्रम (चिन्हित i = गिनती - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      स्थिर स्वतः& map = page_map.arrayZ[(अचिन्हित) i];
+      स्थिर स्वतः& page = pages.arrayZ[map.सूचकांक_2];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      अगर (!page.is_empty ())
+	वापस map.major * page_t::PAGE_BITS + page.get_max ();
     }
-    return INVALID;
+    वापस INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  अटल constexpr hb_codepoint_t INVALID = page_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  काष्ठा iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
+    अटल constexpr bool is_sorted_iterator = true;
+    अटल constexpr bool has_fast_len = true;
+    iter_t (स्थिर hb_bit_set_t &s_ = Null (hb_bit_set_t),
 	    bool init = true) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      अगर (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    प्रकार hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () स्थिर { वापस v; }
+    bool __more__ () स्थिर { वापस v != INVALID; }
+    व्योम __next__ () { s->next (&v); अगर (l) l--; }
+    व्योम __prev__ () { s->previous (&v); }
+    अचिन्हित __len__ () स्थिर { वापस l; }
+    iter_t end () स्थिर { वापस iter_t (*s, false); }
+    bool चालक != (स्थिर iter_t& o) स्थिर
+    { वापस v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    रक्षित:
+    स्थिर hb_bit_set_t *s;
     hb_codepoint_t v;
-    unsigned l;
+    अचिन्हित l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () स्थिर { वापस iter_t (*यह); }
+  चालक iter_t () स्थिर { वापस iter (); }
 
-  protected:
+  रक्षित:
 
   page_t *page_for (hb_codepoint_t g, bool insert = false)
   {
-    unsigned major = get_major (g);
+    अचिन्हित major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    अचिन्हित i = last_page_lookup;
+    अगर (likely (i < page_map.लंबाई))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      स्वतः &cached_page = page_map.arrayZ[i];
+      अगर (cached_page.major == major)
+	वापस &pages.arrayZ[cached_page.सूचकांक_2];
     }
 
-    page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    page_map_t map = {major, pages.लंबाई};
+    अगर (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      अगर (!insert)
+        वापस nullptr;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      अगर (unlikely (!resize (pages.लंबाई + 1)))
+	वापस nullptr;
 
-      pages.arrayZ[map.index].init0 ();
-      memmove (page_map.arrayZ + i + 1,
+      pages.arrayZ[map.सूचकांक_2].init0 ();
+      स_हटाओ (page_map.arrayZ + i + 1,
 	       page_map.arrayZ + i,
-	       (page_map.length - 1 - i) * page_map.item_size);
+	       (page_map.लंबाई - 1 - i) * page_map.item_आकार);
       page_map.arrayZ[i] = map;
     }
 
     last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    वापस &pages.arrayZ[page_map.arrayZ[i].सूचकांक_2];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  स्थिर page_t *page_for (hb_codepoint_t g) स्थिर
   {
-    unsigned major = get_major (g);
+    अचिन्हित major = get_major (g);
 
     /* The extra page_map length is necessary; can't just rely on vector here,
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
-    unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    अचिन्हित i = last_page_lookup;
+    अगर (likely (i < page_map.लंबाई))
     {
-      auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      स्वतः &cached_page = page_map.arrayZ[i];
+      अगर (cached_page.major == major)
+	वापस &pages.arrayZ[cached_page.सूचकांक_2];
     }
 
     page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    अगर (!page_map.bfind (key, &i))
+      वापस nullptr;
 
     last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    वापस &pages.arrayZ[page_map.arrayZ[i].सूचकांक_2];
   }
-  page_t &page_at (unsigned int i)
+  page_t &page_at (अचिन्हित पूर्णांक i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    निश्चित (i < page_map.लंबाई);
+    वापस pages.arrayZ[page_map.arrayZ[i].सूचकांक_2];
   }
-  const page_t &page_at (unsigned int i) const
+  स्थिर page_t &page_at (अचिन्हित पूर्णांक i) स्थिर
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    निश्चित (i < page_map.लंबाई);
+    वापस pages.arrayZ[page_map.arrayZ[i].सूचकांक_2];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  अचिन्हित पूर्णांक get_major (hb_codepoint_t g) स्थिर { वापस g >> page_t::PAGE_BITS_LOG_2; }
+  अचिन्हित पूर्णांक page_remainder (hb_codepoint_t g) स्थिर { वापस g & page_t::PAGE_BITMASK; }
+  hb_codepoint_t major_start (अचिन्हित पूर्णांक major) स्थिर { वापस major << page_t::PAGE_BITS_LOG_2; }
 };
 
 
-#endif /* HB_BIT_SET_HH */
+#पूर्ण_अगर /* HB_BIT_SET_HH */

@@ -1,80 +1,80 @@
-#ifndef OT_LAYOUT_GPOS_ANCHOR_HH
-#define OT_LAYOUT_GPOS_ANCHOR_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_ANCHOR_HH
+#घोषणा OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#समावेश "AnchorFormat1.hh"
+#समावेश "AnchorFormat2.hh"
+#समावेश "AnchorFormat3.hh"
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct Anchor
+काष्ठा Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  रक्षित:
+  जोड़ {
+  काष्ठा { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  खुला:
+  DEFINE_आकार_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (यह);
+    अगर (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    हाल 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    हाल 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    शेष:return_trace (true);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  व्योम get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   भग्न *x, भग्न *y) स्थिर
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); वापस;
+    हाल 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); वापस;
+    हाल 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); वापस;
+    शेष:                                          वापस;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (यह);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    हाल 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      अगर (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
         return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
       return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+    हाल 3: hb_barrier (); return_trace (u.format3.subset (c));
+    शेष:return_trace (false);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  व्योम collect_variation_indices (hb_collect_variation_indices_context_t *c) स्थिर
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    चयन (u.format.v) {
+    हाल 1: हाल 2:
+      वापस;
+    हाल 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      वापस;
+    शेष: वापस;
     }
   }
 };
@@ -83,4 +83,4 @@ struct Anchor
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHOR_HH
+#पूर्ण_अगर  // OT_LAYOUT_GPOS_ANCHOR_HH

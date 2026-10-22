@@ -24,25 +24,25 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#समावेश "hb.h"
+#समावेश "hb-ot.h"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#अगर_घोषित HAVE_FREETYPE
+#समावेश "hb-ft.h"
+#पूर्ण_अगर
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#अगर_घोषित HB_NO_OPEN
+#घोषणा hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
+#पूर्ण_अगर
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
-  if (argc != 4 && argc != 5) {
-    fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
-    exit (1);
+  अगर (argc != 4 && argc != 5) {
+    ख_लिखो (मानक_त्रुटि, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
+    निकास (1);
   }
 
   /* Create the face */
@@ -53,15 +53,15 @@ main (int argc, char **argv)
   blob = nullptr;
 
   hb_font_t *font = hb_font_create (face);
-#ifdef HAVE_FREETYPE
+#अगर_घोषित HAVE_FREETYPE
   hb_ft_font_set_funcs (font);
-#endif
+#पूर्ण_अगर
 
-  unsigned int len = argc - 3;
+  अचिन्हित पूर्णांक len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  अगर (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    वापस 2;
+  वापस !hb_ot_layout_lookup_would_substitute (face, म_से_दीर्घ (argv[2], nullptr, 0), glyphs, len, false);
 }

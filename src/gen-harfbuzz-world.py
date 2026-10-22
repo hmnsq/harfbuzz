@@ -9,9 +9,9 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+आयात os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+अगर len(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
@@ -21,8 +21,8 @@ TEMPLATE = sys.argv[3]
 # Parse --TAG file... groups
 groups = {}
 current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
+क्रम arg in sys.argv[4:]:
+    अगर arg.startswith('--'):
         current_tag = arg[2:]
         groups[current_tag] = []
     elif current_tag is not None:
@@ -31,39 +31,39 @@ for arg in sys.argv[4:]:
 # Build #include lines for each group
 def make_includes(files):
     seen = set()
-    lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
+    पंक्तियाँ = []
+    क्रम f in sorted(files):
+        अगर not f.endswith('.cc'):
+            जारी
         rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
+        अगर rel not in seen:
             seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+            पंक्तियाँ.append('#include "{}"'.format(rel))
+    वापस '\n'.मेल(पंक्तियाँ)
 
 # Read template and substitute
 with open(TEMPLATE, 'r') as f:
-    content = f.read()
+    content = f.म_पढ़ो()
 
-for tag, files in groups.items():
+क्रम tag, files in groups.वस्तुएँ():
     placeholder = '%%{}%%'.format(tag)
-    content = content.replace(placeholder, make_includes(files))
+    content = content.प्रतिस्थापन(placeholder, make_includes(files))
 
 with open(OUTPUT, 'w') as f:
-    f.write(content)
+    f.म_लिखो(content)
 
 # Copy back to source tree if changed
-baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
+baseline = os.path.मेल(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
+प्रयास:
     with open(baseline, 'r') as b:
-        if b.read() == content:
+        अगर b.म_पढ़ो() == content:
             sys.exit(0)
 except FileNotFoundError:
     pass
 
-try:
+प्रयास:
     shutil.copyfile(OUTPUT, baseline)
 except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+    आयात filecmp
+    अगर os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

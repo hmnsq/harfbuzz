@@ -22,12 +22,12 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_GDI_H
-#define HB_GDI_H
+#अगर_अघोषित HB_GDI_H
+#घोषणा HB_GDI_H
 
-#include "hb.h"
+#समावेश "hb.h"
 
-#include <windows.h>
+#समावेश <windows.h>
 
 HB_BEGIN_DECLS
 
@@ -36,4 +36,4 @@ hb_gdi_face_create (HFONT hfont);
 
 HB_END_DECLS
 
-#endif /* HB_GDI_H */
+#पूर्ण_अगर /* HB_GDI_H */

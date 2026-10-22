@@ -24,111 +24,111 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_HH
-#define HB_SHAPER_HH
+#अगर_अघोषित HB_SHAPER_HH
+#घोषणा HB_SHAPER_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#समावेश "hb.hh"
+#समावेश "hb-machinery.hh"
 
-typedef hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
+प्रकार hb_bool_t hb_shape_func_t (hb_shape_plan_t    *shape_plan,
 				   hb_font_t          *font,
-				   hb_buffer_t        *buffer,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   hb_बफर_t        *बफर,
+				   स्थिर hb_feature_t *features,
+				   अचिन्हित पूर्णांक        अंक_features);
 
-#define HB_SHAPER_IMPLEMENT(name) \
-	extern "C" HB_INTERNAL hb_shape_func_t _hb_##name##_shape;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#घोषणा HB_SHAPER_IMPLEMENT(name) \
+	बाह्य "C" HB_INTERNAL hb_shape_func_t _hb_##name##_shape;
+#समावेश "hb-shaper-list.hh"
+#अघोषित HB_SHAPER_IMPLEMENT
 
-struct hb_shaper_entry_t {
-  char name[16];
+काष्ठा hb_shaper_entry_t {
+  अक्षर name[16];
   hb_shape_func_t *func;
 };
 
-HB_INTERNAL const hb_shaper_entry_t *
+HB_INTERNAL स्थिर hb_shaper_entry_t *
 _hb_shapers_get ();
 
 
-template <typename Data, unsigned int WheresData, typename T>
-struct hb_shaper_lazy_loader_t;
+ढाँचा <typename तथ्य_3, अचिन्हित पूर्णांक Wheres_तथ्य, typename T>
+काष्ठा hb_shaper_lazy_loader_t;
 
-#define HB_SHAPER_ORDER(Shaper) \
+#घोषणा HB_SHAPER_ORDER(Shaper) \
   HB_PASTE (HB_SHAPER_ORDER_, Shaper)
-enum hb_shaper_order_t
+क्रमागत hb_shaper_order_t
 {
   _HB_SHAPER_ORDER_ORDER_ZERO,
-#define HB_SHAPER_IMPLEMENT(Shaper) \
+#घोषणा HB_SHAPER_IMPLEMENT(Shaper) \
       HB_SHAPER_ORDER (Shaper),
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
-  _HB_SHAPERS_COUNT_PLUS_ONE,
-  HB_SHAPERS_COUNT = _HB_SHAPERS_COUNT_PLUS_ONE - 1,
+#समावेश "hb-shaper-list.hh"
+#अघोषित HB_SHAPER_IMPLEMENT
+  HB_SHAPERS_गिनती_PLUS_ONE,
+  HB_SHAPERS_गिनती = HB_SHAPERS_गिनती_PLUS_ONE - 1,
 };
 
-template <enum hb_shaper_order_t order, typename Object> struct hb_shaper_object_data_type_t;
+ढाँचा <क्रमागत hb_shaper_order_t order, typename Object> काष्ठा hb_shaper_object_तथ्य_type_t;
 
-#define HB_SHAPER_DATA_SUCCEEDED ((void *) +1)
-#define HB_SHAPER_DATA_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
-#define HB_SHAPER_DATA_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
-#define HB_SHAPER_DATA_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
+#घोषणा HB_SHAPER_तथ्य_SUCCEEDED ((व्योम *) +1)
+#घोषणा HB_SHAPER_तथ्य_TYPE(shaper, object)		hb_##shaper##_##object##_data_t
+#घोषणा HB_SHAPER_तथ्य_CREATE_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_create
+#घोषणा HB_SHAPER_तथ्य_DESTROY_FUNC(shaper, object)	_hb_##shaper##_shaper_##object##_data_destroy
 
-#define HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, object) \
+#घोषणा HB_SHAPER_तथ्य_INSTANTIATE_SHAPERS(shaper, object) \
 	\
-	struct HB_SHAPER_DATA_TYPE (shaper, object); /* Type forward declaration. */ \
-	extern "C" HB_INTERNAL HB_SHAPER_DATA_TYPE (shaper, object) * \
-	HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
-	extern "C" HB_INTERNAL void \
-	HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (HB_SHAPER_DATA_TYPE (shaper, object) *shaper##_##object); \
+	काष्ठा HB_SHAPER_तथ्य_TYPE (shaper, object); /* Type forward declaration. */ \
+	बाह्य "C" HB_INTERNAL HB_SHAPER_तथ्य_TYPE (shaper, object) * \
+	HB_SHAPER_तथ्य_CREATE_FUNC (shaper, object) (hb_##object##_t *object); \
+	बाह्य "C" HB_INTERNAL व्योम \
+	HB_SHAPER_तथ्य_DESTROY_FUNC (shaper, object) (HB_SHAPER_तथ्य_TYPE (shaper, object) *shaper##_##object); \
 	\
-	template <> \
-	struct hb_shaper_object_data_type_t<HB_SHAPER_ORDER (shaper), hb_##object##_t> \
+	ढाँचा <> \
+	काष्ठा hb_shaper_object_तथ्य_type_t<HB_SHAPER_ORDER (shaper), hb_##object##_t> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) value; \
+	  प्रकार HB_SHAPER_तथ्य_TYPE(shaper, object) value; \
 	}; \
 	\
-	template <unsigned int WheresData> \
-	struct hb_shaper_lazy_loader_t<hb_##object##_t, WheresData, HB_SHAPER_DATA_TYPE(shaper, object)> \
-		: hb_lazy_loader_t<HB_SHAPER_DATA_TYPE(shaper, object), \
+	ढाँचा <अचिन्हित पूर्णांक Wheres_तथ्य> \
+	काष्ठा hb_shaper_lazy_loader_t<hb_##object##_t, Wheres_तथ्य, HB_SHAPER_तथ्य_TYPE(shaper, object)> \
+		: hb_lazy_loader_t<HB_SHAPER_तथ्य_TYPE(shaper, object), \
 				   hb_shaper_lazy_loader_t<hb_##object##_t, \
-							   WheresData, \
-							   HB_SHAPER_DATA_TYPE(shaper, object)>, \
-				   hb_##object##_t, WheresData> \
+							   Wheres_तथ्य, \
+							   HB_SHAPER_तथ्य_TYPE(shaper, object)>, \
+				   hb_##object##_t, Wheres_तथ्य> \
 	{ \
-	  typedef HB_SHAPER_DATA_TYPE(shaper, object) Type; \
-	  static Type* create (hb_##object##_t *data) \
-	  { return HB_SHAPER_DATA_CREATE_FUNC (shaper, object) (data); } \
-	  static Type *get_null () { return nullptr; } \
-	  static void destroy (Type *p) { HB_SHAPER_DATA_DESTROY_FUNC (shaper, object) (p); } \
+	  प्रकार HB_SHAPER_तथ्य_TYPE(shaper, object) Type; \
+	  अटल Type* create (hb_##object##_t *तथ्य) \
+	  { वापस HB_SHAPER_तथ्य_CREATE_FUNC (shaper, object) (तथ्य); } \
+	  अटल Type *get_null () { वापस nullptr; } \
+	  अटल व्योम destroy (Type *p) { HB_SHAPER_तथ्य_DESTROY_FUNC (shaper, object) (p); } \
 	}; \
 	\
 	static_assert (true, "") /* Require semicolon after. */
 
 
-template <typename Object>
-struct hb_shaper_object_dataset_t
+ढाँचा <typename Object>
+काष्ठा hb_shaper_object_dataset_t
 {
-  void init0 (Object *parent_data)
+  व्योम init0 (Object *parent_तथ्य)
   {
-    this->parent_data = parent_data;
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+    यह->parent_तथ्य = parent_तथ्य;
+#घोषणा HB_SHAPER_IMPLEMENT(shaper) shaper.init0 ();
+#समावेश "hb-shaper-list.hh"
+#अघोषित HB_SHAPER_IMPLEMENT
   }
-  void fini ()
+  व्योम fini ()
   {
-#define HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#घोषणा HB_SHAPER_IMPLEMENT(shaper) shaper.fini ();
+#समावेश "hb-shaper-list.hh"
+#अघोषित HB_SHAPER_IMPLEMENT
   }
 
-  Object *parent_data; /* MUST be JUST before the lazy loaders. */
-#define HB_SHAPER_IMPLEMENT(shaper) \
+  Object *parent_तथ्य; /* MUST be JUST before the lazy loaders. */
+#घोषणा HB_SHAPER_IMPLEMENT(shaper) \
 	hb_shaper_lazy_loader_t<Object, HB_SHAPER_ORDER(shaper), \
-				typename hb_shaper_object_data_type_t<HB_SHAPER_ORDER(shaper), Object>::value \
+				typename hb_shaper_object_तथ्य_type_t<HB_SHAPER_ORDER(shaper), Object>::value \
 			       > shaper;
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+#समावेश "hb-shaper-list.hh"
+#अघोषित HB_SHAPER_IMPLEMENT
 };
 
-#endif /* HB_SHAPER_HH */
+#पूर्ण_अगर /* HB_SHAPER_HH */

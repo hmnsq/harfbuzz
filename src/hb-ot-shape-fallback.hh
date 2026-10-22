@@ -24,31 +24,31 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_FALLBACK_HH
-#define HB_OT_SHAPE_FALLBACK_HH
+#अगर_अघोषित HB_OT_SHAPE_FALLBACK_HH
+#घोषणा HB_OT_SHAPE_FALLBACK_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-ot-shape.hh"
+#समावेश "hb-ot-shape.hh"
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम _hb_ot_shape_fallback_mark_position (स्थिर hb_ot_shape_plan_t *plan,
 						      hb_font_t *font,
-						      hb_buffer_t  *buffer,
+						      hb_बफर_t  *बफर,
 						      bool adjust_offsets_when_zeroing);
 
-HB_INTERNAL void _hb_ot_shape_fallback_mark_position_recategorize_marks (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम _hb_ot_shape_fallback_mark_position_recategorize_marks (स्थिर hb_ot_shape_plan_t *plan,
 									 hb_font_t *font,
-									 hb_buffer_t  *buffer);
+									 hb_बफर_t  *बफर);
 
 
-HB_INTERNAL void _hb_ot_shape_fallback_kern (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम _hb_ot_shape_fallback_kern (स्थिर hb_ot_shape_plan_t *plan,
 					     hb_font_t *font,
-					     hb_buffer_t  *buffer);
+					     hb_बफर_t  *बफर);
 
-HB_INTERNAL void _hb_ot_shape_fallback_spaces (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL व्योम _hb_ot_shape_fallback_spaces (स्थिर hb_ot_shape_plan_t *plan,
 					       hb_font_t *font,
-					       hb_buffer_t  *buffer);
+					       hb_बफर_t  *बफर);
 
 
-#endif /* HB_OT_SHAPE_FALLBACK_HH */
+#पूर्ण_अगर /* HB_OT_SHAPE_FALLBACK_HH */

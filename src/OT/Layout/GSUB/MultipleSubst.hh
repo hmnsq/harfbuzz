@@ -1,52 +1,52 @@
-#ifndef OT_LAYOUT_GSUB_MULTIPLESUBST_HH
-#define OT_LAYOUT_GSUB_MULTIPLESUBST_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_MULTIPLESUBST_HH
+#घोषणा OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 
-#include "Common.hh"
-#include "MultipleSubstFormat1.hh"
+#समावेश "Common.hh"
+#समावेश "MultipleSubstFormat1.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-struct MultipleSubst
+काष्ठा MultipleSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  रक्षित:
+  जोड़ {
+  काष्ठा { HBUINT16 v; }		format;         /* Format identifier */
   MultipleSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
+#अगर_अघोषित HB_NO_BEYOND_64K
   MultipleSubstFormat1_2<MediumTypes>	format2;
-#endif
+#पूर्ण_अगर
   } u;
 
-  public:
+  खुला:
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिर
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    अगर (unlikely (!c->may_dispatch (यह, &u.format.v))) वापस c->no_dispatch_return_मूल्य ();
+    TRACE_DISPATCH (यह, u.format.v);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#पूर्ण_अगर
+    शेष:return_trace (c->default_return_मूल्य ());
     }
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
   bool serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (यह);
+    अगर (unlikely (!c->extend_min (u.format.v))) return_trace (false);
+    अचिन्हित पूर्णांक format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
-    default:return_trace (false);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
+    शेष:return_trace (false);
     }
   }
 
@@ -59,4 +59,4 @@ struct MultipleSubst
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_MULTIPLESUBST_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GSUB_MULTIPLESUBST_HH */

@@ -1,79 +1,79 @@
-#ifndef OT_LAYOUT_GPOS_POSLOOKUP_HH
-#define OT_LAYOUT_GPOS_POSLOOKUP_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_POSLOOKUP_HH
+#घोषणा OT_LAYOUT_GPOS_POSLOOKUP_HH
 
-#include "PosLookupSubTable.hh"
-#include "../../../hb-ot-layout-common.hh"
+#समावेश "PosLookupSubTable.hh"
+#समावेश "../../../hb-ot-layout-common.hh"
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct PosLookup : Lookup
+काष्ठा PosLookup : Lookup
 {
   using SubTable = PosLookupSubTable;
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  स्थिर SubTable& get_subtable (अचिन्हित पूर्णांक i) स्थिर
+  { वापस Lookup::get_subtable<SubTable> (i); }
 
-  bool is_reverse () const
+  bool is_reverse () स्थिर
   {
-    return false;
+    वापस false;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) स्थिर
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (यह);
     return_trace (dispatch (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  bool intersects (स्थिर hb_set_t *glyphs) स्थिर
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    वापस dispatch (&c);
   }
 
-  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { return dispatch (c); }
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) स्थिर
+  { वापस dispatch (c); }
 
-  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
+  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, अचिन्हित this_सूचकांक) स्थिर
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    अगर (c->is_lookup_visited (this_सूचकांक))
+      वापस hb_closure_lookups_context_t::default_return_मूल्य ();
 
-    c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    c->set_lookup_visited (this_सूचकांक);
+    अगर (!intersects (c->glyphs))
     {
-      c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      c->set_lookup_inactive (this_सूचकांक);
+      वापस hb_closure_lookups_context_t::default_return_मूल्य ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    वापस ret;
   }
 
-  template <typename set_t>
-  void collect_coverage (set_t *glyphs) const
+  ढाँचा <typename set_t>
+  व्योम collect_coverage (set_t *glyphs) स्थिर
   {
     hb_collect_coverage_context_t<set_t> c (glyphs);
     dispatch (&c);
   }
 
-  template <typename context_t>
-  static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  ढाँचा <typename context_t>
+  अटल typename context_t::return_t dispatch_recurse_func (context_t *c, अचिन्हित पूर्णांक lookup_सूचकांक);
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिर
+  { वापस Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
 
-  bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  bool subset (hb_subset_context_t *c) स्थिर
+  { वापस Lookup::subset<SubTable> (c); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
+  { वापस Lookup::sanitize<SubTable> (c); }
 };
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GPOS_POSLOOKUP_HH */
+#पूर्ण_अगर  /* OT_LAYOUT_GPOS_POSLOOKUP_HH */

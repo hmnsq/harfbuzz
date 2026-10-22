@@ -24,18 +24,18 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-vector-paint.hh"
-#include "hb-vector-draw.hh"
-#include "hb-paint.hh"
+#समावेश "hb-vector-paint.hh"
+#समावेश "hb-vector-draw.hh"
+#समावेश "hb-paint.hh"
 
-#include <math.h>
-#include <stdio.h>
+#समावेश <math.h>
+#समावेश <stdio.h>
 
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif
+#अगर_घोषित HAVE_ZLIB
+#समावेश <zlib.h>
+#पूर्ण_अगर
 
 /* PDF paint backend for COLRv0/v1 color font rendering.
  *
@@ -52,81 +52,81 @@
 
 /* ---- PDF object collector ---- */
 
-struct hb_pdf_obj_t
+काष्ठा hb_pdf_obj_t
 {
-  hb_vector_buf_t data;
+  hb_vector_buf_t तथ्य;
 };
 
 /* Collects extra PDF objects (shadings, functions, ExtGState)
  * during painting.  Referenced from the content stream by name
  * (e.g. /SH0, /GS0) and emitted at render time. */
-static bool
+अटल bool
 hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
-			    const char *idat_data, unsigned idat_len,
-			    unsigned width, unsigned height,
-			    const uint8_t *trns, unsigned trns_len);
+			    स्थिर अक्षर *idat_तथ्य, अचिन्हित idat_len,
+			    अचिन्हित width, अचिन्हित height,
+			    स्थिर uint8_t *trns, अचिन्हित trns_len);
 
-struct hb_pdf_resources_t
+काष्ठा hb_pdf_resources_t
 {
   hb_vector_t<hb_pdf_obj_t> objects;   /* extra objects, starting at id 5 */
   hb_vector_buf_t extgstate_dict;    /* /GS0 5 0 R /GS1 6 0 R ... */
   hb_vector_buf_t shading_dict;      /* /SH0 7 0 R ... */
   hb_vector_buf_t xobject_dict;      /* /Im0 8 0 R ... */
-  unsigned extgstate_count = 0;
-  unsigned shading_count = 0;
-  unsigned xobject_count = 0;
+  अचिन्हित extgstate_गिनती = 0;
+  अचिन्हित shading_गिनती = 0;
+  अचिन्हित xobject_गिनती = 0;
 
-  unsigned add_object (hb_vector_buf_t &&obj_data)
+  अचिन्हित add_object (hb_vector_buf_t &&obj_तथ्य)
   {
-    unsigned id = 5 + objects.length; /* objects 1-4 are fixed */
+    अचिन्हित id = 5 + objects.लंबाई; /* objects 1-4 are fixed */
     hb_pdf_obj_t obj;
-    obj.data = std::move (obj_data);
+    obj.तथ्य = std::move (obj_तथ्य);
     objects.push (std::move (obj));
-    return id;
+    वापस id;
   }
 
   /* Add ExtGState for fill opacity, return resource name index. */
-  unsigned add_extgstate_alpha (float alpha)
+  अचिन्हित add_extgstate_alpha (भग्न alpha)
   {
-    unsigned idx = extgstate_count++;
+    अचिन्हित idx = extgstate_गिनती++;
     hb_vector_buf_t obj;
     obj.append_str ("<< /Type /ExtGState /ca ");
-    obj.append_num (alpha, 4);
+    obj.append_अंक (alpha, 4);
     obj.append_str (" >>");
-    unsigned obj_id = add_object (std::move (obj));
+    अचिन्हित obj_id = add_object (std::move (obj));
 
     extgstate_dict.append_str ("/GS");
     extgstate_dict.append_unsigned (idx);
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (obj_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    वापस idx;
   }
 
   /* Add ExtGState for blend mode, return resource name index. */
-  unsigned add_extgstate_blend (const char *bm)
+  अचिन्हित add_extgstate_blend (स्थिर अक्षर *bm)
   {
-    unsigned idx = extgstate_count++;
+    अचिन्हित idx = extgstate_गिनती++;
     hb_vector_buf_t obj;
     obj.append_str ("<< /Type /ExtGState /BM /");
     obj.append_str (bm);
     obj.append_str (" >>");
-    unsigned obj_id = add_object (std::move (obj));
+    अचिन्हित obj_id = add_object (std::move (obj));
 
     extgstate_dict.append_str ("/GS");
     extgstate_dict.append_unsigned (idx);
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (obj_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    वापस idx;
   }
 
   /* Add ExtGState with an SMask (soft mask) referencing a Form XObject
    * that paints a DeviceGray shading.  Returns the ExtGState resource index. */
-  unsigned add_extgstate_smask (unsigned alpha_shading_id,
-				float bbox_x, float bbox_y,
-				float bbox_w, float bbox_h,
-				unsigned precision)
+  अचिन्हित add_extgstate_smask (अचिन्हित alpha_shading_id,
+				भग्न bbox_x, भग्न bbox_y,
+				भग्न bbox_w, भग्न bbox_h,
+				अचिन्हित precision)
   {
     /* Form XObject: transparency group painting the alpha shading. */
     hb_vector_buf_t form_stream;
@@ -135,73 +135,73 @@ struct hb_pdf_resources_t
     hb_vector_buf_t form;
     form.append_str ("<< /Type /XObject /Subtype /Form\n");
     form.append_str ("/BBox [");
-    form.append_num (bbox_x, precision);
+    form.append_अंक (bbox_x, precision);
     form.append_c (' ');
-    form.append_num (bbox_y, precision);
+    form.append_अंक (bbox_y, precision);
     form.append_c (' ');
-    form.append_num (bbox_x + bbox_w, precision);
+    form.append_अंक (bbox_x + bbox_w, precision);
     form.append_c (' ');
-    form.append_num (bbox_y + bbox_h, precision);
+    form.append_अंक (bbox_y + bbox_h, precision);
     form.append_str ("]\n/Group << /S /Transparency /CS /DeviceGray >>\n");
     form.append_str ("/Resources << /Shading << /SHa ");
     form.append_unsigned (alpha_shading_id);
     form.append_str (" 0 R >> >>\n");
     form.append_str ("/Length ");
-    form.append_unsigned (form_stream.length);
+    form.append_unsigned (form_stream.लंबाई);
     form.append_str (" >>\nstream\n");
-    form.append_len (form_stream.arrayZ, form_stream.length);
+    form.append_len (form_stream.arrayZ, form_stream.लंबाई);
     form.append_str ("endstream");
-    unsigned form_id = add_object (std::move (form));
+    अचिन्हित form_id = add_object (std::move (form));
 
     /* ExtGState with luminosity soft mask. */
-    unsigned idx = extgstate_count++;
+    अचिन्हित idx = extgstate_गिनती++;
     hb_vector_buf_t gs;
     gs.append_str ("<< /Type /ExtGState\n");
     gs.append_str ("/SMask << /Type /Mask /S /Luminosity /G ");
     gs.append_unsigned (form_id);
     gs.append_str (" 0 R >> >>");
-    unsigned gs_id = add_object (std::move (gs));
+    अचिन्हित gs_id = add_object (std::move (gs));
 
     extgstate_dict.append_str ("/GS");
     extgstate_dict.append_unsigned (idx);
     extgstate_dict.append_c (' ');
     extgstate_dict.append_unsigned (gs_id);
     extgstate_dict.append_str (" 0 R ");
-    return idx;
+    वापस idx;
   }
 
   /* Add a shading, return resource name index. */
-  unsigned add_shading (hb_vector_buf_t &&shading_data)
+  अचिन्हित add_shading (hb_vector_buf_t &&shading_तथ्य)
   {
-    unsigned obj_id = add_object (std::move (shading_data));
-    return add_shading_by_id (obj_id);
+    अचिन्हित obj_id = add_object (std::move (shading_तथ्य));
+    वापस add_shading_by_id (obj_id);
   }
 
   /* Register an already-allocated object as a shading resource. */
-  unsigned add_shading_by_id (unsigned obj_id)
+  अचिन्हित add_shading_by_id (अचिन्हित obj_id)
   {
-    unsigned idx = shading_count++;
+    अचिन्हित idx = shading_गिनती++;
     shading_dict.append_str ("/SH");
     shading_dict.append_unsigned (idx);
     shading_dict.append_c (' ');
     shading_dict.append_unsigned (obj_id);
     shading_dict.append_str (" 0 R ");
-    return idx;
+    वापस idx;
   }
 
   /* Add an XObject image, return resource name index.
    * idat_data/idat_len is the concatenated PNG IDAT payload (zlib data).
    * colors is 1 (gray), 3 (RGB), or 4 (RGBA); for indexed, pass colors=1.
    * plte/plte_len is the PLTE chunk data for indexed images (may be null). */
-  unsigned add_xobject_png_image (const char *idat_data, unsigned idat_len,
-				  unsigned width, unsigned height,
-				  unsigned colors, bool has_alpha,
-				  const uint8_t *plte = nullptr,
-				  unsigned plte_len = 0,
-				  const uint8_t *trns = nullptr,
-				  unsigned trns_len = 0)
+  अचिन्हित add_xobject_png_image (स्थिर अक्षर *idat_तथ्य, अचिन्हित idat_len,
+				  अचिन्हित width, अचिन्हित height,
+				  अचिन्हित colors, bool has_alpha,
+				  स्थिर uint8_t *plte = nullptr,
+				  अचिन्हित plte_len = 0,
+				  स्थिर uint8_t *trns = nullptr,
+				  अचिन्हित trns_len = 0)
   {
-    unsigned idx = xobject_count++;
+    अचिन्हित idx = xobject_गिनती++;
     hb_vector_buf_t obj;
     obj.append_str ("<< /Type /XObject /Subtype /Image\n");
     obj.append_str ("/Width ");
@@ -210,34 +210,34 @@ struct hb_pdf_resources_t
     obj.append_unsigned (height);
     obj.append_str ("\n/BitsPerComponent 8\n");
 
-    if (plte && plte_len >= 3)
+    अगर (plte && plte_len >= 3)
     {
       /* Indexed color: /ColorSpace [/Indexed /DeviceRGB N <hex palette>] */
-      unsigned n_entries = plte_len / 3;
+      अचिन्हित n_entries = plte_len / 3;
       obj.append_str ("/ColorSpace [/Indexed /DeviceRGB ");
       obj.append_unsigned (n_entries - 1);
       obj.append_str (" <");
-      for (unsigned i = 0; i < n_entries * 3; i++)
+      क्रम (अचिन्हित i = 0; i < n_entries * 3; i++)
       {
 	obj.append_c ("0123456789ABCDEF"[plte[i] >> 4]);
 	obj.append_c ("0123456789ABCDEF"[plte[i] & 0xF]);
       }
       obj.append_str (">]\n");
     }
-    else
+    अन्यथा
     {
       obj.append_str ("/ColorSpace ");
-      unsigned color_channels = has_alpha ? colors - 1 : colors;
+      अचिन्हित color_channels = has_alpha ? colors - 1 : colors;
       obj.append_str (color_channels == 1 ? "/DeviceGray" : "/DeviceRGB");
       obj.append_c ('\n');
     }
 
     /* Build SMask for indexed images with tRNS transparency. */
-    unsigned smask_id = 0;
-    if (plte && trns && trns_len)
+    अचिन्हित smask_id = 0;
+    अगर (plte && trns && trns_len)
     {
       hb_vector_buf_t smask_stream;
-      if (hb_pdf_build_indexed_smask (&smask_stream, idat_data, idat_len,
+      अगर (hb_pdf_build_indexed_smask (&smask_stream, idat_तथ्य, idat_len,
 				      width, height, trns, trns_len))
       {
 	hb_vector_buf_t smask_obj;
@@ -248,15 +248,15 @@ struct hb_pdf_resources_t
 	smask_obj.append_unsigned (height);
 	smask_obj.append_str ("\n/ColorSpace /DeviceGray /BitsPerComponent 8\n");
 	smask_obj.append_str ("/Length ");
-	smask_obj.append_unsigned (smask_stream.length);
+	smask_obj.append_unsigned (smask_stream.लंबाई);
 	smask_obj.append_str (" >>\nstream\n");
-	smask_obj.append_len (smask_stream.arrayZ, smask_stream.length);
+	smask_obj.append_len (smask_stream.arrayZ, smask_stream.लंबाई);
 	smask_obj.append_str ("\nendstream");
 	smask_id = add_object (std::move (smask_obj));
       }
     }
 
-    if (smask_id)
+    अगर (smask_id)
     {
       obj.append_str ("/SMask ");
       obj.append_unsigned (smask_id);
@@ -272,60 +272,60 @@ struct hb_pdf_resources_t
     obj.append_str ("/Length ");
     obj.append_unsigned (idat_len);
     obj.append_str (" >>\nstream\n");
-    obj.append_len (idat_data, idat_len);
+    obj.append_len (idat_तथ्य, idat_len);
     obj.append_str ("\nendstream");
 
-    (void) has_alpha;
+    (व्योम) has_alpha;
 
-    unsigned obj_id = add_object (std::move (obj));
+    अचिन्हित obj_id = add_object (std::move (obj));
 
     xobject_dict.append_str ("/Im");
     xobject_dict.append_unsigned (idx);
     xobject_dict.append_c (' ');
     xobject_dict.append_unsigned (obj_id);
     xobject_dict.append_str (" 0 R ");
-    return idx;
+    वापस idx;
   }
 };
 
 /* Store resources pointer in the paint struct's defs buffer
  * (repurposed — defs is unused for PDF). */
-static hb_pdf_resources_t *
+अटल hb_pdf_resources_t *
 hb_pdf_get_resources (hb_vector_paint_t *paint)
 {
-  if (!paint->defs.length)
+  अगर (!paint->defs.लंबाई)
   {
     /* First call: allocate and store. */
-    auto *res = (hb_pdf_resources_t *) hb_calloc (1, sizeof (hb_pdf_resources_t));
-    if (unlikely (!res)) return nullptr;
-    new (res) hb_pdf_resources_t ();
-    if (unlikely (!paint->defs.resize (sizeof (void *))))
+    स्वतः *res = (hb_pdf_resources_t *) hb_calloc (1, माप (hb_pdf_resources_t));
+    अगर (unlikely (!res)) वापस nullptr;
+    नया (res) hb_pdf_resources_t ();
+    अगर (unlikely (!paint->defs.resize (माप (व्योम *))))
     {
       res->~hb_pdf_resources_t ();
       hb_free (res);
-      return nullptr;
+      वापस nullptr;
     }
-    memcpy (paint->defs.arrayZ, &res, sizeof (void *));
+    स_नकल (paint->defs.arrayZ, &res, माप (व्योम *));
   }
   hb_pdf_resources_t *res;
-  memcpy (&res, paint->defs.arrayZ, sizeof (void *));
-  return res;
+  स_नकल (&res, paint->defs.arrayZ, माप (व्योम *));
+  वापस res;
 }
 
-void
+व्योम
 hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint)
 {
-  if (paint->defs.length >= sizeof (void *))
+  अगर (paint->defs.लंबाई >= माप (व्योम *))
   {
     hb_pdf_resources_t *res;
-    memcpy (&res, paint->defs.arrayZ, sizeof (void *));
-    if (res)
+    स_नकल (&res, paint->defs.arrayZ, माप (व्योम *));
+    अगर (res)
     {
       res->~hb_pdf_resources_t ();
       hb_free (res);
     }
   }
-  paint->defs.clear ();
+  paint->defs.सफा ();
 }
 
 
@@ -333,16 +333,16 @@ hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint)
 
 
 /* Emit a glyph outline as PDF path operators into buf. */
-static void
+अटल व्योम
 hb_pdf_emit_glyph_path (hb_vector_paint_t *paint,
 			 hb_font_t *font,
 			 hb_codepoint_t glyph,
 			 hb_vector_buf_t *buf)
 {
-  paint->path.clear ();
+  paint->path.सफा ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  अगर (likely (paint->budget_remaining >= 0))
   {
     hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
 				 paint->x_scale_factor, paint->y_scale_factor,
@@ -351,85 +351,85 @@ hb_pdf_emit_glyph_path (hb_vector_paint_t *paint,
 			hb_vector_pdf_path_draw_funcs_get (),
 			&sink);
   }
-  buf->append_len (paint->path.arrayZ, paint->path.length);
-  paint->path.clear ();
+  buf->append_len (paint->path.arrayZ, paint->path.लंबाई);
+  paint->path.सफा ();
 }
 
 
 /* ---- paint callbacks ---- */
 
-static void
-hb_pdf_paint_push_transform (hb_paint_funcs_t *,
-			     void *paint_data,
-			     float xx, float yx,
-			     float xy, float yy,
-			     float dx, float dy,
-			     void *)
+अटल व्योम
+hb_pdf_paint_धकेलो_transform (hb_paint_funcs_t *,
+			     व्योम *paint_तथ्य,
+			     भग्न xx, भग्न yx,
+			     भग्न xy, भग्न yy,
+			     भग्न dx, भग्न dy,
+			     व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
 
-  auto &body = paint->current_body ();
-  unsigned sprec = body.scale_precision ();
+  स्वतः &body = paint->current_body ();
+  अचिन्हित sprec = body.scale_precision ();
   body.append_str ("q\n");
-  body.append_num (xx, sprec);
+  body.append_अंक (xx, sprec);
   body.append_c (' ');
-  body.append_num (yx, sprec);
+  body.append_अंक (yx, sprec);
   body.append_c (' ');
-  body.append_num (xy, sprec);
+  body.append_अंक (xy, sprec);
   body.append_c (' ');
-  body.append_num (yy, sprec);
+  body.append_अंक (yy, sprec);
   body.append_c (' ');
-  body.append_num (paint->sx (dx));
+  body.append_अंक (paint->sx (dx));
   body.append_c (' ');
-  body.append_num (paint->sy (dy));
+  body.append_अंक (paint->sy (dy));
   body.append_str (" cm\n");
 }
 
-static void
-hb_pdf_paint_pop_transform (hb_paint_funcs_t *,
-			    void *paint_data,
-			    void *)
+अटल व्योम
+hb_pdf_paint_निकालो_transform (hb_paint_funcs_t *,
+			    व्योम *paint_तथ्य,
+			    व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
   paint->current_body ().append_str ("Q\n");
 }
 
-static void
+अटल व्योम
 hb_pdf_paint_fill_glyph (hb_paint_funcs_t *,
-			 void *paint_data,
+			 व्योम *paint_तथ्य,
 			 hb_codepoint_t glyph,
 			 hb_font_t *font,
 			 hb_bool_t,
 			 hb_color_t c,
-			 void *)
+			 व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
 
-  float r = hb_color_get_red (c) / 255.f;
-  float g = hb_color_get_green (c) / 255.f;
-  float b = hb_color_get_blue (c) / 255.f;
-  float a = hb_color_get_alpha (c) / 255.f;
+  भग्न r = hb_color_get_red (c) / 255.f;
+  भग्न g = hb_color_get_green (c) / 255.f;
+  भग्न b = hb_color_get_blue (c) / 255.f;
+  भग्न a = hb_color_get_alpha (c) / 255.f;
 
-  if (a < 1.f / 255.f)
-    return;
+  अगर (a < 1.f / 255.f)
+    वापस;
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
 
   bool scoped = false;
   /* Set alpha via ExtGState if needed, scoped so it does not leak
    * into later paints. */
-  if (a < 1.f - 1.f / 512.f)
+  अगर (a < 1.f - 1.f / 512.f)
   {
-    auto *res = hb_pdf_get_resources (paint);
-    if (res)
+    स्वतः *res = hb_pdf_get_resources (paint);
+    अगर (res)
     {
-      unsigned gs_idx = res->add_extgstate_alpha (a);
+      अचिन्हित gs_idx = res->add_extgstate_alpha (a);
       body.append_str ("q\n");
       scoped = true;
       body.append_str ("/GS");
@@ -438,72 +438,72 @@ hb_pdf_paint_fill_glyph (hb_paint_funcs_t *,
     }
   }
 
-  body.append_num (r, 4);
+  body.append_अंक (r, 4);
   body.append_c (' ');
-  body.append_num (g, 4);
+  body.append_अंक (g, 4);
   body.append_c (' ');
-  body.append_num (b, 4);
+  body.append_अंक (b, 4);
   body.append_str (" rg\n");
   hb_pdf_emit_glyph_path (paint, font, glyph, &body);
   body.append_str ("f\n");
-  if (scoped)
+  अगर (scoped)
     body.append_str ("Q\n");
 }
 
-static void
-hb_pdf_paint_push_clip_glyph (hb_paint_funcs_t *,
-			      void *paint_data,
+अटल व्योम
+hb_pdf_paint_धकेलो_clip_glyph (hb_paint_funcs_t *,
+			      व्योम *paint_तथ्य,
 			      hb_codepoint_t glyph,
 			      hb_font_t *font,
-			      void *)
+			      व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
   body.append_str ("q\n");
   hb_pdf_emit_glyph_path (paint, font, glyph, &body);
   body.append_str ("W n\n");
 }
 
-static void
-hb_pdf_paint_push_clip_rectangle (hb_paint_funcs_t *,
-				  void *paint_data,
-				  float xmin, float ymin,
-				  float xmax, float ymax,
-				  void *)
+अटल व्योम
+hb_pdf_paint_धकेलो_clip_rectangle (hb_paint_funcs_t *,
+				  व्योम *paint_तथ्य,
+				  भग्न xmin, भग्न ymin,
+				  भग्न xmax, भग्न ymax,
+				  व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
   body.append_str ("q\n");
-  body.append_num (paint->sx (xmin));
+  body.append_अंक (paint->sx (xmin));
   body.append_c (' ');
-  body.append_num (paint->sy (ymin));
+  body.append_अंक (paint->sy (ymin));
   body.append_c (' ');
-  body.append_num (paint->sx (xmax - xmin));
+  body.append_अंक (paint->sx (xmax - xmin));
   body.append_c (' ');
-  body.append_num (paint->sy (ymax - ymin));
+  body.append_अंक (paint->sy (ymax - ymin));
   body.append_str (" re W n\n");
 }
 
-static hb_draw_funcs_t *
-hb_pdf_paint_push_clip_path_start (hb_paint_funcs_t *,
-				   void *paint_data,
-				   void **draw_data,
-				   void *)
+अटल hb_draw_funcs_t *
+hb_pdf_paint_धकेलो_clip_path_start (hb_paint_funcs_t *,
+				   व्योम *paint_तथ्य,
+				   व्योम **draw_तथ्य,
+				   व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
   {
-    *draw_data = nullptr;
-    return nullptr;
+    *draw_तथ्य = nullptr;
+    वापस nullptr;
   }
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
   body.append_str ("q\n");
   /* Stream path operators straight into the body; end() seals
    * the path with "W n" to turn it into the clip region.
@@ -513,53 +513,53 @@ hb_pdf_paint_push_clip_path_start (hb_paint_funcs_t *,
 			   paint->x_scale_factor,
 			   paint->y_scale_factor,
 			   &paint->budget_remaining};
-  *draw_data = &paint->clip_path_sink;
-  return hb_vector_pdf_path_draw_funcs_get ();
+  *draw_तथ्य = &paint->clip_path_sink;
+  वापस hb_vector_pdf_path_draw_funcs_get ();
 }
 
-static void
-hb_pdf_paint_push_clip_path_end (hb_paint_funcs_t *,
-				 void *paint_data,
-				 void *)
+अटल व्योम
+hb_pdf_paint_धकेलो_clip_path_end (hb_paint_funcs_t *,
+				 व्योम *paint_तथ्य,
+				 व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
   paint->current_body ().append_str ("W n\n");
 }
 
-static void
-hb_pdf_paint_pop_clip (hb_paint_funcs_t *,
-		       void *paint_data,
-		       void *)
+अटल व्योम
+hb_pdf_paint_निकालो_clip (hb_paint_funcs_t *,
+		       व्योम *paint_तथ्य,
+		       व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
   paint->current_body ().append_str ("Q\n");
 }
 
 /* Paint a solid color, including alpha via ExtGState. */
-static void
+अटल व्योम
 hb_pdf_paint_solid_color (hb_vector_paint_t *paint, hb_color_t c)
 {
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
 
-  float r = hb_color_get_red (c) / 255.f;
-  float g = hb_color_get_green (c) / 255.f;
-  float b = hb_color_get_blue (c) / 255.f;
-  float a = hb_color_get_alpha (c) / 255.f;
+  भग्न r = hb_color_get_red (c) / 255.f;
+  भग्न g = hb_color_get_green (c) / 255.f;
+  भग्न b = hb_color_get_blue (c) / 255.f;
+  भग्न a = hb_color_get_alpha (c) / 255.f;
 
-  if (a < 1.f / 255.f)
-    return;
+  अगर (a < 1.f / 255.f)
+    वापस;
 
   /* Set alpha via ExtGState if needed. */
-  if (a < 1.f - 1.f / 512.f)
+  अगर (a < 1.f - 1.f / 512.f)
   {
-    auto *res = hb_pdf_get_resources (paint);
-    if (res)
+    स्वतः *res = hb_pdf_get_resources (paint);
+    अगर (res)
     {
-      unsigned gs_idx = res->add_extgstate_alpha (a);
+      अचिन्हित gs_idx = res->add_extgstate_alpha (a);
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -567,119 +567,119 @@ hb_pdf_paint_solid_color (hb_vector_paint_t *paint, hb_color_t c)
   }
 
   /* Set fill color. */
-  body.append_num (r, 4);
+  body.append_अंक (r, 4);
   body.append_c (' ');
-  body.append_num (g, 4);
+  body.append_अंक (g, 4);
   body.append_c (' ');
-  body.append_num (b, 4);
+  body.append_अंक (b, 4);
   body.append_str (" rg\n");
 
   /* Paint a huge rect (will be clipped). */
   body.append_str ("-32767 -32767 65534 65534 re f\n");
 }
 
-static void
+अटल व्योम
 hb_pdf_paint_color (hb_paint_funcs_t *,
-		    void *paint_data,
+		    व्योम *paint_तथ्य,
 		    hb_bool_t,
 		    hb_color_t color,
-		    void *)
+		    व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
 
   hb_pdf_paint_solid_color (paint, color);
 }
 
 /* Build an uncompressed alpha mask from indexed PNG IDAT data + tRNS.
  * Decompresses IDAT, un-filters PNG rows, maps palette indices to alpha. */
-static bool
+अटल bool
 hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
-			    const char *idat_data, unsigned idat_len,
-			    unsigned width, unsigned height,
-			    const uint8_t *trns, unsigned trns_len)
+			    स्थिर अक्षर *idat_तथ्य, अचिन्हित idat_len,
+			    अचिन्हित width, अचिन्हित height,
+			    स्थिर uint8_t *trns, अचिन्हित trns_len)
 {
-#ifndef HAVE_ZLIB
-  (void) out; (void) idat_data; (void) idat_len;
-  (void) width; (void) height; (void) trns; (void) trns_len;
-  return false;
-#else
+#अगर_अघोषित HAVE_ZLIB
+  (व्योम) out; (व्योम) idat_तथ्य; (व्योम) idat_len;
+  (व्योम) width; (व्योम) height; (व्योम) trns; (व्योम) trns_len;
+  वापस false;
+#अन्यथा
   /* Guard the size arithmetic below against 32-bit overflow.  width/height come
    * from the attacker-controlled PNG IHDR; without this, (width + 1) * height or
    * width * height can wrap and under-size buffers that are then indexed per
    * pixel (raw + y * (width + 1), out->arrayZ[y * width + x]). */
-  unsigned raw_len, mask_len;
-  if (!width || !height ||
+  अचिन्हित raw_len, mask_len;
+  अगर (!width || !height ||
       width == 0xFFFFFFFFu ||
       hb_unsigned_mul_overflows (width + 1, height, &raw_len) ||
       hb_unsigned_mul_overflows (width, height, &mask_len))
-    return false;
+    वापस false;
 
   /* Decompress IDAT (zlib). */
   /* raw_len = (width + 1) * height: 1 filter byte per row + width bytes. */
   uint8_t *raw = (uint8_t *) hb_malloc (raw_len);
-  if (!raw) return false;
+  अगर (!raw) वापस false;
   HB_SCOPE_GUARD (hb_free (raw));
 
   z_stream stream = {};
-  stream.next_in = (Bytef *) idat_data;
+  stream.अग्र_in = (Bytef *) idat_तथ्य;
   stream.avail_in = idat_len;
-  stream.next_out = (Bytef *) raw;
+  stream.अग्र_out = (Bytef *) raw;
   stream.avail_out = raw_len;
 
-  if (inflateInit (&stream) != Z_OK)
-    return false;
-  int status = inflate (&stream, Z_FINISH);
-  unsigned long total_out = stream.total_out;
+  अगर (inflateInit (&stream) != Z_OK)
+    वापस false;
+  पूर्णांक status = inflate (&stream, Z_FINISH);
+  अचिन्हित दीर्घ योग_out = stream.योग_out;
   inflateEnd (&stream);
-  if (status != Z_STREAM_END || total_out != raw_len)
-    return false;
+  अगर (status != Z_STREAM_END || योग_out != raw_len)
+    वापस false;
 
   /* Un-filter and map to alpha. */
-  if (!out->resize (mask_len))
-    return false;
+  अगर (!out->resize (mask_len))
+    वापस false;
 
   uint8_t *unfiltered = (uint8_t *) hb_malloc (width);
-  if (!unfiltered)
-    return false;
+  अगर (!unfiltered)
+    वापस false;
   HB_SCOPE_GUARD (hb_free (unfiltered));
 
-  uint8_t *prev_unfiltered = (uint8_t *) hb_calloc (width, 1);
-  if (!prev_unfiltered)
-    return false;
-  HB_SCOPE_GUARD (hb_free (prev_unfiltered));
+  uint8_t *पूर्व_unfiltered = (uint8_t *) hb_calloc (width, 1);
+  अगर (!पूर्व_unfiltered)
+    वापस false;
+  HB_SCOPE_GUARD (hb_free (पूर्व_unfiltered));
 
-  for (unsigned y = 0; y < height; y++)
+  क्रम (अचिन्हित y = 0; y < height; y++)
   {
     uint8_t *row = raw + y * (width + 1);
     uint8_t filter = row[0];
     uint8_t *pixels = row + 1;
 
-    for (unsigned x = 0; x < width; x++)
+    क्रम (अचिन्हित x = 0; x < width; x++)
     {
       uint8_t a = (x > 0) ? unfiltered[x - 1] : 0;
-      uint8_t b = prev_unfiltered[x];
-      uint8_t c = (x > 0) ? prev_unfiltered[x - 1] : 0;
+      uint8_t b = पूर्व_unfiltered[x];
+      uint8_t c = (x > 0) ? पूर्व_unfiltered[x - 1] : 0;
       uint8_t val = pixels[x];
 
-      switch (filter)
+      चयन (filter)
       {
-      case 0: unfiltered[x] = val; break; /* None */
-      case 1: unfiltered[x] = val + a; break; /* Sub */
-      case 2: unfiltered[x] = val + b; break; /* Up */
-      case 3: unfiltered[x] = val + (uint8_t) (((unsigned) a + b) / 2); break; /* Average */
-      case 4: /* Paeth */
+      हाल 0: unfiltered[x] = val; अवरोध; /* None */
+      हाल 1: unfiltered[x] = val + a; अवरोध; /* Sub */
+      हाल 2: unfiltered[x] = val + b; अवरोध; /* Up */
+      हाल 3: unfiltered[x] = val + (uint8_t) (((अचिन्हित) a + b) / 2); अवरोध; /* Average */
+      हाल 4: /* Paeth */
       {
-	int p = (int) a + (int) b - (int) c;
-	int pa = abs (p - (int) a);
-	int pb = abs (p - (int) b);
-	int pc = abs (p - (int) c);
+	पूर्णांक p = (पूर्णांक) a + (पूर्णांक) b - (पूर्णांक) c;
+	पूर्णांक pa = असल (p - (पूर्णांक) a);
+	पूर्णांक pb = असल (p - (पूर्णांक) b);
+	पूर्णांक pc = असल (p - (पूर्णांक) c);
 	uint8_t pr = (pa <= pb && pa <= pc) ? a : (pb <= pc) ? b : c;
 	unfiltered[x] = val + pr;
-	break;
+	अवरोध;
       }
-      default: unfiltered[x] = val; break;
+      शेष: unfiltered[x] = val; अवरोध;
       }
 
       /* Map palette index to alpha. */
@@ -688,207 +688,207 @@ hb_pdf_build_indexed_smask (hb_vector_buf_t *out,
     }
 
     /* Swap buffers. */
-    uint8_t *tmp = prev_unfiltered;
-    prev_unfiltered = unfiltered;
+    uint8_t *tmp = पूर्व_unfiltered;
+    पूर्व_unfiltered = unfiltered;
     unfiltered = tmp;
   }
 
-  return true;
-#endif
+  वापस true;
+#पूर्ण_अगर
 }
 
 /* Read a big-endian uint32 from a byte pointer. */
-static inline uint32_t
-hb_pdf_png_u32 (const uint8_t *p)
+अटल अंतरभूत uint32_t
+hb_pdf_png_u32 (स्थिर uint8_t *p)
 {
-  return ((uint32_t) p[0] << 24) | ((uint32_t) p[1] << 16) |
+  वापस ((uint32_t) p[0] << 24) | ((uint32_t) p[1] << 16) |
 	 ((uint32_t) p[2] << 8)  | (uint32_t) p[3];
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_pdf_paint_image (hb_paint_funcs_t *,
-		    void *paint_data,
+		    व्योम *paint_तथ्य,
 		    hb_blob_t *image,
-		    unsigned width,
-		    unsigned height,
+		    अचिन्हित width,
+		    अचिन्हित height,
 		    hb_tag_t format,
-		    float slant HB_UNUSED,
+		    भग्न slant HB_UNUSED,
 		    hb_glyph_extents_t *extents,
-		    void *)
+		    व्योम *)
 {
-  if (format != HB_TAG ('p','n','g',' '))
-    return false;
-  if (!extents || !width || !height)
-    return false;
+  अगर (format != HB_TAG ('p','n','g',' '))
+    वापस false;
+  अगर (!extents || !width || !height)
+    वापस false;
 
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return false;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस false;
+  स्वतः *res = hb_pdf_get_resources (paint);
+  अगर (unlikely (!res))
+    वापस false;
 
-  unsigned len = 0;
-  const uint8_t *data = (const uint8_t *) hb_blob_get_data (image, &len);
-  if (!data || len < 8)
-    return false;
+  अचिन्हित len = 0;
+  स्थिर uint8_t *तथ्य = (स्थिर uint8_t *) hb_blob_get_तथ्य (image, &len);
+  अगर (!तथ्य || len < 8)
+    वापस false;
 
   /* Verify PNG signature. */
-  static const uint8_t png_sig[8] = {137, 80, 78, 71, 13, 10, 26, 10};
-  if (hb_memcmp (data, png_sig, 8) != 0)
-    return false;
+  अटल स्थिर uint8_t png_sig[8] = {137, 80, 78, 71, 13, 10, 26, 10};
+  अगर (hb_memcmp (तथ्य, png_sig, 8) != 0)
+    वापस false;
 
   /* Parse PNG chunks: extract IHDR and concatenate IDAT payloads. */
-  unsigned png_w = 0, png_h = 0;
-  unsigned colors = 3; /* default RGB */
+  अचिन्हित png_w = 0, png_h = 0;
+  अचिन्हित colors = 3; /* default RGB */
   uint8_t color_type = 2;
   bool has_alpha = false;
-  const uint8_t *plte_data = nullptr;
-  unsigned plte_len = 0;
-  const uint8_t *trns_data = nullptr;
-  unsigned trns_len = 0;
+  स्थिर uint8_t *plte_तथ्य = nullptr;
+  अचिन्हित plte_len = 0;
+  स्थिर uint8_t *trns_तथ्य = nullptr;
+  अचिन्हित trns_len = 0;
   hb_vector_buf_t idat;
 
-  unsigned pos = 8;
+  अचिन्हित pos = 8;
   /* Invariant: pos <= len (len >= 8 checked above).  All bounds checks below
    * are written to avoid 32-bit wrapping: a malicious chunk_len must not be
    * able to wrap pos + 12 + chunk_len past the end of the buffer. */
-  while (len - pos >= 12)
+  जबतक (len - pos >= 12)
   {
-    uint32_t chunk_len = hb_pdf_png_u32 (data + pos);
-    uint32_t chunk_type = hb_pdf_png_u32 (data + pos + 4);
-    if (chunk_len > len - pos - 12)
-      break;
-    const uint8_t *chunk_data = data + pos + 8;
+    uint32_t chunk_len = hb_pdf_png_u32 (तथ्य + pos);
+    uint32_t chunk_type = hb_pdf_png_u32 (तथ्य + pos + 4);
+    अगर (chunk_len > len - pos - 12)
+      अवरोध;
+    स्थिर uint8_t *chunk_तथ्य = तथ्य + pos + 8;
 
-    if (chunk_type == 0x49484452u) /* IHDR */
+    अगर (chunk_type == 0x49484452u) /* IHDR */
     {
-      if (chunk_len < 13) return false;
-      png_w = hb_pdf_png_u32 (chunk_data);
-      png_h = hb_pdf_png_u32 (chunk_data + 4);
-      uint8_t bit_depth = chunk_data[8];
-      color_type = chunk_data[9];
-      if (bit_depth != 8) return false; /* only 8-bit supported */
+      अगर (chunk_len < 13) वापस false;
+      png_w = hb_pdf_png_u32 (chunk_तथ्य);
+      png_h = hb_pdf_png_u32 (chunk_तथ्य + 4);
+      uint8_t bit_depth = chunk_तथ्य[8];
+      color_type = chunk_तथ्य[9];
+      अगर (bit_depth != 8) वापस false; /* only 8-bit supported */
 
-      switch (color_type)
+      चयन (color_type)
       {
-      case 0: colors = 1; has_alpha = false; break; /* Grayscale */
-      case 2: colors = 3; has_alpha = false; break; /* RGB */
-      case 3: colors = 1; has_alpha = false; break; /* Indexed */
-      case 4: colors = 2; has_alpha = true;  break; /* Gray+Alpha */
-      case 6: colors = 4; has_alpha = true;  break; /* RGBA */
-      default: return false;
+      हाल 0: colors = 1; has_alpha = false; अवरोध; /* Grayscale */
+      हाल 2: colors = 3; has_alpha = false; अवरोध; /* RGB */
+      हाल 3: colors = 1; has_alpha = false; अवरोध; /* Indexed */
+      हाल 4: colors = 2; has_alpha = true;  अवरोध; /* Gray+Alpha */
+      हाल 6: colors = 4; has_alpha = true;  अवरोध; /* RGBA */
+      शेष: वापस false;
       }
     }
-    else if (chunk_type == 0x504C5445u) /* PLTE */
+    अन्यथा अगर (chunk_type == 0x504C5445u) /* PLTE */
     {
-      plte_data = chunk_data;
+      plte_तथ्य = chunk_तथ्य;
       plte_len = chunk_len;
     }
-    else if (chunk_type == 0x74524E53u) /* tRNS */
+    अन्यथा अगर (chunk_type == 0x74524E53u) /* tRNS */
     {
-      trns_data = chunk_data;
+      trns_तथ्य = chunk_तथ्य;
       trns_len = chunk_len;
     }
-    else if (chunk_type == 0x49444154u) /* IDAT */
+    अन्यथा अगर (chunk_type == 0x49444154u) /* IDAT */
     {
-      idat.append_len ((const char *) chunk_data, chunk_len);
+      idat.append_len ((स्थिर अक्षर *) chunk_तथ्य, chunk_len);
     }
-    else if (chunk_type == 0x49454E44u) /* IEND */
-      break;
+    अन्यथा अगर (chunk_type == 0x49454E44u) /* IEND */
+      अवरोध;
 
     pos += 12 + chunk_len;
   }
 
-  if (!png_w || !png_h || !idat.length)
-    return false;
+  अगर (!png_w || !png_h || !idat.लंबाई)
+    वापस false;
 
-  unsigned im_idx = res->add_xobject_png_image (idat.arrayZ, idat.length,
+  अचिन्हित im_idx = res->add_xobject_png_image (idat.arrayZ, idat.लंबाई,
 						 png_w, png_h,
 						 colors, has_alpha,
-						 plte_data, plte_len,
-						 trns_data, trns_len);
+						 plte_तथ्य, plte_len,
+						 trns_तथ्य, trns_len);
 
   /* Emit: save state, set CTM to map image (0,0)-(1,1) to extents, paint. */
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
   body.append_str ("q\n");
 
   /* Image space: (0,0) at bottom-left, (1,1) at top-right.
    * We need to map to extents (x_bearing, y_bearing+height) .. (x_bearing+width, y_bearing).
    * Since font coords are Y-up like PDF, y_bearing is the top. */
-  float ix = (float) extents->x_bearing;
-  float iy = (float) extents->y_bearing + (float) extents->height;
-  float iw = (float) extents->width;
-  float ih = -(float) extents->height; /* negative because image Y goes up but height is negative in extents */
+  भग्न ix = (भग्न) extents->x_bearing;
+  भग्न iy = (भग्न) extents->y_bearing + (भग्न) extents->height;
+  भग्न iw = (भग्न) extents->width;
+  भग्न ih = -(भग्न) extents->height; /* negative because image Y goes up but height is negative in extents */
 
-  body.append_num (paint->sx (iw));
+  body.append_अंक (paint->sx (iw));
   body.append_str (" 0 0 ");
-  body.append_num (paint->sy (ih));
+  body.append_अंक (paint->sy (ih));
   body.append_c (' ');
-  body.append_num (paint->sx (ix));
+  body.append_अंक (paint->sx (ix));
   body.append_c (' ');
-  body.append_num (paint->sy (iy));
+  body.append_अंक (paint->sy (iy));
   body.append_str (" cm\n");
 
   body.append_str ("/Im");
   body.append_unsigned (im_idx);
   body.append_str (" Do\nQ\n");
 
-  return true;
+  वापस true;
 }
 
 /* ---- Gradient helpers ---- */
 
-static bool
-hb_pdf_gradient_needs_alpha (hb_array_t<const hb_color_stop_t> stops)
+अटल bool
+hb_pdf_gradient_needs_alpha (hb_array_t<स्थिर hb_color_stop_t> stops)
 {
-  for (const auto &s : stops)
-    if (hb_color_get_alpha (s.color) != 255)
-      return true;
-  return false;
+  क्रम (स्थिर स्वतः &s : stops)
+    अगर (hb_color_get_alpha (s.color) != 255)
+      वापस true;
+  वापस false;
 }
 
 /* Build a PDF Type 2 (exponential interpolation) function for
  * a single alpha stop pair (DeviceGray, scalar output). */
-static void
+अटल व्योम
 hb_pdf_build_alpha_interpolation_function (hb_vector_buf_t *obj,
-					   float a0, float a1)
+					   भग्न a0, भग्न a1)
 {
   obj->append_str ("<< /FunctionType 2 /Domain [0 1] /N 1\n");
   obj->append_str ("/C0 [");
-  obj->append_num (a0, 4);
+  obj->append_अंक (a0, 4);
   obj->append_str ("]\n/C1 [");
-  obj->append_num (a1, 4);
+  obj->append_अंक (a1, 4);
   obj->append_str ("] >>");
 }
 
 /* Build a stitching function (Type 3) for the alpha channel of
  * pre-populated paint->color_stops_scratch (already sorted+normalized). */
-static unsigned
+अटल अचिन्हित
 hb_pdf_build_alpha_gradient_function_from_stops (hb_pdf_resources_t *res,
 						 hb_vector_paint_t *paint)
 {
-  unsigned count = paint->color_stops_scratch.length;
+  अचिन्हित गिनती = paint->color_stops_scratch.लंबाई;
 
-  if (count < 2)
+  अगर (गिनती < 2)
   {
-    float a = count ? hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f : 1.f;
+    भग्न a = गिनती ? hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f : 1.f;
     hb_vector_buf_t obj;
     hb_pdf_build_alpha_interpolation_function (&obj, a, a);
-    return res->add_object (std::move (obj));
+    वापस res->add_object (std::move (obj));
   }
 
-  if (count == 2)
+  अगर (गिनती == 2)
   {
     hb_vector_buf_t obj;
     hb_pdf_build_alpha_interpolation_function (&obj,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[0].color) / 255.f,
       hb_color_get_alpha (paint->color_stops_scratch.arrayZ[1].color) / 255.f);
-    return res->add_object (std::move (obj));
+    वापस res->add_object (std::move (obj));
   }
 
-  hb_vector_t<unsigned> sub_func_ids;
-  for (unsigned i = 0; i + 1 < count; i++)
+  hb_vector_t<अचिन्हित> sub_func_ids;
+  क्रम (अचिन्हित i = 0; i + 1 < गिनती; i++)
   {
     hb_vector_buf_t sub;
     hb_pdf_build_alpha_interpolation_function (&sub,
@@ -900,86 +900,86 @@ hb_pdf_build_alpha_gradient_function_from_stops (hb_pdf_resources_t *res,
   hb_vector_buf_t obj;
   obj.append_str ("<< /FunctionType 3 /Domain [0 1]\n");
   obj.append_str ("/Functions [");
-  for (unsigned i = 0; i < sub_func_ids.length; i++)
+  क्रम (अचिन्हित i = 0; i < sub_func_ids.लंबाई; i++)
   {
-    if (i) obj.append_c (' ');
+    अगर (i) obj.append_c (' ');
     obj.append_unsigned (sub_func_ids.arrayZ[i]);
     obj.append_str (" 0 R");
   }
   obj.append_str ("]\n/Bounds [");
-  for (unsigned i = 1; i + 1 < count; i++)
+  क्रम (अचिन्हित i = 1; i + 1 < गिनती; i++)
   {
-    if (i > 1) obj.append_c (' ');
-    obj.append_num (paint->color_stops_scratch.arrayZ[i].offset, 4);
+    अगर (i > 1) obj.append_c (' ');
+    obj.append_अंक (paint->color_stops_scratch.arrayZ[i].offset, 4);
   }
   obj.append_str ("]\n/Encode [");
-  for (unsigned i = 0; i + 1 < count; i++)
+  क्रम (अचिन्हित i = 0; i + 1 < गिनती; i++)
   {
-    if (i) obj.append_c (' ');
+    अगर (i) obj.append_c (' ');
     obj.append_str ("0 1");
   }
   obj.append_str ("] >>");
-  return res->add_object (std::move (obj));
+  वापस res->add_object (std::move (obj));
 }
 
 /* Build a PDF Type 2 (exponential interpolation) function for
  * a single color stop pair. */
-static void
+अटल व्योम
 hb_pdf_build_interpolation_function (hb_vector_buf_t *obj,
 				     hb_color_t c0, hb_color_t c1)
 {
   obj->append_str ("<< /FunctionType 2 /Domain [0 1] /N 1\n");
   obj->append_str ("/C0 [");
-  obj->append_num (hb_color_get_red (c0) / 255.f, 4);
+  obj->append_अंक (hb_color_get_red (c0) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_green (c0) / 255.f, 4);
+  obj->append_अंक (hb_color_get_green (c0) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_blue (c0) / 255.f, 4);
+  obj->append_अंक (hb_color_get_blue (c0) / 255.f, 4);
   obj->append_str ("]\n/C1 [");
-  obj->append_num (hb_color_get_red (c1) / 255.f, 4);
+  obj->append_अंक (hb_color_get_red (c1) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_green (c1) / 255.f, 4);
+  obj->append_अंक (hb_color_get_green (c1) / 255.f, 4);
   obj->append_c (' ');
-  obj->append_num (hb_color_get_blue (c1) / 255.f, 4);
+  obj->append_अंक (hb_color_get_blue (c1) / 255.f, 4);
   obj->append_str ("] >>");
 }
 
 /* Build a stitching function (Type 3) from pre-populated
  * paint->color_stops_scratch (already sorted+normalized). */
-static unsigned
+अटल अचिन्हित
 hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 					   hb_vector_paint_t *paint)
 {
-  unsigned count = paint->color_stops_scratch.length;
+  अचिन्हित गिनती = paint->color_stops_scratch.लंबाई;
 
-  if (count < 2)
+  अगर (गिनती < 2)
   {
     /* Single stop: constant function. */
-    hb_color_t c = count ? paint->color_stops_scratch.arrayZ[0].color
+    hb_color_t c = गिनती ? paint->color_stops_scratch.arrayZ[0].color
 			 : HB_COLOR (0, 0, 0, 255);
     hb_vector_buf_t obj;
     hb_pdf_build_interpolation_function (&obj, c, c);
-    return res->add_object (std::move (obj));
+    वापस res->add_object (std::move (obj));
   }
 
   /* Sort by offset. */
-  paint->color_stops_scratch.as_array ().qsort (
-    [] (const hb_color_stop_t &a, const hb_color_stop_t &b)
-    { return (a.offset > b.offset) - (a.offset < b.offset); });
+  paint->color_stops_scratch.as_array ().क्विक (
+    [] (स्थिर hb_color_stop_t &a, स्थिर hb_color_stop_t &b)
+    { वापस (a.offset > b.offset) - (a.offset < b.offset); });
 
-  if (count == 2)
+  अगर (गिनती == 2)
   {
     /* Two stops: single interpolation function. */
     hb_vector_buf_t obj;
     hb_pdf_build_interpolation_function (&obj,
 					  paint->color_stops_scratch.arrayZ[0].color,
 					  paint->color_stops_scratch.arrayZ[1].color);
-    return res->add_object (std::move (obj));
+    वापस res->add_object (std::move (obj));
   }
 
   /* Multiple stops: create sub-functions and stitch. */
-  hb_vector_t<unsigned> sub_func_ids;
-  for (unsigned i = 0; i + 1 < count; i++)
+  hb_vector_t<अचिन्हित> sub_func_ids;
+  क्रम (अचिन्हित i = 0; i + 1 < गिनती; i++)
   {
     hb_vector_buf_t sub;
     hb_pdf_build_interpolation_function (&sub,
@@ -994,9 +994,9 @@ hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 
   /* Functions array. */
   obj.append_str ("/Functions [");
-  for (unsigned i = 0; i < sub_func_ids.length; i++)
+  क्रम (अचिन्हित i = 0; i < sub_func_ids.लंबाई; i++)
   {
-    if (i) obj.append_c (' ');
+    अगर (i) obj.append_c (' ');
     obj.append_unsigned (sub_func_ids.arrayZ[i]);
     obj.append_str (" 0 R");
   }
@@ -1004,103 +1004,103 @@ hb_pdf_build_gradient_function_from_stops (hb_pdf_resources_t *res,
 
   /* Bounds. */
   obj.append_str ("/Bounds [");
-  for (unsigned i = 1; i + 1 < count; i++)
+  क्रम (अचिन्हित i = 1; i + 1 < गिनती; i++)
   {
-    if (i > 1) obj.append_c (' ');
-    obj.append_num (paint->color_stops_scratch.arrayZ[i].offset, 4);
+    अगर (i > 1) obj.append_c (' ');
+    obj.append_अंक (paint->color_stops_scratch.arrayZ[i].offset, 4);
   }
   obj.append_str ("]\n");
 
   /* Encode array. */
   obj.append_str ("/Encode [");
-  for (unsigned i = 0; i + 1 < count; i++)
+  क्रम (अचिन्हित i = 0; i + 1 < गिनती; i++)
   {
-    if (i) obj.append_c (' ');
+    अगर (i) obj.append_c (' ');
     obj.append_str ("0 1");
   }
   obj.append_str ("] >>");
 
-  return res->add_object (std::move (obj));
+  वापस res->add_object (std::move (obj));
 }
 
-static void
+अटल व्योम
 hb_pdf_paint_linear_gradient (hb_paint_funcs_t *,
-			      void *paint_data,
-			      hb_color_line_t *color_line,
-			      float x0, float y0,
-			      float x1, float y1,
-			      float x2 HB_UNUSED, float y2 HB_UNUSED,
-			      void *)
+			      व्योम *paint_तथ्य,
+			      hb_color_पंक्ति_t *color_पंक्ति,
+			      भग्न x0, भग्न y0,
+			      भग्न x1, भग्न y1,
+			      भग्न x2 HB_UNUSED, भग्न y2 HB_UNUSED,
+			      व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
+  स्वतः *res = hb_pdf_get_resources (paint);
+  अगर (unlikely (!res))
+    वापस;
 
   /* Fetch, normalize stops to [0,1], and adjust coordinates. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  अगर (!paint->fetch_color_stops (color_पंक्ति))
+    वापस;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
+  भग्न mn, mx;
+  hb_paint_normalize_color_पंक्ति (stops.arrayZ, stops.लंबाई, &mn, &mx);
+  भग्न gx0 = x0 + mn * (x1 - x0);
+  भग्न gy0 = y0 + mn * (y1 - y0);
+  भग्न gx1 = x0 + mx * (x1 - x0);
+  भग्न gy1 = y0 + mx * (y1 - y0);
 
-  unsigned func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
+  अचिन्हित func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const char *extend_str = (extend == HB_PAINT_EXTEND_PAD)
+  hb_paint_extend_t extend = hb_color_पंक्ति_get_extend (color_पंक्ति);
+  स्थिर अक्षर *extend_str = (extend == HB_PAINT_EXTEND_PAD)
 			    ? "/Extend [true true]\n" : "";
 
   /* Build Type 2 (axial) shading — color only. */
   hb_vector_buf_t sh;
   sh.append_str ("<< /ShadingType 2 /ColorSpace /DeviceRGB\n");
   sh.append_str ("/Coords [");
-  sh.append_num (paint->sx (gx0));
+  sh.append_अंक (paint->sx (gx0));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy0));
+  sh.append_अंक (paint->sy (gy0));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gx1));
+  sh.append_अंक (paint->sx (gx1));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy1));
+  sh.append_अंक (paint->sy (gy1));
   sh.append_str ("]\n/Function ");
   sh.append_unsigned (func_id);
   sh.append_str (" 0 R\n");
   sh.append_str (extend_str);
   sh.append_str (">>");
 
-  unsigned sh_idx = res->add_shading (std::move (sh));
+  अचिन्हित sh_idx = res->add_shading (std::move (sh));
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
 
   bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
-  if (needs_alpha)
+  अगर (needs_alpha)
   {
-    unsigned alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
+    अचिन्हित alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
 
     hb_vector_buf_t ash;
     ash.append_str ("<< /ShadingType 2 /ColorSpace /DeviceGray\n");
     ash.append_str ("/Coords [");
-    ash.append_num (paint->sx (gx0));
+    ash.append_अंक (paint->sx (gx0));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy0));
+    ash.append_अंक (paint->sy (gy0));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gx1));
+    ash.append_अंक (paint->sx (gx1));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy1));
+    ash.append_अंक (paint->sy (gy1));
     ash.append_str ("]\n/Function ");
     ash.append_unsigned (alpha_func_id);
     ash.append_str (" 0 R\n");
     ash.append_str (extend_str);
     ash.append_str (">>");
-    unsigned alpha_sh_id = res->add_object (std::move (ash));
+    अचिन्हित alpha_sh_id = res->add_object (std::move (ash));
 
-    unsigned gs_idx = res->add_extgstate_smask (alpha_sh_id,
+    अचिन्हित gs_idx = res->add_extgstate_smask (alpha_sh_id,
 						paint->sx (gx0), paint->sy (gy0),
 						paint->sx (gx1 - gx0), paint->sy (gy1 - gy0),
 						paint->get_precision ());
@@ -1114,97 +1114,97 @@ hb_pdf_paint_linear_gradient (hb_paint_funcs_t *,
   body.append_str (" sh\n");
 }
 
-static void
+अटल व्योम
 hb_pdf_paint_radial_gradient (hb_paint_funcs_t *,
-			      void *paint_data,
-			      hb_color_line_t *color_line,
-			      float x0, float y0, float r0,
-			      float x1, float y1, float r1,
-			      void *)
+			      व्योम *paint_तथ्य,
+			      hb_color_पंक्ति_t *color_पंक्ति,
+			      भग्न x0, भग्न y0, भग्न r0,
+			      भग्न x1, भग्न y1, भग्न r1,
+			      व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
+  स्वतः *res = hb_pdf_get_resources (paint);
+  अगर (unlikely (!res))
+    वापस;
 
   /* Fetch, normalize stops to [0,1], and adjust coordinates. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  अगर (!paint->fetch_color_stops (color_पंक्ति))
+    वापस;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gr0 = r0 + mn * (r1 - r0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
-  float gr1 = r0 + mx * (r1 - r0);
+  भग्न mn, mx;
+  hb_paint_normalize_color_पंक्ति (stops.arrayZ, stops.लंबाई, &mn, &mx);
+  भग्न gx0 = x0 + mn * (x1 - x0);
+  भग्न gy0 = y0 + mn * (y1 - y0);
+  भग्न gr0 = r0 + mn * (r1 - r0);
+  भग्न gx1 = x0 + mx * (x1 - x0);
+  भग्न gy1 = y0 + mx * (y1 - y0);
+  भग्न gr1 = r0 + mx * (r1 - r0);
 
-  unsigned func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
+  अचिन्हित func_id = hb_pdf_build_gradient_function_from_stops (res, paint);
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
-  const char *extend_str = (extend == HB_PAINT_EXTEND_PAD)
+  hb_paint_extend_t extend = hb_color_पंक्ति_get_extend (color_पंक्ति);
+  स्थिर अक्षर *extend_str = (extend == HB_PAINT_EXTEND_PAD)
 			    ? "/Extend [true true]\n" : "";
 
   /* Build Type 3 (radial) shading — color only. */
   hb_vector_buf_t sh;
   sh.append_str ("<< /ShadingType 3 /ColorSpace /DeviceRGB\n");
   sh.append_str ("/Coords [");
-  sh.append_num (paint->sx (gx0));
+  sh.append_अंक (paint->sx (gx0));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy0));
+  sh.append_अंक (paint->sy (gy0));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gr0));
+  sh.append_अंक (paint->sx (gr0));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gx1));
+  sh.append_अंक (paint->sx (gx1));
   sh.append_c (' ');
-  sh.append_num (paint->sy (gy1));
+  sh.append_अंक (paint->sy (gy1));
   sh.append_c (' ');
-  sh.append_num (paint->sx (gr1));
+  sh.append_अंक (paint->sx (gr1));
   sh.append_str ("]\n/Function ");
   sh.append_unsigned (func_id);
   sh.append_str (" 0 R\n");
   sh.append_str (extend_str);
   sh.append_str (">>");
 
-  unsigned sh_idx = res->add_shading (std::move (sh));
+  अचिन्हित sh_idx = res->add_shading (std::move (sh));
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
 
   bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
-  if (needs_alpha)
+  अगर (needs_alpha)
   {
-    unsigned alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
+    अचिन्हित alpha_func_id = hb_pdf_build_alpha_gradient_function_from_stops (res, paint);
 
     hb_vector_buf_t ash;
     ash.append_str ("<< /ShadingType 3 /ColorSpace /DeviceGray\n");
     ash.append_str ("/Coords [");
-    ash.append_num (paint->sx (gx0));
+    ash.append_अंक (paint->sx (gx0));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy0));
+    ash.append_अंक (paint->sy (gy0));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gr0));
+    ash.append_अंक (paint->sx (gr0));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gx1));
+    ash.append_अंक (paint->sx (gx1));
     ash.append_c (' ');
-    ash.append_num (paint->sy (gy1));
+    ash.append_अंक (paint->sy (gy1));
     ash.append_c (' ');
-    ash.append_num (paint->sx (gr1));
+    ash.append_अंक (paint->sx (gr1));
     ash.append_str ("]\n/Function ");
     ash.append_unsigned (alpha_func_id);
     ash.append_str (" 0 R\n");
     ash.append_str (extend_str);
     ash.append_str (">>");
-    unsigned alpha_sh_id = res->add_object (std::move (ash));
+    अचिन्हित alpha_sh_id = res->add_object (std::move (ash));
 
     /* BBox: enclosing square of the outer circle. */
-    float cx = (gr1 >= gr0) ? gx1 : gx0;
-    float cy = (gr1 >= gr0) ? gy1 : gy0;
-    float rr = hb_max (gr0, gr1);
-    unsigned gs_idx = res->add_extgstate_smask (alpha_sh_id,
+    भग्न cx = (gr1 >= gr0) ? gx1 : gx0;
+    भग्न cy = (gr1 >= gr0) ? gy1 : gy0;
+    भग्न rr = hb_max (gr0, gr1);
+    अचिन्हित gs_idx = res->add_extgstate_smask (alpha_sh_id,
 						paint->sx (cx - rr), paint->sy (cy - rr),
 						paint->sx (2 * rr), paint->sy (2 * rr),
 						paint->get_precision ());
@@ -1220,47 +1220,47 @@ hb_pdf_paint_radial_gradient (hb_paint_funcs_t *,
 
 
 /* Encode a 16-bit big-endian unsigned value into buf. */
-static void
+अटल व्योम
 hb_pdf_encode_u16 (hb_vector_buf_t *buf, uint16_t v)
 {
-  char bytes[2] = {(char) (v >> 8), (char) (v & 0xFF)};
+  अक्षर bytes[2] = {(अक्षर) (v >> 8), (अक्षर) (v & 0xFF)};
   buf->append_len (bytes, 2);
 }
 
 /* Encode a coordinate as 16-bit value relative to Decode range. */
-static void
+अटल व्योम
 hb_pdf_encode_coord (hb_vector_buf_t *buf,
-		     float val, float lo, float hi)
+		     भग्न val, भग्न lo, भग्न hi)
 {
-  float t = (val - lo) / (hi - lo);
+  भग्न t = (val - lo) / (hi - lo);
   t = hb_clamp (t, 0.f, 1.f);
   hb_pdf_encode_u16 (buf, (uint16_t) (t * 65535.f + 0.5f));
 }
 
 /* Encode RGB from hb_color_t as 3 bytes. */
-static void
+अटल व्योम
 hb_pdf_encode_color_rgb (hb_vector_buf_t *buf, hb_color_t c)
 {
-  char rgb[3] = {(char) hb_color_get_red (c),
-		 (char) hb_color_get_green (c),
-		 (char) hb_color_get_blue (c)};
+  अक्षर rgb[3] = {(अक्षर) hb_color_get_red (c),
+		 (अक्षर) hb_color_get_green (c),
+		 (अक्षर) hb_color_get_blue (c)};
   buf->append_len (rgb, 3);
 }
 
 /* Encode alpha from hb_color_t as 1 byte (gray). */
-static void
+अटल व्योम
 hb_pdf_encode_color_alpha (hb_vector_buf_t *buf, hb_color_t c)
 {
-  char a = (char) hb_color_get_alpha (c);
+  अक्षर a = (अक्षर) hb_color_get_alpha (c);
   buf->append_len (&a, 1);
 }
 
 /* Encode one Coons patch control point. */
-static void
+अटल व्योम
 hb_pdf_encode_point (hb_vector_buf_t *buf,
-		     float x, float y,
-		     float xlo, float xhi,
-		     float ylo, float yhi)
+		     भग्न x, भग्न y,
+		     भग्न xlo, भग्न xhi,
+		     भग्न ylo, भग्न yhi)
 {
   hb_pdf_encode_coord (buf, x, xlo, xhi);
   hb_pdf_encode_coord (buf, y, ylo, yhi);
@@ -1270,64 +1270,64 @@ hb_pdf_encode_point (hb_vector_buf_t *buf,
  * Splits large arcs into sub-patches of max 90°.
  * If alpha_mesh is non-null, emits a parallel DeviceGray
  * patch with the alpha channel. */
-static void
+अटल व्योम
 hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
 			hb_vector_buf_t *alpha_mesh,
-			float cx, float cy,
-			float xlo, float xhi, float ylo, float yhi,
-			float a0, hb_color_t c0_in,
-			float a1, hb_color_t c1_in)
+			भग्न cx, भग्न cy,
+			भग्न xlo, भग्न xhi, भग्न ylo, भग्न yhi,
+			भग्न a0, hb_color_t c0_in,
+			भग्न a1, hb_color_t c1_in)
 {
-  const float R = 32767.f;
-  const float eps = 0.5f;
-  const float MAX_SECTOR = (float) M_PI / 2.f;
+  स्थिर भग्न R = 32767.f;
+  स्थिर भग्न eps = 0.5f;
+  स्थिर भग्न MAX_SECTOR = (भग्न) M_PI / 2.f;
 
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / MAX_SECTOR);
-  if (num_splits < 1) num_splits = 1;
+  पूर्णांक अंक_splits = (पूर्णांक) ceilf (fabsf (a1 - a0) / MAX_SECTOR);
+  अगर (अंक_splits < 1) अंक_splits = 1;
 
-  for (int s = 0; s < num_splits; s++)
+  क्रम (पूर्णांक s = 0; s < अंक_splits; s++)
   {
-    float k0 = (float) s / num_splits;
-    float k1 = (float) (s + 1) / num_splits;
-    float sa0 = a0 + k0 * (a1 - a0);
-    float sa1 = a0 + k1 * (a1 - a0);
+    भग्न k0 = (भग्न) s / अंक_splits;
+    भग्न k1 = (भग्न) (s + 1) / अंक_splits;
+    भग्न sa0 = a0 + k0 * (a1 - a0);
+    भग्न sa1 = a0 + k1 * (a1 - a0);
     hb_color_t sc0 = hb_color_lerp (c0_in, c1_in, k0);
     hb_color_t sc1 = hb_color_lerp (c0_in, c1_in, k1);
 
-    float da = sa1 - sa0;
-    float kappa = (4.f / 3.f) * tanf (da / 4.f);
+    भग्न da = sa1 - sa0;
+    भग्न kappa = (4.f / 3.f) * tanf (da / 4.f);
 
-    float cos0 = cosf (sa0), sin0 = sinf (sa0);
-    float cos1 = cosf (sa1), sin1 = sinf (sa1);
+    भग्न cos0 = cosf (sa0), sin0 = sinf (sa0);
+    भग्न cos1 = cosf (sa1), sin1 = sinf (sa1);
 
-    float p0x = cx + eps * cos0, p0y = cy + eps * sin0;
-    float p3x = cx + R * cos0,   p3y = cy + R * sin0;
-    float p6x = cx + R * cos1,   p6y = cy + R * sin1;
-    float p9x = cx + eps * cos1, p9y = cy + eps * sin1;
+    भग्न p0x = cx + eps * cos0, p0y = cy + eps * sin0;
+    भग्न p3x = cx + R * cos0,   p3y = cy + R * sin0;
+    भग्न p6x = cx + R * cos1,   p6y = cy + R * sin1;
+    भग्न p9x = cx + eps * cos1, p9y = cy + eps * sin1;
 
     /* Edge 1: p0→p3, radial straight line. */
-    float e1_1x = p0x + (p3x - p0x) / 3.f;
-    float e1_1y = p0y + (p3y - p0y) / 3.f;
-    float e1_2x = p0x + 2.f * (p3x - p0x) / 3.f;
-    float e1_2y = p0y + 2.f * (p3y - p0y) / 3.f;
+    भग्न e1_1x = p0x + (p3x - p0x) / 3.f;
+    भग्न e1_1y = p0y + (p3y - p0y) / 3.f;
+    भग्न e1_2x = p0x + 2.f * (p3x - p0x) / 3.f;
+    भग्न e1_2y = p0y + 2.f * (p3y - p0y) / 3.f;
 
     /* Edge 2: p3→p6, outer arc. */
-    float e2_1x = p3x + kappa * R * (-sin0);
-    float e2_1y = p3y + kappa * R * ( cos0);
-    float e2_2x = p6x - kappa * R * (-sin1);
-    float e2_2y = p6y - kappa * R * ( cos1);
+    भग्न e2_1x = p3x + kappa * R * (-sin0);
+    भग्न e2_1y = p3y + kappa * R * ( cos0);
+    भग्न e2_2x = p6x - kappa * R * (-sin1);
+    भग्न e2_2y = p6y - kappa * R * ( cos1);
 
     /* Edge 3: p6→p9, radial straight line. */
-    float e3_1x = p6x + (p9x - p6x) / 3.f;
-    float e3_1y = p6y + (p9y - p6y) / 3.f;
-    float e3_2x = p6x + 2.f * (p9x - p6x) / 3.f;
-    float e3_2y = p6y + 2.f * (p9y - p6y) / 3.f;
+    भग्न e3_1x = p6x + (p9x - p6x) / 3.f;
+    भग्न e3_1y = p6y + (p9y - p6y) / 3.f;
+    भग्न e3_2x = p6x + 2.f * (p9x - p6x) / 3.f;
+    भग्न e3_2y = p6y + 2.f * (p9y - p6y) / 3.f;
 
     /* Edge 4: p9→p0, inner arc. */
-    float e4_1x = p9x + kappa * eps * (-sin1);
-    float e4_1y = p9y + kappa * eps * ( cos1);
-    float e4_2x = p0x - kappa * eps * (-sin0);
-    float e4_2y = p0y - kappa * eps * ( cos0);
+    भग्न e4_1x = p9x + kappa * eps * (-sin1);
+    भग्न e4_1y = p9y + kappa * eps * ( cos1);
+    भग्न e4_2x = p0x - kappa * eps * (-sin0);
+    भग्न e4_2y = p0y - kappa * eps * ( cos0);
 
     mesh->append_c ('\0'); /* flag = 0, new patch */
 
@@ -1349,7 +1349,7 @@ hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
     hb_pdf_encode_color_rgb (mesh, sc1); /* outer end */
     hb_pdf_encode_color_rgb (mesh, sc1); /* inner end */
 
-    if (alpha_mesh)
+    अगर (alpha_mesh)
     {
       alpha_mesh->append_c ('\0');
 
@@ -1375,115 +1375,115 @@ hb_pdf_add_sweep_patch (hb_vector_buf_t *mesh,
 }
 
 /* Callback context + trampoline for hb_paint_sweep_gradient_tiles. */
-struct hb_pdf_sweep_ctx_t {
+काष्ठा hb_pdf_sweep_ctx_t {
   hb_vector_buf_t *mesh;
   hb_vector_buf_t *alpha_mesh;
-  float cx, cy, xlo, xhi, ylo, yhi;
+  भग्न cx, cy, xlo, xhi, ylo, yhi;
 };
 
-static void
-hb_pdf_sweep_emit_patch (float a0, hb_color_t c0,
-			 float a1, hb_color_t c1,
-			 void *user_data)
+अटल व्योम
+hb_pdf_sweep_emit_patch (भग्न a0, hb_color_t c0,
+			 भग्न a1, hb_color_t c1,
+			 व्योम *user_तथ्य)
 {
-  auto *ctx = (hb_pdf_sweep_ctx_t *) user_data;
+  स्वतः *ctx = (hb_pdf_sweep_ctx_t *) user_तथ्य;
   /* Sweep-gradient meshes are not outline-derived, so they are bounded by
    * the output document-size cap, not the outline work budget: stop once a
    * mesh buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->mesh->in_error () ||
+  अगर (unlikely (ctx->mesh->in_error () ||
 		(ctx->alpha_mesh && ctx->alpha_mesh->in_error ())))
-    return;
+    वापस;
   hb_pdf_add_sweep_patch (ctx->mesh, ctx->alpha_mesh,
 			  ctx->cx, ctx->cy,
 			  ctx->xlo, ctx->xhi, ctx->ylo, ctx->yhi,
 			  a0, c0, a1, c1);
 }
 
-static void
+अटल व्योम
 hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
-			     void *paint_data,
-			     hb_color_line_t *color_line,
-			     float cx, float cy,
-			     float start_angle,
-			     float end_angle,
-			     void *)
+			     व्योम *paint_तथ्य,
+			     hb_color_पंक्ति_t *color_पंक्ति,
+			     भग्न cx, भग्न cy,
+			     भग्न start_angle,
+			     भग्न end_angle,
+			     व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  auto *res = hb_pdf_get_resources (paint);
-  if (unlikely (!res))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
+  स्वतः *res = hb_pdf_get_resources (paint);
+  अगर (unlikely (!res))
+    वापस;
 
   /* Get and sort color stops. */
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  अगर (!paint->fetch_color_stops (color_पंक्ति))
+    वापस;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
-  stops.as_array ().qsort (
-    [] (const hb_color_stop_t &a, const hb_color_stop_t &b)
-    { return (a.offset > b.offset) - (a.offset < b.offset); });
+  stops.as_array ().क्विक (
+    [] (स्थिर hb_color_stop_t &a, स्थिर hb_color_stop_t &b)
+    { वापस (a.offset > b.offset) - (a.offset < b.offset); });
 
-  hb_paint_extend_t extend = hb_color_line_get_extend (color_line);
+  hb_paint_extend_t extend = hb_color_पंक्ति_get_extend (color_पंक्ति);
 
-  const float R = 32767.f;
-  float scx = paint->sx (cx), scy = paint->sy (cy);
-  float xlo = scx - R - 1, xhi = scx + R + 1;
-  float ylo = scy - R - 1, yhi = scy + R + 1;
+  स्थिर भग्न R = 32767.f;
+  भग्न scx = paint->sx (cx), scy = paint->sy (cy);
+  भग्न xlo = scx - R - 1, xhi = scx + R + 1;
+  भग्न ylo = scy - R - 1, yhi = scy + R + 1;
 
   bool needs_alpha = hb_pdf_gradient_needs_alpha (stops);
 
   hb_vector_buf_t mesh;
   hb_vector_buf_t alpha_mesh;
   mesh.alloc (256);
-  if (needs_alpha)
+  अगर (needs_alpha)
     alpha_mesh.alloc (256);
 
   hb_pdf_sweep_ctx_t ctx { &mesh, needs_alpha ? &alpha_mesh : nullptr,
 			    scx, scy, xlo, xhi, ylo, yhi };
-  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.length, extend,
+  hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.लंबाई, extend,
 				 start_angle, end_angle,
 				 hb_pdf_sweep_emit_patch, &ctx);
 
-  if (!mesh.length)
-    return;
+  अगर (!mesh.लंबाई)
+    वापस;
 
-  auto hb_pdf_build_mesh_shading = [&] (hb_vector_buf_t &m,
-					 const char *cs,
-					 const char *decode_suffix) -> unsigned
+  स्वतः hb_pdf_build_mesh_shading = [&] (hb_vector_buf_t &m,
+					 स्थिर अक्षर *cs,
+					 स्थिर अक्षर *decode_suffix) -> अचिन्हित
   {
     hb_vector_buf_t sh;
     sh.append_str ("<< /ShadingType 6 /ColorSpace /");
     sh.append_str (cs);
     sh.append_str ("\n/BitsPerCoordinate 16 /BitsPerComponent 8 /BitsPerFlag 8\n");
     sh.append_str ("/Decode [");
-    sh.append_num (xlo, 2);
+    sh.append_अंक (xlo, 2);
     sh.append_c (' ');
-    sh.append_num (xhi, 2);
+    sh.append_अंक (xhi, 2);
     sh.append_c (' ');
-    sh.append_num (ylo, 2);
+    sh.append_अंक (ylo, 2);
     sh.append_c (' ');
-    sh.append_num (yhi, 2);
+    sh.append_अंक (yhi, 2);
     sh.append_str (decode_suffix);
     sh.append_str ("]\n/Length ");
-    sh.append_unsigned (m.length);
+    sh.append_unsigned (m.लंबाई);
     sh.append_str (" >>\nstream\n");
-    sh.append_len (m.arrayZ, m.length);
+    sh.append_len (m.arrayZ, m.लंबाई);
     sh.append_str ("\nendstream");
-    return res->add_object (std::move (sh));
+    वापस res->add_object (std::move (sh));
   };
 
-  unsigned sh_obj_id = hb_pdf_build_mesh_shading (mesh, "DeviceRGB",
+  अचिन्हित sh_obj_id = hb_pdf_build_mesh_shading (mesh, "DeviceRGB",
 						   " 0 1 0 1 0 1");
-  unsigned sh_idx = res->add_shading_by_id (sh_obj_id);
+  अचिन्हित sh_idx = res->add_shading_by_id (sh_obj_id);
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
 
-  if (needs_alpha && alpha_mesh.length)
+  अगर (needs_alpha && alpha_mesh.लंबाई)
   {
-    unsigned alpha_sh_id = hb_pdf_build_mesh_shading (alpha_mesh, "DeviceGray",
+    अचिन्हित alpha_sh_id = hb_pdf_build_mesh_shading (alpha_mesh, "DeviceGray",
 						       " 0 1");
-    unsigned gs_idx = res->add_extgstate_smask (alpha_sh_id,
+    अचिन्हित gs_idx = res->add_extgstate_smask (alpha_sh_id,
 						xlo, ylo,
 						xhi - xlo, yhi - ylo,
 						paint->get_precision ());
@@ -1497,77 +1497,77 @@ hb_pdf_paint_sweep_gradient (hb_paint_funcs_t *,
   body.append_str (" sh\n");
 }
 
-static const char *
+अटल स्थिर अक्षर *
 hb_pdf_blend_mode_name (hb_paint_composite_mode_t mode)
 {
-  switch (mode)
+  चयन (mode)
   {
-  case HB_PAINT_COMPOSITE_MODE_MULTIPLY:       return "Multiply";
-  case HB_PAINT_COMPOSITE_MODE_SCREEN:         return "Screen";
-  case HB_PAINT_COMPOSITE_MODE_OVERLAY:        return "Overlay";
-  case HB_PAINT_COMPOSITE_MODE_DARKEN:         return "Darken";
-  case HB_PAINT_COMPOSITE_MODE_LIGHTEN:        return "Lighten";
-  case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:    return "ColorDodge";
-  case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:     return "ColorBurn";
-  case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:     return "HardLight";
-  case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:     return "SoftLight";
-  case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:     return "Difference";
-  case HB_PAINT_COMPOSITE_MODE_EXCLUSION:      return "Exclusion";
-  case HB_PAINT_COMPOSITE_MODE_HSL_HUE:        return "Hue";
-  case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "Saturation";
-  case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:      return "Color";
-  case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "Luminosity";
+  हाल HB_PAINT_COMPOSITE_MODE_MULTIPLY:       वापस "Multiply";
+  हाल HB_PAINT_COMPOSITE_MODE_SCREEN:         वापस "Screen";
+  हाल HB_PAINT_COMPOSITE_MODE_OVERLAY:        वापस "Overlay";
+  हाल HB_PAINT_COMPOSITE_MODE_DARKEN:         वापस "Darken";
+  हाल HB_PAINT_COMPOSITE_MODE_LIGHTEN:        वापस "Lighten";
+  हाल HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:    वापस "ColorDodge";
+  हाल HB_PAINT_COMPOSITE_MODE_COLOR_BURN:     वापस "ColorBurn";
+  हाल HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:     वापस "HardLight";
+  हाल HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:     वापस "SoftLight";
+  हाल HB_PAINT_COMPOSITE_MODE_DIFFERENCE:     वापस "Difference";
+  हाल HB_PAINT_COMPOSITE_MODE_EXCLUSION:      वापस "Exclusion";
+  हाल HB_PAINT_COMPOSITE_MODE_HSL_HUE:        वापस "Hue";
+  हाल HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: वापस "Saturation";
+  हाल HB_PAINT_COMPOSITE_MODE_HSL_COLOR:      वापस "Color";
+  हाल HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: वापस "Luminosity";
   /* Porter-Duff modes have no PDF blend-mode equivalent; approximate
    * the two that have a plausible color-blend analog, and let the
    * rest fall through to Normal (SRC_OVER). */
-  case HB_PAINT_COMPOSITE_MODE_PLUS:           return "Screen";
-  case HB_PAINT_COMPOSITE_MODE_XOR:            return "Difference";
-  case HB_PAINT_COMPOSITE_MODE_CLEAR:
-  case HB_PAINT_COMPOSITE_MODE_SRC:
-  case HB_PAINT_COMPOSITE_MODE_DEST:
-  case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-  case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-  case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-  case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-  case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-  case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-  case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-  case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-  default:                                     return nullptr; /* Normal */
+  हाल HB_PAINT_COMPOSITE_MODE_PLUS:           वापस "Screen";
+  हाल HB_PAINT_COMPOSITE_MODE_XOR:            वापस "Difference";
+  हाल HB_PAINT_COMPOSITE_MODE_CLEAR:
+  हाल HB_PAINT_COMPOSITE_MODE_SRC:
+  हाल HB_PAINT_COMPOSITE_MODE_DEST:
+  हाल HB_PAINT_COMPOSITE_MODE_SRC_OVER:
+  हाल HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+  हाल HB_PAINT_COMPOSITE_MODE_SRC_IN:
+  हाल HB_PAINT_COMPOSITE_MODE_DEST_IN:
+  हाल HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+  हाल HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+  हाल HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+  हाल HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+  शेष:                                     वापस nullptr; /* Normal */
   }
 }
 
-static void
-hb_pdf_paint_push_group (hb_paint_funcs_t *,
-			 void *paint_data,
-			 void *)
+अटल व्योम
+hb_pdf_paint_धकेलो_group (hb_paint_funcs_t *,
+			 व्योम *paint_तथ्य,
+			 व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
   paint->current_body ().append_str ("q\n");
 }
 
-static void
-hb_pdf_paint_push_group_for (hb_paint_funcs_t *,
-			     void *paint_data,
+अटल व्योम
+hb_pdf_paint_धकेलो_group_for (hb_paint_funcs_t *,
+			     व्योम *paint_तथ्य,
 			     hb_paint_composite_mode_t mode,
-			     void *)
+			     व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
 
-  auto &body = paint->current_body ();
+  स्वतः &body = paint->current_body ();
   body.append_str ("q\n");
 
-  const char *bm = hb_pdf_blend_mode_name (mode);
-  if (bm)
+  स्थिर अक्षर *bm = hb_pdf_blend_mode_name (mode);
+  अगर (bm)
   {
-    auto *res = hb_pdf_get_resources (paint);
-    if (likely (res))
+    स्वतः *res = hb_pdf_get_resources (paint);
+    अगर (likely (res))
     {
-      unsigned gs_idx = res->add_extgstate_blend (bm);
+      अचिन्हित gs_idx = res->add_extgstate_blend (bm);
       body.append_str ("/GS");
       body.append_unsigned (gs_idx);
       body.append_str (" gs\n");
@@ -1575,55 +1575,55 @@ hb_pdf_paint_push_group_for (hb_paint_funcs_t *,
   }
 }
 
-static void
-hb_pdf_paint_pop_group (hb_paint_funcs_t *,
-			void *paint_data,
+अटल व्योम
+hb_pdf_paint_निकालो_group (hb_paint_funcs_t *,
+			व्योम *paint_तथ्य,
 			hb_paint_composite_mode_t mode HB_UNUSED,
-			void *)
+			व्योम *)
 {
-  auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  स्वतः *paint = (hb_vector_paint_t *) paint_तथ्य;
+  अगर (unlikely (!paint->ensure_initialized ()))
+    वापस;
   paint->current_body ().append_str ("Q\n");
 }
 
 
 /* ---- lazy loader for paint funcs ---- */
 
-static inline void free_static_pdf_paint_funcs ();
+अटल अंतरभूत व्योम free_static_pdf_paint_funcs ();
 
-static struct hb_pdf_paint_funcs_lazy_loader_t
+अटल काष्ठा hb_pdf_paint_funcs_lazy_loader_t
   : hb_paint_funcs_lazy_loader_t<hb_pdf_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  अटल hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
-    hb_paint_funcs_set_push_transform_func (funcs, (hb_paint_push_transform_func_t) hb_pdf_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, (hb_paint_pop_transform_func_t) hb_pdf_paint_pop_transform, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_transform_func (funcs, (hb_paint_धकेलो_transform_func_t) hb_pdf_paint_धकेलो_transform, nullptr, nullptr);
+    hb_paint_funcs_set_निकालो_transform_func (funcs, (hb_paint_निकालो_transform_func_t) hb_pdf_paint_निकालो_transform, nullptr, nullptr);
     hb_paint_funcs_set_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_pdf_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, (hb_paint_push_clip_glyph_func_t) hb_pdf_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, (hb_paint_push_clip_rectangle_func_t) hb_pdf_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, (hb_paint_push_clip_path_start_func_t) hb_pdf_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, (hb_paint_push_clip_path_end_func_t) hb_pdf_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, (hb_paint_pop_clip_func_t) hb_pdf_paint_pop_clip, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_clip_glyph_func (funcs, (hb_paint_धकेलो_clip_glyph_func_t) hb_pdf_paint_धकेलो_clip_glyph, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_clip_rectangle_func (funcs, (hb_paint_धकेलो_clip_rectangle_func_t) hb_pdf_paint_धकेलो_clip_rectangle, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_clip_path_start_func (funcs, (hb_paint_धकेलो_clip_path_start_func_t) hb_pdf_paint_धकेलो_clip_path_start, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_clip_path_end_func (funcs, (hb_paint_धकेलो_clip_path_end_func_t) hb_pdf_paint_धकेलो_clip_path_end, nullptr, nullptr);
+    hb_paint_funcs_set_निकालो_clip_func (funcs, (hb_paint_निकालो_clip_func_t) hb_pdf_paint_निकालो_clip, nullptr, nullptr);
     hb_paint_funcs_set_color_func (funcs, (hb_paint_color_func_t) hb_pdf_paint_color, nullptr, nullptr);
     hb_paint_funcs_set_image_func (funcs, (hb_paint_image_func_t) hb_pdf_paint_image, nullptr, nullptr);
     hb_paint_funcs_set_linear_gradient_func (funcs, (hb_paint_linear_gradient_func_t) hb_pdf_paint_linear_gradient, nullptr, nullptr);
     hb_paint_funcs_set_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_pdf_paint_radial_gradient, nullptr, nullptr);
     hb_paint_funcs_set_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_pdf_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, (hb_paint_push_group_func_t) hb_pdf_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_for_func (funcs, (hb_paint_push_group_for_func_t) hb_pdf_paint_push_group_for, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, (hb_paint_pop_group_func_t) hb_pdf_paint_pop_group, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_group_func (funcs, (hb_paint_धकेलो_group_func_t) hb_pdf_paint_धकेलो_group, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_group_for_func (funcs, (hb_paint_धकेलो_group_for_func_t) hb_pdf_paint_धकेलो_group_for, nullptr, nullptr);
+    hb_paint_funcs_set_निकालो_group_func (funcs, (hb_paint_निकालो_group_func_t) hb_pdf_paint_निकालो_group, nullptr, nullptr);
     hb_paint_funcs_set_set_budget_func (funcs, hb_vector_paint_set_budget_callback, nullptr, nullptr);
     hb_paint_funcs_set_get_budget_func (funcs, hb_vector_paint_get_budget_callback, nullptr, nullptr);
     hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
     hb_paint_funcs_make_immutable (funcs);
     hb_atexit (free_static_pdf_paint_funcs);
-    return funcs;
+    वापस funcs;
   }
 } static_pdf_paint_funcs;
 
-static inline void
+अटल अंतरभूत व्योम
 free_static_pdf_paint_funcs ()
 {
   static_pdf_paint_funcs.free_instance ();
@@ -1632,7 +1632,7 @@ free_static_pdf_paint_funcs ()
 hb_paint_funcs_t *
 hb_vector_paint_pdf_funcs_get ()
 {
-  return static_pdf_paint_funcs.get_unconst ();
+  वापस static_pdf_paint_funcs.get_unconst ();
 }
 
 
@@ -1641,76 +1641,76 @@ hb_vector_paint_pdf_funcs_get ()
 hb_blob_t *
 hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
-  if (!paint->group_stack.length ||
-      !paint->group_stack.arrayZ[0].length)
-    return nullptr;
+  अगर (!paint->has_extents)
+    वापस nullptr;
+  अगर (!paint->group_ढेर.लंबाई ||
+      !paint->group_ढेर.arrayZ[0].लंबाई)
+    वापस nullptr;
 
-  hb_vector_buf_t &content = paint->group_stack.arrayZ[0];
+  hb_vector_buf_t &content = paint->group_ढेर.arrayZ[0];
   hb_pdf_resources_t *res = hb_pdf_get_resources (paint);
 
-  float ex = paint->extents.x;
-  float ey = paint->extents.y;
-  float ew = paint->extents.width;
-  float eh = paint->extents.height;
+  भग्न ex = paint->extents.x;
+  भग्न ey = paint->extents.y;
+  भग्न ew = paint->extents.width;
+  भग्न eh = paint->extents.height;
 
-  unsigned num_extra = res ? res->objects.length : 0;
-  unsigned total_objects = 4 + num_extra; /* 1-based: 1..total_objects */
+  अचिन्हित अंक_extra = res ? res->objects.लंबाई : 0;
+  अचिन्हित योग_objects = 4 + अंक_extra; /* 1-based: 1..total_objects */
 
   /* Build PDF. */
   hb_vector_buf_t out;
   hb_buf_recover_recycled (paint->recycled_blob, &out);
-  out.alloc (content.length + num_extra * 128 + 1024);
+  out.alloc (content.लंबाई + अंक_extra * 128 + 1024);
 
-  hb_vector_t<unsigned> offsets;
-  if (unlikely (!offsets.resize (total_objects)))
-    return nullptr;
+  hb_vector_t<अचिन्हित> offsets;
+  अगर (unlikely (!offsets.resize (योग_objects)))
+    वापस nullptr;
 
   out.append_str ("%PDF-1.4\n%\xC0\xC1\xC2\xC3\n");
 
   /* Object 1: Catalog */
-  offsets.arrayZ[0] = out.length;
+  offsets.arrayZ[0] = out.लंबाई;
   out.append_str ("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
 
   /* Object 2: Pages */
-  offsets.arrayZ[1] = out.length;
+  offsets.arrayZ[1] = out.लंबाई;
   out.append_str ("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
 
   /* Object 3: Page */
-  offsets.arrayZ[2] = out.length;
+  offsets.arrayZ[2] = out.लंबाई;
   out.append_str ("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [");
-  out.append_num (ex);
+  out.append_अंक (ex);
   out.append_c (' ');
-  out.append_num (ey);
+  out.append_अंक (ey);
   out.append_c (' ');
-  out.append_num (ex + ew);
+  out.append_अंक (ex + ew);
   out.append_c (' ');
-  out.append_num (ey + eh);
+  out.append_अंक (ey + eh);
   out.append_str ("]\n/Contents 4 0 R");
 
   /* Resources. */
   bool has_resources = res &&
-    (res->extgstate_dict.length || res->shading_dict.length || res->xobject_dict.length);
-  if (has_resources)
+    (res->extgstate_dict.लंबाई || res->shading_dict.लंबाई || res->xobject_dict.लंबाई);
+  अगर (has_resources)
   {
     out.append_str ("\n/Resources <<");
-    if (res->extgstate_dict.length)
+    अगर (res->extgstate_dict.लंबाई)
     {
       out.append_str (" /ExtGState << ");
-      out.append_len (res->extgstate_dict.arrayZ, res->extgstate_dict.length);
+      out.append_len (res->extgstate_dict.arrayZ, res->extgstate_dict.लंबाई);
       out.append_str (">>");
     }
-    if (res->shading_dict.length)
+    अगर (res->shading_dict.लंबाई)
     {
       out.append_str (" /Shading << ");
-      out.append_len (res->shading_dict.arrayZ, res->shading_dict.length);
+      out.append_len (res->shading_dict.arrayZ, res->shading_dict.लंबाई);
       out.append_str (">>");
     }
-    if (res->xobject_dict.length)
+    अगर (res->xobject_dict.लंबाई)
     {
       out.append_str (" /XObject << ");
-      out.append_len (res->xobject_dict.arrayZ, res->xobject_dict.length);
+      out.append_len (res->xobject_dict.arrayZ, res->xobject_dict.लंबाई);
       out.append_str (">>");
     }
     out.append_str (" >>");
@@ -1720,79 +1720,79 @@ hb_vector_paint_render_pdf (hb_vector_paint_t *paint)
 
   /* Build content stream: optional background rect + glyph content. */
   hb_vector_buf_t bg_prefix;
-  if (hb_color_get_alpha (paint->background))
+  अगर (hb_color_get_alpha (paint->background))
   {
-    float r = hb_color_get_red (paint->background) / 255.f;
-    float g = hb_color_get_green (paint->background) / 255.f;
-    float b = hb_color_get_blue (paint->background) / 255.f;
-    float a = hb_color_get_alpha (paint->background) / 255.f;
-    if (a < 1.f - 1.f / 512.f)
+    भग्न r = hb_color_get_red (paint->background) / 255.f;
+    भग्न g = hb_color_get_green (paint->background) / 255.f;
+    भग्न b = hb_color_get_blue (paint->background) / 255.f;
+    भग्न a = hb_color_get_alpha (paint->background) / 255.f;
+    अगर (a < 1.f - 1.f / 512.f)
     {
-      if (res)
+      अगर (res)
       {
-	unsigned gs_idx = res->add_extgstate_alpha (a);
+	अचिन्हित gs_idx = res->add_extgstate_alpha (a);
 	bg_prefix.append_str ("/GS");
 	bg_prefix.append_unsigned (gs_idx);
 	bg_prefix.append_str (" gs\n");
       }
     }
-    bg_prefix.append_num (r, 4);
+    bg_prefix.append_अंक (r, 4);
     bg_prefix.append_c (' ');
-    bg_prefix.append_num (g, 4);
+    bg_prefix.append_अंक (g, 4);
     bg_prefix.append_c (' ');
-    bg_prefix.append_num (b, 4);
+    bg_prefix.append_अंक (b, 4);
     bg_prefix.append_str (" rg\n");
-    bg_prefix.append_num (ex);
+    bg_prefix.append_अंक (ex);
     bg_prefix.append_c (' ');
-    bg_prefix.append_num (ey);
+    bg_prefix.append_अंक (ey);
     bg_prefix.append_c (' ');
-    bg_prefix.append_num (ew);
+    bg_prefix.append_अंक (ew);
     bg_prefix.append_c (' ');
-    bg_prefix.append_num (eh);
+    bg_prefix.append_अंक (eh);
     bg_prefix.append_str (" re f\n");
   }
-  unsigned stream_len = bg_prefix.length + content.length;
+  अचिन्हित stream_len = bg_prefix.लंबाई + content.लंबाई;
 
   /* Object 4: Content stream */
-  offsets.arrayZ[3] = out.length;
+  offsets.arrayZ[3] = out.लंबाई;
   out.append_str ("4 0 obj\n<< /Length ");
   out.append_unsigned (stream_len);
   out.append_str (" >>\nstream\n");
-  out.append_len (bg_prefix.arrayZ, bg_prefix.length);
-  out.append_len (content.arrayZ, content.length);
+  out.append_len (bg_prefix.arrayZ, bg_prefix.लंबाई);
+  out.append_len (content.arrayZ, content.लंबाई);
   out.append_str ("endstream\nendobj\n");
 
   /* Extra objects (functions, shadings, ExtGState). */
-  for (unsigned i = 0; i < num_extra; i++)
+  क्रम (अचिन्हित i = 0; i < अंक_extra; i++)
   {
-    offsets.arrayZ[4 + i] = out.length;
+    offsets.arrayZ[4 + i] = out.लंबाई;
     out.append_unsigned (5 + i);
     out.append_str (" 0 obj\n");
-    auto &obj = res->objects.arrayZ[i];
-    out.append_len (obj.data.arrayZ, obj.data.length);
+    स्वतः &obj = res->objects.arrayZ[i];
+    out.append_len (obj.तथ्य.arrayZ, obj.तथ्य.लंबाई);
     out.append_str ("\nendobj\n");
   }
 
   /* Cross-reference table */
-  unsigned xref_offset = out.length;
+  अचिन्हित xref_offset = out.लंबाई;
   out.append_str ("xref\n0 ");
-  out.append_unsigned (total_objects + 1);
+  out.append_unsigned (योग_objects + 1);
   out.append_str ("\n0000000000 65535 f \n");
-  for (unsigned i = 0; i < total_objects; i++)
+  क्रम (अचिन्हित i = 0; i < योग_objects; i++)
   {
-    char tmp[21];
-    snprintf (tmp, sizeof (tmp), "%010u 00000 n \n", offsets.arrayZ[i]);
+    अक्षर tmp[21];
+    snprintf (tmp, माप (tmp), "%010u 00000 n \n", offsets.arrayZ[i]);
     out.append_len (tmp, 20);
   }
 
   /* Trailer */
   out.append_str ("trailer\n<< /Size ");
-  out.append_unsigned (total_objects + 1);
+  out.append_unsigned (योग_objects + 1);
   out.append_str (" /Root 1 0 R >>\nstartxref\n");
   out.append_unsigned (xref_offset);
   out.append_str ("\n%%EOF\n");
 
   hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
 
-  return blob;
+  वापस blob;
 }

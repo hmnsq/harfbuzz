@@ -26,25 +26,25 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_ARABIC_HH
-#define HB_OT_SHAPER_ARABIC_HH
+#अगर_अघोषित HB_OT_SHAPER_ARABIC_HH
+#घोषणा HB_OT_SHAPER_ARABIC_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#समावेश "hb-ot-shaper.hh"
 
 
-struct arabic_shape_plan_t;
+काष्ठा arabic_shape_plan_t;
 
-HB_INTERNAL void *
-data_create_arabic (const hb_ot_shape_plan_t *plan);
+HB_INTERNAL व्योम *
+तथ्य_create_arabic (स्थिर hb_ot_shape_plan_t *plan);
 
-HB_INTERNAL void
-data_destroy_arabic (void *data);
+HB_INTERNAL व्योम
+तथ्य_destroy_arabic (व्योम *तथ्य);
 
-HB_INTERNAL void
-setup_masks_arabic_plan (const arabic_shape_plan_t *arabic_plan,
-			 hb_buffer_t               *buffer,
+HB_INTERNAL व्योम
+setup_masks_arabic_plan (स्थिर arabic_shape_plan_t *arabic_plan,
+			 hb_बफर_t               *बफर,
 			 hb_script_t                script);
 
-#endif /* HB_OT_SHAPER_ARABIC_HH */
+#पूर्ण_अगर /* HB_OT_SHAPER_ARABIC_HH */

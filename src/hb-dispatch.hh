@@ -26,35 +26,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DISPATCH_HH
-#define HB_DISPATCH_HH
+#अगर_अघोषित HB_DISPATCH_HH
+#घोषणा HB_DISPATCH_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
 /*
  * Dispatch
  */
 
-template <typename Context, typename Return=hb_empty_t, unsigned int MaxDebugDepth=0>
-struct hb_dispatch_context_t
+ढाँचा <typename Context, typename Return=hb_empty_t, अचिन्हित पूर्णांक MaxDebugDepth=0>
+काष्ठा hb_dispatch_context_t
 {
-  private:
+  निजी:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const Context* thiz () const { return static_cast<const Context *> (this); }
-	Context* thiz ()       { return static_cast<      Context *> (this); }
-  public:
-  const char *get_name () { return "UNKNOWN"; }
-  static constexpr unsigned max_debug_depth = MaxDebugDepth;
-  typedef Return return_t;
-  template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format HB_UNUSED) { return true; }
-  template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
-  static return_t no_dispatch_return_value () { return Context::default_return_value (); }
-  static bool stop_sublookup_iteration (const return_t r HB_UNUSED) { return false; }
-  unsigned debug_depth = 0;
+  स्थिर Context* thiz () स्थिर { वापस static_cast<स्थिर Context *> (यह); }
+	Context* thiz ()       { वापस static_cast<      Context *> (यह); }
+  खुला:
+  स्थिर अक्षर *get_name () { वापस "UNKNOWN"; }
+  अटल constexpr अचिन्हित max_debug_depth = MaxDebugDepth;
+  प्रकार Return return_t;
+  ढाँचा <typename T, typename F>
+  bool may_dispatch (स्थिर T *obj HB_UNUSED, स्थिर F *format HB_UNUSED) { वापस true; }
+  ढाँचा <typename T, typename ...Ts>
+  return_t dispatch (स्थिर T &obj, Ts&&... ds)
+  { वापस obj.dispatch (thiz (), std::forward<Ts> (ds)...); }
+  अटल return_t no_dispatch_return_मूल्य () { वापस Context::default_return_मूल्य (); }
+  अटल bool stop_sublookup_iteration (स्थिर return_t r HB_UNUSED) { वापस false; }
+  अचिन्हित debug_depth = 0;
 };
 
 
-#endif /* HB_DISPATCH_HH */
+#पूर्ण_अगर /* HB_DISPATCH_HH */

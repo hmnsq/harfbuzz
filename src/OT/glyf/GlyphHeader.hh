@@ -1,26 +1,26 @@
-#ifndef OT_GLYF_GLYPHHEADER_HH
-#define OT_GLYF_GLYPHHEADER_HH
+#अगर_अघोषित OT_GLYF_GLYPHHEADER_HH
+#घोषणा OT_GLYF_GLYPHHEADER_HH
 
 
-#include "../../hb-open-type.hh"
+#समावेश "../../hb-open-type.hh"
 
 
 namespace OT {
 namespace glyf_impl {
 
 
-struct GlyphHeader
+काष्ठा GlyphHeader
 {
-  bool has_data () const { return numberOfContours; }
+  bool has_तथ्य () स्थिर { वापस संख्या_Of_Contours; }
 
-  template <typename accelerator_t>
-  bool get_extents_without_var_scaled (hb_font_t *font, const accelerator_t &glyf_accelerator,
-				       hb_codepoint_t gid, hb_glyph_extents_t *extents) const
+  ढाँचा <typename accelerator_t>
+  bool get_extents_without_var_scaled (hb_font_t *font, स्थिर accelerator_t &glyf_accelerator,
+				       hb_codepoint_t gid, hb_glyph_extents_t *extents) स्थिर
   {
     /* Undocumented rasterizer behavior: shift glyph to the left by (lsb - xMin), i.e., xMin = lsb */
     /* extents->x_bearing = hb_min (glyph_header.xMin, glyph_header.xMax); */
-    int lsb = hb_min (xMin, xMax);
-    (void) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
+    पूर्णांक lsb = hb_min (xMin, xMax);
+    (व्योम) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
     extents->x_bearing = lsb;
     extents->y_bearing = hb_max (yMin, yMax);
     extents->width     = hb_max (xMin, xMax) - hb_min (xMin, xMax);
@@ -28,10 +28,10 @@ struct GlyphHeader
 
     font->scale_glyph_extents (extents);
 
-    return true;
+    वापस true;
   }
 
-  HBINT16	numberOfContours;
+  HBINT16	संख्या_Of_Contours;
 		    /* If the number of contours is
 		     * greater than or equal to zero,
 		     * this is a simple glyph; if negative,
@@ -40,8 +40,8 @@ struct GlyphHeader
   FWORD	yMin;	/* Minimum y for coordinate data. */
   FWORD	xMax;	/* Maximum x for coordinate data. */
   FWORD	yMax;	/* Maximum y for coordinate data. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  खुला:
+  DEFINE_आकार_STATIC (10);
 };
 
 
@@ -49,4 +49,4 @@ struct GlyphHeader
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYPHHEADER_HH */
+#पूर्ण_अगर /* OT_GLYF_GLYPHHEADER_HH */

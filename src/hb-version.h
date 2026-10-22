@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_VERSION_H
-#define HB_VERSION_H
+#अगर_अघोषित HB_VERSION_H
+#घोषणा HB_VERSION_H
 
-#include "hb-common.h"
+#समावेश "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -41,26 +41,26 @@ HB_BEGIN_DECLS
  *
  * The major component of the library version available at compile-time.
  */
-#define HB_VERSION_MAJOR 14
+#घोषणा HB_VERSION_MAJOR 14
 /**
  * HB_VERSION_MINOR:
  *
  * The minor component of the library version available at compile-time.
  */
-#define HB_VERSION_MINOR 6
+#घोषणा HB_VERSION_MINOR 6
 /**
  * HB_VERSION_MICRO:
  *
  * The micro component of the library version available at compile-time.
  */
-#define HB_VERSION_MICRO 0
+#घोषणा HB_VERSION_MICRO 0
 
 /**
  * HB_VERSION_STRING:
  *
  * A string literal containing the library version available at compile-time.
  */
-#define HB_VERSION_STRING "14.6.0"
+#घोषणा HB_VERSION_STRING "14.6.0"
 
 /**
  * HB_VERSION_ATLEAST:
@@ -71,25 +71,25 @@ HB_BEGIN_DECLS
  * Tests the library version at compile-time against a minimum value,
  * as three integer components.
  */
-#define HB_VERSION_ATLEAST(major,minor,micro) \
+#घोषणा HB_VERSION_ATLEAST(major,minor,micro) \
 	((major)*10000+(minor)*100+(micro) <= \
 	 HB_VERSION_MAJOR*10000+HB_VERSION_MINOR*100+HB_VERSION_MICRO)
 
 
-HB_EXTERN void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro);
+HB_EXTERN व्योम
+hb_version (अचिन्हित पूर्णांक *major,
+	    अचिन्हित पूर्णांक *minor,
+	    अचिन्हित पूर्णांक *micro);
 
-HB_EXTERN const char *
-hb_version_string (void);
+HB_EXTERN स्थिर अक्षर *
+hb_version_string (व्योम);
 
 HB_EXTERN hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro);
+hb_version_atleast (अचिन्हित पूर्णांक major,
+		    अचिन्हित पूर्णांक minor,
+		    अचिन्हित पूर्णांक micro);
 
 
 HB_END_DECLS
 
-#endif /* HB_VERSION_H */
+#पूर्ण_अगर /* HB_VERSION_H */

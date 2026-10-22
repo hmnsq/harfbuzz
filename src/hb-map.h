@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_MAP_H
-#define HB_MAP_H
+#अगर_अघोषित HB_MAP_H
+#घोषणा HB_MAP_H
 
-#include "hb-common.h"
-#include "hb-set.h"
+#समावेश "hb-common.h"
+#समावेश "hb-set.h"
 
 HB_BEGIN_DECLS
 
@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  *
  * Since: 1.7.7
  */
-#define HB_MAP_VALUE_INVALID HB_CODEPOINT_INVALID
+#घोषणा HB_MAP_मूल्य_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_map_t:
@@ -52,92 +52,92 @@ HB_BEGIN_DECLS
  * Data type for holding integer-to-integer hash maps.
  *
  **/
-typedef struct hb_map_t hb_map_t;
+प्रकार काष्ठा hb_map_t hb_map_t;
 
 
 HB_EXTERN hb_map_t *
-hb_map_create (void);
+hb_map_create (व्योम);
 
 HB_EXTERN hb_map_t *
-hb_map_get_empty (void);
+hb_map_get_empty (व्योम);
 
 HB_EXTERN hb_map_t *
 hb_map_reference (hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_map_destroy (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_map_set_user_तथ्य (hb_map_t           *map,
+		      hb_user_तथ्य_कुंजी_t *कुंजी_2,
+		      व्योम *              तथ्य,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key);
+HB_EXTERN व्योम *
+hb_map_get_user_तथ्य (स्थिर hb_map_t     *map,
+		      hb_user_तथ्य_कुंजी_t *कुंजी_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_map_allocation_successful (const hb_map_t *map);
+hb_map_allocation_successful (स्थिर hb_map_t *map);
 
 HB_EXTERN hb_map_t *
-hb_map_copy (const hb_map_t *map);
+hb_map_copy (स्थिर hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_map_clear (hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_empty (const hb_map_t *map);
+hb_map_is_empty (स्थिर hb_map_t *map);
 
-HB_EXTERN unsigned int
-hb_map_get_population (const hb_map_t *map);
+HB_EXTERN अचिन्हित पूर्णांक
+hb_map_get_population (स्थिर hb_map_t *map);
 
 HB_EXTERN hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other);
+hb_map_is_equal (स्थिर hb_map_t *map,
+		 स्थिर hb_map_t *other);
 
-HB_EXTERN unsigned int
-hb_map_hash (const hb_map_t *map);
+HB_EXTERN अचिन्हित पूर्णांक
+hb_map_hash (स्थिर hb_map_t *map);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_map_set (hb_map_t       *map,
-	    hb_codepoint_t  key,
-	    hb_codepoint_t  value);
+	    hb_codepoint_t  कुंजी_2,
+	    hb_codepoint_t  मूल्य_2);
 
 HB_EXTERN hb_codepoint_t
-hb_map_get (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_get (स्थिर hb_map_t *map,
+	    hb_codepoint_t  कुंजी_2);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_map_del (hb_map_t       *map,
-	    hb_codepoint_t  key);
+	    hb_codepoint_t  कुंजी_2);
 
 HB_EXTERN hb_bool_t
-hb_map_has (const hb_map_t *map,
-	    hb_codepoint_t  key);
+hb_map_has (स्थिर hb_map_t *map,
+	    hb_codepoint_t  कुंजी_2);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other);
+	       स्थिर hb_map_t *other);
 
 /* Pass -1 in for idx to get started. */
 HB_EXTERN hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
-	     hb_codepoint_t *key,
-	     hb_codepoint_t *value);
+hb_map_अग्र (स्थिर hb_map_t *map,
+	     पूर्णांक *idx,
+	     hb_codepoint_t *कुंजी_2,
+	     hb_codepoint_t *मूल्य_2);
 
-HB_EXTERN void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys);
+HB_EXTERN व्योम
+hb_map_कुंजियाँ (स्थिर hb_map_t *map,
+	     hb_set_t *कुंजियाँ);
 
-HB_EXTERN void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values);
+HB_EXTERN व्योम
+hb_map_मूल्यावली (स्थिर hb_map_t *map,
+	       hb_set_t *मूल्यावली);
 
 HB_END_DECLS
 
-#endif /* HB_MAP_H */
+#पूर्ण_अगर /* HB_MAP_H */

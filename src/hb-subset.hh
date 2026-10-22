@@ -24,35 +24,35 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_HH
-#define HB_SUBSET_HH
+#अगर_अघोषित HB_SUBSET_HH
+#घोषणा HB_SUBSET_HH
 
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-subset.h"
+#समावेश "hb-subset.h"
 
-#include "hb-machinery.hh"
-#include "hb-serialize.hh"
-#include "hb-subset-input.hh"
-#include "hb-subset-plan.hh"
+#समावेश "hb-machinery.hh"
+#समावेश "hb-serialize.hh"
+#समावेश "hb-subset-input.hh"
+#समावेश "hb-subset-plan.hh"
 
-struct hb_subset_context_t :
+काष्ठा hb_subset_context_t :
        hb_dispatch_context_t<hb_subset_context_t, bool, HB_DEBUG_SUBSET>
 {
-  const char *get_name () { return "SUBSET"; }
-  static return_t default_return_value () { return true; }
+  स्थिर अक्षर *get_name () { वापस "SUBSET"; }
+  अटल return_t default_return_मूल्य () { वापस true; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.subset (this, std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  निजी:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.subset (यह, std::forward<Ts> (ds)...) )
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  _dispatch (स्थिर T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (यह, std::forward<Ts> (ds)...) )
+  खुला:
+  ढाँचा <typename T, typename ...Ts> स्वतः
+  dispatch (स्थिर T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_blob_t *source_blob;
@@ -70,4 +70,4 @@ struct hb_subset_context_t :
 			table_tag (table_tag_) {}
 };
 
-#endif /* HB_SUBSET_HH */
+#पूर्ण_अगर /* HB_SUBSET_HH */

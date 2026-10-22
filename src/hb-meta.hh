@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_META_HH
-#define HB_META_HH
+#अगर_अघोषित HB_META_HH
+#घोषणा HB_META_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include <memory>
-#include <type_traits>
-#include <utility>
+#समावेश <memory>
+#समावेश <type_traits>
+#समावेश <utility>
 
 
 /*
@@ -39,200 +39,200 @@
  */
 
 /* Void!  For when we need a expression-type of void. */
-struct hb_empty_t {};
+काष्ठा hb_empty_t {};
 
 /* https://en.cppreference.com/w/cpp/types/void_t */
-template<typename... Ts> struct _hb_void_t { typedef void type; };
-template<typename... Ts> using hb_void_t = typename _hb_void_t<Ts...>::type;
+ढाँचा<typename... Ts> काष्ठा _hb_void_t { प्रकार व्योम type; };
+ढाँचा<typename... Ts> using hb_void_t = typename _hb_void_t<Ts...>::type;
 
-template<typename Head, typename... Ts> struct _hb_head_t { typedef Head type; };
-template<typename... Ts> using hb_head_t = typename _hb_head_t<Ts...>::type;
+ढाँचा<typename शीर्ष, typename... Ts> काष्ठा hb_शीर्ष_t { प्रकार शीर्ष type; };
+ढाँचा<typename... Ts> using hb_शीर्ष_t_2 = typename hb_शीर्ष_t<Ts...>::type;
 
-template <typename T, T v> struct hb_integral_constant { static constexpr T value = v; };
-template <bool b> using hb_bool_constant = hb_integral_constant<bool, b>;
+ढाँचा <typename T, T v> काष्ठा hb_integral_constant { अटल constexpr T value = v; };
+ढाँचा <bool b> using hb_bool_constant = hb_integral_constant<bool, b>;
 using hb_true_type = hb_bool_constant<true>;
 using hb_false_type = hb_bool_constant<false>;
 
 /* Static-assert as expression. */
-template <bool cond> struct static_assert_expr;
-template <> struct static_assert_expr<true> : hb_false_type {};
-#define static_assert_expr(C) static_assert_expr<C>::value
+ढाँचा <bool cond> काष्ठा static_assert_व्यंजक;
+ढाँचा <> काष्ठा static_assert_व्यंजक<true> : hb_false_type {};
+#घोषणा static_assert_व्यंजक(C) static_assert_व्यंजक<C>::value
 
 /* Basic type SFINAE. */
 
-template <bool B, typename T = void> struct hb_enable_if {};
-template <typename T>                struct hb_enable_if<true, T> { typedef T type; };
-#define hb_enable_if(Cond) typename hb_enable_if<(Cond)>::type* = nullptr
+ढाँचा <bool B, typename T = व्योम> काष्ठा hb_enable_if {};
+ढाँचा <typename T>                काष्ठा hb_enable_if<true, T> { प्रकार T type; };
+#घोषणा hb_enable_if(Cond) typename hb_enable_if<(Cond)>::type* = nullptr
 /* Concepts/Requires alias: */
-#define hb_requires(Cond) hb_enable_if((Cond))
+#घोषणा hb_requires(Cond) hb_enable_if((Cond))
 
-template <typename T, typename T2> struct hb_is_same : hb_false_type {};
-template <typename T>              struct hb_is_same<T, T> : hb_true_type {};
-#define hb_is_same(T, T2) hb_is_same<T, T2>::value
+ढाँचा <typename T, typename T2> काष्ठा hb_is_same : hb_false_type {};
+ढाँचा <typename T>              काष्ठा hb_is_same<T, T> : hb_true_type {};
+#घोषणा hb_is_same(T, T2) hb_is_same<T, T2>::value
 
 /* Function overloading SFINAE and priority. */
 
-#define HB_RETURN(Ret, E) -> hb_head_t<Ret, decltype ((E))> { return (E); }
-#define HB_AUTO_RETURN(E) -> decltype ((E)) { return (E); }
-#define HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
+#घोषणा HB_RETURN(Ret, E) -> hb_शीर्ष_t_2<Ret, decltype ((E))> { वापस (E); }
+#घोषणा HB_AUTO_RETURN(E) -> decltype ((E)) { वापस (E); }
+#घोषणा HB_VOID_RETURN(E) -> hb_void_t<decltype ((E))> { (E); }
 
-template <unsigned Pri> struct hb_priority : hb_priority<Pri - 1> {};
-template <>             struct hb_priority<0> {};
-#define hb_prioritize hb_priority<16> ()
+ढाँचा <अचिन्हित Pri> काष्ठा hb_priority : hb_priority<Pri - 1> {};
+ढाँचा <>             काष्ठा hb_priority<0> {};
+#घोषणा hb_prioritize hb_priority<16> ()
 
-#define HB_FUNCOBJ(x) static_const x HB_UNUSED
-
-
-template <typename T> struct hb_type_identity_t { typedef T type; };
-template <typename T> using hb_type_identity = typename hb_type_identity_t<T>::type;
-
-template <typename T> static inline T hb_declval ();
-#define hb_declval(T) (hb_declval<T> ())
-
-template <typename T> struct hb_match_const		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_const<const T>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_const = typename hb_match_const<T>::type;
-
-template <typename T> struct hb_match_reference		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_reference<T &>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> struct hb_match_reference<T &&>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_reference = typename hb_match_reference<T>::type;
-template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<1>) -> hb_type_identity<T&>;
-template <typename T> auto _hb_try_add_lvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
-template <typename T> using hb_add_lvalue_reference = decltype (_hb_try_add_lvalue_reference<T> (hb_prioritize));
-template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<1>) -> hb_type_identity<T&&>;
-template <typename T> auto _hb_try_add_rvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
-template <typename T> using hb_add_rvalue_reference = decltype (_hb_try_add_rvalue_reference<T> (hb_prioritize));
-
-template <typename T> struct hb_match_pointer		: hb_type_identity_t<T>, hb_false_type	{};
-template <typename T> struct hb_match_pointer<T *>	: hb_type_identity_t<T>, hb_true_type	{};
-template <typename T> using hb_remove_pointer = typename hb_match_pointer<T>::type;
-template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<hb_remove_reference<T>*>;
-template <typename T> auto _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<T>;
-template <typename T> using hb_add_pointer = decltype (_hb_try_add_pointer<T> (hb_prioritize));
+#घोषणा HB_FUNCOBJ(x) static_const x HB_UNUSED
 
 
-template <typename T> using hb_decay = typename std::decay<T>::type;
+ढाँचा <typename T> काष्ठा hb_type_identity_t { प्रकार T type; };
+ढाँचा <typename T> using hb_type_identity = typename hb_type_identity_t<T>::type;
 
-#define hb_is_convertible(From,To) std::is_convertible<From, To>::value
+ढाँचा <typename T> अटल अंतरभूत T hb_declval ();
+#घोषणा hb_declval(T) (hb_declval<T> ())
 
-template <typename From, typename To>
+ढाँचा <typename T> काष्ठा hb_match_const		: hb_type_identity_t<T>, hb_false_type	{};
+ढाँचा <typename T> काष्ठा hb_match_const<स्थिर T>	: hb_type_identity_t<T>, hb_true_type	{};
+ढाँचा <typename T> using hb_remove_const = typename hb_match_const<T>::type;
+
+ढाँचा <typename T> काष्ठा hb_match_reference		: hb_type_identity_t<T>, hb_false_type	{};
+ढाँचा <typename T> काष्ठा hb_match_reference<T &>	: hb_type_identity_t<T>, hb_true_type	{};
+ढाँचा <typename T> काष्ठा hb_match_reference<T &&>	: hb_type_identity_t<T>, hb_true_type	{};
+ढाँचा <typename T> using hb_remove_reference = typename hb_match_reference<T>::type;
+ढाँचा <typename T> स्वतः _hb_try_add_lvalue_reference (hb_priority<1>) -> hb_type_identity<T&>;
+ढाँचा <typename T> स्वतः _hb_try_add_lvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
+ढाँचा <typename T> using hb_add_lvalue_reference = decltype (_hb_try_add_lvalue_reference<T> (hb_prioritize));
+ढाँचा <typename T> स्वतः _hb_try_add_rvalue_reference (hb_priority<1>) -> hb_type_identity<T&&>;
+ढाँचा <typename T> स्वतः _hb_try_add_rvalue_reference (hb_priority<0>) -> hb_type_identity<T>;
+ढाँचा <typename T> using hb_add_rvalue_reference = decltype (_hb_try_add_rvalue_reference<T> (hb_prioritize));
+
+ढाँचा <typename T> काष्ठा hb_match_pointer		: hb_type_identity_t<T>, hb_false_type	{};
+ढाँचा <typename T> काष्ठा hb_match_pointer<T *>	: hb_type_identity_t<T>, hb_true_type	{};
+ढाँचा <typename T> using hb_remove_pointer = typename hb_match_pointer<T>::type;
+ढाँचा <typename T> स्वतः _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<hb_remove_reference<T>*>;
+ढाँचा <typename T> स्वतः _hb_try_add_pointer (hb_priority<1>) -> hb_type_identity<T>;
+ढाँचा <typename T> using hb_add_pointer = decltype (_hb_try_add_pointer<T> (hb_prioritize));
+
+
+ढाँचा <typename T> using hb_decay = typename std::decay<T>::type;
+
+#घोषणा hb_is_convertible(From,To) std::is_convertible<From, To>::value
+
+ढाँचा <typename From, typename To>
 using hb_is_cr_convertible = hb_bool_constant<
   hb_is_same (hb_decay<From>, hb_decay<To>) &&
   (!std::is_const<From>::value || std::is_const<To>::value) &&
   (!std::is_reference<To>::value || std::is_const<To>::value || std::is_reference<To>::value)
 >;
-#define hb_is_cr_convertible(From,To) hb_is_cr_convertible<From, To>::value
+#घोषणा hb_is_cr_convertible(From,To) hb_is_cr_convertible<From, To>::value
 
 
-struct
+काष्ठा
 {
-  template <typename T> constexpr auto
-  operator () (T&& v) const HB_AUTO_RETURN (std::forward<T> (v))
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (T&& v) स्थिर HB_AUTO_RETURN (std::forward<T> (v))
 
-  template <typename T> constexpr auto
-  operator () (T *v) const HB_AUTO_RETURN (*v)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (T *v) स्थिर HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (const hb::shared_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (स्थिर hb::shared_ptr<T>& v) स्थिर HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (hb::shared_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (hb::shared_ptr<T>& v) स्थिर HB_AUTO_RETURN (*v)
   
-  template <typename T> constexpr auto
-  operator () (const hb::unique_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (स्थिर hb::unique_ptr<T>& v) स्थिर HB_AUTO_RETURN (*v)
 
-  template <typename T> constexpr auto
-  operator () (hb::unique_ptr<T>& v) const HB_AUTO_RETURN (*v)
+  ढाँचा <typename T> constexpr स्वतः
+  चालक () (hb::unique_ptr<T>& v) स्थिर HB_AUTO_RETURN (*v)
 }
 HB_FUNCOBJ (hb_deref);
 
-template <typename T>
-struct hb_reference_wrapper
+ढाँचा <typename T>
+काष्ठा hb_reference_wrapper
 {
   hb_reference_wrapper (T v) : v (v) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return v; }
-  T& get () { return v; }
+  bool चालक == (स्थिर hb_reference_wrapper& o) स्थिर { वापस v == o.v; }
+  bool चालक != (स्थिर hb_reference_wrapper& o) स्थिर { वापस v != o.v; }
+  चालक T& () { वापस v; }
+  T& लो () { वापस v; }
   T v;
 };
-template <typename T>
-struct hb_reference_wrapper<T&>
+ढाँचा <typename T>
+काष्ठा hb_reference_wrapper<T&>
 {
   hb_reference_wrapper (T& v) : v (std::addressof (v)) {}
-  bool operator == (const hb_reference_wrapper& o) const { return v == o.v; }
-  bool operator != (const hb_reference_wrapper& o) const { return v != o.v; }
-  operator T& () { return *v; }
-  T& get () { return *v; }
+  bool चालक == (स्थिर hb_reference_wrapper& o) स्थिर { वापस v == o.v; }
+  bool चालक != (स्थिर hb_reference_wrapper& o) स्थिर { वापस v != o.v; }
+  चालक T& () { वापस *v; }
+  T& लो () { वापस *v; }
   T* v;
 };
 
 
 /* Type traits */
 
-template <typename T> struct hb_int_min;
-template <> struct hb_int_min<char>			: hb_integral_constant<char,			CHAR_MIN>	{};
-template <> struct hb_int_min<signed char>		: hb_integral_constant<signed char,		SCHAR_MIN>	{};
-template <> struct hb_int_min<unsigned char>		: hb_integral_constant<unsigned char,		0>		{};
-template <> struct hb_int_min<signed short>		: hb_integral_constant<signed short,		SHRT_MIN>	{};
-template <> struct hb_int_min<unsigned short>		: hb_integral_constant<unsigned short,		0>		{};
-template <> struct hb_int_min<signed int>		: hb_integral_constant<signed int,		INT_MIN>	{};
-template <> struct hb_int_min<unsigned int>		: hb_integral_constant<unsigned int,		0>		{};
-template <> struct hb_int_min<signed long>		: hb_integral_constant<signed long,		LONG_MIN>	{};
-template <> struct hb_int_min<unsigned long>		: hb_integral_constant<unsigned long,		0>		{};
-template <> struct hb_int_min<signed long long>		: hb_integral_constant<signed long long,	LLONG_MIN>	{};
-template <> struct hb_int_min<unsigned long long>	: hb_integral_constant<unsigned long long,	0>		{};
-template <typename T> struct hb_int_min<T *>		: hb_integral_constant<T *,			nullptr>	{};
-#define hb_int_min(T) hb_int_min<T>::value
-template <typename T> struct hb_int_max;
-template <> struct hb_int_max<char>			: hb_integral_constant<char,			CHAR_MAX>	{};
-template <> struct hb_int_max<signed char>		: hb_integral_constant<signed char,		SCHAR_MAX>	{};
-template <> struct hb_int_max<unsigned char>		: hb_integral_constant<unsigned char,		UCHAR_MAX>	{};
-template <> struct hb_int_max<signed short>		: hb_integral_constant<signed short,		SHRT_MAX>	{};
-template <> struct hb_int_max<unsigned short>		: hb_integral_constant<unsigned short,		USHRT_MAX>	{};
-template <> struct hb_int_max<signed int>		: hb_integral_constant<signed int,		INT_MAX>	{};
-template <> struct hb_int_max<unsigned int>		: hb_integral_constant<unsigned int,		UINT_MAX>	{};
-template <> struct hb_int_max<signed long>		: hb_integral_constant<signed long,		LONG_MAX>	{};
-template <> struct hb_int_max<unsigned long>		: hb_integral_constant<unsigned long,		ULONG_MAX>	{};
-template <> struct hb_int_max<signed long long>		: hb_integral_constant<signed long long,	LLONG_MAX>	{};
-template <> struct hb_int_max<unsigned long long>	: hb_integral_constant<unsigned long long,	ULLONG_MAX>	{};
-#define hb_int_max(T) hb_int_max<T>::value
+ढाँचा <typename T> काष्ठा hb_int_min;
+ढाँचा <> काष्ठा hb_int_min<अक्षर>			: hb_integral_constant<अक्षर,			अक्षर_न्यून>	{};
+ढाँचा <> काष्ठा hb_int_min<चिन्हित अक्षर>		: hb_integral_constant<चिन्हित अक्षर,		च_अक्षर_न्यून>	{};
+ढाँचा <> काष्ठा hb_int_min<अचिन्हित अक्षर>		: hb_integral_constant<अचिन्हित अक्षर,		0>		{};
+ढाँचा <> काष्ठा hb_int_min<चिन्हित लघु>		: hb_integral_constant<चिन्हित लघु,		लघु_न्यून>	{};
+ढाँचा <> काष्ठा hb_int_min<अचिन्हित लघु>		: hb_integral_constant<अचिन्हित लघु,		0>		{};
+ढाँचा <> काष्ठा hb_int_min<चिन्हित पूर्णांक>		: hb_integral_constant<चिन्हित पूर्णांक,		पूर्णांक_न्यून>	{};
+ढाँचा <> काष्ठा hb_int_min<अचिन्हित पूर्णांक>		: hb_integral_constant<अचिन्हित पूर्णांक,		0>		{};
+ढाँचा <> काष्ठा hb_int_min<चिन्हित दीर्घ>		: hb_integral_constant<चिन्हित दीर्घ,		दीर्घ_न्यून>	{};
+ढाँचा <> काष्ठा hb_int_min<अचिन्हित दीर्घ>		: hb_integral_constant<अचिन्हित दीर्घ,		0>		{};
+ढाँचा <> काष्ठा hb_int_min<चिन्हित दीर्घ दीर्घ>		: hb_integral_constant<चिन्हित दीर्घ दीर्घ,	LLONG_MIN>	{};
+ढाँचा <> काष्ठा hb_int_min<अचिन्हित दीर्घ दीर्घ>	: hb_integral_constant<अचिन्हित दीर्घ दीर्घ,	0>		{};
+ढाँचा <typename T> काष्ठा hb_int_min<T *>		: hb_integral_constant<T *,			nullptr>	{};
+#घोषणा hb_int_min(T) hb_int_min<T>::value
+ढाँचा <typename T> काष्ठा hb_int_max;
+ढाँचा <> काष्ठा hb_int_max<अक्षर>			: hb_integral_constant<अक्षर,			अक्षर_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<चिन्हित अक्षर>		: hb_integral_constant<चिन्हित अक्षर,		च_अक्षर_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<अचिन्हित अक्षर>		: hb_integral_constant<अचिन्हित अक्षर,		अच_अक्षर_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<चिन्हित लघु>		: hb_integral_constant<चिन्हित लघु,		लघु_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<अचिन्हित लघु>		: hb_integral_constant<अचिन्हित लघु,		अच_लघु_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<चिन्हित पूर्णांक>		: hb_integral_constant<चिन्हित पूर्णांक,		पूर्णांक_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<अचिन्हित पूर्णांक>		: hb_integral_constant<अचिन्हित पूर्णांक,		अच_पूर्णांक_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<चिन्हित दीर्घ>		: hb_integral_constant<चिन्हित दीर्घ,		दीर्घ_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<अचिन्हित दीर्घ>		: hb_integral_constant<अचिन्हित दीर्घ,		अच_दीर्घ_उच्च>	{};
+ढाँचा <> काष्ठा hb_int_max<चिन्हित दीर्घ दीर्घ>		: hb_integral_constant<चिन्हित दीर्घ दीर्घ,	LLONG_MAX>	{};
+ढाँचा <> काष्ठा hb_int_max<अचिन्हित दीर्घ दीर्घ>	: hb_integral_constant<अचिन्हित दीर्घ दीर्घ,	ULLONG_MAX>	{};
+#घोषणा hb_int_max(T) hb_int_max<T>::value
 
-#if defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
-#define hb_is_trivially_copyable(T) __has_trivial_copy(T)
-#define hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
-#define hb_is_trivially_constructible(T) __has_trivial_constructor(T)
-#define hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
-#define hb_is_trivially_destructible(T) __has_trivial_destructor(T)
-#else
-#define hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
-#define hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
-#define hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
-#define hb_is_trivially_copy_constructible(T) std::is_trivially_copy_constructible<T>::value
-#define hb_is_trivially_destructible(T) std::is_trivially_destructible<T>::value
-#endif
+#अगर defined(__GNUC__) && __GNUC__ < 5 && !defined(__clang__)
+#घोषणा hb_is_trivially_copyable(T) __has_trivial_copy(T)
+#घोषणा hb_is_trivially_copy_assignable(T) __has_trivial_assign(T)
+#घोषणा hb_is_trivially_constructible(T) __has_trivial_constructor(T)
+#घोषणा hb_is_trivially_copy_constructible(T) __has_trivial_copy_constructor(T)
+#घोषणा hb_is_trivially_destructible(T) __has_trivial_destructor(T)
+#अन्यथा
+#घोषणा hb_is_trivially_copyable(T) std::is_trivially_copyable<T>::value
+#घोषणा hb_is_trivially_copy_assignable(T) std::is_trivially_copy_assignable<T>::value
+#घोषणा hb_is_trivially_constructible(T) std::is_trivially_constructible<T>::value
+#घोषणा hb_is_trivially_copy_constructible(T) std::is_trivially_copy_constructible<T>::value
+#घोषणा hb_is_trivially_destructible(T) std::is_trivially_destructible<T>::value
+#पूर्ण_अगर
 
 /* Class traits. */
 
-#define HB_DELETE_COPY_ASSIGN(TypeName) \
-  TypeName(const TypeName&) = delete; \
-  void operator=(const TypeName&) = delete
-#define HB_DELETE_CREATE_COPY_ASSIGN(TypeName) \
-  TypeName() = delete; \
-  TypeName(const TypeName&) = delete; \
-  void operator=(const TypeName&) = delete
+#घोषणा HB_DELETE_COPY_ASSIGN(TypeName) \
+  TypeName(स्थिर TypeName&) = मिटाओ; \
+  व्योम चालक=(स्थिर TypeName&) = मिटाओ
+#घोषणा HB_DELETE_CREATE_COPY_ASSIGN(TypeName) \
+  TypeName() = मिटाओ; \
+  TypeName(स्थिर TypeName&) = मिटाओ; \
+  व्योम चालक=(स्थिर TypeName&) = मिटाओ
 
 /* hb_unwrap_type (T)
  * If T has no T::type, returns T. Otherwise calls itself on T::type recursively.
  */
 
-template <typename T, typename>
-struct _hb_unwrap_type : hb_type_identity_t<T> {};
-template <typename T>
-struct _hb_unwrap_type<T, hb_void_t<typename T::type>> : _hb_unwrap_type<typename T::type, void> {};
-template <typename T>
-using hb_unwrap_type = _hb_unwrap_type<T, void>;
-#define hb_unwrap_type(T) typename hb_unwrap_type<T>::type
+ढाँचा <typename T, typename>
+काष्ठा _hb_unwrap_type : hb_type_identity_t<T> {};
+ढाँचा <typename T>
+काष्ठा _hb_unwrap_type<T, hb_void_t<typename T::type>> : _hb_unwrap_type<typename T::type, व्योम> {};
+ढाँचा <typename T>
+using hb_unwrap_type = _hb_unwrap_type<T, व्योम>;
+#घोषणा hb_unwrap_type(T) typename hb_unwrap_type<T>::type
 
-#endif /* HB_META_HH */
+#पूर्ण_अगर /* HB_META_HH */

@@ -26,101 +26,101 @@
  * Google Author(s): Behdad Esfahbod, Roozbeh Pournader
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_TAG
+#अगर_अघोषित HB_NO_OT_TAG
 
 
 /* hb_script_t */
 
-static hb_tag_t
+अटल hb_tag_t
 hb_ot_old_tag_from_script (hb_script_t script)
 {
   /* This seems to be accurate as of end of 2012. */
 
-  switch ((hb_tag_t) script)
+  चयन ((hb_tag_t) script)
   {
-    case HB_SCRIPT_INVALID:		return HB_OT_TAG_DEFAULT_SCRIPT;
-    case HB_SCRIPT_MATH:		return HB_OT_TAG_MATH_SCRIPT;
+    हाल HB_SCRIPT_INVALID:		वापस HB_OT_TAG_DEFAULT_SCRIPT;
+    हाल HB_SCRIPT_MATH:		वापस HB_OT_TAG_MATH_SCRIPT;
 
     /* Hiragana, Katakana, and their collective ISO 15924 script all map to 'kana'. */
-    case HB_SCRIPT_HIRAGANA:		return HB_TAG('k','a','n','a');
-    case HB_TAG('H','r','k','t'):
-					return HB_TAG('k','a','n','a');
+    हाल HB_SCRIPT_HIRAGANA:		वापस HB_TAG('k','a','n','a');
+    हाल HB_TAG('H','r','k','t'):
+					वापस HB_TAG('k','a','n','a');
 
     /* Spaces at the end are preserved, unlike ISO 15924 */
-    case HB_SCRIPT_LAO:			return HB_TAG('l','a','o',' ');
-    case HB_SCRIPT_YI:			return HB_TAG('y','i',' ',' ');
+    हाल HB_SCRIPT_LAO:			वापस HB_TAG('l','a','o',' ');
+    हाल HB_SCRIPT_YI:			वापस HB_TAG('y','i',' ',' ');
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_NKO:			return HB_TAG('n','k','o',' ');
+    हाल HB_SCRIPT_NKO:			वापस HB_TAG('n','k','o',' ');
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_VAI:			return HB_TAG('v','a','i',' ');
+    हाल HB_SCRIPT_VAI:			वापस HB_TAG('v','a','i',' ');
   }
 
   /* Else, just change first char to lowercase and return */
-  return ((hb_tag_t) script) | 0x20000000u;
+  वापस ((hb_tag_t) script) | 0x20000000u;
 }
 
-static hb_script_t
+अटल hb_script_t
 hb_ot_old_tag_to_script (hb_tag_t tag)
 {
-  if (unlikely (tag == HB_OT_TAG_DEFAULT_SCRIPT))
-    return HB_SCRIPT_INVALID;
-  if (unlikely (tag == HB_OT_TAG_MATH_SCRIPT))
-    return HB_SCRIPT_MATH;
+  अगर (unlikely (tag == HB_OT_TAG_DEFAULT_SCRIPT))
+    वापस HB_SCRIPT_INVALID;
+  अगर (unlikely (tag == HB_OT_TAG_MATH_SCRIPT))
+    वापस HB_SCRIPT_MATH;
 
   /* This side of the conversion is fully algorithmic. */
 
   /* Any spaces at the end of the tag are replaced by repeating the last
    * letter.  Eg 'nko ' -> 'Nkoo' */
-  if (unlikely ((tag & 0x0000FF00u) == 0x00002000u))
+  अगर (unlikely ((tag & 0x0000FF00u) == 0x00002000u))
     tag |= (tag >> 8) & 0x0000FF00u; /* Copy second letter to third */
-  if (unlikely ((tag & 0x000000FFu) == 0x00000020u))
+  अगर (unlikely ((tag & 0x000000FFu) == 0x00000020u))
     tag |= (tag >> 8) & 0x000000FFu; /* Copy third letter to fourth */
 
   /* Change first char to uppercase and return */
-  return (hb_script_t) (tag & ~0x20000000u);
+  वापस (hb_script_t) (tag & ~0x20000000u);
 }
 
-static hb_tag_t
+अटल hb_tag_t
 hb_ot_new_tag_from_script (hb_script_t script)
 {
-  switch ((hb_tag_t) script) {
-    case HB_SCRIPT_BENGALI:		return HB_TAG('b','n','g','2');
-    case HB_SCRIPT_DEVANAGARI:		return HB_TAG('d','e','v','2');
-    case HB_SCRIPT_GUJARATI:		return HB_TAG('g','j','r','2');
-    case HB_SCRIPT_GURMUKHI:		return HB_TAG('g','u','r','2');
-    case HB_SCRIPT_KANNADA:		return HB_TAG('k','n','d','2');
-    case HB_SCRIPT_MALAYALAM:		return HB_TAG('m','l','m','2');
-    case HB_SCRIPT_ORIYA:		return HB_TAG('o','r','y','2');
-    case HB_SCRIPT_TAMIL:		return HB_TAG('t','m','l','2');
-    case HB_SCRIPT_TELUGU:		return HB_TAG('t','e','l','2');
-    case HB_SCRIPT_MYANMAR:		return HB_TAG('m','y','m','2');
+  चयन ((hb_tag_t) script) {
+    हाल HB_SCRIPT_BENGALI:		वापस HB_TAG('b','n','g','2');
+    हाल HB_SCRIPT_DEVANAGARI:		वापस HB_TAG('d','e','v','2');
+    हाल HB_SCRIPT_GUJARATI:		वापस HB_TAG('g','j','r','2');
+    हाल HB_SCRIPT_GURMUKHI:		वापस HB_TAG('g','u','r','2');
+    हाल HB_SCRIPT_KANNADA:		वापस HB_TAG('k','n','d','2');
+    हाल HB_SCRIPT_MALAYALAM:		वापस HB_TAG('m','l','m','2');
+    हाल HB_SCRIPT_ORIYA:		वापस HB_TAG('o','r','y','2');
+    हाल HB_SCRIPT_TAMIL:		वापस HB_TAG('t','m','l','2');
+    हाल HB_SCRIPT_TELUGU:		वापस HB_TAG('t','e','l','2');
+    हाल HB_SCRIPT_MYANMAR:		वापस HB_TAG('m','y','m','2');
   }
 
-  return HB_OT_TAG_DEFAULT_SCRIPT;
+  वापस HB_OT_TAG_DEFAULT_SCRIPT;
 }
 
-static hb_script_t
+अटल hb_script_t
 hb_ot_new_tag_to_script (hb_tag_t tag)
 {
-  switch (tag) {
-    case HB_TAG('b','n','g','2'):	return HB_SCRIPT_BENGALI;
-    case HB_TAG('d','e','v','2'):	return HB_SCRIPT_DEVANAGARI;
-    case HB_TAG('g','j','r','2'):	return HB_SCRIPT_GUJARATI;
-    case HB_TAG('g','u','r','2'):	return HB_SCRIPT_GURMUKHI;
-    case HB_TAG('k','n','d','2'):	return HB_SCRIPT_KANNADA;
-    case HB_TAG('m','l','m','2'):	return HB_SCRIPT_MALAYALAM;
-    case HB_TAG('o','r','y','2'):	return HB_SCRIPT_ORIYA;
-    case HB_TAG('t','m','l','2'):	return HB_SCRIPT_TAMIL;
-    case HB_TAG('t','e','l','2'):	return HB_SCRIPT_TELUGU;
-    case HB_TAG('m','y','m','2'):	return HB_SCRIPT_MYANMAR;
+  चयन (tag) {
+    हाल HB_TAG('b','n','g','2'):	वापस HB_SCRIPT_BENGALI;
+    हाल HB_TAG('d','e','v','2'):	वापस HB_SCRIPT_DEVANAGARI;
+    हाल HB_TAG('g','j','r','2'):	वापस HB_SCRIPT_GUJARATI;
+    हाल HB_TAG('g','u','r','2'):	वापस HB_SCRIPT_GURMUKHI;
+    हाल HB_TAG('k','n','d','2'):	वापस HB_SCRIPT_KANNADA;
+    हाल HB_TAG('m','l','m','2'):	वापस HB_SCRIPT_MALAYALAM;
+    हाल HB_TAG('o','r','y','2'):	वापस HB_SCRIPT_ORIYA;
+    हाल HB_TAG('t','m','l','2'):	वापस HB_SCRIPT_TAMIL;
+    हाल HB_TAG('t','e','l','2'):	वापस HB_SCRIPT_TELUGU;
+    हाल HB_TAG('m','y','m','2'):	वापस HB_SCRIPT_MYANMAR;
   }
 
-  return HB_SCRIPT_UNKNOWN;
+  वापस HB_SCRIPT_UNKNOWN;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_ot_tags_from_script:
  * @script: an #hb_script_t to convert.
@@ -132,18 +132,18 @@ hb_ot_new_tag_to_script (hb_tag_t tag)
  * Since: 0.6.0
  * Deprecated: 2.0.0: use hb_ot_tags_from_script_and_language() instead
  **/
-void
+व्योम
 hb_ot_tags_from_script (hb_script_t  script,
 			hb_tag_t    *script_tag_1,
 			hb_tag_t    *script_tag_2)
 {
-  unsigned int count = 2;
+  अचिन्हित पूर्णांक गिनती = 2;
   hb_tag_t tags[2];
-  hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &count, tags, nullptr, nullptr);
-  *script_tag_1 = count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *script_tag_2 = count > 1 ? tags[1] : HB_OT_TAG_DEFAULT_SCRIPT;
+  hb_ot_tags_from_script_and_language (script, HB_LANGUAGE_INVALID, &गिनती, tags, nullptr, nullptr);
+  *script_tag_1 = गिनती > 0 ? tags[0] : HB_OT_TAG_DEFAULT_SCRIPT;
+  *script_tag_2 = गिनती > 1 ? tags[1] : HB_OT_TAG_DEFAULT_SCRIPT;
 }
-#endif
+#पूर्ण_अगर
 
 /*
  * Complete list at:
@@ -153,31 +153,31 @@ hb_ot_tags_from_script (hb_script_t  script,
  * So we just do that, and handle the exceptional cases in a switch.
  */
 
-static void
+अटल व्योम
 hb_ot_all_tags_from_script (hb_script_t   script,
-			    unsigned int *count /* IN/OUT */,
+			    अचिन्हित पूर्णांक *गिनती /* IN/OUT */,
 			    hb_tag_t     *tags /* OUT */)
 {
-  unsigned int i = 0;
+  अचिन्हित पूर्णांक i = 0;
 
   hb_tag_t new_tag = hb_ot_new_tag_from_script (script);
-  if (unlikely (new_tag != HB_OT_TAG_DEFAULT_SCRIPT))
+  अगर (unlikely (new_tag != HB_OT_TAG_DEFAULT_SCRIPT))
   {
     /* HB_SCRIPT_MYANMAR maps to 'mym2', but there is no 'mym3'. */
-    if (new_tag != HB_TAG('m','y','m','2'))
+    अगर (new_tag != HB_TAG('m','y','m','2'))
       tags[i++] = new_tag | '3';
-    if (*count > i)
+    अगर (*गिनती > i)
       tags[i++] = new_tag;
   }
 
-  if (*count > i)
+  अगर (*गिनती > i)
   {
     hb_tag_t old_tag = hb_ot_old_tag_from_script (script);
-    if (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
+    अगर (old_tag != HB_OT_TAG_DEFAULT_SCRIPT)
       tags[i++] = old_tag;
   }
 
-  *count = i;
+  *गिनती = i;
 }
 
 /**
@@ -192,101 +192,101 @@ hb_ot_all_tags_from_script (hb_script_t   script,
 hb_script_t
 hb_ot_tag_to_script (hb_tag_t tag)
 {
-  unsigned char digit = tag & 0x000000FFu;
-  if (unlikely (digit == '2' || digit == '3'))
-    return hb_ot_new_tag_to_script (tag & 0xFFFFFF32);
+  अचिन्हित अक्षर digit = tag & 0x000000FFu;
+  अगर (unlikely (digit == '2' || digit == '3'))
+    वापस hb_ot_new_tag_to_script (tag & 0xFFFFFF32);
 
-  return hb_ot_old_tag_to_script (tag);
+  वापस hb_ot_old_tag_to_script (tag);
 }
 
 
 /* hb_language_t */
 
-static inline bool
-subtag_matches (const char *lang_str,
-		const char *limit,
-		const char *subtag,
-		unsigned    subtag_len)
+अटल अंतरभूत bool
+subtag_matches (स्थिर अक्षर *lang_str,
+		स्थिर अक्षर *limit,
+		स्थिर अक्षर *subtag,
+		अचिन्हित    subtag_len)
 {
-  if (likely ((unsigned) (limit - lang_str) < subtag_len))
-    return false;
+  अगर (likely ((अचिन्हित) (limit - lang_str) < subtag_len))
+    वापस false;
 
-  do {
-    const char *s = strstr (lang_str, subtag);
-    if (!s || s >= limit)
-      return false;
-    if (!ISALNUM (s[subtag_len]))
-      return true;
+  करो {
+    स्थिर अक्षर *s = म_माला (lang_str, subtag);
+    अगर (!s || s >= limit)
+      वापस false;
+    अगर (!ISALNUM (s[subtag_len]))
+      वापस true;
     lang_str = s + subtag_len;
-  } while (true);
+  } जबतक (true);
 }
 
-static bool
-lang_matches (const char *lang_str,
-	      const char *limit,
-	      const char *spec,
-	      unsigned    spec_len)
+अटल bool
+lang_matches (स्थिर अक्षर *lang_str,
+	      स्थिर अक्षर *limit,
+	      स्थिर अक्षर *spec,
+	      अचिन्हित    spec_len)
 {
   /* Same as hb_language_matches(); duplicated. */
 
-  if (likely ((unsigned) (limit - lang_str) < spec_len))
-    return false;
+  अगर (likely ((अचिन्हित) (limit - lang_str) < spec_len))
+    वापस false;
 
-  return strncmp (lang_str, spec, spec_len) == 0 &&
+  वापस म_भेदन (lang_str, spec, spec_len) == 0 &&
 	 (lang_str[spec_len] == '\0' || lang_str[spec_len] == '-');
 }
 
-static bool
-bfind_tag (const hb_tag_t *array,
-	   unsigned        len,
+अटल bool
+bfind_tag (स्थिर hb_tag_t *array,
+	   अचिन्हित        len,
 	   hb_tag_t        key)
 {
-  unsigned min = 0;
-  unsigned max = len;
+  अचिन्हित min = 0;
+  अचिन्हित max = len;
 
-  while (min < max)
+  जबतक (min < max)
   {
-    unsigned mid = min + (max - min) / 2;
+    अचिन्हित mid = min + (max - min) / 2;
     hb_tag_t val = array[mid];
-    if (key < val)
+    अगर (key < val)
       max = mid;
-    else if (key > val)
+    अन्यथा अगर (key > val)
       min = mid + 1;
-    else
-      return true;
+    अन्यथा
+      वापस true;
   }
 
-  return false;
+  वापस false;
 }
 
-struct LangTag
+काष्ठा LangTag
 {
   hb_tag_t language;
   hb_tag_t tag;
 
-  int cmp (hb_tag_t a) const
+  पूर्णांक cmp (hb_tag_t a) स्थिर
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    वापस a < यह->language ? -1 : a > यह->language ? +1 : 0;
   }
-  int cmp (const LangTag *that) const
-  { return cmp (that->language); }
+  पूर्णांक cmp (स्थिर LangTag *that) स्थिर
+  { वापस cmp (that->language); }
 };
 
-struct LangTagRange
+काष्ठा LangTagRange
 {
   hb_tag_t language;
   uint16_t offset;
-  uint8_t count;
+  uint8_t गिनती;
 
-  int cmp (hb_tag_t a) const
+  पूर्णांक cmp (hb_tag_t a) स्थिर
   {
-    return a < this->language ? -1 : a > this->language ? +1 : 0;
+    वापस a < यह->language ? -1 : a > यह->language ? +1 : 0;
   }
-  int cmp (const LangTagRange *that) const
-  { return cmp (that->language); }
+  पूर्णांक cmp (स्थिर LangTagRange *that) स्थिर
+  { वापस cmp (that->language); }
 };
 
-#include "hb-ot-tag-table.hh"
+#समावेश "hb-ot-tag-table.hh"
 
 /* The corresponding languages IDs for the following IDs are unclear,
  * overlap, or are architecturally weird. Needs more research. */
@@ -298,7 +298,7 @@ struct LangTagRange
 /*{"??",	{HB_TAG('Y','I','C',' ')}},*/	/* Yi Classic */
 /*{"zh?",	{HB_TAG('Z','H','P',' ')}},*/	/* Chinese Phonetic */
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_ot_tag_from_language:
  * @language: an #hb_language_t to convert.
@@ -311,179 +311,179 @@ struct LangTagRange
 hb_tag_t
 hb_ot_tag_from_language (hb_language_t language)
 {
-  unsigned int count = 1;
+  अचिन्हित पूर्णांक गिनती = 1;
   hb_tag_t tags[1];
-  hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &count, tags);
-  return count > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  hb_ot_tags_from_script_and_language (HB_SCRIPT_UNKNOWN, language, nullptr, nullptr, &गिनती, tags);
+  वापस गिनती > 0 ? tags[0] : HB_OT_TAG_DEFAULT_LANGUAGE;
 }
-#endif
+#पूर्ण_अगर
 
-static void
-hb_ot_tags_from_language (const char   *lang_str,
-			  const char   *limit,
-			  unsigned int *count,
+अटल व्योम
+hb_ot_tags_from_language (स्थिर अक्षर   *lang_str,
+			  स्थिर अक्षर   *limit,
+			  अचिन्हित पूर्णांक *गिनती,
 			  hb_tag_t     *tags)
 {
 
-#ifndef HB_NO_LANGUAGE_LONG
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
   /* Check for matches of multiple subtags. */
-  if (hb_ot_tags_from_complex_language (lang_str, limit, count, tags))
-    return;
-#endif
+  अगर (hb_ot_tags_from_complex_language (lang_str, limit, गिनती, tags))
+    वापस;
+#पूर्ण_अगर
 
   /* Find a language matching in the first component. */
-#ifndef HB_NO_LANGUAGE_LONG
-  const char *s; s = strchr (lang_str, '-');
-#endif
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
+  स्थिर अक्षर *s; s = म_अक्षर (lang_str, '-');
+#पूर्ण_अगर
   {
-#ifndef HB_NO_LANGUAGE_LONG
-    if (s && limit - lang_str >= 6)
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
+    अगर (s && limit - lang_str >= 6)
     {
-      const char *extlang_end = strchr (s + 1, '-');
+      स्थिर अक्षर *extlang_end = म_अक्षर (s + 1, '-');
       /* If there is an extended language tag, use it. */
-      if (3 == (extlang_end ? extlang_end - s - 1 : strlen (s + 1)) &&
+      अगर (3 == (extlang_end ? extlang_end - s - 1 : म_माप (s + 1)) &&
 	  ISALPHA (s[1]))
 	lang_str = s + 1;
     }
-#endif
-    const char *dash = strchr (lang_str, '-');
-    unsigned first_len = dash ? dash - lang_str : limit - lang_str;
+#पूर्ण_अगर
+    स्थिर अक्षर *dash = म_अक्षर (lang_str, '-');
+    अचिन्हित first_len = dash ? dash - lang_str : limit - lang_str;
     hb_tag_t lang_tag = hb_tag_from_string (lang_str, first_len);
 
-    if (first_len == 2)
+    अगर (first_len == 2)
     {
-      static hb_atomic_t<unsigned> last_tag_idx_2 {0}; /* Poor man's cache. */
-      unsigned tag_idx = last_tag_idx_2;
+      अटल hb_atomic_t<अचिन्हित> last_tag_idx_2 {0}; /* Poor man's cache. */
+      अचिन्हित tag_idx = last_tag_idx_2;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages2) &&
+      अगर (likely (tag_idx < ARRAY_लंबाई (ot_languages2) &&
 		  ot_languages2[tag_idx].language == lang_tag) ||
 	  hb_sorted_array (ot_languages2).bfind (lang_tag, &tag_idx))
       {
 	last_tag_idx_2 = tag_idx;
-	unsigned int i;
-	while (tag_idx != 0 &&
+	अचिन्हित पूर्णांक i;
+	जबतक (tag_idx != 0 &&
 	       ot_languages2[tag_idx].language == ot_languages2[tag_idx - 1].language)
 	  tag_idx--;
-	for (i = 0;
-	     i < *count &&
-	     tag_idx + i < ARRAY_LENGTH (ot_languages2) &&
+	क्रम (i = 0;
+	     i < *गिनती &&
+	     tag_idx + i < ARRAY_लंबाई (ot_languages2) &&
 	     ot_languages2[tag_idx + i].tag != HB_TAG_NONE &&
 	     ot_languages2[tag_idx + i].language == ot_languages2[tag_idx].language;
 	     i++)
 	  tags[i] = ot_languages2[tag_idx + i].tag;
-	*count = i;
-	return;
+	*गिनती = i;
+	वापस;
       }
     }
-#ifndef HB_NO_LANGUAGE_LONG
-    else if (first_len == 3)
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
+    अन्यथा अगर (first_len == 3)
     {
-      static hb_atomic_t<unsigned> last_tag_idx_3 {0}; /* Poor man's cache. */
-      unsigned tag_idx = last_tag_idx_3;
+      अटल hb_atomic_t<अचिन्हित> last_tag_idx_3 {0}; /* Poor man's cache. */
+      अचिन्हित tag_idx = last_tag_idx_3;
 
-      if (likely (tag_idx < ARRAY_LENGTH (ot_languages3) &&
+      अगर (likely (tag_idx < ARRAY_लंबाई (ot_languages3) &&
 		  ot_languages3[tag_idx].language == lang_tag) ||
 	  hb_sorted_array (ot_languages3).bfind (lang_tag, &tag_idx))
       {
 	last_tag_idx_3 = tag_idx;
-	if (*count)
+	अगर (*गिनती)
 	{
 	  tags[0] = ot_languages3[tag_idx].tag;
-	  *count = 1;
+	  *गिनती = 1;
 	}
-	else
-	  *count = 0;
-	return;
+	अन्यथा
+	  *गिनती = 0;
+	वापस;
       }
 
-      static hb_atomic_t<unsigned> last_tag_idx_3_multi {0}; /* Poor man's cache. */
-      unsigned multi_tag_idx = last_tag_idx_3_multi;
+      अटल hb_atomic_t<अचिन्हित> last_tag_idx_3_multi {0}; /* Poor man's cache. */
+      अचिन्हित multi_tag_idx = last_tag_idx_3_multi;
 
-      if (likely (multi_tag_idx < ARRAY_LENGTH (ot_languages3_multi) &&
+      अगर (likely (multi_tag_idx < ARRAY_लंबाई (ot_languages3_multi) &&
 		  ot_languages3_multi[multi_tag_idx].language == lang_tag) ||
 	  hb_sorted_array (ot_languages3_multi).bfind (lang_tag, &multi_tag_idx))
       {
 	last_tag_idx_3_multi = multi_tag_idx;
-	const LangTagRange &range = ot_languages3_multi[multi_tag_idx];
-	unsigned int i;
-	for (i = 0; i < *count && i < range.count; i++)
-	  tags[i] = ot_languages3_multi_values[range.offset + i];
-	*count = i;
-	return;
+	स्थिर LangTagRange &range = ot_languages3_multi[multi_tag_idx];
+	अचिन्हित पूर्णांक i;
+	क्रम (i = 0; i < *गिनती && i < range.गिनती; i++)
+	  tags[i] = ot_languages3_multi_मूल्यावली[range.offset + i];
+	*गिनती = i;
+	वापस;
       }
 
-      if (bfind_tag (ot_languages3_blocked, ARRAY_LENGTH (ot_languages3_blocked), lang_tag))
+      अगर (bfind_tag (ot_languages3_blocked, ARRAY_लंबाई (ot_languages3_blocked), lang_tag))
       {
-	*count = 0;
-	return;
+	*गिनती = 0;
+	वापस;
       }
 
       /* Assume it's ISO-639-3 and upper-case and use it. */
       tags[0] = lang_tag & ~0x20202000u;
-      *count = 1;
-      return;
+      *गिनती = 1;
+      वापस;
     }
-#endif
+#पूर्ण_अगर
   }
 
-#ifndef HB_NO_LANGUAGE_LONG
-  if (!s)
-    s = lang_str + strlen (lang_str);
-  if (s - lang_str == 3) {
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
+  अगर (!s)
+    s = lang_str + म_माप (lang_str);
+  अगर (s - lang_str == 3) {
     /* Assume it's ISO-639-3 and upper-case and use it. */
     tags[0] = hb_tag_from_string (lang_str, s - lang_str) & ~0x20202000u;
-    *count = 1;
-    return;
+    *गिनती = 1;
+    वापस;
   }
-#endif
+#पूर्ण_अगर
 
-  *count = 0;
+  *गिनती = 0;
 }
 
-static bool
-parse_private_use_subtag (const char     *private_use_subtag,
-			  unsigned int   *count,
+अटल bool
+parse_private_use_subtag (स्थिर अक्षर     *private_use_subtag,
+			  अचिन्हित पूर्णांक   *गिनती,
 			  hb_tag_t       *tags,
-			  const char     *prefix,
-			  unsigned char (*normalize) (unsigned char))
+			  स्थिर अक्षर     *prefix,
+			  अचिन्हित अक्षर (*normalize) (अचिन्हित अक्षर))
 {
-#ifdef HB_NO_LANGUAGE_PRIVATE_SUBTAG
-  return false;
-#endif
+#अगर_घोषित HB_NO_LANGUAGE_PRIVATE_SUBTAG
+  वापस false;
+#पूर्ण_अगर
 
-  if (!(private_use_subtag && count && tags && *count)) return false;
+  अगर (!(private_use_subtag && गिनती && tags && *गिनती)) वापस false;
 
-  const char *s = strstr (private_use_subtag, prefix);
-  if (!s) return false;
+  स्थिर अक्षर *s = म_माला (private_use_subtag, prefix);
+  अगर (!s) वापस false;
 
-  char tag[4];
-  int i;
-  s += strlen (prefix);
-  if (s[0] == '-') {
+  अक्षर tag[4];
+  पूर्णांक i;
+  s += म_माप (prefix);
+  अगर (s[0] == '-') {
     s += 1;
-    char c;
-    for (i = 0; i < 8 && ISHEX (s[i]); i++)
+    अक्षर c;
+    क्रम (i = 0; i < 8 && ISHEX (s[i]); i++)
     {
       c = FROMHEX (s[i]);
-      if (i % 2 == 0)
+      अगर (i % 2 == 0)
 	tag[i / 2] = c << 4;
-      else
+      अन्यथा
 	tag[i / 2] += c;
     }
-    if (i != 8) return false;
-  } else {
-    for (i = 0; i < 4 && ISALNUM (s[i]); i++)
+    अगर (i != 8) वापस false;
+  } अन्यथा {
+    क्रम (i = 0; i < 4 && ISALNUM (s[i]); i++)
       tag[i] = normalize (s[i]);
-    if (!i) return false;
+    अगर (!i) वापस false;
 
-    for (; i < 4; i++)
+    क्रम (; i < 4; i++)
       tag[i] = ' ';
   }
   tags[0] = HB_TAG (tag[0], tag[1], tag[2], tag[3]);
-  if ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
+  अगर ((tags[0] & 0xDFDFDFDF) == HB_OT_TAG_DEFAULT_SCRIPT)
     tags[0] ^= ~0xDFDFDFDF;
-  *count = 1;
-  return true;
+  *गिनती = 1;
+  वापस true;
 }
 
 /**
@@ -503,62 +503,62 @@ parse_private_use_subtag (const char     *private_use_subtag,
  *
  * Since: 2.0.0
  **/
-void
+व्योम
 hb_ot_tags_from_script_and_language (hb_script_t   script,
 				     hb_language_t language,
-				     unsigned int *script_count /* IN/OUT */,
+				     अचिन्हित पूर्णांक *script_गिनती /* IN/OUT */,
 				     hb_tag_t     *script_tags /* OUT */,
-				     unsigned int *language_count /* IN/OUT */,
+				     अचिन्हित पूर्णांक *language_गिनती /* IN/OUT */,
 				     hb_tag_t     *language_tags /* OUT */)
 {
   bool needs_script = true;
 
-  if (language == HB_LANGUAGE_INVALID)
+  अगर (language == HB_LANGUAGE_INVALID)
   {
-    if (language_count && language_tags && *language_count)
-      *language_count = 0;
+    अगर (language_गिनती && language_tags && *language_गिनती)
+      *language_गिनती = 0;
   }
-  else
+  अन्यथा
   {
-    const char *lang_str, *s, *limit, *private_use_subtag;
+    स्थिर अक्षर *lang_str, *s, *limit, *private_use_subtag;
     bool needs_language;
 
     lang_str = hb_language_to_string (language);
     limit = nullptr;
     private_use_subtag = nullptr;
-    if (lang_str[0] == 'x' && lang_str[1] == '-')
+    अगर (lang_str[0] == 'x' && lang_str[1] == '-')
     {
       private_use_subtag = lang_str;
-    } else {
-      for (s = lang_str + 1; *s; s++)
+    } अन्यथा {
+      क्रम (s = lang_str + 1; *s; s++)
       {
-	if (s[-1] == '-' && s[1] == '-')
+	अगर (s[-1] == '-' && s[1] == '-')
 	{
-	  if (s[0] == 'x')
+	  अगर (s[0] == 'x')
 	  {
 	    private_use_subtag = s;
-	    if (!limit)
+	    अगर (!limit)
 	      limit = s - 1;
-	    break;
-	  } else if (!limit)
+	    अवरोध;
+	  } अन्यथा अगर (!limit)
 	  {
 	    limit = s - 1;
 	  }
 	}
       }
-      if (!limit)
+      अगर (!limit)
 	limit = s;
     }
 
-    needs_script = !parse_private_use_subtag (private_use_subtag, script_count, script_tags, "-hbsc", TOLOWER);
-    needs_language = !parse_private_use_subtag (private_use_subtag, language_count, language_tags, "-hbot", TOUPPER);
+    needs_script = !parse_private_use_subtag (private_use_subtag, script_गिनती, script_tags, "-hbsc", TOLOWER);
+    needs_language = !parse_private_use_subtag (private_use_subtag, language_गिनती, language_tags, "-hbot", TOUPPER);
 
-    if (needs_language && language_count && language_tags && *language_count)
-      hb_ot_tags_from_language (lang_str, limit, language_count, language_tags);
+    अगर (needs_language && language_गिनती && language_tags && *language_गिनती)
+      hb_ot_tags_from_language (lang_str, limit, language_गिनती, language_tags);
   }
 
-  if (needs_script && script_count && script_tags && *script_count)
-    hb_ot_all_tags_from_script (script, script_count, script_tags);
+  अगर (needs_script && script_गिनती && script_tags && *script_गिनती)
+    hb_ot_all_tags_from_script (script, script_गिनती, script_tags);
 }
 
 /**
@@ -575,41 +575,41 @@ hb_ot_tags_from_script_and_language (hb_script_t   script,
 hb_language_t
 hb_ot_tag_to_language (hb_tag_t tag)
 {
-  unsigned int i;
+  अचिन्हित पूर्णांक i;
 
-  if (tag == HB_OT_TAG_DEFAULT_LANGUAGE)
-    return nullptr;
+  अगर (tag == HB_OT_TAG_DEFAULT_LANGUAGE)
+    वापस nullptr;
 
-#ifndef HB_NO_LANGUAGE_LONG
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
   {
     hb_language_t disambiguated_tag = hb_ot_ambiguous_tag_to_language (tag);
-    if (disambiguated_tag != HB_LANGUAGE_INVALID)
-      return disambiguated_tag;
+    अगर (disambiguated_tag != HB_LANGUAGE_INVALID)
+      वापस disambiguated_tag;
   }
-#endif
+#पूर्ण_अगर
 
-  char buf[4];
-  for (i = 0; i < ARRAY_LENGTH (ot_languages2); i++)
-    if (ot_languages2[i].tag == tag)
+  अक्षर buf[4];
+  क्रम (i = 0; i < ARRAY_लंबाई (ot_languages2); i++)
+    अगर (ot_languages2[i].tag == tag)
     {
       hb_tag_to_string (ot_languages2[i].language, buf);
-      return hb_language_from_string (buf, 2);
+      वापस hb_language_from_string (buf, 2);
     }
-#ifndef HB_NO_LANGUAGE_LONG
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3); i++)
-    if (ot_languages3[i].tag == tag)
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
+  क्रम (i = 0; i < ARRAY_लंबाई (ot_languages3); i++)
+    अगर (ot_languages3[i].tag == tag)
     {
       hb_tag_to_string (ot_languages3[i].language, buf);
-      return hb_language_from_string (buf, 3);
+      वापस hb_language_from_string (buf, 3);
     }
-  for (i = 0; i < ARRAY_LENGTH (ot_languages3_multi); i++)
-    for (unsigned int j = 0; j < ot_languages3_multi[i].count; j++)
-      if (ot_languages3_multi_values[ot_languages3_multi[i].offset + j] == tag)
+  क्रम (i = 0; i < ARRAY_लंबाई (ot_languages3_multi); i++)
+    क्रम (अचिन्हित पूर्णांक j = 0; j < ot_languages3_multi[i].गिनती; j++)
+      अगर (ot_languages3_multi_मूल्यावली[ot_languages3_multi[i].offset + j] == tag)
       {
 	hb_tag_to_string (ot_languages3_multi[i].language, buf);
-	return hb_language_from_string (buf, 3);
+	वापस hb_language_from_string (buf, 3);
       }
-#endif
+#पूर्ण_अगर
 
   /* Return a custom language in the form of "x-hbot-AABBCCDD".
    * If it's three letters long, also guess it's ISO 639-3 and lower-case and
@@ -618,9 +618,9 @@ hb_ot_tag_to_language (hb_tag_t tag)
    * the same tag as the original tag).
    */
   {
-    char buf[20];
-    char *str = buf;
-    if (ISALPHA (tag >> 24)
+    अक्षर buf[20];
+    अक्षर *str = buf;
+    अगर (ISALPHA (tag >> 24)
 	&& ISALPHA ((tag >> 16) & 0xFF)
 	&& ISALPHA ((tag >> 8) & 0xFF)
 	&& (tag & 0xFF) == ' ')
@@ -632,7 +632,7 @@ hb_ot_tag_to_language (hb_tag_t tag)
       str += 4;
     }
     snprintf (str, 16, "x-hbot-%08" PRIx32, tag);
-    return hb_language_from_string (&*buf, -1);
+    वापस hb_language_from_string (&*buf, -1);
   }
 }
 
@@ -649,40 +649,40 @@ hb_ot_tag_to_language (hb_tag_t tag)
  *
  * Since: 2.0.0
  **/
-void
+व्योम
 hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 				   hb_tag_t       language_tag,
 				   hb_script_t   *script /* OUT */,
 				   hb_language_t *language /* OUT */)
 {
   hb_script_t script_out = hb_ot_tag_to_script (script_tag);
-  if (script)
+  अगर (script)
     *script = script_out;
-  if (language)
+  अगर (language)
   {
-    unsigned int script_count = 1;
+    अचिन्हित पूर्णांक script_गिनती = 1;
     hb_tag_t primary_script_tag[1];
     hb_ot_tags_from_script_and_language (script_out,
 					 HB_LANGUAGE_INVALID,
-					 &script_count,
+					 &script_गिनती,
 					 primary_script_tag,
 					 nullptr, nullptr);
     *language = hb_ot_tag_to_language (language_tag);
-    const char *lang_str = *language ? hb_language_to_string (*language) : nullptr;
-    if (lang_str && (script_count == 0 || primary_script_tag[0] != script_tag))
+    स्थिर अक्षर *lang_str = *language ? hb_language_to_string (*language) : nullptr;
+    अगर (lang_str && (script_गिनती == 0 || primary_script_tag[0] != script_tag))
     {
-      unsigned char *buf;
-      size_t len = strlen (lang_str);
-      buf = (unsigned char *) hb_malloc (len + 16);
-      if (unlikely (!buf))
+      अचिन्हित अक्षर *buf;
+      माप_प्रकार len = म_माप (lang_str);
+      buf = (अचिन्हित अक्षर *) hb_malloc (len + 16);
+      अगर (unlikely (!buf))
       {
 	*language = nullptr;
       }
-      else
+      अन्यथा
       {
-	int shift;
+	पूर्णांक shift;
 	hb_memcpy (buf, lang_str, len);
-	if (lang_str[0] != 'x' || lang_str[1] != '-') {
+	अगर (lang_str[0] != 'x' || lang_str[1] != '-') {
 	  buf[len++] = '-';
 	  buf[len++] = 'x';
 	}
@@ -692,68 +692,68 @@ hb_ot_tags_to_script_and_language (hb_tag_t       script_tag,
 	buf[len++] = 's';
 	buf[len++] = 'c';
 	buf[len++] = '-';
-	for (shift = 28; shift >= 0; shift -= 4)
+	क्रम (shift = 28; shift >= 0; shift -= 4)
 	  buf[len++] = TOHEX (script_tag >> shift);
-	*language = hb_language_from_string ((char *) buf, len);
+	*language = hb_language_from_string ((अक्षर *) buf, len);
 	hb_free (buf);
       }
     }
   }
 }
 
-#ifdef MAIN
-static inline void
+#अगर_घोषित MAIN
+अटल अंतरभूत व्योम
 test_langs_sorted ()
 {
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages2); i++)
+  क्रम (अचिन्हित पूर्णांक i = 1; i < ARRAY_लंबाई (ot_languages2); i++)
   {
-    int c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
-    if (c > 0)
+    पूर्णांक c = ot_languages2[i].cmp (&ot_languages2[i - 1]);
+    अगर (c > 0)
     {
-      fprintf (stderr, "ot_languages2 not sorted at index %u: %08x %d %08x\n",
+      ख_लिखो (मानक_त्रुटि, "ot_languages2 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages2[i-1].language, c, ot_languages2[i].language);
-      abort();
+      पात();
     }
   }
-#ifndef HB_NO_LANGUAGE_LONG
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3); i++)
+#अगर_अघोषित HB_NO_LANGUAGE_LONG
+  क्रम (अचिन्हित पूर्णांक i = 1; i < ARRAY_लंबाई (ot_languages3); i++)
   {
-    int c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
-    if (c > 0)
+    पूर्णांक c = ot_languages3[i].cmp (&ot_languages3[i - 1]);
+    अगर (c > 0)
     {
-      fprintf (stderr, "ot_languages3 not sorted at index %u: %08x %d %08x\n",
+      ख_लिखो (मानक_त्रुटि, "ot_languages3 not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3[i-1].language, c, ot_languages3[i].language);
-      abort();
+      पात();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_multi); i++)
+  क्रम (अचिन्हित पूर्णांक i = 1; i < ARRAY_लंबाई (ot_languages3_multi); i++)
   {
-    int c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
-    if (c > 0)
+    पूर्णांक c = ot_languages3_multi[i].cmp (&ot_languages3_multi[i - 1]);
+    अगर (c > 0)
     {
-      fprintf (stderr, "ot_languages3_multi not sorted at index %u: %08x %d %08x\n",
+      ख_लिखो (मानक_त्रुटि, "ot_languages3_multi not sorted at index %u: %08x %d %08x\n",
 	       i, ot_languages3_multi[i-1].language, c, ot_languages3_multi[i].language);
-      abort();
+      पात();
     }
   }
-  for (unsigned int i = 1; i < ARRAY_LENGTH (ot_languages3_blocked); i++)
-    if (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
+  क्रम (अचिन्हित पूर्णांक i = 1; i < ARRAY_लंबाई (ot_languages3_blocked); i++)
+    अगर (ot_languages3_blocked[i] < ot_languages3_blocked[i - 1])
     {
-      fprintf (stderr, "ot_languages3_blocked not sorted at index %u: %08x < %08x\n",
+      ख_लिखो (मानक_त्रुटि, "ot_languages3_blocked not sorted at index %u: %08x < %08x\n",
 	       i, ot_languages3_blocked[i], ot_languages3_blocked[i - 1]);
-      abort();
+      पात();
     }
-#endif
+#पूर्ण_अगर
 }
 
-int
-main ()
+पूर्णांक
+मुख्य ()
 {
   test_langs_sorted ();
-  return 0;
+  वापस 0;
 }
 
-#endif
+#पूर्ण_अगर
 
 
-#endif
+#पूर्ण_अगर

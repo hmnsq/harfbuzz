@@ -22,90 +22,90 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_LIST_HH
-#define HB_WASM_API_LIST_HH
+#अगर_अघोषित HB_WASM_API_LIST_HH
+#घोषणा HB_WASM_API_LIST_HH
 
-#include "hb-wasm-api.hh"
+#समावेश "hb-wasm-api.hh"
 
 
-#ifdef HB_DEBUG_WASM
+#अगर_घोषित HB_DEBUG_WASM
 namespace hb { namespace wasm {
 
-static void debugprint (HB_WASM_EXEC_ENV char *str)
-{ DEBUG_MSG (WASM, exec_env, "%s", str); }
-static void debugprint1 (HB_WASM_EXEC_ENV char *str, int32_t i1)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d", str, i1); }
-static void debugprint2 (HB_WASM_EXEC_ENV char *str, int32_t i1, int32_t i2)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d, %d", str, i1, i2); }
-static void debugprint3 (HB_WASM_EXEC_ENV char *str, int32_t i1, int32_t i2, int32_t i3)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d, %d, %d", str, i1, i2, i3); }
-static void debugprint4 (HB_WASM_EXEC_ENV char *str, int32_t i1, int32_t i2, int32_t i3, int32_t i4)
-{ DEBUG_MSG (WASM, exec_env, "%s: %d, %d, %d, %d", str, i1, i2, i3, i4); }
+अटल व्योम debugprint (HB_WASM_EXEC_ENV अक्षर *str)
+{ DEBUG_संदेश (WASM, exec_env, "%s", str); }
+अटल व्योम debugprint1 (HB_WASM_EXEC_ENV अक्षर *str, int32_t i1)
+{ DEBUG_संदेश (WASM, exec_env, "%s: %d", str, i1); }
+अटल व्योम debugprint2 (HB_WASM_EXEC_ENV अक्षर *str, int32_t i1, int32_t i2)
+{ DEBUG_संदेश (WASM, exec_env, "%s: %d, %d", str, i1, i2); }
+अटल व्योम debugprint3 (HB_WASM_EXEC_ENV अक्षर *str, int32_t i1, int32_t i2, int32_t i3)
+{ DEBUG_संदेश (WASM, exec_env, "%s: %d, %d, %d", str, i1, i2, i3); }
+अटल व्योम debugprint4 (HB_WASM_EXEC_ENV अक्षर *str, int32_t i1, int32_t i2, int32_t i3, int32_t i4)
+{ DEBUG_संदेश (WASM, exec_env, "%s: %d, %d, %d, %d", str, i1, i2, i3, i4); }
 
 }}
-#endif
+#पूर्ण_अगर
 
-#define NATIVE_SYMBOL(signature, name) {#name, (void *) hb::wasm::name, signature, NULL}
+#घोषणा NATIVE_प्रतीक(signature, name) {#name, (व्योम *) hb::wasm::name, signature, शून्य}
 /* Note: the array must be static defined since runtime will keep it after registration.
  * Also not const, because it modifies it (sorts it).
  * https://github.com/bytecodealliance/wasm-micro-runtime/blob/main/doc/export_native_api.md
  *
  * TODO Allocate this lazily in _hb_wasm_init(). */
-static NativeSymbol _hb_wasm_native_symbols[] =
+अटल Native_प्रतीक _hb_wasm_native_symbols[] =
 {
   /* common */
-  NATIVE_SYMBOL ("(i)i",	script_get_horizontal_direction),
+  NATIVE_प्रतीक ("(i)i",	script_get_horizontal_direction),
 
   /* blob */
-  NATIVE_SYMBOL ("(i)",		blob_free),
+  NATIVE_प्रतीक ("(i)",		blob_free),
 
-  /* buffer */
-  NATIVE_SYMBOL ("(i)",		buffer_contents_free),
-  NATIVE_SYMBOL ("(ii)i",	buffer_contents_realloc),
-  NATIVE_SYMBOL ("(ii)i",	buffer_copy_contents),
-  NATIVE_SYMBOL ("(ii)i",	buffer_set_contents),
-  NATIVE_SYMBOL ("(i)i",	buffer_get_direction),
-  NATIVE_SYMBOL ("(i)i",	buffer_get_script),
-  NATIVE_SYMBOL ("(i)",		buffer_reverse),
-  NATIVE_SYMBOL ("(i)",		buffer_reverse_clusters),
+  /*बफर*/
+  NATIVE_प्रतीक ("(i)",		बफर_contents_free),
+  NATIVE_प्रतीक ("(ii)i",	बफर_contents_realloc),
+  NATIVE_प्रतीक ("(ii)i",	बफर_copy_contents),
+  NATIVE_प्रतीक ("(ii)i",	बफर_set_contents),
+  NATIVE_प्रतीक ("(i)i",	बफर_get_direction),
+  NATIVE_प्रतीक ("(i)i",	बफर_get_script),
+  NATIVE_प्रतीक ("(i)",		बफर_reverse),
+  NATIVE_प्रतीक ("(i)",		बफर_reverse_clusters),
 
   /* face */
-  NATIVE_SYMBOL ("(ii)i",	face_create),
-  NATIVE_SYMBOL ("(iii)i",	face_copy_table),
-  NATIVE_SYMBOL ("(i)i",	face_get_upem),
+  NATIVE_प्रतीक ("(ii)i",	face_create),
+  NATIVE_प्रतीक ("(iii)i",	face_copy_table),
+  NATIVE_प्रतीक ("(i)i",	face_get_upem),
 
   /* font */
-  NATIVE_SYMBOL ("(i)i",	font_create),
-  NATIVE_SYMBOL ("(i)i",	font_get_face),
-  NATIVE_SYMBOL ("(iii)",	font_get_scale),
-  NATIVE_SYMBOL ("(iii)i",	font_get_glyph),
-  NATIVE_SYMBOL ("(ii)i",	font_get_glyph_h_advance),
-  NATIVE_SYMBOL ("(ii)i",	font_get_glyph_v_advance),
-  NATIVE_SYMBOL ("(iii)i",	font_get_glyph_extents),
-  NATIVE_SYMBOL ("(iiii)",	font_glyph_to_string),
-  NATIVE_SYMBOL ("(iii)i",	font_copy_glyph_outline),
-  NATIVE_SYMBOL ("(ii)i",	font_copy_coords),
-  NATIVE_SYMBOL ("(ii)i",	font_set_coords),
+  NATIVE_प्रतीक ("(i)i",	font_create),
+  NATIVE_प्रतीक ("(i)i",	font_get_face),
+  NATIVE_प्रतीक ("(iii)",	font_get_scale),
+  NATIVE_प्रतीक ("(iii)i",	font_get_glyph),
+  NATIVE_प्रतीक ("(ii)i",	font_get_glyph_h_advance),
+  NATIVE_प्रतीक ("(ii)i",	font_get_glyph_v_advance),
+  NATIVE_प्रतीक ("(iii)i",	font_get_glyph_extents),
+  NATIVE_प्रतीक ("(iiii)",	font_glyph_to_string),
+  NATIVE_प्रतीक ("(iii)i",	font_copy_glyph_outline),
+  NATIVE_प्रतीक ("(ii)i",	font_copy_coords),
+  NATIVE_प्रतीक ("(ii)i",	font_set_coords),
 
   /* outline */
-  NATIVE_SYMBOL ("(i)",		glyph_outline_free),
+  NATIVE_प्रतीक ("(i)",		glyph_outline_free),
 
   /* shape */
-  NATIVE_SYMBOL ("(iiii$)i",	shape_with),
-  NATIVE_SYMBOL ("(iii)i",	feature_copy_contents),
-  NATIVE_SYMBOL ("(i)",		features_free),
+  NATIVE_प्रतीक ("(iiii$)i",	shape_with),
+  NATIVE_प्रतीक ("(iii)i",	feature_copy_contents),
+  NATIVE_प्रतीक ("(i)",		features_free),
 
   /* debug */
-#ifdef HB_DEBUG_WASM
-  NATIVE_SYMBOL ("($)",		debugprint),
-  NATIVE_SYMBOL ("($i)",	debugprint1),
-  NATIVE_SYMBOL ("($ii)",	debugprint2),
-  NATIVE_SYMBOL ("($iii)",	debugprint3),
-  NATIVE_SYMBOL ("($iiii)",	debugprint4),
-#endif
+#अगर_घोषित HB_DEBUG_WASM
+  NATIVE_प्रतीक ("($)",		debugprint),
+  NATIVE_प्रतीक ("($i)",	debugprint1),
+  NATIVE_प्रतीक ("($ii)",	debugprint2),
+  NATIVE_प्रतीक ("($iii)",	debugprint3),
+  NATIVE_प्रतीक ("($iiii)",	debugprint4),
+#पूर्ण_अगर
 
 };
-#undef NATIVE_SYMBOL
+#अघोषित NATIVE_प्रतीक
 
 
-#endif /* HB_WASM_API_LIST_HH */
+#पूर्ण_अगर /* HB_WASM_API_LIST_HH */

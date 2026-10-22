@@ -28,35 +28,35 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GPU_CU2QU_HH
-#define HB_GPU_CU2QU_HH
+#अगर_अघोषित HB_GPU_CU2QU_HH
+#घोषणा HB_GPU_CU2QU_HH
 
-#include "hb-gpu-draw.hh"
+#समावेश "hb-gpu-draw.hh"
 
-#include <cmath>
+#समावेश <cmath>
 
 
 /* Maximum approximation error in font units.
  * 0.5 is well below one unit in any reasonable coordinate system. */
-#ifndef HB_GPU_CU2QU_TOLERANCE
-#define HB_GPU_CU2QU_TOLERANCE 0.5
-#endif
+#अगर_अघोषित HB_GPU_CU2QU_TOLERANCE
+#घोषणा HB_GPU_CU2QU_TOLERANCE 0.5
+#पूर्ण_अगर
 
 /* Maximum subdivision depth.  Each level halves the parameter interval;
  * at depth 10 the sub-curve spans 1/1024 of the original, so the
  * quadratic error (O(dt^4)) is reduced by a factor of ~10^12. */
-#define HB_GPU_CU2QU_MAX_DEPTH 10
+#घोषणा HB_GPU_CU2QU_MAX_DEPTH 10
 
 
-struct hb_gpu_cu2qu_point_t
+काष्ठा hb_gpu_cu2qu_point_t
 {
-  double x, y;
+  द्विगुन x, y;
 };
 
-static inline hb_gpu_cu2qu_point_t
-hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, double t)
+अटल अंतरभूत hb_gpu_cu2qu_point_t
+hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, द्विगुन t)
 {
-  return {a.x + (b.x - a.x) * t,
+  वापस {a.x + (b.x - a.x) * t,
 	  a.y + (b.y - a.y) * t};
 }
 
@@ -64,29 +64,29 @@ hb_gpu_cu2qu_lerp (hb_gpu_cu2qu_point_t a, hb_gpu_cu2qu_point_t b, double t)
 /*
  * Check whether a cubic error curve stays within `tolerance` of the origin.
  */
-static bool
+अटल bool
 hb_gpu_cubic_farthest_fit_inside (hb_gpu_cu2qu_point_t p0,
 				  hb_gpu_cu2qu_point_t p1,
 				  hb_gpu_cu2qu_point_t p2,
 				  hb_gpu_cu2qu_point_t p3,
-				  double tolerance, unsigned depth)
+				  द्विगुन tolerance, अचिन्हित depth)
 {
-  if (hypot (p1.x, p1.y) <= tolerance &&
+  अगर (hypot (p1.x, p1.y) <= tolerance &&
       hypot (p2.x, p2.y) <= tolerance)
-    return true;
+    वापस true;
 
-  if (depth >= 8)
-    return false;
+  अगर (depth >= 8)
+    वापस false;
 
   hb_gpu_cu2qu_point_t mid = {(p0.x + 3 * (p1.x + p2.x) + p3.x) * 0.125,
 			      (p0.y + 3 * (p1.y + p2.y) + p3.y) * 0.125};
-  if (hypot (mid.x, mid.y) > tolerance)
-    return false;
+  अगर (hypot (mid.x, mid.y) > tolerance)
+    वापस false;
 
   hb_gpu_cu2qu_point_t d3 = {(p3.x + p2.x - p1.x - p0.x) * 0.125,
 			     (p3.y + p2.y - p1.y - p0.y) * 0.125};
 
-  return hb_gpu_cubic_farthest_fit_inside (
+  वापस hb_gpu_cubic_farthest_fit_inside (
     p0,
     hb_gpu_cu2qu_lerp (p0, p1, 0.5),
     {mid.x - d3.x, mid.y - d3.y},
@@ -105,24 +105,24 @@ hb_gpu_cubic_farthest_fit_inside (hb_gpu_cu2qu_point_t p0,
 /*
  * Try to approximate a cubic Bézier with a single quadratic.
  */
-static bool
+अटल bool
 hb_gpu_cubic_approx_quadratic (hb_gpu_cu2qu_point_t c0,
 			       hb_gpu_cu2qu_point_t c1,
 			       hb_gpu_cu2qu_point_t c2,
 			       hb_gpu_cu2qu_point_t c3,
-			       double tolerance,
+			       द्विगुन tolerance,
 			       hb_gpu_cu2qu_point_t *q1)
 {
-  double ax = c1.x - c0.x, ay = c1.y - c0.y;
-  double dx = c3.x - c2.x, dy = c3.y - c2.y;
+  द्विगुन ax = c1.x - c0.x, ay = c1.y - c0.y;
+  द्विगुन dx = c3.x - c2.x, dy = c3.y - c2.y;
 
-  double px = -ay, py = ax;
+  द्विगुन px = -ay, py = ax;
 
-  double denom = px * dx + py * dy;
-  if (fabs (denom) < 1e-12)
-    return false;
+  द्विगुन denom = px * dx + py * dy;
+  अगर (भ_असल (denom) < 1e-12)
+    वापस false;
 
-  double h = (px * (c0.x - c2.x) + py * (c0.y - c2.y)) / denom;
+  द्विगुन h = (px * (c0.x - c2.x) + py * (c0.y - c2.y)) / denom;
 
   q1->x = c2.x + dx * h;
   q1->y = c2.y + dy * h;
@@ -132,14 +132,14 @@ hb_gpu_cubic_approx_quadratic (hb_gpu_cu2qu_point_t c0,
   hb_gpu_cu2qu_point_t err2 = {c3.x + (q1->x - c3.x) * (2.0 / 3.0) - c2.x,
 			       c3.y + (q1->y - c3.y) * (2.0 / 3.0) - c2.y};
 
-  return hb_gpu_cubic_farthest_fit_inside ({0, 0}, err1, err2, {0, 0}, tolerance, 0);
+  वापस hb_gpu_cubic_farthest_fit_inside ({0, 0}, err1, err2, {0, 0}, tolerance, 0);
 }
 
 
 /*
  * Split a cubic at t = 0.5 (de Casteljau).
  */
-static void
+अटल व्योम
 hb_gpu_split_cubic_half (hb_gpu_cu2qu_point_t c0,
 			 hb_gpu_cu2qu_point_t c1,
 			 hb_gpu_cu2qu_point_t c2,
@@ -162,25 +162,25 @@ hb_gpu_split_cubic_half (hb_gpu_cu2qu_point_t c0,
 /*
  * Recursively convert a cubic into quadratic segments.
  */
-static void
+अटल व्योम
 hb_gpu_cubic_to_quadratics (hb_gpu_draw_t *g,
 			    hb_gpu_cu2qu_point_t c0,
 			    hb_gpu_cu2qu_point_t c1,
 			    hb_gpu_cu2qu_point_t c2,
 			    hb_gpu_cu2qu_point_t c3,
-			    double tolerance, unsigned depth)
+			    द्विगुन tolerance, अचिन्हित depth)
 {
   hb_gpu_cu2qu_point_t q1;
-  if (hb_gpu_cubic_approx_quadratic (c0, c1, c2, c3, tolerance, &q1))
+  अगर (hb_gpu_cubic_approx_quadratic (c0, c1, c2, c3, tolerance, &q1))
   {
     g->acc_conic_to (q1.x, q1.y, c3.x, c3.y);
-    return;
+    वापस;
   }
 
-  if (depth >= HB_GPU_CU2QU_MAX_DEPTH)
+  अगर (depth >= HB_GPU_CU2QU_MAX_DEPTH)
   {
-    g->acc_line_to (c3.x, c3.y);
-    return;
+    g->acc_पंक्ति_to (c3.x, c3.y);
+    वापस;
   }
 
   hb_gpu_cu2qu_point_t pts[7];
@@ -190,4 +190,4 @@ hb_gpu_cubic_to_quadratics (hb_gpu_draw_t *g,
 }
 
 
-#endif /* HB_GPU_CU2QU_HH */
+#पूर्ण_अगर /* HB_GPU_CU2QU_HH */

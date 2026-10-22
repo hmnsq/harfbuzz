@@ -24,14 +24,14 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#अगर_अघोषित GRAPH_GRAPH_परिणाम_HH
+#घोषणा GRAPH_GRAPH_परिणाम_HH
 
-#include "../hb-result.hh"
+#समावेश "../hb-result.hh"
 
 namespace graph {
 
-enum graph_error_t {
+क्रमागत graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,25 +43,25 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+अटल अंतरभूत स्थिर अक्षर* to_string(graph_error_t e) {
+  चयन (e) {
+    हाल ALLOCATION_FAILURE: वापस "Memory Allocation Failed";
+    हाल LIMIT_EXCEEDED: वापस "Limit Exceeded";
+    हाल INVALID_ARGUMENT: वापस "Invalid Argument";
+    हाल CYCLE_DETECTED: वापस "Cycle in Graph";
+    हाल SANITIZE_FAILURE: वापस "Failed Sanitization";
+    हाल OUT_OF_BOUNDS: वापस "Out of Bounds";
+    हाल ORPHANED_NODES: वापस "Graph is not fully connected";
+    हाल OVERFLOW_RESOLUTION_FAILED: वापस "Overflows are not able to be resolved";
+    हाल UNKNOWN:
+    शेष:
+      वापस "Unknown Error";
   }
 }
 
-template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+ढाँचा<typename T>
+using graph_परिणाम_t = hb_परिणाम_t<T, graph_error_t>;
 
 } // namespace graph
 
-#endif /* GRAPH_GRAPH_RESULT_HH */
+#पूर्ण_अगर /* GRAPH_GRAPH_RESULT_HH */

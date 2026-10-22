@@ -1,44 +1,44 @@
-#define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
+#घोषणा HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#समावेश <hb-wasm-api.h>
 
-extern "C" {
-void debugprint (const char *s);
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+बाह्य "C" {
+व्योम debugprint (स्थिर अक्षर *s);
+व्योम debugprint1 (स्थिर अक्षर *s, int32_t);
+व्योम debugprint2 (स्थिर अक्षर *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (व्योम *shape_plan,
        font_t *font,
-       buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       बफर_t *बफर,
+       स्थिर feature_t *features,
+       uint32_t अंक_features)
 {
   face_t *face = font_get_face (font);
 
   blob_t blob = BLOB_INIT;
   face_copy_table (face, TAG ('c','m','a','p'), &blob);
 
-  debugprint1 ("cmap length", blob.length);
+  debugprint1 ("cmap length", blob.लंबाई);
 
   blob_free (&blob);
 
-  buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  बफर_contents_t contents = बफर_CONTENTS_INIT;
+  अगर (!बफर_copy_contents (बफर, &contents))
+    वापस false;
 
-  debugprint1 ("buffer length", contents.length);
+  debugprint1 ("buffer length", contents.लंबाई);
 
   glyph_outline_t outline = GLYPH_OUTLINE_INIT;
 
-  for (unsigned i = 0; i < contents.length; i++)
+  क्रम (अचिन्हित i = 0; i < contents.लंबाई; i++)
   {
-    char name[64];
+    अक्षर name[64];
 
     debugprint1 ("glyph at", i);
 
-    font_glyph_to_string (font, contents.info[i].codepoint, name, sizeof (name));
+    font_glyph_to_string (font, contents.info[i].codepoint, name, माप (name));
 
     debugprint (name);
 
@@ -52,9 +52,9 @@ shape (void *shape_plan,
 
   glyph_outline_free (&outline);
 
-  bool_t ret = buffer_set_contents (buffer, &contents);
+  bool_t ret = बफर_set_contents (बफर, &contents);
 
-  buffer_contents_free (&contents);
+  बफर_contents_free (&contents);
 
-  return ret;
+  वापस ret;
 }

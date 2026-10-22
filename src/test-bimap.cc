@@ -24,11 +24,11 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-bimap.hh"
+#समावेश "hb.hh"
+#समावेश "hb-bimap.hh"
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
   hb_bimap_t	bm;
 
@@ -44,7 +44,7 @@ main (int argc, char **argv)
   bm.del (1);
   hb_always_assert (bm.has (1) == false);
   hb_always_assert (bm.has (3) == true);
-  bm.clear ();
+  bm.सफा ();
   hb_always_assert (bm.get_population () == 0);
 
   hb_inc_bimap_t  ibm;
@@ -72,5 +72,5 @@ main (int argc, char **argv)
   hb_always_assert (ibm.backward (2) == 2);
   hb_always_assert (ibm.has (4) == false);
 
-  return 0;
+  वापस 0;
 }

@@ -24,63 +24,63 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPE_PLAN_HH
-#define HB_SHAPE_PLAN_HH
+#अगर_अघोषित HB_SHAPE_PLAN_HH
+#घोषणा HB_SHAPE_PLAN_HH
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-ot-shape.hh"
+#समावेश "hb.hh"
+#समावेश "hb-shaper.hh"
+#समावेश "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+काष्ठा hb_shape_plan_कुंजी_t
 {
   hb_segment_properties_t  props;
 
-  const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  स्थिर hb_feature_t      *user_features;
+  अचिन्हित पूर्णांक             अंक_user_features;
 
-#ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
-#endif
+#अगर_अघोषित HB_NO_OT_SHAPE
+  hb_ot_shape_plan_कुंजी_t   ot;
+#पूर्ण_अगर
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  स्थिर अक्षर              *shaper_name;
 
   HB_INTERNAL bool init (bool                           copy,
 			 hb_face_t                     *face,
-			 const hb_segment_properties_t *props,
-			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 स्थिर hb_segment_properties_t *props,
+			 स्थिर hb_feature_t            *user_features,
+			 अचिन्हित पूर्णांक                   अंक_user_features,
+			 स्थिर पूर्णांक                     *coords,
+			 अचिन्हित पूर्णांक                   अंक_coords,
+			 स्थिर अक्षर * स्थिर            *shaper_list);
 
-  HB_INTERNAL void fini ()
+  HB_INTERNAL व्योम fini ()
   {
-    hb_free ((void *) user_features);
+    hb_free ((व्योम *) user_features);
     user_features = nullptr;
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
     ot.fini ();
-#endif
+#पूर्ण_अगर
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_INTERNAL bool user_features_match (स्थिर hb_shape_plan_कुंजी_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_INTERNAL bool equal (स्थिर hb_shape_plan_कुंजी_t *other);
 };
 
-struct hb_shape_plan_t
+काष्ठा hb_shape_plan_t
 {
   HB_INTERNAL ~hb_shape_plan_t ();
   hb_object_header_t header;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
-#ifndef HB_NO_OT_SHAPE
+  hb_shape_plan_कुंजी_t key;
+#अगर_अघोषित HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
-#endif
-#ifdef HAVE_HARFRUST
-  hb_atomic_t<void *> harfrust_data;
-#endif
+#पूर्ण_अगर
+#अगर_घोषित HAVE_HARFRUST
+  hb_atomic_t<व्योम *> harfrust_तथ्य;
+#पूर्ण_अगर
 };
 
 
-#endif /* HB_SHAPE_PLAN_HH */
+#पूर्ण_अगर /* HB_SHAPE_PLAN_HH */

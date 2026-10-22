@@ -14,36 +14,36 @@
  * # Date: 2026-06-29, 15:25:26 GMT
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-vowel-constraints.hh"
+#समावेश "hb-ot-shaper-vowel-constraints.hh"
 
-static void
-_output_dotted_circle (hb_buffer_t *buffer)
+अटल व्योम
+_output_dotted_circle (hb_बफर_t *बफर)
 {
-  (void) buffer->output_glyph (0x25CCu);
-  _hb_glyph_info_clear_continuation (&buffer->prev());
+  (व्योम) बफर->output_glyph (0x25CCu);
+  _hb_glyph_info_clear_continuation (&बफर->prev());
 }
 
-static void
-_output_with_dotted_circle (hb_buffer_t *buffer)
+अटल व्योम
+_output_with_dotted_circle (hb_बफर_t *बफर)
 {
-  _output_dotted_circle (buffer);
-  (void) buffer->next_glyph ();
+  _output_dotted_circle (बफर);
+  (व्योम) बफर->अग्र_glyph ();
 }
 
-void
-_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
-				       hb_buffer_t              *buffer,
+व्योम
+_hb_preprocess_text_vowel_constraints (स्थिर hb_ot_shape_plan_t *plan HB_UNUSED,
+				       hb_बफर_t              *बफर,
 				       hb_font_t                *font HB_UNUSED)
 {
-#ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-  return;
-#endif
-  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
-    return;
+#अगर_घोषित HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
+  वापस;
+#पूर्ण_अगर
+  अगर (बफर->flags & HB_बफर_FLAG_DO_NOT_जोड़ो_DOTTED_CIRCLE)
+    वापस;
 
   /* UGLY UGLY UGLY business of adding dotted-circle in the middle of
    * vowel-sequences that look like another vowel.  Data for each script
@@ -51,427 +51,427 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
    *
    * https://github.com/harfbuzz/harfbuzz/issues/1019
    */
-  buffer->clear_output ();
-  unsigned int count = buffer->len;
-  switch ((unsigned) buffer->props.script)
+  बफर->clear_output ();
+  अचिन्हित पूर्णांक गिनती = बफर->len;
+  चयन ((अचिन्हित) बफर->props.script)
   {
-    case HB_SCRIPT_DEVANAGARI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_DEVANAGARI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0905u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x0905u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x093Bu: case 0x093Eu: case 0x0945u:
-	      case 0x0946u: case 0x0949u: case 0x094Au: case 0x094Bu:
-	      case 0x094Cu: case 0x094Fu: case 0x0956u: case 0x0957u:
+	      हाल 0x093Au: हाल 0x093Bu: हाल 0x093Eu: हाल 0x0945u:
+	      हाल 0x0946u: हाल 0x0949u: हाल 0x094Au: हाल 0x094Bu:
+	      हाल 0x094Cu: हाल 0x094Fu: हाल 0x0956u: हाल 0x0957u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0906u:
-	    switch (buffer->cur (1).codepoint)
+	    अवरोध;
+	  हाल 0x0906u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x0945u: case 0x0946u: case 0x0947u:
-	      case 0x0948u:
+	      हाल 0x093Au: हाल 0x0945u: हाल 0x0946u: हाल 0x0947u:
+	      हाल 0x0948u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0909u:
-	    matched = 0x0941u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x090Fu:
-	    switch (buffer->cur (1).codepoint)
+	    अवरोध;
+	  हाल 0x0909u:
+	    matched = 0x0941u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x090Fu:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0945u: case 0x0946u: case 0x0947u:
+	      हाल 0x0945u: हाल 0x0946u: हाल 0x0947u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0930u:
-	    if (0x094Du == buffer->cur (1).codepoint &&
-		buffer->idx + 2 < count &&
-		0x0907u == buffer->cur (2).codepoint)
+	    अवरोध;
+	  हाल 0x0930u:
+	    अगर (0x094Du == बफर->cur (1).codepoint &&
+		बफर->idx + 2 < गिनती &&
+		0x0907u == बफर->cur (2).codepoint)
 	    {
-	      (void) buffer->next_glyph ();
+	      (व्योम) बफर->अग्र_glyph ();
 	      matched = true;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_BENGALI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_BENGALI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0985u:
-	    matched = 0x09BEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Bu:
-	    matched = 0x09C3u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Cu:
-	    matched = 0x09E2u == buffer->cur (1).codepoint;
-	    break;
+	  हाल 0x0985u:
+	    matched = 0x09BEu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x098Bu:
+	    matched = 0x09C3u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x098Cu:
+	    matched = 0x09E2u == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_GURMUKHI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_GURMUKHI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0A05u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x0A05u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0A3Eu: case 0x0A48u: case 0x0A4Cu:
+	      हाल 0x0A3Eu: हाल 0x0A48u: हाल 0x0A4Cu:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0A72u:
-	    switch (buffer->cur (1).codepoint)
+	    अवरोध;
+	  हाल 0x0A72u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0A3Fu: case 0x0A40u: case 0x0A47u:
+	      हाल 0x0A3Fu: हाल 0x0A40u: हाल 0x0A47u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0A73u:
-	    switch (buffer->cur (1).codepoint)
+	    अवरोध;
+	  हाल 0x0A73u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0A41u: case 0x0A42u: case 0x0A4Bu:
+	      हाल 0x0A41u: हाल 0x0A42u: हाल 0x0A4Bu:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_GUJARATI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_GUJARATI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0A85u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x0A85u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0ABEu: case 0x0AC5u: case 0x0AC7u: case 0x0AC8u:
-	      case 0x0AC9u: case 0x0ACBu: case 0x0ACCu:
+	      हाल 0x0ABEu: हाल 0x0AC5u: हाल 0x0AC7u: हाल 0x0AC8u:
+	      हाल 0x0AC9u: हाल 0x0ACBu: हाल 0x0ACCu:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0AC5u:
-	    matched = 0x0ABEu == buffer->cur (1).codepoint;
-	    break;
+	    अवरोध;
+	  हाल 0x0AC5u:
+	    matched = 0x0ABEu == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_ORIYA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_ORIYA:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0B05u:
-	    matched = 0x0B3Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0B0Fu: case 0x0B13u:
-	    matched = 0x0B57u == buffer->cur (1).codepoint;
-	    break;
+	  हाल 0x0B05u:
+	    matched = 0x0B3Eu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x0B0Fu: हाल 0x0B13u:
+	    matched = 0x0B57u == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_TAMIL:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_TAMIL:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	if (0x0B85u == buffer->cur ().codepoint &&
-	    0x0BC2u == buffer->cur (1).codepoint)
+	अगर (0x0B85u == बफर->cur ().codepoint &&
+	    0x0BC2u == बफर->cur (1).codepoint)
 	{
 	  matched = true;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_TELUGU:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_TELUGU:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0C12u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x0C12u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0C4Cu: case 0x0C55u:
+	      हाल 0x0C4Cu: हाल 0x0C55u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0C3Fu: case 0x0C46u: case 0x0C4Au:
-	    matched = 0x0C55u == buffer->cur (1).codepoint;
-	    break;
+	    अवरोध;
+	  हाल 0x0C3Fu: हाल 0x0C46u: हाल 0x0C4Au:
+	    matched = 0x0C55u == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_KANNADA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_KANNADA:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0C89u: case 0x0C8Bu:
-	    matched = 0x0CBEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0C92u:
-	    matched = 0x0CCCu == buffer->cur (1).codepoint;
-	    break;
+	  हाल 0x0C89u: हाल 0x0C8Bu:
+	    matched = 0x0CBEu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x0C92u:
+	    matched = 0x0CCCu == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_MALAYALAM:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_MALAYALAM:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0D07u: case 0x0D09u:
-	    matched = 0x0D57u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D0Eu:
-	    matched = 0x0D46u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D12u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x0D07u: हाल 0x0D09u:
+	    matched = 0x0D57u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x0D0Eu:
+	    matched = 0x0D46u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x0D12u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0D3Eu: case 0x0D57u:
+	      हाल 0x0D3Eu: हाल 0x0D57u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_SINHALA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_SINHALA:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x0D85u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x0D85u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0DCFu: case 0x0DD0u: case 0x0DD1u:
+	      हाल 0x0DCFu: हाल 0x0DD0u: हाल 0x0DD1u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x0D8Bu: case 0x0D8Fu: case 0x0D94u:
-	    matched = 0x0DDFu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D8Du:
-	    matched = 0x0DD8u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D91u:
-	    switch (buffer->cur (1).codepoint)
+	    अवरोध;
+	  हाल 0x0D8Bu: हाल 0x0D8Fu: हाल 0x0D94u:
+	    matched = 0x0DDFu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x0D8Du:
+	    matched = 0x0DD8u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x0D91u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x0DCAu: case 0x0DD9u: case 0x0DDAu: case 0x0DDCu:
-	      case 0x0DDDu: case 0x0DDEu:
+	      हाल 0x0DCAu: हाल 0x0DD9u: हाल 0x0DDAu: हाल 0x0DDCu:
+	      हाल 0x0DDDu: हाल 0x0DDEu:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_BRAHMI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_BRAHMI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x11005u:
-	    matched = 0x11038u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Bu:
-	    matched = 0x1103Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Fu:
-	    matched = 0x11042u == buffer->cur (1).codepoint;
-	    break;
+	  हाल 0x11005u:
+	    matched = 0x11038u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x1100Bu:
+	    matched = 0x1103Eu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x1100Fu:
+	    matched = 0x11042u == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_KHOJKI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_KHOJKI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x11200u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x11200u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x1122Cu: case 0x11231u: case 0x11233u:
+	      हाल 0x1122Cu: हाल 0x11231u: हाल 0x11233u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x11206u:
-	    matched = 0x1122Cu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1122Cu:
-	    switch (buffer->cur (1).codepoint)
+	    अवरोध;
+	  हाल 0x11206u:
+	    matched = 0x1122Cu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x1122Cu:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x11230u: case 0x11231u:
+	      हाल 0x11230u: हाल 0x11231u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x11240u:
-	    matched = 0x1122Eu == buffer->cur (1).codepoint;
-	    break;
+	    अवरोध;
+	  हाल 0x11240u:
+	    matched = 0x1122Eu == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_KHUDAWADI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_KHUDAWADI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x112B0u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x112B0u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x112E0u: case 0x112E5u: case 0x112E6u: case 0x112E7u:
-	      case 0x112E8u:
+	      हाल 0x112E0u: हाल 0x112E5u: हाल 0x112E6u: हाल 0x112E7u:
+	      हाल 0x112E8u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_TIRHUTA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_TIRHUTA:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x11481u:
-	    matched = 0x114B0u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1148Bu: case 0x1148Du:
-	    matched = 0x114BAu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x114AAu:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x11481u:
+	    matched = 0x114B0u == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x1148Bu: हाल 0x1148Du:
+	    matched = 0x114BAu == बफर->cur (1).codepoint;
+	    अवरोध;
+	  हाल 0x114AAu:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x114B5u: case 0x114B6u:
+	      हाल 0x114B5u: हाल 0x114B6u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_MODI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_MODI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x11600u: case 0x11601u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x11600u: हाल 0x11601u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x11639u: case 0x1163Au:
+	      हाल 0x11639u: हाल 0x1163Au:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    case HB_SCRIPT_TAKRI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    हाल HB_SCRIPT_TAKRI:
+      क्रम (बफर->idx = 0; बफर->idx + 1 < गिनती && बफर->successful;)
       {
 	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	चयन (बफर->cur ().codepoint)
 	{
-	  case 0x11680u:
-	    switch (buffer->cur (1).codepoint)
+	  हाल 0x11680u:
+	    चयन (बफर->cur (1).codepoint)
 	    {
-	      case 0x116ADu: case 0x116B4u: case 0x116B5u:
+	      हाल 0x116ADu: हाल 0x116B4u: हाल 0x116B5u:
 		matched = true;
-		break;
+		अवरोध;
 	    }
-	    break;
-	  case 0x11686u:
-	    matched = 0x116B2u == buffer->cur (1).codepoint;
-	    break;
+	    अवरोध;
+	  हाल 0x11686u:
+	    matched = 0x116B2u == बफर->cur (1).codepoint;
+	    अवरोध;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(व्योम) बफर->अग्र_glyph ();
+	अगर (matched) _output_with_dotted_circle (बफर);
       }
-      break;
+      अवरोध;
 
-    default:
-      break;
+    शेष:
+      अवरोध;
   }
-  buffer->sync ();
+  बफर->sync ();
 }
 
 
-#endif
+#पूर्ण_अगर
 /* == End of generated functions == */

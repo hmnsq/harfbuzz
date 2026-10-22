@@ -22,54 +22,54 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-cache.hh"
+#समावेश "hb-cache.hh"
 
-template <unsigned key_bits, unsigned value_bits, unsigned cache_bits, bool thread_safe>
-static void
+ढाँचा <अचिन्हित कुंजी_bits, अचिन्हित मूल्य_bits, अचिन्हित cache_bits, bool thread_safe>
+अटल व्योम
 test_cache ()
 {
-  hb_cache_t<key_bits, value_bits, cache_bits, thread_safe> cache;
-  unsigned key_max = (1u << key_bits) - 1;
-  unsigned value = 42;
-  unsigned keys[] = {0, 1, 255, 256, key_max};
-  unsigned overflow_keys[] = {key_max + 1, 32512, 32767, 65535, UINT_MAX};
+  hb_cache_t<कुंजी_bits, मूल्य_bits, cache_bits, thread_safe> cache;
+  अचिन्हित कुंजी_max = (1u << कुंजी_bits) - 1;
+  अचिन्हित value = 42;
+  अचिन्हित कुंजियाँ[] = {0, 1, 255, 256, कुंजी_max};
+  अचिन्हित overflow_कुंजियाँ[] = {कुंजी_max + 1, 32512, 32767, 65535, अच_पूर्णांक_उच्च};
 
-  for (unsigned key : keys)
-    hb_always_assert (!cache.get (key, &value));
+  क्रम (अचिन्हित key : कुंजियाँ)
+    hb_always_assert (!cache.लो (key, &value));
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  क्रम (अचिन्हित key : overflow_कुंजियाँ)
+    अगर (key > कुंजी_max)
     {
-      hb_always_assert (!cache.get (key, &value));
+      hb_always_assert (!cache.लो (key, &value));
       hb_always_assert (value == 42);
     }
 
-  for (unsigned key : keys)
+  क्रम (अचिन्हित key : कुंजियाँ)
   {
     cache.set (key, 0);
-    hb_always_assert (cache.get (key, &value) && value == 0);
+    hb_always_assert (cache.लो (key, &value) && value == 0);
   }
 
-  cache.set (42, cache.MAX_VALUE);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.set (42, cache.MAX_मूल्य);
+  hb_always_assert (cache.लो (42, &value) && value == cache.MAX_मूल्य);
 
-  for (unsigned key : overflow_keys)
-    if (key > key_max)
+  क्रम (अचिन्हित key : overflow_कुंजियाँ)
+    अगर (key > कुंजी_max)
     {
       cache.set (key, 0);
-      hb_always_assert (!cache.get (key, &value));
+      hb_always_assert (!cache.लो (key, &value));
     }
 
-  cache.set (42, cache.MAX_VALUE + 1);
-  hb_always_assert (cache.get (42, &value) && value == cache.MAX_VALUE);
+  cache.set (42, cache.MAX_मूल्य + 1);
+  hb_always_assert (cache.लो (42, &value) && value == cache.MAX_मूल्य);
 
-  cache.clear ();
-  for (unsigned key : keys)
-    hb_always_assert (!cache.get (key, &value));
+  cache.सफा ();
+  क्रम (अचिन्हित key : कुंजियाँ)
+    hb_always_assert (!cache.लो (key, &value));
 }
 
-template <bool thread_safe>
-static void
+ढाँचा <bool thread_safe>
+अटल व्योम
 test_caches ()
 {
   /* Entries with spare bits, and entries that fill the storage type. */
@@ -81,8 +81,8 @@ test_caches ()
   test_cache<24, 16, 8, thread_safe> ();
 }
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
   test_caches<true> ();
   test_caches<false> ();

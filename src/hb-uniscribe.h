@@ -24,12 +24,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_UNISCRIBE_H
-#define HB_UNISCRIBE_H
+#अगर_अघोषित HB_UNISCRIBE_H
+#घोषणा HB_UNISCRIBE_H
 
-#include "hb.h"
+#समावेश "hb.h"
 
-#include <windows.h>
+#समावेश <windows.h>
 
 HB_BEGIN_DECLS
 
@@ -43,4 +43,4 @@ hb_uniscribe_font_get_hfont (hb_font_t *font);
 
 HB_END_DECLS
 
-#endif /* HB_UNISCRIBE_H */
+#पूर्ण_अगर /* HB_UNISCRIBE_H */

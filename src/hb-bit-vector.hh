@@ -22,174 +22,174 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_VECTOR_HH
-#define HB_BIT_VECTOR_HH
+#अगर_अघोषित HB_BIT_VECTOR_HH
+#घोषणा HB_BIT_VECTOR_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-atomic.hh"
+#समावेश "hb-atomic.hh"
 
-struct hb_min_max_t
+काष्ठा hb_min_max_t
 {
-  void add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  व्योम add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
+  व्योम add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     min_v = hb_min (min_v, a);
     max_v = hb_max (max_v, b);
   }
 
-  template <typename set_t>
-  void union_ (const set_t &set)
+  ढाँचा <typename set_t>
+  व्योम union_ (स्थिर set_t &set)
   {
     hb_codepoint_t set_min = set.get_min ();
-    if (unlikely (set_min == HB_CODEPOINT_INVALID))
-      return;
+    अगर (unlikely (set_min == HB_CODEPOINT_INVALID))
+      वापस;
     hb_codepoint_t set_max = set.get_max ();
     min_v = hb_min (min_v, set_min);
     max_v = hb_max (max_v, set_max);
   }
 
-  hb_codepoint_t get_min () const { return min_v; }
-  hb_codepoint_t get_max () const { return max_v; }
+  hb_codepoint_t get_min () स्थिर { वापस min_v; }
+  hb_codepoint_t get_max () स्थिर { वापस max_v; }
 
-  private:
+  निजी:
   hb_codepoint_t min_v = HB_CODEPOINT_INVALID;
   hb_codepoint_t max_v = 0;
 };
 
-template <bool atomic = false>
-struct hb_bit_vector_t
+ढाँचा <bool atomic = false>
+काष्ठा hb_bit_vector_t
 {
   using int_t = uint64_t;
   using elt_t = typename std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
 
-  hb_bit_vector_t () = delete;
-  hb_bit_vector_t (const hb_bit_vector_t &other) = delete;
-  hb_bit_vector_t &operator= (const hb_bit_vector_t &other) = delete;
+  hb_bit_vector_t () = मिटाओ;
+  hb_bit_vector_t (स्थिर hb_bit_vector_t &other) = मिटाओ;
+  hb_bit_vector_t &चालक= (स्थिर hb_bit_vector_t &other) = मिटाओ;
 
   // Move
   hb_bit_vector_t (hb_bit_vector_t &&other)
-		: min_v (other.min_v), max_v (other.max_v), count (other.count), elts (other.elts)
+		: min_v (other.min_v), max_v (other.max_v), गिनती (other.गिनती), elts (other.elts)
   {
-    other.min_v = other.max_v = other.count = 0;
+    other.min_v = other.max_v = other.गिनती = 0;
     other.elts = nullptr;
   }
-  hb_bit_vector_t &operator= (hb_bit_vector_t &&other)
+  hb_bit_vector_t &चालक= (hb_bit_vector_t &&other)
   {
     hb_swap (min_v, other.min_v);
     hb_swap (max_v, other.max_v);
-    hb_swap (count, other.count);
+    hb_swap (गिनती, other.गिनती);
     hb_swap (elts, other.elts);
-    return *this;
+    वापस *यह;
   }
 
-  hb_bit_vector_t (unsigned min_v, unsigned max_v)
+  hb_bit_vector_t (अचिन्हित min_v, अचिन्हित max_v)
     : min_v (min_v), max_v (max_v)
   {
-    if (unlikely (min_v >= max_v))
+    अगर (unlikely (min_v >= max_v))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = गिनती = 0;
+      वापस;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
-    if (unlikely (!elts))
+    अचिन्हित अंक = (max_v - min_v + माप (int_t) * 8) / (माप (int_t) * 8);
+    elts = (elt_t *) hb_calloc (अंक, माप (int_t));
+    अगर (unlikely (!elts))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = गिनती = 0;
+      वापस;
     }
 
-    count = max_v - min_v + 1;
+    गिनती = max_v - min_v + 1;
   }
   ~hb_bit_vector_t ()
   {
     hb_free (elts);
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  व्योम add (hb_codepoint_t g) { elt (g) |= mask (g); }
+  व्योम del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
+  व्योम set (hb_codepoint_t g, bool value) { अगर (value) add (g); अन्यथा del (g); }
+  bool लो (hb_codepoint_t g) स्थिर { वापस elt (g) & mask (g); }
+  bool has (hb_codepoint_t g) स्थिर { वापस लो (g); }
+  bool may_have (hb_codepoint_t g) स्थिर { वापस लो (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
+  bool चालक [] (hb_codepoint_t g) स्थिर { वापस लो (g); }
+  bool चालक () (hb_codepoint_t g) स्थिर { वापस लो (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  व्योम add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    अगर (unlikely (!गिनती || a > b || a < min_v || b > max_v))
+      वापस;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    अगर (la == lb)
       *la |= (mask (b) << 1) - mask(a);
-    else
+    अन्यथा
     {
       *la |= ~(mask (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (अक्षर *) lb - (अक्षर *) la);
 
       *lb |= ((mask (b) << 1) - 1llu);
     }
   }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  व्योम del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    अगर (unlikely (!गिनती || a > b || a < min_v || b > max_v))
+      वापस;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    अगर (la == lb)
       *la &= ~((mask (b) << 1llu) - mask(a));
-    else
+    अन्यथा
     {
       *la &= mask (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (अक्षर *) lb - (अक्षर *) la);
 
       *lb &= ~((mask (b) << 1) - 1llu);
     }
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  व्योम set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
+  { अगर (v) add_range (a, b); अन्यथा del_range (a, b); }
 
-  template <typename set_t>
-  void union_ (const set_t &set)
+  ढाँचा <typename set_t>
+  व्योम union_ (स्थिर set_t &set)
   {
-    for (hb_codepoint_t g : set)
+    क्रम (hb_codepoint_t g : set)
       add (g);
   }
 
-  static const unsigned int ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  अटल स्थिर अचिन्हित पूर्णांक ELT_BITS = माप (elt_t) * 8;
+  अटल constexpr अचिन्हित ELT_MASK = ELT_BITS - 1;
 
-  static constexpr elt_t zero = 0;
+  अटल constexpr elt_t zero = 0;
 
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Crap(elt_t);
-    return elts[g / ELT_BITS];
+    अगर (unlikely (g >= गिनती))
+      वापस Crap(elt_t);
+    वापस elts[g / ELT_BITS];
   }
-  const elt_t& elt (hb_codepoint_t g) const
+  स्थिर elt_t& elt (hb_codepoint_t g) स्थिर
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Null(elt_t);
-    return elts[g / ELT_BITS];
+    अगर (unlikely (g >= गिनती))
+      वापस Null(elt_t);
+    वापस elts[g / ELT_BITS];
   }
 
-  static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  अटल constexpr int_t mask (hb_codepoint_t g) { वापस elt_t (1) << (g & ELT_MASK); }
 
-  hb_codepoint_t min_v = 0, max_v = 0, count = 0;
+  hb_codepoint_t min_v = 0, max_v = 0, गिनती = 0;
   elt_t *elts = nullptr;
 };
 
 
-#endif /* HB_BIT_VECTOR_HH */
+#पूर्ण_अगर /* HB_BIT_VECTOR_HH */

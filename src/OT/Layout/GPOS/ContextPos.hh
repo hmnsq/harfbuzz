@@ -1,14 +1,14 @@
-#ifndef OT_LAYOUT_GPOS_CONTEXTPOS_HH
-#define OT_LAYOUT_GPOS_CONTEXTPOS_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_CONTEXTPOS_HH
+#घोषणा OT_LAYOUT_GPOS_CONTEXTPOS_HH
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct ContextPos : Context {};
+काष्ठा ContextPos : Context {};
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CONTEXTPOS_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_CONTEXTPOS_HH */

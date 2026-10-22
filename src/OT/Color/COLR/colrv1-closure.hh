@@ -24,11 +24,11 @@
  *
  */
 
-#ifndef OT_COLOR_COLR_COLRV1_CLOSURE_HH
-#define OT_COLOR_COLR_COLRV1_CLOSURE_HH
+#अगर_अघोषित OT_COLOR_COLR_COLRV1_CLOSURE_HH
+#घोषणा OT_COLOR_COLR_COLRV1_CLOSURE_HH
 
-#include "../../../hb-open-type.hh"
-#include "COLR.hh"
+#समावेश "../../../hb-open-type.hh"
+#समावेश "COLR.hh"
 
 /*
  * COLR -- Color
@@ -36,103 +36,103 @@
  */
 namespace OT {
 
-HB_INTERNAL void PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintColrLayers::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  c->add_layer_indices (firstLayerIndex, numLayers);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  c->add_layer_indices (first_Layer_सूचकांक, अंक_Layers);
+  स्थिर LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
+  क्रम (अचिन्हित i = first_Layer_सूचकांक; i < first_Layer_सूचकांक + अंक_Layers; i++)
   {
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    स्थिर Paint &paint = paint_offset_lists.get_paint (i);
     paint.dispatch (c);
   }
 }
 
-template <typename Types>
-HB_INTERNAL void PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) const
+ढाँचा <typename Types>
+HB_INTERNAL व्योम PaintGlyph<Types>::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
   c->add_glyph (gid);
-  (this+paint).dispatch (c);
+  (यह+paint).dispatch (c);
 }
 
-HB_INTERNAL void PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintColrGlyph::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  const COLR *colr_table = c->get_colr_table ();
-  const BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
-  if (!baseglyph_paintrecord) return;
+  स्थिर COLR *colr_table = c->get_colr_table ();
+  स्थिर BaseGlyphPaintRecord* baseglyph_paintrecord = colr_table->get_base_glyph_paintrecord (gid);
+  अगर (!baseglyph_paintrecord) वापस;
   c->add_glyph (gid);
 
-  const BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
+  स्थिर BaseGlyphList &baseglyph_list = colr_table->get_baseglyphList ();
   (&baseglyph_list+baseglyph_paintrecord->paint).dispatch (c);
 }
 
-template <template<typename> class Var>
-HB_INTERNAL void PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) const
+ढाँचा <ढाँचा<typename> श्रेणी Var>
+HB_INTERNAL व्योम PaintTransform<Var>::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  (this+transform).closurev1 (c);
+  (यह+src).dispatch (c);
+  (यह+transform).closurev1 (c);
 }
 
-HB_INTERNAL void PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintTranslate::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScale::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintScale::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintScaleAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintScaleUniform::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintScaleUniformAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintRotate::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 1;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 1;
 }
 
-HB_INTERNAL void PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintRotateAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 3;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 3;
 }
 
-HB_INTERNAL void PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintSkew::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 2;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 2;
 }
 
-HB_INTERNAL void PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintSkewAroundCenter::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  c->num_var_idxes = 4;
+  (यह+src).dispatch (c);
+  c->अंक_var_idxes = 4;
 }
 
-HB_INTERNAL void PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) const
+HB_INTERNAL व्योम PaintComposite::closurev1 (hb_colrv1_closure_context_t* c) स्थिर
 {
-  (this+src).dispatch (c);
-  (this+backdrop).dispatch (c);
+  (यह+src).dispatch (c);
+  (यह+backdrop).dispatch (c);
 }
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */
+#पूर्ण_अगर /* OT_COLOR_COLR_COLRV1_CLOSURE_HH */

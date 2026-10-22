@@ -1,40 +1,40 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
-#define OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
+#घोषणा OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct AnchorFormat2
+काष्ठा AnchorFormat2
 {
 
-  protected:
+  रक्षित:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
   HBUINT16      anchorPoint;            /* Index to glyph contour point */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  खुला:
+  DEFINE_आकार_STATIC (8);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  व्योम get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   भग्न *x, भग्न *y) स्थिर
   {
     hb_font_t *font = c->font;
 
-#ifdef HB_NO_HINTING
+#अगर_घोषित HB_NO_HINTING
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
-    return;
-#endif
+    वापस;
+#पूर्ण_अगर
 
-    unsigned int x_ppem = font->x_ppem;
-    unsigned int y_ppem = font->y_ppem;
+    अचिन्हित पूर्णांक x_ppem = font->x_ppem;
+    अचिन्हित पूर्णांक y_ppem = font->y_ppem;
     hb_position_t cx = 0, cy = 0;
     bool ret;
 
@@ -44,10 +44,10 @@ struct AnchorFormat2
     *y = ret && y_ppem ? cy : font->em_fscale_y (yCoordinate);
   }
 
-  AnchorFormat2* copy (hb_serialize_context_t *c) const
+  AnchorFormat2* copy (hb_serialize_context_t *c) स्थिर
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed<AnchorFormat2> (this));
+    TRACE_SERIALIZE (यह);
+    return_trace (c->embed<AnchorFormat2> (यह));
   }
 };
 
@@ -55,4 +55,4 @@ struct AnchorFormat2
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHORFORMAT2_HH
+#पूर्ण_अगर  // OT_LAYOUT_GPOS_ANCHORFORMAT2_HH

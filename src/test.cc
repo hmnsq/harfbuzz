@@ -24,58 +24,58 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
+#अगर_घोषित HAVE_FREETYPE
+#समावेश "hb-ft.h"
+#पूर्ण_अगर
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#अगर_घोषित HB_NO_OPEN
+#घोषणा hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
+#पूर्ण_अगर
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
-  if (argc != 2) {
-    fprintf (stderr, "usage: %s font-file.ttf\n", argv[0]);
-    exit (1);
+  अगर (argc != 2) {
+    ख_लिखो (मानक_त्रुटि, "usage: %s font-file.ttf\n", argv[0]);
+    निकास (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
-  printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
+  निश्चित (blob);
+  म_लिखो ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_लंबाई (blob));
 
   /* Create the face */
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
   blob = nullptr;
-  unsigned int upem = hb_face_get_upem (face);
+  अचिन्हित पूर्णांक upem = hb_face_get_upem (face);
 
   hb_font_t *font = hb_font_create (face);
   hb_font_set_scale (font, upem, upem);
 
-#ifdef HAVE_FREETYPE
+#अगर_घोषित HAVE_FREETYPE
   hb_ft_font_set_funcs (font);
-#endif
+#पूर्ण_अगर
 
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_बफर_t *बफर = hb_बफर_create ();
 
-  hb_buffer_add_utf8 (buffer, "\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb0\xe0\xa5\x8d\xe0\xa4\x95", -1, 0, -1);
-  hb_buffer_guess_segment_properties (buffer);
+  hb_बफर_add_utf8 (बफर, "\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb0\xe0\xa5\x8d\xe0\xa4\x95", -1, 0, -1);
+  hb_बफर_guess_segment_properties (बफर);
 
-  hb_shape (font, buffer, nullptr, 0);
+  hb_shape (font, बफर, nullptr, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
-  hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
-  hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
+  अचिन्हित पूर्णांक गिनती = hb_बफर_get_लंबाई (बफर);
+  hb_glyph_info_t *infos = hb_बफर_get_glyph_infos (बफर, nullptr);
+  hb_glyph_position_t *positions = hb_बफर_get_glyph_positions (बफर, nullptr);
 
-  for (unsigned int i = 0; i < count; i++)
+  क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];
 
-    printf ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
+    म_लिखो ("cluster %u	glyph 0x%x at	(%d,%d)+(%d,%d)\n",
 	    info->cluster,
 	    info->codepoint,
 	    pos->x_offset,
@@ -85,11 +85,11 @@ main (int argc, char **argv)
 
   }
 
-  hb_buffer_destroy (buffer);
+  hb_बफर_destroy (बफर);
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  वापस 0;
 }
 
 

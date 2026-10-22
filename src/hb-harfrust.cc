@@ -22,45 +22,45 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifdef HAVE_HARFRUST
+#अगर_घोषित HAVE_HARFRUST
 
-#include "hb-shaper-impl.hh"
+#समावेश "hb-shaper-impl.hh"
 
-#include "hb-utf.hh"
+#समावेश "hb-utf.hh"
 
 
 /*
  * buffer
  */
-extern "C" void *
-_hb_harfrust_buffer_create_rs (void);
+बाह्य "C" व्योम *
+hb_harfrust_बफर_create_rs (व्योम);
 
-extern "C" void
-_hb_harfrust_buffer_destroy_rs (void *data);
+बाह्य "C" व्योम
+hb_harfrust_बफर_destroy_rs (व्योम *तथ्य);
 
 
 /*
  * shaper face data
  */
 
-extern "C" void *
-_hb_harfrust_shaper_face_data_create_rs (hb_face_t *face);
+बाह्य "C" व्योम *
+hb_harfrust_shaper_face_तथ्य_create_rs (hb_face_t *face);
 
-hb_harfrust_face_data_t *
-_hb_harfrust_shaper_face_data_create (hb_face_t *face)
+hb_harfrust_face_तथ्य_t *
+hb_harfrust_shaper_face_तथ्य_create (hb_face_t *face)
 {
-  return (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
+  वापस (hb_harfrust_face_तथ्य_t *) hb_harfrust_shaper_face_तथ्य_create_rs (face);
 }
 
-extern "C" void
-_hb_harfrust_shaper_face_data_destroy_rs (void *data);
+बाह्य "C" व्योम
+hb_harfrust_shaper_face_तथ्य_destroy_rs (व्योम *तथ्य);
 
-void
-_hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
+व्योम
+hb_harfrust_shaper_face_तथ्य_destroy (hb_harfrust_face_तथ्य_t *तथ्य)
 {
-  _hb_harfrust_shaper_face_data_destroy_rs (data);
+  hb_harfrust_shaper_face_तथ्य_destroy_rs (तथ्य);
 }
 
 
@@ -68,23 +68,23 @@ _hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
  * shaper font data
  */
 
-extern "C" void *
-_hb_harfrust_shaper_font_data_create_rs (hb_font_t *font, const void *face_data);
+बाह्य "C" व्योम *
+hb_harfrust_shaper_font_तथ्य_create_rs (hb_font_t *font, स्थिर व्योम *face_तथ्य);
 
-hb_harfrust_font_data_t *
-_hb_harfrust_shaper_font_data_create (hb_font_t *font)
+hb_harfrust_font_तथ्य_t *
+hb_harfrust_shaper_font_तथ्य_create (hb_font_t *font)
 {
-  const hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
-  return (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
+  स्थिर hb_harfrust_face_तथ्य_t *face_तथ्य = font->face->तथ्य.harfrust;
+  वापस (hb_harfrust_font_तथ्य_t *) hb_harfrust_shaper_font_तथ्य_create_rs (font, face_तथ्य);
 }
 
-extern "C" void
-_hb_harfrust_shaper_font_data_destroy_rs (void *data);
+बाह्य "C" व्योम
+hb_harfrust_shaper_font_तथ्य_destroy_rs (व्योम *तथ्य);
 
-void
-_hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
+व्योम
+hb_harfrust_shaper_font_तथ्य_destroy (hb_harfrust_font_तथ्य_t *तथ्य)
 {
-  _hb_harfrust_shaper_font_data_destroy_rs (data);
+  hb_harfrust_shaper_font_तथ्य_destroy_rs (तथ्य);
 }
 
 
@@ -92,96 +92,96 @@ _hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
  * shape plan
  */
 
-extern "C" void *
-_hb_harfrust_shape_plan_create_rs (const void *font_data,
+बाह्य "C" व्योम *
+_hb_harfrust_shape_plan_create_rs (स्थिर व्योम *font_तथ्य,
 				   hb_script_t script,
 				   hb_language_t language,
 				   hb_direction_t direction,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   स्थिर hb_feature_t *features,
+				   अचिन्हित पूर्णांक        अंक_features);
 
-extern "C" void
-_hb_harfrust_shape_plan_destroy_rs (void *data);
+बाह्य "C" व्योम
+_hb_harfrust_shape_plan_destroy_rs (व्योम *तथ्य);
 
 
 /*
  * shaper
  */
 
-extern "C" hb_bool_t
-_hb_harfrust_shape_rs (const void         *font_data,
-		       const void         *rs_shape_plan,
-		       const void         *rs_buffer,
+बाह्य "C" hb_bool_t
+_hb_harfrust_shape_rs (स्थिर व्योम         *font_तथ्य,
+		       स्थिर व्योम         *rs_shape_plan,
+		       स्थिर व्योम         *rs_बफर,
 		       hb_font_t          *font,
-		       hb_buffer_t        *buffer,
-		       const hb_codepoint_t *pre_context,
+		       hb_बफर_t        *बफर,
+		       स्थिर hb_codepoint_t *pre_context,
 		       uint32_t            pre_context_len,
-		       const hb_codepoint_t *post_context,
+		       स्थिर hb_codepoint_t *post_context,
 		       uint32_t            post_context_len,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       स्थिर hb_feature_t *features,
+		       अचिन्हित पूर्णांक        अंक_features);
 
-static hb_user_data_key_t hb_buffer_key = {0};
+अटल hb_user_तथ्य_कुंजी_t hb_बफर_कुंजी = {0};
 
 hb_bool_t
 _hb_harfrust_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
-		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    hb_बफर_t        *बफर,
+		    स्थिर hb_feature_t *features,
+		    अचिन्हित पूर्णांक        अंक_features)
 {
-  const hb_harfrust_font_data_t *font_data = font->data.harfrust;
+  स्थिर hb_harfrust_font_तथ्य_t *font_तथ्य = font->तथ्य.harfrust;
 
-retry_buffer:
-  void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_key);
-  if (unlikely (!hr_buffer))
+retry_बफर:
+  व्योम *hr_बफर = hb_बफर_get_user_तथ्य (बफर, &hb_बफर_कुंजी);
+  अगर (unlikely (!hr_बफर))
   {
-    hr_buffer = _hb_harfrust_buffer_create_rs ();
-    if (unlikely (!hr_buffer))
-      return false;
+    hr_बफर = hb_harfrust_बफर_create_rs ();
+    अगर (unlikely (!hr_बफर))
+      वापस false;
 
-    if (!hb_buffer_set_user_data (buffer,
-				  &hb_buffer_key,
-				  hr_buffer,
-				  _hb_harfrust_buffer_destroy_rs,
+    अगर (!hb_बफर_set_user_तथ्य (बफर,
+				  &hb_बफर_कुंजी,
+				  hr_बफर,
+				  hb_harfrust_बफर_destroy_rs,
 				  false))
     {
-      _hb_harfrust_buffer_destroy_rs (hr_buffer);
-      goto retry_buffer;
+      hb_harfrust_बफर_destroy_rs (hr_बफर);
+      जाओ retry_बफर;
     }
   }
 
-  void *hr_shape_plan = nullptr;
+  व्योम *hr_shape_plan = nullptr;
 
 retry_shape_plan:
-  hr_shape_plan = shape_plan->harfrust_data.get_acquire ();
-  if (unlikely (!hr_shape_plan))
+  hr_shape_plan = shape_plan->harfrust_तथ्य.get_acquire ();
+  अगर (unlikely (!hr_shape_plan))
   {
-    hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_data,
+    hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_तथ्य,
 						       shape_plan->key.props.script,
 						       shape_plan->key.props.language,
 						       shape_plan->key.props.direction,
-						       features, num_features);
-    if (hr_shape_plan &&
-	!shape_plan->harfrust_data.cmpexch (nullptr, hr_shape_plan))
+						       features, अंक_features);
+    अगर (hr_shape_plan &&
+	!shape_plan->harfrust_तथ्य.cmpexch (nullptr, hr_shape_plan))
     {
       _hb_harfrust_shape_plan_destroy_rs (hr_shape_plan);
-      goto retry_shape_plan;
+      जाओ retry_shape_plan;
     }
   }
 
-  return _hb_harfrust_shape_rs (font_data,
+  वापस _hb_harfrust_shape_rs (font_तथ्य,
 				hr_shape_plan,
-				hr_buffer,
+				hr_बफर,
 				font,
-				buffer,
-				buffer->context[0],
-				buffer->context_len[0],
-				buffer->context[1],
-				buffer->context_len[1],
+				बफर,
+				बफर->context[0],
+				बफर->context_len[0],
+				बफर->context[1],
+				बफर->context_len[1],
 				features,
-				num_features);
+				अंक_features);
 }
 
 
-#endif
+#पूर्ण_अगर

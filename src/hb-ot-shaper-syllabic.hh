@@ -22,26 +22,26 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_SHAPER_SYLLABIC_HH
-#define HB_OT_SHAPER_SYLLABIC_HH
+#अगर_अघोषित HB_OT_SHAPER_SYLLABIC_HH
+#घोषणा HB_OT_SHAPER_SYLLABIC_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#समावेश "hb-ot-shaper.hh"
 
-
-HB_INTERNAL bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
-				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category = -1,
-				   int dottedcircle_position = -1);
 
 HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+hb_syllabic_जोड़ो_dotted_circles (hb_font_t *font,
+				   hb_बफर_t *बफर,
+				   अचिन्हित पूर्णांक broken_syllable_type,
+				   अचिन्हित पूर्णांक dottedcircle_category,
+				   पूर्णांक repha_category = -1,
+				   पूर्णांक dottedcircle_position = -1);
+
+HB_INTERNAL bool
+hb_syllabic_clear_var (स्थिर hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
+		       hb_बफर_t *बफर);
 
 
-#endif /* HB_OT_SHAPER_SYLLABIC_HH */
+#पूर्ण_अगर /* HB_OT_SHAPER_SYLLABIC_HH */

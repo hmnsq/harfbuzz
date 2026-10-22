@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#अगर_अघोषित HB_संख्या_HH
+#घोषणा HB_संख्या_HH
 
 HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+hb_parse_int (स्थिर अक्षर **pp, स्थिर अक्षर *end, पूर्णांक *pv,
+	      bool whole_बफर = false);
 
 HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+hb_parse_uint (स्थिर अक्षर **pp, स्थिर अक्षर *end, अचिन्हित पूर्णांक *pv,
+	       bool whole_बफर = false, पूर्णांक base = 10);
 
 HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+hb_parse_double (स्थिर अक्षर **pp, स्थिर अक्षर *end, द्विगुन *pv,
+		 bool whole_बफर = false);
 
-#endif /* HB_NUMBER_HH */
+#पूर्ण_अगर /* HB_NUMBER_HH */

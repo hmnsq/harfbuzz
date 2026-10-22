@@ -26,51 +26,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_SHAPE_H
-#define HB_SHAPE_H
+#अगर_अघोषित HB_SHAPE_H
+#घोषणा HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#समावेश "hb-common.h"
+#समावेश "hb-buffer.h"
+#समावेश "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_shape (hb_font_t           *font,
-	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  hb_बफर_t         *बफर,
+	  स्थिर hb_feature_t  *features,
+	  अचिन्हित पूर्णांक         अंक_features);
 
 HB_EXTERN hb_bool_t
 hb_shape_full (hb_font_t          *font,
-	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+	       hb_बफर_t        *बफर,
+	       स्थिर hb_feature_t *features,
+	       अचिन्हित पूर्णांक        अंक_features,
+	       स्थिर अक्षर * स्थिर *shaper_list);
 
-#ifdef HB_EXPERIMENTAL_API
+#अगर_घोषित HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
-		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  hb_बफर_t        *बफर,
+		  स्थिर hb_feature_t *features,
+		  अचिन्हित पूर्णांक        अंक_features,
+		  स्थिर अक्षर * स्थिर *shaper_list,
+		  भग्न               min_target_advance,
+		  भग्न               max_target_advance,
+		  भग्न              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
-#endif
+		  भग्न              *var_मूल्य /* OUT */);
+#पूर्ण_अगर
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN स्थिर अक्षर **
+hb_shape_list_shapers (व्योम);
 
 
 HB_END_DECLS
 
-#endif /* HB_SHAPE_H */
+#पूर्ण_अगर /* HB_SHAPE_H */

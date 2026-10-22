@@ -24,50 +24,50 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_LIST_HH
-#define HB_SHAPER_LIST_HH
-#endif /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
+#अगर_अघोषित HB_SHAPER_LIST_HH
+#घोषणा HB_SHAPER_LIST_HH
+#पूर्ण_अगर /* HB_SHAPER_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_NO_SHAPER
+#अगर_अघोषित HB_NO_SHAPER
 
 
 /* v--- Add new shapers in the right place here. */
 
-#ifdef HAVE_WASM
+#अगर_घोषित HAVE_WASM
 /* Only picks up fonts that have a "Wasm" table. */
 HB_SHAPER_IMPLEMENT (wasm)
-#endif
+#पूर्ण_अगर
 
-#ifdef HAVE_GRAPHITE2
+#अगर_घोषित HAVE_GRAPHITE2
 /* Only picks up fonts that have a "Silf" table. */
 HB_SHAPER_IMPLEMENT (graphite2)
-#endif
+#पूर्ण_अगर
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 HB_SHAPER_IMPLEMENT (ot) /* <--- This is our main shaper. */
-#endif
+#पूर्ण_अगर
 
-#ifdef HAVE_UNISCRIBE
+#अगर_घोषित HAVE_UNISCRIBE
 HB_SHAPER_IMPLEMENT (uniscribe)
-#endif
-#ifdef HAVE_DIRECTWRITE
+#पूर्ण_अगर
+#अगर_घोषित HAVE_DIRECTWRITE
 HB_SHAPER_IMPLEMENT (directwrite)
-#endif
-#ifdef HAVE_CORETEXT
+#पूर्ण_अगर
+#अगर_घोषित HAVE_CORETEXT
 HB_SHAPER_IMPLEMENT (coretext)
-#endif
+#पूर्ण_अगर
 
-#ifdef HAVE_HARFRUST
+#अगर_घोषित HAVE_HARFRUST
 HB_SHAPER_IMPLEMENT (harfrust)
-#endif
+#पूर्ण_अगर
 
-#ifdef HAVE_KBTS
+#अगर_घोषित HAVE_KBTS
 HB_SHAPER_IMPLEMENT (kbts)
-#endif
+#पूर्ण_अगर
 
-#ifndef HB_NO_FALLBACK_SHAPE
+#अगर_अघोषित HB_NO_FALLBACK_SHAPE
 HB_SHAPER_IMPLEMENT (fallback) /* <--- This should be last. */
-#endif
+#पूर्ण_अगर
 
 
-#endif
+#पूर्ण_अगर

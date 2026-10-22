@@ -24,80 +24,80 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#अगर_अघोषित HB_SUBSET_निवेश_HH
+#घोषणा HB_SUBSET_निवेश_HH
 
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#समावेश "hb-subset.h"
+#समावेश "hb-map.hh"
+#समावेश "hb-set.hh"
+#समावेश "hb-cplusplus.hh"
+#समावेश "hb-font.hh"
+#समावेश "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+काष्ठा hb_ot_name_record_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
-  hb_ot_name_record_ids_t (unsigned platform_id_,
-                           unsigned encoding_id_,
-                           unsigned language_id_,
-                           unsigned name_id_)
+  hb_ot_name_record_ids_t () = शेष;
+  hb_ot_name_record_ids_t (अचिन्हित platform_id_,
+                           अचिन्हित encoding_id_,
+                           अचिन्हित language_id_,
+                           अचिन्हित name_id_)
       :platform_id (platform_id_),
       encoding_id (encoding_id_),
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  bool चालक != (स्थिर hb_ot_name_record_ids_t o) स्थिर
+  { वापस !(*यह == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  अंतरभूत bool चालक == (स्थिर hb_ot_name_record_ids_t& o) स्थिर
   {
-    return platform_id == o.platform_id &&
+    वापस platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  अंतरभूत uint32_t hash () स्थिर
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    वापस current;
   }
 
-  unsigned platform_id;
-  unsigned encoding_id;
-  unsigned language_id;
-  unsigned name_id;
+  अचिन्हित platform_id;
+  अचिन्हित encoding_id;
+  अचिन्हित language_id;
+  अचिन्हित name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+प्रकार काष्ठा hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+काष्ठा hb_subset_निवेश_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_INTERNAL hb_subset_निवेश_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_निवेश_t ()
   {
     sets.~sets_t ();
 
-#ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+#अगर_घोषित HB_EXPERIMENTAL_API
+    क्रम (स्वतः _ : name_table_overrides.values ())
       _.fini ();
-#endif
+#पूर्ण_अगर
   }
 
   hb_object_header_t header;
 
-  struct sets_t {
+  काष्ठा sets_t {
     hb::shared_ptr<hb_set_t> glyphs;
     hb::shared_ptr<hb_set_t> unicodes;
     hb::shared_ptr<hb_set_t> no_subset_tables;
@@ -108,48 +108,48 @@ struct hb_subset_input_t
     hb::shared_ptr<hb_set_t> layout_scripts;
   };
 
-  union {
+  जोड़ {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_set_t> set_ptrs[माप (sets_t) / माप (hb_set_t*)];
   };
 
-  unsigned flags;
-  bool attach_accelerator_data = false;
+  अचिन्हित flags;
+  bool attach_accelerator_तथ्य = false;
 
   // If set loca format will always be the long version.
   bool force_long_loca = false;
 
   hb_hashmap_t<hb_tag_t, Triple> axes_location;
   hb_map_t glyph_map;
-#ifdef HB_EXPERIMENTAL_API
+#अगर_घोषित HB_EXPERIMENTAL_API
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
-#endif
+#पूर्ण_अगर
 
-  inline unsigned num_sets () const
+  अंतरभूत अचिन्हित अंक_sets () स्थिर
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    वापस माप (set_ptrs) / माप (hb_set_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  अंतरभूत hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    वापस hb_array (set_ptrs);
   }
 
-  bool in_error () const
+  bool in_error () स्थिर
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    क्रम (अचिन्हित i = 0; i < अंक_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      अगर (unlikely (set_ptrs[i]->in_error ()))
+        वापस true;
     }
 
-    return axes_location.in_error ()
-#ifdef HB_EXPERIMENTAL_API
+    वापस axes_location.in_error ()
+#अगर_घोषित HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
-#endif
+#पूर्ण_अगर
 	;
   }
 };
 
 
-#endif /* HB_SUBSET_INPUT_HH */
+#पूर्ण_अगर /* HB_SUBSET_INPUT_HH */

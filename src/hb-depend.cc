@@ -24,19 +24,19 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-depend.hh"
+#समावेश "hb-depend.hh"
 
-#include "hb-face.hh"
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-depend.hh"
+#समावेश "hb-face.hh"
+#समावेश "hb-ot-cmap-table.hh"
+#समावेश "hb-ot-glyf-table.hh"
+#समावेश "hb-ot-layout-gsub-table.hh"
+#समावेश "hb-ot-math-table.hh"
+#समावेश "hb-ot-cff1-table.hh"
+#समावेश "hb-ot-var-varc-table.hh"
+#समावेश "OT/Color/COLR/COLR.hh"
+#समावेश "OT/Color/COLR/colrv1-depend.hh"
 
 /**
  * SECTION:hb-subset-depend
@@ -63,15 +63,15 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
+  अगर (unlikely (!तथ्य.glyph_dependencies.resize_exact (f->get_अंक_glyphs ()))) {
     successful = false;
-    return;
+    वापस;
   }
-  successful = hb_depend_data_builder_t (data).compile (f);
+  successful = hb_depend_तथ्य_builder_t (तथ्य).compile (f);
 }
 
 bool
-hb_depend_data_builder_t::compile (hb_face_t *face)
+hb_depend_तथ्य_builder_t::compile (hb_face_t *face)
 {
   /* Extract dependencies from all relevant OpenType tables.
    * Note: cmap (UVS) dependencies are not extracted - UVS closure is handled
@@ -82,26 +82,26 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
-    face->table.GSUB.get_relaxed ()->depend (this, face);
-#ifndef HB_NO_MATH
-  face->table.MATH->depend (this);
-#endif
-#ifndef HB_NO_COLOR
-  face->table.COLR->depend (this);
-#endif
-  face->table.glyf->depend (this);
-#ifndef HB_NO_CFF
-  OT::cff1_subset_accelerator_t (face).depend (this);
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  face->table.VARC->depend (this);
-#endif
-  return successful;
+  अगर (hb_ot_layout_has_substitution (face))
+    face->table.GSUB.get_relaxed ()->depend (यह, face);
+#अगर_अघोषित HB_NO_MATH
+  face->table.MATH->depend (यह);
+#पूर्ण_अगर
+#अगर_अघोषित HB_NO_COLOR
+  face->table.COLR->depend (यह);
+#पूर्ण_अगर
+  face->table.glyf->depend (यह);
+#अगर_अघोषित HB_NO_CFF
+  OT::cff1_subset_accelerator_t (face).depend (यह);
+#पूर्ण_अगर
+#अगर_अघोषित HB_NO_VAR_COMPOSITES
+  face->table.VARC->depend (यह);
+#पूर्ण_अगर
+  वापस successful;
 }
 
 
-#ifndef HB_NO_SUBSET_DEPEND
+#अगर_अघोषित HB_NO_SUBSET_DEPEND
 
 /**
  * hb_subset_depend_from_face_or_fail:
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  अगर (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    वापस nullptr;
 
-  if (unlikely (depend->in_error ()))
+  अगर (unlikely (depend->in_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    वापस nullptr;
   }
 
-  return depend;
+  वापस depend;
 }
 
 /**
@@ -173,31 +173,31 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
+                                अचिन्हित पूर्णांक start_offset,
+                                अचिन्हित पूर्णांक *entry_गिनती,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  अचिन्हित पूर्णांक योग = depend->तथ्य.get_glyph_entry_गिनती (gid);
+  अगर (entry_गिनती)
   {
-    unsigned int count = hb_min (*entry_count,
-                                  start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    अचिन्हित पूर्णांक गिनती = hb_min (*entry_गिनती,
+                                  start_offset < योग ? योग - start_offset : 0u);
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       uint8_t flags_byte = 0;
-      depend->data.get_glyph_entry (gid, start_offset + i,
+      depend->तथ्य.get_glyph_entry (gid, start_offset + i,
                                     &entries[i].table_tag, &entries[i].dependent,
-                                    &entries[i].layout_tag, &entries[i].ligature_set_index,
-                                    &entries[i].context_set_index,
+                                    &entries[i].layout_tag, &entries[i].ligature_set_सूचकांक,
+                                    &entries[i].context_set_सूचकांक,
                                     &flags_byte);
       entries[i].flags = (hb_subset_depend_edge_flags_t) flags_byte;
     }
-    *entry_count = count;
+    *entry_गिनती = गिनती;
   }
-  return total;
+  वापस योग;
 }
 
 /**
@@ -224,13 +224,13 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
  * Since: 14.3.0
  **/
 hb_bool_t
-hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
+hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t सूचकांक_2,
                               hb_set_t *out)
 {
-  const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
+  स्थिर hb_set_t *s = depend->get_set_from_सूचकांक (सूचकांक_2);
+  अगर (!s) वापस false;
   out->set (*s);
-  return true;
+  वापस true;
 }
 
 /**
@@ -242,12 +242,12 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
  *
  * Since: 14.3.0
  **/
-void
+व्योम
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  अगर (!hb_object_destroy (depend)) वापस;
 
   hb_free (depend);
 }
 
-#endif /* !HB_NO_SUBSET_DEPEND */
+#पूर्ण_अगर /* !HB_NO_SUBSET_DEPEND */

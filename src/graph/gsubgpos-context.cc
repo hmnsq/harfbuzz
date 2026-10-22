@@ -24,58 +24,58 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-graph.hh"
+#समावेश "gsubgpos-graph.hh"
 
 namespace graph {
 
-graph_result_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
+graph_परिणाम_t<gsubgpos_graph_context_t> gsubgpos_graph_context_t::create (hb_tag_t table_tag_,
                                                                            graph_t& graph_)
 {
   gsubgpos_graph_context_t context (table_tag_, graph_);
 
-  if (unlikely (table_tag_ != HB_OT_TAG_GPOS
+  अगर (unlikely (table_tag_ != HB_OT_TAG_GPOS
                 && table_tag_ != HB_OT_TAG_GSUB))
-    return Err(INVALID_ARGUMENT);
+    वापस Err(INVALID_ARGUMENT);
 
-  TRY_ASSIGN (const GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
+  TRY_ASSIGN (स्थिर GSTAR* gstar, graph::GSTAR::graph_to_gstar (context.graph));
   TRY(gstar->find_lookups (context.graph, context.lookups));
-  TRY_ASSIGN (context.lookup_list_index, gstar->get_lookup_list_index (context.graph));
+  TRY_ASSIGN (context.lookup_list_सूचकांक, gstar->get_lookup_list_सूचकांक (context.graph));
 
-  return context;
+  वापस context;
 }
 
 gsubgpos_graph_context_t::gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                                     graph_t& graph_)
     : table_tag (table_tag_),
       graph (graph_),
-      lookup_list_index (0),
+      lookup_list_सूचकांक (0),
       lookups ()
 {}
 
-graph_result_t<unsigned> gsubgpos_graph_context_t::create_node (unsigned size)
+graph_परिणाम_t<अचिन्हित> gsubgpos_graph_context_t::create_गाँठ (अचिन्हित आकार)
 {
-  char* buffer = (char*) hb_calloc (1, size);
-  if (unlikely (!buffer))
-    return Err(ALLOCATION_FAILURE);
+  अक्षर* बफर = (अक्षर*) hb_calloc (1, आकार);
+  अगर (unlikely (!बफर))
+    वापस Err(ALLOCATION_FAILURE);
 
-  auto res = add_buffer (buffer);
-  if (unlikely (!res.is_ok ())) {
+  स्वतः res = add_बफर (बफर);
+  अगर (unlikely (!res.is_ok ())) {
     // Allocation did not get stored for freeing later.
-    hb_free (buffer);
-    return Err(res.error ());
+    hb_free (बफर);
+    वापस Err(res.error ());
   }
 
-  return graph.new_node (buffer, buffer + size);
+  वापस graph.new_गाँठ (बफर, बफर + आकार);
 }
 
-unsigned gsubgpos_graph_context_t::num_non_ext_subtables ()  {
-  unsigned count = 0;
-  for (auto l : lookups.values ())
+अचिन्हित gsubgpos_graph_context_t::अंक_non_ext_subtables ()  {
+  अचिन्हित गिनती = 0;
+  क्रम (स्वतः l : lookups.values ())
   {
-    if (l->is_extension (table_tag)) continue;
-    count += l->number_of_subtables ();
+    अगर (l->is_extension (table_tag)) जारी;
+    गिनती += l->संख्या_of_subtables ();
   }
-  return count;
+  वापस गिनती;
 }
 
 }

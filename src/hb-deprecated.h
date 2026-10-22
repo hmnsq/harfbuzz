@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_DEPRECATED_H
-#define HB_DEPRECATED_H
+#अगर_अघोषित HB_DEPRECATED_H
+#घोषणा HB_DEPRECATED_H
 
-#include "hb-common.h"
-#include "hb-unicode.h"
-#include "hb-font.h"
-#include "hb-set.h"
+#समावेश "hb-common.h"
+#समावेश "hb-unicode.h"
+#समावेश "hb-font.h"
+#समावेश "hb-set.h"
 
 
 /**
@@ -50,7 +50,7 @@
 
 HB_BEGIN_DECLS
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 
 
 /**
@@ -60,7 +60,7 @@ HB_BEGIN_DECLS
  *
  * Deprecated: 0.9.20
  */
-#define HB_SCRIPT_CANADIAN_ABORIGINAL		HB_SCRIPT_CANADIAN_SYLLABICS
+#घोषणा HB_SCRIPT_CANADIAN_ABORIGINAL		HB_SCRIPT_CANADIAN_SYLLABICS
 
 /**
  * HB_BUFFER_FLAGS_DEFAULT:
@@ -69,7 +69,7 @@ HB_BEGIN_DECLS
  *
  * Deprecated: 0.9.20
  */
-#define HB_BUFFER_FLAGS_DEFAULT			HB_BUFFER_FLAG_DEFAULT
+#घोषणा HB_बफर_FLAGS_DEFAULT			HB_बफर_FLAG_DEFAULT
 /**
  * HB_BUFFER_SERIALIZE_FLAGS_DEFAULT:
  *
@@ -77,7 +77,7 @@ HB_BEGIN_DECLS
  *
  * Deprecated: 0.9.20
  */
-#define HB_BUFFER_SERIALIZE_FLAGS_DEFAULT	HB_BUFFER_SERIALIZE_FLAG_DEFAULT
+#घोषणा HB_बफर_SERIALIZE_FLAGS_DEFAULT	HB_बफर_SERIALIZE_FLAG_DEFAULT
 
 /**
  * hb_font_get_glyph_func_t:
@@ -97,16 +97,16 @@ HB_BEGIN_DECLS
  * Deprecated: 1.2.3
  *
  **/
-typedef hb_bool_t (*hb_font_get_glyph_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_glyph_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 					       hb_codepoint_t unicode, hb_codepoint_t variation_selector,
 					       hb_codepoint_t *glyph,
-					       void *user_data);
+					       व्योम *user_तथ्य);
 
 HB_DEPRECATED_FOR (hb_font_funcs_set_nominal_glyph_func and hb_font_funcs_set_variation_glyph_func)
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_func (hb_font_funcs_t *ffuncs,
 			      hb_font_get_glyph_func_t func,
-			      void *user_data, hb_destroy_func_t destroy);
+			      व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /* https://github.com/harfbuzz/harfbuzz/pull/4207 */
 /**
@@ -116,7 +116,7 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t *ffuncs,
  *
  * Deprecated: 7.2.0
  **/
-#define HB_UNICODE_COMBINING_CLASS_CCC133 133
+#घोषणा HB_UNICODE_COMBINING_CLASS_CCC133 133
 
 /**
  * hb_unicode_eastasian_width_func_t:
@@ -128,9 +128,9 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t *ffuncs,
  *
  * Deprecated: 2.0.0
  */
-typedef unsigned int			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t *ufuncs,
+प्रकार अचिन्हित पूर्णांक			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t *ufuncs,
 										 hb_codepoint_t      unicode,
-										 void               *user_data);
+										 व्योम               *user_तथ्य);
 
 /**
  * hb_unicode_funcs_set_eastasian_width_func:
@@ -144,10 +144,10 @@ typedef unsigned int			(*hb_unicode_eastasian_width_func_t)	(hb_unicode_funcs_t 
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED void
+HB_EXTERN HB_DEPRECATED व्योम
 hb_unicode_funcs_set_eastasian_width_func (hb_unicode_funcs_t *ufuncs,
 					   hb_unicode_eastasian_width_func_t func,
-					   void *user_data, hb_destroy_func_t destroy);
+					   व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_unicode_eastasian_width:
@@ -159,7 +159,7 @@ hb_unicode_funcs_set_eastasian_width_func (hb_unicode_funcs_t *ufuncs,
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED unsigned int
+HB_EXTERN HB_DEPRECATED अचिन्हित पूर्णांक
 hb_unicode_eastasian_width (hb_unicode_funcs_t *ufuncs,
 			    hb_codepoint_t unicode);
 
@@ -184,10 +184,10 @@ hb_unicode_eastasian_width (hb_unicode_funcs_t *ufuncs,
  *
  * Deprecated: 2.0.0
  */
-typedef unsigned int			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_funcs_t *ufuncs,
+प्रकार अचिन्हित पूर्णांक			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_funcs_t *ufuncs,
 											 hb_codepoint_t      u,
 											 hb_codepoint_t     *decomposed,
-											 void               *user_data);
+											 व्योम               *user_तथ्य);
 
 /**
  * HB_UNICODE_MAX_DECOMPOSITION_LEN:
@@ -196,7 +196,7 @@ typedef unsigned int			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_
  *
  * Deprecated: 2.0.0
  */
-#define HB_UNICODE_MAX_DECOMPOSITION_LEN (18+1) /* codepoints */
+#घोषणा HB_UNICODE_MAX_DECOMPOSITION_LEN (18+1) /* codepoints */
 
 /**
  * hb_unicode_funcs_set_decompose_compatibility_func:
@@ -212,12 +212,12 @@ typedef unsigned int			(*hb_unicode_decompose_compatibility_func_t)	(hb_unicode_
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN HB_DEPRECATED void
+HB_EXTERN HB_DEPRECATED व्योम
 hb_unicode_funcs_set_decompose_compatibility_func (hb_unicode_funcs_t *ufuncs,
 						   hb_unicode_decompose_compatibility_func_t func,
-						   void *user_data, hb_destroy_func_t destroy);
+						   व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
-HB_EXTERN HB_DEPRECATED unsigned int
+HB_EXTERN HB_DEPRECATED अचिन्हित पूर्णांक
 hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
 				    hb_codepoint_t      u,
 				    hb_codepoint_t     *decomposed);
@@ -232,7 +232,7 @@ hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
  * the specified font, for vertical text segments.
  *
  **/
-typedef hb_font_get_glyph_kerning_func_t hb_font_get_glyph_v_kerning_func_t;
+प्रकार hb_font_get_glyph_kerning_func_t hb_font_get_glyph_v_kerning_func_t;
 
 /**
  * hb_font_funcs_set_glyph_v_kerning_func:
@@ -246,14 +246,14 @@ typedef hb_font_get_glyph_kerning_func_t hb_font_get_glyph_v_kerning_func_t;
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_v_kerning_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_v_kerning_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 HB_EXTERN hb_position_t
 hb_font_get_glyph_v_kerning (hb_font_t *font,
-			     hb_codepoint_t top_glyph, hb_codepoint_t bottom_glyph);
+			     hb_codepoint_t शीर्ष_glyph, hb_codepoint_t bottom_glyph);
 
 
 /**
@@ -270,10 +270,10 @@ hb_font_get_glyph_v_kerning (hb_font_t *font,
  * Since: 4.0.0
  * Deprecated: 7.0.0: Use #hb_font_draw_glyph_func_t instead
  **/
-typedef void (*hb_font_get_glyph_shape_func_t) (hb_font_t *font, void *font_data,
+प्रकार व्योम (*hb_font_get_glyph_shape_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						hb_codepoint_t glyph,
-						hb_draw_funcs_t *draw_funcs, void *draw_data,
-						void *user_data);
+						hb_draw_funcs_t *draw_funcs, व्योम *draw_तथ्य,
+						व्योम *user_तथ्य);
 
 /**
  * hb_font_draw_glyph_func_t:
@@ -289,10 +289,10 @@ typedef void (*hb_font_get_glyph_shape_func_t) (hb_font_t *font, void *font_data
  * Since: 7.0.0
  * Deprecated: 11.2.0: Use hb_font_draw_glyph_func_or_fail_t instead.
  **/
-typedef void (*hb_font_draw_glyph_func_t) (hb_font_t *font, void *font_data,
+प्रकार व्योम (*hb_font_draw_glyph_func_t) (hb_font_t *font, व्योम *font_तथ्य,
                                            hb_codepoint_t glyph,
-                                           hb_draw_funcs_t *draw_funcs, void *draw_data,
-                                           void *user_data);
+                                           hb_draw_funcs_t *draw_funcs, व्योम *draw_तथ्य,
+                                           व्योम *user_तथ्य);
 
 /**
  * hb_font_paint_glyph_func_t:
@@ -310,12 +310,12 @@ typedef void (*hb_font_draw_glyph_func_t) (hb_font_t *font, void *font_data,
  * Since: 7.0.0
  * Deprecated: 11.2.0: Use hb_font_paint_glyph_or_fail_func_t instead.
  */
-typedef hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						 hb_codepoint_t glyph,
-						 hb_paint_funcs_t *paint_funcs, void *paint_data,
-						 unsigned int palette_index,
+						 hb_paint_funcs_t *paint_funcs, व्योम *paint_तथ्य,
+						 अचिन्हित पूर्णांक palette_सूचकांक,
 						 hb_color_t foreground,
-						 void *user_data);
+						 व्योम *user_तथ्य);
 
 /**
  * hb_font_funcs_set_glyph_shape_func:
@@ -331,10 +331,10 @@ typedef hb_bool_t (*hb_font_paint_glyph_func_t) (hb_font_t *font, void *font_dat
  * Deprecated: 7.0.0: Use hb_font_funcs_set_draw_glyph_func() instead
  **/
 HB_DEPRECATED_FOR (hb_font_funcs_set_draw_glyph_or_fail_func)
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t *ffuncs,
 				    hb_font_get_glyph_shape_func_t func,
-				    void *user_data, hb_destroy_func_t destroy);
+				    व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_draw_glyph_func:
@@ -349,10 +349,10 @@ hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t *ffuncs,
  * Deprecated: 11.2.0: Use hb_font_funcs_set_draw_glyph_or_fail_func instead.
  **/
 HB_DEPRECATED_FOR (hb_font_funcs_set_draw_glyph_or_fail_func)
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t *ffuncs,
                                    hb_font_draw_glyph_func_t func,
-                                   void *user_data, hb_destroy_func_t destroy);
+                                   व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_paint_glyph_func:
@@ -367,16 +367,16 @@ hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t *ffuncs,
  * Deprecated: 11.2.0: Use hb_font_funcs_set_paint_glyph_or_fail_func() instead.
  */
 HB_DEPRECATED_FOR (hb_font_funcs_set_paint_glyph_or_fail_func)
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t *ffuncs,
                                     hb_font_paint_glyph_func_t func,
-                                    void *user_data, hb_destroy_func_t destroy);
+                                    व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 HB_DEPRECATED_FOR (hb_font_draw_glyph_or_fail)
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_glyph_shape (hb_font_t *font,
 			 hb_codepoint_t glyph,
-			 hb_draw_funcs_t *dfuncs, void *draw_data);
+			 hb_draw_funcs_t *dfuncs, व्योम *draw_तथ्य);
 
 
 /**
@@ -386,16 +386,16 @@ hb_font_get_glyph_shape (hb_font_t *font,
  *
  * Deprecated: 8.3.0
  */
-#define HB_AAT_LAYOUT_FEATURE_TYPE_CURISVE_CONNECTION HB_AAT_LAYOUT_FEATURE_TYPE_CURSIVE_CONNECTION
+#घोषणा HB_AAT_LAYOUT_FEATURE_TYPE_CURISVE_CONNECTION HB_AAT_LAYOUT_FEATURE_TYPE_CURSIVE_CONNECTION
 
 HB_DEPRECATED_FOR (hb_font_create)
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_face (hb_font_t *font,
 		  hb_face_t *face);
 
-#endif
+#पूर्ण_अगर
 
 
 HB_END_DECLS
 
-#endif /* HB_DEPRECATED_H */
+#पूर्ण_अगर /* HB_DEPRECATED_H */

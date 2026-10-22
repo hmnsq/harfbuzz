@@ -22,91 +22,91 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#समावेश "hb-ot-shaper-syllabic.hh"
 
 
 bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
-				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+hb_syllabic_जोड़ो_dotted_circles (hb_font_t *font,
+				   hb_बफर_t *बफर,
+				   अचिन्हित पूर्णांक broken_syllable_type,
+				   अचिन्हित पूर्णांक dottedcircle_category,
+				   पूर्णांक repha_category,
+				   पूर्णांक dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  अगर (unlikely (बफर->flags & HB_बफर_FLAG_DO_NOT_जोड़ो_DOTTED_CIRCLE))
+    वापस false;
+  अगर (likely (!(बफर->scratch_flags & HB_बफर_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    अगर (बफर->messaging ())
+      (व्योम) बफर->message (font, "skipped inserting dotted-circles because there is no broken syllables");
+    वापस false;
   }
 
-  if (buffer->messaging () &&
-      !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+  अगर (बफर->messaging () &&
+      !बफर->message (font, "start inserting dotted-circles"))
+    वापस false;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  अगर (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    वापस false;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  अगर (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
-  buffer->clear_output ();
+  बफर->clear_output ();
 
-  buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  बफर->idx = 0;
+  अचिन्हित पूर्णांक last_syllable = 0;
+  जबतक (बफर->idx < बफर->len && बफर->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    अचिन्हित पूर्णांक syllable = बफर->cur().syllable();
+    अगर (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
       last_syllable = syllable;
 
       hb_glyph_info_t ginfo = dottedcircle;
-      ginfo.cluster = buffer->cur().cluster;
-      ginfo.mask = buffer->cur().mask;
-      ginfo.syllable() = buffer->cur().syllable();
+      ginfo.cluster = बफर->cur().cluster;
+      ginfo.mask = बफर->cur().mask;
+      ginfo.syllable() = बफर->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      अगर (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
-	       last_syllable == buffer->cur().syllable() &&
-	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	जबतक (बफर->idx < बफर->len && बफर->successful &&
+	       last_syllable == बफर->cur().syllable() &&
+	       बफर->cur().ot_shaper_var_u8_category() == (अचिन्हित) repha_category)
+	  (व्योम) बफर->अग्र_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (व्योम) बफर->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    अन्यथा
+      (व्योम) बफर->अग्र_glyph ();
   }
-  buffer->sync ();
+  बफर->sync ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  अगर (बफर->messaging ())
+    (व्योम) बफर->message (font, "end inserting dotted-circles");
 
-  return true;
+  वापस true;
 }
 
 HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+hb_syllabic_clear_var (स्थिर hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer)
+		       hb_बफर_t *बफर)
 {
-  HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  HB_बफर_DEALLOCATE_VAR (बफर, syllable);
+  वापस false;
 }
 
 
-#endif
+#पूर्ण_अगर

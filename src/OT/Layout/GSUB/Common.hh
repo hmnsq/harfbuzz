@@ -1,19 +1,19 @@
-#ifndef OT_LAYOUT_GSUB_COMMON_HH
-#define OT_LAYOUT_GSUB_COMMON_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_COMMON_HH
+#घोषणा OT_LAYOUT_GSUB_COMMON_HH
 
-#include "../../../hb-serialize.hh"
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#समावेश "../../../hb-serialize.hh"
+#समावेश "../../../hb-ot-layout-gsubgpos.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-template<typename Iterator>
-static void SingleSubst_serialize (hb_serialize_context_t *c,
+ढाँचा<typename Iterator>
+अटल व्योम SingleSubst_serialize (hb_serialize_context_t *c,
                                    Iterator it);
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_COMMON_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GSUB_COMMON_HH */

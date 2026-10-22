@@ -28,14 +28,14 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_TABLE_LIST_HH
-#define HB_OT_FACE_TABLE_LIST_HH
-#endif /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
+#अगर_अघोषित HB_OT_FACE_TABLE_LIST_HH
+#घोषणा HB_OT_FACE_TABLE_LIST_HH
+#पूर्ण_अगर /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_OT_ACCELERATOR
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type)
-#define _HB_OT_ACCELERATOR_UNDEF
-#endif
+#अगर_अघोषित HB_OT_ACCELERATOR
+#घोषणा HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type)
+#घोषणा _HB_OT_ACCELERATOR_UNDEF
+#पूर्ण_अगर
 
 
 /* This lists font tables that the hb_face_t will contain and lazily
@@ -46,76 +46,76 @@
 
 
 /* OpenType fundamentals. */
-HB_OT_TABLE (OT, head)
+HB_OT_TABLE (OT, शीर्ष_2)
 HB_OT_ACCELERATOR (OT, maxp)
-#if !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
+#अगर !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
 HB_OT_ACCELERATOR (OT, cmap)
-#endif
+#पूर्ण_अगर
 HB_OT_ACCELERATOR (OT, hhea)
 HB_OT_ACCELERATOR (OT, hmtx)
 HB_OT_TABLE (OT, OS2)
-#if !defined(HB_NO_OT_FONT_GLYPH_NAMES) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
+#अगर !defined(HB_NO_OT_FONT_GLYPH_NAMES) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
 HB_OT_ACCELERATOR (OT, post)
-#endif
-#ifndef HB_NO_NAME
+#पूर्ण_अगर
+#अगर_अघोषित HB_NO_NAME
 HB_OT_ACCELERATOR (OT, name)
-#endif
-#ifndef HB_NO_STYLE
+#पूर्ण_अगर
+#अगर_अघोषित HB_NO_STYLE
 HB_OT_TABLE (OT, STAT)
-#endif
-#ifndef HB_NO_META
+#पूर्ण_अगर
+#अगर_अघोषित HB_NO_META
 HB_OT_ACCELERATOR (OT, meta)
-#endif
+#पूर्ण_अगर
 
 /* Vertical layout. */
-#ifndef HB_NO_VERTICAL
+#अगर_अघोषित HB_NO_VERTICAL
 HB_OT_ACCELERATOR (OT, vhea)
 HB_OT_ACCELERATOR (OT, vmtx)
 HB_OT_TABLE (OT, VORG)
-#endif
+#पूर्ण_अगर
 
 /* TrueType outlines. */
 HB_OT_TABLE (OT, loca)
 HB_OT_ACCELERATOR (OT, glyf)
 
 /* CFF outlines. */
-#ifndef HB_NO_CFF
+#अगर_अघोषित HB_NO_CFF
 HB_OT_ACCELERATOR (OT, cff1)
 HB_OT_ACCELERATOR (OT, cff2)
-#endif
+#पूर्ण_अगर
 
 /* OpenType variations. */
-#ifndef HB_NO_VAR
+#अगर_अघोषित HB_NO_VAR
 HB_OT_TABLE (OT, fvar)
 HB_OT_TABLE (OT, avar)
 HB_OT_TABLE (OT, cvar)
 HB_OT_ACCELERATOR (OT, gvar)
 HB_OT_TABLE (OT, MVAR)
-#ifndef HB_NO_VAR_COMPOSITES
+#अगर_अघोषित HB_NO_VAR_COMPOSITES
 HB_OT_ACCELERATOR (OT, VARC)
-#endif
-#endif
+#पूर्ण_अगर
+#पूर्ण_अगर
 
 /* Legacy kern. */
-#ifndef HB_NO_OT_KERN
+#अगर_अघोषित HB_NO_OT_KERN
 HB_OT_ACCELERATOR (OT, kern)
-#endif
+#पूर्ण_अगर
 
 /* OpenType shaping. */
-#ifndef HB_NO_OT_LAYOUT
+#अगर_अघोषित HB_NO_OT_LAYOUT
 HB_OT_ACCELERATOR (OT, GDEF)
 HB_OT_ACCELERATOR (OT, GSUB)
 HB_OT_ACCELERATOR (OT, GPOS)
 //HB_OT_TABLE (OT, JSTF)
-#endif
+#पूर्ण_अगर
 
 /* OpenType baseline. */
-#ifndef HB_NO_BASE
+#अगर_अघोषित HB_NO_BASE
 HB_OT_TABLE (OT, BASE)
-#endif
+#पूर्ण_अगर
 
 /* AAT shaping. */
-#ifndef HB_NO_AAT
+#अगर_अघोषित HB_NO_AAT
 HB_OT_ACCELERATOR (AAT, morx)
 HB_OT_ACCELERATOR (AAT, mort)
 HB_OT_ACCELERATOR (AAT, kerx)
@@ -124,25 +124,25 @@ HB_OT_TABLE (AAT, trak)
 HB_OT_TABLE (AAT, ltag)
 HB_OT_TABLE (AAT, feat)
 // HB_OT_TABLE (AAT, opbd)
-#endif
+#पूर्ण_अगर
 
 /* OpenType color fonts. */
-#ifndef HB_NO_COLOR
+#अगर_अघोषित HB_NO_COLOR
 HB_OT_ACCELERATOR (OT, COLR)
 HB_OT_TABLE (OT, CPAL)
 HB_OT_ACCELERATOR (OT, CBDT)
 HB_OT_ACCELERATOR (OT, sbix)
-#ifndef HB_NO_SVG
+#अगर_अघोषित HB_NO_SVG
 HB_OT_ACCELERATOR (OT, SVG)
-#endif
-#endif
+#पूर्ण_अगर
+#पूर्ण_अगर
 
 /* OpenType math. */
-#ifndef HB_NO_MATH
+#अगर_अघोषित HB_NO_MATH
 HB_OT_TABLE (OT, MATH)
-#endif
+#पूर्ण_अगर
 
 
-#ifdef _HB_OT_ACCELERATOR_UNDEF
-#undef HB_OT_ACCELERATOR
-#endif
+#अगर_घोषित _HB_OT_ACCELERATOR_UNDEF
+#अघोषित HB_OT_ACCELERATOR
+#पूर्ण_अगर

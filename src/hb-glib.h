@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GLIB_H
-#define HB_GLIB_H
+#अगर_अघोषित HB_GLIB_H
+#घोषणा HB_GLIB_H
 
-#include "hb.h"
+#समावेश "hb.h"
 
-#include <glib.h>
+#समावेश <glib.h>
 
 HB_BEGIN_DECLS
 
@@ -44,13 +44,13 @@ hb_glib_script_from_script (hb_script_t script);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_glib_get_unicode_funcs (void);
+hb_glib_get_unicode_funcs (व्योम);
 
-#if GLIB_CHECK_VERSION(2,31,10)
+#अगर GLIB_CHECK_VERSION(2,31,10)
 HB_EXTERN hb_blob_t *
 hb_glib_blob_create (GBytes *gbytes);
-#endif
+#पूर्ण_अगर
 
 HB_END_DECLS
 
-#endif /* HB_GLIB_H */
+#पूर्ण_अगर /* HB_GLIB_H */

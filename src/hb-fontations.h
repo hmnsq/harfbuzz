@@ -22,10 +22,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FONTATIONS_H
-#define HB_FONTATIONS_H
+#अगर_अघोषित HB_FONTATIONS_H
+#घोषणा HB_FONTATIONS_H
 
-#include "hb.h"
+#समावेश "hb.h"
 
 /**
  * SECTION: hb-fontations
@@ -48,9 +48,9 @@ HB_BEGIN_DECLS
  *
  * Since: 11.0.0
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_fontations_font_set_funcs (hb_font_t *font);
 
 HB_END_DECLS
 
-#endif /* HB_FONTATIONS_H */
+#पूर्ण_अगर /* HB_FONTATIONS_H */

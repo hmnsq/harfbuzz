@@ -24,138 +24,138 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "gsubgpos-context.hh"
-#include "classdef-graph.hh"
-#include "hb-iter.hh"
-#include "hb-serialize.hh"
+#समावेश "gsubgpos-context.hh"
+#समावेश "classdef-graph.hh"
+#समावेश "hb-iter.hh"
+#समावेश "hb-serialize.hh"
 
-typedef hb_codepoint_pair_t gid_and_class_t;
-typedef hb_vector_t<gid_and_class_t> gid_and_class_list_t;
+प्रकार hb_codepoint_pair_t gid_and_class_t;
+प्रकार hb_vector_t<gid_and_class_t> gid_and_class_list_t;
 
-template<typename It>
-static unsigned actual_class_def_size(It glyph_and_class) {
-  char buffer[100];
-  hb_serialize_context_t serializer(buffer, 100);
+ढाँचा<typename It>
+अटल अचिन्हित actual_class_def_आकार(It glyph_and_class) {
+  अक्षर बफर[100];
+  hb_serialize_context_t serializer(बफर, 100);
   OT::ClassDef_serialize (&serializer, glyph_and_class);
   serializer.end_serialize ();
   hb_always_assert(!serializer.in_error());
 
   hb_blob_t* blob = serializer.copy_blob();
-  unsigned size = hb_blob_get_length(blob);
+  अचिन्हित आकार = hb_blob_get_लंबाई(blob);
   hb_blob_destroy(blob);
-  return size;
+  वापस आकार;
 }
 
-static unsigned actual_class_def_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
-  auto filtered_it =
+अटल अचिन्हित actual_class_def_आकार(gid_and_class_list_t consecutive_map, hb_vector_t<अचिन्हित> classes) {
+  स्वतः filtered_it =
     + consecutive_map.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+    | hb_filter([&] (अचिन्हित c) {
+      क्रम (अचिन्हित klass : classes) {
+        अगर (c == klass) {
+          वापस true;
         }
       }
-      return false;
+      वापस false;
     }, hb_second);
-  return actual_class_def_size(+ filtered_it);
+  वापस actual_class_def_आकार(+ filtered_it);
 }
 
-template<typename It>
-static unsigned actual_coverage_size(It glyphs) {
-  char buffer[100];
-  hb_serialize_context_t serializer(buffer, 100);
+ढाँचा<typename It>
+अटल अचिन्हित actual_coverage_आकार(It glyphs) {
+  अक्षर बफर[100];
+  hb_serialize_context_t serializer(बफर, 100);
   OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
   serializer.end_serialize ();
   hb_always_assert(!serializer.in_error());
 
   hb_blob_t* blob = serializer.copy_blob();
-  unsigned size = hb_blob_get_length(blob);
+  अचिन्हित आकार = hb_blob_get_लंबाई(blob);
   hb_blob_destroy(blob);
-  return size;
+  वापस आकार;
 }
 
-static unsigned actual_coverage_size(gid_and_class_list_t consecutive_map, hb_vector_t<unsigned> classes) {
-  auto filtered_it =
+अटल अचिन्हित actual_coverage_आकार(gid_and_class_list_t consecutive_map, hb_vector_t<अचिन्हित> classes) {
+  स्वतः filtered_it =
     + consecutive_map.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      for (unsigned klass : classes) {
-        if (c == klass) {
-          return true;
+    | hb_filter([&] (अचिन्हित c) {
+      क्रम (अचिन्हित klass : classes) {
+        अगर (c == klass) {
+          वापस true;
         }
       }
-      return false;
+      वापस false;
     }, hb_second);
-  return actual_coverage_size(+ filtered_it | hb_map_retains_sorting(hb_first));
+  वापस actual_coverage_आकार(+ filtered_it | hb_map_retains_sorting(hb_first));
 }
 
-static bool check_coverage_size(graph::class_def_size_estimator_t& estimator,
-                                const gid_and_class_list_t& map,
-                                hb_vector_t<unsigned> klasses)
+अटल bool check_coverage_आकार(graph::class_def_आकार_estimator_t& estimator,
+                                स्थिर gid_and_class_list_t& map,
+                                hb_vector_t<अचिन्हित> klasses)
 {
-  unsigned result = estimator.coverage_size();
-  unsigned expected = actual_coverage_size(map, klasses);
-  if (result != expected) {
-    printf ("FAIL: estimated coverage expected size %u but was %u\n", expected, result);
-    return false;
+  अचिन्हित परिणाम = estimator.coverage_आकार();
+  अचिन्हित expected = actual_coverage_आकार(map, klasses);
+  अगर (परिणाम != expected) {
+    म_लिखो ("FAIL: estimated coverage expected size %u but was %u\n", expected, परिणाम);
+    वापस false;
   }
-  return true;
+  वापस true;
 }
 
-static HB_UNUSED bool check_add_class_def_size(graph::class_def_size_estimator_t& estimator,
-					       const gid_and_class_list_t& map,
-					       unsigned klass, hb_vector_t<unsigned> klasses)
+अटल HB_UNUSED bool check_add_class_def_आकार(graph::class_def_आकार_estimator_t& estimator,
+					       स्थिर gid_and_class_list_t& map,
+					       अचिन्हित klass, hb_vector_t<अचिन्हित> klasses)
 {
-  unsigned result = estimator.add_class_def_size(klass);
-  unsigned expected = actual_class_def_size(map, klasses);
-  if (result != expected) {
-    printf ("FAIL: estimated class def expected size %u but was %u\n", expected, result);
-    return false;
+  अचिन्हित परिणाम = estimator.add_class_def_आकार(klass);
+  अचिन्हित expected = actual_class_def_आकार(map, klasses);
+  अगर (परिणाम != expected) {
+    म_लिखो ("FAIL: estimated class def expected size %u but was %u\n", expected, परिणाम);
+    वापस false;
   }
 
-  return check_coverage_size(estimator, map, klasses);
+  वापस check_coverage_आकार(estimator, map, klasses);
 }
 
-static HB_UNUSED bool check_add_class_def_size (const gid_and_class_list_t& list, unsigned klass)
+अटल HB_UNUSED bool check_add_class_def_आकार (स्थिर gid_and_class_list_t& list, अचिन्हित klass)
 {
-  graph::class_def_size_estimator_t estimator = *graph::class_def_size_estimator_t::create (list.iter ());
+  graph::class_def_आकार_estimator_t estimator = *graph::class_def_आकार_estimator_t::create (list.iter ());
 
-  unsigned result = estimator.add_class_def_size (klass);
-  auto filtered_it =
+  अचिन्हित परिणाम = estimator.add_class_def_आकार (klass);
+  स्वतः filtered_it =
     + list.as_sorted_array().iter()
-    | hb_filter([&] (unsigned c) {
-      return c == klass;
+    | hb_filter([&] (अचिन्हित c) {
+      वापस c == klass;
     }, hb_second);
 
-  unsigned expected = actual_class_def_size(filtered_it);
-  if (result != expected)
+  अचिन्हित expected = actual_class_def_आकार(filtered_it);
+  अगर (परिणाम != expected)
   {
-    printf ("FAIL: class def expected size %u but was %u\n", expected, result);
-    return false;
+    म_लिखो ("FAIL: class def expected size %u but was %u\n", expected, परिणाम);
+    वापस false;
   }
 
-  auto cov_it = + filtered_it | hb_map_retains_sorting(hb_first);
-  result = estimator.coverage_size ();
-  expected = actual_coverage_size(cov_it);
-  if (result != expected)
+  स्वतः cov_it = + filtered_it | hb_map_retains_sorting(hb_first);
+  परिणाम = estimator.coverage_आकार ();
+  expected = actual_coverage_आकार(cov_it);
+  अगर (परिणाम != expected)
   {
-    printf ("FAIL: coverage expected size %u but was %u\n", expected, result);
-    return false;
+    म_लिखो ("FAIL: coverage expected size %u but was %u\n", expected, परिणाम);
+    वापस false;
   }
 
-  return true;
+  वापस true;
 }
 
-static void test_class_and_coverage_size_estimates ()
+अटल व्योम test_class_and_coverage_आकार_estimates ()
 {
   gid_and_class_list_t empty = {
   };
-  hb_always_assert (check_add_class_def_size (empty, 0));
-  hb_always_assert (check_add_class_def_size (empty, 1));
+  hb_always_assert (check_add_class_def_आकार (empty, 0));
+  hb_always_assert (check_add_class_def_आकार (empty, 1));
 
   gid_and_class_list_t class_zero = {
     {5, 0},
   };
-  hb_always_assert (check_add_class_def_size (class_zero, 0));
+  hb_always_assert (check_add_class_def_आकार (class_zero, 0));
 
   gid_and_class_list_t consecutive = {
     {4, 0},
@@ -169,9 +169,9 @@ static void test_class_and_coverage_size_estimates ()
     {10, 2},
     {11, 2},
   };
-  hb_always_assert (check_add_class_def_size (consecutive, 0));
-  hb_always_assert (check_add_class_def_size (consecutive, 1));
-  hb_always_assert (check_add_class_def_size (consecutive, 2));
+  hb_always_assert (check_add_class_def_आकार (consecutive, 0));
+  hb_always_assert (check_add_class_def_आकार (consecutive, 1));
+  hb_always_assert (check_add_class_def_आकार (consecutive, 2));
 
   gid_and_class_list_t non_consecutive = {
     {4, 0},
@@ -185,9 +185,9 @@ static void test_class_and_coverage_size_estimates ()
     {11, 2},
     {13, 2},
   };
-  hb_always_assert (check_add_class_def_size (non_consecutive, 0));
-  hb_always_assert (check_add_class_def_size (non_consecutive, 1));
-  hb_always_assert (check_add_class_def_size (non_consecutive, 2));
+  hb_always_assert (check_add_class_def_आकार (non_consecutive, 0));
+  hb_always_assert (check_add_class_def_आकार (non_consecutive, 1));
+  hb_always_assert (check_add_class_def_आकार (non_consecutive, 2));
 
   gid_and_class_list_t multiple_ranges = {
     {4, 0},
@@ -202,40 +202,40 @@ static void test_class_and_coverage_size_estimates ()
     {12, 1},
     {13, 1},
   };
-  hb_always_assert (check_add_class_def_size (multiple_ranges, 0));
-  hb_always_assert (check_add_class_def_size (multiple_ranges, 1));
+  hb_always_assert (check_add_class_def_आकार (multiple_ranges, 0));
+  hb_always_assert (check_add_class_def_आकार (multiple_ranges, 1));
 
-#ifndef HB_NO_BEYOND_64K
-  gid_and_class_list_t high_consecutive = {
+#अगर_अघोषित HB_NO_BEYOND_64K
+  gid_and_class_list_t ऊपरी_consecutive = {
     {0x10000, 1},
     {0x10001, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_consecutive, 1));
+  hb_always_assert (check_add_class_def_आकार (ऊपरी_consecutive, 1));
 
-  gid_and_class_list_t high_non_consecutive = {
+  gid_and_class_list_t ऊपरी_non_consecutive = {
     {0x10000, 1},
     {0x10002, 1},
   };
-  hb_always_assert (check_add_class_def_size (high_non_consecutive, 1));
+  hb_always_assert (check_add_class_def_आकार (ऊपरी_non_consecutive, 1));
 
-  gid_and_class_list_t high_class = {
+  gid_and_class_list_t ऊपरी_class = {
     {5, 0x10000},
   };
-  hb_always_assert (check_add_class_def_size (high_class, 0x10000));
-#endif
+  hb_always_assert (check_add_class_def_आकार (ऊपरी_class, 0x10000));
+#पूर्ण_अगर
 }
 
-#ifndef HB_NO_BEYOND_64K
-static void test_class_def_format_3_values ()
+#अगर_अघोषित HB_NO_BEYOND_64K
+अटल व्योम test_class_def_format_3_मूल्यावली ()
 {
-  alignas (OT::ClassDef) static const unsigned char data[] = {
+  alignas (OT::ClassDef) अटल स्थिर अचिन्हित अक्षर तथ्य[] = {
     0x00, 0x03,             // format
     0x00, 0x00, 0x05,       // startGlyphID
     0x00, 0x00, 0x02,       // glyphCount
     0x00, 0x00, 0x01,       // classValue[0]
     0x01, 0x00, 0x00,       // classValue[1]
   };
-  const OT::ClassDef &class_def = *reinterpret_cast<const OT::ClassDef *> (data);
+  स्थिर OT::ClassDef &class_def = *reinterpret_cast<स्थिर OT::ClassDef *> (तथ्य);
 
   hb_always_assert (class_def.get_class (5) == 1);
   hb_always_assert (class_def.get_class (6) == 0x10000u);
@@ -244,9 +244,9 @@ static void test_class_def_format_3_values ()
   glyphs.add (6);
   hb_always_assert (class_def.intersects_class (&glyphs, 0x10000u));
 }
-#endif
+#पूर्ण_अगर
 
-static void test_running_class_and_coverage_size_estimates () {
+अटल व्योम test_running_class_and_coverage_आकार_estimates () {
   // #### With consecutive gids: switches formats ###
   gid_and_class_list_t consecutive_map = {
     // range 1-4 (f1: 8 bytes), (f2: 6 bytes)
@@ -268,15 +268,15 @@ static void test_running_class_and_coverage_size_estimates () {
     {12, 3},
   };
 
-  graph::class_def_size_estimator_t estimator1 = *graph::class_def_size_estimator_t::create (consecutive_map.iter());
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {1, 2})); // check that adding the same class again works
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 3, {1, 2, 3}));
+  graph::class_def_आकार_estimator_t estimator1 = *graph::class_def_आकार_estimator_t::create (consecutive_map.iter());
+  hb_always_assert(check_add_class_def_आकार(estimator1, consecutive_map, 1, {1}));
+  hb_always_assert(check_add_class_def_आकार(estimator1, consecutive_map, 2, {1, 2}));
+  hb_always_assert(check_add_class_def_आकार(estimator1, consecutive_map, 2, {1, 2})); // check that adding the same class again works
+  hb_always_assert(check_add_class_def_आकार(estimator1, consecutive_map, 3, {1, 2, 3}));
 
   estimator1.reset();
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator1, consecutive_map, 3, {2, 3}));
+  hb_always_assert(check_add_class_def_आकार(estimator1, consecutive_map, 2, {2}));
+  hb_always_assert(check_add_class_def_आकार(estimator1, consecutive_map, 3, {2, 3}));
 
   // #### With non-consecutive gids: always uses format 2 ###
   gid_and_class_list_t non_consecutive_map = {
@@ -300,40 +300,40 @@ static void test_running_class_and_coverage_size_estimates () {
     {15, 3},
   };
 
-  graph::class_def_size_estimator_t estimator2 = *graph::class_def_size_estimator_t::create (non_consecutive_map.iter());
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 3, {1, 2, 3}));
+  graph::class_def_आकार_estimator_t estimator2 = *graph::class_def_आकार_estimator_t::create (non_consecutive_map.iter());
+  hb_always_assert(check_add_class_def_आकार(estimator2, non_consecutive_map, 1, {1}));
+  hb_always_assert(check_add_class_def_आकार(estimator2, non_consecutive_map, 2, {1, 2}));
+  hb_always_assert(check_add_class_def_आकार(estimator2, non_consecutive_map, 3, {1, 2, 3}));
 
   estimator2.reset();
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator2, non_consecutive_map, 3, {2, 3}));
+  hb_always_assert(check_add_class_def_आकार(estimator2, non_consecutive_map, 2, {2}));
+  hb_always_assert(check_add_class_def_आकार(estimator2, non_consecutive_map, 3, {2, 3}));
 }
 
-static void test_running_class_size_estimates_with_locally_consecutive_glyphs () {
+अटल व्योम test_running_class_आकार_estimates_with_locally_consecutive_glyphs () {
   gid_and_class_list_t map = {
     {1, 1},
     {6, 2},
     {7, 3},
   };
 
-  graph::class_def_size_estimator_t estimator = *graph::class_def_size_estimator_t::create (map.iter());
-  hb_always_assert(check_add_class_def_size(estimator, map, 1, {1}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 2, {1, 2}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 3, {1, 2, 3}));
+  graph::class_def_आकार_estimator_t estimator = *graph::class_def_आकार_estimator_t::create (map.iter());
+  hb_always_assert(check_add_class_def_आकार(estimator, map, 1, {1}));
+  hb_always_assert(check_add_class_def_आकार(estimator, map, 2, {1, 2}));
+  hb_always_assert(check_add_class_def_आकार(estimator, map, 3, {1, 2, 3}));
 
   estimator.reset();
-  hb_always_assert(check_add_class_def_size(estimator, map, 2, {2}));
-  hb_always_assert(check_add_class_def_size(estimator, map, 3, {2, 3}));
+  hb_always_assert(check_add_class_def_आकार(estimator, map, 2, {2}));
+  hb_always_assert(check_add_class_def_आकार(estimator, map, 3, {2, 3}));
 }
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
-  test_class_and_coverage_size_estimates ();
-  test_running_class_and_coverage_size_estimates ();
-  test_running_class_size_estimates_with_locally_consecutive_glyphs ();
-#ifndef HB_NO_BEYOND_64K
-  test_class_def_format_3_values ();
-#endif
+  test_class_and_coverage_आकार_estimates ();
+  test_running_class_and_coverage_आकार_estimates ();
+  test_running_class_आकार_estimates_with_locally_consecutive_glyphs ();
+#अगर_अघोषित HB_NO_BEYOND_64K
+  test_class_def_format_3_मूल्यावली ();
+#पूर्ण_अगर
 }

@@ -1,110 +1,110 @@
-#ifndef OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
-#define OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
+#घोषणा OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH
 
-#include "Common.hh"
-#include "Sequence.hh"
+#समावेश "Common.hh"
+#समावेश "Sequence.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-template <typename Types>
-struct MultipleSubstFormat1_2
+ढाँचा <typename Types>
+काष्ठा MultipleSubstFormat1_2
 {
-  protected:
+  रक्षित:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  typename Types::ढाँचा LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of Substitution table */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<Sequence<Types>>>
+  typename Types::ढाँचा ArrayOf<typename Types::ढाँचा OffsetTo<Sequence<Types>>>
                 sequence;               /* Array of Sequence tables
                                          * ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, sequence);
+  खुला:
+  DEFINE_आकार_ARRAY (2 + Types::LOffset::static_आकार + Types::HBUINT::static_आकार, sequence);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && sequence.sanitize (c, this));
+    TRACE_SANITIZE (यह);
+    return_trace (coverage.sanitize (c, यह) && sequence.sanitize (c, यह));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  bool intersects (स्थिर hb_set_t *glyphs) स्थिर
+  { वापस (यह+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  bool may_have_non_1to1 () स्थिर
+  { वापस true; }
 
-  void closure (hb_closure_context_t *c) const
+  व्योम closure (hb_closure_context_t *c) स्थिर
   {
-    + hb_zip (this+coverage, sequence)
+    + hb_zip (यह+coverage, sequence)
     | hb_filter (c->parent_active_glyphs (), hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Sequence<Types> &_) { _.closure (c); })
+    | hb_map (hb_add (यह))
+    | hb_apply ([c] (स्थिर Sequence<Types> &_) { _.closure (c); })
     ;
   }
 
-  void depend (hb_depend_context_t *c) const
+  व्योम depend (hb_depend_context_t *c) स्थिर
   {
     // Filter by parent_active_glyphs like closure does
-    + hb_zip (this+coverage, sequence)
+    + hb_zip (यह+coverage, sequence)
     | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const typename Types::template OffsetTo<Sequence<Types>>&> &_)
+    | hb_apply ([&] (स्थिर hb_pair_t<hb_codepoint_t, स्थिर typename Types::ढाँचा OffsetTo<Sequence<Types>>&> &_)
                 {
-                  const Sequence<Types>& s = this+_.second;
+                  स्थिर Sequence<Types>& s = यह+_.second;
                   s.depend (c, _.first);
                 })
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  व्योम closure_lookups (hb_closure_lookups_context_t *c) स्थिर {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  व्योम collect_glyphs (hb_collect_glyphs_context_t *c) स्थिर
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, sequence)
+    अगर (unlikely (!(यह+coverage).collect_coverage (c->निवेश))) वापस;
+    + hb_zip (यह+coverage, sequence)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const Sequence<Types> &_) { _.collect_glyphs (c); })
+    | hb_map (hb_add (यह))
+    | hb_apply ([c] (स्थिर Sequence<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  स्थिर Coverage &get_coverage () स्थिर { वापस यह+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  bool would_apply (hb_would_apply_context_t *c) स्थिर
+  { वापस c->len == 1 && (यह+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) स्थिर
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (यह);
 
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    अचिन्हित पूर्णांक सूचकांक_2 = (यह+coverage).get_coverage (c->बफर->cur().codepoint);
+    अगर (सूचकांक_2 == NOT_COVERED) return_trace (false);
 
-    return_trace ((this+sequence[index]).apply (c));
+    return_trace ((यह+sequence[सूचकांक_2]).apply (c));
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
   bool serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    auto sequences =
+    TRACE_SERIALIZE (यह);
+    स्वतः sequences =
       + it
       | hb_map (hb_second)
       ;
-    auto glyphs =
+    स्वतः glyphs =
       + it
       | hb_map_retains_sorting (hb_first)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    अगर (unlikely (!c->extend_min (यह))) return_trace (false);
 
-    if (unlikely (!sequence.serialize (c, sequences.length))) return_trace (false);
+    अगर (unlikely (!sequence.serialize (c, sequences.लंबाई))) return_trace (false);
 
-    for (auto& pair : hb_zip (sequences, sequence))
+    क्रम (स्वतः& pair : hb_zip (sequences, sequence))
     {
-      if (unlikely (!pair.second
+      अगर (unlikely (!pair.second
 		    .serialize_serialize (c, pair.first)))
         return_trace (false);
     }
@@ -112,20 +112,20 @@ struct MultipleSubstFormat1_2
     return_trace (coverage.serialize_serialize (c, glyphs));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (यह);
+    स्थिर hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    स्थिर hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    स्वतः *out = c->serializer->start_embed (*यह);
+    अगर (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, sequence)
+    + hb_zip (यह+coverage, sequence)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->sequence, this), hb_second)
+    | hb_filter (subset_offset_array (c, out->sequence, यह), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
@@ -140,4 +140,4 @@ struct MultipleSubstFormat1_2
 }
 
 
-#endif /* OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GSUB_MULTIPLESUBSTFORMAT1_HH */

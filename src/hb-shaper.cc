@@ -24,79 +24,79 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-machinery.hh"
+#समावेश "hb.hh"
+#समावेश "hb-shaper.hh"
+#समावेश "hb-machinery.hh"
 
 
-static const hb_shaper_entry_t _hb_all_shapers[] = {
-#define HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+अटल स्थिर hb_shaper_entry_t _hb_all_shapers[] = {
+#घोषणा HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
+#समावेश "hb-shaper-list.hh"
+#अघोषित HB_SHAPER_IMPLEMENT
 };
-#ifndef HB_NO_SHAPER
-static_assert (0 != ARRAY_LENGTH_CONST (_hb_all_shapers), "No shaper enabled.");
-#endif
+#अगर_अघोषित HB_NO_SHAPER
+static_assert (0 != ARRAY_लंबाई_CONST (_hb_all_shapers), "No shaper enabled.");
+#पूर्ण_अगर
 
-static inline void free_static_shapers ();
+अटल अंतरभूत व्योम free_static_shapers ();
 
-static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
+अटल काष्ठा hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
 							  hb_shapers_lazy_loader_t>
 {
-  static hb_shaper_entry_t *create ()
+  अटल hb_shaper_entry_t *create ()
   {
-    char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    अक्षर *env = दो_पर्या ("HB_SHAPER_LIST");
+    अगर (!env || !*env)
+      वापस nullptr;
 
-    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, माप (_hb_all_shapers));
+    अगर (unlikely (!shapers))
+      वापस nullptr;
 
-    hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
+    hb_memcpy (shapers, _hb_all_shapers, माप (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
-    char *end, *p = env;
-    for (;;)
+    अचिन्हित पूर्णांक i = 0;
+    अक्षर *end, *p = env;
+    क्रम (;;)
     {
-      end = strchr (p, ',');
-      if (!end)
-	end = p + strlen (p);
+      end = म_अक्षर (p, ',');
+      अगर (!end)
+	end = p + म_माप (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
-	    0 == strncmp (shapers[j].name, p, end - p))
+      क्रम (अचिन्हित पूर्णांक j = i; j < ARRAY_लंबाई_CONST (_hb_all_shapers); j++)
+	अगर (end - p == (पूर्णांक) म_माप (shapers[j].name) &&
+	    0 == म_भेदन (shapers[j].name, p, end - p))
 	{
 	  /* Reorder this shaper to position i */
-	 struct hb_shaper_entry_t t = shapers[j];
-	 memmove (&shapers[i + 1], &shapers[i], sizeof (shapers[i]) * (j - i));
+	 काष्ठा hb_shaper_entry_t t = shapers[j];
+	 स_हटाओ (&shapers[i + 1], &shapers[i], माप (shapers[i]) * (j - i));
 	 shapers[i] = t;
 	 i++;
 	}
 
-      if (!*end)
-	break;
-      else
+      अगर (!*end)
+	अवरोध;
+      अन्यथा
 	p = end + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    वापस shapers;
   }
-  static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  अटल व्योम destroy (hb_shaper_entry_t *p) { hb_free (p); }
+  अटल स्थिर hb_shaper_entry_t *get_null ()      { वापस _hb_all_shapers; }
 } static_shapers;
 
-static inline
-void free_static_shapers ()
+अटल अंतरभूत
+व्योम free_static_shapers ()
 {
   static_shapers.free_instance ();
 }
 
-const hb_shaper_entry_t *
+स्थिर hb_shaper_entry_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  वापस static_shapers.get_unconst ();
 }

@@ -24,14 +24,14 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_GPU_PAINT_HH
-#define HB_GPU_PAINT_HH
+#अगर_अघोषित HB_GPU_PAINT_HH
+#घोषणा HB_GPU_PAINT_HH
 
-#include "hb.hh"
-#include "hb-gpu.h"
-#include "hb-geometry.hh"
-#include "hb-map.hh"
-#include "hb-object.hh"
+#समावेश "hb.hh"
+#समावेश "hb-gpu.h"
+#समावेश "hb-geometry.hh"
+#समावेश "hb-map.hh"
+#समावेश "hb-object.hh"
 
 
 /*
@@ -237,22 +237,22 @@
  *     bitmap path.
  */
 
-struct hb_gpu_paint_t
+काष्ठा hb_gpu_paint_t
 {
   hb_object_header_t header;
 
   /* Persistent configuration (survives hb_gpu_paint_clear). */
-  unsigned   palette    = 0;
+  अचिन्हित   palette    = 0;
   hb_map_t  *custom_palette = nullptr;
 
   /* Current effective affine (stack is grown/shrunk by
    * push_transform / pop_transform callbacks). */
-  hb_transform_t<float> cur_transform = {1, 0, 0, 1, 0, 0};
-  hb_vector_t<hb_transform_t<float>> transform_stack;
+  hb_transform_t<भग्न> cur_transform = {1, 0, 0, 1, 0, 0};
+  hb_vector_t<hb_transform_t<भग्न>> transform_ढेर;
 
   /* Font scale (set by hb_gpu_paint_glyph()). */
-  int x_scale = 0;
-  int y_scale = 0;
+  पूर्णांक x_scale = 0;
+  पूर्णांक y_scale = 0;
 
   /* Accumulator state (cleared by hb_gpu_paint_clear). */
 
@@ -260,7 +260,7 @@ struct hb_gpu_paint_t
    * whose total length is determined by the op type (see the
    * design notes at the top of this file). */
   hb_vector_t<int16_t> ops;
-  unsigned num_ops = 0;
+  अचिन्हित अंक_ops = 0;
 
   /* Clip-glyph Slug sub-blobs collected during paint walk.
    * Referenced by sub_blob_index recorded inside ops;
@@ -268,22 +268,22 @@ struct hb_gpu_paint_t
    * patches the recorded indices into texel offsets. */
   hb_vector_t<hb_blob_t *> sub_blobs;
   /* Total bytes held in sub_blobs; bounded by HB_GPU_PAINT_MAX_SUB_BYTES. */
-  unsigned sub_bytes = 0;
+  अचिन्हित sub_bytes = 0;
 
-  bool push_sub_blob (hb_blob_t *blob)
+  bool धकेलो_sub_blob (hb_blob_t *blob)
   {
-    unsigned len = hb_blob_get_length (blob);
-    if (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
-		  !sub_blobs.push_or_fail (blob)))
-      return false;
+    अचिन्हित len = hb_blob_get_लंबाई (blob);
+    अगर (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
+		  !sub_blobs.धकेलो_or_fail (blob)))
+      वापस false;
     sub_bytes += len;
-    return true;
+    वापस true;
   }
 
   /* Nesting depth of push_group / pop_group.  We bail (set
    * `unsupported`) if it exceeds HB_GPU_PAINT_MAX_GROUP_DEPTH,
    * which matches HB_GPU_PAINT_GROUP_DEPTH in the fragment shader. */
-  unsigned group_depth = 0;
+  अचिन्हित group_depth = 0;
 
   /* Work budget for the current paint session; reset by
    * hb_gpu_paint_clear().  All the session's work is outline-derived
@@ -294,7 +294,7 @@ struct hb_gpu_paint_t
   int64_t budget = HB_BUDGET_DEFAULT;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  व्योम recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
@@ -308,26 +308,26 @@ struct hb_gpu_paint_t
    * the clip outline is defined in that coord space, a subsequent
    * gradient params callback may run under deeper transforms which
    * we use for the gradient but not the clip outline. */
-  struct pending_clip_t
+  काष्ठा pending_clip_t
   {
     hb_codepoint_t        glyph;    /* HB_CODEPOINT_INVALID for path clips */
     hb_font_t            *font;     /* borrowed; nullptr for path clips */
-    hb_transform_t<float> transform;
+    hb_transform_t<भग्न> transform;
     /* Path clips are encoded into a sub-blob at push_clip_path_end
      * time; glyph clips are encoded lazily on first consuming layer
      * and cached.  sub_blob_index is -1 until the encode happens,
      * then holds the index into c->sub_blobs and ext_* hold the
      * design-unit extents. */
-    int                   sub_blob_index;
-    int                   ext_x0, ext_y0, ext_x1, ext_y1;
+    पूर्णांक                   sub_blob_सूचकांक;
+    पूर्णांक                   ext_x0, ext_y0, ext_x1, ext_y1;
   };
-  pending_clip_t clip_stack[3];
-  unsigned       clip_depth = 0;
+  pending_clip_t clip_ढेर[3];
+  अचिन्हित       clip_depth = 0;
 
   /* Carries the cur_transform captured at push_clip_path_start
    * through to push_clip_path_end, where the encoded clip is
    * committed to clip_stack. */
-  hb_transform_t<float> pending_clip_path_transform = {};
+  hb_transform_t<भग्न> pending_clip_path_transform = {};
   bool                  pending_clip_path = false;
 
   /* Set when the paint walk emits v1-only callbacks we do not yet
@@ -335,10 +335,10 @@ struct hb_gpu_paint_t
   bool unsupported = false;
 
   /* Extents in font design units, accumulated across layers. */
-  int ext_min_x =  0x7fffffff;
-  int ext_min_y =  0x7fffffff;
-  int ext_max_x = -0x7fffffff;
-  int ext_max_y = -0x7fffffff;
+  पूर्णांक ext_min_x =  0x7fffffff;
+  पूर्णांक ext_min_y =  0x7fffffff;
+  पूर्णांक ext_max_x = -0x7fffffff;
+  पूर्णांक ext_max_y = -0x7fffffff;
 
   /* Scratch: used to rasterize each clip-glyph outline. */
   hb_gpu_draw_t *scratch_draw = nullptr;
@@ -349,18 +349,18 @@ struct hb_gpu_paint_t
   /* Recycled output blob. */
   hb_blob_t *recycled_blob = nullptr;
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  bool fetch_color_stops (hb_color_पंक्ति_t *color_पंक्ति)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    अचिन्हित गिनती = hb_color_पंक्ति_get_color_stops (color_पंक्ति, 0, nullptr, nullptr);
+    अगर (unlikely (!गिनती || !color_stops_scratch.resize (गिनती)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      वापस false;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    hb_color_पंक्ति_get_color_stops (color_पंक्ति, 0, &गिनती, color_stops_scratch.arrayZ);
+    वापस true;
   }
 };
 
 
-#endif /* HB_GPU_PAINT_HH */
+#पूर्ण_अगर /* HB_GPU_PAINT_HH */

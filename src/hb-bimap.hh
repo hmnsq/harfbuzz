@@ -24,98 +24,98 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_BIMAP_HH
-#define HB_BIMAP_HH
+#अगर_अघोषित HB_BIMAP_HH
+#घोषणा HB_BIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
+#समावेश "hb.hh"
+#समावेश "hb-map.hh"
 
 /* Bi-directional map */
-struct hb_bimap_t
+काष्ठा hb_bimap_t
 {
-  void reset ()
+  व्योम reset ()
   {
     forw_map.reset ();
     back_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  व्योम alloc (अचिन्हित निकालो)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (निकालो);
+    back_map.alloc (निकालो);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () स्थिर { वापस forw_map.in_error () || back_map.in_error (); }
 
-  void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
+  व्योम set (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    अगर (in_error ()) वापस;
+    अगर (unlikely (lhs == HB_MAP_मूल्य_INVALID)) वापस;
+    अगर (unlikely (rhs == HB_MAP_मूल्य_INVALID)) { del (lhs); वापस; }
 
     forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    अगर (unlikely (in_error ())) वापस;
 
     back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    अगर (unlikely (in_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t लो (hb_codepoint_t lhs) स्थिर { वापस forw_map.लो (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) स्थिर { वापस back_map.लो (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t चालक [] (hb_codepoint_t lhs) स्थिर { वापस लो (lhs); }
+  bool has (hb_codepoint_t lhs) स्थिर { वापस forw_map.has (lhs); }
 
 
-  void del (hb_codepoint_t lhs)
+  व्योम del (hb_codepoint_t lhs)
   {
-    back_map.del (get (lhs));
+    back_map.del (लो (lhs));
     forw_map.del (lhs);
   }
 
-  void clear ()
+  व्योम सफा ()
   {
-    forw_map.clear ();
-    back_map.clear ();
+    forw_map.सफा ();
+    back_map.सफा ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  bool is_empty () स्थिर { वापस forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  अचिन्हित पूर्णांक get_population () स्थिर { वापस forw_map.get_population (); }
 
-  protected:
+  रक्षित:
   hb_map_t  forw_map;
   hb_map_t  back_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ forw_map.keys())
-  auto values () const HB_AUTO_RETURN (+ forw_map.values())
-  auto iter () const HB_AUTO_RETURN (+ forw_map.iter())
+  खुला:
+  स्वतः कुंजियाँ () स्थिर HB_AUTO_RETURN (+ forw_map.कुंजियाँ())
+  स्वतः values () स्थिर HB_AUTO_RETURN (+ forw_map.values())
+  स्वतः iter () स्थिर HB_AUTO_RETURN (+ forw_map.iter())
 };
 
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
-struct hb_inc_bimap_t
+काष्ठा hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  bool in_error () स्थिर { वापस forw_map.in_error () || back_map.in_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  अचिन्हित पूर्णांक get_population () स्थिर { वापस forw_map.get_population (); }
 
-  void reset ()
+  व्योम reset ()
   {
     forw_map.reset ();
     back_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  व्योम alloc (अचिन्हित निकालो)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (निकालो);
+    back_map.alloc (निकालो);
   }
 
-  void clear ()
+  व्योम सफा ()
   {
-    forw_map.clear ();
-    back_map.clear ();
+    forw_map.सफा ();
+    back_map.सफा ();
   }
 
   /* Add a mapping from lhs to rhs with a unique value if lhs is unknown.
@@ -124,82 +124,82 @@ struct hb_inc_bimap_t
   hb_codepoint_t add (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    अगर (rhs == HB_MAP_मूल्य_INVALID)
     {
-      rhs = back_map.length;
+      rhs = back_map.लंबाई;
       forw_map.set (lhs, rhs);
       back_map.push (lhs);
     }
-    return rhs;
+    वापस rhs;
   }
 
   hb_codepoint_t skip ()
   {
-    hb_codepoint_t start = back_map.length;
-    back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    hb_codepoint_t start = back_map.लंबाई;
+    back_map.push (HB_MAP_मूल्य_INVALID);
+    वापस start;
   }
 
-  hb_codepoint_t skip (unsigned count)
+  hb_codepoint_t skip (अचिन्हित गिनती)
   {
-    hb_codepoint_t start = back_map.length;
-    back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
-      back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    hb_codepoint_t start = back_map.लंबाई;
+    back_map.alloc (back_map.लंबाई + गिनती);
+    क्रम (अचिन्हित i = 0; i < गिनती; i++)
+      back_map.push (HB_MAP_मूल्य_INVALID);
+    वापस start;
   }
 
-  hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  hb_codepoint_t get_अग्र_मूल्य () स्थिर
+  { वापस back_map.लंबाई; }
 
-  void add_set (const hb_set_t *set)
+  व्योम add_set (स्थिर hb_set_t *set)
   {
-    for (auto i : *set) add (i);
+    क्रम (स्वतः i : *set) add (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  bool identity (अचिन्हित पूर्णांक आकार)
   {
-    clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    सफा ();
+    क्रम (hb_codepoint_t i = 0; i < आकार; i++) add (i);
+    वापस !in_error ();
   }
 
-  protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  रक्षित:
+  अटल पूर्णांक cmp_id (स्थिर व्योम* a, स्थिर व्योम* b)
+  { वापस (पूर्णांक)*(स्थिर hb_codepoint_t *)a - (पूर्णांक)*(स्थिर hb_codepoint_t *)b; }
 
-  public:
+  खुला:
   /* Optional: after finished adding all mappings in a random order,
    * reassign rhs to lhs so that they are in the same order. */
-  void sort ()
+  व्योम sort ()
   {
-    hb_codepoint_t  count = get_population ();
+    hb_codepoint_t  गिनती = get_population ();
     hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    अगर (unlikely (!work.resize_dirty  (गिनती))) वापस;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    क्रम (hb_codepoint_t rhs = 0; rhs < गिनती; rhs++)
       work.arrayZ[rhs] = back_map[rhs];
 
-    work.qsort (cmp_id);
+    work.क्विक (cmp_id);
 
-    clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    सफा ();
+    क्रम (hb_codepoint_t rhs = 0; rhs < गिनती; rhs++)
       add (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t लो (hb_codepoint_t lhs) स्थिर { वापस forw_map.लो (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) स्थिर { वापस back_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t चालक [] (hb_codepoint_t lhs) स्थिर { वापस लो (lhs); }
+  bool has (hb_codepoint_t lhs) स्थिर { वापस forw_map.has (lhs); }
 
-  protected:
+  रक्षित:
   hb_map_t forw_map;
   hb_vector_t<hb_codepoint_t> back_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ back_map.iter())
+  खुला:
+  स्वतः कुंजियाँ () स्थिर HB_AUTO_RETURN (+ back_map.iter())
 };
 
-#endif /* HB_BIMAP_HH */
+#पूर्ण_अगर /* HB_BIMAP_HH */

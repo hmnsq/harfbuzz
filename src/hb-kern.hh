@@ -24,79 +24,79 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_KERN_HH
-#define HB_KERN_HH
+#अगर_अघोषित HB_KERN_HH
+#घोषणा HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-aat-layout-common.hh"
+#समावेश "hb-ot-layout-gpos-table.hh"
 
 
 namespace OT {
 
 
-template <typename Driver>
-struct hb_kern_machine_t
+ढाँचा <typename Driver>
+काष्ठा hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
+  hb_kern_machine_t (स्थिर Driver &driver_,
 		     bool crossStream_ = false) :
 		       driver (driver_),
 		       crossStream (crossStream_) {}
 
-  void kern (hb_font_t   *font,
-	     hb_buffer_t *buffer,
+  व्योम kern (hb_font_t   *font,
+	     hb_बफर_t *बफर,
 	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+	     bool         scale = true) स्थिर
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    अगर (!बफर->message (font, "start kern"))
+      वापस;
 
-    buffer->unsafe_to_concat ();
-    OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
+    बफर->unsafe_to_concat ();
+    OT::hb_ot_apply_context_t c (1, font, बफर, hb_blob_get_empty ());
     c.set_lookup_mask (kern_mask);
     c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    स्वतः &skippy_iter = c.iter_निवेश;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (बफर->props.direction);
+    अचिन्हित पूर्णांक गिनती = बफर->len;
+    hb_glyph_info_t *info = बफर->info;
+    hb_glyph_position_t *pos = बफर->pos;
+    क्रम (अचिन्हित पूर्णांक idx = 0; idx < गिनती;)
     {
-      if (!(info[idx].mask & kern_mask))
+      अगर (!(info[idx].mask & kern_mask))
       {
 	idx++;
-	continue;
+	जारी;
       }
 
       skippy_iter.reset_fast (idx);
-      unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      अचिन्हित unsafe_to;
+      अगर (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
-	continue;
+	जारी;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      अचिन्हित पूर्णांक i = idx;
+      अचिन्हित पूर्णांक j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      अगर (likely (!kern))
+	जाओ skip;
 
-      if (horizontal)
+      अगर (horizontal)
       {
-	if (scale)
+	अगर (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	अगर (crossStream)
 	{
 	  pos[j].y_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  बफर->scratch_flags |= HB_बफर_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	अन्यथा
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      अन्यथा
       {
-	if (scale)
+	अगर (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	अगर (crossStream)
 	{
 	  pos[j].x_offset = kern;
-	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+	  बफर->scratch_flags |= HB_बफर_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	अन्यथा
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -124,16 +124,16 @@ struct hb_kern_machine_t
 	}
       }
 
-      buffer->unsafe_to_break (i, j + 1);
+      बफर->unsafe_to_break (i, j + 1);
 
     skip:
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (व्योम) बफर->message (font, "end kern");
   }
 
-  const Driver &driver;
+  स्थिर Driver &driver;
   bool crossStream;
 };
 
@@ -141,4 +141,4 @@ struct hb_kern_machine_t
 } /* namespace OT */
 
 
-#endif /* HB_KERN_HH */
+#पूर्ण_अगर /* HB_KERN_HH */

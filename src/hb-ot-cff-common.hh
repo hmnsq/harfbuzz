@@ -23,79 +23,79 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_OT_CFF_COMMON_HH
-#define HB_OT_CFF_COMMON_HH
+#अगर_अघोषित HB_OT_CFF_COMMON_HH
+#घोषणा HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-bimap.hh"
+#समावेश "hb-ot-layout-common.hh"
+#समावेश "hb-cff-interp-dict-common.hh"
+#समावेश "hb-subset-plan.hh"
 
 namespace CFF {
 
 using namespace OT;
 
-#define CFF_UNDEF_CODE  0xFFFFFFFF
+#घोषणा CFF_UNDEF_CODE  0xFFFFFFFF
 
 using objidx_t = hb_serialize_context_t::objidx_t;
 using whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
-template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+ढाँचा<typename Type, typename ...Ts>
+अटल अंतरभूत स्थिर Type& StructAtOffsetOrNull (स्थिर व्योम *P, पूर्णांक offset, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  अगर (!offset) वापस Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  स्थिर अक्षर *p = (स्थिर अक्षर *) P + offset;
+  अगर (!sc.check_point (p)) वापस Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  स्थिर Type &obj = *reinterpret_cast<स्थिर Type *> (p);
+  अगर (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) वापस Null (Type);
 
-  return obj;
+  वापस obj;
 }
 
 
-struct code_pair_t
+काष्ठा code_pair_t
 {
-  unsigned code;
+  अचिन्हित code;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
+using str_buff_t = hb_vector_t<अचिन्हित अक्षर>;
 using str_buff_vec_t = hb_vector_t<str_buff_t>;
 using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+काष्ठा Dict : UnsizedByteStr
 {
-  template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
+  ढाँचा <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
   bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+		  स्थिर DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+    TRACE_SERIALIZE (यह);
+    क्रम (अचिन्हित पूर्णांक i = 0; i < dictval.get_गिनती (); i++)
+      अगर (unlikely (!opszr.serialize (c, dictval[i], ds...)))
 	return_trace (false);
 
     return_trace (true);
   }
 
-  template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  ढाँचा <typename T, typename V>
+  अटल bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    अगर (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      वापस false;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (यह);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_आकार<HBUINT8> (Op_Code_आकार (op), false);
+    अगर (unlikely (!p)) return_trace (false);
+    अगर (Is_OpCode_ESC (op))
     {
       *p = OpCode_escape;
       op = Unmake_OpCode_ESC (op);
@@ -105,276 +105,276 @@ struct Dict : UnsizedByteStr
     return_trace (true);
   }
 
-  template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  ढाँचा <typename V>
+  अटल bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { वापस serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
 
-  template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  ढाँचा <typename V>
+  अटल bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
+  { वापस serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  ढाँचा <typename T, पूर्णांक int_op>
+  अटल bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
   {
-    T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
+    T &ofs = *(T *) (c->शीर्ष_2 + Op_Code_आकार (int_op));
+    अगर (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) वापस false;
     c->add_link (ofs, link, whence);
-    return true;
+    वापस true;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  अटल bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::शीर्ष)
+  { वापस serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  अटल bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::शीर्ष)
+  { वापस serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+काष्ठा शीर्ष_Dict : Dict {};
+काष्ठा FontDict : Dict {};
+काष्ठा PrivateDict : Dict {};
 
-struct table_info_t
+काष्ठा table_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  व्योम init () { offset = आकार = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  अचिन्हित पूर्णांक    offset;
+  अचिन्हित पूर्णांक    आकार;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+ढाँचा <typename गिनती_3>
+काष्ठा FDArray : CFFIndex<गिनती_3>
 {
-  template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
+  ढाँचा <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (यह);
 
     /* serialize INDEX data */
-    hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    hb_vector_t<अचिन्हित> sizes;
+    अगर (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    अक्षर *तथ्य_base = c->शीर्ष_2;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (स्थिर hb_pair_t<स्थिर DICTVAL&, स्थिर INFO&> &_)
     {
       FontDict *dict = c->start_embed<FontDict> ();
 		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+		वापस c->शीर्ष_2 - (स्थिर अक्षर*)dict;
 	      })
     | hb_sink (sizes)
     ;
-    unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    अचिन्हित तथ्य_आकार = c->शीर्ष_2 - तथ्य_base;
+    c->निकालो_pack (false);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    अगर (unlikely (sizes.in_error ())) return_trace (false);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<गिनती_3>::serialize_header (c, hb_iter (sizes), तथ्य_आकार));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+काष्ठा FDSelect0 {
+  bool sanitize (hb_sanitize_context_t *c, अचिन्हित पूर्णांक fdcount,
+                 अचिन्हित पूर्णांक glyph_गिनती = HB_CODEPOINT_INVALID) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!(c->check_struct (यह))))
       return_trace (false);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
+    अगर (unlikely (!c->check_array (fds, glyph_गिनती == HB_CODEPOINT_INVALID ?
+                                     c->get_अंक_glyphs () : glyph_गिनती)))
       return_trace (false);
 
     return_trace (true);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  अचिन्हित get_fd (hb_codepoint_t glyph) स्थिर
+  { वापस fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<अचिन्हित, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) स्थिर
+  { वापस {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  माप_प्रकार get_आकार (अचिन्हित पूर्णांक अंक_glyphs) स्थिर
+  { वापस hb_unsigned_mul_saturate (HBUINT8::static_आकार, अंक_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
-  DEFINE_SIZE_MIN (0);
+  DEFINE_आकार_MIN (0);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+ढाँचा <typename GID_TYPE, typename FD_TYPE>
+काष्ठा FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  bool sanitize (hb_sanitize_context_t *c, स्थिर व्योम * /*nullptr*/, अचिन्हित पूर्णांक fdcount) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  first < c->get_अंक_glyphs () && (fd < fdcount));
   }
 
   GID_TYPE    first;
   FD_TYPE     fd;
-  public:
-  DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
+  खुला:
+  DEFINE_आकार_STATIC (GID_TYPE::static_आकार + FD_TYPE::static_आकार);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+ढाँचा <typename GID_TYPE, typename FD_TYPE>
+काष्ठा FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  माप_प्रकार get_आकार () स्थिर
+  { वापस hb_unsigned_add_saturate ((माप_प्रकार) GID_TYPE::static_आकार * 2, ranges.get_आकार ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  bool sanitize (hb_sanitize_context_t *c, अचिन्हित पूर्णांक fdcount,
+                 अचिन्हित पूर्णांक min_glyphs = HB_CODEPOINT_INVALID) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!(c->check_struct (यह) &&
 		    ranges.sanitize (c, nullptr, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
 		    ranges[0].first == 0)))
       return_trace (false);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
+    क्रम (अचिन्हित पूर्णांक i = 1; i < nRanges (); i++)
+      अगर (unlikely (ranges[i - 1].first >= ranges[i].first))
 	return_trace (false);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    अगर (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() <= c->get_अंक_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
+                                  c->get_अंक_glyphs () : min_glyphs))))
       return_trace (false);
 
     return_trace (true);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  अटल पूर्णांक _cmp_range (स्थिर व्योम *कुंजी_3, स्थिर व्योम *_item)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) कुंजी_3;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    अगर (glyph < range[0].first) वापस -1;
+    अगर (glyph < range[1].first) वापस 0;
+    वापस +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  अचिन्हित get_fd (hb_codepoint_t glyph) स्थिर
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    स्वतः *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, माप (ranges[0]), _cmp_range);
+    वापस range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<अचिन्हित, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) स्थिर
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
+    स्वतः *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, माप (ranges[0]), _cmp_range);
+    अचिन्हित fd = range ? range->fd : ranges[nRanges () - 1].fd;
     hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    वापस {fd, end};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { वापस ranges.len; }
+  GID_TYPE         nRanges () स्थिर { वापस ranges.len; }
+  GID_TYPE       &sentinel ()       { वापस StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  स्थिर GID_TYPE &sentinel () स्थिर { वापस StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
   ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
 
-  DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
+  DEFINE_आकार_ARRAY (GID_TYPE::static_आकार, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+प्रकार FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+प्रकार FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+काष्ठा FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, स्थिर FDSelect &src, अचिन्हित पूर्णांक अंक_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
-    hb_memcpy (dest, &src, size);
+    TRACE_SERIALIZE (यह);
+    अचिन्हित पूर्णांक आकार = src.get_आकार (अंक_glyphs);
+    FDSelect *dest = c->allocate_आकार<FDSelect> (आकार, false);
+    अगर (unlikely (!dest)) return_trace (false);
+    hb_memcpy (dest, &src, आकार);
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  माप_प्रकार get_आकार (अचिन्हित पूर्णांक अंक_glyphs) स्थिर
   {
-    switch (format)
+    चयन (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    हाल 0: hb_barrier (); वापस hb_unsigned_add_saturate (format.static_आकार, u.format0.get_आकार (अंक_glyphs));
+    हाल 3: hb_barrier (); वापस hb_unsigned_add_saturate (format.static_आकार, u.format3.get_आकार ());
+    शेष:वापस 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  अचिन्हित get_fd (hb_codepoint_t glyph) स्थिर
   {
-    if (this == &Null (FDSelect)) return 0;
+    अगर (यह == &Null (FDSelect)) वापस 0;
 
-    switch (format)
+    चयन (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    हाल 0: hb_barrier (); वापस u.format0.get_fd (glyph);
+    हाल 3: hb_barrier (); वापस u.format3.get_fd (glyph);
+    शेष:वापस 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<अचिन्हित, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) स्थिर
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    अगर (यह == &Null (FDSelect)) वापस {0, 1};
 
-    switch (format)
+    चयन (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    हाल 0: hb_barrier (); वापस u.format0.get_fd_range (glyph);
+    हाल 3: hb_barrier (); वापस u.format3.get_fd_range (glyph);
+    शेष:वापस {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  bool sanitize (hb_sanitize_context_t *c, अचिन्हित पूर्णांक fdcount) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!c->check_struct (यह)))
       return_trace (false);
     hb_barrier ();
 
-    switch (format)
+    चयन (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    हाल 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    हाल 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    शेष:return_trace (false);
     }
   }
 
   HBUINT8	format;
-  union {
+  जोड़ {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
-  DEFINE_SIZE_MIN (1);
+  खुला:
+  DEFINE_आकार_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+ढाँचा <typename गिनती_3>
+काष्ठा Subrs : CFFIndex<गिनती_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  प्रकार गिनती_3 गिनती_type;
+  प्रकार CFFIndex<गिनती_3> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_OT_CFF_COMMON_HH */
+#पूर्ण_अगर /* HB_OT_CFF_COMMON_HH */

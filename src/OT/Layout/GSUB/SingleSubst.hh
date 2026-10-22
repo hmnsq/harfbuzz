@@ -1,97 +1,97 @@
-#ifndef OT_LAYOUT_GSUB_SINGLESUBST_HH
-#define OT_LAYOUT_GSUB_SINGLESUBST_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_SINGLESUBST_HH
+#घोषणा OT_LAYOUT_GSUB_SINGLESUBST_HH
 
-#include "Common.hh"
-#include "SingleSubstFormat1.hh"
-#include "SingleSubstFormat2.hh"
+#समावेश "Common.hh"
+#समावेश "SingleSubstFormat1.hh"
+#समावेश "SingleSubstFormat2.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-struct SingleSubst
+काष्ठा SingleSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  रक्षित:
+  जोड़ {
+  काष्ठा { HBUINT16 v; }		format;         /* Format identifier */
   SingleSubstFormat1_3<SmallTypes>	format1;
   SingleSubstFormat2_4<SmallTypes>	format2;
-#ifndef HB_NO_BEYOND_64K
+#अगर_अघोषित HB_NO_BEYOND_64K
   SingleSubstFormat1_3<MediumTypes>	format3;
   SingleSubstFormat2_4<MediumTypes>	format4;
-#endif
+#पूर्ण_अगर
   } u;
 
-  public:
+  खुला:
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिर
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    अगर (unlikely (!c->may_dispatch (यह, &u.format.v))) वापस c->no_dispatch_return_मूल्य ();
+    TRACE_DISPATCH (यह, u.format.v);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    हाल 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    हाल 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+#पूर्ण_अगर
+    शेष:return_trace (c->default_return_मूल्य ());
     }
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_sorted_source_of (Iterator,
-                                                const hb_codepoint_pair_t))>
+                                                स्थिर hb_codepoint_pair_t))>
   bool serialize (hb_serialize_context_t *c,
                   Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned format = 2;
-    unsigned delta = 0;
-    if (glyphs)
+    TRACE_SERIALIZE (यह);
+    अगर (unlikely (!c->extend_min (u.format.v))) return_trace (false);
+    अचिन्हित format = 2;
+    अचिन्हित delta = 0;
+    अगर (glyphs)
     {
       format = 1;
       hb_codepoint_t mask = 0xFFFFu;
 
-#ifndef HB_NO_BEYOND_64K
-       if (+ glyphs
+#अगर_अघोषित HB_NO_BEYOND_64K
+       अगर (+ glyphs
 	   | hb_map_retains_sorting (hb_second)
-	   | hb_filter ([] (hb_codepoint_t gid) { return gid > 0xFFFFu; }))
+	   | hb_filter ([] (hb_codepoint_t gid) { वापस gid > 0xFFFFu; }))
        {
 	 format += 2;
 	 mask = 0xFFFFFFu;
        }
-#endif
+#पूर्ण_अगर
 
-      auto get_delta = [=] (hb_codepoint_pair_t _)
-                       { return (unsigned) (_.second - _.first) & mask; };
+      स्वतः get_delta = [=] (hb_codepoint_pair_t _)
+                       { वापस (अचिन्हित) (_.second - _.first) & mask; };
       delta = get_delta (*glyphs);
-      if (!hb_all (++(+glyphs), delta, get_delta)) format += 1;
+      अगर (!hb_all (++(+glyphs), delta, get_delta)) format += 1;
     }
 
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c,
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (u.format1.serialize (c,
                                                + glyphs
                                                | hb_map_retains_sorting (hb_first),
                                                delta));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c,
+    हाल 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 3: hb_barrier (); return_trace (u.format3.serialize (c,
                                                + glyphs
                                                | hb_map_retains_sorting (hb_first),
                                                delta));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
-#endif
-    default:return_trace (false);
+    हाल 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
+#पूर्ण_अगर
+    शेष:return_trace (false);
     }
   }
 };
 
-template<typename Iterator>
-static void
+ढाँचा<typename Iterator>
+अटल व्योम
 SingleSubst_serialize (hb_serialize_context_t *c,
                        Iterator it)
 { c->start_embed<SingleSubst> ()->serialize (c, it); }
@@ -100,4 +100,4 @@ SingleSubst_serialize (hb_serialize_context_t *c,
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_SINGLESUBST_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GSUB_SINGLESUBST_HH */

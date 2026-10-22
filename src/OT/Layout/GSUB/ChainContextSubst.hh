@@ -1,18 +1,18 @@
-#ifndef OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
-#define OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
+#घोषणा OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#समावेश "../../../hb-ot-layout-gsubgpos.hh"
+#समावेश "Common.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-struct ChainContextSubst : ChainContext {};
+काष्ठा ChainContextSubst : ChainContext {};
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH */
+#पूर्ण_अगर  /* OT_LAYOUT_GSUB_CHAINCONTEXTSUBST_HH */

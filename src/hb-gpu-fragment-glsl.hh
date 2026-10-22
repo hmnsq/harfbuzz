@@ -1,4 +1,4 @@
-static const char *hb_gpu_fragment_glsl =
+अटल स्थिर अक्षर *hb_gpu_fragment_glsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " * Copyright (C) 2017  Eric Lengyel\n"

@@ -1,17 +1,17 @@
-#ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
-#define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#घोषणा OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+काष्ठा ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  प्रकार काष्ठा PosLookupSubTable SubTable;
 };
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */

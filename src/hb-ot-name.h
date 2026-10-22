@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#अगर !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb-ot.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_OT_NAME_H
-#define HB_OT_NAME_H
+#अगर_अघोषित HB_OT_NAME_H
+#घोषणा HB_OT_NAME_H
 
-#include "hb.h"
+#समावेश "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -71,7 +71,7 @@ HB_BEGIN_DECLS
  *
  * Since: 7.0.0
  **/
-typedef enum
+प्रकार क्रमागत
 {
   HB_OT_NAME_ID_COPYRIGHT		= 0,
   HB_OT_NAME_ID_FONT_FAMILY		= 1,
@@ -112,7 +112,7 @@ typedef enum
  *
  * Since: 2.0.0
  **/
-typedef unsigned int hb_ot_name_id_t;
+प्रकार अचिन्हित पूर्णांक hb_ot_name_id_t;
 
 
 /**
@@ -124,7 +124,7 @@ typedef unsigned int hb_ot_name_id_t;
  *
  * Since: 2.1.0
  **/
-typedef struct hb_ot_name_entry_t {
+प्रकार काष्ठा hb_ot_name_entry_t {
   hb_ot_name_id_t name_id;
   /*< private >*/
   hb_var_int_t    var;
@@ -132,33 +132,33 @@ typedef struct hb_ot_name_entry_t {
   hb_language_t   language;
 } hb_ot_name_entry_t;
 
-HB_EXTERN const hb_ot_name_entry_t *
+HB_EXTERN स्थिर hb_ot_name_entry_t *
 hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */);
+		       अचिन्हित पूर्णांक *अंक_entries /* OUT */);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */);
+		     अचिन्हित पूर्णांक    *text_आकार /* IN/OUT */,
+		     अक्षर            *text      /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      अचिन्हित पूर्णांक    *text_आकार /* IN/OUT */,
 		      uint16_t        *text      /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
+		      अचिन्हित पूर्णांक    *text_आकार /* IN/OUT */,
 		      uint32_t        *text      /* OUT */);
 
 
 HB_END_DECLS
 
-#endif /* HB_OT_NAME_H */
+#पूर्ण_अगर /* HB_OT_NAME_H */

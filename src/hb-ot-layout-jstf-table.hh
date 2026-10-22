@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_JSTF_TABLE_HH
-#define HB_OT_LAYOUT_JSTF_TABLE_HH
+#अगर_अघोषित HB_OT_LAYOUT_JSTF_TABLE_HH
+#घोषणा HB_OT_LAYOUT_JSTF_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-layout-gpos-table.hh"
 
 
 namespace OT {
@@ -38,39 +38,39 @@ namespace OT {
  * JstfModList -- Justification Modification List Tables
  */
 
-typedef IndexArray JstfModList;
+प्रकार सूचकांक_Array JstfModList;
 
 
 /*
  * JstfMax -- Justification Maximum Table
  */
 
-typedef List16OfOffset16To<PosLookup> JstfMax;
+प्रकार List16OfOffset16To<PosLookup> JstfMax;
 
 
 /*
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+काष्ठा JstfPriority
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  shrinkageEnableGSUB.sanitize (c, this) &&
-		  shrinkageDisableGSUB.sanitize (c, this) &&
-		  shrinkageEnableGPOS.sanitize (c, this) &&
-		  shrinkageDisableGPOS.sanitize (c, this) &&
-		  shrinkageJstfMax.sanitize (c, this) &&
-		  extensionEnableGSUB.sanitize (c, this) &&
-		  extensionDisableGSUB.sanitize (c, this) &&
-		  extensionEnableGPOS.sanitize (c, this) &&
-		  extensionDisableGPOS.sanitize (c, this) &&
-		  extensionJstfMax.sanitize (c, this));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
+		  shrinkageEnableGSUB.sanitize (c, यह) &&
+		  shrinkageDisableGSUB.sanitize (c, यह) &&
+		  shrinkageEnableGPOS.sanitize (c, यह) &&
+		  shrinkageDisableGPOS.sanitize (c, यह) &&
+		  shrinkageJstfMax.sanitize (c, यह) &&
+		  extensionEnableGSUB.sanitize (c, यह) &&
+		  extensionDisableGSUB.sanitize (c, यह) &&
+		  extensionEnableGPOS.sanitize (c, यह) &&
+		  extensionDisableGPOS.sanitize (c, यह) &&
+		  extensionJstfMax.sanitize (c, यह));
   }
 
-  protected:
+  रक्षित:
   Offset16To<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
@@ -112,8 +112,8 @@ struct JstfPriority
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  खुला:
+  DEFINE_आकार_STATIC (20);
 };
 
 
@@ -121,12 +121,12 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+काष्ठा JstfLangSys : List16OfOffset16To<JstfPriority>
 {
   bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+		 स्थिर Record_sanitize_closure_t * = nullptr) स्थिर
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (यह);
     return_trace (List16OfOffset16To<JstfPriority>::sanitize (c));
   }
 };
@@ -136,7 +136,7 @@ struct JstfLangSys : List16OfOffset16To<JstfPriority>
  * ExtenderGlyphs -- Extender Glyph Table
  */
 
-template <typename Types>
+ढाँचा <typename Types>
 using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
 
 
@@ -144,94 +144,94 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
  * JstfScript -- The Justification Table
  */
 
-template <typename Types>
-struct JstfScript
+ढाँचा <typename Types>
+काष्ठा JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  अचिन्हित पूर्णांक get_lang_sys_गिनती () स्थिर
+  { वापस langSys.len; }
+  स्थिर Tag& get_lang_sys_tag (अचिन्हित पूर्णांक i) स्थिर
+  { वापस langSys.get_tag (i); }
+  अचिन्हित पूर्णांक get_lang_sys_tags (अचिन्हित पूर्णांक start_offset,
+				  अचिन्हित पूर्णांक *lang_sys_गिनती /* IN/OUT */,
+				  hb_tag_t     *lang_sys_tags /* OUT */) स्थिर
+  { वापस langSys.get_tags (start_offset, lang_sys_गिनती, lang_sys_tags); }
+  स्थिर JstfLangSys& get_lang_sys (अचिन्हित पूर्णांक i) स्थिर
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    अगर (i == सूचकांक::NOT_FOUND_सूचकांक) वापस get_default_lang_sys ();
+    वापस यह+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  bool find_lang_sys_सूचकांक (hb_tag_t tag, अचिन्हित पूर्णांक *सूचकांक_2) स्थिर
+  { वापस langSys.find_सूचकांक (tag, सूचकांक_2); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  bool has_default_lang_sys () स्थिर               { वापस defaultLangSys != 0; }
+  स्थिर JstfLangSys& get_default_lang_sys () स्थिर { वापस यह+defaultLangSys; }
 
   bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+		 स्थिर Record_sanitize_closure_t * = nullptr) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (extenderGlyphs.sanitize (c, this) &&
-		  defaultLangSys.sanitize (c, this) &&
-		  langSys.sanitize (c, this));
+    TRACE_SANITIZE (यह);
+    return_trace (extenderGlyphs.sanitize (c, यह) &&
+		  defaultLangSys.sanitize (c, यह) &&
+		  langSys.sanitize (c, यह));
   }
 
-  protected:
-  typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
+  रक्षित:
+  typename Types::ढाँचा LOffsetTo<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
-  typename Types::template LOffsetTo<JstfLangSys>
+  typename Types::ढाँचा LOffsetTo<JstfLangSys>
 		defaultLangSys;	/* Offset to DefaultJstfLangSys table--from
 				 * beginning of JstfScript table--may be Null */
   RecordArrayOf<JstfLangSys>
 		langSys;	/* Array of JstfLangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
-  DEFINE_SIZE_ARRAY (2 * Types::LOffset::static_size + 2, langSys);
+  खुला:
+  DEFINE_आकार_ARRAY (2 * Types::LOffset::static_आकार + 2, langSys);
 };
 
-template <typename Types>
-struct JstfScriptRecord
+ढाँचा <typename Types>
+काष्ठा JstfScriptRecord
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  पूर्णांक cmp (hb_tag_t a) स्थिर { वापस tag.cmp (a); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  bool sanitize (hb_sanitize_context_t *c, स्थिर व्योम *base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    स्थिर Record_sanitize_closure_t closure = {tag, base};
+    return_trace (c->check_struct (यह) &&
 		  offset.sanitize (c, base, &closure));
   }
 
   Tag		tag;		/* 4-byte JstfScript identification tag */
-  typename Types::template LOffsetTo<JstfScript<Types>>
+  typename Types::ढाँचा LOffsetTo<JstfScript<Types>>
 		offset;		/* Offset from beginning of JSTF header */
-  public:
-  DEFINE_SIZE_STATIC (4 + Types::LOffset::static_size);
+  खुला:
+  DEFINE_आकार_STATIC (4 + Types::LOffset::static_आकार);
 };
 
-template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+ढाँचा <typename Types>
+काष्ठा JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
-			 hb_tag_t     *script_tags /* OUT */) const
+  स्थिर Tag& get_tag (अचिन्हित पूर्णांक i) स्थिर
+  { वापस (*यह)[i].tag; }
+  अचिन्हित पूर्णांक get_tags (अचिन्हित पूर्णांक start_offset,
+			 अचिन्हित पूर्णांक *script_गिनती /* IN/OUT */,
+			 hb_tag_t     *script_tags /* OUT */) स्थिर
   {
-    if (script_count)
+    अगर (script_गिनती)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
+      + यह->as_array ().sub_array (start_offset, script_गिनती)
       | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      | hb_sink (hb_array (script_tags, *script_गिनती))
       ;
     }
-    return this->len;
+    वापस यह->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  स्थिर JstfScript<Types>& get_script (स्थिर व्योम *base, अचिन्हित पूर्णांक i) स्थिर
+  { वापस base+(*यह)[i].offset; }
+  bool find_सूचकांक (hb_tag_t tag, अचिन्हित पूर्णांक *सूचकांक_2) स्थिर
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    वापस यह->bfind (tag, सूचकांक_2, HB_NOT_FOUND_STORE, सूचकांक::NOT_FOUND_सूचकांक);
   }
 };
 
@@ -241,97 +241,97 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+काष्ठा JSTF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  अचिन्हित पूर्णांक get_script_गिनती () स्थिर
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
-#endif
-    return scriptList.len;
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (has_script_list2 ()) वापस get_script_list2 ().len;
+#पूर्ण_अगर
+    वापस scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  स्थिर Tag& get_script_tag (अचिन्हित पूर्णांक i) स्थिर
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
-#endif
-    return scriptList.get_tag (i);
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (has_script_list2 ()) वापस get_script_list2 ().get_tag (i);
+#पूर्ण_अगर
+    वापस scriptList.get_tag (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
+  अचिन्हित पूर्णांक get_script_tags (अचिन्हित पूर्णांक start_offset,
+				अचिन्हित पूर्णांक *script_गिनती /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) स्थिर
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
-#endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (has_script_list2 ())
+      वापस get_script_list2 ().get_tags (start_offset, script_गिनती, script_tags);
+#पूर्ण_अगर
+    वापस scriptList.get_tags (start_offset, script_गिनती, script_tags);
   }
-  template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  ढाँचा <typename Types>
+  स्थिर JstfScript<Types>& get_script (अचिन्हित पूर्णांक i) स्थिर;
+  bool find_script_सूचकांक (hb_tag_t tag, अचिन्हित पूर्णांक *सूचकांक_2) स्थिर
   {
-#ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
-#endif
-    return scriptList.find_index (tag, index);
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (has_script_list2 ()) वापस get_script_list2 ().find_सूचकांक (tag, सूचकांक_2);
+#पूर्ण_अगर
+    वापस scriptList.find_सूचकांक (tag, सूचकांक_2);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (यह);
+    अगर (unlikely (!version.sanitize (c) ||
 		  !hb_barrier () ||
 		  version.major != 1 ||
-		  !scriptList.sanitize (c, this)))
+		  !scriptList.sanitize (c, यह)))
       return_trace (false);
-#ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, यह)))
       return_trace (false);
-#endif
+#पूर्ण_अगर
     return_trace (true);
   }
 
-  private:
-#ifndef HB_NO_BEYOND_64K
-  bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
-  const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
-#endif
+  निजी:
+#अगर_अघोषित HB_NO_BEYOND_64K
+  bool has_script_list2 () स्थिर
+  { वापस version.minor >= 1 && get_script_list2 ().len; }
+  स्थिर JstfScriptList<Layout::MediumTypes>& get_script_list2 () स्थिर
+  { वापस StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+#पूर्ण_अगर
 
-  protected:
+  रक्षित:
   FixedVersion<>version;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
 		scriptList;	/* Array of JstfScripts--listed
 				 * alphabetically by ScriptTag */
-#ifndef HB_NO_BEYOND_64K
+#अगर_अघोषित HB_NO_BEYOND_64K
 /*JstfScriptList<Layout::MediumTypes>
 		scriptList2;*//* Array of JstfScript2s--listed
 				 * alphabetically by ScriptTag.
 				 * Present only if minorVersion is 1 or greater. */
-#endif
-  public:
-  DEFINE_SIZE_ARRAY (6, scriptList);
+#पूर्ण_अगर
+  खुला:
+  DEFINE_आकार_ARRAY (6, scriptList);
 };
 
-template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+ढाँचा <>
+अंतरभूत स्थिर JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (अचिन्हित पूर्णांक i) स्थिर
+{ वापस scriptList.get_script (यह, i); }
 
-#ifndef HB_NO_BEYOND_64K
-template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
-#endif
+#अगर_अघोषित HB_NO_BEYOND_64K
+ढाँचा <>
+अंतरभूत स्थिर JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (अचिन्हित पूर्णांक i) स्थिर
+{ वापस get_script_list2 ().get_script (यह, i); }
+#पूर्ण_अगर
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_JSTF_TABLE_HH */
+#पूर्ण_अगर /* HB_OT_LAYOUT_JSTF_TABLE_HH */

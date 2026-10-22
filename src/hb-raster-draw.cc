@@ -24,34 +24,34 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
+#समावेश "hb-raster-image.hh"
+#समावेश "hb-geometry.hh"
+#समावेश "hb-machinery.hh"
 
-#if defined(__aarch64__) || defined(_M_ARM64)
-#include <arm_neon.h>
-#define HB_RASTER_NEON 1
-#elif defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64)
-#include <emmintrin.h>
-#define HB_RASTER_SSE2 1
-#endif
+#अगर defined(__aarch64__) || defined(_M_ARM64)
+#समावेश <arm_neon.h>
+#घोषणा HB_RASTER_NEON 1
+#या_अगर defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64)
+#समावेश <emmintrin.h>
+#घोषणा HB_RASTER_SSE2 1
+#पूर्ण_अगर
 
 
 /* Fixed-point precision for sub-pixel coordinates.
    8 bits = 24.8: 256 sub-pixel units per pixel. */
-#define HB_RASTER_PIXEL_BITS 8
-#define HB_RASTER_ONE_PIXEL  (1 << HB_RASTER_PIXEL_BITS)
-#define HB_RASTER_PIXEL_MASK (HB_RASTER_ONE_PIXEL - 1)
+#घोषणा HB_RASTER_PIXEL_BITS 8
+#घोषणा HB_RASTER_ONE_PIXEL  (1 << HB_RASTER_PIXEL_BITS)
+#घोषणा HB_RASTER_PIXEL_MASK (HB_RASTER_ONE_PIXEL - 1)
 /* Full-coverage alpha = 2 * ONE_PIXEL^2 */
-#define HB_RASTER_FULL_COVERAGE (2 * HB_RASTER_ONE_PIXEL * HB_RASTER_ONE_PIXEL)
+#घोषणा HB_RASTER_FULL_COVERAGE (2 * HB_RASTER_ONE_PIXEL * HB_RASTER_ONE_PIXEL)
 /* Flatness threshold for Bézier flattening: max deviation in pixels */
-#define HB_RASTER_FLAT_THRESH 0.25f
+#घोषणा HB_RASTER_FLAT_THRESH 0.25f
 
 
 /* Normalized edge: yH > yL always */
-struct hb_raster_edge_t
+काष्ठा hb_raster_edge_t
 {
   int32_t xL, yL;   /* lower endpoint (fixed-point) */
   int32_t xH, yH;   /* upper endpoint (fixed-point) */
@@ -60,14 +60,14 @@ struct hb_raster_edge_t
 };
 
 /* hb_raster_draw_t — outline rasterizer */
-struct hb_raster_draw_t
+काष्ठा hb_raster_draw_t
 {
   hb_object_header_t header;
 
   /* Configuration */
   hb_transform_t<>    transform         = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor    = 1.f;
-  float               y_scale_factor    = 1.f;
+  भग्न               x_scale_factor    = 1.f;
+  भग्न               y_scale_factor    = 1.f;
   hb_raster_extents_t fixed_extents     = {};
   bool                has_extents = false;
 
@@ -75,13 +75,13 @@ struct hb_raster_draw_t
      internally by raster-paint so invisible curves collapse to their
      chord.  See hb_raster_draw_set_clip_box(). */
   bool  has_clip_box = false;
-  float clip_x0 = 0.f, clip_y0 = 0.f, clip_x1 = 0.f, clip_y1 = 0.f;
+  भग्न clip_x0 = 0.f, clip_y0 = 0.f, clip_x1 = 0.f, clip_y1 = 0.f;
 
   /* Flattening clip resolved from the above (or from fixed extents),
      expanded by one pixel; kept in sync by hb_raster_draw_update_flatten_clip(). */
   bool  flatten_clip_active = false;
-  float flatten_clip_x0 = 0.f, flatten_clip_y0 = 0.f;
-  float flatten_clip_x1 = 0.f, flatten_clip_y1 = 0.f;
+  भग्न flatten_clip_x0 = 0.f, flatten_clip_y0 = 0.f;
+  भग्न flatten_clip_x1 = 0.f, flatten_clip_y1 = 0.f;
 
   /* Work budget for outline traversal and curve flattening.  A paint
      backend seeds this through the public draw-budget API before drawing
@@ -90,17 +90,17 @@ struct hb_raster_draw_t
   int64_t  budget = HB_BUDGET_DEFAULT;
   int64_t  budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  व्योम recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { वापस &budget_remaining; }
 
   /* Accumulated geometry */
-  int64_t edges_left = HB_RASTER_MAX_DRAW_EDGES;
+  int64_t edges_बायाँ = HB_RASTER_MAX_DRAW_EDGES;
   hb_vector_t<hb_raster_edge_t> edges;
 
   /* Scratch — reused across render() calls */
@@ -108,17 +108,17 @@ struct hb_raster_draw_t
   hb_vector_t<int16_t> row_cover;
   hb_vector_t<int64_t> row_area_wide;
   hb_vector_t<int64_t> row_cover_wide;
-  hb_vector_t<hb_vector_t<unsigned>> edge_buckets;
-  hb_vector_t<unsigned> active_edges;
+  hb_vector_t<hb_vector_t<अचिन्हित>> edge_buckets;
+  hb_vector_t<अचिन्हित> active_edges;
 
   /* Recycled image for zero-malloc render */
   hb_raster_image_t *recycled_image = nullptr;
 };
 
-static HB_ALWAYS_INLINE void
-hb_raster_draw_transform_point (const hb_raster_draw_t *draw,
-				float x, float y,
-				float &tx, float &ty)
+अटल HB_ALWAYS_INLINE व्योम
+hb_raster_draw_transform_point (स्थिर hb_raster_draw_t *draw,
+				भग्न x, भग्न y,
+				भग्न &tx, भग्न &ty)
 {
   tx = x; ty = y;
   draw->transform.transform_point (tx, ty);
@@ -143,10 +143,10 @@ hb_raster_draw_transform_point (const hb_raster_draw_t *draw,
  * Since: 13.0.0
  **/
 hb_raster_draw_t *
-hb_raster_draw_create_or_fail (void)
+hb_raster_draw_create_or_fail (व्योम)
 {
   hb_raster_draw_t *draw = hb_object_create<hb_raster_draw_t> ();
-  return draw;
+  वापस draw;
 }
 
 /**
@@ -166,7 +166,7 @@ hb_raster_draw_create_or_fail (void)
 hb_raster_draw_t *
 hb_raster_draw_reference (hb_raster_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  वापस hb_object_reference (draw);
 }
 
 /**
@@ -178,11 +178,11 @@ hb_raster_draw_reference (hb_raster_draw_t *draw)
  *
  * Since: 13.0.0
  **/
-void
+व्योम
 hb_raster_draw_destroy (hb_raster_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  अगर (!hb_object_should_destroy (draw))
+    वापस;
 
   hb_raster_image_destroy (draw->recycled_image);
   hb_object_actually_destroy (draw);
@@ -204,13 +204,13 @@ hb_raster_draw_destroy (hb_raster_draw_t *draw)
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key,
-			      void               *data,
+hb_raster_draw_set_user_तथ्य (hb_raster_draw_t   *draw,
+			      hb_user_तथ्य_कुंजी_t *key,
+			      व्योम               *तथ्य,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  वापस hb_object_set_user_तथ्य (draw, key, तथ्य, destroy, replace);
 }
 
 /**
@@ -226,11 +226,11 @@ hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
  *
  * Since: 13.0.0
  **/
-void *
-hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key)
+व्योम *
+hb_raster_draw_get_user_तथ्य (स्थिर hb_raster_draw_t   *draw,
+			      hb_user_तथ्य_कुंजी_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  वापस hb_object_get_user_तथ्य (draw, key);
 }
 
 /**
@@ -248,11 +248,11 @@ hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
  *
  * Since: 13.0.0
  **/
-void
+व्योम
 hb_raster_draw_set_transform (hb_raster_draw_t *draw,
-			      float xx, float yx,
-			      float xy, float yy,
-			      float dx, float dy)
+			      भग्न xx, भग्न yx,
+			      भग्न xy, भग्न yy,
+			      भग्न dx, भग्न dy)
 {
   draw->transform = {xx, yx, xy, yy, dx, dy};
 }
@@ -268,10 +268,10 @@ hb_raster_draw_set_transform (hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
+व्योम
 hb_raster_draw_set_scale_factor (hb_raster_draw_t *draw,
-				 float x_scale_factor,
-				 float y_scale_factor)
+				 भग्न x_scale_factor,
+				 भग्न y_scale_factor)
 {
   draw->x_scale_factor = x_scale_factor > 0.f ? x_scale_factor : 1.f;
   draw->y_scale_factor = y_scale_factor > 0.f ? y_scale_factor : 1.f;
@@ -287,13 +287,13 @@ hb_raster_draw_set_scale_factor (hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_draw_get_scale_factor (const hb_raster_draw_t *draw,
-				 float *x_scale_factor,
-				 float *y_scale_factor)
+व्योम
+hb_raster_draw_get_scale_factor (स्थिर hb_raster_draw_t *draw,
+				 भग्न *x_scale_factor,
+				 भग्न *y_scale_factor)
 {
-  if (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
+  अगर (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
+  अगर (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
 }
 
 /**
@@ -310,18 +310,18 @@ hb_raster_draw_get_scale_factor (const hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
-			      float *xx, float *yx,
-			      float *xy, float *yy,
-			      float *dx, float *dy)
+व्योम
+hb_raster_draw_get_transform (स्थिर hb_raster_draw_t *draw,
+			      भग्न *xx, भग्न *yx,
+			      भग्न *xy, भग्न *yy,
+			      भग्न *dx, भग्न *dy)
 {
-  if (xx) *xx = draw->transform.xx;
-  if (yx) *yx = draw->transform.yx;
-  if (xy) *xy = draw->transform.xy;
-  if (yy) *yy = draw->transform.yy;
-  if (dx) *dx = draw->transform.x0;
-  if (dy) *dy = draw->transform.y0;
+  अगर (xx) *xx = draw->transform.xx;
+  अगर (yx) *yx = draw->transform.yx;
+  अगर (xy) *xy = draw->transform.xy;
+  अगर (yy) *yy = draw->transform.yy;
+  अगर (dx) *dx = draw->transform.x0;
+  अगर (dy) *dy = draw->transform.y0;
 }
 
 /* Recompute the resolved flattening clip box: the internal clip box
@@ -333,10 +333,10 @@ hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
    curve's endpoints (intermediate scanline crossings cancel in pairs,
    and crossings right of the box never reach visible pixels), so the
    replacement is exact for rendering. */
-static void
+अटल व्योम
 hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
 {
-  if (draw->has_clip_box)
+  अगर (draw->has_clip_box)
   {
     draw->flatten_clip_active = true;
     draw->flatten_clip_x0 = draw->clip_x0 - 1.f;
@@ -344,15 +344,15 @@ hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
     draw->flatten_clip_x1 = draw->clip_x1 + 1.f;
     draw->flatten_clip_y1 = draw->clip_y1 + 1.f;
   }
-  else if (draw->has_extents)
+  अन्यथा अगर (draw->has_extents)
   {
     draw->flatten_clip_active = true;
-    draw->flatten_clip_x0 = (float) draw->fixed_extents.x_origin - 1.f;
-    draw->flatten_clip_y0 = (float) draw->fixed_extents.y_origin - 1.f;
-    draw->flatten_clip_x1 = (float) draw->fixed_extents.x_origin + (float) draw->fixed_extents.width + 1.f;
-    draw->flatten_clip_y1 = (float) draw->fixed_extents.y_origin + (float) draw->fixed_extents.height + 1.f;
+    draw->flatten_clip_x0 = (भग्न) draw->fixed_extents.x_origin - 1.f;
+    draw->flatten_clip_y0 = (भग्न) draw->fixed_extents.y_origin - 1.f;
+    draw->flatten_clip_x1 = (भग्न) draw->fixed_extents.x_origin + (भग्न) draw->fixed_extents.width + 1.f;
+    draw->flatten_clip_y1 = (भग्न) draw->fixed_extents.y_origin + (भग्न) draw->fixed_extents.height + 1.f;
   }
-  else
+  अन्यथा
     draw->flatten_clip_active = false;
 }
 
@@ -367,9 +367,9 @@ hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
  *
  * Since: 13.0.0
  **/
-void
+व्योम
 hb_raster_draw_set_extents (hb_raster_draw_t          *draw,
-			    const hb_raster_extents_t *extents)
+			    स्थिर hb_raster_extents_t *extents)
 {
   draw->fixed_extents     = *extents;
   draw->has_extents = true;
@@ -388,15 +388,15 @@ hb_raster_draw_set_extents (hb_raster_draw_t          *draw,
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_draw_get_extents (const hb_raster_draw_t    *draw,
+hb_raster_draw_get_extents (स्थिर hb_raster_draw_t    *draw,
 			    hb_raster_extents_t *extents)
 {
-  if (!draw->has_extents)
-    return false;
+  अगर (!draw->has_extents)
+    वापस false;
 
-  if (extents)
+  अगर (extents)
     *extents = draw->fixed_extents;
-  return true;
+  वापस true;
 }
 
 /**
@@ -419,27 +419,27 @@ hb_raster_draw_get_extents (const hb_raster_draw_t    *draw,
  **/
 hb_bool_t
 hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
-				  const hb_glyph_extents_t *glyph_extents)
+				  स्थिर hb_glyph_extents_t *glyph_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = (float) glyph_extents->x_bearing + glyph_extents->width;
-  float y1 = (float) glyph_extents->y_bearing + glyph_extents->height;
+  भग्न x0 = (भग्न) glyph_extents->x_bearing;
+  भग्न y0 = (भग्न) glyph_extents->y_bearing;
+  भग्न x1 = (भग्न) glyph_extents->x_bearing + glyph_extents->width;
+  भग्न y1 = (भग्न) glyph_extents->y_bearing + glyph_extents->height;
 
-  float xmin = hb_min (x0, x1);
-  float xmax = hb_max (x0, x1);
-  float ymin = hb_min (y0, y1);
-  float ymax = hb_max (y0, y1);
+  भग्न xmin = hb_min (x0, x1);
+  भग्न xmax = hb_max (x0, x1);
+  भग्न ymin = hb_min (y0, y1);
+  भग्न ymax = hb_max (y0, y1);
 
-  float px[4] = {xmin, xmin, xmax, xmax};
-  float py[4] = {ymin, ymax, ymin, ymax};
+  भग्न px[4] = {xmin, xmin, xmax, xmax};
+  भग्न py[4] = {ymin, ymax, ymin, ymax};
 
-  float tx, ty;
+  भग्न tx, ty;
   hb_raster_draw_transform_point (draw, px[0], py[0], tx, ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  भग्न tx_min = tx, tx_max = tx;
+  भग्न ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  क्रम (अचिन्हित i = 1; i < 4; i++)
   {
     hb_raster_draw_transform_point (draw, px[i], py[i], tx, ty);
     tx_min = hb_min (tx_min, tx);
@@ -453,23 +453,23 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
   int32_t ex1 = hb_clamp_to<int32_t> (ceilf  (tx_max));
   int32_t ey1 = hb_clamp_to<int32_t> (ceilf  (ty_max));
 
-  if (ex1 <= ex0 || ey1 <= ey0)
+  अगर (ex1 <= ex0 || ey1 <= ey0)
   {
     draw->fixed_extents = {};
     draw->has_extents = false;
     hb_raster_draw_update_flatten_clip (draw);
-    return false;
+    वापस false;
   }
 
   draw->fixed_extents = {
     ex0, ey0,
-    (unsigned) hb_min ((int64_t) ex1 - ex0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
-    (unsigned) hb_min ((int64_t) ey1 - ey0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
+    (अचिन्हित) hb_min ((int64_t) ex1 - ex0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
+    (अचिन्हित) hb_min ((int64_t) ey1 - ey0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
     0
   };
   draw->has_extents = true;
   hb_raster_draw_update_flatten_clip (draw);
-  return true;
+  वापस true;
 }
 
 /**
@@ -483,7 +483,7 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
  *
  * Since: 14.2.0
  **/
-void
+व्योम
 hb_raster_draw_clear (hb_raster_draw_t *draw)
 {
   draw->fixed_extents     = {};
@@ -491,9 +491,9 @@ hb_raster_draw_clear (hb_raster_draw_t *draw)
   draw->has_clip_box = false;
   draw->flatten_clip_active = false;
   draw->recharge_budget ();
-  draw->edges_left = HB_RASTER_MAX_DRAW_EDGES;
-  draw->edges.clear ();
-  draw->active_edges.clear ();
+  draw->edges_बायाँ = HB_RASTER_MAX_DRAW_EDGES;
+  draw->edges.सफा ();
+  draw->active_edges.सफा ();
 }
 
 /**
@@ -506,7 +506,7 @@ hb_raster_draw_clear (hb_raster_draw_t *draw)
  *
  * Since: 13.0.0
  **/
-void
+व्योम
 hb_raster_draw_reset (hb_raster_draw_t *draw)
 {
   draw->transform         = {1, 0, 0, 1, 0, 0};
@@ -516,10 +516,10 @@ hb_raster_draw_reset (hb_raster_draw_t *draw)
   hb_raster_draw_clear (draw);
 }
 
-void
+व्योम
 hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
-			     float x0, float y0,
-			     float x1, float y1)
+			     भग्न x0, भग्न y0,
+			     भग्न x1, भग्न y1)
 {
   draw->has_clip_box = true;
   draw->clip_x0 = x0;
@@ -530,21 +530,21 @@ hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
 }
 
 int64_t
-hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
-			       unsigned int max_rows,
-			       unsigned int max_cols)
+hb_raster_draw_get_pixel_work (स्थिर hb_raster_draw_t *draw,
+			       अचिन्हित पूर्णांक max_rows,
+			       अचिन्हित पूर्णांक max_cols)
 {
   int64_t work = 0;
-  for (const auto &edge : draw->edges)
+  क्रम (स्थिर स्वतः &edge : draw->edges)
   {
     int64_t dx = (int64_t) edge.xH - edge.xL;
-    if (dx < 0) dx = -dx;
+    अगर (dx < 0) dx = -dx;
     work += 1 + hb_min (((int64_t) edge.yH - edge.yL) >> HB_RASTER_PIXEL_BITS,
 			(int64_t) max_rows)
 	      + hb_min (dx >> HB_RASTER_PIXEL_BITS,
 			(int64_t) max_cols);
   }
-  return work;
+  वापस work;
 }
 
 /**
@@ -561,7 +561,7 @@ hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
+व्योम
 hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
 			      hb_raster_image_t *image)
 {
@@ -574,68 +574,68 @@ hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
  * Draw callbacks — flatten on the fly into hb_raster_edge_t
  */
 
-static inline void
-transform_point (const hb_raster_draw_t *draw,
-		 float  x,  float  y,
-		 float &tx, float &ty)
+अटल अंतरभूत व्योम
+transform_point (स्थिर hb_raster_draw_t *draw,
+		 भग्न  x,  भग्न  y,
+		 भग्न &tx, भग्न &ty)
 {
   hb_raster_draw_transform_point (draw, x, y, tx, ty);
 }
 
-static void
+अटल व्योम
 emit_segment (hb_raster_draw_t *draw,
-	      float x0, float y0,
-	      float x1, float y1)
+	      भग्न x0, भग्न y0,
+	      भग्न x1, भग्न y1)
 {
-  if (unlikely (draw->edges_left <= 0))
-    return;
+  अगर (unlikely (draw->edges_बायाँ <= 0))
+    वापस;
 
   int32_t X0 = hb_clamp_to<int32_t> (roundf (x0 * HB_RASTER_ONE_PIXEL));
   int32_t Y0 = hb_clamp_to<int32_t> (roundf (y0 * HB_RASTER_ONE_PIXEL));
   int32_t X1 = hb_clamp_to<int32_t> (roundf (x1 * HB_RASTER_ONE_PIXEL));
   int32_t Y1 = hb_clamp_to<int32_t> (roundf (y1 * HB_RASTER_ONE_PIXEL));
 
-  if (Y0 == Y1) return; /* horizontal — skip */
+  अगर (Y0 == Y1) वापस; /* horizontal — skip */
 
   hb_raster_edge_t e;
-  if (Y0 < Y1) {
+  अगर (Y0 < Y1) {
     e.xL = X0; e.yL = Y0; e.xH = X1; e.yH = Y1; e.wind = +1;
-  } else {
+  } अन्यथा {
     e.xL = X1; e.yL = Y1; e.xH = X0; e.yH = Y0; e.wind = -1;
   }
   e.slope = (((int64_t) e.xH - (int64_t) e.xL) * (int64_t) 65536) /
 	    ((int64_t) e.yH - (int64_t) e.yL);
 
-  if (likely (draw->edges.push_or_fail (e)))
-    draw->edges_left--;
-  else
-    draw->edges_left = 0;
+  अगर (likely (draw->edges.धकेलो_or_fail (e)))
+    draw->edges_बायाँ--;
+  अन्यथा
+    draw->edges_बायाँ = 0;
 }
 
 
 /* Quadratic Bézier flattener — iterative de Casteljau at t=0.5. */
-static inline void
+अटल अंतरभूत व्योम
 flatten_quadratic_recursive (hb_raster_draw_t *draw,
-			     float x0, float y0,
-			     float x1, float y1,
-			     float x2, float y2,
-			     int depth = 0)
+			     भग्न x0, भग्न y0,
+			     भग्न x1, भग्न y1,
+			     भग्न x2, भग्न y2,
+			     पूर्णांक depth = 0)
 {
-  struct quad_node_t
+  काष्ठा quad_गाँठ_t
   {
-    float x0, y0, x1, y1, x2, y2;
-    int depth;
+    भग्न x0, y0, x1, y1, x2, y2;
+    पूर्णांक depth;
     bool check_clip;
   };
 
-  quad_node_t stack[16];
-  unsigned top = 0;
+  quad_गाँठ_t ढेर[16];
+  अचिन्हित शीर्ष_4 = 0;
 
   bool check_clip = draw->flatten_clip_active;
   int64_t *work = draw->get_budget_remaining ();
-  int64_t work_left = *work;
+  int64_t work_बायाँ = *work;
 
-  while (true)
+  जबतक (true)
   {
     bool emit_chord = depth >= 16;
 
@@ -643,43 +643,43 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
        Subdivided control points are convex combinations of their
        parent's, so once a node is entirely inside the box no
        descendant can leave it and the test is skipped below. */
-    if (!emit_chord && check_clip)
+    अगर (!emit_chord && check_clip)
     {
-      float bx0 = hb_min (x0, hb_min (x1, x2));
-      float bx1 = hb_max (x0, hb_max (x1, x2));
-      float by0 = hb_min (y0, hb_min (y1, y2));
-      float by1 = hb_max (y0, hb_max (y1, y2));
-      if (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
+      भग्न bx0 = hb_min (x0, hb_min (x1, x2));
+      भग्न bx1 = hb_max (x0, hb_max (x1, x2));
+      भग्न by0 = hb_min (y0, hb_min (y1, y2));
+      भग्न by1 = hb_max (y0, hb_max (y1, y2));
+      अगर (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
 	  by1 < draw->flatten_clip_y0 || by0 > draw->flatten_clip_y1)
 	emit_chord = true;
-      else if (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
+      अन्यथा अगर (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
 	       by0 >= draw->flatten_clip_y0 && by1 <= draw->flatten_clip_y1)
 	check_clip = false;
     }
 
-    if (!emit_chord)
+    अगर (!emit_chord)
     {
       bool is_flat;
-      if (false)
+      अगर (false)
       {
 	/* Old behavior: midpoint deviation from chord midpoint. */
-	float mx = x0 * 0.25f + x1 * 0.5f + x2 * 0.25f;
-	float my = y0 * 0.25f + y1 * 0.5f + y2 * 0.25f;
-	float chord_mx = (x0 + x2) * 0.5f;
-	float chord_my = (y0 + y2) * 0.5f;
-	float dx = mx - chord_mx;
-	float dy = my - chord_my;
-	static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+	भग्न mx = x0 * 0.25f + x1 * 0.5f + x2 * 0.25f;
+	भग्न my = y0 * 0.25f + y1 * 0.5f + y2 * 0.25f;
+	भग्न chord_mx = (x0 + x2) * 0.5f;
+	भग्न chord_my = (y0 + y2) * 0.5f;
+	भग्न dx = mx - chord_mx;
+	भग्न dy = my - chord_my;
+	अटल स्थिर भग्न flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 	is_flat = (dx * dx + dy * dy) <= flat_thresh;
       }
-      else
+      अन्यथा
       {
 	/* FreeType behavior: control-point deviation from chord center. */
-	const float flat_thresh = 0.25f;
-	float dx = x0 + x2 - 2.f * x1;
-	float dy = y0 + y2 - 2.f * y1;
-	if (dx < 0) dx = -dx;
-	if (dy < 0) dy = -dy;
+	स्थिर भग्न flat_thresh = 0.25f;
+	भग्न dx = x0 + x2 - 2.f * x1;
+	भग्न dy = y0 + y2 - 2.f * y1;
+	अगर (dx < 0) dx = -dx;
+	अगर (dy < 0) dy = -dy;
 	is_flat = dx <= flat_thresh && dy <= flat_thresh;
       }
       emit_chord = is_flat;
@@ -687,37 +687,37 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
 
     /* Charge one unit per subdivision; degrade to the chord when the
        session work budget is spent. */
-    if (!emit_chord)
+    अगर (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
+      अगर (unlikely (work_बायाँ <= 0))
 	emit_chord = true;
-      else
-	work_left--;
+      अन्यथा
+	work_बायाँ--;
     }
 
-    if (emit_chord)
+    अगर (emit_chord)
     {
       emit_segment (draw, x0, y0, x2, y2);
-      if (!top)
+      अगर (!शीर्ष_4)
       {
-	*work = work_left;
-	return;
+	*work = work_बायाँ;
+	वापस;
       }
-      const quad_node_t &n = stack[--top];
+      स्थिर quad_गाँठ_t &n = ढेर[--शीर्ष_4];
       x0 = n.x0; y0 = n.y0;
       x1 = n.x1; y1 = n.y1;
       x2 = n.x2; y2 = n.y2;
       depth = n.depth;
       check_clip = n.check_clip;
-      continue;
+      जारी;
     }
 
-    float x01 = (x0 + x1) * 0.5f, y01 = (y0 + y1) * 0.5f;
-    float x12 = (x1 + x2) * 0.5f, y12 = (y1 + y2) * 0.5f;
-    float xm  = (x01 + x12) * 0.5f, ym  = (y01 + y12) * 0.5f;
+    भग्न x01 = (x0 + x1) * 0.5f, y01 = (y0 + y1) * 0.5f;
+    भग्न x12 = (x1 + x2) * 0.5f, y12 = (y1 + y2) * 0.5f;
+    भग्न xm  = (x01 + x12) * 0.5f, ym  = (y01 + y12) * 0.5f;
 
     /* Depth is capped at 16, so stack capacity 16 is sufficient. */
-    stack[top++] = {xm, ym, x12, y12, x2, y2, depth + 1, check_clip};
+    ढेर[शीर्ष_4++] = {xm, ym, x12, y12, x2, y2, depth + 1, check_clip};
     x2 = xm; y2 = ym;
     x1 = x01; y1 = y01;
     depth++;
@@ -728,57 +728,57 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
    The error (midpoint deviation) shrinks exactly 4× per de Casteljau
    subdivision, so we compute the subdivision count upfront and iterate
    with constant-cost additions instead of recursive branching. */
-static inline void
+अटल अंतरभूत व्योम
 flatten_quadratic_fd (hb_raster_draw_t *draw,
-		      float x0, float y0,
-		      float x1, float y1,
-		      float x2, float y2)
+		      भग्न x0, भग्न y0,
+		      भग्न x1, भग्न y1,
+		      भग्न x2, भग्न y2)
 {
   /* Deviation of curve midpoint from chord midpoint (squared). */
-  float devx = (x0 - 2 * x1 + x2) * 0.25f;
-  float devy = (y0 - 2 * y1 + y2) * 0.25f;
-  float err2 = devx * devx + devy * devy;
+  भग्न devx = (x0 - 2 * x1 + x2) * 0.25f;
+  भग्न devy = (y0 - 2 * y1 + y2) * 0.25f;
+  भग्न err2 = devx * devx + devy * devy;
 
-  static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+  अटल स्थिर भग्न flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 
-  if (err2 <= flat_thresh)
+  अगर (err2 <= flat_thresh)
   {
     emit_segment (draw, x0, y0, x2, y2);
-    return;
+    वापस;
   }
 
   /* err² shrinks 16× per subdivision level.  Find n such that
      err2 / 16^n <= flat_thresh, i.e. n = ceil(log₁₆(err2/flat_thresh)). */
-  unsigned n = 1;
+  अचिन्हित n = 1;
   {
-    float ratio = err2 / flat_thresh;
-    while (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
-    if (n > 16) n = 16;
+    भग्न ratio = err2 / flat_thresh;
+    जबतक (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
+    अगर (n > 16) n = 16;
   }
-  unsigned N = 1u << n;   /* number of line segments */
-  float h = 1.f / N;
+  अचिन्हित N = 1u << n;   /* number of line segments */
+  भग्न h = 1.f / N;
 
   /* Quadratic: B(t) = a·t² + b·t + c
      Forward differences with step h:
        d²f = 2·a·h²   (constant)
        df₀ = a·h² + b·h
        f₀  = c = P₀                     */
-  float ax = x0 - 2 * x1 + x2;
-  float ay = y0 - 2 * y1 + y2;
-  float bx = 2 * (x1 - x0);
-  float by = 2 * (y1 - y0);
+  भग्न ax = x0 - 2 * x1 + x2;
+  भग्न ay = y0 - 2 * y1 + y2;
+  भग्न bx = 2 * (x1 - x0);
+  भग्न by = 2 * (y1 - y0);
 
-  float d2fx = 2 * ax * h * h;
-  float d2fy = 2 * ay * h * h;
-  float dfx  = ax * h * h + bx * h;
-  float dfy  = ay * h * h + by * h;
-  float fx   = x0;
-  float fy   = y0;
+  भग्न d2fx = 2 * ax * h * h;
+  भग्न d2fy = 2 * ay * h * h;
+  भग्न dfx  = ax * h * h + bx * h;
+  भग्न dfy  = ay * h * h + by * h;
+  भग्न fx   = x0;
+  भग्न fy   = y0;
 
-  for (unsigned i = 1; i < N; i++)
+  क्रम (अचिन्हित i = 1; i < N; i++)
   {
-    float nx = fx + dfx;
-    float ny = fy + dfy;
+    भग्न nx = fx + dfx;
+    भग्न ny = fy + dfy;
     emit_segment (draw, fx, fy, nx, ny);
     fx = nx;
     fy = ny;
@@ -789,15 +789,15 @@ flatten_quadratic_fd (hb_raster_draw_t *draw,
   emit_segment (draw, fx, fy, x2, y2);
 }
 
-static void
+अटल व्योम
 flatten_quadratic (hb_raster_draw_t *draw,
-		   float x0, float y0,
-		   float x1, float y1,
-		   float x2, float y2)
+		   भग्न x0, भग्न y0,
+		   भग्न x1, भग्न y1,
+		   भग्न x2, भग्न y2)
 {
-  if (false)
+  अगर (false)
     flatten_quadratic_fd (draw, x0, y0, x1, y1, x2, y2);
-  else
+  अन्यथा
     flatten_quadratic_recursive (draw, x0, y0, x1, y1, x2, y2);
 }
 
@@ -805,47 +805,47 @@ flatten_quadratic (hb_raster_draw_t *draw,
      max||B(t)-L(t)|| <= max_t ||B''(t)|| / 8.
    B''(t) is linear, so max norm is attained at t=0 or t=1:
      B''(0)=6*(P0-2P1+P2), B''(1)=6*(P1-2P2+P3). */
-static inline float
-cubic_chord_error_bound2 (float x0, float y0,
-			  float x1, float y1,
-			  float x2, float y2,
-			  float x3, float y3)
+अटल अंतरभूत भग्न
+cubic_chord_error_bound2 (भग्न x0, भग्न y0,
+			  भग्न x1, भग्न y1,
+			  भग्न x2, भग्न y2,
+			  भग्न x3, भग्न y3)
 {
-  float d20x = x0 - 2 * x1 + x2;
-  float d20y = y0 - 2 * y1 + y2;
-  float d21x = x1 - 2 * x2 + x3;
-  float d21y = y1 - 2 * y2 + y3;
-  float m0 = d20x * d20x + d20y * d20y;
-  float m1 = d21x * d21x + d21y * d21y;
-  float m = m0 > m1 ? m0 : m1;
+  भग्न d20x = x0 - 2 * x1 + x2;
+  भग्न d20y = y0 - 2 * y1 + y2;
+  भग्न d21x = x1 - 2 * x2 + x3;
+  भग्न d21y = y1 - 2 * y2 + y3;
+  भग्न m0 = d20x * d20x + d20y * d20y;
+  भग्न m1 = d21x * d21x + d21y * d21y;
+  भग्न m = m0 > m1 ? m0 : m1;
   /* (max||B''||/8)^2 = (6/8)^2 * max||d2||^2 = (3/4)^2 * m. */
-  return m * (9.f / 16.f);
+  वापस m * (9.f / 16.f);
 }
 
 /* Cubic Bézier flattener — iterative de Casteljau at t=0.5. */
-static inline void
+अटल अंतरभूत व्योम
 flatten_cubic_recursive (hb_raster_draw_t *draw,
-			 float x0, float y0,
-			 float x1, float y1,
-			 float x2, float y2,
-			 float x3, float y3,
-			 int depth = 0)
+			 भग्न x0, भग्न y0,
+			 भग्न x1, भग्न y1,
+			 भग्न x2, भग्न y2,
+			 भग्न x3, भग्न y3,
+			 पूर्णांक depth = 0)
 {
-  struct cubic_node_t
+  काष्ठा cubic_गाँठ_t
   {
-    float x0, y0, x1, y1, x2, y2, x3, y3;
-    int depth;
+    भग्न x0, y0, x1, y1, x2, y2, x3, y3;
+    पूर्णांक depth;
     bool check_clip;
   };
 
-  cubic_node_t stack[16];
-  unsigned top = 0;
+  cubic_गाँठ_t ढेर[16];
+  अचिन्हित शीर्ष_4 = 0;
 
   bool check_clip = draw->flatten_clip_active;
   int64_t *work = draw->get_budget_remaining ();
-  int64_t work_left = *work;
+  int64_t work_बायाँ = *work;
 
-  while (true)
+  जबतक (true)
   {
     bool emit_chord = depth >= 16;
 
@@ -853,44 +853,44 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
        Subdivided control points are convex combinations of their
        parent's, so once a node is entirely inside the box no
        descendant can leave it and the test is skipped below. */
-    if (!emit_chord && check_clip)
+    अगर (!emit_chord && check_clip)
     {
-      float bx0 = hb_min (hb_min (x0, x1), hb_min (x2, x3));
-      float bx1 = hb_max (hb_max (x0, x1), hb_max (x2, x3));
-      float by0 = hb_min (hb_min (y0, y1), hb_min (y2, y3));
-      float by1 = hb_max (hb_max (y0, y1), hb_max (y2, y3));
-      if (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
+      भग्न bx0 = hb_min (hb_min (x0, x1), hb_min (x2, x3));
+      भग्न bx1 = hb_max (hb_max (x0, x1), hb_max (x2, x3));
+      भग्न by0 = hb_min (hb_min (y0, y1), hb_min (y2, y3));
+      भग्न by1 = hb_max (hb_max (y0, y1), hb_max (y2, y3));
+      अगर (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
 	  by1 < draw->flatten_clip_y0 || by0 > draw->flatten_clip_y1)
 	emit_chord = true;
-      else if (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
+      अन्यथा अगर (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
 	       by0 >= draw->flatten_clip_y0 && by1 <= draw->flatten_clip_y1)
 	check_clip = false;
     }
 
-    if (!emit_chord)
+    अगर (!emit_chord)
     {
       bool is_flat;
-      if (false)
+      अगर (false)
       {
 	/* Old behavior: curvature/chord-error bound. */
-	float err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
-	static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+	भग्न err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
+	अटल स्थिर भग्न flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 	is_flat = err2 <= flat_thresh;
       }
-      else
+      अन्यथा
       {
 	/* FreeType behavior: chord-trisection distance test. */
-	const float flat_thresh = 0.5f;
+	स्थिर भग्न flat_thresh = 0.5f;
 
-	float d10x = 2.f * x0 - 3.f * x1 + x3;
-	float d10y = 2.f * y0 - 3.f * y1 + y3;
-	float d20x = x0 - 3.f * x2 + 2.f * x3;
-	float d20y = y0 - 3.f * y2 + 2.f * y3;
+	भग्न d10x = 2.f * x0 - 3.f * x1 + x3;
+	भग्न d10y = 2.f * y0 - 3.f * y1 + y3;
+	भग्न d20x = x0 - 3.f * x2 + 2.f * x3;
+	भग्न d20y = y0 - 3.f * y2 + 2.f * y3;
 
-	if (d10x < 0) d10x = -d10x;
-	if (d10y < 0) d10y = -d10y;
-	if (d20x < 0) d20x = -d20x;
-	if (d20y < 0) d20y = -d20y;
+	अगर (d10x < 0) d10x = -d10x;
+	अगर (d10y < 0) d10y = -d10y;
+	अगर (d20x < 0) d20x = -d20x;
+	अगर (d20y < 0) d20y = -d20y;
 
 	is_flat = d10x <= flat_thresh &&
 		  d10y <= flat_thresh &&
@@ -902,41 +902,41 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
 
     /* Charge one unit per subdivision; degrade to the chord when the
        session work budget is spent. */
-    if (!emit_chord)
+    अगर (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
+      अगर (unlikely (work_बायाँ <= 0))
 	emit_chord = true;
-      else
-	work_left--;
+      अन्यथा
+	work_बायाँ--;
     }
 
-    if (emit_chord)
+    अगर (emit_chord)
     {
       emit_segment (draw, x0, y0, x3, y3);
-      if (!top)
+      अगर (!शीर्ष_4)
       {
-	*work = work_left;
-	return;
+	*work = work_बायाँ;
+	वापस;
       }
-      const cubic_node_t &n = stack[--top];
+      स्थिर cubic_गाँठ_t &n = ढेर[--शीर्ष_4];
       x0 = n.x0; y0 = n.y0;
       x1 = n.x1; y1 = n.y1;
       x2 = n.x2; y2 = n.y2;
       x3 = n.x3; y3 = n.y3;
       depth = n.depth;
       check_clip = n.check_clip;
-      continue;
+      जारी;
     }
 
-    float x01  = (x0 + x1) * 0.5f, y01  = (y0 + y1) * 0.5f;
-    float x12  = (x1 + x2) * 0.5f, y12  = (y1 + y2) * 0.5f;
-    float x23  = (x2 + x3) * 0.5f, y23  = (y2 + y3) * 0.5f;
-    float x012 = (x01 + x12) * 0.5f, y012 = (y01 + y12) * 0.5f;
-    float x123 = (x12 + x23) * 0.5f, y123 = (y12 + y23) * 0.5f;
-    float xm   = (x012 + x123) * 0.5f, ym   = (y012 + y123) * 0.5f;
+    भग्न x01  = (x0 + x1) * 0.5f, y01  = (y0 + y1) * 0.5f;
+    भग्न x12  = (x1 + x2) * 0.5f, y12  = (y1 + y2) * 0.5f;
+    भग्न x23  = (x2 + x3) * 0.5f, y23  = (y2 + y3) * 0.5f;
+    भग्न x012 = (x01 + x12) * 0.5f, y012 = (y01 + y12) * 0.5f;
+    भग्न x123 = (x12 + x23) * 0.5f, y123 = (y12 + y23) * 0.5f;
+    भग्न xm   = (x012 + x123) * 0.5f, ym   = (y012 + y123) * 0.5f;
 
     /* Depth is capped at 16, so stack capacity 16 is sufficient. */
-    stack[top++] = {xm, ym, x123, y123, x23, y23, x3, y3, depth + 1, check_clip};
+    ढेर[शीर्ष_4++] = {xm, ym, x123, y123, x23, y23, x3, y3, depth + 1, check_clip};
     x3 = xm; y3 = ym;
     x2 = x012; y2 = y012;
     x1 = x01; y1 = y01;
@@ -948,32 +948,32 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
    Use a curvature-based chord-error bound (max||B''||/8), then choose a
    uniform subdivision count n such that the bound drops below threshold.
    The cubic adds a constant third difference d³f = 6·a·h³. */
-static inline void
+अटल अंतरभूत व्योम
 flatten_cubic_fd (hb_raster_draw_t *draw,
-		  float x0, float y0,
-		  float x1, float y1,
-		  float x2, float y2,
-		  float x3, float y3)
+		  भग्न x0, भग्न y0,
+		  भग्न x1, भग्न y1,
+		  भग्न x2, भग्न y2,
+		  भग्न x3, भग्न y3)
 {
-  float err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
+  भग्न err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
 
-  static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+  अटल स्थिर भग्न flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 
-  if (err2 <= flat_thresh)
+  अगर (err2 <= flat_thresh)
   {
     emit_segment (draw, x0, y0, x3, y3);
-    return;
+    वापस;
   }
 
   /* The bound scales with h², so err² shrinks 16× per subdivision level. */
-  unsigned n = 1;
+  अचिन्हित n = 1;
   {
-    float ratio = err2 / flat_thresh;
-    while (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
-    if (n > 16) n = 16;
+    भग्न ratio = err2 / flat_thresh;
+    जबतक (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
+    अगर (n > 16) n = 16;
   }
-  unsigned N = 1u << n;
-  float h = 1.f / N;
+  अचिन्हित N = 1u << n;
+  भग्न h = 1.f / N;
 
   /* Cubic: B(t) = a·t³ + b·t² + c·t + d
      a = -P₀ + 3P₁ - 3P₂ + P₃
@@ -985,27 +985,27 @@ flatten_cubic_fd (hb_raster_draw_t *draw,
        d²f₀ = 6·a·h³ + 2·b·h²
        d¹f₀ = a·h³ + b·h² + c·h
        f₀   = d = P₀              */
-  float ax = -x0 + 3*x1 - 3*x2 + x3;
-  float ay = -y0 + 3*y1 - 3*y2 + y3;
-  float bx =  3*x0 - 6*x1 + 3*x2;
-  float by =  3*y0 - 6*y1 + 3*y2;
-  float cx =  3*(x1 - x0);
-  float cy =  3*(y1 - y0);
+  भग्न ax = -x0 + 3*x1 - 3*x2 + x3;
+  भग्न ay = -y0 + 3*y1 - 3*y2 + y3;
+  भग्न bx =  3*x0 - 6*x1 + 3*x2;
+  भग्न by =  3*y0 - 6*y1 + 3*y2;
+  भग्न cx =  3*(x1 - x0);
+  भग्न cy =  3*(y1 - y0);
 
-  float h2 = h * h, h3 = h2 * h;
-  float d3fx = 6 * ax * h3;
-  float d3fy = 6 * ay * h3;
-  float d2fx = d3fx + 2 * bx * h2;
-  float d2fy = d3fy + 2 * by * h2;
-  float dfx  = ax * h3 + bx * h2 + cx * h;
-  float dfy  = ay * h3 + by * h2 + cy * h;
-  float fx   = x0;
-  float fy   = y0;
+  भग्न h2 = h * h, h3 = h2 * h;
+  भग्न d3fx = 6 * ax * h3;
+  भग्न d3fy = 6 * ay * h3;
+  भग्न d2fx = d3fx + 2 * bx * h2;
+  भग्न d2fy = d3fy + 2 * by * h2;
+  भग्न dfx  = ax * h3 + bx * h2 + cx * h;
+  भग्न dfy  = ay * h3 + by * h2 + cy * h;
+  भग्न fx   = x0;
+  भग्न fy   = y0;
 
-  for (unsigned i = 1; i < N; i++)
+  क्रम (अचिन्हित i = 1; i < N; i++)
   {
-    float nx = fx + dfx;
-    float ny = fy + dfy;
+    भग्न nx = fx + dfx;
+    भग्न ny = fy + dfy;
     emit_segment (draw, fx, fy, nx, ny);
     fx = nx;  fy = ny;
     dfx += d2fx;  dfy += d2fy;
@@ -1015,79 +1015,79 @@ flatten_cubic_fd (hb_raster_draw_t *draw,
   emit_segment (draw, fx, fy, x3, y3);
 }
 
-static void
+अटल व्योम
 flatten_cubic (hb_raster_draw_t *draw,
-	       float x0, float y0,
-	       float x1, float y1,
-	       float x2, float y2,
-	       float x3, float y3)
+	       भग्न x0, भग्न y0,
+	       भग्न x1, भग्न y1,
+	       भग्न x2, भग्न y2,
+	       भग्न x3, भग्न y3)
 {
-  if (false)
+  अगर (false)
     flatten_cubic_fd (draw, x0, y0, x1, y1, x2, y2, x3, y3);
-  else
+  अन्यथा
     flatten_cubic_recursive (draw, x0, y0, x1, y1, x2, y2, x3, y3);
 }
 
 
 /* Draw callback implementations */
 
-static void
+अटल व्योम
 hb_raster_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		   void *draw_data,
+		   व्योम *draw_तथ्य,
 		   hb_draw_state_t *st HB_UNUSED,
-		   float to_x HB_UNUSED, float to_y HB_UNUSED,
-		   void *user_data HB_UNUSED)
+		   भग्न to_x HB_UNUSED, भग्न to_y HB_UNUSED,
+		   व्योम *user_तथ्य HB_UNUSED)
 {
   /* no-op: state tracked by hb_draw_state_t */
 }
 
-static void
-hb_raster_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		   void *draw_data,
+अटल व्योम
+hb_raster_पंक्ति_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+		   व्योम *draw_तथ्य,
 		   hb_draw_state_t *st,
-		   float to_x, float to_y,
-		   void *user_data HB_UNUSED)
+		   भग्न to_x, भग्न to_y,
+		   व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_तथ्य;
+  अगर (unlikely (draw->edges_बायाँ <= 0)) वापस;
 
-  float tx0, ty0, tx1, ty1;
+  भग्न tx0, ty0, tx1, ty1;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
   transform_point (draw, to_x,          to_y,           tx1, ty1);
   emit_segment (draw, tx0, ty0, tx1, ty1);
 }
 
-static void
+अटल व्योम
 hb_raster_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			void *draw_data,
+			व्योम *draw_तथ्य,
 			hb_draw_state_t *st,
-			float control_x, float control_y,
-			float to_x, float to_y,
-			void *user_data HB_UNUSED)
+			भग्न control_x, भग्न control_y,
+			भग्न to_x, भग्न to_y,
+			व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_तथ्य;
+  अगर (unlikely (draw->edges_बायाँ <= 0)) वापस;
 
-  float tx0, ty0, tx1, ty1, tx2, ty2;
+  भग्न tx0, ty0, tx1, ty1, tx2, ty2;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
   transform_point (draw, control_x,     control_y,      tx1, ty1);
   transform_point (draw, to_x,          to_y,           tx2, ty2);
   flatten_quadratic (draw, tx0, ty0, tx1, ty1, tx2, ty2);
 }
 
-static void
+अटल व्योम
 hb_raster_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		    void *draw_data,
+		    व्योम *draw_तथ्य,
 		    hb_draw_state_t *st,
-		    float control1_x, float control1_y,
-		    float control2_x, float control2_y,
-		    float to_x, float to_y,
-		    void *user_data HB_UNUSED)
+		    भग्न control1_x, भग्न control1_y,
+		    भग्न control2_x, भग्न control2_y,
+		    भग्न to_x, भग्न to_y,
+		    व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_तथ्य;
+  अगर (unlikely (draw->edges_बायाँ <= 0)) वापस;
 
-  float tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3;
+  भग्न tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
   transform_point (draw, control1_x,    control1_y,     tx1, ty1);
   transform_point (draw, control2_x,    control2_y,     tx2, ty2);
@@ -1095,50 +1095,50 @@ hb_raster_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   flatten_cubic (draw, tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3);
 }
 
-static void
+अटल व्योम
 hb_raster_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		      void *draw_data HB_UNUSED,
+		      व्योम *draw_तथ्य HB_UNUSED,
 		      hb_draw_state_t *st HB_UNUSED,
-		      void *user_data HB_UNUSED)
+		      व्योम *user_तथ्य HB_UNUSED)
 {
   /* no-op: hb_draw_funcs_t already emits closing line_to before us */
 }
 
-static hb_bool_t
-hb_raster_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
-			   int64_t budget, void *)
+अटल hb_bool_t
+hb_raster_draw_set_budget (hb_draw_funcs_t *, व्योम *draw_तथ्य,
+			   int64_t budget, व्योम *)
 {
-  auto *draw = (hb_raster_draw_t *) draw_data;
+  स्वतः *draw = (hb_raster_draw_t *) draw_तथ्य;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  वापस true;
 }
 
-static int64_t
-hb_raster_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
+अटल int64_t
+hb_raster_draw_get_budget (hb_draw_funcs_t *, व्योम *draw_तथ्य, व्योम *)
 {
-  return ((hb_raster_draw_t *) draw_data)->budget;
+  वापस ((hb_raster_draw_t *) draw_तथ्य)->budget;
 }
 
-static int64_t *
-hb_raster_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+अटल int64_t *
+hb_raster_draw_get_budget_remaining (hb_draw_funcs_t *, व्योम *draw_तथ्य, व्योम *)
 {
-  return ((hb_raster_draw_t *) draw_data)->get_budget_remaining ();
+  वापस ((hb_raster_draw_t *) draw_तथ्य)->get_budget_remaining ();
 }
 
 
 /* Lazy-loader singleton for draw funcs */
 
-static inline void free_static_raster_draw_funcs ();
+अटल अंतरभूत व्योम free_static_raster_draw_funcs ();
 
-static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_raster_draw_funcs_lazy_loader_t>
+अटल काष्ठा hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_raster_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  अटल hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func      (funcs, hb_raster_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_raster_line_to,      nullptr, nullptr);
+    hb_draw_funcs_set_पंक्ति_to_func      (funcs, hb_raster_पंक्ति_to,      nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_raster_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func     (funcs, hb_raster_cubic_to,     nullptr, nullptr);
     hb_draw_funcs_set_close_path_func   (funcs, hb_raster_close_path,   nullptr, nullptr);
@@ -1150,11 +1150,11 @@ static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<h
 
     hb_atexit (free_static_raster_draw_funcs);
 
-    return funcs;
+    वापस funcs;
   }
 } static_raster_draw_funcs;
 
-static inline void
+अटल अंतरभूत व्योम
 free_static_raster_draw_funcs ()
 {
   static_raster_draw_funcs.free_instance ();
@@ -1174,9 +1174,9 @@ free_static_raster_draw_funcs ()
  * Since: 14.2.0
  **/
 hb_draw_funcs_t *
-hb_raster_draw_get_funcs (const hb_raster_draw_t *draw HB_UNUSED)
+hb_raster_draw_get_funcs (स्थिर hb_raster_draw_t *draw HB_UNUSED)
 {
-  return static_raster_draw_funcs.get_unconst ();
+  वापस static_raster_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1202,7 +1202,7 @@ hb_raster_draw_glyph_or_fail (hb_raster_draw_t *draw,
 			      hb_font_t       *font,
 			      hb_codepoint_t   glyph)
 {
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  वापस hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_raster_draw_get_funcs (draw), draw);
 }
 
@@ -1218,7 +1218,7 @@ hb_raster_draw_glyph_or_fail (hb_raster_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-void
+व्योम
 hb_raster_draw_glyph (hb_raster_draw_t *draw,
 		      hb_font_t       *font,
 		      hb_codepoint_t   glyph)
@@ -1247,19 +1247,19 @@ hb_raster_draw_glyph (hb_raster_draw_t *draw,
 
 /* Each edge contributes at most ONE_PIXEL to a cell's cover, so the
  * compact accumulators are exact up to this many active edges. */
-static constexpr unsigned HB_RASTER_NARROW_MAX_ACTIVE_EDGES =
+अटल constexpr अचिन्हित HB_RASTER_NARROW_MAX_ACTIVE_EDGES =
   INT16_MAX / HB_RASTER_ONE_PIXEL;
 
 /* Add one edge piece's area/cover into a single cell. */
-template <typename Area, typename Cover>
-static HB_ALWAYS_INLINE void
-cell_add (Area *area, Cover *cover, unsigned width, int col,
+ढाँचा <typename Area, typename Cover>
+अटल HB_ALWAYS_INLINE व्योम
+cell_add (Area *area, Cover *cover, अचिन्हित width, पूर्णांक col,
 	  int32_t fx0, int32_t fy0, int32_t fx1, int32_t fy1, int32_t wind,
-	  unsigned &x_min, unsigned &x_max)
+	  अचिन्हित &x_min, अचिन्हित &x_max)
 {
-  if (unlikely ((unsigned) col >= width))
+  अगर (unlikely ((अचिन्हित) col >= width))
   {
-    if (unlikely (col < 0))
+    अगर (unlikely (col < 0))
     {
       /* Edge is to the left of the surface.  The winding contribution
        * still carries into the visible region, so add the cover delta
@@ -1270,36 +1270,36 @@ cell_add (Area *area, Cover *cover, unsigned width, int col,
       x_min = hb_min (x_min, 0u);
       x_max = hb_max (x_max, 0u);
     }
-    return;
+    वापस;
   }
   int32_t dy = fy1 - fy0;
   area[col]  += (Area) (fx0 + fx1) * dy * wind;
   cover[col] += (Cover) (dy * wind);
-  x_min = hb_min (x_min, (unsigned) col);
-  x_max = hb_max (x_max, (unsigned) col);
+  x_min = hb_min (x_min, (अचिन्हित) col);
+  x_max = hb_max (x_max, (अचिन्हित) col);
 }
 
 /* Walk one edge through the pixel cells of a single pixel row,
    accumulating area/cover.  py is the integer pixel-row index. */
-template <typename Area, typename Cover>
-static HB_ALWAYS_INLINE void
+ढाँचा <typename Area, typename Cover>
+अटल HB_ALWAYS_INLINE व्योम
 edge_sweep_row (Area                   *area,
 		Cover                  *cover,
-		unsigned                width,
-		int                     x_org,
-		int32_t                 y_top,
-		const hb_raster_edge_t &edge,
-		unsigned               &x_min,
-		unsigned               &x_max)
+		अचिन्हित                width,
+		पूर्णांक                     x_org,
+		int32_t                 y_शीर्ष,
+		स्थिर hb_raster_edge_t &edge,
+		अचिन्हित               &x_min,
+		अचिन्हित               &x_max)
 {
   /* Saturate: y_top can be within ONE_PIXEL of INT32_MAX when the surface
    * sits at the extreme of the fixed-point coordinate space.  Edges are
    * int32-clamped too, so no coverage exists beyond INT32_MAX anyway. */
-  int32_t y_bot = (int32_t) hb_min ((int64_t) y_top + HB_RASTER_ONE_PIXEL, (int64_t) INT32_MAX);
+  int32_t y_bot = (int32_t) hb_min ((int64_t) y_शीर्ष + HB_RASTER_ONE_PIXEL, (int64_t) INT32_MAX);
 
-  int32_t ey0 = hb_max (edge.yL, y_top);
+  int32_t ey0 = hb_max (edge.yL, y_शीर्ष);
   int32_t ey1 = hb_min (edge.yH, y_bot);
-  if (ey0 >= ey1) return;
+  अगर (ey0 >= ey1) वापस;
 
   /* X at clipped endpoints (fixed-point). Keep the interpolation in 64-bit
    * so extreme y values do not overflow before the slope multiply. */
@@ -1311,8 +1311,8 @@ edge_sweep_row (Area                   *area,
   int32_t x1 = (int32_t) hb_clamp (x1_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
 
   /* Fractional y within this pixel row [0, ONE_PIXEL] */
-  int32_t fy0 = ey0 - y_top;
-  int32_t fy1 = ey1 - y_top;
+  int32_t fy0 = ey0 - y_शीर्ष;
+  int32_t fy1 = ey1 - y_शीर्ष;
 
   int32_t cx0 = x0 >> HB_RASTER_PIXEL_BITS;
   int32_t fx0 = x0 & HB_RASTER_PIXEL_MASK;
@@ -1321,39 +1321,39 @@ edge_sweep_row (Area                   *area,
   int32_t wind = edge.wind;
 
   /* Fast path: both endpoints in the same pixel column. */
-  if (cx0 == cx1)
+  अगर (cx0 == cx1)
   {
     cell_add (area, cover, width, cx0 - x_org, fx0, fy0, fx1, fy1, wind, x_min, x_max);
-    return;
+    वापस;
   }
 
-  int64_t total_dx = (int64_t) x1 - (int64_t) x0;
-  int64_t total_dy = (int64_t) fy1 - (int64_t) fy0;
+  int64_t योग_dx = (int64_t) x1 - (int64_t) x0;
+  int64_t योग_dy = (int64_t) fy1 - (int64_t) fy0;
 
   /* fy increment per pixel column (constant since x_b advances by ONE_PIXEL). */
-  int32_t delta_fy = (int32_t) ((int64_t) HB_RASTER_ONE_PIXEL * total_dy / total_dx);
+  int32_t delta_fy = (int32_t) ((int64_t) HB_RASTER_ONE_PIXEL * योग_dy / योग_dx);
 
-  if (total_dx > 0)
+  अगर (योग_dx > 0)
   {
     /* Left-to-right edge. */
-    if (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
+    अगर (likely ((अचिन्हित) (cx0 - x_org) < width && (अचिन्हित) (cx1 - x_org) < width))
     {
       /* Entirely inside the surface: unclipped walk. */
       int32_t x_b = (int32_t) hb_clamp (((int64_t) cx0 + 1) * HB_RASTER_ONE_PIXEL,
 					(int64_t) INT32_MIN, (int64_t) INT32_MAX);
-      int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * total_dy) / total_dx);
+      int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * योग_dy) / योग_dx);
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
 
-      int32_t fy_prev = fy_b;
-      for (int32_t cx = cx0 + 1; cx < cx1; cx++)
+      int32_t fy_पूर्व = fy_b;
+      क्रम (int32_t cx = cx0 + 1; cx < cx1; cx++)
       {
-	fy_b = fy_prev + delta_fy;
-	cell_add (area, cover, width, cx - x_org, 0, fy_prev, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
-	fy_prev = fy_b;
+	fy_b = fy_पूर्व + delta_fy;
+	cell_add (area, cover, width, cx - x_org, 0, fy_पूर्व, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
+	fy_पूर्व = fy_b;
       }
 
-      cell_add (area, cover, width, cx1 - x_org, 0, fy_prev, fx1, fy1, wind, x_min, x_max);
-      return;
+      cell_add (area, cover, width, cx1 - x_org, 0, fy_पूर्व, fx1, fy1, wind, x_min, x_max);
+      वापस;
     }
 
     /* Visible column window.  Columns left of it only contribute their
@@ -1365,133 +1365,133 @@ edge_sweep_row (Area                   *area,
     int64_t col_min = (int64_t) x_org;
     int64_t col_max = (int64_t) x_org + (int64_t) width - 1;
 
-    if (unlikely (cx1 < col_min))
+    अगर (unlikely (cx1 < col_min))
     {
       /* Entirely left of the surface. */
       cell_add (area, cover, width, -1, 0, fy0, 0, fy1, wind, x_min, x_max);
-      return;
+      वापस;
     }
-    if (unlikely (cx0 > col_max))
-      return; /* Entirely right of the surface. */
+    अगर (unlikely (cx0 > col_max))
+      वापस; /* Entirely right of the surface. */
 
     int32_t x_b = (int32_t) hb_clamp (((int64_t) cx0 + 1) * HB_RASTER_ONE_PIXEL,
 				      (int64_t) INT32_MIN, (int64_t) INT32_MAX);
-    int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * total_dy) / total_dx);
+    int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * योग_dy) / योग_dx);
 
     int32_t cx = cx0 + 1;
-    int32_t fy_prev = fy_b;
-    if (likely (cx0 >= col_min))
+    int32_t fy_पूर्व = fy_b;
+    अगर (likely (cx0 >= col_min))
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
-    else
+    अन्यथा
     {
       /* Fold the first cell and the mid columns left of the surface
        * into one column-0 cover update. */
       int32_t cx_skip = (int32_t) col_min; /* ≤ cx1, so it fits */
-      fy_prev = fy_b + (int32_t) ((int64_t) (cx_skip - cx) * delta_fy);
-      cell_add (area, cover, width, -1, 0, fy0, 0, fy_prev, wind, x_min, x_max);
+      fy_पूर्व = fy_b + (int32_t) ((int64_t) (cx_skip - cx) * delta_fy);
+      cell_add (area, cover, width, -1, 0, fy0, 0, fy_पूर्व, wind, x_min, x_max);
       cx = cx_skip;
     }
 
     int32_t cx_end = (int32_t) hb_min ((int64_t) cx1, col_max + 1);
-    for (; cx < cx_end; cx++)
+    क्रम (; cx < cx_end; cx++)
     {
-      fy_b = fy_prev + delta_fy;
-      cell_add (area, cover, width, cx - x_org, 0, fy_prev, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
-      fy_prev = fy_b;
+      fy_b = fy_पूर्व + delta_fy;
+      cell_add (area, cover, width, cx - x_org, 0, fy_पूर्व, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
+      fy_पूर्व = fy_b;
     }
 
-    if (likely (cx1 <= col_max))
-      cell_add (area, cover, width, cx1 - x_org, 0, fy_prev, fx1, fy1, wind, x_min, x_max);
+    अगर (likely (cx1 <= col_max))
+      cell_add (area, cover, width, cx1 - x_org, 0, fy_पूर्व, fx1, fy1, wind, x_min, x_max);
   }
-  else
+  अन्यथा
   {
     /* Right-to-left edge. */
-    if (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
+    अगर (likely ((अचिन्हित) (cx0 - x_org) < width && (अचिन्हित) (cx1 - x_org) < width))
     {
       /* Entirely inside the surface: unclipped walk. */
       int32_t x_b = (int32_t) hb_clamp ((int64_t) cx0 * HB_RASTER_ONE_PIXEL,
 					(int64_t) INT32_MIN, (int64_t) INT32_MAX);
-      int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * total_dy) / total_dx);
+      int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * योग_dy) / योग_dx);
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, 0, fy_b, wind, x_min, x_max);
 
-      int32_t fy_prev = fy_b;
-      for (int32_t cx = cx0 - 1; cx > cx1; cx--)
+      int32_t fy_पूर्व = fy_b;
+      क्रम (int32_t cx = cx0 - 1; cx > cx1; cx--)
       {
-	fy_b = fy_prev - delta_fy;
-	cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_prev, 0, fy_b, wind, x_min, x_max);
-	fy_prev = fy_b;
+	fy_b = fy_पूर्व - delta_fy;
+	cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_पूर्व, 0, fy_b, wind, x_min, x_max);
+	fy_पूर्व = fy_b;
       }
 
-      cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_prev, fx1, fy1, wind, x_min, x_max);
-      return;
+      cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_पूर्व, fx1, fy1, wind, x_min, x_max);
+      वापस;
     }
 
     int64_t col_min = (int64_t) x_org;
     int64_t col_max = (int64_t) x_org + (int64_t) width - 1;
 
-    if (unlikely (cx0 < col_min))
+    अगर (unlikely (cx0 < col_min))
     {
       /* Entirely left of the surface. */
       cell_add (area, cover, width, -1, 0, fy0, 0, fy1, wind, x_min, x_max);
-      return;
+      वापस;
     }
-    if (unlikely (cx1 > col_max))
-      return; /* Entirely right of the surface. */
+    अगर (unlikely (cx1 > col_max))
+      वापस; /* Entirely right of the surface. */
 
     int32_t x_b = (int32_t) hb_clamp ((int64_t) cx0 * HB_RASTER_ONE_PIXEL,
 				      (int64_t) INT32_MIN, (int64_t) INT32_MAX);
-    int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * total_dy) / total_dx);
+    int32_t fy_b = fy0 + (int32_t) ((((int64_t) x_b - (int64_t) x0) * योग_dy) / योग_dx);
     cell_add (area, cover, width, cx0 - x_org, fx0, fy0, 0, fy_b, wind, x_min, x_max);
 
     int32_t cx = cx0 - 1;
-    int32_t fy_prev = fy_b;
-    if (unlikely (cx > col_max))
+    int32_t fy_पूर्व = fy_b;
+    अगर (unlikely (cx > col_max))
     {
       /* Mid columns right of the surface contribute nothing. */
       int32_t cx_skip = (int32_t) col_max; /* ≥ cx1, so it fits */
-      fy_prev = fy_b - (int32_t) ((int64_t) (cx - cx_skip) * delta_fy);
+      fy_पूर्व = fy_b - (int32_t) ((int64_t) (cx - cx_skip) * delta_fy);
       cx = cx_skip;
     }
 
     int32_t cx_stop = (int32_t) hb_max ((int64_t) cx1, col_min - 1);
-    for (; cx > cx_stop; cx--)
+    क्रम (; cx > cx_stop; cx--)
     {
-      fy_b = fy_prev - delta_fy;
-      cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_prev, 0, fy_b, wind, x_min, x_max);
-      fy_prev = fy_b;
+      fy_b = fy_पूर्व - delta_fy;
+      cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_पूर्व, 0, fy_b, wind, x_min, x_max);
+      fy_पूर्व = fy_b;
     }
 
-    if (likely (cx1 >= col_min))
-      cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_prev, fx1, fy1, wind, x_min, x_max);
-    else
+    अगर (likely (cx1 >= col_min))
+      cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_पूर्व, fx1, fy1, wind, x_min, x_max);
+    अन्यथा
       /* Fold the mid columns left of the surface and the last cell
        * into one column-0 cover update. */
-      cell_add (area, cover, width, -1, 0, fy_prev, 0, fy1, wind, x_min, x_max);
+      cell_add (area, cover, width, -1, 0, fy_पूर्व, 0, fy1, wind, x_min, x_max);
   }
 }
 
 /* Convert cover-delta + area to alpha bytes, then clear.
    Returns final cover accumulator over [x_min, x_max]. */
-static int32_t
+अटल int32_t
 sweep_row_to_alpha (uint8_t *__restrict row_buf,
 		    int32_t *__restrict area,
 		    int16_t *__restrict cover,
-		    unsigned x_min,
-		    unsigned x_max)
+		    अचिन्हित x_min,
+		    अचिन्हित x_max)
 {
-  const int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
+  स्थिर int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
   int32_t cover_accum = 0;
-  unsigned x = x_min;
+  अचिन्हित x = x_min;
 
-#ifdef HB_RASTER_NEON
+#अगर_घोषित HB_RASTER_NEON
   int32x4_t clamp_v = vdupq_n_s32 (HB_RASTER_FULL_COVERAGE);
   int32x4_t bias_v  = vdupq_n_s32 (HB_RASTER_FULL_COVERAGE / 2);
   int32x4_t zero32  = vdupq_n_s32 (0);
   int16x8_t zero16  = vdupq_n_s16 (0);
-  for (; x + 7 <= x_max; x += 8)
+  क्रम (; x + 7 <= x_max; x += 8)
   {
     int32_t ctmp[8];
-    for (unsigned i = 0; i < 8; i++)
+    क्रम (अचिन्हित i = 0; i < 8; i++)
     {
       cover_accum += cover[x + i];
       ctmp[i] = cover_accum * cover_scale;
@@ -1521,23 +1521,23 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
     vst1q_s32 (area + x + 4, zero32);
     vst1q_s16 (cover + x,    zero16);
   }
-#elif defined(HB_RASTER_SSE2)
+#या_अगर defined(HB_RASTER_SSE2)
   __m128i clamp_v = _mm_set1_epi32 (HB_RASTER_FULL_COVERAGE);
   __m128i bias_v  = _mm_set1_epi32 (HB_RASTER_FULL_COVERAGE / 2);
   __m128i zero_v  = _mm_setzero_si128 ();
-  for (; x + 7 <= x_max; x += 8)
+  क्रम (; x + 7 <= x_max; x += 8)
   {
     int32_t ctmp[8];
-    for (unsigned i = 0; i < 8; i++)
+    क्रम (अचिन्हित i = 0; i < 8; i++)
     {
       cover_accum += cover[x + i];
       ctmp[i] = cover_accum * cover_scale;
     }
 
-    __m128i c0  = _mm_loadu_si128 ((__m128i *) (void *) (ctmp + 0));
-    __m128i c1  = _mm_loadu_si128 ((__m128i *) (void *) (ctmp + 4));
-    __m128i a0  = _mm_loadu_si128 ((__m128i *) (void *) (area + x));
-    __m128i a1  = _mm_loadu_si128 ((__m128i *) (void *) (area + x + 4));
+    __m128i c0  = _mm_loadu_si128 ((__m128i *) (व्योम *) (ctmp + 0));
+    __m128i c1  = _mm_loadu_si128 ((__m128i *) (व्योम *) (ctmp + 4));
+    __m128i a0  = _mm_loadu_si128 ((__m128i *) (व्योम *) (area + x));
+    __m128i a1  = _mm_loadu_si128 ((__m128i *) (व्योम *) (area + x + 4));
 
     __m128i v0 = _mm_sub_epi32 (c0, a0);
     __m128i v1 = _mm_sub_epi32 (c1, a1);
@@ -1557,50 +1557,50 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
 
     __m128i h = _mm_packs_epi32 (r0, r1);
     __m128i b = _mm_packus_epi16 (h, h);
-    _mm_storel_epi64 ((__m128i *) (void *) (row_buf + x), b);
+    _mm_storel_epi64 ((__m128i *) (व्योम *) (row_buf + x), b);
 
-    _mm_storeu_si128 ((__m128i *) (void *) (area + x),     zero_v);
-    _mm_storeu_si128 ((__m128i *) (void *) (area + x + 4), zero_v);
-    _mm_storeu_si128 ((__m128i *) (void *) (cover + x),    zero_v);
+    _mm_storeu_si128 ((__m128i *) (व्योम *) (area + x),     zero_v);
+    _mm_storeu_si128 ((__m128i *) (व्योम *) (area + x + 4), zero_v);
+    _mm_storeu_si128 ((__m128i *) (व्योम *) (cover + x),    zero_v);
   }
-#endif
+#पूर्ण_अगर
 
-  for (; x <= x_max; x++)
+  क्रम (; x <= x_max; x++)
   {
     cover_accum += cover[x];
     int32_t val   = cover_accum * cover_scale - area[x];
     int32_t alpha = val < 0 ? -val : val;
-    if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
-    row_buf[x] = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
+    अगर (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+    row_buf[x] = (uint8_t) (((अचिन्हित) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
     area[x]  = 0;
     cover[x] = 0;
   }
 
-  return cover_accum;
+  वापस cover_accum;
 }
 
-static int64_t
+अटल int64_t
 sweep_row_to_alpha_wide (uint8_t *__restrict row_buf,
 			 int64_t *__restrict area,
 			 int64_t *__restrict cover,
-			 unsigned x_min,
-			 unsigned x_max)
+			 अचिन्हित x_min,
+			 अचिन्हित x_max)
 {
-  const int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
+  स्थिर int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
   int64_t cover_accum = 0;
 
-  for (unsigned x = x_min; x <= x_max; x++)
+  क्रम (अचिन्हित x = x_min; x <= x_max; x++)
   {
     cover_accum += cover[x];
     int64_t val = cover_accum * cover_scale - area[x];
     int64_t alpha = val < 0 ? -val : val;
-    if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
-    row_buf[x] = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
+    अगर (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+    row_buf[x] = (uint8_t) (((अचिन्हित) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
     area[x] = 0;
     cover[x] = 0;
   }
 
-  return cover_accum;
+  वापस cover_accum;
 }
 
 
@@ -1625,24 +1625,24 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   /* ── 1. Compute result extents ─────────────────────────────────── */
   hb_raster_extents_t ext;
 
-  if (draw->has_extents)
+  अगर (draw->has_extents)
   {
     ext = draw->fixed_extents;
   }
-  else
+  अन्यथा
   {
     /* Auto-size from edge bounding box */
-    if (draw->edges.length == 0)
+    अगर (draw->edges.लंबाई == 0)
     {
       /* No edges: produce 0×0 image */
       ext = { 0, 0, 0, 0, 0 };
     }
-    else
+    अन्यथा
     {
       int32_t xmin = draw->edges.arrayZ[0].xL, xmax = draw->edges.arrayZ[0].xL;
       int32_t ymin = draw->edges.arrayZ[0].yL, ymax = draw->edges.arrayZ[0].yH;
 
-      for (const auto &e : draw->edges)
+      क्रम (स्थिर स्वतः &e : draw->edges)
       {
 	xmin = hb_min (xmin, hb_min (e.xL, e.xH));
 	xmax = hb_max (xmax, hb_max (e.xL, e.xH));
@@ -1653,21 +1653,21 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
       /* Convert fixed-point → pixels (floor for min, ceil for max).  Edge
 	 coordinates are saturated to int32 range in emit_segment, so the
 	 +MASK ceil step must be widened to avoid signed overflow. */
-      int x0 = xmin >> HB_RASTER_PIXEL_BITS;
-      int y0 = ymin >> HB_RASTER_PIXEL_BITS;
-      int x1 = (int) (((int64_t) xmax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
-      int y1 = (int) (((int64_t) ymax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
+      पूर्णांक x0 = xmin >> HB_RASTER_PIXEL_BITS;
+      पूर्णांक y0 = ymin >> HB_RASTER_PIXEL_BITS;
+      पूर्णांक x1 = (पूर्णांक) (((int64_t) xmax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
+      पूर्णांक y1 = (पूर्णांक) (((int64_t) ymax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
 
       ext.x_origin = x0;
       ext.y_origin = y0;
-      ext.width    = (unsigned) hb_min (hb_max (0, x1 - x0), HB_RASTER_MAX_AUTO_DIMENSION);
-      ext.height   = (unsigned) hb_min (hb_max (0, y1 - y0), HB_RASTER_MAX_AUTO_DIMENSION);
+      ext.width    = (अचिन्हित) hb_min (hb_max (0, x1 - x0), HB_RASTER_MAX_AUTO_DIMENSION);
+      ext.height   = (अचिन्हित) hb_min (hb_max (0, y1 - y0), HB_RASTER_MAX_AUTO_DIMENSION);
       ext.stride   = 0; /* filled below */
     }
   }
 
   /* ── 2. Compute stride ─────────────────────────────────────────── */
-  if (ext.stride == 0)
+  अगर (ext.stride == 0)
     ext.stride = (ext.width + 3u) & ~3u;
 
   /* ── 3. Allocate or reuse image ─────────────────────────────────── */
@@ -1675,117 +1675,117 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   HB_SCOPE_GUARD (hb_raster_draw_clear (draw));
 
   hb_unique_ptr_t<hb_raster_image_t> image;
-  if (draw->recycled_image)
+  अगर (draw->recycled_image)
   {
     image = hb_unique_ptr_t<hb_raster_image_t> (draw->recycled_image);
     draw->recycled_image = nullptr;
   }
-  else
+  अन्यथा
   {
     image = hb_unique_ptr_t<hb_raster_image_t> (hb_raster_image_create_or_fail ());
-    if (unlikely (!image)) return nullptr;
+    अगर (unlikely (!image)) वापस nullptr;
   }
 
-  if (unlikely (!image->configure (HB_RASTER_FORMAT_A8, ext)))
-    return nullptr;
-  image->clear ();
+  अगर (unlikely (!image->configure (HB_RASTER_FORMAT_A8, ext)))
+    वापस nullptr;
+  image->सफा ();
 
   /* ── 4. Bucket edges by starting row and rasterize scanlines ──── */
-  if (draw->edges.length && ext.width && ext.height)
+  अगर (draw->edges.लंबाई && ext.width && ext.height)
   {
-    if (unlikely (!draw->row_area.resize_dirty (ext.width) ||
+    अगर (unlikely (!draw->row_area.resize_dirty (ext.width) ||
 		  !draw->row_cover.resize_dirty (ext.width)))
-      return nullptr;
-    hb_memset (draw->row_area.arrayZ,  0, ext.width * sizeof (int32_t));
-    hb_memset (draw->row_cover.arrayZ, 0, ext.width * sizeof (int16_t));
+      वापस nullptr;
+    hb_memset (draw->row_area.arrayZ,  0, ext.width * माप (int32_t));
+    hb_memset (draw->row_cover.arrayZ, 0, ext.width * माप (int16_t));
 
     /* Bucket edges by their starting pixel row.
        Only grow the outer vector; clear inner vectors without freeing. */
-    unsigned old_buckets = draw->edge_buckets.length;
-    if (ext.height > old_buckets)
+    अचिन्हित old_buckets = draw->edge_buckets.लंबाई;
+    अगर (ext.height > old_buckets)
     {
-      if (unlikely (!draw->edge_buckets.resize (ext.height)))
-	return nullptr;
+      अगर (unlikely (!draw->edge_buckets.resize (ext.height)))
+	वापस nullptr;
     }
-    for (unsigned i = 0; i < hb_min (ext.height, old_buckets); i++)
-      draw->edge_buckets.arrayZ[i].clear ();
+    क्रम (अचिन्हित i = 0; i < hb_min (ext.height, old_buckets); i++)
+      draw->edge_buckets.arrayZ[i].सफा ();
     /* New buckets (if any) are already empty from resize's zero-init. */
 
-    for (unsigned i = 0; i < draw->edges.length; i++)
+    क्रम (अचिन्हित i = 0; i < draw->edges.लंबाई; i++)
     {
-      int row = (draw->edges.arrayZ[i].yL >> HB_RASTER_PIXEL_BITS) - ext.y_origin;
-      if (row < 0) row = 0;
-      if ((unsigned) row >= ext.height) continue;
+      पूर्णांक row = (draw->edges.arrayZ[i].yL >> HB_RASTER_PIXEL_BITS) - ext.y_origin;
+      अगर (row < 0) row = 0;
+      अगर ((अचिन्हित) row >= ext.height) जारी;
       draw->edge_buckets.arrayZ[row].push (i);
     }
 
     /* Scanline loop with active edge list. */
-    draw->active_edges.clear ();
+    draw->active_edges.सफा ();
     bool wide_initialized = false;
 
-    for (unsigned row = 0; row < ext.height; row++)
+    क्रम (अचिन्हित row = 0; row < ext.height; row++)
     {
-      int64_t y_top_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
-      int32_t y_top = (int32_t) hb_clamp (y_top_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
+      int64_t y_शीर्ष_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
+      int32_t y_शीर्ष = (int32_t) hb_clamp (y_शीर्ष_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
 
       /* Add new edges from this row's bucket. */
       draw->active_edges.extend (draw->edge_buckets.arrayZ[row]);
 
       /* Process active edges and compact live ones in one linear pass. */
-      unsigned x_min = ext.width, x_max = 0;
-      unsigned write = 0;
-      unsigned active_len = draw->active_edges.length;
+      अचिन्हित x_min = ext.width, x_max = 0;
+      अचिन्हित ग_लिखो = 0;
+      अचिन्हित active_len = draw->active_edges.लंबाई;
       bool use_wide = active_len > HB_RASTER_NARROW_MAX_ACTIVE_EDGES;
-      if (unlikely (use_wide && !wide_initialized))
+      अगर (unlikely (use_wide && !wide_initialized))
       {
-	if (unlikely (!draw->row_area_wide.resize_dirty (ext.width) ||
+	अगर (unlikely (!draw->row_area_wide.resize_dirty (ext.width) ||
 		      !draw->row_cover_wide.resize_dirty (ext.width)))
-	  return nullptr;
-	hb_memset (draw->row_area_wide.arrayZ,  0, ext.width * sizeof (int64_t));
-	hb_memset (draw->row_cover_wide.arrayZ, 0, ext.width * sizeof (int64_t));
+	  वापस nullptr;
+	hb_memset (draw->row_area_wide.arrayZ,  0, ext.width * माप (int64_t));
+	hb_memset (draw->row_cover_wide.arrayZ, 0, ext.width * माप (int64_t));
 	wide_initialized = true;
       }
-      for (unsigned j = 0; j < active_len; j++)
+      क्रम (अचिन्हित j = 0; j < active_len; j++)
       {
-	unsigned edge_idx = draw->active_edges.arrayZ[j];
-	const auto &e = draw->edges.arrayZ[edge_idx];
-	if (e.yH <= y_top)
-	  continue;
+	अचिन्हित edge_idx = draw->active_edges.arrayZ[j];
+	स्थिर स्वतः &e = draw->edges.arrayZ[edge_idx];
+	अगर (e.yH <= y_शीर्ष)
+	  जारी;
 
-	if (unlikely (use_wide))
+	अगर (unlikely (use_wide))
 	  edge_sweep_row (draw->row_area_wide.arrayZ, draw->row_cover_wide.arrayZ,
-			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
-	else
+			  ext.width, ext.x_origin, y_शीर्ष, e, x_min, x_max);
+	अन्यथा
 	  edge_sweep_row (draw->row_area.arrayZ, draw->row_cover.arrayZ,
-			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
-	draw->active_edges.arrayZ[write++] = edge_idx;
+			  ext.width, ext.x_origin, y_शीर्ष, e, x_min, x_max);
+	draw->active_edges.arrayZ[ग_लिखो++] = edge_idx;
       }
-      draw->active_edges.resize (write);
+      draw->active_edges.resize (ग_लिखो);
 
-      if (x_min <= x_max)
+      अगर (x_min <= x_max)
       {
 	int64_t cover_accum = use_wide ?
-	  sweep_row_to_alpha_wide (image->buffer.arrayZ + row * ext.stride,
+	  sweep_row_to_alpha_wide (image->बफर.arrayZ + row * ext.stride,
 				   draw->row_area_wide.arrayZ, draw->row_cover_wide.arrayZ,
 				   x_min, x_max) :
-	  sweep_row_to_alpha (image->buffer.arrayZ + row * ext.stride,
+	  sweep_row_to_alpha (image->बफर.arrayZ + row * ext.stride,
 			      draw->row_area.arrayZ, draw->row_cover.arrayZ,
 			      x_min, x_max);
 
 	/* If cover doesn't cancel, memset the constant-alpha tail. */
-	if (cover_accum != 0)
+	अगर (cover_accum != 0)
 	{
 	  int64_t alpha = cover_accum * (2 * HB_RASTER_ONE_PIXEL);
 	  alpha = alpha < 0 ? -alpha : alpha;
-	  if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
-	  uint8_t byte = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
+	  अगर (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+	  uint8_t byte = (uint8_t) (((अचिन्हित) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
 
-	  uint8_t *row_buf = image->buffer.arrayZ + row * ext.stride;
+	  uint8_t *row_buf = image->बफर.arrayZ + row * ext.stride;
 	  hb_memset (row_buf + x_max + 1, byte, ext.width - 1 - x_max);
 	}
       }
     }
   }
 
-  return image.release ();
+  वापस image.release ();
 }

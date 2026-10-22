@@ -23,11 +23,11 @@
  *
  */
 
-#ifndef HB_OT_POST_TABLE_V2SUBSET_HH
-#define HB_OT_POST_TABLE_V2SUBSET_HH
+#अगर_अघोषित HB_OT_POST_TABLE_V2SUBSET_HH
+#घोषणा HB_OT_POST_TABLE_V2SUBSET_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-post-table.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-post-table.hh"
 
 /*
  * post -- PostScript
@@ -35,117 +35,117 @@
  */
 
 namespace OT {
-template<typename Iterator>
-HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
+ढाँचा<typename Iterator>
+HB_INTERNAL bool post_V2_पुच्छ::serialize (hb_serialize_context_t *c,
                                         Iterator it,
-                                        const void* _post) const
+                                        स्थिर व्योम* _post) स्थिर
 {
-  TRACE_SERIALIZE (this);
-  auto *out = c->start_embed (this);
-  if (unlikely (!c->check_success (out))) return_trace (false);
-  if (!out->glyphNameIndex.serialize (c, + it
+  TRACE_SERIALIZE (यह);
+  स्वतः *out = c->start_embed (यह);
+  अगर (unlikely (!c->check_success (out))) return_trace (false);
+  अगर (!out->glyph_Name_सूचकांक.serialize (c, + it
                                          | hb_map (hb_second)))
       return_trace (false);
 
   hb_set_t copied_indices;
-  for (const auto& _ : + it )
+  क्रम (स्थिर स्वतः& _ : + it )
   {
-    unsigned glyph_id = _.first;
-    unsigned new_index = _.second;
+    अचिन्हित glyph_id = _.first;
+    अचिन्हित new_सूचकांक = _.second;
 
-    if (new_index < 258) continue;
-    if (copied_indices.has (new_index)) continue;
-    copied_indices.add (new_index);
+    अगर (new_सूचकांक < 258) जारी;
+    अगर (copied_indices.has (new_सूचकांक)) जारी;
+    copied_indices.add (new_सूचकांक);
 
-    hb_bytes_t s = reinterpret_cast<const post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
-    HBUINT8 *o = c->allocate_size<HBUINT8> (HBUINT8::static_size * (s.length + 1));
-    if (unlikely (!o)) return_trace (false);
-    if (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_size * s.length);
+    hb_bytes_t s = reinterpret_cast<स्थिर post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
+    HBUINT8 *o = c->allocate_आकार<HBUINT8> (HBUINT8::static_आकार * (s.लंबाई + 1));
+    अगर (unlikely (!o)) return_trace (false);
+    अगर (!c->check_assign (o[0], s.लंबाई, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    hb_memcpy (o+1, s.arrayZ, HBUINT8::static_आकार * s.लंबाई);
   }
 
   return_trace (true);
 }
 
-HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
+HB_INTERNAL bool post_V2_पुच्छ::subset (hb_subset_context_t *c) स्थिर
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (यह);
 
-  const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-  unsigned num_glyphs = c->plan->num_output_glyphs ();
-  hb_map_t old_new_index_map, old_gid_new_index_map;
-  unsigned i = 0;
+  स्थिर hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
+  अचिन्हित अंक_glyphs = c->plan->अंक_output_glyphs ();
+  hb_map_t old_new_सूचकांक_map, old_gid_new_सूचकांक_map;
+  अचिन्हित i = 0;
 
   post::accelerator_t _post (c->plan->source);
 
-  hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_index;
+  hb_hashmap_t<hb_bytes_t, uint32_t, true> glyph_name_to_new_सूचकांक;
 
-  old_new_index_map.alloc (num_glyphs);
-  old_gid_new_index_map.alloc (num_glyphs);
-  glyph_name_to_new_index.alloc (num_glyphs);
+  old_new_सूचकांक_map.alloc (अंक_glyphs);
+  old_gid_new_सूचकांक_map.alloc (अंक_glyphs);
+  glyph_name_to_new_सूचकांक.alloc (अंक_glyphs);
 
-  for (auto _ : c->plan->new_to_old_gid_list)
+  क्रम (स्वतः _ : c->plan->new_to_old_gid_list)
   {
     hb_codepoint_t old_gid = _.second;
-    unsigned old_index = glyphNameIndex[old_gid];
+    अचिन्हित old_सूचकांक = glyph_Name_सूचकांक[old_gid];
 
-    unsigned new_index;
-    const uint32_t *new_index2;
-    if (old_index <= 257)
-      new_index = old_index;
-    else if (old_new_index_map.has (old_index, &new_index2))
-      new_index = *new_index2;
-    else
+    अचिन्हित new_सूचकांक;
+    स्थिर uint32_t *new_index2;
+    अगर (old_सूचकांक <= 257)
+      new_सूचकांक = old_सूचकांक;
+    अन्यथा अगर (old_new_सूचकांक_map.has (old_सूचकांक, &new_index2))
+      new_सूचकांक = *new_index2;
+    अन्यथा
     {
       hb_bytes_t s = _post.find_glyph_name (old_gid);
-      new_index = glyph_name_to_new_index.get (s);
-      if (new_index == (unsigned)-1)
+      new_सूचकांक = glyph_name_to_new_सूचकांक.लो (s);
+      अगर (new_सूचकांक == (अचिन्हित)-1)
       {
-        int standard_glyph_index = -1;
-        for (unsigned i = 0; i < format1_names_length; i++)
+        पूर्णांक standard_glyph_सूचकांक = -1;
+        क्रम (अचिन्हित i = 0; i < format1_names_लंबाई; i++)
         {
-          if (s == format1_names (i))
+          अगर (s == format1_names (i))
           {
-            standard_glyph_index = i;
-            break;
+            standard_glyph_सूचकांक = i;
+            अवरोध;
           }
         }
 
-        if (standard_glyph_index == -1)
+        अगर (standard_glyph_सूचकांक == -1)
         {
-          new_index = 258 + i;
+          new_सूचकांक = 258 + i;
           i++;
         }
-        else
-        { new_index = standard_glyph_index; }
-        glyph_name_to_new_index.set (s, new_index);
+        अन्यथा
+        { new_सूचकांक = standard_glyph_सूचकांक; }
+        glyph_name_to_new_सूचकांक.set (s, new_सूचकांक);
       }
-      old_new_index_map.set (old_index, new_index);
+      old_new_सूचकांक_map.set (old_सूचकांक, new_सूचकांक);
     }
-    old_gid_new_index_map.set (old_gid, new_index);
+    old_gid_new_सूचकांक_map.set (old_gid, new_सूचकांक);
   }
 
-  if (old_gid_new_index_map.in_error())
+  अगर (old_gid_new_सूचकांक_map.in_error())
     return_trace (false);
 
-  auto index_iter =
-  + hb_range (num_glyphs)
+  स्वतः सूचकांक_iter =
+  + hb_range (अंक_glyphs)
   | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
                             {
                               hb_codepoint_t *old_gid;
                               /* use 0 for retain-gid holes, which refers to the name .notdef,
                                * as the glyphNameIndex entry for that glyph ID."*/
-                              unsigned new_index = 0;
-                              if (reverse_glyph_map.has (new_gid, &old_gid)) {
-                                new_index = old_gid_new_index_map.get (*old_gid);
-                                return hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
+                              अचिन्हित new_सूचकांक = 0;
+                              अगर (reverse_glyph_map.has (new_gid, &old_gid)) {
+                                new_सूचकांक = old_gid_new_सूचकांक_map.लो (*old_gid);
+                                वापस hb_pair_t<अचिन्हित, अचिन्हित> (*old_gid, new_सूचकांक);
                               }
-                              return hb_pair_t<unsigned, unsigned> (new_gid, new_index);
+                              वापस hb_pair_t<अचिन्हित, अचिन्हित> (new_gid, new_सूचकांक);
                             })
   ;
 
-  return_trace (serialize (c->serializer, index_iter, &_post));
+  return_trace (serialize (c->serializer, सूचकांक_iter, &_post));
 }
 
 } /* namespace OT */
-#endif /* HB_OT_POST_TABLE_V2SUBSET_HH */
+#पूर्ण_अगर /* HB_OT_POST_TABLE_V2SUBSET_HH */

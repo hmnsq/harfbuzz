@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_ARABIC_WIN1256_HH
+#अगर_अघोषित HB_OT_SHAPER_ARABIC_WIN1256_HH
 
 
 /*
@@ -37,33 +37,33 @@
 
 
 /* First we measure, then we cut. */
-#ifndef OT_MEASURE
-#define OT_MEASURE
-#define OT_TABLE_START			static const struct TABLE_NAME {
-#define OT_TABLE_END			}
-#define OT_LABEL_START(Name)		unsigned char Name[
-#define OT_LABEL_END			];
-#define OT_UINT8(u8)			+1/*byte*/
-#define OT_UINT16(u16)			+2/*bytes*/
-#else
-#undef  OT_MEASURE
-#define OT_TABLE_START			TABLE_NAME = {
-#define OT_TABLE_END			};
-#define OT_LABEL_START(Name)		{
-#define OT_LABEL_END			},
-#define OT_UINT8(u8)			(u8),
-#define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#अगर_अघोषित OT_MEASURE
+#घोषणा OT_MEASURE
+#घोषणा OT_TABLE_START			अटल स्थिर काष्ठा TABLE_NAME {
+#घोषणा OT_TABLE_END			}
+#घोषणा OT_LABEL_START(Name)		अचिन्हित अक्षर Name[
+#घोषणा OT_LABEL_END			];
+#घोषणा OT_UINT8(u8)			+1/*byte*/
+#घोषणा OT_UINT16(u16)			+2/*bytes*/
+#अन्यथा
+#अघोषित  OT_MEASURE
+#घोषणा OT_TABLE_START			TABLE_NAME = {
+#घोषणा OT_TABLE_END			};
+#घोषणा OT_LABEL_START(Name)		{
+#घोषणा OT_LABEL_END			},
+#घोषणा OT_UINT8(u8)			(u8),
+#घोषणा OT_UINT16(u16)			(अचिन्हित अक्षर)((u16)>>8), (अचिन्हित अक्षर)((u16)&0xFFu),
+#घोषणा OT_गिनती(Name, Item_आकार)	((अचिन्हित पूर्णांक) माप(((काष्ठा TABLE_NAME*)0)->Name) \
+					 / (अचिन्हित पूर्णांक)(Item_आकार) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
-					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
-					  (char*)(&((struct TABLE_NAME*)0)->From)) \
+#घोषणा OT_DISTANCE(From,To)		((अचिन्हित पूर्णांक) \
+					 ((अक्षर*)(&((काष्ठा TABLE_NAME*)0)->To) - \
+					  (अक्षर*)(&((काष्ठा TABLE_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
-#endif
+#पूर्ण_अगर
 
 
-#define OT_LABEL(Name) \
+#घोषणा OT_LABEL(Name) \
 	OT_LABEL_END \
 	OT_LABEL_START(Name)
 
@@ -72,36 +72,36 @@
  * commas will throw off the preprocessor.  The solution is to wrap
  * the passed-in argument in OT_LIST() before passing to the next macro.
  * Unfortunately this trick requires vararg macros. */
-#define OT_LIST(...) __VA_ARGS__
+#घोषणा OT_LIST(...) __VA_ARGS__
 
 
 /*
  * Basic Types
  */
 
-#define OT_TAG(a,b,c,d) \
+#घोषणा OT_TAG(a,b,c,d) \
 	OT_UINT8(a) OT_UINT8(b) OT_UINT8(c) OT_UINT8(d)
 
-#define OT_OFFSET(From, To) /* Offset from From to To in bytes */ \
+#घोषणा OT_OFFSET(From, To) /* Offset from From to To in bytes */ \
 	OT_UINT16(OT_DISTANCE(From, To))
 
-#define OT_GLYPHID /* GlyphID */ \
+#घोषणा OT_GLYPHID /* GlyphID */ \
 	OT_UINT16
 /* Shorthand. */
-#define G	OT_GLYPHID
+#घोषणा G	OT_GLYPHID
 
-#define OT_UARRAY(Name, Items) \
+#घोषणा OT_UARRAY(Name, वस्तुएँ_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2)) \
+	OT_UINT16(OT_गिनती(Name##Data, 2)) \
 	OT_LABEL(Name##Data) \
-	Items \
+	वस्तुएँ_2 \
 	OT_LABEL_END
 
-#define OT_UHEADLESSARRAY(Name, Items) \
+#घोषणा OT_UHEADLESSARRAY(Name, वस्तुएँ_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2) + 1) \
+	OT_UINT16(OT_गिनती(Name##Data, 2) + 1) \
 	OT_LABEL(Name##Data) \
-	Items \
+	वस्तुएँ_2 \
 	OT_LABEL_END
 
 
@@ -109,35 +109,35 @@
  * Common Types
  */
 
-#define OT_LOOKUP_FLAG_IGNORE_MARKS	0x08u
+#घोषणा OT_LOOKUP_FLAG_IGNORE_MARKS	0x08u
 
-#define OT_LOOKUP(Name, LookupType, LookupFlag, SubLookupOffsets) \
+#घोषणा OT_LOOKUP(Name, LookupType, LookupFlag, SubLookupOffsets) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(LookupType) \
 	OT_UINT16(LookupFlag) \
 	OT_LABEL_END \
 	OT_UARRAY(Name##SubLookupOffsetsArray, OT_LIST(SubLookupOffsets))
 
-#define OT_SUBLOOKUP(Name, SubFormat, Items) \
+#घोषणा OT_SUBLOOKUP(Name, SubFormat, वस्तुएँ_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(SubFormat) \
-	Items
+	वस्तुएँ_2
 
-#define OT_COVERAGE1(Name, Items) \
+#घोषणा OT_COVERAGE1(Name, वस्तुएँ_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(1) \
 	OT_LABEL_END \
-	OT_UARRAY(Name##Glyphs, OT_LIST(Items))
+	OT_UARRAY(Name##Glyphs, OT_LIST(वस्तुएँ_2))
 
 
 /*
  * GSUB
  */
 
-#define OT_LOOKUP_TYPE_SUBST_SINGLE	1u
-#define OT_LOOKUP_TYPE_SUBST_LIGATURE	4u
+#घोषणा OT_LOOKUP_TYPE_SUBST_SINGLE	1u
+#घोषणा OT_LOOKUP_TYPE_SUBST_LIGATURE	4u
 
-#define OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2(Name, FromGlyphs, ToGlyphs) \
+#घोषणा OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2(Name, FromGlyphs, ToGlyphs) \
 	OT_SUBLOOKUP(Name, 2, \
 		OT_OFFSET(Name, Name##Coverage) \
 		OT_LABEL_END \
@@ -146,7 +146,7 @@
 	OT_COVERAGE1(Name##Coverage, OT_LIST(FromGlyphs)) \
 	/* static_assert_expr (len(FromGlyphs) == len(ToGlyphs)) */
 
-#define OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1(Name, FirstGlyphs, LigatureSetOffsets) \
+#घोषणा OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1(Name, FirstGlyphs, LigatureSetOffsets) \
 	OT_SUBLOOKUP(Name, 1, \
 		OT_OFFSET(Name, Name##Coverage) \
 		OT_LABEL_END \
@@ -155,10 +155,10 @@
 	OT_COVERAGE1(Name##Coverage, OT_LIST(FirstGlyphs)) \
 	/* static_assert_expr (len(FirstGlyphs) == len(LigatureSetOffsets)) */
 
-#define OT_LIGATURE_SET(Name, LigatureSetOffsets) \
+#घोषणा OT_LIGATURE_SET(Name, LigatureSetOffsets) \
 	OT_UARRAY(Name, OT_LIST(LigatureSetOffsets))
 
-#define OT_LIGATURE(Name, Components, LigGlyph) \
+#घोषणा OT_LIGATURE(Name, Components, LigGlyph) \
 	OT_LABEL_START(Name) \
 	LigGlyph \
 	OT_LABEL_END \
@@ -171,17 +171,17 @@
  */
 
 /* Table name. */
-#define TABLE_NAME arabic_win1256_gsub_lookups
+#घोषणा TABLE_NAME arabic_win1256_gsub_lookups
 
 /* Table manifest. */
-#define MANIFEST(Items) \
+#घोषणा MANIFEST(वस्तुएँ_2) \
 	OT_LABEL_START(manifest) \
-	OT_UINT16(OT_COUNT(manifestData, 6)) \
-	OT_LABEL(manifestData) \
-	Items \
+	OT_UINT16(OT_गिनती(manifest_तथ्य, 6)) \
+	OT_LABEL(manifest_तथ्य) \
+	वस्तुएँ_2 \
 	OT_LABEL_END
 
-#define MANIFEST_LOOKUP(Tag, Name) \
+#घोषणा MANIFEST_LOOKUP(Tag, Name) \
 	Tag \
 	OT_OFFSET(manifest, Name)
 
@@ -301,49 +301,49 @@ OT_TABLE_END
  * Clean up
  */
 
-#undef MANIFEST
-#undef MANIFEST_LOOKUP
+#अघोषित MANIFEST
+#अघोषित MANIFEST_LOOKUP
 
-#undef OT_TABLE_START
-#undef OT_TABLE_END
-#undef OT_LABEL_START
-#undef OT_LABEL_END
-#undef OT_UINT8
-#undef OT_UINT16
-#undef OT_COUNT
-#undef OT_DISTANCE
+#अघोषित OT_TABLE_START
+#अघोषित OT_TABLE_END
+#अघोषित OT_LABEL_START
+#अघोषित OT_LABEL_END
+#अघोषित OT_UINT8
+#अघोषित OT_UINT16
+#अघोषित OT_गिनती
+#अघोषित OT_DISTANCE
 
-#undef OT_LABEL
-#undef OT_LIST
+#अघोषित OT_LABEL
+#अघोषित OT_LIST
 
-#undef OT_TAG
-#undef OT_OFFSET
-#undef OT_GLYPHID
-#undef G
-#undef OT_UARRAY
-#undef OT_UHEADLESSARRAY
+#अघोषित OT_TAG
+#अघोषित OT_OFFSET
+#अघोषित OT_GLYPHID
+#अघोषित G
+#अघोषित OT_UARRAY
+#अघोषित OT_UHEADLESSARRAY
 
-#undef OT_LOOKUP_FLAG_IGNORE_MARKS
-#undef OT_LOOKUP
-#undef OT_SUBLOOKUP
-#undef OT_COVERAGE1
-#undef OT_LOOKUP_TYPE_SUBST_SINGLE
-#undef OT_LOOKUP_TYPE_SUBST_LIGATURE
-#undef OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2
-#undef OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1
-#undef OT_LIGATURE_SET
-#undef OT_LIGATURE
+#अघोषित OT_LOOKUP_FLAG_IGNORE_MARKS
+#अघोषित OT_LOOKUP
+#अघोषित OT_SUBLOOKUP
+#अघोषित OT_COVERAGE1
+#अघोषित OT_LOOKUP_TYPE_SUBST_SINGLE
+#अघोषित OT_LOOKUP_TYPE_SUBST_LIGATURE
+#अघोषित OT_SUBLOOKUP_SINGLE_SUBST_FORMAT2
+#अघोषित OT_SUBLOOKUP_LIGATURE_SUBST_FORMAT1
+#अघोषित OT_LIGATURE_SET
+#अघोषित OT_LIGATURE
 
 
 /*
  * Include a second time to get the table data...
  */
-#if 0
-#include "hb.hh" /* Make check-includes.sh happy. */
-#endif
-#ifdef OT_MEASURE
-#include "hb-ot-shaper-arabic-win1256.hh"
-#endif
+#अगर 0
+#समावेश "hb.hh" /* Make check-includes.sh happy. */
+#पूर्ण_अगर
+#अगर_घोषित OT_MEASURE
+#समावेश "hb-ot-shaper-arabic-win1256.hh"
+#पूर्ण_अगर
 
-#define HB_OT_SHAPER_ARABIC_WIN1256_HH
-#endif /* HB_OT_SHAPER_ARABIC_WIN1256_HH */
+#घोषणा HB_OT_SHAPER_ARABIC_WIN1256_HH
+#पूर्ण_अगर /* HB_OT_SHAPER_ARABIC_WIN1256_HH */

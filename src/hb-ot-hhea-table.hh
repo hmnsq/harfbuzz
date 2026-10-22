@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_HHEA_TABLE_HH
-#define HB_OT_HHEA_TABLE_HH
+#अगर_अघोषित HB_OT_HHEA_TABLE_HH
+#घोषणा HB_OT_HHEA_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-dual.hh"
 
 /*
  * hhea -- Horizontal Header
@@ -36,38 +36,38 @@
  * vhea -- Vertical Header
  * https://docs.microsoft.com/en-us/typography/opentype/spec/vhea
  */
-#define HB_OT_TAG_hhea HB_TAG('h','h','e','a')
-#define HB_OT_TAG_HHEA HB_TAG('H','H','E','A')
-#define HB_OT_TAG_vhea HB_TAG('v','h','e','a')
-#define HB_OT_TAG_VHEA HB_TAG('V','H','E','A')
+#घोषणा HB_OT_TAG_hhea HB_TAG('h','h','e','a')
+#घोषणा HB_OT_TAG_HHEA HB_TAG('H','H','E','A')
+#घोषणा HB_OT_TAG_vhea HB_TAG('v','h','e','a')
+#घोषणा HB_OT_TAG_VHEA HB_TAG('V','H','E','A')
 
 
 namespace OT {
 
 
-template <typename T, typename Types>
-struct _hea
+ढाँचा <typename T, typename Types>
+काष्ठा _hea
 {
-  using LongMetricCount = typename Types::HBLUINT;
+  using Long_Metric_गिनती = typename Types::HBLUINT;
 
-  static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  अटल constexpr अचिन्हित long_metric_गिनती_max ()
+  { वापस Long_Metric_गिनती::static_आकार == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
-  bool has_data () const { return version.major; }
+  bool has_तथ्य () स्थिर { वापस version.major; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
 		  likely (version.major == 1));
   }
 
-  public:
+  खुला:
   FixedVersion<>version;	/* 0x00010000u for version 1.0. */
   FWORD		ascender;	/* Typographic ascent. */
   FWORD		descender;	/* Typographic descent. */
-  FWORD		lineGap;	/* Typographic line gap. */
+  FWORD		पंक्ति_Gap;	/* Typographic line gap. */
   UFWORD	advanceMax;	/* Maximum advance width/height value in
 				 * metrics table. */
   FWORD		minLeadingBearing;
@@ -92,35 +92,35 @@ struct _hea
   HBINT16	reserved2;	/* Set to 0. */
   HBINT16	reserved3;	/* Set to 0. */
   HBINT16	reserved4;	/* Set to 0. */
-  HBINT16	metricDataFormat;/* 0 for current format. */
-  LongMetricCount
-		numberOfLongMetrics;
+  HBINT16	metric_तथ्य_Format;/* 0 for current format. */
+  Long_Metric_गिनती
+		संख्या_Of_Long_Metrics;
 				/* Number of LongMetric entries in metric
 				 * table. */
-  public:
-  DEFINE_SIZE_STATIC (34 + Types::HBLUINT::static_size);
+  खुला:
+  DEFINE_आकार_STATIC (34 + Types::HBLUINT::static_आकार);
 };
 
-struct hhea : _hea<hhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
+काष्ठा hhea : _hea<hhea, Layout::SmallTypes> {
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
 };
-struct HHEA : _hea<HHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
+काष्ठा HHEA : _hea<HHEA, Layout::MediumTypes> {
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
 };
-struct vhea : _hea<vhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
+काष्ठा vhea : _hea<vhea, Layout::SmallTypes> {
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
 };
-struct VHEA : _hea<VHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
+काष्ठा VHEA : _hea<VHEA, Layout::MediumTypes> {
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
 };
 
-struct hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
+काष्ठा hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
 {
   hhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<hhea, HHEA> (face) {}
 };
 
-struct vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
+काष्ठा vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
 {
   vhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<vhea, VHEA> (face) {}
@@ -130,4 +130,4 @@ struct vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
 } /* namespace OT */
 
 
-#endif /* HB_OT_HHEA_TABLE_HH */
+#पूर्ण_अगर /* HB_OT_HHEA_TABLE_HH */

@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#समावेश "graph.hh"
+#समावेश "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#अगर_अघोषित GRAPH_GSUBGPOS_CONTEXT_HH
+#घोषणा GRAPH_GSUBGPOS_CONTEXT_HH
 
 namespace graph {
 
-struct Lookup;
+काष्ठा Lookup;
 
-struct gsubgpos_graph_context_t
+काष्ठा gsubgpos_graph_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
+  HB_INTERNAL अटल graph_परिणाम_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
 
   hb_tag_t table_tag;
   graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  अचिन्हित lookup_list_सूचकांक;
+  hb_hashmap_t<अचिन्हित, graph::Lookup*> lookups;
+  hb_hashmap_t<अचिन्हित, अचिन्हित> subtable_to_extension;
+  hb_hashmap_t<अचिन्हित, hb_vector_t<अचिन्हित>> split_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_INTERNAL graph_परिणाम_t<अचिन्हित> create_गाँठ (अचिन्हित आकार);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_परिणाम_t<व्योम> add_बफर (अक्षर* बफर)
   {
-    return graph.add_buffer (buffer);
+    वापस graph.add_बफर (बफर);
   }
 
- private:
+ निजी:
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_INTERNAL अचिन्हित अंक_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#पूर्ण_अगर  // GRAPH_GSUBGPOS_CONTEXT

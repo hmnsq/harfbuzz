@@ -22,63 +22,63 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_OT_GASP_TABLE_HH
-#define HB_OT_GASP_TABLE_HH
+#अगर_अघोषित HB_OT_GASP_TABLE_HH
+#घोषणा HB_OT_GASP_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#समावेश "hb-open-type.hh"
+#समावेश "hb-ot-hhea-table.hh"
+#समावेश "hb-ot-os2-table.hh"
+#समावेश "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gasp
  */
-#define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
+#घोषणा HB_OT_TAG_gasp HB_TAG('g','a','s','p')
 
 
 namespace OT {
 
-struct GaspRange
+काष्ठा GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह));
   }
 
-  public:
+  खुला:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  खुला:
+  DEFINE_आकार_STATIC (4);
 };
 
-struct gasp
+काष्ठा gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  स्थिर GaspRange &get_gasp_range (अचिन्हित पूर्णांक i) स्थिर
+  { वापस gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
+  रक्षित:
   HBUINT16	version;	/* Version number (set to 1) */
   Array16Of<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
-  DEFINE_SIZE_ARRAY (4, gaspRanges);
+  खुला:
+  DEFINE_आकार_ARRAY (4, gaspRanges);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_GASP_TABLE_HH */
+#पूर्ण_अगर /* HB_OT_GASP_TABLE_HH */

@@ -24,18 +24,18 @@
  * Mozilla Author(s): Jonathan Kew
  */
 
-#ifndef HB_CORETEXT_H
-#define HB_CORETEXT_H
+#अगर_अघोषित HB_CORETEXT_H
+#घोषणा HB_CORETEXT_H
 
-#include "hb.h"
+#समावेश "hb.h"
 
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#समावेश <TargetConditionals.h>
+#अगर TARGET_OS_IPHONE
 #  include <CoreText/CoreText.h>
 #  include <CoreGraphics/CoreGraphics.h>
-#else
+#अन्यथा
 #  include <ApplicationServices/ApplicationServices.h>
-#endif
+#पूर्ण_अगर
 
 HB_BEGIN_DECLS
 
@@ -50,7 +50,7 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6mort.html
  *
  **/
-#define HB_CORETEXT_TAG_MORT HB_TAG('m','o','r','t')
+#घोषणा HB_CORETEXT_TAG_MORT HB_TAG('m','o','r','t')
 
 /**
  * HB_CORETEXT_TAG_MORX:
@@ -62,7 +62,7 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6morx.html
  *
  **/
-#define HB_CORETEXT_TAG_MORX HB_TAG('m','o','r','x')
+#घोषणा HB_CORETEXT_TAG_MORX HB_TAG('m','o','r','x')
 
 /**
  * HB_CORETEXT_TAG_KERX:
@@ -74,19 +74,19 @@ HB_BEGIN_DECLS
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6kerx.html
  *
  **/
-#define HB_CORETEXT_TAG_KERX HB_TAG('k','e','r','x')
+#घोषणा HB_CORETEXT_TAG_KERX HB_TAG('k','e','r','x')
 
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font);
 
 HB_EXTERN hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index);
+hb_coretext_face_create_from_file_or_fail (स्थिर अक्षर   *file_name,
+					   अचिन्हित पूर्णांक  सूचकांक_2);
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index);
+					   अचिन्हित पूर्णांक  सूचकांक_2);
 
 HB_EXTERN hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font);
@@ -98,10 +98,10 @@ hb_coretext_face_get_cg_font (hb_face_t *face);
 HB_EXTERN CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_coretext_font_set_funcs (hb_font_t *font);
 
 
 HB_END_DECLS
 
-#endif /* HB_CORETEXT_H */
+#पूर्ण_अगर /* HB_CORETEXT_H */

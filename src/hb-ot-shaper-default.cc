@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#समावेश "hb-ot-shaper.hh"
 
 
-const hb_ot_shaper_t _hb_ot_shaper_default =
+स्थिर hb_ot_shaper_t _hb_ot_shaper_default =
 {
   nullptr, /* collect_features */
   nullptr, /* override_features */
@@ -49,10 +49,10 @@ const hb_ot_shaper_t _hb_ot_shaper_default =
   true, /* fallback_position */
 };
 
-#ifndef HB_NO_AAT_SHAPE
+#अगर_अघोषित HB_NO_AAT_SHAPE
 /* Same as default but no mark advance zeroing / fallback positioning.
  * Dumbest shaper ever, basically. */
-const hb_ot_shaper_t _hb_ot_shaper_dumber =
+स्थिर hb_ot_shaper_t _hb_ot_shaper_dumber =
 {
   nullptr, /* collect_features */
   nullptr, /* override_features */
@@ -69,7 +69,7 @@ const hb_ot_shaper_t _hb_ot_shaper_dumber =
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
   false, /* fallback_position */
 };
-#endif
+#पूर्ण_अगर
 
 
-#endif
+#पूर्ण_अगर

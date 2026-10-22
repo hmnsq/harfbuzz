@@ -1,14 +1,14 @@
-#ifndef OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
-#define OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
+#घोषणा OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct ChainContextPos : ChainContext {};
+काष्ठा ChainContextPos : ChainContext {};
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_CHAINCONTEXTPOS_HH */

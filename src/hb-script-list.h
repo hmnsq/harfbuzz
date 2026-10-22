@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_SCRIPT_LIST_H
-#define HB_SCRIPT_LIST_H
+#अगर_अघोषित HB_SCRIPT_LIST_H
+#घोषणा HB_SCRIPT_LIST_H
 
 /* This file belongs to the middle of hb-common.h.
  * The reason it has been surgically extracted is because
@@ -42,11 +42,11 @@
  */
 
 /* Dummy lines to make our checks happy.  */
-#if 0
-#include "hb-common.h"
+#अगर 0
+#समावेश "hb-common.h"
 HB_BEGIN_DECLS
 HB_END_DECLS
-#endif
+#पूर्ण_अगर
 
 
 /**
@@ -240,7 +240,7 @@ HB_END_DECLS
  **/
 
 /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-typedef enum
+प्रकार क्रमागत
 {
   HB_SCRIPT_COMMON			= HB_TAG ('Z','y','y','y'), /*1.1*/
   HB_SCRIPT_INHERITED			= HB_TAG ('Z','i','n','h'), /*1.1*/
@@ -497,9 +497,9 @@ typedef enum
    *
    *   https://lists.freedesktop.org/archives/harfbuzz/2014-March/004150.html
    */
-  _HB_SCRIPT_MAX_VALUE				= HB_TAG_MAX_SIGNED, /*< skip >*/
-  _HB_SCRIPT_MAX_VALUE_SIGNED			= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_SCRIPT_MAX_मूल्य				= HB_TAG_MAX_SIGNED, /*< skip >*/
+  HB_SCRIPT_MAX_मूल्य_SIGNED			= HB_TAG_MAX_SIGNED /*< skip >*/
 
 } hb_script_t;
 
-#endif /* HB_SCRIPT_LIST_H */
+#पूर्ण_अगर /* HB_SCRIPT_LIST_H */

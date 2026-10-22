@@ -22,27 +22,27 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot-cff-common.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-cff-specializer.hh"
+#समावेश "hb.hh"
+#समावेश "hb-ot-cff-common.hh"
+#समावेश "hb-subset-cff-common.hh"
+#समावेश "hb-cff-specializer.hh"
 
-static void
-test_specialized_line_geometry ()
+अटल व्योम
+test_specialized_पंक्ति_geometry ()
 {
   /* Reconstruct every point after specializing horizontal/vertical line
    * sequences, including repeated directions and merged alternating runs. */
-  for (unsigned n = 1; n <= 8; n++)
-    for (unsigned mask = 0; mask < (1u << n); mask++)
-      for (unsigned maxstack : {4u, 48u})
+  क्रम (अचिन्हित n = 1; n <= 8; n++)
+    क्रम (अचिन्हित mask = 0; mask < (1u << n); mask++)
+      क्रम (अचिन्हित maxstack : {4u, 48u})
       {
         hb_vector_t<CFF::cs_command_t> commands;
-        for (unsigned i = 0; i < n; i++)
+        क्रम (अचिन्हित i = 0; i < n; i++)
         {
           bool horizontal = mask & (1u << i);
-          int delta = (i & 1) ? -(int) i - 1 : (int) i + 1;
+          पूर्णांक delta = (i & 1) ? -(पूर्णांक) i - 1 : (पूर्णांक) i + 1;
           CFF::cs_command_t cmd (OpCode_rlineto);
-          CFF::number_t dx, dy;
+          CFF::संख्या_t dx, dy;
           dx.set_int (horizontal ? delta : 0);
           dy.set_int (horizontal ? 0 : delta);
           cmd.args.push (dx);
@@ -50,17 +50,17 @@ test_specialized_line_geometry ()
           commands.push (std::move (cmd));
         }
         CFF::specialize_commands (commands, maxstack);
-        for (const auto &cmd : commands)
-          hb_always_assert (cmd.args.length <= maxstack);
+        क्रम (स्थिर स्वतः &cmd : commands)
+          hb_always_assert (cmd.args.लंबाई <= maxstack);
         CFF::str_buff_t encoded;
         hb_always_assert (CFF::encode_commands (commands, encoded));
         CFF::generalize_commands (commands);
-        hb_always_assert (commands.length == n);
-        int x = 0, y = 0, expected_x = 0, expected_y = 0;
-        for (unsigned i = 0; i < n; i++)
+        hb_always_assert (commands.लंबाई == n);
+        पूर्णांक x = 0, y = 0, expected_x = 0, expected_y = 0;
+        क्रम (अचिन्हित i = 0; i < n; i++)
         {
           bool horizontal = mask & (1u << i);
-          int delta = (i & 1) ? -(int) i - 1 : (int) i + 1;
+          पूर्णांक delta = (i & 1) ? -(पूर्णांक) i - 1 : (पूर्णांक) i + 1;
           expected_x += horizontal ? delta : 0;
           expected_y += horizontal ? 0 : delta;
           x += commands[i].args[0].to_int ();
@@ -70,19 +70,19 @@ test_specialized_line_geometry ()
       }
 }
 
-static void
+अटल व्योम
 test_specialized_fractional_geometry ()
 {
-  const double deltas[][2] = {
+  स्थिर द्विगुन deltas[][2] = {
     {0.5, 12}, {-0.5, 12}, {12, 0.5}, {12, -0.5},
     {0.25, -0.75}, {0, 12}, {12, 0},
   };
-  for (CFF::op_code_t op : {OpCode_rmoveto, OpCode_rlineto})
-    for (const auto &delta : deltas)
+  क्रम (CFF::op_code_t op : {OpCode_rmoveto, OpCode_rlineto})
+    क्रम (स्थिर स्वतः &delta : deltas)
     {
       hb_vector_t<CFF::cs_command_t> commands;
       CFF::cs_command_t cmd (op);
-      CFF::number_t dx, dy;
+      CFF::संख्या_t dx, dy;
       dx.set_real (delta[0]);
       dy.set_real (delta[1]);
       cmd.args.push (dx);
@@ -92,25 +92,25 @@ test_specialized_fractional_geometry ()
       CFF::str_buff_t encoded;
       hb_always_assert (CFF::encode_commands (commands, encoded));
       CFF::generalize_commands (commands);
-      hb_always_assert (commands.length == 1);
+      hb_always_assert (commands.लंबाई == 1);
       hb_always_assert (commands[0].op == op);
-      hb_always_assert (commands[0].args.length == 2);
+      hb_always_assert (commands[0].args.लंबाई == 2);
       hb_always_assert (commands[0].args[0].to_real () == delta[0]);
       hb_always_assert (commands[0].args[1].to_real () == delta[1]);
     }
 }
 
-template <typename GID, typename FD>
-static void
+ढाँचा <typename GID, typename FD>
+अटल व्योम
 test_fd_select_sentinel ()
 {
-  unsigned char data[3 * GID::static_size + FD::static_size] = {};
-  auto *select = reinterpret_cast<CFF::FDSelect3_4<GID, FD> *> (data);
+  अचिन्हित अक्षर तथ्य[3 * GID::static_आकार + FD::static_आकार] = {};
+  स्वतः *select = reinterpret_cast<CFF::FDSelect3_4<GID, FD> *> (तथ्य);
   select->ranges.len = 1;
   select->ranges.arrayZ[0].first = 0;
   select->ranges.arrayZ[0].fd = 0;
-  hb_sanitize_context_t c ((const char *) data, (const char *) data + sizeof (data));
-  c.set_num_glyphs (4);
+  hb_sanitize_context_t c ((स्थिर अक्षर *) तथ्य, (स्थिर अक्षर *) तथ्य + माप (तथ्य));
+  c.set_अंक_glyphs (4);
   c.start_processing ();
 
   select->sentinel () = 3;
@@ -126,10 +126,10 @@ test_fd_select_sentinel ()
   c.end_processing ();
 }
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
-  test_specialized_line_geometry ();
+  test_specialized_पंक्ति_geometry ();
   test_specialized_fractional_geometry ();
   test_fd_select_sentinel<OT::HBUINT16, OT::HBUINT8> ();
   test_fd_select_sentinel<OT::HBUINT32, OT::HBUINT16> ();
@@ -138,13 +138,13 @@ main (int argc, char **argv)
   {
     CFF::str_buff_t buff;
     CFF::str_encoder_t encoder (buff);
-    CFF::number_t number;
-    struct num_tp_test {
-      double input;
-      unsigned length;
-      unsigned char output[7];
+    CFF::संख्या_t number;
+    काष्ठा अंक_tp_test {
+      द्विगुन निवेश;
+      अचिन्हित लंबाई;
+      अचिन्हित अक्षर output[7];
     };
-    struct num_tp_test num_tp_tests[] = {
+    काष्ठा अंक_tp_test अंक_tp_tests[] = {
       { -9.399999999999999, 4, { 0x1E, 0xE9, 0xA4, 0xFF } }, // -9.4
       { 9.399999999999999999, 3, { 0x1E, 0x9A, 0x4F } }, // 9.4
       { 456.8, 4, { 0x1E, 0x45, 0x6A, 0x8F } }, // 456.8
@@ -164,17 +164,17 @@ main (int argc, char **argv)
       { 0.0123, 4, { 0x1E, 0x12, 0x3C, 0x4F } }, // 123E-4
       { -0.0123, 5, { 0x1E, 0xE1, 0x23, 0xC4, 0xFF } }, // -123E-4
     };
-    for (size_t t = 0; t < sizeof num_tp_tests / sizeof num_tp_tests[0]; t++)
+    क्रम (माप_प्रकार t = 0; t < माप अंक_tp_tests / माप अंक_tp_tests[0]; t++)
     {
-      struct num_tp_test num_tp_test = num_tp_tests[t];
-      number.set_real (num_tp_test.input);
-      encoder.encode_num_tp (number);
-      hb_always_assert (buff.length == num_tp_test.length);
-      for (unsigned i = 0; i < buff.length; i++)
-	hb_always_assert (buff[i] == num_tp_test.output[i]);
+      काष्ठा अंक_tp_test अंक_tp_test = अंक_tp_tests[t];
+      number.set_real (अंक_tp_test.निवेश);
+      encoder.encode_अंक_tp (number);
+      hb_always_assert (buff.लंबाई == अंक_tp_test.लंबाई);
+      क्रम (अचिन्हित i = 0; i < buff.लंबाई; i++)
+	hb_always_assert (buff[i] == अंक_tp_test.output[i]);
       encoder.reset ();
     }
   }
 
-  return 0;
+  वापस 0;
 }

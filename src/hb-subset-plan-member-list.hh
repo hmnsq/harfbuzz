@@ -25,11 +25,11 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_PLAN_MEMBER_LIST_HH
-#define HB_SUBSET_PLAN_MEMBER_LIST_HH
-#endif /* HB_SUBSET_PLAN_MEMBER_LIST_HH */ /* Dummy header guards */
+#अगर_अघोषित HB_SUBSET_PLAN_MEMBER_LIST_HH
+#घोषणा HB_SUBSET_PLAN_MEMBER_LIST_HH
+#पूर्ण_अगर /* HB_SUBSET_PLAN_MEMBER_LIST_HH */ /* Dummy header guards */
 
-#define E(x, y) x, y
+#घोषणा E(x, y) x, y
 
 // For each cp that we'd like to retain maps to the corresponding gid.
 HB_SUBSET_PLAN_MEMBER (hb_set_t, unicodes)
@@ -81,8 +81,8 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, gpos_lookups)
 HB_SUBSET_PLAN_MEMBER (hb_map_t, used_mark_sets_map)
 
 //active langsys we'd like to retain
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::unique_ptr<hb_set_t>>), gsub_langsys)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::unique_ptr<hb_set_t>>), gpos_langsys)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb::unique_ptr<hb_set_t>>), gsub_langsys)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb::unique_ptr<hb_set_t>>), gpos_langsys)
 
 //active features after removing redundant langsys and prune_features
 HB_SUBSET_PLAN_MEMBER (hb_map_t, gsub_features)
@@ -93,17 +93,17 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, gsub_features_w_duplicates)
 HB_SUBSET_PLAN_MEMBER (hb_map_t, gpos_features_w_duplicates)
 
 //active feature variation records/condition index with variations
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::shared_ptr<hb_set_t>>), gsub_feature_record_cond_idx_map)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::shared_ptr<hb_set_t>>), gpos_feature_record_cond_idx_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb::shared_ptr<hb_set_t>>), gsub_feature_record_cond_idx_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb::shared_ptr<hb_set_t>>), gpos_feature_record_cond_idx_map)
 
 //feature index-> address of substituation feature table mapping with
 //variations
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, const OT::Feature*>), gsub_feature_substitutes_map)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, const OT::Feature*>), gpos_feature_substitutes_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, स्थिर OT::Feature*>), gsub_feature_substitutes_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, स्थिर OT::Feature*>), gpos_feature_substitutes_map)
 
 //feature index->resolved lookup set mapping for fully-instanced lookup variations
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::shared_ptr<hb_set_t>>), gsub_lookup_variations)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb::shared_ptr<hb_set_t>>), gpos_lookup_variations)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb::shared_ptr<hb_set_t>>), gsub_lookup_variations)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb::shared_ptr<hb_set_t>>), gpos_lookup_variations)
 
 // old feature_indexes set, used to reinstate the old features
 HB_SUBSET_PLAN_MEMBER (hb_set_t, gsub_old_features)
@@ -111,8 +111,8 @@ HB_SUBSET_PLAN_MEMBER (hb_set_t, gpos_old_features)
 
 //feature_index->pair of (address of old feature, feature tag), used for alternate feature
 //parameter formats and inserting a catch all record if necessary
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb_pair_t E(<const void*, const void*>)>), gsub_old_feature_idx_tag_map)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<unsigned, hb_pair_t E(<const void*, const void*>)>), gpos_old_feature_idx_tag_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb_pair_t E(<स्थिर व्योम*, स्थिर व्योम*>)>), gsub_old_feature_idx_tag_map)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<अचिन्हित, hb_pair_t E(<स्थिर व्योम*, स्थिर व्योम*>)>), gpos_old_feature_idx_tag_map)
 
 //active layers/palettes we'd like to retain
 HB_SUBSET_PLAN_MEMBER (hb_map_t, colrv1_layers)
@@ -120,17 +120,17 @@ HB_SUBSET_PLAN_MEMBER (hb_map_t, colr_palettes)
 //colrv1 varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, colrv1_varstore_inner_maps)
 //colrv1 retained varidx -> (new varidx, delta) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), colrv1_variation_idx_delta_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<अचिन्हित, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), colrv1_variation_idx_delta_map)
 //colrv1 retained new delta set index -> new varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_map_t, colrv1_new_deltaset_idx_varidx_map)
 
 //Old layout item variation index -> (New varidx, delta) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), layout_variation_idx_delta_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<अचिन्हित, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), layout_variation_idx_delta_map)
 
 //Layout condition -> (source variation index, default value)
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, int>)>), layout_condition_values)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<uintptr_t, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), layout_condition_मूल्यावली)
 //Layout condition -> (private variation index, rescaled default value)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<uintptr_t, hb_pair_t E(<unsigned, int>)>), layout_condition_idx_value_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<uintptr_t, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), layout_condition_idx_मूल्य_map)
 
 //gdef varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, gdef_varstore_inner_maps)
@@ -139,7 +139,7 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, hb::unique_ptr<hb_blob_t>>), sa
 
 //normalized axes range map
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), axes_location)
-HB_SUBSET_PLAN_MEMBER (hb_vector_t<int>, normalized_coords)
+HB_SUBSET_PLAN_MEMBER (hb_vector_t<पूर्णांक>, normalized_coords)
 
 //user specified axes range map
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), user_axes_location)
@@ -147,7 +147,7 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), user_axes_location)
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, TripleDistances>), axes_triple_distances)
 
 //retained old axis index -> new axis index mapping in fvar axis array
-HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_index_map)
+HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_सूचकांक_map)
 
 //old intermediate coords (post-fvar, post-avar-v1, pre-avar-v2) at new min/default/max
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), old_intermediates)
@@ -161,21 +161,21 @@ HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, Triple>), avar2_reachable_range
 //avar2: self-contained pinned axes -> constant old-space final coord.
 //These axes are removed from fvar/avar entirely; their contribution is
 //baked into the variation tables like an ordinary pin at that coord.
-HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, double>), avar2_self_contained)
+HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_tag_t, द्विगुन>), avar2_self_contained)
 
 //axis_index->axis_tag mapping in fvar axis array
-HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_old_index_tag_map)
+HB_SUBSET_PLAN_MEMBER (hb_map_t, axes_old_सूचकांक_tag_map)
 //vector of retained axis tags in the order of axes given in the 'fvar' table
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_tag_t>, axis_tags)
 
 //hmtx metrics map: new gid->(advance, lsb)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, int>)>), hmtx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), hmtx_map)
 //vmtx metrics map: new gid->(advance, lsb)
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<unsigned, int>)>), vmtx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), vmtx_map)
 //boundsWidth map: new gid->boundsWidth, boundWidth=xMax - xMin
-HB_SUBSET_PLAN_MEMBER (mutable hb_vector_t<unsigned>, bounds_width_vec)
+HB_SUBSET_PLAN_MEMBER (mutable hb_vector_t<अचिन्हित>, bounds_width_vec)
 //boundsHeight map: new gid->boundsHeight, boundsHeight=yMax - yMin
-HB_SUBSET_PLAN_MEMBER (mutable hb_vector_t<unsigned>, bounds_height_vec)
+HB_SUBSET_PLAN_MEMBER (mutable hb_vector_t<अचिन्हित>, bounds_height_vec)
 
 //map: new_gid -> contour points vector
 HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, contour_point_vector_t>), new_gid_contour_points_map)
@@ -184,15 +184,15 @@ HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<hb_codepoint_t, contour_point_vec
 HB_SUBSET_PLAN_MEMBER (hb_set_t, composite_new_gids)
 
 //Old BASE item variation index -> (New varidx, 0) mapping
-HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<unsigned, hb_pair_t E(<unsigned, int>)>), base_variation_idx_map)
+HB_SUBSET_PLAN_MEMBER (mutable hb_hashmap_t E(<अचिन्हित, hb_pair_t E(<अचिन्हित, पूर्णांक>)>), base_variation_idx_map)
 
 //BASE table varstore retained varidx mapping
 HB_SUBSET_PLAN_MEMBER (hb_vector_t<hb_inc_bimap_t>, base_varstore_inner_maps)
 
-#ifdef HB_EXPERIMENTAL_API
+#अगर_घोषित HB_EXPERIMENTAL_API
 // name table overrides map: hb_ot_name_record_ids_t-> name string new value or
 // None to indicate should remove
 HB_SUBSET_PLAN_MEMBER (hb_hashmap_t E(<hb_ot_name_record_ids_t, hb_bytes_t>), name_table_overrides)
-#endif
+#पूर्ण_अगर
 
-#undef E
+#अघोषित E

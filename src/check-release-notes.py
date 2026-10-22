@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-import sys
+आयात sys
 
 
 news_path = sys.argv[1]
 release = sys.argv[2]
 
 with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+    पंक्तियाँ = news_file.readlines()
 
-start = None
+शुरू = None
 end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
+क्रम i, पंक्ति in enumerate(पंक्तियाँ):
+    पंक्ति = पंक्ति.rstrip()
+    अगर पंक्ति.startswith("Overview of changes leading to"):
+        अगर शुरू is not None:  # Start of next release
             end = i
-            break
-        if line.endswith(release):  # Start of the release
-            start = i + 3  # Skip the header lines
+            अवरोध
+        अगर पंक्ति.endswith(release):  # Start of the release
+            शुरू = i + 3  # Skip the header lines
 
-assert start and end and end > start
+assert शुरू and end and end > शुरू
 
-print("".join(lines[start:end]))
+print("".मेल(पंक्तियाँ[शुरू:end]))

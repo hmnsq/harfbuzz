@@ -1,123 +1,123 @@
-#ifndef OT_LAYOUT_GPOS_SINGLEPOS_HH
-#define OT_LAYOUT_GPOS_SINGLEPOS_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_SINGLEPOS_HH
+#घोषणा OT_LAYOUT_GPOS_SINGLEPOS_HH
 
-#include "SinglePosFormat1.hh"
-#include "SinglePosFormat2.hh"
+#समावेश "SinglePosFormat1.hh"
+#समावेश "SinglePosFormat2.hh"
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct SinglePos
+काष्ठा SinglePos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  रक्षित:
+  जोड़ {
+  काष्ठा { HBUINT16 v; } format;        /* Format identifier */
   SinglePosFormat1_3<SmallTypes> format1;
   SinglePosFormat2_4<SmallTypes> format2;
-#ifndef HB_NO_BEYOND_64K
+#अगर_अघोषित HB_NO_BEYOND_64K
   SinglePosFormat1_3<MediumTypes> format3;
   SinglePosFormat2_4<MediumTypes> format4;
-#endif
+#पूर्ण_अगर
   } u;
 
-  public:
-  template<typename Iterator,
+  खुला:
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  unsigned get_format (Iterator glyph_val_iter_pairs)
+  अचिन्हित get_format (Iterator glyph_val_iter_pairs)
   {
-    hb_array_t<const Value> first_val_iter = hb_second (*glyph_val_iter_pairs);
+    hb_array_t<स्थिर मूल्य> first_val_iter = hb_second (*glyph_val_iter_pairs);
 
-    for (const auto iter : glyph_val_iter_pairs)
-      for (const auto _ : hb_zip (iter.second, first_val_iter))
-        if (_.first != _.second)
-          return 2;
+    क्रम (स्थिर स्वतः iter : glyph_val_iter_pairs)
+      क्रम (स्थिर स्वतः _ : hb_zip (iter.second, first_val_iter))
+        अगर (_.first != _.second)
+          वापस 2;
 
-    return 1;
+    वापस 1;
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase* src,
-                  ValueFormat src_format,
+  व्योम serialize (hb_serialize_context_t *c,
+                  स्थिर मूल्य_Base* src,
+                  मूल्य_Format src_format,
                   Iterator glyph_val_iter_pairs,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                  unsigned newFormat)
+                  स्थिर hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *layout_variation_idx_delta_map,
+                  अचिन्हित newFormat)
   {
-    if (unlikely (!c->extend_min (u.format.v))) return;
-    unsigned format = 2;
-    ValueFormat new_format;
+    अगर (unlikely (!c->extend_min (u.format.v))) वापस;
+    अचिन्हित format = 2;
+    मूल्य_Format new_format;
     new_format = newFormat;
 
-    if (glyph_val_iter_pairs)
+    अगर (glyph_val_iter_pairs)
       format = get_format (glyph_val_iter_pairs);
 
-#ifndef HB_NO_BEYOND_64K
-    if (+ glyph_val_iter_pairs
+#अगर_अघोषित HB_NO_BEYOND_64K
+    अगर (+ glyph_val_iter_pairs
 	| hb_map_retains_sorting (hb_first)
-	| hb_filter ([] (hb_codepoint_t gid) { return gid > 0xFFFFu; }))
+	| hb_filter ([] (hb_codepoint_t gid) { वापस gid > 0xFFFFu; }))
       format += 2;
-#endif
+#पूर्ण_अगर
 
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.serialize (c,
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); u.format1.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-    case 2: hb_barrier (); u.format2.serialize (c,
+      वापस;
+    हाल 2: hb_barrier (); u.format2.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-#ifndef HB_NO_BEYOND_64K
-    case 3: u.format3.serialize (c,
+      वापस;
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 3: u.format3.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-    case 4: u.format4.serialize (c,
+      वापस;
+    हाल 4: u.format4.serialize (c,
                                  src, src_format,
                                  glyph_val_iter_pairs,
                                  new_format,
                                  layout_variation_idx_delta_map);
-      return;
-#endif
-    default:return;
+      वापस;
+#पूर्ण_अगर
+    शेष:वापस;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिर
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    अगर (unlikely (!c->may_dispatch (यह, &u.format.v))) वापस c->no_dispatch_return_मूल्य ();
+    TRACE_DISPATCH (यह, u.format.v);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    हाल 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    हाल 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+#पूर्ण_अगर
+    शेष:return_trace (c->default_return_मूल्य ());
     }
   }
 };
 
 
-template<typename Iterator>
-static void
+ढाँचा<typename Iterator>
+अटल व्योम
 SinglePos_serialize (hb_serialize_context_t *c,
-                     const ValueBase *src,
-                     ValueFormat src_format,
+                     स्थिर मूल्य_Base *src,
+                     मूल्य_Format src_format,
                      Iterator it,
-                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                     unsigned new_format)
+                     स्थिर hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *layout_variation_idx_delta_map,
+                     अचिन्हित new_format)
 { c->start_embed<SinglePos> ()->serialize (c, src, src_format, it, layout_variation_idx_delta_map, new_format); }
 
 
@@ -125,4 +125,4 @@ SinglePos_serialize (hb_serialize_context_t *c,
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_SINGLEPOS_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_SINGLEPOS_HH */

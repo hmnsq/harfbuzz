@@ -1,58 +1,58 @@
-#ifndef OT_VAR_VARC_COORD_SETTER_HH
-#define OT_VAR_VARC_COORD_SETTER_HH
+#अगर_अघोषित OT_VAR_VARC_COORD_SETTER_HH
+#घोषणा OT_VAR_VARC_COORD_SETTER_HH
 
 
-#include "../../../hb.hh"
+#समावेश "../../../hb.hh"
 
 
 namespace OT {
 //namespace Var {
 
 
-struct coord_setter_t
+काष्ठा coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<स्थिर पूर्णांक> coords_)
   {
-    length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    लंबाई = coords_.लंबाई;
+    अगर (लंबाई <= ARRAY_लंबाई (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, लंबाई * माप (पूर्णांक));
+    अन्यथा
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  पूर्णांक& चालक [] (अचिन्हित idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    अगर (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      वापस Crap(पूर्णांक);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    अगर (लंबाई <= ARRAY_लंबाई (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      अगर (idx < ARRAY_लंबाई (static_coords))
       {
-        while (length <= idx)
-	  static_coords[length++] = 0;
-	return static_coords[idx];
+        जबतक (लंबाई <= idx)
+	  static_coords[लंबाई++] = 0;
+	वापस static_coords[idx];
       }
-      else
-        dynamic_coords.extend (hb_array (static_coords, length));
+      अन्यथा
+        dynamic_coords.extend (hb_array (static_coords, लंबाई));
     }
 
-    if (dynamic_coords.length <= idx)
+    अगर (dynamic_coords.लंबाई <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
-      length = idx + 1;
+      अगर (unlikely (!dynamic_coords.resize (idx + 1)))
+	वापस Crap(पूर्णांक);
+      लंबाई = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    वापस dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<पूर्णांक> get_coords ()
+  { वापस लंबाई <= ARRAY_लंबाई (static_coords) ? hb_array (static_coords, लंबाई) : dynamic_coords.as_array (); }
 
-  private:
-  hb_vector_t<int> dynamic_coords;
-  unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  निजी:
+  hb_vector_t<पूर्णांक> dynamic_coords;
+  अचिन्हित लंबाई;
+  पूर्णांक static_coords[माप (व्योम *) * 8];
 };
 
 
@@ -60,4 +60,4 @@ struct coord_setter_t
 
 } // namespace OT
 
-#endif /* OT_VAR_VARC_COORD_SETTER_HH */
+#पूर्ण_अगर /* OT_VAR_VARC_COORD_SETTER_HH */

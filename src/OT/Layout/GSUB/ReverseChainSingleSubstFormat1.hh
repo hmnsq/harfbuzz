@@ -1,81 +1,81 @@
-#ifndef OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
-#define OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
+#घोषणा OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH
 
-#include "Common.hh"
+#समावेश "Common.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-template <typename Types>
-struct ReverseChainSingleSubstFormat1_2
+ढाँचा <typename Types>
+काष्ठा ReverseChainSingleSubstFormat1_2
 {
-  protected:
+  रक्षित:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  typename Types::ढाँचा LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of table */
-  Array16Of<typename Types::template OffsetTo<Coverage>>
+  Array16Of<typename Types::ढाँचा OffsetTo<Coverage>>
                 backtrack;              /* Array of coverage tables
                                          * in backtracking sequence, in glyph
                                          * sequence order */
   /* Format 2 widens the backtrack and lookahead coverage offsets but
    * keeps their counts 16-bit. */
-  Array16Of<typename Types::template OffsetTo<Coverage>>
+  Array16Of<typename Types::ढाँचा OffsetTo<Coverage>>
                 lookaheadX;             /* Array of coverage tables
                                          * in lookahead sequence, in glyph
                                          * sequence order */
-  typename Types::template ArrayOf<typename Types::HBGlyphID>
+  typename Types::ढाँचा ArrayOf<typename Types::HBGlyphID>
                 substituteX;            /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
-  public:
-  DEFINE_SIZE_MIN (6 + Types::LOffset::static_size + Types::HBUINT::static_size);
+  खुला:
+  DEFINE_आकार_MIN (6 + Types::LOffset::static_आकार + Types::HBUINT::static_आकार);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    if (!(coverage.sanitize (c, this) && backtrack.sanitize (c, this)))
+    TRACE_SANITIZE (यह);
+    अगर (!(coverage.sanitize (c, यह) && backtrack.sanitize (c, यह)))
       return_trace (false);
     hb_barrier ();
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    if (!lookahead.sanitize (c, this))
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    अगर (!lookahead.sanitize (c, यह))
       return_trace (false);
     hb_barrier ();
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    स्थिर स्वतः &substitute = StructAfter<decltype (substituteX)> (lookahead);
     return_trace (substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  bool intersects (स्थिर hb_set_t *glyphs) स्थिर
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    अगर (!(यह+coverage).intersects (glyphs))
+      वापस false;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
 
-    unsigned int count;
+    अचिन्हित पूर्णांक गिनती;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+backtrack[i]).intersects (glyphs))
-        return false;
+    गिनती = backtrack.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      अगर (!(यह+backtrack[i]).intersects (glyphs))
+        वापस false;
 
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (!(this+lookahead[i]).intersects (glyphs))
-        return false;
+    गिनती = lookahead.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      अगर (!(यह+lookahead[i]).intersects (glyphs))
+        वापस false;
 
-    return true;
+    वापस true;
   }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  bool may_have_non_1to1 () स्थिर
+  { वापस false; }
 
-  void depend (hb_depend_context_t *c) const {
+  व्योम depend (hb_depend_context_t *c) स्थिर {
     // Filter by intersects and parent_active_glyphs like closure does
-    if (!intersects (c->glyphs)) return;
+    अगर (!intersects (c->glyphs)) वापस;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    स्थिर स्वतः &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
     /* Build context set from backtrack and lookahead coverages.
      * ReverseChainSingleSubst has contextual requirements - the substitution
@@ -83,144 +83,144 @@ struct ReverseChainSingleSubstFormat1_2
     hb_set_t context_glyphs;
 
     /* Add glyphs from backtrack coverages */
-    unsigned int count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
+    अचिन्हित पूर्णांक गिनती = backtrack.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       hb_set_t back_glyphs;
-      (this+backtrack[i]).intersect_set (*c->glyphs, back_glyphs);
-      if (back_glyphs.get_population () == 1)
+      (यह+backtrack[i]).intersect_set (*c->glyphs, back_glyphs);
+      अगर (back_glyphs.get_population () == 1)
         context_glyphs.add (back_glyphs.get_min ());
-      else if (back_glyphs.get_population () > 1)
+      अन्यथा अगर (back_glyphs.get_population () > 1)
       {
-        hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (back_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
+        hb_codepoint_t set_idx = c->depend_तथ्य->find_or_create_context_set (back_glyphs);
+        अगर (unlikely (set_idx == HB_CODEPOINT_INVALID))
+          वापस;
         context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
       }
     }
 
     /* Add glyphs from lookahead coverages */
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
+    गिनती = lookahead.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       hb_set_t look_glyphs;
-      (this+lookahead[i]).intersect_set (*c->glyphs, look_glyphs);
-      if (look_glyphs.get_population () == 1)
+      (यह+lookahead[i]).intersect_set (*c->glyphs, look_glyphs);
+      अगर (look_glyphs.get_population () == 1)
         context_glyphs.add (look_glyphs.get_min ());
-      else if (look_glyphs.get_population () > 1)
+      अन्यथा अगर (look_glyphs.get_population () > 1)
       {
-        hb_codepoint_t set_idx = c->depend_data->find_or_create_context_set (look_glyphs);
-        if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-          return;
+        hb_codepoint_t set_idx = c->depend_तथ्य->find_or_create_context_set (look_glyphs);
+        अगर (unlikely (set_idx == HB_CODEPOINT_INVALID))
+          वापस;
         context_glyphs.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
       }
     }
 
     /* Allocate context set and save/restore around edge creation */
-    if (unlikely (context_glyphs.in_error ()))
+    अगर (unlikely (context_glyphs.in_error ()))
     {
-      c->depend_data->fail ();
-      return;
+      c->depend_तथ्य->हार ();
+      वापस;
     }
     hb_codepoint_t context_set_idx = context_glyphs.is_empty ()
       ? HB_CODEPOINT_INVALID
-      : c->depend_data->find_or_create_context_set (context_glyphs);
-    if (unlikely (!context_glyphs.is_empty () &&
+      : c->depend_तथ्य->find_or_create_context_set (context_glyphs);
+    अगर (unlikely (!context_glyphs.is_empty () &&
                   context_set_idx == HB_CODEPOINT_INVALID))
-      return;
+      वापस;
 
-    hb_codepoint_t saved_context = c->depend_data->current_context_set_index;
-    c->depend_data->current_context_set_index = context_set_idx;
+    hb_codepoint_t saved_context = c->depend_तथ्य->current_context_set_सूचकांक;
+    c->depend_तथ्य->current_context_set_सूचकांक = context_set_idx;
 
-    + hb_zip (this+coverage, substitute)
+    + hb_zip (यह+coverage, substitute)
     | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    | hb_apply ([&] (स्थिर hb_codepoint_pair_t &_) { c->depend_तथ्य->add_gsub_lookup (_.first, c->lookup_सूचकांक, _.second); })
     ;
 
-    c->depend_data->current_context_set_index = saved_context;
+    c->depend_तथ्य->current_context_set_सूचकांक = saved_context;
   }
 
-  void closure (hb_closure_context_t *c) const
+  व्योम closure (hb_closure_context_t *c) स्थिर
   {
-    if (!intersects (c->glyphs)) return;
+    अगर (!intersects (c->glyphs)) वापस;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    स्थिर स्वतः &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    + hb_zip (this+coverage, substitute)
+    + hb_zip (यह+coverage, substitute)
     | hb_filter (c->parent_active_glyphs (), hb_first)
     | hb_map (hb_second)
     | hb_sink (c->output)
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  व्योम closure_lookups (hb_closure_lookups_context_t *c) स्थिर {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  व्योम collect_glyphs (hb_collect_glyphs_context_t *c) स्थिर
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    अगर (unlikely (!(यह+coverage).collect_coverage (c->निवेश))) वापस;
 
-    unsigned int count;
+    अचिन्हित पूर्णांक गिनती;
 
-    count = backtrack.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+backtrack[i]).collect_coverage (c->before))) return;
+    गिनती = backtrack.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      अगर (unlikely (!(यह+backtrack[i]).collect_coverage (c->before))) वापस;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    count = lookahead.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(this+lookahead[i]).collect_coverage (c->after))) return;
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    गिनती = lookahead.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      अगर (unlikely (!(यह+lookahead[i]).collect_coverage (c->after))) वापस;
 
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
-    count = substitute.len;
+    स्थिर स्वतः &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    गिनती = substitute.len;
     c->output->add_array (substitute.arrayZ, substitute.len);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  स्थिर Coverage &get_coverage () स्थिर { वापस यह+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  bool would_apply (hb_would_apply_context_t *c) स्थिर
+  { वापस c->len == 1 && (यह+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) स्थिर
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur ().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (यह);
+    अचिन्हित पूर्णांक सूचकांक_2 = (यह+coverage).get_coverage (c->बफर->cur ().codepoint);
+    अगर (सूचकांक_2 == NOT_COVERED) return_trace (false);
 
-    if (unlikely (c->nesting_level_left != HB_MAX_NESTING_LEVEL))
+    अगर (unlikely (c->nesting_level_बायाँ != HB_MAX_NESTING_LEVEL))
       return_trace (false); /* No chaining to this type */
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    स्थिर स्वतः &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    अगर (unlikely (सूचकांक_2 >= substitute.len)) return_trace (false);
 
-    unsigned int start_index = 0, end_index = 0;
-    if (match_backtrack (c,
+    अचिन्हित पूर्णांक start_सूचकांक = 0, end_सूचकांक = 0;
+    अगर (match_backtrack (c,
                          backtrack.len, backtrack.arrayZ,
-                         match_coverage, this,
-                         &start_index) &&
+                         match_coverage, यह,
+                         &start_सूचकांक) &&
         match_lookahead (c,
                          lookahead.len, lookahead.arrayZ,
-                         match_coverage, this,
-                         c->buffer->idx + 1, &end_index))
+                         match_coverage, यह,
+                         c->बफर->idx + 1, &end_सूचकांक))
     {
-      c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
+      c->बफर->unsafe_to_break_from_outbuffer (start_सूचकांक, end_सूचकांक);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      अगर (HB_बफर_MESSAGE_MORE && c->बफर->messaging ())
       {
-	c->buffer->message (c->font,
+	c->बफर->message (c->font,
 			    "replacing glyph at %u (reverse chaining substitution)",
-			    c->buffer->idx);
+			    c->बफर->idx);
       }
 
-      c->replace_glyph_inplace (substitute[index]);
+      c->replace_glyph_inplace (substitute[सूचकांक_2]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      अगर (HB_बफर_MESSAGE_MORE && c->बफर->messaging ())
       {
-	c->buffer->message (c->font,
+	c->बफर->message (c->font,
 			    "replaced glyph at %u (reverse chaining substitution)",
-			    c->buffer->idx);
+			    c->बफर->idx);
       }
 
       /* Note: We DON'T decrease buffer->idx.  The main loop does it
@@ -228,97 +228,97 @@ struct ReverseChainSingleSubstFormat1_2
        * calls us through a Context lookup. */
       return_trace (true);
     }
-    else
+    अन्यथा
     {
-      c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
+      c->बफर->unsafe_to_concat_from_outbuffer (start_सूचकांक, end_सूचकांक);
       return_trace (false);
     }
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_coverage_offset_array (hb_subset_context_t *c, Iterator it) const
+  bool serialize_coverage_offset_array (hb_subset_context_t *c, Iterator it) स्थिर
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    TRACE_SERIALIZE (यह);
+    स्वतः *out = c->serializer->start_embed<Array16Of<typename Types::ढाँचा OffsetTo<Coverage>>> ();
+    अगर (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
 
-    for (auto& offset : it) {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
+    क्रम (स्वतः& offset : it) {
+      स्वतः *o = out->serialize_append (c->serializer);
+      अगर (unlikely (!o) || !o->serialize_subset (c, offset, यह))
         return_trace (false);
     }
 
     return_trace (true);
   }
 
-  template<typename Iterator, typename BacktrackIterator, typename LookaheadIterator,
+  ढाँचा<typename Iterator, typename BacktrackIterator, typename LookaheadIterator,
            hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_pair_t)),
            hb_requires (hb_is_iterator (BacktrackIterator)),
            hb_requires (hb_is_iterator (LookaheadIterator))>
   bool serialize (hb_subset_context_t *c,
                   Iterator coverage_subst_iter,
                   BacktrackIterator backtrack_iter,
-                  LookaheadIterator lookahead_iter) const
+                  LookaheadIterator lookahead_iter) स्थिर
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (यह);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (this->coverage))) return_trace (false);
+    स्वतः *out = c->serializer->start_embed (यह);
+    अगर (unlikely (!c->serializer->embed (यह->format))) return_trace (false);
+    अगर (unlikely (!c->serializer->embed (यह->coverage))) return_trace (false);
 
-    if (!serialize_coverage_offset_array (c, backtrack_iter)) return_trace (false);
-    if (!serialize_lookahead_coverage_offset_array (c, lookahead_iter)) return_trace (false);
+    अगर (!serialize_coverage_offset_array (c, backtrack_iter)) return_trace (false);
+    अगर (!serialize_lookahead_coverage_offset_array (c, lookahead_iter)) return_trace (false);
 
-    auto *substitute_out = c->serializer->start_embed<typename Types::template ArrayOf<typename Types::HBGlyphID>> ();
-    auto substitutes =
+    स्वतः *substitute_out = c->serializer->start_embed<typename Types::ढाँचा ArrayOf<typename Types::HBGlyphID>> ();
+    स्वतः substitutes =
     + coverage_subst_iter
     | hb_map (hb_second)
     ;
 
-    auto glyphs =
+    स्वतः glyphs =
     + coverage_subst_iter
     | hb_map_retains_sorting (hb_first)
     ;
-    if (unlikely (! c->serializer->check_success (substitute_out->serialize (c->serializer, substitutes))))
+    अगर (unlikely (! c->serializer->check_success (substitute_out->serialize (c->serializer, substitutes))))
         return_trace (false);
 
-    if (unlikely (!out->coverage.serialize_serialize (c->serializer, glyphs)))
+    अगर (unlikely (!out->coverage.serialize_serialize (c->serializer, glyphs)))
       return_trace (false);
     return_trace (true);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (यह);
+    स्थिर hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    स्थिर hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
-    const auto &substitute = StructAfter<decltype (substituteX)> (lookahead);
+    स्थिर स्वतः &lookahead = StructAfter<decltype (lookaheadX)> (backtrack);
+    स्थिर स्वतः &substitute = StructAfter<decltype (substituteX)> (lookahead);
 
-    auto it =
-    + hb_zip (this+coverage, substitute)
+    स्वतः it =
+    + hb_zip (यह+coverage, substitute)
     | hb_filter (glyphset, hb_first)
     | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, स्थिर typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { वापस hb_pair (glyph_map[p.first], glyph_map[p.second]); })
     ;
 
     return_trace (bool (it) && serialize (c, it, backtrack.iter (), lookahead.iter ()));
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_lookahead_coverage_offset_array (hb_subset_context_t *c, Iterator it) const
+  bool serialize_lookahead_coverage_offset_array (hb_subset_context_t *c, Iterator it) स्थिर
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    TRACE_SERIALIZE (यह);
+    स्वतः *out = c->serializer->start_embed<Array16Of<typename Types::ढाँचा OffsetTo<Coverage>>> ();
+    अगर (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
 
-    for (auto& offset : it) {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, this))
+    क्रम (स्वतः& offset : it) {
+      स्वतः *o = out->serialize_append (c->serializer);
+      अगर (unlikely (!o) || !o->serialize_subset (c, offset, यह))
         return_trace (false);
     }
 
@@ -330,4 +330,4 @@ struct ReverseChainSingleSubstFormat1_2
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH */
+#पूर्ण_अगर  /* HB_OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBSTFORMAT1_HH */

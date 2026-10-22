@@ -1,231 +1,231 @@
-#ifndef OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
-#define OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
+#घोषणा OT_LAYOUT_GSUB_SUBSTLOOKUP_HH
 
-#include "Common.hh"
-#include "SubstLookupSubTable.hh"
+#समावेश "Common.hh"
+#समावेश "SubstLookupSubTable.hh"
 
 namespace OT {
 namespace Layout {
 namespace GSUB_impl {
 
-struct SubstLookup : Lookup
+काष्ठा SubstLookup : Lookup
 {
   using SubTable = SubstLookupSubTable;
 
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return Lookup::sanitize<SubTable> (c); }
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
+  { वापस Lookup::sanitize<SubTable> (c); }
 
-  const SubTable& get_subtable (unsigned int i) const
-  { return Lookup::get_subtable<SubTable> (i); }
+  स्थिर SubTable& get_subtable (अचिन्हित पूर्णांक i) स्थिर
+  { वापस Lookup::get_subtable<SubTable> (i); }
 
-  static inline bool lookup_type_is_reverse (unsigned int lookup_type)
-  { return lookup_type == SubTable::ReverseChainSingle; }
+  अटल अंतरभूत bool lookup_type_is_reverse (अचिन्हित पूर्णांक lookup_type)
+  { वापस lookup_type == SubTable::ReverseChainSingle; }
 
-  bool is_reverse () const
+  bool is_reverse () स्थिर
   {
-    unsigned int type = get_type ();
-    if (unlikely (type == SubTable::Extension) && hb_barrier ())
-      return get_subtable (0).u.extension.is_reverse ();
-    return lookup_type_is_reverse (type);
+    अचिन्हित पूर्णांक type = get_type ();
+    अगर (unlikely (type == SubTable::Extension) && hb_barrier ())
+      वापस get_subtable (0).u.extension.is_reverse ();
+    वापस lookup_type_is_reverse (type);
   }
 
-  bool may_have_non_1to1 () const
+  bool may_have_non_1to1 () स्थिर
   {
     hb_have_non_1to1_context_t c;
-    return dispatch (&c);
+    वापस dispatch (&c);
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  bool apply (hb_ot_apply_context_t *c) स्थिर
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (यह);
     return_trace (dispatch (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  bool intersects (स्थिर hb_set_t *glyphs) स्थिर
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c);
+    वापस dispatch (&c);
   }
 
-  hb_closure_context_t::return_t closure (hb_closure_context_t *c, unsigned int this_index) const
+  hb_closure_context_t::return_t closure (hb_closure_context_t *c, अचिन्हित पूर्णांक this_सूचकांक) स्थिर
   {
-    if (!c->should_visit_lookup (this_index))
-      return hb_closure_context_t::default_return_value ();
+    अगर (!c->should_visit_lookup (this_सूचकांक))
+      वापस hb_closure_context_t::default_return_मूल्य ();
 
     c->set_recurse_func (dispatch_closure_recurse_func);
 
     hb_closure_context_t::return_t ret = dispatch (c);
 
-    c->flush ();
+    c->सफाई ();
 
-    return ret;
+    वापस ret;
   }
 
-  void depend (hb_depend_context_t *c) const
+  व्योम depend (hb_depend_context_t *c) स्थिर
   {
     c->set_recurse_func (dispatch_depend_recurse_func);
     dispatch (c);
   }
 
-  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, unsigned this_index) const
+  hb_closure_lookups_context_t::return_t closure_lookups (hb_closure_lookups_context_t *c, अचिन्हित this_सूचकांक) स्थिर
   {
-    if (c->is_lookup_visited (this_index))
-      return hb_closure_lookups_context_t::default_return_value ();
+    अगर (c->is_lookup_visited (this_सूचकांक))
+      वापस hb_closure_lookups_context_t::default_return_मूल्य ();
 
-    c->set_lookup_visited (this_index);
-    if (!intersects (c->glyphs))
+    c->set_lookup_visited (this_सूचकांक);
+    अगर (!intersects (c->glyphs))
     {
-      c->set_lookup_inactive (this_index);
-      return hb_closure_lookups_context_t::default_return_value ();
+      c->set_lookup_inactive (this_सूचकांक);
+      वापस hb_closure_lookups_context_t::default_return_मूल्य ();
     }
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
-    return ret;
+    वापस ret;
   }
 
-  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) const
+  hb_collect_glyphs_context_t::return_t collect_glyphs (hb_collect_glyphs_context_t *c) स्थिर
   {
     c->set_recurse_func (dispatch_recurse_func<hb_collect_glyphs_context_t>);
-    return dispatch (c);
+    वापस dispatch (c);
   }
 
-  template <typename set_t>
-  void collect_coverage (set_t *glyphs) const
+  ढाँचा <typename set_t>
+  व्योम collect_coverage (set_t *glyphs) स्थिर
   {
     hb_collect_coverage_context_t<set_t> c (glyphs);
     dispatch (&c);
   }
 
   bool would_apply (hb_would_apply_context_t *c,
-                    const hb_ot_layout_lookup_accelerator_t *accel) const
+                    स्थिर hb_ot_layout_lookup_accelerator_t *accel) स्थिर
   {
-    if (unlikely (!c->len)) return false;
-    if (!accel->may_have (c->glyphs[0])) return false;
-      return dispatch (c);
+    अगर (unlikely (!c->len)) वापस false;
+    अगर (!accel->may_have (c->glyphs[0])) वापस false;
+      वापस dispatch (c);
   }
 
-  template<typename Glyphs, typename Substitutes,
+  ढाँचा<typename Glyphs, typename Substitutes,
 	   hb_requires (hb_is_sorted_source_of (Glyphs,
-						const hb_codepoint_t) &&
+						स्थिर hb_codepoint_t) &&
 			hb_is_source_of (Substitutes,
-					 const hb_codepoint_t))>
+					 स्थिर hb_codepoint_t))>
   bool serialize_single (hb_serialize_context_t *c,
                          uint32_t lookup_props,
                          Glyphs glyphs,
                          Substitutes substitutes)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Single, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
+    TRACE_SERIALIZE (यह);
+    अगर (unlikely (!Lookup::serialize (c, SubTable::Single, lookup_props, 1))) return_trace (false);
+    अगर (c->push<SubTable> ()->u.single.serialize (c, hb_zip (glyphs, substitutes)))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->निकालो_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->निकालो_discard ();
     return_trace (false);
   }
 
-  template<typename Iterator,
+  ढाँचा<typename Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
   bool serialize (hb_serialize_context_t *c,
 		  uint32_t lookup_props,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Multiple, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.multiple.
+    TRACE_SERIALIZE (यह);
+    अगर (unlikely (!Lookup::serialize (c, SubTable::Multiple, lookup_props, 1))) return_trace (false);
+    अगर (c->push<SubTable> ()->u.multiple.
         serialize (c, it))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->निकालो_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->निकालो_discard ();
     return_trace (false);
   }
 
-  template <typename GlyphID>
+  ढाँचा <typename GlyphID>
   bool serialize_alternate (hb_serialize_context_t *c,
                             uint32_t lookup_props,
                             hb_sorted_array_t<GlyphID> glyphs,
-                            hb_array_t<const unsigned int> alternate_len_list,
+                            hb_array_t<स्थिर अचिन्हित पूर्णांक> alternate_len_list,
                             hb_array_t<GlyphID> alternate_glyphs_list)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Alternate, lookup_props, 1))) return_trace (false);
+    TRACE_SERIALIZE (यह);
+    अगर (unlikely (!Lookup::serialize (c, SubTable::Alternate, lookup_props, 1))) return_trace (false);
 
-    if (c->push<SubTable> ()->u.alternate.
+    अगर (c->push<SubTable> ()->u.alternate.
         serialize (c,
                    glyphs,
                    alternate_len_list,
                    alternate_glyphs_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->निकालो_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->निकालो_discard ();
     return_trace (false);
   }
 
-  template <typename GlyphID>
+  ढाँचा <typename GlyphID>
   bool serialize_ligature (hb_serialize_context_t *c,
                            uint32_t lookup_props,
                            hb_sorted_array_t<GlyphID> first_glyphs,
-                           hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                           hb_array_t<स्थिर अचिन्हित पूर्णांक> ligature_per_first_glyph_गिनती_list,
                            hb_array_t<GlyphID> ligatures_list,
-                           hb_array_t<const unsigned int> component_count_list,
+                           hb_array_t<स्थिर अचिन्हित पूर्णांक> component_गिनती_list,
                            hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!Lookup::serialize (c, SubTable::Ligature, lookup_props, 1))) return_trace (false);
-    if (c->push<SubTable> ()->u.ligature.
+    TRACE_SERIALIZE (यह);
+    अगर (unlikely (!Lookup::serialize (c, SubTable::Ligature, lookup_props, 1))) return_trace (false);
+    अगर (c->push<SubTable> ()->u.ligature.
         serialize (c,
                    first_glyphs,
-                   ligature_per_first_glyph_count_list,
+                   ligature_per_first_glyph_गिनती_list,
                    ligatures_list,
-                   component_count_list,
+                   component_गिनती_list,
                    component_list))
     {
-      c->add_link (get_subtables<SubTable> ()[0], c->pop_pack ());
+      c->add_link (get_subtables<SubTable> ()[0], c->निकालो_pack ());
       return_trace (true);
     }
-    c->pop_discard ();
+    c->निकालो_discard ();
     return_trace (false);
   }
 
-  template <typename context_t>
-  static inline typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
+  ढाँचा <typename context_t>
+  अटल अंतरभूत typename context_t::return_t dispatch_recurse_func (context_t *c, अचिन्हित पूर्णांक lookup_सूचकांक);
 
-  static inline typename hb_closure_context_t::return_t closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  अटल अंतरभूत typename hb_closure_context_t::return_t closure_glyphs_recurse_func (hb_closure_context_t *c, अचिन्हित lookup_सूचकांक, hb_set_t *covered_seq_indices, अचिन्हित seq_सूचकांक, अचिन्हित end_सूचकांक);
 
 
-  static inline hb_closure_context_t::return_t dispatch_closure_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  अटल अंतरभूत hb_closure_context_t::return_t dispatch_closure_recurse_func (hb_closure_context_t *c, अचिन्हित lookup_सूचकांक, hb_set_t *covered_seq_indices, अचिन्हित seq_सूचकांक, अचिन्हित end_सूचकांक)
   {
-    if (!c->should_visit_lookup (lookup_index))
-      return hb_empty_t ();
+    अगर (!c->should_visit_lookup (lookup_सूचकांक))
+      वापस hb_empty_t ();
 
-    hb_closure_context_t::return_t ret = closure_glyphs_recurse_func (c, lookup_index, covered_seq_indices, seq_index, end_index);
+    hb_closure_context_t::return_t ret = closure_glyphs_recurse_func (c, lookup_सूचकांक, covered_seq_indices, seq_सूचकांक, end_सूचकांक);
 
     /* While in theory we should flush here, it will cause timeouts because a recursive
      * lookup can keep growing the glyph set.  Skip, and outer loop will retry up to
      * HB_CLOSURE_MAX_STAGES time, which should be enough for every realistic font. */
     //c->flush ();
 
-    return ret;
+    वापस ret;
   }
 
-  static inline hb_depend_context_t::return_t depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  अटल अंतरभूत hb_depend_context_t::return_t depend_glyphs_recurse_func (hb_depend_context_t *c, अचिन्हित lookup_सूचकांक, hb_bit_page_t *covered_seq_indices, अचिन्हित seq_सूचकांक, अचिन्हित end_सूचकांक);
 
-  static inline hb_depend_context_t::return_t dispatch_depend_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  अटल अंतरभूत hb_depend_context_t::return_t dispatch_depend_recurse_func (hb_depend_context_t *c, अचिन्हित lookup_सूचकांक, hb_bit_page_t *covered_seq_indices, अचिन्हित seq_सूचकांक, अचिन्हित end_सूचकांक)
   {
-    return depend_glyphs_recurse_func (c, lookup_index, covered_seq_indices, seq_index, end_index);
+    वापस depend_glyphs_recurse_func (c, lookup_सूचकांक, covered_seq_indices, seq_सूचकांक, end_सूचकांक);
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
-  { return Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिर
+  { वापस Lookup::dispatch<SubTable> (c, std::forward<Ts> (ds)...); }
 
-  bool subset (hb_subset_context_t *c) const
-  { return Lookup::subset<SubTable> (c); }
+  bool subset (hb_subset_context_t *c) स्थिर
+  { वापस Lookup::subset<SubTable> (c); }
 };
 
 
@@ -233,4 +233,4 @@ struct SubstLookup : Lookup
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_SUBSTLOOKUP_HH */
+#पूर्ण_अगर  /* OT_LAYOUT_GSUB_SUBSTLOOKUP_HH */

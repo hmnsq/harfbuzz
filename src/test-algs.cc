@@ -24,24 +24,24 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-set.hh"
+#समावेश "hb.hh"
+#समावेश "hb-algs.hh"
+#समावेश "hb-set.hh"
 
 
-static char *
-test_func (int a, char **b)
+अटल अक्षर *
+test_func (पूर्णांक a, अक्षर **b)
 {
-  return b ? b[a] : nullptr;
+  वापस b ? b[a] : nullptr;
 }
 
-struct A
+काष्ठा A
 {
-  void a () {}
+  व्योम a () {}
 };
 
-int
-main (int argc, char **argv)
+पूर्णांक
+मुख्य (पूर्णांक argc, अक्षर **argv)
 {
   hb_always_assert (roundf (0.5f) == 1.f);
   hb_always_assert (roundf (-0.5f) == 0.f);
@@ -56,17 +56,17 @@ main (int argc, char **argv)
   hb_always_assert (roundf (8388609.f) == 8388609.f);
   hb_always_assert (roundf (-8388609.f) == -8388609.f);
 
-  int i = 1;
-  auto p = hb_pair (1, i);
+  पूर्णांक i = 1;
+  स्वतः p = hb_pair (1, i);
 
   p.second = 2;
   hb_always_assert (i == 2);
 
-  const int c = 3;
-  auto pc = hb_pair (1, c);
+  स्थिर पूर्णांक c = 3;
+  स्वतः pc = hb_pair (1, c);
   hb_always_assert (pc.second == 3);
 
-  auto q = p;
+  स्वतः q = p;
   hb_always_assert (&q != &p);
   q.second = 4;
   hb_always_assert (i == 4);
@@ -79,22 +79,22 @@ main (int argc, char **argv)
   hb_always_assert (1 == hb_min (8, 1));
   hb_always_assert (8 == hb_max (8, 1));
 
-  int x = 1, y = 2;
+  पूर्णांक x = 1, y = 2;
   hb_min (x, 3);
   hb_min (3, x);
   hb_min (x, 4 + 3);
-  int &z = hb_min (x, y);
+  पूर्णांक &z = hb_min (x, y);
   z = 3;
   hb_always_assert (x == 3);
 
-  hb_pair_t<const int*, int> xp = hb_pair_t<int *, long> (nullptr, 0);
-  xp = hb_pair_t<int *, double> (nullptr, 1);
-  xp = hb_pair_t<const int*, int> (nullptr, 1);
+  hb_pair_t<स्थिर पूर्णांक*, पूर्णांक> xp = hb_pair_t<पूर्णांक *, दीर्घ> (nullptr, 0);
+  xp = hb_pair_t<पूर्णांक *, द्विगुन> (nullptr, 1);
+  xp = hb_pair_t<स्थिर पूर्णांक*, पूर्णांक> (nullptr, 1);
 
   hb_always_assert (3 == hb_partial (hb_min, 3) (4));
   hb_always_assert (3 == hb_partial<1> (hb_min, 4) (3));
 
-  auto M0 = hb_partial<2> (hb_max, 0);
+  स्वतः M0 = hb_partial<2> (hb_max, 0);
   hb_always_assert (M0 (-2) == 0);
   hb_always_assert (M0 (+2) == 2);
 
@@ -102,22 +102,22 @@ main (int argc, char **argv)
   hb_always_assert (hb_add (5) (2) == 7);
 
   hb_always_assert (hb_saturate_add (1, 2) == 3);
-  hb_always_assert (hb_saturate_add (INT_MAX, 1) == INT_MAX);
-  hb_always_assert (hb_saturate_add (INT_MIN, -1) == INT_MIN);
-  hb_always_assert (hb_saturate_add (INT_MAX, INT_MIN) == -1);
+  hb_always_assert (hb_saturate_add (पूर्णांक_उच्च, 1) == पूर्णांक_उच्च);
+  hb_always_assert (hb_saturate_add (पूर्णांक_न्यून, -1) == पूर्णांक_न्यून);
+  hb_always_assert (hb_saturate_add (पूर्णांक_उच्च, पूर्णांक_न्यून) == -1);
   hb_always_assert (hb_saturate_sub (3, 2) == 1);
-  hb_always_assert (hb_saturate_sub (INT_MAX, -1) == INT_MAX);
-  hb_always_assert (hb_saturate_sub (INT_MIN, 1) == INT_MIN);
-  hb_always_assert (hb_saturate_sub (INT_MIN, INT_MIN) == 0);
+  hb_always_assert (hb_saturate_sub (पूर्णांक_उच्च, -1) == पूर्णांक_उच्च);
+  hb_always_assert (hb_saturate_sub (पूर्णांक_न्यून, 1) == पूर्णांक_न्यून);
+  hb_always_assert (hb_saturate_sub (पूर्णांक_न्यून, पूर्णांक_न्यून) == 0);
   hb_always_assert (hb_saturate_neg (2) == -2);
   hb_always_assert (hb_saturate_neg (-2) == 2);
-  hb_always_assert (hb_saturate_neg (INT_MIN) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> (1.) == 1);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MAX + 1.) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((double) INT_MIN - 1.) == INT_MIN);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) 1) == 1);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MAX + 1) == INT_MAX);
-  hb_always_assert (hb_clamp_to<int> ((int64_t) INT_MIN - 1) == INT_MIN);
+  hb_always_assert (hb_saturate_neg (पूर्णांक_न्यून) == पूर्णांक_उच्च);
+  hb_always_assert (hb_clamp_to<पूर्णांक> (1.) == 1);
+  hb_always_assert (hb_clamp_to<पूर्णांक> ((द्विगुन) पूर्णांक_उच्च + 1.) == पूर्णांक_उच्च);
+  hb_always_assert (hb_clamp_to<पूर्णांक> ((द्विगुन) पूर्णांक_न्यून - 1.) == पूर्णांक_न्यून);
+  hb_always_assert (hb_clamp_to<पूर्णांक> ((int64_t) 1) == 1);
+  hb_always_assert (hb_clamp_to<पूर्णांक> ((int64_t) पूर्णांक_उच्च + 1) == पूर्णांक_उच्च);
+  hb_always_assert (hb_clamp_to<पूर्णांक> ((int64_t) पूर्णांक_न्यून - 1) == पूर्णांक_न्यून);
 
   int64_t budget = 10;
   hb_always_assert (hb_budget_spend (budget, 4, 2));
@@ -154,5 +154,5 @@ main (int argc, char **argv)
   hb_always_assert (hb_hash (set1) == hb_hash (hb::shared_ptr<hb_set_t> {hb_set_reference (&set1)}));
   hb_always_assert (hb_hash (set1) == hb_hash (hb::unique_ptr<hb_set_t> {hb_set_reference (&set1)}));
 
-  return 0;
+  वापस 0;
 }

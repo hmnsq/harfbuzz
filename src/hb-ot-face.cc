@@ -24,39 +24,39 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-ot-face.hh"
+#समावेश "hb-ot-face.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-kern-table.hh"
-#include "hb-ot-meta-table.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-post-table.hh"
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/sbix/sbix.hh"
-#include "OT/Color/svg/svg.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-aat-layout-kerx-table.hh"
-#include "hb-aat-layout-morx-table.hh"
+#समावेश "hb-ot-cmap-table.hh"
+#समावेश "hb-ot-glyf-table.hh"
+#समावेश "hb-ot-cff1-table.hh"
+#समावेश "hb-ot-cff2-table.hh"
+#समावेश "hb-ot-hmtx-table.hh"
+#समावेश "hb-ot-kern-table.hh"
+#समावेश "hb-ot-meta-table.hh"
+#समावेश "hb-ot-name-table.hh"
+#समावेश "hb-ot-post-table.hh"
+#समावेश "OT/Color/CBDT/CBDT.hh"
+#समावेश "OT/Color/COLR/COLR.hh"
+#समावेश "OT/Color/sbix/sbix.hh"
+#समावेश "OT/Color/svg/svg.hh"
+#समावेश "hb-ot-layout-gdef-table.hh"
+#समावेश "hb-ot-layout-gsub-table.hh"
+#समावेश "hb-ot-layout-gpos-table.hh"
+#समावेश "hb-ot-var-varc-table.hh"
+#समावेश "hb-aat-layout-kerx-table.hh"
+#समावेश "hb-aat-layout-morx-table.hh"
 
 
-void hb_ot_face_t::init0 (hb_face_t *face)
+व्योम hb_ot_face_t::init0 (hb_face_t *face)
 {
-  this->face = face;
-#define HB_OT_TABLE(Namespace, Type) Type.init0 ();
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+  यह->face = face;
+#घोषणा HB_OT_TABLE(Namespace, Type) Type.init0 ();
+#समावेश "hb-ot-face-table-list.hh"
+#अघोषित HB_OT_TABLE
 }
-void hb_ot_face_t::fini ()
+व्योम hb_ot_face_t::fini ()
 {
-#define HB_OT_TABLE(Namespace, Type) Type.fini ();
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+#घोषणा HB_OT_TABLE(Namespace, Type) Type.fini ();
+#समावेश "hb-ot-face-table-list.hh"
+#अघोषित HB_OT_TABLE
 }

@@ -24,11 +24,11 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF1_STD_STR_HH
-#if 0 /* Make checks happy. */
-#define HB_OT_CFF1_STD_STR_HH
-#include "hb.hh"
-#endif
+#अगर_अघोषित HB_OT_CFF1_STD_STR_HH
+#अगर 0 /* Make checks happy. */
+#घोषणा HB_OT_CFF1_STD_STR_HH
+#समावेश "hb.hh"
+#पूर्ण_अगर
 
 HB_STR(".notdef")
 HB_STR("space")
@@ -422,4 +422,4 @@ HB_STR("Regular")
 HB_STR("Roman")
 HB_STR("Semibold")
 
-#endif /* HB_OT_CFF1_STD_STR_HH */
+#पूर्ण_अगर /* HB_OT_CFF1_STD_STR_HH */

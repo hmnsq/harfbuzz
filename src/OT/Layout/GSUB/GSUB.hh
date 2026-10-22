@@ -1,9 +1,9 @@
-#ifndef OT_LAYOUT_GSUB_GSUB_HH
-#define OT_LAYOUT_GSUB_GSUB_HH
+#अगर_अघोषित OT_LAYOUT_GSUB_GSUB_HH
+#घोषणा OT_LAYOUT_GSUB_GSUB_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "SubstLookup.hh"
+#समावेश "../../../hb-ot-layout-gsubgpos.hh"
+#समावेश "Common.hh"
+#समावेश "SubstLookup.hh"
 
 namespace OT {
 
@@ -16,47 +16,47 @@ namespace Layout {
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gsub
  */
 
-struct GSUB : GSUBGPOS
+काष्ठा GSUB : GSUBGPOS
 {
   using Lookup = SubstLookup;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
+  अटल constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
 
-  const SubstLookup& get_lookup (unsigned int i) const
-  { return static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
+  स्थिर SubstLookup& get_lookup (अचिन्हित पूर्णांक i) स्थिर
+  { वापस static_cast<स्थिर SubstLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
     hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<SubstLookup> (&l);
+    वापस GSUBGPOS::subset<SubstLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (यह);
     return_trace (GSUBGPOS::sanitize<SubstLookup> (c));
   }
 
   HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+                                   hb_face_t *face) स्थिर;
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
+  व्योम closure_lookups (hb_face_t      *face,
+                        स्थिर hb_set_t *glyphs,
+                        hb_set_t       *lookup_indexes /* IN/OUT */) स्थिर
   { GSUBGPOS::closure_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GSUB> accelerator_t;
+  प्रकार GSUBGPOS::accelerator_t<GSUB> accelerator_t;
 };
 
 
 }
 
-struct GSUB_accelerator_t : Layout::GSUB::accelerator_t {
+काष्ठा GSUB_accelerator_t : Layout::GSUB::accelerator_t {
   GSUB_accelerator_t (hb_face_t *face) : Layout::GSUB::accelerator_t (face) {}
-  HB_INTERNAL void depend (hb_depend_data_builder_t *builder, hb_face_t *face) const;
+  HB_INTERNAL व्योम depend (hb_depend_तथ्य_builder_t *builder, hb_face_t *face) स्थिर;
 };
 
 
 }
 
-#endif  /* OT_LAYOUT_GSUB_GSUB_HH */
+#पूर्ण_अगर  /* OT_LAYOUT_GSUB_GSUB_HH */

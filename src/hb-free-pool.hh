@@ -24,10 +24,10 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FREE_POOL_HH
-#define HB_FREE_POOL_HH
+#अगर_अघोषित HB_FREE_POOL_HH
+#घोषणा HB_FREE_POOL_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
 /* Memory pool for persistent alloc/free of small objects.
  *
@@ -40,8 +40,8 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+ढाँचा <typename T, अचिन्हित ChunkLen = 32>
+काष्ठा hb_free_pool_t
 {
   hb_free_pool_t () : next (nullptr) {}
   ~hb_free_pool_t ()
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    अगर (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      अगर (unlikely (!chunks.alloc (chunks.लंबाई + 1))) वापस nullptr;
+      chunk_t *chunk = (chunk_t *) hb_malloc (माप (chunk_t));
+      अगर (unlikely (!chunk)) वापस nullptr;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,33 +67,33 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, माप (T));
 
-    return obj;
+    वापस obj;
   }
 
-  void release (T* obj)
+  व्योम release (T* obj)
   {
     * (T**) obj = next;
     next = obj;
   }
 
-  private:
+  निजी:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
-  static_assert (alignof (T) % alignof (void *) == 0, "");
+  static_assert (माप (T) >= माप (व्योम *), "");
+  static_assert (alignof (T) % alignof (व्योम *) == 0, "");
 
-  struct chunk_t
+  काष्ठा chunk_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      क्रम (अचिन्हित i = 0; i < ARRAY_लंबाई (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
-      * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
+      * (T**) &arrayZ[ARRAY_लंबाई (arrayZ) - 1] = nullptr;
 
-      return arrayZ;
+      वापस arrayZ;
     }
 
     T arrayZ[ChunkLen];
@@ -104,4 +104,4 @@ struct hb_free_pool_t
 };
 
 
-#endif /* HB_FREE_POOL_HH */
+#पूर्ण_अगर /* HB_FREE_POOL_HH */

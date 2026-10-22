@@ -24,190 +24,190 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CONFIG_HH
-#define HB_CONFIG_HH
+#अगर_अघोषित HB_CONFIG_HH
+#घोषणा HB_CONFIG_HH
 
-#if 0 /* Make test happy. */
-#include "hb.hh"
-#endif
+#अगर 0 /* Make test happy. */
+#समावेश "hb.hh"
+#पूर्ण_अगर
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#अगर_घोषित HAVE_CONFIG_H
+#समावेश "config.h"
+#पूर्ण_अगर
 
-#ifndef HB_EXPERIMENTAL_API
-#define HB_NO_BEYOND_64K
-#define HB_NO_CUBIC_GLYF
-#define HB_NO_SUBSET_DEPEND
-#endif
+#अगर_अघोषित HB_EXPERIMENTAL_API
+#घोषणा HB_NO_BEYOND_64K
+#घोषणा HB_NO_CUBIC_GLYF
+#घोषणा HB_NO_SUBSET_DEPEND
+#पूर्ण_अगर
 
-#ifdef HB_TINY
-#define HB_LEAN
-#define HB_MINI
-#define HB_NO_SVG
-#define HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_MORE
-#define HB_MINIMIZE_MEMORY_USAGE
-#define HB_NO_MT
-#define HB_NO_UCD_UNASSIGNED
-#ifndef NDEBUG
-#define NDEBUG
-#endif
-#endif
+#अगर_घोषित HB_TINY
+#घोषणा HB_LEAN
+#घोषणा HB_MINI
+#घोषणा HB_NO_SVG
+#घोषणा HB_OPTIMIZE_आकार
+#घोषणा HB_OPTIMIZE_आकार_MORE
+#घोषणा HB_MINIMIZE_MEMORY_USAGE
+#घोषणा HB_NO_MT
+#घोषणा HB_NO_UCD_UNASSIGNED
+#अगर_अघोषित न_संशोधन
+#घोषणा न_संशोधन
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifdef HB_LEAN
-#define HB_DISABLE_DEPRECATED
-#define HB_NO_ATEXIT
-#define HB_NO_BUFFER_MESSAGE
-#define HB_NO_BUFFER_SERIALIZE
-#define HB_NO_BUFFER_VERIFY
-#define HB_NO_BITMAP
-#define HB_NO_ERRNO
-#define HB_NO_FACE_COLLECT_UNICODES
-#define HB_NO_GETENV
-#define HB_NO_HINTING
-#define HB_NO_LAYOUT_FEATURE_PARAMS
-#define HB_NO_LAYOUT_COLLECT_GLYPHS
-#define HB_NO_LAYOUT_RARELY_USED
-#define HB_NO_LAYOUT_UNUSED
-#define HB_NO_MATH
-#define HB_NO_META
-#define HB_NO_METRICS
-#define HB_NO_MMAP
-#define HB_NO_NAME
-#define HB_NO_OPEN
-#define HB_NO_OT_FETCH
-#define HB_NO_OT_FONT_GLYPH_NAMES
-#define HB_NO_SETLOCALE
-#define HB_NO_STYLE
-#define HB_NO_SUBSET_DEPEND
-#define HB_NO_VERTICAL
-#define HB_NO_VAR
+#अगर_घोषित HB_LEAN
+#घोषणा HB_DISABLE_DEPRECATED
+#घोषणा HB_NO_ATEXIT
+#घोषणा HB_NO_बफर_MESSAGE
+#घोषणा HB_NO_बफर_SERIALIZE
+#घोषणा HB_NO_बफर_VERIFY
+#घोषणा HB_NO_BITMAP
+#घोषणा HB_NO_ERRNO
+#घोषणा HB_NO_FACE_COLLECT_UNICODES
+#घोषणा HB_NO_GETENV
+#घोषणा HB_NO_HINTING
+#घोषणा HB_NO_LAYOUT_FEATURE_PARAMS
+#घोषणा HB_NO_LAYOUT_COLLECT_GLYPHS
+#घोषणा HB_NO_LAYOUT_RARELY_USED
+#घोषणा HB_NO_LAYOUT_UNUSED
+#घोषणा HB_NO_MATH
+#घोषणा HB_NO_META
+#घोषणा HB_NO_METRICS
+#घोषणा HB_NO_MMAP
+#घोषणा HB_NO_NAME
+#घोषणा HB_NO_OPEN
+#घोषणा HB_NO_OT_FETCH
+#घोषणा HB_NO_OT_FONT_GLYPH_NAMES
+#घोषणा HB_NO_SETLOCALE
+#घोषणा HB_NO_STYLE
+#घोषणा HB_NO_SUBSET_DEPEND
+#घोषणा HB_NO_VERTICAL
+#घोषणा HB_NO_VAR
 
-#if !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
-#define HB_NO_COLOR
-#define HB_NO_DRAW
-#define HB_NO_PAINT
-#endif
+#अगर !(defined(HB_HAS_CAIRO) || defined(HB_HAS_RASTER) || defined(HB_HAS_VECTOR) || defined(HB_HAS_GPU))
+#घोषणा HB_NO_COLOR
+#घोषणा HB_NO_DRAW
+#घोषणा HB_NO_PAINT
+#पूर्ण_अगर
 
-#endif
+#पूर्ण_अगर
 
-#ifdef HB_MINI
-#define HB_NO_AAT
-#define HB_NO_LEGACY
-#define HB_NO_BEYOND_64K
-#define HB_NO_CUBIC_GLYF
-#endif
+#अगर_घोषित HB_MINI
+#घोषणा HB_NO_AAT
+#घोषणा HB_NO_LEGACY
+#घोषणा HB_NO_BEYOND_64K
+#घोषणा HB_NO_CUBIC_GLYF
+#पूर्ण_अगर
 
-#ifdef __OPTIMIZE_SIZE__
-#ifndef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE
-#endif
-#endif
+#अगर_घोषित __OPTIMIZE_SIZE__
+#अगर_अघोषित HB_OPTIMIZE_आकार
+#घोषणा HB_OPTIMIZE_आकार
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-#if defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
-#ifndef HB_CONFIG_OVERRIDE_H
-#define HB_CONFIG_OVERRIDE_H "config-override.h"
-#endif
-#include HB_CONFIG_OVERRIDE_H
-#endif
+#अगर defined(HAVE_CONFIG_OVERRIDE_H) || defined(HB_CONFIG_OVERRIDE_H)
+#अगर_अघोषित HB_CONFIG_OVERRIDE_H
+#घोषणा HB_CONFIG_OVERRIDE_H "config-override.h"
+#पूर्ण_अगर
+#समावेश HB_CONFIG_OVERRIDE_H
+#पूर्ण_अगर
 
 /* Closure of options. */
 
-#ifdef HB_NO_VAR
-#define HB_NO_VAR_COMPOSITES
-#endif
+#अगर_घोषित HB_NO_VAR
+#घोषणा HB_NO_VAR_COMPOSITES
+#पूर्ण_अगर
 
-#ifdef HB_DISABLE_DEPRECATED
-#define HB_IF_NOT_DEPRECATED(x)
-#else
-#define HB_IF_NOT_DEPRECATED(x) x
-#endif
+#अगर_घोषित HB_DISABLE_DEPRECATED
+#घोषणा HB_IF_NOT_DEPRECATED(x)
+#अन्यथा
+#घोषणा HB_IF_NOT_DEPRECATED(x) x
+#पूर्ण_अगर
 
-#ifdef HB_NO_SHAPER
-#define HB_NO_OT_SHAPE
-#define HB_NO_AAT_SHAPE
-#endif
+#अगर_घोषित HB_NO_SHAPER
+#घोषणा HB_NO_OT_SHAPE
+#घोषणा HB_NO_AAT_SHAPE
+#पूर्ण_अगर
 
-#ifdef HB_NO_AAT
-#define HB_NO_OT_NAME_LANGUAGE_AAT
-#define HB_NO_AAT_SHAPE
-#endif
+#अगर_घोषित HB_NO_AAT
+#घोषणा HB_NO_OT_NAME_LANGUAGE_AAT
+#घोषणा HB_NO_AAT_SHAPE
+#पूर्ण_अगर
 
-#ifdef HB_NO_BITMAP
-#define HB_NO_OT_FONT_BITMAP
-#endif
+#अगर_घोषित HB_NO_BITMAP
+#घोषणा HB_NO_OT_FONT_BITMAP
+#पूर्ण_अगर
 
-#ifdef HB_NO_DRAW
-#define HB_NO_OT_FONT_CFF
-#define HB_NO_OUTLINE
-#define HB_NO_PAINT
-#endif
+#अगर_घोषित HB_NO_DRAW
+#घोषणा HB_NO_OT_FONT_CFF
+#घोषणा HB_NO_OUTLINE
+#घोषणा HB_NO_PAINT
+#पूर्ण_अगर
 
-#ifdef HB_NO_CFF
-#define HB_NO_OT_FONT_CFF
-#define HB_NO_SUBSET_CFF
-#endif
+#अगर_घोषित HB_NO_CFF
+#घोषणा HB_NO_OT_FONT_CFF
+#घोषणा HB_NO_SUBSET_CFF
+#पूर्ण_अगर
 
-#ifdef HB_NO_LEGACY
-#define HB_NO_CMAP_LEGACY_SUBTABLES
-#define HB_NO_FALLBACK_SHAPE
-#define HB_NO_OT_KERN
-#define HB_NO_OT_LAYOUT_BLOCKLIST
-#define HB_NO_AAT_LAYOUT_BLOCKLIST
-#define HB_NO_OT_SHAPE_FALLBACK
-#endif
+#अगर_घोषित HB_NO_LEGACY
+#घोषणा HB_NO_CMAP_LEGACY_SUBTABLES
+#घोषणा HB_NO_FALLBACK_SHAPE
+#घोषणा HB_NO_OT_KERN
+#घोषणा HB_NO_OT_LAYOUT_BLOCKLIST
+#घोषणा HB_NO_AAT_LAYOUT_BLOCKLIST
+#घोषणा HB_NO_OT_SHAPE_FALLBACK
+#पूर्ण_अगर
 
-#ifdef HB_NO_NAME
-#define HB_NO_OT_NAME_LANGUAGE
-#endif
+#अगर_घोषित HB_NO_NAME
+#घोषणा HB_NO_OT_NAME_LANGUAGE
+#पूर्ण_अगर
 
-#ifdef HB_NO_OT
-#define HB_NO_OT_FONT
-#define HB_NO_OT_LAYOUT
-#define HB_NO_OT_TAG
-#define HB_NO_OT_SHAPE
-#endif
+#अगर_घोषित HB_NO_OT
+#घोषणा HB_NO_OT_FONT
+#घोषणा HB_NO_OT_LAYOUT
+#घोषणा HB_NO_OT_TAG
+#घोषणा HB_NO_OT_SHAPE
+#पूर्ण_अगर
 
-#ifdef HB_NO_OT_SHAPE
-#define HB_NO_AAT_SHAPE
-#endif
+#अगर_घोषित HB_NO_OT_SHAPE
+#घोषणा HB_NO_AAT_SHAPE
+#पूर्ण_अगर
 
-#ifdef HB_NO_OT_SHAPE_FALLBACK
-#define HB_NO_OT_SHAPER_ARABIC_FALLBACK
-#define HB_NO_OT_SHAPER_HEBREW_FALLBACK
-#define HB_NO_OT_SHAPER_THAI_FALLBACK
-#define HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-#define HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
-#endif
+#अगर_घोषित HB_NO_OT_SHAPE_FALLBACK
+#घोषणा HB_NO_OT_SHAPER_ARABIC_FALLBACK
+#घोषणा HB_NO_OT_SHAPER_HEBREW_FALLBACK
+#घोषणा HB_NO_OT_SHAPER_THAI_FALLBACK
+#घोषणा HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
+#घोषणा HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
+#पूर्ण_अगर
 
-#ifdef HB_OPTIMIZE_SIZE_MORE
-#define HB_NO_OT_RULESETS_FAST_PATH
-#endif
+#अगर_घोषित HB_OPTIMIZE_आकार_MORE
+#घोषणा HB_NO_OT_RULESETS_FAST_PATH
+#पूर्ण_अगर
 
-#ifdef HB_MINIMIZE_MEMORY_USAGE
-#define HB_NO_GDEF_CACHE
-#define HB_NO_OT_LAYOUT_LOOKUP_CACHE
-#define HB_NO_OT_FONT_CMAP_CACHE
-#endif
+#अगर_घोषित HB_MINIMIZE_MEMORY_USAGE
+#घोषणा HB_NO_GDEF_CACHE
+#घोषणा HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#घोषणा HB_NO_OT_FONT_CMAP_CACHE
+#पूर्ण_अगर
 
-#if defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
-#ifndef HB_CONFIG_OVERRIDE_LAST_H
-#define HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
-#endif
-#include HB_CONFIG_OVERRIDE_LAST_H
-#endif
+#अगर defined(HAVE_CONFIG_OVERRIDE_LAST_H) || defined(HB_CONFIG_OVERRIDE_LAST_H)
+#अगर_अघोषित HB_CONFIG_OVERRIDE_LAST_H
+#घोषणा HB_CONFIG_OVERRIDE_LAST_H "config-override-last.h"
+#पूर्ण_अगर
+#समावेश HB_CONFIG_OVERRIDE_LAST_H
+#पूर्ण_अगर
 
-#ifdef HB_OPTIMIZE_SIZE
-#define HB_OPTIMIZE_SIZE_VAL 1
-#else
-#define HB_OPTIMIZE_SIZE_VAL 0
-#endif
+#अगर_घोषित HB_OPTIMIZE_आकार
+#घोषणा HB_OPTIMIZE_आकार_VAL 1
+#अन्यथा
+#घोषणा HB_OPTIMIZE_आकार_VAL 0
+#पूर्ण_अगर
 
-#ifdef HB_MINIMIZE_MEMORY_USAGE
-#define HB_MINIMIZE_MEMORY_USAGE_VAL 1
-#else
-#define HB_MINIMIZE_MEMORY_USAGE_VAL 0
-#endif
+#अगर_घोषित HB_MINIMIZE_MEMORY_USAGE
+#घोषणा HB_MINIMIZE_MEMORY_USAGE_VAL 1
+#अन्यथा
+#घोषणा HB_MINIMIZE_MEMORY_USAGE_VAL 0
+#पूर्ण_अगर
 
-#endif /* HB_CONFIG_HH */
+#पूर्ण_अगर /* HB_CONFIG_HH */

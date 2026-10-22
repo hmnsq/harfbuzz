@@ -1,197 +1,197 @@
-#ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
+#घोषणा OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 
-#include "PairSet.hh"
+#समावेश "PairSet.hh"
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
 
-template <typename Types>
-struct PairPosFormat1_3
+ढाँचा <typename Types>
+काष्ठा PairPosFormat1_3
 {
   using PairSet = GPOS_impl::PairSet<Types>;
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_मूल्य_Record = GPOS_impl::Pair_मूल्य_Record<Types>;
 
-  protected:
+  रक्षित:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  typename Types::ढाँचा LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat[2];         /* [0] Defines the types of data in
+  मूल्य_Format   मूल्य_Format_2[2];         /* [0] Defines the types of data in
                                          * ValueRecord1--for the first glyph
                                          * in the pair--may be zero (0) */
                                         /* [1] Defines the types of data in
                                          * ValueRecord2--for the second glyph
                                          * in the pair--may be zero (0) */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<PairSet>>
+  typename Types::ढाँचा ArrayOf<typename Types::ढाँचा OffsetTo<PairSet>>
                 pairSet;                /* Array of PairSet tables ordered by
                                          * Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * ValueFormat::static_size + Types::HBUINT::static_size, pairSet);
+  खुला:
+  DEFINE_आकार_ARRAY (2 + Types::LOffset::static_आकार + 2 * मूल्य_Format::static_आकार + Types::HBUINT::static_आकार, pairSet);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (यह);
 
-    if (!c->check_struct (this)) return_trace (false);
+    अगर (!c->check_struct (यह)) return_trace (false);
     hb_barrier ();
 
-    unsigned int len1 = valueFormat[0].get_len ();
-    unsigned int len2 = valueFormat[1].get_len ();
+    अचिन्हित पूर्णांक len1 = मूल्य_Format_2[0].get_len ();
+    अचिन्हित पूर्णांक len2 = मूल्य_Format_2[1].get_len ();
     typename PairSet::sanitize_closure_t closure =
     {
-      valueFormat,
+      मूल्य_Format_2,
       len1,
-      PairSet::get_size (len1, len2)
+      PairSet::get_आकार (len1, len2)
     };
 
-    return_trace (coverage.sanitize (c, this) && pairSet.sanitize (c, this, &closure));
+    return_trace (coverage.sanitize (c, यह) && pairSet.sanitize (c, यह, &closure));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  bool intersects (स्थिर hb_set_t *glyphs) स्थिर
   {
-    auto &cov = this+coverage;
+    स्वतः &cov = यह+coverage;
 
-    if (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
+    अगर (pairSet.len > glyphs->get_population () * hb_bit_storage ((अचिन्हित) pairSet.len))
     {
-      for (hb_codepoint_t g : glyphs->iter ())
+      क्रम (hb_codepoint_t g : glyphs->iter ())
       {
-	unsigned i = cov.get_coverage (g);
-	if ((this+pairSet[i]).intersects (glyphs, valueFormat))
-	  return true;
+	अचिन्हित i = cov.get_coverage (g);
+	अगर ((यह+pairSet[i]).intersects (glyphs, मूल्य_Format_2))
+	  वापस true;
       }
-      return false;
+      वापस false;
     }
 
-    return
+    वापस
     + hb_zip (cov, pairSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map ([glyphs, this] (const typename Types::template OffsetTo<PairSet> &_)
-              { return (this+_).intersects (glyphs, valueFormat); })
+    | hb_map ([glyphs, यह] (स्थिर typename Types::ढाँचा OffsetTo<PairSet> &_)
+              { वापस (यह+_).intersects (glyphs, मूल्य_Format_2); })
     | hb_any
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  व्योम closure_lookups (hb_closure_lookups_context_t *c) स्थिर {}
+  व्योम collect_variation_indices (hb_collect_variation_indices_context_t *c) स्थिर
   {
-    if ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) return;
+    अगर ((!मूल्य_Format_2[0].has_device ()) && (!मूल्य_Format_2[1].has_device ())) वापस;
 
-    auto it =
-    + hb_zip (this+coverage, pairSet)
+    स्वतः it =
+    + hb_zip (यह+coverage, pairSet)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
     ;
 
-    if (!it) return;
+    अगर (!it) वापस;
     + it
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, valueFormat); })
+    | hb_map (hb_add (यह))
+    | hb_apply ([&] (स्थिर PairSet& _) { _.collect_variation_indices (c, मूल्य_Format_2); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  व्योम collect_glyphs (hb_collect_glyphs_context_t *c) स्थिर
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    unsigned int count = pairSet.len;
-    for (unsigned int i = 0; i < count; i++)
-      (this+pairSet[i]).collect_glyphs (c, valueFormat);
+    अगर (unlikely (!(यह+coverage).collect_coverage (c->निवेश))) वापस;
+    अचिन्हित पूर्णांक गिनती = pairSet.len;
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
+      (यह+pairSet[i]).collect_glyphs (c, मूल्य_Format_2);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  व्योम collect_second_glyphs (hb_set_digest_t *digest) स्थिर
   {
-    unsigned count = pairSet.len;
-    for (unsigned i = 0; i < count; i++)
-      (this+pairSet[i]).collect_second_glyphs (digest, valueFormat);
+    अचिन्हित गिनती = pairSet.len;
+    क्रम (अचिन्हित i = 0; i < गिनती; i++)
+      (यह+pairSet[i]).collect_second_glyphs (digest, मूल्य_Format_2);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  स्थिर Coverage &get_coverage () स्थिर { वापस यह+coverage; }
 
-  struct external_cache_t
+  काष्ठा external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
     hb_set_digest_t pair_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  व्योम *external_cache_create () स्थिर
   {
-    unsigned count = pairSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_set_digest_t) +
-		    count * sizeof (hb_set_digest_t);
-    external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    अचिन्हित गिनती = pairSet.len;
+    अचिन्हित आकार = माप (external_cache_t) -
+		    HB_VAR_ARRAY * माप (hb_set_digest_t) +
+		    गिनती * माप (hb_set_digest_t);
+    external_cache_t *cache = (external_cache_t *) hb_malloc (आकार);
+    अगर (likely (cache))
     {
-      cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
+      cache->coverage.सफा ();
+      क्रम (अचिन्हित i = 0; i < गिनती; i++)
       {
 	cache->pair_sets[i].init ();
-	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
+	(यह+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], मूल्य_Format_2);
       }
     }
-    return cache;
+    वापस cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  bool apply (hb_ot_apply_context_t *c, व्योम *external_cache) स्थिर
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (यह);
 
-    hb_buffer_t *buffer = c->buffer;
+    hb_बफर_t *बफर = c->बफर;
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#अगर_अघोषित HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-#endif
-    if (index == NOT_COVERED) return_trace (false);
+    अचिन्हित पूर्णांक सूचकांक_2 = (यह+coverage).get_coverage  (बफर->cur().codepoint, cache ? &cache->coverage : nullptr);
+#अन्यथा
+    अचिन्हित पूर्णांक सूचकांक_2 = (यह+coverage).get_coverage  (बफर->cur().codepoint);
+#पूर्ण_अगर
+    अगर (सूचकांक_2 == NOT_COVERED) return_trace (false);
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
-    unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    स्वतः &skippy_iter = c->iter_निवेश;
+    skippy_iter.reset_fast (बफर->idx);
+    अचिन्हित unsafe_to;
+    अगर (unlikely (!skippy_iter.next (&unsafe_to)))
     {
-      buffer->unsafe_to_concat (buffer->idx, unsafe_to);
+      बफर->unsafe_to_concat (बफर->idx, unsafe_to);
       return_trace (false);
     }
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (cache &&
-	index < pairSet.len &&
-	!cache->pair_sets[index].may_have (buffer->info[skippy_iter.idx].codepoint))
+#अगर_अघोषित HB_NO_OT_LAYOUT_LOOKUP_CACHE
+    अगर (cache &&
+	सूचकांक_2 < pairSet.len &&
+	!cache->pair_sets[सूचकांक_2].may_have (बफर->info[skippy_iter.idx].codepoint))
     {
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
+      बफर->unsafe_to_concat (बफर->idx, skippy_iter.idx + 1);
       return_trace (false);
     }
-#endif
+#पूर्ण_अगर
 
-    return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
+    return_trace ((यह+pairSet[सूचकांक_2]).apply (c, मूल्य_Format_2, skippy_iter.idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  bool subset (hb_subset_context_t *c) स्थिर
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (यह);
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    स्थिर hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    स्थिर hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    स्वतः *out = c->serializer->start_embed (*यह);
+    अगर (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat[0], valueFormat[1]);
+    hb_pair_t<अचिन्हित, अचिन्हित> newFormats = hb_pair (मूल्य_Format_2[0], मूल्य_Format_2[1]);
 
-    if (c->plan->normalized_coords)
+    अगर (c->plan->normalized_coords)
     {
       /* all device flags will be dropped when full instancing, no need to strip
        * hints, also do not strip emtpy cause we don't compute the new default
        * value during stripping */
-      newFormats = compute_effective_value_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = compute_effective_मूल्य_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    अन्यथा अगर (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
       bool has_fvar = (blob != hb_blob_get_empty ());
@@ -200,30 +200,30 @@ struct PairPosFormat1_3
       bool strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
+      अगर (has_fvar && !c->plan->has_gdef_varstore)
         strip = true;
-      newFormats = compute_effective_value_formats (glyphset, strip, true);
+      newFormats = compute_effective_मूल्य_formats (glyphset, strip, true);
     }
 
-    out->valueFormat[0] = newFormats.first;
-    out->valueFormat[1] = newFormats.second;
+    out->मूल्य_Format_2[0] = newFormats.first;
+    out->मूल्य_Format_2[1] = newFormats.second;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
 
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (यह+coverage, pairSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter ([this, c, out] (const typename Types::template OffsetTo<PairSet>& _)
+    | hb_filter ([यह, c, out] (स्थिर typename Types::ढाँचा OffsetTo<PairSet>& _)
                  {
-                   auto snap = c->serializer->snapshot ();
-                   auto *o = out->pairSet.serialize_append (c->serializer);
-                   if (unlikely (!o)) return false;
-                   bool ret = o->serialize_subset (c, _, this, valueFormat, out->valueFormat);
-                   if (!ret)
+                   स्वतः snap = c->serializer->snapshot ();
+                   स्वतः *o = out->pairSet.serialize_append (c->serializer);
+                   अगर (unlikely (!o)) वापस false;
+                   bool ret = o->serialize_subset (c, _, यह, मूल्य_Format_2, out->मूल्य_Format_2);
+                   अगर (!ret)
                    {
-                     out->pairSet.pop ();
+                     out->pairSet.निकालो ();
                      c->serializer->revert (snap);
                    }
-                   return ret;
+                   वापस ret;
                  },
                  hb_second)
     | hb_map (hb_first)
@@ -237,30 +237,30 @@ struct PairPosFormat1_3
   }
 
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_set_t& glyphset,
+  hb_pair_t<अचिन्हित, अचिन्हित> compute_effective_मूल्य_formats (स्थिर hb_set_t& glyphset,
                                                                  bool strip_hints, bool strip_empty,
-                                                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+                                                                 स्थिर hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> *varidx_delta_map = nullptr) स्थिर
   {
-    unsigned format1 = 0;
-    unsigned format2 = 0;
-    for (const auto & _ :
-	  + hb_zip (this+coverage, pairSet)
+    अचिन्हित format1 = 0;
+    अचिन्हित format2 = 0;
+    क्रम (स्थिर स्वतः & _ :
+	  + hb_zip (यह+coverage, pairSet)
 	  | hb_filter (glyphset, hb_first)
 	  | hb_map (hb_second)
 	)
     {
-      const PairSet& set = (this + _);
-      auto formats = set.get_values_view (valueFormat).compute_effective_value_formats (
-          glyphset, valueFormat, strip_hints, strip_empty, varidx_delta_map);
+      स्थिर PairSet& set = (यह + _);
+      स्वतः formats = set.get_मूल्यावली_view (मूल्य_Format_2).compute_effective_मूल्य_formats (
+          glyphset, मूल्य_Format_2, strip_hints, strip_empty, varidx_delta_map);
       format1 |= formats.first;
       format2 |= formats.second;
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat[0] && format2 == valueFormat[1])
-        break;
+      अगर (!varidx_delta_map &&
+          format1 == मूल्य_Format_2[0] && format2 == मूल्य_Format_2[1])
+        अवरोध;
     }
 
-    return hb_pair (format1, format2);
+    वापस hb_pair (format1, format2);
   }
 };
 
@@ -269,4 +269,4 @@ struct PairPosFormat1_3
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
+#पूर्ण_अगर  // OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH

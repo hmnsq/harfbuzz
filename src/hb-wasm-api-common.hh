@@ -22,10 +22,10 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_COMMON_HH
-#define HB_WASM_API_COMMON_HH
+#अगर_अघोषित HB_WASM_API_COMMON_HH
+#घोषणा HB_WASM_API_COMMON_HH
 
-#include "hb-wasm-api.hh"
+#समावेश "hb-wasm-api.hh"
 
 namespace hb {
 namespace wasm {
@@ -34,11 +34,11 @@ namespace wasm {
 HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 							    script_t script)
 {
-  return (direction_t)
+  वापस (direction_t)
 	 hb_script_get_horizontal_direction (hb_script_from_iso15924_tag (script));
 }
 
 
 }}
 
-#endif /* HB_WASM_API_COMMON_HH */
+#पूर्ण_अगर /* HB_WASM_API_COMMON_HH */

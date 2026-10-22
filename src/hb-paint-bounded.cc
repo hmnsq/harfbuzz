@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_PAINT
+#अगर_अघोषित HB_NO_PAINT
 
-#include "hb-paint-bounded.hh"
+#समावेश "hb-paint-bounded.hh"
 
-#include "hb-machinery.hh"
+#समावेश "hb-machinery.hh"
 
 
 /*
@@ -37,146 +37,146 @@
  * https://learn.microsoft.com/en-us/typography/opentype/spec/colr#glyph-metrics-and-boundedness
  */
 
-static void
-hb_paint_bounded_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-				  void *paint_data,
+अटल व्योम
+hb_paint_bounded_धकेलो_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
+				  व्योम *paint_तथ्य,
 				  hb_codepoint_t glyph,
 				  hb_font_t *font,
-				  void *user_data HB_UNUSED)
+				  व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
-  c->push_clip ();
+  c->धकेलो_clip ();
 }
 
-static void
-hb_paint_bounded_push_clip_rectangle (hb_paint_funcs_t *funcs HB_UNUSED,
-				      void *paint_data,
-				      float xmin, float ymin, float xmax, float ymax,
-				      void *user_data)
+अटल व्योम
+hb_paint_bounded_धकेलो_clip_rectangle (hb_paint_funcs_t *funcs HB_UNUSED,
+				      व्योम *paint_तथ्य,
+				      भग्न xmin, भग्न ymin, भग्न xmax, भग्न ymax,
+				      व्योम *user_तथ्य)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
-  c->push_clip ();
+  c->धकेलो_clip ();
 }
 
-static void
-hb_paint_bounded_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-			   void *paint_data,
-			   void *user_data HB_UNUSED)
+अटल व्योम
+hb_paint_bounded_निकालो_clip (hb_paint_funcs_t *funcs HB_UNUSED,
+			   व्योम *paint_तथ्य,
+			   व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
-  c->pop_clip ();
+  c->निकालो_clip ();
 }
 
-static void
-hb_paint_bounded_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void *paint_data,
-			     void *user_data HB_UNUSED)
+अटल व्योम
+hb_paint_bounded_धकेलो_group (hb_paint_funcs_t *funcs HB_UNUSED,
+			     व्योम *paint_तथ्य,
+			     व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
-  c->push_group ();
+  c->धकेलो_group ();
 }
 
-static void
-hb_paint_bounded_pop_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void *paint_data,
+अटल व्योम
+hb_paint_bounded_निकालो_group (hb_paint_funcs_t *funcs HB_UNUSED,
+			    व्योम *paint_तथ्य,
 			    hb_paint_composite_mode_t mode,
-			    void *user_data HB_UNUSED)
+			    व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
-  c->pop_group (mode);
+  c->निकालो_group (mode);
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
+			      व्योम *paint_तथ्य,
 			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
+			      अचिन्हित पूर्णांक width HB_UNUSED,
+			      अचिन्हित पूर्णांक height HB_UNUSED,
 			      hb_tag_t format HB_UNUSED,
-			      float slant HB_UNUSED,
+			      भग्न slant HB_UNUSED,
 			      hb_glyph_extents_t *glyph_extents,
-			      void *user_data HB_UNUSED)
+			      व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
-  c->push_clip ();
+  c->धकेलो_clip ();
   c->paint ();
-  c->pop_clip ();
+  c->निकालो_clip ();
 
-  return true;
+  वापस true;
 }
 
-static void
+अटल व्योम
 hb_paint_bounded_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
+			      व्योम *paint_तथ्य,
 			      hb_bool_t use_foreground HB_UNUSED,
 			      hb_color_t color HB_UNUSED,
-			      void *user_data HB_UNUSED)
+			      व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
   c->paint ();
 }
 
-static void
+अटल व्योम
 hb_paint_bounded_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED,
-				        float x2 HB_UNUSED, float y2 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+				        व्योम *paint_तथ्य,
+				        hb_color_पंक्ति_t *color_पंक्ति HB_UNUSED,
+				        भग्न x0 HB_UNUSED, भग्न y0 HB_UNUSED,
+				        भग्न x1 HB_UNUSED, भग्न y1 HB_UNUSED,
+				        भग्न x2 HB_UNUSED, भग्न y2 HB_UNUSED,
+				        व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
   c->paint ();
 }
 
-static void
+अटल व्योम
 hb_paint_bounded_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED, float r0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED, float r1 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+				        व्योम *paint_तथ्य,
+				        hb_color_पंक्ति_t *color_पंक्ति HB_UNUSED,
+				        भग्न x0 HB_UNUSED, भग्न y0 HB_UNUSED, भग्न r0 HB_UNUSED,
+				        भग्न x1 HB_UNUSED, भग्न y1 HB_UNUSED, भग्न r1 HB_UNUSED,
+				        व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
   c->paint ();
 }
 
-static void
+अटल व्योम
 hb_paint_bounded_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				       void *paint_data,
-				       hb_color_line_t *color_line HB_UNUSED,
-				       float cx HB_UNUSED, float cy HB_UNUSED,
-				       float start_angle HB_UNUSED,
-				       float end_angle HB_UNUSED,
-				       void *user_data HB_UNUSED)
+				       व्योम *paint_तथ्य,
+				       hb_color_पंक्ति_t *color_पंक्ति HB_UNUSED,
+				       भग्न cx HB_UNUSED, भग्न cy HB_UNUSED,
+				       भग्न start_angle HB_UNUSED,
+				       भग्न end_angle HB_UNUSED,
+				       व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_तथ्य;
 
   c->paint ();
 }
 
-static inline void free_static_paint_bounded_funcs ();
+अटल अंतरभूत व्योम free_static_paint_bounded_funcs ();
 
-static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
+अटल काष्ठा hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  अटल hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, hb_paint_bounded_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, hb_paint_bounded_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, hb_paint_bounded_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, hb_paint_bounded_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, hb_paint_bounded_pop_group, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_clip_glyph_func (funcs, hb_paint_bounded_धकेलो_clip_glyph, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_clip_rectangle_func (funcs, hb_paint_bounded_धकेलो_clip_rectangle, nullptr, nullptr);
+    hb_paint_funcs_set_निकालो_clip_func (funcs, hb_paint_bounded_निकालो_clip, nullptr, nullptr);
+    hb_paint_funcs_set_धकेलो_group_func (funcs, hb_paint_bounded_धकेलो_group, nullptr, nullptr);
+    hb_paint_funcs_set_निकालो_group_func (funcs, hb_paint_bounded_निकालो_group, nullptr, nullptr);
     hb_paint_funcs_set_color_func (funcs, hb_paint_bounded_paint_color, nullptr, nullptr);
     hb_paint_funcs_set_image_func (funcs, hb_paint_bounded_paint_image, nullptr, nullptr);
     hb_paint_funcs_set_linear_gradient_func (funcs, hb_paint_bounded_paint_linear_gradient, nullptr, nullptr);
@@ -187,12 +187,12 @@ static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_
 
     hb_atexit (free_static_paint_bounded_funcs);
 
-    return funcs;
+    वापस funcs;
   }
 } static_paint_bounded_funcs;
 
-static inline
-void free_static_paint_bounded_funcs ()
+अटल अंतरभूत
+व्योम free_static_paint_bounded_funcs ()
 {
   static_paint_bounded_funcs.free_instance ();
 }
@@ -200,8 +200,8 @@ void free_static_paint_bounded_funcs ()
 hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ()
 {
-  return static_paint_bounded_funcs.get_unconst ();
+  वापस static_paint_bounded_funcs.get_unconst ();
 }
 
 
-#endif
+#पूर्ण_अगर

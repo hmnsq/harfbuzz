@@ -24,17 +24,17 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#अगर !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#त्रुटि "Include <hb.h> instead."
+#पूर्ण_अगर
 
-#ifndef HB_FONT_H
-#define HB_FONT_H
+#अगर_अघोषित HB_FONT_H
+#घोषणा HB_FONT_H
 
-#include "hb-common.h"
-#include "hb-face.h"
-#include "hb-draw.h"
-#include "hb-paint.h"
+#समावेश "hb-common.h"
+#समावेश "hb-face.h"
+#समावेश "hb-draw.h"
+#समावेश "hb-paint.h"
 
 HB_BEGIN_DECLS
 
@@ -55,34 +55,34 @@ HB_BEGIN_DECLS
  * method.
  *
  **/
-typedef struct hb_font_funcs_t hb_font_funcs_t;
+प्रकार काष्ठा hb_font_funcs_t hb_font_funcs_t;
 
 HB_EXTERN hb_font_funcs_t *
-hb_font_funcs_create (void);
+hb_font_funcs_create (व्योम);
 
 HB_EXTERN hb_font_funcs_t *
-hb_font_funcs_get_empty (void);
+hb_font_funcs_get_empty (व्योम);
 
 HB_EXTERN hb_font_funcs_t *
 hb_font_funcs_reference (hb_font_funcs_t *ffuncs);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_destroy (hb_font_funcs_t *ffuncs);
 
 HB_EXTERN hb_bool_t
-hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_font_funcs_set_user_तथ्य (hb_font_funcs_t    *ffuncs,
+			     hb_user_तथ्य_कुंजी_t *कुंजी_2,
+			     व्योम *              तथ्य,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
-			     hb_user_data_key_t    *key);
+HB_EXTERN व्योम *
+hb_font_funcs_get_user_तथ्य (स्थिर hb_font_funcs_t *ffuncs,
+			     hb_user_तथ्य_कुंजी_t    *कुंजी_2);
 
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs);
 
 HB_EXTERN hb_bool_t
@@ -102,10 +102,10 @@ hb_font_funcs_is_immutable (hb_font_funcs_t *ffuncs);
  * Note that typically @ascender is positive and @descender
  * negative, in coordinate systems that grow up.
  **/
-typedef struct hb_font_extents_t {
+प्रकार काष्ठा hb_font_extents_t {
   hb_position_t ascender;
   hb_position_t descender;
-  hb_position_t line_gap;
+  hb_position_t पंक्ति_gap;
   /*< private >*/
   hb_position_t reserved9;
   hb_position_t reserved8;
@@ -130,9 +130,9 @@ typedef struct hb_font_extents_t {
  * This method should retrieve the extents for a font.
  *
  **/
-typedef hb_bool_t (*hb_font_get_font_extents_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_font_extents_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						       hb_font_extents_t *extents,
-						       void *user_data);
+						       व्योम *user_तथ्य);
 
 /**
  * hb_font_get_font_h_extents_func_t:
@@ -144,7 +144,7 @@ typedef hb_bool_t (*hb_font_get_font_extents_func_t) (hb_font_t *font, void *fon
  * parameter.
  * 
  **/
-typedef hb_font_get_font_extents_func_t hb_font_get_font_h_extents_func_t;
+प्रकार hb_font_get_font_extents_func_t hb_font_get_font_h_extents_func_t;
 
 /**
  * hb_font_get_font_v_extents_func_t:
@@ -156,7 +156,7 @@ typedef hb_font_get_font_extents_func_t hb_font_get_font_h_extents_func_t;
  * parameter.
  * 
  **/
-typedef hb_font_get_font_extents_func_t hb_font_get_font_v_extents_func_t;
+प्रकार hb_font_get_font_extents_func_t hb_font_get_font_v_extents_func_t;
 
 
 /**
@@ -175,10 +175,10 @@ typedef hb_font_get_font_extents_func_t hb_font_get_font_v_extents_func_t;
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-typedef hb_bool_t (*hb_font_get_nominal_glyph_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_nominal_glyph_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						       hb_codepoint_t unicode,
 						       hb_codepoint_t *glyph,
-						       void *user_data);
+						       व्योम *user_तथ्य);
 
 /**
  * hb_font_get_variation_glyph_func_t:
@@ -198,10 +198,10 @@ typedef hb_bool_t (*hb_font_get_nominal_glyph_func_t) (hb_font_t *font, void *fo
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-typedef hb_bool_t (*hb_font_get_variation_glyph_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_variation_glyph_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 							 hb_codepoint_t unicode, hb_codepoint_t variation_selector,
 							 hb_codepoint_t *glyph,
-							 void *user_data);
+							 व्योम *user_तथ्य);
 
 
 /**
@@ -224,13 +224,13 @@ typedef hb_bool_t (*hb_font_get_variation_glyph_func_t) (hb_font_t *font, void *
  * Return value: the number of code points processed
  * 
  **/
-typedef unsigned int (*hb_font_get_nominal_glyphs_func_t) (hb_font_t *font, void *font_data,
-							   unsigned int count,
-							   const hb_codepoint_t *first_unicode,
-							   unsigned int unicode_stride,
+प्रकार अचिन्हित पूर्णांक (*hb_font_get_nominal_glyphs_func_t) (hb_font_t *font, व्योम *font_तथ्य,
+							   अचिन्हित पूर्णांक गिनती,
+							   स्थिर hb_codepoint_t *first_unicode,
+							   अचिन्हित पूर्णांक unicode_stride,
 							   hb_codepoint_t *first_glyph,
-							   unsigned int glyph_stride,
-							   void *user_data);
+							   अचिन्हित पूर्णांक glyph_stride,
+							   व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_advance_func_t:
@@ -247,9 +247,9 @@ typedef unsigned int (*hb_font_get_nominal_glyphs_func_t) (hb_font_t *font, void
  * Return value: The advance of @glyph within @font
  *
  **/
-typedef hb_position_t (*hb_font_get_glyph_advance_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_position_t (*hb_font_get_glyph_advance_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 							   hb_codepoint_t glyph,
-							   void *user_data);
+							   व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_h_advance_func_t:
@@ -261,7 +261,7 @@ typedef hb_position_t (*hb_font_get_glyph_advance_func_t) (hb_font_t *font, void
  * an #hb_position_t output parameter.
  * 
  **/
-typedef hb_font_get_glyph_advance_func_t hb_font_get_glyph_h_advance_func_t;
+प्रकार hb_font_get_glyph_advance_func_t hb_font_get_glyph_h_advance_func_t;
 
 /**
  * hb_font_get_glyph_v_advance_func_t:
@@ -273,7 +273,7 @@ typedef hb_font_get_glyph_advance_func_t hb_font_get_glyph_h_advance_func_t;
  * an #hb_position_t output parameter.
  * 
  **/
-typedef hb_font_get_glyph_advance_func_t hb_font_get_glyph_v_advance_func_t;
+प्रकार hb_font_get_glyph_advance_func_t hb_font_get_glyph_v_advance_func_t;
 
 /**
  * hb_font_get_glyph_advances_func_t:
@@ -291,13 +291,13 @@ typedef hb_font_get_glyph_advance_func_t hb_font_get_glyph_v_advance_func_t;
  * This method should retrieve the advances for a sequence of glyphs.
  * 
  **/
-typedef void (*hb_font_get_glyph_advances_func_t) (hb_font_t* font, void* font_data,
-						   unsigned int count,
-						   const hb_codepoint_t *first_glyph,
-						   unsigned glyph_stride,
+प्रकार व्योम (*hb_font_get_glyph_advances_func_t) (hb_font_t* font, व्योम* font_तथ्य,
+						   अचिन्हित पूर्णांक गिनती,
+						   स्थिर hb_codepoint_t *first_glyph,
+						   अचिन्हित glyph_stride,
 						   hb_position_t *first_advance,
-						   unsigned advance_stride,
-						   void *user_data);
+						   अचिन्हित advance_stride,
+						   व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_h_advances_func_t:
@@ -308,7 +308,7 @@ typedef void (*hb_font_get_glyph_advances_func_t) (hb_font_t* font, void* font_d
  * horizontal-direction text segments.
  * 
  **/
-typedef hb_font_get_glyph_advances_func_t hb_font_get_glyph_h_advances_func_t;
+प्रकार hb_font_get_glyph_advances_func_t hb_font_get_glyph_h_advances_func_t;
 
 /**
  * hb_font_get_glyph_v_advances_func_t:
@@ -319,7 +319,7 @@ typedef hb_font_get_glyph_advances_func_t hb_font_get_glyph_h_advances_func_t;
  * vertical-direction text segments.
  * 
  **/
-typedef hb_font_get_glyph_advances_func_t hb_font_get_glyph_v_advances_func_t;
+प्रकार hb_font_get_glyph_advances_func_t hb_font_get_glyph_v_advances_func_t;
 
 /**
  * hb_font_get_glyph_origin_func_t:
@@ -339,10 +339,10 @@ typedef hb_font_get_glyph_advances_func_t hb_font_get_glyph_v_advances_func_t;
  * Return value: `true` if data found, `false` otherwise
  * 
  **/
-typedef hb_bool_t (*hb_font_get_glyph_origin_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_glyph_origin_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						      hb_codepoint_t glyph,
 						      hb_position_t *x, hb_position_t *y,
-						      void *user_data);
+						      व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_h_origin_func_t:
@@ -354,7 +354,7 @@ typedef hb_bool_t (*hb_font_get_glyph_origin_func_t) (hb_font_t *font, void *fon
  * coordinate must be returned in an #hb_position_t output parameter.
  * 
  **/
-typedef hb_font_get_glyph_origin_func_t hb_font_get_glyph_h_origin_func_t;
+प्रकार hb_font_get_glyph_origin_func_t hb_font_get_glyph_h_origin_func_t;
 
 /**
  * hb_font_get_glyph_v_origin_func_t:
@@ -366,7 +366,7 @@ typedef hb_font_get_glyph_origin_func_t hb_font_get_glyph_h_origin_func_t;
  * must be returned in an #hb_position_t output parameter.
  * 
  **/
-typedef hb_font_get_glyph_origin_func_t hb_font_get_glyph_v_origin_func_t;
+प्रकार hb_font_get_glyph_origin_func_t hb_font_get_glyph_v_origin_func_t;
 
 /**
  * hb_font_get_glyph_origins_func_t:
@@ -391,15 +391,15 @@ typedef hb_font_get_glyph_origin_func_t hb_font_get_glyph_v_origin_func_t;
  *
  * Since: 11.3.0
  **/
-typedef hb_bool_t (*hb_font_get_glyph_origins_func_t) (hb_font_t *font, void *font_data,
-						       unsigned int count,
-						       const hb_codepoint_t *first_glyph,
-						       unsigned glyph_stride,
+प्रकार hb_bool_t (*hb_font_get_glyph_origins_func_t) (hb_font_t *font, व्योम *font_तथ्य,
+						       अचिन्हित पूर्णांक गिनती,
+						       स्थिर hb_codepoint_t *first_glyph,
+						       अचिन्हित glyph_stride,
 						       hb_position_t *first_x,
-						       unsigned x_stride,
+						       अचिन्हित x_stride,
 						       hb_position_t *first_y,
-						       unsigned y_stride,
-						       void *user_data);
+						       अचिन्हित y_stride,
+						       व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_h_origins_func_t:
@@ -412,7 +412,7 @@ typedef hb_bool_t (*hb_font_get_glyph_origins_func_t) (hb_font_t *font, void *fo
  *
  * Since: 11.3.0
  **/
-typedef hb_font_get_glyph_origins_func_t hb_font_get_glyph_h_origins_func_t;
+प्रकार hb_font_get_glyph_origins_func_t hb_font_get_glyph_h_origins_func_t;
 
 /**
  * hb_font_get_glyph_v_origins_func_t:
@@ -425,7 +425,7 @@ typedef hb_font_get_glyph_origins_func_t hb_font_get_glyph_h_origins_func_t;
  *
  * Since: 11.3.0
  **/
-typedef hb_font_get_glyph_origins_func_t hb_font_get_glyph_v_origins_func_t;
+प्रकार hb_font_get_glyph_origins_func_t hb_font_get_glyph_v_origins_func_t;
 
 /**
  * hb_font_get_glyph_kerning_func_t:
@@ -439,9 +439,9 @@ typedef hb_font_get_glyph_origins_func_t hb_font_get_glyph_v_origins_func_t;
  * the specified font, for horizontal text segments.
  *
  **/
-typedef hb_position_t (*hb_font_get_glyph_kerning_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_position_t (*hb_font_get_glyph_kerning_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 							   hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
-							   void *user_data);
+							   व्योम *user_तथ्य);
 /**
  * hb_font_get_glyph_h_kerning_func_t:
  *
@@ -451,7 +451,7 @@ typedef hb_position_t (*hb_font_get_glyph_kerning_func_t) (hb_font_t *font, void
  * the specified font, for horizontal text segments.
  *
  **/
-typedef hb_font_get_glyph_kerning_func_t hb_font_get_glyph_h_kerning_func_t;
+प्रकार hb_font_get_glyph_kerning_func_t hb_font_get_glyph_h_kerning_func_t;
 
 
 /**
@@ -470,10 +470,10 @@ typedef hb_font_get_glyph_kerning_func_t hb_font_get_glyph_h_kerning_func_t;
  * Return value: `true` if data found, `false` otherwise
  * 
  **/
-typedef hb_bool_t (*hb_font_get_glyph_extents_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_glyph_extents_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						       hb_codepoint_t glyph,
 						       hb_glyph_extents_t *extents,
-						       void *user_data);
+						       व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_contour_point_func_t:
@@ -494,10 +494,10 @@ typedef hb_bool_t (*hb_font_get_glyph_extents_func_t) (hb_font_t *font, void *fo
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-typedef hb_bool_t (*hb_font_get_glyph_contour_point_func_t) (hb_font_t *font, void *font_data,
-							     hb_codepoint_t glyph, unsigned int point_index,
+प्रकार hb_bool_t (*hb_font_get_glyph_contour_point_func_t) (hb_font_t *font, व्योम *font_तथ्य,
+							     hb_codepoint_t glyph, अचिन्हित पूर्णांक point_सूचकांक,
 							     hb_position_t *x, hb_position_t *y,
-							     void *user_data);
+							     व्योम *user_तथ्य);
 
 
 /**
@@ -517,10 +517,10 @@ typedef hb_bool_t (*hb_font_get_glyph_contour_point_func_t) (hb_font_t *font, vo
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-typedef hb_bool_t (*hb_font_get_glyph_name_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_get_glyph_name_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 						    hb_codepoint_t glyph,
-						    char *name, unsigned int size,
-						    void *user_data);
+						    अक्षर *name, अचिन्हित पूर्णांक आकार,
+						    व्योम *user_तथ्य);
 
 /**
  * hb_font_get_glyph_from_name_func_t:
@@ -539,10 +539,10 @@ typedef hb_bool_t (*hb_font_get_glyph_name_func_t) (hb_font_t *font, void *font_
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-typedef hb_bool_t (*hb_font_get_glyph_from_name_func_t) (hb_font_t *font, void *font_data,
-							 const char *name, int len, /* -1 means nul-terminated */
+प्रकार hb_bool_t (*hb_font_get_glyph_from_name_func_t) (hb_font_t *font, व्योम *font_तथ्य,
+							 स्थिर अक्षर *name, पूर्णांक len, /* -1 means nul-terminated */
 							 hb_codepoint_t *glyph,
-							 void *user_data);
+							 व्योम *user_तथ्य);
 
 /**
  * hb_font_draw_glyph_or_fail_func_t:
@@ -559,10 +559,10 @@ typedef hb_bool_t (*hb_font_get_glyph_from_name_func_t) (hb_font_t *font, void *
  *
  * Since: 11.2.0
  **/
-typedef hb_bool_t (*hb_font_draw_glyph_or_fail_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_draw_glyph_or_fail_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 							hb_codepoint_t glyph,
-							hb_draw_funcs_t *draw_funcs, void *draw_data,
-							void *user_data);
+							hb_draw_funcs_t *draw_funcs, व्योम *draw_तथ्य,
+							व्योम *user_तथ्य);
 
 /**
  * hb_font_paint_glyph_or_fail_func_t:
@@ -581,12 +581,12 @@ typedef hb_bool_t (*hb_font_draw_glyph_or_fail_func_t) (hb_font_t *font, void *f
  *
  * Since: 11.2.0
  */
-typedef hb_bool_t (*hb_font_paint_glyph_or_fail_func_t) (hb_font_t *font, void *font_data,
+प्रकार hb_bool_t (*hb_font_paint_glyph_or_fail_func_t) (hb_font_t *font, व्योम *font_तथ्य,
 							 hb_codepoint_t glyph,
-							 hb_paint_funcs_t *paint_funcs, void *paint_data,
-							 unsigned int palette_index,
+							 hb_paint_funcs_t *paint_funcs, व्योम *paint_तथ्य,
+							 अचिन्हित पूर्णांक palette_सूचकांक,
 							 hb_color_t foreground,
-							 void *user_data);
+							 व्योम *user_तथ्य);
 
 /* func setters */
 
@@ -601,10 +601,10 @@ typedef hb_bool_t (*hb_font_paint_glyph_or_fail_func_t) (hb_font_t *font, void *
  *
  * Since: 1.1.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_font_h_extents_func (hb_font_funcs_t *ffuncs,
 				       hb_font_get_font_h_extents_func_t func,
-				       void *user_data, hb_destroy_func_t destroy);
+				       व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_font_v_extents_func:
@@ -617,10 +617,10 @@ hb_font_funcs_set_font_h_extents_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 1.1.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_font_v_extents_func (hb_font_funcs_t *ffuncs,
 				       hb_font_get_font_v_extents_func_t func,
-				       void *user_data, hb_destroy_func_t destroy);
+				       व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_nominal_glyph_func:
@@ -633,10 +633,10 @@ hb_font_funcs_set_font_v_extents_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 1.2.3
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_nominal_glyph_func (hb_font_funcs_t *ffuncs,
 				      hb_font_get_nominal_glyph_func_t func,
-				      void *user_data, hb_destroy_func_t destroy);
+				      व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_nominal_glyphs_func:
@@ -649,10 +649,10 @@ hb_font_funcs_set_nominal_glyph_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 2.0.0
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_nominal_glyphs_func (hb_font_funcs_t *ffuncs,
 				       hb_font_get_nominal_glyphs_func_t func,
-				       void *user_data, hb_destroy_func_t destroy);
+				       व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_variation_glyph_func:
@@ -665,10 +665,10 @@ hb_font_funcs_set_nominal_glyphs_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 1.2.3
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_variation_glyph_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_variation_glyph_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_h_advance_func:
@@ -681,10 +681,10 @@ hb_font_funcs_set_variation_glyph_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_h_advance_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_h_advance_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_v_advance_func:
@@ -697,10 +697,10 @@ hb_font_funcs_set_glyph_h_advance_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_v_advance_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_v_advance_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_h_advances_func:
@@ -713,10 +713,10 @@ hb_font_funcs_set_glyph_v_advance_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 1.8.6
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_h_advances_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_h_advances_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_v_advances_func:
@@ -729,10 +729,10 @@ hb_font_funcs_set_glyph_h_advances_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 1.8.6
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_v_advances_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_v_advances_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_h_origin_func:
@@ -745,10 +745,10 @@ hb_font_funcs_set_glyph_v_advances_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_h_origin_func (hb_font_funcs_t *ffuncs,
 				       hb_font_get_glyph_h_origin_func_t func,
-				       void *user_data, hb_destroy_func_t destroy);
+				       व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_v_origin_func:
@@ -761,10 +761,10 @@ hb_font_funcs_set_glyph_h_origin_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_v_origin_func (hb_font_funcs_t *ffuncs,
 				       hb_font_get_glyph_v_origin_func_t func,
-				       void *user_data, hb_destroy_func_t destroy);
+				       व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_h_origins_func:
@@ -777,10 +777,10 @@ hb_font_funcs_set_glyph_v_origin_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 11.3.0
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_h_origins_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_h_origins_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_v_origins_func:
@@ -793,10 +793,10 @@ hb_font_funcs_set_glyph_h_origins_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 11.3.0
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_v_origins_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_v_origins_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_h_kerning_func:
@@ -809,10 +809,10 @@ hb_font_funcs_set_glyph_v_origins_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_h_kerning_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_h_kerning_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_extents_func:
@@ -825,10 +825,10 @@ hb_font_funcs_set_glyph_h_kerning_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_extents_func (hb_font_funcs_t *ffuncs,
 				      hb_font_get_glyph_extents_func_t func,
-				      void *user_data, hb_destroy_func_t destroy);
+				      व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_contour_point_func:
@@ -841,10 +841,10 @@ hb_font_funcs_set_glyph_extents_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_contour_point_func (hb_font_funcs_t *ffuncs,
 					    hb_font_get_glyph_contour_point_func_t func,
-					    void *user_data, hb_destroy_func_t destroy);
+					    व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_name_func:
@@ -857,10 +857,10 @@ hb_font_funcs_set_glyph_contour_point_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_name_func (hb_font_funcs_t *ffuncs,
 				   hb_font_get_glyph_name_func_t func,
-				   void *user_data, hb_destroy_func_t destroy);
+				   व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_glyph_from_name_func:
@@ -873,10 +873,10 @@ hb_font_funcs_set_glyph_name_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_glyph_from_name_func (hb_font_funcs_t *ffuncs,
 					hb_font_get_glyph_from_name_func_t func,
-					void *user_data, hb_destroy_func_t destroy);
+					व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_draw_glyph_or_fail_func:
@@ -889,10 +889,10 @@ hb_font_funcs_set_glyph_from_name_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 11.2.0
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_draw_glyph_or_fail_func (hb_font_funcs_t *ffuncs,
 					   hb_font_draw_glyph_or_fail_func_t func,
-					   void *user_data, hb_destroy_func_t destroy);
+					   व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /**
  * hb_font_funcs_set_paint_glyph_or_fail_func:
@@ -905,10 +905,10 @@ hb_font_funcs_set_draw_glyph_or_fail_func (hb_font_funcs_t *ffuncs,
  *
  * Since: 11.2.0
  */
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_funcs_set_paint_glyph_or_fail_func (hb_font_funcs_t *ffuncs,
 					    hb_font_paint_glyph_or_fail_func_t func,
-					    void *user_data, hb_destroy_func_t destroy);
+					    व्योम *user_तथ्य, hb_destroy_func_t destroy);
 
 /* func dispatch */
 
@@ -928,13 +928,13 @@ hb_font_get_variation_glyph (hb_font_t *font,
 			     hb_codepoint_t unicode, hb_codepoint_t variation_selector,
 			     hb_codepoint_t *glyph);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_font_get_nominal_glyphs (hb_font_t *font,
-			    unsigned int count,
-			    const hb_codepoint_t *first_unicode,
-			    unsigned int unicode_stride,
+			    अचिन्हित पूर्णांक गिनती,
+			    स्थिर hb_codepoint_t *first_unicode,
+			    अचिन्हित पूर्णांक unicode_stride,
 			    hb_codepoint_t *first_glyph,
-			    unsigned int glyph_stride);
+			    अचिन्हित पूर्णांक glyph_stride);
 
 HB_EXTERN hb_position_t
 hb_font_get_glyph_h_advance (hb_font_t *font,
@@ -943,20 +943,20 @@ HB_EXTERN hb_position_t
 hb_font_get_glyph_v_advance (hb_font_t *font,
 			     hb_codepoint_t glyph);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_glyph_h_advances (hb_font_t* font,
-			      unsigned int count,
-			      const hb_codepoint_t *first_glyph,
-			      unsigned glyph_stride,
+			      अचिन्हित पूर्णांक गिनती,
+			      स्थिर hb_codepoint_t *first_glyph,
+			      अचिन्हित glyph_stride,
 			      hb_position_t *first_advance,
-			      unsigned advance_stride);
-HB_EXTERN void
+			      अचिन्हित advance_stride);
+HB_EXTERN व्योम
 hb_font_get_glyph_v_advances (hb_font_t* font,
-			      unsigned int count,
-			      const hb_codepoint_t *first_glyph,
-			      unsigned glyph_stride,
+			      अचिन्हित पूर्णांक गिनती,
+			      स्थिर hb_codepoint_t *first_glyph,
+			      अचिन्हित glyph_stride,
 			      hb_position_t *first_advance,
-			      unsigned advance_stride);
+			      अचिन्हित advance_stride);
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_h_origin (hb_font_t *font,
@@ -969,27 +969,27 @@ hb_font_get_glyph_v_origin (hb_font_t *font,
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_h_origins (hb_font_t *font,
-			     unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned glyph_stride,
+			     अचिन्हित पूर्णांक गिनती,
+			     स्थिर hb_codepoint_t *first_glyph,
+			     अचिन्हित glyph_stride,
 			     hb_position_t *first_x,
-			     unsigned x_stride,
+			     अचिन्हित x_stride,
 			     hb_position_t *first_y,
-			     unsigned y_stride);
+			     अचिन्हित y_stride);
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_v_origins (hb_font_t *font,
-			     unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned glyph_stride,
+			     अचिन्हित पूर्णांक गिनती,
+			     स्थिर hb_codepoint_t *first_glyph,
+			     अचिन्हित glyph_stride,
 			     hb_position_t *first_x,
-			     unsigned x_stride,
+			     अचिन्हित x_stride,
 			     hb_position_t *first_y,
-			     unsigned y_stride);
+			     अचिन्हित y_stride);
 
 HB_EXTERN hb_position_t
 hb_font_get_glyph_h_kerning (hb_font_t *font,
-			     hb_codepoint_t left_glyph, hb_codepoint_t right_glyph);
+			     hb_codepoint_t बायाँ_glyph, hb_codepoint_t दायाँ_glyph);
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_extents (hb_font_t *font,
@@ -998,28 +998,28 @@ hb_font_get_glyph_extents (hb_font_t *font,
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_contour_point (hb_font_t *font,
-				 hb_codepoint_t glyph, unsigned int point_index,
+				 hb_codepoint_t glyph, अचिन्हित पूर्णांक point_सूचकांक,
 				 hb_position_t *x, hb_position_t *y);
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_name (hb_font_t *font,
 			hb_codepoint_t glyph,
-			char *name, unsigned int size);
+			अक्षर *name, अचिन्हित पूर्णांक आकार);
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_from_name (hb_font_t *font,
-			     const char *name, int len, /* -1 means nul-terminated */
+			     स्थिर अक्षर *name, पूर्णांक len, /* -1 means nul-terminated */
 			     hb_codepoint_t *glyph);
 
 HB_EXTERN hb_bool_t
 hb_font_draw_glyph_or_fail (hb_font_t *font,
 			    hb_codepoint_t glyph,
-			    hb_draw_funcs_t *dfuncs, void *draw_data);
+			    hb_draw_funcs_t *dfuncs, व्योम *draw_तथ्य);
 
 HB_EXTERN hb_bool_t
 hb_font_paint_glyph_or_fail (hb_font_t *font,
 			     hb_codepoint_t glyph,
-			     hb_paint_funcs_t *pfuncs, void *paint_data,
-			     unsigned int palette_index,
+			     hb_paint_funcs_t *pfuncs, व्योम *paint_तथ्य,
+			     अचिन्हित पूर्णांक palette_सूचकांक,
 			     hb_color_t foreground);
 
 /* high-level funcs, with fallback */
@@ -1031,40 +1031,40 @@ hb_font_get_glyph (hb_font_t *font,
 		   hb_codepoint_t unicode, hb_codepoint_t variation_selector,
 		   hb_codepoint_t *glyph);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_extents_for_direction (hb_font_t *font,
 				   hb_direction_t direction,
 				   hb_font_extents_t *extents);
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_glyph_advance_for_direction (hb_font_t *font,
 					 hb_codepoint_t glyph,
 					 hb_direction_t direction,
 					 hb_position_t *x, hb_position_t *y);
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_glyph_advances_for_direction (hb_font_t* font,
 					  hb_direction_t direction,
-					  unsigned int count,
-					  const hb_codepoint_t *first_glyph,
-					  unsigned glyph_stride,
+					  अचिन्हित पूर्णांक गिनती,
+					  स्थिर hb_codepoint_t *first_glyph,
+					  अचिन्हित glyph_stride,
 					  hb_position_t *first_advance,
-					  unsigned advance_stride);
-HB_EXTERN void
+					  अचिन्हित advance_stride);
+HB_EXTERN व्योम
 hb_font_get_glyph_origin_for_direction (hb_font_t *font,
 					hb_codepoint_t glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y);
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_add_glyph_origin_for_direction (hb_font_t *font,
 					hb_codepoint_t glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y);
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_subtract_glyph_origin_for_direction (hb_font_t *font,
 					     hb_codepoint_t glyph,
 					     hb_direction_t direction,
 					     hb_position_t *x, hb_position_t *y);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_glyph_kerning_for_direction (hb_font_t *font,
 					 hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
 					 hb_direction_t direction,
@@ -1078,33 +1078,33 @@ hb_font_get_glyph_extents_for_origin (hb_font_t *font,
 
 HB_EXTERN hb_bool_t
 hb_font_get_glyph_contour_point_for_origin (hb_font_t *font,
-					    hb_codepoint_t glyph, unsigned int point_index,
+					    hb_codepoint_t glyph, अचिन्हित पूर्णांक point_सूचकांक,
 					    hb_direction_t direction,
 					    hb_position_t *x, hb_position_t *y);
 
 /* Generates gidDDD if glyph has no name. */
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_glyph_to_string (hb_font_t *font,
 			 hb_codepoint_t glyph,
-			 char *s, unsigned int size);
+			 अक्षर *s, अचिन्हित पूर्णांक आकार);
 /* Parses gidDDD and uniUUUU strings automatically. */
 HB_EXTERN hb_bool_t
 hb_font_glyph_from_string (hb_font_t *font,
-			   const char *s, int len, /* -1 means nul-terminated */
+			   स्थिर अक्षर *s, पूर्णांक len, /* -1 means nul-terminated */
 			   hb_codepoint_t *glyph);
 
 /* Older alias for hb_font_draw_glyph_or_fail() with no return value. */
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_draw_glyph (hb_font_t *font,
 		    hb_codepoint_t glyph,
-		    hb_draw_funcs_t *dfuncs, void *draw_data);
+		    hb_draw_funcs_t *dfuncs, व्योम *draw_तथ्य);
 
 /* Paints color glyph; if failed, draws outline glyph. */
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_paint_glyph (hb_font_t *font,
 		     hb_codepoint_t glyph,
-		     hb_paint_funcs_t *pfuncs, void *paint_data,
-		     unsigned int palette_index,
+		     hb_paint_funcs_t *pfuncs, व्योम *paint_तथ्य,
+		     अचिन्हित पूर्णांक palette_सूचकांक,
 		     hb_color_t foreground);
 
 /*
@@ -1120,39 +1120,39 @@ HB_EXTERN hb_font_t *
 hb_font_create_sub_font (hb_font_t *parent);
 
 HB_EXTERN hb_font_t *
-hb_font_get_empty (void);
+hb_font_get_empty (व्योम);
 
 HB_EXTERN hb_font_t *
 hb_font_reference (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_destroy (hb_font_t *font);
 
 HB_EXTERN hb_bool_t
-hb_font_set_user_data (hb_font_t          *font,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_font_set_user_तथ्य (hb_font_t          *font,
+		       hb_user_तथ्य_कुंजी_t *कुंजी_2,
+		       व्योम *              तथ्य,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_font_get_user_data (const hb_font_t    *font,
-		       hb_user_data_key_t *key);
+HB_EXTERN व्योम *
+hb_font_get_user_तथ्य (स्थिर hb_font_t    *font,
+		       hb_user_तथ्य_कुंजी_t *कुंजी_2);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_make_immutable (hb_font_t *font);
 
 HB_EXTERN hb_bool_t
 hb_font_is_immutable (hb_font_t *font);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_font_get_serial (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_changed (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_parent (hb_font_t *font,
 		    hb_font_t *parent);
 
@@ -1163,104 +1163,104 @@ HB_EXTERN hb_face_t *
 hb_font_get_face (hb_font_t *font);
 
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_funcs (hb_font_t         *font,
 		   hb_font_funcs_t   *klass,
-		   void              *font_data,
+		   व्योम              *font_तथ्य,
 		   hb_destroy_func_t  destroy);
 
 /* Be *very* careful with this function! */
-HB_EXTERN void
-hb_font_set_funcs_data (hb_font_t         *font,
-			void              *font_data,
+HB_EXTERN व्योम
+hb_font_set_funcs_तथ्य (hb_font_t         *font,
+			व्योम              *font_तथ्य,
 			hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_bool_t
 hb_font_set_funcs_using (hb_font_t  *font,
-			 const char *name);
+			 स्थिर अक्षर *name);
 
-HB_EXTERN const char **
-hb_font_list_funcs (void);
+HB_EXTERN स्थिर अक्षर **
+hb_font_list_funcs (व्योम);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_scale (hb_font_t *font,
-		   int x_scale,
-		   int y_scale);
+		   पूर्णांक x_scale,
+		   पूर्णांक y_scale);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_scale (hb_font_t *font,
-		   int *x_scale,
-		   int *y_scale);
+		   पूर्णांक *x_scale,
+		   पूर्णांक *y_scale);
 
 /*
  * A zero value means "no hinting in that direction"
  */
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_ppem (hb_font_t *font,
-		  unsigned int x_ppem,
-		  unsigned int y_ppem);
+		  अचिन्हित पूर्णांक x_ppem,
+		  अचिन्हित पूर्णांक y_ppem);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_ppem (hb_font_t *font,
-		  unsigned int *x_ppem,
-		  unsigned int *y_ppem);
+		  अचिन्हित पूर्णांक *x_ppem,
+		  अचिन्हित पूर्णांक *y_ppem);
 
 /*
  * Point size per EM.  Used for optical-sizing in CoreText.
  * A value of zero means "not set".
  */
-HB_EXTERN void
-hb_font_set_ptem (hb_font_t *font, float ptem);
+HB_EXTERN व्योम
+hb_font_set_ptem (hb_font_t *font, भग्न ptem);
 
-HB_EXTERN float
+HB_EXTERN भग्न
 hb_font_get_ptem (hb_font_t *font);
 
 HB_EXTERN hb_bool_t
 hb_font_is_synthetic (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_synthetic_bold (hb_font_t *font,
-			    float x_embolden, float y_embolden,
+			    भग्न x_embolden, भग्न y_embolden,
 			    hb_bool_t in_place);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_synthetic_bold (hb_font_t *font,
-			    float *x_embolden, float *y_embolden,
+			    भग्न *x_embolden, भग्न *y_embolden,
 			    hb_bool_t *in_place);
 
-HB_EXTERN void
-hb_font_set_synthetic_slant (hb_font_t *font, float slant);
+HB_EXTERN व्योम
+hb_font_set_synthetic_slant (hb_font_t *font, भग्न slant);
 
-HB_EXTERN float
+HB_EXTERN भग्न
 hb_font_get_synthetic_slant (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_variations (hb_font_t *font,
-			const hb_variation_t *variations,
-			unsigned int variations_length);
+			स्थिर hb_variation_t *variations,
+			अचिन्हित पूर्णांक variations_लंबाई);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_variation (hb_font_t *font,
 		       hb_tag_t tag,
-		       float    value);
+		       भग्न    मूल्य_2);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_var_coords_design (hb_font_t *font,
-			       const float *coords,
-			       unsigned int coords_length);
+			       स्थिर भग्न *coords,
+			       अचिन्हित पूर्णांक coords_लंबाई);
 
-HB_EXTERN const float *
+HB_EXTERN स्थिर भग्न *
 hb_font_get_var_coords_design (hb_font_t *font,
-			       unsigned int *length);
+			       अचिन्हित पूर्णांक *लंबाई);
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_var_coords_normalized (hb_font_t *font,
-				   const int *coords, /* 2.14 normalized */
-				   unsigned int coords_length);
+				   स्थिर पूर्णांक *coords, /* 2.14 normalized */
+				   अचिन्हित पूर्णांक coords_लंबाई);
 
-HB_EXTERN const int *
+HB_EXTERN स्थिर पूर्णांक *
 hb_font_get_var_coords_normalized (hb_font_t *font,
-				   unsigned int *length);
+				   अचिन्हित पूर्णांक *लंबाई);
 
 /**
  * HB_FONT_NO_VAR_NAMED_INSTANCE:
@@ -1271,15 +1271,15 @@ hb_font_get_var_coords_normalized (hb_font_t *font,
  *
  * Since: 7.0.0
  */
-#define HB_FONT_NO_VAR_NAMED_INSTANCE 0xFFFFFFFF
+#घोषणा HB_FONT_NO_VAR_NAMED_INSTANCE 0xFFFFFFFF
 
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_set_var_named_instance (hb_font_t *font,
-				unsigned int instance_index);
+				अचिन्हित पूर्णांक instance_सूचकांक);
 
-HB_EXTERN unsigned int
+HB_EXTERN अचिन्हित पूर्णांक
 hb_font_get_var_named_instance (hb_font_t *font);
 
 HB_END_DECLS
 
-#endif /* HB_FONT_H */
+#पूर्ण_अगर /* HB_FONT_H */

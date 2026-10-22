@@ -22,19 +22,19 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_DRAW_HH
-#define HB_DRAW_HH
+#अगर_अघोषित HB_DRAW_HH
+#घोषणा HB_DRAW_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
 
 /*
  * hb_draw_funcs_t
  */
 
-#define HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
+#घोषणा HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
   HB_DRAW_FUNC_IMPLEMENT (move_to) \
-  HB_DRAW_FUNC_IMPLEMENT (line_to) \
+  HB_DRAW_FUNC_IMPLEMENT (पंक्ति_to) \
   HB_DRAW_FUNC_IMPLEMENT (quadratic_to) \
   HB_DRAW_FUNC_IMPLEMENT (cubic_to) \
   HB_DRAW_FUNC_IMPLEMENT (close_path) \
@@ -43,146 +43,146 @@
   HB_DRAW_FUNC_IMPLEMENT (get_budget_remaining) \
   /* ^--- Add new callbacks here */
 
-struct hb_draw_funcs_t
+काष्ठा hb_draw_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
+  काष्ठा {
+#घोषणा HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#अघोषित HB_DRAW_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) void *name;
+  काष्ठा {
+#घोषणा HB_DRAW_FUNC_IMPLEMENT(name) व्योम *name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
-  } *user_data;
+#अघोषित HB_DRAW_FUNC_IMPLEMENT
+  } *user_तथ्य;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
+  काष्ठा {
+#घोषणा HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#अघोषित HB_DRAW_FUNC_IMPLEMENT
   } *destroy;
 
-  void emit_move_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.move_to (this, draw_data, &st,
+  व्योम emit_move_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+		     भग्न to_x, भग्न to_y)
+  { func.move_to (यह, draw_तथ्य, &st,
 		  to_x, to_y,
-		  !user_data ? nullptr : user_data->move_to); }
-  void emit_line_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.line_to (this, draw_data, &st,
+		  !user_तथ्य ? nullptr : user_तथ्य->move_to); }
+  व्योम emit_पंक्ति_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+		     भग्न to_x, भग्न to_y)
+  { func.पंक्ति_to (यह, draw_तथ्य, &st,
 		  to_x, to_y,
-		  !user_data ? nullptr : user_data->line_to); }
-  void emit_quadratic_to (void *draw_data, hb_draw_state_t &st,
-			  float control_x, float control_y,
-			  float to_x, float to_y)
-  { func.quadratic_to (this, draw_data, &st,
+		  !user_तथ्य ? nullptr : user_तथ्य->पंक्ति_to); }
+  व्योम emit_quadratic_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+			  भग्न control_x, भग्न control_y,
+			  भग्न to_x, भग्न to_y)
+  { func.quadratic_to (यह, draw_तथ्य, &st,
 		       control_x, control_y,
 		       to_x, to_y,
-		       !user_data ? nullptr : user_data->quadratic_to); }
-  void emit_cubic_to (void *draw_data, hb_draw_state_t &st,
-		      float control1_x, float control1_y,
-		      float control2_x, float control2_y,
-		      float to_x, float to_y)
-  { func.cubic_to (this, draw_data, &st,
+		       !user_तथ्य ? nullptr : user_तथ्य->quadratic_to); }
+  व्योम emit_cubic_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+		      भग्न control1_x, भग्न control1_y,
+		      भग्न control2_x, भग्न control2_y,
+		      भग्न to_x, भग्न to_y)
+  { func.cubic_to (यह, draw_तथ्य, &st,
 		   control1_x, control1_y,
 		   control2_x, control2_y,
 		   to_x, to_y,
-		   !user_data ? nullptr : user_data->cubic_to); }
-  void emit_close_path (void *draw_data, hb_draw_state_t &st)
-  { func.close_path (this, draw_data, &st,
-		     !user_data ? nullptr : user_data->close_path); }
+		   !user_तथ्य ? nullptr : user_तथ्य->cubic_to); }
+  व्योम emit_close_path (व्योम *draw_तथ्य, hb_draw_state_t &st)
+  { func.close_path (यह, draw_तथ्य, &st,
+		     !user_तथ्य ? nullptr : user_तथ्य->close_path); }
 
-  bool set_budget (void *draw_data, int64_t budget)
+  bool set_budget (व्योम *draw_तथ्य, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    अगर (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, draw_data, budget,
-			    !user_data ? nullptr : user_data->set_budget);
+    वापस func.set_budget (यह, draw_तथ्य, budget,
+			    !user_तथ्य ? nullptr : user_तथ्य->set_budget);
   }
-  int64_t get_budget (void *draw_data)
-  { return func.get_budget (this, draw_data,
-			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *draw_data)
-  { return func.get_budget_remaining (this, draw_data,
-				      !user_data ? nullptr : user_data->get_budget_remaining); }
+  int64_t get_budget (व्योम *draw_तथ्य)
+  { वापस func.get_budget (यह, draw_तथ्य,
+			    !user_तथ्य ? nullptr : user_तथ्य->get_budget); }
+  int64_t *get_budget_remaining_ptr (व्योम *draw_तथ्य)
+  { वापस func.get_budget_remaining (यह, draw_तथ्य,
+				      !user_तथ्य ? nullptr : user_तथ्य->get_budget_remaining); }
 
 
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  move_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
+  move_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+	   भग्न to_x, भग्न to_y)
   {
-    if (unlikely (st.path_open)) close_path (draw_data, st);
+    अगर (unlikely (st.path_open)) close_path (draw_तथ्य, st);
 
     st.current_x = to_x;
     st.current_y = to_y;
   }
 
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  line_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
+  पंक्ति_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+	   भग्न to_x, भग्न to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    अगर (unlikely (!st.path_open)) start_path (draw_तथ्य, st);
 
-    emit_line_to (draw_data, st, to_x, to_y);
+    emit_पंक्ति_to (draw_तथ्य, st, to_x, to_y);
 
     st.current_x = to_x;
     st.current_y = to_y;
   }
 
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  quadratic_to (void *draw_data, hb_draw_state_t &st,
-		float control_x, float control_y,
-		float to_x, float to_y)
+  quadratic_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+		भग्न control_x, भग्न control_y,
+		भग्न to_x, भग्न to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    अगर (unlikely (!st.path_open)) start_path (draw_तथ्य, st);
 
-    emit_quadratic_to (draw_data, st, control_x, control_y, to_x, to_y);
+    emit_quadratic_to (draw_तथ्य, st, control_x, control_y, to_x, to_y);
 
     st.current_x = to_x;
     st.current_y = to_y;
   }
 
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  cubic_to (void *draw_data, hb_draw_state_t &st,
-	    float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  cubic_to (व्योम *draw_तथ्य, hb_draw_state_t &st,
+	    भग्न control1_x, भग्न control1_y,
+	    भग्न control2_x, भग्न control2_y,
+	    भग्न to_x, भग्न to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    अगर (unlikely (!st.path_open)) start_path (draw_तथ्य, st);
 
-    emit_cubic_to (draw_data, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
+    emit_cubic_to (draw_तथ्य, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
 
     st.current_x = to_x;
     st.current_y = to_y;
   }
 
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  close_path (void *draw_data, hb_draw_state_t &st)
+  close_path (व्योम *draw_तथ्य, hb_draw_state_t &st)
   {
-    if (likely (st.path_open))
+    अगर (likely (st.path_open))
     {
-      if ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
-	emit_line_to (draw_data, st, st.path_start_x, st.path_start_y);
-      emit_close_path (draw_data, st);
+      अगर ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
+	emit_पंक्ति_to (draw_तथ्य, st, st.path_start_x, st.path_start_y);
+      emit_close_path (draw_तथ्य, st);
     }
     st.path_open = false;
     st.path_start_x = st.current_x = st.path_start_y = st.current_y = 0;
   }
 
-  protected:
+  रक्षित:
 
-  void start_path (void *draw_data, hb_draw_state_t &st)
+  व्योम start_path (व्योम *draw_तथ्य, hb_draw_state_t &st)
   {
-    assert (!st.path_open);
-    emit_move_to (draw_data, st, st.current_x, st.current_y);
+    निश्चित (!st.path_open);
+    emit_move_to (draw_तथ्य, st, st.current_x, st.current_y);
     st.path_open = true;
     st.path_start_x = st.current_x;
     st.path_start_y = st.current_y;
@@ -190,61 +190,61 @@ struct hb_draw_funcs_t
 };
 DECLARE_NULL_INSTANCE (hb_draw_funcs_t);
 
-struct hb_draw_session_t
+काष्ठा hb_draw_session_t
 {
-  hb_draw_session_t (hb_draw_funcs_t *funcs_, void *draw_data_)
-    : funcs {funcs_}, draw_data {draw_data_}, st HB_DRAW_STATE_DEFAULT,
-      local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_remaining_ptr (draw_data)}
+  hb_draw_session_t (hb_draw_funcs_t *funcs_, व्योम *draw_तथ्य_2)
+    : funcs {funcs_}, draw_तथ्य {draw_तथ्य_2}, st HB_DRAW_STATE_DEFAULT,
+      local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_remaining_ptr (draw_तथ्य)}
   {
-    if (!budget)
+    अगर (!budget)
       budget = &local_budget;
   }
 
   ~hb_draw_session_t () { close_path (); }
 
   HB_ALWAYS_INLINE
-  void move_to (float to_x, float to_y)
+  व्योम move_to (भग्न to_x, भग्न to_y)
   {
-    funcs->move_to (draw_data, st,
+    funcs->move_to (draw_तथ्य, st,
 		    to_x, to_y);
   }
   HB_ALWAYS_INLINE
-  void line_to (float to_x, float to_y)
+  व्योम पंक्ति_to (भग्न to_x, भग्न to_y)
   {
-    funcs->line_to (draw_data, st,
+    funcs->पंक्ति_to (draw_तथ्य, st,
 		    to_x, to_y);
   }
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  quadratic_to (float control_x, float control_y,
-		float to_x, float to_y)
+  quadratic_to (भग्न control_x, भग्न control_y,
+		भग्न to_x, भग्न to_y)
   {
-    funcs->quadratic_to (draw_data, st,
+    funcs->quadratic_to (draw_तथ्य, st,
 			 control_x, control_y,
 			 to_x, to_y);
   }
-  void
+  व्योम
   HB_ALWAYS_INLINE
-  cubic_to (float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  cubic_to (भग्न control1_x, भग्न control1_y,
+	    भग्न control2_x, भग्न control2_y,
+	    भग्न to_x, भग्न to_y)
   {
-    funcs->cubic_to (draw_data, st,
+    funcs->cubic_to (draw_तथ्य, st,
 		     control1_x, control1_y,
 		     control2_x, control2_y,
 		     to_x, to_y);
   }
   HB_ALWAYS_INLINE
-  void close_path ()
+  व्योम close_path ()
   {
-    funcs->close_path (draw_data, st);
+    funcs->close_path (draw_तथ्य, st);
   }
 
-  int64_t &get_budget () { return *budget; }
+  int64_t &get_budget () { वापस *budget; }
 
-  public:
+  खुला:
   hb_draw_funcs_t *funcs;
-  void *draw_data;
+  व्योम *draw_तथ्य;
   hb_draw_state_t st;
   int64_t local_budget;
   int64_t *budget;
@@ -255,4 +255,4 @@ HB_INTERNAL hb_draw_funcs_t *
 hb_draw_extents_get_funcs ();
 
 
-#endif /* HB_DRAW_HH */
+#पूर्ण_अगर /* HB_DRAW_HH */

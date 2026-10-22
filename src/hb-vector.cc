@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#समावेश "hb-machinery.hh"
+#समावेश "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,62 +74,62 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+काष्ठा hb_vector_decimal_point_t
 {
-  char value[8];
+  अक्षर value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+अटल hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+अटल अंतरभूत व्योम free_static_svg_decimal_point ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
+अटल काष्ठा hb_vector_decimal_point_lazy_loader_t
   : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  अटल hb_vector_decimal_point_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    स्वतः *p = (hb_vector_decimal_point_t *) hb_calloc (1, माप (hb_vector_decimal_point_t));
+    अगर (!p)
+      वापस nullptr;
 
     p->value[0] = '.';
     p->value[1] = '\0';
 
-#ifndef HB_NO_SETLOCALE
-    lconv *lc = nullptr;
-#ifdef HAVE_LOCALECONV_L
+#अगर_अघोषित HB_NO_SETLOCALE
+    स्था_बदल *lc = nullptr;
+#अगर_घोषित HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    अगर (current_locale)
       lc = localeconv_l (current_locale);
-#endif
-    if (!lc)
-      lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+#पूर्ण_अगर
+    अगर (!lc)
+      lc = क्षेत्र_बदलो ();
+    अगर (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      म_नकलन (p->value, lc->decimal_point, माप (p->value) - 1);
+      p->value[माप (p->value) - 1] = '\0';
     }
-#endif
+#पूर्ण_अगर
 
     hb_atexit (free_static_svg_decimal_point);
-    return p;
+    वापस p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  अटल व्योम destroy (hb_vector_decimal_point_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
+  अटल स्थिर hb_vector_decimal_point_t *get_null ()
+  { वापस &hb_vector_decimal_point_default; }
 } static_svg_decimal_point;
 
-static inline void
+अटल अंतरभूत व्योम
 free_static_svg_decimal_point ()
 {
   static_svg_decimal_point.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+स्थिर अक्षर *
+hb_vector_decimal_point_get (व्योम)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  वापस static_svg_decimal_point.get_unconst ()->value;
 }

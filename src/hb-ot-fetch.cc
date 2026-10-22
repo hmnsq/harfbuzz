@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_FETCH
+#अगर_अघोषित HB_NO_OT_FETCH
 
-#include "hb-ot.h"
+#समावेश "hb-ot.h"
 
-#include "hb-ot-head-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-post-table.hh"
+#समावेश "hb-ot-head-table.hh"
+#समावेश "hb-ot-os2-table.hh"
+#समावेश "hb-ot-post-table.hh"
 
 /**
  * SECTION:hb-ot-fetch
@@ -61,19 +61,19 @@ uint32_t
 hb_ot_fetch_bits (hb_face_t        *face,
 		hb_ot_bits_tag_t  tag)
 {
-  switch ((unsigned) tag)
+  चयन ((अचिन्हित) tag)
   {
-  case HB_OT_BITS_TAG_FS_TYPE:		 return face->table.OS2->fsType;
-  case HB_OT_BITS_TAG_FS_SELECTION:	 return face->table.OS2->fsSelection;
-  case HB_OT_BITS_TAG_MAC_STYLE:	 return face->table.head->get_mac_style ();
-  case HB_OT_BITS_TAG_IS_FIXED_PITCH:	 return face->table.post->table->isFixedPitch;
-  case HB_OT_BITS_TAG_UNICODE_RANGE_1:	 return face->table.OS2->ulUnicodeRange[0];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_2:	 return face->table.OS2->ulUnicodeRange[1];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_3:	 return face->table.OS2->ulUnicodeRange[2];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_4:	 return face->table.OS2->ulUnicodeRange[3];
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: return face->table.OS2->v1 ().ulCodePageRange1;
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: return face->table.OS2->v1 ().ulCodePageRange2;
-  default:				 return 0;
+  हाल HB_OT_BITS_TAG_FS_TYPE:		 वापस face->table.OS2->fsType;
+  हाल HB_OT_BITS_TAG_FS_SELECTION:	 वापस face->table.OS2->fsSelection;
+  हाल HB_OT_BITS_TAG_MAC_STYLE:	 वापस face->table.शीर्ष_2->get_mac_style ();
+  हाल HB_OT_BITS_TAG_IS_FIXED_PITCH:	 वापस face->table.post->table->isFixedPitch;
+  हाल HB_OT_BITS_TAG_UNICODE_RANGE_1:	 वापस face->table.OS2->ulUnicodeRange[0];
+  हाल HB_OT_BITS_TAG_UNICODE_RANGE_2:	 वापस face->table.OS2->ulUnicodeRange[1];
+  हाल HB_OT_BITS_TAG_UNICODE_RANGE_3:	 वापस face->table.OS2->ulUnicodeRange[2];
+  हाल HB_OT_BITS_TAG_UNICODE_RANGE_4:	 वापस face->table.OS2->ulUnicodeRange[3];
+  हाल HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: वापस face->table.OS2->v1 ().ulCodePageRange1;
+  हाल HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: वापस face->table.OS2->v1 ().ulCodePageRange2;
+  शेष:				 वापस 0;
   }
 }
 
@@ -89,17 +89,17 @@ hb_ot_fetch_bits (hb_face_t        *face,
  * Since: 14.3.0
  **/
 int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag)
+hb_ot_fetch_संख्या (hb_face_t          *face,
+		  hb_ot_संख्या_tag_t  tag)
 {
-  switch ((unsigned) tag)
+  चयन ((अचिन्हित) tag)
   {
-  case HB_OT_NUMBER_TAG_FONT_X_MIN: return face->table.head->xMin;
-  case HB_OT_NUMBER_TAG_FONT_Y_MIN: return face->table.head->yMin;
-  case HB_OT_NUMBER_TAG_FONT_X_MAX: return face->table.head->xMax;
-  case HB_OT_NUMBER_TAG_FONT_Y_MAX: return face->table.head->yMax;
-  default:		       return 0;
+  हाल HB_OT_संख्या_TAG_FONT_X_MIN: वापस face->table.शीर्ष_2->xMin;
+  हाल HB_OT_संख्या_TAG_FONT_Y_MIN: वापस face->table.शीर्ष_2->yMin;
+  हाल HB_OT_संख्या_TAG_FONT_X_MAX: वापस face->table.शीर्ष_2->xMax;
+  हाल HB_OT_संख्या_TAG_FONT_Y_MAX: वापस face->table.शीर्ष_2->yMax;
+  शेष:		       वापस 0;
   }
 }
 
-#endif
+#पूर्ण_अगर

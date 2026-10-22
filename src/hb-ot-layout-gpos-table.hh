@@ -26,10 +26,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GPOS_TABLE_HH
-#define HB_OT_LAYOUT_GPOS_TABLE_HH
+#अगर_अघोषित HB_OT_LAYOUT_GPOS_TABLE_HH
+#घोषणा HB_OT_LAYOUT_GPOS_TABLE_HH
 
-#include "OT/Layout/GPOS/GPOS.hh"
+#समावेश "OT/Layout/GPOS/GPOS.hh"
 
 namespace OT {
 namespace Layout {
@@ -37,53 +37,53 @@ namespace GPOS_impl {
 
 // TODO(garretrieger): Move into new layout directory.
 /* Out-of-class implementation for methods recursing */
-#ifndef HB_NO_OT_LAYOUT
-template <typename context_t>
-/*static*/ typename context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+#अगर_अघोषित HB_NO_OT_LAYOUT
+ढाँचा <typename context_t>
+/*static*/ typename context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, अचिन्हित पूर्णांक lookup_सूचकांक)
 {
-  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
+  स्थिर PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_सूचकांक);
+  वापस l.dispatch (c);
 }
 
-template <>
-inline hb_closure_lookups_context_t::return_t
-PosLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
+ढाँचा <>
+अंतरभूत hb_closure_lookups_context_t::return_t
+PosLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, अचिन्हित this_सूचकांक)
 {
-  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  स्थिर PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (this_सूचकांक);
+  वापस l.closure_lookups (c, this_सूचकांक);
 }
 
-template <>
-inline bool PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+ढाँचा <>
+अंतरभूत bool PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, अचिन्हित पूर्णांक lookup_सूचकांक)
 {
-  auto *gpos = c->face->table.GPOS.get_relaxed ();
-  const PosLookup &l = gpos->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
-  c->set_lookup_index (lookup_index);
+  स्वतः *gpos = c->face->table.GPOS.get_relaxed ();
+  स्थिर PosLookup &l = gpos->table->get_lookup (lookup_सूचकांक);
+  अचिन्हित पूर्णांक saved_lookup_props = c->lookup_props;
+  अचिन्हित पूर्णांक saved_lookup_सूचकांक = c->lookup_सूचकांक;
+  c->set_lookup_सूचकांक (lookup_सूचकांक);
   c->set_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
+  uint32_t ढेर_match_positions[8];
   hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
+  saved_match_positions.set_storage (ढेर_match_positions);
   hb_swap (c->match_positions, saved_match_positions);
 
   bool ret = false;
-  auto *accel = gpos->get_accel (lookup_index);
+  स्वतः *accel = gpos->get_accel (lookup_सूचकांक);
   ret = accel && accel->apply (c, false);
 
-  c->set_lookup_index (saved_lookup_index);
+  c->set_lookup_सूचकांक (saved_lookup_सूचकांक);
   c->set_lookup_props (saved_lookup_props);
 
   hb_swap (c->match_positions, saved_match_positions);
 
-  return ret;
+  वापस ret;
 }
-#endif
+#पूर्ण_अगर
 
 } /* namespace GPOS_impl */
 } /* namespace Layout */
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_GPOS_TABLE_HH */
+#पूर्ण_अगर /* HB_OT_LAYOUT_GPOS_TABLE_HH */

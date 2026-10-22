@@ -1,16 +1,16 @@
-#ifndef OT_VAR_VARC_VARC_HH
-#define OT_VAR_VARC_VARC_HH
+#अगर_अघोषित OT_VAR_VARC_VARC_HH
+#घोषणा OT_VAR_VARC_VARC_HH
 
-#include "../../../hb-decycler.hh"
-#include "../../../hb-geometry.hh"
-#include "../../../hb-ot-layout-common.hh"
-#include "../../../hb-ot-glyf-table.hh"
-#include "../../../hb-ot-cff2-table.hh"
-#include "../../../hb-ot-cff1-table.hh"
+#समावेश "../../../hb-decycler.hh"
+#समावेश "../../../hb-geometry.hh"
+#समावेश "../../../hb-ot-layout-common.hh"
+#समावेश "../../../hb-ot-glyf-table.hh"
+#समावेश "../../../hb-ot-cff2-table.hh"
+#समावेश "../../../hb-ot-cff1-table.hh"
 
-#include "coord-setter.hh"
+#समावेश "coord-setter.hh"
 
-struct hb_depend_data_builder_t;
+काष्ठा hb_depend_तथ्य_builder_t;
 
 namespace OT {
 
@@ -21,38 +21,38 @@ namespace OT {
  * https://github.com/harfbuzz/boring-expansion-spec/blob/main/VARC.md
  */
 
-#ifndef HB_NO_VAR_COMPOSITES
+#अगर_अघोषित HB_NO_VAR_COMPOSITES
 
-struct hb_varc_scratch_t
+काष्ठा hb_varc_scratch_t
 {
-  hb_vector_t<unsigned> axisIndices;
-  hb_vector_t<double> axisValues;
+  hb_vector_t<अचिन्हित> axisIndices;
+  hb_vector_t<द्विगुन> axis_मूल्यावली_2;
   hb_glyf_scratch_t glyf_scratch;
 };
 
-struct hb_varc_context_t
+काष्ठा hb_varc_context_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
   hb_extents_t<> *extents;
   mutable hb_decycler_t decycler;
-  mutable signed edges_left;
-  mutable signed depth_left;
+  mutable चिन्हित edges_बायाँ;
+  mutable चिन्हित depth_बायाँ;
   /* Renderer-owned live budget, shared by VARC record processing and
    * every leaf loaded from glyf/CFF/CFF2. */
   int64_t &budget;
   hb_varc_scratch_t &scratch;
 };
 
-struct VARC;
+काष्ठा VARC;
 
-struct VarComponent
+काष्ठा VarComponent
 {
-  enum class flags_t : uint32_t
+  क्रमागत श्रेणी flags_t : uint32_t
   {
     RESET_UNSPECIFIED_AXES	= 1u << 0,
     HAVE_AXES			= 1u << 1,
-    AXIS_VALUES_HAVE_VARIATION	= 1u << 2,
+    AXIS_मूल्यावली_HAVE_VARIATION	= 1u << 2,
     TRANSFORM_HAS_VARIATION	= 1u << 3,
     HAVE_TRANSLATE_X		= 1u << 4,
     HAVE_TRANSLATE_Y		= 1u << 5,
@@ -68,57 +68,57 @@ struct VarComponent
     RESERVED_MASK		= ~((1u << 15) - 1),
   };
 
-  struct record_t
+  काष्ठा record_t
   {
     uint32_t flags;
     hb_codepoint_t gid;
-    unsigned gid_offset;
-    unsigned gid_size;
-    unsigned condition_index;
-    unsigned condition_offset;
-    unsigned condition_size;
-    unsigned axis_indices_index;
-    unsigned axis_indices_offset;
-    unsigned axis_indices_size;
-    uint32_t axis_values_var_idx;
-    unsigned axis_values_var_offset;
-    unsigned axis_values_var_size;
+    अचिन्हित gid_offset;
+    अचिन्हित gid_आकार;
+    अचिन्हित condition_सूचकांक;
+    अचिन्हित condition_offset;
+    अचिन्हित condition_आकार;
+    अचिन्हित axis_indices_सूचकांक;
+    अचिन्हित axis_indices_offset;
+    अचिन्हित axis_indices_आकार;
+    uint32_t axis_मूल्यावली_var_idx;
+    अचिन्हित axis_मूल्यावली_var_offset;
+    अचिन्हित axis_मूल्यावली_var_आकार;
     uint32_t transform_var_idx;
-    unsigned transform_var_offset;
-    unsigned transform_var_size;
+    अचिन्हित transform_var_offset;
+    अचिन्हित transform_var_आकार;
     hb_transform_decomposed_t<> transform;
-    unsigned size;
+    अचिन्हित आकार;
   };
 
   HB_INTERNAL hb_ubytes_t
-  get_path_at (const hb_varc_context_t &c,
+  get_path_at (स्थिर hb_varc_context_t &c,
 	       hb_codepoint_t parent_gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<स्थिर पूर्णांक> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
-	       hb_scalar_cache_t *cache = nullptr) const;
+	       hb_scalar_cache_t *cache = nullptr) स्थिर;
 
-  HB_INTERNAL static bool decompile_record (const VARC &varc,
+  HB_INTERNAL अटल bool decompile_record (स्थिर VARC &varc,
 					    hb_ubytes_t record,
-					    hb_vector_t<unsigned> *axis_indices,
-					    hb_vector_t<double> *axis_values,
+					    hb_vector_t<अचिन्हित> *axis_indices,
+					    hb_vector_t<द्विगुन> *axis_मूल्यावली,
 					    record_t *decoded /* OUT */,
 					    int64_t *budget = nullptr);
 };
 
-struct VarCompositeGlyph
+काष्ठा VarCompositeGlyph
 {
-  static void
-  get_path_at (const hb_varc_context_t &c,
+  अटल व्योम
+  get_path_at (स्थिर hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<स्थिर पूर्णांक> coords,
 	       hb_transform_t<> transform,
 	       hb_ubytes_t record,
 	       hb_scalar_cache_t *cache)
   {
-    while (record)
+    जबतक (record)
     {
-      const VarComponent &comp = * (const VarComponent *) (record.arrayZ);
+      स्थिर VarComponent &comp = * (स्थिर VarComponent *) (record.arrayZ);
       record = comp.get_path_at (c,
 				 gid,
 				 coords, transform,
@@ -130,80 +130,80 @@ struct VarCompositeGlyph
 
 HB_MARK_AS_FLAG_T (VarComponent::flags_t);
 
-struct VARC
+काष्ठा VARC
 {
-  friend struct VarComponent;
+  मित्र काष्ठा VarComponent;
 
-  static constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
+  अटल constexpr hb_tag_t tableTag = HB_TAG ('V', 'A', 'R', 'C');
 
   HB_INTERNAL bool
-  get_path_at (const hb_varc_context_t &c,
+  get_path_at (स्थिर hb_varc_context_t &c,
 	       hb_codepoint_t gid,
-	       hb_array_t<const int> coords,
+	       hb_array_t<स्थिर पूर्णांक> coords,
 	       hb_transform_t<> transform = HB_TRANSFORM_IDENTITY,
 	       hb_codepoint_t parent_gid = HB_CODEPOINT_INVALID,
-	       hb_scalar_cache_t *parent_cache = nullptr) const;
+	       hb_scalar_cache_t *parent_cache = nullptr) स्थिर;
 
-  HB_INTERNAL bool closure_glyphs (hb_set_t *glyphset) const;
-  HB_INTERNAL void depend (hb_depend_data_builder_t *depend_data) const;
-  HB_INTERNAL bool subset (hb_subset_context_t *c) const;
+  HB_INTERNAL bool closure_glyphs (hb_set_t *glyphset) स्थिर;
+  HB_INTERNAL व्योम depend (hb_depend_तथ्य_builder_t *depend_तथ्य) स्थिर;
+  HB_INTERNAL bool subset (hb_subset_context_t *c) स्थिर;
 
   bool
   get_path (hb_font_t *font,
 	    hb_codepoint_t gid,
 	    hb_draw_session_t &draw_session,
-	    hb_varc_scratch_t &scratch) const
+	    hb_varc_scratch_t &scratch) स्थिर
   {
     int64_t &budget = draw_session.get_budget ();
     hb_varc_context_t c {font,
 			 &draw_session,
 			 nullptr,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_GRAPH_EDGE_गिनती,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+    वापस get_path_at (c, gid,
+			hb_array (font->coords, font->अंक_coords));
   }
 
   bool
   get_extents (hb_font_t *font,
 	       hb_codepoint_t gid,
 	       hb_extents_t<> *extents,
-	       hb_varc_scratch_t &scratch) const
+	       hb_varc_scratch_t &scratch) स्थिर
   {
     int64_t budget = HB_BUDGET_GLYPH;
     hb_varc_context_t c {font,
 			 nullptr,
 			 extents,
 			 hb_decycler_t {},
-			 HB_MAX_GRAPH_EDGE_COUNT,
+			 HB_MAX_GRAPH_EDGE_गिनती,
 			 HB_MAX_NESTING_LEVEL,
 			 budget,
 			 scratch};
 
-    return get_path_at (c, gid,
-			hb_array (font->coords, font->num_coords));
+    वापस get_path_at (c, gid,
+			hb_array (font->coords, font->अंक_coords));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (यह);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  version.major == 1 &&
-		  coverage.sanitize (c, this) &&
-		  varStore.sanitize (c, this) &&
-		  conditionList.sanitize (c, this) &&
-		  axisIndicesList.sanitize (c, this) &&
-		  glyphRecords.sanitize (c, this));
+		  coverage.sanitize (c, यह) &&
+		  varStore.sanitize (c, यह) &&
+		  conditionList.sanitize (c, यह) &&
+		  axisIndicesList.sanitize (c, यह) &&
+		  glyphRecords.sanitize (c, यह));
   }
 
-  struct accelerator_t
+  काष्ठा accelerator_t
   {
-    friend struct VarComponent;
+    मित्र काष्ठा VarComponent;
 
     accelerator_t (hb_face_t *face)
     {
@@ -211,8 +211,8 @@ struct VARC
     }
     ~accelerator_t ()
     {
-      auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      स्वतः *scratch = cached_scratch.get_relaxed ();
+      अगर (scratch)
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
@@ -221,107 +221,107 @@ struct VARC
       table.destroy ();
     }
 
-    bool has_data () const { return table->has_data (); }
+    bool has_तथ्य () स्थिर { वापस table->has_तथ्य (); }
 
     bool
-    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) const
+    get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session) स्थिर
     {
-      if (!table->has_data ()) return false;
+      अगर (!table->has_तथ्य ()) वापस false;
 
-      auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      स्वतः *scratch = acquire_scratch ();
+      अगर (unlikely (!scratch)) वापस true;
       bool ret = table->get_path (font, gid, draw_session, *scratch);
       release_scratch (scratch);
-      return ret;
+      वापस ret;
     }
 
-    bool closure_glyphs (hb_set_t *glyphset) const
+    bool closure_glyphs (hb_set_t *glyphset) स्थिर
     {
-      if (table->has_data ())
-	return table->closure_glyphs (glyphset);
-      return true;
+      अगर (table->has_तथ्य ())
+	वापस table->closure_glyphs (glyphset);
+      वापस true;
     }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    व्योम depend (hb_depend_तथ्य_builder_t *depend_तथ्य) स्थिर
     {
-      if (table->has_data ())
-	table->depend (depend_data);
+      अगर (table->has_तथ्य ())
+	table->depend (depend_तथ्य);
     }
 
     bool
     get_extents (hb_font_t *font,
 		 hb_codepoint_t gid,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) स्थिर
     {
-#ifndef HB_NO_DRAW
-      if (!table->has_data ()) return false;
+#अगर_अघोषित HB_NO_DRAW
+      अगर (!table->has_तथ्य ()) वापस false;
 
       hb_extents_t<> f_extents;
 
-      auto *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
+      स्वतः *scratch = acquire_scratch ();
+      अगर (unlikely (!scratch)) वापस true;
       bool ret = table->get_extents (font, gid, &f_extents, *scratch);
       release_scratch (scratch);
 
-      if (ret)
+      अगर (ret)
 	*extents = f_extents.to_glyph_extents (font->x_scale < 0, font->y_scale < 0);
 
-      return ret;
-#else
-      return false;
-#endif
+      वापस ret;
+#अन्यथा
+      वापस false;
+#पूर्ण_अगर
     }
 
-    private:
+    निजी:
 
-    hb_varc_scratch_t *acquire_scratch () const
+    hb_varc_scratch_t *acquire_scratch () स्थिर
     {
       hb_varc_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      अगर (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_varc_scratch_t *) hb_calloc (1, sizeof (hb_varc_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_varc_scratch_t *) hb_calloc (1, माप (hb_varc_scratch_t));
+	अगर (unlikely (!scratch))
+	  वापस nullptr;
       }
 
-      return scratch;
+      वापस scratch;
     }
-    void release_scratch (hb_varc_scratch_t *scratch) const
+    व्योम release_scratch (hb_varc_scratch_t *scratch) स्थिर
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      अगर (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_varc_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    private:
+    निजी:
     hb_blob_ptr_t<VARC> table;
     mutable hb_atomic_t<hb_varc_scratch_t *> cached_scratch;
   };
 
-  bool has_data () const { return version.major != 0; }
+  bool has_तथ्य () स्थिर { वापस version.major != 0; }
 
-  protected:
+  रक्षित:
   FixedVersion<> version; /* Version identifier */
   Offset32To<Coverage> coverage;
   Offset32To<MultiItemVariationStore> varStore;
   Offset32To<ConditionList> conditionList;
   Offset32To<TupleList> axisIndicesList;
-  Offset32To<CFF2Index/*Of<VarCompositeGlyph>*/> glyphRecords;
-  public:
-  DEFINE_SIZE_STATIC (24);
+  Offset32To<CFF2_सूचकांक/*Of<VarCompositeGlyph>*/> glyphRecords;
+  खुला:
+  DEFINE_आकार_STATIC (24);
 };
 
-struct VARC_accelerator_t : VARC::accelerator_t {
+काष्ठा VARC_accelerator_t : VARC::accelerator_t {
   VARC_accelerator_t (hb_face_t *face) : VARC::accelerator_t (face) {}
 };
 
-#endif
+#पूर्ण_अगर
 
 //}
 
 }
 
-#endif  /* OT_VAR_VARC_VARC_HH */
+#पूर्ण_अगर  /* OT_VAR_VARC_VARC_HH */

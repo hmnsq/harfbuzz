@@ -25,15 +25,15 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#समावेश "hb.hh"
+#समावेश "hb-blob.hh"
 
-#ifdef HAVE_SYS_MMAN_H
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-#include <sys/mman.h>
-#endif /* HAVE_SYS_MMAN_H */
+#अगर_घोषित HAVE_SYS_MMAN_H
+#अगर_घोषित HAVE_UNISTD_H
+#समावेश <unistd.h>
+#पूर्ण_अगर /* HAVE_UNISTD_H */
+#समावेश <sys/mman.h>
+#पूर्ण_अगर /* HAVE_SYS_MMAN_H */
 
 
 /**
@@ -66,22 +66,22 @@
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
+hb_blob_create (स्थिर अक्षर        *तथ्य,
+		अचिन्हित पूर्णांक       लंबाई,
 		hb_memory_mode_t   mode,
-		void              *user_data,
+		व्योम              *user_तथ्य,
 		hb_destroy_func_t  destroy)
 {
-  if (!length)
+  अगर (!लंबाई)
   {
-    if (destroy)
-      destroy (user_data);
-    return hb_blob_get_empty ();
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस hb_blob_get_empty ();
   }
 
-  hb_blob_t *blob = hb_blob_create_or_fail (data, length, mode,
-					    user_data, destroy);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  hb_blob_t *blob = hb_blob_create_or_fail (तथ्य, लंबाई, mode,
+					    user_तथ्य, destroy);
+  वापस likely (blob) ? blob : hb_blob_get_empty ();
 }
 
 /**
@@ -104,45 +104,45 @@ hb_blob_create (const char        *data,
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+hb_blob_create_or_fail (स्थिर अक्षर        *तथ्य,
+			अचिन्हित पूर्णांक       लंबाई,
 			hb_memory_mode_t   mode,
-			void              *user_data,
+			व्योम              *user_तथ्य,
 			hb_destroy_func_t  destroy)
 {
   hb_blob_t *blob;
 
-  if (length >= 1u << 31 ||
+  अगर (लंबाई >= 1u << 31 ||
       !(blob = hb_object_create<hb_blob_t> ()))
   {
-    if (destroy)
-      destroy (user_data);
-    return nullptr;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस nullptr;
   }
 
-  blob->data = data;
-  blob->length = length;
+  blob->तथ्य = तथ्य;
+  blob->लंबाई = लंबाई;
   blob->mode = mode;
 
-  blob->user_data = user_data;
+  blob->user_तथ्य = user_तथ्य;
   blob->destroy = destroy;
 
-  if (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
+  अगर (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
     blob->mode = HB_MEMORY_MODE_READONLY;
-    if (!blob->try_make_writable ())
+    अगर (!blob->try_make_writable ())
     {
       hb_blob_destroy (blob);
-      return nullptr;
+      वापस nullptr;
     }
   }
 
-  return blob;
+  वापस blob;
 }
 
-static void
-_hb_blob_destroy (void *data)
+अटल व्योम
+_hb_blob_destroy (व्योम *तथ्य)
 {
-  hb_blob_destroy ((hb_blob_t *) data);
+  hb_blob_destroy ((hb_blob_t *) तथ्य);
 }
 
 /**
@@ -167,23 +167,23 @@ _hb_blob_destroy (void *data)
  **/
 hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length)
+			 अचिन्हित पूर्णांक  offset,
+			 अचिन्हित पूर्णांक  लंबाई)
 {
   hb_blob_t *blob;
 
-  if (!length || !parent || offset >= parent->length)
-    return hb_blob_get_empty ();
+  अगर (!लंबाई || !parent || offset >= parent->लंबाई)
+    वापस hb_blob_get_empty ();
 
   hb_blob_make_immutable (parent);
 
-  blob = hb_blob_create (parent->data + offset,
-			 hb_min (length, parent->length - offset),
+  blob = hb_blob_create (parent->तथ्य + offset,
+			 hb_min (लंबाई, parent->लंबाई - offset),
 			 HB_MEMORY_MODE_READONLY,
 			 hb_blob_reference (parent),
 			 _hb_blob_destroy);
 
-  return blob;
+  वापस blob;
 }
 
 /**
@@ -199,16 +199,16 @@ hb_blob_create_sub_blob (hb_blob_t    *parent,
 hb_blob_t *
 hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 {
-  blob = hb_blob_create (blob->data,
-			 blob->length,
+  blob = hb_blob_create (blob->तथ्य,
+			 blob->लंबाई,
 			 HB_MEMORY_MODE_DUPLICATE,
 			 nullptr,
 			 nullptr);
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  अगर (unlikely (blob == hb_blob_get_empty ()))
     blob = nullptr;
 
-  return blob;
+  वापस blob;
 }
 
 /**
@@ -225,7 +225,7 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 hb_blob_t *
 hb_blob_get_empty ()
 {
-  return const_cast<hb_blob_t *> (&Null (hb_blob_t));
+  वापस const_cast<hb_blob_t *> (&Null (hb_blob_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_blob_get_empty ()
 hb_blob_t *
 hb_blob_reference (hb_blob_t *blob)
 {
-  return hb_object_reference (blob);
+  वापस hb_object_reference (blob);
 }
 
 /**
@@ -258,10 +258,10 @@ hb_blob_reference (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_blob_destroy (hb_blob_t *blob)
 {
-  if (!hb_object_destroy (blob)) return;
+  अगर (!hb_object_destroy (blob)) वापस;
 
   hb_free (blob);
 }
@@ -281,13 +281,13 @@ hb_blob_destroy (hb_blob_t *blob)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_blob_set_user_data (hb_blob_t          *blob,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_blob_set_user_तथ्य (hb_blob_t          *blob,
+		       hb_user_तथ्य_कुंजी_t *key,
+		       व्योम *              तथ्य,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (blob, key, data, destroy, replace);
+  वापस hb_object_set_user_तथ्य (blob, key, तथ्य, destroy, replace);
 }
 
 /**
@@ -302,11 +302,11 @@ hb_blob_set_user_data (hb_blob_t          *blob,
  *
  * Since: 0.9.2
  **/
-void *
-hb_blob_get_user_data (const hb_blob_t    *blob,
-		       hb_user_data_key_t *key)
+व्योम *
+hb_blob_get_user_तथ्य (स्थिर hb_blob_t    *blob,
+		       hb_user_तथ्य_कुंजी_t *key)
 {
-  return hb_object_get_user_data (blob, key);
+  वापस hb_object_get_user_तथ्य (blob, key);
 }
 
 
@@ -318,11 +318,11 @@ hb_blob_get_user_data (const hb_blob_t    *blob,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_blob_make_immutable (hb_blob_t *blob)
 {
-  if (hb_object_is_immutable (blob))
-    return;
+  अगर (hb_object_is_immutable (blob))
+    वापस;
 
   hb_object_make_immutable (blob);
 }
@@ -340,7 +340,7 @@ hb_blob_make_immutable (hb_blob_t *blob)
 hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob)
 {
-  return hb_object_is_immutable (blob);
+  वापस hb_object_is_immutable (blob);
 }
 
 
@@ -354,10 +354,10 @@ hb_blob_is_immutable (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_blob_get_length (hb_blob_t *blob)
+अचिन्हित पूर्णांक
+hb_blob_get_लंबाई (hb_blob_t *blob)
 {
-  return blob->length;
+  वापस blob->लंबाई;
 }
 
 /**
@@ -371,13 +371,13 @@ hb_blob_get_length (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
+स्थिर अक्षर *
+hb_blob_get_तथ्य (hb_blob_t *blob, अचिन्हित पूर्णांक *लंबाई)
 {
-  if (length)
-    *length = blob->length;
+  अगर (लंबाई)
+    *लंबाई = blob->लंबाई;
 
-  return blob->data;
+  वापस blob->तथ्य;
 }
 
 /**
@@ -396,200 +396,200 @@ hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
  *
  * Since: 0.9.2
  **/
-char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length)
+अक्षर *
+hb_blob_get_तथ्य_writable (hb_blob_t *blob, अचिन्हित पूर्णांक *लंबाई)
 {
-  if (hb_object_is_immutable (blob) ||
+  अगर (hb_object_is_immutable (blob) ||
      !blob->try_make_writable ())
   {
-    if (length) *length = 0;
-    return nullptr;
+    अगर (लंबाई) *लंबाई = 0;
+    वापस nullptr;
   }
 
-  if (length) *length = blob->length;
-  return const_cast<char *> (blob->data);
+  अगर (लंबाई) *लंबाई = blob->लंबाई;
+  वापस const_cast<अक्षर *> (blob->तथ्य);
 }
 
 
 bool
 hb_blob_t::try_make_writable_inplace_unix ()
 {
-#if defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
-  uintptr_t pagesize = -1, mask, length;
-  const char *addr;
+#अगर defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
+  uintptr_t pagesize = -1, mask, लंबाई;
+  स्थिर अक्षर *addr;
 
-#if defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
-  pagesize = (uintptr_t) sysconf (_SC_PAGE_SIZE);
-#elif defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
+#अगर defined(HAVE_SYSCONF) && defined(SC_PAGE_आकार)
+  pagesize = (uintptr_t) sysconf (SC_PAGE_आकार);
+#या_अगर defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGESIZE);
-#elif defined(HAVE_GETPAGESIZE)
+#या_अगर defined(HAVE_GETPAGESIZE)
   pagesize = (uintptr_t) getpagesize ();
-#endif
+#पूर्ण_अगर
 
-  if ((uintptr_t) -1L == pagesize) {
-    DEBUG_MSG_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
-    return false;
+  अगर ((uintptr_t) -1L == pagesize) {
+    DEBUG_संदेश_FUNC (BLOB, यह, "failed to get pagesize: %s", म_त्रुटि (त्रुटि_सं));
+    वापस false;
   }
-  DEBUG_MSG_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
+  DEBUG_संदेश_FUNC (BLOB, यह, "pagesize is %lu", (अचिन्हित दीर्घ) pagesize);
 
   mask = ~(pagesize-1);
-  addr = (const char *) (((uintptr_t) this->data) & mask);
-  length = (const char *) (((uintptr_t) this->data + this->length + pagesize-1) & mask)  - addr;
-  DEBUG_MSG_FUNC (BLOB, this,
+  addr = (स्थिर अक्षर *) (((uintptr_t) यह->तथ्य) & mask);
+  लंबाई = (स्थिर अक्षर *) (((uintptr_t) यह->तथ्य + यह->लंबाई + pagesize-1) & mask)  - addr;
+  DEBUG_संदेश_FUNC (BLOB, यह,
 		  "calling mprotect on [%p..%p] (%lu bytes)",
-		  addr, addr+length, (unsigned long) length);
-  if (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
-    DEBUG_MSG_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
-    return false;
+		  addr, addr+लंबाई, (अचिन्हित दीर्घ) लंबाई);
+  अगर (-1 == mprotect ((व्योम *) addr, लंबाई, PROT_READ | PROT_WRITE)) {
+    DEBUG_संदेश_FUNC (BLOB, यह, "mprotect failed: %s", म_त्रुटि (त्रुटि_सं));
+    वापस false;
   }
 
-  this->mode = HB_MEMORY_MODE_WRITABLE;
+  यह->mode = HB_MEMORY_MODE_WRITABLE;
 
-  DEBUG_MSG_FUNC (BLOB, this,
+  DEBUG_संदेश_FUNC (BLOB, यह,
 		  "successfully made [%p..%p] (%lu bytes) writable\n",
-		  addr, addr+length, (unsigned long) length);
-  return true;
-#else
-  return false;
-#endif
+		  addr, addr+लंबाई, (अचिन्हित दीर्घ) लंबाई);
+  वापस true;
+#अन्यथा
+  वापस false;
+#पूर्ण_अगर
 }
 
 bool
 hb_blob_t::try_make_writable_inplace ()
 {
-  DEBUG_MSG_FUNC (BLOB, this, "making writable inplace\n");
+  DEBUG_संदेश_FUNC (BLOB, यह, "making writable inplace\n");
 
-  if (this->try_make_writable_inplace_unix ())
-    return true;
+  अगर (यह->try_make_writable_inplace_unix ())
+    वापस true;
 
-  DEBUG_MSG_FUNC (BLOB, this, "making writable -> FAILED\n");
+  DEBUG_संदेश_FUNC (BLOB, यह, "making writable -> FAILED\n");
 
   /* Failed to make writable inplace, mark that */
-  this->mode = HB_MEMORY_MODE_READONLY;
-  return false;
+  यह->mode = HB_MEMORY_MODE_READONLY;
+  वापस false;
 }
 
 bool
 hb_blob_t::try_make_writable ()
 {
-  if (unlikely (!length))
+  अगर (unlikely (!लंबाई))
     mode = HB_MEMORY_MODE_WRITABLE;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  अगर (यह->mode == HB_MEMORY_MODE_WRITABLE)
+    वापस true;
 
-  if (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
-    return true;
+  अगर (यह->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && यह->try_make_writable_inplace ())
+    वापस true;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  अगर (यह->mode == HB_MEMORY_MODE_WRITABLE)
+    वापस true;
 
 
-  DEBUG_MSG_FUNC (BLOB, this, "current data is -> %p\n", this->data);
+  DEBUG_संदेश_FUNC (BLOB, यह, "current data is -> %p\n", यह->तथ्य);
 
-  char *new_data;
+  अक्षर *new_तथ्य;
 
-  new_data = (char *) hb_malloc (this->length);
-  if (unlikely (!new_data))
-    return false;
+  new_तथ्य = (अक्षर *) hb_malloc (यह->लंबाई);
+  अगर (unlikely (!new_तथ्य))
+    वापस false;
 
-  DEBUG_MSG_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
+  DEBUG_संदेश_FUNC (BLOB, यह, "dupped successfully -> %p\n", यह->तथ्य);
 
-  hb_memcpy (new_data, this->data, this->length);
-  this->destroy_user_data ();
-  this->mode = HB_MEMORY_MODE_WRITABLE;
-  this->data = new_data;
-  this->user_data = new_data;
-  this->destroy = hb_free;
+  hb_memcpy (new_तथ्य, यह->तथ्य, यह->लंबाई);
+  यह->destroy_user_तथ्य ();
+  यह->mode = HB_MEMORY_MODE_WRITABLE;
+  यह->तथ्य = new_तथ्य;
+  यह->user_तथ्य = new_तथ्य;
+  यह->destroy = hb_free;
 
-  return true;
+  वापस true;
 }
 
 /*
  * Mmap
  */
 
-#ifndef HB_NO_OPEN
-#ifdef HAVE_MMAP
-# if !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
+#अगर_अघोषित HB_NO_OPEN
+#अगर_घोषित HAVE_MMAP
+# अगर !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
 #  include <sys/paths.h>
 # endif
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-#endif
+#पूर्ण_अगर
 
-#ifdef _WIN32
+#अगर_घोषित _WIN32
 # include <windows.h>
-#else
-# ifndef O_BINARY
-#  define O_BINARY 0
+#अन्यथा
+# ifndef O_द्विआधारी
+#  define O_द्विआधारी 0
 # endif
-#endif
+#पूर्ण_अगर
 
-#ifndef MAP_NORESERVE
+#अगर_अघोषित MAP_NORESERVE
 # define MAP_NORESERVE 0
-#endif
+#पूर्ण_अगर
 
-struct hb_mapped_file_t
+काष्ठा hb_mapped_file_t
 {
-  char *contents;
-  unsigned long length;
-#ifdef _WIN32
+  अक्षर *contents;
+  अचिन्हित दीर्घ लंबाई;
+#अगर_घोषित _WIN32
   HANDLE mapping;
-#endif
+#पूर्ण_अगर
 };
 
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-static void
-_hb_mapped_file_destroy (void *file_)
+#अगर (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+अटल व्योम
+_hb_mapped_file_destroy (व्योम *file_)
 {
   hb_mapped_file_t *file = (hb_mapped_file_t *) file_;
-#ifdef HAVE_MMAP
-  munmap (file->contents, file->length);
-#elif defined(_WIN32)
+#अगर_घोषित HAVE_MMAP
+  munmap (file->contents, file->लंबाई);
+#या_अगर defined(_WIN32)
   UnmapViewOfFile (file->contents);
   CloseHandle (file->mapping);
-#else
-  assert (0); // If we don't have mmap we shouldn't reach here
-#endif
+#अन्यथा
+  निश्चित (0); // If we don't have mmap we shouldn't reach here
+#पूर्ण_अगर
 
   hb_free (file);
 }
-#endif
+#पूर्ण_अगर
 
-#ifdef _PATH_RSRCFORKSPEC
-static int
-_open_resource_fork (const char *file_name, hb_mapped_file_t *file)
+#अगर_घोषित _PATH_RSRCFORKSPEC
+अटल पूर्णांक
+_open_resource_fork (स्थिर अक्षर *file_name, hb_mapped_file_t *file)
 {
-  size_t name_len = strlen (file_name);
-  size_t len = name_len + sizeof (_PATH_RSRCFORKSPEC);
+  माप_प्रकार name_len = म_माप (file_name);
+  माप_प्रकार len = name_len + माप (_PATH_RSRCFORKSPEC);
 
-  char *rsrc_name = (char *) hb_malloc (len);
-  if (unlikely (!rsrc_name)) return -1;
+  अक्षर *rsrc_name = (अक्षर *) hb_malloc (len);
+  अगर (unlikely (!rsrc_name)) वापस -1;
 
-  strncpy (rsrc_name, file_name, name_len);
-  strncpy (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
-	   sizeof (_PATH_RSRCFORKSPEC));
+  म_नकलन (rsrc_name, file_name, name_len);
+  म_नकलन (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
+	   माप (_PATH_RSRCFORKSPEC));
 
-  int fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
+  पूर्णांक fd = खोलो (rsrc_name, O_RDONLY | O_द्विआधारी, 0);
   hb_free (rsrc_name);
 
-  if (fd != -1)
+  अगर (fd != -1)
   {
-    struct stat st;
-    if (fstat (fd, &st) != -1)
-      file->length = (unsigned long) st.st_size;
-    else
+    काष्ठा stat st;
+    अगर (ख_स्थिति (fd, &st) != -1)
+      file->लंबाई = (अचिन्हित दीर्घ) st.st_आकार;
+    अन्यथा
     {
-      close (fd);
+      बंद (fd);
       fd = -1;
     }
   }
 
-  return fd;
+  वापस fd;
 }
-#endif
+#पूर्ण_अगर
 
 /**
  * hb_blob_create_from_file:
@@ -609,77 +609,77 @@ _open_resource_fork (const char *file_name, hb_mapped_file_t *file)
  * Since: 1.7.7
  **/
 hb_blob_t *
-hb_blob_create_from_file (const char *file_name)
+hb_blob_create_from_file (स्थिर अक्षर *file_name)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  वापस likely (blob) ? blob : hb_blob_get_empty ();
 }
 
-#if defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
-static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+#अगर defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
+अटल hb_blob_t *
+_hb_blob_try_mmap (स्थिर अक्षर *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
-  auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, माप (hb_mapped_file_t));
+  अगर (unlikely (!file)) वापस nullptr;
+  स्वतः file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  int fd = open (file_name, O_RDONLY | O_BINARY, 0);
-  if (unlikely (fd == -1)) return nullptr;
-  auto fd_guard = hb_make_scope_guard ([&]() { close (fd); });
+  पूर्णांक fd = खोलो (file_name, O_RDONLY | O_द्विआधारी, 0);
+  अगर (unlikely (fd == -1)) वापस nullptr;
+  स्वतः fd_guard = hb_make_scope_guard ([&]() { बंद (fd); });
 
-  struct stat st;
-  if (unlikely (fstat (fd, &st) == -1)) return nullptr;
+  काष्ठा stat st;
+  अगर (unlikely (ख_स्थिति (fd, &st) == -1)) वापस nullptr;
 
-  file->length = (unsigned long) st.st_size;
+  file->लंबाई = (अचिन्हित दीर्घ) st.st_आकार;
 
-#ifdef _PATH_RSRCFORKSPEC
-  if (unlikely (file->length == 0))
+#अगर_घोषित _PATH_RSRCFORKSPEC
+  अगर (unlikely (file->लंबाई == 0))
   {
-    int rfd = _open_resource_fork (file_name, file);
-    if (rfd != -1)
+    पूर्णांक rfd = _open_resource_fork (file_name, file);
+    अगर (rfd != -1)
     {
-      close (fd);
+      बंद (fd);
       fd = rfd;
     }
   }
-#endif
+#पूर्ण_अगर
 
-  file->contents = (char *) mmap (nullptr, file->length, PROT_READ,
+  file->contents = (अक्षर *) mmap (nullptr, file->लंबाई, PROT_READ,
 				  MAP_PRIVATE | MAP_NORESERVE, fd, 0);
-  if (unlikely (file->contents == MAP_FAILED)) return nullptr;
+  अगर (unlikely (file->contents == MAP_FAILED)) वापस nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return (ownership ends after mmap). */
-  return hb_blob_create_or_fail (file->contents, file->length,
-				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
+  वापस hb_blob_create_or_fail (file->contents, file->लंबाई,
+				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (व्योम *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
-#elif defined(_WIN32) && !defined(HB_NO_MMAP)
-static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+#या_अगर defined(_WIN32) && !defined(HB_NO_MMAP)
+अटल hb_blob_t *
+_hb_blob_try_mmap (स्थिर अक्षर *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
-  auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, माप (hb_mapped_file_t));
+  अगर (unlikely (!file)) वापस nullptr;
+  स्वतः file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  size_t size = strlen (file_name) + 1;
-  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (sizeof (wchar_t) * size);
-  if (unlikely (!wchar_file_name)) return nullptr;
+  माप_प्रकार आकार = म_माप (file_name) + 1;
+  ब_अक्षर_प्रकार *wchar_file_name = (ब_अक्षर_प्रकार *) hb_malloc (माप (ब_अक्षर_प्रकार) * आकार);
+  अगर (unlikely (!wchar_file_name)) वापस nullptr;
 
   /* Assume file name is given in UTF-8 encoding */
-  int conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
-  if (conversion <= 0)
+  पूर्णांक conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, आकार);
+  अगर (conversion <= 0)
   {
     /* Conversion failed due to invalid UTF-8 characters,
        Repeat conversion based on system code page */
-    mbstowcs (wchar_file_name, file_name, size);
+    mbstowcs (wchar_file_name, file_name, आकार);
   }
 
   HANDLE fd;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#अगर !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     CREATEFILE2_EXTENDED_PARAMETERS ceparams = { 0 };
-    ceparams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+    ceparams.dw_आकार = माप(CREATEFILE2_EXTENDED_PARAMETERS);
     ceparams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFFF;
     ceparams.dwFileFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFF00000;
     ceparams.dwSecurityQosFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0x000F0000;
@@ -688,84 +688,84 @@ _hb_blob_try_mmap (const char *file_name)
     fd = CreateFile2 (wchar_file_name, GENERIC_READ, FILE_SHARE_READ,
 		      OPEN_EXISTING, &ceparams);
   }
-#else
+#अन्यथा
   fd = CreateFileW (wchar_file_name, GENERIC_READ, FILE_SHARE_READ, nullptr,
 		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
 		    nullptr);
-#endif
+#पूर्ण_अगर
   hb_free (wchar_file_name);
 
-  if (unlikely (fd == INVALID_HANDLE_VALUE)) return nullptr;
-  auto fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
+  अगर (unlikely (fd == INVALID_HANDLE_मूल्य)) वापस nullptr;
+  स्वतः fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#अगर !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
-    LARGE_INTEGER length;
-    GetFileSizeEx (fd, &length);
-    file->length = length.LowPart;
-    file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, length.QuadPart, nullptr);
+    LARGE_INTEGER लंबाई;
+    Get_File_आकार_Ex (fd, &लंबाई);
+    file->लंबाई = लंबाई.निचला_Part;
+    file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, लंबाई.QuadPart, nullptr);
   }
-#else
-  file->length = (unsigned long) GetFileSize (fd, nullptr);
+#अन्यथा
+  file->लंबाई = (अचिन्हित दीर्घ) Get_File_आकार (fd, nullptr);
   file->mapping = CreateFileMapping (fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
-#endif
-  if (unlikely (!file->mapping)) return nullptr;
+#पूर्ण_अगर
+  अगर (unlikely (!file->mapping)) वापस nullptr;
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-  file->contents = (char *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
-#else
-  file->contents = (char *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
-#endif
-  if (unlikely (!file->contents)) return nullptr;
+#अगर !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+  file->contents = (अक्षर *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
+#अन्यथा
+  file->contents = (अक्षर *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
+#पूर्ण_अगर
+  अगर (unlikely (!file->contents)) वापस nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return. */
-  return hb_blob_create_or_fail (file->contents, file->length,
-				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
+  वापस hb_blob_create_or_fail (file->contents, file->लंबाई,
+				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (व्योम *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
-#endif
+#पूर्ण_अगर
 
 /* Read a file without knowing its size beforehand.  Used as a fallback
  * for systems without mmap or to read from pipes. */
-static hb_blob_t *
-_hb_blob_read_file (const char *file_name)
+अटल hb_blob_t *
+_hb_blob_read_file (स्थिर अक्षर *file_name)
 {
-  unsigned long len = 0, allocated = BUFSIZ * 16;
-  char *data = (char *) hb_malloc (allocated);
-  if (unlikely (!data)) return nullptr;
-  auto data_guard = hb_make_scope_guard ([&]() { hb_free (data); });
+  अचिन्हित दीर्घ len = 0, allocated = बफ_मान * 16;
+  अक्षर *तथ्य = (अक्षर *) hb_malloc (allocated);
+  अगर (unlikely (!तथ्य)) वापस nullptr;
+  स्वतः तथ्य_guard = hb_make_scope_guard ([&]() { hb_free (तथ्य); });
 
-  FILE *fp = fopen (file_name, "rb");
-  if (unlikely (!fp)) return nullptr;
-  HB_SCOPE_GUARD (fclose (fp));
+  खाता *fp = ख_खोलो (file_name, "rb");
+  अगर (unlikely (!fp)) वापस nullptr;
+  HB_SCOPE_GUARD (ख_बंद (fp));
 
-  while (!feof (fp))
+  जबतक (!ख_पूर्ण (fp))
   {
-    if (allocated - len < BUFSIZ)
+    अगर (allocated - len < बफ_मान)
     {
       allocated *= 2;
       /* Don't allocate and go more than ~536MB, our mmap reader still
 	 can cover files like that but lets limit our fallback reader */
-      if (unlikely (allocated > (2 << 28))) return nullptr;
-      char *new_data = (char *) hb_realloc (data, allocated);
-      if (unlikely (!new_data)) return nullptr;
-      data = new_data;
+      अगर (unlikely (allocated > (2 << 28))) वापस nullptr;
+      अक्षर *new_तथ्य = (अक्षर *) hb_realloc (तथ्य, allocated);
+      अगर (unlikely (!new_तथ्य)) वापस nullptr;
+      तथ्य = new_तथ्य;
     }
 
-    unsigned long addition = fread (data + len, 1, allocated - len, fp);
+    अचिन्हित दीर्घ addition = ख_पढ़ो (तथ्य + len, 1, allocated - len, fp);
 
-    int err = ferror (fp);
-#ifdef EINTR // armcc doesn't have it
-    if (unlikely (err == EINTR)) continue;
-#endif
-    if (unlikely (err)) return nullptr;
+    पूर्णांक err = ख_त्रुटि (fp);
+#अगर_घोषित EINTR // armcc doesn't have it
+    अगर (unlikely (err == EINTR)) जारी;
+#पूर्ण_अगर
+    अगर (unlikely (err)) वापस nullptr;
 
     len += addition;
   }
 
-  data_guard.release ();
-  return hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
+  तथ्य_guard.release ();
+  वापस hb_blob_create_or_fail (तथ्य, len, HB_MEMORY_MODE_WRITABLE, तथ्य,
 				 (hb_destroy_func_t) hb_free);
 }
 
@@ -786,14 +786,14 @@ _hb_blob_read_file (const char *file_name)
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name)
+hb_blob_create_from_file_or_fail (स्थिर अक्षर *file_name)
 {
   /* Adopted from glib's gmappedfile.c with Matthias Clasen and
      Allison Lortie permission but changed a lot to suit our need. */
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-  if (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
-    return blob;
-#endif
-  return _hb_blob_read_file (file_name);
+#अगर (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+  अगर (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
+    वापस blob;
+#पूर्ण_अगर
+  वापस _hb_blob_read_file (file_name);
 }
-#endif /* !HB_NO_OPEN */
+#पूर्ण_अगर /* !HB_NO_OPEN */

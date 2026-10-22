@@ -25,20 +25,20 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-layout-ankr-table.hh"
-#include "hb-aat-layout-bsln-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-aat-layout-just-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-aat-layout-kerx-table.hh"
-#include "hb-aat-layout-morx-table.hh"
-#include "hb-aat-layout-trak-table.hh"
-#include "hb-aat-ltag-table.hh"
+#समावेश "hb-aat-layout.hh"
+#समावेश "hb-aat-layout-ankr-table.hh"
+#समावेश "hb-aat-layout-bsln-table.hh" // Just so we compile it; unused otherwise.
+#समावेश "hb-aat-layout-feat-table.hh"
+#समावेश "hb-aat-layout-just-table.hh" // Just so we compile it; unused otherwise.
+#समावेश "hb-aat-layout-kerx-table.hh"
+#समावेश "hb-aat-layout-morx-table.hh"
+#समावेश "hb-aat-layout-trak-table.hh"
+#समावेश "hb-aat-ltag-table.hh"
 
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gdef-table.hh"
+#समावेश "hb-ot-layout-gsub-table.hh"
+#समावेश "hb-ot-layout-gdef-table.hh"
 
 
 /*
@@ -46,30 +46,30 @@
  */
 
 /* Note: This context is used for kerning, even without AAT, hence the condition. */
-#if !defined(HB_NO_AAT) || !defined(HB_NO_OT_KERN)
+#अगर !defined(HB_NO_AAT) || !defined(HB_NO_OT_KERN)
 
-AAT::hb_aat_apply_context_t::hb_aat_apply_context_t (const hb_ot_shape_plan_t *plan_,
+AAT::hb_aat_apply_context_t::hb_aat_apply_context_t (स्थिर hb_ot_shape_plan_t *plan_,
 						     hb_font_t *font_,
-						     hb_buffer_t *buffer_,
+						     hb_बफर_t *बफर_2,
 						     hb_blob_t *blob) :
 						       plan (plan_),
 						       font (font_),
 						       face (font->face),
-						       buffer (buffer_),
+						       बफर (बफर_2),
 						       sanitizer (),
 						       ankr_table (&Null (AAT::ankr)),
 						       gdef (
-#ifndef HB_NO_OT_LAYOUT
+#अगर_अघोषित HB_NO_OT_LAYOUT
 							 *face->table.GDEF->table
-#else
+#अन्यथा
 							 Null (GDEF)
-#endif
+#पूर्ण_अगर
 						       ),
 						       has_glyph_classes (gdef.has_glyph_classes ()),
-						       lookup_index (0)
+						       lookup_सूचकांक (0)
 {
   sanitizer.init (blob);
-  sanitizer.set_num_glyphs (face->get_num_glyphs ());
+  sanitizer.set_अंक_glyphs (face->get_अंक_glyphs ());
   sanitizer.start_processing ();
   sanitizer.set_max_ops (HB_SANITIZE_MAX_OPS_MAX);
 }
@@ -77,11 +77,11 @@ AAT::hb_aat_apply_context_t::hb_aat_apply_context_t (const hb_ot_shape_plan_t *p
 AAT::hb_aat_apply_context_t::~hb_aat_apply_context_t ()
 { sanitizer.end_processing (); }
 
-void
-AAT::hb_aat_apply_context_t::set_ankr_table (const AAT::ankr *ankr_table_)
+व्योम
+AAT::hb_aat_apply_context_t::set_ankr_table (स्थिर AAT::ankr *ankr_table_)
 { ankr_table = ankr_table_; }
 
-#endif
+#पूर्ण_अगर
 
 
 /**
@@ -97,13 +97,13 @@ AAT::hb_aat_apply_context_t::set_ankr_table (const AAT::ankr *ankr_table_)
  **/
 
 
-#if !defined(HB_NO_AAT) || defined(HAVE_CORETEXT)
+#अगर !defined(HB_NO_AAT) || defined(HAVE_CORETEXT)
 
 /* Mapping from OpenType feature tags to AAT feature names and selectors.
  *
  * Table data courtesy of Apple.  Converted from mnemonics to integers
  * when moving to this file. */
-static const hb_aat_feature_mapping_t feature_mappings[] =
+अटल स्थिर hb_aat_feature_mapping_t feature_mappings[] =
 {
   {HB_TAG ('a','f','r','c'), HB_AAT_LAYOUT_FEATURE_TYPE_FRACTIONS,               HB_AAT_LAYOUT_FEATURE_SELECTOR_VERTICAL_FRACTIONS,             HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_FRACTIONS},
   {HB_TAG ('c','2','p','c'), HB_AAT_LAYOUT_FEATURE_TYPE_UPPER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_UPPER_CASE},
@@ -130,15 +130,15 @@ static const hb_aat_feature_mapping_t feature_mappings[] =
   {HB_TAG ('j','p','8','3'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1983_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
   {HB_TAG ('j','p','9','0'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_JIS1990_CHARACTERS,             (hb_aat_layout_feature_selector_t) 16},
   {HB_TAG ('l','i','g','a'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_COMMON_LIGATURES_OFF},
-  {HB_TAG ('l','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
+  {HB_TAG ('l','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_संख्या_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_UPPER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
   {HB_TAG ('m','g','r','k'), HB_AAT_LAYOUT_FEATURE_TYPE_MATHEMATICAL_EXTRAS,     HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MATHEMATICAL_GREEK_OFF},
   {HB_TAG ('n','l','c','k'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_NLCCHARACTERS,                  (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('o','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
+  {HB_TAG ('o','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_संख्या_CASE,             HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_NUMBERS,             (hb_aat_layout_feature_selector_t) 2},
   {HB_TAG ('o','r','d','n'), HB_AAT_LAYOUT_FEATURE_TYPE_VERTICAL_POSITION,       HB_AAT_LAYOUT_FEATURE_SELECTOR_ORDINALS,                       HB_AAT_LAYOUT_FEATURE_SELECTOR_NORMAL_POSITION},
   {HB_TAG ('p','a','l','t'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_ALT_PROPORTIONAL_TEXT,          (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('p','c','a','p'), HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE,              HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_PETITE_CAPS,         HB_AAT_LAYOUT_FEATURE_SELECTOR_DEFAULT_LOWER_CASE},
   {HB_TAG ('p','k','n','a'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_TEXT,              (hb_aat_layout_feature_selector_t) 7},
-  {HB_TAG ('p','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_NUMBERS,           (hb_aat_layout_feature_selector_t) 4},
+  {HB_TAG ('p','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_संख्या_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_NUMBERS,           (hb_aat_layout_feature_selector_t) 4},
   {HB_TAG ('p','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_PROPORTIONAL_TEXT,              (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('q','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_QUARTER_WIDTH_TEXT,             (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('r','l','i','g'), HB_AAT_LAYOUT_FEATURE_TYPE_LIGATURES,               HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_ON,          HB_AAT_LAYOUT_FEATURE_SELECTOR_REQUIRED_LIGATURES_OFF},
@@ -171,7 +171,7 @@ static const hb_aat_feature_mapping_t feature_mappings[] =
   {HB_TAG ('s','w','s','h'), HB_AAT_LAYOUT_FEATURE_TYPE_CONTEXTUAL_ALTERNATIVES, HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_ON,            HB_AAT_LAYOUT_FEATURE_SELECTOR_SWASH_ALTERNATES_OFF},
   {HB_TAG ('t','i','t','l'), HB_AAT_LAYOUT_FEATURE_TYPE_STYLE_OPTIONS,           HB_AAT_LAYOUT_FEATURE_SELECTOR_TITLING_CAPS,                   HB_AAT_LAYOUT_FEATURE_SELECTOR_NO_STYLE_OPTIONS},
   {HB_TAG ('t','n','a','m'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_NAMES_CHARACTERS,   (hb_aat_layout_feature_selector_t) 16},
-  {HB_TAG ('t','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_NUMBER_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_NUMBERS,             (hb_aat_layout_feature_selector_t) 4},
+  {HB_TAG ('t','n','u','m'), HB_AAT_LAYOUT_FEATURE_TYPE_संख्या_SPACING,          HB_AAT_LAYOUT_FEATURE_SELECTOR_MONOSPACED_NUMBERS,             (hb_aat_layout_feature_selector_t) 4},
   {HB_TAG ('t','r','a','d'), HB_AAT_LAYOUT_FEATURE_TYPE_CHARACTER_SHAPE,         HB_AAT_LAYOUT_FEATURE_SELECTOR_TRADITIONAL_CHARACTERS,         (hb_aat_layout_feature_selector_t) 16},
   {HB_TAG ('t','w','i','d'), HB_AAT_LAYOUT_FEATURE_TYPE_TEXT_SPACING,            HB_AAT_LAYOUT_FEATURE_SELECTOR_THIRD_WIDTH_TEXT,               (hb_aat_layout_feature_selector_t) 7},
   {HB_TAG ('u','n','i','c'), HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE,             (hb_aat_layout_feature_selector_t) 14,                 (hb_aat_layout_feature_selector_t) 15},
@@ -196,15 +196,15 @@ static const hb_aat_feature_mapping_t feature_mappings[] =
  * OpenType feature tag queried
  *
  **/
-const hb_aat_feature_mapping_t *
+स्थिर hb_aat_feature_mapping_t *
 hb_aat_layout_find_feature_mapping (hb_tag_t tag)
 {
-  return hb_sorted_array (feature_mappings).bsearch (tag);
+  वापस hb_sorted_array (feature_mappings).द्वा_खोज (tag);
 }
-#endif
+#पूर्ण_अगर
 
 
-#ifndef HB_NO_AAT_SHAPE
+#अगर_अघोषित HB_NO_AAT_SHAPE
 
 /*
  * mort/morx/kerx/trak
@@ -213,50 +213,50 @@ hb_aat_layout_find_feature_mapping (hb_tag_t tag)
 
 bool
 AAT::morx::is_blocklisted (hb_blob_t *blob,
-                           hb_face_t *face) const
+                           hb_face_t *face) स्थिर
 {
-#ifdef HB_NO_AAT_LAYOUT_BLOCKLIST
-  return false;
-#endif
+#अगर_घोषित HB_NO_AAT_LAYOUT_BLOCKLIST
+  वापस false;
+#पूर्ण_अगर
 
-  switch HB_CODEPOINT_ENCODE3 (blob->length,
-                               face->table.GSUB->table.get_length (),
-                               face->table.GDEF->table.get_length ())
+  चयन HB_CODEPOINT_ENCODE3 (blob->लंबाई,
+                               face->table.GSUB->table.get_लंबाई (),
+                               face->table.GDEF->table.get_लंबाई ())
   {
     /* https://github.com/harfbuzz/harfbuzz/issues/4108
        sha1sum:a71ca6813b7e56a772cffff7c24a5166b087197c  AALMAGHRIBI.ttf */
-    case HB_CODEPOINT_ENCODE3 (19892, 2794, 340):
-      return true;
+    हाल HB_CODEPOINT_ENCODE3 (19892, 2794, 340):
+      वापस true;
   }
-  return false;
+  वापस false;
 }
 
 bool
 AAT::mort::is_blocklisted (hb_blob_t *blob,
-                           hb_face_t *face) const
+                           hb_face_t *face) स्थिर
 {
-#ifdef HB_NO_AAT_LAYOUT_BLOCKLIST
-  return false;
-#endif
-  return false;
+#अगर_घोषित HB_NO_AAT_LAYOUT_BLOCKLIST
+  वापस false;
+#पूर्ण_अगर
+  वापस false;
 }
 
-void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+व्योम
+hb_aat_layout_compile_map (स्थिर hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map)
 {
-  const AAT::morx& morx = *mapper->face->table.morx->table;
-  if (morx.has_data ())
+  स्थिर AAT::morx& morx = *mapper->face->table.morx->table;
+  अगर (morx.has_तथ्य ())
   {
     morx.compile_flags (mapper, map);
-    return;
+    वापस;
   }
 
-  const AAT::mort& mort = *mapper->face->table.mort->table;
-  if (mort.has_data ())
+  स्थिर AAT::mort& mort = *mapper->face->table.mort->table;
+  अगर (mort.has_तथ्य ())
   {
     mort.compile_flags (mapper, map);
-    return;
+    वापस;
   }
 }
 
@@ -277,67 +277,67 @@ hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
 hb_bool_t
 hb_aat_layout_has_substitution (hb_face_t *face)
 {
-  return face->table.morx->table->has_data () ||
-	 face->table.mort->table->has_data ();
+  वापस face->table.morx->table->has_तथ्य () ||
+	 face->table.mort->table->has_तथ्य ();
 }
 
-void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+व्योम
+hb_aat_layout_substitute (स्थिर hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features)
+			  hb_बफर_t *बफर,
+			  स्थिर hb_feature_t *features,
+			  अचिन्हित अंक_features)
 {
   hb_aat_map_t map;
-  if (num_features)
+  अगर (अंक_features)
   {
     hb_aat_map_builder_t builder (font->face, plan->props);
-    for (unsigned i = 0; i < num_features; i++)
+    क्रम (अचिन्हित i = 0; i < अंक_features; i++)
       builder.add_feature (features[i]);
     builder.compile (map);
   }
 
   {
-    auto &accel = *font->face->table.morx;
-    const AAT::morx& morx = *accel.table;
-    if (morx.has_data ())
+    स्वतः &accel = *font->face->table.morx;
+    स्थिर AAT::morx& morx = *accel.table;
+    अगर (morx.has_तथ्य ())
     {
-      AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
-      if (!buffer->message (font, "start table morx")) return;
-      c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
-      morx.apply (&c, num_features ? map : plan->aat_map, accel);
-      accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
-      c.buffer_glyph_set = nullptr;
-      (void) buffer->message (font, "end table morx");
-      return;
+      AAT::hb_aat_apply_context_t c (plan, font, बफर, accel.get_blob ());
+      अगर (!बफर->message (font, "start table morx")) वापस;
+      c.बफर_glyph_set = accel.scratch.create_बफर_glyph_set ();
+      morx.apply (&c, अंक_features ? map : plan->aat_map, accel);
+      accel.scratch.destroy_बफर_glyph_set (c.बफर_glyph_set);
+      c.बफर_glyph_set = nullptr;
+      (व्योम) बफर->message (font, "end table morx");
+      वापस;
     }
   }
 
   {
-    auto &accel = *font->face->table.mort;
-    const AAT::mort& mort = *accel.table;
-    if (mort.has_data ())
+    स्वतः &accel = *font->face->table.mort;
+    स्थिर AAT::mort& mort = *accel.table;
+    अगर (mort.has_तथ्य ())
     {
-      AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
-      if (!buffer->message (font, "start table mort")) return;
-      mort.apply (&c, num_features ? map : plan->aat_map, accel);
-      (void) buffer->message (font, "end table mort");
-      return;
+      AAT::hb_aat_apply_context_t c (plan, font, बफर, accel.get_blob ());
+      अगर (!बफर->message (font, "start table mort")) वापस;
+      mort.apply (&c, अंक_features ? map : plan->aat_map, accel);
+      (व्योम) बफर->message (font, "end table mort");
+      वापस;
     }
   }
 }
 
-static bool
-is_deleted_glyph (const hb_glyph_info_t *info)
+अटल bool
+is_deleted_glyph (स्थिर hb_glyph_info_t *info)
 {
-  return _hb_glyph_info_is_aat_deleted (info);
+  वापस _hb_glyph_info_is_aat_deleted (info);
 }
 
-void
-hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer)
+व्योम
+hb_aat_layout_remove_deleted_glyphs (hb_बफर_t *बफर)
 {
-  if (buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED)
-    buffer->delete_glyphs_inplace (is_deleted_glyph);
+  अगर (बफर->scratch_flags & HB_बफर_SCRATCH_FLAG_AAT_HAS_DELETED)
+    बफर->delete_glyphs_inplace (is_deleted_glyph);
 }
 
 /**
@@ -356,24 +356,24 @@ hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer)
 hb_bool_t
 hb_aat_layout_has_positioning (hb_face_t *face)
 {
-  return face->table.kerx->table->has_data ();
+  वापस face->table.kerx->table->has_तथ्य ();
 }
 
-void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+व्योम
+hb_aat_layout_position (स्थिर hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer)
+			hb_बफर_t *बफर)
 {
-  auto &accel = *font->face->table.kerx;
+  स्वतः &accel = *font->face->table.kerx;
 
-  AAT::hb_aat_apply_context_t c (plan, font, buffer, accel.get_blob ());
-  if (!buffer->message (font, "start table kerx")) return;
-  c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
-  c.set_ankr_table (font->face->table.ankr.get ());
+  AAT::hb_aat_apply_context_t c (plan, font, बफर, accel.get_blob ());
+  अगर (!बफर->message (font, "start table kerx")) वापस;
+  c.बफर_glyph_set = accel.scratch.create_बफर_glyph_set ();
+  c.set_ankr_table (font->face->table.ankr.लो ());
   accel.apply (&c);
-  accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
-  c.buffer_glyph_set = nullptr;
-  (void) buffer->message (font, "end table kerx");
+  accel.scratch.destroy_बफर_glyph_set (c.बफर_glyph_set);
+  c.बफर_glyph_set = nullptr;
+  (व्योम) बफर->message (font, "end table kerx");
 }
 
 
@@ -391,17 +391,17 @@ hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
 hb_bool_t
 hb_aat_layout_has_tracking (hb_face_t *face)
 {
-  return face->table.trak->has_data ();
+  वापस face->table.trak->has_तथ्य ();
 }
 
-void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+व्योम
+hb_aat_layout_track (स्थिर hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer)
+		     hb_बफर_t *बफर)
 {
-  const AAT::trak& trak = *font->face->table.trak;
+  स्थिर AAT::trak& trak = *font->face->table.trak;
 
-  AAT::hb_aat_apply_context_t c (plan, font, buffer);
+  AAT::hb_aat_apply_context_t c (plan, font, बफर);
   trak.apply (&c);
 }
 
@@ -419,13 +419,13 @@ hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
  *
  * Since: 2.2.0
  */
-unsigned int
+अचिन्हित पूर्णांक
 hb_aat_layout_get_feature_types (hb_face_t                    *face,
-				 unsigned int                  start_offset,
-				 unsigned int                 *feature_count, /* IN/OUT.  May be NULL. */
+				 अचिन्हित पूर्णांक                  start_offset,
+				 अचिन्हित पूर्णांक                 *feature_गिनती_2, /* IN/OUT.  May be NULL. */
 				 hb_aat_layout_feature_type_t *features       /* OUT.     May be NULL. */)
 {
-  return face->table.feat->get_feature_types (start_offset, feature_count, features);
+  वापस face->table.feat->get_feature_types (start_offset, feature_गिनती_2, features);
 }
 
 /**
@@ -443,7 +443,7 @@ hb_ot_name_id_t
 hb_aat_layout_feature_type_get_name_id (hb_face_t                    *face,
 					hb_aat_layout_feature_type_t  feature_type)
 {
-  return face->table.feat->get_feature_name_id (feature_type);
+  वापस face->table.feat->get_feature_name_id (feature_type);
 }
 
 /**
@@ -467,16 +467,16 @@ hb_aat_layout_feature_type_get_name_id (hb_face_t                    *face,
  *
  * Since: 2.2.0
  */
-unsigned int
+अचिन्हित पूर्णांक
 hb_aat_layout_feature_type_get_selector_infos (hb_face_t                             *face,
 					       hb_aat_layout_feature_type_t           feature_type,
-					       unsigned int                           start_offset,
-					       unsigned int                          *selector_count, /* IN/OUT.  May be NULL. */
+					       अचिन्हित पूर्णांक                           start_offset,
+					       अचिन्हित पूर्णांक                          *selector_गिनती, /* IN/OUT.  May be NULL. */
 					       hb_aat_layout_feature_selector_info_t *selectors,      /* OUT.     May be NULL. */
-					       unsigned int                          *default_index   /* OUT.     May be NULL. */)
+					       अचिन्हित पूर्णांक                          *default_सूचकांक   /* OUT.     May be NULL. */)
 {
-  return face->table.feat->get_selector_infos (feature_type, start_offset, selector_count, selectors, default_index);
+  वापस face->table.feat->get_selector_infos (feature_type, start_offset, selector_गिनती, selectors, default_सूचकांक);
 }
 
 
-#endif
+#पूर्ण_अगर

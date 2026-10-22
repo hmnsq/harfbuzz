@@ -24,33 +24,33 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_PLAN_HH
-#define HB_SUBSET_PLAN_HH
+#अगर_अघोषित HB_SUBSET_PLAN_HH
+#घोषणा HB_SUBSET_PLAN_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-subset-input.hh"
-#include "hb-subset-accelerator.hh"
+#समावेश "hb-subset.h"
+#समावेश "hb-subset-input.hh"
+#समावेश "hb-subset-accelerator.hh"
 
-#include "hb-map.hh"
-#include "hb-bimap.hh"
-#include "hb-set.hh"
+#समावेश "hb-map.hh"
+#समावेश "hb-bimap.hh"
+#समावेश "hb-set.hh"
 
 namespace OT {
-struct Feature;
+काष्ठा Feature;
 }
 
-struct os2_info_t {
+काष्ठा os2_info_t {
   hb_codepoint_t min_cmap_codepoint;
   hb_codepoint_t max_cmap_codepoint;
 };
 
-typedef struct os2_info_t os2_info_t;
+प्रकार काष्ठा os2_info_t os2_info_t;
 
-struct head_maxp_info_t
+काष्ठा शीर्ष_maxp_info_t
 {
-  head_maxp_info_t ()
+  शीर्ष_maxp_info_t ()
       :xMin (0x7FFF), xMax (-0x7FFF), yMin (0x7FFF), yMax (-0x7FFF),
       maxPoints (0), maxContours (0),
       maxCompositePoints (0),
@@ -59,84 +59,84 @@ struct head_maxp_info_t
       maxComponentDepth (0),
       allXMinIsLsb (true) {}
 
-  int xMin;
-  int xMax;
-  int yMin;
-  int yMax;
-  unsigned maxPoints;
-  unsigned maxContours;
-  unsigned maxCompositePoints;
-  unsigned maxCompositeContours;
-  unsigned maxComponentElements;
-  unsigned maxComponentDepth;
+  पूर्णांक xMin;
+  पूर्णांक xMax;
+  पूर्णांक yMin;
+  पूर्णांक yMax;
+  अचिन्हित maxPoints;
+  अचिन्हित maxContours;
+  अचिन्हित maxCompositePoints;
+  अचिन्हित maxCompositeContours;
+  अचिन्हित maxComponentElements;
+  अचिन्हित maxComponentDepth;
   bool allXMinIsLsb;
 };
 
-typedef struct head_maxp_info_t head_maxp_info_t;
+प्रकार काष्ठा शीर्ष_maxp_info_t शीर्ष_maxp_info_t;
 
-struct contour_point_t
+काष्ठा contour_point_t
 {
-  void init (float x_ = 0.f, float y_ = 0.f, bool is_end_point_ = false)
+  व्योम init (भग्न x_ = 0.f, भग्न y_ = 0.f, bool is_end_point_ = false)
   { flag = 0; x = x_; y = y_; is_end_point = is_end_point_; }
 
-  void transform (const float (&matrix)[4])
+  व्योम transform (स्थिर भग्न (&matrix)[4])
   {
-    float x_ = x * matrix[0] + y * matrix[2];
+    भग्न x_ = x * matrix[0] + y * matrix[2];
 	  y  = x * matrix[1] + y * matrix[3];
     x  = x_;
   }
 
-  void add_delta (float delta_x, float delta_y)
+  व्योम add_delta (भग्न delta_x, भग्न delta_y)
   {
     x += delta_x;
     y += delta_y;
   }
 
   HB_ALWAYS_INLINE
-  void translate (const contour_point_t &p) { x += p.x; y += p.y; }
+  व्योम translate (स्थिर contour_point_t &p) { x += p.x; y += p.y; }
 
-  float x;
-  float y;
+  भग्न x;
+  भग्न y;
   uint8_t flag;
   bool is_end_point;
 };
 
-struct contour_point_vector_t : hb_vector_t<contour_point_t>
+काष्ठा contour_point_vector_t : hb_vector_t<contour_point_t>
 {
-  bool add_deltas (hb_array_t<const float> deltas_x,
-                   hb_array_t<const float> deltas_y,
-                   hb_array_t<const bool> indices)
+  bool add_deltas (hb_array_t<स्थिर भग्न> deltas_x,
+                   hb_array_t<स्थिर भग्न> deltas_y,
+                   hb_array_t<स्थिर bool> indices)
   {
-    if (indices.length != deltas_x.length ||
-        indices.length != deltas_y.length)
-      return false;
+    अगर (indices.लंबाई != deltas_x.लंबाई ||
+        indices.लंबाई != deltas_y.लंबाई)
+      वापस false;
 
-    for (unsigned i = 0; i < indices.length; i++)
+    क्रम (अचिन्हित i = 0; i < indices.लंबाई; i++)
     {
-      if (!indices.arrayZ[i]) continue;
+      अगर (!indices.arrayZ[i]) जारी;
       arrayZ[i].add_delta (deltas_x.arrayZ[i], deltas_y.arrayZ[i]);
     }
-    return true;
+    वापस true;
   }
 };
 
 namespace OT {
-  struct cff1_subset_accelerator_t;
-  struct cff2_subset_accelerator_t;
+  काष्ठा cff1_subset_accelerator_t;
+  काष्ठा cff2_subset_accelerator_t;
 }
 
-struct hb_subset_plan_t
+काष्ठा hb_subset_plan_t
 {
   HB_INTERNAL hb_subset_plan_t (hb_face_t *,
-				const hb_subset_input_t *input);
+				स्थिर hb_subset_निवेश_t *निवेश);
 
   HB_INTERNAL ~hb_subset_plan_t();
 
   hb_object_header_t header;
 
   bool successful;
-  unsigned flags;
-  bool attach_accelerator_data = false;
+  अचिन्हित flags;
+  bool attach_accelerator_तथ्य = false;
   bool force_long_loca = false;
 
   // The glyph subset
@@ -148,23 +148,23 @@ struct hb_subset_plan_t
 
   // Plan is only good for a specific source/dest so keep them with it
   hb_face_t *source;
-#ifndef HB_NO_SUBSET_CFF
+#अगर_अघोषित HB_NO_SUBSET_CFF
   // These have to be immediately after source:
   hb_face_lazy_loader_t<OT::cff1_subset_accelerator_t, 1> cff1_accel;
   hb_face_lazy_loader_t<OT::cff2_subset_accelerator_t, 2> cff2_accel;
-#endif
+#पूर्ण_अगर
 
   hb_face_t *dest;
 
-  unsigned int _num_output_glyphs;
+  अचिन्हित पूर्णांक अंक_output_glyphs_2;
 
   bool all_axes_pinned;
   bool pinned_at_default;
   bool has_seac;
 
   // whether to insert a catch-all FeatureVariationRecord
-  bool gsub_insert_catch_all_feature_variation_rec;
-  bool gpos_insert_catch_all_feature_variation_rec;
+  bool gsub_जोड़ो_catch_all_feature_variation_rec;
+  bool gpos_जोड़ो_catch_all_feature_variation_rec;
 
   // whether GDEF ItemVariationStore is retained
   mutable bool has_gdef_varstore;
@@ -172,55 +172,55 @@ struct hb_subset_plan_t
   // whether we're doing avar2 partial instancing
   bool has_avar2;
 
-#define HB_SUBSET_PLAN_MEMBER(Type, Name) Type Name;
-#include "hb-subset-plan-member-list.hh"
-#undef HB_SUBSET_PLAN_MEMBER
+#घोषणा HB_SUBSET_PLAN_MEMBER(Type, Name) Type Name;
+#समावेश "hb-subset-plan-member-list.hh"
+#अघोषित HB_SUBSET_PLAN_MEMBER
 
   //recalculated head/maxp table info after instancing
-  mutable head_maxp_info_t head_maxp_info;
+  mutable शीर्ष_maxp_info_t शीर्ष_maxp_info;
 
   os2_info_t os2_info;
 
-  const hb_subset_accelerator_t* accelerator = nullptr;
+  स्थिर hb_subset_accelerator_t* accelerator = nullptr;
   hb_subset_accelerator_t* inprogress_accelerator = nullptr;
 
- public:
+ खुला:
 
-  template<typename T>
-  struct source_table_loader
+  ढाँचा<typename T>
+  काष्ठा source_table_loader
   {
-    hb_blob_ptr_t<T> operator () (hb_subset_plan_t *plan)
+    hb_blob_ptr_t<T> चालक () (hb_subset_plan_t *plan)
     {
       hb_lock_t lock (plan->accelerator ? &plan->accelerator->sanitized_table_cache_lock : nullptr);
 
-      auto *cache = plan->accelerator ? &plan->accelerator->sanitized_table_cache : &plan->sanitized_table_cache;
-      if (cache
+      स्वतः *cache = plan->accelerator ? &plan->accelerator->sanitized_table_cache : &plan->sanitized_table_cache;
+      अगर (cache
 	  && !cache->in_error ()
 	  && cache->has (+T::tableTag)) {
-	return hb_blob_reference (cache->get (+T::tableTag).get ());
+	वापस hb_blob_reference (cache->लो (+T::tableTag).लो ());
       }
 
       hb::unique_ptr<hb_blob_t> table_blob {hb_sanitize_context_t ().reference_table<T> (plan->source)};
-      hb_blob_t* ret = hb_blob_reference (table_blob.get ());
+      hb_blob_t* ret = hb_blob_reference (table_blob.लो ());
 
-      if (likely (cache))
+      अगर (likely (cache))
 	cache->set (+T::tableTag, std::move (table_blob));
 
-      return ret;
+      वापस ret;
     }
   };
 
-  template<typename T>
-  auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (this))
+  ढाँचा<typename T>
+  स्वतः source_table() HB_AUTO_RETURN (source_table_loader<T> {} (यह))
 
-  bool in_error () const { return !successful; }
+  bool in_error () स्थिर { वापस !successful; }
 
-  HB_INTERNAL double layout_variation_delta (unsigned var_idx);
+  HB_INTERNAL द्विगुन layout_variation_delta (अचिन्हित var_idx);
 
   bool check_success(bool success)
   {
     successful = (successful && success);
-    return successful;
+    वापस successful;
   }
 
   /*
@@ -228,88 +228,88 @@ struct hb_subset_plan_t
    * Does NOT include ids kept due to retain_gids. You probably want to use
    * glyph_map/reverse_glyph_map.
    */
-  inline const hb_set_t *
-  glyphset () const
+  अंतरभूत स्थिर hb_set_t *
+  glyphset () स्थिर
   {
-    return &_glyphset;
+    वापस &_glyphset;
   }
 
   /*
    * The set of input glyph ids which will be retained in the subset.
    */
-  inline const hb_set_t *
-  glyphset_gsub () const
+  अंतरभूत स्थिर hb_set_t *
+  glyphset_gsub () स्थिर
   {
-    return &_glyphset_gsub;
+    वापस &_glyphset_gsub;
   }
 
   /*
    * Old-to-new glyph id mapping for GSUB glyphs, through the flat
    * array; returns HB_MAP_VALUE_INVALID for glyphs not retained.
    */
-  inline hb_codepoint_t
-  map_gsub_glyph (hb_codepoint_t old_gid) const
+  अंतरभूत hb_codepoint_t
+  map_gsub_glyph (hb_codepoint_t old_gid) स्थिर
   {
-    return old_gid < glyph_map_gsub_flat.length
+    वापस old_gid < glyph_map_gsub_flat.लंबाई
 	 ? glyph_map_gsub_flat.arrayZ[old_gid]
-	 : HB_MAP_VALUE_INVALID;
+	 : HB_MAP_मूल्य_INVALID;
   }
 
   /*
    * The total number of output glyphs in the final subset.
    */
-  inline unsigned int
-  num_output_glyphs () const
+  अंतरभूत अचिन्हित पूर्णांक
+  अंक_output_glyphs () स्थिर
   {
-    return _num_output_glyphs;
+    वापस अंक_output_glyphs_2;
   }
 
-  inline bool new_gid_for_codepoint (hb_codepoint_t codepoint,
-				     hb_codepoint_t *new_gid) const
+  अंतरभूत bool new_gid_for_codepoint (hb_codepoint_t codepoint,
+				     hb_codepoint_t *new_gid) स्थिर
   {
-    hb_codepoint_t old_gid = codepoint_to_glyph->get (codepoint);
-    if (old_gid == HB_MAP_VALUE_INVALID)
-      return false;
+    hb_codepoint_t old_gid = codepoint_to_glyph->लो (codepoint);
+    अगर (old_gid == HB_MAP_मूल्य_INVALID)
+      वापस false;
 
-    return new_gid_for_old_gid (old_gid, new_gid);
+    वापस new_gid_for_old_gid (old_gid, new_gid);
   }
 
-  inline bool new_gid_for_old_gid (hb_codepoint_t old_gid,
-				   hb_codepoint_t *new_gid) const
+  अंतरभूत bool new_gid_for_old_gid (hb_codepoint_t old_gid,
+				   hb_codepoint_t *new_gid) स्थिर
   {
-    hb_codepoint_t gid = glyph_map->get (old_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    hb_codepoint_t gid = glyph_map->लो (old_gid);
+    अगर (gid == HB_MAP_मूल्य_INVALID)
+      वापस false;
 
     *new_gid = gid;
-    return true;
+    वापस true;
   }
 
-  inline bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
-				   hb_codepoint_t *old_gid) const
+  अंतरभूत bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
+				   hb_codepoint_t *old_gid) स्थिर
   {
-    hb_codepoint_t gid = reverse_glyph_map->get (new_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    hb_codepoint_t gid = reverse_glyph_map->लो (new_gid);
+    अगर (gid == HB_MAP_मूल्य_INVALID)
+      वापस false;
 
     *old_gid = gid;
-    return true;
+    वापस true;
   }
 
-  inline bool
+  अंतरभूत bool
   add_table (hb_tag_t tag,
 	     hb_blob_t *contents)
   {
-    if (HB_DEBUG_SUBSET)
+    अगर (HB_DEBUG_SUBSET)
     {
       hb_blob_t *source_blob = source->reference_table (tag);
-      DEBUG_MSG(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
+      DEBUG_संदेश(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
 		HB_UNTAG(tag),
-		hb_blob_get_length (contents),
-		hb_blob_get_length (source_blob));
+		hb_blob_get_लंबाई (contents),
+		hb_blob_get_लंबाई (source_blob));
       hb_blob_destroy (source_blob);
     }
-    return hb_face_builder_add_table (dest, tag, contents);
+    वापस hb_face_builder_add_table (dest, tag, contents);
   }
 };
 
@@ -321,68 +321,68 @@ struct hb_subset_plan_t
 //
 // The functions below are those needed to connect the split files
 // above together.
-HB_INTERNAL void
-remap_indexes (const hb_set_t *indexes,
+HB_INTERNAL व्योम
+remap_indexes (स्थिर hb_set_t *indexes,
                hb_map_t       *mapping /* OUT */);
 
 
-#ifndef HB_NO_VAR
-template<typename ItemVarStore>
-HB_INTERNAL void
-remap_variation_indices (const ItemVarStore &var_store,
-                         const hb_set_t &variation_indices,
-                         const hb_vector_t<int>& normalized_coords,
+#अगर_अघोषित HB_NO_VAR
+ढाँचा<typename ItemVarStore>
+HB_INTERNAL व्योम
+remap_variation_indices (स्थिर ItemVarStore &var_store,
+                         स्थिर hb_set_t &variation_indices,
+                         स्थिर hb_vector_t<पूर्णांक>& normalized_coords,
                          bool calculate_delta, /* not pinned at default */
                          bool no_variations, /* all axes pinned */
-                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+                         hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> &variation_idx_delta_map /* OUT */);
 
 
-template<typename DeltaSetIndexMap>
-HB_INTERNAL void
-remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+ढाँचा<typename Delta_Set_सूचकांक_Map>
+HB_INTERNAL व्योम
+remap_colrv1_delta_set_सूचकांक_indices (स्थिर Delta_Set_सूचकांक_Map &सूचकांक_map,
+                                      स्थिर hb_set_t &delta_set_idxes,
+                                      hb_hashmap_t<अचिन्हित, hb_pair_t<अचिन्हित, पूर्णांक>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
 
-HB_INTERNAL void
-generate_varstore_inner_maps (const hb_set_t& varidx_set,
-                              unsigned subtable_count,
+HB_INTERNAL व्योम
+generate_varstore_inner_maps (स्थिर hb_set_t& varidx_set,
+                              अचिन्हित subtable_गिनती,
                               hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */);
 
 HB_INTERNAL bool
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan);
 
-HB_INTERNAL void
+HB_INTERNAL व्योम
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan);
 
 HB_INTERNAL bool
 get_instance_glyphs_contour_points (hb_subset_plan_t *plan);
 
-#ifndef HB_NO_BASE
-HB_INTERNAL void
+#अगर_अघोषित HB_NO_BASE
+HB_INTERNAL व्योम
 collect_base_variation_indices (hb_subset_plan_t* plan);
-#endif
-#endif
+#पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef HB_NO_SUBSET_LAYOUT
-typedef hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> script_langsys_map;
+#अगर_अघोषित HB_NO_SUBSET_LAYOUT
+प्रकार hb_hashmap_t<अचिन्हित, hb::unique_ptr<hb_set_t>> script_langsys_map;
 
-HB_INTERNAL void
+HB_INTERNAL व्योम
 remap_used_mark_sets (hb_subset_plan_t *plan,
                       hb_map_t& used_mark_sets_map);
 
-HB_INTERNAL void
+HB_INTERNAL व्योम
 layout_nameid_closure (hb_subset_plan_t* plan,
                        hb_set_t* drop_tables);
 
-HB_INTERNAL void
+HB_INTERNAL व्योम
 layout_populate_gids_to_retain (hb_subset_plan_t* plan,
                                 hb_set_t* drop_tables);
 
-HB_INTERNAL void
+HB_INTERNAL व्योम
 collect_layout_variation_indices (hb_subset_plan_t* plan);
-#endif
+#पूर्ण_अगर
 
 
-#endif /* HB_SUBSET_PLAN_HH */
+#पूर्ण_अगर /* HB_SUBSET_PLAN_HH */

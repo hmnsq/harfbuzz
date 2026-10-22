@@ -26,33 +26,33 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-font.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
-#include "hb-machinery.hh"
+#समावेश "hb-font.hh"
+#समावेश "hb-draw.hh"
+#समावेश "hb-paint.hh"
+#समावेश "hb-machinery.hh"
 
-#include "hb-ot.h"
+#समावेश "hb-ot.h"
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
+#समावेश "hb-ot-var-avar-table.hh"
+#समावेश "hb-ot-var-fvar-table.hh"
 
-#ifndef HB_NO_OT_FONT
-#include "hb-ot.h"
-#endif
-#ifdef HAVE_FREETYPE
-#include "hb-ft.h"
-#endif
-#ifdef HAVE_FONTATIONS
-#include "hb-fontations.h"
-#endif
-#ifdef HAVE_CORETEXT
-#include "hb-coretext.h"
-#endif
-#ifdef HAVE_DIRECTWRITE
-#include "hb-directwrite.h"
-#endif
+#अगर_अघोषित HB_NO_OT_FONT
+#समावेश "hb-ot.h"
+#पूर्ण_अगर
+#अगर_घोषित HAVE_FREETYPE
+#समावेश "hb-ft.h"
+#पूर्ण_अगर
+#अगर_घोषित HAVE_FONTATIONS
+#समावेश "hb-fontations.h"
+#पूर्ण_अगर
+#अगर_घोषित HAVE_CORETEXT
+#समावेश "hb-coretext.h"
+#पूर्ण_अगर
+#अगर_घोषित HAVE_DIRECTWRITE
+#समावेश "hb-directwrite.h"
+#पूर्ण_अगर
 
 
 /**
@@ -87,726 +87,726 @@
  * hb_font_funcs_t
  */
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_font_h_extents_nil (hb_font_t         *font HB_UNUSED,
-				void              *font_data HB_UNUSED,
+				व्योम              *font_तथ्य HB_UNUSED,
 				hb_font_extents_t *extents,
-				void              *user_data HB_UNUSED)
+				व्योम              *user_तथ्य HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, माप (*extents));
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_font_h_extents_default (hb_font_t         *font,
-				    void              *font_data HB_UNUSED,
+				    व्योम              *font_तथ्य HB_UNUSED,
 				    hb_font_extents_t *extents,
-				    void              *user_data HB_UNUSED)
+				    व्योम              *user_तथ्य HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_font_h_extents (extents, false);
-  if (ret) {
+  अगर (ret) {
     extents->ascender = font->parent_scale_y_distance (extents->ascender);
     extents->descender = font->parent_scale_y_distance (extents->descender);
-    extents->line_gap = font->parent_scale_y_distance (extents->line_gap);
+    extents->पंक्ति_gap = font->parent_scale_y_distance (extents->पंक्ति_gap);
   }
-  return ret;
+  वापस ret;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_font_v_extents_nil (hb_font_t         *font HB_UNUSED,
-				void              *font_data HB_UNUSED,
+				व्योम              *font_तथ्य HB_UNUSED,
 				hb_font_extents_t *extents,
-				void              *user_data HB_UNUSED)
+				व्योम              *user_तथ्य HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, माप (*extents));
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_font_v_extents_default (hb_font_t         *font,
-				    void              *font_data HB_UNUSED,
+				    व्योम              *font_तथ्य HB_UNUSED,
 				    hb_font_extents_t *extents,
-				    void              *user_data HB_UNUSED)
+				    व्योम              *user_तथ्य HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_font_v_extents (extents, false);
-  if (ret) {
+  अगर (ret) {
     extents->ascender = font->parent_scale_x_distance (extents->ascender);
     extents->descender = font->parent_scale_x_distance (extents->descender);
-    extents->line_gap = font->parent_scale_x_distance (extents->line_gap);
+    extents->पंक्ति_gap = font->parent_scale_x_distance (extents->पंक्ति_gap);
   }
-  return ret;
+  वापस ret;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_nominal_glyph_nil (hb_font_t      *font HB_UNUSED,
-			       void           *font_data HB_UNUSED,
+			       व्योम           *font_तथ्य HB_UNUSED,
 			       hb_codepoint_t  unicode HB_UNUSED,
 			       hb_codepoint_t *glyph,
-			       void           *user_data HB_UNUSED)
+			       व्योम           *user_तथ्य HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_nominal_glyph_default (hb_font_t      *font,
-				   void           *font_data HB_UNUSED,
+				   व्योम           *font_तथ्य HB_UNUSED,
 				   hb_codepoint_t  unicode,
 				   hb_codepoint_t *glyph,
-				   void           *user_data HB_UNUSED)
+				   व्योम           *user_तथ्य HB_UNUSED)
 {
-  if (font->has_nominal_glyphs_func_set ())
+  अगर (font->has_nominal_glyphs_func_set ())
   {
-    return font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
+    वापस font->get_nominal_glyphs (1, &unicode, 0, glyph, 0);
   }
-  return font->parent->get_nominal_glyph (unicode, glyph);
+  वापस font->parent->get_nominal_glyph (unicode, glyph);
 }
 
-#define hb_font_get_nominal_glyphs_nil hb_font_get_nominal_glyphs_default
+#घोषणा hb_font_get_nominal_glyphs_nil hb_font_get_nominal_glyphs_default
 
-static unsigned int
+अटल अचिन्हित पूर्णांक
 hb_font_get_nominal_glyphs_default (hb_font_t            *font,
-				    void                 *font_data HB_UNUSED,
-				    unsigned int          count,
-				    const hb_codepoint_t *first_unicode,
-				    unsigned int          unicode_stride,
+				    व्योम                 *font_तथ्य HB_UNUSED,
+				    अचिन्हित पूर्णांक          गिनती,
+				    स्थिर hb_codepoint_t *first_unicode,
+				    अचिन्हित पूर्णांक          unicode_stride,
 				    hb_codepoint_t       *first_glyph,
-				    unsigned int          glyph_stride,
-				    void                 *user_data HB_UNUSED)
+				    अचिन्हित पूर्णांक          glyph_stride,
+				    व्योम                 *user_तथ्य HB_UNUSED)
 {
-  if (font->has_nominal_glyph_func_set ())
+  अगर (font->has_nominal_glyph_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
-      if (!font->get_nominal_glyph (*first_unicode, first_glyph))
-	return i;
+      अगर (!font->get_nominal_glyph (*first_unicode, first_glyph))
+	वापस i;
 
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return count;
+    वापस गिनती;
   }
 
-  return font->parent->get_nominal_glyphs (count,
+  वापस font->parent->get_nominal_glyphs (गिनती,
 					   first_unicode, unicode_stride,
 					   first_glyph, glyph_stride);
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_variation_glyph_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
+				 व्योम           *font_तथ्य HB_UNUSED,
 				 hb_codepoint_t  unicode HB_UNUSED,
 				 hb_codepoint_t  variation_selector HB_UNUSED,
 				 hb_codepoint_t *glyph,
-				 void           *user_data HB_UNUSED)
+				 व्योम           *user_तथ्य HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_variation_glyph_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     व्योम           *font_तथ्य HB_UNUSED,
 				     hb_codepoint_t  unicode,
 				     hb_codepoint_t  variation_selector,
 				     hb_codepoint_t *glyph,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
-  return font->parent->get_variation_glyph (unicode, variation_selector, glyph);
+  वापस font->parent->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_h_advance_nil (hb_font_t      *font,
-				 void           *font_data HB_UNUSED,
+				 व्योम           *font_तथ्य HB_UNUSED,
 				 hb_codepoint_t  glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 व्योम           *user_तथ्य HB_UNUSED)
 {
-  return font->x_scale;
+  वापस font->x_scale;
 }
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_h_advance_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     व्योम           *font_तथ्य HB_UNUSED,
 				     hb_codepoint_t  glyph,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_h_advances_func_set ())
+  अगर (font->has_glyph_h_advances_func_set ())
   {
     hb_position_t ret;
     font->get_glyph_h_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    वापस ret;
   }
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, false));
+  वापस font->parent_scale_x_distance (font->parent->get_glyph_h_advance (glyph, false));
 }
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_v_advance_nil (hb_font_t      *font,
-				 void           *font_data HB_UNUSED,
+				 व्योम           *font_तथ्य HB_UNUSED,
 				 hb_codepoint_t  glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 व्योम           *user_तथ्य HB_UNUSED)
 {
-  return -font->y_scale;
+  वापस -font->y_scale;
 }
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_v_advance_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
+				     व्योम           *font_तथ्य HB_UNUSED,
 				     hb_codepoint_t  glyph,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_v_advances_func_set ())
+  अगर (font->has_glyph_v_advances_func_set ())
   {
     hb_position_t ret;
     font->get_glyph_v_advances (1, &glyph, 0, &ret, 0, false);
-    return ret;
+    वापस ret;
   }
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, false));
+  वापस font->parent_scale_y_distance (font->parent->get_glyph_v_advance (glyph, false));
 }
 
-#define hb_font_get_glyph_h_advances_nil hb_font_get_glyph_h_advances_default
+#घोषणा hb_font_get_glyph_h_advances_nil hb_font_get_glyph_h_advances_default
 
-static void
+अटल व्योम
 hb_font_get_glyph_h_advances_default (hb_font_t*            font,
-				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
-				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
+				      व्योम*                 font_तथ्य HB_UNUSED,
+				      अचिन्हित पूर्णांक          गिनती,
+				      स्थिर hb_codepoint_t *first_glyph,
+				      अचिन्हित पूर्णांक          glyph_stride,
 				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
-				      void                 *user_data HB_UNUSED)
+				      अचिन्हित पूर्णांक          advance_stride,
+				      व्योम                 *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_h_advance_func_set ())
+  अगर (font->has_glyph_h_advance_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       *first_advance = font->get_glyph_h_advance (*first_glyph, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
     }
-    return;
+    वापस;
   }
 
-  font->parent->get_glyph_h_advances (count,
+  font->parent->get_glyph_h_advances (गिनती,
 				      first_glyph, glyph_stride,
 				      first_advance, advance_stride,
 				      false);
-  for (unsigned int i = 0; i < count; i++)
+  क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
   {
     *first_advance = font->parent_scale_x_distance (*first_advance);
     first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
   }
 }
 
-#define hb_font_get_glyph_v_advances_nil hb_font_get_glyph_v_advances_default
-static void
+#घोषणा hb_font_get_glyph_v_advances_nil hb_font_get_glyph_v_advances_default
+अटल व्योम
 hb_font_get_glyph_v_advances_default (hb_font_t*            font,
-				      void*                 font_data HB_UNUSED,
-				      unsigned int          count,
-				      const hb_codepoint_t *first_glyph,
-				      unsigned int          glyph_stride,
+				      व्योम*                 font_तथ्य HB_UNUSED,
+				      अचिन्हित पूर्णांक          गिनती,
+				      स्थिर hb_codepoint_t *first_glyph,
+				      अचिन्हित पूर्णांक          glyph_stride,
 				      hb_position_t        *first_advance,
-				      unsigned int          advance_stride,
-				      void                 *user_data HB_UNUSED)
+				      अचिन्हित पूर्णांक          advance_stride,
+				      व्योम                 *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_v_advance_func_set ())
+  अगर (font->has_glyph_v_advance_func_set ())
   {
-    for (unsigned int i = 0; i < count; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       *first_advance = font->get_glyph_v_advance (*first_glyph, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
     }
-    return;
+    वापस;
   }
 
-  font->parent->get_glyph_v_advances (count,
+  font->parent->get_glyph_v_advances (गिनती,
 				      first_glyph, glyph_stride,
 				      first_advance, advance_stride,
 				      false);
-  for (unsigned int i = 0; i < count; i++)
+  क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
   {
     *first_advance = font->parent_scale_y_distance (*first_advance);
     first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
   }
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_h_origin_nil (hb_font_t      *font HB_UNUSED,
-				void           *font_data HB_UNUSED,
+				व्योम           *font_तथ्य HB_UNUSED,
 				hb_codepoint_t  glyph HB_UNUSED,
 				hb_position_t  *x,
 				hb_position_t  *y,
-				void           *user_data HB_UNUSED)
+				व्योम           *user_तथ्य HB_UNUSED)
 {
   *x = *y = 0;
-  return true;
+  वापस true;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_h_origin_default (hb_font_t      *font,
-				    void           *font_data HB_UNUSED,
+				    व्योम           *font_तथ्य HB_UNUSED,
 				    hb_codepoint_t  glyph,
 				    hb_position_t  *x,
 				    hb_position_t  *y,
-				    void           *user_data HB_UNUSED)
+				    व्योम           *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_h_origins_func_set ())
+  अगर (font->has_glyph_h_origins_func_set ())
   {
-    return font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, false);
+    वापस font->get_glyph_h_origins (1, &glyph, 0, x, 0, y, 0, false);
   }
   hb_bool_t ret = font->parent->get_glyph_h_origin (glyph, x, y);
-  if (ret)
+  अगर (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  वापस ret;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_v_origin_nil (hb_font_t      *font HB_UNUSED,
-				void           *font_data HB_UNUSED,
+				व्योम           *font_तथ्य HB_UNUSED,
 				hb_codepoint_t  glyph HB_UNUSED,
 				hb_position_t  *x,
 				hb_position_t  *y,
-				void           *user_data HB_UNUSED)
+				व्योम           *user_तथ्य HB_UNUSED)
 {
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_v_origin_default (hb_font_t      *font,
-				    void           *font_data HB_UNUSED,
+				    व्योम           *font_तथ्य HB_UNUSED,
 				    hb_codepoint_t  glyph,
 				    hb_position_t  *x,
 				    hb_position_t  *y,
-				    void           *user_data HB_UNUSED)
+				    व्योम           *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_v_origins_func_set ())
+  अगर (font->has_glyph_v_origins_func_set ())
   {
-    return font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, false);
+    वापस font->get_glyph_v_origins (1, &glyph, 0, x, 0, y, 0, false);
   }
   hb_bool_t ret = font->parent->get_glyph_v_origin (glyph, x, y);
-  if (ret)
+  अगर (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  वापस ret;
 }
 
-#define hb_font_get_glyph_h_origins_nil hb_font_get_glyph_h_origins_default
+#घोषणा hb_font_get_glyph_h_origins_nil hb_font_get_glyph_h_origins_default
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_h_origins_default (hb_font_t *font HB_UNUSED,
-				     void *font_data HB_UNUSED,
-				     unsigned int count,
-				     const hb_codepoint_t *first_glyph HB_UNUSED,
-				     unsigned glyph_stride HB_UNUSED,
+				     व्योम *font_तथ्य HB_UNUSED,
+				     अचिन्हित पूर्णांक गिनती,
+				     स्थिर hb_codepoint_t *first_glyph HB_UNUSED,
+				     अचिन्हित glyph_stride HB_UNUSED,
 				     hb_position_t *first_x,
-				     unsigned x_stride,
+				     अचिन्हित x_stride,
 				     hb_position_t *first_y,
-				     unsigned y_stride,
-				     void *user_data HB_UNUSED)
+				     अचिन्हित y_stride,
+				     व्योम *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_h_origin_func_set ())
+  अगर (font->has_glyph_h_origin_func_set ())
   {
     hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       ret &= font->get_glyph_h_origin (*first_glyph, first_x, first_y, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
-    return ret;
+    वापस ret;
   }
 
-  hb_bool_t ret = font->parent->get_glyph_h_origins (count,
+  hb_bool_t ret = font->parent->get_glyph_h_origins (गिनती,
 						     first_glyph, glyph_stride,
 						     first_x, x_stride,
 						     first_y, y_stride);
-  if (ret)
+  अगर (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    क्रम (अचिन्हित i = 0; i < गिनती; i++)
     {
       font->parent_scale_position (first_x, first_y);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
   }
-  return ret;
+  वापस ret;
 }
 
-#define hb_font_get_glyph_v_origins_nil hb_font_get_glyph_v_origins_default
+#घोषणा hb_font_get_glyph_v_origins_nil hb_font_get_glyph_v_origins_default
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_v_origins_default (hb_font_t *font HB_UNUSED,
-				     void *font_data HB_UNUSED,
-				     unsigned int count,
-				     const hb_codepoint_t *first_glyph HB_UNUSED,
-				     unsigned glyph_stride HB_UNUSED,
+				     व्योम *font_तथ्य HB_UNUSED,
+				     अचिन्हित पूर्णांक गिनती,
+				     स्थिर hb_codepoint_t *first_glyph HB_UNUSED,
+				     अचिन्हित glyph_stride HB_UNUSED,
 				     hb_position_t *first_x,
-				     unsigned x_stride,
+				     अचिन्हित x_stride,
 				     hb_position_t *first_y,
-				     unsigned y_stride,
-				     void *user_data HB_UNUSED)
+				     अचिन्हित y_stride,
+				     व्योम *user_तथ्य HB_UNUSED)
 {
-  if (font->has_glyph_v_origin_func_set ())
+  अगर (font->has_glyph_v_origin_func_set ())
   {
     hb_bool_t ret = true;
-    for (unsigned int i = 0; i < count; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
     {
       ret &= font->get_glyph_v_origin (*first_glyph, first_x, first_y, false);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
-    return ret;
+    वापस ret;
   }
 
-  hb_bool_t ret = font->parent->get_glyph_v_origins (count,
+  hb_bool_t ret = font->parent->get_glyph_v_origins (गिनती,
 						     first_glyph, glyph_stride,
 						     first_x, x_stride,
 						     first_y, y_stride);
-  if (ret)
+  अगर (ret)
   {
-    for (unsigned i = 0; i < count; i++)
+    क्रम (अचिन्हित i = 0; i < गिनती; i++)
     {
       font->parent_scale_position (first_x, first_y);
       first_x = &StructAtOffsetUnaligned<hb_position_t> (first_x, x_stride);
       first_y = &StructAtOffsetUnaligned<hb_position_t> (first_y, y_stride);
     }
   }
-  return ret;
+  वापस ret;
 }
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_h_kerning_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  left_glyph HB_UNUSED,
-				 hb_codepoint_t  right_glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 व्योम           *font_तथ्य HB_UNUSED,
+				 hb_codepoint_t  बायाँ_glyph HB_UNUSED,
+				 hb_codepoint_t  दायाँ_glyph HB_UNUSED,
+				 व्योम           *user_तथ्य HB_UNUSED)
 {
-  return 0;
+  वापस 0;
 }
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_h_kerning_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     hb_codepoint_t  left_glyph,
-				     hb_codepoint_t  right_glyph,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *font_तथ्य HB_UNUSED,
+				     hb_codepoint_t  बायाँ_glyph,
+				     hb_codepoint_t  दायाँ_glyph,
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
-  return font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (left_glyph, right_glyph));
+  वापस font->parent_scale_x_distance (font->parent->get_glyph_h_kerning (बायाँ_glyph, दायाँ_glyph));
 }
 
-#ifndef HB_DISABLE_DEPRECATED
-static hb_position_t
+#अगर_अघोषित HB_DISABLE_DEPRECATED
+अटल hb_position_t
 hb_font_get_glyph_v_kerning_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 hb_codepoint_t  top_glyph HB_UNUSED,
+				 व्योम           *font_तथ्य HB_UNUSED,
+				 hb_codepoint_t  शीर्ष_glyph HB_UNUSED,
 				 hb_codepoint_t  bottom_glyph HB_UNUSED,
-				 void           *user_data HB_UNUSED)
+				 व्योम           *user_तथ्य HB_UNUSED)
 {
-  return 0;
+  वापस 0;
 }
 
-static hb_position_t
+अटल hb_position_t
 hb_font_get_glyph_v_kerning_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     hb_codepoint_t  top_glyph,
+				     व्योम           *font_तथ्य HB_UNUSED,
+				     hb_codepoint_t  शीर्ष_glyph,
 				     hb_codepoint_t  bottom_glyph,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
-  return font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (top_glyph, bottom_glyph));
+  वापस font->parent_scale_y_distance (font->parent->get_glyph_v_kerning (शीर्ष_glyph, bottom_glyph));
 }
-#endif
+#पूर्ण_अगर
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_extents_nil (hb_font_t          *font HB_UNUSED,
-			       void               *font_data HB_UNUSED,
+			       व्योम               *font_तथ्य HB_UNUSED,
 			       hb_codepoint_t      glyph HB_UNUSED,
 			       hb_glyph_extents_t *extents,
-			       void               *user_data HB_UNUSED)
+			       व्योम               *user_तथ्य HB_UNUSED)
 {
-  hb_memset (extents, 0, sizeof (*extents));
-  return false;
+  hb_memset (extents, 0, माप (*extents));
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_extents_default (hb_font_t          *font,
-				   void               *font_data HB_UNUSED,
+				   व्योम               *font_तथ्य HB_UNUSED,
 				   hb_codepoint_t      glyph,
 				   hb_glyph_extents_t *extents,
-				   void               *user_data HB_UNUSED)
+				   व्योम               *user_तथ्य HB_UNUSED)
 {
   hb_bool_t ret = font->parent->get_glyph_extents (glyph, extents, false);
-  if (ret) {
+  अगर (ret) {
     font->parent_scale_position (&extents->x_bearing, &extents->y_bearing);
     font->parent_scale_distance (&extents->width, &extents->height);
   }
-  return ret;
+  वापस ret;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_contour_point_nil (hb_font_t      *font HB_UNUSED,
-				     void           *font_data HB_UNUSED,
+				     व्योम           *font_तथ्य HB_UNUSED,
 				     hb_codepoint_t  glyph HB_UNUSED,
-				     unsigned int    point_index HB_UNUSED,
+				     अचिन्हित पूर्णांक    point_सूचकांक HB_UNUSED,
 				     hb_position_t  *x,
 				     hb_position_t  *y,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
   *x = *y = 0;
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_contour_point_default (hb_font_t      *font,
-					 void           *font_data HB_UNUSED,
+					 व्योम           *font_तथ्य HB_UNUSED,
 					 hb_codepoint_t  glyph,
-					 unsigned int    point_index,
+					 अचिन्हित पूर्णांक    point_सूचकांक,
 					 hb_position_t  *x,
 					 hb_position_t  *y,
-					 void           *user_data HB_UNUSED)
+					 व्योम           *user_तथ्य HB_UNUSED)
 {
-  hb_bool_t ret = font->parent->get_glyph_contour_point (glyph, point_index, x, y, false);
-  if (ret)
+  hb_bool_t ret = font->parent->get_glyph_contour_point (glyph, point_सूचकांक, x, y, false);
+  अगर (ret)
     font->parent_scale_position (x, y);
-  return ret;
+  वापस ret;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_name_nil (hb_font_t      *font HB_UNUSED,
-			    void           *font_data HB_UNUSED,
+			    व्योम           *font_तथ्य HB_UNUSED,
 			    hb_codepoint_t  glyph HB_UNUSED,
-			    char           *name,
-			    unsigned int    size,
-			    void           *user_data HB_UNUSED)
+			    अक्षर           *name,
+			    अचिन्हित पूर्णांक    आकार,
+			    व्योम           *user_तथ्य HB_UNUSED)
 {
-  if (size) *name = '\0';
-  return false;
+  अगर (आकार) *name = '\0';
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_name_default (hb_font_t      *font,
-				void           *font_data HB_UNUSED,
+				व्योम           *font_तथ्य HB_UNUSED,
 				hb_codepoint_t  glyph,
-				char           *name,
-				unsigned int    size,
-				void           *user_data HB_UNUSED)
+				अक्षर           *name,
+				अचिन्हित पूर्णांक    आकार,
+				व्योम           *user_तथ्य HB_UNUSED)
 {
-  return font->parent->get_glyph_name (glyph, name, size);
+  वापस font->parent->get_glyph_name (glyph, name, आकार);
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_from_name_nil (hb_font_t      *font HB_UNUSED,
-				 void           *font_data HB_UNUSED,
-				 const char     *name HB_UNUSED,
-				 int             len HB_UNUSED, /* -1 means nul-terminated */
+				 व्योम           *font_तथ्य HB_UNUSED,
+				 स्थिर अक्षर     *name HB_UNUSED,
+				 पूर्णांक             len HB_UNUSED, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph,
-				 void           *user_data HB_UNUSED)
+				 व्योम           *user_तथ्य HB_UNUSED)
 {
   *glyph = 0;
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_glyph_from_name_default (hb_font_t      *font,
-				     void           *font_data HB_UNUSED,
-				     const char     *name,
-				     int             len, /* -1 means nul-terminated */
+				     व्योम           *font_तथ्य HB_UNUSED,
+				     स्थिर अक्षर     *name,
+				     पूर्णांक             len, /* -1 means nul-terminated */
 				     hb_codepoint_t *glyph,
-				     void           *user_data HB_UNUSED)
+				     व्योम           *user_तथ्य HB_UNUSED)
 {
-  return font->parent->get_glyph_from_name (name, len, glyph);
+  वापस font->parent->get_glyph_from_name (name, len, glyph);
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_draw_glyph_or_fail_nil (hb_font_t       *font HB_UNUSED,
-				void            *font_data HB_UNUSED,
+				व्योम            *font_तथ्य HB_UNUSED,
 				hb_codepoint_t   glyph,
 				hb_draw_funcs_t *draw_funcs,
-				void            *draw_data,
-				void            *user_data HB_UNUSED)
+				व्योम            *draw_तथ्य,
+				व्योम            *user_तथ्य HB_UNUSED)
 {
-  return false;
+  वापस false;
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_paint_glyph_or_fail_nil (hb_font_t *font HB_UNUSED,
-				 void *font_data HB_UNUSED,
+				 व्योम *font_तथ्य HB_UNUSED,
 				 hb_codepoint_t glyph HB_UNUSED,
 				 hb_paint_funcs_t *paint_funcs HB_UNUSED,
-				 void *paint_data HB_UNUSED,
-				 unsigned int palette HB_UNUSED,
+				 व्योम *paint_तथ्य HB_UNUSED,
+				 अचिन्हित पूर्णांक palette HB_UNUSED,
 				 hb_color_t foreground HB_UNUSED,
-				 void *user_data HB_UNUSED)
+				 व्योम *user_तथ्य HB_UNUSED)
 {
-  return false;
+  वापस false;
 }
 
-typedef struct hb_font_draw_glyph_default_adaptor_t {
+प्रकार काष्ठा hb_font_draw_glyph_default_adaptor_t {
   hb_draw_funcs_t *draw_funcs;
-  void		  *draw_data;
-  float		   x_scale;
-  float		   y_scale;
+  व्योम		  *draw_तथ्य;
+  भग्न		   x_scale;
+  भग्न		   y_scale;
 } hb_font_draw_glyph_default_adaptor_t;
 
-static void
+अटल व्योम
 hb_draw_move_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			 void *draw_data,
+			 व्योम *draw_तथ्य,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 भग्न to_x, भग्न to_y,
+			 व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  भग्न x_scale = adaptor->x_scale;
+  भग्न y_scale = adaptor->y_scale;
 
-  adaptor->draw_funcs->emit_move_to (adaptor->draw_data, *st,
+  adaptor->draw_funcs->emit_move_to (adaptor->draw_तथ्य, *st,
 				     x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_line_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+अटल व्योम
+hb_draw_पंक्ति_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
 			 hb_draw_state_t *st,
-			 float to_x, float to_y,
-			 void *user_data HB_UNUSED)
+			 भग्न to_x, भग्न to_y,
+			 व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  भग्न x_scale = adaptor->x_scale;
+  भग्न y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
 
-  adaptor->draw_funcs->emit_line_to (adaptor->draw_data, *st,
+  adaptor->draw_funcs->emit_पंक्ति_to (adaptor->draw_तथ्य, *st,
 				     x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_quadratic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+अटल व्योम
+hb_draw_quadratic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
 			      hb_draw_state_t *st,
-			      float control_x, float control_y,
-			      float to_x, float to_y,
-			      void *user_data HB_UNUSED)
+			      भग्न control_x, भग्न control_y,
+			      भग्न to_x, भग्न to_y,
+			      व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  भग्न x_scale = adaptor->x_scale;
+  भग्न y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
 
-  adaptor->draw_funcs->emit_quadratic_to (adaptor->draw_data, *st,
+  adaptor->draw_funcs->emit_quadratic_to (adaptor->draw_तथ्य, *st,
 					  x_scale * control_x, y_scale * control_y,
 					  x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_cubic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+अटल व्योम
+hb_draw_cubic_to_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
 			  hb_draw_state_t *st,
-			  float control1_x, float control1_y,
-			  float control2_x, float control2_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+			  भग्न control1_x, भग्न control1_y,
+			  भग्न control2_x, भग्न control2_y,
+			  भग्न to_x, भग्न to_y,
+			  व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  float x_scale = adaptor->x_scale;
-  float y_scale = adaptor->y_scale;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  भग्न x_scale = adaptor->x_scale;
+  भग्न y_scale = adaptor->y_scale;
 
   st->current_x = st->current_x * x_scale;
   st->current_y = st->current_y * y_scale;
 
-  adaptor->draw_funcs->emit_cubic_to (adaptor->draw_data, *st,
+  adaptor->draw_funcs->emit_cubic_to (adaptor->draw_तथ्य, *st,
 				      x_scale * control1_x, y_scale * control1_y,
 				      x_scale * control2_x, y_scale * control2_y,
 				      x_scale * to_x, y_scale * to_y);
 }
 
-static void
-hb_draw_close_path_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+अटल व्योम
+hb_draw_close_path_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
 			    hb_draw_state_t *st,
-			    void *user_data HB_UNUSED)
+			    व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
 
-  adaptor->draw_funcs->emit_close_path (adaptor->draw_data, *st);
+  adaptor->draw_funcs->emit_close_path (adaptor->draw_तथ्य, *st);
 }
 
-static hb_bool_t
-hb_draw_set_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
+अटल hb_bool_t
+hb_draw_set_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
 			    int64_t budget,
-			    void *user_data HB_UNUSED)
+			    व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->set_budget (adaptor->draw_data, budget);
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  वापस adaptor->draw_funcs->set_budget (adaptor->draw_तथ्य, budget);
 }
 
-static int64_t
-hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
-			    void *user_data HB_UNUSED)
+अटल int64_t
+hb_draw_get_budget_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
+			    व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget (adaptor->draw_data);
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  वापस adaptor->draw_funcs->get_budget (adaptor->draw_तथ्य);
 }
 
-static int64_t *
-hb_draw_get_budget_remaining_default (hb_draw_funcs_t *dfuncs HB_UNUSED, void *draw_data,
-				      void *user_data HB_UNUSED)
+अटल int64_t *
+hb_draw_get_budget_remaining_default (hb_draw_funcs_t *dfuncs HB_UNUSED, व्योम *draw_तथ्य,
+				      व्योम *user_तथ्य HB_UNUSED)
 {
-  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_data;
-  return adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_data);
+  hb_font_draw_glyph_default_adaptor_t *adaptor = (hb_font_draw_glyph_default_adaptor_t *) draw_तथ्य;
+  वापस adaptor->draw_funcs->get_budget_remaining_ptr (adaptor->draw_तथ्य);
 }
 
-static const hb_draw_funcs_t _hb_draw_funcs_default = {
+अटल स्थिर hb_draw_funcs_t _hb_draw_funcs_default = {
   HB_OBJECT_HEADER_STATIC,
 
   {
-#define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_default,
+#घोषणा HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_default,
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_DRAW_FUNC_IMPLEMENT
+#अघोषित HB_DRAW_FUNC_IMPLEMENT
   }
 };
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_draw_glyph_or_fail_default (hb_font_t       *font,
-				    void            *font_data HB_UNUSED,
+				    व्योम            *font_तथ्य HB_UNUSED,
 				    hb_codepoint_t   glyph,
 				    hb_draw_funcs_t *draw_funcs,
-				    void            *draw_data,
-				    void            *user_data HB_UNUSED)
+				    व्योम            *draw_तथ्य,
+				    व्योम            *user_तथ्य HB_UNUSED)
 {
   hb_font_draw_glyph_default_adaptor_t adaptor = {
     draw_funcs,
-    draw_data,
-    font->parent->x_scale ? (float) font->x_scale / (float) font->parent->x_scale : 0.f,
-    font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0.f
+    draw_तथ्य,
+    font->parent->x_scale ? (भग्न) font->x_scale / (भग्न) font->parent->x_scale : 0.f,
+    font->parent->y_scale ? (भग्न) font->y_scale / (भग्न) font->parent->y_scale : 0.f
   };
 
-  return font->parent->draw_glyph_or_fail (glyph,
+  वापस font->parent->draw_glyph_or_fail (glyph,
 					   const_cast<hb_draw_funcs_t *> (&_hb_draw_funcs_default),
 					   &adaptor,
 					   false);
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_paint_glyph_or_fail_default (hb_font_t *font,
-				     void *font_data,
+				     व्योम *font_तथ्य,
 				     hb_codepoint_t glyph,
 				     hb_paint_funcs_t *paint_funcs,
-				     void *paint_data,
-				     unsigned int palette,
+				     व्योम *paint_तथ्य,
+				     अचिन्हित पूर्णांक palette,
 				     hb_color_t foreground,
-				     void *user_data)
+				     व्योम *user_तथ्य)
 {
-  paint_funcs->push_transform (paint_data,
-    font->parent->x_scale ? (float) font->x_scale / (float) font->parent->x_scale : 0, 0,
-    0, font->parent->y_scale ? (float) font->y_scale / (float) font->parent->y_scale : 0,
+  paint_funcs->धकेलो_transform (paint_तथ्य,
+    font->parent->x_scale ? (भग्न) font->x_scale / (भग्न) font->parent->x_scale : 0, 0,
+    0, font->parent->y_scale ? (भग्न) font->y_scale / (भग्न) font->parent->y_scale : 0,
     0, 0);
 
-  bool ret = font->parent->paint_glyph_or_fail (glyph, paint_funcs, paint_data, palette, foreground);
+  bool ret = font->parent->paint_glyph_or_fail (glyph, paint_funcs, paint_तथ्य, palette, foreground);
 
-  paint_funcs->pop_transform (paint_data);
+  paint_funcs->निकालो_transform (paint_तथ्य);
 
-  return ret;
+  वापस ret;
 }
 
 DEFINE_NULL_INSTANCE (hb_font_funcs_t) =
@@ -817,23 +817,23 @@ DEFINE_NULL_INSTANCE (hb_font_funcs_t) =
   nullptr,
   {
     {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_nil,
+#घोषणा HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_nil,
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#अघोषित HB_FONT_FUNC_IMPLEMENT
     }
   }
 };
 
-static const hb_font_funcs_t _hb_font_funcs_default = {
+अटल स्थिर hb_font_funcs_t _hb_font_funcs_default = {
   HB_OBJECT_HEADER_STATIC,
 
   nullptr,
   nullptr,
   {
     {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_default,
+#घोषणा HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_default,
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#अघोषित HB_FONT_FUNC_IMPLEMENT
     }
   }
 };
@@ -853,12 +853,12 @@ hb_font_funcs_create ()
 {
   hb_font_funcs_t *ffuncs;
 
-  if (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
-    return hb_font_funcs_get_empty ();
+  अगर (!(ffuncs = hb_object_create<hb_font_funcs_t> ()))
+    वापस hb_font_funcs_get_empty ();
 
-  ffuncs->get = _hb_font_funcs_default.get;
+  ffuncs->लो = _hb_font_funcs_default.लो;
 
-  return ffuncs;
+  वापस ffuncs;
 }
 
 /**
@@ -873,7 +873,7 @@ hb_font_funcs_create ()
 hb_font_funcs_t *
 hb_font_funcs_get_empty ()
 {
-  return const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
+  वापस const_cast<hb_font_funcs_t *> (&_hb_font_funcs_default);
 }
 
 /**
@@ -889,7 +889,7 @@ hb_font_funcs_get_empty ()
 hb_font_funcs_t *
 hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_reference (ffuncs);
+  वापस hb_object_reference (ffuncs);
 }
 
 /**
@@ -902,21 +902,21 @@ hb_font_funcs_reference (hb_font_funcs_t *ffuncs)
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
 {
-  if (!hb_object_destroy (ffuncs)) return;
+  अगर (!hb_object_destroy (ffuncs)) वापस;
 
-  if (ffuncs->destroy)
+  अगर (ffuncs->destroy)
   {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) if (ffuncs->destroy->name) \
-    ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name);
+#घोषणा HB_FONT_FUNC_IMPLEMENT(get_,name) अगर (ffuncs->destroy->name) \
+    ffuncs->destroy->name (!ffuncs->user_तथ्य ? nullptr : ffuncs->user_तथ्य->name);
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#अघोषित HB_FONT_FUNC_IMPLEMENT
   }
 
   hb_free (ffuncs->destroy);
-  hb_free (ffuncs->user_data);
+  hb_free (ffuncs->user_तथ्य);
 
   hb_free (ffuncs);
 }
@@ -936,13 +936,13 @@ hb_font_funcs_destroy (hb_font_funcs_t *ffuncs)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
-			     hb_user_data_key_t *key,
-			     void *              data,
+hb_font_funcs_set_user_तथ्य (hb_font_funcs_t    *ffuncs,
+			     hb_user_तथ्य_कुंजी_t *key,
+			     व्योम *              तथ्य,
 			     hb_destroy_func_t   destroy /* May be NULL. */,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (ffuncs, key, data, destroy, replace);
+  वापस hb_object_set_user_तथ्य (ffuncs, key, तथ्य, destroy, replace);
 }
 
 /**
@@ -957,11 +957,11 @@ hb_font_funcs_set_user_data (hb_font_funcs_t    *ffuncs,
  *
  * Since: 0.9.2
  **/
-void *
-hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
-			     hb_user_data_key_t    *key)
+व्योम *
+hb_font_funcs_get_user_तथ्य (स्थिर hb_font_funcs_t *ffuncs,
+			     hb_user_तथ्य_कुंजी_t    *key)
 {
-  return hb_object_get_user_data (ffuncs, key);
+  वापस hb_object_get_user_तथ्य (ffuncs, key);
 }
 
 
@@ -973,11 +973,11 @@ hb_font_funcs_get_user_data (const hb_font_funcs_t *ffuncs,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 {
-  if (hb_object_is_immutable (ffuncs))
-    return;
+  अगर (hb_object_is_immutable (ffuncs))
+    वापस;
 
   hb_object_make_immutable (ffuncs);
 }
@@ -995,101 +995,101 @@ hb_font_funcs_make_immutable (hb_font_funcs_t *ffuncs)
 hb_bool_t
 hb_font_funcs_is_immutable (hb_font_funcs_t *ffuncs)
 {
-  return hb_object_is_immutable (ffuncs);
+  वापस hb_object_is_immutable (ffuncs);
 }
 
 
-static bool
+अटल bool
 _hb_font_funcs_set_preamble (hb_font_funcs_t    *ffuncs,
 			     bool                func_is_null,
-			     void              **user_data,
+			     व्योम              **user_तथ्य,
 			     hb_destroy_func_t  *destroy)
 {
-  if (hb_object_is_immutable (ffuncs))
+  अगर (hb_object_is_immutable (ffuncs))
   {
-    if (*destroy)
-      (*destroy) (*user_data);
-    return false;
+    अगर (*destroy)
+      (*destroy) (*user_तथ्य);
+    वापस false;
   }
 
-  if (func_is_null)
+  अगर (func_is_null)
   {
-    if (*destroy)
-      (*destroy) (*user_data);
+    अगर (*destroy)
+      (*destroy) (*user_तथ्य);
     *destroy = nullptr;
-    *user_data = nullptr;
+    *user_तथ्य = nullptr;
   }
 
-  return true;
+  वापस true;
 }
 
-static bool
-_hb_font_funcs_set_middle (hb_font_funcs_t   *ffuncs,
-			   void              *user_data,
+अटल bool
+hb_font_funcs_set_मध्य (hb_font_funcs_t   *ffuncs,
+			   व्योम              *user_तथ्य,
 			   hb_destroy_func_t  destroy)
 {
-  auto destroy_guard = hb_make_scope_guard ([&]() {
-    if (destroy) destroy (user_data);
+  स्वतः destroy_guard = hb_make_scope_guard ([&]() {
+    अगर (destroy) destroy (user_तथ्य);
   });
 
-  if (user_data && !ffuncs->user_data)
+  अगर (user_तथ्य && !ffuncs->user_तथ्य)
   {
-    ffuncs->user_data = (decltype (ffuncs->user_data)) hb_calloc (1, sizeof (*ffuncs->user_data));
-    if (unlikely (!ffuncs->user_data))
-      return false;
+    ffuncs->user_तथ्य = (decltype (ffuncs->user_तथ्य)) hb_calloc (1, माप (*ffuncs->user_तथ्य));
+    अगर (unlikely (!ffuncs->user_तथ्य))
+      वापस false;
   }
-  if (destroy && !ffuncs->destroy)
+  अगर (destroy && !ffuncs->destroy)
   {
-    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, sizeof (*ffuncs->destroy));
-    if (unlikely (!ffuncs->destroy))
-      return false;
+    ffuncs->destroy = (decltype (ffuncs->destroy)) hb_calloc (1, माप (*ffuncs->destroy));
+    अगर (unlikely (!ffuncs->destroy))
+      वापस false;
   }
 
   destroy_guard.release ();
-  return true;
+  वापस true;
 }
 
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) \
+#घोषणा HB_FONT_FUNC_IMPLEMENT(get_,name) \
 									 \
-void                                                                     \
+व्योम                                                                     \
 hb_font_funcs_set_##name##_func (hb_font_funcs_t             *ffuncs,    \
 				 hb_font_##get_##name##_func_t func,     \
-				 void                        *user_data, \
+				 व्योम                        *user_तथ्य, \
 				 hb_destroy_func_t            destroy)   \
 {                                                                        \
-  if (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_data, &destroy))\
-      return;                                                            \
+  अगर (!_hb_font_funcs_set_preamble (ffuncs, !func, &user_तथ्य, &destroy))\
+      वापस;                                                            \
 									 \
-  if (ffuncs->destroy && ffuncs->destroy->name)                          \
-    ffuncs->destroy->name (!ffuncs->user_data ? nullptr : ffuncs->user_data->name); \
+  अगर (ffuncs->destroy && ffuncs->destroy->name)                          \
+    ffuncs->destroy->name (!ffuncs->user_तथ्य ? nullptr : ffuncs->user_तथ्य->name); \
                                                                          \
-  if (!_hb_font_funcs_set_middle (ffuncs, user_data, destroy))           \
-      return;                                                            \
+  अगर (!hb_font_funcs_set_मध्य (ffuncs, user_तथ्य, destroy))           \
+      वापस;                                                            \
 									 \
-  if (func)                                                              \
-    ffuncs->get.f.name = func;                                           \
-  else                                                                   \
-    ffuncs->get.f.name = hb_font_##get_##name##_default;                   \
+  अगर (func)                                                              \
+    ffuncs->लो.f.name = func;                                           \
+  अन्यथा                                                                   \
+    ffuncs->लो.f.name = hb_font_##get_##name##_default;                   \
 									 \
-  if (ffuncs->user_data)                                                 \
-    ffuncs->user_data->name = user_data;                                 \
-  if (ffuncs->destroy)                                                   \
+  अगर (ffuncs->user_तथ्य)                                                 \
+    ffuncs->user_तथ्य->name = user_तथ्य;                                 \
+  अगर (ffuncs->destroy)                                                   \
     ffuncs->destroy->name = destroy;                                     \
 }
 
 HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_FONT_FUNC_IMPLEMENT
+#अघोषित HB_FONT_FUNC_IMPLEMENT
 
 bool
-hb_font_t::has_func_set (unsigned int i)
+hb_font_t::has_func_set (अचिन्हित पूर्णांक i)
 {
-  return this->klass->get.array[i] != _hb_font_funcs_default.get.array[i];
+  वापस यह->klass->लो.array[i] != _hb_font_funcs_default.लो.array[i];
 }
 
 bool
-hb_font_t::has_func (unsigned int i)
+hb_font_t::has_func (अचिन्हित पूर्णांक i)
 {
-  return has_func_set (i) ||
+  वापस has_func_set (i) ||
 	 (parent && parent != &_hb_Null_hb_font_t && parent->has_func (i));
 }
 
@@ -1111,7 +1111,7 @@ hb_bool_t
 hb_font_get_h_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_h_extents (extents);
+  वापस font->get_font_h_extents (extents);
 }
 
 /**
@@ -1130,7 +1130,7 @@ hb_bool_t
 hb_font_get_v_extents (hb_font_t         *font,
 		       hb_font_extents_t *extents)
 {
-  return font->get_font_v_extents (extents);
+  वापस font->get_font_v_extents (extents);
 }
 
 /**
@@ -1156,9 +1156,9 @@ hb_font_get_glyph (hb_font_t      *font,
 		   hb_codepoint_t  variation_selector,
 		   hb_codepoint_t *glyph)
 {
-  if (unlikely (variation_selector))
-    return font->get_variation_glyph (unicode, variation_selector, glyph);
-  return font->get_nominal_glyph (unicode, glyph);
+  अगर (unlikely (variation_selector))
+    वापस font->get_variation_glyph (unicode, variation_selector, glyph);
+  वापस font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1183,7 +1183,7 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
 			   hb_codepoint_t  unicode,
 			   hb_codepoint_t *glyph)
 {
-  return font->get_nominal_glyph (unicode, glyph);
+  वापस font->get_nominal_glyph (unicode, glyph);
 }
 
 /**
@@ -1203,15 +1203,15 @@ hb_font_get_nominal_glyph (hb_font_t      *font,
  *
  * Since: 2.6.3
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_font_get_nominal_glyphs (hb_font_t *font,
-			    unsigned int count,
-			    const hb_codepoint_t *first_unicode,
-			    unsigned int unicode_stride,
+			    अचिन्हित पूर्णांक गिनती,
+			    स्थिर hb_codepoint_t *first_unicode,
+			    अचिन्हित पूर्णांक unicode_stride,
 			    hb_codepoint_t *first_glyph,
-			    unsigned int glyph_stride)
+			    अचिन्हित पूर्णांक glyph_stride)
 {
-  return font->get_nominal_glyphs (count,
+  वापस font->get_nominal_glyphs (गिनती,
 				   first_unicode, unicode_stride,
 				   first_glyph, glyph_stride);
 }
@@ -1237,7 +1237,7 @@ hb_font_get_variation_glyph (hb_font_t      *font,
 			     hb_codepoint_t  variation_selector,
 			     hb_codepoint_t *glyph)
 {
-  return font->get_variation_glyph (unicode, variation_selector, glyph);
+  वापस font->get_variation_glyph (unicode, variation_selector, glyph);
 }
 
 /**
@@ -1256,7 +1256,7 @@ hb_position_t
 hb_font_get_glyph_h_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_h_advance (glyph);
+  वापस font->get_glyph_h_advance (glyph);
 }
 
 /**
@@ -1275,7 +1275,7 @@ hb_position_t
 hb_font_get_glyph_v_advance (hb_font_t      *font,
 			     hb_codepoint_t  glyph)
 {
-  return font->get_glyph_v_advance (glyph);
+  वापस font->get_glyph_v_advance (glyph);
 }
 
 /**
@@ -1292,15 +1292,15 @@ hb_font_get_glyph_v_advance (hb_font_t      *font,
  *
  * Since: 1.8.6
  **/
-void
+व्योम
 hb_font_get_glyph_h_advances (hb_font_t*            font,
-			      unsigned int          count,
-			      const hb_codepoint_t *first_glyph,
-			      unsigned              glyph_stride,
+			      अचिन्हित पूर्णांक          गिनती,
+			      स्थिर hb_codepoint_t *first_glyph,
+			      अचिन्हित              glyph_stride,
 			      hb_position_t        *first_advance,
-			      unsigned              advance_stride)
+			      अचिन्हित              advance_stride)
 {
-  font->get_glyph_h_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+  font->get_glyph_h_advances (गिनती, first_glyph, glyph_stride, first_advance, advance_stride);
 }
 /**
  * hb_font_get_glyph_v_advances:
@@ -1316,15 +1316,15 @@ hb_font_get_glyph_h_advances (hb_font_t*            font,
  *
  * Since: 1.8.6
  **/
-void
+व्योम
 hb_font_get_glyph_v_advances (hb_font_t*            font,
-			      unsigned int          count,
-			      const hb_codepoint_t *first_glyph,
-			      unsigned              glyph_stride,
+			      अचिन्हित पूर्णांक          गिनती,
+			      स्थिर hb_codepoint_t *first_glyph,
+			      अचिन्हित              glyph_stride,
 			      hb_position_t        *first_advance,
-			      unsigned              advance_stride)
+			      अचिन्हित              advance_stride)
 {
-  font->get_glyph_v_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+  font->get_glyph_v_advances (गिनती, first_glyph, glyph_stride, first_advance, advance_stride);
 }
 
 /**
@@ -1347,7 +1347,7 @@ hb_font_get_glyph_h_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_h_origin (glyph, x, y);
+  वापस font->get_glyph_h_origin (glyph, x, y);
 }
 
 /**
@@ -1370,7 +1370,7 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
 			    hb_position_t  *x,
 			    hb_position_t  *y)
 {
-  return font->get_glyph_v_origin (glyph, x, y);
+  वापस font->get_glyph_v_origin (glyph, x, y);
 }
 
 /**
@@ -1393,16 +1393,16 @@ hb_font_get_glyph_v_origin (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_h_origins (hb_font_t      *font,
-			     unsigned int    count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
+			     अचिन्हित पूर्णांक    गिनती,
+			     स्थिर hb_codepoint_t *first_glyph,
+			     अचिन्हित पूर्णांक    glyph_stride,
 			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
+			     अचिन्हित पूर्णांक    x_stride,
 			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     अचिन्हित पूर्णांक    y_stride)
 
 {
-  return font->get_glyph_h_origins (count,
+  वापस font->get_glyph_h_origins (गिनती,
 				    first_glyph, glyph_stride,
 				    first_x, x_stride,
 				    first_y, y_stride);
@@ -1428,16 +1428,16 @@ hb_font_get_glyph_h_origins (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_v_origins (hb_font_t      *font,
-			     unsigned int    count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int    glyph_stride,
+			     अचिन्हित पूर्णांक    गिनती,
+			     स्थिर hb_codepoint_t *first_glyph,
+			     अचिन्हित पूर्णांक    glyph_stride,
 			     hb_position_t  *first_x,
-			     unsigned int    x_stride,
+			     अचिन्हित पूर्णांक    x_stride,
 			     hb_position_t  *first_y,
-			     unsigned int    y_stride)
+			     अचिन्हित पूर्णांक    y_stride)
 
 {
-  return font->get_glyph_v_origins (count,
+  वापस font->get_glyph_v_origins (गिनती,
 				    first_glyph, glyph_stride,
 				    first_x, x_stride,
 				    first_y, y_stride);
@@ -1462,13 +1462,13 @@ hb_font_get_glyph_v_origins (hb_font_t      *font,
  **/
 hb_position_t
 hb_font_get_glyph_h_kerning (hb_font_t      *font,
-			     hb_codepoint_t  left_glyph,
-			     hb_codepoint_t  right_glyph)
+			     hb_codepoint_t  बायाँ_glyph,
+			     hb_codepoint_t  दायाँ_glyph)
 {
-  return font->get_glyph_h_kerning (left_glyph, right_glyph);
+  वापस font->get_glyph_h_kerning (बायाँ_glyph, दायाँ_glyph);
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_font_get_glyph_v_kerning:
  * @font: #hb_font_t to work upon
@@ -1488,12 +1488,12 @@ hb_font_get_glyph_h_kerning (hb_font_t      *font,
  **/
 hb_position_t
 hb_font_get_glyph_v_kerning (hb_font_t      *font,
-			     hb_codepoint_t  top_glyph,
+			     hb_codepoint_t  शीर्ष_glyph,
 			     hb_codepoint_t  bottom_glyph)
 {
-  return font->get_glyph_v_kerning (top_glyph, bottom_glyph);
+  वापस font->get_glyph_v_kerning (शीर्ष_glyph, bottom_glyph);
 }
-#endif
+#पूर्ण_अगर
 
 /**
  * hb_font_get_glyph_extents:
@@ -1513,7 +1513,7 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 			   hb_codepoint_t      glyph,
 			   hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents (glyph, extents);
+  वापस font->get_glyph_extents (glyph, extents);
 }
 
 /**
@@ -1534,11 +1534,11 @@ hb_font_get_glyph_extents (hb_font_t          *font,
 hb_bool_t
 hb_font_get_glyph_contour_point (hb_font_t      *font,
 				 hb_codepoint_t  glyph,
-				 unsigned int    point_index,
+				 अचिन्हित पूर्णांक    point_सूचकांक,
 				 hb_position_t  *x,
 				 hb_position_t  *y)
 {
-  return font->get_glyph_contour_point (glyph, point_index, x, y);
+  वापस font->get_glyph_contour_point (glyph, point_सूचकांक, x, y);
 }
 
 /**
@@ -1560,10 +1560,10 @@ hb_font_get_glyph_contour_point (hb_font_t      *font,
 hb_bool_t
 hb_font_get_glyph_name (hb_font_t      *font,
 			hb_codepoint_t  glyph,
-			char           *name,
-			unsigned int    size)
+			अक्षर           *name,
+			अचिन्हित पूर्णांक    आकार)
 {
-  return font->get_glyph_name (glyph, name, size);
+  वापस font->get_glyph_name (glyph, name, आकार);
 }
 
 /**
@@ -1583,14 +1583,14 @@ hb_font_get_glyph_name (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_get_glyph_from_name (hb_font_t      *font,
-			     const char     *name,
-			     int             len, /* -1 means nul-terminated */
+			     स्थिर अक्षर     *name,
+			     पूर्णांक             len, /* -1 means nul-terminated */
 			     hb_codepoint_t *glyph)
 {
-  return font->get_glyph_from_name (name, len, glyph);
+  वापस font->get_glyph_from_name (name, len, glyph);
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_font_get_glyph_shape:
  * @font: #hb_font_t to work upon
@@ -1605,14 +1605,14 @@ hb_font_get_glyph_from_name (hb_font_t      *font,
  * Since: 4.0.0
  * Deprecated: 7.0.0: Use hb_font_draw_glyph() instead
  */
-void
+व्योम
 hb_font_get_glyph_shape (hb_font_t *font,
 		         hb_codepoint_t glyph,
-		         hb_draw_funcs_t *dfuncs, void *draw_data)
+		         hb_draw_funcs_t *dfuncs, व्योम *draw_तथ्य)
 {
-  hb_font_draw_glyph (font, glyph, dfuncs, draw_data);
+  hb_font_draw_glyph (font, glyph, dfuncs, draw_तथ्य);
 }
-#endif
+#पूर्ण_अगर
 
 /**
  * hb_font_draw_glyph_or_fail:
@@ -1636,9 +1636,9 @@ hb_font_get_glyph_shape (hb_font_t *font,
 hb_bool_t
 hb_font_draw_glyph_or_fail (hb_font_t *font,
 			    hb_codepoint_t glyph,
-			    hb_draw_funcs_t *dfuncs, void *draw_data)
+			    hb_draw_funcs_t *dfuncs, व्योम *draw_तथ्य)
 {
-  return font->draw_glyph_or_fail (glyph, dfuncs, draw_data);
+  वापस font->draw_glyph_or_fail (glyph, dfuncs, draw_तथ्य);
 }
 
 /**
@@ -1674,28 +1674,28 @@ hb_font_draw_glyph_or_fail (hb_font_t *font,
 hb_bool_t
 hb_font_paint_glyph_or_fail (hb_font_t *font,
 			     hb_codepoint_t glyph,
-			     hb_paint_funcs_t *pfuncs, void *paint_data,
-			     unsigned int palette_index,
+			     hb_paint_funcs_t *pfuncs, व्योम *paint_तथ्य,
+			     अचिन्हित पूर्णांक palette_सूचकांक,
 			     hb_color_t foreground)
 {
-  return font->paint_glyph_or_fail (glyph, pfuncs, paint_data, palette_index, foreground);
+  वापस font->paint_glyph_or_fail (glyph, pfuncs, paint_तथ्य, palette_सूचकांक, foreground);
 }
 
 /* A bit higher-level, and with fallback */
 
-void
+व्योम
 hb_font_t::paint_glyph (hb_codepoint_t glyph,
-			hb_paint_funcs_t *paint_funcs, void *paint_data,
-			unsigned int palette,
+			hb_paint_funcs_t *paint_funcs, व्योम *paint_तथ्य,
+			अचिन्हित पूर्णांक palette,
 			hb_color_t foreground)
 {
-  if (paint_glyph_or_fail (glyph,
-			   paint_funcs, paint_data,
+  अगर (paint_glyph_or_fail (glyph,
+			   paint_funcs, paint_तथ्य,
 			   palette, foreground))
-    return;
+    वापस;
 
   /* Fallback for outline glyph. */
-  paint_funcs->fill_glyph (paint_data, glyph, this, true, foreground);
+  paint_funcs->fill_glyph (paint_तथ्य, glyph, यह, true, foreground);
 }
 
 
@@ -1716,12 +1716,12 @@ hb_font_t::paint_glyph (hb_codepoint_t glyph,
  *
  * Since: 7.0.0
  **/
-void
+व्योम
 hb_font_draw_glyph (hb_font_t *font,
 		    hb_codepoint_t glyph,
-		    hb_draw_funcs_t *dfuncs, void *draw_data)
+		    hb_draw_funcs_t *dfuncs, व्योम *draw_तथ्य)
 {
-  (void) hb_font_draw_glyph_or_fail (font, glyph, dfuncs, draw_data);
+  (व्योम) hb_font_draw_glyph_or_fail (font, glyph, dfuncs, draw_तथ्य);
 }
 
 /**
@@ -1748,14 +1748,14 @@ hb_font_draw_glyph (hb_font_t *font,
  *
  * Since: 7.0.0
  */
-void
+व्योम
 hb_font_paint_glyph (hb_font_t *font,
                      hb_codepoint_t glyph,
-                     hb_paint_funcs_t *pfuncs, void *paint_data,
-                     unsigned int palette_index,
+                     hb_paint_funcs_t *pfuncs, व्योम *paint_तथ्य,
+                     अचिन्हित पूर्णांक palette_सूचकांक,
                      hb_color_t foreground)
 {
-  font->paint_glyph (glyph, pfuncs, paint_data, palette_index, foreground);
+  font->paint_glyph (glyph, pfuncs, paint_तथ्य, palette_सूचकांक, foreground);
 }
 
 /**
@@ -1772,7 +1772,7 @@ hb_font_paint_glyph (hb_font_t *font,
  *
  * Since: 1.1.3
  **/
-void
+व्योम
 hb_font_get_extents_for_direction (hb_font_t         *font,
 				   hb_direction_t     direction,
 				   hb_font_extents_t *extents)
@@ -1795,7 +1795,7 @@ hb_font_get_extents_for_direction (hb_font_t         *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
 					 hb_codepoint_t  glyph,
 					 hb_direction_t  direction,
@@ -1822,16 +1822,16 @@ hb_font_get_glyph_advance_for_direction (hb_font_t      *font,
  *
  * Since: 1.8.6
  **/
-HB_EXTERN void
+HB_EXTERN व्योम
 hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
 					  hb_direction_t        direction,
-					  unsigned int          count,
-					  const hb_codepoint_t *first_glyph,
-					  unsigned              glyph_stride,
+					  अचिन्हित पूर्णांक          गिनती,
+					  स्थिर hb_codepoint_t *first_glyph,
+					  अचिन्हित              glyph_stride,
 					  hb_position_t        *first_advance,
-					  unsigned              advance_stride)
+					  अचिन्हित              advance_stride)
 {
-  font->get_glyph_advances_for_direction (direction, count, first_glyph, glyph_stride, first_advance, advance_stride);
+  font->get_glyph_advances_for_direction (direction, गिनती, first_glyph, glyph_stride, first_advance, advance_stride);
 }
 
 /**
@@ -1850,14 +1850,14 @@ hb_font_get_glyph_advances_for_direction (hb_font_t*            font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
 					hb_codepoint_t  glyph,
 					hb_direction_t  direction,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->get_glyph_origin_for_direction (glyph, direction, x, y);
+  वापस font->get_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1878,14 +1878,14 @@ hb_font_get_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
 					hb_codepoint_t  glyph,
 					hb_direction_t  direction,
 					hb_position_t  *x,
 					hb_position_t  *y)
 {
-  return font->add_glyph_origin_for_direction (glyph, direction, x, y);
+  वापस font->add_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1906,14 +1906,14 @@ hb_font_add_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
 					     hb_codepoint_t  glyph,
 					     hb_direction_t  direction,
 					     hb_position_t  *x,
 					     hb_position_t  *y)
 {
-  return font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
+  वापस font->subtract_glyph_origin_for_direction (glyph, direction, x, y);
 }
 
 /**
@@ -1932,7 +1932,7 @@ hb_font_subtract_glyph_origin_for_direction (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_get_glyph_kerning_for_direction (hb_font_t      *font,
 					 hb_codepoint_t  first_glyph,
 					 hb_codepoint_t  second_glyph,
@@ -1940,7 +1940,7 @@ hb_font_get_glyph_kerning_for_direction (hb_font_t      *font,
 					 hb_position_t  *x,
 					 hb_position_t  *y)
 {
-  return font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
+  वापस font->get_glyph_kerning_for_direction (first_glyph, second_glyph, direction, x, y);
 }
 
 /**
@@ -1967,7 +1967,7 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 				      hb_direction_t      direction,
 				      hb_glyph_extents_t *extents)
 {
-  return font->get_glyph_extents_for_origin (glyph, direction, extents);
+  वापस font->get_glyph_extents_for_origin (glyph, direction, extents);
 }
 
 /**
@@ -1993,12 +1993,12 @@ hb_font_get_glyph_extents_for_origin (hb_font_t          *font,
 hb_bool_t
 hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
 					    hb_codepoint_t  glyph,
-					    unsigned int    point_index,
+					    अचिन्हित पूर्णांक    point_सूचकांक,
 					    hb_direction_t  direction,
 					    hb_position_t  *x,
 					    hb_position_t  *y)
 {
-  return font->get_glyph_contour_point_for_origin (glyph, point_index, direction, x, y);
+  वापस font->get_glyph_contour_point_for_origin (glyph, point_सूचकांक, direction, x, y);
 }
 
 /**
@@ -2019,13 +2019,13 @@ hb_font_get_glyph_contour_point_for_origin (hb_font_t      *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_glyph_to_string (hb_font_t      *font,
 			 hb_codepoint_t  glyph,
-			 char           *s,
-			 unsigned int    size)
+			 अक्षर           *s,
+			 अचिन्हित पूर्णांक    आकार)
 {
-  font->glyph_to_string (glyph, s, size);
+  font->glyph_to_string (glyph, s, आकार);
 }
 
 /**
@@ -2046,11 +2046,11 @@ hb_font_glyph_to_string (hb_font_t      *font,
  **/
 hb_bool_t
 hb_font_glyph_from_string (hb_font_t      *font,
-			   const char     *s,
-			   int             len,
+			   स्थिर अक्षर     *s,
+			   पूर्णांक             len,
 			   hb_codepoint_t *glyph)
 {
-  return font->glyph_from_string (s, len, glyph);
+  वापस font->glyph_from_string (s, len, glyph);
 }
 
 
@@ -2099,29 +2099,29 @@ DEFINE_NULL_INSTANCE (hb_font_t) =
 };
 
 
-static hb_font_t *
+अटल hb_font_t *
 _hb_font_create (hb_face_t *face)
 {
   hb_font_t *font;
 
-  if (unlikely (!face))
+  अगर (unlikely (!face))
     face = hb_face_get_empty ();
 
-  if (!(font = hb_object_create<hb_font_t> ()))
-    return hb_font_get_empty ();
+  अगर (!(font = hb_object_create<hb_font_t> ()))
+    वापस hb_font_get_empty ();
 
   hb_face_make_immutable (face);
   font->parent = hb_font_get_empty ();
   font->face = hb_face_reference (face);
   font->klass = hb_font_funcs_get_empty ();
-  font->data.init0 (font);
+  font->तथ्य.init0 (font);
   font->x_scale = font->y_scale = face->get_upem ();
   font->embolden_in_place = true;
   font->x_multf = font->y_multf = 1.f;
   font->x_mult = font->y_mult = 1 << 16;
-  font->instance_index = HB_FONT_NO_VAR_NAMED_INSTANCE;
+  font->instance_सूचकांक = HB_FONT_NO_VAR_NAMED_INSTANCE;
 
-  return font;
+  वापस font;
 }
 
 /**
@@ -2148,33 +2148,33 @@ hb_font_create (hb_face_t *face)
 
   hb_font_set_funcs_using (font, nullptr);
 
-#ifndef HB_NO_VAR
+#अगर_अघोषित HB_NO_VAR
   // Initialize variations.
-  if (likely (face))
+  अगर (likely (face))
   {
-    if (face->index >> 16)
-      hb_font_set_var_named_instance (font, (face->index >> 16) - 1);
-    else
+    अगर (face->सूचकांक_2 >> 16)
+      hb_font_set_var_named_instance (font, (face->सूचकांक_2 >> 16) - 1);
+    अन्यथा
       hb_font_set_variations (font, nullptr, 0);
   }
-#endif
+#पूर्ण_अगर
 
-  return font;
+  वापस font;
 }
 
-static void
+अटल व्योम
 _hb_font_adopt_var_coords (hb_font_t *font,
-			   int *coords, /* 2.14 normalized */
-			   float *design_coords,
-			   unsigned int coords_length)
+			   पूर्णांक *coords, /* 2.14 normalized */
+			   भग्न *design_coords,
+			   अचिन्हित पूर्णांक coords_लंबाई)
 {
   hb_free (font->coords);
   hb_free (font->design_coords);
 
   font->coords = coords;
   font->design_coords = design_coords;
-  font->num_coords = coords_length;
-  font->has_nonzero_coords = hb_any (hb_array (coords, coords_length));
+  font->अंक_coords = coords_लंबाई;
+  font->has_nonzero_coords = hb_any (hb_array (coords, coords_लंबाई));
 
   font->changed ();
   font->serial_coords = font->serial;
@@ -2194,13 +2194,13 @@ _hb_font_adopt_var_coords (hb_font_t *font,
 hb_font_t *
 hb_font_create_sub_font (hb_font_t *parent)
 {
-  if (unlikely (!parent))
+  अगर (unlikely (!parent))
     parent = hb_font_get_empty ();
 
   hb_font_t *font = _hb_font_create (parent->face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  अगर (unlikely (hb_object_is_immutable (font)))
+    वापस font;
 
   font->parent = hb_font_reference (parent);
 
@@ -2214,18 +2214,18 @@ hb_font_create_sub_font (hb_font_t *parent)
   font->y_ppem = parent->y_ppem;
   font->ptem = parent->ptem;
 
-  unsigned int num_coords = parent->num_coords;
-  if (num_coords)
+  अचिन्हित पूर्णांक अंक_coords = parent->अंक_coords;
+  अगर (अंक_coords)
   {
-    int *coords = (int *) hb_calloc (num_coords, sizeof (parent->coords[0]));
-    float *design_coords = (float *) hb_calloc (num_coords, sizeof (parent->design_coords[0]));
-    if (likely (coords && design_coords))
+    पूर्णांक *coords = (पूर्णांक *) hb_calloc (अंक_coords, माप (parent->coords[0]));
+    भग्न *design_coords = (भग्न *) hb_calloc (अंक_coords, माप (parent->design_coords[0]));
+    अगर (likely (coords && design_coords))
     {
-      hb_memcpy (coords, parent->coords, num_coords * sizeof (parent->coords[0]));
-      hb_memcpy (design_coords, parent->design_coords, num_coords * sizeof (parent->design_coords[0]));
-      _hb_font_adopt_var_coords (font, coords, design_coords, num_coords);
+      hb_memcpy (coords, parent->coords, अंक_coords * माप (parent->coords[0]));
+      hb_memcpy (design_coords, parent->design_coords, अंक_coords * माप (parent->design_coords[0]));
+      _hb_font_adopt_var_coords (font, coords, design_coords, अंक_coords);
     }
-    else
+    अन्यथा
     {
       hb_free (coords);
       hb_free (design_coords);
@@ -2235,7 +2235,7 @@ hb_font_create_sub_font (hb_font_t *parent)
   font->changed ();
   font->serial_coords = font->serial;
 
-  return font;
+  वापस font;
 }
 
 /**
@@ -2250,7 +2250,7 @@ hb_font_create_sub_font (hb_font_t *parent)
 hb_font_t *
 hb_font_get_empty ()
 {
-  return const_cast<hb_font_t *> (&Null (hb_font_t));
+  वापस const_cast<hb_font_t *> (&Null (hb_font_t));
 }
 
 /**
@@ -2266,7 +2266,7 @@ hb_font_get_empty ()
 hb_font_t *
 hb_font_reference (hb_font_t *font)
 {
-  return hb_object_reference (font);
+  वापस hb_object_reference (font);
 }
 
 /**
@@ -2279,15 +2279,15 @@ hb_font_reference (hb_font_t *font)
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_destroy (hb_font_t *font)
 {
-  if (!hb_object_destroy (font)) return;
+  अगर (!hb_object_destroy (font)) वापस;
 
-  font->data.fini ();
+  font->तथ्य.fini ();
 
-  if (font->destroy)
-    font->destroy (font->user_data);
+  अगर (font->destroy)
+    font->destroy (font->user_तथ्य);
 
   hb_font_destroy (font->parent);
   hb_face_destroy (font->face);
@@ -2314,16 +2314,16 @@ hb_font_destroy (hb_font_t *font)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_font_set_user_data (hb_font_t          *font,
-		       hb_user_data_key_t *key,
-		       void *              data,
+hb_font_set_user_तथ्य (hb_font_t          *font,
+		       hb_user_तथ्य_कुंजी_t *key,
+		       व्योम *              तथ्य,
 		       hb_destroy_func_t   destroy /* May be NULL. */,
 		       hb_bool_t           replace)
 {
-  if (!hb_object_is_immutable (font))
+  अगर (!hb_object_is_immutable (font))
     font->changed ();
 
-  return hb_object_set_user_data (font, key, data, destroy, replace);
+  वापस hb_object_set_user_तथ्य (font, key, तथ्य, destroy, replace);
 }
 
 /**
@@ -2338,11 +2338,11 @@ hb_font_set_user_data (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void *
-hb_font_get_user_data (const hb_font_t    *font,
-		       hb_user_data_key_t *key)
+व्योम *
+hb_font_get_user_तथ्य (स्थिर hb_font_t    *font,
+		       hb_user_तथ्य_कुंजी_t *key)
 {
-  return hb_object_get_user_data (font, key);
+  वापस hb_object_get_user_तथ्य (font, key);
 }
 
 /**
@@ -2353,13 +2353,13 @@ hb_font_get_user_data (const hb_font_t    *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_make_immutable (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->parent)
+  अगर (font->parent)
     hb_font_make_immutable (font->parent);
 
   hb_object_make_immutable (font);
@@ -2378,7 +2378,7 @@ hb_font_make_immutable (hb_font_t *font)
 hb_bool_t
 hb_font_is_immutable (hb_font_t *font)
 {
-  return hb_object_is_immutable (font);
+  वापस hb_object_is_immutable (font);
 }
 
 /**
@@ -2393,10 +2393,10 @@ hb_font_is_immutable (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_font_get_serial (hb_font_t *font)
 {
-  return font->serial.get_acquire ();
+  वापस font->serial.get_acquire ();
 }
 
 /**
@@ -2409,11 +2409,11 @@ hb_font_get_serial (hb_font_t *font)
  *
  * Since: 4.4.0
  **/
-void
+व्योम
 hb_font_changed (hb_font_t *font)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
   font->changed ();
 }
@@ -2427,22 +2427,22 @@ hb_font_changed (hb_font_t *font)
  *
  * Since: 1.0.5
  **/
-void
+व्योम
 hb_font_set_parent (hb_font_t *font,
 		    hb_font_t *parent)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (parent == font->parent)
-    return;
+  अगर (parent == font->parent)
+    वापस;
 
-  if (!parent)
+  अगर (!parent)
     parent = hb_font_get_empty ();
 
-  for (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
-    if (p == font)
-      return; /* Would create a cycle - reject */
+  क्रम (hb_font_t *p = parent; p && p != hb_font_get_empty(); p = p->parent)
+    अगर (p == font)
+      वापस; /* Would create a cycle - reject */
 
   hb_font_t *old = font->parent;
 
@@ -2466,10 +2466,10 @@ hb_font_set_parent (hb_font_t *font,
 hb_font_t *
 hb_font_get_parent (hb_font_t *font)
 {
-  return font->parent;
+  वापस font->parent;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /**
  * hb_font_set_face:
  * @font: #hb_font_t to work upon
@@ -2485,17 +2485,17 @@ hb_font_get_parent (hb_font_t *font)
  * Since: 1.4.3
  * XDeprecated: REPLACEME: Use hb_font_create() instead.
  **/
-void
+व्योम
 hb_font_set_face (hb_font_t *font,
 		  hb_face_t *face)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (face == font->face)
-    return;
+  अगर (face == font->face)
+    वापस;
 
-  if (unlikely (!face))
+  अगर (unlikely (!face))
     face = hb_face_get_empty ();
 
   hb_face_t *old = font->face;
@@ -2513,7 +2513,7 @@ hb_font_set_face (hb_font_t *font,
   font->changed ();
   font->serial_coords = font->serial;
 }
-#endif
+#पूर्ण_अगर
 
 /**
  * hb_font_get_face:
@@ -2528,7 +2528,7 @@ hb_font_set_face (hb_font_t *font,
 hb_face_t *
 hb_font_get_face (hb_font_t *font)
 {
-  return font->face;
+  वापस font->face;
 }
 
 
@@ -2544,29 +2544,29 @@ hb_font_get_face (hb_font_t *font)
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_set_funcs (hb_font_t         *font,
 		   hb_font_funcs_t   *klass,
-		   void              *font_data,
+		   व्योम              *font_तथ्य,
 		   hb_destroy_func_t  destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (font))
+  अगर (hb_object_is_immutable (font))
   {
-    if (destroy)
-      destroy (font_data);
-    return;
+    अगर (destroy)
+      destroy (font_तथ्य);
+    वापस;
   }
 
-  if (font->destroy)
-    font->destroy (font->user_data);
+  अगर (font->destroy)
+    font->destroy (font->user_तथ्य);
 
-  if (!klass)
+  अगर (!klass)
     klass = hb_font_funcs_get_empty ();
 
   hb_font_funcs_reference (klass);
   hb_font_funcs_destroy (font->klass);
   font->klass = klass;
-  font->user_data = font_data;
+  font->user_तथ्य = font_तथ्य;
   font->destroy = destroy;
 
   font->changed ();
@@ -2583,63 +2583,63 @@ hb_font_set_funcs (hb_font_t         *font,
  *
  * Since: 0.9.2
  **/
-void
-hb_font_set_funcs_data (hb_font_t         *font,
-		        void              *font_data,
+व्योम
+hb_font_set_funcs_तथ्य (hb_font_t         *font,
+		        व्योम              *font_तथ्य,
 		        hb_destroy_func_t  destroy /* May be NULL. */)
 {
   /* Destroy user_data? */
-  if (hb_object_is_immutable (font))
+  अगर (hb_object_is_immutable (font))
   {
-    if (destroy)
-      destroy (font_data);
-    return;
+    अगर (destroy)
+      destroy (font_तथ्य);
+    वापस;
   }
 
-  if (font->destroy)
-    font->destroy (font->user_data);
+  अगर (font->destroy)
+    font->destroy (font->user_तथ्य);
 
-  font->user_data = font_data;
+  font->user_तथ्य = font_तथ्य;
   font->destroy = destroy;
 
   font->changed ();
 }
 
-static const struct supported_font_funcs_t {
-	char name[16];
-	void (*func) (hb_font_t *);
+अटल स्थिर काष्ठा supported_font_funcs_t {
+	अक्षर name[16];
+	व्योम (*func) (hb_font_t *);
 } supported_font_funcs[] =
 {
-#ifndef HB_NO_OT_FONT
+#अगर_अघोषित HB_NO_OT_FONT
   {"ot",	hb_ot_font_set_funcs},
-#endif
-#ifdef HAVE_FREETYPE
+#पूर्ण_अगर
+#अगर_घोषित HAVE_FREETYPE
   {"ft",	hb_ft_font_set_funcs},
-#endif
-#ifdef HAVE_FONTATIONS
+#पूर्ण_अगर
+#अगर_घोषित HAVE_FONTATIONS
   {"fontations",hb_fontations_font_set_funcs},
-#endif
-#ifdef HAVE_CORETEXT
+#पूर्ण_अगर
+#अगर_घोषित HAVE_CORETEXT
   {"coretext",	hb_coretext_font_set_funcs},
-#endif
-#ifdef HAVE_DIRECTWRITE
+#पूर्ण_अगर
+#अगर_घोषित HAVE_DIRECTWRITE
   {"directwrite",hb_directwrite_font_set_funcs},
-#endif
+#पूर्ण_अगर
 };
 
-static const char *get_default_funcs_name ()
+अटल स्थिर अक्षर *get_default_funcs_name ()
 {
-  static hb_atomic_t<const char *> static_funcs_name;
-  const char *name = static_funcs_name.get_acquire ();
-  if (!name)
+  अटल hb_atomic_t<स्थिर अक्षर *> static_funcs_name;
+  स्थिर अक्षर *name = static_funcs_name.get_acquire ();
+  अगर (!name)
   {
-    name = getenv ("HB_FONT_FUNCS");
-    if (!name)
+    name = दो_पर्या ("HB_FONT_FUNCS");
+    अगर (!name)
       name = "";
-    if (!static_funcs_name.cmpexch (nullptr, name))
+    अगर (!static_funcs_name.cmpexch (nullptr, name))
       name = static_funcs_name.get_acquire ();
   }
-  return name;
+  वापस name;
 }
 
 /**
@@ -2660,69 +2660,69 @@ static const char *get_default_funcs_name ()
  **/
 hb_bool_t
 hb_font_set_funcs_using (hb_font_t  *font,
-			 const char *name)
+			 स्थिर अक्षर *name)
 {
-  if (unlikely (hb_object_is_immutable (font)))
-    return false;
+  अगर (unlikely (hb_object_is_immutable (font)))
+    वापस false;
 
   bool retry = false;
 
-  if (!name || !*name)
+  अगर (!name || !*name)
   {
     name = get_default_funcs_name ();
     retry = true;
   }
-  if (name && !*name) name = nullptr;
+  अगर (name && !*name) name = nullptr;
 
 retry:
-  for (unsigned i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
-    if (!name || strcmp (supported_font_funcs[i].name, name) == 0)
+  क्रम (अचिन्हित i = 0; i < ARRAY_लंबाई (supported_font_funcs); i++)
+    अगर (!name || म_भेद (supported_font_funcs[i].name, name) == 0)
     {
       supported_font_funcs[i].func (font);
-      if (name || font->klass != hb_font_funcs_get_empty ())
-	return true;
+      अगर (name || font->klass != hb_font_funcs_get_empty ())
+	वापस true;
     }
 
-  if (retry)
+  अगर (retry)
   {
     retry = false;
     name = nullptr;
-    goto retry;
+    जाओ retry;
   }
 
-  return false;
+  वापस false;
 }
 
-static inline void free_static_font_funcs_list ();
+अटल अंतरभूत व्योम free_static_font_funcs_list ();
 
-static const char * const nil_font_funcs_list[] = {nullptr};
+अटल स्थिर अक्षर * स्थिर nil_font_funcs_list[] = {nullptr};
 
-static struct hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+अटल काष्ठा hb_font_funcs_list_lazy_loader_t : hb_lazy_loader_t<स्थिर अक्षर *,
 								  hb_font_funcs_list_lazy_loader_t>
 {
-  static const char ** create ()
+  अटल स्थिर अक्षर ** create ()
   {
-    const char **font_funcs_list = (const char **) hb_calloc (1 + ARRAY_LENGTH (supported_font_funcs), sizeof (const char *));
-    if (unlikely (!font_funcs_list))
-      return nullptr;
+    स्थिर अक्षर **font_funcs_list = (स्थिर अक्षर **) hb_calloc (1 + ARRAY_लंबाई (supported_font_funcs), माप (स्थिर अक्षर *));
+    अगर (unlikely (!font_funcs_list))
+      वापस nullptr;
 
-    unsigned i;
-    for (i = 0; i < ARRAY_LENGTH (supported_font_funcs); i++)
+    अचिन्हित i;
+    क्रम (i = 0; i < ARRAY_लंबाई (supported_font_funcs); i++)
       font_funcs_list[i] = supported_font_funcs[i].name;
     font_funcs_list[i] = nullptr;
 
     hb_atexit (free_static_font_funcs_list);
 
-    return font_funcs_list;
+    वापस font_funcs_list;
   }
-  static void destroy (const char **l)
+  अटल व्योम destroy (स्थिर अक्षर **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_font_funcs_list; }
+  अटल स्थिर अक्षर * स्थिर * get_null ()
+  { वापस nil_font_funcs_list; }
 } static_font_funcs_list;
 
-static inline
-void free_static_font_funcs_list ()
+अटल अंतरभूत
+व्योम free_static_font_funcs_list ()
 {
   static_font_funcs_list.free_instance ();
 }
@@ -2739,10 +2739,10 @@ void free_static_font_funcs_list ()
  *
  * Since: 11.0.0
  **/
-const char **
+स्थिर अक्षर **
 hb_font_list_funcs ()
 {
-  return static_font_funcs_list.get_unconst ();
+  वापस static_font_funcs_list.get_unconst ();
 }
 
 /**
@@ -2780,16 +2780,16 @@ hb_font_list_funcs ()
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_set_scale (hb_font_t *font,
-		   int        x_scale,
-		   int        y_scale)
+		   पूर्णांक        x_scale,
+		   पूर्णांक        y_scale)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->x_scale == x_scale && font->y_scale == y_scale)
-    return;
+  अगर (font->x_scale == x_scale && font->y_scale == y_scale)
+    वापस;
 
   font->x_scale = x_scale;
   font->y_scale = y_scale;
@@ -2807,13 +2807,13 @@ hb_font_set_scale (hb_font_t *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_get_scale (hb_font_t *font,
-		   int       *x_scale,
-		   int       *y_scale)
+		   पूर्णांक       *x_scale,
+		   पूर्णांक       *y_scale)
 {
-  if (x_scale) *x_scale = font->x_scale;
-  if (y_scale) *y_scale = font->y_scale;
+  अगर (x_scale) *x_scale = font->x_scale;
+  अगर (y_scale) *y_scale = font->y_scale;
 }
 
 /**
@@ -2830,16 +2830,16 @@ hb_font_get_scale (hb_font_t *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_set_ppem (hb_font_t    *font,
-		  unsigned int  x_ppem,
-		  unsigned int  y_ppem)
+		  अचिन्हित पूर्णांक  x_ppem,
+		  अचिन्हित पूर्णांक  y_ppem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
-    return;
+  अगर (font->x_ppem == x_ppem && font->y_ppem == y_ppem)
+    वापस;
 
   font->x_ppem = x_ppem;
   font->y_ppem = y_ppem;
@@ -2857,13 +2857,13 @@ hb_font_set_ppem (hb_font_t    *font,
  *
  * Since: 0.9.2
  **/
-void
+व्योम
 hb_font_get_ppem (hb_font_t    *font,
-		  unsigned int *x_ppem,
-		  unsigned int *y_ppem)
+		  अचिन्हित पूर्णांक *x_ppem,
+		  अचिन्हित पूर्णांक *y_ppem)
 {
-  if (x_ppem) *x_ppem = font->x_ppem;
-  if (y_ppem) *y_ppem = font->y_ppem;
+  अगर (x_ppem) *x_ppem = font->x_ppem;
+  अगर (y_ppem) *y_ppem = font->y_ppem;
 }
 
 /**
@@ -2878,15 +2878,15 @@ hb_font_get_ppem (hb_font_t    *font,
  *
  * Since: 1.6.0
  **/
-void
+व्योम
 hb_font_set_ptem (hb_font_t *font,
-		  float      ptem)
+		  भग्न      ptem)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->ptem == ptem)
-    return;
+  अगर (font->ptem == ptem)
+    वापस;
 
   font->ptem = ptem;
 
@@ -2904,10 +2904,10 @@ hb_font_set_ptem (hb_font_t *font,
  *
  * Since: 1.6.0
  **/
-float
+भग्न
 hb_font_get_ptem (hb_font_t *font)
 {
-  return font->ptem;
+  वापस font->ptem;
 }
 
 /**
@@ -2924,7 +2924,7 @@ hb_font_get_ptem (hb_font_t *font)
 hb_bool_t
 hb_font_is_synthetic (hb_font_t *font)
 {
-  return font->is_synthetic;
+  वापस font->is_synthetic;
 }
 
 /**
@@ -2953,19 +2953,19 @@ hb_font_is_synthetic (hb_font_t *font)
  *
  * Since: 7.0.0
  **/
-void
+व्योम
 hb_font_set_synthetic_bold (hb_font_t *font,
-			    float x_embolden,
-			    float y_embolden,
+			    भग्न x_embolden,
+			    भग्न y_embolden,
 			    hb_bool_t in_place)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->x_embolden == x_embolden &&
+  अगर (font->x_embolden == x_embolden &&
       font->y_embolden == y_embolden &&
       font->embolden_in_place == (bool) in_place)
-    return;
+    वापस;
 
   font->x_embolden = x_embolden;
   font->y_embolden = y_embolden;
@@ -2985,15 +2985,15 @@ hb_font_set_synthetic_bold (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-void
+व्योम
 hb_font_get_synthetic_bold (hb_font_t *font,
-			    float *x_embolden,
-			    float *y_embolden,
+			    भग्न *x_embolden,
+			    भग्न *y_embolden,
 			    hb_bool_t *in_place)
 {
-  if (x_embolden) *x_embolden = font->x_embolden;
-  if (y_embolden) *y_embolden = font->y_embolden;
-  if (in_place) *in_place = font->embolden_in_place;
+  अगर (x_embolden) *x_embolden = font->x_embolden;
+  अगर (y_embolden) *y_embolden = font->y_embolden;
+  अगर (in_place) *in_place = font->embolden_in_place;
 }
 
 /**
@@ -3016,14 +3016,14 @@ hb_font_get_synthetic_bold (hb_font_t *font,
  *
  * Since: 3.3.0
  **/
-HB_EXTERN void
-hb_font_set_synthetic_slant (hb_font_t *font, float slant)
+HB_EXTERN व्योम
+hb_font_set_synthetic_slant (hb_font_t *font, भग्न slant)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->slant == slant)
-    return;
+  अगर (font->slant == slant)
+    वापस;
 
   font->slant = slant;
 
@@ -3040,13 +3040,13 @@ hb_font_set_synthetic_slant (hb_font_t *font, float slant)
  *
  * Since: 3.3.0
  **/
-HB_EXTERN float
+HB_EXTERN भग्न
 hb_font_get_synthetic_slant (hb_font_t *font)
 {
-  return font->slant;
+  वापस font->slant;
 }
 
-#ifndef HB_NO_VAR
+#अगर_अघोषित HB_NO_VAR
 /*
  * Variations
  */
@@ -3065,52 +3065,52 @@ hb_font_get_synthetic_slant (hb_font_t *font)
  *
  * Since: 1.4.2
  */
-void
+व्योम
 hb_font_set_variations (hb_font_t            *font,
-			const hb_variation_t *variations,
-			unsigned int          variations_length)
+			स्थिर hb_variation_t *variations,
+			अचिन्हित पूर्णांक          variations_लंबाई)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  स्थिर OT::fvar &fvar = *font->face->table.fvar;
+  स्वतः axes = fvar.get_axes ();
+  स्थिर अचिन्हित coords_लंबाई = axes.लंबाई;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  पूर्णांक *normalized = coords_लंबाई ? (पूर्णांक *) hb_calloc (coords_लंबाई, माप (पूर्णांक)) : nullptr;
+  भग्न *design_coords = coords_लंबाई ? (भग्न *) hb_calloc (coords_लंबाई, माप (भग्न)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  अगर (unlikely (coords_लंबाई && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    वापस;
   }
 
   /* Initialize design coords. */
-  for (unsigned int i = 0; i < coords_length; i++)
+  क्रम (अचिन्हित पूर्णांक i = 0; i < coords_लंबाई; i++)
     design_coords[i] = axes[i].get_default ();
-  if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+  अगर (font->instance_सूचकांक != HB_FONT_NO_VAR_NAMED_INSTANCE)
   {
-    unsigned count = coords_length;
+    अचिन्हित गिनती = coords_लंबाई;
     /* This may fail if index is out-of-range;
      * That's why we initialize design_coords from fvar above
      * unconditionally. */
-    hb_ot_var_named_instance_get_design_coords (font->face, font->instance_index,
-						&count, design_coords);
+    hb_ot_var_named_instance_get_design_coords (font->face, font->instance_सूचकांक,
+						&गिनती, design_coords);
   }
 
-  for (unsigned int i = 0; i < variations_length; i++)
+  क्रम (अचिन्हित पूर्णांक i = 0; i < variations_लंबाई; i++)
   {
-    const auto tag = variations[i].tag;
-    const auto v = variations[i].value;
-    for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-      if (axes[axis_index].axisTag == tag)
-	design_coords[axis_index] = v;
+    स्थिर स्वतः tag = variations[i].tag;
+    स्थिर स्वतः v = variations[i].value;
+    क्रम (अचिन्हित axis_सूचकांक = 0; axis_सूचकांक < coords_लंबाई; axis_सूचकांक++)
+      अगर (axes[axis_सूचकांक].axisTag == tag)
+	design_coords[axis_सूचकांक] = v;
   }
 
-  hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
-  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_length);
+  hb_ot_var_normalize_coords (font->face, coords_लंबाई, design_coords, normalized);
+  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_लंबाई);
 }
 
 /**
@@ -3127,58 +3127,58 @@ hb_font_set_variations (hb_font_t            *font,
  *
  * Since: 7.1.0
  */
-void
+व्योम
 hb_font_set_variation (hb_font_t *font,
 		       hb_tag_t tag,
-		       float    value)
+		       भग्न    value)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
   // TODO Share some of this code with set_variations()
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  स्थिर OT::fvar &fvar = *font->face->table.fvar;
+  स्वतः axes = fvar.get_axes ();
+  स्थिर अचिन्हित coords_लंबाई = axes.लंबाई;
 
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  पूर्णांक *normalized = coords_लंबाई ? (पूर्णांक *) hb_calloc (coords_लंबाई, माप (पूर्णांक)) : nullptr;
+  भग्न *design_coords = coords_लंबाई ? (भग्न *) hb_calloc (coords_लंबाई, माप (भग्न)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  अगर (unlikely (coords_लंबाई && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    वापस;
   }
 
   /* Initialize design coords.
    * The font's coords may belong to another face after hb_font_set_face(). */
-  if (font->design_coords && font->num_coords == coords_length)
+  अगर (font->design_coords && font->अंक_coords == coords_लंबाई)
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < coords_लंबाई; i++)
       design_coords[i] = font->design_coords[i];
   }
-  else
+  अन्यथा
   {
-    for (unsigned int i = 0; i < coords_length; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < coords_लंबाई; i++)
       design_coords[i] = axes[i].get_default ();
-    if (font->instance_index != HB_FONT_NO_VAR_NAMED_INSTANCE)
+    अगर (font->instance_सूचकांक != HB_FONT_NO_VAR_NAMED_INSTANCE)
     {
-      unsigned count = coords_length;
+      अचिन्हित गिनती = coords_लंबाई;
       /* This may fail if index is out-of-range;
        * That's why we initialize design_coords from fvar above
        * unconditionally. */
-      hb_ot_var_named_instance_get_design_coords (font->face, font->instance_index,
-						  &count, design_coords);
+      hb_ot_var_named_instance_get_design_coords (font->face, font->instance_सूचकांक,
+						  &गिनती, design_coords);
     }
   }
 
-  for (unsigned axis_index = 0; axis_index < coords_length; axis_index++)
-    if (axes[axis_index].axisTag == tag)
-      design_coords[axis_index] = value;
+  क्रम (अचिन्हित axis_सूचकांक = 0; axis_सूचकांक < coords_लंबाई; axis_सूचकांक++)
+    अगर (axes[axis_सूचकांक].axisTag == tag)
+      design_coords[axis_सूचकांक] = value;
 
-  hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
-  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_length);
+  hb_ot_var_normalize_coords (font->face, coords_लंबाई, design_coords, normalized);
+  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_लंबाई);
 }
 
 /**
@@ -3196,37 +3196,37 @@ hb_font_set_variation (hb_font_t *font,
  *
  * Since: 1.4.2
  */
-void
+व्योम
 hb_font_set_var_coords_design (hb_font_t    *font,
-			       const float  *coords,
-			       unsigned int  input_coords_length)
+			       स्थिर भग्न  *coords,
+			       अचिन्हित पूर्णांक  निवेश_coords_लंबाई)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  const unsigned coords_length = axes.length;
+  स्थिर OT::fvar &fvar = *font->face->table.fvar;
+  स्वतः axes = fvar.get_axes ();
+  स्थिर अचिन्हित coords_लंबाई = axes.लंबाई;
 
-  input_coords_length = hb_min (input_coords_length, coords_length);
-  int *normalized = coords_length ? (int *) hb_calloc (coords_length, sizeof (int)) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (float)) : nullptr;
+  निवेश_coords_लंबाई = hb_min (निवेश_coords_लंबाई, coords_लंबाई);
+  पूर्णांक *normalized = coords_लंबाई ? (पूर्णांक *) hb_calloc (coords_लंबाई, माप (पूर्णांक)) : nullptr;
+  भग्न *design_coords = coords_लंबाई ? (भग्न *) hb_calloc (coords_लंबाई, माप (भग्न)) : nullptr;
 
-  if (unlikely (coords_length && !(normalized && design_coords)))
+  अगर (unlikely (coords_लंबाई && !(normalized && design_coords)))
   {
     hb_free (normalized);
     hb_free (design_coords);
-    return;
+    वापस;
   }
 
-  if (input_coords_length)
-    hb_memcpy (design_coords, coords, input_coords_length * sizeof (font->design_coords[0]));
+  अगर (निवेश_coords_लंबाई)
+    hb_memcpy (design_coords, coords, निवेश_coords_लंबाई * माप (font->design_coords[0]));
   // Fill in the rest with default values
-  for (unsigned int i = input_coords_length; i < coords_length; i++)
+  क्रम (अचिन्हित पूर्णांक i = निवेश_coords_लंबाई; i < coords_लंबाई; i++)
     design_coords[i] = axes[i].get_default ();
 
-  hb_ot_var_normalize_coords (font->face, coords_length, design_coords, normalized);
-  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_length);
+  hb_ot_var_normalize_coords (font->face, coords_लंबाई, design_coords, normalized);
+  _hb_font_adopt_var_coords (font, normalized, design_coords, coords_लंबाई);
 }
 
 /**
@@ -3238,17 +3238,17 @@ hb_font_set_var_coords_design (hb_font_t    *font,
  *
  * Since: 2.6.0
  */
-void
+व्योम
 hb_font_set_var_named_instance (hb_font_t *font,
-				unsigned int instance_index)
+				अचिन्हित पूर्णांक instance_सूचकांक)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  if (font->instance_index == instance_index)
-    return;
+  अगर (font->instance_सूचकांक == instance_सूचकांक)
+    वापस;
 
-  font->instance_index = instance_index;
+  font->instance_सूचकांक = instance_सूचकांक;
   hb_font_set_variations (font, nullptr, 0);
 }
 
@@ -3262,10 +3262,10 @@ hb_font_set_var_named_instance (hb_font_t *font,
  *
  * Since: 7.0.0
  **/
-unsigned int
+अचिन्हित पूर्णांक
 hb_font_get_var_named_instance (hb_font_t *font)
 {
-  return font->instance_index;
+  वापस font->instance_सूचकांक;
 }
 
 /**
@@ -3285,36 +3285,36 @@ hb_font_get_var_named_instance (hb_font_t *font)
  *
  * Since: 1.4.2
  */
-void
+व्योम
 hb_font_set_var_coords_normalized (hb_font_t    *font,
-				   const int    *coords, /* 2.14 normalized */
-				   unsigned int  input_coords_length)
+				   स्थिर पूर्णांक    *coords, /* 2.14 normalized */
+				   अचिन्हित पूर्णांक  निवेश_coords_लंबाई)
 {
-  if (hb_object_is_immutable (font))
-    return;
+  अगर (hb_object_is_immutable (font))
+    वापस;
 
-  const OT::fvar &fvar = *font->face->table.fvar;
-  auto axes = fvar.get_axes ();
-  unsigned coords_length = axes.length;
+  स्थिर OT::fvar &fvar = *font->face->table.fvar;
+  स्वतः axes = fvar.get_axes ();
+  अचिन्हित coords_लंबाई = axes.लंबाई;
 
-  input_coords_length = hb_min (input_coords_length, coords_length);
-  int *copy = coords_length ? (int *) hb_calloc (coords_length, sizeof (coords[0])) : nullptr;
-  float *design_coords = coords_length ? (float *) hb_calloc (coords_length, sizeof (design_coords[0])) : nullptr;
+  निवेश_coords_लंबाई = hb_min (निवेश_coords_लंबाई, coords_लंबाई);
+  पूर्णांक *copy = coords_लंबाई ? (पूर्णांक *) hb_calloc (coords_लंबाई, माप (coords[0])) : nullptr;
+  भग्न *design_coords = coords_लंबाई ? (भग्न *) hb_calloc (coords_लंबाई, माप (design_coords[0])) : nullptr;
 
-  if (unlikely (coords_length && !(copy && design_coords)))
+  अगर (unlikely (coords_लंबाई && !(copy && design_coords)))
   {
     hb_free (copy);
     hb_free (design_coords);
-    return;
+    वापस;
   }
 
-  if (input_coords_length)
-    hb_memcpy (copy, coords, input_coords_length * sizeof (coords[0]));
+  अगर (निवेश_coords_लंबाई)
+    hb_memcpy (copy, coords, निवेश_coords_लंबाई * माप (coords[0]));
 
-  for (unsigned int i = 0; i < coords_length; ++i)
-    design_coords[i] = NAN;
+  क्रम (अचिन्हित पूर्णांक i = 0; i < coords_लंबाई; ++i)
+    design_coords[i] = न_अंक;
 
-  _hb_font_adopt_var_coords (font, copy, design_coords, coords_length);
+  _hb_font_adopt_var_coords (font, copy, design_coords, coords_लंबाई);
 }
 
 /**
@@ -3335,14 +3335,14 @@ hb_font_set_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 1.4.2
  */
-const int *
+स्थिर पूर्णांक *
 hb_font_get_var_coords_normalized (hb_font_t    *font,
-				   unsigned int *length)
+				   अचिन्हित पूर्णांक *लंबाई)
 {
-  if (length)
-    *length = font->num_coords;
+  अगर (लंबाई)
+    *लंबाई = font->अंक_coords;
 
-  return font->coords;
+  वापस font->coords;
 }
 
 /**
@@ -3367,99 +3367,99 @@ hb_font_get_var_coords_normalized (hb_font_t    *font,
  *
  * Since: 3.3.0
  */
-const float *
+स्थिर भग्न *
 hb_font_get_var_coords_design (hb_font_t *font,
-			       unsigned int *length)
+			       अचिन्हित पूर्णांक *लंबाई)
 {
-  if (length)
-    *length = font->num_coords;
+  अगर (लंबाई)
+    *लंबाई = font->अंक_coords;
 
-  return font->design_coords;
+  वापस font->design_coords;
 }
-#endif
+#पूर्ण_अगर
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 /*
  * Deprecated get_glyph_func():
  */
 
-struct hb_trampoline_closure_t
+काष्ठा hb_trampoline_closure_t
 {
-  void *user_data;
+  व्योम *user_तथ्य;
   hb_destroy_func_t destroy;
-  unsigned int ref_count;
+  अचिन्हित पूर्णांक ref_गिनती_2;
 };
 
-template <typename FuncType>
-struct hb_trampoline_t
+ढाँचा <typename FuncType>
+काष्ठा hb_trampoline_t
 {
   hb_trampoline_closure_t closure; /* Must be first. */
   FuncType func;
 };
 
-template <typename FuncType>
-static hb_trampoline_t<FuncType> *
+ढाँचा <typename FuncType>
+अटल hb_trampoline_t<FuncType> *
 trampoline_create (FuncType           func,
-		   void              *user_data,
+		   व्योम              *user_तथ्य,
 		   hb_destroy_func_t  destroy)
 {
-  typedef hb_trampoline_t<FuncType> trampoline_t;
+  प्रकार hb_trampoline_t<FuncType> trampoline_t;
 
-  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, sizeof (trampoline_t));
+  trampoline_t *trampoline = (trampoline_t *) hb_calloc (1, माप (trampoline_t));
 
-  if (unlikely (!trampoline))
-    return nullptr;
+  अगर (unlikely (!trampoline))
+    वापस nullptr;
 
-  trampoline->closure.user_data = user_data;
+  trampoline->closure.user_तथ्य = user_तथ्य;
   trampoline->closure.destroy = destroy;
-  trampoline->closure.ref_count = 1;
+  trampoline->closure.ref_गिनती_2 = 1;
   trampoline->func = func;
 
-  return trampoline;
+  वापस trampoline;
 }
 
-static void
+अटल व्योम
 trampoline_reference (hb_trampoline_closure_t *closure)
 {
-  closure->ref_count++;
+  closure->ref_गिनती_2++;
 }
 
-static void
-trampoline_destroy (void *user_data)
+अटल व्योम
+trampoline_destroy (व्योम *user_तथ्य)
 {
-  hb_trampoline_closure_t *closure = (hb_trampoline_closure_t *) user_data;
+  hb_trampoline_closure_t *closure = (hb_trampoline_closure_t *) user_तथ्य;
 
-  if (--closure->ref_count)
-    return;
+  अगर (--closure->ref_गिनती_2)
+    वापस;
 
-  if (closure->destroy)
-    closure->destroy (closure->user_data);
+  अगर (closure->destroy)
+    closure->destroy (closure->user_तथ्य);
   hb_free (closure);
 }
 
-typedef hb_trampoline_t<hb_font_get_glyph_func_t> hb_font_get_glyph_trampoline_t;
+प्रकार hb_trampoline_t<hb_font_get_glyph_func_t> hb_font_get_glyph_trampoline_t;
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_nominal_glyph_trampoline (hb_font_t      *font,
-				      void           *font_data,
+				      व्योम           *font_तथ्य,
 				      hb_codepoint_t  unicode,
 				      hb_codepoint_t *glyph,
-				      void           *user_data)
+				      व्योम           *user_तथ्य)
 {
-  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, 0, glyph, trampoline->closure.user_data);
+  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_तथ्य;
+  वापस trampoline->func (font, font_तथ्य, unicode, 0, glyph, trampoline->closure.user_तथ्य);
 }
 
-static hb_bool_t
+अटल hb_bool_t
 hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
-					void           *font_data,
+					व्योम           *font_तथ्य,
 					hb_codepoint_t  unicode,
 					hb_codepoint_t  variation_selector,
 					hb_codepoint_t *glyph,
-					void           *user_data)
+					व्योम           *user_तथ्य)
 {
-  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_data;
-  return trampoline->func (font, font_data, unicode, variation_selector, glyph, trampoline->closure.user_data);
+  hb_font_get_glyph_trampoline_t *trampoline = (hb_font_get_glyph_trampoline_t *) user_तथ्य;
+  वापस trampoline->func (font, font_तथ्य, unicode, variation_selector, glyph, trampoline->closure.user_तथ्य);
 }
 
 /**
@@ -3475,27 +3475,27 @@ hb_font_get_variation_glyph_trampoline (hb_font_t      *font,
  * Since: 0.9.2
  * Deprecated: 1.2.3
  **/
-void
+व्योम
 hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
 			      hb_font_get_glyph_func_t  func,
-			      void                     *user_data,
+			      व्योम                     *user_तथ्य,
 			      hb_destroy_func_t         destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  अगर (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस;
   }
 
   hb_font_get_glyph_trampoline_t *trampoline;
 
-  trampoline = trampoline_create (func, user_data, destroy);
-  if (unlikely (!trampoline))
+  trampoline = trampoline_create (func, user_तथ्य, destroy);
+  अगर (unlikely (!trampoline))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस;
   }
 
   /* Since we pass it to two destroying functions. */
@@ -3511,59 +3511,59 @@ hb_font_funcs_set_glyph_func (hb_font_funcs_t          *ffuncs,
 					  trampoline,
 					  trampoline_destroy);
 }
-#endif
+#पूर्ण_अगर
 
 
-#ifndef HB_DISABLE_DEPRECATED
+#अगर_अघोषित HB_DISABLE_DEPRECATED
 
-struct hb_draw_glyph_closure_t
+काष्ठा hb_draw_glyph_closure_t
 {
   hb_font_draw_glyph_func_t func;
-  void *user_data;
+  व्योम *user_तथ्य;
   hb_destroy_func_t destroy;
 };
-static hb_bool_t
+अटल hb_bool_t
 hb_font_draw_glyph_trampoline (hb_font_t       *font,
-			       void            *font_data,
+			       व्योम            *font_तथ्य,
 			       hb_codepoint_t   glyph,
 			       hb_draw_funcs_t *draw_funcs,
-			       void            *draw_data,
-			       void            *user_data)
+			       व्योम            *draw_तथ्य,
+			       व्योम            *user_तथ्य)
 {
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
-  closure->func (font, font_data, glyph, draw_funcs, draw_data, closure->user_data);
-  return true;
+  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_तथ्य;
+  closure->func (font, font_तथ्य, glyph, draw_funcs, draw_तथ्य, closure->user_तथ्य);
+  वापस true;
 }
-static void
-hb_font_draw_glyph_closure_destroy (void *user_data)
+अटल व्योम
+hb_font_draw_glyph_closure_destroy (व्योम *user_तथ्य)
 {
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_data;
+  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) user_तथ्य;
 
-  if (closure->destroy)
-    closure->destroy (closure->user_data);
+  अगर (closure->destroy)
+    closure->destroy (closure->user_तथ्य);
   hb_free (closure);
 }
-static void
+अटल व्योम
 _hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
 				    hb_font_draw_glyph_func_t  func,
-				    void                      *user_data,
+				    व्योम                      *user_तथ्य,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  अगर (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस;
   }
-  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, sizeof (hb_draw_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_draw_glyph_closure_t *closure = (hb_draw_glyph_closure_t *) hb_calloc (1, माप (hb_draw_glyph_closure_t));
+  अगर (unlikely (!closure))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस;
   }
   closure->func = func;
-  closure->user_data = user_data;
+  closure->user_तथ्य = user_तथ्य;
   closure->destroy = destroy;
 
   hb_font_funcs_set_draw_glyph_or_fail_func (ffuncs,
@@ -3571,73 +3571,73 @@ _hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
 					     closure,
 					     hb_font_draw_glyph_closure_destroy);
 }
-void
+व्योम
 hb_font_funcs_set_draw_glyph_func (hb_font_funcs_t           *ffuncs,
                                    hb_font_draw_glyph_func_t  func,
-                                   void                      *user_data,
+                                   व्योम                      *user_तथ्य,
                                    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
+  _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_तथ्य, destroy);
 }
-void
+व्योम
 hb_font_funcs_set_glyph_shape_func (hb_font_funcs_t               *ffuncs,
                                    hb_font_get_glyph_shape_func_t  func,
-                                   void                           *user_data,
+                                   व्योम                           *user_तथ्य,
                                    hb_destroy_func_t               destroy /* May be NULL. */)
 {
-  _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_data, destroy);
+  _hb_font_funcs_set_draw_glyph_func (ffuncs, func, user_तथ्य, destroy);
 }
 
-struct hb_paint_glyph_closure_t
+काष्ठा hb_paint_glyph_closure_t
 {
   hb_font_paint_glyph_func_t func;
-  void *user_data;
+  व्योम *user_तथ्य;
   hb_destroy_func_t destroy;
 };
-static hb_bool_t
+अटल hb_bool_t
 hb_font_paint_glyph_trampoline (hb_font_t        *font,
-				void *font_data,
+				व्योम *font_तथ्य,
 				hb_codepoint_t glyph,
 				hb_paint_funcs_t *paint_funcs,
-				void *paint_data,
-				unsigned int palette,
+				व्योम *paint_तथ्य,
+				अचिन्हित पूर्णांक palette,
 				hb_color_t foreground,
-				void *user_data)
+				व्योम *user_तथ्य)
 {
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
-  closure->func (font, font_data, glyph, paint_funcs, paint_data, palette, foreground, closure->user_data);
-  return true;
+  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_तथ्य;
+  closure->func (font, font_तथ्य, glyph, paint_funcs, paint_तथ्य, palette, foreground, closure->user_तथ्य);
+  वापस true;
 }
-static void
-hb_font_paint_glyph_closure_destroy (void *user_data)
+अटल व्योम
+hb_font_paint_glyph_closure_destroy (व्योम *user_तथ्य)
 {
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_data;
+  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) user_तथ्य;
 
-  if (closure->destroy)
-    closure->destroy (closure->user_data);
+  अगर (closure->destroy)
+    closure->destroy (closure->user_तथ्य);
   hb_free (closure);
 }
-void
+व्योम
 hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t           *ffuncs,
 				    hb_font_paint_glyph_func_t  func,
-				    void                      *user_data,
+				    व्योम                      *user_तथ्य,
 				    hb_destroy_func_t          destroy /* May be NULL. */)
 {
-  if (hb_object_is_immutable (ffuncs))
+  अगर (hb_object_is_immutable (ffuncs))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस;
   }
-  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, sizeof (hb_paint_glyph_closure_t));
-  if (unlikely (!closure))
+  hb_paint_glyph_closure_t *closure = (hb_paint_glyph_closure_t *) hb_calloc (1, माप (hb_paint_glyph_closure_t));
+  अगर (unlikely (!closure))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    अगर (destroy)
+      destroy (user_तथ्य);
+    वापस;
   }
   closure->func = func;
-  closure->user_data = user_data;
+  closure->user_तथ्य = user_तथ्य;
   closure->destroy = destroy;
 
   hb_font_funcs_set_paint_glyph_or_fail_func (ffuncs,
@@ -3645,4 +3645,4 @@ hb_font_funcs_set_paint_glyph_func (hb_font_funcs_t           *ffuncs,
 					      closure,
 					      hb_font_paint_glyph_closure_destroy);
 }
-#endif
+#पूर्ण_अगर

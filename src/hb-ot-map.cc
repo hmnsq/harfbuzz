@@ -26,30 +26,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#अगर_अघोषित HB_NO_OT_SHAPE
 
-#include "hb-ot-map.hh"
-#include "hb-ot-shape.hh"
-#include "hb-ot-layout.hh"
+#समावेश "hb-ot-map.hh"
+#समावेश "hb-ot-shape.hh"
+#समावेश "hb-ot-layout.hh"
 
 
-void hb_ot_map_t::collect_lookups (unsigned int table_index, hb_set_t *lookups_out) const
+व्योम hb_ot_map_t::collect_lookups (अचिन्हित पूर्णांक table_सूचकांक, hb_set_t *lookups_out) स्थिर
 {
-  for (unsigned int i = 0; i < lookups[table_index].length; i++)
-    lookups_out->add (lookups[table_index][i].index);
+  क्रम (अचिन्हित पूर्णांक i = 0; i < lookups[table_सूचकांक].लंबाई; i++)
+    lookups_out->add (lookups[table_सूचकांक][i].सूचकांक_2);
 }
 
 
 hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
-					  const hb_segment_properties_t &props_)
+					  स्थिर hb_segment_properties_t &props_)
 {
-  hb_memset (this, 0, sizeof (*this));
+  hb_memset (यह, 0, माप (*यह));
 
   feature_infos.init ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].init ();
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
+    stages[table_सूचकांक].init ();
 
   face = face_;
   props = props_;
@@ -57,78 +57,78 @@ hb_ot_map_builder_t::hb_ot_map_builder_t (hb_face_t *face_,
   /* Fetch script/language indices for GSUB/GPOS.  We need these later to skip
    * features not available in either table and not waste precious bits for them. */
 
-  unsigned int script_count = HB_OT_MAX_TAGS_PER_SCRIPT;
-  unsigned int language_count = HB_OT_MAX_TAGS_PER_LANGUAGE;
+  अचिन्हित पूर्णांक script_गिनती = HB_OT_MAX_TAGS_PER_SCRIPT;
+  अचिन्हित पूर्णांक language_गिनती = HB_OT_MAX_TAGS_PER_LANGUAGE;
   hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
   hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
 
   hb_ot_tags_from_script_and_language (props.script,
 				       props.language,
-				       &script_count,
+				       &script_गिनती,
 				       script_tags,
-				       &language_count,
+				       &language_गिनती,
 				       language_tags);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
   {
-    hb_tag_t table_tag = table_tags[table_index];
-    found_script[table_index] = (bool) hb_ot_layout_table_select_script (face,
+    hb_tag_t table_tag = table_tags[table_सूचकांक];
+    found_script[table_सूचकांक] = (bool) hb_ot_layout_table_select_script (face,
 									 table_tag,
-									 script_count,
+									 script_गिनती,
 									 script_tags,
-									 &script_index[table_index],
-									 &chosen_script[table_index]);
+									 &script_सूचकांक[table_सूचकांक],
+									 &chosen_script[table_सूचकांक]);
     hb_ot_layout_script_select_language (face,
 					 table_tag,
-					 script_index[table_index],
-					 language_count,
+					 script_सूचकांक[table_सूचकांक],
+					 language_गिनती,
 					 language_tags,
-					 &language_index[table_index]);
+					 &language_सूचकांक[table_सूचकांक]);
   }
 }
 
 hb_ot_map_builder_t::~hb_ot_map_builder_t ()
 {
   feature_infos.fini ();
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
-    stages[table_index].fini ();
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
+    stages[table_सूचकांक].fini ();
 }
 
-void hb_ot_map_builder_t::add_feature (hb_tag_t tag,
+व्योम hb_ot_map_builder_t::add_feature (hb_tag_t tag,
 				       hb_ot_map_feature_flags_t flags,
-				       unsigned int value)
+				       अचिन्हित पूर्णांक value)
 {
-  if (unlikely (!tag)) return;
+  अगर (unlikely (!tag)) वापस;
   feature_info_t *info = feature_infos.push();
   info->tag = tag;
-  info->seq = feature_infos.length;
-  info->max_value = value;
+  info->seq = feature_infos.लंबाई;
+  info->max_मूल्य = value;
   info->flags = flags;
-  info->default_value = (flags & F_GLOBAL) ? value : 0;
+  info->default_मूल्य = (flags & F_GLOBAL) ? value : 0;
   info->stage[0] = current_stage[0];
   info->stage[1] = current_stage[1];
 }
 
 bool hb_ot_map_builder_t::has_feature (hb_tag_t tag)
 {
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
   {
-    if (hb_ot_layout_language_find_feature (face,
-					    table_tags[table_index],
-					    script_index[table_index],
-					    language_index[table_index],
+    अगर (hb_ot_layout_language_find_feature (face,
+					    table_tags[table_सूचकांक],
+					    script_सूचकांक[table_सूचकांक],
+					    language_सूचकांक[table_सूचकांक],
 					    tag,
 					    nullptr))
-      return true;
+      वापस true;
   }
-  return false;
+  वापस false;
 }
 
-void
+व्योम
 hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
-				  unsigned int  table_index,
-				  unsigned int  feature_index,
-				  const hb_ot_shape_plan_key_t &key,
+				  अचिन्हित पूर्णांक  table_सूचकांक,
+				  अचिन्हित पूर्णांक  feature_सूचकांक,
+				  स्थिर hb_ot_shape_plan_कुंजी_t &key,
 				  hb_mask_t     mask,
 				  bool          auto_zwnj,
 				  bool          auto_zwj,
@@ -136,53 +136,53 @@ hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
 				  bool          per_syllable,
 				  hb_tag_t      feature_tag)
 {
-  unsigned int lookup_indices[32];
-  unsigned int offset, len;
-  unsigned int table_lookup_count;
+  अचिन्हित पूर्णांक lookup_indices[32];
+  अचिन्हित पूर्णांक offset, len;
+  अचिन्हित पूर्णांक table_lookup_गिनती;
 
-  table_lookup_count = hb_ot_layout_table_get_lookup_count (face, table_tags[table_index]);
+  table_lookup_गिनती = hb_ot_layout_table_get_lookup_गिनती (face, table_tags[table_सूचकांक]);
 
   hb_set_t varied_lookups;
-  if (key.get_lookup_variations (face, table_index, feature_index, &varied_lookups))
+  अगर (key.get_lookup_variations (face, table_सूचकांक, feature_सूचकांक, &varied_lookups))
   {
-    if (unlikely (varied_lookups.in_error ()))
+    अगर (unlikely (varied_lookups.in_error ()))
     {
-      m.lookups[table_index].ensure_error ();
-      return;
+      m.lookups[table_सूचकांक].ensure_error ();
+      वापस;
     }
-    for (unsigned int lookup_index : varied_lookups)
+    क्रम (अचिन्हित पूर्णांक lookup_सूचकांक : varied_lookups)
     {
-      if (lookup_index >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
+      अगर (lookup_सूचकांक >= table_lookup_गिनती)
+	जारी;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_सूचकांक].push ();
       lookup->mask = mask;
-      lookup->index = lookup_index;
+      lookup->सूचकांक_2 = lookup_सूचकांक;
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
       lookup->per_syllable = per_syllable;
       lookup->feature_tag = feature_tag;
     }
-    return;
+    वापस;
   }
 
   offset = 0;
-  do {
-    len = ARRAY_LENGTH (lookup_indices);
+  करो {
+    len = ARRAY_लंबाई (lookup_indices);
     hb_ot_layout_feature_with_variations_get_lookups (face,
-					      table_tags[table_index],
-					      feature_index,
-					      key.variations_index[table_index],
+					      table_tags[table_सूचकांक],
+					      feature_सूचकांक,
+					      key.variations_सूचकांक[table_सूचकांक],
 						      offset, &len,
 						      lookup_indices);
 
-    for (unsigned int i = 0; i < len; i++)
+    क्रम (अचिन्हित पूर्णांक i = 0; i < len; i++)
     {
-      if (lookup_indices[i] >= table_lookup_count)
-	continue;
-      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_index].push ();
+      अगर (lookup_indices[i] >= table_lookup_गिनती)
+	जारी;
+      hb_ot_map_t::lookup_map_t *lookup = m.lookups[table_सूचकांक].push ();
       lookup->mask = mask;
-      lookup->index = lookup_indices[i];
+      lookup->सूचकांक_2 = lookup_indices[i];
       lookup->auto_zwnj = auto_zwnj;
       lookup->auto_zwj = auto_zwj;
       lookup->random = random;
@@ -191,69 +191,69 @@ hb_ot_map_builder_t::add_lookups (hb_ot_map_t  &m,
     }
 
     offset += len;
-  } while (len == ARRAY_LENGTH (lookup_indices));
+  } जबतक (len == ARRAY_लंबाई (lookup_indices));
 }
 
 
-void hb_ot_map_builder_t::add_pause (unsigned int table_index, hb_ot_map_t::pause_func_t pause_func)
+व्योम hb_ot_map_builder_t::add_pause (अचिन्हित पूर्णांक table_सूचकांक, hb_ot_map_t::pause_func_t pause_func)
 {
-  stage_info_t *s = stages[table_index].push ();
-  s->index = current_stage[table_index];
+  stage_info_t *s = stages[table_सूचकांक].push ();
+  s->सूचकांक_2 = current_stage[table_सूचकांक];
   s->pause_func = pause_func;
 
-  current_stage[table_index]++;
+  current_stage[table_सूचकांक]++;
 }
 
-void
+व्योम
 hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
-			      const hb_ot_shape_plan_key_t &key)
+			      स्थिर hb_ot_shape_plan_कुंजी_t &key)
 {
-  unsigned int global_bit_shift = 8 * sizeof (hb_mask_t) - 1;
-  unsigned int global_bit_mask = 1u << global_bit_shift;
+  अचिन्हित पूर्णांक global_bit_shift = 8 * माप (hb_mask_t) - 1;
+  अचिन्हित पूर्णांक global_bit_mask = 1u << global_bit_shift;
 
   m.global_mask = global_bit_mask;
 
-  unsigned int required_feature_index[2];
+  अचिन्हित पूर्णांक required_feature_सूचकांक[2];
   hb_tag_t required_feature_tag[2];
   /* We default to applying required feature in stage 0.  If the required
    * feature has a tag that is known to the shaper, we apply required feature
    * in the stage for that tag.
    */
-  unsigned int required_feature_stage[2] = {0, 0};
+  अचिन्हित पूर्णांक required_feature_stage[2] = {0, 0};
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
   {
-    m.chosen_script[table_index] = chosen_script[table_index];
-    m.found_script[table_index] = found_script[table_index];
+    m.chosen_script[table_सूचकांक] = chosen_script[table_सूचकांक];
+    m.found_script[table_सूचकांक] = found_script[table_सूचकांक];
 
     hb_ot_layout_language_get_required_feature (face,
-						table_tags[table_index],
-						script_index[table_index],
-						language_index[table_index],
-						&required_feature_index[table_index],
-						&required_feature_tag[table_index]);
+						table_tags[table_सूचकांक],
+						script_सूचकांक[table_सूचकांक],
+						language_सूचकांक[table_सूचकांक],
+						&required_feature_सूचकांक[table_सूचकांक],
+						&required_feature_tag[table_सूचकांक]);
   }
 
   /* Sort features and merge duplicates */
-  if (feature_infos.length)
+  अगर (feature_infos.लंबाई)
   {
-    if (!is_simple)
-      feature_infos.qsort ();
-    auto *f = feature_infos.arrayZ;
-    unsigned int j = 0;
-    unsigned count = feature_infos.length;
-    for (unsigned int i = 1; i < count; i++)
-      if (f[i].tag != f[j].tag)
+    अगर (!is_simple)
+      feature_infos.क्विक ();
+    स्वतः *f = feature_infos.arrayZ;
+    अचिन्हित पूर्णांक j = 0;
+    अचिन्हित गिनती = feature_infos.लंबाई;
+    क्रम (अचिन्हित पूर्णांक i = 1; i < गिनती; i++)
+      अगर (f[i].tag != f[j].tag)
 	f[++j] = f[i];
-      else {
-	if (f[i].flags & F_GLOBAL) {
+      अन्यथा {
+	अगर (f[i].flags & F_GLOBAL) {
 	  f[j].flags |= F_GLOBAL;
-	  f[j].max_value = f[i].max_value;
-	  f[j].default_value = f[i].default_value;
-	} else {
-	  if (f[j].flags & F_GLOBAL)
+	  f[j].max_मूल्य = f[i].max_मूल्य;
+	  f[j].default_मूल्य = f[i].default_मूल्य;
+	} अन्यथा {
+	  अगर (f[j].flags & F_GLOBAL)
 	    f[j].flags ^= F_GLOBAL;
-	  f[j].max_value = hb_max (f[j].max_value, f[i].max_value);
+	  f[j].max_मूल्य = hb_max (f[j].max_मूल्य, f[i].max_मूल्य);
 	  /* Inherit default_value from j */
 	}
 	f[j].flags |= (f[i].flags & F_HAS_FALLBACK);
@@ -264,116 +264,116 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
   }
 
   hb_map_t feature_indices[2];
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
     hb_ot_layout_collect_features_map (face,
-				       table_tags[table_index],
-				       script_index[table_index],
-				       language_index[table_index],
-				       &feature_indices[table_index]);
+				       table_tags[table_सूचकांक],
+				       script_सूचकांक[table_सूचकांक],
+				       language_सूचकांक[table_सूचकांक],
+				       &feature_indices[table_सूचकांक]);
 
   /* Allocate bits now */
   static_assert ((!(HB_GLYPH_FLAG_DEFINED & (HB_GLYPH_FLAG_DEFINED + 1))), "");
-  unsigned int next_bit = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
+  अचिन्हित पूर्णांक अग्र_bit = hb_popcount (HB_GLYPH_FLAG_DEFINED) + 1;
 
-  unsigned count = feature_infos.length;
-  for (unsigned int i = 0; i < count; i++)
+  अचिन्हित गिनती = feature_infos.लंबाई;
+  क्रम (अचिन्हित पूर्णांक i = 0; i < गिनती; i++)
   {
-    const feature_info_t *info = &feature_infos[i];
+    स्थिर feature_info_t *info = &feature_infos[i];
 
-    unsigned int bits_needed;
+    अचिन्हित पूर्णांक bits_needed;
 
-    if ((info->flags & F_GLOBAL) && info->max_value == 1)
+    अगर ((info->flags & F_GLOBAL) && info->max_मूल्य == 1)
       /* Uses the global bit */
       bits_needed = 0;
-    else
+    अन्यथा
       /* Limit bits per feature. */
-      bits_needed = hb_min (HB_OT_MAP_MAX_BITS, hb_bit_storage (info->max_value));
+      bits_needed = hb_min (HB_OT_MAP_MAX_BITS, hb_bit_storage (info->max_मूल्य));
 
-    if (!info->max_value || next_bit + bits_needed >= global_bit_shift)
-      continue; /* Feature disabled, or not enough bits. */
+    अगर (!info->max_मूल्य || अग्र_bit + bits_needed >= global_bit_shift)
+      जारी; /* Feature disabled, or not enough bits. */
 
     bool found = false;
-    unsigned int feature_index[2];
-    for (unsigned int table_index = 0; table_index < 2; table_index++)
+    अचिन्हित पूर्णांक feature_सूचकांक[2];
+    क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
     {
-      if (required_feature_tag[table_index] == info->tag)
-	required_feature_stage[table_index] = info->stage[table_index];
+      अगर (required_feature_tag[table_सूचकांक] == info->tag)
+	required_feature_stage[table_सूचकांक] = info->stage[table_सूचकांक];
 
-      hb_codepoint_t *index;
-      if (feature_indices[table_index].has (info->tag, &index))
+      hb_codepoint_t *सूचकांक_2;
+      अगर (feature_indices[table_सूचकांक].has (info->tag, &सूचकांक_2))
       {
-        feature_index[table_index] = *index;
+        feature_सूचकांक[table_सूचकांक] = *सूचकांक_2;
         found = true;
       }
-      else
-        feature_index[table_index] = HB_OT_LAYOUT_NO_FEATURE_INDEX;
+      अन्यथा
+        feature_सूचकांक[table_सूचकांक] = HB_OT_LAYOUT_NO_FEATURE_सूचकांक;
     }
-    if (!found && (info->flags & F_GLOBAL_SEARCH))
+    अगर (!found && (info->flags & F_GLOBAL_खोज))
     {
-      for (unsigned int table_index = 0; table_index < 2; table_index++)
+      क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
       {
 	found |= (bool) hb_ot_layout_table_find_feature (face,
-							 table_tags[table_index],
+							 table_tags[table_सूचकांक],
 							 info->tag,
-							 &feature_index[table_index]);
+							 &feature_सूचकांक[table_सूचकांक]);
       }
     }
-    if (!found && !(info->flags & F_HAS_FALLBACK))
-      continue;
+    अगर (!found && !(info->flags & F_HAS_FALLBACK))
+      जारी;
 
 
     hb_ot_map_t::feature_map_t *map = m.features.push ();
 
     map->tag = info->tag;
-    map->index[0] = feature_index[0];
-    map->index[1] = feature_index[1];
+    map->सूचकांक_2[0] = feature_सूचकांक[0];
+    map->सूचकांक_2[1] = feature_सूचकांक[1];
     map->stage[0] = info->stage[0];
     map->stage[1] = info->stage[1];
     map->auto_zwnj = !(info->flags & F_MANUAL_ZWNJ);
     map->auto_zwj = !(info->flags & F_MANUAL_ZWJ);
     map->random = !!(info->flags & F_RANDOM);
     map->per_syllable = !!(info->flags & F_PER_SYLLABLE);
-    if ((info->flags & F_GLOBAL) && info->max_value == 1) {
+    अगर ((info->flags & F_GLOBAL) && info->max_मूल्य == 1) {
       /* Uses the global bit */
       map->shift = global_bit_shift;
       map->mask = global_bit_mask;
-    } else {
-      map->shift = next_bit;
-      map->mask = (1u << (next_bit + bits_needed)) - (1u << next_bit);
-      next_bit += bits_needed;
-      m.global_mask |= (info->default_value << map->shift) & map->mask;
+    } अन्यथा {
+      map->shift = अग्र_bit;
+      map->mask = (1u << (अग्र_bit + bits_needed)) - (1u << अग्र_bit);
+      अग्र_bit += bits_needed;
+      m.global_mask |= (info->default_मूल्य << map->shift) & map->mask;
     }
     map->_1_mask = (1u << map->shift) & map->mask;
     map->needs_fallback = !found;
   }
   //feature_infos.shrink (0); /* Done with these */
-  if (is_simple)
-    m.features.qsort ();
+  अगर (is_simple)
+    m.features.क्विक ();
 
   add_gsub_pause (nullptr);
   add_gpos_pause (nullptr);
 
-  for (unsigned int table_index = 0; table_index < 2; table_index++)
+  क्रम (अचिन्हित पूर्णांक table_सूचकांक = 0; table_सूचकांक < 2; table_सूचकांक++)
   {
     /* Collect lookup indices for features */
-    auto &lookups = m.lookups[table_index];
+    स्वतः &lookups = m.lookups[table_सूचकांक];
 
-    unsigned int stage_index = 0;
-    unsigned int last_num_lookups = 0;
-    for (unsigned stage = 0; stage < current_stage[table_index]; stage++)
+    अचिन्हित पूर्णांक stage_सूचकांक = 0;
+    अचिन्हित पूर्णांक last_अंक_lookups = 0;
+    क्रम (अचिन्हित stage = 0; stage < current_stage[table_सूचकांक]; stage++)
     {
-      if (required_feature_index[table_index] != HB_OT_LAYOUT_NO_FEATURE_INDEX &&
-	  required_feature_stage[table_index] == stage)
-	add_lookups (m, table_index,
-		     required_feature_index[table_index],
+      अगर (required_feature_सूचकांक[table_सूचकांक] != HB_OT_LAYOUT_NO_FEATURE_सूचकांक &&
+	  required_feature_stage[table_सूचकांक] == stage)
+	add_lookups (m, table_सूचकांक,
+		     required_feature_सूचकांक[table_सूचकांक],
 		     key,
 		     global_bit_mask);
 
-      for (auto &feature : m.features)
+      क्रम (स्वतः &feature : m.features)
       {
-	if (feature.stage[table_index] == stage)
-	  add_lookups (m, table_index,
-		       feature.index[table_index],
+	अगर (feature.stage[table_सूचकांक] == stage)
+	  add_lookups (m, table_सूचकांक,
+		       feature.सूचकांक_2[table_सूचकांक],
 		       key,
 		       feature.mask,
 		       feature.auto_zwnj,
@@ -384,15 +384,15 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
       }
 
       /* Sort lookups and merge duplicates */
-      if (last_num_lookups + 1 < lookups.length)
+      अगर (last_अंक_lookups + 1 < lookups.लंबाई)
       {
-	lookups.as_array ().sub_array (last_num_lookups, lookups.length - last_num_lookups).qsort ();
+	lookups.as_array ().sub_array (last_अंक_lookups, lookups.लंबाई - last_अंक_lookups).क्विक ();
 
-	unsigned int j = last_num_lookups;
-	for (unsigned int i = j + 1; i < lookups.length; i++)
-	  if (lookups.arrayZ[i].index != lookups.arrayZ[j].index)
+	अचिन्हित पूर्णांक j = last_अंक_lookups;
+	क्रम (अचिन्हित पूर्णांक i = j + 1; i < lookups.लंबाई; i++)
+	  अगर (lookups.arrayZ[i].सूचकांक_2 != lookups.arrayZ[j].सूचकांक_2)
 	    lookups.arrayZ[++j] = lookups.arrayZ[i];
-	  else
+	  अन्यथा
 	  {
 	    lookups.arrayZ[j].mask |= lookups.arrayZ[i].mask;
 	    lookups.arrayZ[j].auto_zwnj &= lookups.arrayZ[i].auto_zwnj;
@@ -401,32 +401,32 @@ hb_ot_map_builder_t::compile (hb_ot_map_t                  &m,
 	lookups.shrink (j + 1);
       }
 
-      last_num_lookups = lookups.length;
+      last_अंक_lookups = lookups.लंबाई;
 
-      if (stage_index < stages[table_index].length && stages[table_index][stage_index].index == stage) {
-	hb_ot_map_t::stage_map_t *stage_map = m.stages[table_index].push ();
-	stage_map->last_lookup = last_num_lookups;
-	stage_map->pause_func = stages[table_index][stage_index].pause_func;
+      अगर (stage_सूचकांक < stages[table_सूचकांक].लंबाई && stages[table_सूचकांक][stage_सूचकांक].सूचकांक_2 == stage) {
+	hb_ot_map_t::stage_map_t *stage_map = m.stages[table_सूचकांक].push ();
+	stage_map->last_lookup = last_अंक_lookups;
+	stage_map->pause_func = stages[table_सूचकांक][stage_सूचकांक].pause_func;
 
-	stage_index++;
+	stage_सूचकांक++;
       }
     }
   }
 }
 
-unsigned int hb_ot_map_t::get_feature_tags (unsigned int start_offset, unsigned int *tag_count, hb_tag_t *tags) const
+अचिन्हित पूर्णांक hb_ot_map_t::get_feature_tags (अचिन्हित पूर्णांक start_offset, अचिन्हित पूर्णांक *tag_गिनती, hb_tag_t *tags) स्थिर
 {
-  if (tag_count)
+  अगर (tag_गिनती)
   {
-    auto sub_features = features.as_array ().sub_array (start_offset, tag_count);
-    if (tags)
+    स्वतः sub_features = features.as_array ().sub_array (start_offset, tag_गिनती);
+    अगर (tags)
     {
-      for (unsigned int i = 0; i < sub_features.length; i++)
+      क्रम (अचिन्हित पूर्णांक i = 0; i < sub_features.लंबाई; i++)
         tags[i] = sub_features[i].tag;
     }
   }
 
-  return features.length;
+  वापस features.लंबाई;
 }
 
-#endif
+#पूर्ण_अगर

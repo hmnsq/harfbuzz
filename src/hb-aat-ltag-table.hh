@@ -22,16 +22,16 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LTAG_TABLE_HH
-#define HB_AAT_LTAG_TABLE_HH
+#अगर_अघोषित HB_AAT_LTAG_TABLE_HH
+#घोषणा HB_AAT_LTAG_TABLE_HH
 
-#include "hb-open-type.hh"
+#समावेश "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6ltag.html
  */
-#define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
+#घोषणा HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
 
 
 namespace AAT {
@@ -39,57 +39,57 @@ namespace AAT {
 using namespace OT;
 
 
-struct FTStringRange
+काष्ठा FTStringRange
 {
-  friend struct ltag;
+  मित्र काष्ठा ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  bool sanitize (hb_sanitize_context_t *c, स्थिर व्योम *base) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (c->check_struct (यह) &&
 		  hb_barrier () &&
-		  (base+tag).sanitize (c, length));
+		  (base+tag).sanitize (c, लंबाई));
   }
 
-  protected:
+  रक्षित:
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		tag;		/* Offset from the start of the table to
 				 * the beginning of the string */
-  HBUINT16	length;		/* String length (in bytes) */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  HBUINT16	लंबाई;		/* String length (in bytes) */
+  खुला:
+  DEFINE_आकार_STATIC (4);
 };
 
-struct ltag
+काष्ठा ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  अटल constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (अचिन्हित पूर्णांक i) स्थिर
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
-				    range.length);
+    स्थिर FTStringRange &range = tagRanges[i];
+    वापस hb_language_from_string ((स्थिर अक्षर *) (यह+range.tag).arrayZ,
+				    range.लंबाई);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  bool sanitize (hb_sanitize_context_t *c) स्थिर
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (यह);
+    return_trace (likely (c->check_struct (यह) &&
 			  hb_barrier () &&
 			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  tagRanges.sanitize (c, यह)));
   }
 
-  protected:
+  रक्षित:
   HBUINT32	version;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
   Array32Of<FTStringRange>
 		tagRanges;	/* Range for each tag's string */
-  public:
-  DEFINE_SIZE_ARRAY (12, tagRanges);
+  खुला:
+  DEFINE_आकार_ARRAY (12, tagRanges);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LTAG_TABLE_HH */
+#पूर्ण_अगर /* HB_AAT_LTAG_TABLE_HH */

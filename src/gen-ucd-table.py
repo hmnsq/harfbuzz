@@ -7,31 +7,31 @@ Input file:
 """
 
 # https://github.com/harfbuzz/packtab
-import packTab
-import packTab.ucdxml
+आयात packTab
+आयात packTab.ucdxml
 
-import sys, re
-import logging
+आयात sys, re
+आयात logging
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
+अगर len(sys.argv) > 1 and sys.argv[1] == "--rust":
     del sys.argv[1]
     logging.info("Generating Rust code...")
     language = "rust"
-else:
+अन्यथा:
     logging.info("Generating C code...")
     language = "c"
 language = packTab.languages[language]
 
-if len(sys.argv) not in (2, 3):
+अगर len(sys.argv) not in (2, 3):
     sys.exit(__doc__)
 
 logging.info("Loading UCDXML...")
 ucdxml = packTab.ucdxml.load_ucdxml(sys.argv[1])
 ucd = packTab.ucdxml.ucdxml_get_repertoire(ucdxml)
 
-hb_script_list_h = "hb-script-list.h" if len(sys.argv) < 3 else sys.argv[2]
+hb_script_list_h = "hb-script-list.h" अगर len(sys.argv) < 3 अन्यथा sys.argv[2]
 
 logging.info("Preparing data tables...")
 
@@ -47,10 +47,10 @@ logging.info("Preparing data tables...")
 # Composition & Decomposition (dm) are encoded elaborately,
 # as discussed below.
 
-gc = [u["gc"] for u in ucd]
-ccc = [int(u["ccc"]) for u in ucd]
-bmg = [int(v, 16) - int(u) if v else 0 for u, v in enumerate(u["bmg"] for u in ucd)]
-sc = [u["sc"] for u in ucd]
+gc = [u["gc"] क्रम u in ucd]
+ccc = [पूर्णांक(u["ccc"]) क्रम u in ucd]
+bmg = [पूर्णांक(v, 16) - पूर्णांक(u) अगर v अन्यथा 0 क्रम u, v in enumerate(u["bmg"] क्रम u in ucd)]
+sc = [u["sc"] क्रम u in ucd]
 
 
 # Prepare Compose / Decompose data
@@ -58,23 +58,23 @@ sc = [u["sc"] for u in ucd]
 # This code is very dense.  See hb_ucd_compose() / hb_ucd_decompose() for the logic.
 
 dm = {
-    i: tuple(int(v, 16) for v in u["dm"].split())
-    for i, u in enumerate(ucd)
-    if u["dm"] != "#" and u["dt"] == "can" and not (0xAC00 <= i < 0xAC00 + 11172)
+    i: tuple(पूर्णांक(v, 16) क्रम v in u["dm"].split())
+    क्रम i, u in enumerate(ucd)
+    अगर u["dm"] != "#" and u["dt"] == "can" and not (0xAC00 <= i < 0xAC00 + 11172)
 }
-ce = {i for i, u in enumerate(ucd) if u["Comp_Ex"] == "Y"}
+ce = {i क्रम i, u in enumerate(ucd) अगर u["Comp_Ex"] == "Y"}
 
-assert not any(v for v in dm.values() if len(v) not in (1, 2))
-dm1 = sorted(set(v for v in dm.values() if len(v) == 1))
-assert all((v[0] >> 16) in (0, 2) for v in dm1)
-dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 0]
-dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) for v in dm1 if (v[0] >> 16) == 2]
-dm1_order = {v: i + 1 for i, v in enumerate(dm1)}
+assert not any(v क्रम v in dm.मूल्यावली() अगर len(v) not in (1, 2))
+dm1 = sorted(set(v क्रम v in dm.मूल्यावली() अगर len(v) == 1))
+assert all((v[0] >> 16) in (0, 2) क्रम v in dm1)
+dm1_p0_array = ["0x%04X" % (v[0] & 0xFFFF) क्रम v in dm1 अगर (v[0] >> 16) == 0]
+dm1_p2_array = ["0x%04X" % (v[0] & 0xFFFF) क्रम v in dm1 अगर (v[0] >> 16) == 2]
+dm1_order = {v: i + 1 क्रम i, v in enumerate(dm1)}
 
 dm2 = sorted(
-    (v + (i if i not in ce and not ccc[i] else 0,), v)
-    for i, v in dm.items()
-    if len(v) == 2
+    (v + (i अगर i not in ce and not ccc[i] अन्यथा 0,), v)
+    क्रम i, v in dm.वस्तुएँ()
+    अगर len(v) == 2
 )
 
 filt = lambda v: (
@@ -82,29 +82,29 @@ filt = lambda v: (
     and (v[1] & 0xFFFFFF80) == 0x0300
     and (v[2] & 0xFFF0C000) == 0x0000
 )
-dm2_u32_array = [v for v in dm2 if filt(v[0])]
-dm2_u64_array = [v for v in dm2 if not filt(v[0])]
+dm2_u32_array = [v क्रम v in dm2 अगर filt(v[0])]
+dm2_u64_array = [v क्रम v in dm2 अगर not filt(v[0])]
 assert dm2_u32_array + dm2_u64_array == dm2
 dm2_u32_array = [
     "HB_CODEPOINT_ENCODE3_11_7_14 (0x%04X, 0x%04X, 0x%04X)" % v[0]
-    for v in dm2_u32_array
+    क्रम v in dm2_u32_array
 ]
 dm2_u64_array = [
-    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] for v in dm2_u64_array
+    "HB_CODEPOINT_ENCODE3 (0x%04X, 0x%04X, 0x%04X)" % v[0] क्रम v in dm2_u64_array
 ]
 
 l = 1 + len(dm1_p0_array) + len(dm1_p2_array)
-dm2_order = {v[1]: i + l for i, v in enumerate(dm2)}
+dm2_order = {v[1]: i + l क्रम i, v in enumerate(dm2)}
 
 dm_order = {None: 0}
-dm_order.update(dm1_order)
-dm_order.update(dm2_order)
+dm_order.नया_हाल(dm1_order)
+dm_order.नया_हाल(dm2_order)
 
 
 # Prepare General_Category / Script mapping arrays
 
 gc_order = dict()
-for i, v in enumerate(
+क्रम i, v in enumerate(
     (
         "Cc",
         "Cf",
@@ -144,17 +144,17 @@ for i, v in enumerate(
 sc_order = dict()
 sc_array = []
 sc_re = re.compile(r"\b(HB_SCRIPT_[_A-Z]*).*HB_TAG [(]'(.)','(.)','(.)','(.)'[)]")
-for line in open(hb_script_list_h):
-    m = sc_re.search(line)
-    if not m:
-        continue
+क्रम पंक्ति in open(hb_script_list_h):
+    m = sc_re.खोज(पंक्ति)
+    अगर not m:
+        जारी
     name = m.group(1)
-    tag = "".join(m.group(i) for i in range(2, 6))
+    tag = "".मेल(m.group(i) क्रम i in range(2, 6))
     i = len(sc_array)
     sc_order[tag] = i
     sc_order[i] = tag
-    if language.name == "rust":
-        name = name.replace("HB_SCRIPT_", "script::")
+    अगर language.name == "rust":
+        name = name.प्रतिस्थापन("HB_SCRIPT_", "script::")
     sc_array.append(name)
 
 
@@ -177,13 +177,13 @@ print(" * The following table is generated by running:")
 print(" *")
 print(
     " *   ./gen-ucd-table.py %sucd.nounihan.grouped.xml hb-script-list.h"
-    % (("--%s " % language.name) if language.name != "c" else "")
+    % (("--%s " % language.name) अगर language.name != "c" अन्यथा "")
 )
 print(" *")
 print(" * on file with this description:", ucdxml.description)
 print(" */")
 print()
-if language.name == "c":
+अगर language.name == "c":
     print("#ifndef HB_UCD_TABLE_HH")
     print("#define HB_UCD_TABLE_HH")
     print()
@@ -199,7 +199,7 @@ elif language.name == "rust":
     print("use crate::hb::common::script;")
     print("use crate::hb::common::Script as hb_script_t;")
     print()
-else:
+अन्यथा:
     assert False, "Unknown language: %s" % language.name
 
 # Write mapping data
@@ -208,11 +208,11 @@ uint16_t = language.type_name("u16")
 uint32_t = language.type_name("u32")
 uint64_t = language.type_name("u64")
 
-if language.name == "c":
-    private = True
+अगर language.name == "c":
+    निजी = True
 elif language.name == "rust":
-    private = False
-else:
+    निजी = False
+अन्यथा:
     assert False, "Unknown language: %s" % language.name
 
 code = packTab.Code("_hb_ucd")
@@ -221,7 +221,7 @@ dm1_p0_array, _ = code.addArray(uint16_t, "dm1_p0_map", dm1_p0_array)
 dm1_p2_array, _ = code.addArray(uint16_t, "dm1_p2_map", dm1_p2_array)
 dm2_u32_array, _ = code.addArray(uint32_t, "dm2_u32_map", dm2_u32_array)
 dm2_u64_array, _ = code.addArray(uint64_t, "dm2_u64_map", dm2_u64_array)
-code.print_code(language=language, private=private)
+code.print_code(language=language, निजी=निजी)
 
 datasets = [
     ("gc", gc, "Cn", gc_order),
@@ -235,57 +235,57 @@ datasets = [
 # Write main data
 
 modes = {}
-if language.name == "c":
+अगर language.name == "c":
     modes[DEFAULT] = "#ifndef HB_OPTIMIZE_SIZE"
     modes[COMPACT] = "#elif !defined(HB_NO_UCD_UNASSIGNED)"
     modes[SLOPPY] = "#else"
     modes[None] = "#endif"
-else:
+अन्यथा:
     modes[DEFAULT] = ""
 
-for step, text in modes.items():
+क्रम step, text in modes.वस्तुएँ():
     print()
-    if text:
+    अगर text:
         print(text)
         print()
-    if step is None:
-        continue
+    अगर step is None:
+        जारी
 
     compression = compression_level[step]
     logging.info("  Compression=%d:" % compression)
 
-    if step == SLOPPY:
-        for i in range(len(gc)):
-            if (i % 128) and gc[i] == "Cn":
+    अगर step == SLOPPY:
+        क्रम i in range(len(gc)):
+            अगर (i % 128) and gc[i] == "Cn":
                 gc[i] = gc[i - 1]
-        for i in range(len(gc) - 2, -1, -1):
-            if ((i + 1) % 128) and gc[i] == "Cn":
+        क्रम i in range(len(gc) - 2, -1, -1):
+            अगर ((i + 1) % 128) and gc[i] == "Cn":
                 gc[i] = gc[i + 1]
-        for i in range(len(sc)):
-            if (i % 128) and sc[i] == "Zzzz":
+        क्रम i in range(len(sc)):
+            अगर (i % 128) and sc[i] == "Zzzz":
                 sc[i] = sc[i - 1]
-        for i in range(len(sc) - 2, -1, -1):
-            if ((i + 1) % 128) and sc[i] == "Zzzz":
+        क्रम i in range(len(sc) - 2, -1, -1):
+            अगर ((i + 1) % 128) and sc[i] == "Zzzz":
                 sc[i] = sc[i + 1]
 
     code = packTab.Code("_hb_ucd")
 
-    for name, data, default, mapping in datasets:
+    क्रम name, तथ्य, शेष, mapping in datasets:
         sol = packTab.pack_table(
-            data, default, mapping=mapping, compression=compression
+            तथ्य, शेष, mapping=mapping, compression=compression
         )
         logging.info("      Dataset=%-8s FullCost=%d" % (name, sol.fullCost))
-        sol.genCode(code, name, private=private, language=language)
+        sol.genCode(code, name, निजी=निजी, language=language)
 
     code.print_code(language=language)
 
     print()
 
-if language.name == "c":
+अगर language.name == "c":
     print("#endif /* HB_UCD_TABLE_HH */")
 elif language.name == "rust":
     print("}")
-else:
+अन्यथा:
     assert False, "Unknown language: %s" % language.name
 print()
 print("/* == End of generated table == */")

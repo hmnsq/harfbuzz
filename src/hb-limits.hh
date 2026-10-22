@@ -22,122 +22,122 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_LIMITS_HH
-#define HB_LIMITS_HH
+#अगर_अघोषित HB_LIMITS_HH
+#घोषणा HB_LIMITS_HH
 
-#include "hb.hh"
-
-
-#ifndef HB_BUFFER_MAX_LEN_FACTOR
-#define HB_BUFFER_MAX_LEN_FACTOR 256
-#endif
-#ifndef HB_BUFFER_MAX_LEN_MIN
-#define HB_BUFFER_MAX_LEN_MIN 65536
-#endif
-#ifndef HB_BUFFER_MAX_LEN_DEFAULT
-#define HB_BUFFER_MAX_LEN_DEFAULT 0x3FFFFFFF /* Shaping more than a billion chars? Let us know! */
-#endif
-
-#ifndef HB_BUFFER_MAX_OPS_FACTOR
-#define HB_BUFFER_MAX_OPS_FACTOR 4096
-#endif
-#ifndef HB_BUFFER_MAX_OPS_MIN
-#define HB_BUFFER_MAX_OPS_MIN 65536
-#endif
-#ifndef HB_BUFFER_MAX_OPS_DEFAULT
-#define HB_BUFFER_MAX_OPS_DEFAULT 0x1FFFFFFF /* Shaping more than a billion operations? Let us know! */
-#endif
+#समावेश "hb.hh"
 
 
-#ifndef HB_MAX_NESTING_LEVEL
-#define HB_MAX_NESTING_LEVEL 64
-#endif
+#अगर_अघोषित HB_बफर_MAX_LEN_FACTOR
+#घोषणा HB_बफर_MAX_LEN_FACTOR 256
+#पूर्ण_अगर
+#अगर_अघोषित HB_बफर_MAX_LEN_MIN
+#घोषणा HB_बफर_MAX_LEN_MIN 65536
+#पूर्ण_अगर
+#अगर_अघोषित HB_बफर_MAX_LEN_DEFAULT
+#घोषणा HB_बफर_MAX_LEN_DEFAULT 0x3FFFFFFF /* Shaping more than a billion chars? Let us know! */
+#पूर्ण_अगर
+
+#अगर_अघोषित HB_बफर_MAX_OPS_FACTOR
+#घोषणा HB_बफर_MAX_OPS_FACTOR 4096
+#पूर्ण_अगर
+#अगर_अघोषित HB_बफर_MAX_OPS_MIN
+#घोषणा HB_बफर_MAX_OPS_MIN 65536
+#पूर्ण_अगर
+#अगर_अघोषित HB_बफर_MAX_OPS_DEFAULT
+#घोषणा HB_बफर_MAX_OPS_DEFAULT 0x1FFFFFFF /* Shaping more than a billion operations? Let us know! */
+#पूर्ण_अगर
 
 
-#ifndef HB_MAX_CONTEXT_LENGTH
-#define HB_MAX_CONTEXT_LENGTH 64
-#endif
+#अगर_अघोषित HB_MAX_NESTING_LEVEL
+#घोषणा HB_MAX_NESTING_LEVEL 64
+#पूर्ण_अगर
 
-#ifndef HB_MAX_SYLLABLE_LENGTH
-#define HB_MAX_SYLLABLE_LENGTH 64
-#endif
 
-#ifndef HB_CLOSURE_MAX_STAGES
+#अगर_अघोषित HB_MAX_CONTEXT_लंबाई
+#घोषणा HB_MAX_CONTEXT_लंबाई 64
+#पूर्ण_अगर
+
+#अगर_अघोषित HB_MAX_SYLLABLE_लंबाई
+#घोषणा HB_MAX_SYLLABLE_लंबाई 64
+#पूर्ण_अगर
+
+#अगर_अघोषित HB_CLOSURE_MAX_STAGES
 /*
  * The maximum number of times a lookup can be applied during shaping.
  * Used to limit the number of iterations of the closure algorithm.
  * This must be larger than the number of times add_gsub_pause() is
  * called in a collect_features call of any shaper.
  */
-#define HB_CLOSURE_MAX_STAGES 12
-#endif
+#घोषणा HB_CLOSURE_MAX_STAGES 12
+#पूर्ण_अगर
 
-#ifndef HB_MAX_SCRIPTS
-#define HB_MAX_SCRIPTS 500
-#endif
+#अगर_अघोषित HB_MAX_SCRIPTS
+#घोषणा HB_MAX_SCRIPTS 500
+#पूर्ण_अगर
 
-#ifndef HB_MAX_LANGSYS
-#define HB_MAX_LANGSYS 2000
-#endif
+#अगर_अघोषित HB_MAX_LANGSYS
+#घोषणा HB_MAX_LANGSYS 2000
+#पूर्ण_अगर
 
-#ifndef HB_MAX_LANGSYS_FEATURE_COUNT
-#define HB_MAX_LANGSYS_FEATURE_COUNT 50000
-#endif
+#अगर_अघोषित HB_MAX_LANGSYS_FEATURE_गिनती
+#घोषणा HB_MAX_LANGSYS_FEATURE_गिनती 50000
+#पूर्ण_अगर
 
-#ifndef HB_MAX_FEATURE_INDICES
-#define HB_MAX_FEATURE_INDICES 8000
-#endif
+#अगर_अघोषित HB_MAX_FEATURE_INDICES
+#घोषणा HB_MAX_FEATURE_INDICES 8000
+#पूर्ण_अगर
 
-#ifndef HB_MAX_LOOKUP_VISIT_COUNT
-#define HB_MAX_LOOKUP_VISIT_COUNT 35000
-#endif
+#अगर_अघोषित HB_MAX_LOOKUP_VISIT_गिनती
+#घोषणा HB_MAX_LOOKUP_VISIT_गिनती 35000
+#पूर्ण_अगर
 
-#ifndef HB_MAX_GRAPH_EDGE_COUNT
-#define HB_MAX_GRAPH_EDGE_COUNT 16384
-#endif
+#अगर_अघोषित HB_MAX_GRAPH_EDGE_गिनती
+#घोषणा HB_MAX_GRAPH_EDGE_गिनती 16384
+#पूर्ण_अगर
 
-#ifndef HB_VAR_COMPOSITE_MAX_AXES
-#define HB_VAR_COMPOSITE_MAX_AXES 4096
-#endif
+#अगर_अघोषित HB_VAR_COMPOSITE_MAX_AXES
+#घोषणा HB_VAR_COMPOSITE_MAX_AXES 4096
+#पूर्ण_अगर
 
-#ifndef HB_GLYF_MAX_POINTS
-#define HB_GLYF_MAX_POINTS 200000
-#endif
+#अगर_अघोषित HB_GLYF_MAX_POINTS
+#घोषणा HB_GLYF_MAX_POINTS 200000
+#पूर्ण_अगर
 
-#ifndef HB_CFF_MAX_OPS
-#define HB_CFF_MAX_OPS 200000
-#endif
+#अगर_अघोषित HB_CFF_MAX_OPS
+#घोषणा HB_CFF_MAX_OPS 200000
+#पूर्ण_अगर
 
-#ifndef HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH
-#define HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH 64
-#endif
+#अगर_अघोषित HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH
+#घोषणा HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH 64
+#पूर्ण_अगर
 
-#ifndef HB_SVG_MAX_PATH_SEGMENTS
-#define HB_SVG_MAX_PATH_SEGMENTS 262144
-#endif
+#अगर_अघोषित HB_SVG_MAX_PATH_SEGMENTS
+#घोषणा HB_SVG_MAX_PATH_SEGMENTS 262144
+#पूर्ण_अगर
 
-#ifndef HB_GPU_DRAW_MAX_CURVES
-#define HB_GPU_DRAW_MAX_CURVES 65536
-#endif
+#अगर_अघोषित HB_GPU_DRAW_MAX_CURVES
+#घोषणा HB_GPU_DRAW_MAX_CURVES 65536
+#पूर्ण_अगर
 
 /* Total bytes of sub-blobs (gradient color stops, clip outlines) in one
  * hb_gpu_paint_t walk; exceeding it makes the paint unsupported. */
-#ifndef HB_GPU_PAINT_MAX_SUB_BYTES
-#define HB_GPU_PAINT_MAX_SUB_BYTES ((unsigned) 64 << 20)
-#endif
+#अगर_अघोषित HB_GPU_PAINT_MAX_SUB_BYTES
+#घोषणा HB_GPU_PAINT_MAX_SUB_BYTES ((अचिन्हित) 64 << 20)
+#पूर्ण_अगर
 
 /* Tiles emitted by one hb_paint_sweep_gradient_tiles() call.  Also
  * sets the angular resolution (2π over this) below which a repeating
  * color line is filled with its average color instead of tiled;
  * a repeat/reflect color line whose stops span a tiny angle could
  * otherwise emit millions of patches while covering 0..2π. */
-#ifndef HB_PAINT_MAX_SWEEP_TILES
-#define HB_PAINT_MAX_SWEEP_TILES 4096
-#endif
+#अगर_अघोषित HB_PAINT_MAX_SWEEP_TILES
+#घोषणा HB_PAINT_MAX_SWEEP_TILES 4096
+#पूर्ण_अगर
 
-#ifndef HB_SVG_MAX_DOCUMENT_SIZE
-#define HB_SVG_MAX_DOCUMENT_SIZE ((size_t) 16 << 20)
-#endif
+#अगर_अघोषित HB_SVG_MAX_DOCUMENT_आकार
+#घोषणा HB_SVG_MAX_DOCUMENT_आकार ((माप_प्रकार) 16 << 20)
+#पूर्ण_अगर
 
 /* Maximum size of one serialized vector document (SVG or PDF) produced by
  * the vector backends.  Bounds output that is not outline-derived -- most
@@ -145,21 +145,21 @@
  * which the outline work budget cannot see.  vector is one glyph per
  * context, so a flat cap suffices.  Unsigned (not size_t like the SVG-table
  * limit above) to match hb_vector_buf_t's unsigned length arithmetic. */
-#ifndef HB_VECTOR_MAX_DOCUMENT_SIZE
-#define HB_VECTOR_MAX_DOCUMENT_SIZE ((unsigned) 16 << 20)
-#endif
+#अगर_अघोषित HB_VECTOR_MAX_DOCUMENT_आकार
+#घोषणा HB_VECTOR_MAX_DOCUMENT_आकार ((अचिन्हित) 16 << 20)
+#पूर्ण_अगर
 
-#ifndef HB_RASTER_MAX_BUFFER_SIZE
-#define HB_RASTER_MAX_BUFFER_SIZE ((size_t) 1 << 30)
-#endif
+#अगर_अघोषित HB_RASTER_MAX_बफर_आकार
+#घोषणा HB_RASTER_MAX_बफर_आकार ((माप_प्रकार) 1 << 30)
+#पूर्ण_अगर
 
 /* Maximum surface dimension (pixels per side) when extents are derived
  * from font data (glyph extents or accumulated outline bounds).  Bounds
  * attacker-controlled allocations; extents set explicitly through
  * hb_raster_{draw,paint}_set_extents() are not limited. */
-#ifndef HB_RASTER_MAX_AUTO_DIMENSION
-#define HB_RASTER_MAX_AUTO_DIMENSION 4096
-#endif
+#अगर_अघोषित HB_RASTER_MAX_AUTO_DIMENSION
+#घोषणा HB_RASTER_MAX_AUTO_DIMENSION 4096
+#पूर्ण_अगर
 
 /*
  * Cumulative work budgets.
@@ -177,62 +177,62 @@
 
 /* Fixed relative weights.  Keep the value in the name so charge sites are
  * easy to audit; tune the common session cap, not these values. */
-#define HB_BUDGET_1	1u
-#define HB_BUDGET_2	2u
-#define HB_BUDGET_4	4u
-#define HB_BUDGET_8	8u
-#define HB_BUDGET_16	16u
-#define HB_BUDGET_32	32u
-#define HB_BUDGET_64	64u
-#define HB_BUDGET_128	128u
-#define HB_BUDGET_256	256u
-#define HB_BUDGET_512	512u
-#define HB_BUDGET_1024	1024u
+#घोषणा HB_BUDGET_1	1u
+#घोषणा HB_BUDGET_2	2u
+#घोषणा HB_BUDGET_4	4u
+#घोषणा HB_BUDGET_8	8u
+#घोषणा HB_BUDGET_16	16u
+#घोषणा HB_BUDGET_32	32u
+#घोषणा HB_BUDGET_64	64u
+#घोषणा HB_BUDGET_128	128u
+#घोषणा HB_BUDGET_256	256u
+#घोषणा HB_BUDGET_512	512u
+#घोषणा HB_BUDGET_1024	1024u
 
 /* The common finite default for one top-level glyph rendering session.
  * Nested outline and paint work shares the same live counter. */
-#ifndef HB_BUDGET_GLYPH
-#define HB_BUDGET_GLYPH ((int64_t) 1 << 24)
-#endif
+#अगर_अघोषित HB_BUDGET_GLYPH
+#घोषणा HB_BUDGET_GLYPH ((int64_t) 1 << 24)
+#पूर्ण_अगर
 
 /* Precharge COST * MULT.  Callers bound COST and MULT structurally, and live
  * budgets are concrete non-negative values when a session starts. */
-static HB_ALWAYS_INLINE bool
-hb_budget_spend (int64_t &budget, unsigned int cost, unsigned int mult = 1)
+अटल HB_ALWAYS_INLINE bool
+hb_budget_spend (int64_t &budget, अचिन्हित पूर्णांक cost, अचिन्हित पूर्णांक mult = 1)
 {
   budget -= (int64_t) cost * mult;
-  return budget >= 0;
+  वापस budget >= 0;
 }
 
 /* The flat pixel-work floor for one raster paint session.  Pixel and
  * outline work use separate live counters, so keep this independent of
  * the common outline budget above. */
-#ifndef HB_BUDGET_RASTER_PIXELS
-#define HB_BUDGET_RASTER_PIXELS ((int64_t) 1 << 26)
-#endif
+#अगर_अघोषित HB_BUDGET_RASTER_PIXELS
+#घोषणा HB_BUDGET_RASTER_PIXELS ((int64_t) 1 << 26)
+#पूर्ण_अगर
 
 /* Very large raster surfaces still get a few full-surface operations. */
-#ifndef HB_BUDGET_RASTER_PAINT_PASSES
-#define HB_BUDGET_RASTER_PAINT_PASSES 4
-#endif
+#अगर_अघोषित HB_BUDGET_RASTER_PAINT_PASSES
+#घोषणा HB_BUDGET_RASTER_PAINT_PASSES 4
+#पूर्ण_अगर
 
 /* One raster draw session, in accumulated non-horizontal edges. */
-#ifndef HB_RASTER_MAX_DRAW_EDGES
-#define HB_RASTER_MAX_DRAW_EDGES ((int64_t) 1 << 20)
-#endif
+#अगर_अघोषित HB_RASTER_MAX_DRAW_EDGES
+#घोषणा HB_RASTER_MAX_DRAW_EDGES ((int64_t) 1 << 20)
+#पूर्ण_अगर
 
 
-#ifndef HB_REPACKER_MAX_ITERATIONS
-#define HB_REPACKER_MAX_ITERATIONS 500
-#endif
+#अगर_अघोषित HB_REPACKER_MAX_ITERATIONS
+#घोषणा HB_REPACKER_MAX_ITERATIONS 500
+#पूर्ण_अगर
 
-#ifndef HB_REPACKER_MAX_VERTICES
-#define HB_REPACKER_MAX_VERTICES 800000
-#endif
+#अगर_अघोषित HB_REPACKER_MAX_VERTICES
+#घोषणा HB_REPACKER_MAX_VERTICES 800000
+#पूर्ण_अगर
 
-#ifndef HB_REPACKER_MAX_SPACES
-#define HB_REPACKER_MAX_SPACES 8000
-#endif
+#अगर_अघोषित HB_REPACKER_MAX_SPACES
+#घोषणा HB_REPACKER_MAX_SPACES 8000
+#पूर्ण_अगर
 
 
-#endif /* HB_LIMITS_HH */
+#पूर्ण_अगर /* HB_LIMITS_HH */

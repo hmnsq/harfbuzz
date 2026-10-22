@@ -1,35 +1,35 @@
-#ifndef OT_LAYOUT_GPOS_CURSIVEPOS_HH
-#define OT_LAYOUT_GPOS_CURSIVEPOS_HH
+#अगर_अघोषित OT_LAYOUT_GPOS_CURSIVEPOS_HH
+#घोषणा OT_LAYOUT_GPOS_CURSIVEPOS_HH
 
-#include "CursivePosFormat1.hh"
+#समावेश "CursivePosFormat1.hh"
 
 namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct CursivePos
+काष्ठा CursivePos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  रक्षित:
+  जोड़ {
+  काष्ठा { HBUINT16 v; } format;        /* Format identifier */
   CursivePosFormat1_2<SmallTypes> format1;
-#ifndef HB_NO_BEYOND_64K
+#अगर_अघोषित HB_NO_BEYOND_64K
   CursivePosFormat1_2<MediumTypes> format2;
-#endif
+#पूर्ण_अगर
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  खुला:
+  ढाँचा <typename context_t, typename ...Ts>
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) स्थिर
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    अगर (unlikely (!c->may_dispatch (यह, &u.format.v))) वापस c->no_dispatch_return_मूल्य ();
+    TRACE_DISPATCH (यह, u.format.v);
+    चयन (u.format.v) {
+    हाल 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#अगर_अघोषित HB_NO_BEYOND_64K
+    हाल 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#पूर्ण_अगर
+    शेष:return_trace (c->default_return_मूल्य ());
     }
   }
 };
@@ -38,4 +38,4 @@ struct CursivePos
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CURSIVEPOS_HH */
+#पूर्ण_अगर /* OT_LAYOUT_GPOS_CURSIVEPOS_HH */

@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#अगर_अघोषित GRAPH_SPLIT_HELPERS_HH
+#घोषणा GRAPH_SPLIT_HELPERS_HH
 
-#include "graph-result.hh"
+#समावेश "graph-result.hh"
 
 namespace graph {
 
-template<typename Context>
+ढाँचा<typename Context>
 HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+graph_परिणाम_t<hb_vector_t<अचिन्हित>> actuate_subtable_split (Context& split_context,
+                                                              स्थिर hb_vector_t<अचिन्हित>& split_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_vector_t<अचिन्हित> new_objects;
+  अगर (!split_points)
+    वापस Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  क्रम (अचिन्हित i = 0; i < split_points.लंबाई; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
+    अचिन्हित start = split_points[i];
+    अचिन्हित end = (i < split_points.लंबाई - 1)
                    ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+                   : split_context.original_गिनती_2 ();
+    TRY_ASSIGN (अचिन्हित id, split_context.clone_range (start, end));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (graph_परिणाम_t<व्योम>::from (new_objects, ALLOCATION_FAILURE));
   }
 
   TRY (split_context.shrink (split_points[0]));
 
-  return Ok(new_objects);
+  वापस Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#पूर्ण_अगर  // GRAPH_SPLIT_HELPERS_HH

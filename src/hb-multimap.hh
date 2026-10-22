@@ -22,75 +22,75 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_MULTIMAP_HH
-#define HB_MULTIMAP_HH
+#अगर_अघोषित HB_MULTIMAP_HH
+#घोषणा HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#समावेश "hb.hh"
+#समावेश "hb-map.hh"
+#समावेश "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+काष्ठा hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  व्योम add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    अगर (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      वापस;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    अगर (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      वापस;
     }
 
     singulars.set (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<स्थिर hb_codepoint_t> लो (hb_codepoint_t k) स्थिर
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    स्थिर hb_codepoint_t *v;
+    अगर (singulars.has (k, &v))
+      वापस hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    अगर (multiples.has (k, &m))
+      वापस m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    वापस hb_array_t<स्थिर hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  bool in_error () स्थिर
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    अगर (singulars.in_error () || multiples.in_error ())
+      वापस true;
+    क्रम (स्थिर स्वतः &m : multiples.मूल्यावली_ref ())
+      अगर (m.in_error ())
+        वापस true;
+    वापस false;
   }
 
-  void alloc (unsigned size)
+  व्योम alloc (अचिन्हित आकार)
   {
-    singulars.alloc (size);
+    singulars.alloc (आकार);
   }
 
-  protected:
+  रक्षित:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };
 
 
 
-#endif /* HB_MULTIMAP_HH */
+#पूर्ण_अगर /* HB_MULTIMAP_HH */

@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_HH
-#define HB_OT_FACE_HH
+#अगर_अघोषित HB_OT_FACE_HH
+#घोषणा HB_OT_FACE_HH
 
-#include "hb.hh"
+#समावेश "hb.hh"
 
-#include "hb-machinery.hh"
+#समावेश "hb-machinery.hh"
 
 
 /*
@@ -39,36 +39,36 @@
  */
 
 /* Declare tables. */
-#define HB_OT_TABLE(Namespace, Type) namespace Namespace { struct Type; }
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#घोषणा HB_OT_TABLE(Namespace, Type) namespace Namespace { काष्ठा Type; }
+#घोषणा HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
+#समावेश "hb-ot-face-table-list.hh"
+#अघोषित HB_OT_ACCELERATOR
+#अघोषित HB_OT_TABLE
 
-struct hb_ot_face_t
+काष्ठा hb_ot_face_t
 {
-  HB_INTERNAL void init0 (hb_face_t *face);
-  HB_INTERNAL void fini ();
+  HB_INTERNAL व्योम init0 (hb_face_t *face);
+  HB_INTERNAL व्योम fini ();
 
-#define HB_OT_TABLE_ORDER(Namespace, Type) \
+#घोषणा HB_OT_TABLE_ORDER(Namespace, Type) \
     HB_PASTE (ORDER_, HB_PASTE (Namespace, HB_PASTE (_, Type)))
-  enum order_t
+  क्रमागत order_t
   {
     ORDER_ZERO,
-#define HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+#घोषणा HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),
+#समावेश "hb-ot-face-table-list.hh"
+#अघोषित HB_OT_TABLE
   };
 
   hb_face_t *face; /* MUST be JUST before the lazy loaders. */
-#define HB_OT_TABLE(Namespace, Type) \
+#घोषणा HB_OT_TABLE(Namespace, Type) \
   hb_table_lazy_loader_t<Namespace::Type, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#define HB_OT_ACCELERATOR(Namespace, Type) \
+#घोषणा HB_OT_ACCELERATOR(Namespace, Type) \
   hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#समावेश "hb-ot-face-table-list.hh"
+#अघोषित HB_OT_ACCELERATOR
+#अघोषित HB_OT_TABLE
 };
 
 
-#endif /* HB_OT_FACE_HH */
+#पूर्ण_अगर /* HB_OT_FACE_HH */
