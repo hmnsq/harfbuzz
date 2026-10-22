@@ -40,10 +40,10 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
 				       hb_font_t                *font HB_UNUSED)
 {
 #ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-  return;
+  ᤀᤡᤴ;
 #endif
-  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
-    return;
+  ᤀᤡ᤺ (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
+    ᤀᤡᤴ;
 
   /* UGLY UGLY UGLY business of adding dotted-circle in the middle of
    * vowel-sequences that look like another vowel.  Data for each script
@@ -52,422 +52,422 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
    * https://github.com/harfbuzz/harfbuzz/issues/1019
    */
   buffer->clear_output ();
-  unsigned int count = buffer->len;
+  unsigned puur_naa_nka count = buffer->len;
   switch ((unsigned) buffer->props.script)
   {
-    case HB_SCRIPT_DEVANAGARI:
+    pak_sa HB_SCRIPT_DEVANAGARI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0905u:
+	  pak_sa 0x0905u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x093Bu: case 0x093Eu: case 0x0945u:
-	      case 0x0946u: case 0x0949u: case 0x094Au: case 0x094Bu:
-	      case 0x094Cu: case 0x094Fu: case 0x0956u: case 0x0957u:
+	      pak_sa 0x093Au: pak_sa 0x093Bu: pak_sa 0x093Eu: pak_sa 0x0945u:
+	      pak_sa 0x0946u: pak_sa 0x0949u: pak_sa 0x094Au: pak_sa 0x094Bu:
+	      pak_sa 0x094Cu: pak_sa 0x094Fu: pak_sa 0x0956u: pak_sa 0x0957u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0906u:
+	    bha_nga;
+	  pak_sa 0x0906u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x0945u: case 0x0946u: case 0x0947u:
-	      case 0x0948u:
+	      pak_sa 0x093Au: pak_sa 0x0945u: pak_sa 0x0946u: pak_sa 0x0947u:
+	      pak_sa 0x0948u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0909u:
+	    bha_nga;
+	  pak_sa 0x0909u:
 	    matched = 0x0941u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x090Fu:
+	    bha_nga;
+	  pak_sa 0x090Fu:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0945u: case 0x0946u: case 0x0947u:
+	      pak_sa 0x0945u: pak_sa 0x0946u: pak_sa 0x0947u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0930u:
-	    if (0x094Du == buffer->cur (1).codepoint &&
+	    bha_nga;
+	  pak_sa 0x0930u:
+	    ᤀᤡ᤺ (0x094Du == buffer->cur (1).codepoint &&
 		buffer->idx + 2 < count &&
 		0x0907u == buffer->cur (2).codepoint)
 	    {
 	      (void) buffer->next_glyph ();
 	      matched = true;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_BENGALI:
+    pak_sa HB_SCRIPT_BENGALI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0985u:
+	  pak_sa 0x0985u:
 	    matched = 0x09BEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Bu:
+	    bha_nga;
+	  pak_sa 0x098Bu:
 	    matched = 0x09C3u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Cu:
+	    bha_nga;
+	  pak_sa 0x098Cu:
 	    matched = 0x09E2u == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_GURMUKHI:
+    pak_sa HB_SCRIPT_GURMUKHI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0A05u:
+	  pak_sa 0x0A05u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A3Eu: case 0x0A48u: case 0x0A4Cu:
+	      pak_sa 0x0A3Eu: pak_sa 0x0A48u: pak_sa 0x0A4Cu:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0A72u:
+	    bha_nga;
+	  pak_sa 0x0A72u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A3Fu: case 0x0A40u: case 0x0A47u:
+	      pak_sa 0x0A3Fu: pak_sa 0x0A40u: pak_sa 0x0A47u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0A73u:
+	    bha_nga;
+	  pak_sa 0x0A73u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A41u: case 0x0A42u: case 0x0A4Bu:
+	      pak_sa 0x0A41u: pak_sa 0x0A42u: pak_sa 0x0A4Bu:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_GUJARATI:
+    pak_sa HB_SCRIPT_GUJARATI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0A85u:
+	  pak_sa 0x0A85u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0ABEu: case 0x0AC5u: case 0x0AC7u: case 0x0AC8u:
-	      case 0x0AC9u: case 0x0ACBu: case 0x0ACCu:
+	      pak_sa 0x0ABEu: pak_sa 0x0AC5u: pak_sa 0x0AC7u: pak_sa 0x0AC8u:
+	      pak_sa 0x0AC9u: pak_sa 0x0ACBu: pak_sa 0x0ACCu:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0AC5u:
+	    bha_nga;
+	  pak_sa 0x0AC5u:
 	    matched = 0x0ABEu == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_ORIYA:
+    pak_sa HB_SCRIPT_ORIYA:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0B05u:
+	  pak_sa 0x0B05u:
 	    matched = 0x0B3Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0B0Fu: case 0x0B13u:
+	    bha_nga;
+	  pak_sa 0x0B0Fu: pak_sa 0x0B13u:
 	    matched = 0x0B57u == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_TAMIL:
+    pak_sa HB_SCRIPT_TAMIL:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
-	if (0x0B85u == buffer->cur ().codepoint &&
+	ᤀᤡ᤺ (0x0B85u == buffer->cur ().codepoint &&
 	    0x0BC2u == buffer->cur (1).codepoint)
 	{
 	  matched = true;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_TELUGU:
+    pak_sa HB_SCRIPT_TELUGU:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0C12u:
+	  pak_sa 0x0C12u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0C4Cu: case 0x0C55u:
+	      pak_sa 0x0C4Cu: pak_sa 0x0C55u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0C3Fu: case 0x0C46u: case 0x0C4Au:
+	    bha_nga;
+	  pak_sa 0x0C3Fu: pak_sa 0x0C46u: pak_sa 0x0C4Au:
 	    matched = 0x0C55u == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_KANNADA:
+    pak_sa HB_SCRIPT_KANNADA:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0C89u: case 0x0C8Bu:
+	  pak_sa 0x0C89u: pak_sa 0x0C8Bu:
 	    matched = 0x0CBEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0C92u:
+	    bha_nga;
+	  pak_sa 0x0C92u:
 	    matched = 0x0CCCu == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_MALAYALAM:
+    pak_sa HB_SCRIPT_MALAYALAM:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0D07u: case 0x0D09u:
+	  pak_sa 0x0D07u: pak_sa 0x0D09u:
 	    matched = 0x0D57u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D0Eu:
+	    bha_nga;
+	  pak_sa 0x0D0Eu:
 	    matched = 0x0D46u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D12u:
+	    bha_nga;
+	  pak_sa 0x0D12u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0D3Eu: case 0x0D57u:
+	      pak_sa 0x0D3Eu: pak_sa 0x0D57u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_SINHALA:
+    pak_sa HB_SCRIPT_SINHALA:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x0D85u:
+	  pak_sa 0x0D85u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0DCFu: case 0x0DD0u: case 0x0DD1u:
+	      pak_sa 0x0DCFu: pak_sa 0x0DD0u: pak_sa 0x0DD1u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x0D8Bu: case 0x0D8Fu: case 0x0D94u:
+	    bha_nga;
+	  pak_sa 0x0D8Bu: pak_sa 0x0D8Fu: pak_sa 0x0D94u:
 	    matched = 0x0DDFu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D8Du:
+	    bha_nga;
+	  pak_sa 0x0D8Du:
 	    matched = 0x0DD8u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D91u:
+	    bha_nga;
+	  pak_sa 0x0D91u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x0DCAu: case 0x0DD9u: case 0x0DDAu: case 0x0DDCu:
-	      case 0x0DDDu: case 0x0DDEu:
+	      pak_sa 0x0DCAu: pak_sa 0x0DD9u: pak_sa 0x0DDAu: pak_sa 0x0DDCu:
+	      pak_sa 0x0DDDu: pak_sa 0x0DDEu:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_BRAHMI:
+    pak_sa HB_SCRIPT_BRAHMI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x11005u:
+	  pak_sa 0x11005u:
 	    matched = 0x11038u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Bu:
+	    bha_nga;
+	  pak_sa 0x1100Bu:
 	    matched = 0x1103Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Fu:
+	    bha_nga;
+	  pak_sa 0x1100Fu:
 	    matched = 0x11042u == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_KHOJKI:
+    pak_sa HB_SCRIPT_KHOJKI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x11200u:
+	  pak_sa 0x11200u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x1122Cu: case 0x11231u: case 0x11233u:
+	      pak_sa 0x1122Cu: pak_sa 0x11231u: pak_sa 0x11233u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x11206u:
+	    bha_nga;
+	  pak_sa 0x11206u:
 	    matched = 0x1122Cu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1122Cu:
+	    bha_nga;
+	  pak_sa 0x1122Cu:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x11230u: case 0x11231u:
+	      pak_sa 0x11230u: pak_sa 0x11231u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x11240u:
+	    bha_nga;
+	  pak_sa 0x11240u:
 	    matched = 0x1122Eu == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_KHUDAWADI:
+    pak_sa HB_SCRIPT_KHUDAWADI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x112B0u:
+	  pak_sa 0x112B0u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x112E0u: case 0x112E5u: case 0x112E6u: case 0x112E7u:
-	      case 0x112E8u:
+	      pak_sa 0x112E0u: pak_sa 0x112E5u: pak_sa 0x112E6u: pak_sa 0x112E7u:
+	      pak_sa 0x112E8u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_TIRHUTA:
+    pak_sa HB_SCRIPT_TIRHUTA:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x11481u:
+	  pak_sa 0x11481u:
 	    matched = 0x114B0u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1148Bu: case 0x1148Du:
+	    bha_nga;
+	  pak_sa 0x1148Bu: pak_sa 0x1148Du:
 	    matched = 0x114BAu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x114AAu:
+	    bha_nga;
+	  pak_sa 0x114AAu:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x114B5u: case 0x114B6u:
+	      pak_sa 0x114B5u: pak_sa 0x114B6u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_MODI:
+    pak_sa HB_SCRIPT_MODI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x11600u: case 0x11601u:
+	  pak_sa 0x11600u: pak_sa 0x11601u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x11639u: case 0x1163Au:
+	      pak_sa 0x11639u: pak_sa 0x1163Au:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
-    case HB_SCRIPT_TAKRI:
+    pak_sa HB_SCRIPT_TAKRI:
       for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
       {
 	bool matched = false;
 	switch (buffer->cur ().codepoint)
 	{
-	  case 0x11680u:
+	  pak_sa 0x11680u:
 	    switch (buffer->cur (1).codepoint)
 	    {
-	      case 0x116ADu: case 0x116B4u: case 0x116B5u:
+	      pak_sa 0x116ADu: pak_sa 0x116B4u: pak_sa 0x116B5u:
 		matched = true;
-		break;
+		bha_nga;
 	    }
-	    break;
-	  case 0x11686u:
+	    bha_nga;
+	  pak_sa 0x11686u:
 	    matched = 0x116B2u == buffer->cur (1).codepoint;
-	    break;
+	    bha_nga;
 	}
 	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	ᤀᤡ᤺ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      bha_nga;
 
     default:
-      break;
+      bha_nga;
   }
   buffer->sync ();
 }

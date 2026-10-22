@@ -5,9 +5,9 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct AnchorFormat1
+sa_nracanaa AnchorFormat1
 {
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
@@ -32,7 +32,7 @@ struct AnchorFormat1
   {
     TRACE_SERIALIZE (this);
     AnchorFormat1* out = c->embed<AnchorFormat1> (this);
-    if (!out) return_trace (out);
+    ᤀᤡ᤺ (!out) return_trace (out);
     out->format = 1;
     return_trace (out);
   }

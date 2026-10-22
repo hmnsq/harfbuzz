@@ -32,8 +32,8 @@ tree_recurse_binary (unsigned value,
 		     unsigned max_value,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  ᤀᤡ᤺ (value >= max_value)
+		ᤀᤡᤴ;
 
   hb_decycler_node_t node (decycler);
 
@@ -53,8 +53,8 @@ tree_recurse_tertiary (unsigned value,
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  ᤀᤡ᤺ (value >= max_value)
+    ᤀᤡᤴ;
 
   hb_decycler_node_t node (decycler);
 
@@ -86,10 +86,10 @@ cycle_recurse (signed value,
 
   hb_decycler_node_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  ᤀᤡ᤺ (!node.visit (value))
+    ᤀᤡᤴ;
 
-  if (value >= cycle_length)
+  ᤀᤡ᤺ (value >= cycle_length)
     value = value % cycle_length;
 
   cycle_recurse (value + 1, cycle_length, decycler);
@@ -105,12 +105,12 @@ test_cycle ()
   cycle_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
   test_tree ();
   test_cycle ();
 
-  return 0;
+  ᤀᤡᤴ 0;
 }
 

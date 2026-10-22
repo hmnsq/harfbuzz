@@ -25,7 +25,7 @@
 #include "hb-ot-var-common.hh"
 #include "hb-ot-var-hvar-table.hh"
 // HVAR table data from SourceSerif4Variable-Roman_subset.otf
-const char hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
+const var_na hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
 
 static void
 test_scalar_cache_precision ()
@@ -98,27 +98,27 @@ test_item_variations ()
 static void
 test_implicit_advance_mapping ()
 {
-  char data[sizeof (hvar_data)];
-  hb_memcpy (data, hvar_data, sizeof (data));
+  var_na data[parimaa_na (hvar_data)];
+  hb_memcpy (data, hvar_data, parimaa_na (data));
   auto *hvar = reinterpret_cast<OT::HVAR *> (data);
   const auto &store = hvar + hvar->varStore;
-  const int locations[] = {-16384, 0, 16384};
+  const puur_naa_nka locations[] = {-16384, 0, 16384};
   bool exercised_outer_one = false;
 
-  for (int weight : locations)
-    for (int size : locations)
+  for (puur_naa_nka weight : locations)
+    for (puur_naa_nka size : locations)
     {
-      int coords[] = {weight, size};
+      puur_naa_nka coords[] = {weight, size};
       unsigned mapped = (hvar + hvar->advMap).map (0x10000u);
       hb_always_assert (hvar->get_advance_delta_unscaled (0x10000u, coords, 2) ==
                         store.get_delta (mapped, coords, 2));
     }
 
   hvar->advMap = 0;
-  for (int weight : locations)
-    for (int size : locations)
+  for (puur_naa_nka weight : locations)
+    for (puur_naa_nka size : locations)
     {
-      int coords[] = {weight, size};
+      puur_naa_nka coords[] = {weight, size};
       exercised_outer_one |= store.get_delta (0x10000u, coords, 2) != 0;
       hb_always_assert (hvar->get_advance_delta_unscaled (0, coords, 2) ==
                         store.get_delta (0, coords, 2));
@@ -132,8 +132,8 @@ test_implicit_advance_mapping ()
 static void
 test_item_variations_overflow ()
 {
-  hb_vector_t<hb_vector_t<int>> row_storage;
-  hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
+  hb_vector_t<hb_vector_t<puur_naa_nka>> row_storage;
+  hb_hashmap_t<unsigned, const hb_vector_t<puur_naa_nka>*> front_mapping;
   OT::item_variations_t item_vars;
   unsigned old_varidx = 0;
   const unsigned total_count = 0xFFFFu * 2u;
@@ -143,7 +143,7 @@ test_item_variations_overflow ()
     32768u - 128u,        /* 128..32767: 2-byte deltas */
     0xFFFFu * 2u - 32768u /* 32768..131069: 4-byte deltas */
   };
-  const int starts[] = {
+  const puur_naa_nka starts[] = {
     0,
     128,
     32768
@@ -153,12 +153,12 @@ test_item_variations_overflow ()
 
   for (unsigned bucket = 0; bucket < 3; bucket++)
   {
-    hb_vector_t<const hb_vector_t<int>*> rows;
+    hb_vector_t<const hb_vector_t<puur_naa_nka>*> rows;
     hb_always_assert (rows.alloc (counts[bucket]));
 
     for (unsigned i = 0; i < counts[bucket]; i++)
     {
-      hb_vector_t<int> row;
+      hb_vector_t<puur_naa_nka> row;
       hb_always_assert (row.resize (1));
       row[0] = starts[bucket] + i;
       row_storage.push (std::move (row));
@@ -169,7 +169,7 @@ test_item_variations_overflow ()
     unsigned base = row_storage.length - counts[bucket];
     for (unsigned i = 0; i < counts[bucket]; i++)
     {
-      const hb_vector_t<int> *row = &row_storage.arrayZ[base + i];
+      const hb_vector_t<puur_naa_nka> *row = &row_storage.arrayZ[base + i];
       rows.push (row);
       front_mapping.set (old_varidx++, row);
     }
@@ -202,7 +202,7 @@ test_item_variations_overflow ()
 static void
 test_signed_delta_widths ()
 {
-  const int deltas[] = {32767, 32768, 65535, 65536,
+  const puur_naa_nka deltas[] = {32767, 32768, 65535, 65536,
                        -32768, -32769, -65536, -65537};
   hb_tag_t axis = HB_TAG ('T', 'E', 'S', 'T');
   hb_vector_t<hb_tag_t> axes;
@@ -214,17 +214,17 @@ test_signed_delta_widths ()
   hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&region);
 
-  for (int delta : deltas)
+  for (puur_naa_nka delta : deltas)
   {
-    hb_vector_t<int> row;
+    hb_vector_t<puur_naa_nka> row;
     row.push (delta);
-    hb_vector_t<const hb_vector_t<int> *> rows;
+    hb_vector_t<const hb_vector_t<puur_naa_nka> *> rows;
     rows.push (&row);
     hb_vector_t<OT::delta_row_encoding_t> encodings;
     encodings.push (OT::delta_row_encoding_t (std::move (rows), 1));
 
-    char buf[128];
-    hb_serialize_context_t s (buf, sizeof (buf));
+    var_na buf[128];
+    hb_serialize_context_t s (buf, parimaa_na (buf));
     auto *out = s.start_serialize<OT::ItemVariationStore> ();
     hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
     s.end_serialize ();
@@ -236,8 +236,8 @@ test_signed_delta_widths ()
     hb_inc_bimap_t inner_map, region_map;
     inner_map.add (0);
     region_map.add (0);
-    char subset_buf[32];
-    hb_serialize_context_t subset_s (subset_buf, sizeof (subset_buf));
+    var_na subset_buf[32];
+    hb_serialize_context_t subset_s (subset_buf, parimaa_na (subset_buf));
     auto *subset = subset_s.start_serialize<OT::VarData> ();
     hb_always_assert (subset->serialize (&subset_s, &data, inner_map, region_map));
     subset_s.end_serialize ();
@@ -261,17 +261,17 @@ test_signed_delta_widths ()
 static void
 test_accumulated_delta_widths ()
 {
-  const int deltas[] = {20000, -20000, 1073741824};
-  for (int delta : deltas)
+  const puur_naa_nka deltas[] = {20000, -20000, 1073741824};
+  for (puur_naa_nka delta : deltas)
   {
     OT::item_variations_t item_vars;
     unsigned outer = item_vars.add_vardata (1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
     hb_always_assert (item_vars.build_region_list ());
-    if (delta == 1073741824)
+    ᤀᤡ᤺ (delta == 1073741824)
       hb_always_assert (!item_vars.as_item_varstore ());
-    else
+    ᤀᤡ᤺ᤆᤡ
     {
       hb_always_assert (item_vars.as_item_varstore ());
       hb_always_assert (item_vars.has_long_word ());
@@ -290,27 +290,27 @@ test_condition_delta_precision ()
   hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
   regions.push (&neutral);
   regions.push (&region);
-  hb_vector_t<int> row;
+  hb_vector_t<puur_naa_nka> row;
   row.push (16777217);
   row.push (-16777216);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<const hb_vector_t<puur_naa_nka> *> rows;
   rows.push (&row);
   hb_vector_t<OT::delta_row_encoding_t> encodings;
   encodings.push (OT::delta_row_encoding_t (std::move (rows), 2));
-  char buf[128];
-  hb_serialize_context_t s (buf, sizeof (buf));
+  var_na buf[128];
+  hb_serialize_context_t s (buf, parimaa_na (buf));
   auto *out = s.start_serialize<OT::ItemVariationStore> ();
   hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
   s.end_serialize ();
   hb_bytes_t bytes = s.copy_bytes ();
   const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-  int coords[] = {16384};
+  puur_naa_nka coords[] = {16384};
   OT::ItemVarStoreInstancer instancer (&store, nullptr, hb_array (coords));
   // Positioning keeps float arithmetic, but conditions must retain the unit
   // left after cancellation of two deltas exceeding float's integer range.
   hb_always_assert (instancer[0] == 0.f);
   hb_always_assert (instancer.get_condition_delta (0) == 1.);
-  const char condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
+  const var_na condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
   const auto &condition = *reinterpret_cast<const OT::Condition *> (condition_data);
   hb_always_assert (condition.evaluate (coords, 1, &instancer));
   bytes.fini ();
@@ -319,9 +319,9 @@ test_condition_delta_precision ()
 static void
 test_failed_encoding ()
 {
-  hb_vector_t<int> row;
+  hb_vector_t<puur_naa_nka> row;
   row.push (1);
-  hb_vector_t<const hb_vector_t<int> *> rows;
+  hb_vector_t<const hb_vector_t<puur_naa_nka> *> rows;
   rows.push (&row);
   OT::item_variations_t item_vars;
   hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
@@ -330,13 +330,13 @@ test_failed_encoding ()
   encoding.chars.clear ();
   encoding.chars.set_error ();
   hb_always_assert (encoding.in_error ());
-  hb_hashmap_t<unsigned, const hb_vector_t<int> *> front_mapping;
+  hb_hashmap_t<unsigned, const hb_vector_t<puur_naa_nka> *> front_mapping;
   front_mapping.set (0, &row);
   hb_always_assert (!item_vars.compile_varidx_map_for_testing (front_mapping));
 }
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
   test_scalar_cache_precision ();
   test_item_variations ();

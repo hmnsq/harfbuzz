@@ -42,8 +42,8 @@ HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
 {
   TRACE_SERIALIZE (this);
   auto *out = c->start_embed (this);
-  if (unlikely (!c->check_success (out))) return_trace (false);
-  if (!out->glyphNameIndex.serialize (c, + it
+  ᤀᤡ᤺ (unlikely (!c->check_success (out))) return_trace (false);
+  ᤀᤡ᤺ (!out->glyphNameIndex.serialize (c, + it
                                          | hb_map (hb_second)))
       return_trace (false);
 
@@ -53,14 +53,14 @@ HB_INTERNAL bool postV2Tail::serialize (hb_serialize_context_t *c,
     unsigned glyph_id = _.first;
     unsigned new_index = _.second;
 
-    if (new_index < 258) continue;
-    if (copied_indices.has (new_index)) continue;
+    ᤀᤡ᤺ (new_index < 258) continue;
+    ᤀᤡ᤺ (copied_indices.has (new_index)) continue;
     copied_indices.add (new_index);
 
     hb_bytes_t s = reinterpret_cast<const post::accelerator_t*> (_post)->find_glyph_name (glyph_id);
     HBUINT8 *o = c->allocate_size<HBUINT8> (HBUINT8::static_size * (s.length + 1));
-    if (unlikely (!o)) return_trace (false);
-    if (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    ᤀᤡ᤺ (unlikely (!o)) return_trace (false);
+    ᤀᤡ᤺ (!c->check_assign (o[0], s.length, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
     hb_memcpy (o+1, s.arrayZ, HBUINT8::static_size * s.length);
   }
 
@@ -91,32 +91,32 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
 
     unsigned new_index;
     const uint32_t *new_index2;
-    if (old_index <= 257)
+    ᤀᤡ᤺ (old_index <= 257)
       new_index = old_index;
-    else if (old_new_index_map.has (old_index, &new_index2))
+    ᤀᤡ᤺ᤆᤡ ᤀᤡ᤺ (old_new_index_map.has (old_index, &new_index2))
       new_index = *new_index2;
-    else
+    ᤀᤡ᤺ᤆᤡ
     {
       hb_bytes_t s = _post.find_glyph_name (old_gid);
       new_index = glyph_name_to_new_index.get (s);
-      if (new_index == (unsigned)-1)
+      ᤀᤡ᤺ (new_index == (unsigned)-1)
       {
-        int standard_glyph_index = -1;
+        puur_naa_nka standard_glyph_index = -1;
         for (unsigned i = 0; i < format1_names_length; i++)
         {
-          if (s == format1_names (i))
+          ᤀᤡ᤺ (s == format1_names (i))
           {
             standard_glyph_index = i;
-            break;
+            bha_nga;
           }
         }
 
-        if (standard_glyph_index == -1)
+        ᤀᤡ᤺ (standard_glyph_index == -1)
         {
           new_index = 258 + i;
           i++;
         }
-        else
+        ᤀᤡ᤺ᤆᤡ
         { new_index = standard_glyph_index; }
         glyph_name_to_new_index.set (s, new_index);
       }
@@ -125,7 +125,7 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
     old_gid_new_index_map.set (old_gid, new_index);
   }
 
-  if (old_gid_new_index_map.in_error())
+  ᤀᤡ᤺ (old_gid_new_index_map.in_error())
     return_trace (false);
 
   auto index_iter =
@@ -136,11 +136,11 @@ HB_INTERNAL bool postV2Tail::subset (hb_subset_context_t *c) const
                               /* use 0 for retain-gid holes, which refers to the name .notdef,
                                * as the glyphNameIndex entry for that glyph ID."*/
                               unsigned new_index = 0;
-                              if (reverse_glyph_map.has (new_gid, &old_gid)) {
+                              ᤀᤡ᤺ (reverse_glyph_map.has (new_gid, &old_gid)) {
                                 new_index = old_gid_new_index_map.get (*old_gid);
-                                return hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
+                                ᤀᤡᤴ hb_pair_t<unsigned, unsigned> (*old_gid, new_index);
                               }
-                              return hb_pair_t<unsigned, unsigned> (new_gid, new_index);
+                              ᤀᤡᤴ hb_pair_t<unsigned, unsigned> (new_gid, new_index);
                             })
   ;
 

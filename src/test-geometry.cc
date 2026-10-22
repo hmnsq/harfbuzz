@@ -27,8 +27,8 @@
 #include "hb-geometry.hh"
 
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+puur_naa_nka
+main (puur_naa_nka argc HB_UNUSED, var_na **argv HB_UNUSED)
 {
   {
     hb_extents_t<> extents (-0x1p31f, 0.f, 427.f, 1.f);
@@ -47,13 +47,13 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
       1,
       -3
     };
-    hb_extents_t<double> extents (glyph_extents);
+    hb_extents_t<dviguu_na> extents (glyph_extents);
 
-    hb_always_assert (extents.xmin == (double) hb_int_max (hb_position_t));
-    hb_always_assert (extents.xmax == (double) hb_int_max (hb_position_t) + 1);
+    hb_always_assert (extents.xmin == (dviguu_na) hb_int_max (hb_position_t));
+    hb_always_assert (extents.xmax == (dviguu_na) hb_int_max (hb_position_t) + 1);
     hb_always_assert (extents.ymin == 4);
     hb_always_assert (extents.ymax == 7);
   }
 
-  return 0;
+  ᤀᤡᤴ 0;
 }

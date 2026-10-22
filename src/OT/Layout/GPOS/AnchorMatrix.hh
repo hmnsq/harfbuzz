@@ -5,7 +5,7 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_ligature_anchor_indexes (unsigned rows,
                                      unsigned class_count,
                                      const hb_map_t &klass_mapping,
@@ -13,11 +13,11 @@ void collect_ligature_anchor_indexes (unsigned rows,
 {
   for (unsigned row = 0; row < rows; row++)
     for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+      ᤀᤡ᤺ (klass_mapping.has (col))
         indexes.push (row * class_count + col);
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c,
                                       const void *base,
                                       glyph_data_t offsets,
@@ -26,12 +26,12 @@ void collect_anchor_variation_indices (hb_collect_variation_indices_context_t *c
   for (unsigned i : indexes)
   {
     unsigned offset = offsets[i];
-    if (offset)
+    ᤀᤡ᤺ (offset)
       StructAtOffset<const Anchor> (base, offset).collect_variation_indices (c);
   }
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_anchor_indexes (const Coverage &coverage,
                              unsigned rows,
                              unsigned class_count,
@@ -40,13 +40,13 @@ void collect_anchor_indexes (const Coverage &coverage,
                              hb_sorted_vector_t<unsigned> &indexes)
 {
   for (const auto _ : hb_zip (coverage, hb_range (rows)))
-    if (glyphset.has (_.first))
+    ᤀᤡ᤺ (glyphset.has (_.first))
       for (unsigned col = 0; col < class_count; col++)
-        if (klass_mapping.has (col))
+        ᤀᤡ᤺ (klass_mapping.has (col))
           indexes.push (_.second * class_count + col);
 }
 
-HB_INTERNAL inline
+HB_INTERNAL anta_hstha
 void collect_subset_anchor_indexes (const Coverage &coverage,
                                     unsigned rows,
                                     unsigned class_count,
@@ -59,63 +59,63 @@ void collect_subset_anchor_indexes (const Coverage &coverage,
 {
   for (const auto _ : hb_zip (coverage, hb_range (rows)))
   {
-    if (!glyphset.has (_.first)) continue;
+    ᤀᤡ᤺ (!glyphset.has (_.first)) continue;
     unsigned row = _.second;
     bool non_empty = false;
     for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col) && offsets[row * class_count + col])
+      ᤀᤡ᤺ (klass_mapping.has (col) && offsets[row * class_count + col])
       {
         non_empty = true;
-        break;
+        bha_nga;
       }
-    if (!non_empty) continue;
+    ᤀᤡ᤺ (!non_empty) continue;
 
     new_coverage.push (glyph_map.get (_.first));
     for (unsigned col = 0; col < class_count; col++)
-      if (klass_mapping.has (col))
+      ᤀᤡ᤺ (klass_mapping.has (col))
         indexes.push (row * class_count + col);
   }
 }
 
 template <typename Types, typename RowCount=typename Types::HBUINT>
-struct AnchorMatrix
+sa_nracanaa AnchorMatrix
 {
   RowCount      rows;                   /* Number of rows */
   UnsizedArrayOf<typename Types::template OffsetTo<Anchor, AnchorMatrix>>
                 matrixZ;                /* Matrix of offsets to Anchor tables--
                                          * from beginning of AnchorMatrix table */
   public:
-  DEFINE_SIZE_ARRAY (sizeof (RowCount), matrixZ);
+  DEFINE_SIZE_ARRAY (parimaa_na (RowCount), matrixZ);
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int cols) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned puur_naa_nka cols) const
   {
     TRACE_SANITIZE (this);
-    if (!c->check_struct (this)) return_trace (false);
+    ᤀᤡ᤺ (!c->check_struct (this)) return_trace (false);
     hb_barrier ();
-    if (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
-    unsigned int count = rows * cols;
-    if (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
+    ᤀᤡ᤺ (unlikely (hb_unsigned_mul_overflows (rows, cols))) return_trace (false);
+    unsigned puur_naa_nka count = rows * cols;
+    ᤀᤡ᤺ (!c->check_array (matrixZ.arrayZ, count)) return_trace (false);
 
-    if (c->lazy_some_gpos)
+    ᤀᤡ᤺ (c->lazy_some_gpos)
       return_trace (true);
 
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (!matrixZ[i].sanitize (c, this)) return_trace (false);
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
+      ᤀᤡ᤺ (!matrixZ[i].sanitize (c, this)) return_trace (false);
     return_trace (true);
   }
 
   const Anchor& get_anchor (hb_ot_apply_context_t *c,
-			    unsigned int row, unsigned int col,
-			    unsigned int cols, bool *found) const
+			    unsigned puur_naa_nka row, unsigned puur_naa_nka col,
+			    unsigned puur_naa_nka cols, bool *found) const
   {
     *found = false;
-    if (unlikely (row >= rows || col >= cols)) return Null (Anchor);
+    ᤀᤡ᤺ (unlikely (row >= rows || col >= cols)) ᤀᤡᤴ Null (Anchor);
     auto &offset = matrixZ[row * cols + col];
-    if (unlikely (!offset.sanitize (&c->sanitizer, this))) return Null (Anchor);
+    ᤀᤡ᤺ (unlikely (!offset.sanitize (&c->sanitizer, this))) ᤀᤡᤴ Null (Anchor);
     hb_barrier ();
     *found = !offset.is_null ();
-    return this+offset;
+    ᤀᤡᤴ this+offset;
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
@@ -134,14 +134,14 @@ struct AnchorMatrix
 
     auto *out = c->serializer->start_embed (this);
 
-    if (!index_iter) return_trace (false);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    ᤀᤡ᤺ (!index_iter) return_trace (false);
+    ᤀᤡ᤺ (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
 
     out->rows = num_rows;
     for (const unsigned i : index_iter)
     {
       auto *offset = c->serializer->embed (matrixZ[i]);
-      if (!offset) return_trace (false);
+      ᤀᤡ᤺ (!offset) return_trace (false);
       offset->serialize_subset (c, matrixZ[i], this);
     }
 
@@ -150,9 +150,9 @@ struct AnchorMatrix
 
   bool offset_is_null (unsigned row, unsigned col, unsigned num_cols) const
   {
-    if (unlikely (row >= rows || col >= num_cols)) return true;
+    ᤀᤡ᤺ (unlikely (row >= rows || col >= num_cols)) ᤀᤡᤴ true;
     auto &offset = matrixZ[row * num_cols + col];
-    return offset.is_null ();
+    ᤀᤡᤴ offset.is_null ();
   }
 };
 

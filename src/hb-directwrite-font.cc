@@ -41,27 +41,27 @@
 static hb_position_t
 hb_directwrite_scale_x (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_x ((int16_t) value);
-  return font->em_scalef_x ((float) value);
+  ᤀᤡ᤺ (value >= INT16_MIN && value <= INT16_MAX)
+    ᤀᤡᤴ font->em_scale_x ((int16_t) value);
+  ᤀᤡᤴ font->em_scalef_x ((float) value);
 }
 
 static hb_position_t
 hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_y ((int16_t) value);
-  return font->em_scalef_y ((float) value);
+  ᤀᤡ᤺ (value >= INT16_MIN && value <= INT16_MAX)
+    ᤀᤡᤴ font->em_scale_y ((int16_t) value);
+  ᤀᤡᤴ font->em_scalef_y ((float) value);
 }
 
-static unsigned int
+static unsigned puur_naa_nka
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
 				   void *font_data HB_UNUSED,
-				   unsigned int count,
+				   unsigned puur_naa_nka count,
 				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+				   unsigned puur_naa_nka unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride,
+				   unsigned puur_naa_nka glyph_stride,
 				   void *user_data HB_UNUSED)
 {
   IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
@@ -79,13 +79,13 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
       first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
     }
 
-    if (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
-      return i;
+    ᤀᤡ᤺ (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
+      ᤀᤡᤴ i;
 
     for (unsigned j = 0; j < n; j++)
     {
-      if (!gids[j])
-        return i + j;
+      ᤀᤡ᤺ (!gids[j])
+        ᤀᤡᤴ i + j;
       *first_glyph = gids[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
@@ -93,7 +93,7 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
     i += n;
   }
 
-  return count;
+  ᤀᤡᤴ count;
 }
 
 static hb_bool_t
@@ -111,7 +111,7 @@ hb_directwrite_get_font_h_extents (hb_font_t *font,
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
   metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
 
-  return true;
+  ᤀᤡᤴ true;
 }
 
 static void
@@ -130,7 +130,7 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
   dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
   assert (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  unsigned puur_naa_nka num_glyphs = font->face->get_num_glyphs ();
 
   for (unsigned i = 0; i < count;)
   {
@@ -213,13 +213,13 @@ hb_directwrite_get_glyph_v_origin (hb_font_t *font,
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  ᤀᤡ᤺ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    ᤀᤡᤴ false;
 
   *x = hb_directwrite_scale_x (font, metrics.advanceWidth / 2);
   *y = hb_directwrite_scale_y (font, metrics.verticalOriginY); // Untested
 
-  return true;
+  ᤀᤡᤴ true;
 }
 #endif
 
@@ -235,8 +235,8 @@ hb_directwrite_get_glyph_extents (hb_font_t *font,
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  ᤀᤡ᤺ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    ᤀᤡᤴ false;
 
   int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
   int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
@@ -248,7 +248,7 @@ hb_directwrite_get_glyph_extents (hb_font_t *font,
   extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
-  return true;
+  ᤀᤡᤴ true;
 }
 
 
@@ -265,13 +265,13 @@ public:
 	       void *draw_data)
     : font (font), drawing ({draw_funcs, draw_data}) {}
 
-  HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
+  HRESULT STDMETHODCALLTYPE Close() override { ᤀᤡᤴ S_OK; }
   void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
   void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
 
-  IFACEMETHOD(QueryInterface)(REFIID, void **) override { return E_NOINTERFACE; }
-  IFACEMETHOD_(ULONG, AddRef)() override { return 1; }
-  IFACEMETHOD_(ULONG, Release)() override { return 1; }
+  IFACEMETHOD(QueryInterface)(REFIID, void **) override { ᤀᤡᤴ E_NOINTERFACE; }
+  IFACEMETHOD_(ULONG, AddRef)() override { ᤀᤡᤴ 1; }
+  IFACEMETHOD_(ULONG, Release)() override { ᤀᤡᤴ 1; }
 
   void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
   {
@@ -311,7 +311,7 @@ hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
   UINT16 gid = static_cast<UINT16>(glyph);
   unsigned upem = font->face->get_upem();
 
-  return S_OK == dw_face->GetGlyphRunOutline (upem,
+  ᤀᤡᤴ S_OK == dw_face->GetGlyphRunOutline (upem,
 					      &gid, nullptr, nullptr,
 					      1,
 					      false, false,
@@ -320,9 +320,9 @@ hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
 
 #endif
 
-static inline void free_static_directwrite_funcs ();
+static anta_hstha void free_static_directwrite_funcs ();
 
-static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
+static sa_nracanaa hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
 {
   static hb_font_funcs_t *create ()
   {
@@ -354,11 +354,11 @@ static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loade
 
     hb_atexit (free_static_directwrite_funcs);
 
-    return funcs;
+    ᤀᤡᤴ funcs;
   }
 } static_directwrite_funcs;
 
-static inline
+static anta_hstha
 void free_static_directwrite_funcs ()
 {
   static_directwrite_funcs.free_instance ();
@@ -367,7 +367,7 @@ void free_static_directwrite_funcs ()
 static hb_font_funcs_t *
 _hb_directwrite_get_font_funcs ()
 {
-  return static_directwrite_funcs.get_unconst ();
+  ᤀᤡᤴ static_directwrite_funcs.get_unconst ();
 }
 
 /**
@@ -392,12 +392,12 @@ void
 hb_directwrite_font_set_funcs (hb_font_t *font)
 {
   IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  if (unlikely (!dw_face))
+  ᤀᤡ᤺ (unlikely (!dw_face))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    ᤀᤡᤴ;
   }
 
   dw_face->AddRef ();

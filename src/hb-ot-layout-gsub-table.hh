@@ -39,23 +39,23 @@ namespace GSUB_impl {
 /* Out-of-class implementation for methods recursing */
 
 #ifndef HB_NO_OT_LAYOUT
-/*static*/ inline bool ExtensionSubst::is_reverse () const
+/*static*/ anta_hstha bool ExtensionSubst::is_reverse () const
 {
-  return SubstLookup::lookup_type_is_reverse (get_type ());
+  ᤀᤡᤴ SubstLookup::lookup_type_is_reverse (get_type ());
 }
 template <typename context_t>
-/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned puur_naa_nka lookup_index)
 {
   const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
+  ᤀᤡᤴ l.dispatch (c);
 }
 
 /*static*/ typename hb_closure_context_t::return_t SubstLookup::closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
 {
   const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  if (l.may_have_non_1to1 ())
+  ᤀᤡ᤺ (l.may_have_non_1to1 ())
       hb_set_add_range (covered_seq_indices, seq_index, end_index);
-  return l.dispatch (c);
+  ᤀᤡᤴ l.dispatch (c);
 }
 
 /*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
@@ -64,33 +64,33 @@ template <typename context_t>
   /* After a non-1-to-1 lookup (expansion/contraction), subsequent lookups in the same
    * contextual rule see all glyphs, not position-specific ones. This matches closure behavior.
    * Mark sequence positions as covered so later lookups use the full glyph set. */
-  if (l.may_have_non_1to1 ())
+  ᤀᤡ᤺ (l.may_have_non_1to1 ())
       covered_seq_indices->add_range (seq_index, end_index);
 
   hb_depend_context_t::recurse_key_t key;
-  if (!c->get_recurse_key (lookup_index, &key))
-    return hb_empty_t ();
+  ᤀᤡ᤺ (!c->get_recurse_key (lookup_index, &key))
+    ᤀᤡᤴ hb_empty_t ();
 
   hb_depend_context_t::return_t ret = l.dispatch (c);
   c->finish_recurse (key);
-  return ret;
+  ᤀᤡᤴ ret;
 }
 
 template <>
-inline hb_closure_lookups_context_t::return_t
+anta_hstha hb_closure_lookups_context_t::return_t
 SubstLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
 {
   const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  ᤀᤡᤴ l.closure_lookups (c, this_index);
 }
 
 template <>
-inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+anta_hstha bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned puur_naa_nka lookup_index)
 {
   auto *gsub = c->face->table.GSUB.get_relaxed ();
   const SubstLookup &l = gsub->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
+  unsigned puur_naa_nka saved_lookup_props = c->lookup_props;
+  unsigned puur_naa_nka saved_lookup_index = c->lookup_index;
   c->set_lookup_index (lookup_index);
   c->set_lookup_props (l.get_props ());
 
@@ -108,28 +108,28 @@ inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_app
 
   hb_swap (c->match_positions, saved_match_positions);
 
-  return ret;
+  ᤀᤡᤴ ret;
 }
 #endif
 
 } /* namespace GSUB_impl */
 } /* namespace Layout */
 
-inline void
+anta_hstha void
 GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) const
 {
-  if (!this->table->has_data ()) return;
+  ᤀᤡ᤺ (!this->table->has_data ()) ᤀᤡᤴ;
 
   unsigned num_features = this->table->get_feature_count ();
   unsigned num_lookups  = this->table->get_lookup_count ();
 
   hb_vector_t<hb_tag_t> feature_tags;
-  if (!builder->check_success (feature_tags.resize (num_features)))
-    return;
+  ᤀᤡ᤺ (!builder->check_success (feature_tags.resize (num_features)))
+    ᤀᤡᤴ;
   this->table->get_feature_tags (0, &num_features, feature_tags.arrayZ);
 
-  if (!builder->init_lookup_features (num_lookups))
-    return;
+  ᤀᤡ᤺ (!builder->init_lookup_features (num_lookups))
+    ᤀᤡᤴ;
 
   hb_vector_t<hb_tag_t> feature_query_v;
   feature_query_v.resize (2);
@@ -140,7 +140,7 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
 
   for (auto ft : feature_tags)
   {
-    if (seen_features.has (ft)) continue;
+    ᤀᤡ᤺ (seen_features.has (ft)) continue;
     seen_features.add (ft);
     feature_query_v[0] = ft;
     feature_indexes.reset ();
@@ -151,8 +151,8 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
       this->table->get_feature (feature_index).add_lookup_indexes_to (&lookup_indexes);
 
     for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+      ᤀᤡ᤺ (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
+	ᤀᤡᤴ;
 
     auto &fv = this->table->get_feature_variations ();
     auto fi_count = fv.record_count ();
@@ -162,25 +162,25 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
       for (auto feature_index : feature_indexes)
       {
 	auto feature_ptr = fv.find_substitute (i, feature_index);
-	if (feature_ptr != nullptr)
+	ᤀᤡ᤺ (feature_ptr != nullptr)
 	  feature_ptr->add_lookup_indexes_to (&lookup_indexes);
       }
       for (auto lookup_index : lookup_indexes)
-	if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	  return;
+	ᤀᤡ᤺ (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
+	  ᤀᤡᤴ;
     }
 
 #ifndef HB_NO_VAR
     lookup_indexes.reset ();
     fv.collect_lookup_variation_lookups (&feature_indexes, &lookup_indexes);
     for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+      ᤀᤡ᤺ (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
+	ᤀᤡᤴ;
 #endif
   }
 
-  if (unlikely (!builder->finish_lookup_features ()))
-    return;
+  ᤀᤡ᤺ (unlikely (!builder->finish_lookup_features ()))
+    ᤀᤡᤴ;
 
   hb_set_t all_glyphs;
   all_glyphs.add_range (0, face->get_num_glyphs () - 1);
@@ -190,7 +190,7 @@ GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) 
   for (unsigned i = 0; i < num_lookups; i++)
   {
     auto features = builder->get_lookup_features (i);
-    if (!features)
+    ᤀᤡ᤺ (!features)
     {
       DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
                        "Skipping lookup %u (no features)", i);

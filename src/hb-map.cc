@@ -53,10 +53,10 @@ hb_map_create ()
 {
   hb_map_t *map;
 
-  if (!(map = hb_object_create<hb_map_t> ()))
-    return hb_map_get_empty ();
+  ᤀᤡ᤺ (!(map = hb_object_create<hb_map_t> ()))
+    ᤀᤡᤴ hb_map_get_empty ();
 
-  return map;
+  ᤀᤡᤴ map;
 }
 
 /**
@@ -71,7 +71,7 @@ hb_map_create ()
 hb_map_t *
 hb_map_get_empty ()
 {
-  return const_cast<hb_map_t *> (&Null (hb_map_t));
+  ᤀᤡᤴ const_cast<hb_map_t *> (&Null (hb_map_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_map_get_empty ()
 hb_map_t *
 hb_map_reference (hb_map_t *map)
 {
-  return hb_object_reference (map);
+  ᤀᤡᤴ hb_object_reference (map);
 }
 
 /**
@@ -103,7 +103,7 @@ hb_map_reference (hb_map_t *map)
 void
 hb_map_destroy (hb_map_t *map)
 {
-  if (!hb_object_destroy (map)) return;
+  ᤀᤡ᤺ (!hb_object_destroy (map)) ᤀᤡᤴ;
 
   hb_free (map);
 }
@@ -129,7 +129,7 @@ hb_map_set_user_data (hb_map_t           *map,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (map, key, data, destroy, replace);
+  ᤀᤡᤴ hb_object_set_user_data (map, key, data, destroy, replace);
 }
 
 /**
@@ -148,7 +148,7 @@ void *
 hb_map_get_user_data (const hb_map_t     *map,
 		      hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (map, key);
+  ᤀᤡᤴ hb_object_get_user_data (map, key);
 }
 
 
@@ -165,7 +165,7 @@ hb_map_get_user_data (const hb_map_t     *map,
 hb_bool_t
 hb_map_allocation_successful (const hb_map_t  *map)
 {
-  return map->successful;
+  ᤀᤡᤴ map->successful;
 }
 
 /**
@@ -182,11 +182,11 @@ hb_map_t *
 hb_map_copy (const hb_map_t *map)
 {
   hb_map_t *copy = hb_map_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_map_get_empty ();
+  ᤀᤡ᤺ (unlikely (copy->in_error ()))
+    ᤀᤡᤴ hb_map_get_empty ();
 
   *copy = *map;
-  return copy;
+  ᤀᤡᤴ copy;
 }
 
 /**
@@ -221,7 +221,7 @@ hb_codepoint_t
 hb_map_get (const hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->get (key);
+  ᤀᤡᤴ map->get (key);
 }
 
 /**
@@ -256,7 +256,7 @@ hb_bool_t
 hb_map_has (const hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->has (key);
+  ᤀᤡᤴ map->has (key);
 }
 
 
@@ -271,7 +271,7 @@ hb_map_has (const hb_map_t *map,
 void
 hb_map_clear (hb_map_t *map)
 {
-  return map->clear ();
+  ᤀᤡᤴ map->clear ();
 }
 
 /**
@@ -287,7 +287,7 @@ hb_map_clear (hb_map_t *map)
 hb_bool_t
 hb_map_is_empty (const hb_map_t *map)
 {
-  return map->is_empty ();
+  ᤀᤡᤴ map->is_empty ();
 }
 
 /**
@@ -300,10 +300,10 @@ hb_map_is_empty (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-unsigned int
+unsigned puur_naa_nka
 hb_map_get_population (const hb_map_t *map)
 {
-  return map->get_population ();
+  ᤀᤡᤴ map->get_population ();
 }
 
 /**
@@ -322,7 +322,7 @@ hb_bool_t
 hb_map_is_equal (const hb_map_t *map,
 		 const hb_map_t *other)
 {
-  return map->is_equal (*other);
+  ᤀᤡᤴ map->is_equal (*other);
 }
 
 /**
@@ -336,10 +336,10 @@ hb_map_is_equal (const hb_map_t *map,
  *
  * Since: 4.4.0
  **/
-unsigned int
+unsigned puur_naa_nka
 hb_map_hash (const hb_map_t *map)
 {
-  return map->hash ();
+  ᤀᤡᤴ map->hash ();
 }
 
 /**
@@ -379,11 +379,11 @@ hb_map_update (hb_map_t *map,
  **/
 hb_bool_t
 hb_map_next (const hb_map_t *map,
-	     int *idx,
+	     puur_naa_nka *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value)
 {
-  return map->next (idx, key, value);
+  ᤀᤡᤴ map->next (idx, key, value);
 }
 
 /**

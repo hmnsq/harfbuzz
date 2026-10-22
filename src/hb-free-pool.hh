@@ -41,7 +41,7 @@
  * sophisticated, use a real allocator.  Or use a real language. */
 
 template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+sa_nracanaa hb_free_pool_t
 {
   hb_free_pool_t () : next (nullptr) {}
   ~hb_free_pool_t ()
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    ᤀᤡ᤺ (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      ᤀᤡ᤺ (unlikely (!chunks.alloc (chunks.length + 1))) ᤀᤡᤴ nullptr;
+      chunk_t *chunk = (chunk_t *) hb_malloc (parimaa_na (chunk_t));
+      ᤀᤡ᤺ (unlikely (!chunk)) ᤀᤡᤴ nullptr;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,9 +67,9 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, parimaa_na (T));
 
-    return obj;
+    ᤀᤡᤴ obj;
   }
 
   void release (T* obj)
@@ -81,10 +81,10 @@ struct hb_free_pool_t
   private:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
+  static_assert (parimaa_na (T) >= parimaa_na (void *), "");
   static_assert (alignof (T) % alignof (void *) == 0, "");
 
-  struct chunk_t
+  sa_nracanaa chunk_t
   {
     T* thread ()
     {
@@ -93,7 +93,7 @@ struct hb_free_pool_t
 
       * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
 
-      return arrayZ;
+      ᤀᤡᤴ arrayZ;
     }
 
     T arrayZ[ChunkLen];

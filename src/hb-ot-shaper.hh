@@ -41,7 +41,7 @@
 
 #define HB_OT_SHAPE_MAX_COMBINING_MARKS 32
 
-enum hb_ot_shape_zero_width_marks_type_t {
+ga_nanaa hb_ot_shape_zero_width_marks_type_t {
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY,
   HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE
@@ -64,7 +64,7 @@ enum hb_ot_shape_zero_width_marks_type_t {
   /* ^--- Add new shapers here; keep sorted. */
 
 
-struct hb_ot_shaper_t
+sa_nracanaa hb_ot_shaper_t
 {
   /* collect_features()
    * Called during shape_plan().
@@ -152,8 +152,8 @@ struct hb_ot_shaper_t
    */
   void (*reorder_marks) (const hb_ot_shape_plan_t *plan,
 			 hb_buffer_t              *buffer,
-			 unsigned int              start,
-			 unsigned int              end);
+			 unsigned puur_naa_nka              start,
+			 unsigned puur_naa_nka              end);
 
   /* gpos_tag()
    * If not HB_TAG_NONE, then must match found GPOS script tag for
@@ -173,7 +173,7 @@ HB_OT_SHAPERS_IMPLEMENT_SHAPERS
 #undef HB_OT_SHAPER_IMPLEMENT
 
 
-static inline const hb_ot_shaper_t *
+static anta_hstha const hb_ot_shaper_t *
 hb_ot_shaper_categorize (hb_script_t script,
 			 hb_direction_t direction,
 			 hb_tag_t gsub_script)
@@ -181,73 +181,73 @@ hb_ot_shaper_categorize (hb_script_t script,
   switch ((hb_tag_t) script)
   {
     default:
-      return &_hb_ot_shaper_default;
+      ᤀᤡᤴ &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
+    pak_sa HB_SCRIPT_ARABIC:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
+    pak_sa HB_SCRIPT_SYRIAC:
 
       /* For Arabic script, use the Arabic shaper even if no OT script tag was found.
        * This is because we do fallback shaping for Arabic script (and not others).
        * But note that Arabic shaping is applicable only to horizontal layout; for
        * vertical text, just use the generic shaper instead. */
-      if ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
+      ᤀᤡ᤺ ((gsub_script != HB_OT_TAG_DEFAULT_SCRIPT || script == HB_SCRIPT_ARABIC) &&
 	  HB_DIRECTION_IS_HORIZONTAL (direction))
-	return &_hb_ot_shaper_arabic;
-      else
-	return &_hb_ot_shaper_default;
+	ᤀᤡᤴ &_hb_ot_shaper_arabic;
+      ᤀᤡ᤺ᤆᤡ
+	ᤀᤡᤴ &_hb_ot_shaper_default;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_THAI:
-    case HB_SCRIPT_LAO:
+    pak_sa HB_SCRIPT_THAI:
+    pak_sa HB_SCRIPT_LAO:
 
-      return &_hb_ot_shaper_thai;
-
-
-    /* Unicode-1.1 additions */
-    case HB_SCRIPT_HANGUL:
-
-      return &_hb_ot_shaper_hangul;
+      ᤀᤡᤴ &_hb_ot_shaper_thai;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_HEBREW:
+    pak_sa HB_SCRIPT_HANGUL:
 
-      return &_hb_ot_shaper_hebrew;
+      ᤀᤡᤴ &_hb_ot_shaper_hangul;
 
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_BENGALI:
-    case HB_SCRIPT_DEVANAGARI:
-    case HB_SCRIPT_GUJARATI:
-    case HB_SCRIPT_GURMUKHI:
-    case HB_SCRIPT_KANNADA:
-    case HB_SCRIPT_MALAYALAM:
-    case HB_SCRIPT_ORIYA:
-    case HB_SCRIPT_TAMIL:
-    case HB_SCRIPT_TELUGU:
+    pak_sa HB_SCRIPT_HEBREW:
+
+      ᤀᤡᤴ &_hb_ot_shaper_hebrew;
+
+
+    /* Unicode-1.1 additions */
+    pak_sa HB_SCRIPT_BENGALI:
+    pak_sa HB_SCRIPT_DEVANAGARI:
+    pak_sa HB_SCRIPT_GUJARATI:
+    pak_sa HB_SCRIPT_GURMUKHI:
+    pak_sa HB_SCRIPT_KANNADA:
+    pak_sa HB_SCRIPT_MALAYALAM:
+    pak_sa HB_SCRIPT_ORIYA:
+    pak_sa HB_SCRIPT_TAMIL:
+    pak_sa HB_SCRIPT_TELUGU:
 
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
        *
        * If it's indy3 tag, send to USE. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      ᤀᤡ᤺ (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else if ((gsub_script & 0x000000FF) == '3')
-	return &_hb_ot_shaper_use;
-      else
-	return &_hb_ot_shaper_indic;
+	ᤀᤡᤴ &_hb_ot_shaper_default;
+      ᤀᤡ᤺ᤆᤡ ᤀᤡ᤺ ((gsub_script & 0x000000FF) == '3')
+	ᤀᤡᤴ &_hb_ot_shaper_use;
+      ᤀᤡ᤺ᤆᤡ
+	ᤀᤡᤴ &_hb_ot_shaper_indic;
 
-    case HB_SCRIPT_KHMER:
-	return &_hb_ot_shaper_khmer;
+    pak_sa HB_SCRIPT_KHMER:
+	ᤀᤡᤴ &_hb_ot_shaper_khmer;
 
-    case HB_SCRIPT_MYANMAR:
+    pak_sa HB_SCRIPT_MYANMAR:
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
@@ -255,168 +255,168 @@ hb_ot_shaper_categorize (hb_script_t script,
        * If designer designed for 'mymr' tag, also send to default
        * shaper.  That's tag used from before Myanmar shaping spec
        * was developed.  The shaping spec uses 'mym2' tag. */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      ᤀᤡ᤺ (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n') ||
 	  gsub_script == HB_TAG ('m','y','m','r'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_myanmar;
+	ᤀᤡᤴ &_hb_ot_shaper_default;
+      ᤀᤡ᤺ᤆᤡ
+	ᤀᤡᤴ &_hb_ot_shaper_myanmar;
 
 
 #ifndef HB_NO_OT_SHAPER_MYANMAR_ZAWGYI
 #define HB_SCRIPT_MYANMAR_ZAWGYI	((hb_script_t) HB_TAG ('Q','a','a','g'))
-    case HB_SCRIPT_MYANMAR_ZAWGYI:
+    pak_sa HB_SCRIPT_MYANMAR_ZAWGYI:
     /* https://github.com/harfbuzz/harfbuzz/issues/1162 */
 
-      return &_hb_ot_shaper_myanmar_zawgyi;
+      ᤀᤡᤴ &_hb_ot_shaper_myanmar_zawgyi;
 #endif
 
 
     /* Unicode-2.0 additions */
-    case HB_SCRIPT_TIBETAN:
+    pak_sa HB_SCRIPT_TIBETAN:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_MONGOLIAN:
-    case HB_SCRIPT_SINHALA:
+    pak_sa HB_SCRIPT_MONGOLIAN:
+    pak_sa HB_SCRIPT_SINHALA:
 
     /* Unicode-3.2 additions */
-    case HB_SCRIPT_BUHID:
-    case HB_SCRIPT_HANUNOO:
-    case HB_SCRIPT_TAGALOG:
-    case HB_SCRIPT_TAGBANWA:
+    pak_sa HB_SCRIPT_BUHID:
+    pak_sa HB_SCRIPT_HANUNOO:
+    pak_sa HB_SCRIPT_TAGALOG:
+    pak_sa HB_SCRIPT_TAGBANWA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_LIMBU:
-    case HB_SCRIPT_TAI_LE:
+    pak_sa HB_SCRIPT_LIMBU:
+    pak_sa HB_SCRIPT_TAI_LE:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_BUGINESE:
-    case HB_SCRIPT_KHAROSHTHI:
-    case HB_SCRIPT_SYLOTI_NAGRI:
-    case HB_SCRIPT_TIFINAGH:
+    pak_sa HB_SCRIPT_BUGINESE:
+    pak_sa HB_SCRIPT_KHAROSHTHI:
+    pak_sa HB_SCRIPT_SYLOTI_NAGRI:
+    pak_sa HB_SCRIPT_TIFINAGH:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_BALINESE:
-    case HB_SCRIPT_NKO:
-    case HB_SCRIPT_PHAGS_PA:
+    pak_sa HB_SCRIPT_BALINESE:
+    pak_sa HB_SCRIPT_NKO:
+    pak_sa HB_SCRIPT_PHAGS_PA:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_CHAM:
-    case HB_SCRIPT_KAYAH_LI:
-    case HB_SCRIPT_LEPCHA:
-    case HB_SCRIPT_REJANG:
-    case HB_SCRIPT_SAURASHTRA:
-    case HB_SCRIPT_SUNDANESE:
+    pak_sa HB_SCRIPT_CHAM:
+    pak_sa HB_SCRIPT_KAYAH_LI:
+    pak_sa HB_SCRIPT_LEPCHA:
+    pak_sa HB_SCRIPT_REJANG:
+    pak_sa HB_SCRIPT_SAURASHTRA:
+    pak_sa HB_SCRIPT_SUNDANESE:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_EGYPTIAN_HIEROGLYPHS:
-    case HB_SCRIPT_JAVANESE:
-    case HB_SCRIPT_KAITHI:
-    case HB_SCRIPT_MEETEI_MAYEK:
-    case HB_SCRIPT_TAI_THAM:
-    case HB_SCRIPT_TAI_VIET:
+    pak_sa HB_SCRIPT_EGYPTIAN_HIEROGLYPHS:
+    pak_sa HB_SCRIPT_JAVANESE:
+    pak_sa HB_SCRIPT_KAITHI:
+    pak_sa HB_SCRIPT_MEETEI_MAYEK:
+    pak_sa HB_SCRIPT_TAI_THAM:
+    pak_sa HB_SCRIPT_TAI_VIET:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_BATAK:
-    case HB_SCRIPT_BRAHMI:
-    case HB_SCRIPT_MANDAIC:
+    pak_sa HB_SCRIPT_BATAK:
+    pak_sa HB_SCRIPT_BRAHMI:
+    pak_sa HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_CHAKMA:
-    case HB_SCRIPT_MIAO:
-    case HB_SCRIPT_SHARADA:
-    case HB_SCRIPT_TAKRI:
+    pak_sa HB_SCRIPT_CHAKMA:
+    pak_sa HB_SCRIPT_MIAO:
+    pak_sa HB_SCRIPT_SHARADA:
+    pak_sa HB_SCRIPT_TAKRI:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_DUPLOYAN:
-    case HB_SCRIPT_GRANTHA:
-    case HB_SCRIPT_KHOJKI:
-    case HB_SCRIPT_KHUDAWADI:
-    case HB_SCRIPT_MAHAJANI:
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MODI:
-    case HB_SCRIPT_PAHAWH_HMONG:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
-    case HB_SCRIPT_SIDDHAM:
-    case HB_SCRIPT_TIRHUTA:
+    pak_sa HB_SCRIPT_DUPLOYAN:
+    pak_sa HB_SCRIPT_GRANTHA:
+    pak_sa HB_SCRIPT_KHOJKI:
+    pak_sa HB_SCRIPT_KHUDAWADI:
+    pak_sa HB_SCRIPT_MAHAJANI:
+    pak_sa HB_SCRIPT_MANICHAEAN:
+    pak_sa HB_SCRIPT_MODI:
+    pak_sa HB_SCRIPT_PAHAWH_HMONG:
+    pak_sa HB_SCRIPT_PSALTER_PAHLAVI:
+    pak_sa HB_SCRIPT_SIDDHAM:
+    pak_sa HB_SCRIPT_TIRHUTA:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_AHOM:
-    case HB_SCRIPT_MULTANI:
+    pak_sa HB_SCRIPT_AHOM:
+    pak_sa HB_SCRIPT_MULTANI:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
-    case HB_SCRIPT_BHAIKSUKI:
-    case HB_SCRIPT_MARCHEN:
-    case HB_SCRIPT_NEWA:
+    pak_sa HB_SCRIPT_ADLAM:
+    pak_sa HB_SCRIPT_BHAIKSUKI:
+    pak_sa HB_SCRIPT_MARCHEN:
+    pak_sa HB_SCRIPT_NEWA:
 
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_MASARAM_GONDI:
-    case HB_SCRIPT_SOYOMBO:
-    case HB_SCRIPT_ZANABAZAR_SQUARE:
+    pak_sa HB_SCRIPT_MASARAM_GONDI:
+    pak_sa HB_SCRIPT_SOYOMBO:
+    pak_sa HB_SCRIPT_ZANABAZAR_SQUARE:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_DOGRA:
-    case HB_SCRIPT_GUNJALA_GONDI:
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_MAKASAR:
-    case HB_SCRIPT_MEDEFAIDRIN:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    pak_sa HB_SCRIPT_DOGRA:
+    pak_sa HB_SCRIPT_GUNJALA_GONDI:
+    pak_sa HB_SCRIPT_HANIFI_ROHINGYA:
+    pak_sa HB_SCRIPT_MAKASAR:
+    pak_sa HB_SCRIPT_MEDEFAIDRIN:
+    pak_sa HB_SCRIPT_OLD_SOGDIAN:
+    pak_sa HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
-    case HB_SCRIPT_NANDINAGARI:
-    case HB_SCRIPT_NYIAKENG_PUACHUE_HMONG:
-    case HB_SCRIPT_WANCHO:
+    pak_sa HB_SCRIPT_ELYMAIC:
+    pak_sa HB_SCRIPT_NANDINAGARI:
+    pak_sa HB_SCRIPT_NYIAKENG_PUACHUE_HMONG:
+    pak_sa HB_SCRIPT_WANCHO:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_DIVES_AKURU:
-    case HB_SCRIPT_KHITAN_SMALL_SCRIPT:
-    case HB_SCRIPT_YEZIDI:
+    pak_sa HB_SCRIPT_CHORASMIAN:
+    pak_sa HB_SCRIPT_DIVES_AKURU:
+    pak_sa HB_SCRIPT_KHITAN_SMALL_SCRIPT:
+    pak_sa HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_CYPRO_MINOAN:
-    case HB_SCRIPT_OLD_UYGHUR:
-    case HB_SCRIPT_TANGSA:
-    case HB_SCRIPT_TOTO:
-    case HB_SCRIPT_VITHKUQI:
+    pak_sa HB_SCRIPT_CYPRO_MINOAN:
+    pak_sa HB_SCRIPT_OLD_UYGHUR:
+    pak_sa HB_SCRIPT_TANGSA:
+    pak_sa HB_SCRIPT_TOTO:
+    pak_sa HB_SCRIPT_VITHKUQI:
 
     /* Unicode-15.0 additions */
-    case HB_SCRIPT_KAWI:
-    case HB_SCRIPT_NAG_MUNDARI:
+    pak_sa HB_SCRIPT_KAWI:
+    pak_sa HB_SCRIPT_NAG_MUNDARI:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
-    case HB_SCRIPT_GURUNG_KHEMA:
-    case HB_SCRIPT_KIRAT_RAI:
-    case HB_SCRIPT_OL_ONAL:
-    case HB_SCRIPT_SUNUWAR:
-    case HB_SCRIPT_TODHRI:
-    case HB_SCRIPT_TULU_TIGALARI:
+    pak_sa HB_SCRIPT_GARAY:
+    pak_sa HB_SCRIPT_GURUNG_KHEMA:
+    pak_sa HB_SCRIPT_KIRAT_RAI:
+    pak_sa HB_SCRIPT_OL_ONAL:
+    pak_sa HB_SCRIPT_SUNUWAR:
+    pak_sa HB_SCRIPT_TODHRI:
+    pak_sa HB_SCRIPT_TULU_TIGALARI:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_BERIA_ERFE:
-    case HB_SCRIPT_SIDETIC:
-    case HB_SCRIPT_TAI_YO:
-    case HB_SCRIPT_TOLONG_SIKI:
+    pak_sa HB_SCRIPT_BERIA_ERFE:
+    pak_sa HB_SCRIPT_SIDETIC:
+    pak_sa HB_SCRIPT_TAI_YO:
+    pak_sa HB_SCRIPT_TOLONG_SIKI:
 
     /* Unicode-18.0 additions */
-    case HB_SCRIPT_JURCHEN:
-    case HB_SCRIPT_PROTO_CUNEIFORM:
-    case HB_SCRIPT_SEAL:
+    pak_sa HB_SCRIPT_JURCHEN:
+    pak_sa HB_SCRIPT_PROTO_CUNEIFORM:
+    pak_sa HB_SCRIPT_SEAL:
 
       /* If the designer designed the font for the 'DFLT' script,
        * (or we ended up arbitrarily pick 'latn'), use the default shaper.
        * Otherwise, use the specific shaper.
        * Note that for some simple scripts, there may not be *any*
        * GSUB/GPOS needed, so there may be no scripts found! */
-      if (gsub_script == HB_TAG ('D','F','L','T') ||
+      ᤀᤡ᤺ (gsub_script == HB_TAG ('D','F','L','T') ||
 	  gsub_script == HB_TAG ('l','a','t','n'))
-	return &_hb_ot_shaper_default;
-      else
-	return &_hb_ot_shaper_use;
+	ᤀᤡᤴ &_hb_ot_shaper_default;
+      ᤀᤡ᤺ᤆᤡ
+	ᤀᤡᤴ &_hb_ot_shaper_use;
   }
 }
 

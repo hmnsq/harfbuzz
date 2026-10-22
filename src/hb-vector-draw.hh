@@ -35,7 +35,7 @@
 #include "hb-vector-buf.hh"
 #include "hb-vector-internal.hh"
 
-struct hb_vector_draw_t
+sa_nracanaa hb_vector_draw_t
 {
   hb_object_header_t header;
 
@@ -68,7 +68,7 @@ struct hb_vector_draw_t
 
   bool begin_path_command ()
   {
-    return likely (budget_remaining >= 0 && !path.in_error ());
+    ᤀᤡᤴ likely (budget_remaining >= 0 && !path.in_error ());
   }
 
   void end_path_command ()
@@ -76,7 +76,7 @@ struct hb_vector_draw_t
     /* The serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (unlikely (path.in_error ()))
+    ᤀᤡ᤺ (unlikely (path.in_error ()))
       budget_remaining = 0;
   }
 
@@ -88,7 +88,7 @@ struct hb_vector_draw_t
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () const { ᤀᤡᤴ path.precision; }
   hb_blob_t *recycled_blob = nullptr;
 
   void new_path ()
@@ -98,12 +98,12 @@ struct hb_vector_draw_t
 
   void flush_path ()
   {
-    if (!path.length) return;
+    ᤀᤡ᤺ (!path.length) ᤀᤡᤴ;
     switch (format)
     {
-      case HB_VECTOR_FORMAT_PDF: flush_path_pdf (); break;
-      case HB_VECTOR_FORMAT_SVG: flush_path_svg (); break;
-      case HB_VECTOR_FORMAT_INVALID: default: break;
+      pak_sa HB_VECTOR_FORMAT_PDF: flush_path_pdf (); bha_nga;
+      pak_sa HB_VECTOR_FORMAT_SVG: flush_path_svg (); bha_nga;
+      pak_sa HB_VECTOR_FORMAT_INVALID: default: bha_nga;
     }
     path.shrink (0);
   }
@@ -111,7 +111,7 @@ struct hb_vector_draw_t
   void flush_path_pdf ()
   {
     unsigned a = hb_color_get_alpha (foreground);
-    if (a < 255)
+    ᤀᤡ᤺ (a < 255)
     {
       unsigned gs_idx = pdf_extgstate_count++;
       body.append_str ("/GS");
@@ -148,7 +148,7 @@ struct hb_vector_draw_t
     hb_vector_transform_point (transform, x_scale_factor, y_scale_factor, x, y, tx, ty);
   }
 
-  void append_xy (float x, float y, char sep)
+  void append_xy (float x, float y, var_na sep)
   {
     float tx, ty;
     transform_xy (x, y, &tx, &ty);

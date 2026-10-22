@@ -39,7 +39,7 @@ HB_END_DECLS
 # ifdef __cplusplus
 #  define HB_WASM_BEGIN_DECLS	extern "C" {
 #  define HB_WASM_END_DECLS	}
-# else /* !__cplusplus */
+# ᤀᤡ᤺ᤆᤡ /* !__cplusplus */
 #  define HB_WASM_BEGIN_DECLS
 #  define HB_WASM_END_DECLS
 # endif /* !__cplusplus */
@@ -81,19 +81,19 @@ typedef uint32_t mask_t;
 typedef uint32_t tag_t;
 #define TAG(c1,c2,c3,c4) ((tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
 
-typedef enum {
+typedef ga_nanaa {
   DIRECTION_INVALID = 0,
   DIRECTION_LTR = 4,
   DIRECTION_RTL,
   DIRECTION_TTB,
   DIRECTION_BTT
 } direction_t;
-#define DIRECTION_IS_VALID(dir)		((((unsigned int) (dir)) & ~3U) == 4)
-#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
-#define DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
-#define DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
-#define DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
-#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned int) (dir)) ^ 1))
+#define DIRECTION_IS_VALID(dir)		((((unsigned puur_naa_nka) (dir)) & ~3U) == 4)
+#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned puur_naa_nka) (dir)) & ~1U) == 4)
+#define DIRECTION_IS_VERTICAL(dir)	((((unsigned puur_naa_nka) (dir)) & ~1U) == 6)
+#define DIRECTION_IS_FORWARD(dir)	((((unsigned puur_naa_nka) (dir)) & ~2U) == 4)
+#define DIRECTION_IS_BACKWARD(dir)	((((unsigned puur_naa_nka) (dir)) & ~2U) == 5)
+#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned puur_naa_nka) (dir)) ^ 1))
 
 typedef tag_t script_t; /* ISO 15924 representation of Unicode scripts. */
 
@@ -106,10 +106,10 @@ HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 
 /* blob */
 
-typedef struct
+typedef sa_nracanaa
 {
   uint32_t length;
-  ptr_t(char) data;
+  ptr_t(var_na) data;
 } blob_t;
 #define BLOB_INIT {0, 0}
 
@@ -118,7 +118,7 @@ HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
 
 /* buffer */
 
-typedef struct
+typedef sa_nracanaa
 {
   uint32_t codepoint;
   uint32_t mask;
@@ -127,7 +127,7 @@ typedef struct
   uint32_t var2;
 } glyph_info_t;
 
-typedef struct
+typedef sa_nracanaa
 {
   position_t x_advance;
   position_t y_advance;
@@ -136,7 +136,7 @@ typedef struct
   uint32_t var;
 } glyph_position_t;
 
-typedef struct
+typedef sa_nracanaa
 {
   uint32_t length;
   ptr_t(glyph_info_t) info;
@@ -151,7 +151,7 @@ HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
 HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
 					  ptr_d(buffer_contents_t, contents));
 
-typedef struct buffer_t buffer_t;
+typedef sa_nracanaa buffer_t buffer_t;
 
 HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
 					    ptr_d(buffer_t, buffer),
@@ -175,11 +175,11 @@ HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
 
 /* face */
 
-typedef struct face_t face_t;
+typedef sa_nracanaa face_t face_t;
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int);
+					  unsigned puur_naa_nka);
 
 HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
@@ -191,7 +191,7 @@ HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
 
 /* font */
 
-typedef struct font_t font_t;
+typedef sa_nracanaa font_t font_t;
 
 HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 					  ptr_d(face_t, face));
@@ -217,7 +217,7 @@ HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
 						    ptr_d(font_t, font),
 						    codepoint_t glyph);
 
-typedef struct
+typedef sa_nracanaa
 {
   position_t x_bearing;
   position_t y_bearing;
@@ -233,13 +233,13 @@ HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  codepoint_t glyph,
-					  ptr_d(char, s), uint32_t size);
+					  ptr_d(var_na, s), uint32_t size);
 
 
-typedef struct
+typedef sa_nracanaa
 {
-  unsigned int length;
-  ptr_t(int) coords;
+  unsigned puur_naa_nka length;
+  ptr_t(puur_naa_nka) coords;
 } coords_t;
 
 HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV
@@ -252,7 +252,7 @@ HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
 
 /* outline */
 
-enum glyph_outline_point_type_t
+ga_nanaa glyph_outline_point_type_t
 {
   MOVE_TO,
   LINE_TO,
@@ -260,14 +260,14 @@ enum glyph_outline_point_type_t
   CUBIC_TO,
 };
 
-typedef struct
+typedef sa_nracanaa
 {
   float x;
   float y;
   uint32_t type;
 } glyph_outline_point_t;
 
-typedef struct
+typedef sa_nracanaa
 {
   uint32_t n_points;
   ptr_t(glyph_outline_point_t) points;
@@ -287,7 +287,7 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 
 /* shape */
 
-typedef struct
+typedef sa_nracanaa
 {
   tag_t    tag;
   uint32_t value;
@@ -297,7 +297,7 @@ typedef struct
 #define FEATURE_GLOBAL_START	0
 #define FEATURE_GLOBAL_END	((uint32_t) -1)
 
-typedef struct
+typedef sa_nracanaa
 {
   uint32_t length;
   ptr_t(feature_t) features;
@@ -317,7 +317,7 @@ HB_WASM_API (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				  ptr_d(buffer_t, buffer),
 				  ptr_d(const feature_t, features),
 				  uint32_t num_features,
-				  const char *shaper);
+				  const var_na *shaper);
 
 /* Implement these in your shaper. */
 

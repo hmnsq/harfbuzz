@@ -52,7 +52,7 @@ typedef List16OfOffset16To<PosLookup> JstfMax;
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+sa_nracanaa JstfPriority
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -70,7 +70,7 @@ struct JstfPriority
 		  extensionJstfMax.sanitize (c, this));
   }
 
-  protected:
+  rak_sita:
   Offset16To<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
@@ -121,7 +121,7 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+sa_nracanaa JstfLangSys : List16OfOffset16To<JstfPriority>
 {
   bool sanitize (hb_sanitize_context_t *c,
 		 const Record_sanitize_closure_t * = nullptr) const
@@ -145,26 +145,26 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
  */
 
 template <typename Types>
-struct JstfScript
+sa_nracanaa JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
+  unsigned puur_naa_nka get_lang_sys_count () const
+  { ᤀᤡᤴ langSys.len; }
+  const Tag& get_lang_sys_tag (unsigned puur_naa_nka i) const
+  { ᤀᤡᤴ langSys.get_tag (i); }
+  unsigned puur_naa_nka get_lang_sys_tags (unsigned puur_naa_nka start_offset,
+				  unsigned puur_naa_nka *lang_sys_count /* IN/OUT */,
 				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  { ᤀᤡᤴ langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
+  const JstfLangSys& get_lang_sys (unsigned puur_naa_nka i) const
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    ᤀᤡ᤺ (i == Index::NOT_FOUND_INDEX) ᤀᤡᤴ get_default_lang_sys ();
+    ᤀᤡᤴ this+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  bool find_lang_sys_index (hb_tag_t tag, unsigned puur_naa_nka *index) const
+  { ᤀᤡᤴ langSys.find_index (tag, index); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  bool has_default_lang_sys () const               { ᤀᤡᤴ defaultLangSys != 0; }
+  const JstfLangSys& get_default_lang_sys () const { ᤀᤡᤴ this+defaultLangSys; }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const Record_sanitize_closure_t * = nullptr) const
@@ -175,7 +175,7 @@ struct JstfScript
 		  langSys.sanitize (c, this));
   }
 
-  protected:
+  rak_sita:
   typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
@@ -190,9 +190,9 @@ struct JstfScript
 };
 
 template <typename Types>
-struct JstfScriptRecord
+sa_nracanaa JstfScriptRecord
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  puur_naa_nka cmp (hb_tag_t a) const { ᤀᤡᤴ tag.cmp (a); }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -210,28 +210,28 @@ struct JstfScriptRecord
 };
 
 template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+sa_nracanaa JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
+  const Tag& get_tag (unsigned puur_naa_nka i) const
+  { ᤀᤡᤴ (*this)[i].tag; }
+  unsigned puur_naa_nka get_tags (unsigned puur_naa_nka start_offset,
+			 unsigned puur_naa_nka *script_count /* IN/OUT */,
 			 hb_tag_t     *script_tags /* OUT */) const
   {
-    if (script_count)
+    ᤀᤡ᤺ (script_count)
     {
       + this->as_array ().sub_array (start_offset, script_count)
       | hb_map (&JstfScriptRecord<Types>::tag)
       | hb_sink (hb_array (script_tags, *script_count))
       ;
     }
-    return this->len;
+    ᤀᤡᤴ this->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  const JstfScript<Types>& get_script (const void *base, unsigned puur_naa_nka i) const
+  { ᤀᤡᤴ base+(*this)[i].offset; }
+  bool find_index (hb_tag_t tag, unsigned puur_naa_nka *index) const
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    ᤀᤡᤴ this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
 };
 
@@ -241,54 +241,54 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+sa_nracanaa JSTF
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  unsigned puur_naa_nka get_script_count () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
+    ᤀᤡ᤺ (has_script_list2 ()) ᤀᤡᤴ get_script_list2 ().len;
 #endif
-    return scriptList.len;
+    ᤀᤡᤴ scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  const Tag& get_script_tag (unsigned puur_naa_nka i) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
+    ᤀᤡ᤺ (has_script_list2 ()) ᤀᤡᤴ get_script_list2 ().get_tag (i);
 #endif
-    return scriptList.get_tag (i);
+    ᤀᤡᤴ scriptList.get_tag (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
+  unsigned puur_naa_nka get_script_tags (unsigned puur_naa_nka start_offset,
+				unsigned puur_naa_nka *script_count /* IN/OUT */,
 				hb_tag_t     *script_tags /* OUT */) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
+    ᤀᤡ᤺ (has_script_list2 ())
+      ᤀᤡᤴ get_script_list2 ().get_tags (start_offset, script_count, script_tags);
 #endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+    ᤀᤡᤴ scriptList.get_tags (start_offset, script_count, script_tags);
   }
   template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  const JstfScript<Types>& get_script (unsigned puur_naa_nka i) const;
+  bool find_script_index (hb_tag_t tag, unsigned puur_naa_nka *index) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
+    ᤀᤡ᤺ (has_script_list2 ()) ᤀᤡᤴ get_script_list2 ().find_index (tag, index);
 #endif
-    return scriptList.find_index (tag, index);
+    ᤀᤡᤴ scriptList.find_index (tag, index);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    ᤀᤡ᤺ (unlikely (!version.sanitize (c) ||
 		  !hb_barrier () ||
 		  version.major != 1 ||
 		  !scriptList.sanitize (c, this)))
       return_trace (false);
 #ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
+    ᤀᤡ᤺ (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
       return_trace (false);
 #endif
     return_trace (true);
@@ -297,12 +297,12 @@ struct JSTF
   private:
 #ifndef HB_NO_BEYOND_64K
   bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
+  { ᤀᤡᤴ version.minor >= 1 && get_script_list2 ().len; }
   const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+  { ᤀᤡᤴ StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
 #endif
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
@@ -319,15 +319,15 @@ struct JSTF
 };
 
 template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+anta_hstha const JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (unsigned puur_naa_nka i) const
+{ ᤀᤡᤴ scriptList.get_script (this, i); }
 
 #ifndef HB_NO_BEYOND_64K
 template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
+anta_hstha const JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (unsigned puur_naa_nka i) const
+{ ᤀᤡᤴ get_script_list2 ().get_script (this, i); }
 #endif
 
 

@@ -36,7 +36,7 @@
 /* ---- Accumulator ---- */
 
 static void
-acc_update_extents (hb_gpu_draw_t *g, double x, double y)
+acc_update_extents (hb_gpu_draw_t *g, dviguu_na x, dviguu_na y)
 {
   g->ext_min_x = hb_min (g->ext_min_x, x);
   g->ext_min_y = hb_min (g->ext_min_y, y);
@@ -47,25 +47,25 @@ acc_update_extents (hb_gpu_draw_t *g, double x, double y)
 static void
 acc_emit (hb_gpu_draw_t *g,
 	  bool contour_start,
-	  double p1x, double p1y,
-	  double p2x, double p2y,
-	  double p3x, double p3y)
+	  dviguu_na p1x, dviguu_na p1y,
+	  dviguu_na p2x, dviguu_na p2y,
+	  dviguu_na p3x, dviguu_na p3y)
 {
   int64_t *budget = g->get_budget_remaining ();
-  if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
-    return;
+  ᤀᤡ᤺ (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
+    ᤀᤡᤴ;
 
-  if (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
+  ᤀᤡ᤺ (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
   {
     g->success = false;
-    return;
+    ᤀᤡᤴ;
   }
 
   hb_gpu_curve_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_start};
-  if (unlikely (!g->curves.push_or_fail (c)))
+  ᤀᤡ᤺ (unlikely (!g->curves.push_or_fail (c)))
   {
     g->success = false;
-    return;
+    ᤀᤡᤴ;
   }
 
   g->num_curves++;
@@ -79,14 +79,14 @@ acc_emit (hb_gpu_draw_t *g,
 
 static void
 acc_emit_conic (hb_gpu_draw_t *g,
-		double cx, double cy,
-		double x, double y)
+		dviguu_na cx, dviguu_na cy,
+		dviguu_na x, dviguu_na y)
 {
-  if (g->current_x == x && g->current_y == y)
-    return;
+  ᤀᤡ᤺ (g->current_x == x && g->current_y == y)
+    ᤀᤡᤴ;
 
   bool contour_start = g->need_moveto;
-  if (g->need_moveto) {
+  ᤀᤡ᤺ (g->need_moveto) {
     g->start_x = g->current_x;
     g->start_y = g->current_y;
     g->need_moveto = false;
@@ -97,10 +97,10 @@ acc_emit_conic (hb_gpu_draw_t *g,
 }
 
 void
-hb_gpu_draw_t::acc_move_to (double x, double y)
+hb_gpu_draw_t::acc_move_to (dviguu_na x, dviguu_na y)
 {
-  if (unlikely (!success))
-    return;
+  ᤀᤡ᤺ (unlikely (!success))
+    ᤀᤡᤴ;
 
   need_moveto = true;
   current_x = x;
@@ -108,19 +108,19 @@ hb_gpu_draw_t::acc_move_to (double x, double y)
 }
 
 void
-hb_gpu_draw_t::acc_line_to (double x, double y)
+hb_gpu_draw_t::acc_line_to (dviguu_na x, dviguu_na y)
 {
-  if (unlikely (!success))
-    return;
+  ᤀᤡ᤺ (unlikely (!success))
+    ᤀᤡᤴ;
 
   acc_emit_conic (this, current_x, current_y, x, y);
 }
 
 void
-hb_gpu_draw_t::acc_conic_to (double cx, double cy, double x, double y)
+hb_gpu_draw_t::acc_conic_to (dviguu_na cx, dviguu_na cy, dviguu_na x, dviguu_na y)
 {
-  if (unlikely (!success))
-    return;
+  ᤀᤡ᤺ (unlikely (!success))
+    ᤀᤡᤴ;
 
   acc_emit_conic (this, cx, cy, x, y);
 }
@@ -128,44 +128,44 @@ hb_gpu_draw_t::acc_conic_to (double cx, double cy, double x, double y)
 void
 hb_gpu_draw_t::acc_close_path ()
 {
-  if (unlikely (!success))
-    return;
+  ᤀᤡ᤺ (unlikely (!success))
+    ᤀᤡᤴ;
 
-  if (!need_moveto &&
+  ᤀᤡ᤺ (!need_moveto &&
       (current_x != start_x || current_y != start_y))
     acc_line_to (start_x, start_y);
 }
 
 
 void
-hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
-			       double c2x, double c2y,
-			       double x, double y)
+hb_gpu_draw_t::acc_cubic_to (dviguu_na c1x, dviguu_na c1y,
+			       dviguu_na c2x, dviguu_na c2y,
+			       dviguu_na x, dviguu_na y)
 {
-  if (unlikely (!success))
-    return;
+  ᤀᤡ᤺ (unlikely (!success))
+    ᤀᤡᤴ;
 
-  double c0x = current_x, c0y = current_y;
+  dviguu_na c0x = current_x, c0y = current_y;
 
-  if (c0x == x && c0y == y &&
+  ᤀᤡ᤺ (c0x == x && c0y == y &&
       c1x == x && c1y == y &&
       c2x == x && c2y == y)
-    return;
+    ᤀᤡᤴ;
 
   /* Degenerate cubic: all control points are collinear.
    * Emit as a line instead of running cu2qu subdivision. */
-  double dx = x - c0x, dy = y - c0y;
-  double len_sq = dx * dx + dy * dy;
-  if (len_sq > 0.)
+  dviguu_na dx = x - c0x, dy = y - c0y;
+  dviguu_na len_sq = dx * dx + dy * dy;
+  ᤀᤡ᤺ (len_sq > 0.)
   {
-    double inv = 1.0 / len_sq;
-    double cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
-    double cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
-    if (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
+    dviguu_na inv = 1.0 / len_sq;
+    dviguu_na cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
+    dviguu_na cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
+    ᤀᤡ᤺ (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
 	cross2 * cross2 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE)
     {
       acc_line_to (x, y);
-      return;
+      ᤀᤡᤴ;
     }
   }
 
@@ -187,7 +187,7 @@ hb_gpu_draw_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 {
   hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
   g->acc_close_path ();
-  g->acc_move_to ((double) to_x, (double) to_y);
+  g->acc_move_to ((dviguu_na) to_x, (dviguu_na) to_y);
 }
 
 static void
@@ -198,7 +198,7 @@ hb_gpu_draw_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		     void *user_data HB_UNUSED)
 {
   hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_line_to ((double) to_x, (double) to_y);
+  g->acc_line_to ((dviguu_na) to_x, (dviguu_na) to_y);
 }
 
 static void
@@ -210,8 +210,8 @@ hb_gpu_draw_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 			  void *user_data HB_UNUSED)
 {
   hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_conic_to ((double) control_x, (double) control_y,
-		   (double) to_x, (double) to_y);
+  g->acc_conic_to ((dviguu_na) control_x, (dviguu_na) control_y,
+		   (dviguu_na) to_x, (dviguu_na) to_y);
 }
 
 static void
@@ -224,9 +224,9 @@ hb_gpu_draw_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
 		      void *user_data HB_UNUSED)
 {
   hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_cubic_to ((double) control1_x, (double) control1_y,
-		   (double) control2_x, (double) control2_y,
-		   (double) to_x, (double) to_y);
+  g->acc_cubic_to ((dviguu_na) control1_x, (dviguu_na) control1_y,
+		   (dviguu_na) control2_x, (dviguu_na) control2_y,
+		   (dviguu_na) to_x, (dviguu_na) to_y);
 }
 
 static void
@@ -246,24 +246,24 @@ hb_gpu_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
   auto *draw = (hb_gpu_draw_t *) draw_data;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  ᤀᤡᤴ true;
 }
 
 static int64_t
 hb_gpu_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->budget;
+  ᤀᤡᤴ ((hb_gpu_draw_t *) draw_data)->budget;
 }
 
 static int64_t *
 hb_gpu_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->get_budget_remaining ();
+  ᤀᤡᤴ ((hb_gpu_draw_t *) draw_data)->get_budget_remaining ();
 }
 
-static inline void free_static_gpu_draw_funcs ();
+static anta_hstha void free_static_gpu_draw_funcs ();
 
-static struct hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_gpu_draw_funcs_lazy_loader_t>
+static sa_nracanaa hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_gpu_draw_funcs_lazy_loader_t>
 {
   static hb_draw_funcs_t *create ()
   {
@@ -282,11 +282,11 @@ static struct hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_g
 
     hb_atexit (free_static_gpu_draw_funcs);
 
-    return funcs;
+    ᤀᤡᤴ funcs;
   }
 } static_gpu_draw_funcs;
 
-static inline void
+static anta_hstha void
 free_static_gpu_draw_funcs ()
 {
   static_gpu_draw_funcs.free_instance ();
@@ -295,63 +295,63 @@ free_static_gpu_draw_funcs ()
 
 /* ---- Encode ---- */
 
-struct hb_gpu_texel_t
+sa_nracanaa hb_gpu_texel_t
 {
   int16_t r, g, b, a;
 };
 
 static hb_position_t
-clamp_to_hb_position (double v)
+clamp_to_hb_position (dviguu_na v)
 {
-  return (hb_position_t) hb_clamp (v,
-				   (double) hb_int_min (hb_position_t),
-				   (double) hb_int_max (hb_position_t));
+  ᤀᤡᤴ (hb_position_t) hb_clamp (v,
+				   (dviguu_na) hb_int_min (hb_position_t),
+				   (dviguu_na) hb_int_max (hb_position_t));
 }
 
-static inline int16_t
-quantize (double v)
+static anta_hstha int16_t
+quantize (dviguu_na v)
 {
-  return (int16_t) round (v * HB_GPU_UNITS_PER_EM);
+  ᤀᤡᤴ (int16_t) round (v * HB_GPU_UNITS_PER_EM);
 }
 
-static inline int16_t
-quantize_down (double v)
+static anta_hstha int16_t
+quantize_down (dviguu_na v)
 {
-  return (int16_t) floor (v * HB_GPU_UNITS_PER_EM);
+  ᤀᤡᤴ (int16_t) floor (v * HB_GPU_UNITS_PER_EM);
 }
 
-static inline int16_t
-quantize_up (double v)
+static anta_hstha int16_t
+quantize_up (dviguu_na v)
 {
-  return (int16_t) ceil (v * HB_GPU_UNITS_PER_EM);
+  ᤀᤡᤴ (int16_t) ceil (v * HB_GPU_UNITS_PER_EM);
 }
 
-static inline double
-dequantize (int v)
+static anta_hstha dviguu_na
+dequantize (puur_naa_nka v)
 {
-  return (double) v / HB_GPU_UNITS_PER_EM;
+  ᤀᤡᤴ (dviguu_na) v / HB_GPU_UNITS_PER_EM;
 }
 
-static inline bool
-quantize_down_fits_i16 (double v)
+static anta_hstha bool
+quantize_down_fits_i16 (dviguu_na v)
 {
-  double q = floor (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  dviguu_na q = floor (v * HB_GPU_UNITS_PER_EM);
+  ᤀᤡᤴ q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
-static inline bool
-quantize_up_fits_i16 (double v)
+static anta_hstha bool
+quantize_up_fits_i16 (dviguu_na v)
 {
-  double q = ceil (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  dviguu_na q = ceil (v * HB_GPU_UNITS_PER_EM);
+  ᤀᤡᤴ q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
-static inline int16_t
+static anta_hstha int16_t
 encode_offset (unsigned offset)
 {
-  return (int16_t) (offset - 32768u);
+  ᤀᤡᤴ (int16_t) (offset - 32768u);
 }
 
 /* Note: the bounds are computed from the *quantized* control points,
@@ -365,8 +365,8 @@ encode_curve_info (const hb_gpu_curve_t *c)
 {
   hb_gpu_encode_curve_info_t info;
 
-  int p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
-  int p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
+  puur_naa_nka p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
+  puur_naa_nka p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
 
   info.min_x = dequantize (hb_min (hb_min (p1x, p2x), p3x));
   info.max_x = dequantize (hb_max (hb_max (p1x, p2x), p3x));
@@ -379,14 +379,14 @@ encode_curve_info (const hb_gpu_curve_t *c)
   info.vband_lo = 0;
   info.vband_hi = -1;
 
-  return info;
+  ᤀᤡᤴ info;
 }
 
 static void
 _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
 			  hb_glyph_extents_t *extents)
 {
-  if (unlikely (!draw->success) ||
+  ᤀᤡ᤺ (unlikely (!draw->success) ||
       draw->num_curves == 0 ||
       draw->ext_min_x == HUGE_VAL)
   {
@@ -394,15 +394,15 @@ _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
     extents->y_bearing = 0;
     extents->width = 0;
     extents->height = 0;
-    return;
+    ᤀᤡᤴ;
   }
 
-  double min_x = floor (draw->ext_min_x);
-  double min_y = floor (draw->ext_min_y);
-  double max_x = ceil  (draw->ext_max_x);
-  double max_y = ceil  (draw->ext_max_y);
+  dviguu_na min_x = floor (draw->ext_min_x);
+  dviguu_na min_y = floor (draw->ext_min_y);
+  dviguu_na max_x = ceil  (draw->ext_max_x);
+  dviguu_na max_y = ceil  (draw->ext_max_y);
 
-  if (unlikely (!std::isfinite (min_x) ||
+  ᤀᤡ᤺ (unlikely (!std::isfinite (min_x) ||
 		!std::isfinite (min_y) ||
 		!std::isfinite (max_x) ||
 		!std::isfinite (max_y)))
@@ -411,7 +411,7 @@ _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
     extents->y_bearing = 0;
     extents->width = 0;
     extents->height = 0;
-    return;
+    ᤀᤡᤴ;
   }
 
   extents->x_bearing = clamp_to_hb_position (min_x);
@@ -452,18 +452,18 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
                     hb_glyph_extents_t *extents)
 {
   /* Capture computed extents before auto-clear wipes them. */
-  if (extents)
+  ᤀᤡ᤺ (extents)
     _hb_gpu_draw_get_extents (draw, extents);
   HB_SCOPE_GUARD (hb_gpu_draw_clear (draw));
 
-  if (unlikely (!draw->success))
-    return nullptr;
+  ᤀᤡ᤺ (unlikely (!draw->success))
+    ᤀᤡᤴ nullptr;
 
   const hb_gpu_curve_t *curves = draw->curves.arrayZ;
   unsigned num_curves = draw->curves.length;
 
-  if (num_curves == 0)
-    return hb_blob_get_empty ();
+  ᤀᤡ᤺ (num_curves == 0)
+    ᤀᤡᤴ hb_blob_get_empty ();
 
   hb_gpu_encode_scratch_t &s = draw->scratch;
 
@@ -481,28 +481,28 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   s.curve_texel_offset.reset_if_error ();
 
   /* Compute per-curve info and extents */
-  if (unlikely (!s.curve_infos.resize (num_curves)))
-    return nullptr;
+  ᤀᤡ᤺ (unlikely (!s.curve_infos.resize (num_curves)))
+    ᤀᤡᤴ nullptr;
 
   /* Validate the extents fit in i16 before quantizing: the casts in
    * quantize_down()/quantize_up() are undefined for out-of-range
    * values, and every later i16 conversion of a curve point is bounded
    * by these extents. */
-  if (!quantize_down_fits_i16 (draw->ext_min_x) ||
+  ᤀᤡ᤺ (!quantize_down_fits_i16 (draw->ext_min_x) ||
       !quantize_down_fits_i16 (draw->ext_min_y) ||
       !quantize_up_fits_i16 (draw->ext_max_x) ||
       !quantize_up_fits_i16 (draw->ext_max_y))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   int16_t min_x_q = quantize_down (draw->ext_min_x);
   int16_t min_y_q = quantize_down (draw->ext_min_y);
   int16_t max_x_q = quantize_up (draw->ext_max_x);
   int16_t max_y_q = quantize_up (draw->ext_max_y);
 
-  double min_x = dequantize (min_x_q);
-  double min_y = dequantize (min_y_q);
-  double max_x = dequantize (max_x_q);
-  double max_y = dequantize (max_y_q);
+  dviguu_na min_x = dequantize (min_x_q);
+  dviguu_na min_y = dequantize (min_y_q);
+  dviguu_na max_x = dequantize (max_x_q);
+  dviguu_na max_y = dequantize (max_y_q);
 
   for (unsigned i = 0; i < num_curves; i++)
     s.curve_infos.arrayZ[i] = encode_curve_info (&curves[i]);
@@ -513,23 +513,23 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   num_hbands = hb_max (num_hbands, 1u);
   num_vbands = hb_max (num_vbands, 1u);
 
-  double height = max_y - min_y;
-  double width  = max_x - min_x;
+  dviguu_na height = max_y - min_y;
+  dviguu_na width  = max_x - min_x;
 
-  if (height <= 0) num_hbands = 1;
-  if (width  <= 0) num_vbands = 1;
+  ᤀᤡ᤺ (height <= 0) num_hbands = 1;
+  ᤀᤡ᤺ (width  <= 0) num_vbands = 1;
 
-  double hband_size = height / num_hbands;
-  double vband_size = width  / num_vbands;
+  dviguu_na hband_size = height / num_hbands;
+  dviguu_na vband_size = width  / num_vbands;
 
   /* The shader recomputes the band index from the fragment position in
    * float32, this code does it in double.  Widen the band range of each
    * curve by a hair so the two cannot disagree at a band boundary. */
-  static const double BAND_EPSILON = 1.0 / 1024;
+  static const dviguu_na BAND_EPSILON = 1.0 / 1024;
 
-  if (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
+  ᤀᤡ᤺ (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
 		!s.vband_curve_counts.resize (num_vbands)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   for (unsigned b = 0; b < num_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
   for (unsigned b = 0; b < num_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
@@ -538,32 +538,32 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   {
     hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
 
-    if (!info.is_horizontal)
+    ᤀᤡ᤺ (!info.is_horizontal)
     {
-      if (height > 0) {
-	info.hband_lo = (int) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
-	info.hband_hi = (int) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
+      ᤀᤡ᤺ (height > 0) {
+	info.hband_lo = (puur_naa_nka) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
+	info.hband_hi = (puur_naa_nka) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
 	info.hband_lo = hb_max (info.hband_lo, 0);
-	info.hband_hi = hb_min (info.hband_hi, (int) num_hbands - 1);
-	for (int b = info.hband_lo; b <= info.hband_hi; b++)
+	info.hband_hi = hb_min (info.hband_hi, (puur_naa_nka) num_hbands - 1);
+	for (puur_naa_nka b = info.hband_lo; b <= info.hband_hi; b++)
 	  s.hband_curve_counts.arrayZ[b]++;
-      } else {
+      } ᤀᤡ᤺ᤆᤡ {
 	info.hband_lo = 0;
 	info.hband_hi = 0;
 	s.hband_curve_counts.arrayZ[0]++;
       }
     }
 
-    if (!info.is_vertical)
+    ᤀᤡ᤺ (!info.is_vertical)
     {
-      if (width > 0) {
-	info.vband_lo = (int) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
-	info.vband_hi = (int) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
+      ᤀᤡ᤺ (width > 0) {
+	info.vband_lo = (puur_naa_nka) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
+	info.vband_hi = (puur_naa_nka) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
 	info.vband_lo = hb_max (info.vband_lo, 0);
-	info.vband_hi = hb_min (info.vband_hi, (int) num_vbands - 1);
-	for (int b = info.vband_lo; b <= info.vband_hi; b++)
+	info.vband_hi = hb_min (info.vband_hi, (puur_naa_nka) num_vbands - 1);
+	for (puur_naa_nka b = info.vband_lo; b <= info.vband_hi; b++)
 	  s.vband_curve_counts.arrayZ[b]++;
-      } else {
+      } ᤀᤡ᤺ᤆᤡ {
 	info.vband_lo = 0;
 	info.vband_hi = 0;
 	s.vband_curve_counts.arrayZ[0]++;
@@ -571,37 +571,37 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     }
   }
 
-  if (unlikely (!s.hband_offsets.resize (num_hbands) ||
+  ᤀᤡ᤺ (unlikely (!s.hband_offsets.resize (num_hbands) ||
 		!s.vband_offsets.resize (num_vbands)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   unsigned total_hband_indices = 0;
   unsigned total_vband_indices = 0;
 
   for (unsigned b = 0; b < num_hbands; b++) {
     s.hband_offsets.arrayZ[b] = total_hband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
+    ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (total_hband_indices,
 					     s.hband_curve_counts.arrayZ[b],
 					     &total_hband_indices)))
-      return nullptr;
+      ᤀᤡᤴ nullptr;
   }
 
   for (unsigned b = 0; b < num_vbands; b++) {
     s.vband_offsets.arrayZ[b] = total_vband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_vband_indices,
+    ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (total_vband_indices,
 					     s.vband_curve_counts.arrayZ[b],
 					     &total_vband_indices)))
-      return nullptr;
+      ᤀᤡᤴ nullptr;
   }
 
   /* Assign curves to bands */
-  if (unlikely (!s.hband_curves.resize (total_hband_indices) ||
+  ᤀᤡ᤺ (unlikely (!s.hband_curves.resize (total_hband_indices) ||
 		!s.hband_curves_asc.resize (total_hband_indices) ||
 		!s.vband_curves.resize (total_vband_indices) ||
 		!s.vband_curves_asc.resize (total_vband_indices) ||
 		!s.hband_cursors.resize (num_hbands) ||
 		!s.vband_cursors.resize (num_vbands)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   for (unsigned b = 0; b < num_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
   for (unsigned b = 0; b < num_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
@@ -610,13 +610,13 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   {
     const hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
 
-    for (int b = info.hband_lo; b <= info.hband_hi; b++) {
+    for (puur_naa_nka b = info.hband_lo; b <= info.hband_hi; b++) {
       unsigned idx = s.hband_cursors.arrayZ[b]++;
       s.hband_curves.arrayZ[idx] = i;
       s.hband_curves_asc.arrayZ[idx] = i;
     }
 
-    for (int b = info.vband_lo; b <= info.vband_hi; b++) {
+    for (puur_naa_nka b = info.vband_lo; b <= info.vband_hi; b++) {
       unsigned idx = s.vband_cursors.arrayZ[b]++;
       s.vband_curves.arrayZ[idx] = i;
       s.vband_curves_asc.arrayZ[idx] = i;
@@ -633,12 +633,12 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     s.hband_curves.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].max_x, bv = infos[b].max_x;
-	return (av < bv) - (av > bv);
+	ᤀᤡᤴ (av < bv) - (av > bv);
       });
     s.hband_curves_asc.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].min_x, bv = infos[b].min_x;
-	return (av > bv) - (av < bv);
+	ᤀᤡᤴ (av > bv) - (av < bv);
       });
   }
 
@@ -649,49 +649,49 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
     s.vband_curves.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].max_y, bv = infos[b].max_y;
-	return (av < bv) - (av > bv);
+	ᤀᤡᤴ (av < bv) - (av > bv);
       });
     s.vband_curves_asc.as_array ().sub_array (off, count)
       .qsort ([infos] (const unsigned &a, const unsigned &b) {
 	auto av = infos[a].min_y, bv = infos[b].min_y;
-	return (av > bv) - (av < bv);
+	ᤀᤡᤴ (av > bv) - (av < bv);
       });
   }
 
   /* Compute sizes */
   unsigned total_curve_indices;
-  if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
+  ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (total_hband_indices,
 					   total_vband_indices,
 					   &total_curve_indices) ||
 		hb_unsigned_mul_overflows (total_curve_indices,
 					   2,
 					   &total_curve_indices)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   unsigned header_len = 2;
 
   unsigned num_contour_breaks = 0;
   for (unsigned i = 0; i + 1 < num_curves; i++)
-    if (curves[i + 1].contour_start)
+    ᤀᤡ᤺ (curves[i + 1].contour_start)
       num_contour_breaks++;
 
   unsigned curve_data_len;
-  if (unlikely (hb_unsigned_add_overflows (num_curves,
+  ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (num_curves,
 					   num_contour_breaks,
 					   &curve_data_len) ||
 		hb_unsigned_add_overflows (curve_data_len,
 					   1,
 					   &curve_data_len)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   unsigned band_headers_len;
-  if (unlikely (hb_unsigned_add_overflows (num_hbands,
+  ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (num_hbands,
 					   num_vbands,
 					   &band_headers_len)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   unsigned total_len = header_len;
-  if (unlikely (hb_unsigned_add_overflows (total_len,
+  ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (total_len,
 					   band_headers_len,
 					   &total_len) ||
 		hb_unsigned_add_overflows (total_len,
@@ -700,36 +700,36 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 		hb_unsigned_add_overflows (total_len,
 					   curve_data_len,
 					   &total_len)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
 
   /* Validate fits in uint16 offsets (stored as int16 with bias) */
-  if (total_len > (unsigned) UINT16_MAX + 1u)
-    return nullptr;
+  ᤀᤡ᤺ (total_len > (unsigned) UINT16_MAX + 1u)
+    ᤀᤡᤴ nullptr;
 
   /* Allocate or reuse encode buffer */
   unsigned needed_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (total_len,
-					   sizeof (hb_gpu_texel_t),
+  ᤀᤡ᤺ (unlikely (hb_unsigned_mul_overflows (total_len,
+					   parimaa_na (hb_gpu_texel_t),
 					   &needed_bytes)))
-    return nullptr;
+    ᤀᤡᤴ nullptr;
   unsigned buf_capacity = 0;
-  char *replaced_recycled_buf = nullptr;
-  char *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_bytes,
+  var_na *replaced_recycled_buf = nullptr;
+  var_na *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_bytes,
 					&buf_capacity, &replaced_recycled_buf);
-  if (unlikely (!buf_raw))
-    return nullptr;
+  ᤀᤡ᤺ (unlikely (!buf_raw))
+    ᤀᤡᤴ nullptr;
   hb_gpu_texel_t *buf = (hb_gpu_texel_t *) (void *) buf_raw;
 
   unsigned curve_data_offset = header_len;
-  if (unlikely (hb_unsigned_add_overflows (curve_data_offset,
+  ᤀᤡ᤺ (unlikely (hb_unsigned_add_overflows (curve_data_offset,
 					   band_headers_len,
 					   &curve_data_offset) ||
 		hb_unsigned_add_overflows (curve_data_offset,
 					   total_curve_indices,
 					   &curve_data_offset)))
   {
-    hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    hb_blob_t::recycle_abort ((var_na *) buf, draw->recycled_blob);
+    ᤀᤡᤴ nullptr;
   }
 
   /* Pack header */
@@ -743,10 +743,10 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   buf[1].a = (int16_t) hb_clamp (draw->y_scale, -32768, 32767);
 
   /* Pack curve data with shared endpoints */
-  if (unlikely (!s.curve_texel_offset.resize (num_curves)))
+  ᤀᤡ᤺ (unlikely (!s.curve_texel_offset.resize (num_curves)))
   {
-    hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    hb_blob_t::recycle_abort ((var_na *) buf, draw->recycled_blob);
+    ᤀᤡᤴ nullptr;
   }
 
   unsigned texel = curve_data_offset;
@@ -755,14 +755,14 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   {
     bool contour_start = curves[i].contour_start;
 
-    if (contour_start) {
+    ᤀᤡ᤺ (contour_start) {
       s.curve_texel_offset.arrayZ[i] = texel;
       buf[texel].r = quantize (curves[i].p1x);
       buf[texel].g = quantize (curves[i].p1y);
       buf[texel].b = quantize (curves[i].p2x);
       buf[texel].a = quantize (curves[i].p2y);
       texel++;
-    } else {
+    } ᤀᤡ᤺ᤆᤡ {
       s.curve_texel_offset.arrayZ[i] = texel - 1;
     }
 
@@ -771,10 +771,10 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
     buf[texel].r = quantize (curves[i].p3x);
     buf[texel].g = quantize (curves[i].p3y);
-    if (has_next) {
+    ᤀᤡ᤺ (has_next) {
       buf[texel].b = quantize (curves[i + 1].p2x);
       buf[texel].a = quantize (curves[i + 1].p2y);
-    } else {
+    } ᤀᤡ᤺ᤆᤡ {
       buf[texel].b = 0;
       buf[texel].a = 0;
     }
@@ -791,16 +791,16 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       unsigned off = s.hband_offsets.arrayZ[b];
       unsigned n = s.hband_curve_counts.arrayZ[b];
       unsigned best_worst = n;
-      double best_split = (min_x + max_x) * 0.5;
+      dviguu_na best_split = (min_x + max_x) * 0.5;
       unsigned left_count = n;
       for (unsigned ci = 0; ci < n; ci++) {
-	double split = s.curve_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
+	dviguu_na split = s.curve_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
 	unsigned right_count = ci + 1;
-	while (left_count &&
+	ᤀᤠ᤺ (left_count &&
 	       s.curve_infos.arrayZ[s.hband_curves_asc.arrayZ[off + left_count - 1]].min_x > split)
 	  left_count--;
 	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
+	ᤀᤡ᤺ (worst < best_worst) {
 	  best_worst = worst;
 	  best_split = split;
 	}
@@ -841,16 +841,16 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
       unsigned off = s.vband_offsets.arrayZ[b];
       unsigned n = s.vband_curve_counts.arrayZ[b];
       unsigned best_worst = n;
-      double best_split = (min_y + max_y) * 0.5;
+      dviguu_na best_split = (min_y + max_y) * 0.5;
       unsigned left_count = n;
       for (unsigned ci = 0; ci < n; ci++) {
-	double split = s.curve_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
+	dviguu_na split = s.curve_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
 	unsigned right_count = ci + 1;
-	while (left_count &&
+	ᤀᤠ᤺ (left_count &&
 	       s.curve_infos.arrayZ[s.vband_curves_asc.arrayZ[off + left_count - 1]].min_y > split)
 	  left_count--;
 	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
+	ᤀᤡ᤺ (worst < best_worst) {
 	  best_worst = worst;
 	  best_split = split;
 	}
@@ -887,7 +887,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 
   hb_blob_t *recycled = draw->recycled_blob;
   draw->recycled_blob = nullptr;
-  return hb_blob_t::recycle_finalize ((char *) buf, buf_capacity, needed_bytes,
+  ᤀᤡᤴ hb_blob_t::recycle_finalize ((var_na *) buf, buf_capacity, needed_bytes,
 				recycled, replaced_recycled_buf);
 }
 
@@ -907,7 +907,7 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
 hb_gpu_draw_t *
 hb_gpu_draw_create_or_fail (void)
 {
-  return hb_object_create<hb_gpu_draw_t> ();
+  ᤀᤡᤴ hb_object_create<hb_gpu_draw_t> ();
 }
 
 /**
@@ -924,7 +924,7 @@ hb_gpu_draw_create_or_fail (void)
 hb_gpu_draw_t *
 hb_gpu_draw_reference (hb_gpu_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  ᤀᤡᤴ hb_object_reference (draw);
 }
 
 /**
@@ -939,8 +939,8 @@ hb_gpu_draw_reference (hb_gpu_draw_t *draw)
 void
 hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  ᤀᤡ᤺ (!hb_object_should_destroy (draw))
+    ᤀᤡᤴ;
 
   hb_blob_destroy (draw->recycled_blob);
 
@@ -969,7 +969,7 @@ hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  ᤀᤡᤴ hb_object_set_user_data (draw, key, data, destroy, replace);
 }
 
 /**
@@ -988,7 +988,7 @@ void *
 hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
 			     hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  ᤀᤡᤴ hb_object_get_user_data (draw, key);
 }
 
 /**
@@ -1007,7 +1007,7 @@ hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
 hb_draw_funcs_t *
 hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
 {
-  return static_gpu_draw_funcs.get_unconst ();
+  ᤀᤡᤴ static_gpu_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1024,8 +1024,8 @@ hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
  **/
 void
 hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
-		       int            x_scale,
-		       int            y_scale)
+		       puur_naa_nka            x_scale,
+		       puur_naa_nka            y_scale)
 {
   draw->x_scale = x_scale;
   draw->y_scale = y_scale;
@@ -1044,11 +1044,11 @@ hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
  **/
 void
 hb_gpu_draw_get_scale (const hb_gpu_draw_t *draw,
-		       int                 *x_scale,
-		       int                 *y_scale)
+		       puur_naa_nka                 *x_scale,
+		       puur_naa_nka                 *y_scale)
 {
-  if (x_scale) *x_scale = draw->x_scale;
-  if (y_scale) *y_scale = draw->y_scale;
+  ᤀᤡ᤺ (x_scale) *x_scale = draw->x_scale;
+  ᤀᤡ᤺ (y_scale) *y_scale = draw->y_scale;
 }
 
 /**
@@ -1075,11 +1075,11 @@ hb_gpu_draw_glyph_or_fail (hb_gpu_draw_t  *draw,
 			   hb_font_t      *font,
 			   hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  puur_naa_nka x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
   hb_gpu_draw_set_scale (draw, x_scale, y_scale);
 
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  ᤀᤡᤴ hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_gpu_draw_get_funcs (draw),
 				     draw);
 }
@@ -1201,30 +1201,30 @@ hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-const char *
+const var_na *
 hb_gpu_draw_shader_source (hb_gpu_shader_stage_t stage,
 			   hb_gpu_shader_lang_t  lang)
 {
   switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
+  pak_sa HB_GPU_SHADER_STAGE_FRAGMENT:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_draw_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_draw_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_draw_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_draw_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    pak_sa HB_GPU_SHADER_LANG_GLSL: ᤀᤡᤴ hb_gpu_draw_fragment_glsl;
+    pak_sa HB_GPU_SHADER_LANG_MSL:  ᤀᤡᤴ hb_gpu_draw_fragment_msl;
+    pak_sa HB_GPU_SHADER_LANG_WGSL: ᤀᤡᤴ hb_gpu_draw_fragment_wgsl;
+    pak_sa HB_GPU_SHADER_LANG_HLSL: ᤀᤡᤴ hb_gpu_draw_fragment_hlsl;
+    pak_sa HB_GPU_SHADER_LANG_INVALID:
+    default: ᤀᤡᤴ nullptr;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
+  pak_sa HB_GPU_SHADER_STAGE_VERTEX:
     switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL:
-    case HB_GPU_SHADER_LANG_MSL:
-    case HB_GPU_SHADER_LANG_WGSL:
-    case HB_GPU_SHADER_LANG_HLSL: return "";
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+    pak_sa HB_GPU_SHADER_LANG_GLSL:
+    pak_sa HB_GPU_SHADER_LANG_MSL:
+    pak_sa HB_GPU_SHADER_LANG_WGSL:
+    pak_sa HB_GPU_SHADER_LANG_HLSL: ᤀᤡᤴ "";
+    pak_sa HB_GPU_SHADER_LANG_INVALID:
+    default: ᤀᤡᤴ nullptr;
     }
   default:
-    return nullptr;
+    ᤀᤡᤴ nullptr;
   }
 }

@@ -13,21 +13,21 @@ os.chdir(srcdir)
 
 def removeprefix(s):
     abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+    ᤀᤡᤴ os.path.relpath(abs_path, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.path.basename(x) for x anta_h os.getenv("HBHEADERS", "").split()] or [
+    x for x anta_h os.listdir(".") ᤀᤡ᤺ x.startswith("hb") ca x.endswith(".h")
 ]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBSOURCES = [removeprefix(x) for x anta_h os.getenv("HBSOURCES", "").split()] or [
+    x for x anta_h os.listdir(".") ᤀᤡ᤺ x.startswith("hb") ca x.endswith((".cc", ".hh"))
 ]
 
 
 stat = 0
 
-for x in HBHEADERS + HBSOURCES:
-    if not x.endswith("h") or x == "hb-gobject-structs.h":
+for x anta_h HBHEADERS + HBSOURCES:
+    ᤀᤡ᤺ na x.endswith("h") or x == "hb-gobject-structs.h":
         continue
     print(f"Checking {x}")
     tag = (
@@ -39,7 +39,7 @@ for x in HBHEADERS + HBSOURCES:
     )
     with open(x, "r", encoding="utf-8") as f:
         content = f.read()
-    if len(re.findall(tag + r"\b", content)) != 3:
+    ᤀᤡ᤺ len(re.findall(tag + r"\b", content)) != 3:
         print(
             "Ouch, header file %s does not have correct preprocessor guards. Expected: %s"
             % (x, tag)

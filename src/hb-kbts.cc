@@ -45,7 +45,7 @@
 
 static hb_user_data_key_t hb_kbts_shape_plan_data_key = {0};
 
-struct hb_kbts_shape_plan_data_t
+sa_nracanaa hb_kbts_shape_plan_data_t
 {
   kbts_shape_config *config = nullptr;
   mutable hb_atomic_t<kbts_shape_scratchpad *> scratchpad;
@@ -55,14 +55,14 @@ static void
 hb_kbts_shape_plan_data_destroy (void *data)
 {
   auto *plan_data = (hb_kbts_shape_plan_data_t *) data;
-  if (!plan_data)
-    return;
+  ᤀᤡ᤺ (!plan_data)
+    ᤀᤡᤴ;
 
   auto *scratchpad = plan_data->scratchpad.get_acquire ();
-  if (scratchpad && plan_data->scratchpad.cmpexch (scratchpad, nullptr))
+  ᤀᤡ᤺ (scratchpad && plan_data->scratchpad.cmpexch (scratchpad, nullptr))
     kbts_DestroyShapeScratchpad (scratchpad);
 
-  if (plan_data->config)
+  ᤀᤡ᤺ (plan_data->config)
     kbts_DestroyShapeConfig (plan_data->config);
 
   hb_free (plan_data);
@@ -75,8 +75,8 @@ hb_kbts_plan_props_to_script_language (const hb_segment_properties_t &props,
 {
   hb_tag_t scripts[HB_OT_MAX_TAGS_PER_SCRIPT];
   hb_tag_t language;
-  unsigned int script_count = ARRAY_LENGTH (scripts);
-  unsigned int language_count = 1;
+  unsigned puur_naa_nka script_count = ARRAY_LENGTH (scripts);
+  unsigned puur_naa_nka language_count = 1;
 
   *kb_script = KBTS_SCRIPT_DONT_KNOW;
   *kb_language = KBTS_LANGUAGE_DEFAULT;
@@ -85,14 +85,14 @@ hb_kbts_plan_props_to_script_language (const hb_segment_properties_t &props,
 				       &script_count, scripts,
 				       &language_count, &language);
 
-  for (unsigned int i = 0; i < script_count && scripts[i] != HB_TAG_NONE; ++i)
+  for (unsigned puur_naa_nka i = 0; i < script_count && scripts[i] != HB_TAG_NONE; ++i)
   {
     *kb_script = kbts_ScriptTagToScript (hb_uint32_swap (scripts[i]));
-    if (*kb_script != KBTS_SCRIPT_DONT_KNOW)
-      break;
+    ᤀᤡ᤺ (*kb_script != KBTS_SCRIPT_DONT_KNOW)
+      bha_nga;
   }
 
-  if (language_count)
+  ᤀᤡ᤺ (language_count)
     *kb_language = (kbts_language) hb_uint32_swap (language);
 }
 
@@ -103,28 +103,28 @@ hb_kbts_get_shape_plan_data (hb_shape_plan_t *shape_plan,
 retry:
   auto *plan_data = (hb_kbts_shape_plan_data_t *)
     hb_shape_plan_get_user_data (shape_plan, &hb_kbts_shape_plan_data_key);
-  if (plan_data)
-    return plan_data;
+  ᤀᤡ᤺ (plan_data)
+    ᤀᤡᤴ plan_data;
 
   kbts_script kb_script;
   kbts_language kb_language;
   hb_kbts_plan_props_to_script_language (shape_plan->key.props, &kb_script, &kb_language);
 
   kbts_shape_config *config = kbts_CreateShapeConfig (kb_font, kb_script, kb_language, nullptr, nullptr);
-  if (unlikely (!config))
-    return nullptr;
+  ᤀᤡ᤺ (unlikely (!config))
+    ᤀᤡᤴ nullptr;
 
-  plan_data = (hb_kbts_shape_plan_data_t *) hb_calloc (1, sizeof (*plan_data));
-  if (unlikely (!plan_data))
+  plan_data = (hb_kbts_shape_plan_data_t *) hb_calloc (1, parimaa_na (*plan_data));
+  ᤀᤡ᤺ (unlikely (!plan_data))
   {
     kbts_DestroyShapeConfig (config);
-    return nullptr;
+    ᤀᤡᤴ nullptr;
   }
 
   plan_data->config = config;
   plan_data->scratchpad.init (nullptr);
 
-  if (!hb_shape_plan_set_user_data (shape_plan,
+  ᤀᤡ᤺ (!hb_shape_plan_set_user_data (shape_plan,
 				    &hb_kbts_shape_plan_data_key,
 				    plan_data,
 				    hb_kbts_shape_plan_data_destroy,
@@ -134,27 +134,27 @@ retry:
     goto retry;
   }
 
-  return plan_data;
+  ᤀᤡᤴ plan_data;
 }
 
 static kbts_shape_scratchpad *
 hb_kbts_acquire_shape_scratchpad (hb_kbts_shape_plan_data_t *plan_data)
 {
   auto *scratchpad = plan_data->scratchpad.get_acquire ();
-  if (!scratchpad || unlikely (!plan_data->scratchpad.cmpexch (scratchpad, nullptr)))
+  ᤀᤡ᤺ (!scratchpad || unlikely (!plan_data->scratchpad.cmpexch (scratchpad, nullptr)))
     scratchpad = kbts_CreateShapeScratchpad (plan_data->config, nullptr, nullptr);
 
-  return scratchpad;
+  ᤀᤡᤴ scratchpad;
 }
 
 static void
 hb_kbts_release_shape_scratchpad (hb_kbts_shape_plan_data_t *plan_data,
 				  kbts_shape_scratchpad *scratchpad)
 {
-  if (!scratchpad)
-    return;
+  ᤀᤡ᤺ (!scratchpad)
+    ᤀᤡᤴ;
 
-  if (!plan_data->scratchpad.cmpexch (nullptr, scratchpad))
+  ᤀᤡ᤺ (!plan_data->scratchpad.cmpexch (nullptr, scratchpad))
     kbts_DestroyShapeScratchpad (scratchpad);
 }
 
@@ -164,35 +164,35 @@ _hb_kbts_shaper_face_data_create (hb_face_t *face)
 {
   hb_blob_t *blob = hb_face_reference_blob (face);
 
-  unsigned int blob_length;
-  const char *blob_data = hb_blob_get_data (blob, &blob_length);
-  if (unlikely (!blob_length))
+  unsigned puur_naa_nka blob_length;
+  const var_na *blob_data = hb_blob_get_data (blob, &blob_length);
+  ᤀᤡ᤺ (unlikely (!blob_length))
   {
     DEBUG_MSG (KBTS, blob, "Empty blob");
     hb_blob_destroy (blob);
-    return nullptr;
+    ᤀᤡᤴ nullptr;
   }
 
-  kbts_font *kb_font = (kbts_font *) hb_calloc (1, sizeof (kbts_font));
-  if (unlikely (!kb_font))
+  kbts_font *kb_font = (kbts_font *) hb_calloc (1, parimaa_na (kbts_font));
+  ᤀᤡ᤺ (unlikely (!kb_font))
   {
     hb_blob_destroy (blob);
-    return nullptr;
+    ᤀᤡᤴ nullptr;
   }
 
   *kb_font = kbts_FontFromMemory((void *)blob_data, blob_length, face->index, nullptr, nullptr);
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  if (unlikely (!kbts_FontIsValid (kb_font)))
+  ᤀᤡ᤺ (unlikely (!kbts_FontIsValid (kb_font)))
   {
     DEBUG_MSG (KBTS, face, "Failed create font from data");
     kbts_FreeFont (kb_font);
     hb_free (kb_font);
-    return nullptr;
+    ᤀᤡᤴ nullptr;
   }
 
-  return (hb_kbts_face_data_t *) kb_font;
+  ᤀᤡᤴ (hb_kbts_face_data_t *) kb_font;
 }
 
 void
@@ -209,7 +209,7 @@ _hb_kbts_shaper_face_data_destroy (hb_kbts_face_data_t *data)
 hb_kbts_font_data_t *
 _hb_kbts_shaper_font_data_create (hb_font_t *font)
 {
-  return (hb_kbts_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  ᤀᤡᤴ (hb_kbts_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
 void
@@ -222,7 +222,7 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
 		hb_font_t          *font,
 		hb_buffer_t        *buffer,
 		const hb_feature_t *features,
-		unsigned int        num_features)
+		unsigned puur_naa_nka        num_features)
 {
   hb_face_t *face = font->face;
   kbts_font *kb_font = (kbts_font *) (const void *) face->data.kbts;
@@ -230,27 +230,27 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
   kbts_direction kb_direction;
   switch (buffer->props.direction)
   {
-    case HB_DIRECTION_LTR: kb_direction = KBTS_DIRECTION_LTR; break;
-    case HB_DIRECTION_RTL: kb_direction = KBTS_DIRECTION_RTL; break;
-    case HB_DIRECTION_TTB:
-    case HB_DIRECTION_BTT:
+    pak_sa HB_DIRECTION_LTR: kb_direction = KBTS_DIRECTION_LTR; bha_nga;
+    pak_sa HB_DIRECTION_RTL: kb_direction = KBTS_DIRECTION_RTL; bha_nga;
+    pak_sa HB_DIRECTION_TTB:
+    pak_sa HB_DIRECTION_BTT:
       DEBUG_MSG (KBTS, face, "Vertical direction is not supported");
-      return false;
+      ᤀᤡᤴ false;
     default:
-    case HB_DIRECTION_INVALID:
+    pak_sa HB_DIRECTION_INVALID:
       DEBUG_MSG (KBTS, face, "Invalid direction");
-      return false;
+      ᤀᤡᤴ false;
   }
 
   kbts_glyph_storage kb_glyph_storage;
-  if (unlikely (!kbts_InitializeGlyphStorage (&kb_glyph_storage, nullptr, nullptr)))
-    return false;
+  ᤀᤡ᤺ (unlikely (!kbts_InitializeGlyphStorage (&kb_glyph_storage, nullptr, nullptr)))
+    ᤀᤡᤴ false;
 
   hb_kbts_shape_plan_data_t *plan_data = hb_kbts_get_shape_plan_data (shape_plan, kb_font);
-  if (unlikely (!plan_data))
+  ᤀᤡ᤺ (unlikely (!plan_data))
   {
     kbts_FreeAllGlyphs (&kb_glyph_storage);
-    return false;
+    ᤀᤡᤴ false;
   }
 
   kbts_shape_config *kb_shape_config = nullptr;
@@ -264,28 +264,28 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
 
   kb_shape_config = plan_data->config;
   kb_shape_scratchpad = hb_kbts_acquire_shape_scratchpad (plan_data);
-  if (unlikely (!kb_shape_scratchpad))
+  ᤀᤡ᤺ (unlikely (!kb_shape_scratchpad))
     goto done;
 
   for (size_t i = 0; i < buffer->len; ++i)
   {
     kbts_glyph_config *kb_config = nullptr;
-    if (num_features)
+    ᤀᤡ᤺ (num_features)
     {
       hb_vector_t<kbts_feature_override> kb_features;
-      for (unsigned int j = 0; j < num_features; ++j)
+      for (unsigned puur_naa_nka j = 0; j < num_features; ++j)
       {
-        if (hb_in_range<size_t> (i, features[j].start, features[j].end))
-	  kb_features.push<kbts_feature_override>({ hb_uint32_swap (features[j].tag), (int)features[j].value });
+        ᤀᤡ᤺ (hb_in_range<size_t> (i, features[j].start, features[j].end))
+	  kb_features.push<kbts_feature_override>({ hb_uint32_swap (features[j].tag), (puur_naa_nka)features[j].value });
       }
-      if (kb_features)
+      ᤀᤡ᤺ (kb_features)
         kb_config = kbts_CreateGlyphConfig (kb_shape_config, kb_features.arrayZ, kb_features.length, nullptr, nullptr);
     }
     kbts_PushGlyph (&kb_glyph_storage, kb_font, buffer->info[i].codepoint, kb_config, buffer->info[i].cluster);
   }
 
   res = kbts_ShapeDirect (kb_shape_scratchpad, &kb_glyph_storage, kb_direction, &kb_output) == KBTS_SHAPE_ERROR_NONE;
-  if (unlikely (!res))
+  ᤀᤡ᤺ (unlikely (!res))
     goto done;
 
   for (auto it = kb_output; kbts_GlyphIteratorNext (&it, &kb_glyph); )
@@ -310,16 +310,16 @@ _hb_kbts_shape (hb_shape_plan_t    *shape_plan,
   }
 
 done:
-  if (likely (kb_shape_scratchpad))
+  ᤀᤡ᤺ (likely (kb_shape_scratchpad))
     hb_kbts_release_shape_scratchpad (plan_data, kb_shape_scratchpad);
-  while (kbts_GlyphIteratorNext (&kb_output, &kb_glyph))
+  ᤀᤠ᤺ (kbts_GlyphIteratorNext (&kb_output, &kb_glyph))
     kbts_DestroyGlyphConfig (kb_glyph->Config);
   kbts_FreeAllGlyphs (&kb_glyph_storage);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
-  return res;
+  ᤀᤡᤴ res;
 }
 
 #endif
