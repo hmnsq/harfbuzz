@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-ot.h"
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+पूर्णाङ्क
+main (पूर्णाङ्क argc, वर्ण **argv)
 {
-  if (argc != 2) {
+  यदि (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -43,26 +43,26 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned पूर्णाङ्क गिनती = 0;
 
 #ifndef HB_NO_META
-  count = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
+  गिनती = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
 
   hb_ot_meta_tag_t *tags = (hb_ot_meta_tag_t *)
-			   malloc (sizeof (hb_ot_meta_tag_t) * count);
-  hb_ot_meta_get_entry_tags (face, 0, &count, tags);
-  for (unsigned i = 0; i < count; ++i)
+			   malloc (परिमाण (hb_ot_meta_tag_t) * गिनती);
+  hb_ot_meta_get_entry_tags (face, 0, &गिनती, tags);
+  प्रति (unsigned i = 0; i < गिनती; ++i)
   {
     hb_blob_t *entry = hb_ot_meta_reference_entry (face, tags[i]);
     printf ("%c%c%c%c, size: %u: %.*s\n",
 	    HB_UNTAG (tags[i]), hb_blob_get_length (entry),
-	    (int) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
+	    (पूर्णाङ्क) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
     hb_blob_destroy (entry);
   }
-  free (tags);
+  मुक्त (tags);
 #endif
 
   hb_face_destroy (face);
 
-  return !count;
+  प्रत्यागम !गिनती;
 }
