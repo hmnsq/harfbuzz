@@ -29,24 +29,24 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGE_HH
 #define OT_LAYOUT_COMMON_COVERAGE_HH
 
-#include "../../../hb-ot-dual.hh"
-#include "CoverageFormat1.hh"
-#include "CoverageFormat2.hh"
+#અન્તર્ભાવ "../../../hb-ot-dual.hh"
+#અન્તર્ભાવ "CoverageFormat1.hh"
+#અન્તર્ભાવ "CoverageFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+નામાકાશ OT {
+નામાકાશ Layout {
+નામાકાશ Common {
 
 template<typename Iterator>
-static inline void Coverage_serialize (hb_serialize_context_t *c,
+સ્થિર અંતઃરેખ શૂન્ય Coverage_serialize (hb_serialize_context_t *c,
                                        Iterator it);
 
-struct Coverage
+સંરચના Coverage
 {
 
-  protected:
-  union {
-  struct { HBUINT16 v; }        format;         /* Format identifier */
+  સુરક્ષિત:
+  સંઘ {
+  સંરચના { HBUINT16 v; }        format;         /* Format identifier */
   CoverageFormat1_3<SmallTypes> format1;
   CoverageFormat2_4<SmallTypes> format2;
 #ifndef HB_NO_BEYOND_64K
@@ -54,325 +54,325 @@ struct Coverage
   CoverageFormat2_4<MediumTypes>format4;
 #endif
   } u;
-  public:
+  જાહેર:
   DEFINE_SIZE_UNION (2, format.v);
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (આ);
+    જો (!u.format.v.sanitize (c)) return_trace (ખોટું);
     hb_barrier ();
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    સ્થિતિ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    સ્થિતિ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    સ્થિતિ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    સ્થિતિ 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
-    default:return_trace (true);
+    મૂળભૂત:return_trace (સાચું);
     }
   }
 
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k] != NOT_COVERED; }
+  unsigned operator [] (hb_codepoint_t k) અચલ { પાછા get (k); }
+  તાર્કિક has (hb_codepoint_t k) અચલ { પાછા (*આ)[k] != NOT_COVERED; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  તાર્કિક operator () (hb_codepoint_t k) અચલ { પાછા has (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_coverage (k); }
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned પૂર્ણાંક get (hb_codepoint_t k) અચલ { પાછા get_coverage (k); }
+  unsigned પૂર્ણાંક get_coverage (hb_codepoint_t glyph_id) અચલ
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coverage (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_coverage (glyph_id);
+    પસંદગી (u.format.v) {
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.get_coverage (glyph_id);
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.get_coverage (glyph_id);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_coverage (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_coverage (glyph_id);
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.get_coverage (glyph_id);
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.get_coverage (glyph_id);
 #endif
-    default:return NOT_COVERED;
+    મૂળભૂત:પાછા NOT_COVERED;
     }
   }
-  unsigned int get_coverage (hb_codepoint_t glyph_id,
-			     hb_ot_layout_mapping_cache_t *cache) const
+  unsigned પૂર્ણાંક get_coverage (hb_codepoint_t glyph_id,
+			     hb_ot_layout_mapping_cache_t *cache) અચલ
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    જો (cache && cache->get (glyph_id, &coverage)) પાછા coverage < cache->MAX_કિંમત ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
+    જો (cache) {
+      જો (coverage == NOT_COVERED)
+	cache->set (glyph_id, cache->MAX_કિંમત);
+      નહીંતર જો (likely (coverage < cache->MAX_કિંમત))
 	cache->set (glyph_id, coverage);
     }
-    return coverage;
+    પાછા coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
-				    hb_ot_layout_binary_cache_t *cache) const
+  unsigned પૂર્ણાંક get_coverage_દ્વિઅંકી (hb_codepoint_t glyph_id,
+				    hb_ot_layout_દ્વિઅંકી_cache_t *cache) અચલ
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    જો (cache && cache->get (glyph_id, &coverage)) પાછા coverage < cache->MAX_કિંમત ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else
+    જો (cache) {
+      જો (coverage == NOT_COVERED)
+	cache->set (glyph_id, cache->MAX_કિંમત);
+      નહીંતર
 	cache->set (glyph_id, 0);
     }
-    return coverage;
+    પાછા coverage;
   }
 
-  unsigned get_population () const
+  unsigned get_population () અચલ
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
+    પસંદગી (u.format.v) {
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.get_population ();
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.get_population ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.get_population ();
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.get_population ();
 #endif
-    default:return NOT_COVERED;
+    મૂળભૂત:પાછા NOT_COVERED;
     }
   }
 
   template <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  તાર્કિક serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (આ);
+    જો (unlikely (!c->extend_min (આ))) return_trace (ખોટું);
 
-    unsigned count = hb_len (+ glyphs);
-    unsigned num_ranges = 0;
+    unsigned ગણતરી = hb_len (+ glyphs);
+    unsigned અંક_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
-    bool unsorted = false;
-    for (auto g: + glyphs)
+    તાર્કિક unsorted = ખોટું;
+    માટે (auto g: + glyphs)
     {
-      if (last != (hb_codepoint_t) -2 && g < last)
-	unsorted = true;
-      if (last + 1 != g)
-	num_ranges++;
+      જો (last != (hb_codepoint_t) -2 && g < last)
+	unsorted = સાચું;
+      જો (last + 1 != g)
+	અંક_ranges++;
       last = g;
-      if (g > max) max = g;
+      જો (g > max) max = g;
     }
-    u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
+    u.format.v = !unsorted && ગણતરી <= અંક_ranges * 3 ? 1 : 2;
 
 #ifndef HB_NO_BEYOND_64K
-    if (max > 0xFFFFu)
+    જો (max > 0xFFFFu)
       u.format.v += 2;
-    if (unlikely (max > 0xFFFFFFu))
-#else
-    if (unlikely (max > 0xFFFFu))
+    જો (unlikely (max > 0xFFFFFFu))
+#નહીંતર
+    જો (unlikely (max > 0xFFFFu))
 #endif
     {
-      c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return_trace (false);
+      c->check_success (ખોટું, HB_SERIALIZE_ERROR_INT_OVERFLOW);
+      return_trace (ખોટું);
     }
 
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
+    સ્થિતિ 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
+    સ્થિતિ 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
+    સ્થિતિ 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
+    સ્થિતિ 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
 #endif
-    default:return_trace (false);
+    મૂળભૂત:return_trace (ખોટું);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  તાર્કિક subset (hb_subset_context_t *c) અચલ
   {
-    TRACE_SUBSET (this);
-    const hb_subset_plan_t *plan = c->plan;
+    TRACE_SUBSET (આ);
+    અચલ hb_subset_plan_t *plan = c->plan;
     auto it =
     + iter ()
-    | hb_take (plan->source->get_num_glyphs ())
+    | hb_take (plan->source->get_અંક_glyphs ())
     | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
-	return plan->map_gsub_glyph (g);
+	પાછા plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { પાછા glyph != HB_MAP_કિંમત_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times
     // by the serialize code below.
     hb_sorted_vector_t<hb_codepoint_t> glyphs (it);
     Coverage_serialize (c->serializer, glyphs.iter ());
-    return_trace (bool (glyphs));
+    return_trace (તાર્કિક (glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  તાર્કિક intersects (અચલ hb_set_t *glyphs) અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.intersects (glyphs);
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.intersects (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.intersects (glyphs);
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.intersects (glyphs);
 #endif
-    default:return false;
+    મૂળભૂત:પાછા ખોટું;
     }
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  તાર્કિક intersects_coverage (અચલ hb_set_t *glyphs, unsigned પૂર્ણાંક index) અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects_coverage (glyphs, index);
-    case 2: hb_barrier (); return u.format2.intersects_coverage (glyphs, index);
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.intersects_coverage (glyphs, index);
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.intersects_coverage (glyphs, index);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_coverage (glyphs, index);
-    case 4: hb_barrier (); return u.format4.intersects_coverage (glyphs, index);
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.intersects_coverage (glyphs, index);
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.intersects_coverage (glyphs, index);
 #endif
-    default:return false;
+    મૂળભૂત:પાછા ખોટું;
     }
   }
 
-  unsigned cost () const
+  unsigned cost () અચલ
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
+    પસંદગી (u.format.v) {
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.cost ();
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.cost ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.cost ();
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.cost ();
 #endif
-    default:return 0u;
+    મૂળભૂત:પાછા 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  તાર્કિક collect_coverage (set_t *glyphs) અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.collect_coverage (glyphs);
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.collect_coverage (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.collect_coverage (glyphs);
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.collect_coverage (glyphs);
 #endif
-    default:return false;
+    મૂળભૂત:પાછા ખોટું;
     }
   }
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  શૂન્ય intersect_set (અચલ hb_set_t &glyphs, IterableOut&& intersect_glyphs) અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersect_set (glyphs, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersect_set (glyphs, intersect_glyphs);
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.intersect_set (glyphs, intersect_glyphs);
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.intersect_set (glyphs, intersect_glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersect_set (glyphs, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersect_set (glyphs, intersect_glyphs);
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.intersect_set (glyphs, intersect_glyphs);
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.intersect_set (glyphs, intersect_glyphs);
 #endif
-    default:return ;
+    મૂળભૂત:પાછા ;
     }
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  સંરચના iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const Coverage &c_ = Null (Coverage))
+    સ્થિર constexpr તાર્કિક is_sorted_iterator = સાચું;
+    iter_t (અચલ Coverage &c_ = Null (Coverage))
     {
-      hb_memset (this, 0, sizeof (*this));
+      hb_memset (આ, 0, કદ (*આ));
       format = c_.u.format.v;
-      switch (format)
+      પસંદગી (format)
       {
-      case 1: hb_barrier (); u.format1.init (c_.u.format1); return;
-      case 2: hb_barrier (); u.format2.init (c_.u.format2); return;
+      સ્થિતિ 1: hb_barrier (); u.format1.init (c_.u.format1); પાછા;
+      સ્થિતિ 2: hb_barrier (); u.format2.init (c_.u.format2); પાછા;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.init (c_.u.format3); return;
-      case 4: hb_barrier (); u.format4.init (c_.u.format4); return;
+      સ્થિતિ 3: hb_barrier (); u.format3.init (c_.u.format3); પાછા;
+      સ્થિતિ 4: hb_barrier (); u.format4.init (c_.u.format4); પાછા;
 #endif
-      default:                               return;
+      મૂળભૂત:                               પાછા;
       }
     }
-    bool __more__ () const
+    તાર્કિક __more__ () અચલ
     {
-      switch (format)
+      પસંદગી (format)
       {
-      case 1: hb_barrier (); return u.format1.__more__ ();
-      case 2: hb_barrier (); return u.format2.__more__ ();
+      સ્થિતિ 1: hb_barrier (); પાછા u.format1.__more__ ();
+      સ્થિતિ 2: hb_barrier (); પાછા u.format2.__more__ ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.__more__ ();
-      case 4: hb_barrier (); return u.format4.__more__ ();
+      સ્થિતિ 3: hb_barrier (); પાછા u.format3.__more__ ();
+      સ્થિતિ 4: hb_barrier (); પાછા u.format4.__more__ ();
 #endif
-      default:return false;
+      મૂળભૂત:પાછા ખોટું;
       }
     }
-    void __next__ ()
+    શૂન્ય __next__ ()
     {
-      switch (format)
+      પસંદગી (format)
       {
-      case 1: hb_barrier (); u.format1.__next__ (); break;
-      case 2: hb_barrier (); u.format2.__next__ (); break;
+      સ્થિતિ 1: hb_barrier (); u.format1.__next__ (); તોડો;
+      સ્થિતિ 2: hb_barrier (); u.format2.__next__ (); તોડો;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.__next__ (); break;
-      case 4: hb_barrier (); u.format4.__next__ (); break;
+      સ્થિતિ 3: hb_barrier (); u.format3.__next__ (); તોડો;
+      સ્થિતિ 4: hb_barrier (); u.format4.__next__ (); તોડો;
 #endif
-      default:                   break;
+      મૂળભૂત:                   તોડો;
       }
     }
-    typedef hb_codepoint_t __item_t__;
-    __item_t__ __item__ () const { return get_glyph (); }
+    પ્રકારવ્યાખ્યા hb_codepoint_t __item_t__;
+    __item_t__ __item__ () અચલ { પાછા get_glyph (); }
 
-    hb_codepoint_t get_glyph () const
+    hb_codepoint_t get_glyph () અચલ
     {
-      switch (format)
+      પસંદગી (format)
       {
-      case 1: hb_barrier (); return u.format1.get_glyph ();
-      case 2: hb_barrier (); return u.format2.get_glyph ();
+      સ્થિતિ 1: hb_barrier (); પાછા u.format1.get_glyph ();
+      સ્થિતિ 2: hb_barrier (); પાછા u.format2.get_glyph ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.get_glyph ();
-      case 4: hb_barrier (); return u.format4.get_glyph ();
+      સ્થિતિ 3: hb_barrier (); પાછા u.format3.get_glyph ();
+      સ્થિતિ 4: hb_barrier (); પાછા u.format4.get_glyph ();
 #endif
-      default:return 0;
+      મૂળભૂત:પાછા 0;
       }
     }
-    bool operator != (const iter_t& o) const
+    તાર્કિક operator != (અચલ iter_t& o) અચલ
     {
-      if (unlikely (format != o.format)) return true;
-      switch (format)
+      જો (unlikely (format != o.format)) પાછા સાચું;
+      પસંદગી (format)
       {
-      case 1: hb_barrier (); return u.format1 != o.u.format1;
-      case 2: hb_barrier (); return u.format2 != o.u.format2;
+      સ્થિતિ 1: hb_barrier (); પાછા u.format1 != o.u.format1;
+      સ્થિતિ 2: hb_barrier (); પાછા u.format2 != o.u.format2;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3 != o.u.format3;
-      case 4: hb_barrier (); return u.format4 != o.u.format4;
+      સ્થિતિ 3: hb_barrier (); પાછા u.format3 != o.u.format3;
+      સ્થિતિ 4: hb_barrier (); પાછા u.format4 != o.u.format4;
 #endif
-      default:return false;
+      મૂળભૂત:પાછા ખોટું;
       }
     }
-    iter_t __end__ () const
+    iter_t __end__ () અચલ
     {
       iter_t it;
       it.format = format;
-      switch (format)
+      પસંદગી (format)
       {
-      case 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); break;
-      case 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); break;
+      સ્થિતિ 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); તોડો;
+      સ્થિતિ 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); તોડો;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); break;
-      case 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); break;
+      સ્થિતિ 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); તોડો;
+      સ્થિતિ 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); તોડો;
 #endif
-      default: break;
+      મૂળભૂત: તોડો;
       }
-      return it;
+      પાછા it;
     }
 
-    private:
-    unsigned int format;
-    union {
+    ખાનગી:
+    unsigned પૂર્ણાંક format;
+    સંઘ {
 #ifndef HB_NO_BEYOND_64K
     CoverageFormat2_4<MediumTypes>::iter_t      format4; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<MediumTypes>::iter_t      format3;
@@ -381,11 +381,11 @@ struct Coverage
     CoverageFormat1_3<SmallTypes>::iter_t       format1;
     } u;
   };
-  iter_t iter () const { return iter_t (*this); }
+  iter_t iter () અચલ { પાછા iter_t (*આ); }
 };
 
 template<typename Iterator>
-static inline void
+સ્થિર અંતઃરેખ શૂન્ય
 Coverage_serialize (hb_serialize_context_t *c,
                     Iterator it)
 { c->start_embed<Coverage> ()->serialize (c, it); }

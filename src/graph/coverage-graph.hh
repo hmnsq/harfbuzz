@@ -24,45 +24,45 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../OT/Layout/Common/Coverage.hh"
+#અન્તર્ભાવ "graph.hh"
+#અન્તર્ભાવ "../OT/Layout/Common/Coverage.hh"
 
 #ifndef GRAPH_COVERAGE_GRAPH_HH
 #define GRAPH_COVERAGE_GRAPH_HH
 
-namespace graph {
+નામાકાશ graph {
 
 template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
-  const graph_t::vertex_t& vertex
+સ્થિર graph_result_t<શૂન્ય> sanitize (
+  અચલ OT::Layout::Common::CoverageFormat1_3<Types>* thiz,
+  અચલ graph_t::vertex_t& vertex
 ) {
   size_t vertex_len = vertex.table_size();
   constexpr unsigned min_size = OT::Layout::Common::CoverageFormat1_3<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  જો (unlikely (vertex_len < min_size)) પાછા Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  જો (unlikely (vertex_len < min_size + thiz->glyphArray.get_size () - thiz->glyphArray.len.get_size ()))
+    પાછા Err(SANITIZE_FAILURE);
+  પાછા Ok();
 }
 
 template <typename Types>
-static graph_result_t<void> sanitize (
-  const OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
-  const graph_t::vertex_t& vertex
+સ્થિર graph_result_t<શૂન્ય> sanitize (
+  અચલ OT::Layout::Common::CoverageFormat2_4<Types>* thiz,
+  અચલ graph_t::vertex_t& vertex
 ) {
   size_t vertex_len = vertex.table_size();
   constexpr unsigned min_size = OT::Layout::Common::CoverageFormat2_4<Types>::min_size;
-  if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+  જો (unlikely (vertex_len < min_size)) પાછા Err(SANITIZE_FAILURE);
   hb_barrier ();
-  if (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
-    return Err(SANITIZE_FAILURE);
-  return Ok();
+  જો (unlikely (vertex_len < min_size + thiz->rangeRecord.get_size () - thiz->rangeRecord.len.get_size ()))
+    પાછા Err(SANITIZE_FAILURE);
+  પાછા Ok();
 }
 
-struct Coverage : public OT::Layout::Common::Coverage
+સંરચના Coverage : જાહેર OT::Layout::Common::Coverage
 {
-  static graph_result_t<void> clone_coverage (gsubgpos_graph_context_t& c,
+  સ્થિર graph_result_t<શૂન્ય> clone_coverage (gsubgpos_graph_context_t& c,
                                               unsigned coverage_id,
                                               unsigned new_parent_id,
                                               unsigned link_position,
@@ -71,118 +71,118 @@ struct Coverage : public OT::Layout::Common::Coverage
   {
     unsigned coverage_size = c.graph.vertices_[coverage_id].table_size ();
     auto& coverage_v = c.graph.vertices_[coverage_id];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
+    અચલ Coverage* coverage_table = (અચલ Coverage*) coverage_v.obj().head;
+    જો (unlikely (!coverage_table))
+      પાછા Err(INVALID_ARGUMENT);
     TRY (coverage_table->sanitize (coverage_v));
 
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+          પાછા p.second >= start && p.second < end;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
+    પાછા add_coverage (c, new_parent_id, link_position, new_coverage, coverage_size);
   }
 
   template<typename It>
-  static graph_result_t<void> add_coverage (gsubgpos_graph_context_t& c,
+  સ્થિર graph_result_t<શૂન્ય> add_coverage (gsubgpos_graph_context_t& c,
                                             unsigned parent_id,
                                             unsigned link_position,
                                             It glyphs,
                                             unsigned max_size)
   {
-    TRY_ASSIGN (unsigned coverage_prime_id, c.graph.new_node (nullptr, nullptr));
-    auto& coverage_prime_vertex = c.graph.vertices_[coverage_prime_id];
-    TRY (make_coverage (c, glyphs, coverage_prime_id, max_size));
+    TRY_ASSIGN (unsigned coverage_અવિભાજ્ય_id, c.graph.new_ગાંઠ (nullptr, nullptr));
+    auto& coverage_અવિભાજ્ય_vertex = c.graph.vertices_[coverage_અવિભાજ્ય_id];
+    TRY (make_coverage (c, glyphs, coverage_અવિભાજ્ય_id, max_size));
 
-    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_prime_id, link_position));
-    TRY(coverage_prime_vertex.add_parent (parent_id, false));
+    TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, coverage_અવિભાજ્ય_id, link_position));
+    TRY(coverage_અવિભાજ્ય_vertex.add_parent (parent_id, ખોટું));
 
-    return Ok();
+    પાછા Ok();
   }
 
   // Filter an existing coverage table to glyphs at indices [start, end) and replace it with the filtered version.
-  static graph_result_t<void> filter_coverage (gsubgpos_graph_context_t& c,
+  સ્થિર graph_result_t<શૂન્ય> filter_coverage (gsubgpos_graph_context_t& c,
                                                 unsigned existing_coverage,
                                                 unsigned start, unsigned end) {
     unsigned coverage_size = c.graph.vertices_[existing_coverage].table_size ();
     auto& coverage_v = c.graph.vertices_[existing_coverage];
-    const Coverage* coverage_table = (const Coverage*) coverage_v.obj().head;
-    if (unlikely (!coverage_table))
-      return Err(INVALID_ARGUMENT);
+    અચલ Coverage* coverage_table = (અચલ Coverage*) coverage_v.obj().head;
+    જો (unlikely (!coverage_table))
+      પાછા Err(INVALID_ARGUMENT);
     TRY (coverage_table->sanitize (coverage_v));
 
     auto new_coverage =
         + hb_zip (coverage_table->iter (), hb_range ())
         | hb_filter ([&] (hb_pair_t<unsigned, unsigned> p) {
-          return p.second >= start && p.second < end;
+          પાછા p.second >= start && p.second < end;
         })
         | hb_map_retains_sorting (hb_first)
         ;
 
-    return make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
+    પાછા make_coverage (c, new_coverage, existing_coverage, coverage_size * 2 + 100);
   }
 
   // Replace the coverage table at dest obj with one covering 'glyphs'.
   template<typename It>
-  static graph_result_t<void> make_coverage (gsubgpos_graph_context_t& c,
+  સ્થિર graph_result_t<શૂન્ય> make_coverage (gsubgpos_graph_context_t& c,
                                              It glyphs,
                                              unsigned dest_obj,
                                              unsigned max_size)
   {
-    char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    અક્ષર* buffer = (અક્ષર*) hb_calloc (1, max_size);
+    જો (unlikely (!buffer))
+      પાછા Err(ALLOCATION_FAILURE);
 
     hb_serialize_context_t serializer (buffer, max_size);
     OT::Layout::Common::Coverage_serialize (&serializer, glyphs);
     serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    જો (unlikely (serializer.in_error ()))
     {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      પાછા Err(ALLOCATION_FAILURE);
     }
 
     hb_bytes_t coverage_copy = serializer.copy_bytes ();
-    if (unlikely (!coverage_copy.arrayZ)) {
+    જો (unlikely (!coverage_copy.arrayZ)) {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      પાછા Err(ALLOCATION_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
-    auto res = c.add_buffer ((char *) coverage_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    auto res = c.add_buffer ((અક્ષર *) coverage_copy.arrayZ);
+    જો (unlikely (!res.is_ok ()))
     {
       hb_free (buffer);
-      hb_free ((char *) coverage_copy.arrayZ);
-      return res;
+      hb_free ((અક્ષર *) coverage_copy.arrayZ);
+      પાછા res;
     }
 
     auto& v = c.graph.vertices_[dest_obj];
-    char* head = (char *) coverage_copy.arrayZ;
+    અક્ષર* head = (અક્ષર *) coverage_copy.arrayZ;
     v.set_buffer (head, head + coverage_copy.length);
 
     hb_free (buffer);
-    return Ok();
+    પાછા Ok();
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<શૂન્ય> sanitize (અચલ graph_t::vertex_t& vertex) અચલ
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) return Err(SANITIZE_FAILURE);
+    જો (unlikely (vertex_len < OT::Layout::Common::Coverage::min_size)) પાછા Err(SANITIZE_FAILURE);
     hb_barrier ();
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) this, vertex);
-    case 2: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) this, vertex);
+    સ્થિતિ 1: પાછા graph::sanitize ((અચલ OT::Layout::Common::CoverageFormat1_3<OT::Layout::SmallTypes>*) આ, vertex);
+    સ્થિતિ 2: પાછા graph::sanitize ((અચલ OT::Layout::Common::CoverageFormat2_4<OT::Layout::SmallTypes>*) આ, vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 3: return graph::sanitize ((const OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) this, vertex);
-    case 4: return graph::sanitize ((const OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) this, vertex);
+    સ્થિતિ 3: પાછા graph::sanitize ((અચલ OT::Layout::Common::CoverageFormat1_3<OT::Layout::MediumTypes>*) આ, vertex);
+    સ્થિતિ 4: પાછા graph::sanitize ((અચલ OT::Layout::Common::CoverageFormat2_4<OT::Layout::MediumTypes>*) આ, vertex);
 #endif
-    default: return Err(SANITIZE_FAILURE);
+    મૂળભૂત: પાછા Err(SANITIZE_FAILURE);
     }
   }
 };

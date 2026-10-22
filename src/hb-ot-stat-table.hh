@@ -25,8 +25,8 @@
 #ifndef HB_OT_STAT_TABLE_HH
 #define HB_OT_STAT_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#અન્તર્ભાવ "hb-open-type.hh"
+#અન્તર્ભાવ "hb-ot-layout-common.hh"
 
 /*
  * STAT -- Style Attributes
@@ -35,9 +35,9 @@
 #define HB_OT_TAG_STAT HB_TAG('S','T','A','T')
 
 
-namespace OT {
+નામાકાશ OT {
 
-enum
+ગણના
 {
   OLDER_SIBLING_FONT_ATTRIBUTE = 0x0001,	/* If set, this axis value table
 						 * provides axis value information
@@ -50,474 +50,474 @@ enum
 						 * fonts include the information
 						 * themselves and are present,
 						 * then this record is ignored. */
-  ELIDABLE_AXIS_VALUE_NAME = 0x0002		/* If set, it indicates that the axis
+  ELIDABLE_AXIS_કિંમત_NAME = 0x0002		/* If set, it indicates that the axis
 						 * value represents the “normal” value
 						 * for the axis and may be omitted when
 						 * composing name strings. */
   // Reserved = 0xFFFC				/* Reserved for future use — set to zero. */
 };
 
-static bool axis_value_is_outside_axis_range (hb_tag_t axis_tag, float axis_value,
-                                              const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
+સ્થિર તાર્કિક axis_કિંમત_is_outside_axis_range (hb_tag_t axis_tag, દશાંશ axis_કિંમત,
+                                              અચલ hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
 {
-  if (!user_axes_location->has (axis_tag))
-    return false;
+  જો (!user_axes_location->has (axis_tag))
+    પાછા ખોટું;
 
   Triple axis_range = user_axes_location->get (axis_tag);
-  return (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
+  પાછા (axis_કિંમત < axis_range.minimum || axis_કિંમત > axis_range.maximum);
 }
 
-struct StatAxisRecord
+સંરચના StatAxisRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  પૂર્ણાંક cmp (hb_tag_t key) અચલ { પાછા tag.cmp (key); }
 
-  hb_ot_name_id_t get_name_id () const { return nameID; }
+  hb_ot_name_id_t get_name_id () અચલ { પાછા nameID; }
 
-  hb_tag_t get_axis_tag () const { return tag; }
+  hb_tag_t get_axis_tag () અચલ { પાછા tag; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this)));
+    TRACE_SANITIZE (આ);
+    return_trace (likely (c->check_struct (આ)));
   }
 
-  protected:
+  સુરક્ષિત:
   Tag		tag;		/* A tag identifying the axis of design variation. */
   NameID	nameID;		/* The name ID for entries in the 'name' table that
 				 * provide a display string for this axis. */
   HBUINT16	ordering;	/* A value that applications can use to determine
 				 * primary sorting of face names, or for ordering
 				 * of descriptors when composing family or face names. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct AxisValueFormat1
+સંરચના Axis_કિંમત_Format1
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned પૂર્ણાંક get_axis_index () અચલ { પાછા axisIndex; }
+  દશાંશ get_કિંમત ()             અચલ { પાછા value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_કિંમત_name_id () અચલ { પાછા કિંમત_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    પાછા axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  તાર્કિક keep_axis_કિંમત (અચલ hb_array_t<અચલ StatAxisRecord> axis_records,
+                        અચલ hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) અચલ
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    દશાંશ axis_કિંમત = get_કિંમત ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    પાછા !axis_કિંમત_is_outside_axis_range (axis_tag, axis_કિંમત, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (આ);
+    અચલ hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    જો (keep_axis_કિંમત (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (આ));
 
-    return_trace (false);
+    return_trace (ખોટું);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
-  protected:
+  સુરક્ષિત:
   HBUINT16	format;		/* Format identifier — set to 1. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	કિંમત_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct AxisValueFormat2
+સંરચના Axis_કિંમત_Format2
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return nominalValue.to_float (); }
+  unsigned પૂર્ણાંક get_axis_index () અચલ { પાછા axisIndex; }
+  દશાંશ get_કિંમત ()             અચલ { પાછા nominal_કિંમત.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_કિંમત_name_id () અચલ { પાછા કિંમત_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    પાછા axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  તાર્કિક keep_axis_કિંમત (અચલ hb_array_t<અચલ StatAxisRecord> axis_records,
+                        અચલ hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) અચલ
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    દશાંશ axis_કિંમત = get_કિંમત ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    પાછા !axis_કિંમત_is_outside_axis_range (axis_tag, axis_કિંમત, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (આ);
+    અચલ hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    જો (keep_axis_કિંમત (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (આ));
 
-    return_trace (false);
+    return_trace (ખોટું);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
-  protected:
+  સુરક્ષિત:
   HBUINT16	format;		/* Format identifier — set to 2. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	કિંમત_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
-  F16DOT16	nominalValue;	/* A numeric value for this attribute value. */
-  F16DOT16	rangeMinValue;	/* The minimum value for a range associated
+  F16DOT16	nominal_કિંમત;	/* A numeric value for this attribute value. */
+  F16DOT16	range_Min_કિંમત;	/* The minimum value for a range associated
 				 * with the specified name ID. */
-  F16DOT16	rangeMaxValue;	/* The maximum value for a range associated
+  F16DOT16	range_Max_કિંમત;	/* The maximum value for a range associated
 				 * with the specified name ID. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct AxisValueFormat3
+સંરચના Axis_કિંમત_Format3
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned પૂર્ણાંક get_axis_index () અચલ { પાછા axisIndex; }
+  દશાંશ get_કિંમત ()             અચલ { પાછા value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_કિંમત_name_id () અચલ { પાછા કિંમત_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    પાછા axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  તાર્કિક keep_axis_કિંમત (અચલ hb_array_t<અચલ StatAxisRecord> axis_records,
+                        અચલ hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) અચલ
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    દશાંશ axis_કિંમત = get_કિંમત ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    પાછા !axis_કિંમત_is_outside_axis_range (axis_tag, axis_કિંમત, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (આ);
+    અચલ hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    જો (keep_axis_કિંમત (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (આ));
 
-    return_trace (false);
+    return_trace (ખોટું);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
-  protected:
+  સુરક્ષિત:
   HBUINT16	format;		/* Format identifier — set to 3. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	કિંમત_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  F16DOT16	linkedValue;	/* The numeric value for a style-linked mapping
+  F16DOT16	linked_કિંમત;	/* The numeric value for a style-linked mapping
 				 * from this value. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (16);
 };
 
-struct AxisValueRecord
+સંરચના Axis_કિંમત_Record
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned પૂર્ણાંક get_axis_index () અચલ { પાછા axisIndex; }
+  દશાંશ get_કિંમત ()             અચલ { પાછા value.to_float (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
-  protected:
+  સુરક્ષિત:
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis to which this value
 				 * applies. Must be less than designAxisCount. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct AxisValueFormat4
+સંરચના Axis_કિંમત_Format4
 {
-  const AxisValueRecord &get_axis_record (unsigned int axis_index) const
-  { return axisValues.as_array (axisCount)[axis_index]; }
+  અચલ Axis_કિંમત_Record &get_axis_record (unsigned પૂર્ણાંક axis_index) અચલ
+  { પાછા axis_કિંમતો_2.as_array (axis_ગણતરી_2)[axis_index]; }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  તાર્કિક keep_axis_કિંમત (અચલ hb_array_t<અચલ StatAxisRecord> axis_records,
+                        અચલ hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) અચલ
   {
-    hb_array_t<const AxisValueRecord> axis_value_records = axisValues.as_array (axisCount);
+    hb_array_t<અચલ Axis_કિંમત_Record> axis_કિંમત_records = axis_કિંમતો_2.as_array (axis_ગણતરી_2);
 
-    for (const auto& rec : axis_value_records)
+    માટે (અચલ auto& rec : axis_કિંમત_records)
     {
       unsigned axis_idx = rec.get_axis_index ();
-      float axis_value = rec.get_value ();
+      દશાંશ axis_કિંમત = rec.get_કિંમત ();
       hb_tag_t axis_tag = axis_records[axis_idx].get_axis_tag ();
 
-      if (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
-        return false;
+      જો (axis_કિંમત_is_outside_axis_range (axis_tag, axis_કિંમત, user_axes_location))
+        પાછા ખોટું;
     }
 
-    return true;
+    પાછા સાચું;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
-    if (!keep_axis_value (axis_records, user_axes_location))
-      return_trace (false);
+    TRACE_SUBSET (આ);
+    અચલ hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
+    જો (!keep_axis_કિંમત (axis_records, user_axes_location))
+      return_trace (ખોટું);
 
-    unsigned total_size = min_size + axisCount * AxisValueRecord::static_size;
-    auto *out = c->serializer->allocate_size<AxisValueFormat4> (total_size);
-    if (unlikely (!out)) return_trace (false);
-    hb_memcpy (out, this, total_size);
-    return_trace (true);
+    unsigned total_size = min_size + axis_ગણતરી_2 * Axis_કિંમત_Record::static_size;
+    auto *out = c->serializer->allocate_size<Axis_કિંમત_Format4> (total_size);
+    જો (unlikely (!out)) return_trace (ખોટું);
+    hb_memcpy (out, આ, total_size);
+    return_trace (સાચું);
   }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_કિંમત_name_id () અચલ { પાછા કિંમત_Name_ID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (આ);
+    return_trace (likely (c->check_struct (આ) &&
 			  hb_barrier () &&
-                          axisValues.sanitize (c, axisCount)));
+                          axis_કિંમતો_2.sanitize (c, axis_ગણતરી_2)));
   }
 
-  protected:
+  સુરક્ષિત:
   HBUINT16	format;		/* Format identifier — set to 4. */
-  HBUINT16	axisCount;	/* The total number of axes contributing to
+  HBUINT16	axis_ગણતરી_2;	/* The total number of axes contributing to
 				 * this axis-values combination. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	કિંમત_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
-  UnsizedArrayOf<AxisValueRecord>
-		axisValues;	/* Array of AxisValue records that provide the
+  UnsizedArrayOf<Axis_કિંમત_Record>
+		axis_કિંમતો_2;	/* Array of AxisValue records that provide the
 				 * combination of axis values, one for each
 				 * contributing axis. */
-  public:
-  DEFINE_SIZE_ARRAY (8, axisValues);
+  જાહેર:
+  DEFINE_SIZE_ARRAY (8, axis_કિંમતો_2);
 };
 
-struct AxisValue
+સંરચના Axis_કિંમત
 {
-  float get_value (unsigned int axis_index) const
+  દશાંશ get_કિંમત (unsigned પૂર્ણાંક axis_index) અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value ();
-    case 2: hb_barrier (); return u.format2.get_value ();
-    case 3: hb_barrier (); return u.format3.get_value ();
-    case 4: hb_barrier (); return u.format4.get_axis_record (axis_index).get_value ();
-    default:return 0.f;
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.get_કિંમત ();
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.get_કિંમત ();
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.get_કિંમત ();
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.get_axis_record (axis_index).get_કિંમત ();
+    મૂળભૂત:પાછા 0.f;
     }
   }
 
-  unsigned int get_axis_index () const
+  unsigned પૂર્ણાંક get_axis_index () અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_axis_index ();
-    case 2: hb_barrier (); return u.format2.get_axis_index ();
-    case 3: hb_barrier (); return u.format3.get_axis_index ();
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.get_axis_index ();
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.get_axis_index ();
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.get_axis_index ();
     /* case 4: Makes more sense for variable fonts which are handled by fvar in hb-style */
-    default:return -1;
+    મૂળભૂત:પાછા -1;
     }
   }
 
-  hb_ot_name_id_t get_value_name_id () const
+  hb_ot_name_id_t get_કિંમત_name_id () અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value_name_id ();
-    case 2: hb_barrier (); return u.format2.get_value_name_id ();
-    case 3: hb_barrier (); return u.format3.get_value_name_id ();
-    case 4: hb_barrier (); return u.format4.get_value_name_id ();
-    default:return HB_OT_NAME_ID_INVALID;
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.get_કિંમત_name_id ();
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.get_કિંમત_name_id ();
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.get_કિંમત_name_id ();
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.get_કિંમત_name_id ();
+    મૂળભૂત:પાછા HB_OT_NAME_ID_INVALID;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) અચલ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    જો (unlikely (!c->may_dispatch (આ, &u.format.v))) પાછા c->no_dispatch_return_કિંમત ();
+    TRACE_DISPATCH (આ, u.format.v);
+    પસંદગી (u.format.v) {
+    સ્થિતિ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    સ્થિતિ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    સ્થિતિ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    સ્થિતિ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    મૂળભૂત:return_trace (c->default_return_કિંમત ());
     }
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  તાર્કિક keep_axis_કિંમત (અચલ hb_array_t<અચલ StatAxisRecord> axis_records,
+                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) અચલ
   {
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.keep_axis_value (axis_records, user_axes_location);
-    case 2: hb_barrier (); return u.format2.keep_axis_value (axis_records, user_axes_location);
-    case 3: hb_barrier (); return u.format3.keep_axis_value (axis_records, user_axes_location);
-    case 4: hb_barrier (); return u.format4.keep_axis_value (axis_records, user_axes_location);
-    default:return false;
+    સ્થિતિ 1: hb_barrier (); પાછા u.format1.keep_axis_કિંમત (axis_records, user_axes_location);
+    સ્થિતિ 2: hb_barrier (); પાછા u.format2.keep_axis_કિંમત (axis_records, user_axes_location);
+    સ્થિતિ 3: hb_barrier (); પાછા u.format3.keep_axis_કિંમત (axis_records, user_axes_location);
+    સ્થિતિ 4: hb_barrier (); પાછા u.format4.keep_axis_કિંમત (axis_records, user_axes_location);
+    મૂળભૂત:પાછા ખોટું;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!c->check_struct (આ)))
+      return_trace (ખોટું);
     hb_barrier ();
 
-    switch (u.format.v)
+    પસંદગી (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-    default:return_trace (true);
+    સ્થિતિ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    સ્થિતિ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    સ્થિતિ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    સ્થિતિ 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    મૂળભૂત:return_trace (સાચું);
     }
   }
 
-  protected:
-  union
+  સુરક્ષિત:
+  સંઘ
   {
-  struct { HBUINT16 v; }	format;
-  AxisValueFormat1	format1;
-  AxisValueFormat2	format2;
-  AxisValueFormat3	format3;
-  AxisValueFormat4	format4;
+  સંરચના { HBUINT16 v; }	format;
+  Axis_કિંમત_Format1	format1;
+  Axis_કિંમત_Format2	format2;
+  Axis_કિંમત_Format3	format3;
+  Axis_કિંમત_Format4	format4;
   } u;
-  public:
+  જાહેર:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
+સંરચના Axis_કિંમત_Offset_Array: UnsizedArrayOf<Offset16To<Axis_કિંમત>>
 {
-  bool subset (hb_subset_context_t *c,
-               unsigned axisValueCount,
-               unsigned& count,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               unsigned axis_કિંમત_ગણતરી,
+               unsigned& ગણતરી,
+               અચલ hb_array_t<અચલ StatAxisRecord> axis_records) અચલ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (આ);
 
-    auto axisValueOffsets = as_array (axisValueCount);
-    count = 0;
-    for (const auto& offset : axisValueOffsets)
+    auto axis_કિંમત_Offsets = as_array (axis_કિંમત_ગણતરી);
+    ગણતરી = 0;
+    માટે (અચલ auto& offset : axis_કિંમત_Offsets)
     {
-      if (!offset) continue;
+      જો (!offset) ચાલુ;
       auto o_snap = c->serializer->snapshot ();
       auto *o = c->serializer->embed (offset);
-      if (!o) return_trace (false);
-      if (!o->serialize_subset (c, offset, this, axis_records))
+      જો (!o) return_trace (ખોટું);
+      જો (!o->serialize_subset (c, offset, આ, axis_records))
       {
         c->serializer->revert (o_snap);
-        continue;
+        ચાલુ;
       }
-      count++;
+      ગણતરી++;
     }
 
-    return_trace (count);
+    return_trace (ગણતરી);
   }
 };
 
-struct STAT
+સંરચના STAT
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
+  સ્થિર constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
 
-  bool has_data () const { return version.to_int (); }
+  તાર્કિક has_data () અચલ { પાછા version.to_int (); }
 
-  bool get_value (hb_tag_t tag, float *value) const
+  તાર્કિક get_કિંમત (hb_tag_t tag, દશાંશ *value) અચલ
   {
-    unsigned int axis_index;
-    if (!get_design_axes ().lfind (tag, &axis_index)) return false;
+    unsigned પૂર્ણાંક axis_index;
+    જો (!get_design_axes ().lfind (tag, &axis_index)) પાછા ખોટું;
 
-    hb_array_t<const Offset16To<AxisValue>> axis_values = get_axis_value_offsets ();
-    for (unsigned int i = 0; i < axis_values.length; i++)
+    hb_array_t<અચલ Offset16To<Axis_કિંમત>> axis_કિંમતો = get_axis_કિંમત_offsets ();
+    માટે (unsigned પૂર્ણાંક i = 0; i < axis_કિંમતો.length; i++)
     {
-      const AxisValue& axis_value = this+offsetToAxisValueOffsets+axis_values[i];
-      if (axis_value.get_axis_index () == axis_index)
+      અચલ Axis_કિંમત& axis_કિંમત = આ+offset_To_Axis_કિંમત_Offsets+axis_કિંમતો[i];
+      જો (axis_કિંમત.get_axis_index () == axis_index)
       {
-	if (value)
-	  *value = axis_value.get_value (axis_index);
-	return true;
+	જો (value)
+	  *value = axis_કિંમત.get_કિંમત (axis_index);
+	પાછા સાચું;
       }
     }
-    return false;
+    પાછા ખોટું;
   }
 
-  unsigned get_design_axis_count () const { return designAxisCount; }
+  unsigned get_design_axis_ગણતરી () અચલ { પાછા design_Axis_ગણતરી; }
 
-  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) const
+  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) અચલ
   {
-    if (unlikely (axis_record_index >= designAxisCount)) return HB_OT_NAME_ID_INVALID;
-    const StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
-    return axis_record.get_name_id ();
+    જો (unlikely (axis_record_index >= design_Axis_ગણતરી)) પાછા HB_OT_NAME_ID_INVALID;
+    અચલ StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
+    પાછા axis_record.get_name_id ();
   }
 
-  unsigned get_axis_value_count () const { return axisValueCount; }
+  unsigned get_axis_કિંમત_ગણતરી () અચલ { પાછા axis_કિંમત_ગણતરી; }
 
-  hb_ot_name_id_t get_axis_value_name_id (unsigned axis_value_index) const
+  hb_ot_name_id_t get_axis_કિંમત_name_id (unsigned axis_કિંમત_index) અચલ
   {
-    if (unlikely (axis_value_index >= axisValueCount)) return HB_OT_NAME_ID_INVALID;
-    const AxisValue &axis_value = (this + get_axis_value_offsets ()[axis_value_index]);
-    return axis_value.get_value_name_id ();
+    જો (unlikely (axis_કિંમત_index >= axis_કિંમત_ગણતરી)) પાછા HB_OT_NAME_ID_INVALID;
+    અચલ Axis_કિંમત &axis_કિંમત = (આ + get_axis_કિંમત_offsets ()[axis_કિંમત_index]);
+    પાછા axis_કિંમત.get_કિંમત_name_id ();
   }
 
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  શૂન્ય collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
+                         hb_set_t *nameids_to_retain /* OUT */) અચલ
   {
-    if (!has_data ()) return;
+    જો (!has_data ()) પાછા;
 
     + get_design_axes ()
     | hb_map (&StatAxisRecord::get_name_id)
@@ -526,62 +526,62 @@ struct STAT
 
     auto designAxes = get_design_axes ();
 
-    + get_axis_value_offsets ()
-    | hb_map (hb_add (&(this + offsetToAxisValueOffsets)))
-    | hb_filter ([&] (const AxisValue& _)
-                 { return _.keep_axis_value (designAxes, user_axes_location); })
-    | hb_map (&AxisValue::get_value_name_id)
+    + get_axis_કિંમત_offsets ()
+    | hb_map (hb_add (&(આ + offset_To_Axis_કિંમત_Offsets)))
+    | hb_filter ([&] (અચલ Axis_કિંમત& _)
+                 { પાછા _.keep_axis_કિંમત (designAxes, user_axes_location); })
+    | hb_map (&Axis_કિંમત::get_કિંમત_name_id)
     | hb_sink (nameids_to_retain)
     ;
 
     nameids_to_retain->add (elidedFallbackNameID);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  તાર્કિક subset (hb_subset_context_t *c) અચલ
   {
-    TRACE_SUBSET (this);
-    STAT *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (આ);
+    STAT *out = c->serializer->embed (આ);
+    જો (unlikely (!out)) return_trace (ખોટું);
 
     auto designAxes = get_design_axes ();
-    for (unsigned i = 0; i < (unsigned)designAxisCount; i++)
-      if (unlikely (!c->serializer->embed (designAxes[i])))
-          return_trace (false);
+    માટે (unsigned i = 0; i < (unsigned)design_Axis_ગણતરી; i++)
+      જો (unlikely (!c->serializer->embed (designAxes[i])))
+          return_trace (ખોટું);
 
-    if (designAxisCount)
-      c->serializer->check_assign (out->designAxesOffset, this->get_size (),
+    જો (design_Axis_ગણતરી)
+      c->serializer->check_assign (out->designAxesOffset, આ->get_size (),
                                    HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
-    unsigned count = 0;
-    out->offsetToAxisValueOffsets.serialize_subset (c, offsetToAxisValueOffsets, this,
-                                                    axisValueCount, count, designAxes);
-    return_trace (c->serializer->check_assign (out->axisValueCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned ગણતરી = 0;
+    out->offset_To_Axis_કિંમત_Offsets.serialize_subset (c, offset_To_Axis_કિંમત_Offsets, આ,
+                                                    axis_કિંમત_ગણતરી, ગણતરી, designAxes);
+    return_trace (c->serializer->check_assign (out->axis_કિંમત_ગણતરી, ગણતરી, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (આ);
+    return_trace (likely (c->check_struct (આ) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
 			  version.minor > 0 &&
-			  designAxesOffset.sanitize (c, this, designAxisCount) &&
-			  offsetToAxisValueOffsets.sanitize (c, this, axisValueCount, &(this+offsetToAxisValueOffsets))));
+			  designAxesOffset.sanitize (c, આ, design_Axis_ગણતરી) &&
+			  offset_To_Axis_કિંમત_Offsets.sanitize (c, આ, axis_કિંમત_ગણતરી, &(આ+offset_To_Axis_કિંમત_Offsets))));
   }
 
-  protected:
-  hb_array_t<const StatAxisRecord> const get_design_axes () const
-  { return (this+designAxesOffset).as_array (designAxisCount); }
+  સુરક્ષિત:
+  hb_array_t<અચલ StatAxisRecord> અચલ get_design_axes () અચલ
+  { પાછા (આ+designAxesOffset).as_array (design_Axis_ગણતરી); }
 
-  hb_array_t<const Offset16To<AxisValue>> const get_axis_value_offsets () const
-  { return (this+offsetToAxisValueOffsets).as_array (axisValueCount); }
+  hb_array_t<અચલ Offset16To<Axis_કિંમત>> અચલ get_axis_કિંમત_offsets () અચલ
+  { પાછા (આ+offset_To_Axis_કિંમત_Offsets).as_array (axis_કિંમત_ગણતરી); }
 
 
-  protected:
+  સુરક્ષિત:
   FixedVersion<>version;	/* Version of the stat table
 				 * initially set to 0x00010002u */
   HBUINT16	designAxisSize;	/* The size in bytes of each axis record. */
-  HBUINT16	designAxisCount;/* The number of design axis records. In a
+  HBUINT16	design_Axis_ગણતરી;/* The number of design axis records. In a
 				 * font with an 'fvar' table, this value must be
 				 * greater than or equal to the axisCount value
 				 * in the 'fvar' table. In all fonts, must
@@ -594,9 +594,9 @@ struct STAT
 				 * axes array. If designAxisCount is zero,
 				 * set to zero; if designAxisCount is greater
 				 * than zero, must be greater than zero. */
-  HBUINT16	axisValueCount;	/* The number of axis value tables. */
-  NNOffset32To<AxisValueOffsetArray>
-		offsetToAxisValueOffsets;
+  HBUINT16	axis_કિંમત_ગણતરી;	/* The number of axis value tables. */
+  NNOffset32To<Axis_કિંમત_Offset_Array>
+		offset_To_Axis_કિંમત_Offsets;
 				/* Offset in bytes from the beginning of
 				 * the STAT table to the start of the design
 				 * axes value offsets array. If axisValueCount
@@ -607,7 +607,7 @@ struct STAT
 				 * names into a particular font model produces
 				 * a subfamily name containing only elidable
 				 * elements. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (20);
 };
 

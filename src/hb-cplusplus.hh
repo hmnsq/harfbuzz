@@ -25,122 +25,122 @@
 #ifndef HB_CPLUSPLUS_HH
 #define HB_CPLUSPLUS_HH
 
-#include "hb.h"
+#અન્તર્ભાવ "hb.h"
 
 #ifdef __cplusplus
 
-#include <functional>
-#include <utility>
+#અન્તર્ભાવ <functional>
+#અન્તર્ભાવ <utility>
 
-#if 0
-#if !(__cplusplus >= 201103L)
+#જો 0
+#જો !(__cplusplus >= 201103L)
 #error "HarfBuzz C++ helpers require C++11"
 #endif
 #endif
 
-namespace hb {
+નામાકાશ hb {
 
 
 template <typename T>
-struct vtable;
+સંરચના vtable;
 
 template <typename T>
-struct shared_ptr
+સંરચના shared_ptr
 {
   using element_type = T;
 
   using v = vtable<T>;
 
   explicit shared_ptr (T *p = nullptr) : p (p) {}
-  shared_ptr (const shared_ptr &o) : p (v::reference (o.p)) {}
+  shared_ptr (અચલ shared_ptr &o) : p (v::reference (o.p)) {}
   shared_ptr (shared_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  shared_ptr& operator = (const shared_ptr &o) { if (p != o.p) { destroy (); p = o.p; reference (); } return *this; }
-  shared_ptr& operator = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
+  shared_ptr& operator = (અચલ shared_ptr &o) { જો (p != o.p) { destroy (); p = o.p; reference (); } પાછા *આ; }
+  shared_ptr& operator = (shared_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; પાછા *આ; }
   ~shared_ptr () { v::destroy (p); p = nullptr; }
 
-  T* get() const { return p; }
+  T* get() અચલ { પાછા p; }
 
-  void swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
-  friend void swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
+  શૂન્ય swap (shared_ptr &o)  noexcept { std::swap (p, o.p); }
+  friend શૂન્ય swap (shared_ptr &a, shared_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () const { return p; }
-  bool operator == (const shared_ptr &o) const { return p == o.p; }
-  bool operator != (const shared_ptr &o) const { return p != o.p; }
+  operator T * () અચલ { પાછા p; }
+  T& operator * () અચલ { પાછા *get (); }
+  T* operator -> () અચલ { પાછા get (); }
+  operator તાર્કિક () અચલ { પાછા p; }
+  તાર્કિક operator == (અચલ shared_ptr &o) અચલ { પાછા p == o.p; }
+  તાર્કિક operator != (અચલ shared_ptr &o) અચલ { પાછા p != o.p; }
 
-  static T* get_empty() { return v::get_empty (); }
-  T* reference() { return v::reference (p); }
-  void destroy() { v::destroy (p); }
-  void set_user_data (hb_user_data_key_t *key,
-		      void *value,
+  સ્થિર T* get_empty() { પાછા v::get_empty (); }
+  T* reference() { પાછા v::reference (p); }
+  શૂન્ય destroy() { v::destroy (p); }
+  શૂન્ય set_user_data (hb_user_data_ચાવી_t *key,
+		      શૂન્ય *value,
 		      hb_destroy_func_t destroy,
 		      hb_bool_t replace) { v::set_user_data (p, key, value, destroy, replace); } 
-  void * get_user_data (hb_user_data_key_t *key) { return v::get_user_data (p, key); }
+  શૂન્ય * get_user_data (hb_user_data_ચાવી_t *key) { પાછા v::get_user_data (p, key); }
 
-  private:
+  ખાનગી:
   T *p;
 };
 
-template<typename T> struct is_shared_ptr : std::false_type {};
-template<typename T> struct is_shared_ptr<shared_ptr<T>> : std::true_type {};
+template<typename T> સંરચના is_shared_ptr : std::false_type {};
+template<typename T> સંરચના is_shared_ptr<shared_ptr<T>> : std::true_type {};
 
 template <typename T>
-struct unique_ptr
+સંરચના unique_ptr
 {
   using element_type = T;
 
   using v = vtable<T>;
 
   explicit unique_ptr (T *p = nullptr) : p (p) {}
-  unique_ptr (const unique_ptr &o) = delete;
+  unique_ptr (અચલ unique_ptr &o) = delete;
   unique_ptr (unique_ptr &&o)  noexcept : p (o.p) { o.p = nullptr; }
-  unique_ptr& operator = (const unique_ptr &o) = delete;
-  unique_ptr& operator = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; return *this; }
+  unique_ptr& operator = (અચલ unique_ptr &o) = delete;
+  unique_ptr& operator = (unique_ptr &&o)  noexcept { v::destroy (p); p = o.p; o.p = nullptr; પાછા *આ; }
   ~unique_ptr () { v::destroy (p); p = nullptr; }
 
-  T* get() const { return p; }
-  T* release () { T* v = p; p = nullptr; return v; }
+  T* get() અચલ { પાછા p; }
+  T* release () { T* v = p; p = nullptr; પાછા v; }
 
-  void swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
-  friend void swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
+  શૂન્ય swap (unique_ptr &o)  noexcept { std::swap (p, o.p); }
+  friend શૂન્ય swap (unique_ptr &a, unique_ptr &b)  noexcept { std::swap (a.p, b.p); }
 
-  operator T * () const { return p; }
-  T& operator * () const { return *get (); }
-  T* operator -> () const { return get (); }
-  operator bool () { return p; }
+  operator T * () અચલ { પાછા p; }
+  T& operator * () અચલ { પાછા *get (); }
+  T* operator -> () અચલ { પાછા get (); }
+  operator તાર્કિક () { પાછા p; }
 
-  private:
+  ખાનગી:
   T *p;
 };
 
-template<typename T> struct is_unique_ptr : std::false_type {};
-template<typename T> struct is_unique_ptr<unique_ptr<T>> : std::true_type {};
+template<typename T> સંરચના is_unique_ptr : std::false_type {};
+template<typename T> સંરચના is_unique_ptr<unique_ptr<T>> : std::true_type {};
 
 template <typename T,
-	  T * (*_get_empty) (void),
+	  T * (*_get_empty) (શૂન્ય),
 	  T * (*_reference) (T *),
-	  void (*_destroy) (T *),
+	  શૂન્ય (*_destroy) (T *),
 	  hb_bool_t (*_set_user_data) (T *,
-				       hb_user_data_key_t *,
-				       void *,
+				       hb_user_data_ચાવી_t *,
+				       શૂન્ય *,
 				       hb_destroy_func_t,
 				       hb_bool_t),
-	  void * (*_get_user_data) (const T *,
-				    hb_user_data_key_t *)>
-struct vtable_t
+	  શૂન્ય * (*_get_user_data) (અચલ T *,
+				    hb_user_data_ચાવી_t *)>
+સંરચના vtable_t
 {
-  static constexpr auto get_empty = _get_empty;
-  static constexpr auto reference = _reference;
-  static constexpr auto destroy = _destroy;
-  static constexpr auto set_user_data = _set_user_data;
-  static constexpr auto get_user_data = _get_user_data;
+  સ્થિર constexpr auto get_empty = _get_empty;
+  સ્થિર constexpr auto reference = _reference;
+  સ્થિર constexpr auto destroy = _destroy;
+  સ્થિર constexpr auto set_user_data = _set_user_data;
+  સ્થિર constexpr auto get_user_data = _get_user_data;
 };
 
 #define HB_DEFINE_VTABLE(name, empty) \
 	template<> \
-	struct vtable<hb_##name##_t> \
+	સંરચના vtable<hb_##name##_t> \
 	     : vtable_t<hb_##name##_t, \
 			empty, \
 			&hb_##name##_reference, \
@@ -163,7 +163,7 @@ HB_DEFINE_VTABLE (paint_funcs, &hb_paint_funcs_get_empty);
 
 #ifdef HB_SUBSET_H
 
-HB_DEFINE_VTABLE (subset_input, nullptr);
+HB_DEFINE_VTABLE (subset_આગત, nullptr);
 HB_DEFINE_VTABLE (subset_plan, nullptr);
 
 #endif
@@ -201,26 +201,26 @@ HB_DEFINE_VTABLE (gpu_draw, nullptr);
 /* Workaround for GCC < 7, see:
  * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56480
  * https://stackoverflow.com/a/25594741 */
-namespace std {
+નામાકાશ std {
 
 
 template<typename T>
-struct hash<hb::shared_ptr<T>>
+સંરચના hash<hb::shared_ptr<T>>
 {
-    std::size_t operator()(const hb::shared_ptr<T>& v) const noexcept
+    std::size_t operator()(અચલ hb::shared_ptr<T>& v) અચલ noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        પાછા h;
     }
 };
 
 template<typename T>
-struct hash<hb::unique_ptr<T>>
+સંરચના hash<hb::unique_ptr<T>>
 {
-    std::size_t operator()(const hb::unique_ptr<T>& v) const noexcept
+    std::size_t operator()(અચલ hb::unique_ptr<T>& v) અચલ noexcept
     {
         std::size_t h = std::hash<decltype (v.get ())>{}(v.get ());
-        return h;
+        પાછા h;
     }
 };
 

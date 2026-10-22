@@ -26,130 +26,130 @@
 #ifndef HB_CFF1_INTERP_CS_HH
 #define HB_CFF1_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+નામાકાશ CFF {
 
-using namespace OT;
+using નામાકાશ OT;
 
-typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
+પ્રકારવ્યાખ્યા biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+સંરચના cff1_cs_interp_env_t : cs_interp_env_t<સંખ્યા_t, CFF1Subrs>
 {
   template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff1_cs_interp_env_t (અચલ hb_ubytes_t &str, ACC &acc, unsigned પૂર્ણાંક fd,
+			અચલ પૂર્ણાંક *coords_=nullptr, unsigned પૂર્ણાંક અંક_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
-    processed_width = false;
-    has_width = false;
+    processed_width = ખોટું;
+    has_width = ખોટું;
     arg_start = 0;
-    in_seac = false;
+    in_seac = ખોટું;
   }
 
-  void set_width (bool has_width_)
+  શૂન્ય set_width (તાર્કિક has_width_)
   {
-    if (likely (!processed_width && (SUPER::argStack.get_count () > 0)))
+    જો (likely (!processed_width && (SUPER::arg_ઢગલો.get_ગણતરી () > 0)))
     {
-      if (has_width_)
+      જો (has_width_)
       {
-	width = SUPER::argStack[0];
-	has_width = true;
+	width = SUPER::arg_ઢગલો[0];
+	has_width = સાચું;
 	arg_start = 1;
       }
     }
-    processed_width = true;
+    processed_width = સાચું;
   }
 
-  void clear_args ()
+  શૂન્ય clear_args ()
   {
     arg_start = 0;
     SUPER::clear_args ();
   }
 
-  void set_in_seac (bool _in_seac) { in_seac = _in_seac; }
+  શૂન્ય set_in_seac (તાર્કિક _in_seac) { in_seac = _in_seac; }
 
-  bool	  processed_width;
-  bool	  has_width;
-  unsigned int  arg_start;
-  number_t	width;
-  bool	  in_seac;
+  તાર્કિક	  processed_width;
+  તાર્કિક	  has_width;
+  unsigned પૂર્ણાંક  arg_start;
+  સંખ્યા_t	width;
+  તાર્કિક	  in_seac;
 
-  private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  ખાનગી:
+  પ્રકારવ્યાખ્યા cs_interp_env_t<સંખ્યા_t, CFF1Subrs> SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+સંરચના cff1_cs_opset_t : cs_opset_t<સંખ્યા_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  સ્થિર શૂન્ય process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_dotsection:
+    પસંદગી (op) {
+      સ્થિતિ OpCode_dotsection:
 	SUPER::flush_args_and_op (op, env, param);
-	break;
+	તોડો;
 
-      case OpCode_endchar:
+      સ્થિતિ OpCode_endchar:
 	OPSET::check_width (op, env, param);
-	if (env.argStack.get_count () >= 4)
+	જો (env.arg_ઢગલો.get_ગણતરી () >= 4)
 	{
 	  OPSET::process_seac (env, param);
 	}
 	OPSET::flush_args_and_op (op, env, param);
-	env.set_endchar (true);
-	break;
+	env.set_endchar (સાચું);
+	તોડો;
 
-      default:
+      મૂળભૂત:
 	SUPER::process_op (op, env, param);
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  સ્થિર શૂન્ય check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
   {
-    if (!env.processed_width)
+    જો (!env.processed_width)
     {
-      bool  has_width = false;
-      switch (op)
+      તાર્કિક  has_width = ખોટું;
+      પસંદગી (op)
       {
-	case OpCode_endchar:
-	case OpCode_hstem:
-	case OpCode_hstemhm:
-	case OpCode_vstem:
-	case OpCode_vstemhm:
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  has_width = ((env.argStack.get_count () & 1) != 0);
-	  break;
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  has_width = (env.argStack.get_count () > 1);
-	  break;
-	case OpCode_rmoveto:
-	  has_width = (env.argStack.get_count () > 2);
-	  break;
-	default:
-	  return;
+	સ્થિતિ OpCode_endchar:
+	સ્થિતિ OpCode_hstem:
+	સ્થિતિ OpCode_hstemhm:
+	સ્થિતિ OpCode_vstem:
+	સ્થિતિ OpCode_vstemhm:
+	સ્થિતિ OpCode_hintmask:
+	સ્થિતિ OpCode_cntrmask:
+	  has_width = ((env.arg_ઢગલો.get_ગણતરી () & 1) != 0);
+	  તોડો;
+	સ્થિતિ OpCode_hmoveto:
+	સ્થિતિ OpCode_vmoveto:
+	  has_width = (env.arg_ઢગલો.get_ગણતરી () > 1);
+	  તોડો;
+	સ્થિતિ OpCode_rmoveto:
+	  has_width = (env.arg_ઢગલો.get_ગણતરી () > 2);
+	  તોડો;
+	મૂળભૂત:
+	  પાછા;
       }
       env.set_width (has_width);
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  સ્થિર શૂન્ય process_seac (cff1_cs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  સ્થિર શૂન્ય flush_args (cff1_cs_interp_env_t &env, PARAM& param)
   {
     SUPER::flush_args (env, param);
     env.clear_args ();  /* pop off width */
   }
 
-  private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  ખાનગી:
+  પ્રકારવ્યાખ્યા cs_opset_t<સંખ્યા_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM>

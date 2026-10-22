@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-import sys
+આયાત sys
 
 
 news_path = sys.argv[1]
 release = sys.argv[2]
 
-with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+with open(news_path, "r", encoding="utf-8") ઇવ news_file:
+    લીટીઓ = news_file.readlines()
 
 start = None
 end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
+માટે i, લીટી માં enumerate(લીટીઓ):
+    લીટી = લીટી.rstrip()
+    જો લીટી.startswith("Overview of changes leading to"):
+        જો start is નહીં None:  # Start of next release
             end = i
-            break
-        if line.endswith(release):  # Start of the release
+            તોડો
+        જો લીટી.endswith(release):  # Start of the release
             start = i + 3  # Skip the header lines
 
-assert start and end and end > start
+પ્રતિજ્ઞા start અને end અને end > start
 
-print("".join(lines[start:end]))
+print("".join(લીટીઓ[start:end]))

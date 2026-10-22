@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+સંરચના hb_intp_lazy_loader_t : hb_lazy_loader_t<પૂર્ણાંક, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  સ્થિર પૂર્ણાંક* create () { પાછા nullptr; }
+  સ્થિર શૂન્ય destroy (પૂર્ણાંક* l) {}
+  સ્થિર પૂર્ણાંક* get_null () { પાછા nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+સંરચના hb_void_lazy_loader_t : hb_lazy_loader_t<શૂન્ય, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  સ્થિર શૂન્ય* create () { પાછા nullptr; }
+  સ્થિર શૂન્ય destroy (શૂન્ય* l) {}
+  સ્થિર શૂન્ય* get_null () { પાછા nullptr; }
 };
 
-int
-main (int argc, char **argv)
+પૂર્ણાંક
+મુખ્ય (પૂર્ણાંક argc, અક્ષર **argv)
 {
-  return 0;
+  પાછા 0;
 }

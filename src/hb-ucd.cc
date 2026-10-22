@@ -14,42 +14,42 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "hb.hh"
-#include "hb-unicode.hh"
-#include "hb-machinery.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-unicode.hh"
+#અન્તર્ભાવ "hb-machinery.hh"
 
-#include "hb-ucd-table.hh"
+#અન્તર્ભાવ "hb-ucd-table.hh"
 
-static hb_unicode_combining_class_t
+સ્થિર hb_unicode_combining_class_t
 hb_ucd_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t unicode,
-			void *user_data HB_UNUSED)
+			શૂન્ય *user_data HB_UNUSED)
 {
-  return (hb_unicode_combining_class_t) _hb_ucd_ccc (unicode);
+  પાછા (hb_unicode_combining_class_t) _hb_ucd_ccc (unicode);
 }
 
-static hb_unicode_general_category_t
+સ્થિર hb_unicode_general_category_t
 hb_ucd_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			 hb_codepoint_t unicode,
-			 void *user_data HB_UNUSED)
+			 શૂન્ય *user_data HB_UNUSED)
 {
-  return (hb_unicode_general_category_t) _hb_ucd_gc (unicode);
+  પાછા (hb_unicode_general_category_t) _hb_ucd_gc (unicode);
 }
 
-static hb_codepoint_t
+સ્થિર hb_codepoint_t
 hb_ucd_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		  hb_codepoint_t unicode,
-		  void *user_data HB_UNUSED)
+		  શૂન્ય *user_data HB_UNUSED)
 {
-  return unicode + _hb_ucd_bmg (unicode);
+  પાછા unicode + _hb_ucd_bmg (unicode);
 }
 
-static hb_script_t
+સ્થિર hb_script_t
 hb_ucd_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 	       hb_codepoint_t unicode,
-	       void *user_data HB_UNUSED)
+	       શૂન્ય *user_data HB_UNUSED)
 {
-  return _hb_ucd_sc_map[_hb_ucd_sc (unicode)];
+  પાછા _hb_ucd_sc_map[_hb_ucd_sc (unicode)];
 }
 
 
@@ -63,151 +63,151 @@ hb_ucd_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 #define TCOUNT 28u
 #define NCOUNT (VCOUNT * TCOUNT)
 
-static inline bool
+સ્થિર અંતઃરેખ તાર્કિક
 _hb_ucd_decompose_hangul (hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b)
 {
   unsigned si = ab - SBASE;
 
-  if (si >= SCOUNT)
-    return false;
+  જો (si >= SCOUNT)
+    પાછા ખોટું;
 
-  if (si % TCOUNT)
+  જો (si % TCOUNT)
   {
     /* LV,T */
     *a = SBASE + (si / TCOUNT) * TCOUNT;
     *b = TBASE + (si % TCOUNT);
-    return true;
-  } else {
+    પાછા સાચું;
+  } નહીંતર {
     /* L,V */
     *a = LBASE + (si / NCOUNT);
     *b = VBASE + (si % NCOUNT) / TCOUNT;
-    return true;
+    પાછા સાચું;
   }
 }
 
-static inline bool
+સ્થિર અંતઃરેખ તાર્કિક
 _hb_ucd_compose_hangul (hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab)
 {
-  if (a >= SBASE && a < (SBASE + SCOUNT) && b > TBASE && b < (TBASE + TCOUNT) &&
+  જો (a >= SBASE && a < (SBASE + SCOUNT) && b > TBASE && b < (TBASE + TCOUNT) &&
     !((a - SBASE) % TCOUNT))
   {
     /* LV,T */
     *ab = a + (b - TBASE);
-    return true;
+    પાછા સાચું;
   }
-  else if (a >= LBASE && a < (LBASE + LCOUNT) && b >= VBASE && b < (VBASE + VCOUNT))
+  નહીંતર જો (a >= LBASE && a < (LBASE + LCOUNT) && b >= VBASE && b < (VBASE + VCOUNT))
   {
     /* L,V */
-    int li = a - LBASE;
-    int vi = b - VBASE;
+    પૂર્ણાંક li = a - LBASE;
+    પૂર્ણાંક vi = b - VBASE;
     *ab = SBASE + li * NCOUNT + vi * TCOUNT;
-    return true;
+    પાછા સાચું;
   }
-  else
-    return false;
+  નહીંતર
+    પાછા ખોટું;
 }
 
-static int
-_cmp_pair (const void *_key, const void *_item)
+સ્થિર પૂર્ણાંક
+_cmp_pair (અચલ શૂન્ય *ચાવી_3, અચલ શૂન્ય *_item)
 {
-  uint64_t& a = * (uint64_t*) _key;
+  uint64_t& a = * (uint64_t*) ચાવી_3;
   uint64_t b = (* (uint64_t*) _item) & HB_CODEPOINT_ENCODE3(0x1FFFFFu, 0x1FFFFFu, 0);
 
-  return a < b ? -1 : a > b ? +1 : 0;
+  પાછા a < b ? -1 : a > b ? +1 : 0;
 }
-static int
-_cmp_pair_11_7_14 (const void *_key, const void *_item)
+સ્થિર પૂર્ણાંક
+_cmp_pair_11_7_14 (અચલ શૂન્ય *ચાવી_3, અચલ શૂન્ય *_item)
 {
-  uint32_t& a = * (uint32_t*) _key;
+  uint32_t& a = * (uint32_t*) ચાવી_3;
   uint32_t b = (* (uint32_t*) _item) & HB_CODEPOINT_ENCODE3_11_7_14(0x1FFFFFu, 0x1FFFFFu, 0);
 
-  return a < b ? -1 : a > b ? +1 : 0;
+  પાછા a < b ? -1 : a > b ? +1 : 0;
 }
 
-static hb_bool_t
+સ્થિર hb_bool_t
 hb_ucd_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab,
-		void *user_data HB_UNUSED)
+		શૂન્ય *user_data HB_UNUSED)
 {
   // Hangul is handled algorithmically.
-  if (_hb_ucd_compose_hangul (a, b, ab)) return true;
+  જો (_hb_ucd_compose_hangul (a, b, ab)) પાછા સાચું;
 
   hb_codepoint_t u = 0;
 
-  if ((a & 0xFFFFF800u) == 0x0000u && (b & 0xFFFFFF80) == 0x0300u)
+  જો ((a & 0xFFFFF800u) == 0x0000u && (b & 0xFFFFFF80) == 0x0300u)
   {
     /* If "a" is small enough and "b" is in the U+0300 range,
      * the composition data is encoded in a 32bit array sorted
      * by "a,b" pair. */
     uint32_t k = HB_CODEPOINT_ENCODE3_11_7_14 (a, b, 0);
-    const uint32_t *v = hb_bsearch (k,
+    અચલ uint32_t *v = hb_bsearch (k,
 				    _hb_ucd_dm2_u32_map,
 				    ARRAY_LENGTH (_hb_ucd_dm2_u32_map),
-				    sizeof (*_hb_ucd_dm2_u32_map),
+				    કદ (*_hb_ucd_dm2_u32_map),
 				    _cmp_pair_11_7_14);
-    if (likely (!v)) return false;
+    જો (likely (!v)) પાછા ખોટું;
     u = HB_CODEPOINT_DECODE3_11_7_14_3 (*v);
   }
-  else
+  નહીંતર
   {
     /* Otherwise it is stored in a 64bit array sorted by
      * "a,b" pair. */
     uint64_t k = HB_CODEPOINT_ENCODE3 (a, b, 0);
-    const uint64_t *v = hb_bsearch (k,
+    અચલ uint64_t *v = hb_bsearch (k,
 				    _hb_ucd_dm2_u64_map,
 				    ARRAY_LENGTH (_hb_ucd_dm2_u64_map),
-				    sizeof (*_hb_ucd_dm2_u64_map),
+				    કદ (*_hb_ucd_dm2_u64_map),
 				    _cmp_pair);
-    if (likely (!v)) return false;
+    જો (likely (!v)) પાછા ખોટું;
     u = HB_CODEPOINT_DECODE3_3 (*v);
   }
 
-  if (unlikely (!u)) return false;
+  જો (unlikely (!u)) પાછા ખોટું;
   *ab = u;
-  return true;
+  પાછા સાચું;
 }
 
-static hb_bool_t
+સ્થિર hb_bool_t
 hb_ucd_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		  hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b,
-		  void *user_data HB_UNUSED)
+		  શૂન્ય *user_data HB_UNUSED)
 {
-  if (_hb_ucd_decompose_hangul (ab, a, b)) return true;
+  જો (_hb_ucd_decompose_hangul (ab, a, b)) પાછા સાચું;
 
   unsigned i = _hb_ucd_dm (ab);
 
   /* If no data, there's no decomposition. */
-  if (likely (!i)) return false;
+  જો (likely (!i)) પાછા ખોટું;
   i--;
 
   /* Check if it's a single-character decomposition. */
-  if (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map))
+  જો (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map))
   {
     /* Single-character decompositions currently are only in plane 0 or plane 2. */
-    if (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map))
+    જો (i < ARRAY_LENGTH (_hb_ucd_dm1_p0_map))
     {
       /* Plane 0. */
       *a = _hb_ucd_dm1_p0_map[i];
     }
-    else
+    નહીંતર
     {
       /* Plane 2. */
       i -= ARRAY_LENGTH (_hb_ucd_dm1_p0_map);
       *a = 0x20000 | _hb_ucd_dm1_p2_map[i];
     }
     *b = 0;
-    return true;
+    પાછા સાચું;
   }
   i -= ARRAY_LENGTH (_hb_ucd_dm1_p0_map) + ARRAY_LENGTH (_hb_ucd_dm1_p2_map);
 
   /* Otherwise they are encoded either in a 32bit array or a 64bit array. */
-  if (i < ARRAY_LENGTH (_hb_ucd_dm2_u32_map))
+  જો (i < ARRAY_LENGTH (_hb_ucd_dm2_u32_map))
   {
     /* 32bit array. */
     uint32_t v = _hb_ucd_dm2_u32_map[i];
     *a = HB_CODEPOINT_DECODE3_11_7_14_1 (v);
     *b = HB_CODEPOINT_DECODE3_11_7_14_2 (v);
-    return true;
+    પાછા સાચું;
   }
   i -= ARRAY_LENGTH (_hb_ucd_dm2_u32_map);
 
@@ -215,15 +215,15 @@ hb_ucd_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
   uint64_t v = _hb_ucd_dm2_u64_map[i];
   *a = HB_CODEPOINT_DECODE3_1 (v);
   *b = HB_CODEPOINT_DECODE3_2 (v);
-  return true;
+  પાછા સાચું;
 }
 
 
-static void free_static_ucd_funcs ();
+સ્થિર શૂન્ય free_static_ucd_funcs ();
 
-static struct hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_ucd_unicode_funcs_lazy_loader_t>
+સ્થિર સંરચના hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_ucd_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  સ્થિર hb_unicode_funcs_t *create ()
   {
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -238,12 +238,12 @@ static struct hb_ucd_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
 
     hb_atexit (free_static_ucd_funcs);
 
-    return funcs;
+    પાછા funcs;
   }
 } static_ucd_funcs;
 
-static inline
-void free_static_ucd_funcs ()
+સ્થિર અંતઃરેખ
+શૂન્ય free_static_ucd_funcs ()
 {
   static_ucd_funcs.free_instance ();
 }
@@ -252,7 +252,7 @@ hb_unicode_funcs_t *
 hb_ucd_get_unicode_funcs ()
 {
 #ifdef HB_NO_UCD
-  return hb_unicode_funcs_get_empty ();
+  પાછા hb_unicode_funcs_get_empty ();
 #endif
-  return static_ucd_funcs.get_unconst ();
+  પાછા static_ucd_funcs.get_unconst ();
 }

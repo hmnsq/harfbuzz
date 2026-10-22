@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-import os
-import shutil
-import subprocess
-import sys
+આયાત os
+આયાત shutil
+આયાત subprocess
+આયાત sys
 
-from check_helpers import CHECK_LIBSTDCXX_LIBS
+તઃ check_helpers આયાત CHECK_LIBSTDCXX_LIBS
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -14,32 +14,32 @@ builddir = sys.argv[3]
 os.chdir(srcdir)
 
 ldd = os.getenv("LDD", shutil.which("ldd"))
-if not ldd:
+જો નહીં ldd:
     otool = os.getenv("OTOOL", shutil.which("otool"))
-    if otool:
+    જો otool:
         ldd = otool + " -L"
-    else:
+    નહીંતર:
         print("check-libstdc++.py: 'ldd' not found; skipping test")
         sys.exit(77)
 
 stat = 0
-tested = False
+tested = ખોટું
 
-for soname in CHECK_LIBSTDCXX_LIBS:
-    for suffix in ["so", "dylib"]:
+માટે soname માં CHECK_LIBSTDCXX_LIBS:
+    માટે suffix માં ["so", "dylib"]:
         so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
-            continue
+        જો નહીં os.path.exists(so):
+            ચાલુ
 
         print("Checking that we are not linking to libstdc++ or libc++ in %s" % so)
         ldd_result = subprocess.check_output(ldd.split() + [so])
-        if (b"libstdc++" in ldd_result) or (b"libc++" in ldd_result):
+        જો (b"libstdc++" માં ldd_result) અથવા (b"libc++" માં ldd_result):
             print("Ouch, %s is linked to libstdc++ or libc++" % so)
             stat = 1
 
-        tested = True
+        tested = સાચું
 
-if not tested:
+જો નહીં tested:
     print("check-libstdc++.py: libharfbuzz shared library not found; skipping test")
     sys.exit(77)
 

@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#અન્તર્ભાવ "hb-shaper.hh"
+#અન્તર્ભાવ "hb-shape-plan.hh"
+#અન્તર્ભાવ "hb-buffer.hh"
+#અન્તર્ભાવ "hb-font.hh"
+#અન્તર્ભાવ "hb-machinery.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -50,37 +50,37 @@
  **/
 
 
-static inline void free_static_shaper_list ();
+સ્થિર અંતઃરેખ શૂન્ય free_static_shaper_list ();
 
-static const char * const nil_shaper_list[] = {nullptr};
+સ્થિર અચલ અક્ષર * અચલ nil_shaper_list[] = {nullptr};
 
-static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+સ્થિર સંરચના hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<અચલ અક્ષર *,
 							      hb_shaper_list_lazy_loader_t>
 {
-  static const char ** create ()
+  સ્થિર અચલ અક્ષર ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    અચલ અક્ષર **shaper_list = (અચલ અક્ષર **) hb_calloc (1 + HB_SHAPERS_ગણતરી, કદ (અચલ અક્ષર *));
+    જો (unlikely (!shaper_list))
+      પાછા nullptr;
 
-    const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    અચલ hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    unsigned પૂર્ણાંક i;
+    માટે (i = 0; i < HB_SHAPERS_ગણતરી; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    પાછા shaper_list;
   }
-  static void destroy (const char **l)
+  સ્થિર શૂન્ય destroy (અચલ અક્ષર **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_shaper_list; }
+  સ્થિર અચલ અક્ષર * અચલ * get_null ()
+  { પાછા nil_shaper_list; }
 } static_shaper_list;
 
-static inline
-void free_static_shaper_list ()
+સ્થિર અંતઃરેખ
+શૂન્ય free_static_shaper_list ()
 {
   static_shaper_list.free_instance ();
 }
@@ -98,10 +98,10 @@ void free_static_shaper_list ()
  *
  * Since: 0.9.2
  **/
-const char **
+અચલ અક્ષર **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  પાછા static_shaper_list.get_unconst ();
 }
 
 
@@ -126,47 +126,47 @@ hb_shape_list_shapers ()
 hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list)
+	       અચલ hb_feature_t *features,
+	       unsigned પૂર્ણાંક        અંક_features,
+	       અચલ અક્ષર * અચલ *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  જો (unlikely (!buffer->len))
+    પાછા સાચું;
 
   buffer->enter ();
 
   hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  જો (buffer->flags & HB_BUFFER_FLAG_VERIFY)
   {
     text_buffer = hb_buffer_create ();
     hb_buffer_append (text_buffer, buffer, 0, -1);
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &buffer->props,
-							      features, num_features,
-							      font->coords, font->has_nonzero_coords ? font->num_coords : 0,
+							      features, અંક_features,
+							      font->coords, font->has_nonzero_coords ? font->અંક_coords : 0,
 							      shaper_list);
 
-  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, num_features);
+  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, અંક_features);
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  જો (text_buffer)
   {
-    if (res && buffer->successful
+    જો (res && buffer->successful
 	    && text_buffer->successful
 	    && !buffer->verify (text_buffer,
 				font,
 				features,
-				num_features,
+				અંક_features,
 				shaper_list))
-      res = false;
+      res = ખોટું;
     hb_buffer_destroy (text_buffer);
   }
 
   buffer->leave ();
 
-  return res;
+  પાછા res;
 }
 
 /**
@@ -185,42 +185,42 @@ hb_shape_full (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
+શૂન્ય
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  અચલ hb_feature_t  *features,
+	  unsigned પૂર્ણાંક         અંક_features)
 {
-  hb_shape_full (font, buffer, features, num_features, nullptr);
+  hb_shape_full (font, buffer, features, અંક_features, nullptr);
 }
 
 
 #ifdef HB_EXPERIMENTAL_API
 #ifndef HB_NO_VAR
 
-static float
+સ્થિર દશાંશ
 buffer_advance (hb_buffer_t *buffer)
 {
-  float a = 0;
+  દશાંશ a = 0;
   auto *pos = buffer->pos;
-  unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  unsigned ગણતરી = buffer->len;
+  જો (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    માટે (unsigned i = 0; i < ગણતરી; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  નહીંતર
+    માટે (unsigned i = 0; i < ગણતરી; i++)
       a += pos[i].y_advance;
-  return a;
+  પાછા a;
 }
 
-static void
+સ્થિર શૂન્ય
 reset_buffer (hb_buffer_t *buffer,
-	      hb_array_t<const hb_glyph_info_t> text)
+	      hb_array_t<અચલ hb_glyph_info_t> text)
 {
-  assert (buffer->ensure (text.length));
-  buffer->have_positions = false;
+  પ્રતિજ્ઞા (buffer->ensure (text.length));
+  buffer->have_positions = ખોટું;
   buffer->len = text.length;
-  hb_memcpy (buffer->info, text.arrayZ, text.length * sizeof (buffer->info[0]));
+  hb_memcpy (buffer->info, text.arrayZ, text.length * કદ (buffer->info[0]));
   hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
 }
 
@@ -258,24 +258,24 @@ reset_buffer (hb_buffer_t *buffer,
 hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  અચલ hb_feature_t *features,
+		  unsigned પૂર્ણાંક        અંક_features,
+		  અચલ અક્ષર * અચલ *shaper_list,
+		  દશાંશ               min_target_advance,
+		  દશાંશ               max_target_advance,
+		  દશાંશ              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */)
+		  દશાંશ              *var_કિંમત /* OUT */)
 {
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  જો (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
-			  features, num_features,
+    *var_કિંમત = 0.0f;
+    પાછા hb_shape_full (font, buffer,
+			  features, અંક_features,
 			  shaper_list);
   }
 
@@ -291,151 +291,151 @@ hb_shape_justify (hb_font_t          *font,
     HB_TAG ('j','s','t','f'),
     HB_TAG ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  માટે (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
+    જો (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
     {
       tag = *var_tag = tags[i];
-      break;
+      તોડો;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  જો (!tag)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
-		       features, num_features,
+    *var_કિંમત = 0.0f;
+    જો (hb_shape_full (font, buffer,
+		       features, અંક_features,
 		       shaper_list))
     {
       *advance = buffer_advance (buffer);
-      return true;
+      પાછા સાચું;
     }
-    else
-      return false;
+    નહીંતર
+      પાછા ખોટું;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
   unsigned text_len = buffer->len;
-  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
+  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, કદ (buffer->info[0]));
+  જો (unlikely (text_len && !text_info))
+    પાછા ખોટું;
   HB_SCOPE_GUARD (hb_free (text_info));
-  hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
-  auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
+  hb_memcpy (text_info, buffer->info, text_len * કદ (buffer->info[0]));
+  auto text = hb_array<અચલ hb_glyph_info_t> (text_info, text_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  જો (!*advance)
   {
-    hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_set_variation (font, tag, axis_info.default_કિંમત);
+    જો (!hb_shape_full (font, buffer,
+			features, અંક_features,
 			shaper_list))
-      return false;
+      પાછા ખોટું;
     *advance = buffer_advance (buffer);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  જો (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return true;
+    *var_કિંમત = 0.0f;
+    પાછા સાચું;
   }
 
   /* Prepare for running the solver. */
-  double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  દ્વિગુણ a, b, ya, yb;
+  જો (*advance < min_target_advance)
   {
     /* Need to expand. */
-    ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    ya = (દ્વિગુણ) *advance;
+    a = (દ્વિગુણ) axis_info.default_કિંમત;
+    b = (દ્વિગુણ) axis_info.max_કિંમત;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) b);
+    hb_font_set_variation (font, tag, (દશાંશ) b);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    જો (!hb_shape_full (font, buffer,
+			features, અંક_features,
 			shaper_list))
-      return false;
-    yb = (double) buffer_advance (buffer);
+      પાછા ખોટું;
+    yb = (દ્વિગુણ) buffer_advance (buffer);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    જો (yb <= (દ્વિગુણ) max_target_advance)
     {
-      *var_value = (float) b;
-      *advance = (float) yb;
-      return true;
+      *var_કિંમત = (દશાંશ) b;
+      *advance = (દશાંશ) yb;
+      પાછા સાચું;
     }
   }
-  else
+  નહીંતર
   {
     /* Need to shrink. */
-    yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    yb = (દ્વિગુણ) *advance;
+    a = (દ્વિગુણ) axis_info.min_કિંમત;
+    b = (દ્વિગુણ) axis_info.default_કિંમત;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) a);
+    hb_font_set_variation (font, tag, (દશાંશ) a);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    જો (!hb_shape_full (font, buffer,
+			features, અંક_features,
 			shaper_list))
-      return false;
-    ya = (double) buffer_advance (buffer);
+      પાછા ખોટું;
+    ya = (દ્વિગુણ) buffer_advance (buffer);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    જો (ya >= (દ્વિગુણ) min_target_advance)
     {
-      *var_value = (float) a;
-      *advance = (float) ya;
-      return true;
+      *var_કિંમત = (દશાંશ) a;
+      *advance = (દશાંશ) ya;
+      પાછા સાચું;
     }
   }
 
   /* Run the solver to find a var axis value that hits
    * the desired width. */
 
-  double epsilon = (b - a) / (1<<14);
-  bool failed = false;
+  દ્વિગુણ epsilon = (b - a) / (1<<14);
+  તાર્કિક failed = ખોટું;
 
-  auto f = [&] (double x)
+  auto f = [&] (દ્વિગુણ x)
   {
-    hb_font_set_variation (font, tag, (float) x);
+    hb_font_set_variation (font, tag, (દશાંશ) x);
     reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
-				  features, num_features,
+    જો (unlikely (!hb_shape_full (font, buffer,
+				  features, અંક_features,
 				  shaper_list)))
     {
-      failed = true;
-      return (double) min_target_advance;
+      failed = સાચું;
+      પાછા (દ્વિગુણ) min_target_advance;
     }
 
-    double w = (double) buffer_advance (buffer);
-    DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
+    દ્વિગુણ w = (દ્વિગુણ) buffer_advance (buffer);
+    DEBUG_સંદેશ (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
-	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+	       (દ્વિગુણ) min_target_advance, (દ્વિગુણ) max_target_advance);
+    પાછા w;
   };
 
-  double y = 0;
-  double itp = solve_itp (f,
+  દ્વિગુણ y = 0;
+  દ્વિગુણ itp = solve_itp (f,
 			  a, b,
 			  epsilon,
-			  (double) min_target_advance, (double) max_target_advance,
+			  (દ્વિગુણ) min_target_advance, (દ્વિગુણ) max_target_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  જો (failed)
+    પાછા ખોટું;
 
-  *var_value = (float) itp;
-  *advance = (float) y;
+  *var_કિંમત = (દશાંશ) itp;
+  *advance = (દશાંશ) y;
 
-  return true;
+  પાછા સાચું;
 }
 #endif
 #endif

@@ -1,70 +1,70 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#અન્તર્ભાવ <hb-wasm-api.h>
 
-#include <graphite2/Segment.h>
+#અન્તર્ભાવ <graphite2/Segment.h>
 
-#include <stdlib.h>
-#include <string.h>
+#અન્તર્ભાવ <stdlib.h>
+#અન્તર્ભાવ <string.h>
 
-static int32_t
-clamp_position (double value)
+સ્થિર int32_t
+clamp_position (દ્વિગુણ value)
 {
-  if (value <= INT32_MIN) return INT32_MIN;
-  if (value >= INT32_MAX) return INT32_MAX;
-  return (int32_t) value;
+  જો (value <= INT32_MIN) પાછા INT32_MIN;
+  જો (value >= INT32_MAX) પાછા INT32_MAX;
+  પાછા (int32_t) value;
 }
 
-static int32_t
+સ્થિર int32_t
 saturate_add (int32_t a, int32_t b)
-{ return clamp_position ((int64_t) a + b); }
+{ પાછા clamp_position ((int64_t) a + b); }
 
-static int32_t
+સ્થિર int32_t
 saturate_sub (int32_t a, int32_t b)
-{ return clamp_position ((int64_t) a - b); }
+{ પાછા clamp_position ((int64_t) a - b); }
 
-void debugprint1 (char *s, int32_t);
-void debugprint2 (char *s, int32_t, int32_t);
+શૂન્ય debugprint1 (અક્ષર *s, int32_t);
+શૂન્ય debugprint2 (અક્ષર *s, int32_t, int32_t);
 
-static const void *copy_table (const void *data, unsigned int tag, size_t *len)
+સ્થિર અચલ શૂન્ય *copy_table (અચલ શૂન્ય *data, unsigned પૂર્ણાંક tag, size_t *len)
 {
   face_t *face = (face_t *) data;
   blob_t blob = BLOB_INIT;
-  if (!face_copy_table (face, tag, &blob))
+  જો (!face_copy_table (face, tag, &blob))
     abort ();
 
   *len = blob.length;
-  return blob.data;
+  પાછા blob.data;
 }
 
-static void free_table (const void *data, const void *table_data)
+સ્થિર શૂન્ય free_table (અચલ શૂન્ય *data, અચલ શૂન્ય *table_data)
 {
   blob_t blob;
   blob.length = 0; // Doesn't matter
-  blob.data = (char *) table_data;
+  blob.data = (અક્ષર *) table_data;
   blob_free (&blob);
 }
 
-void *
+શૂન્ય *
 shape_plan_create (face_t *face)
 {
-  const gr_face_ops ops = {sizeof (gr_face_ops), &copy_table, &free_table};
+  અચલ gr_face_ops ops = {કદ (gr_face_ops), &copy_table, &free_table};
   gr_face *grface = gr_make_face_with_ops (face, &ops, gr_face_preloadAll);
-  return grface;
+  પાછા grface;
 }
 
-void
-shape_plan_destroy (void *data)
+શૂન્ય
+shape_plan_destroy (શૂન્ય *data)
 {
   gr_face_destroy ((gr_face *) data);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (શૂન્ય *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       અચલ feature_t *features,
+       uint32_t અંક_features)
 {
   face_t *face = font_get_face (font);
   gr_face *grface = (gr_face *) shape_plan;
@@ -75,7 +75,7 @@ shape (void *shape_plan,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((DIRECTION_IS_HORIZONTAL (direction) &&
+  જો ((DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != DIRECTION_INVALID) ||
       (DIRECTION_IS_VERTICAL   (direction) &&
        direction != DIRECTION_TTB))
@@ -85,19 +85,19 @@ shape (void *shape_plan,
   }
 
   buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  જો (!buffer_copy_contents (buffer, &contents))
+    પાછા ખોટું;
 
   gr_segment *seg = nullptr;
-  const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  અચલ gr_slot *is;
+  unsigned પૂર્ણાંક ci = 0, ic = 0;
   int32_t curradvx = 0, curradvy = 0;
   unsigned length = contents.length;
 
-  uint32_t *chars = (uint32_t *) malloc (length * sizeof (uint32_t));
-  if (!chars)
-    return false;
-  for (unsigned int i = 0; i < contents.length; ++i)
+  uint32_t *chars = (uint32_t *) malloc (length * કદ (uint32_t));
+  જો (!chars)
+    પાછા ખોટું;
+  માટે (unsigned પૂર્ણાંક i = 0; i < contents.length; ++i)
     chars[i] = contents.info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -106,79 +106,79 @@ shape (void *shape_plan,
 		     gr_utf32, chars, contents.length,
 		     2 | (direction == DIRECTION_RTL ? 1 : 0));
 
-  free (chars);
+  મુક્ત (chars);
 
-  if (!seg)
-    return false;
+  જો (!seg)
+    પાછા ખોટું;
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
+  unsigned પૂર્ણાંક glyph_ગણતરી = gr_seg_n_slots (seg);
 
-  struct cluster_t {
-    unsigned int base_char;
-    unsigned int num_chars;
-    unsigned int base_glyph;
-    unsigned int num_glyphs;
-    unsigned int cluster;
+  સંરચના cluster_t {
+    unsigned પૂર્ણાંક base_char;
+    unsigned પૂર્ણાંક અંક_chars;
+    unsigned પૂર્ણાંક base_glyph;
+    unsigned પૂર્ણાંક અંક_glyphs;
+    unsigned પૂર્ણાંક cluster;
     int32_t advance;
   };
 
-  length = glyph_count;
-  if (!buffer_contents_realloc (&contents, length))
-    return false;
-  cluster_t *clusters = (cluster_t *) malloc (length * sizeof (cluster_t));
-  uint32_t *gids = (uint32_t *) malloc (length * sizeof (uint32_t));
-  if (!clusters || !gids)
+  length = glyph_ગણતરી;
+  જો (!buffer_contents_realloc (&contents, length))
+    પાછા ખોટું;
+  cluster_t *clusters = (cluster_t *) malloc (length * કદ (cluster_t));
+  uint32_t *gids = (uint32_t *) malloc (length * કદ (uint32_t));
+  જો (!clusters || !gids)
   {
-    free (clusters);
-    free (gids);
-    return false;
+    મુક્ત (clusters);
+    મુક્ત (gids);
+    પાછા ખોટું;
   }
 
-  memset (clusters, 0, sizeof (clusters[0]) * length);
+  memset (clusters, 0, કદ (clusters[0]) * length);
   codepoint_t *pg = gids;
   clusters[0].cluster = contents.info[0].cluster;
-  unsigned int upem = face_get_upem (face);
+  unsigned પૂર્ણાંક upem = face_get_upem (face);
   int32_t font_x_scale, font_y_scale;
   font_get_scale (font, &font_x_scale, &font_y_scale);
-  float xscale = (float) font_x_scale / upem;
-  float yscale = (float) font_y_scale / upem;
+  દશાંશ xscale = (દશાંશ) font_x_scale / upem;
+  દશાંશ yscale = (દશાંશ) font_y_scale / upem;
   yscale *= yscale / xscale;
   int32_t curradv = 0;
-  if (DIRECTION_IS_BACKWARD (direction))
+  જો (DIRECTION_IS_BACKWARD (direction))
   {
     curradv = clamp_position (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = clamp_position ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    clusters[0].advance = clamp_position ((દ્વિગુણ) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  નહીંતર
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  માટે (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    unsigned int before = gr_slot_before (is);
-    unsigned int after = gr_slot_after (is);
+    unsigned પૂર્ણાંક before = gr_slot_before (is);
+    unsigned પૂર્ણાંક after = gr_slot_after (is);
     *pg = gr_slot_gid (is);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    જ્યારે (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].અંક_chars += clusters[ci].અંક_chars;
+      clusters[ci-1].અંક_glyphs += clusters[ci].અંક_glyphs;
       clusters[ci-1].advance = saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    જો (gr_slot_can_ઉમેરો_before (is) && clusters[ci].અંક_chars && before >= clusters[ci].base_char + clusters[ci].અંક_chars)
     {
       cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].અંક_chars;
       c->cluster = contents.info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->અંક_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
-      if (DIRECTION_IS_BACKWARD (direction))
+      c->અંક_glyphs = 0;
+      જો (DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = clamp_position ((double) curradv - (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = clamp_position ((દ્વિગુણ) curradv - (દ્વિગુણ) (gr_slot_origin_X(is) * xscale));
 	curradv = saturate_sub (curradv, c->advance);
       }
-      else
+      નહીંતર
       {
 	int32_t origin_X = clamp_position (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -188,22 +188,22 @@ shape (void *shape_plan,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].અંક_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    જો (clusters[ci].base_char + clusters[ci].અંક_chars < after + 1)
+	clusters[ci].અંક_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (DIRECTION_IS_BACKWARD (direction))
+  જો (DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = clamp_position ((double) clusters[ci].advance +
-					   (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  નહીંતર
+    clusters[ci].advance = clamp_position ((દ્વિગુણ) clusters[ci].advance +
+					   (દ્વિગુણ) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  માટે (unsigned પૂર્ણાંક i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    માટે (unsigned પૂર્ણાંક j = 0; j < clusters[i].અંક_glyphs; ++j)
     {
       glyph_info_t *info = &contents.info[clusters[i].base_glyph + j];
       info->codepoint = gids[clusters[i].base_glyph + j];
@@ -211,24 +211,24 @@ shape (void *shape_plan,
       info->var1 = (unsigned) clusters[i].advance;     // all glyphs in the cluster get the same advance
     }
   }
-  contents.length = glyph_count;
+  contents.length = glyph_ગણતરી;
 
   /* Positioning. */
-  unsigned int currclus = 0xFFFFFFFF;
-  const glyph_info_t *info = contents.info;
+  unsigned પૂર્ણાંક currclus = 0xFFFFFFFF;
+  અચલ glyph_info_t *info = contents.info;
   glyph_position_t *pPos = contents.pos;
-  if (!DIRECTION_IS_BACKWARD (direction))
+  જો (!DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    માટે (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
-      pPos->x_offset = clamp_position ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = clamp_position ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->cluster != currclus) {
-	pPos->x_advance = (int) info->var1;
+      pPos->x_offset = clamp_position ((દ્વિગુણ) (gr_slot_origin_X (is) * xscale) - curradvx);
+      pPos->y_offset = clamp_position ((દ્વિગુણ) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      જો (info->cluster != currclus) {
+	pPos->x_advance = (પૂર્ણાંક) info->var1;
 	curradvx = saturate_add (curradvx, pPos->x_advance);
 	currclus = info->cluster;
-      } else
+      } નહીંતર
 	pPos->x_advance = 0.;
 
       pPos->y_advance = clamp_position (gr_slot_advance_Y (is, grface, nullptr) * yscale);
@@ -236,34 +236,34 @@ shape (void *shape_plan,
     }
     buffer_set_contents (buffer, &contents);
   }
-  else
+  નહીંતર
   {
     curradvx = clamp_position (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    માટે (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->cluster != currclus)
+      જો (info->cluster != currclus)
       {
-	pPos->x_advance = (int) info->var1;
+	pPos->x_advance = (પૂર્ણાંક) info->var1;
 	curradvx = saturate_sub (curradvx, pPos->x_advance);
 	currclus = info->cluster;
-      } else
+      } નહીંતર
 	pPos->x_advance = 0.;
 
       pPos->y_advance = clamp_position (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = clamp_position ((double) (gr_slot_origin_X (is) * xscale) -
-					      (int) info->var1 - curradvx + pPos->x_advance);
-      pPos->y_offset = clamp_position ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->x_offset = clamp_position ((દ્વિગુણ) (gr_slot_origin_X (is) * xscale) -
+					      (પૂર્ણાંક) info->var1 - curradvx + pPos->x_advance);
+      pPos->y_offset = clamp_position ((દ્વિગુણ) (gr_slot_origin_Y (is) * yscale) - curradvy);
     }
     buffer_set_contents (buffer, &contents);
     buffer_reverse_clusters (buffer);
   }
 
   gr_seg_destroy (seg);
-  free (clusters);
-  free (gids);
+  મુક્ત (clusters);
+  મુક્ત (gids);
 
-  bool ret = glyph_count;
+  તાર્કિક ret = glyph_ગણતરી;
 
-  return ret;
+  પાછા ret;
 }

@@ -27,8 +27,8 @@
 #ifndef HB_NULL_HH
 #define HB_NULL_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-meta.hh"
 
 
 /*
@@ -40,21 +40,21 @@
 #define HB_NULL_POOL_SIZE 640
 
 template <typename T, typename>
-struct _hb_has_min_size : hb_false_type {};
+સંરચના _hb_has_min_size : hb_false_type {};
 template <typename T>
-struct _hb_has_min_size<T, hb_void_t<decltype (T::min_size)>>
+સંરચના _hb_has_min_size<T, hb_void_t<decltype (T::min_size)>>
 	: hb_true_type {};
 template <typename T>
-using hb_has_min_size = _hb_has_min_size<T, void>;
+using hb_has_min_size = _hb_has_min_size<T, શૂન્ય>;
 #define hb_has_min_size(T) hb_has_min_size<T>::value
 
 template <typename T, typename>
-struct _hb_has_null_size : hb_false_type {};
+સંરચના _hb_has_null_size : hb_false_type {};
 template <typename T>
-struct _hb_has_null_size<T, hb_void_t<decltype (T::null_size)>>
+સંરચના _hb_has_null_size<T, hb_void_t<decltype (T::null_size)>>
 	: hb_true_type {};
 template <typename T>
-using hb_has_null_size = _hb_has_null_size<T, void>;
+using hb_has_null_size = _hb_has_null_size<T, શૂન્ય>;
 #define hb_has_null_size(T) hb_has_null_size<T>::value
 
 /* Use SFINAE to sniff whether T has min_size; in which case return the larger
@@ -68,13 +68,13 @@ using hb_has_null_size = _hb_has_null_size<T, void>;
  */
 
 template <typename T, typename>
-struct _hb_null_size : hb_integral_constant<unsigned, sizeof (T)> {};
+સંરચના _hb_null_size : hb_integral_constant<unsigned, કદ (T)> {};
 template <typename T>
-struct _hb_null_size<T, hb_void_t<decltype (T::min_size)>>
+સંરચના _hb_null_size<T, hb_void_t<decltype (T::min_size)>>
 	: hb_integral_constant<unsigned,
-			       (sizeof (T) > T::null_size ? sizeof (T) : T::null_size)> {};
+			       (કદ (T) > T::null_size ? કદ (T) : T::null_size)> {};
 template <typename T>
-using hb_null_size = _hb_null_size<T, void>;
+using hb_null_size = _hb_null_size<T, શૂન્ય>;
 #define hb_null_size(T) hb_null_size<T>::value
 
 /* These doesn't belong here, but since is copy/paste from above, put it here. */
@@ -83,19 +83,19 @@ using hb_null_size = _hb_null_size<T, void>;
  * Returns T::static_size if T::min_size is defined, or sizeof (T) otherwise. */
 
 template <typename T, typename>
-struct _hb_static_size : hb_integral_constant<unsigned, sizeof (T)> {};
+સંરચના _hb_static_size : hb_integral_constant<unsigned, કદ (T)> {};
 template <typename T>
-struct _hb_static_size<T, hb_void_t<decltype (T::static_size)>> : hb_integral_constant<unsigned, T::static_size> {};
+સંરચના _hb_static_size<T, hb_void_t<decltype (T::static_size)>> : hb_integral_constant<unsigned, T::static_size> {};
 template <typename T>
-using hb_static_size = _hb_static_size<T, void>;
+using hb_static_size = _hb_static_size<T, શૂન્ય>;
 #define hb_static_size(T) hb_static_size<T>::value
 
 template <typename T, typename>
-struct _hb_min_size : hb_integral_constant<unsigned, sizeof (T)> {};
+સંરચના _hb_min_size : hb_integral_constant<unsigned, કદ (T)> {};
 template <typename T>
-struct _hb_min_size<T, hb_void_t<decltype (T::min_size)>> : hb_integral_constant<unsigned, T::min_size> {};
+સંરચના _hb_min_size<T, hb_void_t<decltype (T::min_size)>> : hb_integral_constant<unsigned, T::min_size> {};
 template <typename T>
-using hb_min_size = _hb_min_size<T, void>;
+using hb_min_size = _hb_min_size<T, શૂન્ય>;
 #define hb_min_size(T) hb_min_size<T>::value
 
 
@@ -103,64 +103,64 @@ using hb_min_size = _hb_min_size<T, void>;
  * Null()
  */
 
-extern HB_INTERNAL
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)];
+બાહ્ય HB_INTERNAL
+uint64_t અચલ _hb_NullPool[(HB_NULL_POOL_SIZE + કદ (uint64_t) - 1) / કદ (uint64_t)];
 
 /* Generic nul-content Null objects. */
 template <typename Type>
-struct Null {
-  static Type const & get_null ()
+સંરચના Null {
+  સ્થિર Type અચલ & get_null ()
   {
     static_assert (hb_null_size (Type) <= HB_NULL_POOL_SIZE, "Increase HB_NULL_POOL_SIZE.");
-    return *reinterpret_cast<Type const *> (_hb_NullPool);
+    પાછા *reinterpret_cast<Type અચલ *> (_hb_NullPool);
   }
 };
 template <typename QType>
-struct NullHelper
+સંરચના NullHelper
 {
-  typedef hb_remove_const<hb_remove_reference<QType>> Type;
-  static const Type & get_null () { return Null<Type>::get_null (); }
+  પ્રકારવ્યાખ્યા hb_remove_const<hb_remove_reference<QType>> Type;
+  સ્થિર અચલ Type & get_null () { પાછા Null<Type>::get_null (); }
 };
 #define Null(Type) NullHelper<Type>::get_null ()
 
 /* Specializations for arbitrary-content Null objects expressed in bytes. */
 #define DECLARE_NULL_NAMESPACE_BYTES(Namespace, Type) \
 	} /* Close namespace. */ \
-	extern HB_INTERNAL const unsigned char _hb_Null_##Namespace##_##Type[hb_null_size (Namespace::Type)]; \
+	બાહ્ય HB_INTERNAL અચલ unsigned અક્ષર _hb_Null_##Namespace##_##Type[hb_null_size (Namespace::Type)]; \
 	template <> \
-	struct Null<Namespace::Type> { \
-	  static Namespace::Type const & get_null () { \
-	    return *reinterpret_cast<const Namespace::Type *> (_hb_Null_##Namespace##_##Type); \
+	સંરચના Null<Namespace::Type> { \
+	  સ્થિર Namespace::Type અચલ & get_null () { \
+	    પાછા *reinterpret_cast<અચલ Namespace::Type *> (_hb_Null_##Namespace##_##Type); \
 	  } \
 	}; \
-	namespace Namespace { \
-	static_assert (true, "") /* Require semicolon after. */
+	નામાકાશ Namespace { \
+	static_assert (સાચું, "") /* Require semicolon after. */
 #define DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1(Namespace, Type, Size) \
 	} /* Close namespace. */ \
-	extern HB_INTERNAL const unsigned char _hb_Null_##Namespace##_##Type[Size]; \
+	બાહ્ય HB_INTERNAL અચલ unsigned અક્ષર _hb_Null_##Namespace##_##Type[Size]; \
 	template <typename Spec> \
-	struct Null<Namespace::Type<Spec>> { \
-	  static Namespace::Type<Spec> const & get_null () { \
-	    return *reinterpret_cast<const Namespace::Type<Spec> *> (_hb_Null_##Namespace##_##Type); \
+	સંરચના Null<Namespace::Type<Spec>> { \
+	  સ્થિર Namespace::Type<Spec> અચલ & get_null () { \
+	    પાછા *reinterpret_cast<અચલ Namespace::Type<Spec> *> (_hb_Null_##Namespace##_##Type); \
 	  } \
 	}; \
-	namespace Namespace { \
-	static_assert (true, "") /* Require semicolon after. */
+	નામાકાશ Namespace { \
+	static_assert (સાચું, "") /* Require semicolon after. */
 #define DEFINE_NULL_NAMESPACE_BYTES(Namespace, Type) \
-	const unsigned char _hb_Null_##Namespace##_##Type[sizeof (_hb_Null_##Namespace##_##Type)]
+	અચલ unsigned અક્ષર _hb_Null_##Namespace##_##Type[કદ (_hb_Null_##Namespace##_##Type)]
 
 /* Specializations for arbitrary-content Null objects expressed as struct initializer. */
 #define DECLARE_NULL_INSTANCE(Type) \
-	extern HB_INTERNAL const Type _hb_Null_##Type; \
+	બાહ્ય HB_INTERNAL અચલ Type _hb_Null_##Type; \
 	template <> \
-	struct Null<Type> { \
-	  static Type const & get_null () { \
-	    return _hb_Null_##Type; \
+	સંરચના Null<Type> { \
+	  સ્થિર Type અચલ & get_null () { \
+	    પાછા _hb_Null_##Type; \
 	  } \
 	}; \
-	static_assert (true, "") /* Require semicolon after. */
+	static_assert (સાચું, "") /* Require semicolon after. */
 #define DEFINE_NULL_INSTANCE(Type) \
-	const Type _hb_Null_##Type
+	અચલ Type _hb_Null_##Type
 
 /* Global writable pool.  Enlarge as necessary. */
 
@@ -168,32 +168,32 @@ struct NullHelper
  * for correct operation. It only exist to catch and divert program logic bugs instead of
  * causing bad memory access. So, races there are not actually introducing incorrectness
  * in the code. Has ~12kb binary size overhead to have it, also clang build fails with it. */
-extern HB_INTERNAL
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)];
+બાહ્ય HB_INTERNAL
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + કદ (uint64_t) - 1) / કદ (uint64_t)];
 
 /* CRAP pool: Common Region for Access Protection. */
 template <typename Type>
-static inline Type& Crap () {
+સ્થિર અંતઃરેખ Type& Crap () {
   static_assert (hb_null_size (Type) <= HB_NULL_POOL_SIZE, "Increase HB_NULL_POOL_SIZE.");
   Type *obj = reinterpret_cast<Type *> (_hb_CrapPool);
-  memcpy (reinterpret_cast<void*>(obj), std::addressof (Null (Type)), sizeof (*obj));
-  return *obj;
+  memcpy (reinterpret_cast<શૂન્ય*>(obj), std::addressof (Null (Type)), કદ (*obj));
+  પાછા *obj;
 }
 template <typename QType>
-struct CrapHelper
+સંરચના CrapHelper
 {
-  typedef hb_remove_const<hb_remove_reference<QType>> Type;
-  static Type & get_crap () { return Crap<Type> (); }
+  પ્રકારવ્યાખ્યા hb_remove_const<hb_remove_reference<QType>> Type;
+  સ્થિર Type & get_crap () { પાછા Crap<Type> (); }
 };
 #define Crap(Type) CrapHelper<Type>::get_crap ()
 
 template <typename Type>
-struct CrapOrNullHelper {
-  static Type & get () { return Crap (Type); }
+સંરચના CrapOrNullHelper {
+  સ્થિર Type & get () { પાછા Crap (Type); }
 };
 template <typename Type>
-struct CrapOrNullHelper<const Type> {
-  static const Type & get () { return Null (Type); }
+સંરચના CrapOrNullHelper<અચલ Type> {
+  સ્થિર અચલ Type & get () { પાછા Null (Type); }
 };
 #define CrapOrNull(Type) CrapOrNullHelper<Type>::get ()
 
@@ -203,22 +203,22 @@ struct CrapOrNullHelper<const Type> {
  */
 
 template <typename P>
-struct hb_nonnull_ptr_t
+સંરચના hb_nonnull_ptr_t
 {
-  typedef hb_remove_pointer<P> T;
+  પ્રકારવ્યાખ્યા hb_remove_pointer<P> T;
 
   hb_nonnull_ptr_t (T *v_ = nullptr) : v (v_) {}
-  T * operator = (T *v_)   { return v = v_; }
-  T * operator -> () const { return get (); }
-  T & operator * () const  { return *get (); }
-  T ** operator & () const { return std::addressof (v); }
+  T * operator = (T *v_)   { પાછા v = v_; }
+  T * operator -> () અચલ { પાછા get (); }
+  T & operator * () અચલ  { પાછા *get (); }
+  T ** operator & () અચલ { પાછા std::addressof (v); }
   /* Only auto-cast to const types. */
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  T * get () const { return v ? v : const_cast<T *> (std::addressof (Null (T))); }
-  T * get_raw () const { return v; }
+  template <typename C> operator અચલ C * () અચલ { પાછા get (); }
+  operator અચલ અક્ષર * () અચલ { પાછા (અચલ અક્ષર *) get (); }
+  T * get () અચલ { પાછા v ? v : const_cast<T *> (std::addressof (Null (T))); }
+  T * get_raw () અચલ { પાછા v; }
 
-  private:
+  ખાનગી:
   T *v;
 };
 

@@ -16,11 +16,11 @@
 #ifndef HB_OT_SHAPER_ARABIC_TABLE_HH
 #define HB_OT_SHAPER_ARABIC_TABLE_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include <stdint.h>
+#અન્તર્ભાવ <stdint.h>
 
-static const uint8_t _hb_arabic_joining_u8[749]=
+સ્થિર અચલ uint8_t _hb_arabic_joining_u8[749]=
 {
     0, 16,  2,  0,  0,  0,  3,  0,  4,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -71,24 +71,24 @@ static const uint8_t _hb_arabic_joining_u8[749]=
     0, 32, 19,119,119, 51, 51,119,119,119,103,119,119,
 };
 
-static inline uint8_t _hb_arabic_joining_b4 (const uint8_t* a, unsigned i)
+સ્થિર અંતઃરેખ uint8_t _hb_arabic_joining_b4 (અચલ uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  પાછા (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_arabic_joining_joining_type (unsigned u)
+સ્થિર અંતઃરેખ uint8_t _hb_arabic_joining_joining_type (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^3] */
-  return u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
+  પાછા u<125260u ? (uint8_t)(_hb_arabic_joining_b4(_hb_arabic_joining_u8+441u,((_hb_arabic_joining_u8[209u+_hb_arabic_joining_u8[123u+((_hb_arabic_joining_b4(_hb_arabic_joining_u8,((((((u)>>3))>>3))>>3)))<<3)+((((((u)>>3))>>3))&7)]+((((u)>>3))&7)])<<3)+((u)&7))) : 7;
 }
 
-static unsigned int
+સ્થિર unsigned પૂર્ણાંક
 joining_type (hb_codepoint_t u)
 {
-  return _hb_arabic_joining_joining_type (u);
+  પાછા _hb_arabic_joining_joining_type (u);
 }
 
 
-static const uint16_t shaping_table[][4] =
+સ્થિર અચલ uint16_t shaping_table[][4] =
 {
   {0x0000u, 0x0000u, 0x0000u, 0xFE80u}, /* U+0621 ARABIC LETTER HAMZA ISOLATED FORM */
   {0x0000u, 0x0000u, 0xFE82u, 0xFE81u}, /* U+0622 ARABIC LETTER ALEF WITH MADDA ABOVE */
@@ -275,9 +275,9 @@ static const uint16_t shaping_table[][4] =
 #define SHAPING_TABLE_LAST	0x06D3u
 
 
-static const struct ligature_set_t {
+સ્થિર અચલ સંરચના ligature_set_t {
  uint16_t first;
- struct ligature_pairs_t {
+ સંરચના ligature_pairs_t {
    uint16_t components[1];
    uint16_t ligature;
  } ligatures[15];
@@ -380,9 +380,9 @@ static const struct ligature_set_t {
 };
 
 
-static const struct ligature_mark_set_t {
+સ્થિર અચલ સંરચના ligature_mark_set_t {
  uint16_t first;
- struct ligature_pairs_t {
+ સંરચના ligature_pairs_t {
    uint16_t components[1];
    uint16_t ligature;
  } ligatures[5];
@@ -398,9 +398,9 @@ static const struct ligature_mark_set_t {
 };
 
 
-static const struct ligature_3_set_t {
+સ્થિર અચલ સંરચના ligature_3_set_t {
  uint16_t first;
- struct ligature_triplets_t {
+ સંરચના ligature_triplets_t {
    uint16_t components[2];
    uint16_t ligature;
  } ligatures[3];

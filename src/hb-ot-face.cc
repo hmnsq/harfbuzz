@@ -24,39 +24,39 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-ot-face.hh"
+#અન્તર્ભાવ "hb-ot-face.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-kern-table.hh"
-#include "hb-ot-meta-table.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-post-table.hh"
-#include "OT/Color/CBDT/CBDT.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/sbix/sbix.hh"
-#include "OT/Color/svg/svg.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-aat-layout-kerx-table.hh"
-#include "hb-aat-layout-morx-table.hh"
+#અન્તર્ભાવ "hb-ot-cmap-table.hh"
+#અન્તર્ભાવ "hb-ot-glyf-table.hh"
+#અન્તર્ભાવ "hb-ot-cff1-table.hh"
+#અન્તર્ભાવ "hb-ot-cff2-table.hh"
+#અન્તર્ભાવ "hb-ot-hmtx-table.hh"
+#અન્તર્ભાવ "hb-ot-kern-table.hh"
+#અન્તર્ભાવ "hb-ot-meta-table.hh"
+#અન્તર્ભાવ "hb-ot-name-table.hh"
+#અન્તર્ભાવ "hb-ot-post-table.hh"
+#અન્તર્ભાવ "OT/Color/CBDT/CBDT.hh"
+#અન્તર્ભાવ "OT/Color/COLR/COLR.hh"
+#અન્તર્ભાવ "OT/Color/sbix/sbix.hh"
+#અન્તર્ભાવ "OT/Color/svg/svg.hh"
+#અન્તર્ભાવ "hb-ot-layout-gdef-table.hh"
+#અન્તર્ભાવ "hb-ot-layout-gsub-table.hh"
+#અન્તર્ભાવ "hb-ot-layout-gpos-table.hh"
+#અન્તર્ભાવ "hb-ot-var-varc-table.hh"
+#અન્તર્ભાવ "hb-aat-layout-kerx-table.hh"
+#અન્તર્ભાવ "hb-aat-layout-morx-table.hh"
 
 
-void hb_ot_face_t::init0 (hb_face_t *face)
+શૂન્ય hb_ot_face_t::init0 (hb_face_t *face)
 {
-  this->face = face;
+  આ->face = face;
 #define HB_OT_TABLE(Namespace, Type) Type.init0 ();
-#include "hb-ot-face-table-list.hh"
+#અન્તર્ભાવ "hb-ot-face-table-list.hh"
 #undef HB_OT_TABLE
 }
-void hb_ot_face_t::fini ()
+શૂન્ય hb_ot_face_t::fini ()
 {
 #define HB_OT_TABLE(Namespace, Type) Type.fini ();
-#include "hb-ot-face-table-list.hh"
+#અન્તર્ભાવ "hb-ot-face-table-list.hh"
 #undef HB_OT_TABLE
 }

@@ -27,16 +27,16 @@
 #ifndef HB_OT_SHAPE_NORMALIZE_HH
 #define HB_OT_SHAPE_NORMALIZE_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-unicode.hh"
 
 
 /* buffer var allocations, used during the normalization process */
 #define normalizer_glyph_index()	var1.u32
 
-struct hb_ot_shape_plan_t;
+સંરચના hb_ot_shape_plan_t;
 
-enum hb_ot_shape_normalization_mode_t {
+ગણના hb_ot_shape_normalization_mode_t {
   HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
   HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED,
   HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS, /* Never composes base-to-base */
@@ -46,54 +46,54 @@ enum hb_ot_shape_normalization_mode_t {
   HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT = HB_OT_SHAPE_NORMALIZATION_MODE_AUTO
 };
 
-HB_INTERNAL void _hb_ot_shape_normalize (const hb_ot_shape_plan_t *shaper,
+HB_INTERNAL શૂન્ય _hb_ot_shape_normalize (અચલ hb_ot_shape_plan_t *shaper,
 					 hb_buffer_t *buffer,
 					 hb_font_t *font);
 
 
-struct hb_ot_shape_normalize_context_t
+સંરચના hb_ot_shape_normalize_context_t
 {
-  static bool
-  decompose_unicode (const hb_ot_shape_normalize_context_t *c,
+  સ્થિર તાર્કિક
+  decompose_unicode (અચલ hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b)
   {
-    return (bool) c->unicode->decompose (ab, a, b);
+    પાછા (તાર્કિક) c->unicode->decompose (ab, a, b);
   }
 
-  static bool
-  compose_unicode (const hb_ot_shape_normalize_context_t *c,
+  સ્થિર તાર્કિક
+  compose_unicode (અચલ hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab)
   {
-    return (bool) c->unicode->compose (a, b, ab);
+    પાછા (તાર્કિક) c->unicode->compose (a, b, ab);
   }
 
-  void
-  override_decompose_and_compose (bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  શૂન્ય
+  override_decompose_and_compose (તાર્કિક (*decompose) (અચલ hb_ot_shape_normalize_context_t *c,
 						      hb_codepoint_t  ab,
 						      hb_codepoint_t *a,
 						      hb_codepoint_t *b),
-				  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+				  તાર્કિક (*compose) (અચલ hb_ot_shape_normalize_context_t *c,
 						   hb_codepoint_t  a,
 						   hb_codepoint_t  b,
 						   hb_codepoint_t *ab))
   {
-    this->decompose = decompose ? decompose : decompose_unicode;
-    this->compose = compose ? compose : compose_unicode;
+    આ->decompose = decompose ? decompose : decompose_unicode;
+    આ->compose = compose ? compose : compose_unicode;
   }
 
-  const hb_ot_shape_plan_t *plan;
+  અચલ hb_ot_shape_plan_t *plan;
   hb_buffer_t *buffer;
   hb_font_t *font;
   hb_unicode_funcs_t *unicode;
-  bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  તાર્કિક (*decompose) (અચલ hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b);
-  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+  તાર્કિક (*compose) (અચલ hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab);

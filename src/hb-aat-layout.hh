@@ -27,49 +27,49 @@
 #ifndef HB_AAT_LAYOUT_HH
 #define HB_AAT_LAYOUT_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-aat-ltag-table.hh"
+#અન્તર્ભાવ "hb-ot-shape.hh"
+#અન્તર્ભાવ "hb-aat-ltag-table.hh"
 
 /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
 #define HB_CORETEXT_DEFAULT_FONT_SIZE 12.f
 
-struct hb_aat_feature_mapping_t
+સંરચના hb_aat_feature_mapping_t
 {
   hb_tag_t otFeatureTag;
   hb_aat_layout_feature_type_t aatFeatureType;
   hb_aat_layout_feature_selector_t selectorToEnable;
   hb_aat_layout_feature_selector_t selectorToDisable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  પૂર્ણાંક cmp (hb_tag_t key) અચલ
+  { પાછા key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
 };
 
-HB_INTERNAL const hb_aat_feature_mapping_t *
+HB_INTERNAL અચલ hb_aat_feature_mapping_t *
 hb_aat_layout_find_feature_mapping (hb_tag_t tag);
 
-HB_INTERNAL void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+HB_INTERNAL શૂન્ય
+hb_aat_layout_compile_map (અચલ hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map);
 
-HB_INTERNAL void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL શૂન્ય
+hb_aat_layout_substitute (અચલ hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
 			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features);
+			  અચલ hb_feature_t *features,
+			  unsigned અંક_features);
 
-HB_INTERNAL void
+HB_INTERNAL શૂન્ય
 hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer);
 
-HB_INTERNAL void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL શૂન્ય
+hb_aat_layout_position (અચલ hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
 			hb_buffer_t *buffer);
 
-HB_INTERNAL void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+HB_INTERNAL શૂન્ય
+hb_aat_layout_track (અચલ hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
 		     hb_buffer_t *buffer);
 

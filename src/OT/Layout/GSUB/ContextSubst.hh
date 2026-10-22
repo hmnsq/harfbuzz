@@ -2,14 +2,14 @@
 #define OT_LAYOUT_GSUB_CONTEXTSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#અન્તર્ભાવ "../../../hb-ot-layout-gsubgpos.hh"
+#અન્તર્ભાવ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+નામાકાશ OT {
+નામાકાશ Layout {
+નામાકાશ GSUB_impl {
 
-struct ContextSubst : Context {};
+સંરચના ContextSubst : Context {};
 
 }
 }

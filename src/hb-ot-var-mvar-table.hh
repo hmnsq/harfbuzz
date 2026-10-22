@@ -27,26 +27,26 @@
 #ifndef HB_OT_VAR_MVAR_TABLE_HH
 #define HB_OT_VAR_MVAR_TABLE_HH
 
-#include "hb-ot-var-common.hh"
+#અન્તર્ભાવ "hb-ot-var-common.hh"
 
 
-namespace OT {
+નામાકાશ OT {
 
 
-struct VariationValueRecord
+સંરચના Variation_કિંમત_Record
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_map_t& varidx_map) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               અચલ hb_map_t& varidx_map) અચલ
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (આ);
+    auto *out = c->serializer->embed (*આ);
+    જો (unlikely (!out)) return_trace (ખોટું);
 
     hb_codepoint_t *new_idx;
     return_trace (c->serializer->check_assign (out->varIdx,
@@ -54,11 +54,11 @@ struct VariationValueRecord
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  public:
-  Tag		valueTag;	/* Four-byte tag identifying a font-wide measure. */
+  જાહેર:
+  Tag		કિંમત_Tag;	/* Four-byte tag identifying a font-wide measure. */
   VarIdx	varIdx;		/* Outer/inner index into ItemVariationStore item. */
 
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (8);
 };
 
@@ -69,104 +69,104 @@ struct VariationValueRecord
  */
 #define HB_OT_TAG_MVAR HB_TAG('M','V','A','R')
 
-struct MVAR
+સંરચના MVAR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
+  સ્થિર constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  c->check_struct (આ) &&
 		  hb_barrier () &&
-		  valueRecordSize >= VariationValueRecord::static_size &&
-		  varStore.sanitize (c, this) &&
-		  c->check_range (valuesZ.arrayZ,
-				  valueRecordCount,
-				  valueRecordSize));
+		  કિંમત_Record_Size >= Variation_કિંમત_Record::static_size &&
+		  varStore.sanitize (c, આ) &&
+		  c->check_range (કિંમતો_Z.arrayZ,
+				  કિંમત_Record_ગણતરી,
+				  કિંમત_Record_Size));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  તાર્કિક subset (hb_subset_context_t *c) અચલ
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (આ);
 #ifdef HB_NO_VAR
-    return_trace (false);
+    return_trace (ખોટું);
 #endif
 
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    જો (c->plan->all_axes_pinned)
+      return_trace (ખોટું);
 
-    MVAR *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    MVAR *out = c->serializer->start_embed (*આ);
+    જો (unlikely (!c->serializer->extend_min (out))) return_trace (ખોટું);
     out->version = version;
     out->reserved = reserved;
-    out->valueRecordSize = valueRecordSize;
-    out->valueRecordCount = valueRecordCount;
+    out->કિંમત_Record_Size = કિંમત_Record_Size;
+    out->કિંમત_Record_ગણતરી = કિંમત_Record_ગણતરી;
 
     item_variations_t item_vars;
-    const ItemVariationStore& src_var_store = this+varStore;
+    અચલ ItemVariationStore& src_var_store = આ+varStore;
 
-    if (!item_vars.instantiate (src_var_store, c->plan))
-      return_trace (false);
+    જો (!item_vars.instantiate (src_var_store, c->plan))
+      return_trace (ખોટું);
 
     /* serialize varstore */
-    if (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
+    જો (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
                                             item_vars.get_vardata_encodings ()))
-      return_trace (false);
+      return_trace (ખોટું);
 
     /* serialize value records array */
-    unsigned value_rec_count = valueRecordCount;
-    const VariationValueRecord *record = reinterpret_cast<const VariationValueRecord*> (valuesZ.arrayZ);
-    for (unsigned i = 0; i < value_rec_count; i++)
+    unsigned કિંમત_rec_ગણતરી = કિંમત_Record_ગણતરી;
+    અચલ Variation_કિંમત_Record *record = reinterpret_cast<અચલ Variation_કિંમત_Record*> (કિંમતો_Z.arrayZ);
+    માટે (unsigned i = 0; i < કિંમત_rec_ગણતરી; i++)
     {
-      if (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
+      જો (!record->subset (c, item_vars.get_varidx_map ())) return_trace (ખોટું);
       record++;
     }
-    return_trace (true);
+    return_trace (સાચું);
   }
 
-  float get_var (hb_tag_t tag,
-		 const int *coords, unsigned int coord_count) const
+  દશાંશ get_var (hb_tag_t tag,
+		 અચલ પૂર્ણાંક *coords, unsigned પૂર્ણાંક coord_ગણતરી) અચલ
   {
-    const VariationValueRecord *record;
-    record = (VariationValueRecord *) hb_bsearch (tag,
-						  (const VariationValueRecord *)
-						    (const HBUINT8 *) valuesZ,
-						  valueRecordCount, valueRecordSize,
+    અચલ Variation_કિંમત_Record *record;
+    record = (Variation_કિંમત_Record *) hb_bsearch (tag,
+						  (અચલ Variation_કિંમત_Record *)
+						    (અચલ HBUINT8 *) કિંમતો_Z,
+						  કિંમત_Record_ગણતરી, કિંમત_Record_Size,
 						  tag_compare);
-    if (!record)
-      return 0.;
+    જો (!record)
+      પાછા 0.;
 
-    return (this+varStore).get_delta (record->varIdx, coords, coord_count);
+    પાછા (આ+varStore).get_delta (record->varIdx, coords, coord_ગણતરી);
   }
 
-protected:
-  static int tag_compare (const void *pa, const void *pb)
+સુરક્ષિત:
+  સ્થિર પૂર્ણાંક tag_compare (અચલ શૂન્ય *pa, અચલ શૂન્ય *pb)
   {
-    const hb_tag_t *a = (const hb_tag_t *) pa;
-    const Tag *b = (const Tag *) pb;
-    return b->cmp (*a);
+    અચલ hb_tag_t *a = (અચલ hb_tag_t *) pa;
+    અચલ Tag *b = (અચલ Tag *) pb;
+    પાછા b->cmp (*a);
   }
 
-  protected:
+  સુરક્ષિત:
   FixedVersion<>version;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* Not used; set to 0. */
-  HBUINT16	valueRecordSize;/* The size in bytes of each value record —
+  HBUINT16	કિંમત_Record_Size;/* The size in bytes of each value record —
 				 * must be greater than zero. */
-  HBUINT16	valueRecordCount;/* The number of value records — may be zero. */
+  HBUINT16	કિંમત_Record_ગણતરી;/* The number of value records — may be zero. */
   Offset16To<ItemVariationStore>
 		varStore;	/* Offset to item variation store table. */
   UnsizedArrayOf<HBUINT8>
-		valuesZ;	/* Array of value records. The records must be
+		કિંમતો_Z;	/* Array of value records. The records must be
 				 * in binary order of their valueTag field. */
 
-  public:
-  DEFINE_SIZE_ARRAY (12, valuesZ);
+  જાહેર:
+  DEFINE_SIZE_ARRAY (12, કિંમતો_Z);
 };
 
 } /* namespace OT */

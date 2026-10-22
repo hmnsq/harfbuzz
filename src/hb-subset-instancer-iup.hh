@@ -25,28 +25,28 @@
 #ifndef HB_SUBSET_INSTANCER_IUP_HH
 #define HB_SUBSET_INSTANCER_IUP_HH
 
-#include "hb-subset-plan.hh"
+#અન્તર્ભાવ "hb-subset-plan.hh"
 
-struct iup_scratch_t
+સંરચના iup_scratch_t
 {
   hb_vector_t<unsigned> end_points;
-  hb_vector_t<double> interp_x_deltas;
-  hb_vector_t<double> interp_y_deltas;
+  hb_vector_t<દ્વિગુણ> interp_x_deltas;
+  hb_vector_t<દ્વિગુણ> interp_y_deltas;
   hb_vector_t<unsigned> costs;
-  hb_vector_t<int> chain;
-  hb_vector_t<bool> rot_indices;
-  hb_vector_t<int> rot_x_deltas;
-  hb_vector_t<int> rot_y_deltas;
+  hb_vector_t<પૂર્ણાંક> chain;
+  hb_vector_t<તાર્કિક> rot_indices;
+  hb_vector_t<પૂર્ણાંક> rot_x_deltas;
+  hb_vector_t<પૂર્ણાંક> rot_y_deltas;
   contour_point_vector_t rot_points;
 };
 
 /* given contour points and deltas, optimize a set of referenced points within error
  * tolerance. Returns optimized referenced point indices */
-HB_INTERNAL bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                                     const hb_vector_t<int>& x_deltas,
-                                     const hb_vector_t<int>& y_deltas,
-                                     hb_vector_t<bool>& opt_indices, /* OUT */
+HB_INTERNAL તાર્કિક iup_delta_optimize (અચલ contour_point_vector_t& contour_points,
+                                     અચલ hb_vector_t<પૂર્ણાંક>& x_deltas,
+                                     અચલ hb_vector_t<પૂર્ણાંક>& y_deltas,
+                                     hb_vector_t<તાર્કિક>& opt_indices, /* OUT */
 				     iup_scratch_t &scratch,
-                                     double tolerance = 0.0);
+                                     દ્વિગુણ tolerance = 0.0);
 
 #endif /* HB_SUBSET_INSTANCER_IUP_HH */

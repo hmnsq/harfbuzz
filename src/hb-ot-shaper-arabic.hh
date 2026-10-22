@@ -29,21 +29,21 @@
 #ifndef HB_OT_SHAPER_ARABIC_HH
 #define HB_OT_SHAPER_ARABIC_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-ot-shaper.hh"
+#અન્તર્ભાવ "hb-ot-shaper.hh"
 
 
-struct arabic_shape_plan_t;
+સંરચના arabic_shape_plan_t;
 
-HB_INTERNAL void *
-data_create_arabic (const hb_ot_shape_plan_t *plan);
+HB_INTERNAL શૂન્ય *
+data_create_arabic (અચલ hb_ot_shape_plan_t *plan);
 
-HB_INTERNAL void
-data_destroy_arabic (void *data);
+HB_INTERNAL શૂન્ય
+data_destroy_arabic (શૂન્ય *data);
 
-HB_INTERNAL void
-setup_masks_arabic_plan (const arabic_shape_plan_t *arabic_plan,
+HB_INTERNAL શૂન્ય
+setup_masks_arabic_plan (અચલ arabic_shape_plan_t *arabic_plan,
 			 hb_buffer_t               *buffer,
 			 hb_script_t                script);
 

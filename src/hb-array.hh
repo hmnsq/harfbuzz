@@ -27,16 +27,16 @@
 #ifndef HB_ARRAY_HH
 #define HB_ARRAY_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-iter.hh"
-#include "hb-null.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-algs.hh"
+#અન્તર્ભાવ "hb-iter.hh"
+#અન્તર્ભાવ "hb-null.hh"
 
 
 template <typename Type>
-struct hb_sorted_array_t;
+સંરચના hb_sorted_array_t;
 
-enum hb_not_found_t
+ગણના hb_not_found_t
 {
   HB_NOT_FOUND_DONT_STORE,
   HB_NOT_FOUND_STORE,
@@ -45,82 +45,82 @@ enum hb_not_found_t
 
 
 template <typename Type>
-struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
+સંરચના hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 {
-  static constexpr bool realloc_move = true;
+  સ્થિર constexpr તાર્કિક realloc_move = સાચું;
 
   /*
    * Constructors.
    */
-  hb_array_t () = default;
-  hb_array_t (const hb_array_t&) = default;
-  ~hb_array_t () = default;
-  hb_array_t& operator= (const hb_array_t&) = default;
-  hb_array_t& operator= (hb_array_t&&) = default;
+  hb_array_t () = મૂળભૂત;
+  hb_array_t (અચલ hb_array_t&) = મૂળભૂત;
+  ~hb_array_t () = મૂળભૂત;
+  hb_array_t& operator= (અચલ hb_array_t&) = મૂળભૂત;
+  hb_array_t& operator= (hb_array_t&&) = મૂળભૂત;
 
-  constexpr hb_array_t (Type *array_, unsigned int length_) : arrayZ (array_), length (length_) {}
-  template <unsigned int length_>
+  constexpr hb_array_t (Type *array_, unsigned પૂર્ણાંક length_) : arrayZ (array_), length (length_) {}
+  template <unsigned પૂર્ણાંક length_>
   constexpr hb_array_t (Type (&array_)[length_]) : hb_array_t (array_, length_) {}
 
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_array_t (const hb_array_t<U> &o) :
+  constexpr hb_array_t (અચલ hb_array_t<U> &o) :
     hb_iter_with_fallback_t<hb_array_t, Type&> (),
     arrayZ (o.arrayZ), length (o.length), backwards_length (o.backwards_length) {}
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_array_t& operator = (const hb_array_t<U> &o)
-  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; return *this; }
+  hb_array_t& operator = (અચલ hb_array_t<U> &o)
+  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; પાછા *આ; }
 
   /*
    * Iterator implementation.
    */
-  typedef Type& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool has_fast_len = true;
-  Type& __item__ () const
+  પ્રકારવ્યાખ્યા Type& __item_t__;
+  સ્થિર constexpr તાર્કિક is_random_access_iterator = સાચું;
+  સ્થિર constexpr તાર્કિક has_fast_len = સાચું;
+  Type& __item__ () અચલ
   {
-    if (unlikely (!length)) return CrapOrNull (Type);
-    return *arrayZ;
+    જો (unlikely (!length)) પાછા CrapOrNull (Type);
+    પાછા *arrayZ;
   }
-  Type& __item_at__ (unsigned i) const
+  Type& __item_at__ (unsigned i) અચલ
   {
-    if (unlikely (i >= length)) return CrapOrNull (Type);
-    return arrayZ[i];
+    જો (unlikely (i >= length)) પાછા CrapOrNull (Type);
+    પાછા arrayZ[i];
   }
-  void __next__ ()
+  શૂન્ય __next__ ()
   {
-    if (unlikely (!length))
-      return;
+    જો (unlikely (!length))
+      પાછા;
     length--;
     backwards_length++;
     arrayZ++;
   }
-  void __forward__ (unsigned n)
+  શૂન્ય __forward__ (unsigned n)
   {
-    if (unlikely (n > length))
+    જો (unlikely (n > length))
       n = length;
     length -= n;
     backwards_length += n;
     arrayZ += n;
   }
-  void __prev__ ()
+  શૂન્ય __prev__ ()
   {
-    if (unlikely (!backwards_length))
-      return;
+    જો (unlikely (!backwards_length))
+      પાછા;
     length++;
     backwards_length--;
     arrayZ--;
   }
-  void __rewind__ (unsigned n)
+  શૂન્ય __rewind__ (unsigned n)
   {
-    if (unlikely (n > backwards_length))
+    જો (unlikely (n > backwards_length))
       n = backwards_length;
     length += n;
     backwards_length -= n;
     arrayZ -= n;
   }
-  unsigned __len__ () const { return length; }
+  unsigned __len__ () અચલ { પાછા length; }
   /* Ouch. The operator== compares the contents of the array.  For range-based for loops,
    * it's best if we can just compare arrayZ, though comparing contents is still fast,
    * but also would require that Type has operator==.  As such, we optimize this operator
@@ -128,33 +128,33 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    *
    * The above comment is outdated now because we implemented separate begin/end to
    * objects that were using hb_array_t for range-based loop before. */
-  bool operator != (const hb_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  તાર્કિક operator != (અચલ hb_array_t& o) અચલ
+  { પાછા આ->arrayZ != o.arrayZ || આ->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () અચલ { પાછા arrayZ; }
+  Type *end () અચલ { પાછા arrayZ + length; }
 
 
   /* Extra operators.
    */
-  Type * operator & () const { return arrayZ; }
-  operator hb_array_t<const Type> () { return hb_array_t<const Type> (arrayZ, length); }
-  template <typename T> operator T * () const { return arrayZ; }
+  Type * operator & () અચલ { પાછા arrayZ; }
+  operator hb_array_t<અચલ Type> () { પાછા hb_array_t<અચલ Type> (arrayZ, length); }
+  template <typename T> operator T * () અચલ { પાછા arrayZ; }
 
-  HB_INTERNAL bool operator == (const hb_array_t &o) const;
+  HB_INTERNAL તાર્કિક operator == (અચલ hb_array_t &o) અચલ;
 
-  uint32_t hash () const
+  uint32_t hash () અચલ
   {
     // FNV-1a hash function
     // https://github.com/harfbuzz/harfbuzz/pull/4228
     uint32_t current = /*cbf29ce4*/0x84222325;
-    for (auto &v : *this)
+    માટે (auto &v : *આ)
     {
       current = current ^ hb_hash (v);
       current = current * 16777619;
     }
-    return current;
+    પાછા current;
   }
 
   /*
@@ -162,68 +162,68 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    */
 
   /* Note: our compare is NOT lexicographic; it also does NOT call Type::cmp. */
-  int cmp (const hb_array_t &a) const
+  પૂર્ણાંક cmp (અચલ hb_array_t &a) અચલ
   {
-    if (length != a.length)
-      return (int) a.length - (int) length;
-    return hb_memcmp (a.arrayZ, arrayZ, get_size ());
+    જો (length != a.length)
+      પાછા (પૂર્ણાંક) a.length - (પૂર્ણાંક) length;
+    પાછા hb_memcmp (a.arrayZ, arrayZ, get_size ());
   }
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL સ્થિર પૂર્ણાંક cmp (અચલ શૂન્ય *pa, અચલ શૂન્ય *pb)
   {
     hb_array_t *a = (hb_array_t *) pa;
     hb_array_t *b = (hb_array_t *) pb;
-    return b->cmp (*a);
+    પાછા b->cmp (*a);
   }
 
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
+  Type *lsearch (અચલ T &x, Type *not_found = nullptr)
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    પાછા lfind (x, &i) ? &આ->arrayZ[i] : not_found;
   }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
+  અચલ Type *lsearch (અચલ T &x, અચલ Type *not_found = nullptr) અચલ
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    પાછા lfind (x, &i) ? &આ->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr,
+  તાર્કિક lfind (અચલ T &x, unsigned *pos = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned પૂર્ણાંક to_store = (unsigned પૂર્ણાંક) -1) અચલ
   {
-    for (unsigned i = 0; i < length; ++i)
-      if (hb_equal (x, this->arrayZ[i]))
+    માટે (unsigned i = 0; i < length; ++i)
+      જો (hb_equal (x, આ->arrayZ[i]))
       {
-	if (pos)
+	જો (pos)
 	  *pos = i;
-	return true;
+	પાછા સાચું;
       }
 
-    if (pos)
+    જો (pos)
     {
-      switch (not_found)
+      પસંદગી (not_found)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	સ્થિતિ HB_NOT_FOUND_DONT_STORE:
+	  તોડો;
 
-	case HB_NOT_FOUND_STORE:
+	સ્થિતિ HB_NOT_FOUND_STORE:
 	  *pos = to_store;
-	  break;
+	  તોડો;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	સ્થિતિ HB_NOT_FOUND_STORE_CLOSEST:
 	  *pos = length;
-	  break;
+	  તોડો;
       }
     }
-    return false;
+    પાછા ખોટું;
   }
 
-  hb_sorted_array_t<Type> qsort (int (*cmp)(const void*, const void*))
+  hb_sorted_array_t<Type> qsort (પૂર્ણાંક (*cmp)(અચલ શૂન્ય*, અચલ શૂન્ય*))
   {
-    if (likely (length))
-      hb_qsort (arrayZ, length, this->get_item_size (), cmp);
-    return hb_sorted_array_t<Type> (*this);
+    જો (likely (length))
+      hb_qsort (arrayZ, length, આ->get_item_size (), cmp);
+    પાછા hb_sorted_array_t<Type> (*આ);
   }
 
   /* Comparator follows the C qsort convention: returns
@@ -231,277 +231,277 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   template <typename Compar>
   hb_sorted_array_t<Type> qsort (Compar compar)
   {
-    if (likely (length))
+    જો (likely (length))
       hb_qsort_inline (arrayZ, length, compar);
-    return hb_sorted_array_t<Type> (*this);
+    પાછા hb_sorted_array_t<Type> (*આ);
   }
 
-  private:
+  ખાનગી:
   template <typename T = Type,
 	    hb_enable_if (std::is_move_assignable<T>::value)>
   hb_sorted_array_t<Type> _qsort (hb_priority<1>)
   {
-    return qsort ([] (const Type &a, const Type &b) { return Type::cmp (&a, &b); });
+    પાછા qsort ([] (અચલ Type &a, અચલ Type &b) { પાછા Type::cmp (&a, &b); });
   }
   hb_sorted_array_t<Type> _qsort (hb_priority<0>)
   {
-    return qsort ((int(*)(const void*, const void*)) Type::cmp);
+    પાછા qsort ((પૂર્ણાંક(*)(અચલ શૂન્ય*, અચલ શૂન્ય*)) Type::cmp);
   }
-  public:
+  જાહેર:
 
   hb_sorted_array_t<Type> qsort ()
   {
-    return _qsort (hb_prioritize);
+    પાછા _qsort (hb_prioritize);
   }
 
   /*
    * Other methods.
    */
 
-  size_t get_size () const { return length * this->get_item_size (); }
+  size_t get_size () અચલ { પાછા length * આ->get_item_size (); }
 
   /*
    * Reverse the order of items in this array in the range [start, end).
    */
-  void reverse (unsigned start = 0, unsigned end = -1)
+  શૂન્ય reverse (unsigned start = 0, unsigned end = -1)
   {
     start = hb_min (start, length);
     end = hb_min (end, length);
 
-    if (end < start + 2)
-      return;
+    જો (end < start + 2)
+      પાછા;
 
     unsigned stop = start + (end - start) / 2;
-    for (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
+    માટે (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
       hb_swap (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (unsigned પૂર્ણાંક start_offset = 0, unsigned પૂર્ણાંક *seg_ગણતરી = nullptr /* IN/OUT */) અચલ
   {
-    if (!start_offset && !seg_count)
-      return *this;
+    જો (!start_offset && !seg_ગણતરી)
+      પાછા *આ;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
-      count = 0;
-    else
-      count -= start_offset;
-    if (seg_count)
-      count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+    unsigned પૂર્ણાંક ગણતરી = length;
+    જો (unlikely (start_offset > ગણતરી))
+      ગણતરી = 0;
+    નહીંતર
+      ગણતરી -= start_offset;
+    જો (seg_ગણતરી)
+      ગણતરી = *seg_ગણતરી = hb_min (ગણતરી, *seg_ગણતરી);
+    પાછા hb_array_t (arrayZ + start_offset, ગણતરી);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (unsigned પૂર્ણાંક start_offset, unsigned પૂર્ણાંક seg_ગણતરી) અચલ
+  { પાછા sub_array (start_offset, &seg_ગણતરી); }
 
-  hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_array_t truncate (unsigned length) અચલ { પાછા sub_array (0, length); }
 
   template <typename T,
-	    unsigned P = sizeof (Type),
+	    unsigned P = કદ (Type),
 	    hb_enable_if (P == 1)>
-  const T *as () const
-  { return length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
+  અચલ T *as () અચલ
+  { પાછા length < hb_min_size (T) ? &Null (T) : reinterpret_cast<અચલ T *> (arrayZ); }
 
   template <typename T,
-	    unsigned P = sizeof (Type),
+	    unsigned P = કદ (Type),
 	    hb_enable_if (P == 1)>
-  bool check_range (const T *p, unsigned int size = T::static_size) const
+  તાર્કિક check_range (અચલ T *p, unsigned પૂર્ણાંક size = T::static_size) અચલ
   {
-    return arrayZ <= ((const char *) p)
-	&& ((const char *) p) <= arrayZ + length
-	&& (unsigned int) (arrayZ + length - (const char *) p) >= size;
+    પાછા arrayZ <= ((અચલ અક્ષર *) p)
+	&& ((અચલ અક્ષર *) p) <= arrayZ + length
+	&& (unsigned પૂર્ણાંક) (arrayZ + length - (અચલ અક્ષર *) p) >= size;
   }
 
-  template <unsigned P = sizeof (Type),
+  template <unsigned P = કદ (Type),
 	    hb_enable_if (P == 1)>
-  bool check_end (const void *p) const
+  તાર્કિક check_end (અચલ શૂન્ય *p) અચલ
   {
-    return (uintptr_t) (((const char *) p) - arrayZ) <= length;
+    પાછા (uintptr_t) (((અચલ અક્ષર *) p) - arrayZ) <= length;
   }
 
   /* Only call if you allocated the underlying array using hb_malloc() or similar. */
-  void fini ()
-  { hb_free ((void *) arrayZ); arrayZ = nullptr; length = 0; }
+  શૂન્ય fini ()
+  { hb_free ((શૂન્ય *) arrayZ); arrayZ = nullptr; length = 0; }
 
   template <typename hb_serialize_context_t,
 	    typename U = Type,
-	    hb_enable_if (!(sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+	    hb_enable_if (!(કદ (U) < કદ (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
+  hb_array_t copy (hb_serialize_context_t *c) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    for (unsigned i = 0; i < length; i++)
+    જો (unlikely (!c->extend_size (out, get_size (), ખોટું))) return_trace (hb_array_t ());
+    માટે (unsigned i = 0; i < length; i++)
       out[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_serialize_context_t,
 	    typename U = Type,
-	    hb_enable_if (sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+	    hb_enable_if (કદ (U) < કદ (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
+  hb_array_t copy (hb_serialize_context_t *c) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
+    જો (unlikely (!c->extend_size (out, get_size (), ખોટું))) return_trace (hb_array_t ());
     hb_memcpy (out, arrayZ, get_size ());
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_sanitize_context_t>
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return c->check_array (arrayZ, length); }
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
+  { પાછા c->check_array (arrayZ, length); }
 
   /*
    * Members
    */
 
-  public:
+  જાહેર:
   Type *arrayZ = nullptr;
-  unsigned int length = 0;
-  unsigned int backwards_length = 0;
+  unsigned પૂર્ણાંક length = 0;
+  unsigned પૂર્ણાંક backwards_length = 0;
 };
-template <typename T> inline hb_array_t<T>
+template <typename T> અંતઃરેખ hb_array_t<T>
 hb_array ()
-{ return hb_array_t<T> (); }
-template <typename T> inline hb_array_t<T>
-hb_array (T *array, unsigned int length)
-{ return hb_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_array_t<T>
+{ પાછા hb_array_t<T> (); }
+template <typename T> અંતઃરેખ hb_array_t<T>
+hb_array (T *array, unsigned પૂર્ણાંક length)
+{ પાછા hb_array_t<T> (array, length); }
+template <typename T, unsigned પૂર્ણાંક length_> અંતઃરેખ hb_array_t<T>
 hb_array (T (&array_)[length_])
-{ return hb_array_t<T> (array_); }
+{ પાછા hb_array_t<T> (array_); }
 
 template <typename Type>
-struct hb_sorted_array_t :
+સંરચના hb_sorted_array_t :
 	hb_array_t<Type>,
 	hb_iter_t<hb_sorted_array_t<Type>, Type&>
 {
-  typedef hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
+  પ્રકારવ્યાખ્યા hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
   HB_ITER_USING (iter_base_t);
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  static constexpr bool has_fast_len = true;
+  સ્થિર constexpr તાર્કિક is_random_access_iterator = સાચું;
+  સ્થિર constexpr તાર્કિક is_sorted_iterator = સાચું;
+  સ્થિર constexpr તાર્કિક has_fast_len = સાચું;
 
-  hb_sorted_array_t () = default;
-  hb_sorted_array_t (const hb_sorted_array_t&) = default;
-  ~hb_sorted_array_t () = default;
-  hb_sorted_array_t& operator= (const hb_sorted_array_t&) = default;
-  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = default;
+  hb_sorted_array_t () = મૂળભૂત;
+  hb_sorted_array_t (અચલ hb_sorted_array_t&) = મૂળભૂત;
+  ~hb_sorted_array_t () = મૂળભૂત;
+  hb_sorted_array_t& operator= (અચલ hb_sorted_array_t&) = મૂળભૂત;
+  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = મૂળભૂત;
 
-  constexpr hb_sorted_array_t (Type *array_, unsigned int length_) : hb_array_t<Type> (array_, length_) {}
-  template <unsigned int length_>
+  constexpr hb_sorted_array_t (Type *array_, unsigned પૂર્ણાંક length_) : hb_array_t<Type> (array_, length_) {}
+  template <unsigned પૂર્ણાંક length_>
   constexpr hb_sorted_array_t (Type (&array_)[length_]) : hb_array_t<Type> (array_) {}
 
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_sorted_array_t (const hb_array_t<U> &o) :
+  constexpr hb_sorted_array_t (અચલ hb_array_t<U> &o) :
     hb_array_t<Type> (o),
     hb_iter_t<hb_sorted_array_t, Type&> () {}
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_sorted_array_t& operator = (const hb_array_t<U> &o)
-  { hb_array_t<Type> (*this) = o; return *this; }
+  hb_sorted_array_t& operator = (અચલ hb_array_t<U> &o)
+  { hb_array_t<Type> (*આ) = o; પાછા *આ; }
 
   /* Iterator implementation. */
 
   /* See comment in hb_array_of::operator != */
-  bool operator != (const hb_sorted_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  તાર્કિક operator != (અચલ hb_sorted_array_t& o) અચલ
+  { પાછા આ->arrayZ != o.arrayZ || આ->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return this->arrayZ; }
-  Type *end () const { return this->arrayZ + this->length; }
+  Type *begin () અચલ { પાછા આ->arrayZ; }
+  Type *end () અચલ { પાછા આ->arrayZ + આ->length; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (unsigned પૂર્ણાંક start_offset, unsigned પૂર્ણાંક *seg_ગણતરી /* IN/OUT */) અચલ
+  { પાછા hb_sorted_array_t (((અચલ hb_array_t<Type> *) (આ))->sub_array (start_offset, seg_ગણતરી)); }
+  hb_sorted_array_t sub_array (unsigned પૂર્ણાંક start_offset, unsigned પૂર્ણાંક seg_ગણતરી) અચલ
+  { પાછા sub_array (start_offset, &seg_ગણતરી); }
 
-  hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_sorted_array_t truncate (unsigned length) અચલ { પાછા sub_array (0, length); }
 
   template <typename T>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
+  Type *bsearch (અચલ T &x, Type *not_found = nullptr)
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned પૂર્ણાંક i;
+    પાછા bfind (x, &i) ? &આ->arrayZ[i] : not_found;
   }
   template <typename T>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
+  અચલ Type *bsearch (અચલ T &x, અચલ Type *not_found = nullptr) અચલ
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned પૂર્ણાંક i;
+    પાછા bfind (x, &i) ? &આ->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  તાર્કિક bfind (અચલ T &x, unsigned પૂર્ણાંક *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned પૂર્ણાંક to_store = (unsigned પૂર્ણાંક) -1) અચલ
   {
     unsigned pos;
 
-    if (bsearch_impl (x, &pos))
+    જો (bsearch_impl (x, &pos))
     {
-      if (i)
+      જો (i)
 	*i = pos;
-      return true;
+      પાછા સાચું;
     }
 
-    if (i)
+    જો (i)
     {
-      switch (not_found)
+      પસંદગી (not_found)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	સ્થિતિ HB_NOT_FOUND_DONT_STORE:
+	  તોડો;
 
-	case HB_NOT_FOUND_STORE:
+	સ્થિતિ HB_NOT_FOUND_STORE:
 	  *i = to_store;
-	  break;
+	  તોડો;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	સ્થિતિ HB_NOT_FOUND_STORE_CLOSEST:
 	  *i = pos;
-	  break;
+	  તોડો;
       }
     }
-    return false;
+    પાછા ખોટું;
   }
   template <typename T, typename ...Ts>
-  bool bsearch_impl (const T &x, unsigned *pos, Ts... ds) const
+  તાર્કિક bsearch_impl (અચલ T &x, unsigned *pos, Ts... ds) અચલ
   {
-    return hb_bsearch_impl (pos,
+    પાછા hb_bsearch_impl (pos,
 			    x,
-			    this->arrayZ,
-			    this->length,
-			    sizeof (Type),
+			    આ->arrayZ,
+			    આ->length,
+			    કદ (Type),
 			    _hb_cmp_method<T, Type, Ts...>,
 			    std::forward<Ts> (ds)...);
   }
 };
-template <typename T> inline hb_sorted_array_t<T>
-hb_sorted_array (T *array, unsigned int length)
-{ return hb_sorted_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_sorted_array_t<T>
+template <typename T> અંતઃરેખ hb_sorted_array_t<T>
+hb_sorted_array (T *array, unsigned પૂર્ણાંક length)
+{ પાછા hb_sorted_array_t<T> (array, length); }
+template <typename T, unsigned પૂર્ણાંક length_> અંતઃરેખ hb_sorted_array_t<T>
 hb_sorted_array (T (&array_)[length_])
-{ return hb_sorted_array_t<T> (array_); }
+{ પાછા hb_sorted_array_t<T> (array_); }
 
 template <typename T>
-inline bool hb_array_t<T>::operator == (const hb_array_t<T> &o) const
+અંતઃરેખ તાર્કિક hb_array_t<T>::operator == (અચલ hb_array_t<T> &o) અચલ
 {
-  if (o.length != this->length) return false;
-  for (unsigned int i = 0; i < this->length; i++) {
-    if (this->arrayZ[i] != o.arrayZ[i]) return false;
+  જો (o.length != આ->length) પાછા ખોટું;
+  માટે (unsigned પૂર્ણાંક i = 0; i < આ->length; i++) {
+    જો (આ->arrayZ[i] != o.arrayZ[i]) પાછા ખોટું;
   }
-  return true;
+  પાછા સાચું;
 }
 template <>
-inline bool hb_array_t<const char>::operator == (const hb_array_t<const char> &o) const
+અંતઃરેખ તાર્કિક hb_array_t<અચલ અક્ષર>::operator == (અચલ hb_array_t<અચલ અક્ષર> &o) અચલ
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  જો (o.length != આ->length) પાછા ખોટું;
+  પાછા 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 template <>
-inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const unsigned char> &o) const
+અંતઃરેખ તાર્કિક hb_array_t<અચલ unsigned અક્ષર>::operator == (અચલ hb_array_t<અચલ unsigned અક્ષર> &o) અચલ
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  જો (o.length != આ->length) પાછા ખોટું;
+  પાછા 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 
 
@@ -509,23 +509,23 @@ inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const
 
 #ifndef HB_OPTIMIZE_SIZE_MORE
 template <>
-inline uint32_t hb_array_t<const char>::hash () const
+અંતઃરેખ uint32_t hb_array_t<અચલ અક્ષર>::hash () અચલ
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  પાછા fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 
 template <>
-inline uint32_t hb_array_t<const unsigned char>::hash () const
+અંતઃરેખ uint32_t hb_array_t<અચલ unsigned અક્ષર>::hash () અચલ
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  પાછા fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 #endif
 
 
-typedef hb_array_t<const char> hb_bytes_t;
-typedef hb_array_t<const unsigned char> hb_ubytes_t;
+પ્રકારવ્યાખ્યા hb_array_t<અચલ અક્ષર> hb_bytes_t;
+પ્રકારવ્યાખ્યા hb_array_t<અચલ unsigned અક્ષર> hb_ubytes_t;
 
 
 

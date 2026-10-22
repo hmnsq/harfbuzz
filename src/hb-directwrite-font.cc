@@ -24,68 +24,68 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
 #ifdef HAVE_DIRECTWRITE
 
-#include "hb-directwrite.h"
+#અન્તર્ભાવ "hb-directwrite.h"
 
-#include <d2d1.h>
+#અન્તર્ભાવ <d2d1.h>
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#અન્તર્ભાવ "hb-draw.hh"
+#અન્તર્ભાવ "hb-font.hh"
+#અન્તર્ભાવ "hb-machinery.hh"
 
 #define MAX_GLYPHS 256u
 
-static hb_position_t
+સ્થિર hb_position_t
 hb_directwrite_scale_x (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_x ((int16_t) value);
-  return font->em_scalef_x ((float) value);
+  જો (value >= INT16_MIN && value <= INT16_MAX)
+    પાછા font->em_scale_x ((int16_t) value);
+  પાછા font->em_scalef_x ((દશાંશ) value);
 }
 
-static hb_position_t
+સ્થિર hb_position_t
 hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_y ((int16_t) value);
-  return font->em_scalef_y ((float) value);
+  જો (value >= INT16_MIN && value <= INT16_MAX)
+    પાછા font->em_scale_y ((int16_t) value);
+  પાછા font->em_scalef_y ((દશાંશ) value);
 }
 
-static unsigned int
+સ્થિર unsigned પૂર્ણાંક
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
-				   void *font_data HB_UNUSED,
-				   unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+				   શૂન્ય *font_data HB_UNUSED,
+				   unsigned પૂર્ણાંક ગણતરી,
+				   અચલ hb_codepoint_t *first_unicode,
+				   unsigned પૂર્ણાંક unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride,
-				   void *user_data HB_UNUSED)
+				   unsigned પૂર્ણાંક glyph_stride,
+				   શૂન્ય *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
-  for (unsigned i = 0; i < count;)
+  માટે (unsigned i = 0; i < ગણતરી;)
   {
     UINT32 unicodes[MAX_GLYPHS];
     UINT16 gids[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, ગણતરી - i);
 
-    for (unsigned j = 0; j < n; j++)
+    માટે (unsigned j = 0; j < n; j++)
     {
       unicodes[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      first_unicode = &StructAtOffset<અચલ hb_codepoint_t> (first_unicode, unicode_stride);
     }
 
-    if (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
-      return i;
+    જો (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
+      પાછા i;
 
-    for (unsigned j = 0; j < n; j++)
+    માટે (unsigned j = 0; j < n; j++)
     {
-      if (!gids[j])
-        return i + j;
+      જો (!gids[j])
+        પાછા i + j;
       *first_glyph = gids[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
@@ -93,63 +93,63 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
     i += n;
   }
 
-  return count;
+  પાછા ગણતરી;
 }
 
-static hb_bool_t
+સ્થિર hb_bool_t
 hb_directwrite_get_font_h_extents (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   શૂન્ય *font_data HB_UNUSED,
 				   hb_font_extents_t *metrics,
-				   void *user_data HB_UNUSED)
+				   શૂન્ય *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
   DWRITE_FONT_METRICS dw_metrics;
   dw_face->GetMetrics (&dw_metrics);
 
   metrics->ascender = hb_directwrite_scale_y (font, dw_metrics.ascent);
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
-  metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
+  metrics->લીટી_gap = hb_directwrite_scale_y (font, dw_metrics.લીટી_Gap);
 
-  return true;
+  પાછા સાચું;
 }
 
-static void
+સ્થિર શૂન્ય
 hb_directwrite_get_glyph_h_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
+				     શૂન્ય* font_data HB_UNUSED,
+				     unsigned ગણતરી,
+				     અચલ hb_codepoint_t *first_glyph,
 				     unsigned glyph_stride,
 				     hb_position_t *first_advance,
 				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     શૂન્ય *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
   IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (શૂન્ય**)&dw_face1);
+  પ્રતિજ્ઞા (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  unsigned પૂર્ણાંક અંક_glyphs = font->face->get_અંક_glyphs ();
 
-  for (unsigned i = 0; i < count;)
+  માટે (unsigned i = 0; i < ગણતરી;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, ગણતરી - i);
 
-    for (unsigned j = 0; j < n; j++)
+    માટે (unsigned j = 0; j < n; j++)
     {
       gids[j] = *first_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      first_glyph = &StructAtOffset<અચલ hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, false);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, ખોટું);
+    માટે (unsigned j = 0; j < n; j++)
     {
       // https://github.com/harfbuzz/harfbuzz/issues/5319
-      auto advance = gids[j] < num_glyphs ? advances[j] : 0;
+      auto advance = gids[j] < અંક_glyphs ? advances[j] : 0;
       *first_advance = hb_directwrite_scale_x (font, advance);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
@@ -160,37 +160,37 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
 
 #ifndef HB_NO_VERTICAL
 
-static void
+સ્થિર શૂન્ય
 hb_directwrite_get_glyph_v_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
+				     શૂન્ય* font_data HB_UNUSED,
+				     unsigned ગણતરી,
+				     અચલ hb_codepoint_t *first_glyph,
 				     unsigned glyph_stride,
 				     hb_position_t *first_advance,
 				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     શૂન્ય *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
   IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (શૂન્ય**)&dw_face1);
+  પ્રતિજ્ઞા (dw_face1);
 
-  for (unsigned i = 0; i < count;)
+  માટે (unsigned i = 0; i < ગણતરી;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, ગણતરી - i);
 
-    for (unsigned j = 0; j < n; j++)
+    માટે (unsigned j = 0; j < n; j++)
     {
       gids[j] = *first_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      first_glyph = &StructAtOffset<અચલ hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, true);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, સાચું);
+    માટે (unsigned j = 0; j < n; j++)
     {
       *first_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
@@ -200,131 +200,131 @@ hb_directwrite_get_glyph_v_advances (hb_font_t* font,
   }
 }
 
-static hb_bool_t
+સ્થિર hb_bool_t
 hb_directwrite_get_glyph_v_origin (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   શૂન્ય *font_data HB_UNUSED,
 				   hb_codepoint_t glyph,
 				   hb_position_t *x,
 				   hb_position_t *y,
-				   void *user_data HB_UNUSED)
+				   શૂન્ય *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  જો (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    પાછા ખોટું;
 
   *x = hb_directwrite_scale_x (font, metrics.advanceWidth / 2);
   *y = hb_directwrite_scale_y (font, metrics.verticalOriginY); // Untested
 
-  return true;
+  પાછા સાચું;
 }
 #endif
 
-static hb_bool_t
+સ્થિર hb_bool_t
 hb_directwrite_get_glyph_extents (hb_font_t *font,
-				  void *font_data HB_UNUSED,
+				  શૂન્ય *font_data HB_UNUSED,
 				  hb_codepoint_t glyph,
 				  hb_glyph_extents_t *extents,
-				  void *user_data HB_UNUSED)
+				  શૂન્ય *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  જો (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    પાછા ખોટું;
 
-  int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
-  int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
+  int64_t જમણું = (int64_t) metrics.advanceWidth - metrics.જમણું_Side_Bearing;
+  int64_t ટોચ_2 = (int64_t) metrics.verticalOriginY - metrics.ટોચ_Side_Bearing;
   int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advanceHeight + metrics.bottomSideBearing;
 
-  extents->x_bearing = hb_directwrite_scale_x (font, metrics.leftSideBearing);
-  extents->y_bearing = hb_directwrite_scale_y (font, top);
-  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, right), extents->x_bearing);
+  extents->x_bearing = hb_directwrite_scale_x (font, metrics.ડાબું_Side_Bearing);
+  extents->y_bearing = hb_directwrite_scale_y (font, ટોચ_2);
+  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, જમણું), extents->x_bearing);
   extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
-  return true;
+  પાછા સાચું;
 }
 
 
 #ifndef HB_NO_DRAW
 
-class GeometrySink : public IDWriteGeometrySink
+વર્ગ GeometrySink : જાહેર IDWriteGeometrySink
 {
   hb_font_t *font;
   hb_draw_session_t drawing;
 
-public:
+જાહેર:
   GeometrySink(hb_font_t *font,
 	       hb_draw_funcs_t *draw_funcs,
-	       void *draw_data)
+	       શૂન્ય *draw_data)
     : font (font), drawing ({draw_funcs, draw_data}) {}
 
-  HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
-  void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
-  void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
+  HRESULT STDMETHODCALLTYPE Close() override { પાછા S_OK; }
+  શૂન્ય STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
+  શૂન્ય STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
 
-  IFACEMETHOD(QueryInterface)(REFIID, void **) override { return E_NOINTERFACE; }
-  IFACEMETHOD_(ULONG, AddRef)() override { return 1; }
-  IFACEMETHOD_(ULONG, Release)() override { return 1; }
+  IFACEMETHOD(QueryInterface)(REFIID, શૂન્ય **) override { પાછા E_NOINTERFACE; }
+  IFACEMETHOD_(ULONG, AddRef)() override { પાછા 1; }
+  IFACEMETHOD_(ULONG, Release)() override { પાછા 1; }
 
-  void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
+  શૂન્ય STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
   {
-    drawing.move_to (font->em_scalef_x (startPoint.x), -(float) font->em_scalef_y (startPoint.y));
+    drawing.move_to (font->em_scalef_x (startPoint.x), -(દશાંશ) font->em_scalef_y (startPoint.y));
   }
 
-  void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziersCount) override
+  શૂન્ય STDMETHODCALLTYPE AddBeziers(અચલ D2D1_BEZIER_SEGMENT *beziers, UINT beziers_ગણતરી) override
   {
-    for (unsigned i = 0; i < beziersCount; ++i)
-      drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(float) font->em_scalef_y (beziers[i].point1.y),
-			font->em_scalef_x (beziers[i].point2.x), -(float) font->em_scalef_y (beziers[i].point2.y),
-			font->em_scalef_x (beziers[i].point3.x), -(float) font->em_scalef_y (beziers[i].point3.y));
+    માટે (unsigned i = 0; i < beziers_ગણતરી; ++i)
+      drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(દશાંશ) font->em_scalef_y (beziers[i].point1.y),
+			font->em_scalef_x (beziers[i].point2.x), -(દશાંશ) font->em_scalef_y (beziers[i].point2.y),
+			font->em_scalef_x (beziers[i].point3.x), -(દશાંશ) font->em_scalef_y (beziers[i].point3.y));
   }
 
-  void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F *points, UINT pointsCount) override
+  શૂન્ય STDMETHODCALLTYPE Add_લીટીઓ(અચલ D2D1_POINT_2F *points, UINT points_ગણતરી) override
   {
-    for (unsigned i = 0; i < pointsCount; ++i)
-      drawing.line_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
+    માટે (unsigned i = 0; i < points_ગણતરી; ++i)
+      drawing.લીટી_to (font->em_scalef_x (points[i].x), -(દશાંશ) font->em_scalef_y (points[i].y));
   }
 
-  void STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
+  શૂન્ય STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
   {
     drawing.close_path ();
   }
 };
 
-static hb_bool_t
+સ્થિર hb_bool_t
 hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   શૂન્ય *font_data HB_UNUSED,
 				   hb_codepoint_t glyph,
-				   hb_draw_funcs_t *draw_funcs, void *draw_data,
-				   void *user_data)
+				   hb_draw_funcs_t *draw_funcs, શૂન્ય *draw_data,
+				   શૂન્ય *user_data)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
 
   GeometrySink sink (font, draw_funcs, draw_data);
   UINT16 gid = static_cast<UINT16>(glyph);
   unsigned upem = font->face->get_upem();
 
-  return S_OK == dw_face->GetGlyphRunOutline (upem,
+  પાછા S_OK == dw_face->GetGlyphRunOutline (upem,
 					      &gid, nullptr, nullptr,
 					      1,
-					      false, false,
+					      ખોટું, ખોટું,
 					      &sink);
 }
 
 #endif
 
-static inline void free_static_directwrite_funcs ();
+સ્થિર અંતઃરેખ શૂન્ય free_static_directwrite_funcs ();
 
-static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
+સ્થિર સંરચના hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  સ્થિર hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
@@ -354,20 +354,20 @@ static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loade
 
     hb_atexit (free_static_directwrite_funcs);
 
-    return funcs;
+    પાછા funcs;
   }
 } static_directwrite_funcs;
 
-static inline
-void free_static_directwrite_funcs ()
+સ્થિર અંતઃરેખ
+શૂન્ય free_static_directwrite_funcs ()
 {
   static_directwrite_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+સ્થિર hb_font_funcs_t *
 _hb_directwrite_get_font_funcs ()
 {
-  return static_directwrite_funcs.get_unconst ();
+  પાછા static_directwrite_funcs.get_unconst ();
 }
 
 /**
@@ -388,16 +388,16 @@ _hb_directwrite_get_font_funcs ()
  *
  * Since: 11.0.0
  **/
-void
+શૂન્ય
 hb_directwrite_font_set_funcs (hb_font_t *font)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  if (unlikely (!dw_face))
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (અચલ શૂન્ય *) font->data.directwrite;
+  જો (unlikely (!dw_face))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    પાછા;
   }
 
   dw_face->AddRef ();

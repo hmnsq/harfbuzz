@@ -2,25 +2,25 @@
 #define OT_GLYF_GLYPHHEADER_HH
 
 
-#include "../../hb-open-type.hh"
+#અન્તર્ભાવ "../../hb-open-type.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+નામાકાશ OT {
+નામાકાશ glyf_impl {
 
 
-struct GlyphHeader
+સંરચના GlyphHeader
 {
-  bool has_data () const { return numberOfContours; }
+  તાર્કિક has_data () અચલ { પાછા સંખ્યા_Of_Contours; }
 
   template <typename accelerator_t>
-  bool get_extents_without_var_scaled (hb_font_t *font, const accelerator_t &glyf_accelerator,
-				       hb_codepoint_t gid, hb_glyph_extents_t *extents) const
+  તાર્કિક get_extents_without_var_scaled (hb_font_t *font, અચલ accelerator_t &glyf_accelerator,
+				       hb_codepoint_t gid, hb_glyph_extents_t *extents) અચલ
   {
     /* Undocumented rasterizer behavior: shift glyph to the left by (lsb - xMin), i.e., xMin = lsb */
     /* extents->x_bearing = hb_min (glyph_header.xMin, glyph_header.xMax); */
-    int lsb = hb_min (xMin, xMax);
-    (void) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
+    પૂર્ણાંક lsb = hb_min (xMin, xMax);
+    (શૂન્ય) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
     extents->x_bearing = lsb;
     extents->y_bearing = hb_max (yMin, yMax);
     extents->width     = hb_max (xMin, xMax) - hb_min (xMin, xMax);
@@ -28,10 +28,10 @@ struct GlyphHeader
 
     font->scale_glyph_extents (extents);
 
-    return true;
+    પાછા સાચું;
   }
 
-  HBINT16	numberOfContours;
+  HBINT16	સંખ્યા_Of_Contours;
 		    /* If the number of contours is
 		     * greater than or equal to zero,
 		     * this is a simple glyph; if negative,
@@ -40,7 +40,7 @@ struct GlyphHeader
   FWORD	yMin;	/* Minimum y for coordinate data. */
   FWORD	xMax;	/* Maximum x for coordinate data. */
   FWORD	yMax;	/* Maximum y for coordinate data. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (10);
 };
 

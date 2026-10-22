@@ -1,35 +1,35 @@
 #ifndef OT_LAYOUT_GPOS_MARKLIGPOS_HH
 #define OT_LAYOUT_GPOS_MARKLIGPOS_HH
 
-#include "MarkLigPosFormat1.hh"
+#અન્તર્ભાવ "MarkLigPosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+નામાકાશ OT {
+નામાકાશ Layout {
+નામાકાશ GPOS_impl {
 
-struct MarkLigPos
+સંરચના MarkLigPos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  સુરક્ષિત:
+  સંઘ {
+  સંરચના { HBUINT16 v; }		format;         /* Format identifier */
   MarkLigPosFormat1_2<SmallTypes>	format1;
 #ifndef HB_NO_BEYOND_64K
   MarkLigPosFormat1_2<MediumTypes>	format2;
 #endif
   } u;
 
-  public:
+  જાહેર:
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) અચલ
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    જો (unlikely (!c->may_dispatch (આ, &u.format.v))) પાછા c->no_dispatch_return_કિંમત ();
+    TRACE_DISPATCH (આ, u.format.v);
+    પસંદગી (u.format.v) {
+    સ્થિતિ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    સ્થિતિ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    મૂળભૂત:return_trace (c->default_return_કિંમત ());
     }
   }
 };

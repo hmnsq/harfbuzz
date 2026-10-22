@@ -24,17 +24,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-ot.h"
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+પૂર્ણાંક
+મુખ્ય (પૂર્ણાંક argc, અક્ષર **argv)
 {
-  if (argc != 2) {
+  જો (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -45,19 +45,19 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned પૂર્ણાંક ગણતરી = 0;
 
 #ifndef HB_NO_NAME
-  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
+  અચલ hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &ગણતરી);
 
-  for (unsigned int i = 0; i < count; i++)
+  માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
   {
     printf ("%u	%s	",
 	    entries[i].name_id,
 	    hb_language_to_string (entries[i].language));
 
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
+    અક્ષર buf[64];
+    unsigned પૂર્ણાંક buf_size = કદ (buf);
     hb_ot_name_get_utf8 (face,
 			 entries[i].name_id,
 			 entries[i].language,
@@ -70,5 +70,5 @@ main (int argc, char **argv)
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  પાછા ગણતરી ? 0 : 1;
 }

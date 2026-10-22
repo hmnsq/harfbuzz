@@ -26,13 +26,13 @@
 #ifndef HB_CFF_INTERP_COMMON_HH
 #define HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+બાહ્ય HB_INTERNAL અચલ unsigned અક્ષર *endchar_str;
 
-namespace CFF {
+નામાકાશ CFF {
 
-using namespace OT;
+using નામાકાશ OT;
 
-typedef unsigned int op_code_t;
+પ્રકારવ્યાખ્યા unsigned પૂર્ણાંક op_code_t;
 
 
 /* === Dict operators === */
@@ -44,7 +44,7 @@ typedef unsigned int op_code_t;
 #define OpCode_FamilyName	  3 /* CFF Top */
 #define OpCode_Weight		  4 /* CFF Top */
 #define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
+#define Op_Code_Blue_કિંમતો	  6 /* CFF Private, CFF2 Private */
 #define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
 #define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
@@ -92,9 +92,9 @@ typedef unsigned int op_code_t;
 #define OpCode_ESC_Base		256
 #define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+અંતઃરેખ op_code_t Unmake_OpCode_ESC (op_code_t op)  { પાછા (op_code_t)(op - OpCode_ESC_Base); }
+અંતઃરેખ તાર્કિક Is_OpCode_ESC (op_code_t op) { પાછા op >= OpCode_ESC_Base; }
+અંતઃરેખ unsigned પૂર્ણાંક OpCode_Size (op_code_t op) { પાછા Is_OpCode_ESC (op) ? 2: 1; }
 
 #define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
 #define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
@@ -217,80 +217,80 @@ inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 
 #define OpCode_Invalid		0xFFFFu
 
 
-struct number_t
+સંરચના સંખ્યા_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  શૂન્ય set_int (પૂર્ણાંક v)       { value = v; }
+  તાર્કિક to_int (પૂર્ણાંક *v) અચલ
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    જો (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
     {
       *v = 0;
-      return false;
+      પાછા ખોટું;
     }
-    *v = (int) value;
-    return true;
+    *v = (પૂર્ણાંક) value;
+    પાછા સાચું;
   }
-  int to_int () const
+  પૂર્ણાંક to_int () અચલ
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    પૂર્ણાંક v;
+    જો (likely (to_int (&v))) પાછા v;
+    પાછા value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
   }
 
-  void set_fixed (int32_t v) { value = v / 65536.0; }
-  int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  શૂન્ય set_fixed (int32_t v) { value = v / 65536.0; }
+  int32_t to_fixed () અચલ
+  { પાછા (int32_t) hb_clamp (value * 65536.0, (દ્વિગુણ) INT32_MIN, (દ્વિગુણ) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  શૂન્ય set_real (દ્વિગુણ v)   { value = v; }
+  દ્વિગુણ to_real () અચલ    { પાછા value; }
 
-  bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  તાર્કિક in_int_range () અચલ
+  { પાછા value >= INT16_MIN && value <= INT16_MAX && (દ્વિગુણ) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  તાર્કિક operator >  (અચલ સંખ્યા_t &n) અચલ { પાછા value > n.to_real (); }
+  તાર્કિક operator <  (અચલ સંખ્યા_t &n) અચલ { પાછા n > *આ; }
+  તાર્કિક operator >= (અચલ સંખ્યા_t &n) અચલ { પાછા !(*આ < n); }
+  તાર્કિક operator <= (અચલ સંખ્યા_t &n) અચલ { પાછા !(*આ > n); }
 
-  const number_t &operator += (const number_t &n)
+  અચલ સંખ્યા_t &operator += (અચલ સંખ્યા_t &n)
   {
     set_real (to_real () + n.to_real ());
 
-    return *this;
+    પાછા *આ;
   }
 
-  protected:
-  double value = 0.;
+  સુરક્ષિત:
+  દ્વિગુણ value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+સંરચના UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 {
-  hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  hb_ubytes_t as_ubytes (unsigned l) અચલ
+  { પાછા hb_ubytes_t ((અચલ unsigned અક્ષર *) આ, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
   template <typename T, typename V>
-  static bool serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
+  સ્થિર તાર્કિક serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
 
     HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    જો (unlikely (!p)) return_trace (ખોટું);
     *p = intOp;
 
     T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
+    જો (unlikely (!ip)) return_trace (ખોટું);
     return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
   template <typename V>
-  static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  સ્થિર તાર્કિક serialize_int4 (hb_serialize_context_t *c, V value)
+  { પાછા serialize_int<HBINT32> (c, OpCode_longintdict, value); }
 
   template <typename V>
-  static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  સ્થિર તાર્કિક serialize_int2 (hb_serialize_context_t *c, V value)
+  { પાછા serialize_int<HBINT16> (c, OpCode_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
@@ -300,214 +300,214 @@ struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+સંરચના byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  byte_str_ref_t (અચલ hb_ubytes_t &str_, unsigned પૂર્ણાંક offset_ = 0)
     : str (str_) { set_offset (offset_); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  શૂન્ય reset (અચલ hb_ubytes_t &str_, unsigned પૂર્ણાંક offset_ = 0)
   {
     str = str_;
     set_offset (offset_);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  અચલ unsigned અક્ષર& operator [] (પૂર્ણાંક i) {
+    જો (unlikely ((unsigned પૂર્ણાંક) (get_offset () + i) >= str.length))
     {
       set_error ();
-      return Null (unsigned char);
+      પાછા Null (unsigned અક્ષર);
     }
-    return str.arrayZ[get_offset () + i];
+    પાછા str.arrayZ[get_offset () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  unsigned અક્ષર head_unchecked () અચલ { પાછા str.arrayZ[get_offset ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  operator hb_ubytes_t () અચલ { પાછા str.sub_array (get_offset ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (unsigned પૂર્ણાંક offset_, unsigned પૂર્ણાંક len_) અચલ
+  { પાછા str.sub_array (offset_, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  તાર્કિક avail (unsigned પૂર્ણાંક ગણતરી=1) અચલ
+  { પાછા get_offset () + ગણતરી <= str.length; }
+  શૂન્ય inc (unsigned પૂર્ણાંક ગણતરી=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    set_offset (get_offset () + ગણતરી);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
-  void set_offset (unsigned offset) { str.backwards_length = offset; }
+  unsigned get_offset () અચલ { પાછા str.backwards_length; }
+  શૂન્ય set_offset (unsigned offset) { str.backwards_length = offset; }
 
-  void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  શૂન્ય set_error ()      { str.backwards_length = str.length + 1; }
+  તાર્કિક in_error () અચલ { પાછા str.backwards_length > str.length; }
 
-  unsigned total_size () const { return str.length; }
+  unsigned total_size () અચલ { પાછા str.length; }
 
-  protected:
+  સુરક્ષિત:
   hb_ubytes_t       str;
 };
 
-/* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+/*ઢગલો*/
+template <typename ELEM, પૂર્ણાંક LIMIT>
+સંરચના cff_ઢગલો_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& operator [] (unsigned પૂર્ણાંક i)
   {
-    if (unlikely (i >= length))
+    જો (unlikely (i >= length))
     {
       set_error ();
-      return Crap (ELEM);
+      પાછા Crap (ELEM);
     }
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
 
-  void push (const ELEM &v)
+  શૂન્ય push (અચલ ELEM &v)
   {
-    if (likely (length < LIMIT))
+    જો (likely (length < LIMIT))
       arrayZ[length++] = v;
-    else
+    નહીંતર
       set_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    જો (likely (length < LIMIT))
+      પાછા arrayZ[length++];
+    નહીંતર
     {
       set_error ();
-      return Crap (ELEM);
+      પાછા Crap (ELEM);
     }
   }
 
-  ELEM& pop ()
+  ELEM& કાઢો ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    જો (likely (length > 0))
+      પાછા arrayZ[--length];
+    નહીંતર
     {
       set_error ();
-      return Crap (ELEM);
+      પાછા Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  શૂન્ય કાઢો (unsigned પૂર્ણાંક n)
   {
-    if (likely (length >= n))
+    જો (likely (length >= n))
       length -= n;
-    else
+    નહીંતર
       set_error ();
   }
 
-  const ELEM& peek ()
+  અચલ ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    જો (unlikely (length == 0))
     {
       set_error ();
-      return Null (ELEM);
+      પાછા Null (ELEM);
     }
-    return arrayZ[length - 1];
+    પાછા arrayZ[length - 1];
   }
 
-  void unpop ()
+  શૂન્ય unpop ()
   {
-    if (likely (length < LIMIT))
+    જો (likely (length < LIMIT))
       length++;
-    else
+    નહીંતર
       set_error ();
   }
 
-  void clear () { length = 0; }
+  શૂન્ય clear () { length = 0; }
 
-  bool in_error () const { return (error); }
-  void set_error ()      { error = true; }
+  તાર્કિક in_error () અચલ { પાછા (error); }
+  શૂન્ય set_error ()      { error = સાચું; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  unsigned પૂર્ણાંક get_ગણતરી () અચલ { પાછા length; }
+  તાર્કિક is_empty () અચલ          { પાછા !length; }
 
-  hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  hb_array_t<અચલ ELEM> sub_array (unsigned start, unsigned length) અચલ
+  { પાછા hb_array_t<અચલ ELEM> (arrayZ).sub_array (start, length); }
 
-  bool error = false;
-  unsigned int length = 0;
+  તાર્કિક error = ખોટું;
+  unsigned પૂર્ણાંક length = 0;
   ELEM arrayZ[LIMIT];
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+template <typename ARG=સંખ્યા_t>
+સંરચના arg_ઢગલો_t : cff_ઢગલો_t<ARG, 513>
 {
-  void push_int (int v)
+  શૂન્ય ધકેલો_int (પૂર્ણાંક v)
   {
     ARG &n = S::push ();
     n.set_int (v);
   }
 
-  void push_fixed (int32_t v)
+  શૂન્ય ધકેલો_fixed (int32_t v)
   {
     ARG &n = S::push ();
     n.set_fixed (v);
   }
 
-  void push_real (double v)
+  શૂન્ય ધકેલો_real (દ્વિગુણ v)
   {
     ARG &n = S::push ();
     n.set_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& કાઢો_અંક () { પાછા આ->કાઢો (); }
 
-  int pop_int ()
+  પૂર્ણાંક કાઢો_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
+    પૂર્ણાંક v;
+    જો (unlikely (!આ->કાઢો ().to_int (&v)))
       S::set_error ();
-    return v;
+    પાછા v;
   }
 
-  unsigned int pop_uint ()
+  unsigned પૂર્ણાંક કાઢો_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    પૂર્ણાંક i = કાઢો_int ();
+    જો (unlikely (i < 0))
     {
       i = 0;
       S::set_error ();
     }
-    return (unsigned) i;
+    પાછા (unsigned) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  શૂન્ય ધકેલો_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    ધકેલો_int ((પૂર્ણાંક) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  તાર્કિક ધકેલો_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    જો (unlikely (!str_ref.avail (4)))
+      પાછા ખોટું;
+    ધકેલો_fixed ((int32_t)*(અચલ HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    પાછા સાચું;
   }
 
-  private:
-  typedef cff_stack_t<ARG, 513> S;
+  ખાનગી:
+  પ્રકારવ્યાખ્યા cff_ઢગલો_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+સંરચના op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  અચલ unsigned અક્ષર *ptr = nullptr;
 
   op_code_t  op = OpCode_Invalid;
 
@@ -515,38 +515,38 @@ struct op_str_t
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+સંરચના op_serializer_t
 {
-  protected:
-  bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
+  સુરક્ષિત:
+  તાર્કિક copy_opstr (hb_serialize_context_t *c, અચલ op_str_t& opstr) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    unsigned અક્ષર *d = c->allocate_size<unsigned અક્ષર> (opstr.length);
+    જો (unlikely (!d)) return_trace (ખોટું);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    માટે (unsigned i = 0; i < opstr.length; i++)
       d[i] = opstr.ptr[i];
-    return_trace (true);
+    return_trace (સાચું);
   }
 };
 
 template <typename VAL>
-struct parsed_values_t
+સંરચના parsed_કિંમતો_t
 {
-  void init ()
+  શૂન્ય init ()
   {
     opStart = 0;
     values.init ();
   }
-  void fini () { values.fini (); }
+  શૂન્ય fini () { values.fini (); }
 
-  void alloc (unsigned n)
+  શૂન્ય alloc (unsigned n)
   {
     values.alloc_exact (n);
   }
 
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref = byte_str_ref_t (), const VAL &v = VAL ())
+  શૂન્ય add_op (op_code_t op, અચલ byte_str_ref_t& str_ref = byte_str_ref_t (), અચલ VAL &v = VAL ())
   {
     VAL *val = values.push (v);
     val->op = op;
@@ -556,103 +556,103 @@ struct parsed_values_t
     opStart = str_ref.get_offset ();
   }
 
-  bool has_op (op_code_t op) const
+  તાર્કિક has_op (op_code_t op) અચલ
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    માટે (અચલ auto& v : values)
+      જો (v.op == op) પાછા સાચું;
+    પાછા ખોટું;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  unsigned get_ગણતરી () અચલ { પાછા values.length; }
+  અચલ VAL &operator [] (unsigned પૂર્ણાંક i) અચલ { પાછા values[i]; }
 
-  unsigned int       opStart;
+  unsigned પૂર્ણાંક       opStart;
   hb_vector_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
-struct interp_env_t
+template <typename ARG=સંખ્યા_t>
+સંરચના interp_env_t
 {
   interp_env_t () {}
-  interp_env_t (const hb_ubytes_t &str_)
+  interp_env_t (અચલ hb_ubytes_t &str_)
   {
     str_ref.reset (str_);
   }
-  bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  તાર્કિક in_error () અચલ
+  { પાછા str_ref.in_error () || arg_ઢગલો.in_error (); }
 
-  void set_error () { str_ref.set_error (); }
+  શૂન્ય set_error () { str_ref.set_error (); }
 
   op_code_t fetch_op ()
   {
     op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
+    જો (unlikely (!str_ref.avail ()))
+      પાછા OpCode_Invalid;
     op = (op_code_t) str_ref.head_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
+    જો (op == OpCode_escape) {
+      જો (unlikely (!str_ref.avail ()))
+	પાછા OpCode_Invalid;
       op = Make_OpCode_ESC (str_ref.head_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    પાછા op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  અચલ ARG& eval_arg (unsigned પૂર્ણાંક i) { પાછા arg_ઢગલો[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& કાઢો_arg () { પાછા arg_ઢગલો.કાઢો (); }
+  શૂન્ય કાઢો_n_args (unsigned પૂર્ણાંક n) { arg_ઢગલો.કાઢો (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  શૂન્ય clear_args () { કાઢો_n_args (arg_ઢગલો.get_ગણતરી ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_ઢગલો_t<ARG>
+		arg_ઢગલો;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+using અંક_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
-struct opset_t
+template <typename ARG=સંખ્યા_t>
+સંરચના opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<ARG>& env)
+  સ્થિર શૂન્ય process_op (op_code_t op, interp_env_t<ARG>& env)
   {
-    switch (op) {
-      case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+    પસંદગી (op) {
+      સ્થિતિ OpCode_shortint:
+	env.arg_ઢગલો.ધકેલો_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	તોડો;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+      સ્થિતિ OpCode_TwoBytePosInt0: સ્થિતિ OpCode_TwoBytePosInt1:
+      સ્થિતિ OpCode_TwoBytePosInt2: સ્થિતિ OpCode_TwoBytePosInt3:
+	env.arg_ઢગલો.ધકેલો_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	તોડો;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+      સ્થિતિ OpCode_TwoByteNegInt0: સ્થિતિ OpCode_TwoByteNegInt1:
+      સ્થિતિ OpCode_TwoByteNegInt2: સ્થિતિ OpCode_TwoByteNegInt3:
+	env.arg_ઢગલો.ધકેલો_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	તોડો;
 
-      default:
+      મૂળભૂત:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	જો (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.arg_ઢગલો.ધકેલો_int ((પૂર્ણાંક)op - 139);
+	} નહીંતર {
 	  /* invalid unknown operator */
 	  env.clear_args ();
 	}
-	break;
+	તોડો;
     }
   }
 };
 
 template <typename ENV>
-struct interpreter_t
+સંરચના interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;

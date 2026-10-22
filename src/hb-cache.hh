@@ -27,7 +27,7 @@
 #ifndef HB_CACHE_HH
 #define HB_CACHE_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,64 +57,64 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+template <unsigned પૂર્ણાંક ચાવી_bits=16,
+	 unsigned પૂર્ણાંક કિંમત_bits=8 + 32 - ચાવી_bits,
+	 unsigned પૂર્ણાંક cache_bits=8,
+	 તાર્કિક thread_safe=સાચું>
+સંરચના hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+					   typename std::conditional<ચાવી_bits + કિંમત_bits - cache_bits <= 8,
+								     hb_atomic_t<unsigned અક્ષર>,
+								     typename std::conditional<ચાવી_bits + કિંમત_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+											       hb_atomic_t<unsigned પૂર્ણાંક>>::type>::type,
+					   typename std::conditional<ચાવી_bits + કિંમત_bits - cache_bits <= 8,
+								     unsigned અક્ષર,
+								     typename std::conditional<ચાવી_bits + કિંમત_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned પૂર્ણાંક>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((ચાવી_bits >= cache_bits), "");
+  static_assert ((ચાવી_bits + કિંમત_bits <= cache_bits + 8 * કદ (item_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  સ્થિર constexpr unsigned MAX_કિંમત = (1u << કિંમત_bits) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  શૂન્ય clear ()
   {
-    for (auto &v : values)
+    માટે (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  તાર્કિક get (unsigned પૂર્ણાંક key, unsigned પૂર્ણાંક *value) અચલ
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned પૂર્ણાંક k = key & ((1u<<cache_bits)-1);
+    unsigned પૂર્ણાંક v = values[k];
+    constexpr unsigned પૂર્ણાંક empty = (1ULL << (8 * કદ (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    જો ((key >> ચાવી_bits) |
+	((v >> કિંમત_bits) ^ (key >> cache_bits)) |
+	((ચાવી_bits + કિંમત_bits - cache_bits == 8 * કદ (item_t)) && (v == empty)))
+      પાછા ખોટું;
+    *value = v & ((1u<<કિંમત_bits)-1);
+    પાછા સાચું;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  શૂન્ય set (unsigned પૂર્ણાંક key, unsigned પૂર્ણાંક value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    જો (unlikely ((key >> ચાવી_bits) || (value >> કિંમત_bits)))
+      પાછા; /* Overflows */
+    unsigned પૂર્ણાંક k = key & ((1u<<cache_bits)-1);
+    unsigned પૂર્ણાંક v = ((key>>cache_bits)<<કિંમત_bits) | value;
     values[k] = v;
   }
 
-  private:
+  ખાનગી:
   item_t values[1u<<cache_bits];
 };
 

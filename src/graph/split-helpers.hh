@@ -27,33 +27,33 @@
 #ifndef GRAPH_SPLIT_HELPERS_HH
 #define GRAPH_SPLIT_HELPERS_HH
 
-#include "graph-result.hh"
+#અન્તર્ભાવ "graph-result.hh"
 
-namespace graph {
+નામાકાશ graph {
 
 template<typename Context>
 HB_INTERNAL
 graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+                                                              અચલ hb_vector_t<unsigned>& split_points)
 {
   hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  જો (!split_points)
+    પાછા Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  માટે (unsigned i = 0; i < split_points.length; i++)
   {
     unsigned start = split_points[i];
     unsigned end = (i < split_points.length - 1)
                    ? split_points[i + 1]
-                   : split_context.original_count ();
+                   : split_context.original_ગણતરી_2 ();
     TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (graph_result_t<શૂન્ય>::from (new_objects, ALLOCATION_FAILURE));
   }
 
   TRY (split_context.shrink (split_points[0]));
 
-  return Ok(new_objects);
+  પાછા Ok(new_objects);
 }
 
 }

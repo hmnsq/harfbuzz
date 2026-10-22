@@ -24,23 +24,23 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#અન્તર્ભાવ "hb.h"
+#અન્તર્ભાવ "hb-ot.h"
 
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#અન્તર્ભાવ "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+પૂર્ણાંક
+મુખ્ય (પૂર્ણાંક argc, અક્ષર **argv)
 {
-  if (argc != 4 && argc != 5) {
+  જો (argc != 4 && argc != 5) {
     fprintf (stderr, "usage: %s font-file lookup-index first-glyph [second-glyph]\n", argv[0]);
     exit (1);
   }
@@ -57,11 +57,11 @@ main (int argc, char **argv)
   hb_ft_font_set_funcs (font);
 #endif
 
-  unsigned int len = argc - 3;
+  unsigned પૂર્ણાંક len = argc - 3;
   hb_codepoint_t glyphs[2];
-  if (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
+  જો (!hb_font_glyph_from_string (font, argv[3], -1, &glyphs[0]) ||
       (argc > 4 &&
        !hb_font_glyph_from_string (font, argv[4], -1, &glyphs[1])))
-    return 2;
-  return !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, false);
+    પાછા 2;
+  પાછા !hb_ot_layout_lookup_would_substitute (face, strtol (argv[2], nullptr, 0), glyphs, len, ખોટું);
 }

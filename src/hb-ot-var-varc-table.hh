@@ -27,6 +27,6 @@
 #ifndef HB_OT_VAR_VARC_TABLE_HH
 #define HB_OT_VAR_VARC_TABLE_HH
 
-#include "OT/Var/VARC/VARC.hh"
+#અન્તર્ભાવ "OT/Var/VARC/VARC.hh"
 
 #endif /* HB_OT_VAR_VARC_TABLE_HH */

@@ -32,10 +32,10 @@
 #ifndef HB_OBJECT_HH
 #define HB_OBJECT_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-mutex.hh"
-#include "hb-vector.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-atomic.hh"
+#અન્તર્ભાવ "hb-mutex.hh"
+#અન્તર્ભાવ "hb-vector.hh"
 
 
 /*
@@ -43,93 +43,93 @@
  */
 
 template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+સંરચના hb_lockable_set_t
 {
-  hb_vector_t<item_t> items;
+  hb_vector_t<item_t> વસ્તુઓ;
 
-  void init () { items.init (); }
+  શૂન્ય init () { વસ્તુઓ.init (); }
 
   template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  item_t *replace_or_ઉમેરો (T v, lock_t &l, તાર્કિક replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    item_t *item = વસ્તુઓ.lsearch (v);
+    જો (item) {
+      જો (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      નહીંતર {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
-      item = items.push (v);
+    } નહીંતર {
+      item = વસ્તુઓ.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    પાછા વસ્તુઓ.in_error () ? nullptr : item;
   }
 
   template <typename T>
-  void remove (T v, lock_t &l)
+  શૂન્ય remove (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = વસ્તુઓ.lsearch (v);
+    જો (item)
     {
       item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      *item = std::move (વસ્તુઓ.tail ());
+      વસ્તુઓ.કાઢો ();
       l.unlock ();
       old.fini ();
-    } else {
+    } નહીંતર {
       l.unlock ();
     }
   }
 
   template <typename T>
-  bool find (T v, item_t *i, lock_t &l)
+  તાર્કિક find (T v, item_t *i, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = વસ્તુઓ.lsearch (v);
+    જો (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    પાછા !!item;
   }
 
   template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  item_t *find_or_ઉમેરો (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
-    if (!item) {
-      item = items.push (v);
+    item_t *item = વસ્તુઓ.find (v);
+    જો (!item) {
+      item = વસ્તુઓ.push (v);
     }
     l.unlock ();
-    return item;
+    પાછા item;
   }
 
-  void fini (lock_t &l)
+  શૂન્ય fini (lock_t &l)
   {
-    if (!items.length)
+    જો (!વસ્તુઓ.length)
     {
       /* No need to lock. */
-      items.fini ();
-      return;
+      વસ્તુઓ.fini ();
+      પાછા;
     }
     l.lock ();
-    while (items.length)
+    જ્યારે (વસ્તુઓ.length)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      item_t old = વસ્તુઓ.tail ();
+      વસ્તુઓ.કાઢો ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    વસ્તુઓ.fini ();
     l.unlock ();
   }
 
@@ -140,68 +140,68 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+સંરચના hb_reference_ગણતરી_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<પૂર્ણાંક> ref_ગણતરી_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  શૂન્ય init (પૂર્ણાંક v = 1) { ref_ગણતરી_2 = v; }
+  પૂર્ણાંક get_relaxed () અચલ { પાછા ref_ગણતરી_2; }
+  પૂર્ણાંક inc () અચલ { પાછા ref_ગણતરી_2.inc (); }
+  પૂર્ણાંક dec () અચલ { પાછા ref_ગણતરી_2.dec (); }
+  શૂન્ય fini () { ref_ગણતરી_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  તાર્કિક is_inert () અચલ { પાછા !ref_ગણતરી_2; }
+  તાર્કિક is_valid () અચલ { પાછા ref_ગણતરી_2 > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+સંરચના hb_user_data_array_t
 {
-  struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
-    void *data;
+  સંરચના hb_user_data_item_t {
+    hb_user_data_ચાવી_t *key;
+    શૂન્ય *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    તાર્કિક operator == (અચલ hb_user_data_ચાવી_t *other_ચાવી) અચલ { પાછા key == other_ચાવી; }
+    તાર્કિક operator == (અચલ hb_user_data_item_t &other) અચલ { પાછા key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    શૂન્ય fini () { જો (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> વસ્તુઓ;
 
-  void init () { lock.init (); items.init (); }
+  શૂન્ય init () { lock.init (); વસ્તુઓ.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  શૂન્ય fini () { વસ્તુઓ.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
-	    void *              data,
+  તાર્કિક set (hb_user_data_ચાવી_t *key,
+	    શૂન્ય *              data,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    જો (!key)
+      પાછા ખોટું;
 
-    if (replace) {
-      if (!data && !destroy) {
-	items.remove (key, lock);
-	return true;
+    જો (replace) {
+      જો (!data && !destroy) {
+	વસ્તુઓ.remove (key, lock);
+	પાછા સાચું;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    તાર્કિક ret = !!વસ્તુઓ.replace_or_ઉમેરો (item, lock, (તાર્કિક) replace);
 
-    return ret;
+    પાછા ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  શૂન્ય *get (hb_user_data_ચાવી_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    પાછા વસ્તુઓ.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -210,13 +210,13 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+સંરચના hb_object_header_t
 {
-  hb_reference_count_t ref_count;
-  mutable hb_atomic_t<bool> writable = false;
+  hb_reference_ગણતરી_t ref_ગણતરી_2;
+  mutable hb_atomic_t<તાર્કિક> writable = ખોટું;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  તાર્કિક is_inert () અચલ { પાછા !ref_ગણતરી_2.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -226,99 +226,99 @@ struct hb_object_header_t
  */
 
 template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+સ્થિર અંતઃરેખ શૂન્ય hb_object_trace (અચલ Type *obj, અચલ અક્ષર *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_સંદેશ (OBJECT, (શૂન્ય *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->header.ref_ગણતરી_2.get_relaxed () : 0);
 }
 
 template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+સ્થિર અંતઃરેખ Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, કદ (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  જો (unlikely (!obj))
+    પાછા obj;
 
-  new (obj) Type (std::forward<Ts> (ds)...);
+  નવું (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  પાછા obj;
 }
 template <typename Type>
-static inline void hb_object_init (Type *obj)
+સ્થિર અંતઃરેખ શૂન્ય hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
-  obj->header.writable = true;
+  obj->header.ref_ગણતરી_2.init ();
+  obj->header.writable = સાચું;
   obj->header.user_data.init ();
 }
 template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+સ્થિર અંતઃરેખ તાર્કિક hb_object_is_valid (અચલ Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  પાછા likely (obj->header.ref_ગણતરી_2.is_valid ());
 }
 template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+સ્થિર અંતઃરેખ તાર્કિક hb_object_is_immutable (અચલ Type *obj)
 {
-  return !obj->header.writable;
+  પાછા !obj->header.writable;
 }
 template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+સ્થિર અંતઃરેખ શૂન્ય hb_object_make_immutable (અચલ Type *obj)
 {
-  obj->header.writable = false;
+  obj->header.writable = ખોટું;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj);
+સ્થિર અંતઃરેખ શૂન્ય hb_object_fini (Type *obj);
 template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
+સ્થિર અંતઃરેખ Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
-  assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
-  return obj;
+  જો (unlikely (!obj || obj->header.is_inert ()))
+    પાછા obj;
+  પ્રતિજ્ઞા (hb_object_is_valid (obj));
+  obj->header.ref_ગણતરી_2.inc ();
+  પાછા obj;
 }
 template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+સ્થિર અંતઃરેખ તાર્કિક hb_object_should_destroy (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  જો (unlikely (!obj || obj->header.is_inert ()))
+    પાછા ખોટું;
+  પ્રતિજ્ઞા (hb_object_is_valid (obj));
+  જો (obj->header.ref_ગણતરી_2.dec () != 1)
+    પાછા ખોટું;
+  પાછા સાચું;
 }
 
 template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+સ્થિર અંતઃરેખ શૂન્ય hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  જો (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+સ્થિર અંતઃરેખ તાર્કિક hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  જો (!hb_object_should_destroy (obj))
+    પાછા ખોટું;
 
   hb_object_actually_destroy (obj);
-  return true;
+  પાછા સાચું;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj)
+સ્થિર અંતઃરેખ શૂન્ય hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
+  obj->header.ref_ગણતરી_2.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  જો (user_data)
   {
     user_data->fini ();
     hb_free (user_data);
@@ -326,46 +326,46 @@ static inline void hb_object_fini (Type *obj)
   }
 }
 template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
-					    void *              data,
+સ્થિર અંતઃરેખ તાર્કિક hb_object_set_user_data (Type               *obj,
+					    hb_user_data_ચાવી_t *key,
+					    શૂન્ય *              data,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
+  જો (unlikely (!obj || obj->header.is_inert ()))
+    પાછા ખોટું;
+  પ્રતિજ્ઞા (hb_object_is_valid (obj));
 
 retry:
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  જો (unlikely (!user_data))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
+    user_data = (hb_user_data_array_t *) hb_calloc (1, કદ (hb_user_data_array_t));
+    જો (unlikely (!user_data))
+      પાછા ખોટું;
     user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    જો (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
     {
       user_data->fini ();
       hb_free (user_data);
-      goto retry;
+      જાઓ retry;
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  પાછા user_data->set (key, data, destroy, replace);
 }
 
 template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+સ્થિર અંતઃરેખ શૂન્ય *hb_object_get_user_data (Type               *obj,
+					     hb_user_data_ચાવી_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
-  assert (hb_object_is_valid (obj));
+  જો (unlikely (!obj || obj->header.is_inert ()))
+    પાછા nullptr;
+  પ્રતિજ્ઞા (hb_object_is_valid (obj));
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  જો (!user_data)
+    પાછા nullptr;
+  પાછા user_data->get (key);
 }
 
 

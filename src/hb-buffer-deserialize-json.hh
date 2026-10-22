@@ -29,11 +29,11 @@
 #ifndef HB_BUFFER_DESERIALIZE_JSON_HH
 #define HB_BUFFER_DESERIALIZE_JSON_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
 
 #line 33 "hb-buffer-deserialize-json.hh"
-static const unsigned char _deserialize_json_trans_keys[] = {
+સ્થિર અચલ unsigned અક્ષર deserialize_json_trans_ચાવીઓ[] = {
 	0u, 0u, 9u, 34u, 97u, 121u, 120u, 121u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 9u, 93u, 9u, 125u, 34u, 34u, 9u, 58u, 9u, 57u, 48u, 57u, 
 	9u, 125u, 9u, 125u, 108u, 108u, 34u, 34u, 9u, 58u, 9u, 57u, 9u, 125u, 9u, 125u, 
@@ -45,7 +45,7 @@ static const unsigned char _deserialize_json_trans_keys[] = {
 	0
 };
 
-static const char _deserialize_json_key_spans[] = {
+સ્થિર અચલ અક્ષર deserialize_json_ચાવી_spans[] = {
 	0, 26, 25, 2, 1, 50, 49, 10, 
 	117, 117, 85, 117, 1, 50, 49, 10, 
 	117, 117, 1, 1, 50, 49, 117, 117, 
@@ -56,7 +56,7 @@ static const char _deserialize_json_key_spans[] = {
 	1, 50, 49, 117, 1, 115, 115, 115
 };
 
-static const short _deserialize_json_index_offsets[] = {
+સ્થિર અચલ short _deserialize_json_index_offsets[] = {
 	0, 0, 27, 53, 56, 58, 109, 159, 
 	170, 288, 406, 492, 610, 612, 663, 713, 
 	724, 842, 960, 962, 964, 1015, 1065, 1183, 
@@ -67,7 +67,7 @@ static const short _deserialize_json_index_offsets[] = {
 	3154, 3156, 3207, 3257, 3375, 3377, 3493, 3609
 };
 
-static const char _deserialize_json_indicies[] = {
+સ્થિર અચલ અક્ષર _deserialize_json_indicies[] = {
 	0, 0, 0, 0, 0, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 
@@ -536,7 +536,7 @@ static const char _deserialize_json_indicies[] = {
 	1, 1, 1, 1, 104, 1, 0
 };
 
-static const char _deserialize_json_trans_targs[] = {
+સ્થિર અચલ અક્ષર _deserialize_json_trans_targs[] = {
 	1, 0, 2, 3, 18, 24, 37, 43, 
 	51, 56, 60, 4, 12, 5, 6, 7, 
 	8, 11, 8, 11, 9, 1, 10, 9, 
@@ -553,7 +553,7 @@ static const char _deserialize_json_trans_targs[] = {
 	1
 };
 
-static const char _deserialize_json_trans_actions[] = {
+સ્થિર અચલ અક્ષર _deserialize_json_trans_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 1, 
 	1, 1, 0, 0, 2, 2, 2, 0, 
@@ -570,30 +570,30 @@ static const char _deserialize_json_trans_actions[] = {
 	15
 };
 
-static const int deserialize_json_start = 61;
-static const int deserialize_json_first_final = 61;
-static const int deserialize_json_error = 0;
+સ્થિર અચલ પૂર્ણાંક deserialize_json_start = 61;
+સ્થિર અચલ પૂર્ણાંક deserialize_json_first_final = 61;
+સ્થિર અચલ પૂર્ણાંક deserialize_json_error = 0;
 
-static const int deserialize_json_en_main = 61;
+સ્થિર અચલ પૂર્ણાંક deserialize_json_en_main = 61;
 
 
 #line 115 "hb-buffer-deserialize-json.rl"
 
 
-static hb_bool_t
+સ્થિર hb_bool_t
 _hb_buffer_deserialize_json (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+				    અચલ અક્ષર *buf,
+				    unsigned પૂર્ણાંક buf_len,
+				    અચલ અક્ષર **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len;
+  અચલ અક્ષર *p = buf, *pe = buf + buf_len;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (શૂન્ય) hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  const char *tok = nullptr;
-  int cs;
+  અચલ અક્ષર *tok = nullptr;
+  પૂર્ણાંક cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -604,122 +604,122 @@ _hb_buffer_deserialize_json (hb_buffer_t *buffer,
 
 #line 597 "hb-buffer-deserialize-json.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	પૂર્ણાંક _slen;
+	પૂર્ણાંક _trans;
+	અચલ unsigned અક્ષર *ચાવીઓ_2;
+	અચલ અક્ષર *_inds;
+	જો ( p == pe )
+		જાઓ _test_eof;
+	જો ( cs == 0 )
+		જાઓ _out;
 _resume:
-	_keys = _deserialize_json_trans_keys + (cs<<1);
+	ચાવીઓ_2 = deserialize_json_trans_ચાવીઓ + (cs<<1);
 	_inds = _deserialize_json_indicies + _deserialize_json_index_offsets[cs];
 
-	_slen = _deserialize_json_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_json_ચાવી_spans[cs];
+	_trans = _inds[ _slen > 0 && ચાવીઓ_2[0] <=(*p) &&
+		(*p) <= ચાવીઓ_2[1] ?
+		(*p) - ચાવીઓ_2[0] : _slen ];
 
 	cs = _deserialize_json_trans_targs[_trans];
 
-	if ( _deserialize_json_trans_actions[_trans] == 0 )
-		goto _again;
+	જો ( _deserialize_json_trans_actions[_trans] == 0 )
+		જાઓ _again;
 
-	switch ( _deserialize_json_trans_actions[_trans] ) {
-	case 15:
+	પસંદગી ( _deserialize_json_trans_actions[_trans] ) {
+	સ્થિતિ 15:
 #line 38 "hb-buffer-deserialize-json.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, કદ (info));
+	hb_memset (&pos , 0, કદ (pos ));
 }
-	break;
-	case 3:
+	તોડો;
+	સ્થિતિ 3:
 #line 43 "hb-buffer-deserialize-json.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
+	જો (unlikely (!buffer->successful))
+	  પાછા ખોટું;
 	buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
-	case 1:
+	તોડો;
+	સ્થિતિ 1:
 #line 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
+	તોડો;
+	સ્થિતિ 10:
 #line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 14:
+	{ જો (unlikely (!buffer->ensure_glyphs ())) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 14:
 #line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
-	case 11:
+	{ જો (unlikely (!buffer->ensure_unicode ())) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 11:
 #line 58 "hb-buffer-deserialize-json.rl"
 	{
 	/* TODO Unescape \" and \\ if found. */
-	if (!hb_font_glyph_from_string (font,
+	જો (!hb_font_glyph_from_string (font,
 					tok+1, p - tok - 2, /* Skip "" */
 					&info.codepoint))
-	  return false;
+	  પાછા ખોટું;
 }
-	break;
-	case 12:
+	તોડો;
+	સ્થિતિ 12:
 #line 66 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.codepoint)) return false; }
-	break;
-	case 5:
+	{ જો (!parse_uint (tok, p, &info.codepoint)) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 5:
 #line 67 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
+	{ જો (!parse_uint (tok, p, &info.cluster )) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 6:
 #line 68 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 7:
+	{ જો (!parse_int  (tok, p, &pos.x_offset )) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 7:
 #line 69 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 2:
+	{ જો (!parse_int  (tok, p, &pos.y_offset )) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 2:
 #line 70 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 4:
+	{ જો (!parse_int  (tok, p, &pos.x_advance)) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 4:
 #line 71 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 8:
+	{ જો (!parse_int  (tok, p, &pos.y_advance)) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 8:
 #line 72 "hb-buffer-deserialize-json.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
+	{ જો (!parse_uint (tok, p, &info.mask    )) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 9:
 #line 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
 #line 55 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_glyphs ())) return false; }
-	break;
-	case 13:
+	{ જો (unlikely (!buffer->ensure_glyphs ())) પાછા ખોટું; }
+	તોડો;
+	સ્થિતિ 13:
 #line 51 "hb-buffer-deserialize-json.rl"
 	{
 	tok = p;
 }
 #line 56 "hb-buffer-deserialize-json.rl"
-	{ if (unlikely (!buffer->ensure_unicode ())) return false; }
-	break;
+	{ જો (unlikely (!buffer->ensure_unicode ())) પાછા ખોટું; }
+	તોડો;
 #line 689 "hb-buffer-deserialize-json.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	જો ( cs == 0 )
+		જાઓ _out;
+	જો ( ++p != pe )
+		જાઓ _resume;
 	_test_eof: {}
 	_out: {}
 	}
@@ -729,7 +729,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  પાછા p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_JSON_HH */

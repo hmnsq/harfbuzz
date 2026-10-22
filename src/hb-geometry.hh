@@ -24,23 +24,23 @@
 #ifndef HB_GEOMETRY_HH
 #define HB_GEOMETRY_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-algs.hh"
+#અન્તર્ભાવ "hb-algs.hh"
 
-#include <cmath>
+#અન્તર્ભાવ <cmath>
 
 
-template <typename Float = float>
-struct hb_extents_t
+template <typename Float = દશાંશ>
+સંરચના hb_extents_t
 {
   hb_extents_t () {}
-  hb_extents_t (const hb_glyph_extents_t &extents)
+  hb_extents_t (અચલ hb_glyph_extents_t &extents)
   {
-    double x0 = (double) extents.x_bearing;
-    double y0 = (double) extents.y_bearing;
-    double x1 = x0 + (double) extents.width;
-    double y1 = y0 + (double) extents.height;
+    દ્વિગુણ x0 = (દ્વિગુણ) extents.x_bearing;
+    દ્વિગુણ y0 = (દ્વિગુણ) extents.y_bearing;
+    દ્વિગુણ x1 = x0 + (દ્વિગુણ) extents.width;
+    દ્વિગુણ y1 = y0 + (દ્વિગુણ) extents.height;
 
     xmin = (Float) hb_min (x0, x1);
     ymin = (Float) hb_min (y0, y1);
@@ -50,16 +50,16 @@ struct hb_extents_t
   hb_extents_t (Float xmin, Float ymin, Float xmax, Float ymax) :
     xmin (xmin), ymin (ymin), xmax (xmax), ymax (ymax) {}
 
-  bool is_empty () const { return xmin >= xmax || ymin >= ymax; }
-  bool is_void () const { return xmin > xmax; }
+  તાર્કિક is_empty () અચલ { પાછા xmin >= xmax || ymin >= ymax; }
+  તાર્કિક is_void () અચલ { પાછા xmin > xmax; }
 
-  void union_ (const hb_extents_t &o)
+  શૂન્ય union_ (અચલ hb_extents_t &o)
   {
-    if (o.is_empty ()) return;
-    if (is_empty ())
+    જો (o.is_empty ()) પાછા;
+    જો (is_empty ())
     {
-      *this = o;
-      return;
+      *આ = o;
+      પાછા;
     }
     xmin = hb_min (xmin, o.xmin);
     ymin = hb_min (ymin, o.ymin);
@@ -67,12 +67,12 @@ struct hb_extents_t
     ymax = hb_max (ymax, o.ymax);
   }
 
-  void intersect (const hb_extents_t &o)
+  શૂન્ય intersect (અચલ hb_extents_t &o)
   {
-    if (o.is_empty () || is_empty ())
+    જો (o.is_empty () || is_empty ())
     {
-      *this = hb_extents_t {};
-      return;
+      *આ = hb_extents_t {};
+      પાછા;
     }
     xmin = hb_max (xmin, o.xmin);
     ymin = hb_max (ymin, o.ymin);
@@ -80,15 +80,15 @@ struct hb_extents_t
     ymax = hb_min (ymax, o.ymax);
   }
 
-  void
+  શૂન્ય
   add_point (Float x, Float y)
   {
-    if (unlikely (is_void ()))
+    જો (unlikely (is_void ()))
     {
       xmin = xmax = x;
       ymin = ymax = y;
     }
-    else
+    નહીંતર
     {
       xmin = hb_min (xmin, x);
       ymin = hb_min (ymin, y);
@@ -97,20 +97,20 @@ struct hb_extents_t
     }
   }
 
-  hb_glyph_extents_t to_glyph_extents (bool xneg = false, bool yneg = false) const
+  hb_glyph_extents_t to_glyph_extents (તાર્કિક xneg = ખોટું, તાર્કિક yneg = ખોટું) અચલ
   {
-    double x0 = round ((double) xmin);
-    double y0 = round ((double) ymin);
-    double x1 = round ((double) xmax);
-    double y1 = round ((double) ymax);
+    દ્વિગુણ x0 = round ((દ્વિગુણ) xmin);
+    દ્વિગુણ y0 = round ((દ્વિગુણ) ymin);
+    દ્વિગુણ x1 = round ((દ્વિગુણ) xmax);
+    દ્વિગુણ y1 = round ((દ્વિગુણ) ymax);
 
-    if (unlikely (!std::isfinite (x0) ||
+    જો (unlikely (!std::isfinite (x0) ||
 		  !std::isfinite (y0) ||
 		  !std::isfinite (x1) ||
 		  !std::isfinite (y1)))
-      return hb_glyph_extents_t {0, 0, 0, 0};
+      પાછા hb_glyph_extents_t {0, 0, 0, 0};
 
-    return hb_glyph_extents_t {
+    પાછા hb_glyph_extents_t {
       clamp_to_hb_position (xneg ? x1 : x0),
       clamp_to_hb_position (yneg ? y0 : y1),
       clamp_to_hb_position (xneg ? x0 - x1 : x1 - x0),
@@ -123,17 +123,17 @@ struct hb_extents_t
   Float xmax = -1;
   Float ymax = -1;
 
-  static hb_position_t
-  clamp_to_hb_position (double v)
+  સ્થિર hb_position_t
+  clamp_to_hb_position (દ્વિગુણ v)
   {
-    return (hb_position_t) hb_clamp (v,
-				     (double) hb_int_min (hb_position_t),
-				     (double) hb_int_max (hb_position_t));
+    પાછા (hb_position_t) hb_clamp (v,
+				     (દ્વિગુણ) hb_int_min (hb_position_t),
+				     (દ્વિગુણ) hb_int_max (hb_position_t));
   }
 };
 
-template <typename Float = float>
-struct hb_transform_t
+template <typename Float = દશાંશ>
+સંરચના hb_transform_t
 {
   hb_transform_t () {}
   hb_transform_t (Float xx, Float yx,
@@ -141,24 +141,24 @@ struct hb_transform_t
 		  Float x0, Float y0) :
     xx (xx), yx (yx), xy (xy), yy (yy), x0 (x0), y0 (y0) {}
 
-  bool is_identity () const
+  તાર્કિક is_identity () અચલ
   {
-    return xx == 1 && yx == 0 &&
+    પાછા xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1 &&
 	   x0 == 0 && y0 == 0;
   }
-  bool is_translation () const
+  તાર્કિક is_translation () અચલ
   {
-    return xx == 1 && yx == 0 &&
+    પાછા xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1;
   }
 
-  void multiply (const hb_transform_t &o, bool before=false)
+  શૂન્ય multiply (અચલ hb_transform_t &o, તાર્કિક before=ખોટું)
   {
     // Copied from cairo-matrix.c
-    const hb_transform_t &a = before ? o : *this;
-    const hb_transform_t &b = before ? *this : o;
-    *this = {
+    અચલ hb_transform_t &a = before ? o : *આ;
+    અચલ hb_transform_t &b = before ? *આ : o;
+    *આ = {
       a.xx * b.xx + a.xy * b.yx,
       a.yx * b.xx + a.yy * b.yx,
       a.xx * b.xy + a.xy * b.yy,
@@ -169,7 +169,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_distance (Float &dx, Float &dy) const
+  શૂન્ય transform_distance (Float &dx, Float &dy) અચલ
   {
     Float new_x = xx * dx + xy * dy;
     Float new_y = yx * dx + yy * dy;
@@ -178,7 +178,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_point (Float &x, Float &y) const
+  શૂન્ય transform_point (Float &x, Float &y) અચલ
   {
     Float new_x = x0 + xx * x + xy * y;
     Float new_y = y0 + yx * x + yy * y;
@@ -186,7 +186,7 @@ struct hb_transform_t
     y = new_y;
   }
 
-  void transform_extents (hb_extents_t<Float> &extents) const
+  શૂન્ય transform_extents (hb_extents_t<Float> &extents) અચલ
   {
     Float quad_x[4], quad_y[4];
 
@@ -200,123 +200,123 @@ struct hb_transform_t
     quad_y[3] = extents.ymax;
 
     extents = hb_extents_t<Float> {};
-    for (unsigned i = 0; i < 4; i++)
+    માટે (unsigned i = 0; i < 4; i++)
     {
       transform_point (quad_x[i], quad_y[i]);
       extents.add_point (quad_x[i], quad_y[i]);
     }
   }
 
-  void transform (const hb_transform_t &o, bool before=false) { multiply (o, before); }
+  શૂન્ય transform (અચલ hb_transform_t &o, તાર્કિક before=ખોટું) { multiply (o, before); }
 
-  static hb_transform_t translation (Float x, Float y)
+  સ્થિર hb_transform_t translation (Float x, Float y)
   {
-    return {1, 0, 0, 1, x, y};
+    પાછા {1, 0, 0, 1, x, y};
   }
-  void translate (Float x, Float y, bool before=false)
+  શૂન્ય translate (Float x, Float y, તાર્કિક before=ખોટું)
   {
-    if (before)
+    જો (before)
     {
       x0 += x;
       y0 += y;
     }
-    else
+    નહીંતર
     {
-      if (x == 0 && y == 0)
-	return;
+      જો (x == 0 && y == 0)
+	પાછા;
 
       x0 += xx * x + xy * y;
       y0 += yx * x + yy * y;
     }
   }
 
-  static hb_transform_t scaling (Float scaleX, Float scaleY)
+  સ્થિર hb_transform_t scaling (Float scaleX, Float scaleY)
   {
-    return {scaleX, 0, 0, scaleY, 0, 0};
+    પાછા {scaleX, 0, 0, scaleY, 0, 0};
   }
-  void scale (Float scaleX, Float scaleY)
+  શૂન્ય scale (Float scaleX, Float scaleY)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    જો (scaleX == 1 && scaleY == 1)
+      પાછા;
 
     xx *= scaleX;
     yx *= scaleX;
     xy *= scaleY;
     yy *= scaleY;
   }
-  static hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  સ્થિર hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    return {scaleX, 0, 0, scaleY,
+    પાછા {scaleX, 0, 0, scaleY,
 	    center_x ? (1 - scaleX) * center_x : 0,
 	    center_y ? (1 - scaleY) * center_y : 0};
   }
-  void scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  શૂન્ય scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    જો (scaleX == 1 && scaleY == 1)
+      પાછા;
 
     transform (scaling_around_center (scaleX, scaleY, center_x, center_y));
   }
 
-  static hb_transform_t rotation (Float radians)
+  સ્થિર hb_transform_t rotation (Float radians)
   {
     // https://github.com/fonttools/fonttools/blob/f66ee05f71c8b57b5f519ee975e95edcd1466e14/Lib/fontTools/misc/transform.py#L240
     Float c;
     Float s;
     hb_sincos (radians, s, c);
-    return {c, s, -s, c, 0, 0};
+    પાછા {c, s, -s, c, 0, 0};
   }
-  void rotate (Float radians, bool before=false)
+  શૂન્ય rotate (Float radians, તાર્કિક before=ખોટું)
   {
-    if (radians == 0)
-      return;
+    જો (radians == 0)
+      પાછા;
 
     transform (rotation (radians), before);
   }
 
-  static hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
+  સ્થિર hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
   {
     Float s, c;
     hb_sincos (radians, s, c);
-    return {
+    પાછા {
       c, s, -s, c,
       (1 - c) * center_x + s * center_y,
       -s * center_x +  (1 - c) * center_y
     };
   }
-  void rotate_around_center (Float radians, Float center_x, Float center_y, bool before=false)
+  શૂન્ય rotate_around_center (Float radians, Float center_x, Float center_y, તાર્કિક before=ખોટું)
   {
-    if (radians == 0)
-      return;
+    જો (radians == 0)
+      પાછા;
 
     transform (rotation_around_center (radians, center_x, center_y), before);
   }
 
-  static hb_transform_t skewing (Float skewX, Float skewY)
+  સ્થિર hb_transform_t skewing (Float skewX, Float skewY)
   {
-    return {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
+    પાછા {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
   }
-  void skew (Float skewX, Float skewY)
+  શૂન્ય skew (Float skewX, Float skewY)
   {
-    if (skewX == 0 && skewY == 0)
-      return;
+    જો (skewX == 0 && skewY == 0)
+      પાછા;
 
     transform (skewing (skewX, skewY));
   }
-  static hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  સ્થિર hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
     skewX = skewX ? tanf (skewX) : 0;
     skewY = skewY ? tanf (skewY) : 0;
-    return {
+    પાછા {
 	    1, skewY, skewX, 1,
 	    center_y ? -skewX * center_y : 0,
 	    center_x ? -skewY * center_x : 0
     };
   }
-  void skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  શૂન્ય skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
-    if (skewX == 0 && skewY == 0)
-	    return;
+    જો (skewX == 0 && skewY == 0)
+	    પાછા;
 
     transform (skewing_around_center (skewX, skewY, center_x, center_y));
   }
@@ -331,44 +331,44 @@ struct hb_transform_t
 
 #define HB_TRANSFORM_IDENTITY {1, 0, 0, 1, 0, 0}
 
-template <typename Float = float>
-struct hb_bounds_t
+template <typename Float = દશાંશ>
+સંરચના hb_bounds_t
 {
-  enum status_t {
+  ગણના status_t {
     UNBOUNDED,
     BOUNDED,
     EMPTY,
   };
 
   hb_bounds_t (status_t status = UNBOUNDED) : status (status) {}
-  hb_bounds_t (const hb_extents_t<Float> &extents) :
+  hb_bounds_t (અચલ hb_extents_t<Float> &extents) :
     status (extents.is_empty () ? EMPTY : BOUNDED), extents (extents) {}
 
-  void union_ (const hb_bounds_t &o)
+  શૂન્ય union_ (અચલ hb_bounds_t &o)
   {
-    if (o.status == UNBOUNDED)
+    જો (o.status == UNBOUNDED)
       status = UNBOUNDED;
-    else if (o.status == BOUNDED)
+    નહીંતર જો (o.status == BOUNDED)
     {
-      if (status == EMPTY)
-	*this = o;
-      else if (status == BOUNDED)
+      જો (status == EMPTY)
+	*આ = o;
+      નહીંતર જો (status == BOUNDED)
         extents.union_ (o.extents);
     }
   }
 
-  void intersect (const hb_bounds_t &o)
+  શૂન્ય intersect (અચલ hb_bounds_t &o)
   {
-    if (o.status == EMPTY)
+    જો (o.status == EMPTY)
       status = EMPTY;
-    else if (o.status == BOUNDED)
+    નહીંતર જો (o.status == BOUNDED)
     {
-      if (status == UNBOUNDED)
-	*this = o;
-      else if (status == BOUNDED)
+      જો (status == UNBOUNDED)
+	*આ = o;
+      નહીંતર જો (status == BOUNDED)
       {
         extents.intersect (o.extents);
-	if (extents.is_empty ())
+	જો (extents.is_empty ())
 	  status = EMPTY;
       }
     }
@@ -378,8 +378,8 @@ struct hb_bounds_t
   hb_extents_t<Float> extents;
 };
 
-template <typename Float = float>
-struct hb_transform_decomposed_t
+template <typename Float = દશાંશ>
+સંરચના hb_transform_decomposed_t
 {
   Float translateX = 0;
   Float translateY = 0;
@@ -391,16 +391,16 @@ struct hb_transform_decomposed_t
   Float tCenterX = 0;
   Float tCenterY = 0;
 
-  operator bool () const
+  operator તાર્કિક () અચલ
   {
-    return translateX || translateY ||
+    પાછા translateX || translateY ||
 	   rotation ||
 	   scaleX != 1 || scaleY != 1 ||
 	   skewX || skewY ||
 	   tCenterX || tCenterY;
   }
 
-  hb_transform_t<Float> to_transform () const
+  hb_transform_t<Float> to_transform () અચલ
   {
     hb_transform_t<Float> t;
     t.translate (translateX + tCenterX, translateY + tCenterY);
@@ -408,7 +408,7 @@ struct hb_transform_decomposed_t
     t.scale (scaleX, scaleY);
     t.skew (-skewX, skewY);
     t.translate (-tCenterX, -tCenterY);
-    return t;
+    પાછા t;
   }
 };
 

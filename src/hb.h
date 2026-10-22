@@ -28,21 +28,21 @@
 #define HB_H
 #define HB_H_IN
 
-#include "hb-blob.h"
-#include "hb-buffer.h"
-#include "hb-common.h"
-#include "hb-deprecated.h"
-#include "hb-draw.h"
-#include "hb-face.h"
-#include "hb-font.h"
-#include "hb-map.h"
-#include "hb-paint.h"
-#include "hb-set.h"
-#include "hb-shape.h"
-#include "hb-shape-plan.h"
-#include "hb-style.h"
-#include "hb-unicode.h"
-#include "hb-version.h"
+#અન્તર્ભાવ "hb-blob.h"
+#અન્તર્ભાવ "hb-buffer.h"
+#અન્તર્ભાવ "hb-common.h"
+#અન્તર્ભાવ "hb-deprecated.h"
+#અન્તર્ભાવ "hb-draw.h"
+#અન્તર્ભાવ "hb-face.h"
+#અન્તર્ભાવ "hb-font.h"
+#અન્તર્ભાવ "hb-map.h"
+#અન્તર્ભાવ "hb-paint.h"
+#અન્તર્ભાવ "hb-set.h"
+#અન્તર્ભાવ "hb-shape.h"
+#અન્તર્ભાવ "hb-shape-plan.h"
+#અન્તર્ભાવ "hb-style.h"
+#અન્તર્ભાવ "hb-unicode.h"
+#અન્તર્ભાવ "hb-version.h"
 
 HB_BEGIN_DECLS
 HB_END_DECLS

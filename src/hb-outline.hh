@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-draw.hh"
+#અન્તર્ભાવ "hb-draw.hh"
 
 
-struct hb_outline_point_t
+સંરચના hb_outline_point_t
 {
-  enum class type_t
+  ગણના વર્ગ type_t
   {
     MOVE_TO,
-    LINE_TO,
+    લીટી_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (દશાંશ x, દશાંશ y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  દશાંશ x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+સંરચના hb_outline_vector_t
 {
-  float normalize_len ()
+  દશાંશ normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    દશાંશ len = hypotf (x, y);
+    જો (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    પાછા len;
   }
 
-  float x, y;
+  દશાંશ x, y;
 };
 
-struct hb_outline_t
+સંરચના hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  શૂન્ય reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL શૂન્ય replay (hb_draw_funcs_t *pen, શૂન્ય *pen_data) અચલ;
+  HB_INTERNAL દશાંશ control_area () અચલ;
+  HB_INTERNAL શૂન્ય translate (દશાંશ dx, દશાંશ dy);
+  HB_INTERNAL શૂન્ય slant (દશાંશ slant_xy);
+  HB_INTERNAL શૂન્ય embolden (દશાંશ x_strength, દશાંશ y_strength,
+			     દશાંશ x_shift, દશાંશ y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;

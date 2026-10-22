@@ -26,58 +26,58 @@
 #ifndef HB_CFF2_INTERP_CS_HH
 #define HB_CFF2_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+નામાકાશ CFF {
 
-using namespace OT;
+using નામાકાશ OT;
 
-struct blend_arg_t : number_t
+સંરચના blend_arg_t : સંખ્યા_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
-  void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
-  void set_real (double v) { reset_blends (); number_t::set_real (v); }
+  શૂન્ય set_int (પૂર્ણાંક v) { reset_blends (); સંખ્યા_t::set_int (v); }
+  શૂન્ય set_fixed (int32_t v) { reset_blends (); સંખ્યા_t::set_fixed (v); }
+  શૂન્ય set_real (દ્વિગુણ v) { reset_blends (); સંખ્યા_t::set_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
-		   hb_array_t<const blend_arg_t> blends_)
+  શૂન્ય set_blends (unsigned પૂર્ણાંક અંક_કિંમતો, unsigned પૂર્ણાંક કિંમત_Index,
+		   hb_array_t<અચલ blend_arg_t> blends_)
   {
-    numValues = numValues_;
-    valueIndex = valueIndex_;
-    unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
-      return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    અંક_કિંમતો_2 = અંક_કિંમતો;
+    કિંમત_Index_2 = કિંમત_Index;
+    unsigned અંક_Blends = blends_.length;
+    જો (unlikely (!deltas.resize_exact (અંક_Blends)))
+      પાછા;
+    માટે (unsigned પૂર્ણાંક i = 0; i < અંક_Blends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
-  bool blending () const { return deltas.length > 0; }
-  void reset_blends ()
+  તાર્કિક blending () અચલ { પાછા deltas.length > 0; }
+  શૂન્ય reset_blends ()
   {
-    numValues = valueIndex = 0;
+    અંક_કિંમતો_2 = કિંમત_Index_2 = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
-  hb_vector_t<number_t> deltas;
+  unsigned પૂર્ણાંક અંક_કિંમતો_2;
+  unsigned પૂર્ણાંક કિંમત_Index_2;
+  hb_vector_t<સંખ્યા_t> deltas;
 };
 
-typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
+પ્રકારવ્યાખ્યા biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
 
 template <typename ELEM>
-struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
+સંરચના cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
   template <typename ACC>
-  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff2_cs_interp_env_t (અચલ hb_ubytes_t &str, ACC &acc, unsigned પૂર્ણાંક fd,
+			અચલ પૂર્ણાંક *coords_=nullptr, unsigned પૂર્ણાંક અંક_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
-      region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
+      region_ગણતરી_2 (0), cached_scalars_vector (&acc.cached_scalars_vector)
   {
     coords = coords_;
-    num_coords = num_coords_;
+    અંક_coords = અંક_coords_2;
     varStore = acc.varStore;
-    do_blend = num_coords && varStore->size;
+    do_blend = અંક_coords && varStore->size;
     orig_ivs = acc.privateDicts[fd].ivs;
     set_ivs (orig_ivs);
   }
@@ -87,29 +87,29 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
     release_scalars_vector (scalars);
   }
 
-  hb_vector_t<float> *acquire_scalars_vector () const
+  hb_vector_t<દશાંશ> *acquire_scalars_vector () અચલ
   {
-    hb_vector_t<float> *scalars = cached_scalars_vector->get_acquire ();
+    hb_vector_t<દશાંશ> *scalars = cached_scalars_vector->get_acquire ();
 
-    if (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
+    જો (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
     {
-      scalars = (hb_vector_t<float> *) hb_calloc (1, sizeof (hb_vector_t<float>));
-      if (unlikely (!scalars))
-	return nullptr;
+      scalars = (hb_vector_t<દશાંશ> *) hb_calloc (1, કદ (hb_vector_t<દશાંશ>));
+      જો (unlikely (!scalars))
+	પાછા nullptr;
       scalars->init ();
     }
 
-    return scalars;
+    પાછા scalars;
   }
 
-  void release_scalars_vector (hb_vector_t<float> *scalars) const
+  શૂન્ય release_scalars_vector (hb_vector_t<દશાંશ> *scalars) અચલ
   {
-    if (!scalars)
-      return;
+    જો (!scalars)
+      પાછા;
 
     scalars->clear ();
 
-    if (!cached_scalars_vector->cmpexch (nullptr, scalars))
+    જો (!cached_scalars_vector->cmpexch (nullptr, scalars))
     {
       scalars->fini ();
       hb_free (scalars);
@@ -119,216 +119,216 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   op_code_t fetch_op ()
   {
-    if (this->str_ref.avail ())
-      return SUPER::fetch_op ();
+    જો (આ->str_ref.avail ())
+      પાછા SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
-      return OpCode_endchar;
-    else
-      return OpCode_return;
+    જો (આ->call_ઢગલો.is_empty ())
+      પાછા OpCode_endchar;
+    નહીંતર
+      પાછા OpCode_return;
   }
 
-  const ELEM& eval_arg (unsigned int i)
+  અચલ ELEM& eval_arg (unsigned પૂર્ણાંક i)
   {
-    return SUPER::argStack[i];
+    પાછા SUPER::arg_ઢગલો[i];
   }
 
-  const ELEM& pop_arg ()
+  અચલ ELEM& કાઢો_arg ()
   {
-    return SUPER::argStack.pop ();
+    પાછા SUPER::arg_ઢગલો.કાઢો ();
   }
 
-  void process_blend ()
+  શૂન્ય process_blend ()
   {
-    if (!seen_blend)
+    જો (!seen_blend)
     {
       scalars = acquire_scalars_vector ();
-      if (unlikely (!scalars))
+      જો (unlikely (!scalars))
 	SUPER::set_error ();
-      else
+      નહીંતર
       {
-	region_count = varStore->varStore.get_region_index_count (get_ivs ());
-	if (do_blend)
+	region_ગણતરી_2 = varStore->varStore.get_region_index_ગણતરી (get_ivs ());
+	જો (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
+	  જો (unlikely (!scalars->resize_exact (region_ગણતરી_2)))
 	    SUPER::set_error ();
-	  else
-	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
-						   &(*scalars)[0], region_count);
+	  નહીંતર
+	    varStore->varStore.get_region_scalars (get_ivs (), coords, અંક_coords,
+						   &(*scalars)[0], region_ગણતરી_2);
 	}
       }
-      seen_blend = true;
+      seen_blend = સાચું;
     }
   }
 
-  void process_vsindex ()
+  શૂન્ય process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
-    if (unlikely (seen_vsindex () || seen_blend))
+    unsigned પૂર્ણાંક  index = SUPER::arg_ઢગલો.કાઢો_uint ();
+    જો (unlikely (seen_vsindex () || seen_blend))
     {
      SUPER::set_error ();
     }
-    else
+    નહીંતર
     {
       set_ivs (index);
     }
-    seen_vsindex_ = true;
+    seen_vsindex_ = સાચું;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  unsigned પૂર્ણાંક get_region_ગણતરી () અચલ { પાછા region_ગણતરી_2; }
+  શૂન્ય	 set_region_ગણતરી (unsigned પૂર્ણાંક region_ગણતરી_3) { region_ગણતરી_2 = region_ગણતરી_3; }
+  unsigned પૂર્ણાંક get_ivs () અચલ { પાછા ivs; }
+  શૂન્ય	 set_ivs (unsigned પૂર્ણાંક ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
-  unsigned int get_orig_ivs () const { return orig_ivs; }
-  bool	 seen_vsindex () const { return seen_vsindex_; }
+  unsigned પૂર્ણાંક get_orig_ivs () અચલ { પાછા orig_ivs; }
+  તાર્કિક	 seen_vsindex () અચલ { પાછા seen_vsindex_; }
 
-  double blend_deltas (hb_array_t<const ELEM> deltas) const
+  દ્વિગુણ blend_deltas (hb_array_t<અચલ ELEM> deltas) અચલ
   {
-    double v = 0;
-    if (do_blend)
+    દ્વિગુણ v = 0;
+    જો (do_blend)
     {
-      if (likely (scalars && scalars->length == deltas.length))
+      જો (likely (scalars && scalars->length == deltas.length))
       {
-        unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
-	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
+        unsigned ગણતરી = scalars->length;
+	માટે (unsigned i = 0; i < ગણતરી; i++)
+	  v += (દ્વિગુણ) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
       }
     }
-    return v;
+    પાછા v;
   }
 
-  bool have_coords () const { return num_coords; }
+  તાર્કિક have_coords () અચલ { પાછા અંક_coords; }
 
-  protected:
-  const int     *coords;
-  unsigned int  num_coords;
-  const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
-  unsigned int  ivs;
-  unsigned int  orig_ivs;
-  hb_vector_t<float>  *scalars = nullptr;
-  hb_atomic_t<hb_vector_t<float> *> *cached_scalars_vector = nullptr;
-  bool	  do_blend;
-  bool	  seen_vsindex_ = false;
-  bool	  seen_blend = false;
+  સુરક્ષિત:
+  અચલ પૂર્ણાંક     *coords;
+  unsigned પૂર્ણાંક  અંક_coords;
+  અચલ	 CFF2ItemVariationStore *varStore;
+  unsigned પૂર્ણાંક  region_ગણતરી_2;
+  unsigned પૂર્ણાંક  ivs;
+  unsigned પૂર્ણાંક  orig_ivs;
+  hb_vector_t<દશાંશ>  *scalars = nullptr;
+  hb_atomic_t<hb_vector_t<દશાંશ> *> *cached_scalars_vector = nullptr;
+  તાર્કિક	  do_blend;
+  તાર્કિક	  seen_vsindex_ = ખોટું;
+  તાર્કિક	  seen_blend = ખોટું;
 
-  typedef cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
+  પ્રકારવ્યાખ્યા cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
 };
 template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
-struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
+સંરચના cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
 {
-  static void process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  સ્થિર શૂન્ય process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_callsubr:
-      case OpCode_callgsubr:
+    પસંદગી (op) {
+      સ્થિતિ OpCode_callsubr:
+      સ્થિતિ OpCode_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#જો 0
+	જો (unlikely (env.arg_ઢગલો.peek ().blending ()))
 	{
 	  env.set_error ();
-	  break;
+	  તોડો;
 	}
 #endif
 	SUPER::process_op (op, env, param);
-	break;
+	તોડો;
 
-      case OpCode_blendcs:
+      સ્થિતિ OpCode_blendcs:
 	OPSET::process_blend (env, param);
-	break;
+	તોડો;
 
-      case OpCode_vsindexcs:
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+      સ્થિતિ OpCode_vsindexcs:
+#જો 0
+	જો (unlikely (env.arg_ઢગલો.peek ().blending ()))
 	{
 	  env.set_error ();
-	  break;
+	  તોડો;
 	}
 #endif
 	OPSET::process_vsindex (env, param);
-	break;
+	તોડો;
 
-      default:
+      મૂળભૂત:
 	SUPER::process_op (op, env, param);
     }
   }
 
   template <typename T = ELEM,
 	    hb_enable_if (hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  સ્થિર શૂન્ય process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
+				 અચલ hb_array_t<અચલ ELEM> blends,
 				 unsigned n, unsigned i)
   {
-    if (env.have_coords ())
+    જો (env.have_coords ())
       arg.set_int (round (arg.to_real () + env.blend_deltas (blends)));
-    else if (unlikely (arg.blending ()))
+    નહીંતર જો (unlikely (arg.blending ()))
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
-      hb_vector_t<number_t> inner = std::move (arg.deltas);
+      hb_vector_t<સંખ્યા_t> inner = std::move (arg.deltas);
       arg.set_blends (n, i, blends);
-      if (likely (inner.length == arg.deltas.length))
-	for (unsigned j = 0; j < inner.length; j++)
+      જો (likely (inner.length == arg.deltas.length))
+	માટે (unsigned j = 0; j < inner.length; j++)
 	  arg.deltas.arrayZ[j].set_real (arg.deltas.arrayZ[j].to_real () +
 					 inner.arrayZ[j].to_real ());
-      else
+      નહીંતર
 	env.set_error ();
     }
-    else
+    નહીંતર
       arg.set_blends (n, i, blends);
   }
   template <typename T = ELEM,
 	    hb_enable_if (!hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  સ્થિર શૂન્ય process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
+				 અચલ hb_array_t<અચલ ELEM> blends,
 				 unsigned n, unsigned i)
   {
     arg.set_real (arg.to_real () + env.blend_deltas (blends));
   }
 
-  static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  સ્થિર શૂન્ય process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    unsigned int n, k;
+    unsigned પૂર્ણાંક n, k;
 
     env.process_blend ();
-    k = env.get_region_count ();
-    n = env.argStack.pop_uint ();
+    k = env.get_region_ગણતરી ();
+    n = env.arg_ઢગલો.કાઢો_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    unsigned પૂર્ણાંક ગણતરી = env.arg_ઢગલો.get_ગણતરી ();
+    unsigned પૂર્ણાંક total;
+    જો (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > ગણતરી))
     {
       env.set_error ();
-      return;
+      પાછા;
     }
-    if (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
+    જો (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
     {
       env.set_error ();
-      return;
+      પાછા;
     }
-    unsigned int start = count - total;
-    for (unsigned int i = 0; i < n; i++)
+    unsigned પૂર્ણાંક start = ગણતરી - total;
+    માટે (unsigned પૂર્ણાંક i = 0; i < n; i++)
     {
-      const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
-      process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);
+      અચલ hb_array_t<અચલ ELEM> blends = env.arg_ઢગલો.sub_array (start + n + (i * k), k);
+      process_arg_blend (env, env.arg_ઢગલો.arrayZ[start + i], blends, n, i);
     }
 
     /* pop off blend values leaving default values now adorned with blend values */
-    env.argStack.pop (k * n);
+    env.arg_ઢગલો.કાઢો (k * n);
   }
 
-  static void process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  સ્થિર શૂન્ય process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     env.process_vsindex ();
     env.clear_args ();
   }
 
-  private:
-  typedef cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
+  ખાનગી:
+  પ્રકારવ્યાખ્યા cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename ELEM>

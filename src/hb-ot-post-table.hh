@@ -27,12 +27,12 @@
 #ifndef HB_OT_POST_TABLE_HH
 #define HB_OT_POST_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-var-mvar-table.hh"
+#અન્તર્ભાવ "hb-open-type.hh"
+#અન્તર્ભાવ "hb-ot-var-mvar-table.hh"
 
 #define HB_STRING_ARRAY_NAME format1_names
 #define HB_STRING_ARRAY_LIST "hb-ot-post-macroman.hh"
-#include "hb-string-array.hh"
+#અન્તર્ભાવ "hb-string-array.hh"
 #undef HB_STRING_ARRAY_LIST
 #undef HB_STRING_ARRAY_NAME
 
@@ -43,27 +43,27 @@
 #define HB_OT_TAG_post HB_TAG('p','o','s','t')
 
 
-namespace OT {
+નામાકાશ OT {
 
 
-struct postV2Tail
+સંરચના postV2Tail
 {
-  friend struct post;
+  friend સંરચના post;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (glyphNameIndex.sanitize (c));
   }
 
   template<typename Iterator>
-  bool serialize (hb_serialize_context_t *c,
+  તાર્કિક serialize (hb_serialize_context_t *c,
                   Iterator it,
-                  const void* _post) const;
+                  અચલ શૂન્ય* _post) અચલ;
 
-  bool subset (hb_subset_context_t *c) const;
+  તાર્કિક subset (hb_subset_context_t *c) અચલ;
 
-  protected:
+  સુરક્ષિત:
   Array16Of<HBUINT16>	glyphNameIndex;	/* This is not an offset, but is the
 					 * ordinal number of the glyph in 'post'
 					 * string tables. */
@@ -71,42 +71,42 @@ struct postV2Tail
 			namesX;*/	/* Glyph names with length bytes [variable]
 					 * (a Pascal string). */
 
-  public:
+  જાહેર:
   DEFINE_SIZE_ARRAY (2, glyphNameIndex);
 };
 
-struct post
+સંરચના post
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_post;
+  સ્થિર constexpr hb_tag_t tableTag = HB_OT_TAG_post;
 
-  bool serialize (hb_serialize_context_t *c, bool glyph_names) const
+  તાર્કિક serialize (hb_serialize_context_t *c, તાર્કિક glyph_names) અચલ
   {
-    TRACE_SERIALIZE (this);
-    post *post_prime = c->allocate_min<post> ();
-    if (unlikely (!post_prime))  return_trace (false);
+    TRACE_SERIALIZE (આ);
+    post *post_અવિભાજ્ય = c->allocate_min<post> ();
+    જો (unlikely (!post_અવિભાજ્ય))  return_trace (ખોટું);
 
-    hb_memcpy (post_prime, this, post::min_size);
-    if (!glyph_names)
-      return_trace (c->check_assign (post_prime->version.major, 3,
+    hb_memcpy (post_અવિભાજ્ય, આ, post::min_size);
+    જો (!glyph_names)
+      return_trace (c->check_assign (post_અવિભાજ્ય->version.major, 3,
                                      HB_SERIALIZE_ERROR_INT_OVERFLOW)); // Version 3 does not have any glyph names.
 
-    return_trace (true);
+    return_trace (સાચું);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  તાર્કિક subset (hb_subset_context_t *c) અચલ
   {
-    TRACE_SUBSET (this);
-    auto *post_prime = c->serializer->start_embed<post> ();
+    TRACE_SUBSET (આ);
+    auto *post_અવિભાજ્ય = c->serializer->start_embed<post> ();
 
-    bool glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
-    if (!serialize (c->serializer, glyph_names))
-      return_trace (false);
+    તાર્કિક glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
+    જો (!serialize (c->serializer, glyph_names))
+      return_trace (ખોટું);
 
 #ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+    જો (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
-      auto *table = post_prime;
+      auto *table = post_અવિભાજ્ય;
 
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_UNDERLINE_SIZE,   underlineThickness);
       HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_UNDERLINE_OFFSET, underlinePosition);
@@ -114,43 +114,43 @@ struct post
 #endif
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
+    જો (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
     {
-      float italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
-      if (post_prime->italicAngle.to_float () != italic_angle)
-        post_prime->italicAngle.set_float (italic_angle);
+      દશાંશ italic_angle = hb_max (-90.f, hb_min (axis_range->મધ્ય, 90.f));
+      જો (post_અવિભાજ્ય->italicAngle.to_float () != italic_angle)
+        post_અવિભાજ્ય->italicAngle.set_float (italic_angle);
     }
 
-    if (glyph_names && version.major == 2)
+    જો (glyph_names && version.major == 2)
     {
       hb_barrier ();
       return_trace (v2X.subset (c));
     }
 
-    return_trace (true);
+    return_trace (સાચું);
   }
 
-  struct accelerator_t
+  સંરચના accelerator_t
   {
-    friend struct postV2Tail;
+    friend સંરચના postV2Tail;
 
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<post> (face);
-      unsigned int table_length = table.get_length ();
+      unsigned પૂર્ણાંક table_length = table.get_length ();
 
       version = table->version.to_int ();
-      if (version != 0x00020000) return;
+      જો (version != 0x00020000) પાછા;
       hb_barrier ();
 
-      const postV2Tail &v2 = table->v2X;
+      અચલ postV2Tail &v2 = table->v2X;
 
       glyphNameIndex = &v2.glyphNameIndex;
       pool = &StructAfter<uint8_t> (v2.glyphNameIndex);
 
-      const uint8_t *end = (const uint8_t *) (const void *) table + table_length;
-      index_to_offset.alloc (hb_min (face->get_num_glyphs (), table_length / 8));
-      for (const uint8_t *data = pool;
+      અચલ uint8_t *end = (અચલ uint8_t *) (અચલ શૂન્ય *) table + table_length;
+      index_to_offset.alloc (hb_min (face->get_અંક_glyphs (), table_length / 8));
+      માટે (અચલ uint8_t *data = pool;
 	   index_to_offset.length < 65535 && data < end && data + *data < end;
 	   data += 1 + *data)
 	index_to_offset.push (data - pool);
@@ -161,150 +161,150 @@ struct post
       table.destroy ();
     }
 
-    bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+    તાર્કિક get_glyph_name (hb_codepoint_t glyph,
+			 અક્ષર *buf, unsigned પૂર્ણાંક buf_len) અચલ
     {
       hb_bytes_t s = find_glyph_name (glyph);
-      if (!s.length) return false;
-      if (!buf_len) return true;
-      unsigned int len = hb_min (buf_len - 1, s.length);
+      જો (!s.length) પાછા ખોટું;
+      જો (!buf_len) પાછા સાચું;
+      unsigned પૂર્ણાંક len = hb_min (buf_len - 1, s.length);
       strncpy (buf, s.arrayZ, len);
       buf[len] = '\0';
-      return true;
+      પાછા સાચું;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
-			      hb_codepoint_t *glyph) const
+    તાર્કિક get_glyph_from_name (અચલ અક્ષર *name, પૂર્ણાંક len,
+			      hb_codepoint_t *glyph) અચલ
     {
-      unsigned int count = get_glyph_count ();
-      if (unlikely (!count)) return false;
+      unsigned પૂર્ણાંક ગણતરી = get_glyph_ગણતરી ();
+      જો (unlikely (!ગણતરી)) પાછા ખોટું;
 
-      if (len < 0) len = strlen (name);
+      જો (len < 0) len = strlen (name);
 
-      if (unlikely (!len)) return false;
+      જો (unlikely (!len)) પાછા ખોટું;
 
     retry:
       uint16_t *gids = gids_sorted_by_name.get_acquire ();
 
-      if (unlikely (!gids))
+      જો (unlikely (!gids))
       {
-	gids = (uint16_t *) hb_malloc2 (count, sizeof (gids[0]));
-	if (unlikely (!gids))
-	  return false; /* Anything better?! */
+	gids = (uint16_t *) hb_malloc2 (ગણતરી, કદ (gids[0]));
+	જો (unlikely (!gids))
+	  પાછા ખોટું; /* Anything better?! */
 
-	for (unsigned int i = 0; i < count; i++)
+	માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
 	  gids[i] = i;
-	auto thiz = this;
-	hb_array_t<uint16_t> (gids, count)
-	  .qsort ([thiz] (const uint16_t &a, const uint16_t &b) {
+	auto thiz = આ;
+	hb_array_t<uint16_t> (gids, ગણતરી)
+	  .qsort ([thiz] (અચલ uint16_t &a, અચલ uint16_t &b) {
 	    /* hb_array_t::cmp has reversed argument order, so
 	     * x.cmp(y) returns sign of (y - x).  Pass (b, a) to
 	     * get standard "negative when a < b" ordering. */
-	    return thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
+	    પાછા thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
 	  });
 
-	if (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
+	જો (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
 	{
 	  hb_free (gids);
-	  goto retry;
+	  જાઓ retry;
 	}
       }
 
       hb_bytes_t st (name, len);
-      auto* gid = hb_bsearch (st, gids, count, sizeof (gids[0]), cmp_key, (void *) this);
-      if (gid)
+      auto* gid = hb_bsearch (st, gids, ગણતરી, કદ (gids[0]), cmp_ચાવી, (શૂન્ય *) આ);
+      જો (gid)
       {
 	*glyph = *gid;
-	return true;
+	પાછા સાચું;
       }
 
-      return false;
+      પાછા ખોટું;
     }
 
     hb_blob_ptr_t<post> table;
 
-    protected:
+    સુરક્ષિત:
 
-    unsigned int get_glyph_count () const
+    unsigned પૂર્ણાંક get_glyph_ગણતરી () અચલ
     {
-      if (version == 0x00010000)
+      જો (version == 0x00010000)
       {
         hb_barrier ();
-	return format1_names_length;
+	પાછા format1_names_length;
       }
 
-      if (version == 0x00020000)
+      જો (version == 0x00020000)
       {
         hb_barrier ();
-	return glyphNameIndex->len;
+	પાછા glyphNameIndex->len;
       }
 
-      return 0;
+      પાછા 0;
     }
 
-    static int cmp_key (const void *pk, const void *po, void *arg)
+    સ્થિર પૂર્ણાંક cmp_ચાવી (અચલ શૂન્ય *pk, અચલ શૂન્ય *po, શૂન્ય *arg)
     {
-      const accelerator_t *thiz = (const accelerator_t *) arg;
-      const hb_bytes_t *key = (const hb_bytes_t *) pk;
-      uint16_t o = * (const uint16_t *) po;
-      return thiz->find_glyph_name (o).cmp (*key);
+      અચલ accelerator_t *thiz = (અચલ accelerator_t *) arg;
+      અચલ hb_bytes_t *key = (અચલ hb_bytes_t *) pk;
+      uint16_t o = * (અચલ uint16_t *) po;
+      પાછા thiz->find_glyph_name (o).cmp (*key);
     }
 
-    hb_bytes_t find_glyph_name (hb_codepoint_t glyph) const
+    hb_bytes_t find_glyph_name (hb_codepoint_t glyph) અચલ
     {
-      if (version == 0x00010000)
+      જો (version == 0x00010000)
       {
         hb_barrier ();
-	if (glyph >= format1_names_length)
-	  return hb_bytes_t ();
+	જો (glyph >= format1_names_length)
+	  પાછા hb_bytes_t ();
 
-	return format1_names (glyph);
+	પાછા format1_names (glyph);
       }
 
-      if (version != 0x00020000)
-	return hb_bytes_t ();
+      જો (version != 0x00020000)
+	પાછા hb_bytes_t ();
       hb_barrier ();
 
-      if (glyph >= glyphNameIndex->len)
-	return hb_bytes_t ();
+      જો (glyph >= glyphNameIndex->len)
+	પાછા hb_bytes_t ();
 
-      unsigned int index = glyphNameIndex->arrayZ[glyph];
-      if (index < format1_names_length)
-	return format1_names (index);
+      unsigned પૂર્ણાંક index = glyphNameIndex->arrayZ[glyph];
+      જો (index < format1_names_length)
+	પાછા format1_names (index);
       index -= format1_names_length;
 
-      if (index >= index_to_offset.length)
-	return hb_bytes_t ();
-      unsigned int offset = index_to_offset[index];
+      જો (index >= index_to_offset.length)
+	પાછા hb_bytes_t ();
+      unsigned પૂર્ણાંક offset = index_to_offset[index];
 
-      const uint8_t *data = pool + offset;
-      unsigned int name_length = *data;
+      અચલ uint8_t *data = pool + offset;
+      unsigned પૂર્ણાંક name_length = *data;
       data++;
 
-      return hb_bytes_t ((const char *) data, name_length);
+      પાછા hb_bytes_t ((અચલ અક્ષર *) data, name_length);
     }
 
-    private:
+    ખાનગી:
     uint32_t version;
-    const Array16Of<HBUINT16> *glyphNameIndex = nullptr;
+    અચલ Array16Of<HBUINT16> *glyphNameIndex = nullptr;
     hb_vector_t<uint32_t> index_to_offset;
-    const uint8_t *pool = nullptr;
+    અચલ uint8_t *pool = nullptr;
     mutable hb_atomic_t<uint16_t *> gids_sorted_by_name;
   };
 
-  bool has_data () const { return version.to_int (); }
+  તાર્કિક has_data () અચલ { પાછા version.to_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ) &&
 		  hb_barrier () &&
 		  (version.to_int () == 0x00010000 ||
 		   (version.to_int () == 0x00020000 && hb_barrier () && v2X.sanitize (c)) ||
 		   version.to_int () == 0x00030000));
   }
 
-  public:
+  જાહેર:
   FixedVersion<>version;		/* 0x00010000 for version 1.0
 					 * 0x00020000 for version 2.0
 					 * 0x00025000 for version 2.5 (deprecated)
@@ -340,7 +340,7 @@ struct post
   DEFINE_SIZE_MIN (32);
 };
 
-struct post_accelerator_t : post::accelerator_t {
+સંરચના post_accelerator_t : post::accelerator_t {
   post_accelerator_t (hb_face_t *face) : post::accelerator_t (face) {}
 };
 

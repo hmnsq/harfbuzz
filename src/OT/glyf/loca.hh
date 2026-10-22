@@ -2,10 +2,10 @@
 #define OT_GLYF_LOCA_HH
 
 
-#include "../../hb-open-type.hh"
+#અન્તર્ભાવ "../../hb-open-type.hh"
 
 
-namespace OT {
+નામાકાશ OT {
 
 
 /*
@@ -15,23 +15,23 @@ namespace OT {
 #define HB_OT_TAG_loca HB_TAG('l','o','c','a')
 #define HB_OT_TAG_LOCA HB_TAG('L','O','C','A')
 
-struct loca
+સંરચના loca
 {
-  friend struct glyf;
-  friend struct glyf_accelerator_t;
+  friend સંરચના glyf;
+  friend સંરચના glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
+  સ્થિર constexpr hb_tag_t tableTag = HB_OT_TAG_loca;
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c HB_UNUSED) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (true);
+    TRACE_SANITIZE (આ);
+    return_trace (સાચું);
   }
 
-  protected:
+  સુરક્ષિત:
   UnsizedArrayOf<HBUINT8>
 		dataZ;	/* Location data. */
-  public:
+  જાહેર:
   DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */

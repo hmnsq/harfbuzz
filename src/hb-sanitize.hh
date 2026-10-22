@@ -29,9 +29,9 @@
 #ifndef HB_SANITIZE_HH
 #define HB_SANITIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-dispatch.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-blob.hh"
+#અન્તર્ભાવ "hb-dispatch.hh"
 
 
 /*
@@ -120,355 +120,355 @@
 #define HB_SANITIZE_MAX_SUBTABLES 0x4000
 #endif
 
-struct hb_sanitize_context_t :
-       hb_dispatch_context_t<hb_sanitize_context_t, bool, HB_DEBUG_SANITIZE>
+સંરચના hb_sanitize_context_t :
+       hb_dispatch_context_t<hb_sanitize_context_t, તાર્કિક, HB_DEBUG_SANITIZE>
 {
-  hb_sanitize_context_t (const char *start_ = nullptr, const char *end_ = nullptr) :
+  hb_sanitize_context_t (અચલ અક્ષર *start_ = nullptr, અચલ અક્ષર *end_ = nullptr) :
 	start (start_), end (end_),
 	length (0),
 	max_ops (0), max_subtables (0),
         recursion_depth (0),
-	writable (false),
+	writable (ખોટું),
 	blob (nullptr),
-	num_glyphs (65536),
-	num_glyphs_set (false),
-	lazy_some_gpos (false) {}
+	અંક_glyphs (65536),
+	અંક_glyphs_set (ખોટું),
+	lazy_some_gpos (ખોટું) {}
 
-  const char *get_name () { return "SANITIZE"; }
+  અચલ અક્ષર *get_name () { પાછા "SANITIZE"; }
   template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format)
+  તાર્કિક may_dispatch (અચલ T *obj HB_UNUSED, અચલ F *format)
   {
-    return format->sanitize (this) &&
+    પાછા format->sanitize (આ) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  સ્થિર return_t default_return_કિંમત () { પાછા સાચું; }
+  સ્થિર return_t no_dispatch_return_કિંમત () { પાછા ખોટું; }
+  તાર્કિક stop_sublookup_iteration (અચલ return_t r) અચલ { પાછા !r; }
 
-  bool visit_subtables (unsigned count)
+  તાર્કિક visit_subtables (unsigned ગણતરી)
   {
-    max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    max_subtables += ગણતરી;
+    પાછા max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
-  private:
+  ખાનગી:
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.sanitize (this, std::forward<Ts> (ds)...) )
+  _dispatch (અચલ T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.sanitize (આ, std::forward<Ts> (ds)...) )
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
+  _dispatch (અચલ T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (આ, std::forward<Ts> (ds)...) )
+  જાહેર:
   template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  dispatch (અચલ T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_sanitize_context_t (hb_blob_t *b) : hb_sanitize_context_t ()
   {
     init (b);
 
-    if (blob)
+    જો (blob)
       start_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
+    જો (blob)
       end_processing ();
   }
 
-  void init (hb_blob_t *b)
+  શૂન્ય init (hb_blob_t *b)
   {
-    this->blob = hb_blob_reference (b);
-    this->writable = false;
+    આ->blob = hb_blob_reference (b);
+    આ->writable = ખોટું;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  શૂન્ય set_અંક_glyphs (unsigned પૂર્ણાંક અંક_glyphs_2)
   {
-    num_glyphs = num_glyphs_;
-    num_glyphs_set = true;
+    અંક_glyphs = અંક_glyphs_2;
+    અંક_glyphs_set = સાચું;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  unsigned પૂર્ણાંક get_અંક_glyphs () { પાછા અંક_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  શૂન્ય set_max_ops (પૂર્ણાંક max_ops_) { max_ops = max_ops_; }
 
   template <typename T>
-  void set_object (const T *obj)
+  શૂન્ય set_object (અચલ T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    જો (!obj) પાછા;
 
-    const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    અચલ અક્ષર *obj_start = (અચલ અક્ષર *) obj;
+    જો (unlikely (obj_start < આ->start || આ->end <= obj_start))
     {
-      this->start = this->end = nullptr;
-      this->length = 0;
+      આ->start = આ->end = nullptr;
+      આ->length = 0;
     }
-    else
+    નહીંતર
     {
-      this->start = obj_start;
-      this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
-      this->length = this->end - this->start;
+      આ->start = obj_start;
+      આ->end   = obj_start + hb_min (size_t (આ->end - obj_start), obj->get_size ());
+      આ->length = આ->end - આ->start;
     }
   }
 
-  void reset_object ()
+  શૂન્ય reset_object ()
   {
-    if (this->blob)
+    જો (આ->blob)
     {
-      this->start = this->blob->data;
-      this->end = this->start + this->blob->length;
+      આ->start = આ->blob->data;
+      આ->end = આ->start + આ->blob->length;
     }
-    this->length = this->end - this->start;
-    assert (this->start <= this->end); /* Must not overflow. */
+    આ->length = આ->end - આ->start;
+    પ્રતિજ્ઞા (આ->start <= આ->end); /* Must not overflow. */
   }
 
-  void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
+  શૂન્ય start_processing (અચલ અક્ષર *start_ = nullptr, અચલ અક્ષર *end_ = nullptr)
   {
-    if (start_)
+    જો (start_)
     {
-      this->start = start_;
-      this->end = end_;
+      આ->start = start_;
+      આ->end = end_;
     }
     reset_object ();
     unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
-      this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
-      this->max_ops = hb_clamp (m,
+    જો (unlikely (hb_unsigned_mul_overflows (આ->end - આ->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
+      આ->max_ops = HB_SANITIZE_MAX_OPS_MAX;
+    નહીંતર
+      આ->max_ops = hb_clamp (m,
 				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
 				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
-    this->debug_depth = 0;
-    this->recursion_depth = 0;
+    આ->debug_depth = 0;
+    આ->recursion_depth = 0;
 
-    DEBUG_MSG_LEVEL (SANITIZE, start, 0, +1,
+    DEBUG_સંદેશ_LEVEL (SANITIZE, start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     આ->start, આ->end,
+		     (unsigned long) (આ->end - આ->start));
   }
 
-  void end_processing ()
+  શૂન્ય end_processing ()
   {
-    DEBUG_MSG_LEVEL (SANITIZE, this->start, 0, -1,
+    DEBUG_સંદેશ_LEVEL (SANITIZE, આ->start, 0, -1,
 		     "end [%p..%p]",
-		     this->start, this->end);
+		     આ->start, આ->end);
 
-    hb_blob_destroy (this->blob);
-    this->blob = nullptr;
-    this->start = this->end = nullptr;
-    this->length = 0;
+    hb_blob_destroy (આ->blob);
+    આ->blob = nullptr;
+    આ->start = આ->end = nullptr;
+    આ->length = 0;
   }
 
-  bool check_ops(unsigned count)
+  તાર્કિક check_ops(unsigned ગણતરી)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    જો (unlikely (આ->max_ops < 0 || ગણતરી >= (unsigned) આ->max_ops))
     {
-      this->max_ops = -1;
-      return false;
+      આ->max_ops = -1;
+      પાછા ખોટું;
     }
-    this->max_ops -= (int) count;
-    return true;
+    આ->max_ops -= (પૂર્ણાંક) ગણતરી;
+    પાછા સાચું;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_range (const void *base,
-		    unsigned int len) const
+  તાર્કિક check_range (અચલ શૂન્ય *base,
+		    unsigned પૂર્ણાંક len) અચલ
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
-	      ((this->max_ops -= len) > 0);
+    અચલ અક્ષર *p = (અચલ અક્ષર *) base;
+    તાર્કિક ok = (uintptr_t) (p - આ->start) <= આ->length &&
+	      (unsigned પૂર્ણાંક) (આ->end - p) >= len &&
+	      ((આ->max_ops -= len) > 0);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_સંદેશ_LEVEL (SANITIZE, p, આ->debug_depth+1, 0,
 		     "check_range [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     આ->start, આ->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    પાછા likely (ok);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_range_fast (const void *base,
-			 unsigned int len) const
+  તાર્કિક check_range_fast (અચલ શૂન્ય *base,
+			 unsigned પૂર્ણાંક len) અચલ
   {
-    const char *p = (const char *) base;
-    bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+    અચલ અક્ષર *p = (અચલ અક્ષર *) base;
+    તાર્કિક ok = ((uintptr_t) (p - આ->start) <= આ->length &&
+	       (unsigned પૂર્ણાંક) (આ->end - p) >= len);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_સંદેશ_LEVEL (SANITIZE, p, આ->debug_depth+1, 0,
 		     "check_range_fast [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     આ->start, આ->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    પાછા likely (ok);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_point (const void *base) const
+  તાર્કિક check_point (અચલ શૂન્ય *base) અચલ
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length;
+    અચલ અક્ષર *p = (અચલ અક્ષર *) base;
+    તાર્કિક ok = (uintptr_t) (p - આ->start) <= આ->length;
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_સંદેશ_LEVEL (SANITIZE, p, આ->debug_depth+1, 0,
 		     "check_point [%p]"
 		     " in [%p..%p] -> %s",
 		     p,
-		     this->start, this->end,
+		     આ->start, આ->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    પાછા likely (ok);
   }
 
   template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  તાર્કિક check_range (અચલ T *base,
+		    unsigned પૂર્ણાંક a,
+		    unsigned પૂર્ણાંક b) અચલ
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m);
+    પાછા !hb_unsigned_mul_overflows (a, b, &m) &&
+	   આ->check_range (base, m);
   }
 
   template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+  તાર્કિક check_range (અચલ T *base,
+		    unsigned પૂર્ણાંક a,
+		    unsigned પૂર્ણાંક b,
+		    unsigned પૂર્ણાંક c) અચલ
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m, c);
+    પાછા !hb_unsigned_mul_overflows (a, b, &m) &&
+	   આ->check_range (base, m, c);
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  તાર્કિક check_array_sized (અચલ T *base, unsigned પૂર્ણાંક len, unsigned len_size) અચલ
   {
-    if (len_size >= 4)
+    જો (len_size >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      જો (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
+	પાછા ખોટું;
     }
-    else
+    નહીંતર
       len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    પાછા આ->check_range (base, len);
   }
 
   template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  તાર્કિક check_array (અચલ T *base, unsigned પૂર્ણાંક len) અચલ
   {
-    return this->check_range (base, len, hb_static_size (T));
+    પાછા આ->check_range (base, len, hb_static_size (T));
   }
 
   template <typename T>
-  bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  તાર્કિક check_array (અચલ T *base,
+		    unsigned પૂર્ણાંક a,
+		    unsigned પૂર્ણાંક b) અચલ
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    પાછા આ->check_range (base, hb_static_size (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  તાર્કિક check_start_recursion (પૂર્ણાંક max_depth)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    જો (unlikely (recursion_depth >= max_depth)) પાછા ખોટું;
+    પાછા ++recursion_depth;
   }
 
-  bool end_recursion (bool result)
+  તાર્કિક end_recursion (તાર્કિક result)
   {
     recursion_depth--;
-    return result;
+    પાછા result;
   }
 
   template <typename Type>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_struct (const Type *obj) const
+  તાર્કિક check_struct (અચલ Type *obj) અચલ
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    જો (કદ (uintptr_t) == કદ (uint32_t))
+      પાછા likely (આ->check_range_fast (obj, obj->min_size));
+    નહીંતર
+      પાછા likely (આ->check_point ((અચલ અક્ષર *) obj + obj->min_size));
   }
 
   template <typename Type>
   hb_blob_t *sanitize_blob (hb_blob_t *blob)
   {
-    bool sane;
+    તાર્કિક sane;
 
     init (blob);
 
-    DEBUG_MSG_FUNC (SANITIZE, start, "start");
+    DEBUG_સંદેશ_FUNC (SANITIZE, start, "start");
 
     start_processing ();
 
-    if (unlikely (!start))
+    જો (unlikely (!start))
     {
       end_processing ();
-      return blob;
+      પાછા blob;
     }
 
-    Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
+    Type *t = reinterpret_cast<Type *> (const_cast<અક્ષર *> (start));
 
-    sane = t->sanitize (this);
+    sane = t->sanitize (આ);
 
     end_processing ();
 
-    DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    DEBUG_સંદેશ_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
+    જો (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      પાછા blob;
     }
-    else
+    નહીંતર
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      પાછા hb_blob_get_empty ();
     }
   }
 
   template <typename Type>
-  hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
+  hb_blob_t *reference_table (અચલ hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
   {
-    if (!num_glyphs_set)
-      set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    જો (!અંક_glyphs_set)
+      set_અંક_glyphs (hb_face_get_glyph_ગણતરી (face));
+    પાછા sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
   }
 
-  const char *start, *end;
+  અચલ અક્ષર *start, *end;
   unsigned length;
-  mutable int max_ops, max_subtables;
-  private:
-  int recursion_depth;
-  bool writable;
+  mutable પૂર્ણાંક max_ops, max_subtables;
+  ખાનગી:
+  પૂર્ણાંક recursion_depth;
+  તાર્કિક writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
-  bool  num_glyphs_set;
-  public:
-  bool lazy_some_gpos;
+  unsigned પૂર્ણાંક અંક_glyphs;
+  તાર્કિક  અંક_glyphs_set;
+  જાહેર:
+  તાર્કિક lazy_some_gpos;
 };
 
-struct hb_sanitize_with_object_t
+સંરચના hb_sanitize_with_object_t
 {
   template <typename T>
-  hb_sanitize_with_object_t (hb_sanitize_context_t *c, const T& obj) : c (c)
+  hb_sanitize_with_object_t (hb_sanitize_context_t *c, અચલ T& obj) : c (c)
   { c->set_object (obj); }
   ~hb_sanitize_with_object_t ()
   { c->reset_object (); }
 
-  private:
+  ખાનગી:
   hb_sanitize_context_t *c;
 };
 

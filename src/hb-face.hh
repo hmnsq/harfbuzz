@@ -29,11 +29,11 @@
 #ifndef HB_FACE_HH
 #define HB_FACE_HH
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-ot-face.hh"
+#અન્તર્ભાવ "hb-shaper.hh"
+#અન્તર્ભાવ "hb-shape-plan.hh"
+#અન્તર્ભાવ "hb-ot-face.hh"
 
 
 /*
@@ -41,73 +41,73 @@
  */
 
 #define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, face);
-#include "hb-shaper-list.hh"
+#અન્તર્ભાવ "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
-struct hb_face_t
+સંરચના hb_face_t
 {
   hb_object_header_t header;
 
-  unsigned int index;			/* Face index in a collection, zero-based. */
+  unsigned પૂર્ણાંક index;			/* Face index in a collection, zero-based. */
   mutable hb_atomic_t<unsigned> upem;	/* Units-per-EM. */
-  mutable hb_atomic_t<unsigned> num_glyphs;/* Number of glyphs. */
+  mutable hb_atomic_t<unsigned> અંક_glyphs;/* Number of glyphs. */
 
   hb_reference_table_func_t  reference_table_func;
-  void                      *user_data;
+  શૂન્ય                      *user_data;
   hb_destroy_func_t          destroy;
 
   hb_get_table_tags_func_t   get_table_tags_func;
-  void                      *get_table_tags_user_data;
+  શૂન્ય                      *get_table_tags_user_data;
   hb_destroy_func_t          get_table_tags_destroy;
 
   hb_shaper_object_dataset_t<hb_face_t> data;/* Various shaper data. */
   hb_ot_face_t table;			/* All the face's tables. */
 
   /* Cache */
-  struct plan_node_t
+  સંરચના plan_ગાંઠ_t
   {
     hb_shape_plan_t *shape_plan;
-    plan_node_t *next;
+    plan_ગાંઠ_t *next;
   };
 #ifndef HB_NO_SHAPER
-  hb_atomic_t<plan_node_t *> shape_plans;
+  hb_atomic_t<plan_ગાંઠ_t *> shape_plans;
 #endif
 
-  hb_blob_t *reference_table (hb_tag_t tag) const
+  hb_blob_t *reference_table (hb_tag_t tag) અચલ
   {
     hb_blob_t *blob;
 
-    if (unlikely (!reference_table_func))
-      return hb_blob_get_empty ();
+    જો (unlikely (!reference_table_func))
+      પાછા hb_blob_get_empty ();
 
-    blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (this), tag, user_data);
-    if (unlikely (!blob))
-      return hb_blob_get_empty ();
+    blob = reference_table_func (/*Oh, well.*/const_cast<hb_face_t *> (આ), tag, user_data);
+    જો (unlikely (!blob))
+      પાછા hb_blob_get_empty ();
 
-    return blob;
+    પાછા blob;
   }
 
-  unsigned int get_upem () const
+  unsigned પૂર્ણાંક get_upem () અચલ
   {
-    unsigned int ret = upem;
-    if (unlikely (!ret))
+    unsigned પૂર્ણાંક ret = upem;
+    જો (unlikely (!ret))
     {
-      return load_upem ();
+      પાછા load_upem ();
     }
-    return ret;
+    પાછા ret;
   }
 
-  unsigned int get_num_glyphs () const
+  unsigned પૂર્ણાંક get_અંક_glyphs () અચલ
   {
-    unsigned int ret = num_glyphs;
-    if (unlikely (ret == UINT_MAX))
-      return load_num_glyphs ();
-    return ret;
+    unsigned પૂર્ણાંક ret = અંક_glyphs;
+    જો (unlikely (ret == UINT_MAX))
+      પાછા load_અંક_glyphs ();
+    પાછા ret;
   }
 
-  private:
-  HB_INTERNAL unsigned int load_upem () const;
-  HB_INTERNAL unsigned int load_num_glyphs () const;
+  ખાનગી:
+  HB_INTERNAL unsigned પૂર્ણાંક load_upem () અચલ;
+  HB_INTERNAL unsigned પૂર્ણાંક load_અંક_glyphs () અચલ;
 };
 DECLARE_NULL_INSTANCE (hb_face_t);
 

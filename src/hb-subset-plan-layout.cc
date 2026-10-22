@@ -24,42 +24,42 @@
  * Google Author(s): Garret Rieger, Qunxin Liu, Roderick Sheeter
  */
 
-#include "hb-subset-plan.hh"
+#અન્તર્ભાવ "hb-subset-plan.hh"
 
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
+#અન્તર્ભાવ "hb-ot-layout-gdef-table.hh"
+#અન્તર્ભાવ "hb-ot-layout-gpos-table.hh"
+#અન્તર્ભાવ "hb-ot-layout-gsub-table.hh"
+#અન્તર્ભાવ "hb-ot-math-table.hh"
 
 using OT::Layout::GSUB;
 using OT::Layout::GPOS;
 
 #ifndef HB_NO_SUBSET_LAYOUT
 
-double
+દ્વિગુણ
 hb_subset_plan_t::layout_variation_delta (unsigned var_idx HB_UNUSED)
 {
 #ifndef HB_NO_VAR
   hb_blob_ptr_t<OT::GDEF> gdef = source_table<OT::GDEF> ();
-  double delta = gdef->get_var_store ().get_delta<double> (var_idx,
+  દ્વિગુણ delta = gdef->get_var_store ().get_delta<દ્વિગુણ> (var_idx,
                                                 normalized_coords.as_array ());
   gdef.destroy ();
-  return delta;
-#else
-  return 0.f;
+  પાછા delta;
+#નહીંતર
+  પાછા 0.f;
 #endif
 }
 
-void
+શૂન્ય
 remap_used_mark_sets (hb_subset_plan_t *plan,
                       hb_map_t& used_mark_sets_map)
 {
   hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
 
-  if (!gdef->has_data () || !gdef->has_mark_glyph_sets ())
+  જો (!gdef->has_data () || !gdef->has_mark_glyph_sets ())
   {
     gdef.destroy ();
-    return;
+    પાછા;
   }
 
   hb_set_t used_mark_sets;
@@ -73,24 +73,24 @@ remap_used_mark_sets (hb_subset_plan_t *plan,
  * Removes all tags from 'tags' that are not in filter. Additionally eliminates any duplicates.
  * Returns true if anything was removed (not including duplicates).
  */
-static bool _filter_tag_list(hb_vector_t<hb_tag_t>* tags, /* IN/OUT */
-                             const hb_set_t* filter)
+સ્થિર તાર્કિક _filter_tag_list(hb_vector_t<hb_tag_t>* tags, /* IN/OUT */
+                             અચલ hb_set_t* filter)
 {
   hb_vector_t<hb_tag_t> out;
   out.alloc (tags->get_size() + 1); // +1 is to allocate room for the null terminator.
 
-  bool removed = false;
+  તાર્કિક removed = ખોટું;
   hb_set_t visited;
 
-  for (hb_tag_t tag : *tags)
+  માટે (hb_tag_t tag : *tags)
   {
-    if (!tag) continue;
-    if (visited.has (tag)) continue;
+    જો (!tag) ચાલુ;
+    જો (visited.has (tag)) ચાલુ;
 
-    if (!filter->has (tag))
+    જો (!filter->has (tag))
     {
-      removed = true;
-      continue;
+      removed = સાચું;
+      ચાલુ;
     }
 
     visited.add (tag);
@@ -101,15 +101,15 @@ static bool _filter_tag_list(hb_vector_t<hb_tag_t>* tags, /* IN/OUT */
   out.push (HB_TAG_NONE);
 
   hb_swap (out, *tags);
-  return removed;
+  પાછા removed;
 }
 
 template <typename T>
-static bool
+સ્થિર તાર્કિક
 _collect_instanced_lookup_variations (
     hb_subset_plan_t *plan,
-    const T& table,
-    const hb_set_t *feature_indices,
+    અચલ T& table,
+    અચલ hb_set_t *feature_indices,
     hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations)
 {
   hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
@@ -117,7 +117,7 @@ _collect_instanced_lookup_variations (
 				       plan->normalized_coords.as_array ());
   hb_vector_t<unsigned> state;
   unsigned variations_index;
-  bool success = table.get_feature_variations_state (
+  તાર્કિક success = table.get_feature_variations_state (
 	plan->normalized_coords.arrayZ,
 	plan->normalized_coords.length,
 	&variations_index,
@@ -125,54 +125,54 @@ _collect_instanced_lookup_variations (
 	&state);
   gdef.destroy ();
 
-  if (unlikely (!success || state.in_error ()))
-    return plan->check_success (false);
+  જો (unlikely (!success || state.in_error ()))
+    પાછા plan->check_success (ખોટું);
 
-  const auto &variations = table.get_feature_variations ();
-  for (const auto &record : variations.get_lookup_variation_records ())
+  અચલ auto &variations = table.get_feature_variations ();
+  માટે (અચલ auto &record : variations.get_lookup_variation_records ())
   {
     unsigned feature_index = record.get_feature_index ();
-    if (!feature_indices->has (feature_index)) continue;
+    જો (!feature_indices->has (feature_index)) ચાલુ;
 
     hb::shared_ptr<hb_set_t> lookups {hb_set_create ()};
     record.collect_lookups (&variations,
                            table.get_feature_variation (feature_index, variations_index),
                            state.as_sorted_array (), lookups);
 
-    if (unlikely (lookups->in_error () ||
+    જો (unlikely (lookups->in_error () ||
 		  !lookup_variations->set (feature_index, lookups)))
-      return plan->check_success (false);
+      પાછા plan->check_success (ખોટું);
   }
 
-  return true;
+  પાછા સાચું;
 }
 
 template <typename T>
-static void _collect_layout_indices (hb_subset_plan_t     *plan,
-                                     const T&              table,
+સ્થિર શૂન્ય _collect_layout_indices (hb_subset_plan_t     *plan,
+                                     અચલ T&              table,
                                      hb_set_t		  *lookup_indices, /* OUT */
                                      hb_set_t		  *feature_indices, /* OUT */
                                      hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* OUT */
-                                     hb_hashmap_t<unsigned, const OT::Feature*> *feature_substitutes_map, /* OUT */
+                                     hb_hashmap_t<unsigned, અચલ OT::Feature*> *feature_substitutes_map, /* OUT */
                                      hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations, /* OUT */
                                      hb_set_t& catch_all_record_feature_idxes, /* OUT */
-                                     hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map /* OUT */)
+                                     hb_hashmap_t<unsigned, hb_pair_t<અચલ શૂન્ય*, અચલ શૂન્ય*>>& catch_all_record_idx_feature_map /* OUT */)
 {
-  unsigned num_features = table.get_feature_count ();
+  unsigned અંક_features = table.get_feature_ગણતરી ();
   hb_vector_t<hb_tag_t> features;
-  if (!plan->check_success (features.resize (num_features))) return;
-  table.get_feature_tags (0, &num_features, features.arrayZ);
-  bool retain_all_features = !_filter_tag_list (&features, &plan->layout_features);
+  જો (!plan->check_success (features.resize (અંક_features))) પાછા;
+  table.get_feature_tags (0, &અંક_features, features.arrayZ);
+  તાર્કિક retain_all_features = !_filter_tag_list (&features, &plan->layout_features);
 
-  unsigned num_scripts = table.get_script_count ();
+  unsigned અંક_scripts = table.get_script_ગણતરી ();
   hb_vector_t<hb_tag_t> scripts;
-  if (!plan->check_success (scripts.resize (num_scripts))) return;
-  table.get_script_tags (0, &num_scripts, scripts.arrayZ);
-  bool retain_all_scripts = !_filter_tag_list (&scripts, &plan->layout_scripts);
+  જો (!plan->check_success (scripts.resize (અંક_scripts))) પાછા;
+  table.get_script_tags (0, &અંક_scripts, scripts.arrayZ);
+  તાર્કિક retain_all_scripts = !_filter_tag_list (&scripts, &plan->layout_scripts);
 
-  if (!plan->check_success (!features.in_error ()) || !features
+  જો (!plan->check_success (!features.in_error ()) || !features
       || !plan->check_success (!scripts.in_error ()) || !scripts)
-    return;
+    પાછા;
 
   hb_ot_layout_collect_features (plan->source,
                                  T::tableTag,
@@ -183,7 +183,7 @@ static void _collect_layout_indices (hb_subset_plan_t     *plan,
 
 #ifndef HB_NO_VAR
   // collect feature substitutes with variations
-  if (!plan->user_axes_location.is_empty ())
+  જો (!plan->user_axes_location.is_empty ())
   {
     hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
     OT::ItemVarStoreInstancer instancer (&gdef->get_var_store (), nullptr,
@@ -197,9 +197,9 @@ static void _collect_layout_indices (hb_subset_plan_t     *plan,
       feature_substitutes_map,
       catch_all_record_feature_idxes,
       feature_indices,
-      false,
-      false,
-      false,
+      ખોટું,
+      ખોટું,
+      ખોટું,
       0,
       &conditionset_map,
       &instancer,
@@ -211,43 +211,43 @@ static void _collect_layout_indices (hb_subset_plan_t     *plan,
 #endif
 
 #ifndef HB_NO_VAR
-  if (plan->all_axes_pinned &&
+  જો (plan->all_axes_pinned &&
       !_collect_instanced_lookup_variations (plan, table, feature_indices, lookup_variations))
-    return;
+    પાછા;
 #endif
 
-  for (unsigned feature_index : *feature_indices)
+  માટે (unsigned feature_index : *feature_indices)
   {
     hb::shared_ptr<hb_set_t> *lookups;
-    if (lookup_variations->has (feature_index, &lookups))
+    જો (lookup_variations->has (feature_index, &lookups))
     {
       lookup_indices->union_ (**lookups);
-      continue;
+      ચાલુ;
     }
 
-    const OT::Feature* f = &(table.get_feature (feature_index));
-    const OT::Feature **p = nullptr;
-    if (feature_substitutes_map->has (feature_index, &p))
+    અચલ OT::Feature* f = &(table.get_feature (feature_index));
+    અચલ OT::Feature **p = nullptr;
+    જો (feature_substitutes_map->has (feature_index, &p))
       f = *p;
 
     f->add_lookup_indexes_to (lookup_indices);
   }
 
 #ifndef HB_NO_VAR
-  if (catch_all_record_feature_idxes)
+  જો (catch_all_record_feature_idxes)
   {
-    for (unsigned feature_index : catch_all_record_feature_idxes)
+    માટે (unsigned feature_index : catch_all_record_feature_idxes)
     {
-      const OT::Feature& f = table.get_feature (feature_index);
+      અચલ OT::Feature& f = table.get_feature (feature_index);
       f.add_lookup_indexes_to (lookup_indices);
-      const void *tag = reinterpret_cast<const void*> (&(table.get_feature_list ().get_tag (feature_index)));
+      અચલ શૂન્ય *tag = reinterpret_cast<અચલ શૂન્ય*> (&(table.get_feature_list ().get_tag (feature_index)));
       catch_all_record_idx_feature_map.set (feature_index, hb_pair (&f, tag));
     }
   }
 
   // If all axes are pinned then all feature variations will be dropped so there's no need
   // to collect lookups from them.
-  if (!plan->all_axes_pinned)
+  જો (!plan->all_axes_pinned)
     table.feature_variation_collect_lookups (feature_indices,
                                              plan->user_axes_location.is_empty () ? nullptr: feature_record_cond_idx_map,
                                              lookup_indices);
@@ -255,87 +255,87 @@ static void _collect_layout_indices (hb_subset_plan_t     *plan,
 }
 
 
-static bool
-_features_have_equal_params (const OT::Feature &a HB_UNUSED,
-                            const OT::Feature &b HB_UNUSED,
+સ્થિર તાર્કિક
+_features_have_equal_params (અચલ OT::Feature &a HB_UNUSED,
+                            અચલ OT::Feature &b HB_UNUSED,
                             hb_tag_t tag HB_UNUSED)
 {
 #ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  if (bool (a.featureParams) != bool (b.featureParams)) return false;
-  if (!a.featureParams) return true;
-  const OT::FeatureParams &ap = a.get_feature_params ();
-  const OT::FeatureParams &bp = b.get_feature_params ();
-  if (tag == HB_TAG ('s','i','z','e'))
-    return !hb_memcmp (&ap.get_size_params (tag), &bp.get_size_params (tag),
+  જો (તાર્કિક (a.featureParams) != તાર્કિક (b.featureParams)) પાછા ખોટું;
+  જો (!a.featureParams) પાછા સાચું;
+  અચલ OT::FeatureParams &ap = a.get_feature_params ();
+  અચલ OT::FeatureParams &bp = b.get_feature_params ();
+  જો (tag == HB_TAG ('s','i','z','e'))
+    પાછા !hb_memcmp (&ap.get_size_params (tag), &bp.get_size_params (tag),
                        OT::FeatureParamsSize::static_size);
-  if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0'))
-    return !hb_memcmp (&ap.get_stylistic_set_params (tag), &bp.get_stylistic_set_params (tag),
+  જો ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0'))
+    પાછા !hb_memcmp (&ap.get_stylistic_set_params (tag), &bp.get_stylistic_set_params (tag),
                        OT::FeatureParamsStylisticSet::static_size);
-  if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0'))
+  જો ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0'))
   {
-    const auto &ac = ap.get_character_variants_params (tag);
-    const auto &bc = bp.get_character_variants_params (tag);
-    return ac.get_size () == bc.get_size () &&
+    અચલ auto &ac = ap.get_character_variants_params (tag);
+    અચલ auto &bc = bp.get_character_variants_params (tag);
+    પાછા ac.get_size () == bc.get_size () &&
            !hb_memcmp (&ac, &bc, ac.get_size ());
   }
 #endif
-  return true;
+  પાછા સાચું;
 }
 
-static inline void
-_GSUBGPOS_find_duplicate_features (const OT::GSUBGPOS &g,
-				   const hb_map_t *lookup_indices,
-				   const hb_set_t *feature_indices,
-				   const hb_hashmap_t<unsigned, const OT::Feature*> *feature_substitutes_map,
-                                   bool all_axes_pinned HB_UNUSED,
+સ્થિર અંતઃરેખ શૂન્ય
+_GSUBGPOS_find_duplicate_features (અચલ OT::GSUBGPOS &g,
+				   અચલ hb_map_t *lookup_indices,
+				   અચલ hb_set_t *feature_indices,
+				   અચલ hb_hashmap_t<unsigned, અચલ OT::Feature*> *feature_substitutes_map,
+                                   તાર્કિક all_axes_pinned HB_UNUSED,
 				   hb_map_t *duplicate_feature_map /* OUT */)
 {
-  if (feature_indices->is_empty ()) return;
+  જો (feature_indices->is_empty ()) પાછા;
 #ifndef HB_NO_VAR
   hb_set_t variable_features;
-  if (!all_axes_pinned)
+  જો (!all_axes_pinned)
     g.get_feature_variations ().collect_feature_indices (&variable_features);
-  if (unlikely (variable_features.in_error ())) return;
+  જો (unlikely (variable_features.in_error ())) પાછા;
 #endif
   hb_hashmap_t<hb_tag_t, hb::unique_ptr<hb_set_t>> unique_features;
   //find out duplicate features after subset
-  for (unsigned i : feature_indices->iter ())
+  માટે (unsigned i : feature_indices->iter ())
   {
     hb_tag_t t = g.get_feature_tag (i);
-    if (t == HB_MAP_VALUE_INVALID) continue;
-    if (!unique_features.has (t))
+    જો (t == HB_MAP_કિંમત_INVALID) ચાલુ;
+    જો (!unique_features.has (t))
     {
-      if (unlikely (!unique_features.set (t, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	return;
-      if (unique_features.has (t))
+      જો (unlikely (!unique_features.set (t, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
+	પાછા;
+      જો (unique_features.has (t))
 	unique_features.get (t)->add (i);
       duplicate_feature_map->set (i, i);
-      continue;
+      ચાલુ;
     }
 
-    bool found = false;
+    તાર્કિક found = ખોટું;
 
     hb_set_t* same_tag_features = unique_features.get (t);
-    for (unsigned other_f_index : same_tag_features->iter ())
+    માટે (unsigned other_f_index : same_tag_features->iter ())
     {
 #ifndef HB_NO_VAR
       /* Matching base lookups do not imply matching alternate behavior. */
-      if (variable_features.has (i) || variable_features.has (other_f_index) ||
+      જો (variable_features.has (i) || variable_features.has (other_f_index) ||
           g.get_feature_variations ().has_lookup_variations (i) ||
 	  g.get_feature_variations ().has_lookup_variations (other_f_index))
-	continue;
+	ચાલુ;
 #endif
 
-      const OT::Feature* f = &(g.get_feature (i));
-      const OT::Feature **p = nullptr;
-      if (feature_substitutes_map->has (i, &p))
+      અચલ OT::Feature* f = &(g.get_feature (i));
+      અચલ OT::Feature **p = nullptr;
+      જો (feature_substitutes_map->has (i, &p))
         f = *p;
 
-      const OT::Feature* other_f = &(g.get_feature (other_f_index));
-      if (feature_substitutes_map->has (other_f_index, &p))
+      અચલ OT::Feature* other_f = &(g.get_feature (other_f_index));
+      જો (feature_substitutes_map->has (other_f_index, &p))
         other_f = *p;
 
-      if (!_features_have_equal_params (*f, *other_f, t)) continue;
+      જો (!_features_have_equal_params (*f, *other_f, t)) ચાલુ;
 
       auto f_iter =
       + hb_iter (f->lookupIndex)
@@ -347,22 +347,22 @@ _GSUBGPOS_find_duplicate_features (const OT::GSUBGPOS &g,
       | hb_filter (lookup_indices)
       ;
 
-      bool is_equal = true;
-      for (; f_iter && other_f_iter; f_iter++, other_f_iter++)
+      તાર્કિક is_equal = સાચું;
+      માટે (; f_iter && other_f_iter; f_iter++, other_f_iter++)
       {
 	unsigned a = *f_iter;
 	unsigned b = *other_f_iter;
-	if (a != b) { is_equal = false; break; }
+	જો (a != b) { is_equal = ખોટું; તોડો; }
       }
 
-      if (is_equal == false || f_iter || other_f_iter) continue;
+      જો (is_equal == ખોટું || f_iter || other_f_iter) ચાલુ;
 
-      found = true;
+      found = સાચું;
       duplicate_feature_map->set (i, other_f_index);
-      break;
+      તોડો;
     }
 
-    if (found == false)
+    જો (found == ખોટું)
     {
       same_tag_features->add (i);
       duplicate_feature_map->set (i, i);
@@ -370,32 +370,32 @@ _GSUBGPOS_find_duplicate_features (const OT::GSUBGPOS &g,
   }
 }
 
-static void
-remap_feature_indices (const hb_set_t &feature_indices,
-                       const hb_map_t &duplicate_feature_map,
-                       const hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map,
+સ્થિર શૂન્ય
+remap_feature_indices (અચલ hb_set_t &feature_indices,
+                       અચલ hb_map_t &duplicate_feature_map,
+                       અચલ hb_hashmap_t<unsigned, hb_pair_t<અચલ શૂન્ય*, અચલ શૂન્ય*>>& catch_all_record_idx_feature_map,
                        hb_map_t       *mapping, /* OUT */
                        hb_map_t       *mapping_w_duplicates /* OUT */)
 {
   unsigned i = 0;
-  for (const auto _ : feature_indices)
+  માટે (અચલ auto _ : feature_indices)
   {
     // retain those features in case we need to insert a catch-all record to reinstate the old features
-    if (catch_all_record_idx_feature_map.has (_))
+    જો (catch_all_record_idx_feature_map.has (_))
     {
       mapping->set (_, i);
       mapping_w_duplicates->set (_, i);
       i++;
     }
-    else
+    નહીંતર
     {
       uint32_t f_idx = duplicate_feature_map.get (_);
       uint32_t *new_idx;
-      if (mapping-> has (f_idx, &new_idx))
+      જો (mapping-> has (f_idx, &new_idx))
       {
         mapping_w_duplicates->set (_, *new_idx);
       }
-      else
+      નહીંતર
       {
         mapping->set (_, i);
         mapping_w_duplicates->set (_, i);
@@ -406,7 +406,7 @@ remap_feature_indices (const hb_set_t &feature_indices,
 }
 
 template <typename T>
-static void
+સ્થિર શૂન્ય
 _closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
 				 hb_set_t	     *gids_to_retain,
 				 hb_map_t	     *lookups,
@@ -414,10 +414,10 @@ _closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
 				 hb_map_t	     *features_w_duplicates,
 				 script_langsys_map *langsys_map,
 				 hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-				 hb_hashmap_t<unsigned, const OT::Feature*> *feature_substitutes_map,
+				 hb_hashmap_t<unsigned, અચલ OT::Feature*> *feature_substitutes_map,
                                  hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations,
                                  hb_set_t &catch_all_record_feature_idxes,
-                                 hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map)
+                                 hb_hashmap_t<unsigned, hb_pair_t<અચલ શૂન્ય*, અચલ શૂન્ય*>>& catch_all_record_idx_feature_map)
 {
   hb_blob_ptr_t<T> table = plan->source_table<T> ();
   hb_tag_t table_tag = table->tableTag;
@@ -432,7 +432,7 @@ _closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
                               catch_all_record_feature_idxes,
                               catch_all_record_idx_feature_map);
 
-  if (table_tag == HB_OT_TAG_GSUB && !(plan->flags & HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE))
+  જો (table_tag == HB_OT_TAG_GSUB && !(plan->flags & HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE))
     hb_ot_layout_lookups_substitute_closure (plan->source,
                                              &lookup_indices,
 					     gids_to_retain);
@@ -457,11 +457,11 @@ _closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
 #ifndef HB_NO_VAR
   // Populate alternate parameter tags after deduplication. Before this point
   // the map contains only catch-all features and also controls their retention.
-  if (table->get_feature_variations ().record_count ())
-    for (auto p : *features_w_duplicates)
+  જો (table->get_feature_variations ().record_ગણતરી ())
+    માટે (auto p : *features_w_duplicates)
     {
-      const OT::Feature& f = table->get_feature (p.first);
-      const void *tag = &(table->get_feature_list ().get_tag (p.first));
+      અચલ OT::Feature& f = table->get_feature (p.first);
+      અચલ શૂન્ય *tag = &(table->get_feature_list ().get_tag (p.first));
       catch_all_record_idx_feature_map.set (p.first, hb_pair (&f, tag));
     }
 #endif
@@ -469,10 +469,10 @@ _closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
   table.destroy ();
 }
 
-void layout_nameid_closure (hb_subset_plan_t* plan,
+શૂન્ય layout_nameid_closure (hb_subset_plan_t* plan,
                              hb_set_t* drop_tables)
 {
-  if (!drop_tables->has (HB_OT_TAG_GPOS))
+  જો (!drop_tables->has (HB_OT_TAG_GPOS))
   {
     hb_blob_ptr_t<GPOS> gpos = plan->source_table<GPOS> ();
     gpos->collect_name_ids (&plan->gpos_features, &plan->name_ids,
@@ -482,7 +482,7 @@ void layout_nameid_closure (hb_subset_plan_t* plan,
                             plan->all_axes_pinned);
     gpos.destroy ();
   }
-  if (!drop_tables->has (HB_OT_TAG_GSUB))
+  જો (!drop_tables->has (HB_OT_TAG_GSUB))
   {
     hb_blob_ptr_t<GSUB> gsub = plan->source_table<GSUB> ();
     gsub->collect_name_ids (&plan->gsub_features, &plan->name_ids,
@@ -494,10 +494,10 @@ void layout_nameid_closure (hb_subset_plan_t* plan,
   }
 }
 
-void
+શૂન્ય
 layout_populate_gids_to_retain (hb_subset_plan_t* plan,
 		                hb_set_t* drop_tables) {
-  if (!drop_tables->has (HB_OT_TAG_GSUB))
+  જો (!drop_tables->has (HB_OT_TAG_GSUB))
     // closure all glyphs/lookups/features needed for GSUB substitutions.
     _closure_glyphs_lookups_features<GSUB> (
         plan,
@@ -512,7 +512,7 @@ layout_populate_gids_to_retain (hb_subset_plan_t* plan,
         plan->gsub_old_features,
         plan->gsub_old_feature_idx_tag_map);
 
-  if (!drop_tables->has (HB_OT_TAG_GPOS))
+  જો (!drop_tables->has (HB_OT_TAG_GPOS))
     _closure_glyphs_lookups_features<GPOS> (
         plan,
         &plan->_glyphset_gsub,
@@ -528,39 +528,39 @@ layout_populate_gids_to_retain (hb_subset_plan_t* plan,
 }
 
 #ifndef HB_NO_VAR
-void
+શૂન્ય
 collect_layout_variation_indices (hb_subset_plan_t* plan)
 {
   hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
   hb_blob_ptr_t<GSUB> gsub = plan->source_table<GSUB> ();
   hb_blob_ptr_t<GPOS> gpos = plan->source_table<GPOS> ();
 
-  if (!gdef->has_data () || !gdef->has_var_store ())
+  જો (!gdef->has_data () || !gdef->has_var_store ())
   {
     gdef.destroy ();
     gsub.destroy ();
     gpos.destroy ();
-    return;
+    પાછા;
   }
 
   hb_set_t varidx_set;
   OT::hb_collect_variation_indices_context_t c (&varidx_set,
                                                 &plan->_glyphset_gsub,
                                                 &plan->gpos_lookups);
-  if (plan->normalized_coords && !plan->all_axes_pinned)
-    c.condition_values = &plan->layout_condition_values;
+  જો (plan->normalized_coords && !plan->all_axes_pinned)
+    c.condition_કિંમતો = &plan->layout_condition_કિંમતો;
   gdef->collect_variation_indices (&c);
 
-  if (hb_ot_layout_has_substitution (plan->source))
+  જો (hb_ot_layout_has_substitution (plan->source))
     gsub->collect_feature_variation_indices (&c);
-  if (hb_ot_layout_has_positioning (plan->source))
+  જો (hb_ot_layout_has_positioning (plan->source))
   {
     gpos->collect_feature_variation_indices (&c);
     gpos->collect_variation_indices (&c);
   }
 
 #ifndef HB_NO_MATH
-  if (!plan->drop_tables.has (HB_OT_TAG_MATH))
+  જો (!plan->drop_tables.has (HB_OT_TAG_MATH))
   {
     hb_blob_ptr_t<OT::MATH> math = plan->source_table<OT::MATH> ();
     auto *glyph_set = c.glyph_set;
@@ -577,9 +577,9 @@ collect_layout_variation_indices (hb_subset_plan_t* plan)
                            plan->all_axes_pinned,
                            plan->layout_variation_idx_delta_map);
 
-  unsigned subtable_count = gdef->get_var_store ().get_sub_table_count ();
-  generate_varstore_inner_maps (varidx_set, subtable_count, plan->gdef_varstore_inner_maps);
-  plan->check_success (!plan->layout_condition_values.in_error ());
+  unsigned subtable_ગણતરી = gdef->get_var_store ().get_sub_table_ગણતરી ();
+  generate_varstore_inner_maps (varidx_set, subtable_ગણતરી, plan->gdef_varstore_inner_maps);
+  plan->check_success (!plan->layout_condition_કિંમતો.in_error ());
 
   gdef.destroy ();
   gsub.destroy ();

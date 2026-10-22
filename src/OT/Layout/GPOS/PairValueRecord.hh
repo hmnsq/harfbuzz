@@ -1,93 +1,93 @@
 #ifndef OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 #define OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 
-#include "ValueFormat.hh"
+#અન્તર્ભાવ "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+નામાકાશ OT {
+નામાકાશ Layout {
+નામાકાશ GPOS_impl {
 
 
-struct pair_value_record_context_t
+સંરચના pair_કિંમત_record_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
+  અચલ કિંમત_Base     *base;
+  અચલ કિંમત_Format   *કિંમત_Formats;
+  અચલ કિંમત_Format   *newFormats;
   unsigned            len1; /* valueFormats[0].get_len() */
-  const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  અચલ hb_map_t      *glyph_map;
+  અચલ hb_hashmap_t<unsigned, hb_pair_t<unsigned, પૂર્ણાંક>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  શૂન્ય copy_કિંમતો (hb_serialize_context_t *s, અચલ કિંમત *values) અચલ
   {
-    valueFormats[0].copy_values (s, newFormats[0], base, values,
+    કિંમત_Formats[0].copy_કિંમતો (s, newFormats[0], base, values,
                                 layout_variation_idx_delta_map);
-    valueFormats[1].copy_values (s, newFormats[1], base, values + len1,
+    કિંમત_Formats[1].copy_કિંમતો (s, newFormats[1], base, values + len1,
                                 layout_variation_idx_delta_map);
   }
 };
 
 template <typename Types>
-struct PairValueRecord
+સંરચના Pair_કિંમત_Record
 {
   template <typename Types2>
-  friend struct PairSet;
+  friend સંરચના PairSet;
 
-  protected:
+  સુરક્ષિત:
   typename Types::HBGlyphID
 	        secondGlyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
-  ValueRecord   values;                 /* Positioning data for the first glyph
+  કિંમત_Record   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
-  public:
+  જાહેર:
   DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  પૂર્ણાંક cmp (hb_codepoint_t k) અચલ
+  { પાછા secondGlyph.cmp (k); }
 
-  bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+  તાર્કિક subset (hb_subset_context_t *c,
+               pair_કિંમત_record_context_t *closure) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     auto *s = c->serializer;
-    auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    auto *out = s->start_embed (*આ);
+    જો (unlikely (!s->extend_min (out))) return_trace (ખોટું);
 
     out->secondGlyph = (*closure->glyph_map)[secondGlyph];
 
-    closure->copy_values (s, values);
+    closure->copy_કિંમતો (s, values);
 
-    return_trace (true);
+    return_trace (સાચું);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+  શૂન્ય collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  અચલ કિંમત_Format *કિંમત_Formats,
+                                  અચલ કિંમત_Base *base) અચલ
   {
-    unsigned record1_len = valueFormats[0].get_len ();
-    unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    unsigned record1_len = કિંમત_Formats[0].get_len ();
+    unsigned record2_len = કિંમત_Formats[1].get_len ();
+    અચલ hb_array_t<અચલ કિંમત> કિંમતો_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
-      valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
+    જો (કિંમત_Formats[0].has_device ())
+      કિંમત_Formats[0].collect_variation_indices (c, base, કિંમતો_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
-      valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
+    જો (કિંમત_Formats[1].has_device ())
+      કિંમત_Formats[1].collect_variation_indices (c, base, કિંમતો_array.sub_array (record1_len, record2_len));
   }
 
-  bool intersects (const hb_set_t& glyphset) const
+  તાર્કિક intersects (અચલ hb_set_t& glyphset) અચલ
   {
-    return glyphset.has(secondGlyph);
+    પાછા glyphset.has(secondGlyph);
   }
 
-  const Value* get_values_1 () const
+  અચલ કિંમત* get_કિંમતો_1 () અચલ
   {
-    return &values[0];
+    પાછા &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  અચલ કિંમત* get_કિંમતો_2 (કિંમત_Format format1) અચલ
   {
-    return &values[format1.get_len ()];
+    પાછા &values[format1.get_len ()];
   }
 };
 

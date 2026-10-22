@@ -23,124 +23,124 @@
  *
  */
 
-#ifndef HB_NUMBER_CC
-#define HB_NUMBER_CC
-#ifdef HB_NUMBER_CC /* Pacify -Wunused-macros. */
+#ifndef HB_સંખ્યા_CC
+#define HB_સંખ્યા_CC
+#ifdef HB_સંખ્યા_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
-#include "hb-number.hh"
-#include "hb-number-parser.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-number.hh"
+#અન્તર્ભાવ "hb-number-parser.hh"
 
-bool
-hb_parse_double (const char **pp, const char *end, double *pv, bool whole_buffer)
+તાર્કિક
+hb_parse_double (અચલ અક્ષર **pp, અચલ અક્ષર *end, દ્વિગુણ *pv, તાર્કિક whole_buffer)
 {
-  const char *pend = end;
-  double value = hb_strtod (*pp, &pend);
-  if (unlikely (*pp == pend)) return false;
-  if (unlikely (whole_buffer && end != pend)) return false;
+  અચલ અક્ષર *pend = end;
+  દ્વિગુણ value = hb_strtod (*pp, &pend);
+  જો (unlikely (*pp == pend)) પાછા ખોટું;
+  જો (unlikely (whole_buffer && end != pend)) પાછા ખોટું;
   *pv = value;
   *pp = pend;
-  return true;
+  પાછા સાચું;
 }
 
 /* Returns the digit value of c in the given base (2..36), or -1 if c
  * isn't a digit in that base. */
-static int
-_hb_digit_value (char c, int base)
+સ્થિર પૂર્ણાંક
+hb_digit_કિંમત (અક્ષર c, પૂર્ણાંક base)
 {
-  int d;
-  if ('0' <= c && c <= '9')      d = c - '0';
-  else if ('a' <= c && c <= 'z') d = c - 'a' + 10;
-  else if ('A' <= c && c <= 'Z') d = c - 'A' + 10;
-  else return -1;
-  return d < base ? d : -1;
+  પૂર્ણાંક d;
+  જો ('0' <= c && c <= '9')      d = c - '0';
+  નહીંતર જો ('a' <= c && c <= 'z') d = c - 'a' + 10;
+  નહીંતર જો ('A' <= c && c <= 'Z') d = c - 'A' + 10;
+  નહીંતર પાછા -1;
+  પાછા d < base ? d : -1;
 }
 
 /* Consumes digits in [p, pe) into *value (magnitude).  Sets *overflow
  * if the value would exceed UINT64_MAX.  Sets *any_digits if at least
  * one digit was consumed.  Returns the position past the last digit. */
-static const char *
-_hb_scan_digits (const char *p, const char *pe, int base,
-                 uint64_t *value, bool *overflow, bool *any_digits)
+સ્થિર અચલ અક્ષર *
+_hb_scan_digits (અચલ અક્ષર *p, અચલ અક્ષર *pe, પૂર્ણાંક base,
+                 uint64_t *value, તાર્કિક *overflow, તાર્કિક *any_digits)
 {
-  const uint64_t cutoff = UINT64_MAX / (unsigned) base;
-  const uint64_t cutlim = UINT64_MAX % (unsigned) base;
+  અચલ uint64_t cutoff = UINT64_MAX / (unsigned) base;
+  અચલ uint64_t cutlim = UINT64_MAX % (unsigned) base;
   uint64_t v = 0;
-  bool ov = false, any = false;
+  તાર્કિક ov = ખોટું, any = ખોટું;
 
-  for (; p < pe; p++)
+  માટે (; p < pe; p++)
   {
-    int d = _hb_digit_value (*p, base);
-    if (d < 0) break;
-    any = true;
-    if (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
-      ov = true;
-    else
+    પૂર્ણાંક d = hb_digit_કિંમત (*p, base);
+    જો (d < 0) તોડો;
+    any = સાચું;
+    જો (v > cutoff || (v == cutoff && (uint64_t) d > cutlim))
+      ov = સાચું;
+    નહીંતર
       v = v * (unsigned) base + (uint64_t) d;
   }
 
   *value = v;
   *overflow = ov;
   *any_digits = any;
-  return p;
+  પાછા p;
 }
 
 template<typename T, typename Postprocess>
-static bool
-_parse_number (const char **pp, const char *end, T *pv,
-               bool whole_buffer, int base, Postprocess post)
+સ્થિર તાર્કિક
+parse_સંખ્યા (અચલ અક્ષર **pp, અચલ અક્ષર *end, T *pv,
+               તાર્કિક whole_buffer, પૂર્ણાંક base, Postprocess post)
 {
-  const char *pend = end;
-  const char *p = *pp;
-  bool neg = false, any = false, overflow = false;
+  અચલ અક્ષર *pend = end;
+  અચલ અક્ષર *p = *pp;
+  તાર્કિક neg = ખોટું, any = ખોટું, overflow = ખોટું;
 
-  while (p < pend && ISSPACE (*p)) p++;
-  if (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
+  જ્યારે (p < pend && ISSPACE (*p)) p++;
+  જો (p < pend && (*p == '+' || *p == '-')) { neg = (*p == '-'); p++; }
 
   /* Skip an optional "0x"/"0X" prefix for base 16, but only when a hex
    * digit follows — "0x" alone parses as the digit 0, matching strtoul. */
-  if (base == 16 && p + 2 < pend && p[0] == '0' &&
-      (p[1] == 'x' || p[1] == 'X') && _hb_digit_value (p[2], 16) >= 0)
+  જો (base == 16 && p + 2 < pend && p[0] == '0' &&
+      (p[1] == 'x' || p[1] == 'X') && hb_digit_કિંમત (p[2], 16) >= 0)
     p += 2;
 
   uint64_t v = 0;
   p = _hb_scan_digits (p, pend, base, &v, &overflow, &any);
-  if (unlikely (!any || overflow)) return false;
+  જો (unlikely (!any || overflow)) પાછા ખોટું;
 
   T out;
-  if (unlikely (!post (v, neg, &out))) return false;
-  if (unlikely (whole_buffer && p != pend)) return false;
+  જો (unlikely (!post (v, neg, &out))) પાછા ખોટું;
+  જો (unlikely (whole_buffer && p != pend)) પાછા ખોટું;
 
   *pv = out;
   *pp = p;
-  return true;
+  પાછા સાચું;
 }
 
-bool
-hb_parse_int (const char **pp, const char *end, int *pv, bool whole_buffer)
+તાર્કિક
+hb_parse_int (અચલ અક્ષર **pp, અચલ અક્ષર *end, પૂર્ણાંક *pv, તાર્કિક whole_buffer)
 {
-  return _parse_number (pp, end, pv, whole_buffer, 10,
-                        [] (uint64_t v, bool neg, int *out) {
+  પાછા parse_સંખ્યા (pp, end, pv, whole_buffer, 10,
+                        [] (uint64_t v, તાર્કિક neg, પૂર્ણાંક *out) {
     /* INT_MAX = 2^31-1, INT_MIN magnitude = 2^31 */
     uint64_t limit = neg ? (uint64_t) INT_MAX + 1 : (uint64_t) INT_MAX;
-    if (unlikely (v > limit)) return false;
-    *out = (int) (neg ? -(int64_t) v : (int64_t) v);
-    return true;
+    જો (unlikely (v > limit)) પાછા ખોટું;
+    *out = (પૂર્ણાંક) (neg ? -(int64_t) v : (int64_t) v);
+    પાછા સાચું;
   });
 }
 
-bool
-hb_parse_uint (const char **pp, const char *end, unsigned *pv,
-               bool whole_buffer, int base)
+તાર્કિક
+hb_parse_uint (અચલ અક્ષર **pp, અચલ અક્ષર *end, unsigned *pv,
+               તાર્કિક whole_buffer, પૂર્ણાંક base)
 {
-  return _parse_number (pp, end, pv, whole_buffer, base,
-                        [] (uint64_t v, bool neg, unsigned *out) {
-    if (unlikely (v > UINT_MAX)) return false;
+  પાછા parse_સંખ્યા (pp, end, pv, whole_buffer, base,
+                        [] (uint64_t v, તાર્કિક neg, unsigned *out) {
+    જો (unlikely (v > UINT_MAX)) પાછા ખોટું;
     /* Negate in unsigned so -1 wraps to UINT_MAX, matching strtoul
      * truncated to unsigned. */
     unsigned u = (unsigned) v;
     *out = neg ? (unsigned) (0u - u) : u;
-    return true;
+    પાછા સાચું;
   });
 }
 

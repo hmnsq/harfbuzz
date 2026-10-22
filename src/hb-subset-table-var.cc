@@ -1,60 +1,60 @@
-#include "hb-subset-table.hh"
+#અન્તર્ભાવ "hb-subset-table.hh"
 
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-gvar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
+#અન્તર્ભાવ "hb-ot-var-hvar-table.hh"
+#અન્તર્ભાવ "hb-ot-var-gvar-table.hh"
+#અન્તર્ભાવ "hb-ot-var-fvar-table.hh"
+#અન્તર્ભાવ "hb-ot-var-avar-table.hh"
+#અન્તર્ભાવ "hb-ot-var-cvar-table.hh"
+#અન્તર્ભાવ "hb-ot-var-mvar-table.hh"
 #ifndef HB_NO_VAR_COMPOSITES
-#include "OT/Var/VARC/VARC-subset.hh"
+#અન્તર્ભાવ "OT/Var/VARC/VARC-subset.hh"
 #endif
 
-bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+તાર્કિક _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<અક્ષર> &buf, hb_tag_t tag, તાર્કિક *success)
 {
 #ifndef HB_NO_VAR
-  switch (tag)
+  પસંદગી (tag)
   {
-  case HB_TAG('H','V','A','R'): *success = _hb_subset_table<const OT::HVAR> (plan, buf); return true;
-  case HB_TAG('V','V','A','R'): *success = _hb_subset_table<const OT::VVAR> (plan, buf); return true;
-  case HB_TAG('g','v','a','r'): *success = _hb_subset_table<const OT::gvar> (plan, buf); return true;
+  સ્થિતિ HB_TAG('H','V','A','R'): *success = _hb_subset_table<અચલ OT::HVAR> (plan, buf); પાછા સાચું;
+  સ્થિતિ HB_TAG('V','V','A','R'): *success = _hb_subset_table<અચલ OT::VVAR> (plan, buf); પાછા સાચું;
+  સ્થિતિ HB_TAG('g','v','a','r'): *success = _hb_subset_table<અચલ OT::gvar> (plan, buf); પાછા સાચું;
 #ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'): *success = _hb_subset_table<const OT::GVAR> (plan, buf); return true;
+  સ્થિતિ HB_TAG('G','V','A','R'): *success = _hb_subset_table<અચલ OT::GVAR> (plan, buf); પાછા સાચું;
 #endif
 #ifndef HB_NO_VAR_COMPOSITES
-  case HB_TAG('V','A','R','C'): *success = _hb_subset_table<const OT::VARC> (plan, buf); return true;
+  સ્થિતિ HB_TAG('V','A','R','C'): *success = _hb_subset_table<અચલ OT::VARC> (plan, buf); પાછા સાચું;
 #endif
-  case HB_TAG('f','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
+  સ્થિતિ HB_TAG('f','v','a','r'):
+    જો (plan->user_axes_location.is_empty ())
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::fvar> (plan, buf);
-    return true;
-  case HB_TAG('a','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
+    નહીંતર
+      *success = _hb_subset_table<અચલ OT::fvar> (plan, buf);
+    પાછા સાચું;
+  સ્થિતિ HB_TAG('a','v','a','r'):
+    જો (plan->user_axes_location.is_empty ())
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::avar> (plan, buf);
-    return true;
-  case HB_TAG('c','v','a','r'):
+    નહીંતર
+      *success = _hb_subset_table<અચલ OT::avar> (plan, buf);
+    પાછા સાચું;
+  સ્થિતિ HB_TAG('c','v','a','r'):
     /* TODO: For avar2 partial instancing, cull unreachable tuple
      * variations (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    જો (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::cvar> (plan, buf);
-    return true;
-  case HB_TAG('M','V','A','R'):
+    નહીંતર
+      *success = _hb_subset_table<અચલ OT::cvar> (plan, buf);
+    પાછા સાચું;
+  સ્થિતિ HB_TAG('M','V','A','R'):
     /* TODO: For avar2 partial instancing, cull unreachable VarStore
      * regions (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    જો (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
       *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::MVAR> (plan, buf);
-    return true;
+    નહીંતર
+      *success = _hb_subset_table<અચલ OT::MVAR> (plan, buf);
+    પાછા સાચું;
   }
 #endif
-  return false;
+  પાછા ખોટું;
 }

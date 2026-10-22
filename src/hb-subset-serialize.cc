@@ -23,10 +23,10 @@
  *
  */
 
-#include "hb.hh"
+#અન્તર્ભાવ "hb.hh"
 
-#include "hb-subset-serialize.h"
-#include "hb-repacker.hh"
+#અન્તર્ભાવ "hb-subset-serialize.h"
+#અન્તર્ભાવ "hb-repacker.hh"
 
 /**
  * hb_subset_serialize_or_fail:
@@ -45,13 +45,13 @@
 HB_EXTERN hb_blob_t *
 hb_subset_serialize_or_fail (hb_tag_t                      table_tag,
                              hb_subset_serialize_object_t *hb_objects,
-                             unsigned                      num_hb_objs)
+                             unsigned                      અંક_hb_objs)
 {
-  hb_vector_t<const hb_subset_serialize_object_t *> packed;
-  packed.alloc (num_hb_objs + 1);
+  hb_vector_t<અચલ hb_subset_serialize_object_t *> packed;
+  packed.alloc (અંક_hb_objs + 1);
   packed.push (nullptr);
-  for (unsigned i = 0 ; i < num_hb_objs ; i++)
+  માટે (unsigned i = 0 ; i < અંક_hb_objs ; i++)
     packed.push (&(hb_objects[i]));
 
-  return hb_resolve_overflows (packed, table_tag, 20, true);
+  પાછા hb_resolve_overflows (packed, table_tag, 20, સાચું);
 }

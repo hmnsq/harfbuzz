@@ -24,19 +24,19 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#અન્તર્ભાવ "graph.hh"
+#અન્તર્ભાવ "../hb-ot-layout-gsubgpos.hh"
 
 #ifndef GRAPH_GSUBGPOS_CONTEXT_HH
 #define GRAPH_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+નામાકાશ graph {
 
-struct Lookup;
+સંરચના Lookup;
 
-struct gsubgpos_graph_context_t
+સંરચના gsubgpos_graph_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
+  HB_INTERNAL સ્થિર graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
 
   hb_tag_t table_tag;
@@ -47,18 +47,18 @@ struct gsubgpos_graph_context_t
   hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_INTERNAL graph_result_t<unsigned> create_ગાંઠ (unsigned size);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<શૂન્ય> add_buffer (અક્ષર* buffer)
   {
-    return graph.add_buffer (buffer);
+    પાછા graph.add_buffer (buffer);
   }
 
- private:
+ ખાનગી:
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_INTERNAL unsigned અંક_non_ext_subtables ();
 };
 
 }

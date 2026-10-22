@@ -28,9 +28,9 @@
 #ifndef OT_COLOR_CPAL_CPAL_HH
 #define OT_COLOR_CPAL_CPAL_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-color.h"
-#include "../../../hb-ot-name.h"
+#અન્તર્ભાવ "../../../hb-open-type.hh"
+#અન્તર્ભાવ "../../../hb-ot-color.h"
+#અન્તર્ભાવ "../../../hb-ot-name.h"
 
 
 /*
@@ -39,113 +39,113 @@
  */
 #define HB_OT_TAG_CPAL HB_TAG('C','P','A','L')
 
-namespace OT {
+નામાકાશ OT {
 
 
-struct CPALV1Tail
+સંરચના CPALV1Tail
 {
-  friend struct CPAL;
+  friend સંરચના CPAL;
 
-  private:
-  hb_ot_color_palette_flags_t get_palette_flags (const void *base,
-						 unsigned int palette_index,
-						 unsigned int palette_count) const
+  ખાનગી:
+  hb_ot_color_palette_flags_t get_palette_flags (અચલ શૂન્ય *base,
+						 unsigned પૂર્ણાંક palette_index,
+						 unsigned પૂર્ણાંક palette_ગણતરી) અચલ
   {
-    if (!paletteFlagsZ) return HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
-    return (hb_ot_color_palette_flags_t) (uint32_t)
-	   (base+paletteFlagsZ).as_array (palette_count)[palette_index];
+    જો (!paletteFlagsZ) પાછા HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
+    પાછા (hb_ot_color_palette_flags_t) (uint32_t)
+	   (base+paletteFlagsZ).as_array (palette_ગણતરી)[palette_index];
   }
 
-  hb_ot_name_id_t get_palette_name_id (const void *base,
-				       unsigned int palette_index,
-				       unsigned int palette_count) const
+  hb_ot_name_id_t get_palette_name_id (અચલ શૂન્ય *base,
+				       unsigned પૂર્ણાંક palette_index,
+				       unsigned પૂર્ણાંક palette_ગણતરી) અચલ
   {
-    if (!paletteLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+paletteLabelsZ).as_array (palette_count)[palette_index];
+    જો (!paletteLabelsZ) પાછા HB_OT_NAME_ID_INVALID;
+    પાછા (base+paletteLabelsZ).as_array (palette_ગણતરી)[palette_index];
   }
 
-  hb_ot_name_id_t get_color_name_id (const void *base,
-				     unsigned int color_index,
-				     unsigned int color_count) const
+  hb_ot_name_id_t get_color_name_id (અચલ શૂન્ય *base,
+				     unsigned પૂર્ણાંક color_index,
+				     unsigned પૂર્ણાંક color_ગણતરી) અચલ
   {
-    if (!colorLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+colorLabelsZ).as_array (color_count)[color_index];
+    જો (!colorLabelsZ) પાછા HB_OT_NAME_ID_INVALID;
+    પાછા (base+colorLabelsZ).as_array (color_ગણતરી)[color_index];
   }
 
-  public:
-  void collect_name_ids (const void *base,
-                         unsigned palette_count,
-                         unsigned color_count,
-                         const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  જાહેર:
+  શૂન્ય collect_name_ids (અચલ શૂન્ય *base,
+                         unsigned palette_ગણતરી,
+                         unsigned color_ગણતરી,
+                         અચલ hb_map_t *color_index_map,
+                         hb_set_t *nameids_to_retain /* OUT */) અચલ
   {
-    if (paletteLabelsZ)
+    જો (paletteLabelsZ)
     {
-      + (base+paletteLabelsZ).as_array (palette_count)
+      + (base+paletteLabelsZ).as_array (palette_ગણતરી)
       | hb_sink (nameids_to_retain)
       ;
     }
 
-    if (colorLabelsZ)
+    જો (colorLabelsZ)
     {
-      const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-      for (unsigned i = 0; i < color_count; i++)
+      અચલ hb_array_t<અચલ NameID> colorLabels = (base+colorLabelsZ).as_array (color_ગણતરી);
+      માટે (unsigned i = 0; i < color_ગણતરી; i++)
       {
-        if (!color_index_map->has (i)) continue;
+        જો (!color_index_map->has (i)) ચાલુ;
         nameids_to_retain->add (colorLabels[i]);
       }
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  unsigned palette_count,
-                  unsigned color_count,
-                  const void *base,
-                  const hb_map_t *color_index_map) const
+  તાર્કિક serialize (hb_serialize_context_t *c,
+                  unsigned palette_ગણતરી,
+                  unsigned color_ગણતરી,
+                  અચલ શૂન્ય *base,
+                  અચલ hb_map_t *color_index_map) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     auto *out = c->allocate_size<CPALV1Tail> (static_size);
-    if (unlikely (!out)) return_trace (false);
+    જો (unlikely (!out)) return_trace (ખોટું);
 
     out->paletteFlagsZ = 0;
-    if (paletteFlagsZ)
-      out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    જો (paletteFlagsZ)
+      out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_ગણતરી);
 
     out->paletteLabelsZ = 0;
-    if (paletteLabelsZ)
-      out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    જો (paletteLabelsZ)
+      out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_ગણતરી);
 
-    const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-    if (colorLabelsZ)
+    અચલ hb_array_t<અચલ NameID> colorLabels = (base+colorLabelsZ).as_array (color_ગણતરી);
+    જો (colorLabelsZ)
     {
       c->push ();
-      for (unsigned i = 0; i < color_count; i++)
+      માટે (unsigned i = 0; i < color_ગણતરી; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        if (!c->copy<NameID> (colorLabels[i]))
+        જો (!color_index_map->has (i)) ચાલુ;
+        જો (!c->copy<NameID> (colorLabels[i]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->કાઢો_discard ();
+          return_trace (ખોટું);
         }
       }
-      c->add_link (out->colorLabelsZ, c->pop_pack ());
+      c->add_link (out->colorLabelsZ, c->કાઢો_pack ());
     }
-    return_trace (true);
+    return_trace (સાચું);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int palette_count,
-		 unsigned int color_count) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c,
+		 અચલ શૂન્ય *base,
+		 unsigned પૂર્ણાંક palette_ગણતરી,
+		 unsigned પૂર્ણાંક color_ગણતરી) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  (!paletteFlagsZ  || (base+paletteFlagsZ).sanitize (c, palette_count)) &&
-		  (!paletteLabelsZ || (base+paletteLabelsZ).sanitize (c, palette_count)) &&
-		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_count)));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ) &&
+		  (!paletteFlagsZ  || (base+paletteFlagsZ).sanitize (c, palette_ગણતરી)) &&
+		  (!paletteLabelsZ || (base+paletteLabelsZ).sanitize (c, palette_ગણતરી)) &&
+		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_ગણતરી)));
   }
 
-  protected:
+  સુરક્ષિત:
   // TODO(garretrieger): these offsets can hold nulls so we should not be using non-null offsets
   //                     here. Currently they are needed since UnsizedArrayOf doesn't define null_size
   NNOffset32To<UnsizedArrayOf<HBUINT32>>
@@ -160,143 +160,143 @@ struct CPALV1Tail
 		colorLabelsZ;		/* Offset from the beginning of CPAL table to
 					 * the color labels array. Set to 0
 					 * if no array is provided. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (12);
 };
 
-typedef HBUINT32 BGRAColor;
+પ્રકારવ્યાખ્યા HBUINT32 BGRAColor;
 
-struct CPAL
+સંરચના CPAL
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
+  સ્થિર constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
 
-  bool has_data () const { return numPalettes; }
+  તાર્કિક has_data () અચલ { પાછા અંક_Palettes; }
 
-  size_t get_size () const
-  { return min_size + numPalettes * sizeof (colorRecordIndicesZ[0]); }
+  size_t get_size () અચલ
+  { પાછા min_size + અંક_Palettes * કદ (colorRecordIndicesZ[0]); }
 
-  unsigned int get_palette_count () const { return numPalettes; }
-  unsigned int   get_color_count () const { return numColors; }
+  unsigned પૂર્ણાંક get_palette_ગણતરી () અચલ { પાછા અંક_Palettes; }
+  unsigned પૂર્ણાંક   get_color_ગણતરી () અચલ { પાછા અંક_Colors; }
 
-  hb_ot_color_palette_flags_t get_palette_flags (unsigned int palette_index) const
-  { return v1 ().get_palette_flags (this, palette_index, numPalettes); }
+  hb_ot_color_palette_flags_t get_palette_flags (unsigned પૂર્ણાંક palette_index) અચલ
+  { પાછા v1 ().get_palette_flags (આ, palette_index, અંક_Palettes); }
 
-  hb_ot_name_id_t get_palette_name_id (unsigned int palette_index) const
-  { return v1 ().get_palette_name_id (this, palette_index, numPalettes); }
+  hb_ot_name_id_t get_palette_name_id (unsigned પૂર્ણાંક palette_index) અચલ
+  { પાછા v1 ().get_palette_name_id (આ, palette_index, અંક_Palettes); }
 
-  hb_ot_name_id_t get_color_name_id (unsigned int color_index) const
-  { return v1 ().get_color_name_id (this, color_index, numColors); }
+  hb_ot_name_id_t get_color_name_id (unsigned પૂર્ણાંક color_index) અચલ
+  { પાછા v1 ().get_color_name_id (આ, color_index, અંક_Colors); }
 
-  hb_array_t<const BGRAColor> get_palette_colors (unsigned int palette_index) const
+  hb_array_t<અચલ BGRAColor> get_palette_colors (unsigned પૂર્ણાંક palette_index) અચલ
   {
-    if (unlikely (palette_index >= numPalettes))
-      return hb_array_t<const BGRAColor> ();
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    return all_colors.sub_array (start_index, numColors);
+    જો (unlikely (palette_index >= અંક_Palettes))
+      પાછા hb_array_t<અચલ BGRAColor> ();
+    unsigned પૂર્ણાંક start_index = colorRecordIndicesZ[palette_index];
+    hb_array_t<અચલ BGRAColor> all_colors ((આ+colorRecordsZ).arrayZ, અંક_Color_Records);
+    પાછા all_colors.sub_array (start_index, અંક_Colors);
   }
-  unsigned int get_palette_colors (unsigned int  palette_index,
-				   unsigned int  start_offset,
-				   unsigned int *color_count, /* IN/OUT.  May be NULL. */
-				   hb_color_t   *colors       /* OUT.     May be NULL. */) const
+  unsigned પૂર્ણાંક get_palette_colors (unsigned પૂર્ણાંક  palette_index,
+				   unsigned પૂર્ણાંક  start_offset,
+				   unsigned પૂર્ણાંક *color_ગણતરી, /* IN/OUT.  May be NULL. */
+				   hb_color_t   *colors       /* OUT.     May be NULL. */) અચલ
   {
-    if (unlikely (palette_index >= numPalettes))
+    જો (unlikely (palette_index >= અંક_Palettes))
     {
-      if (color_count) *color_count = 0;
-      return 0;
+      જો (color_ગણતરી) *color_ગણતરી = 0;
+      પાછા 0;
     }
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    hb_array_t<const BGRAColor> palette_colors = all_colors.sub_array (start_index,
-								       numColors);
-    if (color_count && colors)
+    unsigned પૂર્ણાંક start_index = colorRecordIndicesZ[palette_index];
+    hb_array_t<અચલ BGRAColor> all_colors ((આ+colorRecordsZ).arrayZ, અંક_Color_Records);
+    hb_array_t<અચલ BGRAColor> palette_colors = all_colors.sub_array (start_index,
+								       અંક_Colors);
+    જો (color_ગણતરી && colors)
     {
-      + palette_colors.sub_array (start_offset, color_count)
-      | hb_sink (hb_array (colors, *color_count))
+      + palette_colors.sub_array (start_offset, color_ગણતરી)
+      | hb_sink (hb_array (colors, *color_ગણતરી))
       ;
     }
-    return numColors;
+    પાછા અંક_Colors;
   }
 
-  void collect_name_ids (const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  શૂન્ય collect_name_ids (અચલ hb_map_t *color_index_map,
+                         hb_set_t *nameids_to_retain /* OUT */) અચલ
   {
-    if (version == 1)
+    જો (version == 1)
     {
       hb_barrier ();
-      v1 ().collect_name_ids (this, numPalettes, numColors, color_index_map, nameids_to_retain);
+      v1 ().collect_name_ids (આ, અંક_Palettes, અંક_Colors, color_index_map, nameids_to_retain);
     }
   }
 
-  private:
-  const CPALV1Tail& v1 () const
+  ખાનગી:
+  અચલ CPALV1Tail& v1 () અચલ
   {
-    if (version == 0) return Null (CPALV1Tail);
+    જો (version == 0) પાછા Null (CPALV1Tail);
     hb_barrier ();
-    return StructAfter<CPALV1Tail> (*this);
+    પાછા StructAfter<CPALV1Tail> (*આ);
   }
 
-  public:
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_array_t<const HBUINT16> &color_record_indices,
-                  const hb_array_t<const BGRAColor> &color_records,
-                  const hb_vector_t<unsigned>& first_color_index_for_layer,
-                  const hb_map_t& first_color_to_layer_index,
-                  const hb_set_t &retained_color_indices) const
+  જાહેર:
+  તાર્કિક serialize (hb_serialize_context_t *c,
+                  અચલ hb_array_t<અચલ HBUINT16> &color_record_indices,
+                  અચલ hb_array_t<અચલ BGRAColor> &color_records,
+                  અચલ hb_vector_t<unsigned>& first_color_index_for_layer,
+                  અચલ hb_map_t& first_color_to_layer_index,
+                  અચલ hb_set_t &retained_color_indices) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
 
     // TODO(grieger): limit total final size.
 
-    for (const auto idx : color_record_indices)
+    માટે (અચલ auto idx : color_record_indices)
     {
       hb_codepoint_t layer_index = first_color_to_layer_index[idx];
 
       HBUINT16 new_idx;
       new_idx = layer_index * retained_color_indices.get_population ();
-      if (!c->copy<HBUINT16> (new_idx)) return_trace (false);
+      જો (!c->copy<HBUINT16> (new_idx)) return_trace (ખોટું);
     }
 
     c->push ();
-    for (unsigned first_color_index : first_color_index_for_layer)
+    માટે (unsigned first_color_index : first_color_index_for_layer)
     {
-      for (hb_codepoint_t color_index : retained_color_indices)
+      માટે (hb_codepoint_t color_index : retained_color_indices)
       {
-        if (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
+        જો (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->કાઢો_discard ();
+          return_trace (ખોટું);
         }
       }
     }
 
-    c->add_link (colorRecordsZ, c->pop_pack ());
-    return_trace (true);
+    c->add_link (colorRecordsZ, c->કાઢો_pack ());
+    return_trace (સાચું);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  તાર્કિક subset (hb_subset_context_t *c) અચલ
   {
-    TRACE_SUBSET (this);
-    if (!numPalettes) return_trace (false);
+    TRACE_SUBSET (આ);
+    જો (!અંક_Palettes) return_trace (ખોટું);
 
-    const hb_map_t *color_index_map = &c->plan->colr_palettes;
-    if (color_index_map->is_empty ()) return_trace (false);
+    અચલ hb_map_t *color_index_map = &c->plan->colr_palettes;
+    જો (color_index_map->is_empty ()) return_trace (ખોટું);
 
     hb_set_t retained_color_indices;
-    for (const auto _ : color_index_map->keys ())
+    માટે (અચલ auto _ : color_index_map->ચાવીઓ ())
     {
-      if (_ == 0xFFFF) continue;
+      જો (_ == 0xFFFF) ચાલુ;
       retained_color_indices.add (_);
     }
-    if (retained_color_indices.is_empty ()) return_trace (false);
+    જો (retained_color_indices.is_empty ()) return_trace (ખોટું);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*આ);
+    જો (unlikely (!c->serializer->extend_min (out))) return_trace (ખોટું);
 
 
     out->version = version;
-    out->numColors = retained_color_indices.get_population ();
-    out->numPalettes = numPalettes;
+    out->અંક_Colors = retained_color_indices.get_population ();
+    out->અંક_Palettes = અંક_Palettes;
 
     hb_vector_t<unsigned> first_color_index_for_layer;
     hb_map_t first_color_to_layer_index;
@@ -306,74 +306,74 @@ struct CPAL
      * a layer's retained colors to its index to find equal layers without
      * scanning all of them. The keys point into layer_retained_colors,
      * which keeps them alive. */
-    hb_hashmap_t<hb_array_t<const BGRAColor>, unsigned> retained_colors_to_layer_index;
+    hb_hashmap_t<hb_array_t<અચલ BGRAColor>, unsigned> retained_colors_to_layer_index;
     hb_vector_t<hb_vector_t<BGRAColor>> layer_retained_colors;
 
-    const hb_array_t<const BGRAColor> all_color_records = (this+colorRecordsZ).as_array (numColorRecords);
+    અચલ hb_array_t<અચલ BGRAColor> all_color_records = (આ+colorRecordsZ).as_array (અંક_Color_Records);
 
-    const hb_array_t<const HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (numPalettes);
-    for (const auto first_color_record_idx : colorRecordIndices)
+    અચલ hb_array_t<અચલ HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (અંક_Palettes);
+    માટે (અચલ auto first_color_record_idx : colorRecordIndices)
     {
-      if (first_color_to_layer_index.has (first_color_record_idx)) continue;
+      જો (first_color_to_layer_index.has (first_color_record_idx)) ચાલુ;
 
       hb_vector_t<BGRAColor> retained_colors;
-      if (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (false);
-      for (hb_codepoint_t color_index : retained_color_indices)
+      જો (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (ખોટું);
+      માટે (hb_codepoint_t color_index : retained_color_indices)
 	retained_colors.push (all_color_records[first_color_record_idx + color_index]);
 
       unsigned layer_index = first_color_index_for_layer.length;
       unsigned *candidate_layer_index = nullptr;
-      if (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
+      જો (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
 	layer_index = *candidate_layer_index;
-      else
+      નહીંતર
       {
 	first_color_index_for_layer.push (first_color_record_idx);
-	if (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (false);
+	જો (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (ખોટું);
 
-	if (unlikely (!layer_retained_colors.push_or_fail (std::move (retained_colors)))) return_trace (false);
-	if (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
-	  return_trace (false);
+	જો (unlikely (!layer_retained_colors.ધકેલો_or_fail (std::move (retained_colors)))) return_trace (ખોટું);
+	જો (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
+	  return_trace (ખોટું);
       }
       first_color_to_layer_index.set (first_color_record_idx, layer_index);
-      if (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (false);
+      જો (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (ખોટું);
     }
 
-    out->numColorRecords = first_color_index_for_layer.length
+    out->અંક_Color_Records = first_color_index_for_layer.length
                            * retained_color_indices.get_population ();
 
-    if (!out->serialize (c->serializer,
+    જો (!out->serialize (c->serializer,
                          colorRecordIndices,
                          all_color_records,
                          first_color_index_for_layer,
                          first_color_to_layer_index,
                          retained_color_indices))
-      return_trace (false);
+      return_trace (ખોટું);
 
-    if (version == 1)
+    જો (version == 1)
     {
       hb_barrier ();
-      return_trace (v1 ().serialize (c->serializer, numPalettes, numColors, this, color_index_map));
+      return_trace (v1 ().serialize (c->serializer, અંક_Palettes, અંક_Colors, આ, color_index_map));
     }
 
-    return_trace (true);
+    return_trace (સાચું);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ) &&
 		  hb_barrier () &&
-		  (this+colorRecordsZ).sanitize (c, numColorRecords) &&
-		  colorRecordIndicesZ.sanitize (c, numPalettes) &&
-		  (version == 0 || v1 ().sanitize (c, this, numPalettes, numColors)));
+		  (આ+colorRecordsZ).sanitize (c, અંક_Color_Records) &&
+		  colorRecordIndicesZ.sanitize (c, અંક_Palettes) &&
+		  (version == 0 || v1 ().sanitize (c, આ, અંક_Palettes, અંક_Colors)));
   }
 
-  protected:
+  સુરક્ષિત:
   HBUINT16	version;		/* Table version number */
   /* Version 0 */
-  HBUINT16	numColors;		/* Number of colors in each palette. */
-  HBUINT16	numPalettes;		/* Number of palettes in the table. */
-  HBUINT16	numColorRecords;	/* Total number of color records, combined for
+  HBUINT16	અંક_Colors;		/* Number of colors in each palette. */
+  HBUINT16	અંક_Palettes;		/* Number of palettes in the table. */
+  HBUINT16	અંક_Color_Records;	/* Total number of color records, combined for
 					 * all palettes. */
   NNOffset32To<UnsizedArrayOf<BGRAColor>>
 		colorRecordsZ;		/* Offset from the beginning of CPAL table to
@@ -382,7 +382,7 @@ struct CPAL
 		colorRecordIndicesZ;	/* Index of each palette’s first color record in
 					 * the combined color record array. */
 /*CPALV1Tail	v1;*/
-  public:
+  જાહેર:
   DEFINE_SIZE_ARRAY (12, colorRecordIndicesZ);
 };
 

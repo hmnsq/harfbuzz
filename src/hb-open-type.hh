@@ -29,15 +29,15 @@
 #ifndef HB_OPEN_TYPE_HH
 #define HB_OPEN_TYPE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-face.hh"
-#include "hb-machinery.hh"
-#include "hb-meta.hh"
-#include "hb-subset.hh"
+#અન્તર્ભાવ "hb.hh"
+#અન્તર્ભાવ "hb-blob.hh"
+#અન્તર્ભાવ "hb-face.hh"
+#અન્તર્ભાવ "hb-machinery.hh"
+#અન્તર્ભાવ "hb-meta.hh"
+#અન્તર્ભાવ "hb-subset.hh"
 
 
-namespace OT {
+નામાકાશ OT {
 
 
 /*
@@ -54,209 +54,209 @@ namespace OT {
  */
 
 /* Integer types in big-endian order and no alignment requirement */
-template <bool BE,
+template <તાર્કિક BE,
 	  typename Type,
-	  unsigned int Size = sizeof (Type)>
-struct NumType
+	  unsigned પૂર્ણાંક Size = કદ (Type)>
+સંરચના અંક_Type
 {
-  typedef Type type;
+  પ્રકારવ્યાખ્યા Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
+  પ્રકારવ્યાખ્યા typename std::conditional<std::is_integral<Type>::value && કદ (Type) <= કદ(પૂર્ણાંક),
 				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  અંક_Type () = મૂળભૂત;
+  explicit constexpr અંક_Type (Type V) : v {V} {}
+  અંક_Type& operator = (Type V) { v = V; પાછા *આ; }
 
-  operator WideType () const { return v; }
+  operator WideType () અચલ { પાછા v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  તાર્કિક operator == (અચલ અંક_Type &o) અચલ { પાછા (Type) v == (Type) o.v; }
+  તાર્કિક operator != (અચલ અંક_Type &o) અચલ { પાછા !(*આ == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  અંક_Type& operator += (WideType ગણતરી) { *આ = *આ + ગણતરી; પાછા *આ; }
+  અંક_Type& operator -= (WideType ગણતરી) { *આ = *આ - ગણતરી; પાછા *આ; }
+  અંક_Type& operator ++ () { *આ += 1; પાછા *આ; }
+  અંક_Type& operator -- () { *આ -= 1; પાછા *આ; }
+  અંક_Type operator ++ (પૂર્ણાંક) { અંક_Type c (*આ); ++*આ; પાછા c; }
+  અંક_Type operator -- (પૂર્ણાંક) { અંક_Type c (*આ); --*આ; પાછા c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () અચલ { પાછા hb_array ((અચલ અક્ષર *) &v, કદ (v)).hash (); }
+  HB_INTERNAL સ્થિર પૂર્ણાંક cmp (અચલ અંક_Type *a, અચલ અંક_Type *b)
+  { પાછા b->cmp (*a); }
+  HB_INTERNAL સ્થિર પૂર્ણાંક cmp (અચલ શૂન્ય *a, અચલ શૂન્ય *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    અંક_Type *pa = (અંક_Type *) a;
+    અંક_Type *pb = (અંક_Type *) b;
 
-    return pb->cmp (*pa);
+    પાછા pb->cmp (*pa);
   }
   template <typename Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  પૂર્ણાંક cmp (Type2 a) અચલ
   {
     Type b = v;
-    return (a > b) - (a < b);
+    પાછા (a > b) - (a < b);
   }
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
-  protected:
+  સુરક્ષિત:
   typename std::conditional<std::is_integral<Type>::value,
 			    HBInt<BE, Type, Size>,
 			    HBFloat<BE, Type, Size>>::type v;
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (Size);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું,  દશાંશ>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+પ્રકારવ્યાખ્યા અંક_Type<સાચું,  દ્વિગુણ> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, દશાંશ>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+પ્રકારવ્યાખ્યા અંક_Type<ખોટું, દ્વિગુણ> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
-struct HBUINT15 : HBUINT16
+સંરચના HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
-  public:
+  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); પાછા *આ; }
+  જાહેર:
   DEFINE_SIZE_STATIC (2);
 };
 
 /* 32-bit unsigned integer with variable encoding. */
-struct HBUINT32VAR
+સંરચના HBUINT32VAR
 {
-  size_t get_size () const
+  size_t get_size () અચલ
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    જો (b0 < 0x80)
+      પાછા 1;
+    નહીંતર જો (b0 < 0xC0)
+      પાછા 2;
+    નહીંતર જો (b0 < 0xE0)
+      પાછા 3;
+    નહીંતર જો (b0 < 0xF0)
+      પાછા 4;
+    નહીંતર
+      પાછા 5;
   }
 
-  static size_t get_size (uint32_t v)
+  સ્થિર size_t get_size (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    જો (v < 0x80)
+      પાછા 1;
+    નહીંતર જો (v < 0x4000)
+      પાછા 2;
+    નહીંતર જો (v < 0x200000)
+      પાછા 3;
+    નહીંતર જો (v < 0x10000000)
+      પાછા 4;
+    નહીંતર
+      પાછા 5;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (c->check_range (v, 1) &&
 		  hb_barrier () &&
 		  c->check_range (v, get_size ()));
   }
 
-  operator uint32_t () const
+  operator uint32_t () અચલ
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    જો (b0 < 0x80)
+      પાછા b0;
+    નહીંતર જો (b0 < 0xC0)
+      પાછા ((b0 & 0x3F) << 8) | v[1];
+    નહીંતર જો (b0 < 0xE0)
+      પાછા ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    નહીંતર જો (b0 < 0xF0)
+      પાછા ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    નહીંતર
+      પાછા (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
-  static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
+  સ્થિર unsigned serialize_unsafe (unsigned અક્ષર *buf, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    unsigned અક્ષર *p = buf + len;
+    માટે (unsigned i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    જો (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    પાછા len;
   }
 
-  static bool serialize (hb_serialize_context_t *c, uint32_t v)
+  સ્થિર તાર્કિક serialize (hb_serialize_context_t *c, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    unsigned અક્ષર *buf = c->allocate_size<unsigned અક્ષર> (len, ખોટું);
+    જો (unlikely (!buf))
+      પાછા ખોટું;
 
     serialize_unsafe (buf, v);
-    return true;
+    પાછા સાચું;
   }
 
-  protected:
-  unsigned char v[5];
+  સુરક્ષિત:
+  unsigned અક્ષર v[5];
 
-  public:
+  જાહેર:
   DEFINE_SIZE_MIN (1);
 };
 
 /* 16-bit signed integer (HBINT16) that describes a quantity in FUnits. */
-typedef HBINT16 FWORD;
+પ્રકારવ્યાખ્યા HBINT16 FWORD;
 
 /* 32-bit signed integer (HBINT32) that describes a quantity in FUnits. */
-typedef HBINT32 FWORD32;
+પ્રકારવ્યાખ્યા HBINT32 FWORD32;
 
 /* 16-bit unsigned integer (HBUINT16) that describes a quantity in FUnits. */
-typedef HBUINT16 UFWORD;
+પ્રકારવ્યાખ્યા HBUINT16 UFWORD;
 
 template <typename Type, unsigned fraction_bits>
-struct HBFixed : Type
+સંરચના HBFixed : Type
 {
-  static constexpr float mult = 1.f / (1 << fraction_bits);
+  સ્થિર constexpr દશાંશ mult = 1.f / (1 << fraction_bits);
   static_assert (Type::static_size * 8 > fraction_bits, "");
 
-  operator signed () const = delete;
-  operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
-  void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
-  void set_float (float f) { Type::v = roundf (f / mult); }
-  public:
+  operator signed () અચલ = delete;
+  operator unsigned () અચલ = delete;
+  explicit operator દશાંશ () અચલ { પાછા to_float (); }
+  typename Type::type to_int () અચલ { પાછા Type::v; }
+  શૂન્ય set_int (typename Type::type i ) { Type::v = i; }
+  દશાંશ to_float (દશાંશ offset = 0) અચલ  { પાછા ((int32_t) Type::v + offset) * mult; }
+  શૂન્ય set_float (દશાંશ f) { Type::v = roundf (f / mult); }
+  જાહેર:
   DEFINE_SIZE_STATIC (Type::static_size);
 };
 
@@ -270,99 +270,99 @@ using F16DOT16 = HBFixed<HBINT32, 16>;
 
 /* Date represented in number of seconds since 12:00 midnight, January 1,
  * 1904. The value is represented as a signed 64-bit integer. */
-struct LONGDATETIME
+સંરચના LONGDATETIME
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
-  protected:
+  સુરક્ષિત:
   HBINT32 major;
   HBUINT32 minor;
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (8);
 };
 
 /* Array of four uint8s (length = 32 bits) used to identify a script, language
  * system, feature, or baseline */
-struct Tag : HBUINT32
+સંરચના Tag : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); પાછા *આ; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
-  public:
+  operator અચલ અક્ષર* () અચલ { પાછા reinterpret_cast<અચલ અક્ષર *> (આ); }
+  operator અક્ષર* ()             { પાછા reinterpret_cast<અક્ષર *> (આ); }
+  જાહેર:
   DEFINE_SIZE_STATIC (4);
 };
 
 /* Glyph index number, same as uint16 (length = 16 bits) */
-struct HBGlyphID16 : HBUINT16
+સંરચના HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); પાછા *આ; }
 };
-struct HBGlyphID24 : HBUINT24
+સંરચના HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); પાછા *આ; }
 };
 
 /* Script/language-system/feature index */
-struct Index : HBUINT16 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+સંરચના Index : HBUINT16 {
+  સ્થિર constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
+  Index& operator = (uint16_t i) { HBUINT16::operator= (i); પાછા *આ; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
 
-typedef Index NameID;
+પ્રકારવ્યાખ્યા Index NameID;
 
-struct VarIdx : HBUINT32 {
-  static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
+સંરચના VarIdx : HBUINT32 {
+  સ્થિર constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
   static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); પાછા *આ; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
 
 /* Offset, Null offset = 0 */
-template <typename Type, bool has_null=true>
-struct Offset : Type
+template <typename Type, તાર્કિક has_null=સાચું>
+સંરચના Offset : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  Offset& operator = (typename Type::type i) { Type::operator= (i); પાછા *આ; }
 
-  typedef Type type;
+  પ્રકારવ્યાખ્યા Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  તાર્કિક is_null () અચલ { પાછા has_null && 0 == *આ; }
 
-  public:
-  DEFINE_SIZE_STATIC (sizeof (Type));
+  જાહેર:
+  DEFINE_SIZE_STATIC (કદ (Type));
 };
 
-typedef Offset<HBUINT16> Offset16;
-typedef Offset<HBUINT24> Offset24;
-typedef Offset<HBUINT32> Offset32;
+પ્રકારવ્યાખ્યા Offset<HBUINT16> Offset16;
+પ્રકારવ્યાખ્યા Offset<HBUINT24> Offset24;
+પ્રકારવ્યાખ્યા Offset<HBUINT32> Offset32;
 
 
 /* CheckSum */
-struct CheckSum : HBUINT32
+સંરચના CheckSum : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); પાછા *આ; }
 
   /* This is reference implementation from the spec. */
-  static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
+  સ્થિર uint32_t CalcTableChecksum (અચલ HBUINT32 *Table, uint32_t Length)
   {
     uint32_t Sum = 0L;
-    assert (0 == (Length & 3));
-    const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
+    પ્રતિજ્ઞા (0 == (Length & 3));
+    અચલ HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
 
-    while (Table < EndPtr)
+    જ્યારે (Table < EndPtr)
       Sum += *Table++;
-    return Sum;
+    પાછા Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
-  { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
+  શૂન્ય set_for_data (અચલ શૂન્ય *data, unsigned પૂર્ણાંક length)
+  { *આ = CalcTableChecksum ((અચલ HBUINT32 *) data, length); }
 
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (4);
 };
 
@@ -372,20 +372,20 @@ struct CheckSum : HBUINT32
  */
 
 template <typename FixedType=HBUINT16>
-struct FixedVersion
+સંરચના FixedVersion
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t to_int () અચલ { પાછા (major << (કદ (FixedType) * 8)) + minor; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
   FixedType major;
   FixedType minor;
-  public:
-  DEFINE_SIZE_STATIC (2 * sizeof (FixedType));
+  જાહેર:
+  DEFINE_SIZE_STATIC (2 * કદ (FixedType));
 };
 
 
@@ -394,95 +394,95 @@ struct FixedVersion
  * Use: (base+offset)
  */
 
-template <typename Type, bool has_null>
-struct _hb_has_null
+template <typename Type, તાર્કિક has_null>
+સંરચના _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  સ્થિર અચલ Type *get_null () { પાછા nullptr; }
+  સ્થિર Type *get_crap ()       { પાછા nullptr; }
 };
 template <typename Type>
-struct _hb_has_null<Type, true>
+સંરચના _hb_has_null<Type, સાચું>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  સ્થિર અચલ Type *get_null () { પાછા &Null (Type); }
+  સ્થિર       Type *get_crap () { પાછા &Crap (Type); }
 };
 
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct OffsetTo : Offset<OffsetType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=શૂન્ય, તાર્કિક has_null=સાચું>
+સંરચના OffsetTo : Offset<OffsetType, has_null>
 {
   using target_t = Type;
 
   // Make sure Type is not unbounded; works only for types that are fully defined at OffsetTo time.
-  static_assert (has_null == false ||
+  static_assert (has_null == ખોટું ||
 		 (hb_has_null_size (Type) || !hb_has_min_size (Type)), "");
 
   HB_DELETE_COPY_ASSIGN (OffsetTo);
-  OffsetTo () = default;
+  OffsetTo () = મૂળભૂત;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); પાછા *આ; }
 
-  const Type& operator () (const void *base) const
+  અચલ Type& operator () (અચલ શૂન્ય *base) અચલ
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    જો (unlikely (આ->is_null ())) પાછા *_hb_has_null<Type, has_null>::get_null ();
+    પાછા StructAtOffset<અચલ Type> (base, *આ);
   }
-  Type& operator () (void *base) const
+  Type& operator () (શૂન્ય *base) અચલ
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    જો (unlikely (આ->is_null ())) પાછા *_hb_has_null<Type, has_null>::get_crap ();
+    પાછા StructAtOffset<Type> (base, *આ);
   }
 
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (અચલ Base, અચલ BaseType *))>
+  friend અચલ Type& operator + (અચલ Base &base, અચલ OffsetTo &offset) { પાછા offset ((અચલ શૂન્ય *) base); }
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (અચલ Base, અચલ BaseType *))>
+  friend અચલ Type& operator + (અચલ OffsetTo &offset, અચલ Base &base) { પાછા offset ((અચલ શૂન્ય *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
+  friend Type& operator + (Base &&base, OffsetTo &offset) { પાછા offset ((શૂન્ય *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  friend Type& operator + (OffsetTo &offset, Base &&base) { પાછા offset ((શૂન્ય *) base); }
 
 
   template <typename Base, typename ...Ts>
-  bool serialize_subset (hb_subset_context_t *c, const OffsetTo& src,
-			 const Base *src_base, Ts&&... ds)
+  તાર્કિક serialize_subset (hb_subset_context_t *c, અચલ OffsetTo& src,
+			 અચલ Base *src_base, Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *આ = 0;
+    જો (src.is_null ())
+      પાછા ખોટું;
 
     auto *s = c->serializer;
 
     s->push ();
 
-    bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
+    તાર્કિક ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
-    else
-      s->pop_discard ();
+    જો (ret || !has_null)
+      s->add_link (*આ, s->કાઢો_pack ());
+    નહીંતર
+      s->કાઢો_discard ();
 
-    return ret;
+    પાછા ret;
   }
 
 
   template <typename ...Ts>
-  bool serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
+  તાર્કિક serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
   {
-    *this = 0;
+    *આ = 0;
 
     Type* obj = c->push<Type> ();
-    bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
+    તાર્કિક ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
-      c->add_link (*this, c->pop_pack ());
-    else
-      c->pop_discard ();
+    જો (ret)
+      c->add_link (*આ, c->કાઢો_pack ());
+    નહીંતર
+      c->કાઢો_discard ();
 
-    return ret;
+    પાછા ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
@@ -490,62 +490,62 @@ struct OffsetTo : Offset<OffsetType, has_null>
    * Can't compile: whence = hb_serialize_context_t::Head followed by Ts&&...
    */
   template <typename ...Ts>
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias,
+  તાર્કિક serialize_copy (hb_serialize_context_t *c, અચલ OffsetTo& src,
+		       અચલ શૂન્ય *src_base, unsigned dst_bias,
 		       hb_serialize_context_t::whence_t whence,
 		       Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *આ = 0;
+    જો (src.is_null ())
+      પાછા ખોટું;
 
     c->push ();
 
-    bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
+    તાર્કિક ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->add_link (*આ, c->કાઢો_pack (), whence, dst_bias);
 
-    return ret;
+    પાછા ret;
   }
 
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  તાર્કિક serialize_copy (hb_serialize_context_t *c, અચલ OffsetTo& src,
+		       અચલ શૂન્ય *src_base, unsigned dst_bias = 0)
+  { પાછા serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
+  તાર્કિક sanitize_shallow (hb_sanitize_context_t *c, અચલ BaseType *base) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!c->check_struct (આ))) return_trace (ખોટું);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
-    return_trace (true);
+    જો (unlikely ((અચલ અક્ષર *) base + (unsigned) *આ < (અચલ અક્ષર *) base)) return_trace (ખોટું);
+    return_trace (સાચું);
   }
 
   template <typename ...Ts>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c, const BaseType *base, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, અચલ BaseType *base, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (sanitize_shallow (c, base) &&
 		  hb_barrier () &&
-		  (this->is_null () ||
-		   c->dispatch (StructAtOffset<Type> (base, *this), std::forward<Ts> (ds)...)));
+		  (આ->is_null () ||
+		   c->dispatch (StructAtOffset<Type> (base, *આ), std::forward<Ts> (ds)...)));
   }
 
-  DEFINE_SIZE_STATIC (sizeof (OffsetType));
+  DEFINE_SIZE_STATIC (કદ (OffsetType));
 };
 /* Partial specializations. */
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
+template <typename Type, typename BaseType=શૂન્ય, તાર્કિક has_null=સાચું> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
+template <typename Type, typename BaseType=શૂન્ય, તાર્કિક has_null=સાચું> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
+template <typename Type, typename BaseType=શૂન્ય, તાર્કિક has_null=સાચું> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
 
-template <typename Type, typename OffsetType, typename BaseType=void> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset16To = Offset16To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset24To = Offset24To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To<Type, BaseType, false>;
+template <typename Type, typename OffsetType, typename BaseType=શૂન્ય> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, ખોટું>;
+template <typename Type, typename BaseType=શૂન્ય> using NNOffset16To = Offset16To<Type, BaseType, ખોટું>;
+template <typename Type, typename BaseType=શૂન્ય> using NNOffset24To = Offset24To<Type, BaseType, ખોટું>;
+template <typename Type, typename BaseType=શૂન્ય> using NNOffset32To = Offset32To<Type, BaseType, ખોટું>;
 
 
 /*
@@ -553,248 +553,248 @@ template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To
  */
 
 template <typename Type>
-struct UnsizedArrayOf
+સંરચના UnsizedArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  પ્રકારવ્યાખ્યા Type item_t;
+  સ્થિર constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
 
-  const Type& operator [] (unsigned int i) const
+  અચલ Type& operator [] (unsigned પૂર્ણાંક i) અચલ
   {
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& operator [] (unsigned પૂર્ણાંક i)
   {
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  સ્થિર size_t get_size (unsigned પૂર્ણાંક len)
+  { પાછા hb_unsigned_mul_saturate (len, Type::static_size); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  template <typename T> operator T * () { પાછા arrayZ; }
+  template <typename T> operator અચલ T * () અચલ { પાછા arrayZ; }
+  hb_array_t<Type> as_array (unsigned પૂર્ણાંક len)
+  { પાછા hb_array (arrayZ, len); }
+  hb_array_t<અચલ Type> as_array (unsigned પૂર્ણાંક len) અચલ
+  { પાછા hb_array (arrayZ, len); }
 
   template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
+  Type &lsearch (unsigned પૂર્ણાંક len, અચલ T &x, Type &not_found = Crap (Type))
+  { પાછા *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
+  અચલ Type &lsearch (unsigned પૂર્ણાંક len, અચલ T &x, અચલ Type &not_found = Null (Type)) અચલ
+  { પાછા *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  તાર્કિક lfind (unsigned પૂર્ણાંક len, અચલ T &x, unsigned પૂર્ણાંક *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+	      unsigned પૂર્ણાંક to_store = (unsigned પૂર્ણાંક) -1) અચલ
+  { પાછા as_array (len).lfind (x, i, not_found, to_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
+  શૂન્ય qsort (unsigned પૂર્ણાંક len, unsigned પૂર્ણાંક start = 0, unsigned પૂર્ણાંક end = (unsigned પૂર્ણાંક) -1)
   { as_array (len).qsort (start, end); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  તાર્કિક serialize (hb_serialize_context_t *c, unsigned પૂર્ણાંક વસ્તુઓ_len, તાર્કિક clear = સાચું)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (આ);
+    જો (unlikely (!c->extend_size (આ, get_size (વસ્તુઓ_len), clear))) return_trace (ખોટું);
+    return_trace (સાચું);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  તાર્કિક serialize (hb_serialize_context_t *c, Iterator વસ્તુઓ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (આ);
+    unsigned ગણતરી = hb_len (વસ્તુઓ);
+    જો (unlikely (!serialize (c, ગણતરી, ખોટું))) return_trace (ખોટું);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    માટે (unsigned i = 0; i < ગણતરી; i++, ++વસ્તુઓ)
+      arrayZ[i] = *વસ્તુઓ;
+    return_trace (સાચું);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned ગણતરી) અચલ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
+    TRACE_SERIALIZE (આ);
+    auto *out = c->start_embed (આ);
+    જો (unlikely (!as_array (ગણતરી).copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, unsigned પૂર્ણાંક ગણતરી, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!sanitize_shallow (c, ગણતરી))) return_trace (ખોટું);
+    જો (!કદ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (સાચું);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      જો (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ખોટું);
+    return_trace (સાચું);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  તાર્કિક sanitize_shallow (hb_sanitize_context_t *c, unsigned પૂર્ણાંક ગણતરી) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_array (arrayZ, ગણતરી));
   }
 
-  public:
+  જાહેર:
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
+  જાહેર:
   DEFINE_SIZE_UNBOUNDED (0);
 };
 
 /* Unsized array of offset's */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
+template <typename Type, typename OffsetType, typename BaseType=શૂન્ય, તાર્કિક has_null=સાચું>
 using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseType, has_null>>;
 
 /* Unsized array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=શૂન્ય, તાર્કિક has_null=સાચું>
+સંરચના UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
 {
-  const Type& operator [] (int i_) const
+  અચલ Type& operator [] (પૂર્ણાંક i_) અચલ
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    અચલ OffsetTo<Type, OffsetType, BaseType, has_null> *p = &આ->arrayZ[i];
+    જો (unlikely ((અચલ શૂન્ય *) p < (અચલ શૂન્ય *) આ->arrayZ)) પાછા Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    પાછા આ+*p;
   }
-  Type& operator [] (int i_)
+  Type& operator [] (પૂર્ણાંક i_)
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    અચલ OffsetTo<Type, OffsetType, BaseType, has_null> *p = &આ->arrayZ[i];
+    જો (unlikely ((અચલ શૂન્ય *) p < (અચલ શૂન્ય *) આ->arrayZ)) પાછા Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    પાછા આ+*p;
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, unsigned પૂર્ણાંક ગણતરી, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+		   ::sanitize (c, ગણતરી, આ, std::forward<Ts> (ds)...)));
   }
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type>
-struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
+સંરચના SortedUnsizedArrayOf : UnsizedArrayOf<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (unsigned પૂર્ણાંક len)
+  { પાછા hb_sorted_array (આ->arrayZ, len); }
+  hb_sorted_array_t<અચલ Type> as_array (unsigned પૂર્ણાંક len) અચલ
+  { પાછા hb_sorted_array (આ->arrayZ, len); }
+  operator hb_sorted_array_t<Type> ()             { પાછા as_array (); }
+  operator hb_sorted_array_t<અચલ Type> () અચલ { પાછા as_array (); }
 
   template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
+  Type &bsearch (unsigned પૂર્ણાંક len, અચલ T &x, Type &not_found = Crap (Type))
+  { પાછા *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
+  અચલ Type &bsearch (unsigned પૂર્ણાંક len, અચલ T &x, અચલ Type &not_found = Null (Type)) અચલ
+  { પાછા *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  તાર્કિક bfind (unsigned પૂર્ણાંક len, અચલ T &x, unsigned પૂર્ણાંક *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+	      unsigned પૂર્ણાંક to_store = (unsigned પૂર્ણાંક) -1) અચલ
+  { પાછા as_array (len).bfind (x, i, not_found, to_store); }
 };
 
 
 /* An array with a number of elements. */
 template <typename Type, typename LenType>
-struct ArrayOf
+સંરચના ArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  પ્રકારવ્યાખ્યા Type item_t;
+  સ્થિર constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
 
-  const Type& operator [] (int i_) const
+  અચલ Type& operator [] (પૂર્ણાંક i_) અચલ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= len)) પાછા Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (પૂર્ણાંક i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= len)) પાછા Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  size_t get_size () અચલ
+  { પાછા hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
 
-  explicit operator bool () const { return len; }
+  explicit operator તાર્કિક () અચલ { પાછા len; }
 
-  void pop () { len--; }
+  શૂન્ય કાઢો () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { પાછા hb_array (arrayZ, len); }
+  hb_array_t<અચલ Type> as_array () અચલ { પાછા hb_array (arrayZ, len); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  પ્રકારવ્યાખ્યા hb_array_t<અચલ Type>   iter_t;
+  પ્રકારવ્યાખ્યા hb_array_t<      Type> writer_t;
+    iter_t   iter () અચલ { પાછા as_array (); }
+  writer_t writer ()       { પાછા as_array (); }
+  operator   iter_t () અચલ { પાછા   iter (); }
+  operator writer_t ()       { પાછા writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  અચલ Type *begin () અચલ { પાછા arrayZ; }
+  અચલ Type *end () અચલ { પાછા arrayZ + len; }
 
   template <typename T>
-  Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
+  Type &lsearch (અચલ T &x, Type &not_found = Crap (Type))
+  { પાછા *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
+  અચલ Type &lsearch (અચલ T &x, અચલ Type &not_found = Null (Type)) અચલ
+  { પાછા *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
+  તાર્કિક lfind (અચલ T &x, unsigned પૂર્ણાંક *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+	      unsigned પૂર્ણાંક to_store = (unsigned પૂર્ણાંક) -1) અચલ
+  { પાછા as_array ().lfind (x, i, not_found, to_store); }
 
-  void qsort ()
+  શૂન્ય qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD તાર્કિક serialize (hb_serialize_context_t *c, unsigned વસ્તુઓ_len, તાર્કિક clear = સાચું)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (આ);
+    જો (unlikely (!c->extend_min (આ))) return_trace (ખોટું);
+    c->check_assign (len, વસ્તુઓ_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    જો (unlikely (!c->extend_size (આ, get_size (), clear))) return_trace (ખોટું);
+    return_trace (સાચું);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD તાર્કિક serialize (hb_serialize_context_t *c, Iterator વસ્તુઓ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (આ);
+    unsigned ગણતરી = hb_len (વસ્તુઓ);
+    જો (unlikely (!serialize (c, ગણતરી, ખોટું))) return_trace (ખોટું);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    માટે (unsigned i = 0; i < ગણતરી; i++, ++વસ્તુઓ)
+      arrayZ[i] = *વસ્તુઓ;
+    return_trace (સાચું);
   }
 
   Type* serialize_append (hb_serialize_context_t *c)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    જો (unlikely (!len || !c->extend (આ)))
     {
       len--;
       return_trace (nullptr);
@@ -802,44 +802,44 @@ struct ArrayOf
     return_trace (&arrayZ[len - 1]);
   }
 
-  ArrayOf* copy (hb_serialize_context_t *c) const
+  ArrayOf* copy (hb_serialize_context_t *c) અચલ
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
+    TRACE_SERIALIZE (આ);
+    auto *out = c->start_embed (આ);
+    જો (unlikely (!c->extend_min (out))) return_trace (nullptr);
     c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
+    જો (unlikely (!as_array ().copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!sanitize_shallow (c))) return_trace (ખોટું);
+    જો (!કદ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (સાચું);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned પૂર્ણાંક ગણતરી = len;
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      જો (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ખોટું);
+    return_trace (સાચું);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize_shallow (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (len.sanitize (c) &&
 		  hb_barrier () &&
-		  c->check_array_sized (arrayZ, len, sizeof (LenType)));
+		  c->check_array_sized (arrayZ, len, કદ (LenType)));
   }
 
-  public:
+  જાહેર:
   LenType	len;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  જાહેર:
+  DEFINE_SIZE_ARRAY (કદ (LenType), arrayZ);
 };
 template <typename Type> using Array16Of = ArrayOf<Type, HBUINT16>;
 template <typename Type> using Array24Of = ArrayOf<Type, HBUINT24>;
@@ -854,39 +854,39 @@ template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUI
 
 /* Array of offsets relative to the beginning of the array itself. */
 template <typename Type, typename OffsetType>
-struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
+સંરચના List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  અચલ Type& operator [] (પૂર્ણાંક i_) અચલ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= આ->len)) પાછા Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    પાછા આ+આ->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  અચલ Type& operator [] (પૂર્ણાંક i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= આ->len)) પાછા Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    પાછા આ+આ->arrayZ[i];
   }
 
-  bool subset (hb_subset_context_t *c) const
+  તાર્કિક subset (hb_subset_context_t *c) અચલ
   {
-    TRACE_SUBSET (this);
-    struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
-      out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
-    return_trace (true);
+    TRACE_SUBSET (આ);
+    સંરચના List16OfOffsetTo *out = c->serializer->embed (*આ);
+    જો (unlikely (!out)) return_trace (ખોટું);
+    unsigned પૂર્ણાંક ગણતરી = આ->len;
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      out->arrayZ[i].serialize_subset (c, આ->arrayZ[i], આ, out);
+    return_trace (સાચું);
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (આ);
+    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, આ, std::forward<Ts> (ds)...)));
   }
 };
 
@@ -895,206 +895,206 @@ using List16OfOffset16To = List16OfOffsetTo<Type, HBUINT16>;
 
 /* An array starting at second element. */
 template <typename Type, typename LenType>
-struct HeadlessArrayOf
+સંરચના HeadlessArrayOf
 {
-  static constexpr unsigned item_size = Type::static_size;
+  સ્થિર constexpr unsigned item_size = Type::static_size;
 
   HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
 
-  const Type& operator [] (int i_) const
+  અચલ Type& operator [] (પૂર્ણાંક i_) અચલ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= lenP1 || !i)) પાછા Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    પાછા arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (પૂર્ણાંક i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= lenP1 || !i)) પાછા Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    પાછા arrayZ[i-1];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  size_t get_size () અચલ
+  { પાછા hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  unsigned get_length () અચલ { પાછા lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { પાછા hb_array (arrayZ, get_length ()); }
+  hb_array_t<અચલ Type> as_array () અચલ { પાછા hb_array (arrayZ, get_length ()); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  પ્રકારવ્યાખ્યા hb_array_t<અચલ Type>   iter_t;
+  પ્રકારવ્યાખ્યા hb_array_t<      Type> writer_t;
+    iter_t   iter () અચલ { પાછા as_array (); }
+  writer_t writer ()       { પાછા as_array (); }
+  operator   iter_t () અચલ { પાછા   iter (); }
+  operator writer_t ()       { પાછા writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  અચલ Type *begin () અચલ { પાછા arrayZ; }
+  અચલ Type *end () અચલ { પાછા arrayZ + get_length (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD તાર્કિક serialize (hb_serialize_context_t *c, unsigned પૂર્ણાંક વસ્તુઓ_len, તાર્કિક clear = સાચું)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (આ);
+    જો (unlikely (!c->extend_min (આ))) return_trace (ખોટું);
+    c->check_assign (lenP1, વસ્તુઓ_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    જો (unlikely (!c->extend_size (આ, get_size (), clear))) return_trace (ખોટું);
+    return_trace (સાચું);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD તાર્કિક serialize (hb_serialize_context_t *c, Iterator વસ્તુઓ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (આ);
+    unsigned ગણતરી = hb_len (વસ્તુઓ);
+    જો (unlikely (!serialize (c, ગણતરી, ખોટું))) return_trace (ખોટું);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    માટે (unsigned i = 0; i < ગણતરી; i++, ++વસ્તુઓ)
+      arrayZ[i] = *વસ્તુઓ;
+    return_trace (સાચું);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!sanitize_shallow (c))) return_trace (ખોટું);
+    જો (!કદ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (સાચું);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned પૂર્ણાંક ગણતરી = get_length ();
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      જો (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ખોટું);
+    return_trace (સાચું);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ખાનગી:
+  તાર્કિક sanitize_shallow (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (lenP1.sanitize (c) &&
 		  hb_barrier () &&
-		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, sizeof (LenType))));
+		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, કદ (LenType))));
   }
 
-  public:
+  જાહેર:
   LenType	lenP1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  જાહેર:
+  DEFINE_SIZE_ARRAY (કદ (LenType), arrayZ);
 };
 template <typename Type> using HeadlessArray16Of = HeadlessArrayOf<Type, HBUINT16>;
 
 /* An array storing length-1. */
 template <typename Type, typename LenType=HBUINT16>
-struct ArrayOfM1
+સંરચના ArrayOfM1
 {
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
 
-  const Type& operator [] (int i_) const
+  અચલ Type& operator [] (પૂર્ણાંક i_) અચલ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i > lenM1)) પાછા Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (પૂર્ણાંક i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i > lenM1)) પાછા Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    પાછા arrayZ[i];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  size_t get_size () અચલ
+  { પાછા hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!sanitize_shallow (c))) return_trace (ખોટું);
+    જો (!કદ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (સાચું);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned પૂર્ણાંક ગણતરી = lenM1 + 1;
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      જો (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (ખોટું);
+    return_trace (સાચું);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ખાનગી:
+  તાર્કિક sanitize_shallow (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (lenM1.sanitize (c) &&
 		  hb_barrier () &&
-		  (c->check_array_sized (arrayZ, lenM1 + 1, sizeof (LenType))));
+		  (c->check_array_sized (arrayZ, lenM1 + 1, કદ (LenType))));
   }
 
-  public:
+  જાહેર:
   LenType	lenM1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  જાહેર:
+  DEFINE_SIZE_ARRAY (કદ (LenType), arrayZ);
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type, typename LenType>
-struct SortedArrayOf : ArrayOf<Type, LenType>
+સંરચના SortedArrayOf : ArrayOf<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { પાછા hb_sorted_array (આ->arrayZ, આ->len); }
+  hb_sorted_array_t<અચલ Type> as_array () અચલ { પાછા hb_sorted_array (આ->arrayZ, આ->len); }
 
   /* Iterator. */
-  typedef hb_sorted_array_t<const Type>   iter_t;
-  typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  પ્રકારવ્યાખ્યા hb_sorted_array_t<અચલ Type>   iter_t;
+  પ્રકારવ્યાખ્યા hb_sorted_array_t<      Type> writer_t;
+    iter_t   iter () અચલ { પાછા as_array (); }
+  writer_t writer ()       { પાછા as_array (); }
+  operator   iter_t () અચલ { પાછા   iter (); }
+  operator writer_t ()       { પાછા writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  અચલ Type *begin () અચલ { પાછા આ->arrayZ; }
+  અચલ Type *end () અચલ { પાછા આ->arrayZ + આ->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  તાર્કિક serialize (hb_serialize_context_t *c, unsigned પૂર્ણાંક વસ્તુઓ_len)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    TRACE_SERIALIZE (આ);
+    તાર્કિક ret = ArrayOf<Type, LenType>::serialize (c, વસ્તુઓ_len);
     return_trace (ret);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  તાર્કિક serialize (hb_serialize_context_t *c, Iterator વસ્તુઓ)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    TRACE_SERIALIZE (આ);
+    તાર્કિક ret = ArrayOf<Type, LenType>::serialize (c, વસ્તુઓ);
     return_trace (ret);
   }
 
-  SortedArrayOf* copy (hb_serialize_context_t *c) const
+  SortedArrayOf* copy (hb_serialize_context_t *c) અચલ
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     SortedArrayOf* out = reinterpret_cast<SortedArrayOf *> (ArrayOf<Type, LenType>::copy (c));
     return_trace (out);
   }
 
   template <typename T>
-  Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
+  Type &bsearch (અચલ T &x, Type &not_found = Crap (Type))
+  { પાછા *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
+  અચલ Type &bsearch (અચલ T &x, અચલ Type &not_found = Null (Type)) અચલ
+  { પાછા *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  તાર્કિક bfind (અચલ T &x, unsigned પૂર્ણાંક *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned પૂર્ણાંક to_store = (unsigned પૂર્ણાંક) -1) અચલ
+  { પાછા as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
@@ -1106,139 +1106,139 @@ template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
  */
 
 template <typename LenType=HBUINT16>
-struct BinSearchHeader
+સંરચના Bin_શોધ_Header
 {
-  operator uint32_t () const { return len; }
+  operator uint32_t () અચલ { પાછા len; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_શોધ_Header& operator = (unsigned પૂર્ણાંક v)
   {
     len = v;
-    assert (len == v);
+    પ્રતિજ્ઞા (len == v);
     entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    શોધ_Range = 16 * (1u << entrySelector);
+    rangeShift = v * 16 > શોધ_Range
+		 ? 16 * v - શોધ_Range
 		 : 0;
-    return *this;
+    પાછા *આ;
   }
 
-  protected:
+  સુરક્ષિત:
   LenType	len;
-  LenType	searchRange;
+  LenType	શોધ_Range;
   LenType	entrySelector;
   LenType	rangeShift;
 
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+using Bin_શોધ_Array_Of = SortedArrayOf<Type, Bin_શોધ_Header<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+સંરચના Var_Sized_Bin_શોધ_Header
 {
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (આ);
+    return_trace (c->check_struct (આ));
   }
 
   HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	શોધ_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
   HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
   HBUINT16	rangeShift;	/* The value of unitSize times the difference of the
 				 * value of nUnits minus the largest power of 2 less
 				 * than or equal to the value of nUnits. */
-  public:
+  જાહેર:
   DEFINE_SIZE_STATIC (10);
 };
 
 template <typename Type>
-struct VarSizedBinSearchArrayOf
+સંરચના Var_Sized_Bin_શોધ_Array_Of
 {
-  static constexpr unsigned item_size = Type::static_size;
+  સ્થિર constexpr unsigned item_size = Type::static_size;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_ASSIGN (Var_Sized_Bin_શોધ_Array_Of);
 
-  bool last_is_terminator () const
+  તાર્કિક last_is_terminator () અચલ
   {
-    if (unlikely (!header.nUnits)) return false;
+    જો (unlikely (!header.nUnits)) પાછા ખોટું;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    અચલ HBUINT16 *શબ્દો = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
+    unsigned પૂર્ણાંક ગણતરી = Type::Termination_Word_ગણતરી;
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      જો (શબ્દો[i] != 0xFFFFu)
+	પાછા ખોટું;
+    પાછા સાચું;
   }
 
-  const Type& operator [] (int i_) const
+  અચલ Type& operator [] (પૂર્ણાંક i_) અચલ
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= get_length ())) પાછા Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    પાછા StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  Type& operator [] (int i_)
+  Type& operator [] (પૂર્ણાંક i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    unsigned પૂર્ણાંક i = (unsigned પૂર્ણાંક) i_;
+    જો (unlikely (i >= get_length ())) પાછા Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    પાછા StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  unsigned પૂર્ણાંક get_length () અચલ
+  { પાછા header.nUnits - last_is_terminator (); }
+  size_t get_size () અચલ
+  { પાછા hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c, Ts&&... ds) અચલ
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (આ);
+    જો (unlikely (!sanitize_shallow (c))) return_trace (ખોટું);
+    જો (!કદ... (Ts) && hb_is_trivially_copyable(Type)) return_trace (સાચું);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned પૂર્ણાંક ગણતરી = get_length ();
+    માટે (unsigned પૂર્ણાંક i = 0; i < ગણતરી; i++)
+      જો (unlikely (!(*આ)[i].sanitize (c, std::forward<Ts> (ds)...)))
+	return_trace (ખોટું);
+    return_trace (સાચું);
   }
 
   template <typename T>
-  const Type *bsearch (const T &key) const
+  અચલ Type *bsearch (અચલ T &key) અચલ
   {
     unsigned pos;
-    return hb_bsearch_impl (&pos,
+    પાછા hb_bsearch_impl (&pos,
 			    key,
-			    (const void *) bytesZ,
+			    (અચલ શૂન્ય *) bytesZ,
 			    get_length (),
 			    header.unitSize,
 			    _hb_cmp_method<T, Type>)
-	   ? (const Type *) (((const char *) &bytesZ) + (pos * header.unitSize))
+	   ? (અચલ Type *) (((અચલ અક્ષર *) &bytesZ) + (pos * header.unitSize))
 	   : nullptr;
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  ખાનગી:
+  તાર્કિક sanitize_shallow (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (આ);
     return_trace (header.sanitize (c) &&
 		  hb_barrier () &&
 		  Type::static_size <= header.unitSize &&
@@ -1247,338 +1247,338 @@ struct VarSizedBinSearchArrayOf
 				  header.unitSize));
   }
 
-  protected:
-  VarSizedBinSearchHeader	header;
+  સુરક્ષિત:
+  Var_Sized_Bin_શોધ_Header	header;
   UnsizedArrayOf<HBUINT8>	bytesZ;
-  public:
+  જાહેર:
   DEFINE_SIZE_ARRAY (10, bytesZ);
 };
 
 
 /* CFF INDEX */
 
-template <typename COUNT>
-struct CFFIndex
+template <typename ગણતરી_3>
+સંરચના CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  unsigned પૂર્ણાંક offset_array_size () અચલ
+  { પાછા offSize * (ગણતરી + 1); }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool serialize (hb_serialize_context_t *c,
-		  const Iterable &iterable,
-		  const unsigned *p_data_size = nullptr,
+  તાર્કિક serialize (hb_serialize_context_t *c,
+		  અચલ Iterable &iterable,
+		  અચલ unsigned *p_data_size = nullptr,
                   unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
     unsigned data_size;
-    if (p_data_size)
+    જો (p_data_size)
       data_size = *p_data_size;
-    else
+    નહીંતર
       total_size (iterable, &data_size);
 
     auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
-    unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
+    જો (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (ખોટું);
+    unsigned અક્ષર *ret = c->allocate_size<unsigned અક્ષર> (data_size, ખોટું);
+    જો (unlikely (!ret)) return_trace (ખોટું);
     unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    માટે (અચલ auto &_ : +it)
     {
       unsigned len = _.length;
 
-      if (!len)
-	continue;
+      જો (!len)
+	ચાલુ;
 
-      if (unlikely (len > remaining)) {
+      જો (unlikely (len > remaining)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
-        return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->check_success (ખોટું, HB_SERIALIZE_ERROR_INT_OVERFLOW));
       }
 
       remaining -= len;
 
-      if (len <= 1)
+      જો (len <= 1)
       {
 	*ret++ = *_.arrayZ;
-	continue;
+	ચાલુ;
       }
       hb_memcpy (ret, _.arrayZ, len);
       ret += len;
     }
-    return_trace (true);
+    return_trace (સાચું);
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_header (hb_serialize_context_t *c,
+  તાર્કિક serialize_header (hb_serialize_context_t *c,
 			 Iterator it,
 			 unsigned data_size,
                          unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (આ);
 
     unsigned off_size = (hb_bit_storage (data_size + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
-    this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
-      return_trace (false);
+    જો (unlikely (!c->extend_min (આ))) return_trace (ખોટું);
+    આ->ગણતરી = hb_len (it);
+    જો (!આ->ગણતરી) return_trace (સાચું);
+    જો (unlikely (!c->extend (આ->offSize))) return_trace (ખોટું);
+    આ->offSize = off_size;
+    જો (unlikely (!c->allocate_size<HBUINT8> (off_size * (આ->ગણતરી + 1), ખોટું)))
+      return_trace (ખોટું);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    unsigned પૂર્ણાંક offset = 1;
+    જો (HB_OPTIMIZE_SIZE_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      unsigned પૂર્ણાંક i = 0;
+      માટે (અચલ auto &_ : +it)
       {
 	set_offset_at (i++, offset);
 	offset += hb_len_of (_);
       }
       set_offset_at (i, offset);
     }
-    else
-      switch (off_size)
+    નહીંતર
+      પસંદગી (off_size)
       {
-	case 1:
+	સ્થિતિ 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  માટે (અચલ auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 2:
+	તોડો;
+	સ્થિતિ 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  માટે (અચલ auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 3:
+	તોડો;
+	સ્થિતિ 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  માટે (અચલ auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 4:
+	તોડો;
+	સ્થિતિ 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  માટે (અચલ auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	default:
-	break;
+	તોડો;
+	મૂળભૂત:
+	તોડો;
       }
 
-    assert (offset == data_size + 1);
-    return_trace (true);
+    પ્રતિજ્ઞા (offset == data_size + 1);
+    return_trace (સાચું);
   }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
+  સ્થિર unsigned total_size (અચલ Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
   {
     auto it = + hb_iter (iterable);
-    if (!it)
+    જો (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      જો (data_size) *data_size = 0;
+      પાછા min_size;
     }
 
     unsigned total = 0;
-    for (const auto &_ : +it)
+    માટે (અચલ auto &_ : +it)
       total += hb_len_of (_);
 
-    if (data_size) *data_size = total;
+    જો (data_size) *data_size = total;
 
     unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    પાછા min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  શૂન્ય set_offset_at (unsigned પૂર્ણાંક index, unsigned પૂર્ણાંક offset)
   {
-    assert (index <= count);
+    પ્રતિજ્ઞા (index <= ગણતરી);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned પૂર્ણાંક size = offSize;
+    અચલ HBUINT8 *p = offsets;
+    પસંદગી (size)
     {
-      case 1: ((HBUINT8  *) p)[index] = offset; break;
-      case 2: ((HBUINT16 *) p)[index] = offset; break;
-      case 3: ((HBUINT24 *) p)[index] = offset; break;
-      case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
+      સ્થિતિ 1: ((HBUINT8  *) p)[index] = offset; તોડો;
+      સ્થિતિ 2: ((HBUINT16 *) p)[index] = offset; તોડો;
+      સ્થિતિ 3: ((HBUINT24 *) p)[index] = offset; તોડો;
+      સ્થિતિ 4: ((HBUINT32 *) p)[index] = offset; તોડો;
+      મૂળભૂત: પાછા;
     }
   }
 
-  private:
-  unsigned int offset_at (unsigned int index) const
+  ખાનગી:
+  unsigned પૂર્ણાંક offset_at (unsigned પૂર્ણાંક index) અચલ
   {
-    assert (index <= count);
+    પ્રતિજ્ઞા (index <= ગણતરી);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned પૂર્ણાંક size = offSize;
+    અચલ HBUINT8 *p = offsets;
+    પસંદગી (size)
     {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      સ્થિતિ 1: પાછા ((HBUINT8  *) p)[index];
+      સ્થિતિ 2: પાછા ((HBUINT16 *) p)[index];
+      સ્થિતિ 3: પાછા ((HBUINT24 *) p)[index];
+      સ્થિતિ 4: પાછા ((HBUINT32 *) p)[index];
+      મૂળભૂત: પાછા 0;
     }
   }
 
-  const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
-  public:
+  અચલ unsigned અક્ષર *data_base () અચલ
+  { પાછા (અચલ unsigned અક્ષર *) આ + min_size + offSize.static_size - 1 + offset_array_size (); }
+  જાહેર:
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned પૂર્ણાંક index) અચલ
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    જો (unlikely (index >= ગણતરી)) પાછા hb_ubytes_t ();
     hb_barrier ();
     unsigned offset0 = offset_at (index);
     unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    જો (unlikely (offset1 < offset0 || offset1 > offset_at (ગણતરી)))
+      પાછા hb_ubytes_t ();
+    પાછા hb_ubytes_t (data_base () + offset0, offset1 - offset0);
   }
 
-  size_t get_size () const
+  size_t get_size () અચલ
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    જો (ગણતરી)
+      પાછા hb_unsigned_add_saturate (min_size, offSize.static_size,
+				       offset_array_size (), offset_at (ગણતરી) - 1);
+    પાછા min_size;  /* empty CFFIndex contains count only */
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  તાર્કિક sanitize (hb_sanitize_context_t *c) અચલ
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (આ);
+    return_trace (likely (c->check_struct (આ) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
+			  (ગણતરી == 0 || /* empty INDEX */
+			   (ગણતરી < ગણતરી + 1u &&
 			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			    c->check_array (offsets, offSize, ગણતરી + 1u) &&
+			    c->check_range (data_base (), offset_at (ગણતરી))))));
   }
 
-  public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
-  private:
+  જાહેર:
+  ગણતરી_3		ગણતરી;		/* Number of object data. Note there are (count+1) offsets */
+  ખાનગી:
   HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
-  public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  જાહેર:
+  DEFINE_SIZE_MIN (ગણતરી_3::static_size);
 };
-typedef CFFIndex<HBUINT16> CFF1Index;
-typedef CFFIndex<HBUINT32> CFF2Index;
+પ્રકારવ્યાખ્યા CFFIndex<HBUINT16> CFF1Index;
+પ્રકારવ્યાખ્યા CFFIndex<HBUINT32> CFF2Index;
 
 
 /* TupleValues */
-struct TupleValues
+સંરચના Tuple_કિંમતો
 {
-  enum packed_value_flag_t
+  ગણના packed_કિંમત_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    કિંમતો_ARE_ZEROS     = 0x80,
+    કિંમતો_ARE_BYTES     = 0x00,
+    કિંમતો_ARE_શબ્દો     = 0x40,
+    કિંમતો_ARE_LONGS     = 0xC0,
+    કિંમતો_SIZE_MASK     = 0xC0,
+    કિંમત_RUN_ગણતરી_MASK = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
-				  unsigned char *encoded_bytes /* OUT */)
+  સ્થિર unsigned compile_unsafe (hb_array_t<અચલ પૂર્ણાંક> values, /* IN */
+				  unsigned અક્ષર *encoded_bytes /* OUT */)
   {
-    unsigned num_values = values.length;
+    unsigned અંક_કિંમતો_3 = values.length;
     unsigned encoded_len = 0;
     unsigned i = 0;
-    while (i < num_values)
+    જ્યારે (i < અંક_કિંમતો_3)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+      પૂર્ણાંક val = values.arrayZ[i];
+      જો (val == 0)
+        encoded_len += encode_કિંમત_run_as_zeroes (i, encoded_bytes + encoded_len, values);
+      નહીંતર જો ((int8_t) val == val)
+        encoded_len += encode_કિંમત_run_as_bytes (i, encoded_bytes + encoded_len, values);
+      નહીંતર જો ((int16_t) val == val)
+        encoded_len += encode_કિંમત_run_as_શબ્દો (i, encoded_bytes + encoded_len, values);
+      નહીંતર
+        encoded_len += encode_કિંમત_run_as_longs (i, encoded_bytes + encoded_len, values);
     }
-    return encoded_len;
+    પાછા encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
-					      unsigned char *it,
-					      hb_array_t<const int> values)
+  સ્થિર unsigned encode_કિંમત_run_as_zeroes (unsigned& i,
+					      unsigned અક્ષર *it,
+					      hb_array_t<અચલ પૂર્ણાંક> values)
   {
-    unsigned num_values = values.length;
+    unsigned અંક_કિંમતો_3 = values.length;
     unsigned run_length = 0;
     unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    જ્યારે (i < અંક_કિંમતો_3 && values.arrayZ[i] == 0)
     {
       i++;
       run_length++;
     }
 
-    while (run_length >= 64)
+    જ્યારે (run_length >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
+      *it++ = અક્ષર (કિંમતો_ARE_ZEROS | 63);
       run_length -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    જો (run_length)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = અક્ષર (કિંમતો_ARE_ZEROS | (run_length - 1));
       encoded_len++;
     }
-    return encoded_len;
+    પાછા encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  સ્થિર unsigned encode_કિંમત_run_as_bytes (unsigned &i,
+					     unsigned અક્ષર *it,
+					     hb_array_t<અચલ પૂર્ણાંક> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned અંક_કિંમતો_3 = values.length;
+    જ્યારે (i < અંક_કિંમતો_3)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
-        break;
+      પૂર્ણાંક val = values.arrayZ[i];
+      જો ((int8_t) val != val)
+        તોડો;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
-        break;
+      જો (val == 0 && i + 1 < અંક_કિંમતો_3 && values.arrayZ[i+1] == 0)
+        તોડો;
 
       i++;
     }
@@ -1586,13 +1586,13 @@ struct TupleValues
 
     unsigned encoded_len = 0;
 
-    while (run_length >= 64)
+    જ્યારે (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (કિંમતો_ARE_BYTES | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
-	it[j] = static_cast<char> (values.arrayZ[start + j]);
+      માટે (unsigned j = 0; j < 64; j++)
+	it[j] = static_cast<અક્ષર> (values.arrayZ[start + j]);
       it += 64;
       encoded_len += 64;
 
@@ -1600,58 +1600,58 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    જો (run_length)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (કિંમતો_ARE_BYTES | (run_length - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
-        it[j] = static_cast<char> (values.arrayZ[start + j]);
+      માટે (unsigned j = 0; j < run_length; j++)
+        it[j] = static_cast<અક્ષર> (values.arrayZ[start + j]);
       encoded_len += run_length;
     }
 
-    return encoded_len;
+    પાછા encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  સ્થિર unsigned encode_કિંમત_run_as_શબ્દો (unsigned &i,
+					     unsigned અક્ષર *it,
+					     hb_array_t<અચલ પૂર્ણાંક> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned અંક_કિંમતો_3 = values.length;
+    જ્યારે (i < અંક_કિંમતો_3)
     {
-      int val = values.arrayZ[i];
+      પૂર્ણાંક val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
-        break;
+      જો ((int16_t) val != val)
+        તોડો;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      જો (val == 0) તોડો;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
-          i + 1 < num_values &&
+      જો ((int8_t) val == val &&
+          i + 1 < અંક_કિંમતો_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
-        break;
+        તોડો;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    જ્યારે (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (કિંમતો_ARE_શબ્દો | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      માટે (unsigned j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t કિંમત_val = values.arrayZ[start + j];
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 8);
+        *it++ = static_cast<અક્ષર> (કિંમત_val & 0xFF);
 
         encoded_len += 2;
       }
@@ -1660,52 +1660,52 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    જો (run_length)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (કિંમતો_ARE_શબ્દો | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      જ્યારે (start < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t કિંમત_val = values.arrayZ[start++];
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 8);
+        *it++ = static_cast<અક્ષર> (કિંમત_val & 0xFF);
 
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    પાછા encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  સ્થિર unsigned encode_કિંમત_run_as_longs (unsigned &i,
+					     unsigned અક્ષર *it,
+					     hb_array_t<અચલ પૂર્ણાંક> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned અંક_કિંમતો_3 = values.length;
+    જ્યારે (i < અંક_કિંમતો_3)
     {
-      int val = values.arrayZ[i];
+      પૂર્ણાંક val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
-        break;
+      જો ((int16_t) val == val)
+        તોડો;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    જ્યારે (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (કિંમતો_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      માટે (unsigned j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t કિંમત_val = values.arrayZ[start + j];
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 24);
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 16);
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 8);
+        *it++ = static_cast<અક્ષર> (કિંમત_val & 0xFF);
 
         encoded_len += 4;
       }
@@ -1714,324 +1714,324 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    જો (run_length)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (કિંમતો_ARE_LONGS | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      જ્યારે (start < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t કિંમત_val = values.arrayZ[start++];
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 24);
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 16);
+        *it++ = static_cast<અક્ષર> (કિંમત_val >> 8);
+        *it++ = static_cast<અક્ષર> (કિંમત_val & 0xFF);
 
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    પાછા encoded_len;
   }
 
   template <typename T>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  static bool decompile (const HBUINT8 *&p /* IN/OUT */,
+  સ્થિર તાર્કિક decompile (અચલ HBUINT8 *&p /* IN/OUT */,
 			 hb_vector_t<T> &values /* IN/OUT */,
-			 const HBUINT8 *end,
-			 bool consume_all = false,
+			 અચલ HBUINT8 *end,
+			 તાર્કિક consume_all = ખોટું,
 			 unsigned start = 0)
   {
     unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
+    unsigned ગણતરી = consume_all ? UINT_MAX : values.length;
+    જો (consume_all)
       values.alloc ((end - p) / 2);
-    while (i < count)
+    જ્યારે (i < ગણતરી)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
+      જો (unlikely (p + 1 > end)) પાછા consume_all;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      unsigned run_ગણતરી = (control & કિંમત_RUN_ગણતરી_MASK) + 1;
+      જો (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        જો (unlikely (!values.resize_dirty  (values.length + run_ગણતરી)))
+	  પાછા ખોટું;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      unsigned stop = i + run_ગણતરી;
+      જો (unlikely (stop > ગણતરી)) પાછા ખોટું;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      unsigned skip = i < start ? hb_min (start - i, run_ગણતરી) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      જો ((control & કિંમતો_SIZE_MASK) == કિંમતો_ARE_ZEROS)
       {
-	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
+	hb_memset (&values.arrayZ[i], 0, (stop - i) * કદ (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      નહીંતર જો ((control & કિંમતો_SIZE_MASK) ==  કિંમતો_ARE_શબ્દો)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+        જો (unlikely (p + run_ગણતરી * HBINT16::static_size > end)) પાછા ખોટું;
 	p += skip * HBINT16::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        માટે (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT16 *) p;
+	  values.arrayZ[i] = * (અચલ HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 1] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 1] = * (અચલ HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 2] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 2] = * (અચલ HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 3] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 3] = * (અચલ HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
 #endif
-        for (; i < stop; i++)
+        માટે (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT16 *) p;
+          values.arrayZ[i] = * (અચલ HBINT16 *) p;
           p += HBINT16::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      નહીંતર જો ((control & કિંમતો_SIZE_MASK) ==  કિંમતો_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+        જો (unlikely (p + run_ગણતરી * HBINT32::static_size > end)) પાછા ખોટું;
 	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        માટે (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT32 *) p;
+          values.arrayZ[i] = * (અચલ HBINT32 *) p;
           p += HBINT32::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      નહીંતર જો ((control & કિંમતો_SIZE_MASK) ==  કિંમતો_ARE_BYTES)
       {
-        if (unlikely (p + run_count > end)) return false;
+        જો (unlikely (p + run_ગણતરી > end)) પાછા ખોટું;
 	p += skip * HBINT8::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+	માટે (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 2] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
+	  values.arrayZ[i] = * (અચલ HBINT8 *) p++;
+	  values.arrayZ[i + 1] = * (અચલ HBINT8 *) p++;
+	  values.arrayZ[i + 2] = * (અચલ HBINT8 *) p++;
+	  values.arrayZ[i + 3] = * (અચલ HBINT8 *) p++;
 	}
 #endif
-        for (; i < stop; i++)
-          values.arrayZ[i] = * (const HBINT8 *) p++;
+        માટે (; i < stop; i++)
+          values.arrayZ[i] = * (અચલ HBINT8 *) p++;
       }
     }
-    return true;
+    પાછા સાચું;
   }
 
-  static bool skip (const unsigned char *&p /* IN/OUT */,
-		    const unsigned char *end,
-		    unsigned count)
+  સ્થિર તાર્કિક skip (અચલ unsigned અક્ષર *&p /* IN/OUT */,
+		    અચલ unsigned અક્ષર *end,
+		    unsigned ગણતરી)
   {
     unsigned seen = 0;
-    while (seen < count)
+    જ્યારે (seen < ગણતરી)
     {
-      if (unlikely (p >= end)) return false;
+      જો (unlikely (p >= end)) પાછા ખોટું;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      unsigned run_ગણતરી = (control & કિંમત_RUN_ગણતરી_MASK) + 1;
+      જો (unlikely (run_ગણતરી > ગણતરી - seen)) પાછા ખોટું;
 
       unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      પસંદગી (control & કિંમતો_SIZE_MASK)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	સ્થિતિ કિંમતો_ARE_ZEROS: તોડો;
+	સ્થિતિ કિંમતો_ARE_BYTES: width = HBINT8::static_size; તોડો;
+	સ્થિતિ કિંમતો_ARE_શબ્દો: width = HBINT16::static_size; તોડો;
+	સ્થિતિ કિંમતો_ARE_LONGS: width = HBINT32::static_size; તોડો;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      જો (unlikely (unsigned (end - p) < run_ગણતરી * width)) પાછા ખોટું;
+      p += run_ગણતરી * width;
+      seen += run_ગણતરી;
     }
-    return true;
+    પાછા સાચું;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  સંરચના iter_t : hb_iter_with_fallback_t<iter_t, પૂર્ણાંક>
   {
-    iter_t (const unsigned char *p_, unsigned len_)
+    iter_t (અચલ unsigned અક્ષર *p_, unsigned len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { જો (likely (ensure_run ())) read_કિંમત (); }
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
+    ખાનગી:
+    અચલ unsigned અક્ષર *p;
+    અચલ unsigned અક્ષર * અચલ endp;
+    પૂર્ણાંક current_કિંમત = 0;
+    signed run_ગણતરી = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    તાર્કિક ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      જો (likely (run_ગણતરી > 0)) પાછા સાચું;
+      પાછા _ensure_run ();
     }
-    bool _ensure_run ()
+    તાર્કિક _ensure_run ()
     {
-      if (unlikely (p >= endp))
+      જો (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
-	return false;
+        run_ગણતરી = 0;
+        current_કિંમત = 0;
+	પાછા ખોટું;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_ગણતરી = (control & કિંમત_RUN_ગણતરી_MASK) + 1;
+      width = control & કિંમતો_SIZE_MASK;
+      પસંદગી (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        સ્થિતિ કિંમતો_ARE_ZEROS: width = 0; તોડો;
+	સ્થિતિ કિંમતો_ARE_BYTES: width = HBINT8::static_size;  તોડો;
+	સ્થિતિ કિંમતો_ARE_શબ્દો: width = HBINT16::static_size; તોડો;
+	સ્થિતિ કિંમતો_ARE_LONGS: width = HBINT32::static_size; તોડો;
+	મૂળભૂત: પ્રતિજ્ઞા (ખોટું);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      જો (unlikely (p + run_ગણતરી * width > endp))
       {
-	run_count = 0;
-	current_value = 0;
-	return false;
+	run_ગણતરી = 0;
+	current_કિંમત = 0;
+	પાછા ખોટું;
       }
 
-      return true;
+      પાછા સાચું;
     }
-    void read_value ()
+    શૂન્ય read_કિંમત ()
     {
-      switch (width)
+      પસંદગી (width)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        સ્થિતિ 0: current_કિંમત = 0; તોડો;
+	સ્થિતિ 1: current_કિંમત = * (અચલ HBINT8  *) p; તોડો;
+	સ્થિતિ 2: current_કિંમત = * (અચલ HBINT16 *) p; તોડો;
+	સ્થિતિ 4: current_કિંમત = * (અચલ HBINT32 *) p; તોડો;
       }
       p += width;
     }
 
-    public:
+    જાહેર:
 
-    typedef int __item_t__;
-    __item_t__ __item__ () const
-    { return current_value; }
+    પ્રકારવ્યાખ્યા પૂર્ણાંક __item_t__;
+    __item_t__ __item__ () અચલ
+    { પાછા current_કિંમત; }
 
-    bool __more__ () const { return run_count || p < endp; }
-    void __next__ ()
+    તાર્કિક __more__ () અચલ { પાછા run_ગણતરી || p < endp; }
+    શૂન્ય __next__ ()
     {
-      run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
-      read_value ();
+      run_ગણતરી--;
+      જો (unlikely (!ensure_run ()))
+	પાછા;
+      read_કિંમત ();
     }
-    void __forward__ (unsigned n)
+    શૂન્ય __forward__ (unsigned n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      જો (unlikely (!ensure_run ()))
+	પાછા;
+      જ્યારે (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	unsigned i = hb_min (n, (unsigned) run_ગણતરી);
+	run_ગણતરી -= i;
 	n -= i;
 	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
-	read_value ();
+	જો (unlikely (!ensure_run ()))
+	  પાછા;
+	read_કિંમત ();
       }
     }
-    bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
-    iter_t __end__ () const
+    તાર્કિક operator != (અચલ iter_t& o) અચલ
+    { પાછા p != o.p || run_ગણતરી != o.run_ગણતરી; }
+    iter_t __end__ () અચલ
     {
       iter_t it (endp, 0);
-      return it;
+      પાછા it;
     }
   };
 
-  struct fetcher_t
+  સંરચના fetcher_t
   {
-    fetcher_t (const unsigned char *p_, unsigned len_)
+    fetcher_t (અચલ unsigned અક્ષર *p_, unsigned len_)
 	      : p (p_), end (p_ + len_) {}
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const end;
-    signed run_count = 0;
+    ખાનગી:
+    અચલ unsigned અક્ષર *p;
+    અચલ unsigned અક્ષર * અચલ end;
+    signed run_ગણતરી = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    તાર્કિક ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      જો (likely (run_ગણતરી > 0)) પાછા સાચું;
+      પાછા _ensure_run ();
     }
 
-    bool _ensure_run ()
+    તાર્કિક _ensure_run ()
     {
-      if (unlikely (p >= end))
+      જો (unlikely (p >= end))
       {
-        run_count = 0;
-	return false;
+        run_ગણતરી = 0;
+	પાછા ખોટું;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_ગણતરી = (control & કિંમત_RUN_ગણતરી_MASK) + 1;
+      width = control & કિંમતો_SIZE_MASK;
+      પસંદગી (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        સ્થિતિ કિંમતો_ARE_ZEROS: width = 0; તોડો;
+	સ્થિતિ કિંમતો_ARE_BYTES: width = HBINT8::static_size;  તોડો;
+	સ્થિતિ કિંમતો_ARE_શબ્દો: width = HBINT16::static_size; તોડો;
+	સ્થિતિ કિંમતો_ARE_LONGS: width = HBINT32::static_size; તોડો;
+	મૂળભૂત: પ્રતિજ્ઞા (ખોટું);
       }
 
-      if (unlikely (p + run_count * width > end))
+      જો (unlikely (p + run_ગણતરી * width > end))
       {
-	run_count = 0;
-	return false;
+	run_ગણતરી = 0;
+	પાછા ખોટું;
       }
 
-      return true;
+      પાછા સાચું;
     }
 
-    public:
-    void skip (unsigned n)
+    જાહેર:
+    શૂન્ય skip (unsigned n)
     {
-      while (n)
+      જ્યારે (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	જો (unlikely (!ensure_run ()))
+	  પાછા;
+	unsigned i = hb_min (n, (unsigned) run_ગણતરી);
+	run_ગણતરી -= i;
 	n -= i;
 	p += i * width;
       }
     }
 
-    private:
-    template <bool scaled, typename T>
-    void _add_to (hb_array_t<T> out, T scale = T (1))
+    ખાનગી:
+    template <તાર્કિક scaled, typename T>
+    શૂન્ય _add_to (hb_array_t<T> out, T scale = T (1))
     {
       unsigned n = out.length;
       T *arrayZ = out.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      માટે (unsigned i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
-	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
-	switch (width)
+	જો (unlikely (!ensure_run ()))
+	  તોડો;
+	unsigned ગણતરી = hb_min (n - i, (unsigned) run_ગણતરી);
+	પસંદગી (width)
 	{
-	  case 0:
+	  સ્થિતિ 0:
 	  {
-	    arrayZ += count;
-	    break;
+	    arrayZ += ગણતરી;
+	    તોડો;
 	  }
-	  case 1:
+	  સ્થિતિ 1:
 	  {
-	    const auto *pp = (const HBINT8 *) p;
+	    અચલ auto *pp = (અચલ HBINT8 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    માટે (; j + 3 < ગણતરી; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2039,18 +2039,18 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    માટે (; j < ગણતરી; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (અચલ unsigned અક્ષર *) pp;
 	  }
-	  break;
-	  case 2:
+	  તોડો;
+	  સ્થિતિ 2:
 	  {
-	    const auto *pp = (const HBINT16 *) p;
+	    અચલ auto *pp = (અચલ HBINT16 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    માટે (; j + 3 < ગણતરી; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2058,72 +2058,72 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    માટે (; j < ગણતરી; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (અચલ unsigned અક્ષર *) pp;
 	  }
-	  break;
-	  case 4:
+	  તોડો;
+	  સ્થિતિ 4:
 	  {
-	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    અચલ auto *pp = (અચલ HBINT32 *) p;
+	    માટે (unsigned j = 0; j < ગણતરી; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (અચલ unsigned અક્ષર *) pp;
 	  }
-	  break;
+	  તોડો;
 	}
-	run_count -= count;
-	i += count;
+	run_ગણતરી -= ગણતરી;
+	i += ગણતરી;
       }
     }
 
-    public:
+    જાહેર:
     template <typename T>
-    void add_to (hb_array_t<T> out, float scale = 1.0f)
+    શૂન્ય add_to (hb_array_t<T> out, દશાંશ scale = 1.0f)
     {
 #ifndef HB_OPTIMIZE_SIZE
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
-        _add_to<false> (out);
-      else
+      જો (ખોટું && scale == 1.0f)
+        _add_to<ખોટું> (out);
+      નહીંતર
 #endif
-        _add_to<true> (out, (T) scale);
+        _add_to<સાચું> (out, (T) scale);
     }
   };
 };
 
-struct TupleList : CFF2Index
+સંરચના TupleList : CFF2Index
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_કિંમતો::iter_t operator [] (unsigned i) અચલ
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    પાછા Tuple_કિંમતો::iter_t (bytes.arrayZ, bytes.length);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_કિંમતો::fetcher_t fetcher (unsigned i) અચલ
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    પાછા Tuple_કિંમતો::fetcher_t (bytes.arrayZ, bytes.length);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
-struct Align
+template <unsigned પૂર્ણાંક alignment>
+સંરચના Align
 {
-  size_t get_size (const void *base) const
+  size_t get_size (અચલ શૂન્ય *base) અચલ
   {
-    unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    unsigned offset = (અચલ અક્ષર *) આ - (અચલ અક્ષર *) base;
+    પાછા (alignment - offset) & (alignment - 1);
   }
 
-  public:
+  જાહેર:
   DEFINE_SIZE_MIN (0);
 };
 
