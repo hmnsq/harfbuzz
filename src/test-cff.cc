@@ -32,15 +32,15 @@ test_specialized_line_geometry ()
 {
   /* Reconstruct every point after specializing horizontal/vertical line
    * sequences, including repeated directions and merged alternating runs. */
-  for (unsigned n = 1; n <= 8; n++)
-    for (unsigned mask = 0; mask < (1u << n); mask++)
-      for (unsigned maxstack : {4u, 48u})
+  за (unsigned n = 1; n <= 8; n++)
+    за (unsigned mask = 0; mask < (1u << n); mask++)
+      за (unsigned maxstack : {4u, 48u})
       {
         hb_vector_t<CFF::cs_command_t> commands;
-        for (unsigned i = 0; i < n; i++)
+        за (unsigned i = 0; i < n; i++)
         {
           bool horizontal = mask & (1u << i);
-          int delta = (i & 1) ? -(int) i - 1 : (int) i + 1;
+          цяло delta = (i & 1) ? -(цяло) i - 1 : (цяло) i + 1;
           CFF::cs_command_t cmd (OpCode_rlineto);
           CFF::number_t dx, dy;
           dx.set_int (horizontal ? delta : 0);
@@ -50,17 +50,17 @@ test_specialized_line_geometry ()
           commands.push (std::move (cmd));
         }
         CFF::specialize_commands (commands, maxstack);
-        for (const auto &cmd : commands)
+        за (const auto &cmd : commands)
           hb_always_assert (cmd.args.length <= maxstack);
         CFF::str_buff_t encoded;
         hb_always_assert (CFF::encode_commands (commands, encoded));
         CFF::generalize_commands (commands);
         hb_always_assert (commands.length == n);
-        int x = 0, y = 0, expected_x = 0, expected_y = 0;
-        for (unsigned i = 0; i < n; i++)
+        цяло x = 0, y = 0, expected_x = 0, expected_y = 0;
+        за (unsigned i = 0; i < n; i++)
         {
           bool horizontal = mask & (1u << i);
-          int delta = (i & 1) ? -(int) i - 1 : (int) i + 1;
+          цяло delta = (i & 1) ? -(цяло) i - 1 : (цяло) i + 1;
           expected_x += horizontal ? delta : 0;
           expected_y += horizontal ? 0 : delta;
           x += commands[i].args[0].to_int ();
@@ -77,8 +77,8 @@ test_specialized_fractional_geometry ()
     {0.5, 12}, {-0.5, 12}, {12, 0.5}, {12, -0.5},
     {0.25, -0.75}, {0, 12}, {12, 0},
   };
-  for (CFF::op_code_t op : {OpCode_rmoveto, OpCode_rlineto})
-    for (const auto &delta : deltas)
+  за (CFF::op_code_t op : {OpCode_rmoveto, OpCode_rlineto})
+    за (const auto &delta : deltas)
     {
       hb_vector_t<CFF::cs_command_t> commands;
       CFF::cs_command_t cmd (op);
@@ -126,8 +126,8 @@ test_fd_select_sentinel ()
   c.end_processing ();
 }
 
-int
-main (int argc, char **argv)
+цяло
+main (цяло argc, char **argv)
 {
   test_specialized_line_geometry ();
   test_specialized_fractional_geometry ();
@@ -164,17 +164,17 @@ main (int argc, char **argv)
       { 0.0123, 4, { 0x1E, 0x12, 0x3C, 0x4F } }, // 123E-4
       { -0.0123, 5, { 0x1E, 0xE1, 0x23, 0xC4, 0xFF } }, // -123E-4
     };
-    for (size_t t = 0; t < sizeof num_tp_tests / sizeof num_tp_tests[0]; t++)
+    за (size_t t = 0; t < sizeof num_tp_tests / sizeof num_tp_tests[0]; t++)
     {
       struct num_tp_test num_tp_test = num_tp_tests[t];
       number.set_real (num_tp_test.input);
       encoder.encode_num_tp (number);
       hb_always_assert (buff.length == num_tp_test.length);
-      for (unsigned i = 0; i < buff.length; i++)
+      за (unsigned i = 0; i < buff.length; i++)
 	hb_always_assert (buff[i] == num_tp_test.output[i]);
       encoder.reset ();
     }
   }
 
-  return 0;
+  върни 0;
 }

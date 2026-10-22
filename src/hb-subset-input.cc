@@ -32,11 +32,11 @@
 
 hb_subset_input_t::hb_subset_input_t ()
 {
-  for (auto& set : sets_iter ())
+  за (auto& set : sets_iter ())
     set = hb::shared_ptr<hb_set_t> (hb_set_create ());
 
-  if (in_error ())
-    return;
+  ако (in_error ())
+    върни;
 
   flags = HB_SUBSET_FLAGS_DEFAULT;
 
@@ -205,16 +205,16 @@ hb_subset_input_create_or_fail (void)
 {
   hb_subset_input_t *input = hb_object_create<hb_subset_input_t>();
 
-  if (unlikely (!input))
-    return nullptr;
+  ако (unlikely (!input))
+    върни nullptr;
 
-  if (input->in_error ())
+  ако (input->in_error ())
   {
     hb_subset_input_destroy (input);
-    return nullptr;
+    върни nullptr;
   }
 
-  return input;
+  върни input;
 }
 
 /**
@@ -230,7 +230,7 @@ hb_subset_input_create_or_fail (void)
 hb_subset_input_t *
 hb_subset_input_reference (hb_subset_input_t *input)
 {
-  return hb_object_reference (input);
+  върни hb_object_reference (input);
 }
 
 /**
@@ -245,7 +245,7 @@ hb_subset_input_reference (hb_subset_input_t *input)
 void
 hb_subset_input_destroy (hb_subset_input_t *input)
 {
-  if (!hb_object_destroy (input)) return;
+  ако (!hb_object_destroy (input)) върни;
 
   hb_free (input);
 }
@@ -265,7 +265,7 @@ hb_subset_input_destroy (hb_subset_input_t *input)
 HB_EXTERN hb_set_t *
 hb_subset_input_unicode_set (hb_subset_input_t *input)
 {
-  return input->sets.unicodes;
+  върни input->sets.unicodes;
 }
 
 /**
@@ -282,7 +282,7 @@ hb_subset_input_unicode_set (hb_subset_input_t *input)
 HB_EXTERN hb_set_t *
 hb_subset_input_glyph_set (hb_subset_input_t *input)
 {
-  return input->sets.glyphs;
+  върни input->sets.glyphs;
 }
 
 /**
@@ -299,7 +299,7 @@ hb_subset_input_glyph_set (hb_subset_input_t *input)
 HB_EXTERN hb_set_t *
 hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
 {
-  return input->sets_iter () [set_type];
+  върни input->sets_iter () [set_type];
 }
 
 /**
@@ -315,7 +315,7 @@ hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
 HB_EXTERN hb_subset_flags_t
 hb_subset_input_get_flags (hb_subset_input_t *input)
 {
-  return (hb_subset_flags_t) input->flags;
+  върни (hb_subset_flags_t) input->flags;
 }
 
 /**
@@ -356,7 +356,7 @@ hb_subset_input_set_user_data (hb_subset_input_t  *input,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace)
 {
-  return hb_object_set_user_data (input, key, data, destroy, replace);
+  върни hb_object_set_user_data (input, key, data, destroy, replace);
 }
 
 /**
@@ -375,7 +375,7 @@ void *
 hb_subset_input_get_user_data (const hb_subset_input_t *input,
 			       hb_user_data_key_t     *key)
 {
-  return hb_object_get_user_data (input, key);
+  върни hb_object_get_user_data (input, key);
 }
 
 /**
@@ -400,7 +400,7 @@ hb_subset_input_keep_everything (hb_subset_input_t *input)
 				      HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
 				      HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG};
 
-  for (auto idx : hb_iter (indices))
+  за (auto idx : hb_iter (indices))
   {
     hb_set_t *set = hb_subset_input_set (input, idx);
     hb_set_clear (set);
@@ -437,25 +437,25 @@ hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
                                          hb_face_t          *face)
 {
   unsigned axis_count = hb_ot_var_get_axis_count (face);
-  if (!axis_count) return false;
+  ако (!axis_count) върни false;
 
   hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_count, sizeof (hb_ot_var_axis_info_t));
-  if (unlikely (!axis_infos)) return false;
+  ако (unlikely (!axis_infos)) върни false;
 
   (void) hb_ot_var_get_axis_infos (face, 0, &axis_count, axis_infos);
 
-  for (unsigned i = 0; i < axis_count; i++)
+  за (unsigned i = 0; i < axis_count; i++)
   {
     hb_tag_t axis_tag = axis_infos[i].tag;
     double default_val = (double) axis_infos[i].default_value;
-    if (!input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
+    ако (!input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
     {
       hb_free (axis_infos);
-      return false;
+      върни false;
     }
   }
   hb_free (axis_infos);
-  return true;
+  върни true;
 }
 
 /**
@@ -478,11 +478,11 @@ hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
                                      hb_tag_t            axis_tag)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  ако (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    върни false;
 
   double default_val = (double) axis_info.default_value;
-  return input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
+  върни input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
 }
 
 /**
@@ -507,11 +507,11 @@ hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
                                    float               axis_value)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  ако (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    върни false;
 
   double val = hb_clamp((double) axis_value, (double) axis_info.min_value, (double) axis_info.max_value);
-  return input->axes_location.set (axis_tag, Triple (val, val, val));
+  върни input->axes_location.set (axis_tag, Triple (val, val, val));
 }
 
 /**
@@ -546,20 +546,20 @@ hb_subset_input_set_axis_range (hb_subset_input_t  *input,
                                 float               axis_def_value)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  ако (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    върни false;
 
   float min = !std::isnan(axis_min_value) ? axis_min_value : axis_info.min_value;
   float max = !std::isnan(axis_max_value) ? axis_max_value : axis_info.max_value;
   float def = !std::isnan(axis_def_value) ? axis_def_value : axis_info.default_value;
 
-  if (min > max)
-    return false;
+  ако (min > max)
+    върни false;
 
   float new_min_val = hb_clamp(min, axis_info.min_value, axis_info.max_value);
   float new_max_val = hb_clamp(max, axis_info.min_value, axis_info.max_value);
   float new_default_val = hb_clamp(def, new_min_val, new_max_val);
-  return input->axes_location.set (axis_tag, Triple ((double) new_min_val, (double) new_default_val, (double) new_max_val));
+  върни input->axes_location.set (axis_tag, Triple ((double) new_min_val, (double) new_default_val, (double) new_max_val));
 }
 
 /**
@@ -585,14 +585,14 @@ hb_subset_input_get_axis_range (hb_subset_input_t  *input,
 
 {
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return false;
+  ако (!input->axes_location.has(axis_tag, &triple)) {
+    върни false;
   }
 
   *axis_min_value = triple->minimum;
   *axis_def_value = triple->middle;
   *axis_max_value = triple->maximum;
-  return true;
+  върни true;
 }
 
 /**
@@ -618,45 +618,45 @@ hb_subset_input_get_axis_range (hb_subset_input_t  *input,
  * Since: 10.2.0
  */
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
+hb_subset_axis_range_from_string (const char *str, цяло len,
                                   float *axis_min_value,
                                   float *axis_max_value,
                                   float *axis_def_value)
 {
-  if (len < 0)
+  ако (len < 0)
     len = strlen (str);
 
   const char *end = str + len;
   const char* part = strpbrk (str, ":");
-  if (!part)
+  ако (!part)
   {
     // Single value.
-    if (strcmp (str, "drop") == 0)
+    ако (strcmp (str, "drop") == 0)
     {
       *axis_min_value = NAN;
       *axis_def_value = NAN;
       *axis_max_value = NAN;
-      return true;
+      върни true;
     }
 
     double v;
-    if (!hb_parse_double (&str, end, &v)) return false;
+    ако (!hb_parse_double (&str, end, &v)) върни false;
 
     *axis_min_value = v;
     *axis_def_value = v;
     *axis_max_value = v;
-    return true;
+    върни true;
   }
 
   float values[3];
-  int count = 0;
-  for (int i = 0; i < 3; i++) {
+  цяло count = 0;
+  за (цяло i = 0; i < 3; i++) {
     count++;
-    if (!*str || part == str)
+    ако (!*str || part == str)
     {
       values[i] = NAN;
 
-      if (part == NULL) break;
+      ако (part == NULL) break;
       str = part + 1;
       part = strpbrk (str, ":");
       continue;
@@ -664,29 +664,29 @@ hb_subset_axis_range_from_string (const char *str, int len,
 
     double v;
     const char *piece_end = part ? part : end;
-    if (!hb_parse_double (&str, piece_end, &v)) return false;
+    ако (!hb_parse_double (&str, piece_end, &v)) върни false;
     values[i] = v;
 
-    if (part == NULL) break;
+    ако (part == NULL) break;
     str = part + 1;
     part = strpbrk (str, ":");
   }
 
-  if (count == 2)
+  ако (count == 2)
   {
     *axis_min_value = values[0];
     *axis_def_value = NAN;
     *axis_max_value = values[1];
-    return true;
+    върни true;
   }
-  else if (count == 3)
+  иначе ако (count == 3)
   {
     *axis_min_value = values[0];
     *axis_def_value = values[1];
     *axis_max_value = values[2];
-    return true;
+    върни true;
   }
-  return false;
+  върни false;
 }
 
 /**
@@ -707,10 +707,10 @@ hb_subset_axis_range_to_string (hb_subset_input_t *input,
                                 hb_tag_t axis_tag,
                                 char *buf, unsigned size)
 {
-  if (unlikely (!size)) return;
+  ако (unlikely (!size)) върни;
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return;
+  ако (!input->axes_location.has(axis_tag, &triple)) {
+    върни;
   }
 
   char s[128];
@@ -739,8 +739,8 @@ hb_subset_axis_range_to_string (hb_subset_input_t *input,
 static void
 _append_arg (hb_vector_t<char> &sb, const char *arg)
 {
-  if (sb.in_error ()) return;
-  if (sb.length)
+  ако (sb.in_error ()) върни;
+  ако (sb.length)
     sb.push (' ');
   unsigned len = strlen (arg);
   sb.extend (hb_bytes_t (arg, len));
@@ -749,33 +749,33 @@ static void
 _format_number_set (const hb_set_t *set, hb_vector_t<char> &out, unsigned base = 10)
 {
   assert (base == 10 || base == 16);
-  if (unlikely (base != 10 && base != 16)) return;
+  ако (unlikely (base != 10 && base != 16)) върни;
 
   hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
   bool first_range = true;
-  while (hb_set_next_range (set, &first, &last))
+  докато (hb_set_next_range (set, &first, &last))
   {
-    if (!first_range)
+    ако (!first_range)
       out.push (',');
     first_range = false;
 
     char buf[64];
-    int len;
-    if (first == last)
+    цяло len;
+    ако (first == last)
     {
-      if (base == 16)
+      ако (base == 16)
         len = snprintf (buf, sizeof (buf), "%X", first);
-      else
+      иначе
         len = snprintf (buf, sizeof (buf), "%u", first);
     }
-    else
+    иначе
     {
-      if (base == 16)
+      ако (base == 16)
         len = snprintf (buf, sizeof (buf), "%X-%X", first, last);
-      else
+      иначе
         len = snprintf (buf, sizeof (buf), "%u-%u", first, last);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return;
+    ако (unlikely (len < 0 || (size_t) len >= sizeof (buf))) върни;
     out.extend (hb_bytes_t (buf, len));
   }
 }
@@ -787,13 +787,13 @@ _format_tag (hb_tag_t tag, hb_vector_t<char> &out)
   hb_tag_to_string (tag, buf);
 
   unsigned len = 4;
-  while (len > 0 && buf[len - 1] == ' ')
+  докато (len > 0 && buf[len - 1] == ' ')
     len--;
 
-  for (unsigned i = 0; i < len; i++)
+  за (unsigned i = 0; i < len; i++)
   {
     char c = buf[i];
-    if (!((c >= 'a' && c <= 'z') ||
+    ако (!((c >= 'a' && c <= 'z') ||
           (c >= 'A' && c <= 'Z') ||
           (c >= '0' && c <= '9') ||
           c == '-' || c == '_'))
@@ -808,9 +808,9 @@ static void
 _format_tag_set (const hb_set_t *set, hb_vector_t<char> &out)
 {
   bool first_tag = true;
-  for (hb_codepoint_t tag : *set)
+  за (hb_codepoint_t tag : *set)
   {
-    if (!first_tag)
+    ако (!first_tag)
       out.push (',');
     first_tag = false;
 
@@ -821,7 +821,7 @@ _format_tag_set (const hb_set_t *set, hb_vector_t<char> &out)
 static bool
 _is_set_default (const hb_set_t *set, const hb_set_t *default_set)
 {
-  return hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
+  върни hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
          hb_set_is_equal (set, default_set);
 }
 
@@ -832,7 +832,7 @@ _format_set_arg (const hb_set_t *set,
                  Formatter &&formatter,
                  hb_vector_t<char> &sb)
 {
-  if (hb_set_is_inverted (set))
+  ако (hb_set_is_inverted (set))
   {
     hb_set_t *excluded = hb_set_copy (set);
     hb_set_invert (excluded);
@@ -842,13 +842,13 @@ _format_set_arg (const hb_set_t *set,
     opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
     opt.extend (hb_bytes_t ("=*", 2));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ако (opt.arrayZ) _append_arg (sb, opt.arrayZ);
 
-    if (!hb_set_is_empty (excluded))
+    ако (!hb_set_is_empty (excluded))
     {
       hb_vector_t<char> formatted;
       formatter (excluded, formatted);
-      if (formatted.length)
+      ако (formatted.length)
       {
         hb_vector_t<char> opt2;
         opt2.extend (hb_bytes_t ("--", 2));
@@ -856,25 +856,25 @@ _format_set_arg (const hb_set_t *set,
         opt2.extend (hb_bytes_t ("-=", 2));
         opt2.extend (formatted.as_array ());
         opt2.push ('\0');
-        if (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
+        ако (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
       }
     }
     hb_set_destroy (excluded);
   }
-  else if (hb_set_is_empty (set))
+  иначе ако (hb_set_is_empty (set))
   {
     hb_vector_t<char> opt;
     opt.extend (hb_bytes_t ("--", 2));
     opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
     opt.extend (hb_bytes_t ("-=*", 3));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ако (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  else
+  иначе
   {
     hb_vector_t<char> formatted;
     formatter (set, formatted);
-    if (formatted.length)
+    ако (formatted.length)
     {
       hb_vector_t<char> opt;
       opt.extend (hb_bytes_t ("--", 2));
@@ -882,7 +882,7 @@ _format_set_arg (const hb_set_t *set,
       opt.extend (hb_bytes_t ("=", 1));
       opt.extend (formatted.as_array ());
       opt.push ('\0');
-      if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+      ако (opt.arrayZ) _append_arg (sb, opt.arrayZ);
     }
   }
 }
@@ -910,53 +910,53 @@ static bool
 _format_glyph_map_arg (const hb_map_t &glyph_map,
                        hb_vector_t<char> &sb)
 {
-  if (glyph_map.is_empty ())
-    return true;
+  ако (glyph_map.is_empty ())
+    върни true;
 
   hb_set_t keys;
   hb_map_keys (&glyph_map, &keys);
   hb_vector_t<char> pairs;
   bool first = true;
-  for (hb_codepoint_t key : keys)
+  за (hb_codepoint_t key : keys)
   {
-    if (!first)
+    ако (!first)
       pairs.push (',');
     first = false;
     hb_codepoint_t val = hb_map_get (&glyph_map, key);
     char buf[64];
-    int len = snprintf (buf, sizeof (buf), "%u:%u", key, val);
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
+    цяло len = snprintf (buf, sizeof (buf), "%u:%u", key, val);
+    ако (unlikely (len < 0 || (size_t) len >= sizeof (buf))) върни false;
     pairs.extend (hb_bytes_t (buf, len));
   }
-  if (pairs.length)
+  ако (pairs.length)
   {
     hb_vector_t<char> opt;
     opt.extend (hb_bytes_t ("--gid-map=", 10));
     opt.extend (pairs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ако (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  върни true;
 }
 
 static bool
 _format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
                            hb_vector_t<char> &sb)
 {
-  if (axes_location.is_empty ())
-    return true;
+  ако (axes_location.is_empty ())
+    върни true;
 
   hb_vector_t<hb_tag_t> axis_tags;
-  for (auto tag : axes_location.keys ())
+  за (auto tag : axes_location.keys ())
     axis_tags.push (tag);
-  axis_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) { return a < b ? -1 : a > b ? 1 : 0; });
+  axis_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) { върни a < b ? -1 : a > b ? 1 : 0; });
 
   hb_vector_t<char> specs;
   bool first = true;
-  for (hb_tag_t tag : axis_tags)
+  за (hb_tag_t tag : axis_tags)
   {
     Triple triple = axes_location.get (tag);
-    if (!first)
+    ако (!first)
       specs.push (',');
     first = false;
 
@@ -964,32 +964,32 @@ _format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
     _format_tag (tag, tag_buf);
 
     char buf[128];
-    int len;
-    if (triple.minimum == triple.middle && triple.middle == triple.maximum)
+    цяло len;
+    ако (triple.minimum == triple.middle && triple.middle == triple.maximum)
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g", (int) tag_buf.length, tag_buf.arrayZ, (double) triple.middle);
+      len = snprintf (buf, sizeof (buf), "%.*s=%g", (цяло) tag_buf.length, tag_buf.arrayZ, (double) triple.middle);
     }
-    else if (std::isnan (triple.minimum) && std::isnan (triple.middle) && std::isnan (triple.maximum))
+    иначе ако (std::isnan (triple.minimum) && std::isnan (triple.middle) && std::isnan (triple.maximum))
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=drop", (int) tag_buf.length, tag_buf.arrayZ);
+      len = snprintf (buf, sizeof (buf), "%.*s=drop", (цяло) tag_buf.length, tag_buf.arrayZ);
     }
-    else
+    иначе
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g:%g:%g", (int) tag_buf.length, tag_buf.arrayZ,
+      len = snprintf (buf, sizeof (buf), "%.*s=%g:%g:%g", (цяло) tag_buf.length, tag_buf.arrayZ,
                       (double) triple.minimum, (double) triple.middle, (double) triple.maximum);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
+    ако (unlikely (len < 0 || (size_t) len >= sizeof (buf))) върни false;
     specs.extend (hb_bytes_t (buf, len));
   }
-  if (specs.length)
+  ако (specs.length)
   {
     hb_vector_t<char> opt;
     opt.extend (hb_bytes_t ("--variations=", 13));
     opt.extend (specs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    ако (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  върни true;
 }
 
 /**
@@ -1007,8 +1007,8 @@ _format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
 hb_blob_t *
 hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
 {
-  if (unlikely (!input || input->in_error ()))
-    return nullptr;
+  ако (unlikely (!input || input->in_error ()))
+    върни nullptr;
 
   hb_vector_t<char> sb;
 
@@ -1039,14 +1039,14 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
 #ifdef HB_EXPERIMENTAL_API
   static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 15,
                  "Check all flags in hb_subset_flags_t are handled here.");
-#else
+#иначе
   static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 13,
                  "Check all flags in hb_subset_flags_t are handled here.");
 #endif
 
-  for (const auto &fo : flag_options)
+  за (const auto &fo : flag_options)
   {
-    if (input->flags & fo.flag)
+    ако (input->flags & fo.flag)
     {
       char buf[36];
       snprintf (buf, sizeof (buf), "--%s", fo.option);
@@ -1055,16 +1055,16 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
   }
 
   hb_subset_input_t *default_input = hb_subset_input_create_or_fail ();
-  if (unlikely (!default_input))
-    return nullptr;
+  ако (unlikely (!default_input))
+    върни nullptr;
 
   // Serialize all sets if they are not equal to their default setting:
 #define PROCESS_NUMBER_SET(field, opt_name, ...) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
+  ако (!_is_set_default (input->sets.field, default_input->sets.field)) \
     _format_number_set_arg (input->sets.field, opt_name, sb, ##__VA_ARGS__)
 
 #define PROCESS_TAG_SET(field, opt_name) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
+  ако (!_is_set_default (input->sets.field, default_input->sets.field)) \
     _format_tag_set_arg (input->sets.field, opt_name, sb)
 
   PROCESS_NUMBER_SET (unicodes, "unicodes", 16);
@@ -1084,22 +1084,22 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
   static_assert (sizeof (input->sets) / sizeof (hb_set_t*) == 8,
                  "Check all sets in hb_subset_input_t::sets_t are handled here.");
 
-  if (unlikely (!_format_glyph_map_arg (input->glyph_map, sb)))
-    return nullptr;
+  ако (unlikely (!_format_glyph_map_arg (input->glyph_map, sb)))
+    върни nullptr;
 
-  if (unlikely (!_format_axes_location_arg (input->axes_location, sb)))
-    return nullptr;
+  ако (unlikely (!_format_axes_location_arg (input->axes_location, sb)))
+    върни nullptr;
 
   sb.push ('\0');
-  if (unlikely (sb.in_error ()))
-    return nullptr;
+  ако (unlikely (sb.in_error ()))
+    върни nullptr;
 
   unsigned len = 0;
   char *buf = sb.steal (&len);
-  if (unlikely (!buf))
-    return nullptr;
+  ако (unlikely (!buf))
+    върни nullptr;
 
-  return hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  върни hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 #endif
 
@@ -1128,8 +1128,8 @@ HB_EXTERN hb_face_t *
 hb_subset_preprocess (hb_face_t *source)
 {
   hb_subset_input_t* input = hb_subset_input_create_or_fail ();
-  if (!input)
-    return hb_face_reference (source);
+  ако (!input)
+    върни hb_face_reference (source);
 
   hb_subset_input_keep_everything (input);
 
@@ -1143,12 +1143,12 @@ hb_subset_preprocess (hb_face_t *source)
   hb_face_t* new_source = hb_subset_or_fail (source, input);
   hb_subset_input_destroy (input);
 
-  if (!new_source) {
+  ако (!new_source) {
     DEBUG_MSG (SUBSET, nullptr, "Preprocessing failed due to subset failure.");
-    return hb_face_reference (source);
+    върни hb_face_reference (source);
   }
 
-  return new_source;
+  върни new_source;
 }
 
 /**
@@ -1179,7 +1179,7 @@ hb_subset_preprocess (hb_face_t *source)
 HB_EXTERN hb_map_t*
 hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
 {
-  return &input->glyph_map;
+  върни &input->glyph_map;
 }
 
 #ifdef HB_EXPERIMENTAL_API
@@ -1209,44 +1209,44 @@ hb_subset_input_override_name_table (hb_subset_input_t  *input,
                                      unsigned            encoding_id,
                                      unsigned            language_id,
                                      const char         *name_str,
-                                     int                 str_len /* -1 means nul-terminated */)
+                                     цяло                 str_len /* -1 means nul-terminated */)
 {
-  if (!name_str)
+  ако (!name_str)
   {
     str_len = 0;
   }
-  else if (str_len == -1)
+  иначе ако (str_len == -1)
   {
       str_len = strlen (name_str);
   }
 
   hb_bytes_t name_bytes (nullptr, 0);
-  if (str_len)
+  ако (str_len)
   {
-    if (platform_id == 1)
+    ако (platform_id == 1)
     {
       const uint8_t *src = reinterpret_cast<const uint8_t*> (name_str);
       const uint8_t *src_end = src + str_len;
 
       hb_codepoint_t unicode;
       const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
-      while (src < src_end)
+      докато (src < src_end)
       {
         src = hb_utf8_t::next (src, src_end, &unicode, replacement);
-        if (unicode >= 0x0080u)
+        ако (unicode >= 0x0080u)
         {
           // Non-ascii character detected, ignored...
-          return false;
+          върни false;
         }
       }
     }
     char *override_name = (char *) hb_malloc (str_len);
-    if (unlikely (!override_name)) return false;
+    ако (unlikely (!override_name)) върни false;
 
     hb_memcpy (override_name, name_str, str_len);
     name_bytes = hb_bytes_t (override_name, str_len);
   }
   input->name_table_overrides.set (hb_ot_name_record_ids_t (platform_id, encoding_id, language_id, name_id), name_bytes);
-  return true;
+  върни true;
 }
 #endif

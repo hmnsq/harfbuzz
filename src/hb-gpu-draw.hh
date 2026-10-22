@@ -51,8 +51,8 @@ struct hb_gpu_encode_curve_info_t
   double min_x, max_x, min_y, max_y;
   bool is_horizontal;
   bool is_vertical;
-  int hband_lo, hband_hi;
-  int vband_lo, vband_hi;
+  цяло hband_lo, hband_hi;
+  цяло vband_lo, vband_hi;
 };
 
 struct hb_gpu_encode_scratch_t
@@ -107,8 +107,8 @@ struct hb_gpu_draw_t
   double ext_max_y = -HUGE_VAL;
 
   /* Font scale (set by hb_gpu_draw_set_scale or hb_gpu_draw_glyph). */
-  int x_scale = 0;
-  int y_scale = 0;
+  цяло x_scale = 0;
+  цяло y_scale = 0;
 
   /* Work budget for outline traversal and generated curves.  A paint
    * backend seeds this through the public draw-budget API before drawing
@@ -124,7 +124,7 @@ struct hb_gpu_draw_t
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { върни &budget_remaining; }
 
   /* Encode scratch (reused across calls) */
   hb_gpu_encode_scratch_t scratch;

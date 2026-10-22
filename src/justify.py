@@ -109,11 +109,11 @@ def makebuffer(words):
     buf = hb.buffer_create()
 
     text = " ".join(words)
-    hb.buffer_add_codepoints(buf, [ord(c) for c in text], 0, len(text))
+    hb.buffer_add_codepoints(buf, [ord(c) за c in text], 0, len(text))
 
     hb.buffer_guess_segment_properties(buf)
 
-    return buf
+    върни buf
 
 
 def justify(face, words, advance, target_advance):
@@ -134,22 +134,22 @@ def justify(face, words, advance, target_advance):
         advance,
     )
 
-    if not ret:
-        return False, buf, None
+    ако not ret:
+        върни False, buf, None
 
-    if tag:
+    ако tag:
         variation = hb.variation_t()
         variation.tag = tag
         variation.value = value
-    else:
+    иначе:
         variation = None
 
-    if shrink and advance > target_advance + wiggle:
-        return False, buf, variation
-    if expand and advance < target_advance - wiggle:
-        return False, buf, variation
+    ако shrink and advance > target_advance + wiggle:
+        върни False, buf, variation
+    ако expand and advance < target_advance - wiggle:
+        върни False, buf, variation
 
-    return True, buf, variation
+    върни True, buf, variation
 
 
 def shape(face, words):
@@ -157,20 +157,20 @@ def shape(face, words):
     buf = makebuffer(words)
     hb.shape(font, buf)
     positions = hb.buffer_get_glyph_positions(buf)
-    advance = sum(p.x_advance for p in positions)
-    return buf, advance
+    advance = sum(p.x_advance за p in positions)
+    върни buf, advance
 
 
 def typeset(face, text, target_advance):
     lines = []
     words = []
-    for word in text.split():
+    за word in text.split():
         words.append(word)
         buf, advance = shape(face, words)
-        if advance > target_advance:
+        ако advance > target_advance:
             # Shrink
             ret, buf, variation = justify(face, words, advance, target_advance)
-            if ret:
+            ако ret:
                 lines.append((buf, variation))
                 words = []
             # If if fails, pop the last word and shrink, and hope for the best.
@@ -181,16 +181,16 @@ def typeset(face, text, target_advance):
                 lines.append((buf, variation))
                 words = [word]
             # But if it is one word, meh.
-            else:
+            иначе:
                 lines.append((buf, variation))
                 words = []
 
     # Justify last line
-    if words:
+    ако words:
         _, buf, variation = justify(face, words, advance, target_advance)
         lines.append((buf, variation))
 
-    return lines
+    върни lines
 
 
 def render(face, text, context, width, height, fontsize):
@@ -210,43 +210,43 @@ def render(face, text, context, width, height, fontsize):
     context.translate(0, margin)
     context.set_font_size(12)
     context.set_source_rgb(1, 0, 0)
-    for buf, variation in lines:
+    за buf, variation in lines:
         rtl = hb.buffer_get_direction(buf) == hb.direction_t.RTL
-        if rtl:
+        ако rtl:
             hb.buffer_reverse(buf)
         infos = hb.buffer_get_glyph_infos(buf)
         positions = hb.buffer_get_glyph_positions(buf)
-        advance = sum(p.x_advance for p in positions)
+        advance = sum(p.x_advance за p in positions)
 
         context.translate(0, lineheight)
         context.save()
 
         context.save()
         context.move_to(0, -20)
-        if variation:
+        ако variation:
             tag = hb.tag_to_string(variation.tag).decode("ascii")
             context.show_text(f" {tag}={variation.value:g}")
         context.move_to(0, 0)
         context.show_text(f" {advance:g}/{target_advance:g}")
         context.restore()
 
-        if variation:
+        ако variation:
             hb.font_set_variations(font, [variation])
 
         context.translate(margin, 0)
         context.scale(scale, -scale)
 
-        if rtl:
+        ако rtl:
             context.translate(target_advance, 0)
 
-        for info, pos in zip(infos, positions):
-            if rtl:
+        за info, pos in zip(infos, positions):
+            ако rtl:
                 context.translate(-pos.x_advance, pos.y_advance)
             context.save()
             context.translate(pos.x_offset, pos.y_offset)
             hb.font_paint_glyph(font, info.codepoint, PFUNCS, id(context), 0, 0x0000FF)
             context.restore()
-            if not rtl:
+            ако not rtl:
                 context.translate(+pos.x_advance, pos.y_advance)
 
         context.restore()
@@ -280,7 +280,7 @@ def main(fontpath, textpath):
     Gtk.main()
 
 
-if __name__ == "__main__":
+ако __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="HarfBuzz justification demo.")

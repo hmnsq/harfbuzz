@@ -67,21 +67,21 @@
  **/
 hb_blob_t *
 hb_blob_create (const char        *data,
-		unsigned int       length,
+		unsigned цяло       length,
 		hb_memory_mode_t   mode,
 		void              *user_data,
 		hb_destroy_func_t  destroy)
 {
-  if (!length)
+  ако (!length)
   {
-    if (destroy)
+    ако (destroy)
       destroy (user_data);
-    return hb_blob_get_empty ();
+    върни hb_blob_get_empty ();
   }
 
   hb_blob_t *blob = hb_blob_create_or_fail (data, length, mode,
 					    user_data, destroy);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  върни likely (blob) ? blob : hb_blob_get_empty ();
 }
 
 /**
@@ -105,19 +105,19 @@ hb_blob_create (const char        *data,
  **/
 hb_blob_t *
 hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+			unsigned цяло       length,
 			hb_memory_mode_t   mode,
 			void              *user_data,
 			hb_destroy_func_t  destroy)
 {
   hb_blob_t *blob;
 
-  if (length >= 1u << 31 ||
+  ако (length >= 1u << 31 ||
       !(blob = hb_object_create<hb_blob_t> ()))
   {
-    if (destroy)
+    ако (destroy)
       destroy (user_data);
-    return nullptr;
+    върни nullptr;
   }
 
   blob->data = data;
@@ -127,16 +127,16 @@ hb_blob_create_or_fail (const char        *data,
   blob->user_data = user_data;
   blob->destroy = destroy;
 
-  if (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
+  ако (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
     blob->mode = HB_MEMORY_MODE_READONLY;
-    if (!blob->try_make_writable ())
+    ако (!blob->try_make_writable ())
     {
       hb_blob_destroy (blob);
-      return nullptr;
+      върни nullptr;
     }
   }
 
-  return blob;
+  върни blob;
 }
 
 static void
@@ -167,13 +167,13 @@ _hb_blob_destroy (void *data)
  **/
 hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length)
+			 unsigned цяло  offset,
+			 unsigned цяло  length)
 {
   hb_blob_t *blob;
 
-  if (!length || !parent || offset >= parent->length)
-    return hb_blob_get_empty ();
+  ако (!length || !parent || offset >= parent->length)
+    върни hb_blob_get_empty ();
 
   hb_blob_make_immutable (parent);
 
@@ -183,7 +183,7 @@ hb_blob_create_sub_blob (hb_blob_t    *parent,
 			 hb_blob_reference (parent),
 			 _hb_blob_destroy);
 
-  return blob;
+  върни blob;
 }
 
 /**
@@ -205,10 +205,10 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 			 nullptr,
 			 nullptr);
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  ако (unlikely (blob == hb_blob_get_empty ()))
     blob = nullptr;
 
-  return blob;
+  върни blob;
 }
 
 /**
@@ -225,7 +225,7 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 hb_blob_t *
 hb_blob_get_empty ()
 {
-  return const_cast<hb_blob_t *> (&Null (hb_blob_t));
+  върни const_cast<hb_blob_t *> (&Null (hb_blob_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_blob_get_empty ()
 hb_blob_t *
 hb_blob_reference (hb_blob_t *blob)
 {
-  return hb_object_reference (blob);
+  върни hb_object_reference (blob);
 }
 
 /**
@@ -261,7 +261,7 @@ hb_blob_reference (hb_blob_t *blob)
 void
 hb_blob_destroy (hb_blob_t *blob)
 {
-  if (!hb_object_destroy (blob)) return;
+  ако (!hb_object_destroy (blob)) върни;
 
   hb_free (blob);
 }
@@ -287,7 +287,7 @@ hb_blob_set_user_data (hb_blob_t          *blob,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (blob, key, data, destroy, replace);
+  върни hb_object_set_user_data (blob, key, data, destroy, replace);
 }
 
 /**
@@ -306,7 +306,7 @@ void *
 hb_blob_get_user_data (const hb_blob_t    *blob,
 		       hb_user_data_key_t *key)
 {
-  return hb_object_get_user_data (blob, key);
+  върни hb_object_get_user_data (blob, key);
 }
 
 
@@ -321,8 +321,8 @@ hb_blob_get_user_data (const hb_blob_t    *blob,
 void
 hb_blob_make_immutable (hb_blob_t *blob)
 {
-  if (hb_object_is_immutable (blob))
-    return;
+  ако (hb_object_is_immutable (blob))
+    върни;
 
   hb_object_make_immutable (blob);
 }
@@ -340,7 +340,7 @@ hb_blob_make_immutable (hb_blob_t *blob)
 hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob)
 {
-  return hb_object_is_immutable (blob);
+  върни hb_object_is_immutable (blob);
 }
 
 
@@ -354,10 +354,10 @@ hb_blob_is_immutable (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned цяло
 hb_blob_get_length (hb_blob_t *blob)
 {
-  return blob->length;
+  върни blob->length;
 }
 
 /**
@@ -372,12 +372,12 @@ hb_blob_get_length (hb_blob_t *blob)
  * Since: 0.9.2
  **/
 const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
+hb_blob_get_data (hb_blob_t *blob, unsigned цяло *length)
 {
-  if (length)
+  ако (length)
     *length = blob->length;
 
-  return blob->data;
+  върни blob->data;
 }
 
 /**
@@ -397,28 +397,28 @@ hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
  * Since: 0.9.2
  **/
 char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length)
+hb_blob_get_data_writable (hb_blob_t *blob, unsigned цяло *length)
 {
-  if (hb_object_is_immutable (blob) ||
+  ако (hb_object_is_immutable (blob) ||
      !blob->try_make_writable ())
   {
-    if (length) *length = 0;
-    return nullptr;
+    ако (length) *length = 0;
+    върни nullptr;
   }
 
-  if (length) *length = blob->length;
-  return const_cast<char *> (blob->data);
+  ако (length) *length = blob->length;
+  върни const_cast<char *> (blob->data);
 }
 
 
 bool
 hb_blob_t::try_make_writable_inplace_unix ()
 {
-#if defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
+#ако defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
   uintptr_t pagesize = -1, mask, length;
   const char *addr;
 
-#if defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
+#ако defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGE_SIZE);
 #elif defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGESIZE);
@@ -426,9 +426,9 @@ hb_blob_t::try_make_writable_inplace_unix ()
   pagesize = (uintptr_t) getpagesize ();
 #endif
 
-  if ((uintptr_t) -1L == pagesize) {
+  ако ((uintptr_t) -1L == pagesize) {
     DEBUG_MSG_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
-    return false;
+    върни false;
   }
   DEBUG_MSG_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
 
@@ -438,9 +438,9 @@ hb_blob_t::try_make_writable_inplace_unix ()
   DEBUG_MSG_FUNC (BLOB, this,
 		  "calling mprotect on [%p..%p] (%lu bytes)",
 		  addr, addr+length, (unsigned long) length);
-  if (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
+  ако (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
     DEBUG_MSG_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
-    return false;
+    върни false;
   }
 
   this->mode = HB_MEMORY_MODE_WRITABLE;
@@ -448,9 +448,9 @@ hb_blob_t::try_make_writable_inplace_unix ()
   DEBUG_MSG_FUNC (BLOB, this,
 		  "successfully made [%p..%p] (%lu bytes) writable\n",
 		  addr, addr+length, (unsigned long) length);
-  return true;
-#else
-  return false;
+  върни true;
+#иначе
+  върни false;
 #endif
 }
 
@@ -459,30 +459,30 @@ hb_blob_t::try_make_writable_inplace ()
 {
   DEBUG_MSG_FUNC (BLOB, this, "making writable inplace\n");
 
-  if (this->try_make_writable_inplace_unix ())
-    return true;
+  ако (this->try_make_writable_inplace_unix ())
+    върни true;
 
   DEBUG_MSG_FUNC (BLOB, this, "making writable -> FAILED\n");
 
   /* Failed to make writable inplace, mark that */
   this->mode = HB_MEMORY_MODE_READONLY;
-  return false;
+  върни false;
 }
 
 bool
 hb_blob_t::try_make_writable ()
 {
-  if (unlikely (!length))
+  ако (unlikely (!length))
     mode = HB_MEMORY_MODE_WRITABLE;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  ако (this->mode == HB_MEMORY_MODE_WRITABLE)
+    върни true;
 
-  if (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
-    return true;
+  ако (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
+    върни true;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  ако (this->mode == HB_MEMORY_MODE_WRITABLE)
+    върни true;
 
 
   DEBUG_MSG_FUNC (BLOB, this, "current data is -> %p\n", this->data);
@@ -490,8 +490,8 @@ hb_blob_t::try_make_writable ()
   char *new_data;
 
   new_data = (char *) hb_malloc (this->length);
-  if (unlikely (!new_data))
-    return false;
+  ако (unlikely (!new_data))
+    върни false;
 
   DEBUG_MSG_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
 
@@ -502,7 +502,7 @@ hb_blob_t::try_make_writable ()
   this->user_data = new_data;
   this->destroy = hb_free;
 
-  return true;
+  върни true;
 }
 
 /*
@@ -511,7 +511,7 @@ hb_blob_t::try_make_writable ()
 
 #ifndef HB_NO_OPEN
 #ifdef HAVE_MMAP
-# if !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
+# ако !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
 #  include <sys/paths.h>
 # endif
 # include <sys/types.h>
@@ -521,7 +521,7 @@ hb_blob_t::try_make_writable ()
 
 #ifdef _WIN32
 # include <windows.h>
-#else
+#иначе
 # ifndef O_BINARY
 #  define O_BINARY 0
 # endif
@@ -540,7 +540,7 @@ struct hb_mapped_file_t
 #endif
 };
 
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+#ако (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
 static void
 _hb_mapped_file_destroy (void *file_)
 {
@@ -550,7 +550,7 @@ _hb_mapped_file_destroy (void *file_)
 #elif defined(_WIN32)
   UnmapViewOfFile (file->contents);
   CloseHandle (file->mapping);
-#else
+#иначе
   assert (0); // If we don't have mmap we shouldn't reach here
 #endif
 
@@ -559,35 +559,35 @@ _hb_mapped_file_destroy (void *file_)
 #endif
 
 #ifdef _PATH_RSRCFORKSPEC
-static int
+static цяло
 _open_resource_fork (const char *file_name, hb_mapped_file_t *file)
 {
   size_t name_len = strlen (file_name);
   size_t len = name_len + sizeof (_PATH_RSRCFORKSPEC);
 
   char *rsrc_name = (char *) hb_malloc (len);
-  if (unlikely (!rsrc_name)) return -1;
+  ако (unlikely (!rsrc_name)) върни -1;
 
   strncpy (rsrc_name, file_name, name_len);
   strncpy (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
 	   sizeof (_PATH_RSRCFORKSPEC));
 
-  int fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
+  цяло fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
   hb_free (rsrc_name);
 
-  if (fd != -1)
+  ако (fd != -1)
   {
     struct stat st;
-    if (fstat (fd, &st) != -1)
+    ако (fstat (fd, &st) != -1)
       file->length = (unsigned long) st.st_size;
-    else
+    иначе
     {
       close (fd);
       fd = -1;
     }
   }
 
-  return fd;
+  върни fd;
 }
 #endif
 
@@ -612,31 +612,31 @@ hb_blob_t *
 hb_blob_create_from_file (const char *file_name)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  върни likely (blob) ? blob : hb_blob_get_empty ();
 }
 
-#if defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
+#ако defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
 static hb_blob_t *
 _hb_blob_try_mmap (const char *file_name)
 {
   hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
+  ако (unlikely (!file)) върни nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  int fd = open (file_name, O_RDONLY | O_BINARY, 0);
-  if (unlikely (fd == -1)) return nullptr;
+  цяло fd = open (file_name, O_RDONLY | O_BINARY, 0);
+  ако (unlikely (fd == -1)) върни nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { close (fd); });
 
   struct stat st;
-  if (unlikely (fstat (fd, &st) == -1)) return nullptr;
+  ако (unlikely (fstat (fd, &st) == -1)) върни nullptr;
 
   file->length = (unsigned long) st.st_size;
 
 #ifdef _PATH_RSRCFORKSPEC
-  if (unlikely (file->length == 0))
+  ако (unlikely (file->length == 0))
   {
-    int rfd = _open_resource_fork (file_name, file);
-    if (rfd != -1)
+    цяло rfd = _open_resource_fork (file_name, file);
+    ако (rfd != -1)
     {
       close (fd);
       fd = rfd;
@@ -646,11 +646,11 @@ _hb_blob_try_mmap (const char *file_name)
 
   file->contents = (char *) mmap (nullptr, file->length, PROT_READ,
 				  MAP_PRIVATE | MAP_NORESERVE, fd, 0);
-  if (unlikely (file->contents == MAP_FAILED)) return nullptr;
+  ако (unlikely (file->contents == MAP_FAILED)) върни nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return (ownership ends after mmap). */
-  return hb_blob_create_or_fail (file->contents, file->length,
+  върни hb_blob_create_or_fail (file->contents, file->length,
 				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
@@ -659,16 +659,16 @@ static hb_blob_t *
 _hb_blob_try_mmap (const char *file_name)
 {
   hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
+  ако (unlikely (!file)) върни nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
   size_t size = strlen (file_name) + 1;
   wchar_t *wchar_file_name = (wchar_t *) hb_malloc (sizeof (wchar_t) * size);
-  if (unlikely (!wchar_file_name)) return nullptr;
+  ако (unlikely (!wchar_file_name)) върни nullptr;
 
   /* Assume file name is given in UTF-8 encoding */
-  int conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
-  if (conversion <= 0)
+  цяло conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
+  ако (conversion <= 0)
   {
     /* Conversion failed due to invalid UTF-8 characters,
        Repeat conversion based on system code page */
@@ -676,7 +676,7 @@ _hb_blob_try_mmap (const char *file_name)
   }
 
   HANDLE fd;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ако !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     CREATEFILE2_EXTENDED_PARAMETERS ceparams = { 0 };
     ceparams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
@@ -688,39 +688,39 @@ _hb_blob_try_mmap (const char *file_name)
     fd = CreateFile2 (wchar_file_name, GENERIC_READ, FILE_SHARE_READ,
 		      OPEN_EXISTING, &ceparams);
   }
-#else
+#иначе
   fd = CreateFileW (wchar_file_name, GENERIC_READ, FILE_SHARE_READ, nullptr,
 		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
 		    nullptr);
 #endif
   hb_free (wchar_file_name);
 
-  if (unlikely (fd == INVALID_HANDLE_VALUE)) return nullptr;
+  ако (unlikely (fd == INVALID_HANDLE_VALUE)) върни nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ако !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     LARGE_INTEGER length;
     GetFileSizeEx (fd, &length);
     file->length = length.LowPart;
     file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, length.QuadPart, nullptr);
   }
-#else
+#иначе
   file->length = (unsigned long) GetFileSize (fd, nullptr);
   file->mapping = CreateFileMapping (fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
 #endif
-  if (unlikely (!file->mapping)) return nullptr;
+  ако (unlikely (!file->mapping)) върни nullptr;
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#ако !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   file->contents = (char *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
-#else
+#иначе
   file->contents = (char *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
 #endif
-  if (unlikely (!file->contents)) return nullptr;
+  ако (unlikely (!file->contents)) върни nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return. */
-  return hb_blob_create_or_fail (file->contents, file->length,
+  върни hb_blob_create_or_fail (file->contents, file->length,
 				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
@@ -733,39 +733,39 @@ _hb_blob_read_file (const char *file_name)
 {
   unsigned long len = 0, allocated = BUFSIZ * 16;
   char *data = (char *) hb_malloc (allocated);
-  if (unlikely (!data)) return nullptr;
+  ако (unlikely (!data)) върни nullptr;
   auto data_guard = hb_make_scope_guard ([&]() { hb_free (data); });
 
   FILE *fp = fopen (file_name, "rb");
-  if (unlikely (!fp)) return nullptr;
+  ако (unlikely (!fp)) върни nullptr;
   HB_SCOPE_GUARD (fclose (fp));
 
-  while (!feof (fp))
+  докато (!feof (fp))
   {
-    if (allocated - len < BUFSIZ)
+    ако (allocated - len < BUFSIZ)
     {
       allocated *= 2;
       /* Don't allocate and go more than ~536MB, our mmap reader still
 	 can cover files like that but lets limit our fallback reader */
-      if (unlikely (allocated > (2 << 28))) return nullptr;
+      ако (unlikely (allocated > (2 << 28))) върни nullptr;
       char *new_data = (char *) hb_realloc (data, allocated);
-      if (unlikely (!new_data)) return nullptr;
+      ако (unlikely (!new_data)) върни nullptr;
       data = new_data;
     }
 
     unsigned long addition = fread (data + len, 1, allocated - len, fp);
 
-    int err = ferror (fp);
+    цяло err = ferror (fp);
 #ifdef EINTR // armcc doesn't have it
-    if (unlikely (err == EINTR)) continue;
+    ако (unlikely (err == EINTR)) continue;
 #endif
-    if (unlikely (err)) return nullptr;
+    ако (unlikely (err)) върни nullptr;
 
     len += addition;
   }
 
   data_guard.release ();
-  return hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
+  върни hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
 				 (hb_destroy_func_t) hb_free);
 }
 
@@ -790,10 +790,10 @@ hb_blob_create_from_file_or_fail (const char *file_name)
 {
   /* Adopted from glib's gmappedfile.c with Matthias Clasen and
      Allison Lortie permission but changed a lot to suit our need. */
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-  if (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
-    return blob;
+#ако (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+  ако (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
+    върни blob;
 #endif
-  return _hb_blob_read_file (file_name);
+  върни _hb_blob_read_file (file_name);
 }
 #endif /* !HB_NO_OPEN */

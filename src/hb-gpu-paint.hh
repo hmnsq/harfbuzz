@@ -251,8 +251,8 @@ struct hb_gpu_paint_t
   hb_vector_t<hb_transform_t<float>> transform_stack;
 
   /* Font scale (set by hb_gpu_paint_glyph()). */
-  int x_scale = 0;
-  int y_scale = 0;
+  цяло x_scale = 0;
+  цяло y_scale = 0;
 
   /* Accumulator state (cleared by hb_gpu_paint_clear). */
 
@@ -273,11 +273,11 @@ struct hb_gpu_paint_t
   bool push_sub_blob (hb_blob_t *blob)
   {
     unsigned len = hb_blob_get_length (blob);
-    if (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
+    ако (unlikely (len > HB_GPU_PAINT_MAX_SUB_BYTES - sub_bytes ||
 		  !sub_blobs.push_or_fail (blob)))
-      return false;
+      върни false;
     sub_bytes += len;
-    return true;
+    върни true;
   }
 
   /* Nesting depth of push_group / pop_group.  We bail (set
@@ -318,8 +318,8 @@ struct hb_gpu_paint_t
      * and cached.  sub_blob_index is -1 until the encode happens,
      * then holds the index into c->sub_blobs and ext_* hold the
      * design-unit extents. */
-    int                   sub_blob_index;
-    int                   ext_x0, ext_y0, ext_x1, ext_y1;
+    цяло                   sub_blob_index;
+    цяло                   ext_x0, ext_y0, ext_x1, ext_y1;
   };
   pending_clip_t clip_stack[3];
   unsigned       clip_depth = 0;
@@ -335,10 +335,10 @@ struct hb_gpu_paint_t
   bool unsupported = false;
 
   /* Extents in font design units, accumulated across layers. */
-  int ext_min_x =  0x7fffffff;
-  int ext_min_y =  0x7fffffff;
-  int ext_max_x = -0x7fffffff;
-  int ext_max_y = -0x7fffffff;
+  цяло ext_min_x =  0x7fffffff;
+  цяло ext_min_y =  0x7fffffff;
+  цяло ext_max_x = -0x7fffffff;
+  цяло ext_max_y = -0x7fffffff;
 
   /* Scratch: used to rasterize each clip-glyph outline. */
   hb_gpu_draw_t *scratch_draw = nullptr;
@@ -352,13 +352,13 @@ struct hb_gpu_paint_t
   bool fetch_color_stops (hb_color_line_t *color_line)
   {
     unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    ако (unlikely (!count || !color_stops_scratch.resize (count)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      върни false;
     }
     hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    върни true;
   }
 };
 

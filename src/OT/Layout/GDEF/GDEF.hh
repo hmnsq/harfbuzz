@@ -58,29 +58,29 @@ struct AttachPoint : Array16Of<HBUINT16>
  * AttachList table itself keeps Offset16 internals. */
 struct AttachList
 {
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
+  unsigned цяло get_attach_points (hb_codepoint_t glyph_id,
+				  unsigned цяло start_offset,
+				  unsigned цяло *point_count /* IN/OUT */,
+				  unsigned цяло *point_array /* OUT */) const
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    unsigned цяло index = (this+coverage).get_coverage (glyph_id);
+    ако (index == NOT_COVERED)
     {
-      if (point_count)
+      ако (point_count)
 	*point_count = 0;
-      return 0;
+      върни 0;
     }
 
     const AttachPoint &points = this+attachPoint[index];
 
-    if (point_count && point_array)
+    ако (point_count && point_array)
     {
       + points.as_array ().sub_array (start_offset, point_count)
       | hb_sink (hb_array (point_array, *point_count))
       ;
     }
 
-    return points.len;
+    върни points.len;
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -90,7 +90,7 @@ struct AttachList
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+coverage, attachPoint)
@@ -132,14 +132,14 @@ struct CaretValueFormat1
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
     return_trace (true);
   }
 
   private:
   hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction) const
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
+    върни HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -162,7 +162,7 @@ struct CaretValueFormat2
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ако (unlikely (!out)) return_trace (false);
     return_trace (true);
   }
 
@@ -171,7 +171,7 @@ struct CaretValueFormat2
   {
     hb_position_t x, y;
     font->get_glyph_contour_point_for_origin (glyph_id, caretValuePoint, direction, &x, &y);
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
+    върни HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -194,7 +194,7 @@ struct CaretValueFormat3
   hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction,
 				 const ItemVariationStore &var_store) const
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ?
+    върни HB_DIRECTION_IS_HORIZONTAL (direction) ?
 	   hb_saturate_add (font->em_scale_x (coordinate), (this+deviceTable).get_x_delta (font, var_store)) :
 	   hb_saturate_add (font->em_scale_y (coordinate), (this+deviceTable).get_y_delta (font, var_store));
   }
@@ -203,25 +203,25 @@ struct CaretValueFormat3
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (!c->serializer->embed (caretValueFormat)) return_trace (false);
-    if (!c->serializer->embed (coordinate)) return_trace (false);
+    ако (!c->serializer->embed (caretValueFormat)) return_trace (false);
+    ако (!c->serializer->embed (coordinate)) return_trace (false);
 
     unsigned varidx = (this+deviceTable).get_variation_index ();
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
+    hb_pair_t<unsigned, цяло> *new_varidx_delta;
+    ако (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
       uint32_t new_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      цяло delta = hb_second (*new_varidx_delta);
+      ако (delta != 0)
       {
-        if (!c->serializer->check_assign (out->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+        ако (!c->serializer->check_assign (out->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_OVERFLOW))
           return_trace (false);
       }
 
-      if (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+      ако (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
         return_trace (c->serializer->check_assign (out->caretValueFormat, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
     }
 
-    if (!c->serializer->embed (deviceTable))
+    ако (!c->serializer->embed (deviceTable))
       return_trace (false);
 
     return_trace (out->deviceTable.serialize_copy (c->serializer, deviceTable, this, c->serializer->to_bias (out),
@@ -256,17 +256,17 @@ struct CaretValue
 				 const ItemVariationStore &var_store) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_caret_value (font, direction);
-    case 2: hb_barrier (); return u.format2.get_caret_value (font, direction, glyph_id);
-    case 3: hb_barrier (); return u.format3.get_caret_value (font, direction, var_store);
-    default:return 0;
+    case 1: hb_barrier (); върни u.format1.get_caret_value (font, direction);
+    case 2: hb_barrier (); върни u.format2.get_caret_value (font, direction, glyph_id);
+    case 3: hb_barrier (); върни u.format3.get_caret_value (font, direction, var_store);
+    default:върни 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
+    ако (unlikely (!c->may_dispatch (this, &u.format.v))) върни c->no_dispatch_return_value ();
     TRACE_DISPATCH (this, u.format.v);
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
@@ -281,19 +281,19 @@ struct CaretValue
     switch (u.format.v) {
     case 1:
     case 2:
-      return;
+      върни;
     case 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      върни;
+    default: върни;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    ако (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
@@ -324,23 +324,23 @@ struct LigGlyph
 			   unsigned             *caret_count /* IN/OUT */,
 			   hb_position_t        *caret_array /* OUT */) const
   {
-    if (caret_count && caret_array)
+    ако (caret_count && caret_array)
     {
       + carets.as_array ().sub_array (start_offset, caret_count)
       | hb_map (hb_add (this))
-      | hb_map ([&] (const CaretValue &value) { return value.get_caret_value (font, direction, glyph_id, var_store); })
+      | hb_map ([&] (const CaretValue &value) { върни value.get_caret_value (font, direction, glyph_id, var_store); })
       | hb_sink (hb_array (caret_array, *caret_count))
       ;
     }
 
-    return carets.len;
+    върни carets.len;
   }
 
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     + hb_iter (carets)
     | hb_apply (subset_offset_array (c, out->carets, this))
@@ -351,7 +351,7 @@ struct LigGlyph
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
-    for (const Offset16To<CaretValue>& offset : carets.iter ())
+    за (const Offset16To<CaretValue>& offset : carets.iter ())
       (this+offset).collect_variation_indices (c);
   }
 
@@ -375,23 +375,23 @@ struct LigGlyph
 template <typename Types>
 struct LigCaretList
 {
-  unsigned int get_lig_carets (hb_font_t *font,
+  unsigned цяло get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
 			       const ItemVariationStore &var_store,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
+			       unsigned цяло start_offset,
+			       unsigned цяло *caret_count /* IN/OUT */,
 			       hb_position_t *caret_array /* OUT */) const
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    unsigned цяло index = (this+coverage).get_coverage (glyph_id);
+    ако (index == NOT_COVERED)
     {
-      if (caret_count)
+      ако (caret_count)
 	*caret_count = 0;
-      return 0;
+      върни 0;
     }
     const LigGlyph &lig_glyph = this+ligGlyph[index];
-    return lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_count, caret_array);
+    върни lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_count, caret_array);
   }
 
   bool subset (hb_subset_context_t *c) const
@@ -401,7 +401,7 @@ struct LigCaretList
     const hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
     + hb_zip (this+coverage, ligGlyph)
@@ -450,17 +450,17 @@ static_assert (LigCaretList<MediumTypes>::min_size ==
 
 struct MarkGlyphSetsFormat1
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return (this+coverage[set_index]).get_coverage (glyph_id) != NOT_COVERED; }
+  bool covers (unsigned цяло set_index, hb_codepoint_t glyph_id) const
+  { върни (this+coverage[set_index]).get_coverage (glyph_id) != NOT_COVERED; }
 
   void collect_used_mark_sets (const hb_set_t& glyph_set,
                                hb_set_t& used_mark_sets /* OUT */) const
   {
     unsigned i = 0;
-    for (const auto &offset : coverage)
+    за (const auto &offset : coverage)
      {
        const auto &cov = this+offset;
-       if (cov.intersects (&glyph_set))
+       ако (cov.intersects (&glyph_set))
          used_mark_sets.add (i);
 
        i++;
@@ -470,7 +470,7 @@ struct MarkGlyphSetsFormat1
   template <typename set_t>
   void collect_coverage (hb_vector_t<set_t> &sets) const
   {
-     for (const auto &offset : coverage)
+     за (const auto &offset : coverage)
      {
        const auto &cov = this+offset;
        cov.collect_coverage (sets.push ());
@@ -481,15 +481,15 @@ struct MarkGlyphSetsFormat1
   {
     TRACE_SUBSET (this);
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->format = format;
 
     bool ret = true;
-    for (const Offset32To<Coverage>& offset : coverage.iter ())
+    за (const Offset32To<Coverage>& offset : coverage.iter ())
     {
       auto snap = c->serializer->snapshot ();
       auto *o = out->coverage.serialize_append (c->serializer);
-      if (unlikely (!o))
+      ако (unlikely (!o))
       {
 	ret = false;
 	break;
@@ -498,8 +498,8 @@ struct MarkGlyphSetsFormat1
       //skip empty coverage
       c->serializer->push ();
       bool res = false;
-      if (offset) res = c->dispatch (this+offset);
-      if (!res)
+      ако (offset) res = c->dispatch (this+offset);
+      ако (!res)
       {
         c->serializer->pop_discard ();
         c->serializer->revert (snap);
@@ -529,11 +529,11 @@ struct MarkGlyphSetsFormat1
 
 struct MarkGlyphSets
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+  bool covers (unsigned цяло set_index, hb_codepoint_t glyph_id) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.covers (set_index, glyph_id);
-    default:return false;
+    case 1: hb_barrier (); върни u.format1.covers (set_index, glyph_id);
+    default:върни false;
     }
   }
 
@@ -541,8 +541,8 @@ struct MarkGlyphSets
   void collect_coverage (hb_vector_t<set_t> &sets) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_coverage (sets); return;
-    default:return;
+    case 1: hb_barrier (); u.format1.collect_coverage (sets); върни;
+    default:върни;
     }
   }
 
@@ -550,8 +550,8 @@ struct MarkGlyphSets
                                hb_set_t& used_mark_sets /* OUT */) const
   {
     switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_used_mark_sets (glyph_set, used_mark_sets); return;
-    default:return;
+    case 1: hb_barrier (); u.format1.collect_used_mark_sets (glyph_set, used_mark_sets); върни;
+    default:върни;
     }
   }
 
@@ -567,7 +567,7 @@ struct MarkGlyphSets
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    ако (!u.format.v.sanitize (c)) return_trace (false);
     hb_barrier ();
     switch (u.format.v) {
     case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
@@ -605,14 +605,14 @@ struct GDEF
 
   size_t get_size () const
   {
-    if (version.major != 1) return version.static_size;
+    ако (version.major != 1) върни version.static_size;
 
-    return min_size +
+    върни min_size +
 	   (version.to_int () >= 0x00010002u ? markGlyphSetsDef.static_size : 0) +
 	   (version.to_int () >= 0x00010003u ? varStore.static_size : 0) +
 #ifndef HB_NO_BEYOND_64K
 	   (version.to_int () >= 0x00010004u ? 5 * Offset32::static_size : 0)
-#else
+#иначе
 	   0
 #endif
 	   ;
@@ -621,7 +621,7 @@ struct GDEF
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    ако (unlikely (!version.sanitize (c) ||
 		  version.major != 1 ||
 		  !c->check_range (this, get_size ())))
       return_trace (false);
@@ -635,13 +635,13 @@ struct GDEF
 				  markGlyphSetsDef.sanitize (c, this);
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u)
+    ако (version.to_int () >= 0x00010004u)
     {
-      if (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, this);
-      if (attachList2) attach_list_ok = attachList2.sanitize (c, this);
-      if (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, this);
-      if (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, this);
-      if (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, this);
+      ако (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, this);
+      ако (attachList2) attach_list_ok = attachList2.sanitize (c, this);
+      ако (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, this);
+      ако (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, this);
+      ако (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, this);
     }
 #endif
 
@@ -656,22 +656,22 @@ struct GDEF
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    ако (version.major != 1) return_trace (false);
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ако (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
     // Push var store first (if it's needed) so that it's last in the
     // serialization order. Some font consumers assume that varstore runs to
     // the end of the GDEF table.
     // See: https://github.com/harfbuzz/harfbuzz/issues/4636
     auto snapshot_version0 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010002u && hb_barrier () &&
+    ако (unlikely (version.to_int () >= 0x00010002u && hb_barrier () &&
 		  !c->serializer->embed (markGlyphSetsDef)))
       return_trace (false);
 
     auto snapshot_version2 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010003u && hb_barrier () &&
+    ако (unlikely (version.to_int () >= 0x00010003u && hb_barrier () &&
 		  !c->serializer->embed (varStore)))
       return_trace (false);
 
@@ -680,23 +680,23 @@ struct GDEF
     use_v14 = version.to_int () >= 0x00010004u &&
 	      (glyphClassDef2 || attachList2 || ligCaretList2 ||
 	       markAttachClassDef2 || markGlyphSetsDef2);
-    if (unlikely (version.to_int () >= 0x00010004u && hb_barrier () &&
+    ако (unlikely (version.to_int () >= 0x00010004u && hb_barrier () &&
 		  !c->serializer->extend_size (out, get_size ())))
       return_trace (false);
 #endif
 
     bool subset_varstore = false;
     unsigned varstore_index = (unsigned) -1;
-    if (version.to_int () >= 0x00010003u && hb_barrier ())
+    ако (version.to_int () >= 0x00010003u && hb_barrier ())
     {
-      if (c->plan->all_axes_pinned)
+      ако (c->plan->all_axes_pinned)
 	out->varStore = 0;
-      else if (c->plan->normalized_coords)
+      иначе ако (c->plan->normalized_coords)
       {
-	if (varStore)
+	ако (varStore)
 	{
 	  item_variations_t item_vars;
-	  if (unlikely (!c->serializer->check_success (
+	  ако (unlikely (!c->serializer->check_success (
                   item_vars.instantiate (this+varStore, c->plan, true, true,
                                           c->plan->gdef_varstore_inner_maps.as_array (), true))))
             return_trace (false);
@@ -712,7 +712,7 @@ struct GDEF
                                             c->plan->layout_condition_idx_value_map);
 	}
       }
-      else
+      иначе
       {
 	subset_varstore = out->varStore.serialize_subset (c, varStore, this,
 							  c->plan->gdef_varstore_inner_maps.as_array ());
@@ -723,42 +723,42 @@ struct GDEF
     out->version.major = version.major;
     out->version.minor = version.minor;
 
-    if (!subset_varstore && version.to_int () >= 0x00010002u && !use_v14) {
+    ако (!subset_varstore && version.to_int () >= 0x00010002u && !use_v14) {
       c->serializer->revert (snapshot_version2);
     }
-    if (!subset_varstore)
+    ако (!subset_varstore)
       out->varStore = 0;
-    else
+    иначе
       c->plan->has_gdef_varstore = true;
 
     bool subset_markglyphsetsdef = false;
-    if (version.to_int () >= 0x00010002u && hb_barrier ())
+    ако (version.to_int () >= 0x00010002u && hb_barrier ())
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14 && markGlyphSetsDef2)
+      ако (use_v14 && markGlyphSetsDef2)
       {
 	out->markGlyphSetsDef = 0;
 	subset_markglyphsetsdef = serialize_subset_offset (c, out->markGlyphSetsDef2,
 							   markGlyphSetsDef2, this);
       }
-      else
+      иначе
 #endif
       {
 #ifndef HB_NO_BEYOND_64K
-	if (use_v14) out->markGlyphSetsDef2 = 0;
+	ако (use_v14) out->markGlyphSetsDef2 = 0;
 #endif
 	subset_markglyphsetsdef = out->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, this);
       }
     }
 
-    if (use_v14)
+    ако (use_v14)
     {
       out->version.minor = 4;
-    } else if (subset_varstore) {
+    } иначе ако (subset_varstore) {
       out->version.minor = 3;
-    } else if (subset_markglyphsetsdef) {
+    } иначе ако (subset_markglyphsetsdef) {
       out->version.minor = 2;
-    } else  {
+    } иначе  {
       out->version.minor = 0;
       c->serializer->revert (snapshot_version0);
     }
@@ -769,69 +769,69 @@ struct GDEF
     bool subset_ligcaretlist = false;
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && glyphClassDef2)
+    ако (use_v14 && glyphClassDef2)
     {
       out->glyphClassDef = 0;
       subset_glyphclassdef = serialize_subset_offset (c, out->glyphClassDef2,
 						      glyphClassDef2, this, nullptr, false, true);
     }
-    else
+    иначе
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->glyphClassDef2 = 0;
+      ако (use_v14) out->glyphClassDef2 = 0;
 #endif
       subset_glyphclassdef = out->glyphClassDef.serialize_subset (c, glyphClassDef, this, nullptr, false, true);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && attachList2)
+    ако (use_v14 && attachList2)
     {
       out->attachList = 0;
       subset_attachlist = serialize_subset_offset (c, out->attachList2, attachList2, this);
     }
-    else
+    иначе
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->attachList2 = 0;
+      ако (use_v14) out->attachList2 = 0;
 #endif
       subset_attachlist = out->attachList.serialize_subset (c, attachList, this);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && markAttachClassDef2)
+    ако (use_v14 && markAttachClassDef2)
     {
       out->markAttachClassDef = 0;
       subset_markattachclassdef = serialize_subset_offset (c, out->markAttachClassDef2,
 							   markAttachClassDef2, this, nullptr, false, true);
     }
-    else
+    иначе
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->markAttachClassDef2 = 0;
+      ако (use_v14) out->markAttachClassDef2 = 0;
 #endif
       subset_markattachclassdef = out->markAttachClassDef.serialize_subset (c, markAttachClassDef,
 									   this, nullptr, false, true);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && ligCaretList2)
+    ако (use_v14 && ligCaretList2)
     {
       out->ligCaretList = 0;
       subset_ligcaretlist = serialize_subset_offset (c, out->ligCaretList2, ligCaretList2, this);
     }
-    else
+    иначе
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->ligCaretList2 = 0;
+      ако (use_v14) out->ligCaretList2 = 0;
 #endif
       subset_ligcaretlist = out->ligCaretList.serialize_subset (c, ligCaretList, this);
     }
 
-    if (subset_varstore && varstore_index != (unsigned) -1) {
+    ако (subset_varstore && varstore_index != (unsigned) -1) {
       c->serializer->repack_last(varstore_index);
     }
 
@@ -844,130 +844,130 @@ struct GDEF
   bool has_glyph_classes () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return true;
+    ако (version.to_int () >= 0x00010004u && glyphClassDef2) върни true;
 #endif
-    return glyphClassDef != 0;
+    върни glyphClassDef != 0;
   }
   const ClassDef &get_glyph_class_def () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return this+glyphClassDef2;
+    ако (version.to_int () >= 0x00010004u && glyphClassDef2) върни this+glyphClassDef2;
 #endif
-    return this+glyphClassDef;
+    върни this+glyphClassDef;
   }
   bool has_attach_list () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return true;
+    ако (version.to_int () >= 0x00010004u && attachList2) върни true;
 #endif
-    return attachList != 0;
+    върни attachList != 0;
   }
   const AttachList &get_attach_list () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return this+attachList2;
+    ако (version.to_int () >= 0x00010004u && attachList2) върни this+attachList2;
 #endif
-    return this+attachList;
+    върни this+attachList;
   }
   bool has_lig_carets () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2) return true;
+    ако (version.to_int () >= 0x00010004u && ligCaretList2) върни true;
 #endif
-    return ligCaretList != 0;
+    върни ligCaretList != 0;
   }
   bool has_mark_attachment_types () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return true;
+    ако (version.to_int () >= 0x00010004u && markAttachClassDef2) върни true;
 #endif
-    return markAttachClassDef != 0;
+    върни markAttachClassDef != 0;
   }
   const ClassDef &get_mark_attach_class_def () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return this+markAttachClassDef2;
+    ако (version.to_int () >= 0x00010004u && markAttachClassDef2) върни this+markAttachClassDef2;
 #endif
-    return this+markAttachClassDef;
+    върни this+markAttachClassDef;
   }
   bool has_mark_glyph_sets () const
   {
-    if (version.to_int () < 0x00010002u) return false;
+    ако (version.to_int () < 0x00010002u) върни false;
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return true;
+    ако (version.to_int () >= 0x00010004u && markGlyphSetsDef2) върни true;
 #endif
-    return markGlyphSetsDef != 0;
+    върни markGlyphSetsDef != 0;
   }
   const MarkGlyphSets &get_mark_glyph_sets () const
   {
-    if (version.to_int () < 0x00010002u) return Null(MarkGlyphSets);
+    ако (version.to_int () < 0x00010002u) върни Null(MarkGlyphSets);
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return this+markGlyphSetsDef2;
+    ако (version.to_int () >= 0x00010004u && markGlyphSetsDef2) върни this+markGlyphSetsDef2;
 #endif
-    return this+markGlyphSetsDef;
+    върни this+markGlyphSetsDef;
   }
   bool has_var_store () const
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () && varStore != 0;
+    върни version.to_int () >= 0x00010003u && hb_barrier () && varStore != 0;
   }
   const ItemVariationStore &get_var_store () const
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () ? this+varStore : Null(ItemVariationStore);
+    върни version.to_int () >= 0x00010003u && hb_barrier () ? this+varStore : Null(ItemVariationStore);
   }
 
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_glyph_class (hb_codepoint_t glyph) const
-  { return get_glyph_class_def ().get_class (glyph); }
-  void get_glyphs_in_class (unsigned int klass, hb_set_t *glyphs) const
+  bool has_data () const { върни version.to_int (); }
+  unsigned цяло get_glyph_class (hb_codepoint_t glyph) const
+  { върни get_glyph_class_def ().get_class (glyph); }
+  void get_glyphs_in_class (unsigned цяло klass, hb_set_t *glyphs) const
   { get_glyph_class_def ().collect_class (glyphs, klass); }
 
-  unsigned int get_mark_attachment_type (hb_codepoint_t glyph) const
-  { return get_mark_attach_class_def ().get_class (glyph); }
+  unsigned цяло get_mark_attachment_type (hb_codepoint_t glyph) const
+  { върни get_mark_attach_class_def ().get_class (glyph); }
 
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
-  { return get_attach_list ().get_attach_points (glyph_id, start_offset, point_count, point_array); }
+  unsigned цяло get_attach_points (hb_codepoint_t glyph_id,
+				  unsigned цяло start_offset,
+				  unsigned цяло *point_count /* IN/OUT */,
+				  unsigned цяло *point_array /* OUT */) const
+  { върни get_attach_list ().get_attach_points (glyph_id, start_offset, point_count, point_array); }
 
-  unsigned int get_lig_carets (hb_font_t *font,
+  unsigned цяло get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
+			       unsigned цяло start_offset,
+			       unsigned цяло *caret_count /* IN/OUT */,
 			       hb_position_t *caret_array /* OUT */) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
-      return (this+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
+    ако (version.to_int () >= 0x00010004u && ligCaretList2)
+      върни (this+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
 						  start_offset, caret_count, caret_array);
 #endif
-    return (this+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
+    върни (this+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
 					       start_offset, caret_count, caret_array);
   }
 
-  bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return get_mark_glyph_sets ().covers (set_index, glyph_id); }
+  bool mark_set_covers (unsigned цяло set_index, hb_codepoint_t glyph_id) const
+  { върни get_mark_glyph_sets ().covers (set_index, glyph_id); }
 
   /* glyph_props is a 16-bit integer where the lower 8-bit have bits representing
    * glyph class and other bits, and high 8-bit the mark attachment type (if any).
    * Not to be confused with lookup_props which is very similar. */
-  unsigned int get_glyph_props (hb_codepoint_t glyph) const
+  unsigned цяло get_glyph_props (hb_codepoint_t glyph) const
   {
-    unsigned int klass = get_glyph_class (glyph);
+    unsigned цяло klass = get_glyph_class (glyph);
 
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH == (unsigned int) LookupFlag::IgnoreBaseGlyphs), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (unsigned int) LookupFlag::IgnoreLigatures), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (unsigned int) LookupFlag::IgnoreMarks), "");
+    static_assert (((unsigned цяло) HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH == (unsigned цяло) LookupFlag::IgnoreBaseGlyphs), "");
+    static_assert (((unsigned цяло) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (unsigned цяло) LookupFlag::IgnoreLigatures), "");
+    static_assert (((unsigned цяло) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (unsigned цяло) LookupFlag::IgnoreMarks), "");
 
     switch (klass) {
-    default:			return HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
-    case BaseGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
-    case LigatureGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
+    default:			върни HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
+    case BaseGlyph:		върни HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
+    case LigatureGlyph:		върни HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
     case MarkGlyph:
 	  klass = get_mark_attachment_type (glyph);
-	  return HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
+	  върни HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
     }
   }
 
@@ -979,7 +979,7 @@ struct GDEF
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<GDEF> (face);
-      if (unlikely (table->is_blocklisted (table.get_blob (), face)))
+      ако (unlikely (table->is_blocklisted (table.get_blob (), face)))
       {
 	hb_blob_destroy (table.get_blob ());
 	table = hb_blob_get_empty ();
@@ -993,29 +993,29 @@ struct GDEF
       {
 	hb_vector_t<hb_set_t> sets;
 	table->get_mark_glyph_sets ().collect_coverage (sets);
-	if (!sets.in_error () &&
+	ако (!sets.in_error () &&
 	    mark_glyph_set_bitmaps.resize (sets.length))
-	  for (unsigned i = 0; i < sets.length; i++)
+	  за (unsigned i = 0; i < sets.length; i++)
 	  {
 	    auto &bitmap = mark_glyph_set_bitmaps.arrayZ[i];
 	    bitmap.bias = HB_SET_VALUE_INVALID;
 	    const auto &set = sets.arrayZ[i];
-	    if (unlikely (set.in_error ())) continue;
+	    ако (unlikely (set.in_error ())) continue;
 	    hb_codepoint_t min_gid = HB_SET_VALUE_INVALID;
 	    hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
 	    hb_set_next (&set, &min_gid);
 	    hb_set_previous (&set, &max_gid);
-	    if (max_gid == HB_SET_VALUE_INVALID)
+	    ако (max_gid == HB_SET_VALUE_INVALID)
 	      continue;
-	    if (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
+	    ако (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
 	    {
 	      /* Too wide for one page; a digest pre-filter instead. */
-	      for (hb_codepoint_t gid : set)
+	      за (hb_codepoint_t gid : set)
 		bitmap.u.digest.add (gid);
 	      continue;
 	    }
 	    bitmap.bias = min_gid;
-	    for (hb_codepoint_t gid : set)
+	    за (hb_codepoint_t gid : set)
 	      bitmap.u.page.add (gid - min_gid);
 	  }
       }
@@ -1023,66 +1023,66 @@ struct GDEF
     }
     ~accelerator_t () { table.destroy (); }
 
-    unsigned int get_glyph_props (hb_codepoint_t glyph) const
+    unsigned цяло get_glyph_props (hb_codepoint_t glyph) const
     {
       unsigned v;
 
 #ifndef HB_NO_GDEF_CACHE
-      if (glyph_props_cache.get (glyph, &v))
-        return v;
+      ако (glyph_props_cache.get (glyph, &v))
+        върни v;
 #endif
 
       v = table->get_glyph_props (glyph);
 
 #ifndef HB_NO_GDEF_CACHE
-      if (likely (table.get_blob ())) // Don't try setting if we are the null instance!
+      ако (likely (table.get_blob ())) // Don't try setting if we are the null instance!
 	glyph_props_cache.set (glyph, v);
 #endif
 
-      return v;
+      върни v;
 
     }
 
     HB_ALWAYS_INLINE
-    bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+    bool mark_set_covers (unsigned цяло set_index, hb_codepoint_t glyph_id) const
     {
 #ifndef HB_NO_GDEF_CACHE
       // We can access arrayZ directly because of sanitize_lookup_props() guarantee.
       const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (likely (bitmap.bias != HB_SET_VALUE_INVALID))
+      ако (likely (bitmap.bias != HB_SET_VALUE_INVALID))
       {
 	hb_codepoint_t biased = glyph_id - bitmap.bias;
-	return biased < hb_bit_page_t::PAGE_BITS &&
+	върни biased < hb_bit_page_t::PAGE_BITS &&
 	       bitmap.u.page.get (biased);
       }
-      return mark_set_covers_slow (set_index, glyph_id);
-#else
-      return table->mark_set_covers (set_index, glyph_id);
+      върни mark_set_covers_slow (set_index, glyph_id);
+#иначе
+      върни table->mark_set_covers (set_index, glyph_id);
 #endif
     }
 
 #ifndef HB_NO_GDEF_CACHE
     HB_NEVER_INLINE
-    bool mark_set_covers_slow (unsigned int set_index, hb_codepoint_t glyph_id) const
+    bool mark_set_covers_slow (unsigned цяло set_index, hb_codepoint_t glyph_id) const
     {
       const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (!bitmap.u.digest.may_have (glyph_id))
-	return false;
-      return table->mark_set_covers (set_index, glyph_id);
+      ако (!bitmap.u.digest.may_have (glyph_id))
+	върни false;
+      върни table->mark_set_covers (set_index, glyph_id);
     }
 #endif
 
     unsigned sanitize_lookup_props (unsigned lookup_props) const
     {
 #ifndef HB_NO_GDEF_CACHE
-      if (lookup_props & LookupFlag::UseMarkFilteringSet &&
+      ако (lookup_props & LookupFlag::UseMarkFilteringSet &&
 	  (lookup_props >> 16) >= mark_glyph_set_bitmaps.length)
       {
         // Invalid mark filtering set index; unset the flag.
 	lookup_props &= ~LookupFlag::UseMarkFilteringSet;
       }
 #endif
-      return lookup_props;
+      върни lookup_props;
     }
 
     hb_blob_ptr_t<GDEF> table;
@@ -1109,10 +1109,10 @@ struct GDEF
   void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
+    ако (version.to_int () >= 0x00010004u && ligCaretList2)
     {
       (this+ligCaretList2).collect_variation_indices (c);
-      return;
+      върни;
     }
 #endif
     (this+ligCaretList).collect_variation_indices (c);
@@ -1121,21 +1121,21 @@ struct GDEF
   protected:
   template <typename Key>
   static void remap_varidx_after_instantiation (const hb_map_t& varidx_map,
-                                                hb_hashmap_t<Key, hb_pair_t<unsigned, int>>& layout_variation_idx_delta_map /* IN/OUT */)
+                                                hb_hashmap_t<Key, hb_pair_t<unsigned, цяло>>& layout_variation_idx_delta_map /* IN/OUT */)
   {
     /* varidx_map is empty which means varstore is empty after instantiation,
      * no variations, map all varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX.
      * varidx_map doesn't have original varidx, indicating delta row is all
      * zeros, map varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX */
-    for (auto _ : layout_variation_idx_delta_map.iter_ref ())
+    за (auto _ : layout_variation_idx_delta_map.iter_ref ())
     {
       /* old_varidx->(varidx, delta) mapping generated for subsetting, then this
        * varidx is used as key of varidx_map during instantiation */
       uint32_t varidx = _.second.first;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
+      ако (varidx_map.has (varidx, &new_varidx))
 	_.second.first = *new_varidx;
-      else
+      иначе
 	_.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
     }
   }
@@ -1148,14 +1148,14 @@ struct GDEF
 				       Ts&&... ds)
   {
     out = 0;
-    if (in.is_null ()) return false;
+    ако (in.is_null ()) върни false;
 
     auto *s = c->serializer;
     s->push ();
     bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    ако (ret) s->add_link (out, s->pop_pack ());
+    иначе s->pop_discard ();
+    върни ret;
   }
 
   FixedVersion<>version;		/* Version of the GDEF table--currently

@@ -50,32 +50,32 @@ struct hb_face_builder_data_t
   hb_hashmap_t<hb_tag_t, face_table_info_t> tables;
 };
 
-static int compare_entries (const void* pa, const void* pb)
+static цяло compare_entries (const void* pa, const void* pb)
 {
   const auto& a = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
   const auto& b = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
 
   /* Order by blob size first (smallest to largest) and then table tag */
 
-  if (a.second.order != b.second.order)
-    return a.second.order < b.second.order ? -1 : +1;
+  ако (a.second.order != b.second.order)
+    върни a.second.order < b.second.order ? -1 : +1;
 
-  if (a.second.data->length != b.second.data->length)
-    return a.second.data->length < b.second.data->length ? -1 : +1;
+  ако (a.second.data->length != b.second.data->length)
+    върни a.second.data->length < b.second.data->length ? -1 : +1;
 
-  return a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
+  върни a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
 }
 
 static hb_face_builder_data_t *
 _hb_face_builder_data_create ()
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, sizeof (hb_face_builder_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  ако (unlikely (!data))
+    върни nullptr;
 
   data->tables.init ();
 
-  return data;
+  върни data;
 }
 
 static void
@@ -83,7 +83,7 @@ _hb_face_builder_data_destroy (void *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  for (auto info : data->tables.values())
+  за (auto info : data->tables.values())
     hb_blob_destroy (info.data);
 
   data->tables.fini ();
@@ -95,15 +95,15 @@ static hb_blob_t *
 _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  unsigned цяло table_count = data->tables.get_population ();
+  unsigned цяло face_length = table_count * 16 + 12;
 
-  for (auto info : data->tables.values())
+  за (auto info : data->tables.values())
     face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
 
   char *buf = (char *) hb_malloc (face_length);
-  if (unlikely (!buf))
-    return nullptr;
+  ако (unlikely (!buf))
+    върни nullptr;
 
   hb_serialize_context_t c (buf, face_length);
   c.propagate_error (data->tables);
@@ -116,10 +116,10 @@ _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
   // Sort the tags so that produced face is deterministic.
   hb_vector_t<hb_pair_t <hb_tag_t, face_table_info_t>> sorted_entries;
   data->tables.iter () | hb_sink (sorted_entries);
-  if (unlikely (sorted_entries.in_error ()))
+  ако (unlikely (sorted_entries.in_error ()))
   {
     hb_free (buf);
-    return nullptr;
+    върни nullptr;
   }
 
   sorted_entries.qsort (compare_entries);
@@ -128,18 +128,18 @@ _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
                                   sfnt_tag,
                                   + sorted_entries.iter()
                                   | hb_map ([&] (hb_pair_t<hb_tag_t, face_table_info_t> _) {
-                                    return hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
+                                    върни hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
                                   }));
 
   c.end_serialize ();
 
-  if (unlikely (!ret))
+  ако (unlikely (!ret))
   {
     hb_free (buf);
-    return nullptr;
+    върни nullptr;
   }
 
-  return hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  върни hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 
 static hb_blob_t *
@@ -147,16 +147,16 @@ _hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void 
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  if (!tag)
-    return _hb_face_builder_data_reference_blob (data);
+  ако (!tag)
+    върни _hb_face_builder_data_reference_blob (data);
 
-  return hb_blob_reference (data->tables[tag].data);
+  върни hb_blob_reference (data->tables[tag].data);
 }
 
 static unsigned
 _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
-				 unsigned int start_offset,
-				 unsigned int *table_count,
+				 unsigned цяло start_offset,
+				 unsigned цяло *table_count,
 				 hb_tag_t *table_tags,
 				 void *user_data)
 {
@@ -164,28 +164,28 @@ _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
 
   unsigned population = data->tables.get_population ();
 
-  if (!table_count)
-    return population;
+  ако (!table_count)
+    върни population;
 
-  if (unlikely (start_offset >= population))
+  ако (unlikely (start_offset >= population))
   {
     *table_count = 0;
-    return population;
+    върни population;
   }
 
   // Sort the tags.
   hb_vector_t<hb_tag_t> sorted_tags;
   data->tables.keys () | hb_sink (sorted_tags);
-  if (unlikely (sorted_tags.in_error ()))
+  ако (unlikely (sorted_tags.in_error ()))
   {
     // Not much to do...
   }
   sorted_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) {
-    return (a > b) - (a < b);
+    върни (a > b) - (a < b);
   });
 
   auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
-  if (table_tags)
+  ако (table_tags)
   {
     auto out = hb_array (table_tags, *table_count);
 
@@ -194,7 +194,7 @@ _hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
     ;
   }
 
-  return population;
+  върни population;
 }
 
 
@@ -213,7 +213,7 @@ hb_face_t *
 hb_face_builder_create ()
 {
   hb_face_builder_data_t *data = _hb_face_builder_data_create ();
-  if (unlikely (!data)) return hb_face_get_empty ();
+  ако (unlikely (!data)) върни hb_face_get_empty ();
 
   hb_face_t *face = hb_face_create_for_tables (_hb_face_builder_reference_table,
 					       data,
@@ -224,7 +224,7 @@ hb_face_builder_create ()
 				   data,
 				   nullptr);
 
-  return face;
+  върни face;
 }
 
 /**
@@ -241,23 +241,23 @@ hb_face_builder_create ()
 hb_bool_t
 hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return false;
+  ако (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    върни false;
 
-  if (tag == HB_MAP_VALUE_INVALID)
-    return false;
+  ако (tag == HB_MAP_VALUE_INVALID)
+    върни false;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   hb_blob_t* previous = data->tables.get (tag).data;
-  if (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
+  ако (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
   {
     hb_blob_destroy (blob);
-    return false;
+    върни false;
   }
 
   hb_blob_destroy (previous);
-  return true;
+  върни true;
 }
 
 /**
@@ -276,22 +276,22 @@ void
 hb_face_builder_sort_tables (hb_face_t *face,
                              const hb_tag_t  *tags)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return;
+  ако (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    върни;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
+  за (auto& info : data->tables.values_ref())
     info.order = (unsigned) -1;
 
   signed order = 0;
-  for (const hb_tag_t* tag = tags;
+  за (const hb_tag_t* tag = tags;
        *tag;
        tag++)
   {
     face_table_info_t* info;
-    if (!data->tables.has (*tag, &info)) continue;
+    ако (!data->tables.has (*tag, &info)) continue;
     info->order = order++;
   }
 }

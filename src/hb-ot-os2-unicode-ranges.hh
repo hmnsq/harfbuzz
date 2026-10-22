@@ -33,12 +33,12 @@ namespace OT {
 
 struct OS2Range
 {
-  int cmp (hb_codepoint_t key) const
-  { return (key < first) ? -1 : key <= last ? 0 : +1; }
+  цяло cmp (hb_codepoint_t key) const
+  { върни (key < first) ? -1 : key <= last ? 0 : +1; }
 
   hb_codepoint_t first;
   hb_codepoint_t last;
-  unsigned int bit;
+  unsigned цяло bit;
 };
 
 /* Note: The contents of this array was generated using gen-os2-unicode-ranges.py. */
@@ -219,11 +219,11 @@ static const OS2Range _hb_os2_unicode_ranges[] =
  * _hb_ot_os2_get_unicode_range_bit:
  * Returns the bit to be set in os/2 ulUnicodeOS2Range for a given codepoint.
  **/
-static unsigned int
+static unsigned цяло
 _hb_ot_os2_get_unicode_range_bit (hb_codepoint_t cp)
 {
   auto *range = hb_sorted_array (_hb_os2_unicode_ranges).bsearch (cp);
-  return range ? range->bit : (unsigned) -1;
+  върни range ? range->bit : (unsigned) -1;
 }
 
 } /* namespace OT */

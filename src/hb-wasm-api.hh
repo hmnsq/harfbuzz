@@ -64,7 +64,7 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
     (void) wasm_externref_ref2obj (obj##ptr, (void **) &obj); \
     /* Check object type. */ \
     /* This works because all our objects have the same hb_object_t layout. */ \
-    if (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
+    ако (unlikely (hb_##obj##_get_user_data (obj, &_hb_wasm_ref_type_key) != \
 		  (void *) hb_wasm_ref_type_##obj)) \
       obj = hb_##obj##_get_empty (); \
   } HB_STMT_END
@@ -81,18 +81,18 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
 #define HB_RETURN_STRUCT(type, name) \
   type *_name_ptr = nullptr; \
   { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
+    ако (likely (wasm_runtime_validate_app_addr (module_inst, \
 						retptr, sizeof (type)))) \
       _name_ptr = (type *) wasm_runtime_addr_app_to_native (module_inst, retptr); \
-    if (unlikely (!_name_ptr)) \
-      return; \
+    ако (unlikely (!_name_ptr)) \
+      върни; \
   } \
   type &name = *_name_ptr
 
 #define HB_PTR_PARAM(type, name) \
   type *name = nullptr; \
   HB_STMT_START { \
-    if (likely (wasm_runtime_validate_app_addr (module_inst, \
+    ако (likely (wasm_runtime_validate_app_addr (module_inst, \
 						name##ptr, sizeof (type)))) \
       name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \
   } HB_STMT_END
@@ -100,7 +100,7 @@ HB_INTERNAL extern hb_user_data_key_t _hb_wasm_ref_type_key;
 #define HB_ARRAY_PARAM(type, name, length) \
   type *name = nullptr; \
   HB_STMT_START { \
-    if (likely (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
+    ако (likely (!hb_unsigned_mul_overflows (length, sizeof (type)) && \
 		wasm_runtime_validate_app_addr (module_inst, \
 						name##ptr, length * sizeof (type)))) \
       name = (type *) wasm_runtime_addr_app_to_native (module_inst, name##ptr); \

@@ -41,11 +41,11 @@ draw_budget_probe (hb_font_t *, void *font_data, hb_codepoint_t,
   hb_draw_state_t state = HB_DRAW_STATE_DEFAULT;
   hb_draw_move_to (draw_funcs, draw_data, &state, 10.f, 20.f);
   hb_draw_line_to (draw_funcs, draw_data, &state, 30.f, 40.f);
-  return true;
+  върни true;
 }
 
-int
-main (int argc HB_UNUSED, char **argv HB_UNUSED)
+цяло
+main (цяло argc HB_UNUSED, char **argv HB_UNUSED)
 {
   hb_paint_funcs_t *paint_funcs = hb_paint_extents_get_funcs ();
 
@@ -90,5 +90,5 @@ main (int argc HB_UNUSED, char **argv HB_UNUSED)
   hb_always_assert (hb_paint_get_budget_remaining (paint_funcs, &context) == 0);
 
   hb_font_destroy (font);
-  return 0;
+  върни 0;
 }

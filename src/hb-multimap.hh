@@ -39,20 +39,20 @@ struct hb_multimap_t
   void add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    ако (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      върни;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    ако (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      върни;
     }
 
     singulars.set (k, v);
@@ -61,24 +61,24 @@ struct hb_multimap_t
   hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
   {
     const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ако (singulars.has (k, &v))
+      върни hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    ако (multiples.has (k, &m))
+      върни m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    върни hb_array_t<const hb_codepoint_t> ();
   }
 
   bool in_error () const
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    ако (singulars.in_error () || multiples.in_error ())
+      върни true;
+    за (const auto &m : multiples.values_ref ())
+      ако (m.in_error ())
+        върни true;
+    върни false;
   }
 
   void alloc (unsigned size)

@@ -41,7 +41,7 @@ namespace OT {
 template <typename Types>
 struct VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  цяло cmp (hb_codepoint_t g) const { върни glyph.cmp (g); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -63,15 +63,15 @@ struct VORGFormat1_2
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { върни version.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  цяло get_y_origin (hb_codepoint_t glyph) const
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    unsigned цяло i;
+    ако (!vertYOrigins.bfind (glyph, &i))
+      върни defaultVertOriginY;
+    върни vertYOrigins[i].vertOriginY;
   }
 
   template <typename Iterator,
@@ -81,7 +81,7 @@ struct VORGFormat1_2
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    ако (unlikely (!c->extend_min ((*this))))  върни;
 
     this->version.major = Types::size == 2 ? 1 : 2;
     this->version.minor = 0;
@@ -96,7 +96,7 @@ struct VORGFormat1_2
   {
     TRACE_SUBSET (this);
     auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    ако (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
 
     auto it =
     + vertYOrigins.as_array ()
@@ -109,7 +109,7 @@ struct VORGFormat1_2
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		върни metric;
 	      })
     ;
 
@@ -142,17 +142,17 @@ struct VORG
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  bool has_data () const { върни u.version.v.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  цяло get_y_origin (hb_codepoint_t glyph) const
   {
     switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
+    case 1: върни u.version1.get_y_origin (glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
+    case 2: върни u.version2.get_y_origin (glyph);
 #endif
-    default: return 0;
+    default: върни 0;
     }
   }
 
@@ -171,7 +171,7 @@ struct VORG
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    ако (unlikely (!u.version.v.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.version.v.major) {
     case 1: hb_barrier (); return_trace (u.version1.sanitize (c));

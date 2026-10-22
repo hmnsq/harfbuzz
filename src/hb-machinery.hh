@@ -43,25 +43,25 @@
 /* StructAtOffset<T>(P,Ofs) returns the struct T& that is placed at memory
  * location pointed to by P plus Ofs bytes. */
 template<typename Type>
-static inline const Type& StructAtOffset(const void *P, unsigned int offset)
-{ return * reinterpret_cast<const Type*> ((const char *) P + offset); }
+static inline const Type& StructAtOffset(const void *P, unsigned цяло offset)
+{ върни * reinterpret_cast<const Type*> ((const char *) P + offset); }
 template<typename Type>
-static inline Type& StructAtOffset(void *P, unsigned int offset)
-{ return * reinterpret_cast<Type*> ((char *) P + offset); }
+static inline Type& StructAtOffset(void *P, unsigned цяло offset)
+{ върни * reinterpret_cast<Type*> ((char *) P + offset); }
 template<typename Type>
-static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned цяло offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<const Type*> ((const char *) P + offset);
+  върни * reinterpret_cast<const Type*> ((const char *) P + offset);
 #pragma GCC diagnostic pop
 }
 template<typename Type>
-static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
+static inline Type& StructAtOffsetUnaligned(void *P, unsigned цяло offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<Type*> ((char *) P + offset);
+  върни * reinterpret_cast<Type*> ((char *) P + offset);
 #pragma GCC diagnostic pop
 }
 
@@ -78,7 +78,7 @@ static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
 template <typename Type, typename TObject, typename ...Ts>
 static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
-  sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
+  sizeof(цяло[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
   : *reinterpret_cast<Type*> (0)
 ))
@@ -110,7 +110,7 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
 
 #define DEFINE_SIZE_STATIC(size) \
   DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size)) \
-  size_t get_size () const { return (size); } \
+  size_t get_size () const { върни (size); } \
   static constexpr unsigned null_size = (size); \
   static constexpr unsigned min_size = (size); \
   static constexpr unsigned static_size = (size)
@@ -137,7 +137,7 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
   static constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY_SIZED(size, array) \
-  size_t get_size () const { return (size - (array).min_size + (array).get_size ()); } \
+  size_t get_size () const { върни (size - (array).min_size + (array).get_size ()); } \
   DEFINE_SIZE_ARRAY(size, array)
 
 
@@ -152,26 +152,26 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  * for every lazy-loader.  Multiple lazy-loaders can access the same data.
  */
 
-template <typename Data, unsigned int WheresData>
+template <typename Data, unsigned цяло WheresData>
 struct hb_data_wrapper_t
 {
   static_assert (WheresData > 0, "");
 
   Data * get_data () const
-  { return *(((Data **) (void *) this) - WheresData); }
+  { върни *(((Data **) (void *) this) - WheresData); }
 
-  bool is_inert () const { return !get_data (); }
+  bool is_inert () const { върни !get_data (); }
 
   template <typename Stored, typename Subclass>
-  Stored * call_create () const { return Subclass::create (get_data ()); }
+  Stored * call_create () const { върни Subclass::create (get_data ()); }
 };
 template <>
 struct hb_data_wrapper_t<void, 0>
 {
-  bool is_inert () const { return false; }
+  bool is_inert () const { върни false; }
 
   template <typename Stored, typename Funcs>
-  Stored * call_create () const { return Funcs::create (); }
+  Stored * call_create () const { върни Funcs::create (); }
 };
 
 template <typename T1, typename T2> struct hb_non_void_t { typedef T1 value; };
@@ -180,7 +180,7 @@ template <typename T2> struct hb_non_void_t<void, T2> { typedef T2 value; };
 template <typename Returned,
 	  typename Subclass = void,
 	  typename Data = void,
-	  unsigned int WheresData = 0,
+	  unsigned цяло WheresData = 0,
 	  typename Stored = Returned>
 struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
 {
@@ -199,76 +199,76 @@ struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
   {
   retry:
     Stored *p = instance.get_acquire ();
-    if (unlikely (p && !cmpexch (p, nullptr)))
+    ако (unlikely (p && !cmpexch (p, nullptr)))
       goto retry;
     do_destroy (p);
   }
 
   static void do_destroy (Stored *p)
   {
-    if (Funcs::tag_null ? !p || is_tagged_null (p) :
+    ако (Funcs::tag_null ? !p || is_tagged_null (p) :
 			  !p || p == const_cast<Stored *> (Funcs::get_null ()))
-      return;
+      върни;
     Funcs::destroy (p);
   }
 
-  const Returned * operator -> () const { return get (); }
+  const Returned * operator -> () const { върни get (); }
   template <typename U = Returned, hb_enable_if (!hb_is_same (U, void))>
-  const U & operator * () const  { return *get (); }
+  const U & operator * () const  { върни *get (); }
   explicit operator bool () const
   {
     Stored *p = get_stored ();
-    if (Funcs::tag_null)
+    ако (Funcs::tag_null)
     {
       Stored *raw = this->instance.get_relaxed ();
-      return raw && !is_tagged_null (raw);
+      върни raw && !is_tagged_null (raw);
     }
-    return p != Funcs::get_null ();
+    върни p != Funcs::get_null ();
   }
-  template <typename C> operator const C * () const { return get (); }
+  template <typename C> operator const C * () const { върни get (); }
 
   Stored * get_stored () const
   {
   retry:
     Stored *p = this->instance.get_acquire ();
-    if (unlikely (!p))
+    ако (unlikely (!p))
     {
-      if (unlikely (this->is_inert ()))
-	return const_cast<Stored *> (Funcs::get_null ());
+      ако (unlikely (this->is_inert ()))
+	върни const_cast<Stored *> (Funcs::get_null ());
 
       p = this->template call_create<Stored, Funcs> ();
-      if (unlikely (!p))
+      ако (unlikely (!p))
 	p = tagged_null (const_cast<Stored *> (Funcs::get_null ()));
 
-      if (unlikely (!cmpexch (nullptr, p)))
+      ако (unlikely (!cmpexch (nullptr, p)))
       {
 	do_destroy (p);
 	goto retry;
       }
     }
-    return untagged (p);
+    върни untagged (p);
   }
   Stored * get_stored_relaxed () const
   {
-    return untagged (this->instance.get_relaxed ());
+    върни untagged (this->instance.get_relaxed ());
   }
 
   bool cmpexch (Stored *current, Stored *value) const
   {
     /* This function can only be safely called directly if no
      * other thread is accessing. */
-    return this->instance.cmpexch (current, value);
+    върни this->instance.cmpexch (current, value);
   }
 
-  const Returned * get () const { return Funcs::convert (get_stored ()); }
-  const Returned * get_relaxed () const { return Funcs::convert (get_stored_relaxed ()); }
-  Returned * get_unconst () const { return const_cast<Returned *> (Funcs::convert (get_stored ())); }
+  const Returned * get () const { върни Funcs::convert (get_stored ()); }
+  const Returned * get_relaxed () const { върни Funcs::convert (get_stored_relaxed ()); }
+  Returned * get_unconst () const { върни const_cast<Returned *> (Funcs::convert (get_stored ())); }
 
   /* To be possibly overloaded by subclasses. */
-  static Returned* convert (Stored *p) { return p; }
+  static Returned* convert (Stored *p) { върни p; }
 
   /* By default null/init/fini the object. */
-  static const Stored* get_null () { return &Null (Stored); }
+  static const Stored* get_null () { върни &Null (Stored); }
 
   /* When tag_null is set, a failed create () is cached as get_null () with
    * its low bit set, and destroy recognizes it by that bit rather than by
@@ -276,24 +276,24 @@ struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
    * library sharing the object would not recognize its address. */
   static constexpr bool tag_null = false;
   static bool is_tagged_null (Stored *p)
-  { return Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
+  { върни Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
   static Stored *tagged_null (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
+  { върни Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
   static Stored *untagged (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
+  { върни Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
   static Stored *create (Data *data)
   {
     Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
+    ако (likely (p))
       p = new (p) Stored (data);
-    return p;
+    върни p;
   }
   static Stored *create ()
   {
     Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
+    ако (likely (p))
       p = new (p) Stored ();
-    return p;
+    върни p;
   }
   static void destroy (Stored *p)
   {
@@ -308,7 +308,7 @@ struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
 
 /* Specializations. */
 
-template <typename T, unsigned int WheresFace>
+template <typename T, unsigned цяло WheresFace>
 struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
 						hb_face_lazy_loader_t<T, WheresFace>,
 						hb_face_t, WheresFace>
@@ -317,10 +317,10 @@ struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
   static constexpr bool tag_null = true;
 
   // Hack; have them here for API parity with hb_table_lazy_loader_t
-  hb_blob_t *get_blob () { return this->get ()->get_blob (); }
+  hb_blob_t *get_blob () { върни this->get ()->get_blob (); }
 };
 
-template <typename T, unsigned int WheresFace>
+template <typename T, unsigned цяло WheresFace>
 struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
 						 hb_table_lazy_loader_t<T, WheresFace>,
 						 hb_face_t, WheresFace,
@@ -329,17 +329,17 @@ struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
   static hb_blob_t *create (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    return c.reference_table<T> (face);
+    върни c.reference_table<T> (face);
   }
   static void destroy (hb_blob_t *p) { hb_blob_destroy (p); }
 
   static const hb_blob_t *get_null ()
-  { return hb_blob_get_empty (); }
+  { върни hb_blob_get_empty (); }
 
   static const T* convert (const hb_blob_t *blob)
-  { return blob->as<T> (); }
+  { върни blob->as<T> (); }
 
-  hb_blob_t* get_blob () const { return this->get_stored (); }
+  hb_blob_t* get_blob () const { върни this->get_stored (); }
 };
 
 #define HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
@@ -349,7 +349,7 @@ struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
     static void destroy (hb_##Type##_funcs_t *p) \
     { hb_##Type##_funcs_destroy (p); } \
     static const hb_##Type##_funcs_t *get_null () \
-    { return hb_##Type##_funcs_get_empty (); } \
+    { върни hb_##Type##_funcs_get_empty (); } \
   }
 
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (font);

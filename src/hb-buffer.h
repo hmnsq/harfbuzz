@@ -27,7 +27,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ако !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -169,7 +169,7 @@ HB_EXTERN hb_glyph_flags_t
 hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
 
 #define hb_glyph_info_get_glyph_flags(info) \
-	((hb_glyph_flags_t) ((unsigned int) (info)->mask & HB_GLYPH_FLAG_DEFINED))
+	((hb_glyph_flags_t) ((unsigned цяло) (info)->mask & HB_GLYPH_FLAG_DEFINED))
 
 
 /**
@@ -232,7 +232,7 @@ HB_EXTERN hb_bool_t
 hb_segment_properties_equal (const hb_segment_properties_t *a,
 			     const hb_segment_properties_t *b);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цяло
 hb_segment_properties_hash (const hb_segment_properties_t *p);
 
 HB_EXTERN void
@@ -569,7 +569,7 @@ hb_buffer_clear_contents (hb_buffer_t *buffer);
 
 HB_EXTERN hb_bool_t
 hb_buffer_pre_allocate (hb_buffer_t  *buffer,
-			unsigned int  size);
+			unsigned цяло  size);
 
 
 HB_EXTERN hb_bool_t
@@ -580,7 +580,7 @@ hb_buffer_reverse (hb_buffer_t *buffer);
 
 HB_EXTERN void
 hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end);
+			 unsigned цяло start, unsigned цяло end);
 
 HB_EXTERN void
 hb_buffer_reverse_clusters (hb_buffer_t *buffer);
@@ -591,65 +591,65 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer);
 HB_EXTERN void
 hb_buffer_add (hb_buffer_t    *buffer,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster);
+	       unsigned цяло    cluster);
 
 HB_EXTERN void
 hb_buffer_add_utf8 (hb_buffer_t  *buffer,
 		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length);
+		    цяло           text_length,
+		    unsigned цяло  item_offset,
+		    цяло           item_length);
 
 HB_EXTERN void
 hb_buffer_add_utf16 (hb_buffer_t    *buffer,
 		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+		     цяло             text_length,
+		     unsigned цяло    item_offset,
+		     цяло             item_length);
 
 HB_EXTERN void
 hb_buffer_add_utf32 (hb_buffer_t    *buffer,
 		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+		     цяло             text_length,
+		     unsigned цяло    item_offset,
+		     цяло             item_length);
 
 HB_EXTERN void
 hb_buffer_add_latin1 (hb_buffer_t   *buffer,
 		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length);
+		      цяло            text_length,
+		      unsigned цяло   item_offset,
+		      цяло            item_length);
 
 HB_EXTERN void
 hb_buffer_add_codepoints (hb_buffer_t          *buffer,
 			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length);
+			  цяло                   text_length,
+			  unsigned цяло          item_offset,
+			  цяло                   item_length);
 
 HB_EXTERN void
 hb_buffer_append (hb_buffer_t *buffer,
 		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end);
+		  unsigned цяло start,
+		  unsigned цяло end);
 
 HB_EXTERN hb_bool_t
 hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length);
+		      unsigned цяло  length);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цяло
 hb_buffer_get_length (const hb_buffer_t *buffer);
 
 /* Getting glyphs out of the buffer */
 
 HB_EXTERN hb_glyph_info_t *
 hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length);
+			   unsigned цяло *length);
 
 HB_EXTERN hb_glyph_position_t *
 hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length);
+			       unsigned цяло *length);
 
 HB_EXTERN hb_bool_t
 hb_buffer_has_positions (hb_buffer_t  *buffer);
@@ -714,7 +714,7 @@ typedef enum {
 } hb_buffer_serialize_format_t;
 
 HB_EXTERN hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len);
+hb_buffer_serialize_format_from_string (const char *str, цяло len);
 
 HB_EXTERN const char *
 hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format);
@@ -722,34 +722,34 @@ hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format);
 HB_EXTERN const char **
 hb_buffer_serialize_list_formats (void);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цяло
 hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-			    unsigned int start,
-			    unsigned int end,
+			    unsigned цяло start,
+			    unsigned цяло end,
 			    char *buf,
-			    unsigned int buf_size,
-			    unsigned int *buf_consumed,
+			    unsigned цяло buf_size,
+			    unsigned цяло *buf_consumed,
 			    hb_font_t *font,
 			    hb_buffer_serialize_format_t format,
 			    hb_buffer_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цяло
 hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-			     unsigned int start,
-			     unsigned int end,
+			     unsigned цяло start,
+			     unsigned цяло end,
 			     char *buf,
-			     unsigned int buf_size,
-			     unsigned int *buf_consumed,
+			     unsigned цяло buf_size,
+			     unsigned цяло *buf_consumed,
 			     hb_buffer_serialize_format_t format,
 			     hb_buffer_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned цяло
 hb_buffer_serialize (hb_buffer_t *buffer,
-		     unsigned int start,
-		     unsigned int end,
+		     unsigned цяло start,
+		     unsigned цяло end,
 		     char *buf,
-		     unsigned int buf_size,
-		     unsigned int *buf_consumed,
+		     unsigned цяло buf_size,
+		     unsigned цяло *buf_consumed,
 		     hb_font_t *font,
 		     hb_buffer_serialize_format_t format,
 		     hb_buffer_serialize_flags_t flags);
@@ -757,7 +757,7 @@ hb_buffer_serialize (hb_buffer_t *buffer,
 HB_EXTERN hb_bool_t
 hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
 			      const char *buf,
-			      int buf_len,
+			      цяло buf_len,
 			      const char **end_ptr,
 			      hb_font_t *font,
 			      hb_buffer_serialize_format_t format);
@@ -765,7 +765,7 @@ hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
 HB_EXTERN hb_bool_t
 hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
 			       const char *buf,
-			       int buf_len,
+			       цяло buf_len,
 			       const char **end_ptr,
 			       hb_buffer_serialize_format_t format);
 
@@ -836,7 +836,7 @@ HB_EXTERN hb_buffer_diff_flags_t
 hb_buffer_diff (hb_buffer_t *buffer,
 		hb_buffer_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz);
+		unsigned цяло position_fuzz);
 
 
 /*

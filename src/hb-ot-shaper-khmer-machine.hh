@@ -264,11 +264,11 @@ static const short _khmer_syllable_machine_eof_trans[] = {
 	42, 42, 49
 };
 
-static const int khmer_syllable_machine_start = 21;
-static const int khmer_syllable_machine_first_final = 21;
-static const int khmer_syllable_machine_error = -1;
+static const цяло khmer_syllable_machine_start = 21;
+static const цяло khmer_syllable_machine_first_final = 21;
+static const цяло khmer_syllable_machine_error = -1;
 
-static const int khmer_syllable_machine_en_main = 21;
+static const цяло khmer_syllable_machine_en_main = 21;
 
 
 #line 53 "hb-ot-shaper-khmer-machine.rl"
@@ -280,18 +280,18 @@ static const int khmer_syllable_machine_en_main = 21;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+    ако (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    за (unsigned цяло i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    ако (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
 inline void
 find_syllables_khmer (hb_buffer_t *buffer)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
+  unsigned цяло p, pe, eof, ts, te, act HB_UNUSED;
+  цяло cs;
   hb_glyph_info_t *info = buffer->info;
   
 #line 287 "hb-ot-shaper-khmer-machine.hh"
@@ -308,15 +308,15 @@ find_syllables_khmer (hb_buffer_t *buffer)
   p = 0;
   pe = eof = buffer->len;
 
-  unsigned int syllable_serial = 1;
+  unsigned цяло syllable_serial = 1;
   
 #line 299 "hb-ot-shaper-khmer-machine.hh"
 	{
-	int _slen;
-	int _trans;
+	цяло _slen;
+	цяло _trans;
 	const unsigned char *_keys;
 	const char *_inds;
-	if ( p == pe )
+	ако ( p == pe )
 		goto _test_eof;
 _resume:
 	switch ( _khmer_syllable_machine_from_state_actions[cs] ) {
@@ -338,7 +338,7 @@ _resume:
 _eof_trans:
 	cs = _khmer_syllable_machine_trans_targs[_trans];
 
-	if ( _khmer_syllable_machine_trans_actions[_trans] == 0 )
+	ако ( _khmer_syllable_machine_trans_actions[_trans] == 0 )
 		goto _again;
 
 	switch ( _khmer_syllable_machine_trans_actions[_trans] ) {
@@ -406,12 +406,12 @@ _again:
 #line 375 "hb-ot-shaper-khmer-machine.hh"
 	}
 
-	if ( ++p != pe )
+	ако ( ++p != pe )
 		goto _resume;
 	_test_eof: {}
-	if ( p == eof )
+	ако ( p == eof )
 	{
-	if ( _khmer_syllable_machine_eof_trans[cs] > 0 ) {
+	ако ( _khmer_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _khmer_syllable_machine_eof_trans[cs] - 1;
 		goto _eof_trans;
 	}

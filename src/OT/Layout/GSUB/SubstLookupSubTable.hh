@@ -46,7 +46,7 @@ struct SubstLookupSubTable
   };
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, unsigned цяло lookup_type, Ts&&... ds) const
   {
     TRACE_DISPATCH (this, lookup_type);
     switch (lookup_type) {
@@ -62,10 +62,10 @@ struct SubstLookupSubTable
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  bool intersects (const hb_set_t *glyphs, unsigned цяло lookup_type) const
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    върни dispatch (&c, lookup_type);
   }
 };
 

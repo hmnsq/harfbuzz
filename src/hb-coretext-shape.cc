@@ -40,19 +40,19 @@ _hb_coretext_shaper_face_data_create (hb_face_t *face)
 {
   CGFontRef cg_font = create_cg_font (face);
 
-  if (unlikely (!cg_font))
+  ако (unlikely (!cg_font))
   {
     DEBUG_MSG (CORETEXT, face, "CGFont creation failed..");
-    return nullptr;
+    върни nullptr;
   }
 
-  return (hb_coretext_face_data_t *) cg_font;
+  върни (hb_coretext_face_data_t *) cg_font;
 }
 
 void
 _hb_coretext_shaper_face_data_destroy (hb_coretext_face_data_t *data)
 {
-  if (data)
+  ако (data)
     CFRelease ((CGFontRef) data);
 }
 
@@ -62,19 +62,19 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 {
   hb_face_t *face = font->face;
   const hb_coretext_face_data_t *face_data = face->data.coretext;
-  if (unlikely (!face_data)) return nullptr;
+  ако (unlikely (!face_data)) върни nullptr;
   CGFontRef cg_font = (CGFontRef) (const void *) face->data.coretext;
 
   CGFloat font_size = (CGFloat) (font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE);
   hb_cf_ptr_t<CTFontRef> ct_font (create_ct_font (cg_font, font_size));
 
-  if (unlikely (!ct_font))
+  ако (unlikely (!ct_font))
   {
     DEBUG_MSG (CORETEXT, font, "CGFont creation failed..");
-    return nullptr;
+    върни nullptr;
   }
 
-  if (font->num_coords)
+  ако (font->num_coords)
   {
     hb_cf_ptr_t<CFMutableDictionaryRef> variations (
       CFDictionaryCreateMutable (kCFAllocatorDefault,
@@ -83,17 +83,17 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 				 &kCFTypeDictionaryValueCallBacks));
 
     unsigned count = font->num_coords;
-    for (unsigned i = 0; i < count; i++)
+    за (unsigned i = 0; i < count; i++)
     {
       hb_ot_var_axis_info_t info;
-      unsigned int c = 1;
+      unsigned цяло c = 1;
       hb_ot_var_get_axis_infos (font->face, i, &c, &info);
 
       float v = hb_clamp (font->design_coords[i], info.min_value, info.max_value);
 
       hb_cf_ptr_t<CFNumberRef> tag_number (CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &info.tag));
       hb_cf_ptr_t<CFNumberRef> value_number (CFNumberCreate (kCFAllocatorDefault, kCFNumberFloatType, &v));
-      if (variations && tag_number && value_number)
+      ако (variations && tag_number && value_number)
 	CFDictionarySetValue (variations, tag_number, value_number);
     }
 
@@ -109,17 +109,17 @@ _hb_coretext_shaper_font_data_create (hb_font_t *font)
 
     hb_cf_ptr_t<CTFontDescriptorRef> varDesc (attributes ? CTFontDescriptorCreateWithAttributes (attributes) : nullptr);
     hb_cf_ptr_t<CTFontRef> new_ct_font (varDesc ? CTFontCreateCopyWithAttributes (ct_font, 0, nullptr, varDesc) : nullptr);
-    if (new_ct_font)
+    ако (new_ct_font)
       ct_font = std::move (new_ct_font);
   }
 
-  return (hb_coretext_font_data_t *) ct_font.release ();
+  върни (hb_coretext_font_data_t *) ct_font.release ();
 }
 
 void
 _hb_coretext_shaper_font_data_destroy (hb_coretext_font_data_t *data)
 {
-  if (data)
+  ако (data)
     CFRelease ((CTFontRef) data);
 }
 
@@ -128,36 +128,36 @@ _hb_coretext_shaper_font_data_destroy (hb_coretext_font_data_t *data)
  */
 
 struct feature_record_t {
-  unsigned int feature;
-  unsigned int setting;
+  unsigned цяло feature;
+  unsigned цяло setting;
 };
 
 struct active_feature_t {
   feature_record_t rec;
-  unsigned int order;
+  unsigned цяло order;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+  HB_INTERNAL static цяло cmp (const void *pa, const void *pb) {
     const active_feature_t *a = (const active_feature_t *) pa;
     const active_feature_t *b = (const active_feature_t *) pb;
-    return a->rec.feature < b->rec.feature ? -1 : a->rec.feature > b->rec.feature ? 1 :
+    върни a->rec.feature < b->rec.feature ? -1 : a->rec.feature > b->rec.feature ? 1 :
 	   a->order < b->order ? -1 : a->order > b->order ? 1 :
 	   a->rec.setting < b->rec.setting ? -1 : a->rec.setting > b->rec.setting ? 1 :
 	   0;
   }
   bool operator== (const active_feature_t& f) const {
-    return cmp (this, &f) == 0;
+    върни cmp (this, &f) == 0;
   }
 };
 
 struct feature_event_t {
-  unsigned int index;
+  unsigned цяло index;
   bool start;
   active_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
+  HB_INTERNAL static цяло cmp (const void *pa, const void *pb) {
     const feature_event_t *a = (const feature_event_t *) pa;
     const feature_event_t *b = (const feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
+    върни a->index < b->index ? -1 : a->index > b->index ? 1 :
 	   a->start < b->start ? -1 : a->start > b->start ? 1 :
 	   active_feature_t::cmp (&a->feature, &b->feature);
   }
@@ -165,8 +165,8 @@ struct feature_event_t {
 
 struct range_record_t {
   CTFontRef font;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  unsigned цяло index_first; /* == start */
+  unsigned цяло index_last;  /* == end - 1 */
 };
 
 
@@ -175,7 +175,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
 		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    unsigned цяло        num_features)
 {
   hb_face_t *face = font->face;
   CGFontRef cg_font = (CGFontRef) (const void *) face->data.coretext;
@@ -192,13 +192,13 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
    * B1 M1 B2 M2, and B1-B2 form a ligature, M2's cluster will
    * continue pointing to B2 even though B2 was merged into B1's
    * cluster... */
-  if (HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (buffer->cluster_level))
+  ако (HB_BUFFER_CLUSTER_LEVEL_IS_GRAPHEMES (buffer->cluster_level))
   {
     hb_unicode_funcs_t *unicode = buffer->unicode;
-    unsigned int count = buffer->len;
+    unsigned цяло count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 1; i < count; i++)
-      if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (unicode->general_category (info[i].codepoint)))
+    за (unsigned цяло i = 1; i < count; i++)
+      ако (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (unicode->general_category (info[i].codepoint)))
 	buffer->merge_grapheme_clusters (i - 1, i + 1);
   }
 
@@ -208,22 +208,22 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
    * Set up features.
    * (copied + modified from code from hb-uniscribe.cc)
    */
-  if (num_features)
+  ако (num_features)
   {
     /* Sort features by start/end events. */
     hb_vector_t<feature_event_t> feature_events;
-    for (unsigned int i = 0; i < num_features; i++)
+    за (unsigned цяло i = 0; i < num_features; i++)
     {
       active_feature_t feature;
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 101000
+#ако MAC_OS_X_VERSION_MIN_REQUIRED < 101000
       const hb_aat_feature_mapping_t * mapping = hb_aat_layout_find_feature_mapping (features[i].tag);
-      if (!mapping)
+      ако (!mapping)
 	continue;
 
       feature.rec.feature = mapping->aatFeatureType;
       feature.rec.setting = features[i].value ? mapping->selectorToEnable : mapping->selectorToDisable;
-#else
+#иначе
       feature.rec.feature = features[i].tag;
       feature.rec.setting = features[i].value;
 #endif
@@ -257,25 +257,25 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 
     /* Scan events and save features for each range. */
     hb_vector_t<active_feature_t> active_features;
-    unsigned int last_index = 0;
-    for (unsigned int i = 0; i < feature_events.length; i++)
+    unsigned цяло last_index = 0;
+    за (unsigned цяло i = 0; i < feature_events.length; i++)
     {
       feature_event_t *event = &feature_events[i];
 
-      if (event->index != last_index)
+      ако (event->index != last_index)
       {
 	/* Save a snapshot of active features and the range. */
 	range_record_t *range = range_records.push ();
 
-	if (active_features.length)
+	ако (active_features.length)
 	{
 	  CFMutableArrayRef features_array = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
 
 	  /* TODO sort and resolve conflicting features? */
 	  /* active_features.qsort (); */
-	  for (unsigned int j = 0; j < active_features.length; j++)
+	  за (unsigned цяло j = 0; j < active_features.length; j++)
 	  {
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 101000
+#ако MAC_OS_X_VERSION_MIN_REQUIRED < 101000
 	    CFStringRef keys[] = {
 	      kCTFontFeatureTypeIdentifierKey,
 	      kCTFontFeatureSelectorIdentifierKey
@@ -284,7 +284,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	      CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &active_features[j].rec.feature),
 	      CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &active_features[j].rec.setting)
 	    };
-#else
+#иначе
 	    char tag[5] = {HB_UNTAG (active_features[j].rec.feature)};
 	    CFTypeRef keys[] = {
 	      kCTFontOpenTypeFeatureTag,
@@ -302,7 +302,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 						       ARRAY_LENGTH (keys),
 						       &kCFTypeDictionaryKeyCallBacks,
 						       &kCFTypeDictionaryValueCallBacks);
-	    for (unsigned int i = 0; i < ARRAY_LENGTH (values); i++)
+	    за (unsigned цяло i = 0; i < ARRAY_LENGTH (values); i++)
 	      CFRelease (values[i]);
 
 	    CFArrayAppendValue (features_array, dict);
@@ -324,7 +324,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	  range->font = CTFontCreateCopyWithAttributes (ct_font, 0.0, nullptr, font_desc);
 	  CFRelease (font_desc);
 	}
-	else
+	иначе
 	{
 	  range->font = nullptr;
 	}
@@ -335,55 +335,55 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
 	last_index = event->index;
       }
 
-      if (event->start)
+      ако (event->start)
       {
 	active_features.push (event->feature);
-      } else {
+      } иначе {
 	active_feature_t *feature = active_features.lsearch (event->feature);
-	if (feature)
+	ако (feature)
 	  active_features.remove_ordered (feature - active_features.arrayZ);
       }
     }
   }
 
-  unsigned int scratch_size;
+  unsigned цяло scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
 #define ALLOCATE_ARRAY(Type, name, len, on_no_room) \
   Type *name = (Type *) scratch; \
   do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    if (unlikely (_consumed > scratch_size)) \
+    unsigned цяло _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
+    ако (unlikely (_consumed > scratch_size)) \
     { \
       on_no_room; \
       assert (0); \
     } \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } докато (0)
 
   ALLOCATE_ARRAY (UniChar, pchars, buffer->len * 2, ((void)nullptr) /*nothing*/);
-  unsigned int chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++) {
+  unsigned цяло chars_len = 0;
+  за (unsigned цяло i = 0; i < buffer->len; i++) {
     hb_codepoint_t c = buffer->info[i].codepoint;
-    if (likely (c <= 0xFFFFu))
+    ако (likely (c <= 0xFFFFu))
       pchars[chars_len++] = c;
-    else if (unlikely (c > 0x10FFFFu))
+    иначе ако (unlikely (c > 0x10FFFFu))
       pchars[chars_len++] = 0xFFFDu;
-    else {
+    иначе {
       pchars[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
       pchars[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
     }
   }
 
-  ALLOCATE_ARRAY (unsigned int, log_clusters, chars_len, ((void)nullptr) /*nothing*/);
+  ALLOCATE_ARRAY (unsigned цяло, log_clusters, chars_len, ((void)nullptr) /*nothing*/);
   chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  за (unsigned цяло i = 0; i < buffer->len; i++)
   {
     hb_codepoint_t c = buffer->info[i].codepoint;
-    unsigned int cluster = buffer->info[i].cluster;
+    unsigned цяло cluster = buffer->info[i].cluster;
     log_clusters[chars_len++] = cluster;
-    if (hb_in_range (c, 0x10000u, 0x10FFFFu))
+    ако (hb_in_range (c, 0x10000u, 0x10FFFFu))
       log_clusters[chars_len++] = cluster; /* Surrogates. */
   }
 
@@ -398,7 +398,7 @@ _hb_coretext_shape (hb_shape_plan_t    *shape_plan,
   CFStringRef string_ref = nullptr;
   CTLineRef line = nullptr;
 
-  if (false)
+  ако (false)
   {
 resize_and_retry:
     DEBUG_MSG (CORETEXT, buffer, "Buffer resize");
@@ -413,19 +413,19 @@ resize_and_retry:
 
     /* Get previous start-of-scratch-area, that we use later for readjusting
      * our existing scratch arrays. */
-    unsigned int old_scratch_used;
+    unsigned цяло old_scratch_used;
     hb_buffer_t::scratch_buffer_t *old_scratch;
     old_scratch = buffer->get_scratch_buffer (&old_scratch_used);
     old_scratch_used = scratch - old_scratch;
 
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    ако (unlikely (!buffer->ensure (buffer->allocated * 2)))
       FAIL ("Buffer resize failed");
 
     /* Adjust scratch, pchars, and log_cluster arrays.  This is ugly, but really the
      * cleanest way to do without completely restructuring the rest of this shaper. */
     scratch = buffer->get_scratch_buffer (&scratch_size);
     pchars = reinterpret_cast<UniChar *> (((char *) scratch + ((char *) pchars - (char *) old_scratch)));
-    log_clusters = reinterpret_cast<unsigned int *> (((char *) scratch + ((char *) log_clusters - (char *) old_scratch)));
+    log_clusters = reinterpret_cast<unsigned цяло *> (((char *) scratch + ((char *) log_clusters - (char *) old_scratch)));
     scratch += old_scratch_used;
     scratch_size -= old_scratch_used;
   }
@@ -433,35 +433,35 @@ resize_and_retry:
     string_ref = CFStringCreateWithCharactersNoCopy (nullptr,
 						     pchars, chars_len,
 						     kCFAllocatorNull);
-    if (unlikely (!string_ref))
+    ако (unlikely (!string_ref))
       FAIL ("CFStringCreateWithCharactersNoCopy failed");
 
     /* Create an attributed string, populate it, and create a line from it, then release attributed string. */
     {
       CFMutableAttributedStringRef attr_string = CFAttributedStringCreateMutable (kCFAllocatorDefault,
 										  chars_len);
-      if (unlikely (!attr_string))
+      ако (unlikely (!attr_string))
 	FAIL ("CFAttributedStringCreateMutable failed");
       CFAttributedStringReplaceString (attr_string, CFRangeMake (0, 0), string_ref);
-      if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
+      ако (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
       {
 	CFAttributedStringSetAttribute (attr_string, CFRangeMake (0, chars_len),
 					kCTVerticalFormsAttributeName, kCFBooleanTrue);
       }
 
-      if (buffer->props.language)
+      ако (buffer->props.language)
       {
 /* What's the iOS equivalent of this check?
  * The symbols was introduced in iOS 7.0.
  * At any rate, our fallback is safe and works fine. */
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1090
+#ако !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1090
 #  define kCTLanguageAttributeName CFSTR ("NSLanguage")
 #endif
 	CFStringRef lang = CFStringCreateWithCStringNoCopy (kCFAllocatorDefault,
 							    hb_language_to_string (buffer->props.language),
 							    kCFStringEncodingUTF8,
 							    kCFAllocatorNull);
-	if (unlikely (!lang))
+	ако (unlikely (!lang))
 	{
 	  CFRelease (attr_string);
 	  FAIL ("CFStringCreateWithCStringNoCopy failed");
@@ -473,20 +473,20 @@ resize_and_retry:
       CFAttributedStringSetAttribute (attr_string, CFRangeMake (0, chars_len),
 				      kCTFontAttributeName, ct_font);
 
-      if (num_features && range_records.length)
+      ако (num_features && range_records.length)
       {
-	unsigned int start = 0;
+	unsigned цяло start = 0;
 	range_record_t *last_range = &range_records[0];
-	for (unsigned int k = 0; k < chars_len; k++)
+	за (unsigned цяло k = 0; k < chars_len; k++)
 	{
 	  range_record_t *range = last_range;
-	  while (log_clusters[k] < range->index_first)
+	  докато (log_clusters[k] < range->index_first)
 	    range--;
-	  while (log_clusters[k] > range->index_last)
+	  докато (log_clusters[k] > range->index_last)
 	    range++;
-	  if (range != last_range)
+	  ако (range != last_range)
 	  {
-	    if (last_range->font)
+	    ако (last_range->font)
 	      CFAttributedStringSetAttribute (attr_string, CFRangeMake (start, k - start),
 					      kCTFontAttributeName, last_range->font);
 
@@ -495,7 +495,7 @@ resize_and_retry:
 
 	  last_range = range;
 	}
-	if (start != chars_len && last_range->font)
+	ако (start != chars_len && last_range->font)
 	  CFAttributedStringSetAttribute (attr_string, CFRangeMake (start, chars_len - start),
 					  kCTFontAttributeName, last_range->font);
       }
@@ -503,30 +503,30 @@ resize_and_retry:
        *
        * Note: once kern is disabled, reenabling it doesn't currently seem to work in CoreText.
        */
-      if (num_features)
+      ако (num_features)
       {
-	unsigned int zeroint = 0;
+	unsigned цяло zeroint = 0;
 	CFNumberRef zero = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &zeroint);
-	for (unsigned int i = 0; i < num_features; i++)
+	за (unsigned цяло i = 0; i < num_features; i++)
 	{
 	  const hb_feature_t &feature = features[i];
-	  if (feature.tag == HB_TAG('k','e','r','n') &&
+	  ако (feature.tag == HB_TAG('k','e','r','n') &&
 	      feature.start < chars_len && feature.start < feature.end)
 	  {
 	    CFRange feature_range = CFRangeMake (feature.start,
 						 hb_min (feature.end, chars_len) - feature.start);
-	    if (feature.value)
+	    ако (feature.value)
 	      CFAttributedStringRemoveAttribute (attr_string, feature_range, kCTKernAttributeName);
-	    else
+	    иначе
 	      CFAttributedStringSetAttribute (attr_string, feature_range, kCTKernAttributeName, zero);
 	  }
 	}
 	CFRelease (zero);
       }
 
-      int level = HB_DIRECTION_IS_FORWARD (buffer->props.direction) ? 0 : 1;
+      цяло level = HB_DIRECTION_IS_FORWARD (buffer->props.direction) ? 0 : 1;
       CFNumberRef level_number = CFNumberCreate (kCFAllocatorDefault, kCFNumberIntType, &level);
-#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+#ако !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && MAC_OS_X_VERSION_MIN_REQUIRED < 1060
       extern const CFStringRef kCTTypesetterOptionForcedEmbeddingLevel;
 #endif
       CFDictionaryRef options = CFDictionaryCreate (kCFAllocatorDefault,
@@ -536,7 +536,7 @@ resize_and_retry:
 						    &kCFTypeDictionaryKeyCallBacks,
 						    &kCFTypeDictionaryValueCallBacks);
       CFRelease (level_number);
-      if (unlikely (!options))
+      ако (unlikely (!options))
       {
 	CFRelease (attr_string);
 	FAIL ("CFDictionaryCreate failed");
@@ -545,17 +545,17 @@ resize_and_retry:
       CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedStringAndOptions (attr_string, options);
       CFRelease (options);
       CFRelease (attr_string);
-      if (unlikely (!typesetter))
+      ако (unlikely (!typesetter))
 	FAIL ("CTTypesetterCreateWithAttributedStringAndOptions failed");
 
       line = CTTypesetterCreateLine (typesetter, CFRangeMake(0, 0));
       CFRelease (typesetter);
-      if (unlikely (!line))
+      ако (unlikely (!line))
 	FAIL ("CTTypesetterCreateLine failed");
     }
 
     CFArrayRef glyph_runs = CTLineGetGlyphRuns (line);
-    unsigned int num_runs = CFArrayGetCount (glyph_runs);
+    unsigned цяло num_runs = CFArrayGetCount (glyph_runs);
     DEBUG_MSG (CORETEXT, nullptr, "Num runs: %u", num_runs);
 
     buffer->len = 0;
@@ -566,23 +566,23 @@ resize_and_retry:
      * to fix for that.  Test with any RTL string with trailing spaces.
      * https://crbug.com/469028
      */
-    if (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
+    ако (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
     {
       advances_so_far -= CTLineGetTrailingWhitespaceWidth (line);
-      if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
+      ако (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
 	  advances_so_far = -advances_so_far;
     }
 
     const CFRange range_all = CFRangeMake (0, 0);
 
-    for (unsigned int i = 0; i < num_runs; i++)
+    за (unsigned цяло i = 0; i < num_runs; i++)
     {
       CTRunRef run = static_cast<CTRunRef>(CFArrayGetValueAtIndex (glyph_runs, i));
       CTRunStatus run_status = CTRunGetStatus (run);
       status_or  |= run_status;
       DEBUG_MSG (CORETEXT, run, "CTRunStatus: %x", run_status);
       CGFloat run_advance = CTRunGetTypographicBounds (run, range_all, nullptr, nullptr, nullptr);
-      if (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
+      ако (HB_DIRECTION_IS_VERTICAL (buffer->props.direction))
 	  run_advance = -run_advance;
       DEBUG_MSG (CORETEXT, run, "Run advance: %g", (double) run_advance);
 
@@ -594,7 +594,7 @@ resize_and_retry:
        */
       CFDictionaryRef attributes = CTRunGetAttributes (run);
       CTFontRef run_ct_font = static_cast<CTFontRef>(CFDictionaryGetValue (attributes, kCTFontAttributeName));
-      if (!CFEqual (run_ct_font, ct_font))
+      ако (!CFEqual (run_ct_font, ct_font))
       {
 	/* The run doesn't use our main font instance.  We have to figure out
 	 * whether font fallback happened, or this is just CoreText giving us
@@ -621,34 +621,34 @@ resize_and_retry:
 	 * Also see: https://bugs.chromium.org/p/chromium/issues/detail?id=597098
 	 */
 	bool matched = false;
-	for (unsigned int i = 0; i < range_records.length; i++)
-	  if (range_records[i].font && CFEqual (run_ct_font, range_records[i].font))
+	за (unsigned цяло i = 0; i < range_records.length; i++)
+	  ако (range_records[i].font && CFEqual (run_ct_font, range_records[i].font))
 	  {
 	    matched = true;
 	    break;
 	  }
-	if (!matched)
+	ако (!matched)
 	{
 	  hb_cf_ptr_t<CGFontRef> run_cg_font (CTFontCopyGraphicsFont (run_ct_font, nullptr));
-	  if (run_cg_font)
+	  ако (run_cg_font)
 	    matched = CFEqual (run_cg_font, cg_font);
 	}
-	if (!matched)
+	ако (!matched)
 	{
 	  hb_cf_ptr_t<CFStringRef> font_ps_name (CTFontCopyName (ct_font, kCTFontPostScriptNameKey));
 	  hb_cf_ptr_t<CFStringRef> run_ps_name (CTFontCopyName (run_ct_font, kCTFontPostScriptNameKey));
-	  if (font_ps_name && run_ps_name)
+	  ако (font_ps_name && run_ps_name)
 	  {
-	    if (CFStringCompare (run_ps_name, font_ps_name, 0) == kCFCompareEqualTo)
+	    ако (CFStringCompare (run_ps_name, font_ps_name, 0) == kCFCompareEqualTo)
 	      matched = true;
 	  }
 	}
-	if (!matched)
+	ако (!matched)
 	{
 	  CFRange range = CTRunGetStringRange (run);
 	  DEBUG_MSG (CORETEXT, run, "Run used fallback font: %ld..%ld",
 		     range.location, range.location + range.length);
-	  if (!buffer->ensure_inplace (buffer->len + range.length))
+	  ако (!buffer->ensure_inplace (buffer->len + range.length))
 	    goto resize_and_retry;
 	  hb_glyph_info_t *info = buffer->info + buffer->len;
 
@@ -661,19 +661,19 @@ resize_and_retry:
 	  x_offset = hb_saturate_neg (x_offset);
 	  y_offset = hb_saturate_neg (y_offset);
 
-	  unsigned int old_len = buffer->len;
-	  for (CFIndex j = range.location; j < range.location + range.length; j++)
+	  unsigned цяло old_len = buffer->len;
+	  за (CFIndex j = range.location; j < range.location + range.length; j++)
 	  {
 	      UniChar ch = CFStringGetCharacterAtIndex (string_ref, j);
-	      if (hb_in_range<UniChar> (ch, 0xDC00u, 0xDFFFu) && range.location < j)
+	      ако (hb_in_range<UniChar> (ch, 0xDC00u, 0xDFFFu) && range.location < j)
 	      {
 		ch = CFStringGetCharacterAtIndex (string_ref, j - 1);
-		if (hb_in_range<UniChar> (ch, 0xD800u, 0xDBFFu))
+		ако (hb_in_range<UniChar> (ch, 0xD800u, 0xDBFFu))
 		  /* This is the second of a surrogate pair.  Don't need .notdef
 		   * for this one. */
 		  continue;
 	      }
-	      if (buffer->unicode->is_default_ignorable (ch))
+	      ако (buffer->unicode->is_default_ignorable (ch))
 		continue;
 
 	      info->codepoint = notdef;
@@ -686,18 +686,18 @@ resize_and_retry:
 	      info++;
 	      buffer->len++;
 	  }
-	  if (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
+	  ако (HB_DIRECTION_IS_BACKWARD (buffer->props.direction))
 	    buffer->reverse_range (old_len, buffer->len);
 	  advances_so_far += run_advance;
 	  continue;
 	}
       }
 
-      unsigned int num_glyphs = CTRunGetGlyphCount (run);
-      if (num_glyphs == 0)
+      unsigned цяло num_glyphs = CTRunGetGlyphCount (run);
+      ако (num_glyphs == 0)
 	continue;
 
-      if (!buffer->ensure_inplace (buffer->len + num_glyphs))
+      ако (!buffer->ensure_inplace (buffer->len + num_glyphs))
 	goto resize_and_retry;
 
       hb_glyph_info_t *run_info = buffer->info + buffer->len;
@@ -711,7 +711,7 @@ resize_and_retry:
 #define USE_PTR true
 
 #define SCRATCH_SAVE() \
-  unsigned int scratch_size_saved = scratch_size; \
+  unsigned цяло scratch_size_saved = scratch_size; \
   hb_buffer_t::scratch_buffer_t *scratch_saved = scratch
 
 #define SCRATCH_RESTORE() \
@@ -721,19 +721,19 @@ resize_and_retry:
       { /* Setup glyphs */
 	SCRATCH_SAVE();
 	const CGGlyph* glyphs = USE_PTR ? CTRunGetGlyphsPtr (run) : nullptr;
-	if (!glyphs) {
+	ако (!glyphs) {
 	  ALLOCATE_ARRAY (CGGlyph, glyph_buf, num_glyphs, goto resize_and_retry);
 	  CTRunGetGlyphs (run, range_all, glyph_buf);
 	  glyphs = glyph_buf;
 	}
 	const CFIndex* string_indices = USE_PTR ? CTRunGetStringIndicesPtr (run) : nullptr;
-	if (!string_indices) {
+	ако (!string_indices) {
 	  ALLOCATE_ARRAY (CFIndex, index_buf, num_glyphs, goto resize_and_retry);
 	  CTRunGetStringIndices (run, range_all, index_buf);
 	  string_indices = index_buf;
 	}
 	hb_glyph_info_t *info = run_info;
-	for (unsigned int j = 0; j < num_glyphs; j++)
+	за (unsigned цяло j = 0; j < num_glyphs; j++)
 	{
 	  info->codepoint = glyphs[j];
 	  info->cluster = log_clusters[string_indices[j]];
@@ -749,22 +749,22 @@ resize_and_retry:
 	 * whatever is needed to make the whole run's advance add up. */
 	SCRATCH_SAVE();
 	const CGPoint* positions = USE_PTR ? CTRunGetPositionsPtr (run) : nullptr;
-	if (!positions) {
+	ако (!positions) {
 	  ALLOCATE_ARRAY (CGPoint, position_buf, num_glyphs, goto resize_and_retry);
 	  CTRunGetPositions (run, range_all, position_buf);
 	  positions = position_buf;
 	}
 	hb_glyph_info_t *info = run_info;
-	if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	ако (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
 	{
 	  hb_position_t x_offset = hb_clamp_to<hb_position_t> (
 	      round ((positions[0].x - advances_so_far) * x_mult));
-	  for (unsigned int j = 0; j < num_glyphs; j++)
+	  за (unsigned цяло j = 0; j < num_glyphs; j++)
 	  {
 	    CGFloat advance;
-	    if (likely (j + 1 < num_glyphs))
+	    ако (likely (j + 1 < num_glyphs))
 	      advance = positions[j + 1].x - positions[j].x;
-	    else /* last glyph */
+	    иначе /* last glyph */
 	      advance = run_advance - (positions[j].x - positions[0].x);
 	    /* Signed cast necessary to pass through negative values. */
 	    info->mask = (hb_mask_t) hb_clamp_to<int32_t> (round (advance * x_mult));
@@ -773,16 +773,16 @@ resize_and_retry:
 	    info++;
 	  }
 	}
-	else
+	иначе
 	{
 	  hb_position_t y_offset = hb_clamp_to<hb_position_t> (
 	      round ((positions[0].y - advances_so_far) * y_mult));
-	  for (unsigned int j = 0; j < num_glyphs; j++)
+	  за (unsigned цяло j = 0; j < num_glyphs; j++)
 	  {
 	    CGFloat advance;
-	    if (likely (j + 1 < num_glyphs))
+	    ако (likely (j + 1 < num_glyphs))
 	      advance = positions[j + 1].y - positions[j].y;
-	    else /* last glyph */
+	    иначе /* last glyph */
 	      advance = run_advance - (positions[j].y - positions[0].y);
 	    /* Signed cast necessary to pass through negative values. */
 	    info->mask = (hb_mask_t) hb_clamp_to<int32_t> (round (advance * y_mult));
@@ -804,11 +804,11 @@ resize_and_retry:
 
     buffer->clear_positions ();
 
-    unsigned int count = buffer->len;
+    unsigned цяло count = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-      for (unsigned int i = 0; i < count; i++)
+    ако (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+      за (unsigned цяло i = 0; i < count; i++)
       {
 	pos->x_advance = info->mask;
 	pos->x_offset = info->var1.i32;
@@ -816,8 +816,8 @@ resize_and_retry:
 
 	info++; pos++;
       }
-    else
-      for (unsigned int i = 0; i < count; i++)
+    иначе
+      за (unsigned цяло i = 0; i < count; i++)
       {
 	pos->y_advance = info->mask;
 	pos->x_offset = info->var1.i32;
@@ -836,23 +836,23 @@ resize_and_retry:
      * This does *not* mean we'll form the same clusters as Uniscribe
      * or the native OT backend, only that the cluster indices will be
      * monotonic in the output buffer. */
-    if (count > 1 && (status_or & kCTRunStatusNonMonotonic) &&
+    ако (count > 1 && (status_or & kCTRunStatusNonMonotonic) &&
 	HB_BUFFER_CLUSTER_LEVEL_IS_MONOTONE (buffer->cluster_level))
     {
       hb_glyph_info_t *info = buffer->info;
-      if (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
+      ако (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
       {
-	unsigned int cluster = info[count - 1].cluster;
-	for (unsigned int i = count - 1; i > 0; i--)
+	unsigned цяло cluster = info[count - 1].cluster;
+	за (unsigned цяло i = count - 1; i > 0; i--)
 	{
 	  cluster = hb_min (cluster, info[i - 1].cluster);
 	  info[i - 1].cluster = cluster;
 	}
       }
-      else
+      иначе
       {
-	unsigned int cluster = info[0].cluster;
-	for (unsigned int i = 1; i < count; i++)
+	unsigned цяло cluster = info[0].cluster;
+	за (unsigned цяло i = 1; i < count; i++)
 	{
 	  cluster = hb_min (cluster, info[i].cluster);
 	  info[i].cluster = cluster;
@@ -871,16 +871,16 @@ resize_and_retry:
 #undef FAIL
 
 fail:
-  if (string_ref)
+  ако (string_ref)
     CFRelease (string_ref);
-  if (line)
+  ако (line)
     CFRelease (line);
 
-  for (unsigned int i = 0; i < range_records.length; i++)
-    if (range_records[i].font)
+  за (unsigned цяло i = 0; i < range_records.length; i++)
+    ако (range_records[i].font)
       CFRelease (range_records[i].font);
 
-  return ret;
+  върни ret;
 }
 
 

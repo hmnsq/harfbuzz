@@ -46,13 +46,13 @@
 static inline float
 _hb_angle_to_ratio (float a)
 {
-  return tanf (a * -HB_PI / 180.f);
+  върни tanf (a * -HB_PI / 180.f);
 }
 
 static inline float
 _hb_ratio_to_angle (float r)
 {
-  return atanf (r) * -180.f / HB_PI;
+  върни atanf (r) * -180.f / HB_PI;
 }
 
 /**
@@ -71,37 +71,37 @@ _hb_ratio_to_angle (float r)
 float
 hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
 {
-  if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+  ако (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
+    върни _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
 #ifndef HB_NO_VAR
   hb_ot_var_axis_info_t axis;
-  if (hb_ot_var_find_axis_info (face, style_tag, &axis))
+  ако (hb_ot_var_find_axis_info (face, style_tag, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    ако (axis.axis_index < font->num_coords) върни font->design_coords[axis.axis_index];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    върни axis.default_value;
   }
 #endif
 
-  if (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
-    return font->ptem;
+  ако (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
+    върни font->ptem;
 
   /* STAT */
   float value;
-  if (face->table.STAT->get_value (style_tag, &value))
-    return value;
+  ако (face->table.STAT->get_value (style_tag, &value))
+    върни value;
 
   switch ((unsigned) style_tag)
   {
   case HB_STYLE_TAG_ITALIC:
-    return face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
+    върни face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
   case HB_STYLE_TAG_OPTICAL_SIZE:
   {
-    unsigned int lower, design, upper;
-    return face->table.OS2->v5 ().get_optical_size (&lower, &upper)
+    unsigned цяло lower, design, upper;
+    върни face->table.OS2->v5 ().get_optical_size (&lower, &upper)
 	   ? (float) (lower + upper) / 2.f
 	   : hb_ot_layout_get_size_params (face, &design, nullptr, nullptr, nullptr, nullptr)
 	   ? design / 10.f
@@ -111,23 +111,23 @@ hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
   {
     float angle = face->table.post->table->italicAngle.to_float ();
 
-    if (font->slant)
+    ако (font->slant)
       angle = _hb_ratio_to_angle (font->slant + _hb_angle_to_ratio (angle));
 
-    return angle;
+    върни angle;
   }
   case HB_STYLE_TAG_WIDTH:
-    return face->table.OS2->has_data ()
+    върни face->table.OS2->has_data ()
 	   ? face->table.OS2->get_width ()
 	   : (face->table.head->is_condensed () ? 75 :
 	      face->table.head->is_expanded () ? 125 :
 	      100);
   case HB_STYLE_TAG_WEIGHT:
-    return face->table.OS2->has_data ()
+    върни face->table.OS2->has_data ()
 	   ? face->table.OS2->usWeightClass
 	   : (face->table.head->is_bold () ? 700 : 400);
   default:
-    return 0;
+    върни 0;
   }
 }
 

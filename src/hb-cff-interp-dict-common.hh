@@ -54,8 +54,8 @@ struct top_dict_values_t : dict_values_t<OPSTR>
   }
   void fini () { dict_values_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  цяло  charStringsOffset;
+  цяло  FDArrayOffset;
 };
 
 struct dict_opset_t : opset_t<number_t>
@@ -80,49 +80,49 @@ struct dict_opset_t : opset_t<number_t>
   /* Turns CFF's BCD format into strtod understandable string */
   static double parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    ако (unlikely (str_ref.in_error ())) върни .0;
 
     enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
     char buf[32] = {0};
     unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    за (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
     {
       unsigned nibble;
-      if (!(i & 1))
+      ако (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	ако (unlikely (!str_ref.avail ())) break;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      иначе
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      ако (unlikely (nibble == RESERVED)) break;
+      иначе ако (nibble == END)
       {
 	const char *p = buf;
 	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
+	ако (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
 	  break;
-	return pv;
+	върни pv;
       }
-      else
+      иначе
       {
 	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	ако (nibble == EXP_NEG)
 	{
 	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
+	  ако (unlikely (count == ARRAY_LENGTH (buf))) break;
 	  buf[count] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    върни .0;
   }
 
   static bool is_hint_op (op_code_t op)
@@ -143,9 +143,9 @@ struct dict_opset_t : opset_t<number_t>
       case OpCode_ForceBold:
       case OpCode_LanguageGroup:
       case OpCode_ExpansionFactor:
-	return true;
+	върни true;
       default:
-	return false;
+	върни false;
     }
   }
 };
@@ -182,14 +182,14 @@ struct dict_interpreter_t : interpreter_t<ENV>
   bool interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    докато (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      ако (unlikely (SUPER::env.in_error ()))
+	върни false;
     }
 
-    return true;
+    върни true;
   }
 
   private:

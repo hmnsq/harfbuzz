@@ -60,23 +60,23 @@ static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
   static const char ** create ()
   {
     const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    ако (unlikely (!shaper_list))
+      върни nullptr;
 
     const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    unsigned цяло i;
+    за (i = 0; i < HB_SHAPERS_COUNT; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    върни shaper_list;
   }
   static void destroy (const char **l)
   { hb_free (l); }
   static const char * const * get_null ()
-  { return nil_shaper_list; }
+  { върни nil_shaper_list; }
 } static_shaper_list;
 
 static inline
@@ -101,7 +101,7 @@ void free_static_shaper_list ()
 const char **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  върни static_shaper_list.get_unconst ();
 }
 
 
@@ -127,16 +127,16 @@ hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
 	       const hb_feature_t *features,
-	       unsigned int        num_features,
+	       unsigned цяло        num_features,
 	       const char * const *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  ако (unlikely (!buffer->len))
+    върни true;
 
   buffer->enter ();
 
   hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  ако (buffer->flags & HB_BUFFER_FLAG_VERIFY)
   {
     text_buffer = hb_buffer_create ();
     hb_buffer_append (text_buffer, buffer, 0, -1);
@@ -151,9 +151,9 @@ hb_shape_full (hb_font_t          *font,
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  ако (text_buffer)
   {
-    if (res && buffer->successful
+    ако (res && buffer->successful
 	    && text_buffer->successful
 	    && !buffer->verify (text_buffer,
 				font,
@@ -166,7 +166,7 @@ hb_shape_full (hb_font_t          *font,
 
   buffer->leave ();
 
-  return res;
+  върни res;
 }
 
 /**
@@ -189,7 +189,7 @@ void
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
 	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  unsigned цяло         num_features)
 {
   hb_shape_full (font, buffer, features, num_features, nullptr);
 }
@@ -204,13 +204,13 @@ buffer_advance (hb_buffer_t *buffer)
   float a = 0;
   auto *pos = buffer->pos;
   unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  ако (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    за (unsigned i = 0; i < count; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  иначе
+    за (unsigned i = 0; i < count; i++)
       a += pos[i].y_advance;
-  return a;
+  върни a;
 }
 
 static void
@@ -259,7 +259,7 @@ hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
 		  const hb_feature_t *features,
-		  unsigned int        num_features,
+		  unsigned цяло        num_features,
 		  const char * const *shaper_list,
 		  float               min_target_advance,
 		  float               max_target_advance,
@@ -270,11 +270,11 @@ hb_shape_justify (hb_font_t          *font,
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  ако (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
     *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
+    върни hb_shape_full (font, buffer,
 			  features, num_features,
 			  shaper_list);
   }
@@ -291,62 +291,62 @@ hb_shape_justify (hb_font_t          *font,
     HB_TAG ('j','s','t','f'),
     HB_TAG ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  за (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
+    ако (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
     {
       tag = *var_tag = tags[i];
       break;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  ако (!tag)
   {
     *var_tag = HB_TAG_NONE;
     *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
+    ако (hb_shape_full (font, buffer,
 		       features, num_features,
 		       shaper_list))
     {
       *advance = buffer_advance (buffer);
-      return true;
+      върни true;
     }
-    else
-      return false;
+    иначе
+      върни false;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
   unsigned text_len = buffer->len;
   auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
+  ако (unlikely (text_len && !text_info))
+    върни false;
   HB_SCOPE_GUARD (hb_free (text_info));
   hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
   auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  ако (!*advance)
   {
     hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
+    ако (!hb_shape_full (font, buffer,
 			features, num_features,
 			shaper_list))
-      return false;
+      върни false;
     *advance = buffer_advance (buffer);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  ако (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
     *var_value = 0.0f;
-    return true;
+    върни true;
   }
 
   /* Prepare for running the solver. */
   double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  ако (*advance < min_target_advance)
   {
     /* Need to expand. */
     ya = (double) *advance;
@@ -357,21 +357,21 @@ hb_shape_justify (hb_font_t          *font,
      * starting point for the solver. */
     hb_font_set_variation (font, tag, (float) b);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
+    ако (!hb_shape_full (font, buffer,
 			features, num_features,
 			shaper_list))
-      return false;
+      върни false;
     yb = (double) buffer_advance (buffer);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    ако (yb <= (double) max_target_advance)
     {
       *var_value = (float) b;
       *advance = (float) yb;
-      return true;
+      върни true;
     }
   }
-  else
+  иначе
   {
     /* Need to shrink. */
     yb = (double) *advance;
@@ -382,18 +382,18 @@ hb_shape_justify (hb_font_t          *font,
      * starting point for the solver. */
     hb_font_set_variation (font, tag, (float) a);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
+    ако (!hb_shape_full (font, buffer,
 			features, num_features,
 			shaper_list))
-      return false;
+      върни false;
     ya = (double) buffer_advance (buffer);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    ако (ya >= (double) min_target_advance)
     {
       *var_value = (float) a;
       *advance = (float) ya;
-      return true;
+      върни true;
     }
   }
 
@@ -407,19 +407,19 @@ hb_shape_justify (hb_font_t          *font,
   {
     hb_font_set_variation (font, tag, (float) x);
     reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
+    ако (unlikely (!hb_shape_full (font, buffer,
 				  features, num_features,
 				  shaper_list)))
     {
       failed = true;
-      return (double) min_target_advance;
+      върни (double) min_target_advance;
     }
 
     double w = (double) buffer_advance (buffer);
     DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
 	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+    върни w;
   };
 
   double y = 0;
@@ -429,13 +429,13 @@ hb_shape_justify (hb_font_t          *font,
 			  (double) min_target_advance, (double) max_target_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  ако (failed)
+    върни false;
 
   *var_value = (float) itp;
   *advance = (float) y;
 
-  return true;
+  върни true;
 }
 #endif
 #endif

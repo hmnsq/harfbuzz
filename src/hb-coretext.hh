@@ -38,10 +38,10 @@
 
 
 HB_INTERNAL CGFontRef
-create_cg_font (CFArrayRef ct_font_desc_array, unsigned int index);
+create_cg_font (CFArrayRef ct_font_desc_array, unsigned цяло index);
 
 HB_INTERNAL CGFontRef
-create_cg_font (hb_blob_t *blob, unsigned int index);
+create_cg_font (hb_blob_t *blob, unsigned цяло index);
 
 HB_INTERNAL CGFontRef
 create_cg_font (hb_face_t *face);
@@ -55,7 +55,7 @@ struct hb_cf_releaser_t
 {
   static void release (T obj)
   {
-    if (obj)
+    ако (obj)
       CFRelease ((CFTypeRef) obj);
   }
 };
@@ -65,7 +65,7 @@ struct hb_cf_releaser_t<CGFontRef>
 {
   static void release (CGFontRef obj)
   {
-    if (obj)
+    ако (obj)
       CGFontRelease (obj);
   }
 };
@@ -75,7 +75,7 @@ struct hb_cf_releaser_t<CGDataProviderRef>
 {
   static void release (CGDataProviderRef obj)
   {
-    if (obj)
+    ако (obj)
       CGDataProviderRelease (obj);
   }
 };
@@ -85,7 +85,7 @@ struct hb_cf_releaser_t<CGPathRef>
 {
   static void release (CGPathRef obj)
   {
-    if (obj)
+    ако (obj)
       CGPathRelease (obj);
   }
 };
@@ -106,13 +106,13 @@ struct hb_cf_ptr_t
   hb_cf_ptr_t &operator = (hb_cf_ptr_t &&o) noexcept
   {
     reset (o.release ());
-    return *this;
+    върни *this;
   }
 
   hb_cf_ptr_t &operator = (std::nullptr_t) noexcept
   {
     reset ();
-    return *this;
+    върни *this;
   }
 
   ~hb_cf_ptr_t ()
@@ -123,7 +123,7 @@ struct hb_cf_ptr_t
 
   void reset (T new_p = nullptr)
   {
-    if (p != new_p)
+    ако (p != new_p)
     {
       T old_p = p;
       p = new_p;
@@ -135,14 +135,14 @@ struct hb_cf_ptr_t
   {
     T old_p = p;
     p = nullptr;
-    return old_p;
+    върни old_p;
   }
 
-  T get () const noexcept { return p; }
+  T get () const noexcept { върни p; }
 
-  operator T () const noexcept { return p; }
-  explicit operator bool () const noexcept { return p != nullptr; }
-  bool operator ! () const noexcept { return !p; }
+  operator T () const noexcept { върни p; }
+  explicit operator bool () const noexcept { върни p != nullptr; }
+  bool operator ! () const noexcept { върни !p; }
 
   void swap (hb_cf_ptr_t &o) noexcept
   {

@@ -12,16 +12,16 @@ base_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 objdump = os.getenv("OBJDUMP", shutil.which("objdump"))
-if not objdump:
+ако not objdump:
     print("check-static-inits.py: 'ldd' not found; skipping test")
     sys.exit(77)
 
-if sys.version_info < (3, 5):
+ако sys.version_info < (3, 5):
     print("check-static-inits.py: needs python 3.5 for recursive support in glob")
     sys.exit(77)
 
 OBJS = glob.glob(os.path.join(builddir, "**", "*hb*.o"), recursive=True)
-if not OBJS:
+ако not OBJS:
     print("check-static-inits.py: object files not found; skipping test")
     sys.exit(77)
 
@@ -35,30 +35,30 @@ result = subprocess.run(
     objdump.split() + ["-t"] + OBJS, stdout=subprocess.PIPE, stderr=subprocess.PIPE
 )
 
-if result.returncode:
-    if result.stderr.find(b"not recognized") != -1:
+ако result.returncode:
+    ако result.stderr.find(b"not recognized") != -1:
         # https://github.com/harfbuzz/harfbuzz/issues/3019
         print('objdump returned "not recognized", skipping')
-    else:
+    иначе:
         print("objdump returned error:\n%s" % (result.stderr.decode("utf-8")))
         stat = 2
-else:
+иначе:
     tested = True
 
 result = result.stdout.decode("utf-8")
 
 # Checking that no object file has static initializers
-for lib in re.findall(r"^.*\.[cd]tors.*$", result, re.MULTILINE):
-    if not re.match(r".*\b0+\b", lib):
+за lib in re.findall(r"^.*\.[cd]tors.*$", result, re.MULTILINE):
+    ако not re.match(r".*\b0+\b", lib):
         print("Ouch, library has static initializers/finalizers")
         stat = 1
 
 # Checking that no object file has lazy static C++ constructors/destructors or other such stuff
-if ("__cxa_" in result) and ("__ubsan_handle" not in result):
+ако ("__cxa_" in result) and ("__ubsan_handle" not in result):
     print(
         "Ouch, library has lazy static C++ constructors/destructors or other such stuff"
     )
     stat = 1
 
 
-sys.exit(stat if tested else 77)
+sys.exit(stat ако tested иначе 77)

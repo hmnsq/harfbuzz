@@ -46,9 +46,9 @@ struct hb_result_err_t
   E error;
 
   template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
+  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { върни error == other.error; }
   template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { върни error != other.error; }
 };
 
 template <typename X> struct _hb_is_result_tag : hb_false_type {};
@@ -58,18 +58,18 @@ template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_typ
 template <typename T>
 static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  върни hb_result_ok_t<T&&>{std::forward<T> (v)};
 }
 
 static inline constexpr hb_result_ok_t<void> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  върни hb_result_ok_t<void>{};
 }
 
 template <typename E>
 static inline constexpr hb_result_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  върни hb_result_err_t<E&&>{std::forward<E> (e)};
 }
 
 template <typename T, typename E>
@@ -85,25 +85,25 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   void destroy ()
   {
-    if (is_ok_)
+    ако (is_ok_)
       val_.~T ();
-    else
+    иначе
       err_.~E ();
   }
 
   void init(const hb_result_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
+    ако (is_ok_)
       new (std::addressof (val_)) T (o.val_);
-    else
+    иначе
       new (std::addressof (err_)) E (o.err_);
   }
 
   void init(hb_result_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
+    ако (is_ok_)
       new (std::addressof (val_)) T (std::move (o.val_));
-    else
+    иначе
       new (std::addressof (err_)) E (std::move (o.err_));
   }
 
@@ -129,41 +129,41 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   hb_result_t& operator = (const hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ако (this == &o) върни *this;
+    ако (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    иначе ако (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    иначе
     {
       destroy ();
       init (o);
     }
-    return *this;
+    върни *this;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    ако (this == &o) върни *this;
+    ако (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    иначе ако (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    иначе
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    върни *this;
   }
 
   // Construct from Ok(...) tag
@@ -219,91 +219,91 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   // Move fallible into a result if it's in_error() method returns false.
   static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+    ако (fallible.in_error()) {
+      върни Err(error_value);
     }
-    return Ok(fallible);
+    върни Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  bool is_ok () const { върни is_ok_; }
+  bool is_err () const { върни !is_ok_; }
+  explicit operator bool () const { върни is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { assert (is_ok_); върни val_; }
+  const T& value () const & { assert (is_ok_); върни val_; }
+  T value () && { assert (is_ok_); върни std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& operator * () & { върни value (); }
+  const T& operator * () const & { върни value (); }
+  T operator * () && { върни std::move (*this).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* operator -> () { върни std::addressof (value ()); }
+  const T* operator -> () const { върни std::addressof (value ()); }
 
   template <typename U>
   T value_or (U&& default_value) const &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
+    ако (is_ok_) върни val_;
+    върни std::forward<U> (default_value);
   }
 
   template <typename U>
   T value_or (U&& default_value) &&
   {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
+    ако (is_ok_) върни std::move (val_);
+    върни std::forward<U> (default_value);
   }
 
   T value_or_default () const &
   {
-    if (is_ok_) return val_;
-    return T ();
+    ако (is_ok_) върни val_;
+    върни T ();
   }
 
   T value_or_default () &&
   {
-    if (is_ok_) return std::move (val_);
-    return T ();
+    ако (is_ok_) върни std::move (val_);
+    върни T ();
   }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  const E& error () const & { assert (!is_ok_); върни err_; }
+  E& error () & { assert (!is_ok_); върни err_; }
+  E error () && { assert (!is_ok_); върни std::move (err_); }
 
   bool operator == (const hb_result_t& o) const
   {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
+    ако (is_ok_ != o.is_ok_) върни false;
+    ако (is_ok_) върни val_ == o.val_;
+    върни err_ == o.err_;
   }
 
   bool operator != (const hb_result_t& o) const
   {
-    return !(*this == o);
+    върни !(*this == o);
   }
 
   template <typename U>
   bool operator == (const hb_result_ok_t<U>& o) const
   {
-    return is_ok_ && val_ == o.value;
+    върни is_ok_ && val_ == o.value;
   }
 
   template <typename U>
   bool operator != (const hb_result_ok_t<U>& o) const
   {
-    return !(*this == o);
+    върни !(*this == o);
   }
 
   template <typename F>
   bool operator == (const hb_result_err_t<F>& e) const
   {
-    return !is_ok_ && err_ == e.error;
+    върни !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
   bool operator != (const hb_result_err_t<F>& e) const
   {
-    return !(*this == e);
+    върни !(*this == e);
   }
 
   template <typename U>
@@ -329,7 +329,7 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
   public:
   ~hb_result_t ()
   {
-    if (!is_ok_)
+    ако (!is_ok_)
       err_.~E ();
   }
 
@@ -338,55 +338,55 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
 
   hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
+    ако (!is_ok_)
       new (std::addressof (err_)) E (o.err_);
   }
 
   hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
+    ако (!is_ok_)
       new (std::addressof (err_)) E (std::move (o.err_));
   }
 
   hb_result_t& operator = (const hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ако (this == &o) върни *this;
+    ако (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    иначе ако (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
       is_ok_ = true;
     }
-    else if (is_ok_ && !o.is_ok_)
+    иначе ако (is_ok_ && !o.is_ok_)
     {
       new (std::addressof (err_)) E (o.err_);
       is_ok_ = false;
     }
-    return *this;
+    върни *this;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    ако (this == &o) върни *this;
+    ако (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    иначе ако (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
       is_ok_ = true;
     }
-    else if (is_ok_ && !o.is_ok_)
+    иначе ако (is_ok_ && !o.is_ok_)
     {
       new (std::addressof (err_)) E (std::move (o.err_));
       is_ok_ = false;
     }
-    return *this;
+    върни *this;
   }
 
   template <typename F,
@@ -413,54 +413,54 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
   // of in_error() and returns either Ok() or Err(error_value).
   template<typename V>
   static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+    ако (fallible.in_error()) {
+      върни Err(error_value);
     }
-    return Ok();
+    върни Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  bool is_ok () const { върни is_ok_; }
+  bool is_err () const { върни !is_ok_; }
+  explicit operator bool () const { върни is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  const E& error () const & { assert (!is_ok_); върни err_; }
+  E& error () & { assert (!is_ok_); върни err_; }
+  E error () && { assert (!is_ok_); върни std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  void operator * () & { върни; }
+  void operator * () const & { върни; }
+  void operator * () && { върни; }
 
   bool operator == (const hb_result_t<void, E>& o) const
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    върни is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
   bool operator != (const hb_result_t<void, E>& o) const
   {
-    return !(*this == o);
+    върни !(*this == o);
   }
 
   bool operator == (hb_result_ok_t<void>) const
   {
-    return is_ok_;
+    върни is_ok_;
   }
 
   bool operator != (hb_result_ok_t<void>) const
   {
-    return !is_ok_;
+    върни !is_ok_;
   }
 
   template <typename F>
   bool operator == (const hb_result_err_t<F>& e) const
   {
-    return !is_ok_ && err_ == e.error;
+    върни !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
   bool operator != (const hb_result_err_t<F>& e) const
   {
-    return !(*this == e);
+    върни !(*this == e);
   }
 
   template <typename U>
@@ -473,36 +473,36 @@ struct HB_NODISCARD_STRUCT hb_result_t<void, E>
 template <typename U, typename T, typename E>
 static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
 {
-  return r == o;
+  върни r == o;
 }
 template <typename U, typename T, typename E>
 static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
 {
-  return r != o;
+  върни r != o;
 }
 template <typename F, typename T, typename E>
 static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
 {
-  return r == e;
+  върни r == e;
 }
 template <typename F, typename T, typename E>
 static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
 {
-  return r != e;
+  върни r != e;
 }
 
 #ifndef TRY
 #define TRY(expr)                                                             \
   do {                                                                        \
     auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
+    ако (unlikely (!_res.is_ok())) върни Err(std::move(_res).error());        \
+  } докато (0)
 #endif
 
 #ifndef TRY_ASSIGN
 #define TRY_ASSIGN(var, ...)                                                  \
   auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+  ако (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) върни Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
 #endif
 

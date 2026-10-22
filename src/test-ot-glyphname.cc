@@ -31,10 +31,10 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+цяло
+main (цяло argc, char **argv)
 {
-  if (argc != 2) {
+  ако (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -47,35 +47,35 @@ main (int argc, char **argv)
   blob = nullptr;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  const unsigned цяло num_glyphs = hb_face_get_glyph_count (face);
+  цяло	result = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  за (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
   {
     char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    unsigned цяло buf_size = sizeof (buf);
+    ако (hb_font_get_glyph_name (font, gid, buf, buf_size))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      ако (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	ако (gid == gid_inv)
 	{
 	  printf ("%u <-> %s\n", gid, buf);
 	}
-	else
+	иначе
 	{
 	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
 	  result = 0;
 	}
       }
-      else
+      иначе
       {
 	printf ("%u -> %s -> ?\n", gid, buf);
 	result = 0;
       }
     }
-    else
+    иначе
     {
       printf ("%u -> ?\n", gid);
       result = 0;
@@ -85,5 +85,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  върни !result;
 }

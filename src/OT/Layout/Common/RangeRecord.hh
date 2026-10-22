@@ -48,33 +48,33 @@ struct RangeRecord
     return_trace (c->check_struct (this));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  цяло cmp (hb_codepoint_t g) const
+  { върни g < first ? -1 : g <= last ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
+  HB_INTERNAL static цяло cmp_range (const void *pa, const void *pb) {
     const RangeRecord *a = (const RangeRecord *) pa;
     const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+    ако (a->first < b->first) върни -1;
+    ако (a->first > b->first) върни +1;
+    ако (a->last < b->last) върни -1;
+    ако (a->last > b->last) върни +1;
+    ако (a->value < b->value) върни -1;
+    ако (a->value > b->value) върни +1;
+    върни 0;
   }
 
   unsigned get_population () const
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    ако (unlikely (last < first)) върни 0;
+    върни (last - first + 1);
   }
 
   bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  { върни glyphs.intersects (first, last); }
 
   template <typename set_t>
   bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  { върни glyphs->add_range (first, last); }
 };
 
 }
@@ -89,7 +89,7 @@ extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
 template <typename Spec, typename Value>
 struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
   static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+    върни *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
   }
 };
 

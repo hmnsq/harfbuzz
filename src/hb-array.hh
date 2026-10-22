@@ -58,8 +58,8 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   hb_array_t& operator= (const hb_array_t&) = default;
   hb_array_t& operator= (hb_array_t&&) = default;
 
-  constexpr hb_array_t (Type *array_, unsigned int length_) : arrayZ (array_), length (length_) {}
-  template <unsigned int length_>
+  constexpr hb_array_t (Type *array_, unsigned цяло length_) : arrayZ (array_), length (length_) {}
+  template <unsigned цяло length_>
   constexpr hb_array_t (Type (&array_)[length_]) : hb_array_t (array_, length_) {}
 
   template <typename U,
@@ -70,7 +70,7 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
   hb_array_t& operator = (const hb_array_t<U> &o)
-  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; return *this; }
+  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; върни *this; }
 
   /*
    * Iterator implementation.
@@ -80,25 +80,25 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   static constexpr bool has_fast_len = true;
   Type& __item__ () const
   {
-    if (unlikely (!length)) return CrapOrNull (Type);
-    return *arrayZ;
+    ако (unlikely (!length)) върни CrapOrNull (Type);
+    върни *arrayZ;
   }
   Type& __item_at__ (unsigned i) const
   {
-    if (unlikely (i >= length)) return CrapOrNull (Type);
-    return arrayZ[i];
+    ако (unlikely (i >= length)) върни CrapOrNull (Type);
+    върни arrayZ[i];
   }
   void __next__ ()
   {
-    if (unlikely (!length))
-      return;
+    ако (unlikely (!length))
+      върни;
     length--;
     backwards_length++;
     arrayZ++;
   }
   void __forward__ (unsigned n)
   {
-    if (unlikely (n > length))
+    ако (unlikely (n > length))
       n = length;
     length -= n;
     backwards_length += n;
@@ -106,21 +106,21 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   }
   void __prev__ ()
   {
-    if (unlikely (!backwards_length))
-      return;
+    ако (unlikely (!backwards_length))
+      върни;
     length++;
     backwards_length--;
     arrayZ--;
   }
   void __rewind__ (unsigned n)
   {
-    if (unlikely (n > backwards_length))
+    ако (unlikely (n > backwards_length))
       n = backwards_length;
     length += n;
     backwards_length -= n;
     arrayZ -= n;
   }
-  unsigned __len__ () const { return length; }
+  unsigned __len__ () const { върни length; }
   /* Ouch. The operator== compares the contents of the array.  For range-based for loops,
    * it's best if we can just compare arrayZ, though comparing contents is still fast,
    * but also would require that Type has operator==.  As such, we optimize this operator
@@ -129,18 +129,18 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    * The above comment is outdated now because we implemented separate begin/end to
    * objects that were using hb_array_t for range-based loop before. */
   bool operator != (const hb_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  { върни this->arrayZ != o.arrayZ || this->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () const { върни arrayZ; }
+  Type *end () const { върни arrayZ + length; }
 
 
   /* Extra operators.
    */
-  Type * operator & () const { return arrayZ; }
-  operator hb_array_t<const Type> () { return hb_array_t<const Type> (arrayZ, length); }
-  template <typename T> operator T * () const { return arrayZ; }
+  Type * operator & () const { върни arrayZ; }
+  operator hb_array_t<const Type> () { върни hb_array_t<const Type> (arrayZ, length); }
+  template <typename T> operator T * () const { върни arrayZ; }
 
   HB_INTERNAL bool operator == (const hb_array_t &o) const;
 
@@ -149,12 +149,12 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
     // FNV-1a hash function
     // https://github.com/harfbuzz/harfbuzz/pull/4228
     uint32_t current = /*cbf29ce4*/0x84222325;
-    for (auto &v : *this)
+    за (auto &v : *this)
     {
       current = current ^ hb_hash (v);
       current = current * 16777619;
     }
-    return current;
+    върни current;
   }
 
   /*
@@ -162,45 +162,45 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    */
 
   /* Note: our compare is NOT lexicographic; it also does NOT call Type::cmp. */
-  int cmp (const hb_array_t &a) const
+  цяло cmp (const hb_array_t &a) const
   {
-    if (length != a.length)
-      return (int) a.length - (int) length;
-    return hb_memcmp (a.arrayZ, arrayZ, get_size ());
+    ако (length != a.length)
+      върни (цяло) a.length - (цяло) length;
+    върни hb_memcmp (a.arrayZ, arrayZ, get_size ());
   }
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL static цяло cmp (const void *pa, const void *pb)
   {
     hb_array_t *a = (hb_array_t *) pa;
     hb_array_t *b = (hb_array_t *) pb;
-    return b->cmp (*a);
+    върни b->cmp (*a);
   }
 
   template <typename T>
   Type *lsearch (const T &x, Type *not_found = nullptr)
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    върни lfind (x, &i) ? &this->arrayZ[i] : not_found;
   }
   template <typename T>
   const Type *lsearch (const T &x, const Type *not_found = nullptr) const
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    върни lfind (x, &i) ? &this->arrayZ[i] : not_found;
   }
   template <typename T>
   bool lfind (const T &x, unsigned *pos = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned цяло to_store = (unsigned цяло) -1) const
   {
-    for (unsigned i = 0; i < length; ++i)
-      if (hb_equal (x, this->arrayZ[i]))
+    за (unsigned i = 0; i < length; ++i)
+      ако (hb_equal (x, this->arrayZ[i]))
       {
-	if (pos)
+	ако (pos)
 	  *pos = i;
-	return true;
+	върни true;
       }
 
-    if (pos)
+    ако (pos)
     {
       switch (not_found)
       {
@@ -216,14 +216,14 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 	  break;
       }
     }
-    return false;
+    върни false;
   }
 
-  hb_sorted_array_t<Type> qsort (int (*cmp)(const void*, const void*))
+  hb_sorted_array_t<Type> qsort (цяло (*cmp)(const void*, const void*))
   {
-    if (likely (length))
+    ако (likely (length))
       hb_qsort (arrayZ, length, this->get_item_size (), cmp);
-    return hb_sorted_array_t<Type> (*this);
+    върни hb_sorted_array_t<Type> (*this);
   }
 
   /* Comparator follows the C qsort convention: returns
@@ -231,9 +231,9 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   template <typename Compar>
   hb_sorted_array_t<Type> qsort (Compar compar)
   {
-    if (likely (length))
+    ако (likely (length))
       hb_qsort_inline (arrayZ, length, compar);
-    return hb_sorted_array_t<Type> (*this);
+    върни hb_sorted_array_t<Type> (*this);
   }
 
   private:
@@ -241,24 +241,24 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 	    hb_enable_if (std::is_move_assignable<T>::value)>
   hb_sorted_array_t<Type> _qsort (hb_priority<1>)
   {
-    return qsort ([] (const Type &a, const Type &b) { return Type::cmp (&a, &b); });
+    върни qsort ([] (const Type &a, const Type &b) { върни Type::cmp (&a, &b); });
   }
   hb_sorted_array_t<Type> _qsort (hb_priority<0>)
   {
-    return qsort ((int(*)(const void*, const void*)) Type::cmp);
+    върни qsort ((цяло(*)(const void*, const void*)) Type::cmp);
   }
   public:
 
   hb_sorted_array_t<Type> qsort ()
   {
-    return _qsort (hb_prioritize);
+    върни _qsort (hb_prioritize);
   }
 
   /*
    * Other methods.
    */
 
-  size_t get_size () const { return length * this->get_item_size (); }
+  size_t get_size () const { върни length * this->get_item_size (); }
 
   /*
    * Reverse the order of items in this array in the range [start, end).
@@ -268,54 +268,54 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
     start = hb_min (start, length);
     end = hb_min (end, length);
 
-    if (end < start + 2)
-      return;
+    ако (end < start + 2)
+      върни;
 
     unsigned stop = start + (end - start) / 2;
-    for (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
+    за (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
       hb_swap (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (unsigned цяло start_offset = 0, unsigned цяло *seg_count = nullptr /* IN/OUT */) const
   {
-    if (!start_offset && !seg_count)
-      return *this;
+    ако (!start_offset && !seg_count)
+      върни *this;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
+    unsigned цяло count = length;
+    ако (unlikely (start_offset > count))
       count = 0;
-    else
+    иначе
       count -= start_offset;
-    if (seg_count)
+    ако (seg_count)
       count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+    върни hb_array_t (arrayZ + start_offset, count);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (unsigned цяло start_offset, unsigned цяло seg_count) const
+  { върни sub_array (start_offset, &seg_count); }
 
-  hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_array_t truncate (unsigned length) const { върни sub_array (0, length); }
 
   template <typename T,
 	    unsigned P = sizeof (Type),
 	    hb_enable_if (P == 1)>
   const T *as () const
-  { return length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
+  { върни length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
 
   template <typename T,
 	    unsigned P = sizeof (Type),
 	    hb_enable_if (P == 1)>
-  bool check_range (const T *p, unsigned int size = T::static_size) const
+  bool check_range (const T *p, unsigned цяло size = T::static_size) const
   {
-    return arrayZ <= ((const char *) p)
+    върни arrayZ <= ((const char *) p)
 	&& ((const char *) p) <= arrayZ + length
-	&& (unsigned int) (arrayZ + length - (const char *) p) >= size;
+	&& (unsigned цяло) (arrayZ + length - (const char *) p) >= size;
   }
 
   template <unsigned P = sizeof (Type),
 	    hb_enable_if (P == 1)>
   bool check_end (const void *p) const
   {
-    return (uintptr_t) (((const char *) p) - arrayZ) <= length;
+    върни (uintptr_t) (((const char *) p) - arrayZ) <= length;
   }
 
   /* Only call if you allocated the underlying array using hb_malloc() or similar. */
@@ -329,8 +329,8 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   {
     TRACE_SERIALIZE (this);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    for (unsigned i = 0; i < length; i++)
+    ако (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
+    за (unsigned i = 0; i < length; i++)
       out[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
     return_trace (hb_array_t (out, length));
   }
@@ -342,14 +342,14 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   {
     TRACE_SERIALIZE (this);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
+    ако (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
     hb_memcpy (out, arrayZ, get_size ());
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_sanitize_context_t>
   bool sanitize (hb_sanitize_context_t *c) const
-  { return c->check_array (arrayZ, length); }
+  { върни c->check_array (arrayZ, length); }
 
   /*
    * Members
@@ -357,18 +357,18 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 
   public:
   Type *arrayZ = nullptr;
-  unsigned int length = 0;
-  unsigned int backwards_length = 0;
+  unsigned цяло length = 0;
+  unsigned цяло backwards_length = 0;
 };
 template <typename T> inline hb_array_t<T>
 hb_array ()
-{ return hb_array_t<T> (); }
+{ върни hb_array_t<T> (); }
 template <typename T> inline hb_array_t<T>
-hb_array (T *array, unsigned int length)
-{ return hb_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_array_t<T>
+hb_array (T *array, unsigned цяло length)
+{ върни hb_array_t<T> (array, length); }
+template <typename T, unsigned цяло length_> inline hb_array_t<T>
 hb_array (T (&array_)[length_])
-{ return hb_array_t<T> (array_); }
+{ върни hb_array_t<T> (array_); }
 
 template <typename Type>
 struct hb_sorted_array_t :
@@ -387,8 +387,8 @@ struct hb_sorted_array_t :
   hb_sorted_array_t& operator= (const hb_sorted_array_t&) = default;
   hb_sorted_array_t& operator= (hb_sorted_array_t&&) = default;
 
-  constexpr hb_sorted_array_t (Type *array_, unsigned int length_) : hb_array_t<Type> (array_, length_) {}
-  template <unsigned int length_>
+  constexpr hb_sorted_array_t (Type *array_, unsigned цяло length_) : hb_array_t<Type> (array_, length_) {}
+  template <unsigned цяло length_>
   constexpr hb_sorted_array_t (Type (&array_)[length_]) : hb_array_t<Type> (array_) {}
 
   template <typename U,
@@ -399,53 +399,53 @@ struct hb_sorted_array_t :
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
   hb_sorted_array_t& operator = (const hb_array_t<U> &o)
-  { hb_array_t<Type> (*this) = o; return *this; }
+  { hb_array_t<Type> (*this) = o; върни *this; }
 
   /* Iterator implementation. */
 
   /* See comment in hb_array_of::operator != */
   bool operator != (const hb_sorted_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  { върни this->arrayZ != o.arrayZ || this->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return this->arrayZ; }
-  Type *end () const { return this->arrayZ + this->length; }
+  Type *begin () const { върни this->arrayZ; }
+  Type *end () const { върни this->arrayZ + this->length; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (unsigned цяло start_offset, unsigned цяло *seg_count /* IN/OUT */) const
+  { върни hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
+  hb_sorted_array_t sub_array (unsigned цяло start_offset, unsigned цяло seg_count) const
+  { върни sub_array (start_offset, &seg_count); }
 
-  hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_sorted_array_t truncate (unsigned length) const { върни sub_array (0, length); }
 
   template <typename T>
   Type *bsearch (const T &x, Type *not_found = nullptr)
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned цяло i;
+    върни bfind (x, &i) ? &this->arrayZ[i] : not_found;
   }
   template <typename T>
   const Type *bsearch (const T &x, const Type *not_found = nullptr) const
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned цяло i;
+    върни bfind (x, &i) ? &this->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  bool bfind (const T &x, unsigned цяло *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned цяло to_store = (unsigned цяло) -1) const
   {
     unsigned pos;
 
-    if (bsearch_impl (x, &pos))
+    ако (bsearch_impl (x, &pos))
     {
-      if (i)
+      ако (i)
 	*i = pos;
-      return true;
+      върни true;
     }
 
-    if (i)
+    ако (i)
     {
       switch (not_found)
       {
@@ -461,12 +461,12 @@ struct hb_sorted_array_t :
 	  break;
       }
     }
-    return false;
+    върни false;
   }
   template <typename T, typename ...Ts>
   bool bsearch_impl (const T &x, unsigned *pos, Ts... ds) const
   {
-    return hb_bsearch_impl (pos,
+    върни hb_bsearch_impl (pos,
 			    x,
 			    this->arrayZ,
 			    this->length,
@@ -476,32 +476,32 @@ struct hb_sorted_array_t :
   }
 };
 template <typename T> inline hb_sorted_array_t<T>
-hb_sorted_array (T *array, unsigned int length)
-{ return hb_sorted_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_sorted_array_t<T>
+hb_sorted_array (T *array, unsigned цяло length)
+{ върни hb_sorted_array_t<T> (array, length); }
+template <typename T, unsigned цяло length_> inline hb_sorted_array_t<T>
 hb_sorted_array (T (&array_)[length_])
-{ return hb_sorted_array_t<T> (array_); }
+{ върни hb_sorted_array_t<T> (array_); }
 
 template <typename T>
 inline bool hb_array_t<T>::operator == (const hb_array_t<T> &o) const
 {
-  if (o.length != this->length) return false;
-  for (unsigned int i = 0; i < this->length; i++) {
-    if (this->arrayZ[i] != o.arrayZ[i]) return false;
+  ако (o.length != this->length) върни false;
+  за (unsigned цяло i = 0; i < this->length; i++) {
+    ако (this->arrayZ[i] != o.arrayZ[i]) върни false;
   }
-  return true;
+  върни true;
 }
 template <>
 inline bool hb_array_t<const char>::operator == (const hb_array_t<const char> &o) const
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  ако (o.length != this->length) върни false;
+  върни 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 template <>
 inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const unsigned char> &o) const
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  ако (o.length != this->length) върни false;
+  върни 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 
 
@@ -512,14 +512,14 @@ template <>
 inline uint32_t hb_array_t<const char>::hash () const
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  върни fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 
 template <>
 inline uint32_t hb_array_t<const unsigned char>::hash () const
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  върни fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 #endif
 

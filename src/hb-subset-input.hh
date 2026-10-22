@@ -50,11 +50,11 @@ struct hb_ot_name_record_ids_t
       name_id (name_id_) {}
 
   bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  { върни !(*this == o); }
 
   inline bool operator == (const hb_ot_name_record_ids_t& o) const
   {
-    return platform_id == o.platform_id &&
+    върни platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
@@ -67,7 +67,7 @@ struct hb_ot_name_record_ids_t
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    върни current;
   }
 
   unsigned platform_id;
@@ -90,7 +90,7 @@ struct hb_subset_input_t
     sets.~sets_t ();
 
 #ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+    за (auto _ : name_table_overrides.values ())
       _.fini ();
 #endif
   }
@@ -127,23 +127,23 @@ struct hb_subset_input_t
 
   inline unsigned num_sets () const
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    върни sizeof (set_ptrs) / sizeof (hb_set_t*);
   }
 
   inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    върни hb_array (set_ptrs);
   }
 
   bool in_error () const
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    за (unsigned i = 0; i < num_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      ако (unlikely (set_ptrs[i]->in_error ()))
+        върни true;
     }
 
-    return axes_location.in_error ()
+    върни axes_location.in_error ()
 #ifdef HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
 #endif
