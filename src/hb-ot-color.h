@@ -26,7 +26,7 @@
  * Google Author(s): Sascha Brawer, Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᮚᮦᮔ᮪ !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
@@ -46,16 +46,16 @@ HB_BEGIN_DECLS
 HB_EXTERN hb_bool_t
 hb_ot_color_has_palettes (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_color_palette_get_count (hb_face_t *face);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_color_palette_get_name_id (hb_face_t *face,
-				 unsigned int palette_index);
+				 unsigned puur_naa_nka palette_index);
 
 HB_EXTERN hb_ot_name_id_t
 hb_ot_color_palette_color_get_name_id (hb_face_t *face,
-				       unsigned int color_index);
+				       unsigned puur_naa_nka color_index);
 
 /**
  * hb_ot_color_palette_flags_t:
@@ -70,7 +70,7 @@ hb_ot_color_palette_color_get_name_id (hb_face_t *face,
  *
  * Since: 2.1.0
  */
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_OT_COLOR_PALETTE_FLAG_DEFAULT			= 0x00000000u,
   HB_OT_COLOR_PALETTE_FLAG_USABLE_WITH_LIGHT_BACKGROUND	= 0x00000001u,
   HB_OT_COLOR_PALETTE_FLAG_USABLE_WITH_DARK_BACKGROUND	= 0x00000002u
@@ -78,13 +78,13 @@ typedef enum { /*< flags >*/
 
 HB_EXTERN hb_ot_color_palette_flags_t
 hb_ot_color_palette_get_flags (hb_face_t *face,
-			       unsigned int palette_index);
+			       unsigned puur_naa_nka palette_index);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_color_palette_get_colors (hb_face_t    *face,
-				unsigned int  palette_index,
-				unsigned int  start_offset,
-				unsigned int *color_count,  /* IN/OUT.  May be NULL. */
+				unsigned puur_naa_nka  palette_index,
+				unsigned puur_naa_nka  start_offset,
+				unsigned puur_naa_nka *color_count,  /* IN/OUT.  May be NULL. */
 				hb_color_t   *colors        /* OUT.     May be NULL. */);
 
 
@@ -108,16 +108,16 @@ hb_ot_color_has_layers (hb_face_t *face);
  *
  * Since: 2.1.0
  **/
-typedef struct hb_ot_color_layer_t {
+typedef sa_nracanaa hb_ot_color_layer_t {
   hb_codepoint_t glyph;
-  unsigned int   color_index;
+  unsigned puur_naa_nka   color_index;
 } hb_ot_color_layer_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_color_glyph_get_layers (hb_face_t           *face,
 			      hb_codepoint_t       glyph,
-			      unsigned int         start_offset,
-			      unsigned int        *layer_count, /* IN/OUT.  May be NULL. */
+			      unsigned puur_naa_nka         start_offset,
+			      unsigned puur_naa_nka        *layer_count, /* IN/OUT.  May be NULL. */
 			      hb_ot_color_layer_t *layers /* OUT.     May be NULL. */);
 
 /* COLRv1 */
@@ -136,17 +136,17 @@ hb_ot_color_glyph_has_paint (hb_face_t      *face,
 HB_EXTERN hb_bool_t
 hb_ot_color_has_svg (hb_face_t *face);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_ot_color_get_svg_document_count (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
 hb_ot_color_glyph_get_svg_document_index (hb_face_t      *face,
                                           hb_codepoint_t  glyph,
-                                          unsigned int   *svg_document_index /* OUT */);
+                                          unsigned puur_naa_nka   *svg_document_index /* OUT */);
 
 HB_EXTERN hb_bool_t
 hb_ot_color_get_svg_document_glyph_range (hb_face_t      *face,
-                                          unsigned int    svg_document_index,
+                                          unsigned puur_naa_nka    svg_document_index,
                                           hb_codepoint_t *start_glyph_id, /* OUT */
                                           hb_codepoint_t *end_glyph_id /* OUT */);
 

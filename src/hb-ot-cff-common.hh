@@ -43,33 +43,33 @@ using whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
 template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+static anta_hstha const Type& StructAtOffsetOrNull (const void *P, puur_naa_nka offset, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  ᮚᮦᮔ᮪ (!offset) ᮝᮜᮤ Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  const var_na *p = (const var_na *) P + offset;
+  ᮚᮦᮔ᮪ (!sc.check_point (p)) ᮝᮜᮤ Null (Type);
 
   const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  ᮚᮦᮔ᮪ (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) ᮝᮜᮤ Null (Type);
 
-  return obj;
+  ᮝᮜᮤ obj;
 }
 
 
-struct code_pair_t
+sa_nracanaa code_pair_t
 {
   unsigned code;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
+using str_buff_t = hb_vector_t<unsigned var_na>;
 using str_buff_vec_t = hb_vector_t<str_buff_t>;
 using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+sa_nracanaa Dict : UnsizedByteStr
 {
   template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
   bool serialize (hb_serialize_context_t *c,
@@ -78,8 +78,8 @@ struct Dict : UnsizedByteStr
 		  Ts&&... ds)
   {
     TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+    for (unsigned puur_naa_nka i = 0; i < dictval.get_count (); i++)
+      ᮚᮦᮔ᮪ (unlikely (!opszr.serialize (c, dictval[i], ds...)))
 	return_trace (false);
 
     return_trace (true);
@@ -88,14 +88,14 @@ struct Dict : UnsizedByteStr
   template <typename T, typename V>
   static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    ᮚᮦᮔ᮪ (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      ᮝᮜᮤ false;
 
     TRACE_SERIALIZE (this);
     /* serialize the opcode */
     HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    ᮚᮦᮔ᮪ (unlikely (!p)) return_trace (false);
+    ᮚᮦᮔ᮪ (Is_OpCode_ESC (op))
     {
       *p = OpCode_escape;
       op = Unmake_OpCode_ESC (op);
@@ -107,43 +107,43 @@ struct Dict : UnsizedByteStr
 
   template <typename V>
   static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  { ᮝᮜᮤ serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
 
   template <typename V>
   static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  { ᮝᮜᮤ serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
 
-  template <typename T, int int_op>
+  template <typename T, puur_naa_nka int_op>
   static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
   {
     T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
+    ᮚᮦᮔ᮪ (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) ᮝᮜᮤ false;
     c->add_link (ofs, link, whence);
-    return true;
+    ᮝᮜᮤ true;
   }
 
   static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  { ᮝᮜᮤ serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
 
   static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  { ᮝᮜᮤ serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+sa_nracanaa TopDict : Dict {};
+sa_nracanaa FontDict : Dict {};
+sa_nracanaa PrivateDict : Dict {};
 
-struct table_info_t
+sa_nracanaa table_info_t
 {
   void init () { offset = size = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  unsigned puur_naa_nka    offset;
+  unsigned puur_naa_nka    size;
   objidx_t	  link;
 };
 
 template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+sa_nracanaa FDArray : CFFIndex<COUNT>
 {
   template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
   bool serialize (hb_serialize_context_t *c,
@@ -154,24 +154,24 @@ struct FDArray : CFFIndex<COUNT>
 
     /* serialize INDEX data */
     hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    ᮚᮦᮔ᮪ (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    var_na *data_base = c->head;
     + it
     | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
     {
       FontDict *dict = c->start_embed<FontDict> ();
 		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+		ᮝᮜᮤ c->head - (const var_na*)dict;
 	      })
     | hb_sink (sizes)
     ;
     unsigned data_size = c->head - data_base;
     c->pop_pack (false);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (sizes.in_error ())) return_trace (false);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
@@ -182,15 +182,15 @@ struct FDArray : CFFIndex<COUNT>
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+sa_nracanaa FDSelect0 {
+  bool sanitize (hb_sanitize_context_t *c, unsigned puur_naa_nka fdcount,
+                 unsigned puur_naa_nka glyph_count = HB_CODEPOINT_INVALID) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
+    ᮚᮦᮔ᮪ (unlikely (!(c->check_struct (this))))
       return_trace (false);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
+    ᮚᮦᮔ᮪ (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
                                      c->get_num_glyphs () : glyph_count)))
       return_trace (false);
 
@@ -198,13 +198,13 @@ struct FDSelect0 {
   }
 
   unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  { ᮝᮜᮤ fds[glyph]; }
 
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  { ᮝᮜᮤ {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_size (unsigned puur_naa_nka num_glyphs) const
+  { ᮝᮜᮤ hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
@@ -212,9 +212,9 @@ struct FDSelect0 {
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+sa_nracanaa FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned puur_naa_nka fdcount) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -229,27 +229,27 @@ struct FDSelect3_4_Range
 };
 
 template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+sa_nracanaa FDSelect3_4
 {
   size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  { ᮝᮜᮤ hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned puur_naa_nka fdcount,
+                 unsigned puur_naa_nka min_glyphs = HB_CODEPOINT_INVALID) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    ᮚᮦᮔ᮪ (unlikely (!(c->check_struct (this) &&
 		    ranges.sanitize (c, nullptr, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
 		    ranges[0].first == 0)))
       return_trace (false);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
+    for (unsigned puur_naa_nka i = 1; i < nRanges (); i++)
+      ᮚᮦᮔ᮪ (unlikely (ranges[i - 1].first >= ranges[i].first))
 	return_trace (false);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    ᮚᮦᮔ᮪ (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
                    sentinel() > ranges[nRanges () - 1].first &&
                    sentinel() <= c->get_num_glyphs () &&
@@ -260,34 +260,34 @@ struct FDSelect3_4
     return_trace (true);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  static puur_naa_nka _cmp_range (const void *_key, const void *_item)
   {
     hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
     FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    ᮚᮦᮔ᮪ (glyph < range[0].first) ᮝᮜᮤ -1;
+    ᮚᮦᮔ᮪ (glyph < range[1].first) ᮝᮜᮤ 0;
+    ᮝᮜᮤ +1;
   }
 
   unsigned get_fd (hb_codepoint_t glyph) const
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, parimaa_na (ranges[0]), _cmp_range);
+    ᮝᮜᮤ range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
+    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, parimaa_na (ranges[0]), _cmp_range);
     unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
     hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    ᮝᮜᮤ {fd, end};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { ᮝᮜᮤ ranges.len; }
+  GID_TYPE         nRanges () const { ᮝᮜᮤ ranges.len; }
+  GID_TYPE       &sentinel ()       { ᮝᮜᮤ StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  const GID_TYPE &sentinel () const { ᮝᮜᮤ StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
   ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
@@ -298,69 +298,69 @@ struct FDSelect3_4
 typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
 typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+sa_nracanaa FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned puur_naa_nka num_glyphs)
   {
     TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
+    unsigned puur_naa_nka size = src.get_size (num_glyphs);
     FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!dest)) return_trace (false);
     hb_memcpy (dest, &src, size);
     return_trace (true);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_size (unsigned puur_naa_nka num_glyphs) const
   {
     switch (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    pak_sa 0: hb_barrier (); ᮝᮜᮤ hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
+    pak_sa 3: hb_barrier (); ᮝᮜᮤ hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
+    default:ᮝᮜᮤ 0;
     }
   }
 
   unsigned get_fd (hb_codepoint_t glyph) const
   {
-    if (this == &Null (FDSelect)) return 0;
+    ᮚᮦᮔ᮪ (this == &Null (FDSelect)) ᮝᮜᮤ 0;
 
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    pak_sa 0: hb_barrier (); ᮝᮜᮤ u.format0.get_fd (glyph);
+    pak_sa 3: hb_barrier (); ᮝᮜᮤ u.format3.get_fd (glyph);
+    default:ᮝᮜᮤ 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
   hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    ᮚᮦᮔ᮪ (this == &Null (FDSelect)) ᮝᮜᮤ {0, 1};
 
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    pak_sa 0: hb_barrier (); ᮝᮜᮤ u.format0.get_fd_range (glyph);
+    pak_sa 3: hb_barrier (); ᮝᮜᮤ u.format3.get_fd_range (glyph);
+    default:ᮝᮜᮤ {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  bool sanitize (hb_sanitize_context_t *c, unsigned puur_naa_nka fdcount) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ᮚᮦᮔ᮪ (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
     switch (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    pak_sa 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    pak_sa 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
     default:return_trace (false);
     }
   }
 
   HBUINT8	format;
-  union {
+  sa_ngha {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
@@ -369,7 +369,7 @@ struct FDSelect
 };
 
 template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+sa_nracanaa Subrs : CFFIndex<COUNT>
 {
   typedef COUNT count_type;
   typedef CFFIndex<COUNT> SUPER;

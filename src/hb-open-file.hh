@@ -46,20 +46,20 @@ namespace OT {
  * Organization of an OpenType Font
  */
 
-struct OpenTypeFontFile;
-struct OpenTypeOffsetTable;
-struct TTCHeader;
+sa_nracanaa OpenTypeFontFile;
+sa_nracanaa OpenTypeOffsetTable;
+sa_nracanaa TTCHeader;
 
 
-typedef struct TableRecord
+typedef sa_nracanaa TableRecord
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  puur_naa_nka cmp (Tag t) const { ᮝᮜᮤ -t.cmp (tag); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL static puur_naa_nka cmp (const void *pa, const void *pb)
   {
     const TableRecord *a = (const TableRecord *) pa;
     const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    ᮝᮜᮤ b->cmp (a->tag);
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -77,43 +77,43 @@ typedef struct TableRecord
   DEFINE_SIZE_STATIC (16);
 } OpenTypeTable;
 
-typedef struct OpenTypeOffsetTable
+typedef sa_nracanaa OpenTypeOffsetTable
 {
-  friend struct OpenTypeFontFile;
+  friend sa_nracanaa OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
+  unsigned puur_naa_nka get_table_count () const { ᮝᮜᮤ tables.len; }
+  const TableRecord& get_table (unsigned puur_naa_nka i) const
+  { ᮝᮜᮤ tables[i]; }
+  unsigned puur_naa_nka get_table_tags (unsigned puur_naa_nka  start_offset,
+			       unsigned puur_naa_nka *table_count, /* IN/OUT */
 			       hb_tag_t     *table_tags /* OUT */) const
   {
-    if (table_count && table_tags)
+    ᮚᮦᮔ᮪ (table_count && table_tags)
     {
       + tables.as_array ().sub_array (start_offset, table_count)
       | hb_map (&TableRecord::tag)
       | hb_sink (hb_array (table_tags, *table_count))
       ;
     }
-    return tables.len;
+    ᮝᮜᮤ tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  bool find_table_index (hb_tag_t tag, unsigned puur_naa_nka *table_index) const
   {
     Tag t;
     t = tag;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    ᮚᮦᮔ᮪ (tables.len < 16)
+      ᮝᮜᮤ tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    ᮜᮤᮚ
+      ᮝᮜᮤ tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
   const TableRecord& get_table_by_tag (hb_tag_t tag) const
   {
-    unsigned int table_index;
+    unsigned puur_naa_nka table_index;
     find_table_index (tag, &table_index);
-    return get_table (table_index);
+    ᮝᮜᮤ get_table (table_index);
   }
 
   public:
@@ -126,15 +126,15 @@ typedef struct OpenTypeOffsetTable
   {
     TRACE_SERIALIZE (this);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!c->extend_min (this))) return_trace (false);
     /* Write sfntVersion (bytes 0..3). */
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
     unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!tables.serialize (c, num_items))) return_trace (false);
 
-    const char *dir_end = (const char *) c->head;
+    const var_na *dir_end = (const var_na *) c->head;
     HBUINT32 *checksum_adjustment = nullptr;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
@@ -145,26 +145,26 @@ typedef struct OpenTypeOffsetTable
       unsigned len = blob->length;
 
       /* Allocate room for the table and copy it. */
-      char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      var_na *start = (var_na *) c->allocate_size<void> (len, false);
+      ᮚᮦᮔ᮪ (unlikely (!start)) ᮝᮜᮤ false;
 
       TableRecord &rec = tables.arrayZ[i];
       rec.tag = entry.first;
       rec.length = len;
       rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
-				      (unsigned) ((char *) start - (char *) this),
+      ᮚᮦᮔ᮪ (unlikely (!c->check_assign (rec.offset,
+				      (unsigned) ((var_na *) start - (var_na *) this),
 				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
         return_trace (false);
 
-      if (likely (len))
+      ᮚᮦᮔ᮪ (likely (len))
 	hb_memcpy (start, blob->data, len);
 
       /* 4-byte alignment. */
       c->align (4);
-      const char *end = (const char *) c->head;
+      const var_na *end = (const var_na *) c->head;
 
-      if (entry.first == HB_OT_TAG_head &&
+      ᮚᮦᮔ᮪ (entry.first == HB_OT_TAG_head &&
 	  (unsigned) (end - start) >= head::static_size)
       {
 	head *h = (head *) start;
@@ -178,14 +178,14 @@ typedef struct OpenTypeOffsetTable
 
     tables.qsort ();
 
-    if (checksum_adjustment)
+    ᮚᮦᮔ᮪ (checksum_adjustment)
     {
       CheckSum checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
-      checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      checksum.set_for_data (this, dir_end - (const var_na *) this);
+      for (unsigned puur_naa_nka i = 0; i < num_items; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
 	checksum = checksum + rec.checkSum;
@@ -203,7 +203,7 @@ typedef struct OpenTypeOffsetTable
     return_trace (c->check_struct (this) && tables.sanitize (c));
   }
 
-  protected:
+  rak_sita:
   Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
   BinSearchArrayOf<TableRecord>
 		tables;
@@ -216,26 +216,26 @@ typedef struct OpenTypeOffsetTable
  * TrueType Collections
  */
 
-struct TTCHeaderVersion1
+sa_nracanaa TTCHeaderVersion1
 {
-  friend struct TTCHeader;
+  friend sa_nracanaa TTCHeader;
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  unsigned puur_naa_nka get_face_count () const { ᮝᮜᮤ get_directory_list ().len; }
+  const OpenTypeFontFace& get_face (unsigned puur_naa_nka i) const
+  { ᮝᮜᮤ this+get_directory_list ()[i]; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    ᮚᮦᮔ᮪ (version.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
+      ᮚᮦᮔ᮪ (unlikely (!table.sanitize_shallow (c)))
 	return_trace (false);
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
+      ᮚᮦᮔ᮪ (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
 	return_trace (false);
       const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
 								   table.get_size () + extra_size);
@@ -249,16 +249,16 @@ struct TTCHeaderVersion1
   const DirectoryList& get_directory_list () const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    ᮚᮦᮔ᮪ (version.minor >= 1)
     {
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      ᮝᮜᮤ StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
     }
 #endif
-    return table;
+    ᮝᮜᮤ table;
   }
 
-  protected:
+  rak_sita:
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header. */
   DirectoryList
@@ -268,44 +268,44 @@ struct TTCHeaderVersion1
   DEFINE_SIZE_ARRAY (12, table);
 };
 
-struct TTCHeader
+sa_nracanaa TTCHeader
 {
-  friend struct OpenTypeFontFile;
+  friend sa_nracanaa OpenTypeFontFile;
 
   private:
 
-  unsigned int get_face_count () const
+  unsigned puur_naa_nka get_face_count () const
   {
     switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    pak_sa 2: /* version 2 is compatible with version 1 */
+    pak_sa 1: hb_barrier (); ᮝᮜᮤ u.version1.get_face_count ();
+    default:ᮝᮜᮤ 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  const OpenTypeFontFace& get_face (unsigned puur_naa_nka i) const
   {
     switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    pak_sa 2: /* version 2 is compatible with version 1 */
+    pak_sa 1: hb_barrier (); ᮝᮜᮤ u.version1.get_face (i);
+    default:ᮝᮜᮤ Null (OpenTypeFontFace);
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!u.header.version.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    pak_sa 2: /* version 2 is compatible with version 1 */
+    pak_sa 1: hb_barrier (); return_trace (u.version1.sanitize (c));
     default:return_trace (true);
     }
   }
 
-  protected:
-  union {
-  struct {
+  rak_sita:
+  sa_ngha {
+  sa_nracanaa {
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header (1.0 or 2.0),
 				 * 0x00010000u or 0x00020000u */
@@ -320,10 +320,10 @@ struct TTCHeader
  * http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/MoreToolbox/MoreToolbox-99.html
  */
 
-struct ResourceRecord
+sa_nracanaa ResourceRecord
 {
   const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  { ᮝᮜᮤ * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *data_base) const
@@ -335,7 +335,7 @@ struct ResourceRecord
 		  get_face (data_base).sanitize (c));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	id;		/* Resource ID. */
   HBINT16	nameOffset;	/* Offset from beginning of resource name list
 				 * to resource name, -1 means there is none. */
@@ -350,16 +350,16 @@ struct ResourceRecord
 
 #define HB_TAG_sfnt HB_TAG ('s','f','n','t')
 
-struct ResourceTypeRecord
+sa_nracanaa ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  unsigned puur_naa_nka get_resource_count () const
+  { ᮝᮜᮤ tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  bool is_sfnt () const { ᮝᮜᮤ tag == HB_TAG_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
+  const ResourceRecord& get_resource_record (unsigned puur_naa_nka i,
 					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  { ᮝᮜᮤ (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *type_base,
@@ -373,7 +373,7 @@ struct ResourceTypeRecord
 				       data_base));
   }
 
-  protected:
+  rak_sita:
   Tag		tag;		/* Resource type. */
   HBUINT16	resCountM1;	/* Number of resources minus 1. */
   NNOffset16To<UnsizedArrayOf<ResourceRecord>>
@@ -383,33 +383,33 @@ struct ResourceTypeRecord
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ResourceMap
+sa_nracanaa ResourceMap
 {
-  unsigned int get_face_count () const
+  unsigned puur_naa_nka get_face_count () const
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned puur_naa_nka count = get_type_count ();
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
     {
       const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      ᮚᮦᮔ᮪ (type.is_sfnt ())
+	ᮝᮜᮤ type.get_resource_count ();
     }
-    return 0;
+    ᮝᮜᮤ 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
+  const OpenTypeFontFace& get_face (unsigned puur_naa_nka idx,
 				    const void *data_base) const
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned puur_naa_nka count = get_type_count ();
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
     {
       const ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      ᮚᮦᮔ᮪ (type.is_sfnt () && idx < type.get_resource_count ())
+	ᮝᮜᮤ type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
     }
-    return Null (OpenTypeFontFace);
+    ᮝᮜᮤ Null (OpenTypeFontFace);
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
@@ -423,12 +423,12 @@ struct ResourceMap
   }
 
   private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  unsigned puur_naa_nka get_type_count () const { ᮝᮜᮤ (this+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  const ResourceTypeRecord& get_type_record (unsigned puur_naa_nka i) const
+  { ᮝᮜᮤ (this+typeList)[i]; }
 
-  protected:
+  rak_sita:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
   HBUINT32	reserved1;	/* Reserved for handle to next resource map */
   HBUINT16	resreved2;	/* Reserved for file reference number */
@@ -442,18 +442,18 @@ struct ResourceMap
   DEFINE_SIZE_STATIC (28);
 };
 
-struct ResourceForkHeader
+sa_nracanaa ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  unsigned puur_naa_nka get_face_count () const
+  { ᮝᮜᮤ (this+map).get_face_count (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  const OpenTypeFontFace& get_face (unsigned puur_naa_nka idx,
+				    unsigned puur_naa_nka *base_offset = nullptr) const
   {
     const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
-      *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    ᮚᮦᮔ᮪ (base_offset)
+      *base_offset = (const var_na *) &face - (const var_na *) this;
+    ᮝᮜᮤ face;
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
@@ -465,7 +465,7 @@ struct ResourceForkHeader
 		  map.sanitize (c, this, &(this+data)));
   }
 
-  protected:
+  rak_sita:
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
 		data;		/* Offset from beginning of resource fork
 				 * to resource data */
@@ -482,9 +482,9 @@ struct ResourceForkHeader
  * OpenType Font File
  */
 
-struct OpenTypeFontFile
+sa_nracanaa OpenTypeFontFile
 {
-  enum {
+  ga_nanaa {
     CFFTag		= HB_TAG ('O','T','T','O'), /* OpenType with Postscript outlines */
     TrueTypeTag		= HB_TAG ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
     TTCTag		= HB_TAG ('t','t','c','f'), /* TrueType Collection */
@@ -493,35 +493,35 @@ struct OpenTypeFontFile
     Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_tag_t get_tag () const { ᮝᮜᮤ u.tag.v; }
 
-  unsigned int get_face_count () const
+  unsigned puur_naa_nka get_face_count () const
   {
     switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    pak_sa CFFTag:	/* All the non-collection tags */
+    pak_sa TrueTag:
+    pak_sa Typ1Tag:
+    pak_sa TrueTypeTag:	ᮝᮜᮤ 1;
+    pak_sa TTCTag:	hb_barrier (); ᮝᮜᮤ u.ttcHeader.get_face_count ();
+    pak_sa DFontTag:	hb_barrier (); ᮝᮜᮤ u.rfHeader.get_face_count ();
+    default:		ᮝᮜᮤ 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  const OpenTypeFontFace& get_face (unsigned puur_naa_nka i, unsigned puur_naa_nka *base_offset = nullptr) const
   {
-    if (base_offset)
+    ᮚᮦᮔ᮪ (base_offset)
       *base_offset = 0;
     switch (u.tag.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
      * Apple dfont container is a container of SFNT's.  So each SFNT is a
      * non-TTC, but the index is more than zero. */
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    pak_sa CFFTag:	/* All the non-collection tags */
+    pak_sa TrueTag:
+    pak_sa Typ1Tag:
+    pak_sa TrueTypeTag:	hb_barrier (); ᮝᮜᮤ u.fontFace;
+    pak_sa TTCTag:	hb_barrier (); ᮝᮜᮤ u.ttcHeader.get_face (i);
+    pak_sa DFontTag:	hb_barrier (); ᮝᮜᮤ u.rfHeader.get_face (i, base_offset);
+    default:		ᮝᮜᮤ Null (OpenTypeFontFace);
     }
   }
 
@@ -533,29 +533,29 @@ struct OpenTypeFontFile
   {
     TRACE_SERIALIZE (this);
     assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!c->extend_min (this))) return_trace (false);
     return_trace (u.fontFace.serialize (c, sfnt_tag, items));
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
     hb_barrier ();
     switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
-    case TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
-    case DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
+    pak_sa CFFTag:	/* All the non-collection tags */
+    pak_sa TrueTag:
+    pak_sa Typ1Tag:
+    pak_sa TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
+    pak_sa TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
+    pak_sa DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
     default:		return_trace (true);
     }
   }
 
-  protected:
-  union {
-  struct { Tag v; }	tag;		/* 4-byte identifier. */
+  rak_sita:
+  sa_ngha {
+  sa_nracanaa { Tag v; }	tag;		/* 4-byte identifier. */
   OpenTypeFontFace	fontFace;
   TTCHeader		ttcHeader;
   ResourceForkHeader	rfHeader;

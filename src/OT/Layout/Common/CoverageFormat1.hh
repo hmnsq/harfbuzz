@@ -34,12 +34,12 @@ namespace OT {
 namespace Layout {
 namespace Common {
 
-#define NOT_COVERED             ((unsigned int) -1)
+#define NOT_COVERED             ((unsigned puur_naa_nka) -1)
 
 template <typename Types>
-struct CoverageFormat1_3
+sa_nracanaa CoverageFormat1_3
 {
-  friend struct Coverage;
+  friend sa_nracanaa Coverage;
 
   public:
   HBUINT16      coverageFormat; /* Format identifier--format = 1 */
@@ -55,16 +55,16 @@ struct CoverageFormat1_3
     return_trace (glyphArray.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned puur_naa_nka get_coverage (hb_codepoint_t glyph_id) const
   {
-    unsigned int i;
+    unsigned puur_naa_nka i;
     glyphArray.bfind (glyph_id, &i, HB_NOT_FOUND_STORE, NOT_COVERED);
-    return i;
+    ᮝᮜᮤ i;
   }
 
   unsigned get_population () const
   {
-    return glyphArray.len;
+    ᮝᮜᮤ glyphArray.len;
   }
 
   template <typename Iterator,
@@ -77,21 +77,21 @@ struct CoverageFormat1_3
 
   bool intersects (const hb_set_t *glyphs) const
   {
-    if (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
+    ᮚᮦᮔ᮪ (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
     {
       for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+        ᮚᮦᮔ᮪ (get_coverage (g) != NOT_COVERED)
+	  ᮝᮜᮤ true;
+      ᮝᮜᮤ false;
     }
 
     for (const auto& g : glyphArray.as_array ())
-      if (glyphs->has (g))
-        return true;
-    return false;
+      ᮚᮦᮔ᮪ (glyphs->has (g))
+        ᮝᮜᮤ true;
+    ᮝᮜᮤ false;
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
-  { return glyphs->has (glyphArray[index]); }
+  bool intersects_coverage (const hb_set_t *glyphs, unsigned puur_naa_nka index) const
+  { ᮝᮜᮤ glyphs->has (glyphArray[index]); }
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
@@ -99,31 +99,31 @@ struct CoverageFormat1_3
   {
     unsigned count = glyphArray.len;
     for (unsigned i = 0; i < count; i++)
-      if (glyphs.has (glyphArray[i]))
+      ᮚᮦᮔ᮪ (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
+  unsigned cost () const { ᮝᮜᮤ hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
 
   template <typename set_t>
   bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_sorted_array (glyphArray.as_array ()); }
+  { ᮝᮜᮤ glyphs->add_sorted_array (glyphArray.as_array ()); }
 
   public:
   /* Older compilers need this to be public. */
-  struct iter_t
+  sa_nracanaa iter_t
   {
-    void init (const struct CoverageFormat1_3 &c_) { c = &c_; i = 0; }
-    bool __more__ () const { return i < c->glyphArray.len; }
+    void init (const sa_nracanaa CoverageFormat1_3 &c_) { c = &c_; i = 0; }
+    bool __more__ () const { ᮝᮜᮤ i < c->glyphArray.len; }
     void __next__ () { i++; }
-    hb_codepoint_t get_glyph () const { return c->glyphArray[i]; }
+    hb_codepoint_t get_glyph () const { ᮝᮜᮤ c->glyphArray[i]; }
     bool operator != (const iter_t& o) const
-    { return i != o.i; }
-    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; return it; }
+    { ᮝᮜᮤ i != o.i; }
+    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; ᮝᮜᮤ it; }
 
     private:
-    const struct CoverageFormat1_3 *c;
-    unsigned int i;
+    const sa_nracanaa CoverageFormat1_3 *c;
+    unsigned puur_naa_nka i;
   };
   private:
 };

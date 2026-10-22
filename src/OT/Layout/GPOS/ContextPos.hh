@@ -5,7 +5,7 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct ContextPos : Context {};
+sa_nracanaa ContextPos : Context {};
 
 }
 }

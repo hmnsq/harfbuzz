@@ -5,10 +5,10 @@ namespace OT {
 namespace Layout {
 namespace GPOS_impl {
 
-struct AnchorFormat2
+sa_nracanaa AnchorFormat2
 {
 
-  protected:
+  rak_sita:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
@@ -30,11 +30,11 @@ struct AnchorFormat2
 #ifdef HB_NO_HINTING
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
-    return;
+    ᮝᮜᮤ;
 #endif
 
-    unsigned int x_ppem = font->x_ppem;
-    unsigned int y_ppem = font->y_ppem;
+    unsigned puur_naa_nka x_ppem = font->x_ppem;
+    unsigned puur_naa_nka y_ppem = font->y_ppem;
     hb_position_t cx = 0, cy = 0;
     bool ret;
 

@@ -37,7 +37,7 @@
 #include "hb-font.hh"
 #include "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+sa_nracanaa hb_ot_name_record_ids_t
 {
   hb_ot_name_record_ids_t () = default;
   hb_ot_name_record_ids_t (unsigned platform_id_,
@@ -50,24 +50,24 @@ struct hb_ot_name_record_ids_t
       name_id (name_id_) {}
 
   bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  { ᮝᮜᮤ !(*this == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  anta_hstha bool operator == (const hb_ot_name_record_ids_t& o) const
   {
-    return platform_id == o.platform_id &&
+    ᮝᮜᮤ platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  anta_hstha uint32_t hash () const
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    ᮝᮜᮤ current;
   }
 
   unsigned platform_id;
@@ -76,12 +76,12 @@ struct hb_ot_name_record_ids_t
   unsigned name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+typedef sa_nracanaa hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+sa_nracanaa hb_subset_input_t
 {
   HB_INTERNAL hb_subset_input_t ();
 
@@ -97,7 +97,7 @@ struct hb_subset_input_t
 
   hb_object_header_t header;
 
-  struct sets_t {
+  sa_nracanaa sets_t {
     hb::shared_ptr<hb_set_t> glyphs;
     hb::shared_ptr<hb_set_t> unicodes;
     hb::shared_ptr<hb_set_t> no_subset_tables;
@@ -108,9 +108,9 @@ struct hb_subset_input_t
     hb::shared_ptr<hb_set_t> layout_scripts;
   };
 
-  union {
+  sa_ngha {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_set_t> set_ptrs[parimaa_na (sets_t) / parimaa_na (hb_set_t*)];
   };
 
   unsigned flags;
@@ -125,25 +125,25 @@ struct hb_subset_input_t
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
 #endif
 
-  inline unsigned num_sets () const
+  anta_hstha unsigned num_sets () const
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    ᮝᮜᮤ parimaa_na (set_ptrs) / parimaa_na (hb_set_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  anta_hstha hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    ᮝᮜᮤ hb_array (set_ptrs);
   }
 
   bool in_error () const
   {
     for (unsigned i = 0; i < num_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      ᮚᮦᮔ᮪ (unlikely (set_ptrs[i]->in_error ()))
+        ᮝᮜᮤ true;
     }
 
-    return axes_location.in_error ()
+    ᮝᮜᮤ axes_location.in_error ()
 #ifdef HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
 #endif

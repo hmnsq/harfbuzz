@@ -34,25 +34,25 @@
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+sa_nracanaa hb_multimap_t
 {
   void add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    ᮚᮦᮔ᮪ (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      ᮝᮜᮤ;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    ᮚᮦᮔ᮪ (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      ᮝᮜᮤ;
     }
 
     singulars.set (k, v);
@@ -61,24 +61,24 @@ struct hb_multimap_t
   hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
   {
     const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ᮚᮦᮔ᮪ (singulars.has (k, &v))
+      ᮝᮜᮤ hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    ᮚᮦᮔ᮪ (multiples.has (k, &m))
+      ᮝᮜᮤ m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    ᮝᮜᮤ hb_array_t<const hb_codepoint_t> ();
   }
 
   bool in_error () const
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
+    ᮚᮦᮔ᮪ (singulars.in_error () || multiples.in_error ())
+      ᮝᮜᮤ true;
     for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+      ᮚᮦᮔ᮪ (m.in_error ())
+        ᮝᮜᮤ true;
+    ᮝᮜᮤ false;
   }
 
   void alloc (unsigned size)
@@ -86,7 +86,7 @@ struct hb_multimap_t
     singulars.alloc (size);
   }
 
-  protected:
+  rak_sita:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

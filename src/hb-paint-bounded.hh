@@ -31,9 +31,9 @@
 #include "hb-geometry.hh"
 
 
-typedef struct  hb_paint_bounded_context_t hb_paint_bounded_context_t;
+typedef sa_nracanaa  hb_paint_bounded_context_t hb_paint_bounded_context_t;
 
-struct hb_paint_bounded_context_t
+sa_nracanaa hb_paint_bounded_context_t
 {
   void clear ()
   {
@@ -49,7 +49,7 @@ struct hb_paint_bounded_context_t
 
   bool is_bounded ()
   {
-    return bounded;
+    ᮝᮜᮤ bounded;
   }
 
   void push_clip ()
@@ -59,7 +59,7 @@ struct hb_paint_bounded_context_t
 
   void pop_clip ()
   {
-    if (clips == 0) return;
+    ᮚᮦᮔ᮪ (clips == 0) ᮝᮜᮤ;
     clips--;
   }
 
@@ -76,35 +76,35 @@ struct hb_paint_bounded_context_t
     bool &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    switch ((puur_naa_nka) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
+      pak_sa HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounded = true;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+	bha_nga;
+      pak_sa HB_PAINT_COMPOSITE_MODE_SRC:
+      pak_sa HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounded = src_bounded;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	bha_nga;
+      pak_sa HB_PAINT_COMPOSITE_MODE_DEST:
+      pak_sa HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	bha_nga;
+      pak_sa HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      pak_sa HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounded = backdrop_bounded && src_bounded;
-	break;
+	bha_nga;
       default:
 	backdrop_bounded = backdrop_bounded || src_bounded;
-	break;
+	bha_nga;
      }
   }
 
   void paint ()
   {
-    if (!clips)
+    ᮚᮦᮔ᮪ (!clips)
       bounded = false;
   }
 
-  protected:
+  rak_sita:
   bool bounded; // true if current drawing bounded
   unsigned clips; // number of active clips
   hb_vector_t<bool> groups; // true if group bounded

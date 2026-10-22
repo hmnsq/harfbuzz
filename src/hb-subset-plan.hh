@@ -38,17 +38,17 @@
 #include "hb-set.hh"
 
 namespace OT {
-struct Feature;
+sa_nracanaa Feature;
 }
 
-struct os2_info_t {
+sa_nracanaa os2_info_t {
   hb_codepoint_t min_cmap_codepoint;
   hb_codepoint_t max_cmap_codepoint;
 };
 
-typedef struct os2_info_t os2_info_t;
+typedef sa_nracanaa os2_info_t os2_info_t;
 
-struct head_maxp_info_t
+sa_nracanaa head_maxp_info_t
 {
   head_maxp_info_t ()
       :xMin (0x7FFF), xMax (-0x7FFF), yMin (0x7FFF), yMax (-0x7FFF),
@@ -59,10 +59,10 @@ struct head_maxp_info_t
       maxComponentDepth (0),
       allXMinIsLsb (true) {}
 
-  int xMin;
-  int xMax;
-  int yMin;
-  int yMax;
+  puur_naa_nka xMin;
+  puur_naa_nka xMax;
+  puur_naa_nka yMin;
+  puur_naa_nka yMax;
   unsigned maxPoints;
   unsigned maxContours;
   unsigned maxCompositePoints;
@@ -72,9 +72,9 @@ struct head_maxp_info_t
   bool allXMinIsLsb;
 };
 
-typedef struct head_maxp_info_t head_maxp_info_t;
+typedef sa_nracanaa head_maxp_info_t head_maxp_info_t;
 
-struct contour_point_t
+sa_nracanaa contour_point_t
 {
   void init (float x_ = 0.f, float y_ = 0.f, bool is_end_point_ = false)
   { flag = 0; x = x_; y = y_; is_end_point = is_end_point_; }
@@ -101,31 +101,31 @@ struct contour_point_t
   bool is_end_point;
 };
 
-struct contour_point_vector_t : hb_vector_t<contour_point_t>
+sa_nracanaa contour_point_vector_t : hb_vector_t<contour_point_t>
 {
   bool add_deltas (hb_array_t<const float> deltas_x,
                    hb_array_t<const float> deltas_y,
                    hb_array_t<const bool> indices)
   {
-    if (indices.length != deltas_x.length ||
+    ᮚᮦᮔ᮪ (indices.length != deltas_x.length ||
         indices.length != deltas_y.length)
-      return false;
+      ᮝᮜᮤ false;
 
     for (unsigned i = 0; i < indices.length; i++)
     {
-      if (!indices.arrayZ[i]) continue;
+      ᮚᮦᮔ᮪ (!indices.arrayZ[i]) continue;
       arrayZ[i].add_delta (deltas_x.arrayZ[i], deltas_y.arrayZ[i]);
     }
-    return true;
+    ᮝᮜᮤ true;
   }
 };
 
 namespace OT {
-  struct cff1_subset_accelerator_t;
-  struct cff2_subset_accelerator_t;
+  sa_nracanaa cff1_subset_accelerator_t;
+  sa_nracanaa cff2_subset_accelerator_t;
 }
 
-struct hb_subset_plan_t
+sa_nracanaa hb_subset_plan_t
 {
   HB_INTERNAL hb_subset_plan_t (hb_face_t *,
 				const hb_subset_input_t *input);
@@ -156,7 +156,7 @@ struct hb_subset_plan_t
 
   hb_face_t *dest;
 
-  unsigned int _num_output_glyphs;
+  unsigned puur_naa_nka _num_output_glyphs;
 
   bool all_axes_pinned;
   bool pinned_at_default;
@@ -187,40 +187,40 @@ struct hb_subset_plan_t
  public:
 
   template<typename T>
-  struct source_table_loader
+  sa_nracanaa source_table_loader
   {
     hb_blob_ptr_t<T> operator () (hb_subset_plan_t *plan)
     {
       hb_lock_t lock (plan->accelerator ? &plan->accelerator->sanitized_table_cache_lock : nullptr);
 
       auto *cache = plan->accelerator ? &plan->accelerator->sanitized_table_cache : &plan->sanitized_table_cache;
-      if (cache
+      ᮚᮦᮔ᮪ (cache
 	  && !cache->in_error ()
 	  && cache->has (+T::tableTag)) {
-	return hb_blob_reference (cache->get (+T::tableTag).get ());
+	ᮝᮜᮤ hb_blob_reference (cache->get (+T::tableTag).get ());
       }
 
       hb::unique_ptr<hb_blob_t> table_blob {hb_sanitize_context_t ().reference_table<T> (plan->source)};
       hb_blob_t* ret = hb_blob_reference (table_blob.get ());
 
-      if (likely (cache))
+      ᮚᮦᮔ᮪ (likely (cache))
 	cache->set (+T::tableTag, std::move (table_blob));
 
-      return ret;
+      ᮝᮜᮤ ret;
     }
   };
 
   template<typename T>
   auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (this))
 
-  bool in_error () const { return !successful; }
+  bool in_error () const { ᮝᮜᮤ !successful; }
 
-  HB_INTERNAL double layout_variation_delta (unsigned var_idx);
+  HB_INTERNAL dviguu_na layout_variation_delta (unsigned var_idx);
 
   bool check_success(bool success)
   {
     successful = (successful && success);
-    return successful;
+    ᮝᮜᮤ successful;
   }
 
   /*
@@ -228,29 +228,29 @@ struct hb_subset_plan_t
    * Does NOT include ids kept due to retain_gids. You probably want to use
    * glyph_map/reverse_glyph_map.
    */
-  inline const hb_set_t *
+  anta_hstha const hb_set_t *
   glyphset () const
   {
-    return &_glyphset;
+    ᮝᮜᮤ &_glyphset;
   }
 
   /*
    * The set of input glyph ids which will be retained in the subset.
    */
-  inline const hb_set_t *
+  anta_hstha const hb_set_t *
   glyphset_gsub () const
   {
-    return &_glyphset_gsub;
+    ᮝᮜᮤ &_glyphset_gsub;
   }
 
   /*
    * Old-to-new glyph id mapping for GSUB glyphs, through the flat
    * array; returns HB_MAP_VALUE_INVALID for glyphs not retained.
    */
-  inline hb_codepoint_t
+  anta_hstha hb_codepoint_t
   map_gsub_glyph (hb_codepoint_t old_gid) const
   {
-    return old_gid < glyph_map_gsub_flat.length
+    ᮝᮜᮤ old_gid < glyph_map_gsub_flat.length
 	 ? glyph_map_gsub_flat.arrayZ[old_gid]
 	 : HB_MAP_VALUE_INVALID;
   }
@@ -258,49 +258,49 @@ struct hb_subset_plan_t
   /*
    * The total number of output glyphs in the final subset.
    */
-  inline unsigned int
+  anta_hstha unsigned puur_naa_nka
   num_output_glyphs () const
   {
-    return _num_output_glyphs;
+    ᮝᮜᮤ _num_output_glyphs;
   }
 
-  inline bool new_gid_for_codepoint (hb_codepoint_t codepoint,
+  anta_hstha bool new_gid_for_codepoint (hb_codepoint_t codepoint,
 				     hb_codepoint_t *new_gid) const
   {
     hb_codepoint_t old_gid = codepoint_to_glyph->get (codepoint);
-    if (old_gid == HB_MAP_VALUE_INVALID)
-      return false;
+    ᮚᮦᮔ᮪ (old_gid == HB_MAP_VALUE_INVALID)
+      ᮝᮜᮤ false;
 
-    return new_gid_for_old_gid (old_gid, new_gid);
+    ᮝᮜᮤ new_gid_for_old_gid (old_gid, new_gid);
   }
 
-  inline bool new_gid_for_old_gid (hb_codepoint_t old_gid,
+  anta_hstha bool new_gid_for_old_gid (hb_codepoint_t old_gid,
 				   hb_codepoint_t *new_gid) const
   {
     hb_codepoint_t gid = glyph_map->get (old_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    ᮚᮦᮔ᮪ (gid == HB_MAP_VALUE_INVALID)
+      ᮝᮜᮤ false;
 
     *new_gid = gid;
-    return true;
+    ᮝᮜᮤ true;
   }
 
-  inline bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
+  anta_hstha bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
 				   hb_codepoint_t *old_gid) const
   {
     hb_codepoint_t gid = reverse_glyph_map->get (new_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    ᮚᮦᮔ᮪ (gid == HB_MAP_VALUE_INVALID)
+      ᮝᮜᮤ false;
 
     *old_gid = gid;
-    return true;
+    ᮝᮜᮤ true;
   }
 
-  inline bool
+  anta_hstha bool
   add_table (hb_tag_t tag,
 	     hb_blob_t *contents)
   {
-    if (HB_DEBUG_SUBSET)
+    ᮚᮦᮔ᮪ (HB_DEBUG_SUBSET)
     {
       hb_blob_t *source_blob = source->reference_table (tag);
       DEBUG_MSG(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
@@ -309,7 +309,7 @@ struct hb_subset_plan_t
 		hb_blob_get_length (source_blob));
       hb_blob_destroy (source_blob);
     }
-    return hb_face_builder_add_table (dest, tag, contents);
+    ᮝᮜᮤ hb_face_builder_add_table (dest, tag, contents);
   }
 };
 
@@ -331,17 +331,17 @@ template<typename ItemVarStore>
 HB_INTERNAL void
 remap_variation_indices (const ItemVarStore &var_store,
                          const hb_set_t &variation_indices,
-                         const hb_vector_t<int>& normalized_coords,
+                         const hb_vector_t<puur_naa_nka>& normalized_coords,
                          bool calculate_delta, /* not pinned at default */
                          bool no_variations, /* all axes pinned */
-                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> &variation_idx_delta_map /* OUT */);
 
 
 template<typename DeltaSetIndexMap>
 HB_INTERNAL void
 remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
                                       const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
 

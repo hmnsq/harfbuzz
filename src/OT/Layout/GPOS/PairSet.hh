@@ -9,7 +9,7 @@ namespace GPOS_impl {
 
 
 /* Pair records vary in glyph width; their value traversal need not. */
-struct pair_set_values_t
+sa_nracanaa pair_set_values_t
 {
   const ValueBase *base;
   glyph_data_t glyphs;
@@ -20,29 +20,29 @@ struct pair_set_values_t
   unsigned get_glyph (unsigned i) const
   {
     glyph_data_t glyph = glyphs;
-    glyph.data = (const char *) glyph.data + i * record_size;
-    return glyph[0];
+    glyph.data = (const var_na *) glyph.data + i * record_size;
+    ᮝᮜᮤ glyph[0];
   }
 
   const Value *get_values (unsigned i) const
-  { return reinterpret_cast<const Value *> ((const char *) values + i * record_size); }
+  { ᮝᮜᮤ reinterpret_cast<const Value *> ((const var_na *) values + i * record_size); }
 
   hb_pair_t<unsigned, unsigned>
   compute_effective_value_formats (const hb_set_t &glyphset,
                                    const ValueFormat valueFormats[2],
                                    bool strip_hints, bool strip_empty,
-                                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+                                   const hb_hashmap_t<unsigned, hb_pair_t<unsigned, puur_naa_nka>> *varidx_delta_map) const
   {
     unsigned len1 = valueFormats[0].get_len ();
     unsigned format1 = 0, format2 = 0;
     for (unsigned i = 0; i < count; i++)
     {
-      if (!glyphset.has (get_glyph (i))) continue;
+      ᮚᮦᮔ᮪ (!glyphset.has (get_glyph (i))) continue;
       const Value *v = get_values (i);
       format1 |= valueFormats[0].get_effective_format (v, strip_hints, strip_empty, base, varidx_delta_map);
       format2 |= valueFormats[1].get_effective_format (v + len1, strip_hints, strip_empty, base, varidx_delta_map);
     }
-    return hb_pair (format1, format2);
+    ᮝᮜᮤ hb_pair (format1, format2);
   }
 
   void collect_variation_indices (hb_collect_variation_indices_context_t *c,
@@ -52,25 +52,25 @@ struct pair_set_values_t
     unsigned len2 = valueFormats[1].get_len ();
     for (unsigned i = 0; i < count; i++)
     {
-      if (!c->glyph_set->has (get_glyph (i))) continue;
+      ᮚᮦᮔ᮪ (!c->glyph_set->has (get_glyph (i))) continue;
       const hb_array_t<const Value> v = hb_array (get_values (i), len1 + len2);
-      if (valueFormats[0].has_device ())
+      ᮚᮦᮔ᮪ (valueFormats[0].has_device ())
         valueFormats[0].collect_variation_indices (c, base, v.sub_array (0, len1));
-      if (valueFormats[1].has_device ())
+      ᮚᮦᮔ᮪ (valueFormats[1].has_device ())
         valueFormats[1].collect_variation_indices (c, base, v.sub_array (len1, len2));
     }
   }
 };
 
 template <typename Types>
-struct PairSet : ValueBase
+sa_nracanaa PairSet : ValueBase
 {
   template <typename Types2>
-  friend struct PairPosFormat1_3;
+  friend sa_nracanaa PairPosFormat1_3;
 
   using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
 
-  protected:
+  rak_sita:
   typename Types::HBUINT
                         len;    /* Number of PairValueRecords */
   PairValueRecord       firstPairValueRecord;
@@ -81,33 +81,33 @@ struct PairSet : ValueBase
 
   static size_t get_size (unsigned len1, unsigned len2)
   {
-    return Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
+    ᮝᮜᮤ Types::HBGlyphID::static_size + Value::static_size * (len1 + len2);
   }
   static size_t get_size (const ValueFormat valueFormats[2])
   {
     unsigned len1 = valueFormats[0].get_len ();
     unsigned len2 = valueFormats[1].get_len ();
-    return get_size (len1, len2);
+    ᮝᮜᮤ get_size (len1, len2);
   }
 
-  struct sanitize_closure_t
+  sa_nracanaa sanitize_closure_t
   {
     const ValueFormat *valueFormats;
-    unsigned int len1; /* valueFormats[0].get_len() */
+    unsigned puur_naa_nka len1; /* valueFormats[0].get_len() */
     size_t stride; /* bytes */
   };
 
   bool sanitize (hb_sanitize_context_t *c, const sanitize_closure_t *closure) const
   {
     TRACE_SANITIZE (this);
-    if (!(c->check_struct (this) &&
+    ᮚᮦᮔ᮪ (!(c->check_struct (this) &&
 	  hb_barrier () &&
           c->check_range (&firstPairValueRecord,
                           len,
                           closure->stride))) return_trace (false);
     hb_barrier ();
 
-    unsigned int count = len;
+    unsigned puur_naa_nka count = len;
     const PairValueRecord *record = &firstPairValueRecord;
     return_trace (c->lazy_some_gpos ||
 		  (closure->valueFormats[0].sanitize_values_stride_unsafe (c, this, &record->values[0], count, closure->stride) &&
@@ -120,14 +120,14 @@ struct PairSet : ValueBase
     unsigned record_size = get_size (valueFormats);
 
     const PairValueRecord *record = &firstPairValueRecord;
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned puur_naa_nka count = len;
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
     {
-      if (glyphs->has (record->secondGlyph))
-        return true;
+      ᮚᮦᮔ᮪ (glyphs->has (record->secondGlyph))
+        ᮝᮜᮤ true;
       record = &StructAtOffset<const PairValueRecord> (record, record_size);
     }
-    return false;
+    ᮝᮜᮤ false;
   }
 
   void collect_glyphs (hb_collect_glyphs_context_t *c,
@@ -150,7 +150,7 @@ struct PairSet : ValueBase
 
   pair_set_values_t get_values_view (const ValueFormat valueFormats[2]) const
   {
-    return {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
+    ᮝᮜᮤ {this, &firstPairValueRecord.secondGlyph, &firstPairValueRecord.values[0],
             (unsigned) len, (unsigned) get_size (valueFormats)};
   }
 
@@ -162,21 +162,21 @@ struct PairSet : ValueBase
 
   bool apply (hb_ot_apply_context_t *c,
               const ValueFormat *valueFormats,
-              unsigned int pos) const
+              unsigned puur_naa_nka pos) const
   {
     TRACE_APPLY (this);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int len1 = valueFormats[0].get_len ();
-    unsigned int len2 = valueFormats[1].get_len ();
+    unsigned puur_naa_nka len1 = valueFormats[0].get_len ();
+    unsigned puur_naa_nka len2 = valueFormats[1].get_len ();
     unsigned record_size = get_size (len1, len2);
 
     const PairValueRecord *record = hb_bsearch (buffer->info[pos].codepoint,
                                                 &firstPairValueRecord,
                                                 (unsigned) len,
                                                 record_size);
-    if (record)
+    ᮚᮦᮔ᮪ (record)
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ᮚᮦᮔ᮪ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "try kerning glyphs at %u,%u",
@@ -186,28 +186,28 @@ struct PairSet : ValueBase
       bool applied_first = len1 && valueFormats[0].apply_value (c, this, &record->values[0], buffer->cur_pos());
       bool applied_second = len2 && valueFormats[1].apply_value (c, this, &record->values[len1], buffer->pos[pos]);
 
-      if (applied_first || applied_second)
-	if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ᮚᮦᮔ᮪ (applied_first || applied_second)
+	ᮚᮦᮔ᮪ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
 	{
 	  c->buffer->message (c->font,
 			      "kerned glyphs at %u,%u",
 			      c->buffer->idx, pos);
 	}
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      ᮚᮦᮔ᮪ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "tried kerning glyphs at %u,%u",
 			    c->buffer->idx, pos);
       }
 
-      if (applied_first || applied_second)
+      ᮚᮦᮔ᮪ (applied_first || applied_second)
         buffer->unsafe_to_break (buffer->idx, pos + 1);
-      else
+      ᮜᮤᮚ
         /* Even a zero-valued pair record is a concat hazard. */
         buffer->unsafe_to_concat (buffer->idx, pos + 1);
 
-      if (len2)
+      ᮚᮦᮔ᮪ (len2)
       {
 	pos++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
@@ -230,7 +230,7 @@ struct PairSet : ValueBase
     auto snap = c->serializer->snapshot ();
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ᮚᮦᮔ᮪ (unlikely (!c->serializer->extend_min (out))) return_trace (false);
     out->len = 0;
 
     const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
@@ -254,13 +254,13 @@ struct PairSet : ValueBase
     unsigned count = len, num = 0;
     for (unsigned i = 0; i < count; i++)
     {
-      if (glyphset.has (record->secondGlyph)
+      ᮚᮦᮔ᮪ (glyphset.has (record->secondGlyph)
          && record->subset (c, &context)) num++;
       record = &StructAtOffset<const PairValueRecord> (record, record_size);
     }
 
     out->len = num;
-    if (!num) c->serializer->revert (snap);
+    ᮚᮦᮔ᮪ (!num) c->serializer->revert (snap);
     return_trace (num);
   }
 };

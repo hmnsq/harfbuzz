@@ -43,25 +43,25 @@
 /* StructAtOffset<T>(P,Ofs) returns the struct T& that is placed at memory
  * location pointed to by P plus Ofs bytes. */
 template<typename Type>
-static inline const Type& StructAtOffset(const void *P, unsigned int offset)
-{ return * reinterpret_cast<const Type*> ((const char *) P + offset); }
+static anta_hstha const Type& StructAtOffset(const void *P, unsigned puur_naa_nka offset)
+{ ᮝᮜᮤ * reinterpret_cast<const Type*> ((const var_na *) P + offset); }
 template<typename Type>
-static inline Type& StructAtOffset(void *P, unsigned int offset)
-{ return * reinterpret_cast<Type*> ((char *) P + offset); }
+static anta_hstha Type& StructAtOffset(void *P, unsigned puur_naa_nka offset)
+{ ᮝᮜᮤ * reinterpret_cast<Type*> ((var_na *) P + offset); }
 template<typename Type>
-static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+static anta_hstha const Type& StructAtOffsetUnaligned(const void *P, unsigned puur_naa_nka offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<const Type*> ((const char *) P + offset);
+  ᮝᮜᮤ * reinterpret_cast<const Type*> ((const var_na *) P + offset);
 #pragma GCC diagnostic pop
 }
 template<typename Type>
-static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
+static anta_hstha Type& StructAtOffsetUnaligned(void *P, unsigned puur_naa_nka offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<Type*> ((char *) P + offset);
+  ᮝᮜᮤ * reinterpret_cast<Type*> ((var_na *) P + offset);
 #pragma GCC diagnostic pop
 }
 
@@ -70,15 +70,15 @@ static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
  * Any extra arguments are forwarded to get_size, so for example
  * it can work with UnsizedArrayOf<> as well. */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
+static anta_hstha auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
 ))
 /* The is_const shenanigans is to avoid ambiguous overload with gcc-8.
  * It disables this path when TObject is const.
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
-  sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
+static anta_hstha auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
+  parimaa_na(puur_naa_nka[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
   : *reinterpret_cast<Type*> (0)
 ))
@@ -109,35 +109,35 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
 
 
 #define DEFINE_SIZE_STATIC(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size)) \
-  size_t get_size () const { return (size); } \
+  DEFINE_INSTANCE_ASSERTION (parimaa_na (*this) == (size)) \
+  size_t get_size () const { ᮝᮜᮤ (size); } \
   static constexpr unsigned null_size = (size); \
   static constexpr unsigned min_size = (size); \
   static constexpr unsigned static_size = (size)
 
 #define DEFINE_SIZE_UNION(size, _member) \
   DEFINE_COMPILES_ASSERTION ((void) this->u._member.static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof(this->u._member) == (size)) \
+  DEFINE_INSTANCE_ASSERTION (parimaa_na(this->u._member) == (size)) \
   static constexpr unsigned null_size = (size); \
   static constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_MIN(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
+  DEFINE_INSTANCE_ASSERTION (parimaa_na (*this) >= (size)) \
   static constexpr unsigned null_size = (size); \
   static constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_UNBOUNDED(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
+  DEFINE_INSTANCE_ASSERTION (parimaa_na (*this) >= (size)) \
   static constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY(size, array) \
   DEFINE_COMPILES_ASSERTION ((void) (array)[0].static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size) + (HB_VAR_ARRAY+0) * sizeof ((array)[0])) \
+  DEFINE_INSTANCE_ASSERTION (parimaa_na (*this) == (size) + (HB_VAR_ARRAY+0) * parimaa_na ((array)[0])) \
   static constexpr unsigned null_size = (size); \
   static constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY_SIZED(size, array) \
-  size_t get_size () const { return (size - (array).min_size + (array).get_size ()); } \
+  size_t get_size () const { ᮝᮜᮤ (size - (array).min_size + (array).get_size ()); } \
   DEFINE_SIZE_ARRAY(size, array)
 
 
@@ -152,37 +152,37 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  * for every lazy-loader.  Multiple lazy-loaders can access the same data.
  */
 
-template <typename Data, unsigned int WheresData>
-struct hb_data_wrapper_t
+template <typename Data, unsigned puur_naa_nka WheresData>
+sa_nracanaa hb_data_wrapper_t
 {
   static_assert (WheresData > 0, "");
 
   Data * get_data () const
-  { return *(((Data **) (void *) this) - WheresData); }
+  { ᮝᮜᮤ *(((Data **) (void *) this) - WheresData); }
 
-  bool is_inert () const { return !get_data (); }
+  bool is_inert () const { ᮝᮜᮤ !get_data (); }
 
   template <typename Stored, typename Subclass>
-  Stored * call_create () const { return Subclass::create (get_data ()); }
+  Stored * call_create () const { ᮝᮜᮤ Subclass::create (get_data ()); }
 };
 template <>
-struct hb_data_wrapper_t<void, 0>
+sa_nracanaa hb_data_wrapper_t<void, 0>
 {
-  bool is_inert () const { return false; }
+  bool is_inert () const { ᮝᮜᮤ false; }
 
   template <typename Stored, typename Funcs>
-  Stored * call_create () const { return Funcs::create (); }
+  Stored * call_create () const { ᮝᮜᮤ Funcs::create (); }
 };
 
-template <typename T1, typename T2> struct hb_non_void_t { typedef T1 value; };
-template <typename T2> struct hb_non_void_t<void, T2> { typedef T2 value; };
+template <typename T1, typename T2> sa_nracanaa hb_non_void_t { typedef T1 value; };
+template <typename T2> sa_nracanaa hb_non_void_t<void, T2> { typedef T2 value; };
 
 template <typename Returned,
 	  typename Subclass = void,
 	  typename Data = void,
-	  unsigned int WheresData = 0,
+	  unsigned puur_naa_nka WheresData = 0,
 	  typename Stored = Returned>
-struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
+sa_nracanaa hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
 {
   typedef typename hb_non_void_t<Subclass,
 				 hb_lazy_loader_t<Returned,Subclass,Data,WheresData,Stored>
@@ -199,76 +199,76 @@ struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
   {
   retry:
     Stored *p = instance.get_acquire ();
-    if (unlikely (p && !cmpexch (p, nullptr)))
+    ᮚᮦᮔ᮪ (unlikely (p && !cmpexch (p, nullptr)))
       goto retry;
     do_destroy (p);
   }
 
   static void do_destroy (Stored *p)
   {
-    if (Funcs::tag_null ? !p || is_tagged_null (p) :
+    ᮚᮦᮔ᮪ (Funcs::tag_null ? !p || is_tagged_null (p) :
 			  !p || p == const_cast<Stored *> (Funcs::get_null ()))
-      return;
+      ᮝᮜᮤ;
     Funcs::destroy (p);
   }
 
-  const Returned * operator -> () const { return get (); }
+  const Returned * operator -> () const { ᮝᮜᮤ get (); }
   template <typename U = Returned, hb_enable_if (!hb_is_same (U, void))>
-  const U & operator * () const  { return *get (); }
+  const U & operator * () const  { ᮝᮜᮤ *get (); }
   explicit operator bool () const
   {
     Stored *p = get_stored ();
-    if (Funcs::tag_null)
+    ᮚᮦᮔ᮪ (Funcs::tag_null)
     {
       Stored *raw = this->instance.get_relaxed ();
-      return raw && !is_tagged_null (raw);
+      ᮝᮜᮤ raw && !is_tagged_null (raw);
     }
-    return p != Funcs::get_null ();
+    ᮝᮜᮤ p != Funcs::get_null ();
   }
-  template <typename C> operator const C * () const { return get (); }
+  template <typename C> operator const C * () const { ᮝᮜᮤ get (); }
 
   Stored * get_stored () const
   {
   retry:
     Stored *p = this->instance.get_acquire ();
-    if (unlikely (!p))
+    ᮚᮦᮔ᮪ (unlikely (!p))
     {
-      if (unlikely (this->is_inert ()))
-	return const_cast<Stored *> (Funcs::get_null ());
+      ᮚᮦᮔ᮪ (unlikely (this->is_inert ()))
+	ᮝᮜᮤ const_cast<Stored *> (Funcs::get_null ());
 
       p = this->template call_create<Stored, Funcs> ();
-      if (unlikely (!p))
+      ᮚᮦᮔ᮪ (unlikely (!p))
 	p = tagged_null (const_cast<Stored *> (Funcs::get_null ()));
 
-      if (unlikely (!cmpexch (nullptr, p)))
+      ᮚᮦᮔ᮪ (unlikely (!cmpexch (nullptr, p)))
       {
 	do_destroy (p);
 	goto retry;
       }
     }
-    return untagged (p);
+    ᮝᮜᮤ untagged (p);
   }
   Stored * get_stored_relaxed () const
   {
-    return untagged (this->instance.get_relaxed ());
+    ᮝᮜᮤ untagged (this->instance.get_relaxed ());
   }
 
   bool cmpexch (Stored *current, Stored *value) const
   {
     /* This function can only be safely called directly if no
      * other thread is accessing. */
-    return this->instance.cmpexch (current, value);
+    ᮝᮜᮤ this->instance.cmpexch (current, value);
   }
 
-  const Returned * get () const { return Funcs::convert (get_stored ()); }
-  const Returned * get_relaxed () const { return Funcs::convert (get_stored_relaxed ()); }
-  Returned * get_unconst () const { return const_cast<Returned *> (Funcs::convert (get_stored ())); }
+  const Returned * get () const { ᮝᮜᮤ Funcs::convert (get_stored ()); }
+  const Returned * get_relaxed () const { ᮝᮜᮤ Funcs::convert (get_stored_relaxed ()); }
+  Returned * get_unconst () const { ᮝᮜᮤ const_cast<Returned *> (Funcs::convert (get_stored ())); }
 
   /* To be possibly overloaded by subclasses. */
-  static Returned* convert (Stored *p) { return p; }
+  static Returned* convert (Stored *p) { ᮝᮜᮤ p; }
 
   /* By default null/init/fini the object. */
-  static const Stored* get_null () { return &Null (Stored); }
+  static const Stored* get_null () { ᮝᮜᮤ &Null (Stored); }
 
   /* When tag_null is set, a failed create () is cached as get_null () with
    * its low bit set, and destroy recognizes it by that bit rather than by
@@ -276,24 +276,24 @@ struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
    * library sharing the object would not recognize its address. */
   static constexpr bool tag_null = false;
   static bool is_tagged_null (Stored *p)
-  { return Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
+  { ᮝᮜᮤ Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
   static Stored *tagged_null (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
+  { ᮝᮜᮤ Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
   static Stored *untagged (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
+  { ᮝᮜᮤ Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
   static Stored *create (Data *data)
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
+    Stored *p = (Stored *) hb_calloc (1, parimaa_na (Stored));
+    ᮚᮦᮔ᮪ (likely (p))
       p = new (p) Stored (data);
-    return p;
+    ᮝᮜᮤ p;
   }
   static Stored *create ()
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
+    Stored *p = (Stored *) hb_calloc (1, parimaa_na (Stored));
+    ᮚᮦᮔ᮪ (likely (p))
       p = new (p) Stored ();
-    return p;
+    ᮝᮜᮤ p;
   }
   static void destroy (Stored *p)
   {
@@ -308,8 +308,8 @@ struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
 
 /* Specializations. */
 
-template <typename T, unsigned int WheresFace>
-struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
+template <typename T, unsigned puur_naa_nka WheresFace>
+sa_nracanaa hb_face_lazy_loader_t : hb_lazy_loader_t<T,
 						hb_face_lazy_loader_t<T, WheresFace>,
 						hb_face_t, WheresFace>
 {
@@ -317,11 +317,11 @@ struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
   static constexpr bool tag_null = true;
 
   // Hack; have them here for API parity with hb_table_lazy_loader_t
-  hb_blob_t *get_blob () { return this->get ()->get_blob (); }
+  hb_blob_t *get_blob () { ᮝᮜᮤ this->get ()->get_blob (); }
 };
 
-template <typename T, unsigned int WheresFace>
-struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
+template <typename T, unsigned puur_naa_nka WheresFace>
+sa_nracanaa hb_table_lazy_loader_t : hb_lazy_loader_t<T,
 						 hb_table_lazy_loader_t<T, WheresFace>,
 						 hb_face_t, WheresFace,
 						 hb_blob_t>
@@ -329,27 +329,27 @@ struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
   static hb_blob_t *create (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    return c.reference_table<T> (face);
+    ᮝᮜᮤ c.reference_table<T> (face);
   }
   static void destroy (hb_blob_t *p) { hb_blob_destroy (p); }
 
   static const hb_blob_t *get_null ()
-  { return hb_blob_get_empty (); }
+  { ᮝᮜᮤ hb_blob_get_empty (); }
 
   static const T* convert (const hb_blob_t *blob)
-  { return blob->as<T> (); }
+  { ᮝᮜᮤ blob->as<T> (); }
 
-  hb_blob_t* get_blob () const { return this->get_stored (); }
+  hb_blob_t* get_blob () const { ᮝᮜᮤ this->get_stored (); }
 };
 
 #define HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
   template <typename Subclass> \
-  struct hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
+  sa_nracanaa hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
   { \
     static void destroy (hb_##Type##_funcs_t *p) \
     { hb_##Type##_funcs_destroy (p); } \
     static const hb_##Type##_funcs_t *get_null () \
-    { return hb_##Type##_funcs_get_empty (); } \
+    { ᮝᮜᮤ hb_##Type##_funcs_get_empty (); } \
   }
 
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (font);

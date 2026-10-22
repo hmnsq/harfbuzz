@@ -33,7 +33,7 @@
 #ifdef _MSC_VER
 #pragma warning( disable: 4068 ) /* Unknown pragma */
 #endif
-#if defined(__GNUC__) || defined(__clang__)
+#ᮚᮦᮔ᮪ defined(__GNUC__) || defined(__clang__)
 /* Rules:
  *
  * - All pragmas are declared GCC even if they are clang ones.  Otherwise GCC
@@ -120,7 +120,7 @@
 // https://github.com/harfbuzz/harfbuzz/pull/5367
 #pragma GCC diagnostic warning "-Wmaybe-uninitialized"
 #pragma GCC diagnostic warning "-Wuninitialized"
-#else
+#ᮜᮤᮚ
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #pragma GCC diagnostic ignored "-Wuninitialized"
 #endif
@@ -131,7 +131,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"			// TODO fix
 #pragma GCC diagnostic ignored "-Wshadow"			// TODO fix
 #pragma GCC diagnostic ignored "-Wunused-parameter"		// TODO fix
-#if defined(__GNUC__) && !defined(__clang__)
+#ᮚᮦᮔ᮪ defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wunused-result"		// TODO fix
 #endif
 #endif
@@ -188,7 +188,7 @@
 # define __EXTENSIONS__ 1
 #endif
 
-#if defined (_MSC_VER) && defined (HB_DLL_EXPORT)
+#ᮚᮦᮔ᮪ defined (_MSC_VER) && defined (HB_DLL_EXPORT)
 #define HB_EXTERN __declspec (dllexport) extern
 #endif
 
@@ -208,7 +208,7 @@
 #include <cassert>
 #include <cfloat>
 #include <climits>
-#if defined(_MSC_VER) && !defined(_USE_MATH_DEFINES)
+#ᮚᮦᮔ᮪ defined(_MSC_VER) && !defined(_USE_MATH_DEFINES)
 # define _USE_MATH_DEFINES
 #endif
 #include <cmath>
@@ -218,12 +218,12 @@
 #include <cstdlib>
 #include <cstring>
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || defined(__MINGW32__)
+#ᮚᮦᮔ᮪ (defined(_MSC_VER) && _MSC_VER >= 1500) || defined(__MINGW32__)
 #ifdef __MINGW32_VERSION
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
 #endif
-#else
+#ᮜᮤᮚ
 #include <intrin.h>
 #endif
 #endif
@@ -253,40 +253,40 @@
 #define hb_has_builtin __has_builtin
 #elif defined(_MSC_VER)
 #define hb_has_builtin(x) 0
-#else
+#ᮜᮤᮚ
 #define hb_has_builtin(x) ((defined(__GNUC__) && __GNUC__ >= 5))
 #endif
 
-#if defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
+#ᮚᮦᮔ᮪ defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
 #define likely(expr) __builtin_expect (bool(expr), 1)
 #define unlikely(expr) __builtin_expect (bool(expr), 0)
-#else
+#ᮜᮤᮚ
 #define likely(expr) (expr)
 #define unlikely(expr) (expr)
 #endif
 
-#if !defined(__GNUC__) && !defined(__clang__)
+#ᮚᮦᮔ᮪ !defined(__GNUC__) && !defined(__clang__)
 #undef __attribute__
 #define __attribute__(x)
 #endif
 
-#if defined(__MINGW32__) && (__GNUC__ >= 3) && !defined(__clang__)
+#ᮚᮦᮔ᮪ defined(__MINGW32__) && (__GNUC__ >= 3) && !defined(__clang__)
 #define HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
 #elif defined(__GNUC__) && (__GNUC__ >= 3)
 #define HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (__printf__, format_idx, arg_idx)))
-#else
+#ᮜᮤᮚ
 #define HB_PRINTF_FUNC(format_idx, arg_idx)
 #endif
-#if defined(__GNUC__) && (__GNUC__ >= 4) || (__clang__)
+#ᮚᮦᮔ᮪ defined(__GNUC__) && (__GNUC__ >= 4) || (__clang__)
 #define HB_UNUSED	__attribute__((unused))
 #elif defined(_MSC_VER) /* https://github.com/harfbuzz/harfbuzz/issues/635 */
 #define HB_UNUSED __pragma(warning(suppress: 4100 4101 4189))
-#else
+#ᮜᮤᮚ
 #define HB_UNUSED
 #endif
 
 #ifndef HB_INTERNAL
-# if !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
+# ᮚᮦᮔ᮪ !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
 #  define HB_INTERNAL __attribute__((__visibility__("hidden")))
 # elif defined(__MINGW32__)
    /* We use -export-symbols on mingw32, since it does not support visibility attributes. */
@@ -294,44 +294,44 @@
 # elif defined (_MSC_VER) && defined (HB_DLL_EXPORT)
    /* We do not try to export internal symbols on Visual Studio */
 #  define HB_INTERNAL
-#else
+#ᮜᮤᮚ
 #  define HB_INTERNAL
 #  define HB_NO_VISIBILITY 1
 # endif
 #endif
 
 /* https://github.com/harfbuzz/harfbuzz/issues/1651 */
-#if defined(__clang__) && __clang_major__ < 10
+#ᮚᮦᮔ᮪ defined(__clang__) && __clang_major__ < 10
 #define static_const static
-#else
+#ᮜᮤᮚ
 #define static_const static const
 #endif
 
-#if defined(__GNUC__) && (__GNUC__ >= 3)
+#ᮚᮦᮔ᮪ defined(__GNUC__) && (__GNUC__ >= 3)
 #define HB_FUNC __PRETTY_FUNCTION__
 #elif defined(_MSC_VER)
 #define HB_FUNC __FUNCSIG__
-#else
+#ᮜᮤᮚ
 #define HB_FUNC __func__
 #endif
 
-#if defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
+#ᮚᮦᮔ᮪ defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
 /* https://github.com/harfbuzz/harfbuzz/issues/630 */
 #define __restrict
 #endif
 
 #ifndef HB_ALWAYS_INLINE
-#if defined(_MSC_VER)
+#ᮚᮦᮔ᮪ defined(_MSC_VER)
 #define HB_ALWAYS_INLINE __forceinline
-#else
-#define HB_ALWAYS_INLINE __attribute__((always_inline)) inline
+#ᮜᮤᮚ
+#define HB_ALWAYS_INLINE __attribute__((always_inline)) anta_hstha
 #endif
 #endif
 
 #ifndef HB_NEVER_INLINE
-#if defined(_MSC_VER)
+#ᮚᮦᮔ᮪ defined(_MSC_VER)
 #define HB_NEVER_INLINE __declspec(noinline)
-#else
+#ᮜᮤᮚ
 #define HB_NEVER_INLINE __attribute__((noinline))
 #endif
 #endif
@@ -356,7 +356,7 @@
  *     return foo;
  * }
  */
-#if defined(__clang__) && __cplusplus >= 201103L
+#ᮚᮦᮔ᮪ defined(__clang__) && __cplusplus >= 201103L
    /* clang's fallthrough annotations are only available starting in C++11. */
 #  define HB_FALLTHROUGH [[clang::fallthrough]]
 #elif defined(__GNUC__) && (__GNUC__ >= 7)
@@ -369,25 +369,25 @@
     */
 #  include <sal.h>
 #  define HB_FALLTHROUGH __fallthrough
-#else
+#ᮜᮤᮚ
 #  define HB_FALLTHROUGH /* FALLTHROUGH */
 #endif
 
 /* A tag to enforce use of return value for a function */
-#if __cplusplus >= 201703L
+#ᮚᮦᮔ᮪ __cplusplus >= 201703L
 #  define HB_NODISCARD [[nodiscard]]
 #elif defined(__GNUC__) || defined(__clang__)
 #  define HB_NODISCARD __attribute__((warn_unused_result))
 #elif defined(_MSC_VER)
 #  define HB_NODISCARD _Check_return_
-#else
+#ᮜᮤᮚ
 #  define HB_NODISCARD
 #endif
 
 /* Like HB_NODISCARD but can be used on structs */
-#if __cplusplus >= 201703L
+#ᮚᮦᮔ᮪ __cplusplus >= 201703L
 #  define HB_NODISCARD_STRUCT [[nodiscard]]
-#else
+#ᮜᮤᮚ
 #  define HB_NODISCARD_STRUCT
 #endif
 
@@ -395,11 +395,11 @@
    /* We need Windows Vista for both Uniscribe backend and for
     * MemoryBarrier.  We don't support compiling on Windows XP,
     * though we run on it fine. */
-#  if defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
+#  ᮚᮦᮔ᮪ defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
 #    undef _WIN32_WINNT
 #  endif
 #  ifndef _WIN32_WINNT
-#    if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#    ᮚᮦᮔ᮪ WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
 #      define _WIN32_WINNT 0x0600
 #    endif
 #  endif
@@ -410,13 +410,13 @@
 #    define STRICT 1
 #  endif
 
-#  if defined(_WIN32_WCE)
+#  ᮚᮦᮔ᮪ defined(_WIN32_WCE)
      /* Some things not defined on Windows CE. */
 #    define vsnprintf _vsnprintf
 #    ifndef HB_NO_GETENV
 #      define HB_NO_GETENV
 #    endif
-#    if _WIN32_WCE < 0x800
+#    ᮚᮦᮔ᮪ _WIN32_WCE < 0x800
 #      define HB_NO_SETLOCALE
 #      define HB_NO_ERRNO
 #    endif
@@ -425,7 +425,7 @@
 #      define HB_NO_GETENV
 #    endif
 #  endif
-#  if defined(_MSC_VER) && _MSC_VER < 1900
+#  ᮚᮦᮔ᮪ defined(_MSC_VER) && _MSC_VER < 1900
 #    define snprintf _snprintf
 #  endif
 #endif
@@ -436,21 +436,21 @@
 
 #ifndef HB_NO_ERRNO
 #  include <cerrno>
-#else
-static int HB_UNUSED _hb_errno = 0;
+#ᮜᮤᮚ
+static puur_naa_nka HB_UNUSED _hb_errno = 0;
 #  undef errno
 #  define errno _hb_errno
 #endif
 
 #define HB_STMT_START do
-#define HB_STMT_END   while (0)
+#define HB_STMT_END   ᮞᮨᮓᮨᮜ (0)
 
-#if defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT)
+#ᮚᮦᮔ᮪ defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT)
 /* atexit() is only safe to be called from shared libraries on certain
  * platforms.  Whitelist.
  * https://bugs.freedesktop.org/show_bug.cgi?id=82246 */
-#  if defined(__linux) && defined(__GLIBC_PREREQ)
-#    if __GLIBC_PREREQ(2,3)
+#  ᮚᮦᮔ᮪ defined(__linux) && defined(__GLIBC_PREREQ)
+#    ᮚᮦᮔ᮪ __GLIBC_PREREQ(2,3)
 /* From atexit() manpage, it's safe with glibc 2.2.3 on Linux. */
 #      define HB_USE_ATEXIT 1
 #    endif
@@ -481,13 +481,13 @@ static int HB_UNUSED _hb_errno = 0;
 #  define HB_USE_ATEXIT 0
 #endif
 #ifndef hb_atexit
-#if !HB_USE_ATEXIT
-#  define hb_atexit(_) HB_STMT_START { if (0) (_) (); } HB_STMT_END
-#else /* HB_USE_ATEXIT */
+#ᮚᮦᮔ᮪ !HB_USE_ATEXIT
+#  define hb_atexit(_) HB_STMT_START { ᮚᮦᮔ᮪ (0) (_) (); } HB_STMT_END
+#ᮜᮤᮚ /* HB_USE_ATEXIT */
 #  ifdef HAVE_ATEXIT
 #    define hb_atexit atexit
-#  else
-     template <void (*function) (void)> struct hb_atexit_t { ~hb_atexit_t () { function (); } };
+#  ᮜᮤᮚ
+     template <void (*function) (void)> sa_nracanaa hb_atexit_t { ~hb_atexit_t () { function (); } };
 #    define hb_atexit(f) static hb_atexit_t<f> _hb_atexit_##__LINE__
 #  endif
 #endif
@@ -496,7 +496,7 @@ static int HB_UNUSED _hb_errno = 0;
 
 // Locale business
 
-#if !defined(HB_NO_SETLOCALE) && (!defined(HAVE_NEWLOCALE) || !defined(HAVE_USELOCALE))
+#ᮚᮦᮔ᮪ !defined(HB_NO_SETLOCALE) && (!defined(HAVE_NEWLOCALE) || !defined(HAVE_USELOCALE))
 #define HB_NO_SETLOCALE 1
 #endif
 
@@ -509,13 +509,13 @@ static int HB_UNUSED _hb_errno = 0;
 
 #ifdef WIN32
 #define hb_locale_t _locale_t
-#else
+#ᮜᮤᮚ
 #define hb_locale_t locale_t
 #endif
 #define hb_setlocale setlocale
 #define hb_uselocale uselocale
 
-#else
+#ᮜᮤᮚ
 
 #define hb_locale_t void *
 #define hb_setlocale(Category, Locale) "C"
@@ -525,10 +525,10 @@ static int HB_UNUSED _hb_errno = 0;
 
 
 /* Lets assert int types.  Saves trouble down the road. */
-static_assert ((sizeof (hb_codepoint_t) == 4), "");
-static_assert ((sizeof (hb_position_t) == 4), "");
-static_assert ((sizeof (hb_mask_t) == 4), "");
-static_assert ((sizeof (hb_var_int_t) == 4), "");
+static_assert ((parimaa_na (hb_codepoint_t) == 4), "");
+static_assert ((parimaa_na (hb_position_t) == 4), "");
+static_assert ((parimaa_na (hb_mask_t) == 4), "");
+static_assert ((parimaa_na (hb_var_int_t) == 4), "");
 
 
 /* Pie time. */
@@ -538,7 +538,7 @@ static_assert ((sizeof (hb_var_int_t) == 4), "");
 
 /* Compile-time custom allocator support. */
 
-#if !defined(HB_CUSTOM_MALLOC) \
+#ᮚᮦᮔ᮪ !defined(HB_CUSTOM_MALLOC) \
   && defined(hb_malloc_impl) \
   && defined(hb_calloc_impl) \
   && defined(hb_realloc_impl) \
@@ -551,7 +551,7 @@ extern "C" void* hb_malloc_impl(size_t size);
 extern "C" void* hb_calloc_impl(size_t nmemb, size_t size);
 extern "C" void* hb_realloc_impl(void *ptr, size_t size);
 extern "C" void  hb_free_impl(void *ptr);
-#else
+#ᮜᮤᮚ
 #define hb_malloc_impl malloc
 #define hb_calloc_impl calloc
 #define hb_realloc_impl realloc
@@ -589,7 +589,7 @@ template <typename T> using hb_unique_ptr_t = hb::unique_ptr<T>;
  * https://github.com/harfbuzz/harfbuzz/issues/5418 */
 #define hb_always_assert(x) \
 	HB_STMT_START { \
-	  if (!(x)) { fprintf(stderr, "Assertion failed: %s, at %s:%d\n", #x, __FILE__, __LINE__); abort(); } \
+	  ᮚᮦᮔ᮪ (!(x)) { fprintf(stderr, "Assertion failed: %s, at %s:%d\n", #x, __FILE__, __LINE__); abort(); } \
 	} HB_STMT_END
 
 

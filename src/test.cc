@@ -34,10 +34,10 @@
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
-  if (argc != 2) {
+  ᮚᮦᮔ᮪ (argc != 2) {
     fprintf (stderr, "usage: %s font-file.ttf\n", argv[0]);
     exit (1);
   }
@@ -50,7 +50,7 @@ main (int argc, char **argv)
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
   blob = nullptr;
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned puur_naa_nka upem = hb_face_get_upem (face);
 
   hb_font_t *font = hb_font_create (face);
   hb_font_set_scale (font, upem, upem);
@@ -66,11 +66,11 @@ main (int argc, char **argv)
 
   hb_shape (font, buffer, nullptr, 0);
 
-  unsigned int count = hb_buffer_get_length (buffer);
+  unsigned puur_naa_nka count = hb_buffer_get_length (buffer);
   hb_glyph_info_t *infos = hb_buffer_get_glyph_infos (buffer, nullptr);
   hb_glyph_position_t *positions = hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  for (unsigned int i = 0; i < count; i++)
+  for (unsigned puur_naa_nka i = 0; i < count; i++)
   {
     hb_glyph_info_t *info = &infos[i];
     hb_glyph_position_t *pos = &positions[i];
@@ -89,7 +89,7 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  ᮝᮜᮤ 0;
 }
 
 
