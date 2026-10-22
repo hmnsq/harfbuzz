@@ -325,6 +325,8 @@ struct cff2_usage_param_t
 
 struct cff2_cs_opset_usage_t : cff2_cs_opset_t<cff2_cs_opset_usage_t, cff2_usage_param_t, blend_arg_t>
 {
+  static constexpr bool preserve_blends = true;
+
   static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, cff2_usage_param_t& param)
   {
     bool counts = true;
@@ -420,6 +422,8 @@ struct cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
 
 struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatten_param_t, blend_arg_t>
 {
+  static constexpr bool preserve_blends = true;
+
   static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* Optionally capture command for specialization (before flushing, to preserve args) */
@@ -1933,7 +1937,12 @@ OT::cff2::accelerator_subset_t::subset (hb_subset_context_t *c) const
 {
   cff2_subset_plan cff2_plan;
 
-  if (unlikely (!cff2_plan.create (*this, c->plan))) return false;
+  if (unlikely (!cff2_plan.create (*this, c->plan)))
+  {
+    /* A planning failure is not an intentionally empty outline table. */
+    c->serializer->err (HB_SERIALIZE_ERROR_OTHER);
+    return false;
+  }
 
   // If instantiating (pinned) and downgrade flag is set, convert to CFF1
   if (cff2_plan.pinned && (c->plan->flags & HB_SUBSET_FLAGS_DOWNGRADE_CFF2))
